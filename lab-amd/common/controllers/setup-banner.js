@@ -1,10 +1,14 @@
-/*global define */
+/*global define, $ */
 
 define(function () {
 
   var labConfig       = require('lab.config'),
       TextController  = require('common/controllers/text-controller'),
-      ImageController = require('common/controllers/image-controller');
+      ImageController = require('common/controllers/image-controller'),
+      DivController   = require('common/controllers/div-controller'),
+      topBarHeight    = 1.5,
+      topBarFontScale = topBarHeight*0.65,
+      topBarVerticalPadding = topBarHeight/10;
 
   /**
    * Returns a hash containing:
@@ -23,14 +27,17 @@ define(function () {
         template = [],
         layout = {},
         // About link visible if there is about section or subtitle.
-        haveAboutText = interactive.about || interactive.subtitle;
+        haveAboutText = interactive.about || interactive.subtitle,
+        body, requestFullscreenMethod;
 
     template.push({
       "id": "top-bar",
       "top": "0",
       "left": "0",
+      "height": topBarHeight + "em",
+      "padding-top": topBarVerticalPadding + "em",
+      "padding-bottom": topBarVerticalPadding + "em",
       "width": "container.width",
-      "height": "banner-right.height",
       "aboveOthers": true
     });
 
@@ -39,38 +46,50 @@ define(function () {
       "bottom": "container.height",
       "left": "0",
       "width": "container.width",
-      "height": "banner-bottom-left.height",
+      "height": "2.5em",
       "belowOthers": true
     });
 
-    function createLinkInContainer(link, container) {
-      components[link.id] = new TextController(link);
-      template.push(container);
-      layout[container.id] = [link.id];
-    }
+    function createElementInContainer(element, container) {
+      var Controller;
 
-    function createImageInContainer(image, container) {
-      components[image.id] = new ImageController(image);
+      if (element.type === "text") {
+        Controller = TextController;
+      } else if (element.type === "image") {
+        Controller = ImageController;
+      } else if (element.type === "div") {
+        Controller = DivController;
+      }
+
+      components[element.id] = new Controller(element);
       template.push(container);
-      layout[container.id] = [image.id];
+      layout[container.id] = [element.id];
     }
 
     // Define about link only if "about" or "subtitle" section is available.
     aboutDialog.update(interactive);
-    createLinkInContainer(
-    {
+    createElementInContainer({
       "type": "text",
       "id": "about-link",
       "text": "About",
-      "style": "header",
-      "onClick": function () { if (haveAboutText) {aboutDialog.open()} else {creditsDialog.open()}}
+      "onClick": function () {
+        if (haveAboutText) {
+          aboutDialog.open();
+        } else {
+          creditsDialog.open();
+        }
+      }
     },
     {
       "id": "banner-right",
+      "fontScale": topBarFontScale,
       "top": "0",
+      "height": topBarHeight + "em",
+      "padding-top": topBarVerticalPadding + "em",
+      "padding-bottom": topBarVerticalPadding + "em",
       "right": "interactive.width",
       "padding-left": "1em",
-      "padding-right": "1em",
+      "padding-right": "0.75em",
       "align": "right",
       "aboveOthers": true
     });
@@ -81,17 +100,20 @@ define(function () {
     // in its specification!
     if (labConfig.sharing) {
       shareDialog.update(interactive);
-      createLinkInContainer(
+      createElementInContainer(
       {
         "type": "text",
         "id": "share-link",
         "text": "Share",
-        "style": "header",
         "onClick": function () { shareDialog.open(); }
       },
       {
         "id": "banner-middle",
+        "fontScale": topBarFontScale,
         "top": "0",
+        "height": topBarHeight + "em",
+        "padding-top": topBarVerticalPadding + "em",
+        "padding-bottom": topBarVerticalPadding + "em",
         // "banner-right" can be undefined, so check it.
         "right": "banner-right.left",
         "padding-right": "1em",
@@ -102,19 +124,88 @@ define(function () {
 
     // bottom bar
     creditsDialog.update(interactive);
-    createImageInContainer(
+    createElementInContainer(
     {
-      "type": "image",
+      "type": "div",
       "id": "credits-link",
       "height": "2.5em",
-      "src": "{resources}/layout/cc-logo.png",
+      "width": "8.1em",
+      "classes": ["credits"],
+      "tooltip": "Credits",
       "onClick": function () { creditsDialog.open(); }
     },
     {
       "id": "banner-bottom-left",
       "bottom": "container.height",
       "left": "0",
+      "padding-left": "0.3em",
       "align": "left",
+      "belowOthers": true
+    });
+
+    // see if we can go fullscreen. If we can, add a fullscreen button.
+    // Note: This requires iframe to be embedded with 'allowfullscreen=true' (and
+    // browser-specific variants). If iframe is not embedded with this property, button
+    // will show but will not work. It is not clear whether we can find out at this moment
+    // whether iframe was embedded appropriately.
+    body = document.body;
+
+    requestFullscreenMethod =
+         body.requestFullScreen ||
+         body.webkitRequestFullScreen ||
+         body.mozRequestFullScreen ||
+         body.msRequestFullScreen;
+
+    document.cancelFullscreenMethod =
+         document.cancelFullScreen ||
+         document.webkitCancelFullScreen ||
+         document.mozCancelFullScreen ||
+         document.msCancelFullScreen;
+
+    function isFullscreen() {
+      // this doesn't yet exist in Safari
+      if (document.fullscreenElement||
+          document.webkitFullscreenElement ||
+          document.mozFullScreenElement) {
+        return true;
+      }
+      // annoying hack to check Safari
+      return ~$(".fullscreen").css("background-image").indexOf("exit");
+    }
+
+    if (requestFullscreenMethod) {
+      createElementInContainer(
+      {
+        "type": "div",
+        "id": "fullsize-link",
+        "height": "2.5em",
+        "width": "2.5em",
+        "classes": ["fullscreen"],
+        "tooltip": "Open interactive in full-screen mode",
+        "onClick": function () {
+          if (!isFullscreen()) {
+            requestFullscreenMethod.call(body);
+          } else {
+            document.cancelFullscreenMethod();
+          }
+        }
+      },
+      {
+        "id": "banner-bottom-right",
+        "bottom": "container.height",
+        "right": "container.width",
+        "align": "left",
+        "padding-left": "1em",
+        "belowOthers": true
+      });
+    }
+
+    template.push({
+      "id": "interactive-playback-container",
+      "bottom": "container.height",
+      "left": "container.width/2 - interactive-playback-container.width/2",
+      "width": "12em",
+      "height": "banner-bottom-left.height",
       "belowOthers": true
     });
 

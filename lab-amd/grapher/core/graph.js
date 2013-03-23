@@ -1,47 +1,44 @@
-/*globals define, d3 */
+/*global define, d3, $ self */
 
 define(function (require) {
   // Dependencies.
-  var axis                    = require('grapher/core/axis'),
-      registerKeyboardHandler = require('grapher/core/register-keyboard-handler');
+  var axis = require('grapher/core/axis'),
+      tooltips = {
+        autoscale: "Show all data (autoscale)"
+      };
 
-  return function Graph(elem, options, message) {
-    var cx = 600, cy = 300,
-        node;
 
-    // FIXME The following two scenarios should result in the same code path being followed:
-    //
-    // (1)
-    //    var g = Graph(); g(d3.select("#graph"));
-    // (2)
-    //    var g = Graph("#graph");
-    //
-    // However, currently, if Graph() is invoked as in (2) then a different path is taken through
-    // scale(), and this appears to affect the path through subsequent code. The proof of this
-    // is that the grapher fails if we move the following if-statement to the end of Graph(),
-    // just before the invocation of graph(elem). Moving the if-statement and invoking
-    // Graph() via (2) should just be the rough equivalent of scenario (1), but apparently, it's not
-    // (or possibly scenario (1) doesn't work.)
+  return function Graph(idOrElement, options, message, tabindex) {
+    var elem,
+        node,
+        $node,
+        cx,
+        cy,
 
-    if (arguments.length) {
-      elem = d3.select(elem);
-      node = elem.node();
-      cx = elem.property("clientWidth");
-      cy = elem.property("clientHeight");
-    }
-
-    var svg, vis, plot, viewbox,
+        stroke = function(d) { return d ? "#ccc" : "#666"; },
+        tx = function(d) { return "translate(" + xScale(d) + ",0)"; },
+        ty = function(d) { return "translate(0," + yScale(d) + ")"; },
+        fx, fy,
+        svg, vis, plot, viewbox,
+        buttonLayer,
         title, xlabel, ylabel,
-        points,
         notification,
-        margin, padding, size,
-        xScale, yScale, xValue, yValue, line,
+        padding, size,
+        xScale, yScale, line,
         shiftingX = false,
         cubicEase = d3.ease('cubic'),
         ds,
-        stroke, tx, ty, fx, fy,
         circleCursorStyle,
-        emsize, strokeWidth,
+        fontSizeInPixels,
+        halfFontSizeInPixels,
+        quarterFontSizeInPixels,
+        titleFontSizeInPixels,
+        axisFontSizeInPixels,
+        xlabelFontSizeInPixels,
+        ylabelFontSizeInPixels,
+        xAxisNumberWidth,
+        yAxisNumberWidth,
+        strokeWidth,
         sizeType = {
           category: "medium",
           value: 3,
@@ -51,31 +48,52 @@ define(function (require) {
           medium: 960,
           large: 1920
         },
-        downx, downy, dragged, selected,
+        downx = NaN,
+        downy = NaN,
+        dragged = null,
+        selected = null,
         titles = [],
+
+        points, pointArray,
+        currentSample,
+        markedPoint, marker,
+        sample,
+        gcanvas, gctx,
+        canvasFillStyle = "rgba(255,255,255, 0.0)",
+        cplot = {},
+
         default_options = {
-          title:          "Graph",
-          xlabel:         "X Axis",
-          ylabel:         "Y Axis",
-          xscale:         "linear",
-          yscale:         "linear",
-          xTicCount:       10,
-          yTicCount:        8,
-          xFormatter:     "3.3r",
-          yFormatter:     "3.3r",
-          xscaleExponent:   0.5,
-          yscaleExponent:   0.5,
+          showButtons:    true,
+          responsiveLayout: false,
+          fontScaleRelativeToParent: true,
+          realTime:       false,
+          title:          "graph",
+          xlabel:         "x-axis",
+          ylabel:         "y-axis",
+          xscale:         'linear',
+          yscale:         'linear',
+          xTickCount:      10,
+          yTickCount:      10,
+          xscaleExponent:  0.5,
+          yscaleExponent:  0.5,
+          xFormatter:      ".2s",
+          yFormatter:      ".2s",
           axisShift:       10,
-          xmax:            60,
-          xmin:             0,
-          ymax:            40,
-          ymin:             0,
+          xmax:            10,
+          xmin:            0,
+          ymax:            10,
+          ymin:            0,
+          dataset:         [0],
+          selectablePoints: false,
           circleRadius:    10.0,
           strokeWidth:      2.0,
           dataChange:      true,
           addData:         true,
           points:          false,
-          notification:    false
+          notification:    false,
+          sample:          1,
+          lines:           true,
+          bars:            false
         },
 
         selection_region = {
@@ -91,8 +109,7 @@ define(function (require) {
         brush_element,
         brush_control;
 
-
-    initialize(options);
+    initialize(idOrElement, options, message);
 
     function setupOptions(options) {
       if (options) {
@@ -109,130 +126,154 @@ define(function (require) {
     }
 
     function calculateSizeType() {
-      if(cx <= sizeType.icon) {
-        sizeType.category = 'icon';
-        sizeType.value = 0;
-      } else if (cx <= sizeType.tiny) {
-        sizeType.category = 'tiny';
-        sizeType.value = 1;
-      } else if (cx <= sizeType.small) {
-        sizeType.category = 'small';
-        sizeType.value = 2;
-      } else if (cx <= sizeType.medium) {
-        sizeType.category = 'medium';
-        sizeType.value = 3;
-      } else if (cx <= sizeType.large) {
+      if (options.responsiveLayout) {
+        if(cx <= sizeType.icon) {
+          sizeType.category = 'icon';
+          sizeType.value = 0;
+        } else if (cx <= sizeType.tiny) {
+          sizeType.category = 'tiny';
+          sizeType.value = 1;
+        } else if (cx <= sizeType.small) {
+          sizeType.category = 'small';
+          sizeType.value = 2;
+        } else if (cx <= sizeType.medium) {
+          sizeType.category = 'medium';
+          sizeType.value = 3;
+        } else if (cx <= sizeType.large) {
+          sizeType.category = 'large';
+          sizeType.value = 4;
+        } else {
+          sizeType.category = 'extralarge';
+          sizeType.value = 5;
+        }
+      } else {
         sizeType.category = 'large';
         sizeType.value = 4;
-      } else {
-        sizeType.category = 'extralarge';
-        sizeType.value = 5;
       }
     }
 
     function scale(w, h) {
-      if (!arguments.length) {
-        cx = elem.property("clientWidth");
-        cy = elem.property("clientHeight");
+      if (!w && !h) {
+        cx = Math.max(elem.property("clientWidth"), 120);
+        cy = Math.max(elem.property("clientHeight"), 62);
       } else {
         cx = w;
-        cy = h;
         node.style.width =  cx +"px";
-        node.style.height = cy +"px";
+        if (!h) {
+          node.style.height = "100%";
+          h = elem.property("clientHeight");
+          cy = h;
+          node.style.height = cy +"px";
+        } else {
+          cy = h;
+          node.style.height = cy +"px";
+        }
       }
       calculateSizeType();
-      // Previously there was used layout module to
-      // define emsize. However, setting this value
-      // to 1 doesn't seem to change anything.
-      // TODO: cleanup it.
-      emsize = 1;
     }
 
-    function initialize(newOptions, mesg) {
-      if (newOptions || !options) {
-        options = setupOptions(newOptions);
-      }
+    // Update the x-scale.
+    function updateXScale() {
+      xScale.domain([options.xmin, options.xmax])
+            .range([0, size.width]);
+    }
 
-      if (svg !== undefined) {
-        svg.remove();
-        svg = undefined;
-      }
+    // Update the y-scale.
+    function updateYScale() {
+      yScale.domain([options.ymin, options.ymax])
+            .range([size.height, 0]);
+    }
 
-      if (mesg) {
-        message = mesg;
-      }
+    function persistScaleChangesToOptions() {
+      var xdomain = xScale.domain(),
+          ydomain = yScale.domain();
+      options.xmax = xdomain[1];
+      options.xmin = xdomain[0];
+      options.ymax = ydomain[1];
+      options.ymin = ydomain[0];
+    }
 
-      if (options.dataChange) {
-        circleCursorStyle = "ns-resize";
-      } else {
-        circleCursorStyle = "crosshair";
-      }
-
+    function calculateLayout() {
       scale();
 
-      options.xrange = options.xmax - options.xmin;
-      options.yrange = options.ymax - options.ymin;
+      fontSizeInPixels = parseFloat($node.css("font-size"));
 
-      options.datacount = 2;
+      if (!options.fontScaleRelativeToParent) {
+        $node.css("font-size", 0.5 + sizeType.value/6 + 'em');
+      }
 
-      strokeWidth = options.strokeWidth;
+      fontSizeInPixels = parseFloat($node.css("font-size"));
+
+      halfFontSizeInPixels = fontSizeInPixels/2;
+      quarterFontSizeInPixels = fontSizeInPixels/4;
+
+      if (svg === undefined) {
+        titleFontSizeInPixels =  fontSizeInPixels;
+        axisFontSizeInPixels =   fontSizeInPixels;
+        xlabelFontSizeInPixels = fontSizeInPixels;
+        ylabelFontSizeInPixels = fontSizeInPixels;
+      } else {
+        titleFontSizeInPixels =  parseFloat($("svg.graph text.title").css("font-size"));
+        axisFontSizeInPixels =   parseFloat($("svg.graph text.axis").css("font-size"));
+        xlabelFontSizeInPixels = parseFloat($("svg.graph text.xlabel").css("font-size"));
+        ylabelFontSizeInPixels = parseFloat($("svg.graph text.ylabel").css("font-size"));
+      }
+
+      xAxisNumberWidth = Math.max(axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.xFormatter, options.xmax)*1.5,
+                                  axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.xFormatter, options.xmin)*1.5);
+
+      yAxisNumberWidth = Math.max(axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.yFormatter, options.ymax)*1.5,
+                                  axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.yFormatter, options.ymin)*1.5);
 
       switch(sizeType.value) {
-        case 0:
+        case 0:         // tiny
         padding = {
-         "top":    4,
-         "right":  4,
-         "bottom": 4,
-         "left":   4
+         "top":    fontSizeInPixels,
+         "right":  fontSizeInPixels,
+         "bottom": fontSizeInPixels,
+         "left":   fontSizeInPixels
         };
         break;
 
-        case 1:
+        case 1:         // small
         padding = {
-         "top":    8,
-         "right":  8,
-         "bottom": 8,
-         "left":   8
+         "top":    fontSizeInPixels,
+         "right":  fontSizeInPixels,
+         "bottom": fontSizeInPixels,
+         "left":   fontSizeInPixels
         };
         break;
 
-        case 2:
+        case 2:         // medium
         padding = {
-         "top":    options.title  ? 25 : 15,
-         "right":  15,
-         "bottom": 20,
-         "left":   60
+         "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
+         "right":  Math.max(fontSizeInPixels, xAxisNumberWidth*0.5),
+         "bottom": axisFontSizeInPixels*1.25,
+         "left":   yAxisNumberWidth
         };
         break;
 
-        case 3:
+        case 3:         // large
         padding = {
-         "top":    options.title  ? 30 : 20,
-         "right":                   30,
-         "bottom": options.xlabel ? 60 : 10,
-         "left":   options.ylabel ? 90 : 60
+         "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
+         "right":  Math.max(fontSizeInPixels, xAxisNumberWidth*0.5),
+         "bottom": options.xlabel ? (xlabelFontSizeInPixels + axisFontSizeInPixels)*1.25 : axisFontSizeInPixels*1.25,
+         "left":   options.ylabel ? yAxisNumberWidth + axisFontSizeInPixels*1.2 : yAxisNumberWidth
         };
         break;
 
-        default:
+        default:         // extralarge
         padding = {
-         "top":    options.title  ? 40 : 20,
-         "right":                   30,
-         "bottom": options.xlabel ? 60 : 10,
-         "left":   options.ylabel ? 90 : 60
+         "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
+         "right":  Math.max(fontSizeInPixels, xAxisNumberWidth*0.5),
+         "bottom": options.xlabel ? (xlabelFontSizeInPixels + axisFontSizeInPixels)*1.25 : axisFontSizeInPixels*1.25,
+         "left":   options.ylabel ? yAxisNumberWidth + axisFontSizeInPixels*1.2 : yAxisNumberWidth
         };
         break;
       }
-
-      if (Object.prototype.toString.call(options.title) === "[object Array]") {
-        titles = options.title;
-      } else {
-        titles = [options.title];
-      }
-      titles.reverse();
 
       if (sizeType.value > 2 ) {
-        padding.top += (titles.length-1) * sizeType.value/3 * sizeType.value/3 * emsize * 22;
+        padding.top += (titles.length-1) * sizeType.value/3 * sizeType.value/3 * fontSizeInPixels;
       } else {
         titles = [titles[0]];
       }
@@ -241,9 +282,6 @@ define(function (require) {
         "width":  cx - padding.left - padding.right,
         "height": cy - padding.top  - padding.bottom
       };
-
-      xValue = function(d) { return d[0]; };
-      yValue = function(d) { return d[1]; };
 
       xScale = d3.scale[options.xscale]()
         .domain([options.xmin, options.xmax])
@@ -254,190 +292,362 @@ define(function (require) {
       }
 
       yScale = d3.scale[options.yscale]()
-        .domain([options.ymin, options.ymax])
-        .range([size.height, 0]);
+        .domain([options.ymin, options.ymax]).nice()
+        .range([size.height, 0]).nice();
 
       if (options.yscale === "pow") {
         yScale.exponent(options.yscaleExponent);
       }
 
-      tx = function(d) {
-        return "translate(" + xScale(d) + ",0)";
-      };
-
-      ty = function(d) {
-        return "translate(0," + yScale(d) + ")";
-      };
-
-      stroke = function(d) {
-        return d ? "#ccc" : "#666";
-      };
-
-      fx = d3.format(options.xFormatter);
-      fy = d3.format(options.yFormatter);
+      updateXScale();
+      updateYScale();
 
       line = d3.svg.line()
           .x(function(d, i) { return xScale(points[i][0]); })
           .y(function(d, i) { return yScale(points[i][1]); });
 
+    }
+
+    // ------------------------------------------------------------
+    //
+    // Imported from graph.js
+    //
+    // ------------------------------------------------------------
+
+    function fakeDataPoints() {
+      var yrange2 = options.yrange / 2,
+          yrange4 = yrange2 / 2,
+          pnts;
+
+      options.datacount = size.width/30;
+      options.xtic = options.xrange / options.datacount;
+      options.ytic = options.yrange / options.datacount;
+
+      pnts = d3.range(options.datacount).map(function(i) {
+        return [i * options.xtic + options.xmin, options.ymin + yrange4 + Math.random() * yrange2 ];
+      });
+      return pnts;
+    }
+
+    function setCurrentSample(samplePoint) {
+      if (typeof samplePoint === "number") {
+        currentSample = samplePoint;
+      }
+      if (typeof currentSample !== "number") {
+        currentSample = points.length-1;
+      }
+      return currentSample;
+    }
+
+    //
+    // Initialize
+    //
+    function initialize(idOrElement, opts, mesg) {
+      if (opts || !options) {
+        options = setupOptions(opts);
+      }
+
+      initializeLayout(idOrElement, mesg);
+
+      options.xrange = options.xmax - options.xmin;
+      options.yrange = options.ymax - options.ymin;
+
+      if (Object.prototype.toString.call(options.title) === "[object Array]") {
+        titles = options.title;
+      } else {
+        titles = [options.title];
+      }
+      titles.reverse();
+
+      fx = d3.format(options.xFormatter);
+      fy = d3.format(options.yFormatter);
+
+      // use local variable for access speed in add_point()
+      sample = options.sample;
+
+      strokeWidth = options.strokeWidth;
+
+      points = options.points;
+      if (points === "fake") {
+        points = fakeDataPoints();
+      }
+
+      // In realTime mode the grapher expects either an array if arrays of dependent data.
+      // The sample variable sets the interval spacing between data samples.
+      if (options.realTime) {
+        pointArray = [];
+
+        if (Object.prototype.toString.call(options.dataset[0]) === "[object Array]") {
+          for (var i = 0; i < options.dataset.length; i++) {
+            pointArray.push(indexedData(options.dataset[i], 0, sample));
+          }
+          points = pointArray[0];
+        } else {
+          points = indexedData(options.dataset, 0);
+          pointArray = [points];
+        }
+      }
+      setCurrentSample(points.length-1);
+    }
+
+    function initializeLayout(idOrElement, mesg) {
+      if (idOrElement) {
+        // d3.select works both for element ID (e.g. "#grapher")
+        // and for DOM element.
+        elem = d3.select(idOrElement);
+        node = elem.node();
+        $node = $(node);
+        cx = elem.property("clientWidth");
+        cy = elem.property("clientHeight");
+      }
+
+      if (mesg) {
+        message = mesg;
+      }
+
+      if (svg !== undefined) {
+        svg.remove();
+        svg = undefined;
+      }
+
+      if (gcanvas !== undefined) {
+        $(gcanvas).remove();
+        gcanvas = undefined;
+      }
+
+      if (options.dataChange) {
+        circleCursorStyle = "ns-resize";
+      } else {
+        circleCursorStyle = "crosshair";
+      }
+
+      scale();
+
       // drag axis logic
       downx = NaN;
       downy = NaN;
-      dragged = selected = null;
+      dragged = null;
     }
 
-    function graph(selection) {
-      if (!selection) { selection = elem; }
-      selection.each(function() {
+    function indexedData(dataset, initial_index, sample) {
+      var i = 0,
+          start_index = initial_index || 0,
+          n = dataset.length,
+          points = [];
+      sample = sample || 1;
+      for (i = 0; i < n;  i++) {
+        points.push({ x: (i + start_index) * sample, y: dataset[i] });
+      }
+      return points;
+    }
 
-        elem = d3.select(this);
+    function number_of_points() {
+      if (points) {
+        return points.length;
+      } else {
+        return false;
+      }
+    }
 
-        if (this.clientWidth && this.clientHeight) {
-          cx = this.clientWidth;
-          cy = this.clientHeight;
-          size.width  = cx - padding.left - padding.right;
-          size.height = cy - padding.top  - padding.bottom;
-        }
+    function createButtonLayer() {
+      var buttonLayer = $('<div>' +
+                          '  <a class="graph-autoscale-button" title="' + tooltips.autoscale + '">' +
+                          '    <i class="icon-picture"></i>' +
+                          '  </a>' +
+                          '</div>')
+            .appendTo($(elem.node()))
+            .addClass('graph-button-layer')
+            .css('z-index', 101);
 
-        points = options.points;
-        if (points === "fake") {
-          points = fakeDataPoints();
-        }
+      buttonLayer.find('a.graph-autoscale-button').on('click', function() { graph.autoscale(); });
+      return buttonLayer;
+    }
 
-        updateXScale();
-        updateYScale();
+    function resizeButtonLayer() {
+      var rect = plot.node(),
+          rectTop,
+          rectLeft,
+          rectWidth,
+          layerWidth;
 
-        if (svg === undefined) {
+      // Make safe for jsdom based tests
+      if (!rect.getCTM || !rect.width.baseVal ) {
+        return;
+      }
 
-          svg = elem.append("svg")
-              .attr("width",  cx)
-              .attr("height", cy)
-              .attr("class", "graph");
+      rectTop = rect.getCTM().f;
+      rectLeft = rect.getCTM().e;
+      rectWidth = rect.width.baseVal.value;
+      layerWidth = buttonLayer.width();
 
-          vis = svg.append("g")
-                .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
-
-          plot = vis.append("rect")
-              .attr("class", "plot")
-              .attr("width", size.width)
-              .attr("height", size.height)
-              .style("fill", "#EEEEEE")
-              .attr("pointer-events", "all")
-              .on("mousedown.drag", plot_drag)
-              .on("touchstart.drag", plot_drag)
-              .call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
-
-          viewbox = vis.append("svg")
-              .attr("class", "viewbox")
-              .attr("top", 0)
-              .attr("left", 0)
-              .attr("width", size.width)
-              .attr("height", size.height)
-              .attr("viewBox", "0 0 "+size.width+" "+size.height);
-
-              // I *assume* this class is superflous -- RPK 7/29/2012
-              //.attr("class", "line");
-
-          viewbox.append("path")
-              .attr("class", "line")
-              .style("stroke-width", strokeWidth)
-              .attr("d", line(points));
-
-          brush_element = viewbox.append("g")
-                .attr("class", "brush");
-
-          // add Chart Title
-          if (options.title && sizeType.value > 1) {
-            title = vis.selectAll("text")
-              .data(titles, function(d) { return d; });
-            title.enter().append("text")
-                .attr("class", "title")
-                .style("font-size", sizeType.value/2.4 * 100 + "%")
-                .text(function(d) { return d; })
-                .attr("x", size.width/2)
-                .attr("dy", function(d, i) { return -0.5 + -1 * sizeType.value/2.8 * i * emsize + "em"; })
-                .style("text-anchor","middle");
-          }
-
-          // Add the x-axis label
-          if (options.xlabel && sizeType.value > 2) {
-            xlabel = vis.append("text")
-                .attr("class", "axis")
-                .style("font-size", sizeType.value/2.6 * 100 + "%")
-                .text(options.xlabel)
-                .attr("x", size.width/2)
-                .attr("y", size.height)
-                .attr("dy","2.4em")
-                .style("text-anchor","middle");
-          }
-
-          // add y-axis label
-          if (options.ylabel && sizeType.value > 2) {
-            ylabel = vis.append("g").append("text")
-                .attr("class", "axis")
-                .style("font-size", sizeType.value/2.6 * 100 + "%")
-                .text(options.ylabel)
-                .style("text-anchor","middle")
-                .attr("transform","translate(" + -50 + " " + size.height/2+") rotate(-90)");
-          }
-
-          d3.select(node)
-              .on("mousemove.drag", mousemove)
-              .on("touchmove.drag", mousemove)
-              .on("mouseup.drag",   mouseup)
-              .on("touchend.drag",  mouseup);
-
-          notification = vis.append("text")
-              .attr("class", "graph-notification")
-              .text(message)
-              .attr("x", size.width/2)
-              .attr("y", size.height/2)
-              .style("text-anchor","middle");
-
-        } else {
-
-          vis
-            .attr("width",  cx)
-            .attr("height", cy);
-
-          plot
-            .attr("width", size.width)
-            .attr("height", size.height);
-
-          viewbox
-              .attr("top", 0)
-              .attr("left", 0)
-              .attr("width", size.width)
-              .attr("height", size.height)
-              .attr("viewBox", "0 0 "+size.width+" "+size.height);
-
-          if (options.title && sizeType.value > 1) {
-              title.each(function(d, i) {
-                d3.select(this).attr("x", size.width/2);
-                d3.select(this).attr("dy", function(d, i) { return 1.4 * i - titles.length + "em"; });
-              });
-          }
-
-          if (options.xlabel && sizeType.value > 1) {
-            xlabel
-                .attr("x", size.width/2)
-                .attr("y", size.height);
-          }
-
-          if (options.ylabel && sizeType.value > 1) {
-            ylabel
-                .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
-          }
-
-          notification
-            .attr("x", size.width/2)
-            .attr("y", size.height/2);
-        }
-        redraw();
+      buttonLayer.css({
+        top: rectTop + 5,
+        left: rectLeft + rectWidth - layerWidth - 5
       });
+    }
+
+    function graph() {
+      calculateLayout();
+
+      if (svg === undefined) {
+
+        svg = elem.append("svg")
+            .attr("width",  cx)
+            .attr("height", cy)
+            .attr("class", "graph");
+            // .attr("tabindex", tabindex || 0);
+
+        vis = svg.append("g")
+              .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+
+        plot = vis.append("rect")
+          .attr("class", "plot")
+          .attr("width", size.width)
+          .attr("height", size.height)
+          .style("fill", "#EEEEEE")
+          .attr("pointer-events", "all")
+          .on("mousedown", plotDrag)
+          .on("touchstart", plotDrag);
+
+        plot.call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
+
+        viewbox = vis.append("svg")
+          .attr("class", "viewbox")
+          .attr("top", 0)
+          .attr("left", 0)
+          .attr("width", size.width)
+          .attr("height", size.height)
+          .attr("viewBox", "0 0 "+size.width+" "+size.height);
+
+        if (!options.realTime) {
+          viewbox.append("path")
+                .attr("class", "line")
+                .style("stroke-width", strokeWidth)
+                .attr("d", line(points));
+        }
+
+        marker = viewbox.append("path").attr("class", "marker");
+        // path without attributes cause SVG parse problem in IE9
+        //     .attr("d", []);
+
+
+        brush_element = viewbox.append("g")
+              .attr("class", "brush");
+
+        // add Chart Title
+        if (options.title && sizeType.value > 1) {
+          title = vis.selectAll("text")
+            .data(titles, function(d) { return d; });
+          title.enter().append("text")
+              .attr("class", "title")
+              .text(function(d) { return d; })
+              .attr("x", size.width/2)
+              .attr("dy", function(d, i) { return -i * titleFontSizeInPixels - halfFontSizeInPixels + "px"; })
+              .style("text-anchor","middle");
+        }
+
+        // Add the x-axis label
+       if (options.xlabel && sizeType.value > 2) {
+          xlabel = vis.append("text")
+              .attr("class", "axis")
+              .attr("class", "xlabel")
+              .text(options.xlabel)
+              .attr("x", size.width/2)
+              .attr("y", size.height)
+              .attr("dy", axisFontSizeInPixels*2 + "px")
+              .style("text-anchor","middle");
+        }
+
+        // add y-axis label
+        if (options.ylabel && sizeType.value > 2) {
+          ylabel = vis.append("g").append("text")
+              .attr("class", "axis")
+              .attr("class", "ylabel")
+              .text( options.ylabel)
+              .style("text-anchor","middle")
+              .attr("transform","translate(" + -yAxisNumberWidth + " " + size.height/2+") rotate(-90)");
+        }
+
+        d3.select(node)
+            .on("mousemove.drag", mousemove)
+            .on("touchmove.drag", mousemove)
+            .on("mouseup.drag",   mouseup)
+            .on("touchend.drag",  mouseup);
+
+        notification = vis.append("text")
+            .attr("class", "graph-notification")
+            .text(message)
+            .attr("x", size.width/2)
+            .attr("y", size.height/2)
+            .style("text-anchor","middle");
+
+        if (options.realTime) {
+          initializeCanvas();
+          showCanvas();
+        }
+
+      } else {
+
+        vis
+          .attr("width",  cx)
+          .attr("height", cy);
+
+        plot
+          .attr("width", size.width)
+          .attr("height", size.height)
+          .style("fill", "#EEEEEE");
+
+        viewbox
+            .attr("top", 0)
+            .attr("left", 0)
+            .attr("width", size.width)
+            .attr("height", size.height)
+            .attr("viewBox", "0 0 "+size.width+" "+size.height);
+
+        if (options.title && sizeType.value > 1) {
+          title
+              .attr("x", size.width/2)
+              .attr("dy", function(d, i) { return -i * titleFontSizeInPixels - halfFontSizeInPixels + "px"; });
+        }
+
+        if (options.xlabel && sizeType.value > 1) {
+          xlabel
+              .attr("x", size.width/2)
+              .attr("y", size.height)
+              .attr("dy", axisFontSizeInPixels*2 + "px");
+        }
+
+        if (options.ylabel && sizeType.value > 1) {
+          ylabel
+              .attr("transform","translate(" + -yAxisNumberWidth + " " + size.height/2+") rotate(-90)");
+        }
+
+        notification
+          .attr("x", size.width/2)
+          .attr("y", size.height/2);
+
+        vis.selectAll("g.x").remove();
+        vis.selectAll("g.y").remove();
+
+        if (options.realTime) {
+          resizeCanvas();
+        }
+      }
+
+      if (options.showButtons) {
+        if (!buttonLayer) buttonLayer = createButtonLayer();
+        resizeButtonLayer();
+      }
+
+      redraw();
+
+      // ------------------------------------------------------------
+      //
+      // Chart Notification
+      //
+      // ------------------------------------------------------------
 
       function notify(mesg) {
-        // add Chart Notification
         message = mesg;
         if (mesg) {
           notification.text(mesg);
@@ -446,76 +656,17 @@ define(function (require) {
         }
       }
 
-      function fakeDataPoints() {
-        var yrange2 = options.yrange / 2,
-            yrange4 = yrange2 / 2,
-            pnts;
-
-        options.datacount = size.width/30;
-        options.xtic = options.xrange / options.datacount;
-        options.ytic = options.yrange / options.datacount;
-
-        pnts = d3.range(options.datacount).map(function(i) {
-          return [i * options.xtic + options.xmin, options.ymin + yrange4 + Math.random() * yrange2 ];
-        });
-        return pnts;
-      }
-
-      function keydown() {
-        if (!selected) return;
-        switch (d3.event.keyCode) {
-          case 8:   // backspace
-          case 46:  // delete
-          if (options.dataChange) {
-            var i = points.indexOf(selected);
-            points.splice(i, 1);
-            selected = points.length ? points[i > 0 ? i - 1 : 0] : null;
-            update();
-          }
-          if (d3.event && d3.event.keyCode) {
-            d3.event.preventDefault();
-            d3.event.stopPropagation();
-          }
-          break;
-        }
-      }
-
-      // unused as of commit ef91f20b5abab1f063dc093d41e9dbd4712931f4
-      // (7/27/2012):
-
-      // // update the layout
-      // function updateLayout() {
-      //   padding = {
-      //    "top":    options.title  ? 40 : 20,
-      //    "right":                 30,
-      //    "bottom": options.xlabel ? 60 : 10,
-      //    "left":   options.ylabel ? 70 : 45
-      //   };
-
-      //   size.width  = cx - padding.left - padding.right;
-      //   size.height = cy - padding.top  - padding.bottom;
-
-      //   plot.attr("width", size.width)
-      //       .attr("height", size.height);
-      // }
-
-      // Update the x-scale.
-      function updateXScale() {
-        xScale.domain([options.xmin, options.xmax])
-              .range([0, size.width]);
-      }
-
-      // Update the y-scale.
-      function updateYScale() {
-        yScale.domain([options.ymin, options.ymax])
-              .range([size.height, 0]);
-      }
+      // ------------------------------------------------------------
+      //
+      // Redraw the plot canvas when it is translated or axes are re-scaled
+      //
+      // ------------------------------------------------------------
 
       function redraw() {
 
-        // Regenerate x-ticks…
+        // Regenerate x-ticks
         var gx = vis.selectAll("g.x")
-            .data(xScale.ticks(options.xTicCount), String)
+            .data(xScale.ticks(options.xTickCount), String)
             .attr("transform", tx);
 
         var gxe = gx.enter().insert("g", "a")
@@ -530,23 +681,22 @@ define(function (require) {
         if (sizeType.value > 1) {
           gxe.append("text")
               .attr("class", "axis")
-              .style("font-size", sizeType.value/2.7 * 100 + "%")
               .attr("y", size.height)
-              .attr("dy", "1em")
+              .attr("dy", axisFontSizeInPixels + "px")
               .attr("text-anchor", "middle")
-              .text(fx)
               .style("cursor", "ew-resize")
-              .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-              .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-              .on("mousedown.drag",  xaxis_drag)
-              .on("touchstart.drag", xaxis_drag);
+              .text(fx)
+              .on("mouseover", function() { d3.select(this).style("font-weight", "bold");})
+              .on("mouseout",  function() { d3.select(this).style("font-weight", "normal");})
+              .on("mousedown.drag",  xaxisDrag)
+              .on("touchstart.drag", xaxisDrag);
         }
 
         gx.exit().remove();
 
-        // Regenerate y-ticks…
+        // Regenerate y-ticks
         var gy = vis.selectAll("g.y")
-            .data(yScale.ticks(options.yTicCount), String)
+            .data(yScale.ticks(options.yTickCount), String)
             .attr("transform", ty);
 
         var gye = gy.enter().insert("g", "a")
@@ -573,16 +723,15 @@ define(function (require) {
           }
           gye.append("text")
               .attr("class", "axis")
-              .style("font-size", sizeType.value/2.7 * 100 + "%")
-              .attr("x", -3)
+              .attr("x", -axisFontSizeInPixels/4 + "px")
               .attr("dy", ".35em")
               .attr("text-anchor", "end")
-              .text(fy)
               .style("cursor", "ns-resize")
-              .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-              .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-              .on("mousedown.drag",  yaxis_drag)
-              .on("touchstart.drag", yaxis_drag);
+              .text(fy)
+              .on("mouseover", function() { d3.select(this).style("font-weight", "bold");})
+              .on("mouseout",  function() { d3.select(this).style("font-weight", "normal");})
+              .on("mousedown.drag",  yaxisDrag)
+              .on("touchstart.drag", yaxisDrag);
         }
 
         gy.exit().remove();
@@ -590,7 +739,63 @@ define(function (require) {
         update();
       }
 
-      function update() {
+      // ------------------------------------------------------------
+      //
+      // Draw the data
+      //
+      // ------------------------------------------------------------
+
+      function update(samplePoint) {
+        setCurrentSample(samplePoint);
+        if (options.realTime) {
+          realTimeUpdate(currentSample);
+        } else {
+          regularUpdate();
+        }
+      }
+
+      function realTimeUpdate(samplePoint) {
+        setCurrentSample(samplePoint);
+        updateCanvas(currentSample);
+
+        // old code saved for reference:
+
+        // if (graph.selectablePoints) {
+        //   var circle = vis.selectAll("circle")
+        //       .data(points, function(d) { return d; });
+
+        //   circle.enter().append("circle")
+        //       .attr("class", function(d) { return d === selected ? "selected" : null; })
+        //       .attr("cx",    function(d) { return x(d.x); })
+        //       .attr("cy",    function(d) { return y(d.y); })
+        //       .attr("r", 1.0)
+        //       .on("mousedown", function(d) {
+        //         selected = dragged = d;
+        //         update();
+        //       });
+
+        //   circle
+        //       .attr("class", function(d) { return d === selected ? "selected" : null; })
+        //       .attr("cx",    function(d) { return x(d.x); })
+        //       .attr("cy",    function(d) { return y(d.y); });
+
+        //   circle.exit().remove();
+        // }
+
+        if (d3.event && d3.event.keyCode) {
+          d3.event.preventDefault();
+          d3.event.stopPropagation();
+        }
+      }
+
+
+      // ------------------------------------------------------------
+      //
+      // Update the slower SVG-based grapher canvas
+      //
+      // ------------------------------------------------------------
+
+      function regularUpdate() {
 
         update_brush_element();
 
@@ -606,17 +811,17 @@ define(function (require) {
                 .attr("cx",    function(d) { return xScale(d[0]); })
                 .attr("cy",    function(d) { return yScale(d[1]); })
                 .attr("r", options.circleRadius * (1 + sizeType.value) / 4)
-                .style("stroke-width", options.circleRadius/6 * (sizeType.value - 1.5))
+                .style("stroke-width", strokeWidth)
                 .style("cursor", circleCursorStyle)
-                .on("mousedown.drag",  datapoint_drag)
-                .on("touchstart.drag", datapoint_drag);
+                .on("mousedown.drag",  dataPointDrag)
+                .on("touchstart.drag", dataPointDrag);
 
             circle
                 .attr("class", function(d) { return d === selected ? "selected" : null; })
                 .attr("cx",    function(d) { return xScale(d[0]); })
                 .attr("cy",    function(d) { return yScale(d[1]); })
                 .attr("r", options.circleRadius * (1 + sizeType.value) / 4)
-                .style("stroke-width", options.circleRadius/6 * (sizeType.value - 1.5));
+                .style("stroke-width", strokeWidth);
           }
         }
 
@@ -628,10 +833,68 @@ define(function (require) {
         }
       }
 
-      function plot_drag() {
+      // ------------------------------------------------------------
+      //
+      // Update the real-time graph canvas
+      //
+      // ------------------------------------------------------------
+
+      // currently unused:
+
+      // function updateSample(currentSample) {
+      //   updateCanvas(currentSample);
+
+      //   if (graph.selectablePoints) {
+      //     var circle = vis.selectAll("circle")
+      //         .data(points, function(d) { return d; });
+
+      //     circle.enter().append("circle")
+      //         .attr("class", function(d) { return d === selected ? "selected" : null; })
+      //         .attr("cx",    function(d) { return x(d.x); })
+      //         .attr("cy",    function(d) { return y(d.y); })
+      //         .attr("r", 1.0)
+      //         .on("mousedown", function(d) {
+      //           selected = dragged = d;
+      //           update();
+      //         });
+
+      //     circle
+      //         .attr("class", function(d) { return d === selected ? "selected" : null; })
+      //         .attr("cx",    function(d) { return x(d.x); })
+      //         .attr("cy",    function(d) { return y(d.y); });
+
+      //     circle.exit().remove();
+      //   }
+
+      //   if (d3.event && d3.event.keyCode) {
+      //     d3.event.preventDefault();
+      //     d3.event.stopPropagation();
+      //   }
+      // }
+
+      function plotDrag() {
+        if (options.realTime) {
+          realTimePlotDrag();
+        } else {
+          regularPlotDrag();
+        }
+      }
+
+      function realTimePlotDrag() {
+        d3.event.preventDefault();
+        plot.style("cursor", "move");
+        if (d3.event.altKey) {
+          var p = d3.mouse(vis.node());
+          downx = xScale.invert(p[0]);
+          downy = yScale.invert(p[1]);
+          dragged = false;
+          d3.event.stopPropagation();
+        }
+      }
+
+      function regularPlotDrag() {
         var p;
         d3.event.preventDefault();
-        registerKeyboardHandler(keydown);
         d3.select('body').style("cursor", "move");
         if (d3.event.altKey) {
           if (d3.event.shiftKey && options.addData) {
@@ -658,39 +921,56 @@ define(function (require) {
         }
       }
 
-      function xaxis_drag(d) {
-        document.onselectstart = function() { return false; };
+      function falseFunction() {
+        return false;
+      }
+
+      function xaxisDrag() {
+        document.onselectstart = falseFunction;
         d3.event.preventDefault();
         var p = d3.mouse(vis.node());
         downx = xScale.invert(p[0]);
       }
 
-      function yaxis_drag(d) {
-        document.onselectstart = function() { return false; };
+      function yaxisDrag() {
         d3.event.preventDefault();
+        document.onselectstart = falseFunction;
         var p = d3.mouse(vis.node());
         downy = yScale.invert(p[1]);
       }
 
-      function datapoint_drag(d) {
-        registerKeyboardHandler(keydown);
-        document.onselectstart = function() { return false; };
+      function dataPointDrag(d) {
+        svg.node().focus();
+        d3.event.preventDefault();
+        document.onselectstart = falseFunction;
         selected = dragged = d;
         update();
       }
 
+      // ------------------------------------------------------------
+      //
+      // Axis scaling
+      //
+      // attach the mousemove and mouseup to the body
+      // in case one wanders off the axis line
+      // ------------------------------------------------------------
+
       function mousemove() {
         var p = d3.mouse(vis.node());
+        // t = d3.event.changedTouches;
 
+        document.onselectstart = function() { return true; };
         d3.event.preventDefault();
         if (dragged && options.dataChange) {
           dragged[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
+          persistScaleChangesToOptions();
           update();
         }
 
         if (!isNaN(downx)) {
           d3.select('body').style("cursor", "ew-resize");
           xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
+          persistScaleChangesToOptions();
           redraw();
           d3.event.stopPropagation();
         }
@@ -698,40 +978,120 @@ define(function (require) {
         if (!isNaN(downy)) {
           d3.select('body').style("cursor", "ns-resize");
           yScale.domain(axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
+          persistScaleChangesToOptions();
           redraw();
           d3.event.stopPropagation();
         }
       }
 
       function mouseup() {
-        document.onselectstart = function() { return true; };
         d3.select('body').style("cursor", "auto");
+        document.onselectstart = function() { return true; };
         if (!isNaN(downx)) {
-          downx = NaN;
           redraw();
+          downx = NaN;
         }
         if (!isNaN(downy)) {
-          downy = NaN;
           redraw();
+          downy = NaN;
         }
         dragged = null;
       }
 
-      function updateOrRescale() {
+      function showMarker(index) {
+        markedPoint = { x: points[index].x, y: points[index].y };
+      }
+
+      // samplePoint is optional argument
+      function updateOrRescale(samplePoint) {
+        setCurrentSample(samplePoint);
+        if (options.realTime) {
+          updateOrRescaleRealTime(currentSample);
+        } else {
+          updateOrRescaleRegular();
+        }
+      }
+
+      // samplePoint is optional argument
+      function updateOrRescaleRealTime(samplePoint) {
+        var i,
+            domain = xScale.domain(),
+            xAxisStart = Math.round(domain[0]/sample),
+            xAxisEnd = Math.round(domain[1]/sample),
+            start = Math.max(0, xAxisStart),
+            xextent = domain[1] - domain[0],
+            shiftPoint = xextent * 0.95,
+            currentExtent;
+
+         setCurrentSample(samplePoint);
+         currentExtent = currentSample * sample;
+         if (shiftingX) {
+           shiftingX = ds();
+            if (shiftingX) {
+            redraw();
+          } else {
+            update(currentSample);
+          }
+        } else {
+          if (currentExtent > domain[0] + shiftPoint) {
+            ds = shiftXDomainRealTime(shiftPoint*0.9, options.axisShift);
+            shiftingX = ds();
+            redraw();
+          } else if ( currentExtent < domain[1] - shiftPoint &&
+                      currentSample < points.length &&
+                      xAxisStart > 0) {
+            ds = shiftXDomainRealTime(shiftPoint*0.9, options.axisShift, -1);
+            shiftingX = ds();
+            redraw();
+          } else if (currentExtent < domain[0]) {
+            ds = shiftXDomainRealTime(shiftPoint*0.1, 1, -1);
+            shiftingX = ds();
+            redraw();
+
+          } else {
+            update(currentSample);
+          }
+        }
+      }
+
+      function shiftXDomainRealTime(shift, steps, direction) {
+        var d0 = xScale.domain()[0],
+            d1 = xScale.domain()[1],
+            increment = 1/steps,
+            index = 0;
+        return function() {
+          var factor;
+          direction = direction || 1;
+          index += increment;
+          factor = shift * cubicEase(index);
+          if (direction > 0) {
+            xScale.domain([d0 + factor, d1 + factor]);
+            persistScaleChangesToOptions();
+            return xScale.domain()[0] < (d0 + shift);
+          } else {
+            xScale.domain([d0 - factor, d1 - factor]);
+            persistScaleChangesToOptions();
+            return xScale.domain()[0] > (d0 - shift);
+          }
+        };
+      }
+
+      function updateOrRescaleRegular() {
         var i,
             domain = xScale.domain(),
             xextent = domain[1] - domain[0],
             shiftPoint = xextent * 0.8;
 
         if (shiftingX) {
-          if (shiftingX = ds()) {
+          shiftingX = ds();
+          if (shiftingX) {
             redraw();
           } else {
             update();
           }
         } else {
           if (points[points.length-1][0] > domain[0] + shiftPoint) {
-            ds = shiftXDomain(shiftPoint*0.75, options.axisShift);
+            ds = shiftXDomainRegular(shiftPoint*0.75, options.axisShift);
             shiftingX = ds();
             redraw();
           } else {
@@ -740,7 +1100,7 @@ define(function (require) {
         }
       }
 
-      function shiftXDomain(shift, steps) {
+      function shiftXDomainRegular(shift, steps) {
         var d0 = xScale.domain()[0],
             d1 = xScale.domain()[1],
             increment = 1/steps,
@@ -750,403 +1110,840 @@ define(function (require) {
           index += increment;
           factor = shift * cubicEase(index);
           xScale.domain([ d0 + factor, d1 + factor]);
+          persistScaleChangesToOptions();
           return xScale.domain()[0] < (d0 + shift);
         };
       }
 
-      // make these private variables and functions available
-      graph.elem = elem;
-      graph.redraw = redraw;
-      graph.update = update;
-      graph.notify = notify;
-      graph.points = points;
-      graph.initialize = initialize;
-      graph.updateXScale = updateXScale;
-      graph.updateYScale = updateYScale;
-      graph.scale = scale;
-      graph.updateOrRescale = updateOrRescale;
-
-    }
-
-    // update the title
-    function updateTitle() {
-      if (options.title && title) {
-        title.text(options.title);
+      // update the title
+      function updateTitle() {
+        if (options.title && title) {
+          title.text(options.title);
+        }
       }
-    }
 
-    // update the x-axis label
-    function updateXlabel() {
-      if (options.xlabel && xlabel) {
-        xlabel.text(options.xlabel);
+      // update the x-axis label
+      function updateXlabel() {
+        if (options.xlabel && xlabel) {
+          xlabel.text(options.xlabel);
+        }
       }
-    }
 
-    // update the y-axis label
-    function updateYlabel() {
-      if (options.ylabel && ylabel) {
-        ylabel.text(options.ylabel);
-      } else {
-        ylabel.style("display", "none");
+      // update the y-axis label
+      function updateYlabel() {
+        if (options.ylabel && ylabel) {
+          ylabel.text(options.ylabel);
+        } else {
+          ylabel.style("display", "none");
+        }
       }
-    }
 
-    // unused as of commit ef91f20b5abab1f063dc093d41e9dbd4712931f4
-    // (7/27/2012)
+      /**
+        If there are more than 1 data points, scale the x axis to contain all x values,
+        and scale the y axis so that the y values lie in the middle 80% of the visible y range.
 
-    // // The x-accessor for the path generator
-    // function X(d) {
-    //   return xScale(d[0]);
-    // }
+        Then nice() the x and y scales (which means that the x and y domains will likely expand
+        somewhat).
+      */
+      graph.autoscale = function() {
+        var i,
+            len,
+            point,
+            x,
+            y,
+            xmin = Infinity,
+            xmax = -Infinity,
+            ymin = Infinity,
+            ymax = -Infinity,
+            transform,
+            pow;
 
-    // // The y-accessor for the path generator
-    // function Y(d) {
-    //   return yScale(d[1]);
-    // }
+        if (points.length < 2) return;
 
-    graph.margin = function(_) {
-      if (!arguments.length) return margin;
-      margin = _;
-      return graph;
-    };
+        for (i = 0, len = points.length; i < len; i++){
+          point = points[i];
+          x = point.length ? point[0] : point.x;
+          y = point.length ? point[1] : point.y;
 
-    graph.xmin = function(_) {
-      if (!arguments.length) return options.xmin;
-      options.xmin = _;
-      options.xrange = options.xmax - options.xmin;
-      if (graph.updateXScale) {
-        graph.updateXScale();
-        graph.redraw();
+          if (x < xmin) xmin = x;
+          if (x > xmax) xmax = x;
+          if (y < ymin) ymin = y;
+          if (y > ymax) ymax = y;
+        }
+
+        // Like Math.pow but returns a value with the same sign as x: pow(-1, 0.5) -> -1
+        pow = function(x, exponent) {
+          return x < 0 ? -Math.pow(-x, exponent) : Math.pow(x, exponent);
+        };
+
+        // convert ymin, ymax to a linear scale, and set 'transform' to the function that
+        // converts the new min, max to the relevant scale.
+        switch (options.yscale) {
+          case 'linear':
+            transform = function(x) { return x; };
+            break;
+          case 'log':
+            ymin = Math.log(ymin) / Math.log(10);
+            ymax = Math.log(ymax) / Math.log(10);
+            transform = function(x) { return Math.pow(10, x); };
+            break;
+          case 'pow':
+            ymin = pow(ymin, options.yscaleExponent);
+            ymax = pow(ymax, options.yscaleExponent);
+            transform = function(x) { return pow(x, 1/options.yscaleExponent); };
+            break;
+        }
+
+        xScale.domain([xmin, xmax]).nice();
+        yScale.domain([transform(ymin - 0.15*(ymax-ymin)), transform(ymax + 0.15*(ymax-ymin))]).nice();
+        persistScaleChangesToOptions();
+        redraw();
+      };
+
+      // REMOVE
+      // 'margin' variable is undefined
+      // It is defined, but otherwise unused, in Lab.grapher.graph as of b1eeea703
+      // (12 March 2013)
+      // graph.margin = function(_) {
+      //   if (!arguments.length) return margin;
+      //   margin = _;
+      //   return graph;
+      // };
+
+      graph.xmin = function(_) {
+        if (!arguments.length) return options.xmin;
+        options.xmin = _;
+        options.xrange = options.xmax - options.xmin;
+        if (graph.updateXScale) {
+          graph.updateXScale();
+          graph.redraw();
+        }
+        return graph;
+      };
+
+      graph.xmax = function(_) {
+        if (!arguments.length) return options.xmax;
+        options.xmax = _;
+        options.xrange = options.xmax - options.xmin;
+        if (graph.updateXScale) {
+          graph.updateXScale();
+          graph.redraw();
+        }
+        return graph;
+      };
+
+      graph.ymin = function(_) {
+        if (!arguments.length) return options.ymin;
+        options.ymin = _;
+        options.yrange = options.ymax - options.ymin;
+        if (graph.updateYScale) {
+          graph.updateYScale();
+          graph.redraw();
+        }
+        return graph;
+      };
+
+      graph.ymax = function(_) {
+        if (!arguments.length) return options.ymax;
+        options.ymax = _;
+        options.yrange = options.ymax - options.ymin;
+        if (graph.updateYScale) {
+          graph.updateYScale();
+          graph.redraw();
+        }
+        return graph;
+      };
+
+      graph.xLabel = function(_) {
+        if (!arguments.length) return options.xlabel;
+        options.xlabel = _;
+        updateXlabel();
+        return graph;
+      };
+
+      graph.yLabel = function(_) {
+        if (!arguments.length) return options.ylabel;
+        options.ylabel = _;
+        updateYlabel();
+        return graph;
+      };
+
+      graph.title = function(_) {
+        if (!arguments.length) return options.title;
+        options.title = _;
+        updateTitle();
+        return graph;
+      };
+
+      graph.width = function(_) {
+        if (!arguments.length) return size.width;
+        size.width = _;
+        return graph;
+      };
+
+      graph.height = function(_) {
+        if (!arguments.length) return size.height;
+        size.height = _;
+        return graph;
+      };
+
+      // REMOVE?
+      // xValue doesn't appear to be used for anything as of b1eeea70, 3/12/13
+      // graph.x = function(_) {
+      //   if (!arguments.length) return xValue;
+      //   xValue = _;
+      //   return graph;
+      // };
+
+      // graph.y = function(_) {
+      //   if (!arguments.length) return yValue;
+      //   yValue = _;
+      //   return graph;
+      // };
+
+      graph.elem = function(_) {
+        if (!arguments.length) return elem;
+        elem = d3.select(_);
+        graph(elem);
+        return graph;
+      };
+
+      // ------------------------------------------------------------
+      //
+      // support for slower SVG-based graphing
+      //
+      // ------------------------------------------------------------
+
+      graph.data = function(_) {
+        if (!arguments.length) return points;
+        var domain = xScale.domain(),
+            xextent = domain[1] - domain[0],
+            shift = xextent * 0.8;
+        options.points = points = _;
+        if (points.length > domain[1]) {
+          domain[0] += shift;
+          domain[1] += shift;
+          xScale.domain(domain);
+          graph.redraw();
+        } else {
+          graph.update();
+        }
+        return graph;
+      };
+
+      /**
+        Set or get the selection domain (i.e., the range of x values that are selected).
+
+        Valid domain specifiers:
+          null     no current selection (selection is turned off)
+          []       a current selection exists but is empty (has_selection is true)
+          [x1, x2] the region between x1 and x2 is selected. Any data points between
+                   x1 and x2 (inclusive) would be considered to be selected.
+
+        Default value is null.
+      */
+      graph.selection_domain = function(a) {
+
+        if (!arguments.length) {
+          if (!has_selection) {
+            return null;
+          }
+          if (selection_region.xmax === Infinity && selection_region.xmin === Infinity ) {
+            return [];
+          }
+          return [selection_region.xmin, selection_region.xmax];
+        }
+
+        // setter
+
+        if (a === null) {
+          has_selection = false;
+        }
+        else if (a.length === 0) {
+          has_selection = true;
+          selection_region.xmin = Infinity;
+          selection_region.xmax = Infinity;
+        }
+        else {
+          has_selection = true;
+          selection_region.xmin = a[0];
+          selection_region.xmax = a[1];
+        }
+
+        update_brush_element();
+
+        if (selection_listener) {
+          selection_listener(graph.selection_domain());
+        }
+        return graph;
+      };
+
+      /**
+        Get whether the graph currently has a selection region. Default value is false.
+
+        If true, it would be valid to filter the data points to return a subset within the selection
+        region, although this region may be empty!
+
+        If false the graph is not considered to have a selection region.
+
+        Note that even if has_selection is true, the selection region may not be currently shown,
+        and if shown, it may be empty.
+      */
+      graph.has_selection = function() {
+        return has_selection;
+      };
+
+      /**
+        Set or get the visibility of the selection region. Default value is false.
+
+        Has no effect if the graph does not currently have a selection region
+        (selection_domain is null).
+
+        If the selection_enabled property is true, the user will also be able to interact
+        with the selection region.
+      */
+      graph.selection_visible = function(val) {
+        if (!arguments.length) {
+          return selection_visible;
+        }
+
+        // setter
+        val = !!val;
+        if (selection_visible !== val) {
+          selection_visible = val;
+          update_brush_element();
+        }
+        return graph;
+      };
+
+      /**
+        Set or get whether user manipulation of the selection region should be enabled
+        when a selection region exists and is visible. Default value is true.
+
+        Setting the value to true has no effect unless the graph has a selection region
+        (selection_domain is non-null) and the region is visible (selection_visible is true).
+        However, the selection_enabled setting is honored whenever those properties are
+        subsequently updated.
+
+        Setting the value to false does not affect the visibility of the selection region,
+        and does not affect the ability to change the region by calling selection_domain().
+
+        Note that graph panning and zooming are disabled while selection manipulation is enabled.
+      */
+      graph.selection_enabled = function(val) {
+        if (!arguments.length) {
+          return selection_enabled;
+        }
+
+        // setter
+        val = !!val;
+        if (selection_enabled !== val) {
+          selection_enabled = val;
+          update_brush_element();
+        }
+        return graph;
+      };
+
+      /**
+        Set or get the listener to be called when the selection_domain changes.
+
+        Both programatic and interactive updates of the selection region result in
+        notification of the listener.
+
+        The listener is called with the new selection_domain value in the first argument.
+      */
+      graph.selection_listener = function(cb) {
+        if (!arguments.length) {
+          return selection_listener;
+        }
+        // setter
+        selection_listener = cb;
+        return graph;
+      };
+
+      function brush_listener() {
+        var extent;
+        if (selection_enabled) {
+          // Note there is a brush.empty() method, but it still reports true after the
+          // brush extent has been programatically updated.
+          extent = brush_control.extent();
+          graph.selection_domain( extent[0] !== extent[1] ? extent : [] );
+        }
       }
-      return graph;
-    };
 
-    graph.xmax = function(_) {
-      if (!arguments.length) return options.xmax;
-      options.xmax = _;
-      options.xrange = options.xmax - options.xmin;
-      if (graph.updateXScale) {
-        graph.updateXScale();
-        graph.redraw();
+      function update_brush_element() {
+        if (has_selection && selection_visible) {
+          brush_control = brush_control || d3.svg.brush()
+            .x(xScale)
+            .extent([selection_region.xmin || 0, selection_region.xmax || 0])
+            .on("brush", brush_listener);
+
+          brush_element
+            .call(brush_control.extent([selection_region.xmin || 0, selection_region.xmax || 0]))
+            .style('display', 'inline')
+            .style('pointer-events', selection_enabled ? 'all' : 'none')
+            .selectAll("rect")
+              .attr("height", size.height);
+
+        } else {
+          brush_element.style('display', 'none');
+        }
       }
-      return graph;
-    };
 
-    graph.ymin = function(_) {
-      if (!arguments.length) return options.ymin;
-      options.ymin = _;
-      options.yrange = options.ymax - options.ymin;
-      if (graph.updateYScale) {
-        graph.updateYScale();
-        graph.redraw();
+      function add_data(newdata) {
+        if (!arguments.length) return points;
+        var i;
+           // domain = xScale.domain(),
+            // xextent = domain[1] - domain[0],
+            //shift = xextent * 0.8,
+            // ds,
+        if (newdata instanceof Array && newdata.length > 0) {
+          if (newdata[0] instanceof Array) {
+            for(i = 0; i < newdata.length; i++) {
+              points.push(newdata[i]);
+            }
+          } else {
+            if (newdata.length === 2) {
+              points.push(newdata);
+            } else {
+              throw new Error("invalid argument to graph.add_data() " + newdata + " length should === 2.");
+            }
+          }
+        }
+        updateOrRescale();
+        return graph;
       }
-      return graph;
-    };
 
-    graph.ymax = function(_) {
-      if (!arguments.length) return options.ymax;
-      options.ymax = _;
-      options.yrange = options.ymax - options.ymin;
-      if (graph.updateYScale) {
-        graph.updateYScale();
-        graph.redraw();
+
+      // ------------------------------------------------------------
+      //
+      // support for the real-time canvas-based graphing
+      //
+      // ------------------------------------------------------------
+
+      function _realTimeAddPoint(p) {
+        if (points.length === 0) { return; }
+        markedPoint = false;
+        var index = points.length,
+            lengthX = index * sample,
+            point = { x: lengthX, y: p };
+        points.push(point);
       }
-      return graph;
-    };
 
-    graph.xLabel = function(_) {
-      if (!arguments.length) return options.xlabel;
-      options.xlabel = _;
-      updateXlabel();
-      return graph;
-    };
-
-    graph.yLabel = function(_) {
-      if (!arguments.length) return options.ylabel;
-      options.ylabel = _;
-      updateYlabel();
-      return graph;
-    };
-
-    graph.title = function(_) {
-      if (!arguments.length) return options.title;
-      options.title = _;
-      updateTitle();
-      return graph;
-    };
-
-    graph.width = function(_) {
-      if (!arguments.length) return size.width;
-      size.width = _;
-      return graph;
-    };
-
-    graph.height = function(_) {
-      if (!arguments.length) return size.height;
-      size.height = _;
-      return graph;
-    };
-
-    graph.x = function(_) {
-      if (!arguments.length) return xValue;
-      xValue = _;
-      return graph;
-    };
-
-    graph.y = function(_) {
-      if (!arguments.length) return yValue;
-      yValue = _;
-      return graph;
-    };
-
-    graph.elem = function(_) {
-      if (!arguments.length) return elem;
-      elem = d3.select(_);
-      graph(elem);
-      return graph;
-    };
-
-    graph.data = function(_) {
-      if (!arguments.length) return points;
-      var domain = xScale.domain(),
-          xextent = domain[1] - domain[0],
-          shift = xextent * 0.8;
-      options.points = points = _;
-      if (points.length > domain[1]) {
-        domain[0] += shift;
-        domain[1] += shift;
-        xScale.domain(domain);
-        graph.redraw();
-      } else {
-        graph.update();
+      function add_point(p) {
+        if (points.length === 0) { return; }
+        _realTimeAddPoint(p);
+        updateOrRescale();
       }
-      return graph;
-    };
 
-    graph.add_data = function(newdata) {
-      if (!arguments.length) return points;
-      var domain = xScale.domain(),
-          xextent = domain[1] - domain[0],
-          shift = xextent * 0.8,
-          i;
-      if (newdata instanceof Array && newdata.length > 0) {
-        if (newdata[0] instanceof Array) {
-          for(i = 0; i < newdata.length; i++) {
-            points.push(newdata[i]);
+      function add_canvas_point(p) {
+        if (points.length === 0) { return; }
+        markedPoint = false;
+        var index = points.length,
+            lengthX = index * sample,
+            previousX = lengthX - sample,
+            point = { x: lengthX, y: p },
+            oldx = xScale.call(self, previousX, previousX),
+            oldy = yScale.call(self, points[index-1].y, index-1),
+            newx, newy;
+
+        points.push(point);
+        newx = xScale.call(self, lengthX, lengthX);
+        newy = yScale.call(self, p, lengthX);
+        gctx.beginPath();
+        gctx.moveTo(oldx, oldy);
+        gctx.lineTo(newx, newy);
+        gctx.stroke();
+      }
+
+      function addPoints(pnts) {
+        for (var i = 0; i < pointArray.length; i++) {
+          points = pointArray[i];
+          _realTimeAddPoint(pnts[i]);
+        }
+        setCurrentSample(points.length-1);
+        updateOrRescale();
+      }
+
+      function newRealTimeData(d) {
+        var i;
+        pointArray = [];
+        if (Object.prototype.toString.call(d) === "[object Array]") {
+          for (i = 0; i < d.length; i++) {
+            points = indexedData(d[i], 0, sample);
+            pointArray.push(points);
           }
         } else {
-          if (newdata.length === 2) {
-            points.push(newdata);
-          } else {
-            throw new Error("invalid argument to graph.add_data() " + newdata + " length should === 2.");
+          points = indexedData(options.dataset, 0, sample);
+          pointArray = [points];
+        }
+        shiftingX = false;
+        setCurrentSample(points.length-1);
+        updateOrRescale();
+      }
+
+      // function addRealTimePoints(pnts) {
+      //   for (var i = 0; i < pointArray.length; i++) {
+      //     points = pointArray[i];
+      //     setStrokeColor(i);
+      //     add_canvas_point(pnts[i]);
+      //   }
+      // }
+
+      function setStrokeColor(i, afterSamplePoint) {
+        var opacity = afterSamplePoint ? 0.4 : 1.0;
+        switch(i) {
+          case 0:
+            gctx.strokeStyle = "rgba(160,00,0," + opacity + ")";
+            break;
+          case 1:
+            gctx.strokeStyle = "rgba(44,160,0," + opacity + ")";
+            break;
+          case 2:
+            gctx.strokeStyle = "rgba(44,0,160," + opacity + ")";
+            break;
+        }
+      }
+
+      function setFillColor(i, afterSamplePoint) {
+        var opacity = afterSamplePoint ? 0.4 : 1.0;
+        switch(i) {
+          case 0:
+            gctx.fillStyle = "rgba(160,00,0," + opacity + ")";
+            break;
+          case 1:
+            gctx.fillStyle = "rgba(44,160,0," + opacity + ")";
+            break;
+          case 2:
+            gctx.fillStyle = "rgba(44,0,160," + opacity + ")";
+            break;
+        }
+      }
+
+      // REMOVE
+      // unused in b1eeea703
+      // function change_xaxis(xmax) {
+      //   x = d3.scale[options.xscale]()
+      //       .domain([0, xmax])
+      //       .range([0, size.width]);
+      //   graph.xmax = xmax;
+
+      //   x_tics_scale = d3.scale[options.xscale]()
+      //       .domain([graph.xmin*graph.sample, graph.xmax*graph.sample])
+      //       .range([0, size.width]);
+      //   update();
+      //   redraw();
+      // }
+
+      // REMOVE
+      // unused in b1eeea703
+      // function change_yaxis(ymax) {
+      //   y = d3.scale[options.yscale]()
+      //       .domain([ymax, 0])
+      //       .range([0, size.height]);
+      //   graph.ymax = ymax;
+      //   update();
+      //   redraw();
+      // }
+
+      function clearCanvas() {
+        gcanvas.width = gcanvas.width;
+        gctx.fillStyle = canvasFillStyle;
+        gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
+        gctx.strokeStyle = "rgba(255,65,0, 1.0)";
+      }
+
+      function showCanvas() {
+        vis.select("path.line").remove();
+        gcanvas.style.zIndex = 100;
+      }
+
+      function hideCanvas() {
+        gcanvas.style.zIndex = -100;
+        update();
+      }
+
+      // update real-time canvas line graph
+      function updateCanvas(samplePoint) {
+        var i, index, py, pointStop,
+            yOrigin = yScale(0.00001),
+            lines = options.lines,
+            bars = options.bars,
+            twopi = 2 * Math.PI,
+            pointsLength = pointArray[0].length,
+            numberOfLines = pointArray.length,
+            xAxisStart = Math.round(xScale.domain()[0]/sample),
+            // xAxisEnd = Math.round(xScale.domain()[1]/sample),
+            start = Math.max(0, xAxisStart),
+            lengthX,
+            px;
+
+
+        setCurrentSample(samplePoint);
+        clearCanvas();
+        gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
+        if (points.length === 0 || xAxisStart >= points.length) { return; }
+        if (lines) {
+          for (i = 0; i < numberOfLines; i++) {
+            points = pointArray[i];
+            lengthX = start * sample;
+            px = xScale(lengthX);
+            py = yScale(points[start].y);
+            setStrokeColor(i);
+            gctx.beginPath();
+            gctx.moveTo(px, py);
+            pointStop = samplePoint - 1;
+            for (index=start+1; index < pointStop; index++) {
+              lengthX = index * sample;
+              px = xScale(lengthX);
+              py = yScale(points[index].y);
+              gctx.lineTo(px, py);
+            }
+            gctx.stroke();
+            pointStop = points.length-1;
+            if (index < pointStop) {
+              setStrokeColor(i, true);
+              for (;index < pointStop; index++) {
+                lengthX = index * sample;
+                px = xScale(lengthX);
+                py = yScale(points[index].y);
+                gctx.lineTo(px, py);
+              }
+              gctx.stroke();
+            }
+          }
+        } else if (bars) {
+          for (i = 0; i < numberOfLines; i++) {
+            points = pointArray[i];
+            setStrokeColor(i);
+            pointStop = samplePoint - 1;
+            for (index=start; index < pointStop; index++) {
+              lengthX = index * sample;
+              px = xScale(lengthX);
+              py = yScale(points[index].y);
+              if (py === 0) {
+                continue;
+              }
+              gctx.beginPath();
+              gctx.moveTo(px, yOrigin);
+              gctx.lineTo(px, py);
+              gctx.stroke();
+            }
+            pointStop = points.length-1;
+            if (index < pointStop) {
+              setStrokeColor(i, true);
+              for (;index < pointStop; index++) {
+                lengthX = index * sample;
+                px = xScale(lengthX);
+                py = yScale(points[index].y);
+                gctx.beginPath();
+                gctx.moveTo(px, yOrigin);
+                gctx.lineTo(px, py);
+                gctx.stroke();
+              }
+            }
+          }
+        } else {
+          for (i = 0; i < numberOfLines; i++) {
+            points = pointArray[i];
+            lengthX = 0;
+            setFillColor(i);
+            setStrokeColor(i, true);
+            pointStop = samplePoint - 1;
+            for (index=0; index < pointStop; index++) {
+              px = xScale(lengthX);
+              py = yScale(points[index].y);
+
+              // gctx.beginPath();
+              // gctx.moveTo(px, py);
+              // gctx.lineTo(px, py);
+              // gctx.stroke();
+
+              gctx.arc(px, py, 1, 0, twopi, false);
+              gctx.fill();
+
+              lengthX += sample;
+            }
+            pointStop = points.length-1;
+            if (index < pointStop) {
+              setFillColor(i, true);
+              setStrokeColor(i, true);
+              for (;index < pointStop; index++) {
+                px = xScale(lengthX);
+                py = yScale(points[index].y);
+
+                // gctx.beginPath();
+                // gctx.moveTo(px, py);
+                // gctx.lineTo(px, py);
+                // gctx.stroke();
+
+                gctx.arc(px, py, 1, 0, twopi, false);
+                gctx.fill();
+
+                lengthX += sample;
+              }
+            }
           }
         }
       }
-      graph.updateOrRescale();
-      return graph;
-    };
 
-    /**
-      Set or get the selection domain (i.e., the range of x values that are selected).
-
-      Valid domain specifiers:
-        null     no current selection (selection is turned off)
-        []       a current selection exists but is empty (has_selection is true)
-        [x1, x2] the region between x1 and x2 is selected. Any data points between
-                 x1 and x2 (inclusive) would be considered to be selected.
-
-      Default value is null.
-    */
-    graph.selection_domain = function(a) {
-
-      if (!arguments.length) {
-        if (!has_selection) {
-          return null;
+      function initializeCanvas() {
+        if (!gcanvas) {
+          gcanvas = gcanvas || document.createElement('canvas');
+          node.appendChild(gcanvas);
         }
-        if (selection_region.xmax === Infinity && selection_region.xmin === Infinity ) {
-          return [];
-        }
-        return [selection_region.xmin, selection_region.xmax];
+        gcanvas.style.zIndex = -100;
+        setupCanvasProperties(gcanvas);
       }
 
-      // setter
-
-      if (a === null) {
-        has_selection = false;
-      }
-      else if (a.length === 0) {
-        has_selection = true;
-        selection_region.xmin = Infinity;
-        selection_region.xmax = Infinity;
-      }
-      else {
-        has_selection = true;
-        selection_region.xmin = a[0];
-        selection_region.xmax = a[1];
+      function resizeCanvas() {
+        setupCanvasProperties(gcanvas);
+        updateCanvas();
       }
 
-      update_brush_element();
-
-      if (selection_listener) {
-        selection_listener(graph.selection_domain());
-      }
-      return graph;
-    };
-
-    /**
-      Get whether the graph currently has a selection region. Default value is false.
-
-      If true, it would be valid to filter the data points to return a subset within the selection
-      region, although this region may be empty!
-
-      If false the graph is not considered to have a selection region.
-
-      Note that even if has_selection is true, the selection region may not be currently shown,
-      and if shown, it may be empty.
-    */
-    graph.has_selection = function() {
-      return has_selection;
-    };
-
-    /**
-      Set or get the visibility of the selection region. Default value is false.
-
-      Has no effect if the graph does not currently have a selection region
-      (selection_domain is null).
-
-      If the selection_enabled property is true, the user will also be able to interact
-      with the selection region.
-    */
-    graph.selection_visible = function(val) {
-      if (!arguments.length) {
-        return selection_visible;
+      function setupCanvasProperties(canvas) {
+        cplot.rect = plot.node();
+        cplot.width = cplot.rect.width['baseVal'].value;
+        cplot.height = cplot.rect.height['baseVal'].value;
+        cplot.left = cplot.rect.getCTM().e;
+        cplot.top = cplot.rect.getCTM().f;
+        canvas.style.position = 'absolute';
+        canvas.width = cplot.width;
+        canvas.height = cplot.height;
+        canvas.style.width = cplot.width  + 'px';
+        canvas.style.height = cplot.height  + 'px';
+        canvas.offsetLeft = cplot.left;
+        canvas.offsetTop = cplot.top;
+        canvas.style.left = cplot.left + 'px';
+        canvas.style.top = cplot.top + 'px';
+        canvas.style.border = 'solid 1px red';
+        canvas.style.pointerEvents = "none";
+        canvas.className += "canvas-overlay";
+        gctx = gcanvas.getContext( '2d' );
+        gctx.globalCompositeOperation = "source-over";
+        gctx.lineWidth = 1;
+        gctx.fillStyle = canvasFillStyle;
+        gctx.fillRect(0, 0, canvas.width, gcanvas.height);
+        gctx.strokeStyle = "rgba(255,65,0, 1.0)";
       }
 
-      // setter
-      val = !!val;
-      if (selection_visible !== val) {
-        selection_visible = val;
-        update_brush_element();
+      // ------------------------------------------------------------
+      //
+      // Keyboard Handling
+      //
+      // ------------------------------------------------------------
+
+      function registerKeyboardHandler() {
+        svg.node().addEventListener("keydown", function (evt) {
+          if (!selected) return false;
+          if (evt.type == "keydown") {
+            switch (evt.keyCode) {
+              case 8:   // backspace
+              case 46:  // delete
+              if (options.dataChange) {
+                var i = points.indexOf(selected);
+                points.splice(i, 1);
+                selected = points.length ? points[i > 0 ? i - 1 : 0] : null;
+                update();
+              }
+              evt.preventDefault();
+              evt.stopPropagation();
+              break;
+            }
+            evt.preventDefault();
+          }
+        });
       }
-      return graph;
-    };
 
-    /**
-      Set or get whether user manipulation of the selection region should be enabled
-      when a selection region exists and is visible. Default value is true.
+      // make these private variables and functions available
+      graph.node = node;
+      graph.elem = elem;
+      graph.scale = scale;
+      graph.update = update;
+      graph.updateOrRescale = updateOrRescale;
+      graph.redraw = redraw;
+      graph.initialize = initialize;
+      graph.initializeLayout = initializeLayout;
+      graph.notify = notify;
+      graph.updateXScale = updateXScale;
+      graph.updateYScale = updateYScale;
+      graph.registerKeyboardHandler = registerKeyboardHandler;
 
-      Setting the value to true has no effect unless the graph has a selection region
-      (selection_domain is non-null) and the region is visible (selection_visible is true).
-      However, the selection_enabled setting is honored whenever those properties are
-      subsequently updated.
+      /**
+        Read only getter for the d3 selection referencing the DOM elements containing the d3
+        brush used to implement selection region manipulation.
+      */
+      graph.brush_element = function() {
+        return brush_element;
+      };
 
-      Setting the value to false does not affect the visibility of the selection region,
-      and does not affect the ability to change the region by calling selection_domain().
+      /**
+        Read-only getter for the d3 brush control (d3.svg.brush() function) used to implement
+        selection region manipulation.
+      */
+      graph.brush_control = function() {
+        return brush_control;
+      };
 
-      Note that graph panning and zooming are disabled while selection manipulation is enabled.
-    */
-    graph.selection_enabled = function(val) {
-      if (!arguments.length) {
-        return selection_enabled;
-      }
+      /**
+        Read-only getter for the internal listener to the d3 'brush' event.
+      */
+      graph.brush_listener = function() {
+        return brush_listener;
+      };
 
-      // setter
-      val = !!val;
-      if (selection_enabled !== val) {
-        selection_enabled = val;
-        update_brush_element();
-      }
-      return graph;
-    };
+      graph.number_of_points = number_of_points;
+      graph.newRealTimeData = newRealTimeData;
+      graph.add_point = add_point;
+      graph.addPoints = addPoints;
+      // graph.addRealTimePoints = addRealTimePoints;
+      graph.initializeCanvas = initializeCanvas;
+      graph.showCanvas = showCanvas;
+      graph.hideCanvas = hideCanvas;
+      graph.clearCanvas = clearCanvas;
+      graph.updateCanvas = updateCanvas;
+      graph.showMarker = showMarker;
 
-    /**
-      Set or get the listener to be called when the selection_domain changes.
+      graph.add_data = add_data;
 
-      Both programatic and interactive updates of the selection region result in
-      notification of the listener.
-
-      The listener is called with the new selection_domain value in the first argument.
-    */
-    graph.selection_listener = function(cb) {
-      if (!arguments.length) {
-        return selection_listener;
-      }
-      // setter
-      selection_listener = cb;
-      return graph;
-    };
-
-    /**
-      Read only getter for the d3 selection referencing the DOM elements containing the d3
-      brush used to implement selection region manipulation.
-    */
-    graph.brush_element = function() {
-      return brush_element;
-    };
-
-    /**
-      Read-only getter for the d3 brush control (d3.svg.brush() function) used to implement
-      selection region manipulation.
-    */
-    graph.brush_control = function() {
-      return brush_control;
-    };
-
-    /**
-      Read-only getter for the internal listener to the d3 'brush' event.
-    */
-    graph.brush_listener = function() {
-      return brush_listener;
-    };
-
-    function brush_listener() {
-      var extent;
-      if (selection_enabled) {
-        // Note there is a brush.empty() method, but it still reports true after the
-        // brush extent has been programatically updated.
-        extent = brush_control.extent();
-        graph.selection_domain( extent[0] !== extent[1] ? extent : [] );
-      }
+      // REMOVE
+      // Unused in b1eeea703
+      // graph.change_xaxis = change_xaxis;
+      // graph.change_yaxis = change_yaxis;
     }
 
-    function update_brush_element() {
-      if (has_selection && selection_visible) {
-        brush_control = brush_control || d3.svg.brush()
-          .x(xScale)
-          .extent([selection_region.xmin || 0, selection_region.xmax || 0])
-          .on("brush", brush_listener);
+    graph.getXDomain = function () {
+      return xScale.domain();
+    };
 
-        brush_element
-          .call(brush_control.extent([selection_region.xmin || 0, selection_region.xmax || 0]))
-          .style('display', 'inline')
-          .style('pointer-events', selection_enabled ? 'all' : 'none')
-          .selectAll("rect")
-            .attr("height", size.height);
+    graph.getYDomain = function () {
+      return yScale.domain();
+    };
 
-      } else {
-        brush_element.style('display', 'none');
-      }
-    }
-
-    graph.reset = function(options, message) {
+    graph.reset = function(idOrElement, options, message) {
       if (arguments.length) {
-        graph.initialize(options, message);
+        graph.initialize(idOrElement, options, message);
       } else {
         graph.initialize();
       }
       graph();
+      // and then render again using actual size of SVG text elements are
+      graph();
+      graph.registerKeyboardHandler();
       return graph;
     };
 
     graph.resize = function(w, h) {
       graph.scale(w, h);
-      graph.initialize();
+      graph.initializeLayout();
       graph();
       return graph;
     };
 
-    if (elem) {
-      graph(elem);
+    if (node) {
+      graph();
+      // and then render again using actual size of SVG text elements are
+      graph();
     }
 
     return graph;

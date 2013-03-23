@@ -1,5 +1,5 @@
 {
-  "title": "Pulldown and radio button used with custom parameters",
+  "title": "Pulldowns, radio buttons and custom parameters",
   "publicationStatus": "public",
   "subtitle": "Testing property/value based pulldown and radio-button group using derived properties such as startingLength and startingAngle.",
   "about": "",

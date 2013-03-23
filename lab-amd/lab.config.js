@@ -4,14 +4,16 @@ define(function (require) {
       publicAPI;
   publicAPI = {
   "sharing": true,
-  "logging": true,
-  "tracing": false,
   "home": "http://lab.concord.org",
+  "homeForSharing": "http://lab.concord.org",
   "homeInteractivePath": "/examples/interactives/interactive.html",
   "homeEmbeddablePath": "/examples/interactives/embeddable.html",
   "utmCampaign": null,
-  "hostName": "lab.concord.org",
+  "fontface": "Lato",
+  "hostName": "lab4.dev.concord.org",
   "dataGamesProxyPrefix": "DataGames/Games/concord/lab/",
+  "logging": true,
+  "tracing": false,
   "authoring": false,
   "actualRoot": ""
 };

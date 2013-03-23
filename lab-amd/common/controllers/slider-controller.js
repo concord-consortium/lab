@@ -5,7 +5,7 @@ define(function () {
   var metadata  = require('common/controllers/interactive-metadata'),
       validator = require('common/validator');
 
-  return function SliderController(component, scriptingAPI) {
+  return function SliderController(component, scriptingAPI, interactivesController) {
     var min, max, steps, propertyName,
         action, initialValue,
         title, labels, displayValue,
@@ -134,6 +134,8 @@ define(function () {
     });
 
     $sliderHandle = $slider.find(".ui-slider-handle");
+
+    $sliderHandle.attr('tabindex', interactivesController.getNextTabIndex());
 
     $elem = $('<div class="interactive-slider">')
               .append($title)

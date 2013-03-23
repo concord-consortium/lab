@@ -5,7 +5,7 @@ define(function (require) {
   var arrays            = require('arrays'),
       ModelPlayer       = require('cs!common/components/model_player');
 
-  return function modelController(modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig,
+  return function modelController(modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, interactivesController,
                                   Model, ModelContainer, ScriptingAPI, Benchmarks) {
     var controller = {},
 
@@ -150,7 +150,7 @@ define(function (require) {
           controller.modelContainer.update();
         };
 
-        controller.modelContainer = new ModelContainer(controller.modelUrl, model);
+        controller.modelContainer = new ModelContainer(controller.modelUrl, model, interactivesController.getNextTabIndex);
       }
 
       function resetModelPlayer() {
@@ -206,6 +206,14 @@ define(function (require) {
       controller.getHeightForWidth = function (width) {
         return controller.modelContainer.getHeightForWidth(width);
       };
+
+      controller.setPlaybackContainer = function (svgPlaybackContainer) {
+        return controller.modelContainer.setPlaybackContainer(svgPlaybackContainer);
+      }
+
+      controller.enableKeyboardHandlers = function () {
+        return model.get("enableKeyboardHandlers");
+      }
 
       controller.reload = reload;
       controller.repaint = repaint;

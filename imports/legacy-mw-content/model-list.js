@@ -2547,6 +2547,340 @@ modelList = [
     ]
   },
   {
+    "section": "student/classic/motion",
+    "content": [
+      {
+        "name": "blockfeeder",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/blockfeeder.cml",
+        "mml": "student/classic/motion/blockfeeder$0.mml",
+        "json": "converted/student/classic/motion/blockfeeder$0.json"
+      },
+      {
+        "name": "bohr",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/bohr.cml",
+        "mml": "student/classic/motion/bohr$0.mml",
+        "json": "converted/student/classic/motion/bohr$0.json"
+      },
+      {
+        "name": "cantileverbeam",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/cantileverbeam.cml",
+        "mml": "student/classic/motion/cantileverbeam$0.mml",
+        "json": "converted/student/classic/motion/cantileverbeam$0.json"
+      },
+      {
+        "name": "centrifugal",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/centrifugal.cml",
+        "mml": "student/classic/motion/centrifugal$0.mml",
+        "json": "converted/student/classic/motion/centrifugal$0.json"
+      },
+      {
+        "name": "chain",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/chain.cml",
+        "mml": "student/classic/motion/chain$0.mml",
+        "json": "converted/student/classic/motion/chain$0.json"
+      },
+      {
+        "name": "chebyshev",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/chebyshev.cml",
+        "mml": "student/classic/motion/chebyshev$0.mml",
+        "json": "converted/student/classic/motion/chebyshev$0.json"
+      },
+      {
+        "name": "crawler",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/crawler.cml",
+        "mml": "student/classic/motion/crawler$0.mml",
+        "json": "converted/student/classic/motion/crawler$0.json"
+      },
+      {
+        "name": "cycloid",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/cycloid.cml",
+        "mml": "student/classic/motion/cycloid$0.mml",
+        "json": "converted/student/classic/motion/cycloid$0.json"
+      },
+      {
+        "name": "daintywalker",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/daintywalker.cml",
+        "mml": "student/classic/motion/daintywalker$0.mml",
+        "json": "converted/student/classic/motion/daintywalker$0.json"
+      },
+      {
+        "name": "dam",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/dam.cml",
+        "mml": "student/classic/motion/dam$0.mml",
+        "json": "converted/student/classic/motion/dam$0.json"
+      },
+      {
+        "name": "draftingmachine",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/draftingmachine.cml",
+        "mml": "student/classic/motion/draftingmachine$0.mml",
+        "json": "converted/student/classic/motion/draftingmachine$0.json"
+      },
+      {
+        "name": "epicycloid",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/epicycloid.cml",
+        "mml": "student/classic/motion/epicycloid$0.mml",
+        "json": "converted/student/classic/motion/epicycloid$0.json"
+      },
+      {
+        "name": "epitrochoid",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/epitrochoid.cml",
+        "mml": "student/classic/motion/epitrochoid$0.mml",
+        "json": "converted/student/classic/motion/epitrochoid$0.json"
+      },
+      {
+        "name": "friction",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/friction.cml",
+        "mml": "student/classic/motion/friction$0.mml",
+        "json": "converted/student/classic/motion/friction$0.json"
+      },
+      {
+        "name": "galtonboard-1",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/galtonboard.cml",
+        "mml": "student/classic/motion/galtonboard$0.mml",
+        "json": "converted/student/classic/motion/galtonboard$0.json"
+      },
+      {
+        "name": "galtonboard-2",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/galtonboard.cml",
+        "mml": "student/classic/motion/galtonboard2$0.mml",
+        "json": "converted/student/classic/motion/galtonboard2$0.json"
+      },
+      {
+        "name": "galtonboard2",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/galtonboard2.cml",
+        "mml": "student/classic/motion/galtonboard2$0.mml",
+        "json": "converted/student/classic/motion/galtonboard2$0.json"
+      },
+      {
+        "name": "genevadrive-1",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/genevadrive.cml",
+        "mml": "student/classic/motion/genevadrive$0.mml",
+        "json": "converted/student/classic/motion/genevadrive$0.json"
+      },
+      {
+        "name": "genevadrive-2",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/genevadrive.cml",
+        "mml": "student/classic/motion/genevadrive3arm0.mml",
+        "json": "converted/student/classic/motion/genevadrive3arm0.json"
+      },
+      {
+        "name": "hoekens",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/hoekens.cml",
+        "mml": "student/classic/motion/hoekens$0.mml",
+        "json": "converted/student/classic/motion/hoekens$0.json"
+      },
+      {
+        "name": "hourglass",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/hourglass.cml",
+        "mml": "student/classic/motion/hourglass$0.mml",
+        "json": "converted/student/classic/motion/hourglass$0.json"
+      },
+      {
+        "name": "hypocycloid",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/hypocycloid.cml",
+        "mml": "student/classic/motion/hypocycloid$0.mml",
+        "json": "converted/student/classic/motion/hypocycloid$0.json"
+      },
+      {
+        "name": "inclinedplane",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/inclinedplane.cml",
+        "mml": "student/classic/motion/inclinedplane$0.mml",
+        "json": "converted/student/classic/motion/inclinedplane$0.json"
+      },
+      {
+        "name": "inversependulum-1",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/inversependulum.cml",
+        "mml": "student/classic/motion/inversependulum$0.mml",
+        "json": "converted/student/classic/motion/inversependulum$0.json"
+      },
+      {
+        "name": "inversependulum-2",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/inversependulum.cml",
+        "mml": "student/classic/motion/inversependulum2$0.mml",
+        "json": "converted/student/classic/motion/inversependulum2$0.json"
+      },
+      {
+        "name": "inversependulum2",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/inversependulum2.cml",
+        "mml": "student/classic/motion/inversependulum2$0.mml",
+        "json": "converted/student/classic/motion/inversependulum2$0.json"
+      },
+      {
+        "name": "inverteddoublependulum",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/inverteddoublependulum.cml",
+        "mml": "student/classic/motion/inverteddoublependulum$0.mml",
+        "json": "converted/student/classic/motion/inverteddoublependulum$0.json"
+      },
+      {
+        "name": "ladder",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/ladder.cml",
+        "mml": "student/classic/motion/ladder$0.mml",
+        "json": "converted/student/classic/motion/ladder$0.json"
+      },
+      {
+        "name": "longitudinalwavespring",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/longitudinalwavespring.cml",
+        "mml": "student/classic/motion/longitudinalwavespring$0.mml",
+        "json": "converted/student/classic/motion/longitudinalwavespring$0.json"
+      },
+      {
+        "name": "mechanicalwave",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/mechanicalwave.cml",
+        "mml": "student/classic/motion/mechanicalwave$0.mml",
+        "json": "converted/student/classic/motion/mechanicalwave$0.json"
+      },
+      {
+        "name": "momentumconservation",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/momentumconservation.cml",
+        "mml": "student/classic/motion/momentumconservation$0.mml",
+        "json": "converted/student/classic/motion/momentumconservation$0.json"
+      },
+      {
+        "name": "pattern",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/pattern.cml",
+        "mml": "student/classic/motion/pattern$0.mml",
+        "json": "converted/student/classic/motion/pattern$0.json"
+      },
+      {
+        "name": "peaucellier",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/peaucellier.cml",
+        "mml": "student/classic/motion/peaucellier$0.mml",
+        "json": "converted/student/classic/motion/peaucellier$0.json"
+      },
+      {
+        "name": "pm1",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/pm1.cml",
+        "mml": "student/classic/motion/pm1$0.mml",
+        "json": "converted/student/classic/motion/pm1$0.json"
+      },
+      {
+        "name": "pouring",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/pouring.cml",
+        "mml": "student/classic/motion/pouring$0.mml",
+        "json": "converted/student/classic/motion/pouring$0.json"
+      },
+      {
+        "name": "pumpjack",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/pumpjack.cml",
+        "mml": "student/classic/motion/pumpjack$0.mml",
+        "json": "converted/student/classic/motion/pumpjack$0.json"
+      },
+      {
+        "name": "rolloninclinedplane",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/rolloninclinedplane.cml",
+        "mml": "student/classic/motion/rolloninclinedplane$0.mml",
+        "json": "converted/student/classic/motion/rolloninclinedplane$0.json"
+      },
+      {
+        "name": "rope",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/rope.cml",
+        "mml": "student/classic/motion/rope$0.mml",
+        "json": "converted/student/classic/motion/rope$0.json"
+      },
+      {
+        "name": "scotchyoke",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/scotchyoke.cml",
+        "mml": "student/classic/motion/scotchyoke$0.mml",
+        "json": "converted/student/classic/motion/scotchyoke$0.json"
+      },
+      {
+        "name": "stringwave-1",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/stringwave.cml",
+        "mml": "student/classic/motion/stringwave$0.mml",
+        "json": "converted/student/classic/motion/stringwave$0.json"
+      },
+      {
+        "name": "stringwave-2",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/stringwave.cml",
+        "mml": "student/classic/motion/stringwave2$0.mml",
+        "json": "converted/student/classic/motion/stringwave2$0.json"
+      },
+      {
+        "name": "stringwave2",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/stringwave2.cml",
+        "mml": "student/classic/motion/stringwave2$0.mml",
+        "json": "converted/student/classic/motion/stringwave2$0.json"
+      },
+      {
+        "name": "undershotwaterwheel",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/undershotwaterwheel.cml",
+        "mml": "student/classic/motion/undershotwaterwheel$0.mml",
+        "json": "converted/student/classic/motion/undershotwaterwheel$0.json"
+      },
+      {
+        "name": "waterpump",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/waterpump.cml",
+        "mml": "student/classic/motion/waterpump$0.mml",
+        "json": "converted/student/classic/motion/waterpump$0.json"
+      },
+      {
+        "name": "waterwheel",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/waterwheel.cml",
+        "mml": "student/classic/motion/waterwheel$0.mml",
+        "json": "converted/student/classic/motion/waterwheel$0.json"
+      },
+      {
+        "name": "watt",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/watt.cml",
+        "mml": "student/classic/motion/watt$0.mml",
+        "json": "converted/student/classic/motion/watt$0.json"
+      },
+      {
+        "name": "windshieldwiper",
+        "path": "student/classic/motion/",
+        "cml": "student/classic/motion/windshieldwiper.cml",
+        "mml": "student/classic/motion/windshieldwiper$0.mml",
+        "json": "converted/student/classic/motion/windshieldwiper$0.json"
+      }
+    ]
+  },
+  {
     "section": "visual/Recycling",
     "content": [
       {

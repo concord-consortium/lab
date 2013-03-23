@@ -1,8 +1,40 @@
-/*globals define */
+/*globals define, d3 */
 //TODO: Should change and newdomain be global variables?
 
 define(function (require) {
   return {
+    numberWidthUsingFormatter: function (elem, cx, cy, fontSizeInPixels, formatter, number) {
+      var testSVG,
+          testText,
+          width,
+          node;
+
+      testSVG = elem.append("svg")
+        .attr("width",  cx)
+        .attr("height", cy)
+        .attr("class", "graph");
+
+      testText = testSVG.append('g')
+        .append("text")
+          .attr("class", "axis")
+          .attr("x", -fontSizeInPixels/4 + "px")
+          .attr("dy", ".35em")
+          .attr("text-anchor", "end")
+          .text(d3.format(formatter)(number));
+
+      node = testText.node();
+
+      // This code is sometimes called by tests that use d3's jsdom-based mock SVG DOm, which
+      // doesn't implement getBBox.
+      if (node.getBBox) {
+        width = testText.node().getBBox().width;
+      } else {
+        width = 0;
+      }
+
+      testSVG.remove();
+      return width;
+    },
     axisProcessDrag: function(dragstart, currentdrag, domain) {
       var originExtent, maxDragIn,
           newdomain = domain,

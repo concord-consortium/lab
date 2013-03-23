@@ -12,7 +12,8 @@ define(function (require) {
 
       // A tiny template, so define it inline and compile immediately.
       iframeTpl = mustache.compile('<iframe width="{{width}}px" height="{{height}}px" ' +
-        'frameborder="no" scrolling="no" src="{{{embeddableSharingUrl}}}"></iframe>');
+        'frameborder="no" scrolling="no" allowfullscreen="true" webkitallowfullscreen="true"' +
+        ' mozallowfullscreen="true" src="{{{embeddableSharingUrl}}}"></iframe>');
 
   /**
    * Share Dialog. Inherits from Basic Dialog.

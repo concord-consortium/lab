@@ -38,8 +38,7 @@
     {
       "type": "text",
       "id": "axes-label",
-      "text": "Axes",
-      "style": "header"
+      "text": "#Axes#"
     },
     {
       "type": "checkbox",
@@ -61,6 +60,20 @@
       "text": "Y units",
       "textOn": "left",
       "property": "yunits"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-xlabel",
+      "text": "X label",
+      "textOn": "left",
+      "property": "xlabel"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-ylabel",
+      "text": "Y label",
+      "textOn": "left",
+      "property": "ylabel"
     }
   ],
   "layout": {
@@ -68,15 +81,18 @@
       [ "axes-label" ],
       [ "show-gridlines" ],
       [ "show-xunits" ],
-      [ "show-yunits" ]
+      [ "show-yunits" ],
+      [ "show-xlabel" ],
+      [ "show-ylabel" ]
     ],
     "bottom": [ "current-obstacles", "kick-atom"]
   },
   "template": [
     {
       "id": "left",
-      "top": "5em",
+      "top": "3em",
       "right": "model.left",
+      "padding-right": "0.5em",
       "align": "right"
     },
     {

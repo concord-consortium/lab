@@ -5,7 +5,7 @@ define(function () {
   var metadata  = require('common/controllers/interactive-metadata'),
       validator = require('common/validator');
 
-  return function CheckboxController(component, scriptingAPI) {
+  return function CheckboxController(component, scriptingAPI, interactivesController) {
     var propertyName,
         onClickScript,
         initialValue,
@@ -53,7 +53,9 @@ define(function () {
 
     $label = $('<label>').append('<span>' + component.text + '</span>');
     $label.attr('for', component.id);
-    $checkbox = $('<input type="checkbox">').attr('id', component.id);
+    $checkbox = $('<input type="checkbox">')
+        .attr('tabindex', interactivesController.getNextTabIndex())
+        .attr('id', component.id);
     $fakeCheckable = $('<div class="fakeCheckable">');
     // Hide native input, use fake checkable.
     $checkbox.css("display", "none");

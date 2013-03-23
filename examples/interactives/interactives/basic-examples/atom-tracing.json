@@ -18,14 +18,12 @@
     {
       "type": "text",
       "id": "button-actions-label",
-      "text": "Mark and trace atoms",
-      "style": "header"
+      "text": "#Mark and trace atoms#"
     },
     {
       "type": "text",
       "id": "axes-label",
-      "text": "Axes",
-      "style": "header"
+      "text": "#Axes#"
     },
     {
       "type": "button",

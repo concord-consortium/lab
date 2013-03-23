@@ -2,7 +2,11 @@
   "title": "Oil and Water",
   "publicationStatus": "public",
   "subtitle": "Explore how polar and non-polar substances interact.",
-  "about": "It is well known that \"oil and water don’t mix.\" But why? Run the model of polar water (blue and red) and non-polar oil (gray). \"Shake up the oil and water mixture,\" then run it again and watch what happens to the molecules over time.",
+  "about": [
+    "It is well known that \"oil and water don’t mix.\" But why? Run the model",
+    "of polar water (blue and red) and non-polar oil (gray). \"Shake up the oil and water mixture,\"",
+    "then run it again and watch what happens to the molecules over time."
+  ],
   "models": [
     {
       "id": "page3$1",

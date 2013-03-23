@@ -1,7 +1,7 @@
 {
   "title": "Hydrogen Combustion",
   "publicationStatus": "draft",
-  "subtitle": "",
+  "subtitle": "The physics in this model will be incomplete until the development of the Chemical Reactions engine.",
   "about": "",
   "models": [
     {

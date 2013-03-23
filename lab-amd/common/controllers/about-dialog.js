@@ -2,6 +2,7 @@
 define(function (require) {
 
   var arrays      = require('arrays'),
+      markdown    = require('markdown'),
       inherit     = require('common/inherit'),
       BasicDialog = require('common/controllers/basic-dialog');
 
@@ -22,17 +23,28 @@ define(function (require) {
    */
   AboutDialog.prototype.update = function(interactive) {
     var $aboutContent = $("<div>"),
-        about;
+        about,
+        content,
+        html,
+        openInNewWindow = 'class="opens-in-new-window" target="blank"';
 
     this.set("title", "About: " + interactive.title);
 
+    // Ensure that common typography for markdown-generated content is used.
+    $aboutContent.addClass("markdown-typography");
     if (interactive.subtitle) {
-      $aboutContent.append("<p>" + interactive.subtitle + "</p>");
+      html = markdown.toHTML(interactive.subtitle);
+      html = html.replace(/<a(.*?)>/, "<a$1 " + openInNewWindow + ">");
+      $aboutContent.append(html);
     }
     about = arrays.isArray(interactive.about) ? interactive.about : [interactive.about];
+    content = "";
     $.each(about, function(idx, val) {
-      $aboutContent.append("<p>" + val + "</p>");
+      content += val + "\n";
     });
+    html = markdown.toHTML(content);
+    html = html.replace(/<a(.*?)>/, "<a$1 " + openInNewWindow + ">");
+    $aboutContent.append(html);
 
     this.setContent($aboutContent);
   };

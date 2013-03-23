@@ -25,15 +25,18 @@ AUTHORING = false;
       $interactiveTitle = $("#interactive-title"),
 
       $selectInteractive = $("#select-interactive"),
+      $selectInteractiveGroups = $("#select-interactive-groups"),
 
       $selectInteractiveSize = $("#select-interactive-size"),
 
       $updateInteractiveButton = $("#update-interactive-button"),
       $saveInteractiveButton = $("#save-interactive-button"),
+      $saveAsInteractiveButton = $("#save-as-interactive-button"),
       $saveModelButton = $("#save-model-button"),
       $updateJsonFromInteractiveButton = $("#update-json-from-interactive-button"),
       $autoFormatInteractiveJsonButton = $("#autoformat-interactive-json-button"),
       $interactiveTextArea = $("#interactive-text-area"),
+      $interactiveErrorDialog = $("#interactive-error-dialog"),
 
       $updateModelButton = $("#update-model-button"),
       $updateJsonFromModelButton = $("#update-json-from-model-button"),
@@ -64,6 +67,8 @@ AUTHORING = false;
       $previousInteractive = $("#previous-interactive"),
       $nextInteractive = $("#next-interactive"),
 
+      $serializedControls = $("#header *.serialize"),
+
       applicationCallbacks,
       editor,
       modelEditor,
@@ -74,7 +79,11 @@ AUTHORING = false;
       interactiveRemote,
       modelRemote,
       hash,
+
       jsonModelPath, contentItems, mmlPath,
+      $jsonModelLink = $("#json-model-link"),
+      $mmlModelLink = $("#mml-model-link"),
+
       interactivesPromise,
       buttonHandlersAdded = false,
       interactiveRemoteKeys = ['id', 'from_import', 'groupKey', 'path'],
@@ -127,6 +136,19 @@ AUTHORING = false;
   if (hash) {
     interactiveUrl = hash.substr(1, hash.length);
 
+    // Use the presense of selectInteractive as a proxy indicating that the
+    // rest of the elements on the non-iframe-embeddable version of the page
+    // are present and should be setup.
+    if ($selectInteractive.length) {
+      AUTHORING = true;
+      applicationCallbacks = [setupFullPage];
+    } else {
+      // else we are being embedded ...
+      if ($editor.length) {
+        applicationCallbacks = [setupEmbeddableAuthorPage];
+      }
+    }
+
     $.get(interactiveUrl).done(function(results) {
       if (typeof results === 'string') results = JSON.parse(results);
       interactiveRemote = results;
@@ -136,19 +158,85 @@ AUTHORING = false;
         document.title = interactive.title;
       }
 
-      // Use the presense of selectInteractive as a proxy indicating that the
-      // rest of the elements on the non-iframe-embeddable version of the page
-      // are present and should be setup.
-      if ($selectInteractive.length) {
-        AUTHORING = true;
-        applicationCallbacks = [setupFullPage];
-      } else {
-        // else we are being embedded ...
-        if ($editor.length) {
-          applicationCallbacks = [setupEmbeddableAuthorPage];
-        }
-      }
-
+      interactiveDefinitionLoaded.resolve();
+    })
+    .fail(function() {
+      document.title = "Interactive not found";
+      interactive = {
+        "title": "Interactive not found",
+        "subtitle": "Couldn't load Interactive definition",
+        "about": [
+          "Problem loading: [" + hash.substr(1) + "](" + interactiveUrl + ")",
+          "Either the definition for this Interactive has moved, been deleted or there have been network problems.",
+          "It would be good to report this issue"
+        ],
+        "publicationStatus": "broken",
+        "fontScale": 1.3,
+        "models": [
+          {
+            "id": "empty-model",
+            "model": {
+              "type": "md2d",
+              "width": 5,
+              "height": 3
+            },
+            "viewOptions": {
+              "controlButtons": "",
+              "backgroundColor": "rgba(245,200,200,255)",
+              "showClock": false
+            }
+          }
+        ],
+        "components": [
+          {
+            "type": "text",
+            "id": "interactive-not-found",
+            "text": [
+              "#Oops!",
+              "###We couldn't find Interactive definition:",
+              "[" + hash.substr(1) + "](" + interactiveUrl + ")",
+              "###It's possible that the Interactive has moved.",
+              "Try going to our [Next-Generation Molecular Workbench Activities page](http://mw.concord.org/nextgen/interactives/) to explore all our models."
+            ]
+          }
+        ],
+        "layout": {
+          "error": [ "interactive-not-found" ]
+        },
+        "template": [
+          {
+            "id": "top",
+            "bottom": "model.top",
+            "height": "1em"
+          },
+          {
+            "id": "bottom",
+            "top": "model.bottom",
+            "height": "1em"
+          },
+          {
+            "id": "right",
+            "left": "model.right",
+            "width": "1em"
+          },
+          {
+            "id": "left",
+            "right": "model.left",
+            "width": "1em"
+          },
+          {
+            "id": "error",
+            "top": "model.top",
+            "left": "model.left",
+            "height": "model.height",
+            "width": "model.width",
+            "padding-top": "0.5em",
+            "padding-bottom": "0.5em",
+            "padding-right": "1em",
+            "padding-left": "1em"
+          }
+        ]
+      };
       interactiveDefinitionLoaded.resolve();
     });
   }
@@ -273,19 +361,27 @@ AUTHORING = false;
     _.each(groups, function (group) {
       var publicFilter = $("#public").is(':checked'),
           draftFilter = $("#draft").is(':checked'),
+          brokenFilter = $("#broken").is(':checked'),
           interactiveGroup = interactives.filter(function (interactive) {
             if (interactive.groupKey !== group.path) return false;
             if (interactive.publicationStatus === 'sample') return true;
             if (publicFilter && interactive.publicationStatus === 'public') return true;
             if (draftFilter && interactive.publicationStatus === 'draft') return true;
+            if (brokenFilter && interactive.publicationStatus === 'broken') return true;
           }),
           $optgroup = $("<optgroup>").attr('label', group.name);
       interactiveGroup.forEach(function (interactive) {
         var title;
-        if (interactive.publicationStatus === 'draft') {
+        switch(interactive.publicationStatus) {
+          case "draft":
           title = "* " + interactive.title;
-        } else {
+          break;
+          case "broken":
+          title = "** " + interactive.title;
+          break;
+          default:
           title = interactive.title;
+          break;
         }
         $optgroup.append($("<option>")
           .attr('value', interactive.path)
@@ -309,7 +405,7 @@ AUTHORING = false;
     origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
 
     jsonModelPath = interactive.models[0].url;
-    $("#json-model-link").attr("href", origin + Lab.config.actualRoot + jsonModelPath);
+    $jsonModelLink.attr("href", origin + Lab.config.actualRoot + jsonModelPath);
 
     setupCodeEditor();
   }
@@ -320,6 +416,7 @@ AUTHORING = false;
       restoreOptionsFromCookie();
       setupSelectList();
       $("#select-filters input").click(setupSelectList);
+      $("#select-filters input").click(setupSelectGroups);
       $("#render-controls input").click(function() {
         saveOptionsToCookie();
         location.reload();
@@ -343,32 +440,37 @@ AUTHORING = false;
     if (cookie) {
       str = cookie[1].split(";")[0];
       settings = str.split('&').map(function (i) { return i.split('='); });
-      $("#interactive-controls input").each(function(i, el) {
+      $serializedControls.each(function(i, el) {
         var match = _.find(settings, function(e) { return e[0] === el.id; }, this);
-        if (match && el.id === match[0]) {
-          el.checked = true;
-        } else {
-          el.checked = false;
-        }
-      });
-      $("#interactive-controls select").each(function(i, el) {
-        var match = _.find(settings, function(e) {
-          return e[0] === el.name;
-        }, this);
-        if (match) {
-          $(el).val(match[1]);
+        switch(el.tagName) {
+          case "INPUT":
+          if (match && el.id === match[0]) {
+            el.checked = true;
+          } else {
+            el.checked = false;
+          }
+          break;
+          case "SELECT":
+          if (match) {
+            $(el).val(match[1]);
+          }
+          break;
         }
       });
     }
   }
 
   function saveOptionsToCookie() {
-    document.cookie = "lab-interactive-options=" + $("#interactive-controls").serialize() + " ; max-age=" + 30*60*60*24;
+    var cookie;
+    cookie = $serializedControls.serialize() + " ; max-age=" + 30*60*60*24;
+    document.cookie = "lab-interactive-options=" + cookie;
   }
 
   function finishSetupFullPage() {
-    var java_mw_href,
-        java_mw_link = $("#java-mw-link"),
+    var javaMWhref,
+        $embeddableLink = $("#embeddable-link"),
+        $javaMWlink = $("#java-mw-link"),
+        $dataGamesLink = $("#datagames-link"),
         origin;
 
     origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
@@ -376,27 +478,35 @@ AUTHORING = false;
     setupNextPreviousInteractive();
 
     // construct link to embeddable version of Interactive
-    $("#embeddable-link").attr("href", function(i, href) { return href + hash; });
+    $embeddableLink.attr("href", function(i, href) { return href + hash; });
+    $embeddableLink.attr("title", "Open this Interactive in a new page suitable for embedding.");
 
     jsonModelPath = interactive.models[0].url;
-    $("#json-model-link").attr("href", origin + Lab.config.actualRoot + jsonModelPath);
+    $jsonModelLink.attr("href", origin + Lab.config.actualRoot + jsonModelPath);
 
     // construct Java MW link for running Interactive via jnlp
     // uses generated resource list: /imports/legacy-mw-content/model-list.js
-    mmlPath = jsonModelPath.replace("/imports/legacy-mw-content/converted/", "").replace(".json", ".mml");
-    contentItems = getObjects(modelList, "mml", mmlPath);
+    // also updates link to original MML in Model Editor
+    mmlPath = jsonModelPath.replace("/imports/legacy-mw-content/converted/", "/imports/legacy-mw-content/").replace(".json", ".mml");
+    contentItems = getObjects(modelList, "mml", mmlPath.replace("/imports/legacy-mw-content/", ""));
     if (contentItems.length > 0) {
-      java_mw_href = "/jnlp/jnlps/org/concord/modeler/mw.jnlp?version-id=1.0&jnlp-args=remote," +
+      javaMWhref = "/jnlp/jnlps/org/concord/modeler/mw.jnlp?version-id=1.0&jnlp-args=remote," +
                       origin + Lab.config.actualRoot + "/imports/legacy-mw-content/" + contentItems[0].cml;
-      java_mw_link.attr("href", java_mw_href);
+      $javaMWlink.attr("href", javaMWhref);
+      $javaMWlink.attr("title", "View original Java Molecular Workbench content using Java Web Start");
+      $mmlModelLink.attr("href", origin + Lab.config.actualRoot + mmlPath);
+      $mmlModelLink.attr("title", "View original Java Molecular Workbench MML file");
     } else {
-      java_mw_link.removeAttr("href");
-      java_mw_link.attr("title", "Java MW link not available for this interactive");
-      java_mw_link.addClass("na");
+      $javaMWlink.removeAttr("href");
+      $javaMWlink.attr("title", "Java Web Start link not available for this interactive");
+      $javaMWlink.addClass("na");
+      $mmlModelLink.removeAttr("href");
+      $mmlModelLink.attr("title", "Java Molecular Workbench MML file not available for this model");
+      $javaMWlink.addClass("na");
     }
 
     // construct link to DataGames embeddable version of Interactive
-    $("#datagames-link").attr("href", function() {
+    $dataGamesLink.attr("href", function() {
       var dgPayload = [{
             "name": $selectInteractive.find("option:selected").text(),
             "dimensions": {
@@ -408,6 +518,7 @@ AUTHORING = false;
           dgUrl = "http://is.kcptech.com/dg?moreGames=" + JSON.stringify(dgPayload);
       return encodeURI(dgUrl);
     });
+    $dataGamesLink.attr("title", "Run this Interactive inside DataGames");
     setupExtras();
   }
 
@@ -450,7 +561,7 @@ AUTHORING = false;
           $iframe;
 
       $iframeWrapper = $('<div id="iframe-wrapper" class="ui-widget-content ' + $selectInteractiveSize.val() + '"></div>');
-      $iframe = $('<iframe id="iframe-interactive" width="100%" height="100%" frameborder="no" scrolling="no" src="' + embeddableUrl + '"></iframe>');
+      $iframe = $('<iframe id="iframe-interactive" width="100%" height="100%" frameborder="no" scrolling="no" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" src="' + embeddableUrl + '"></iframe>');
 
       $content.append($iframeWrapper);
       $("#responsive-content").hide();
@@ -535,23 +646,21 @@ AUTHORING = false;
     return iframePhone;
   }
 
-  function remoteSaveInteractive(interactiveTitle, interactiveState){
+  function remoteSaveInteractive(interactiveState, copyInteractive){
     var httpMethod = 'POST',
         url = '/interactives',
         newInteractiveState,
         interactiveJSON;
 
-    if(!interactiveRemote.from_import) {
+    if(!copyInteractive) {
+      // updating an interactive
       httpMethod = 'PUT';
       url = '/interactives/' + interactiveRemote.id;
     }
     // create an interactive to POST/PUT
-    // merge the, possibly updated, interactive with the interactive last 
+    // merge the, possibly updated, interactive with the interactive last
     // loaded from the webapp.
     newInteractiveState = jQuery.extend(true, interactiveRemote, interactiveState);
-    newInteractiveState['title'] = interactiveTitle;
-    // get the group from the current interactive
-    newInteractiveState['groupKey'] = interactiveRemote.groupKey;
     newInteractiveState.from_import = false;
     interactiveJSON = {'interactive': newInteractiveState};
 
@@ -577,10 +686,16 @@ AUTHORING = false;
           document.title = interactive.title;
         }
 
-        document.location.hash = interactiveRemote.path
+        document.location.hash = interactiveRemote.path;
       },
       error: function(jqXHR, textStatus, errorThrown) {
-        alert("Error: "+ textStatus + " : " + errorThrown)
+        var updateErrors = JSON.parse(jqXHR.responseText);
+        $interactiveErrorDialog.html("<ul></ul>");
+        for(key in updateErrors){
+          $interactiveErrorDialog.find('ul').append("<li>" + key + " " + updateErrors[key] + "</li>");          
+        }
+
+        $interactiveErrorDialog.dialog("open");
       },
       dataType: "json",
       contentType: "application/json",
@@ -608,7 +723,7 @@ AUTHORING = false;
         }
       },
       error: function(jqXHR, textStatus, errorThrown) {
-        alert("Error: "+ textStatus + " : " + errorThrown)
+        alert("Error: "+ textStatus + " : " + errorThrown);
       },
       dataType: "json",
       contentType: "application/json",
@@ -617,43 +732,90 @@ AUTHORING = false;
 
   }
 
-  function setupCopySaveInteractive() {
-    $saveInteractiveButton.show();
+  function setupSelectGroups(){
 
-    if (interactiveRemote.from_import) {
-      // Copying an imported interactive
-      $saveInteractiveButton.text("Save As ...");
-      $(".save-interactive-form").dialog({
-        autoOpen: false,
-        modal: true,
-        buttons: {
-          "Save": function() {
-            var interactiveTitle = $(".save-interactive-title").val();
-            $(this).dialog("close");
-            interactiveState = JSON.parse(editor.getValue());
-            remoteSaveInteractive(interactiveTitle, interactiveState);
-            editor.setValue(JSON.stringify(interactiveState, null, indent));
-          },
-          "Cancel": function() {
-            $(this).dialog("close");
-          }
-        }
+    $selectInteractiveGroups.empty();
+    _.each(groups, function(group) {
+      var publicFilter = $("#public").is(':checked'),
+      draftFilter = $("#draft").is(':checked'),
+      interactiveGroups = interactives.filter(function (interactive) {
+        if (interactive.groupKey !== group.path) return false;
+        if (interactive.publicationStatus === 'sample') return true;
+        if (publicFilter && interactive.publicationStatus === 'public') return true;
+        if (draftFilter && interactive.publicationStatus === 'draft') return true;
       });
       
-    }else {
-      // Saving an Interactive
-      $saveInteractiveButton.text("Save");
+      $selectInteractiveGroups.append($("<option>")
+                                      .attr('value', group.id)
+                                      .text(group.name));
+
+    });
+    $selectInteractiveGroups.val(interactiveRemote.groupKey).attr('selected', true);
+  }
+
+  function setupCopySaveInteractive() {
+    $saveAsInteractiveButton.show();
+
+    if (!interactiveRemote.from_import) {
+      $saveInteractiveButton.show();
     }
 
-    $saveInteractiveButton.on('click', function() {
-      if (interactiveRemote.from_import) {
-        // Prompt for the name of Interactive that will be a 
-        // copy of the exisiting imported interactive
+    // setup the Save As dialog to make a copy of an interactive
+    setupSelectGroups();
+    $(".save-interactive-form").dialog({
+      autoOpen: false,
+      modal: true,
+      width: 'auto',
+      buttons: {
+        "Save": function() {
+          // from the dialog
+          var interactiveTitle = $(".save-interactive-title").val();
+          var interactiveGroup = $("#select-interactive-groups").val();
+          $(this).dialog("close");
+          interactiveState = JSON.parse(editor.getValue());
+          interactiveState.title = interactiveTitle;
+          interactiveState.groupKey = interactiveGroup;
+
+          // make a copy of this interactive
+          remoteSaveInteractive(interactiveState, true);
+          editor.setValue(JSON.stringify(interactiveState, null, indent));
+          $saveInteractiveButton.removeAttr('disabled');
+          $saveAsInteractiveButton.removeAttr('disabled');
+        },
+        "Cancel": function() {
+          $(this).dialog("close");
+        }
+      }
+    });
+
+    $saveAsInteractiveButton.on('click', function() {
         $('.save-interactive-form').dialog("open");
-      } else {
-        interactiveState = JSON.parse(editor.getValue());
-        remoteSaveInteractive(interactive['title'], interactiveState);
-        editor.setValue(JSON.stringify(interactiveState, null, indent));
+    });
+
+    $saveInteractiveButton.on('click', function() {      
+      interactiveState = JSON.parse(editor.getValue());
+      interactiveState.title = interactive.title;
+      // update this interactive, false = don't copy this interactive.
+      remoteSaveInteractive(interactiveState, false);
+      editor.setValue(JSON.stringify(interactiveState, null, indent));
+      $saveInteractiveButton.removeAttr('disabled');
+      $saveAsInteractiveButton.removeAttr('disabled');
+
+    });
+
+    // Error dialog for creating/updating interactives
+    $interactiveErrorDialog.dialog({
+      modal: true,
+      autoOpen: false,
+      title: "Interactive Error",
+      resizable: false,
+      dialogClass: "error",
+      heigth: 300,
+      width: 300,
+      buttons: {
+        "OK": function() {
+          $(this).dialog("close");
+        }
       }
     });
   }
@@ -729,6 +891,7 @@ AUTHORING = false;
   function setupCodeEditor() {
     var foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
     $interactiveTextArea.text(JSON.stringify(interactive, null, indent));
+
     if (!editor) {
       editor = CodeMirror.fromTextArea($interactiveTextArea.get(0), {
         mode: { name: "javascript", json: true },
@@ -740,6 +903,18 @@ AUTHORING = false;
         collapseRange: true,
         onGutterClick: foldFunc
       });
+
+      if (!isStaticPage()){
+        // disable save, save as button when interactive json has changed
+        editor.on('change', function(instance, changeObj){
+          if (!editor.isClean() && 
+              (!$saveInteractiveButton.attr('disabled') || 
+               !$saveAsInteractiveButton.attr('disabled')) ){
+            $saveInteractiveButton.attr('disabled', 'disabled');
+            $saveAsInteractiveButton.attr('disabled', 'disabled');
+          }
+        });
+      }
     }
 
     if (!buttonHandlersAdded) {
@@ -747,6 +922,8 @@ AUTHORING = false;
       $updateInteractiveButton.on('click', function() {
         try {
           interactive = JSON.parse(editor.getValue());
+          $saveInteractiveButton.removeAttr('disabled');
+          $saveAsInteractiveButton.removeAttr('disabled');
         } catch (e) {
           alert("Interactive JSON syntax error: " + e.message);
           throw new Error("Interactive JSON syntax error: " + e.message);
@@ -1051,7 +1228,7 @@ AUTHORING = false;
         modelEnergyGraph.reset('#model-energy-graph-chart', options);
       }
       else {
-        modelEnergyGraph = Lab.grapher.realTimeGraph('#model-energy-graph-chart', options);
+        modelEnergyGraph = Lab.grapher.Graph('#model-energy-graph-chart', options);
       }
       addEventListeners();
     }

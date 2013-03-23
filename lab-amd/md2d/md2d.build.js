@@ -37,6 +37,9 @@
         // which is expected to be available on the host website.
       ],
       exports: 'Backbone'
+    },
+    'markdown': {
+      exports: 'markdown'
     }
   },
 
@@ -46,9 +49,10 @@
     'text': '../vendor/text/text',
     'cs' :'../vendor/require-cs/cs',
     'coffee-script': '../vendor/coffee-script/extras/coffee-script',
-    'underscore': '../vendor/underscore/underscore',
+    'underscore': '../../node_modules/underscore/underscore',
     'backbone': '../../node_modules/backbone/backbone',
-    'mustache': '../../node_modules/mustache/mustache'
+    'mustache': '../../node_modules/mustache/mustache',
+    'markdown': '../../node_modules/markdown/lib/markdown'
   },
 
   // Protect global namespace and call export of API.

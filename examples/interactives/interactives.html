@@ -28,23 +28,39 @@
     <link href='../../vendor/jquery-context-menu/jquery.contextMenu.css' rel='stylesheet' type='text/css'>
     <link href='../../vendor/jquery-selectBoxIt/jquery.selectBoxIt.css' rel='stylesheet' type='text/css'>
     <link href='interactives.css' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&amp;subset=latin,greek,latin-ext' rel='stylesheet' type='text/css'>
     
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&amp;subset=latin,greek,latin-ext' rel='stylesheet' type='text/css'>
   </head>
   <body>
     <div id='header'>
       <a href='http://www.concord.org/' id='logo'>
         <img src='../../resources/layout/cc-logo.png'>
       </a>
-      <h1><a href='../..'>Lab</a>:
-      <a href=''>Next Generation MW Interactive Browser</a></h1>
       <div class='row'>
-        <span class='title'>select Interactive:</span>
-        <select id='select-interactive'></select>
+        <h1><a href='../..'>Lab</a>:
+        <a href=''>Next Generation MW Interactive Browser</a></h1>
         <span class='title'>additional links:</span>
         <a class='opens-in-new-window' href='embeddable.html' id='embeddable-link' target='_blank'>Embeddable</a>
         <a class='opens-in-new-window' href='../../imports/legacy-mw-content/converted/' id='java-mw-link'>Java MW</a>
         <a class='opens-in-new-window' href='embeddable.html' id='datagames-link' target='_blank'>DataGames</a>
+      </div>
+      <div class='row'>
+        <span class='title'>select Interactive:</span>
+        <select id='select-interactive'></select>
+        <form class='controls' id='render-controls'>
+          <span class='title'>render in:</span>
+          <label for='render-in-iframe'>
+            iframe
+            <input checked='checked' class='serialize' id='render-in-iframe' name='render-in-iframe' type='checkbox'>
+          </label>
+          <span class='title'>size:</span>
+          <select class='serialize' id='select-interactive-size' name='select-interactive-size'>
+            <option value='tiny'>tiny</option>
+            <option value='small'>small</option>
+            <option value='medium'>medium</option>
+            <option selected='selected' value='large'>large</option>
+          </select>
+        </form>
       </div>
       <div class='row'>
         <form id='interactive-controls'>
@@ -52,43 +68,33 @@
             <span class='title'>categories:</span>
             <label for='curriculum-filter'>
               Curriculum
-              <input checked='checked' id='curriculum-filter' name='curriculum-filter' type='checkbox'>
+              <input checked='checked' class='serialize' id='curriculum-filter' name='curriculum-filter' type='checkbox'>
             </label>
             <label for='examples-filter'>
               Examples
-              <input id='examples-filter' name='examples-filter' type='checkbox'>
+              <input class='serialize' id='examples-filter' name='examples-filter' type='checkbox'>
             </label>
             <label for='tests-filter'>
               Tests
-              <input id='tests-filter' name='tests-filter' type='checkbox'>
+              <input class='serialize' id='tests-filter' name='tests-filter' type='checkbox'>
             </label>
             <label for='benchmarks-filter'>
               Benchmarks
-              <input id='benchmarks-filter' name='benchmarks-filter' type='checkbox'>
+              <input class='serialize' id='benchmarks-filter' name='benchmarks-filter' type='checkbox'>
             </label>
             <span class='title'>publication status:</span>
             <label for='public'>
               Public
-              <input checked='checked' id='public' name='public' type='checkbox'>
+              <input checked='checked' class='serialize' id='public' name='public' type='checkbox'>
             </label>
             <label for='draft'>
               Draft*
-              <input id='draft' name='draft' type='checkbox'>
+              <input class='serialize' id='draft' name='draft' type='checkbox'>
             </label>
-          </div>
-          <div class='controls' id='render-controls'>
-            <span class='title'>render in:</span>
-            <label for='render-in-iframe'>
-              iframe
-              <input checked='checked' id='render-in-iframe' name='render-in-iframe' type='checkbox'>
+            <label for='broken'>
+              Broken**
+              <input class='serialize' id='broken' name='broken' type='checkbox'>
             </label>
-            <span class='title'>size:</span>
-            <select id='select-interactive-size' name='size'>
-              <option value='tiny'>tiny</option>
-              <option value='small'>small</option>
-              <option value='medium'>medium</option>
-              <option selected='selected' value='large'>large</option>
-            </select>
           </div>
         </form>
       </div>
@@ -100,10 +106,11 @@
       </div>
       <div id='interactive-title'></div>
     </div>
+    <div id='interactive-error-dialog'></div>
     <div class='standard-interactive-layout' id='content'>
       <div id='responsive-content'>
-        <div id='interactive-container'></div>
-        <div id='firefox-warning-pane'>
+        <div id='interactive-container' tabindex='0'></div>
+        <div class='warning-pane' id='firefox-warning-pane'>
           <p>
             <a class='opens-in-new-window' href='http://blog.concord.org/serious-performance-regression-in-firefox-18-and-newer' target='_blank'>Firefox v18+ performance issue ...</a>
           </p>
@@ -122,11 +129,18 @@
             <div class='extras-item-controls'>
               <div class='save-interactive-form'>
                 <form>
-                  <label for='save-interactive-title'>Save</label>
-                  <input class='save-interactive-title' id='ui-corner-all' type='text'>
+                  <p>
+                    <label for='save-interactive-title'>Interactive Title</label>
+                    <input class='save-interactive-title' id='ui-corner-all' type='text'>
+                  </p>
+                  <p>
+                    <label for='select-interactive-groups'>Select the Interactive Group</label>
+                    <select id='select-interactive-groups'></select>
+                  </p>
                 </form>
               </div>
               <button id='save-interactive-button'>Save</button>
+              <button id='save-as-interactive-button'>Save As</button>
               <button id='update-interactive-button'>Update Interactive</button>
               <button id='update-json-from-interactive-button'>Update JSON from Interactive</button>
               <button class='right' id='autoformat-interactive-json-button'>AutoFormat</button>
@@ -145,6 +159,7 @@
               <button id='update-model-button'>Update Model</button>
               <button id='update-json-from-model-button'>Update JSON from Model</button>
               <a class='opens-in-new-window' href='' id='json-model-link' target='_blank'>Model JSON</a>
+              <a class='opens-in-new-window' href='' id='mml-model-link' target='_blank'>Original MML</a>
               <button class='right' id='autoformat-model-json-button'>AutoFormat</button>
             </div>
             <textarea id='model-text-area'></textarea>

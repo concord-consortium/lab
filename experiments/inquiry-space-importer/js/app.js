@@ -49,7 +49,8 @@ ISImporter.sensors = {
     title: "Distance",
     maxReading: 3,
     readingUnits: "m",
-    samplesPerSecond: 10,
+    samplesPerSecond: 20,
+    downsampleRate: 2,
     maxSeconds: 20
   },
 
@@ -97,8 +98,8 @@ ISImporter.sensors = {
     readingUnits: "N",
     minReading: -50,
     maxReading: 50,
-    samplesPerSecond: 100,
-    downsampleRate: 10,
+    samplesPerSecond: 20,
+    downsampleRate: 2,
     maxSeconds: 10
   },
 
@@ -162,7 +163,8 @@ ISImporter.sensors = {
     title: "Distance",
     maxReading: 3,
     readingUnits: "m",
-    samplesPerSecond: 10,
+    samplesPerSecond: 20,
+    downsampleRate: 2,
     maxSeconds: 20
   },
 
@@ -210,8 +212,8 @@ ISImporter.sensors = {
     readingUnits: "N",
     minReading: -50,
     maxReading: 50,
-    samplesPerSecond: 100,
-    downsampleRate: 10,
+    samplesPerSecond: 20,
+    downsampleRate: 2,
     maxSeconds: 10
   },
 
@@ -277,6 +279,12 @@ ISImporter.GraphController = defineClass({
   graph: null,
   dataset: null,
 
+  // Some reasonable initial values
+  xMin: 0,
+  xMax: 20,
+  yMin: 0,
+  yMax: 2,
+
   setTitle: function(title) {
     this.title = title;
     this.graph.title(title);
@@ -324,14 +332,14 @@ ISImporter.GraphController = defineClass({
   },
 
   initGraph: function() {
-    this.graph = Lab.grapher.graph(this.element, {
+    this.graph = Lab.grapher.Graph(this.element, {
       title       : this.title,
       xlabel      : this.xLabel,
-      xmin        : 0,
-      xmax        : 20,
+      xmin        : this.xMin,
+      xmax        : this.xMax,
       ylabel      : this.yLabel,
-      ymin        : 0,
-      ymax        : 2,
+      ymin        : this.yMin,
+      ymax        : this.yMax,
       points      : [],
       circleRadius: false,
       dataChange  : false
@@ -345,7 +353,19 @@ ISImporter.GraphController = defineClass({
     this.graph.notify('');
   },
 
+  /* User interactions with the Lab grapher may change the displayed graph bounds (xmin, xmax, ymin,
+     ymax) without notifying us. This restores the graph bounds to the last programmatically-set
+     bounds, e.g., the default bounds for the currently selected sensor.
+  */
+  restoreLastSavedGraphBounds: function() {
+    this.graph.xmin(this.xMin);
+    this.graph.xmax(this.xMax);
+    this.graph.ymin(this.yMin);
+    this.graph.ymax(this.yMax);
+  },
+
   resetGraph: function() {
+    this.restoreLastSavedGraphBounds();
     this.graph.reset();
   },
 
@@ -540,8 +560,9 @@ ISImporter.appController = new ISImporter.Object({
       if (length > 0) {
         text = ISImporter.fixed(self.dataset.getDataPoints()[length-1], 1);
       } else {
-        text = '';
-        self.$realtimeDisplayUnits.hide();
+        text = self.$realtimeDisplayValue.text();
+        // text = '';
+        // self.$realtimeDisplayUnits.hide();
       }
       self.$realtimeDisplayValue.text(text);
     });
@@ -570,6 +591,54 @@ ISImporter.appController = new ISImporter.Object({
     this.currentAppletReady = false;
     this.currentApplet.on('sensorReady', function() {
       self.sensorAppletReady();
+    });
+    this.currentApplet.on('deviceUnplugged', function() {
+      self.stop();
+      if (self.singleValueTimerId) {
+        clearInterval(self.singleValueTimerId);
+        self.singleValueTimerId = null;
+      }
+      $('#dialog-confirm-content').text("No sensor device is connected! Please connect your device and click OK to try again, or Cancel to stop trying.");
+      $('#dialog-confirm').attr('title', "No sensor device found!");
+      $('#dialog-confirm').dialog({
+        resizable: false,
+        height: 300,
+        width: 400,
+        modal: true,
+        buttons: {
+          "OK": function() {
+            $(this).dialog("close");
+            self.singleValueTimerId = setInterval(function() {self.readSingleValue();}, 1000);
+          },
+          "Cancel": function() {
+            $(this).dialog("close");
+          }
+        }
+      });
+    });
+    this.currentApplet.on('sensorUnplugged', function() {
+      self.stop();
+      if (self.singleValueTimerId) {
+        clearInterval(self.singleValueTimerId);
+        self.singleValueTimerId = null;
+      }
+      $('#dialog-confirm-content').text("No sensor is connected! Please connect your sensor and click OK to try again, or Cancel to stop trying.");
+      $('#dialog-confirm').attr('title', "No sensor found!");
+      $('#dialog-confirm').dialog({
+        resizable: false,
+        height: 300,
+        width: 400,
+        modal: true,
+        buttons: {
+          "OK": function() {
+            $(this).dialog("close");
+            self.singleValueTimerId = setInterval(function() {self.readSingleValue();}, 1000);
+          },
+          "Cancel": function() {
+            $(this).dialog("close");
+          }
+        }
+      });
     });
 
     this.dataset = new ISImporter.Dataset();
@@ -631,11 +700,33 @@ ISImporter.appController = new ISImporter.Object({
     this.currentAppletReady = true;
     this.enable(this.$startButton);
     if (this.sensor.tareable) this.enable(this.$tareButton);
+    // Read the current sensor value and inject it into the display
+    // TODO Poll and update this every second while we're not collecting and not errored out
+    this.readSingleValue();
+    var _this = this;
+    this.singleValueTimerId = setInterval(function() {_this.readSingleValue();}, 1000);
+  },
+
+  singleValueTimerId: null,
+  readSingleValue: function() {
+    try {
+      var values = this.currentApplet.appletInstance.getConfiguredSensorsValues(this.currentApplet.deviceType);
+      if (values != null) {
+        this.$realtimeDisplayValue.text(values[0].toFixed(1));
+        this.$realtimeDisplayUnits.show();
+      }
+    } catch(e) {
+      // console.log("problem enumeratingSensors " + e);
+    }
   },
 
   start: function() {
     this.logAction('started');
     this.started = true;
+    if (this.singleValueTimerId) {
+      window.clearInterval(this.singleValueTimerId);
+      this.singleValueTimerId = null;
+    }
     this.currentApplet.on('data', this.appletDataListener);
     this.currentApplet.start();
     this.disable(this.$startButton);
@@ -651,12 +742,17 @@ ISImporter.appController = new ISImporter.Object({
     this.enable(this.$tareButton);
     this.enable(this.$resetButton);
 
-    this.$realtimeDisplayValue.text('');
-    this.$realtimeDisplayUnits.hide();
+    // this.$realtimeDisplayValue.text('');
+    // this.$realtimeDisplayUnits.hide();
 
     if (this.dataset.getLength() > 0) {
       this.enable(this.$exportButton);
       this.enable(this.$selectButton);
+    }
+
+    var _this = this;
+    if (this.singleValueTimerId === null) {
+      this.singleValueTimerId = window.setInterval(function() {_this.readSingleValue();}, 1000);
     }
   },
 
@@ -673,6 +769,7 @@ ISImporter.appController = new ISImporter.Object({
     this.disable(this.$resetButton);
     this.disable(this.$selectButton);
     this.disable(this.$exportButton);
+    ISImporter.graphController.resetGraph();
   },
 
   tare: function() {

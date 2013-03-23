@@ -1,4 +1,4 @@
-/*global define, model, $ */
+/*global define, model, $, setTimeout, document, window */
 
 define(function (require) {
   // Dependencies.
@@ -21,6 +21,7 @@ define(function (require) {
       NumericOutputController = require('common/controllers/numeric-output-controller'),
       ParentMessageAPI        = require('common/controllers/parent-message-api'),
       ThermometerController   = require('common/controllers/thermometer-controller'),
+      DivController           = require('common/controllers/div-controller'),
 
       // Helper function which just provides banner definition.
       setupBanner             = require('common/controllers/setup-banner'),
@@ -70,7 +71,8 @@ define(function (require) {
         'barGraph':      BarGraphController,
         'graph':         GraphController,
         'slider':        SliderController,
-        'numericOutput': NumericOutputController
+        'numericOutput': NumericOutputController,
+        'div':           DivController
       };
 
   return function interactivesController(interactive, viewSelector) {
@@ -114,8 +116,17 @@ define(function (require) {
         shareDialog,
         creditsDialog,
 
-        semanticLayout;
+        semanticLayout,
+        getNextTabIndex;
 
+
+    // simple tabindex support, also exposed via api.getNextTabIndex()
+    getNextTabIndex = (function () {
+      var tabIndex = -1;
+      return function() {
+        return tabIndex++;
+      };
+    });
 
     function getModel(modelId) {
       if (modelsHash[modelId]) {
@@ -159,13 +170,38 @@ define(function (require) {
       if (modelConfig) {
         finishWithLoadedModel(modelDefinition.url, modelConfig);
       } else {
-        $.get(labConfig.actualRoot + modelDefinition.url).done(function(modelConfig) {
-
-          // Deal with the servers that return the json as text/plain
-          modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
-
-          finishWithLoadedModel(modelDefinition.url, modelConfig);
-        });
+        if (modelDefinition.url) {
+          $.get(labConfig.actualRoot + modelDefinition.url).done(function(modelConfig) {
+            // Deal with the servers that return the json as text/plain
+            modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
+            finishWithLoadedModel(modelDefinition.url, modelConfig);
+          }).fail(function() {
+            modelConfig = {
+              "type": "md2d",
+              "width": 2.5,
+              "height": 1.5,
+              "viewOptions": {
+                "backgroundColor": "rgba(245,200,200,255)",
+                "showClock": false,
+                "textBoxes": [
+                  {
+                    "text": "Model could not be loaded: " + modelDefinition.url,
+                    "x": 0.25,
+                    "y": 1.0,
+                    "width": 2,
+                    "layer": 1,
+                    "frame": "rounded rectangle",
+                    "backgroundColor": "rgb(232,231,231)"
+                  }
+                ]
+              }
+            };
+            finishWithLoadedModel(modelDefinition.url, modelConfig);
+          });
+        } else {
+          modelConfig = modelDefinition.model;
+          finishWithLoadedModel("", modelConfig);
+        }
       }
 
       function finishWithLoadedModel(modelUrl, modelConfig) {
@@ -179,6 +215,9 @@ define(function (require) {
           // Setup model and notify observers that model was loaded.
           modelLoaded(modelConfig);
         }
+        // and setup model player keyboard handlers (if enabled)
+        setupModelPlayerKeyboardHandler();
+
         // Setup model in layout.
         semanticLayout.setupModel(modelController);
         // Finally, layout interactive.
@@ -190,7 +229,7 @@ define(function (require) {
         var modelType = type || "md2d";
         switch(modelType) {
           case "md2d":
-          modelController = new MD2DModelController(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions);
+          modelController = new MD2DModelController(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions, controller);
           break;
         }
         // Extending universal Interactive scriptingAPI with model-specific scripting API
@@ -201,8 +240,59 @@ define(function (require) {
       }
     }
 
+    // ------------------------------------------------------------
+    //
+    // Handle keyboard shortcuts for model operation ...
+    // events routed through model_player object.
+    //
+    // ------------------------------------------------------------
+
+    function setupModelPlayerKeyboardHandler() {
+      if (modelController && modelController.enableKeyboardHandlers()) {
+        $interactiveContainer.keydown(function(event) {
+          var keycode = event.keycode || event.which;
+          switch(keycode) {
+            case 13:                 // return
+            event.preventDefault();
+            if (!model_player.isPlaying()) {
+              model_player.play();
+            }
+            break;
+
+            case 32:                 // space
+            event.preventDefault();
+            if (model_player.isPlaying()) {
+              model_player.stop();
+            } else {
+              model_player.play();
+            }
+            break;
+
+            case 37:                 // left-arrow
+            event.preventDefault();
+            if (model_player.isPlaying()) {
+              model_player.stop();
+            } else {
+              model_player.back();
+            }
+            break;
+
+            case 39:                 // right-arrow
+            event.preventDefault();
+            if (model_player.isPlaying()) {
+              model_player.stop();
+            } else {
+              model_player.forward();
+            }
+            break;
+          }
+        });
+        $interactiveContainer.focus();
+      }
+    }
+
     function setupLayout() {
-      var template, layout, components, fontScale, banner;
+      var template, layout, components, fontScale, banner, resizeAfterFullscreen;
 
       if (typeof interactive.template === "string") {
         template = templates[interactive.template];
@@ -238,6 +328,19 @@ define(function (require) {
           controller.resize();
         });
       }
+
+      // in all cases, call resize when entering and existing fullscreen
+      resizeAfterFullscreen = function() {
+        // need to call twice, as safari requires two attempts before it has
+        // the correct dimensions.
+        controller.resize();
+        setTimeout(controller.resize, 50);
+      };
+      document.addEventListener("fullscreenchange", resizeAfterFullscreen, false);
+
+      document.addEventListener("mozfullscreenchange", resizeAfterFullscreen, false);
+
+      document.addEventListener("webkitfullscreenchange", resizeAfterFullscreen, false);
     }
 
     function createComponent(component) {
@@ -431,9 +534,6 @@ define(function (require) {
         modelsHash[models[i].id] = models[i];
       }
 
-      // Load first model.
-      loadModel(models[0].id);
-
       // Prepare interactive components.
       componentJsons = interactive.components || [];
 
@@ -467,6 +567,17 @@ define(function (require) {
 
       // When all components are created, we can initialize semantic layout.
       setupLayout();
+
+      // FIXME: I moved this after setupLayout() on the previous line
+      // when I added the possiblity of including the model definition in the model
+      // section of the Interactive. We were counting on the ajax get operation taking
+      // long enough to not occur until after setupLayout() finished.
+      //
+      // But ... there is a performance issue, it makes sense to start the ajax request
+      // for the model definition as soon as the Interactive Controller can.
+      //
+      // Load first model
+      loadModel(models[0].id);
     }
 
     /**
@@ -583,6 +694,9 @@ define(function (require) {
       pushOnLoadScript: function (callback) {
         onLoadScripts.push(callback);
       },
+
+      getNextTabIndex: getNextTabIndex,
+
       /**
         Notifies interactive controller that the dimensions of its container have changed.
         It triggers the layout algorithm again.

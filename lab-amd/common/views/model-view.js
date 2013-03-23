@@ -13,13 +13,14 @@ define(function (require) {
       PlaybackComponentSVG  = require('cs!common/components/playback_svg'),
       gradients             = require('common/views/gradients');
 
-  return function ModelView(modelUrl, model, Renderer) {
+  return function ModelView(modelUrl, model, Renderer, getNextTabIndex) {
         // Public API object to be returned.
     var api = {},
         renderer,
         $el,
         node,
         emsize,
+        fontSizeInPixels,
         imagePath,
         vis1, vis, plot,
         playbackComponent,
@@ -50,6 +51,12 @@ define(function (require) {
         textContainerBelow,
         textContainerTop,
 
+        // we can ask the view to render the playback controls to some other container
+        useExternalPlaybackContainer = false,
+        playbackContainer,
+
+        preexistingControls,
+
         clickHandler,
 
         offsetLeft, offsetTop;
@@ -62,36 +69,40 @@ define(function (require) {
       }
     }
 
+    function getFontSizeInPixels() {
+      return parseFloat($el.css('font-size')) || 18;
+    }
+
     // Padding is based on the calculated font-size used for the model view container.
     function updatePadding() {
-      emsize = $el.css('font-size');
-      // Remove "px", convert to number.
-      emsize = Number(emsize.substring(0, emsize.length - 2));
+      fontSizeInPixels = getFontSizeInPixels();
       // Convert value to "em", using 18px as a basic font size.
       // It doesn't have to reflect true 1em value in current context.
       // It just means, that we assume that for 18px font-size,
       // padding and playback have scale 1.
-      emsize /= 18;
+      emsize = fontSizeInPixels / 18;
 
       padding = {
-         "top":    10 * emsize,
-         "right":  10 * emsize,
-         "bottom": 10 * emsize,
-         "left":   10 * emsize
+         "top":    0 * emsize,
+         "right":  0 * emsize,
+         "bottom": 0 * emsize,
+         "left":   0 * emsize
       };
 
-      if (model.get("xunits")) {
-        padding.bottom += (15  * emsize);
+      if (model.get("xunits") || model.get("yunits")) {
+        padding.bottom += (fontSizeInPixels * 1.2);
+        padding.left +=   (fontSizeInPixels * 1.3);
+        padding.top +=    (fontSizeInPixels/2);
+        padding.right +=  (fontSizeInPixels/2);
       }
 
-      if (model.get("yunits")) {
-        padding.left += (15  * emsize);
+      if (model.get("xlabel") || model.get("ylabel")) {
+        padding.bottom += (fontSizeInPixels * 0.8);
+        padding.left +=   (fontSizeInPixels * 0.8);
       }
 
-      if (model.get("controlButtons")) {
-        padding.bottom += (40  * emsize);
-      } else {
-        padding.bottom += (15  * emsize);
+      if (model.get("controlButtons") && !useExternalPlaybackContainer) {
+        padding.bottom += (fontSizeInPixels * 2.5);
       }
     }
 
@@ -115,9 +126,15 @@ define(function (require) {
 
       // Plot size in px.
       size = {
+        "width":  cx - padding.left - padding.right,
+        "height": cy - padding.top  - padding.bottom
+      };
+
+      size = {
         "width":  width,
         "height": height
       };
+
       // Model size in model units.
       modelSize = {
         "width":  modelWidth,
@@ -131,21 +148,26 @@ define(function (require) {
       offsetTop  = node.offsetTop + padding.top;
       offsetLeft = node.offsetLeft + padding.left;
 
-      switch (model.get("controlButtons")) {
-        case "play":
-          playbackXPos = padding.left + (size.width - (75 * emsize))/2;
-          break;
-        case "play_reset":
-          playbackXPos = padding.left + (size.width - (140 * emsize))/2;
-          break;
-        case "play_reset_step":
-          playbackXPos = padding.left + (size.width - (230 * emsize))/2;
-          break;
-        default:
-          playbackXPos = padding.left + (size.width - (230 * emsize))/2;
-      }
+      if (!useExternalPlaybackContainer) {
+        switch (model.get("controlButtons")) {
+          case "play":
+            playbackXPos = padding.left + (size.width - (75 * emsize))/2;
+            break;
+          case "play_reset":
+            playbackXPos = padding.left + (size.width - (140 * emsize))/2;
+            break;
+          case "play_reset_step":
+            playbackXPos = padding.left + (size.width - (230 * emsize))/2;
+            break;
+          default:
+            playbackXPos = padding.left + (size.width - (230 * emsize))/2;
+        }
 
-      playbackYPos = cy - 42 * emsize;
+        playbackYPos = cy - 42 * emsize;
+      } else {
+        playbackXPos = 0;
+        playbackYPos = fontSizeInPixels/6;
+      }
 
       // Basic model2px scaling function for position.
       model2px = d3.scale.linear()
@@ -169,7 +191,8 @@ define(function (require) {
           ty = function(d) { return "translate(0," + model2pxInv(d) + ")"; },
           stroke = function(d) { return d ? "#ccc" : "#666"; },
           fx = model2px.tickFormat(5),
-          fy = model2pxInv.tickFormat(5);
+          fy = model2pxInv.tickFormat(5),
+          lengthUnits = model.getUnitDefinition('length');
 
       if (d3.event && d3.event.transform) {
           d3.event.transform(model2px, model2pxInv);
@@ -196,14 +219,30 @@ define(function (require) {
         gxe.selectAll("line").remove();
       }
 
+      // x-axis units
       if (model.get("xunits")) {
         gxe.append("text")
+            .attr("class", "xunits")
             .attr("y", size.height)
-            .attr("dy", "1.25em")
+            .attr("dy", fontSizeInPixels*0.8 + "px")
             .attr("text-anchor", "middle")
             .text(fx);
       } else {
-        gxe.select("text").remove();
+        gxe.select("text.xunits").remove();
+      }
+
+      // x-axis label
+      if (model.get("xlabel")) {
+        vis.append("text")
+            .attr("class", "axis")
+            .attr("class", "xlabel")
+            .text(lengthUnits.pluralName)
+            .attr("x", size.width/2)
+            .attr("y", size.height)
+            .attr("dy", fontSizeInPixels*1.6 + "px")
+            .style("text-anchor","middle");
+      } else {
+        vis.select("text.xlabel").remove();
       }
 
       gx.exit().remove();
@@ -231,14 +270,28 @@ define(function (require) {
         gye.selectAll("line").remove();
       }
 
+      // y-axis units
       if (model.get("yunits")) {
         gye.append("text")
-            .attr("x", "-0.15em")
-            .attr("dy", "0.30em")
+            .attr("class", "yunits")
+            .attr("x", "-0.3em")
+            .attr("dy", fontSizeInPixels/6 + "px")
             .attr("text-anchor", "end")
             .text(fy);
       } else {
-        gye.select("text").remove();
+        gxe.select("text.yunits").remove();
+      }
+
+      // y-axis label
+      if (model.get("ylabel")) {
+        vis.append("g").append("text")
+            .attr("class", "axis")
+            .attr("class", "ylabel")
+            .text(lengthUnits.pluralName)
+            .style("text-anchor","middle")
+            .attr("transform","translate(" + -fontSizeInPixels*1.6 + " " + size.height/2+") rotate(-90)");
+      } else {
+        vis.select("text.ylabel").remove();
       }
 
       gy.exit().remove();
@@ -278,54 +331,6 @@ define(function (require) {
       if (model.get("enableKeyboardHandlers")) {
         node.focus();
       }
-    }
-
-    // ------------------------------------------------------------
-    //
-    // Handle keyboard shortcuts for model operation
-    //
-    // ------------------------------------------------------------
-
-    function setupKeyboardHandler() {
-      if (!model.get("enableKeyboardHandlers")) return;
-      $(node).keydown(function(event) {
-        var keycode = event.keycode || event.which;
-        switch(keycode) {
-          case 13:                 // return
-          event.preventDefault();
-          if (!model_player.isPlaying()) {
-            model_player.play();
-          }
-          break;
-
-          case 32:                 // space
-          event.preventDefault();
-          if (model_player.isPlaying()) {
-            model_player.stop();
-          } else {
-            model_player.play();
-          }
-          break;
-
-          case 37:                 // left-arrow
-          event.preventDefault();
-          if (model_player.isPlaying()) {
-            model_player.stop();
-          } else {
-            model_player.back();
-          }
-          break;
-
-          case 39:                 // right-arrow
-          event.preventDefault();
-          if (model_player.isPlaying()) {
-            model_player.stop();
-          } else {
-            model_player.forward();
-          }
-          break;
-        }
-      });
     }
 
     function renderContainer() {
@@ -380,8 +385,9 @@ define(function (require) {
           textContainerTop:     textContainerTop
         };
 
-        setupKeyboardHandler();
         createGradients();
+
+        playbackContainer = vis1;
       } else {
         // TODO: ?? what g, why is it here?
         vis.selectAll("g.x").remove();
@@ -410,19 +416,29 @@ define(function (require) {
     }
 
     function setupPlaybackControls() {
-      vis1.select('.model-controller').remove();
+      if (preexistingControls) preexistingControls.remove();
       switch (model.get("controlButtons")) {
         case "play":
-          playbackComponent = new PlayOnlyComponentSVG(vis1, model_player, playbackXPos, playbackYPos, emsize);
+          playbackComponent = new PlayOnlyComponentSVG(playbackContainer, model_player, playbackXPos, playbackYPos, emsize);
           break;
         case "play_reset":
-          playbackComponent = new PlayResetComponentSVG(vis1, model_player, playbackXPos, playbackYPos, emsize);
+          playbackComponent = new PlayResetComponentSVG(playbackContainer, model_player, playbackXPos, playbackYPos, emsize);
           break;
         case "play_reset_step":
-          playbackComponent = new PlaybackComponentSVG(vis1, model_player, playbackXPos, playbackYPos, emsize);
+          playbackComponent = new PlaybackComponentSVG(playbackContainer, model_player, playbackXPos, playbackYPos, emsize);
           break;
         default:
           playbackComponent = null;
+      }
+      preexistingControls = playbackContainer.select('.model-controller');
+    }
+
+    function removeClickHandlers() {
+      var selector;
+      for (selector in clickHandler) {
+        if (clickHandler.hasOwnProperty(selector)) {
+          vis.selectAll(selector).on("click.custom", null);
+        }
       }
     }
 
@@ -448,7 +464,7 @@ define(function (require) {
       // Register listeners.
       // Redraw container each time when some visual-related property is changed.
       model.addPropertiesListener([ "backgroundColor"], repaint);
-      model.addPropertiesListener(["gridLines", "xunits", "yunits"],
+      model.addPropertiesListener(["gridLines", "xunits", "yunits", "xlabel", "ylabel" ],
         function() {
           renderContainer();
           setupPlaybackControls();
@@ -475,6 +491,7 @@ define(function (require) {
       containers: null,
       scale: scale,
       setFocus: setFocus,
+      getFontSizeInPixels: getFontSizeInPixels,
       resize: function() {
         renderContainer();
         setupPlaybackControls();
@@ -492,10 +509,15 @@ define(function (require) {
         height = width / aspectRatio;
         return height + padding.top  + padding.bottom;
       },
+      setPlaybackContainer: function(svgPlaybackContainer) {
+        useExternalPlaybackContainer = true;
+        playbackContainer = svgPlaybackContainer;
+      },
       repaint: function() {
         repaint();
       },
       reset: function(newModelUrl, newModel) {
+        removeClickHandlers();
         processOptions(newModelUrl, newModel);
         renderContainer();
         setupPlaybackControls();
@@ -559,7 +581,9 @@ define(function (require) {
 
         for (selector in clickHandler) {
           if (clickHandler.hasOwnProperty(selector)) {
-            vis.selectAll(selector).on("click", getClickHandler(clickHandler[selector]));
+            // Use 'custom' namespace to don't overwrite other click handlers which
+            // can be added by default.
+            vis.selectAll(selector).on("click.custom", getClickHandler(clickHandler[selector]));
           }
         }
       }
@@ -570,7 +594,8 @@ define(function (require) {
     $el = $("<div>")
       .attr({
         "id": "model-container",
-        "class": "container"
+        "class": "container",
+        "tabindex": getNextTabIndex
       })
       // Set initial dimensions.
       .css({

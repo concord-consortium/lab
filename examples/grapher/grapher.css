@@ -1,13 +1,23 @@
 #content {
   margin-left: 2em; }
 
+#chart {
+  background-color: #f9eec1;
+  width: 960px;
+  height: 500px;
+  border: solid 1px #f4b626;
+  margin: 1em 0 0 1em;
+  padding: 0;
+  position: relative;
+  border-radius: 0.5em; }
+
 svg.graph text.title {
-  font-size: 1.3em; }
-svg.graph text.axis {
-  font-size: 1.2em; }
+  font-size: 1.1em; }
 svg.graph text.ylabel {
   font-size: 1em; }
 svg.graph text.xlabel {
+  font-size: 1em; }
+svg.graph text.axis {
   font-size: 1em; }
 
 circle, .line {

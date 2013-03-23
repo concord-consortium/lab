@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "8f59c315ea565bd7b4dd3498c1e06ed6a68f4976",
-        "short_sha":      "8f59c315",
-        "url":            "https://github.com/concord-consortium/lab/commit/8f59c315",
-        "author":        "Sam Fentress",
-        "email":         "sfentress@concord.org",
-        "date":          "2013-03-12 19:59:33 -0400",
-        "short_message": "Fix relative reference to &quot;/resources&quot; in image urls.",
-        "message":       "Fix relative reference to &quot;/resources&quot; in image urls.\n\nUse Lab.config.actualRoot to get actual root, and use\nmore specific &quot;{resources}/&quot; pattern to specify files\nlocated in public/resources, so we don&#x27;t break any models\nwith a nested resources directory.\n\nNot sure why &quot;Lab&quot; may be undefined in Mocha tests."
+        "sha":           "f596aaec6a15b43300a957e9b3f8b696b0da4716",
+        "short_sha":      "f596aaec",
+        "url":            "https://github.com/concord-consortium/lab/commit/f596aaec",
+        "author":        "Stephen Bannasch",
+        "email":         "stephen.bannasch@gmail.com",
+        "date":          "2013-03-22 21:56:55 -0400",
+        "short_message": "changing metadata.js =&gt; update expected-json fixtures",
+        "message":       "changing metadata.js =&gt; update expected-json fixtures\n\nmetadata.js for MD2D was changed in ef797bb42e2d\n\nWhen changes occur in metadata.js normally the expected-json\nfixtures need to be updated.\n\nTest failures were thrown by the Mocha tests:\n\nThe serialized object does not match the original object used to create the MD2D mode"
       },
       "dirty": false
     }
@@ -454,14 +454,16 @@ define('lab.config',['require','common/actual-root'],function (require) {
       publicAPI;
   publicAPI = {
   "sharing": true,
-  "logging": true,
-  "tracing": false,
   "home": "http://lab.concord.org",
+  "homeForSharing": "http://lab.concord.org",
   "homeInteractivePath": "/examples/interactives/interactive.html",
   "homeEmbeddablePath": "/examples/interactives/embeddable.html",
   "utmCampaign": null,
-  "hostName": "lab.concord.org",
+  "fontface": "Lato",
+  "hostName": "lab4.dev.concord.org",
   "dataGamesProxyPrefix": "DataGames/Games/concord/lab/",
+  "logging": true,
+  "tracing": false,
   "authoring": false,
   "actualRoot": ""
 };
@@ -469,11 +471,43 @@ define('lab.config',['require','common/actual-root'],function (require) {
   return publicAPI;
 });
 
-/*globals define */
+/*globals define, d3 */
 //TODO: Should change and newdomain be global variables?
 
 define('grapher/core/axis',['require'],function (require) {
   return {
+    numberWidthUsingFormatter: function (elem, cx, cy, fontSizeInPixels, formatter, number) {
+      var testSVG,
+          testText,
+          width,
+          node;
+
+      testSVG = elem.append("svg")
+        .attr("width",  cx)
+        .attr("height", cy)
+        .attr("class", "graph");
+
+      testText = testSVG.append('g')
+        .append("text")
+          .attr("class", "axis")
+          .attr("x", -fontSizeInPixels/4 + "px")
+          .attr("dy", ".35em")
+          .attr("text-anchor", "end")
+          .text(d3.format(formatter)(number));
+
+      node = testText.node();
+
+      // This code is sometimes called by tests that use d3's jsdom-based mock SVG DOm, which
+      // doesn't implement getBBox.
+      if (node.getBBox) {
+        width = testText.node().getBBox().width;
+      } else {
+        width = 0;
+      }
+
+      testSVG.remove();
+      return width;
+    },
     axisProcessDrag: function(dragstart, currentdrag, domain) {
       var originExtent, maxDragIn,
           newdomain = domain,
@@ -515,58 +549,47 @@ define('grapher/core/axis',['require'],function (require) {
   };
 });
 
-/*globals define, d3 */
+/*global define, d3, $ self */
 
-define('grapher/core/register-keyboard-handler',['require'],function (require) {
-  return function registerKeyboardHandler(callback) {
-    d3.select(window).on("keydown", callback);
-  };
-});
-
-/*globals define, d3 */
-
-define('grapher/core/graph',['require','grapher/core/axis','grapher/core/register-keyboard-handler'],function (require) {
+define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
   // Dependencies.
-  var axis                    = require('grapher/core/axis'),
-      registerKeyboardHandler = require('grapher/core/register-keyboard-handler');
+  var axis = require('grapher/core/axis'),
+      tooltips = {
+        autoscale: "Show all data (autoscale)"
+      };
 
-  return function Graph(elem, options, message) {
-    var cx = 600, cy = 300,
-        node;
 
-    // FIXME The following two scenarios should result in the same code path being followed:
-    //
-    // (1)
-    //    var g = Graph(); g(d3.select("#graph"));
-    // (2)
-    //    var g = Graph("#graph");
-    //
-    // However, currently, if Graph() is invoked as in (2) then a different path is taken through
-    // scale(), and this appears to affect the path through subsequent code. The proof of this
-    // is that the grapher fails if we move the following if-statement to the end of Graph(),
-    // just before the invocation of graph(elem). Moving the if-statement and invoking
-    // Graph() via (2) should just be the rough equivalent of scenario (1), but apparently, it's not
-    // (or possibly scenario (1) doesn't work.)
+  return function Graph(idOrElement, options, message, tabindex) {
+    var elem,
+        node,
+        $node,
+        cx,
+        cy,
 
-    if (arguments.length) {
-      elem = d3.select(elem);
-      node = elem.node();
-      cx = elem.property("clientWidth");
-      cy = elem.property("clientHeight");
-    }
-
-    var svg, vis, plot, viewbox,
+        stroke = function(d) { return d ? "#ccc" : "#666"; },
+        tx = function(d) { return "translate(" + xScale(d) + ",0)"; },
+        ty = function(d) { return "translate(0," + yScale(d) + ")"; },
+        fx, fy,
+        svg, vis, plot, viewbox,
+        buttonLayer,
         title, xlabel, ylabel,
-        points,
         notification,
-        margin, padding, size,
-        xScale, yScale, xValue, yValue, line,
+        padding, size,
+        xScale, yScale, line,
         shiftingX = false,
         cubicEase = d3.ease('cubic'),
         ds,
-        stroke, tx, ty, fx, fy,
         circleCursorStyle,
-        emsize, strokeWidth,
+        fontSizeInPixels,
+        halfFontSizeInPixels,
+        quarterFontSizeInPixels,
+        titleFontSizeInPixels,
+        axisFontSizeInPixels,
+        xlabelFontSizeInPixels,
+        ylabelFontSizeInPixels,
+        xAxisNumberWidth,
+        yAxisNumberWidth,
+        strokeWidth,
         sizeType = {
           category: "medium",
           value: 3,
@@ -576,31 +599,52 @@ define('grapher/core/graph',['require','grapher/core/axis','grapher/core/registe
           medium: 960,
           large: 1920
         },
-        downx, downy, dragged, selected,
+        downx = NaN,
+        downy = NaN,
+        dragged = null,
+        selected = null,
         titles = [],
+
+        points, pointArray,
+        currentSample,
+        markedPoint, marker,
+        sample,
+        gcanvas, gctx,
+        canvasFillStyle = "rgba(255,255,255, 0.0)",
+        cplot = {},
+
         default_options = {
-          title:          "Graph",
-          xlabel:         "X Axis",
-          ylabel:         "Y Axis",
-          xscale:         "linear",
-          yscale:         "linear",
-          xTicCount:       10,
-          yTicCount:        8,
-          xFormatter:     "3.3r",
-          yFormatter:     "3.3r",
-          xscaleExponent:   0.5,
-          yscaleExponent:   0.5,
+          showButtons:    true,
+          responsiveLayout: false,
+          fontScaleRelativeToParent: true,
+          realTime:       false,
+          title:          "graph",
+          xlabel:         "x-axis",
+          ylabel:         "y-axis",
+          xscale:         'linear',
+          yscale:         'linear',
+          xTickCount:      10,
+          yTickCount:      10,
+          xscaleExponent:  0.5,
+          yscaleExponent:  0.5,
+          xFormatter:      ".2s",
+          yFormatter:      ".2s",
           axisShift:       10,
-          xmax:            60,
-          xmin:             0,
-          ymax:            40,
-          ymin:             0,
+          xmax:            10,
+          xmin:            0,
+          ymax:            10,
+          ymin:            0,
+          dataset:         [0],
+          selectablePoints: false,
           circleRadius:    10.0,
           strokeWidth:      2.0,
           dataChange:      true,
           addData:         true,
           points:          false,
-          notification:    false
+          notification:    false,
+          sample:          1,
+          lines:           true,
+          bars:            false
         },
 
         selection_region = {
@@ -615,1154 +659,6 @@ define('grapher/core/graph',['require','grapher/core/axis','grapher/core/registe
         selection_listener,
         brush_element,
         brush_control;
-
-
-    initialize(options);
-
-    function setupOptions(options) {
-      if (options) {
-        for(var p in default_options) {
-          if (options[p] === undefined) {
-            options[p] = default_options[p];
-          }
-        }
-      } else {
-        options = default_options;
-      }
-      if (options.axisShift < 1) options.axisShift = 1;
-      return options;
-    }
-
-    function calculateSizeType() {
-      if(cx <= sizeType.icon) {
-        sizeType.category = 'icon';
-        sizeType.value = 0;
-      } else if (cx <= sizeType.tiny) {
-        sizeType.category = 'tiny';
-        sizeType.value = 1;
-      } else if (cx <= sizeType.small) {
-        sizeType.category = 'small';
-        sizeType.value = 2;
-      } else if (cx <= sizeType.medium) {
-        sizeType.category = 'medium';
-        sizeType.value = 3;
-      } else if (cx <= sizeType.large) {
-        sizeType.category = 'large';
-        sizeType.value = 4;
-      } else {
-        sizeType.category = 'extralarge';
-        sizeType.value = 5;
-      }
-    }
-
-    function scale(w, h) {
-      if (!arguments.length) {
-        cx = elem.property("clientWidth");
-        cy = elem.property("clientHeight");
-      } else {
-        cx = w;
-        cy = h;
-        node.style.width =  cx +"px";
-        node.style.height = cy +"px";
-      }
-      calculateSizeType();
-      // Previously there was used layout module to
-      // define emsize. However, setting this value
-      // to 1 doesn't seem to change anything.
-      // TODO: cleanup it.
-      emsize = 1;
-    }
-
-    function initialize(newOptions, mesg) {
-      if (newOptions || !options) {
-        options = setupOptions(newOptions);
-      }
-
-      if (svg !== undefined) {
-        svg.remove();
-        svg = undefined;
-      }
-
-      if (mesg) {
-        message = mesg;
-      }
-
-      if (options.dataChange) {
-        circleCursorStyle = "ns-resize";
-      } else {
-        circleCursorStyle = "crosshair";
-      }
-
-      scale();
-
-      options.xrange = options.xmax - options.xmin;
-      options.yrange = options.ymax - options.ymin;
-
-      options.datacount = 2;
-
-      strokeWidth = options.strokeWidth;
-
-      switch(sizeType.value) {
-        case 0:
-        padding = {
-         "top":    4,
-         "right":  4,
-         "bottom": 4,
-         "left":   4
-        };
-        break;
-
-        case 1:
-        padding = {
-         "top":    8,
-         "right":  8,
-         "bottom": 8,
-         "left":   8
-        };
-        break;
-
-        case 2:
-        padding = {
-         "top":    options.title  ? 25 : 15,
-         "right":  15,
-         "bottom": 20,
-         "left":   60
-        };
-        break;
-
-        case 3:
-        padding = {
-         "top":    options.title  ? 30 : 20,
-         "right":                   30,
-         "bottom": options.xlabel ? 60 : 10,
-         "left":   options.ylabel ? 90 : 60
-        };
-        break;
-
-        default:
-        padding = {
-         "top":    options.title  ? 40 : 20,
-         "right":                   30,
-         "bottom": options.xlabel ? 60 : 10,
-         "left":   options.ylabel ? 90 : 60
-        };
-        break;
-      }
-
-      if (Object.prototype.toString.call(options.title) === "[object Array]") {
-        titles = options.title;
-      } else {
-        titles = [options.title];
-      }
-      titles.reverse();
-
-      if (sizeType.value > 2 ) {
-        padding.top += (titles.length-1) * sizeType.value/3 * sizeType.value/3 * emsize * 22;
-      } else {
-        titles = [titles[0]];
-      }
-
-      size = {
-        "width":  cx - padding.left - padding.right,
-        "height": cy - padding.top  - padding.bottom
-      };
-
-      xValue = function(d) { return d[0]; };
-      yValue = function(d) { return d[1]; };
-
-      xScale = d3.scale[options.xscale]()
-        .domain([options.xmin, options.xmax])
-        .range([0, size.width]);
-
-      if (options.xscale === "pow") {
-        xScale.exponent(options.xscaleExponent);
-      }
-
-      yScale = d3.scale[options.yscale]()
-        .domain([options.ymin, options.ymax])
-        .range([size.height, 0]);
-
-      if (options.yscale === "pow") {
-        yScale.exponent(options.yscaleExponent);
-      }
-
-      tx = function(d) {
-        return "translate(" + xScale(d) + ",0)";
-      };
-
-      ty = function(d) {
-        return "translate(0," + yScale(d) + ")";
-      };
-
-      stroke = function(d) {
-        return d ? "#ccc" : "#666";
-      };
-
-      fx = d3.format(options.xFormatter);
-      fy = d3.format(options.yFormatter);
-
-      line = d3.svg.line()
-          .x(function(d, i) { return xScale(points[i][0]); })
-          .y(function(d, i) { return yScale(points[i][1]); });
-
-      // drag axis logic
-      downx = NaN;
-      downy = NaN;
-      dragged = selected = null;
-    }
-
-    function graph(selection) {
-      if (!selection) { selection = elem; }
-      selection.each(function() {
-
-        elem = d3.select(this);
-
-        if (this.clientWidth && this.clientHeight) {
-          cx = this.clientWidth;
-          cy = this.clientHeight;
-          size.width  = cx - padding.left - padding.right;
-          size.height = cy - padding.top  - padding.bottom;
-        }
-
-        points = options.points;
-        if (points === "fake") {
-          points = fakeDataPoints();
-        }
-
-        updateXScale();
-        updateYScale();
-
-        if (svg === undefined) {
-
-          svg = elem.append("svg")
-              .attr("width",  cx)
-              .attr("height", cy)
-              .attr("class", "graph");
-
-          vis = svg.append("g")
-                .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
-
-          plot = vis.append("rect")
-              .attr("class", "plot")
-              .attr("width", size.width)
-              .attr("height", size.height)
-              .style("fill", "#EEEEEE")
-              .attr("pointer-events", "all")
-              .on("mousedown.drag", plot_drag)
-              .on("touchstart.drag", plot_drag)
-              .call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
-
-          viewbox = vis.append("svg")
-              .attr("class", "viewbox")
-              .attr("top", 0)
-              .attr("left", 0)
-              .attr("width", size.width)
-              .attr("height", size.height)
-              .attr("viewBox", "0 0 "+size.width+" "+size.height);
-
-              // I *assume* this class is superflous -- RPK 7/29/2012
-              //.attr("class", "line");
-
-          viewbox.append("path")
-              .attr("class", "line")
-              .style("stroke-width", strokeWidth)
-              .attr("d", line(points));
-
-          brush_element = viewbox.append("g")
-                .attr("class", "brush");
-
-          // add Chart Title
-          if (options.title && sizeType.value > 1) {
-            title = vis.selectAll("text")
-              .data(titles, function(d) { return d; });
-            title.enter().append("text")
-                .attr("class", "title")
-                .style("font-size", sizeType.value/2.4 * 100 + "%")
-                .text(function(d) { return d; })
-                .attr("x", size.width/2)
-                .attr("dy", function(d, i) { return -0.5 + -1 * sizeType.value/2.8 * i * emsize + "em"; })
-                .style("text-anchor","middle");
-          }
-
-          // Add the x-axis label
-          if (options.xlabel && sizeType.value > 2) {
-            xlabel = vis.append("text")
-                .attr("class", "axis")
-                .style("font-size", sizeType.value/2.6 * 100 + "%")
-                .text(options.xlabel)
-                .attr("x", size.width/2)
-                .attr("y", size.height)
-                .attr("dy","2.4em")
-                .style("text-anchor","middle");
-          }
-
-          // add y-axis label
-          if (options.ylabel && sizeType.value > 2) {
-            ylabel = vis.append("g").append("text")
-                .attr("class", "axis")
-                .style("font-size", sizeType.value/2.6 * 100 + "%")
-                .text(options.ylabel)
-                .style("text-anchor","middle")
-                .attr("transform","translate(" + -50 + " " + size.height/2+") rotate(-90)");
-          }
-
-          d3.select(node)
-              .on("mousemove.drag", mousemove)
-              .on("touchmove.drag", mousemove)
-              .on("mouseup.drag",   mouseup)
-              .on("touchend.drag",  mouseup);
-
-          notification = vis.append("text")
-              .attr("class", "graph-notification")
-              .text(message)
-              .attr("x", size.width/2)
-              .attr("y", size.height/2)
-              .style("text-anchor","middle");
-
-        } else {
-
-          vis
-            .attr("width",  cx)
-            .attr("height", cy);
-
-          plot
-            .attr("width", size.width)
-            .attr("height", size.height);
-
-          viewbox
-              .attr("top", 0)
-              .attr("left", 0)
-              .attr("width", size.width)
-              .attr("height", size.height)
-              .attr("viewBox", "0 0 "+size.width+" "+size.height);
-
-          if (options.title && sizeType.value > 1) {
-              title.each(function(d, i) {
-                d3.select(this).attr("x", size.width/2);
-                d3.select(this).attr("dy", function(d, i) { return 1.4 * i - titles.length + "em"; });
-              });
-          }
-
-          if (options.xlabel && sizeType.value > 1) {
-            xlabel
-                .attr("x", size.width/2)
-                .attr("y", size.height);
-          }
-
-          if (options.ylabel && sizeType.value > 1) {
-            ylabel
-                .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
-          }
-
-          notification
-            .attr("x", size.width/2)
-            .attr("y", size.height/2);
-        }
-        redraw();
-      });
-
-      function notify(mesg) {
-        // add Chart Notification
-        message = mesg;
-        if (mesg) {
-          notification.text(mesg);
-        } else {
-          notification.text('');
-        }
-      }
-
-      function fakeDataPoints() {
-        var yrange2 = options.yrange / 2,
-            yrange4 = yrange2 / 2,
-            pnts;
-
-        options.datacount = size.width/30;
-        options.xtic = options.xrange / options.datacount;
-        options.ytic = options.yrange / options.datacount;
-
-        pnts = d3.range(options.datacount).map(function(i) {
-          return [i * options.xtic + options.xmin, options.ymin + yrange4 + Math.random() * yrange2 ];
-        });
-        return pnts;
-      }
-
-      function keydown() {
-        if (!selected) return;
-        switch (d3.event.keyCode) {
-          case 8:   // backspace
-          case 46:  // delete
-          if (options.dataChange) {
-            var i = points.indexOf(selected);
-            points.splice(i, 1);
-            selected = points.length ? points[i > 0 ? i - 1 : 0] : null;
-            update();
-          }
-          if (d3.event && d3.event.keyCode) {
-            d3.event.preventDefault();
-            d3.event.stopPropagation();
-          }
-          break;
-        }
-      }
-
-      // unused as of commit ef91f20b5abab1f063dc093d41e9dbd4712931f4
-      // (7/27/2012):
-
-      // // update the layout
-      // function updateLayout() {
-      //   padding = {
-      //    "top":    options.title  ? 40 : 20,
-      //    "right":                 30,
-      //    "bottom": options.xlabel ? 60 : 10,
-      //    "left":   options.ylabel ? 70 : 45
-      //   };
-
-      //   size.width  = cx - padding.left - padding.right;
-      //   size.height = cy - padding.top  - padding.bottom;
-
-      //   plot.attr("width", size.width)
-      //       .attr("height", size.height);
-      // }
-
-      // Update the x-scale.
-      function updateXScale() {
-        xScale.domain([options.xmin, options.xmax])
-              .range([0, size.width]);
-      }
-
-      // Update the y-scale.
-      function updateYScale() {
-        yScale.domain([options.ymin, options.ymax])
-              .range([size.height, 0]);
-      }
-
-      function redraw() {
-
-        // Regenerate x-ticks…
-        var gx = vis.selectAll("g.x")
-            .data(xScale.ticks(options.xTicCount), String)
-            .attr("transform", tx);
-
-        var gxe = gx.enter().insert("g", "a")
-            .attr("class", "x")
-            .attr("transform", tx);
-
-        gxe.append("line")
-            .attr("stroke", stroke)
-            .attr("y1", 0)
-            .attr("y2", size.height);
-
-        if (sizeType.value > 1) {
-          gxe.append("text")
-              .attr("class", "axis")
-              .style("font-size", sizeType.value/2.7 * 100 + "%")
-              .attr("y", size.height)
-              .attr("dy", "1em")
-              .attr("text-anchor", "middle")
-              .text(fx)
-              .style("cursor", "ew-resize")
-              .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-              .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-              .on("mousedown.drag",  xaxis_drag)
-              .on("touchstart.drag", xaxis_drag);
-        }
-
-        gx.exit().remove();
-
-        // Regenerate y-ticks…
-        var gy = vis.selectAll("g.y")
-            .data(yScale.ticks(options.yTicCount), String)
-            .attr("transform", ty);
-
-        var gye = gy.enter().insert("g", "a")
-            .attr("class", "y")
-            .attr("transform", ty)
-            .attr("background-fill", "#FFEEB6");
-
-        gye.append("line")
-            .attr("stroke", stroke)
-            .attr("x1", 0)
-            .attr("x2", size.width);
-
-        if (sizeType.value > 1) {
-          if (options.yscale === "log") {
-            var gye_length = gye[0].length;
-            if (gye_length > 100) {
-              gye = gye.filter(function(d) { return !!d.toString().match(/(\.[0]*|^)[1]/);});
-            } else if (gye_length > 50) {
-              gye = gye.filter(function(d) { return !!d.toString().match(/(\.[0]*|^)[12]/);});
-            } else {
-              gye = gye.filter(function(d) {
-                return !!d.toString().match(/(\.[0]*|^)[125]/);});
-            }
-          }
-          gye.append("text")
-              .attr("class", "axis")
-              .style("font-size", sizeType.value/2.7 * 100 + "%")
-              .attr("x", -3)
-              .attr("dy", ".35em")
-              .attr("text-anchor", "end")
-              .text(fy)
-              .style("cursor", "ns-resize")
-              .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-              .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-              .on("mousedown.drag",  yaxis_drag)
-              .on("touchstart.drag", yaxis_drag);
-        }
-
-        gy.exit().remove();
-        plot.call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
-        update();
-      }
-
-      function update() {
-
-        update_brush_element();
-
-        vis.select("path").attr("d", line(points));
-
-        var circle = vis.select("svg").selectAll("circle")
-            .data(points, function(d) { return d; });
-
-        if (options.circleRadius && sizeType.value > 1) {
-          if (!(options.circleRadius <= 4 && sizeType.value < 3)) {
-            circle.enter().append("circle")
-                .attr("class", function(d) { return d === selected ? "selected" : null; })
-                .attr("cx",    function(d) { return xScale(d[0]); })
-                .attr("cy",    function(d) { return yScale(d[1]); })
-                .attr("r", options.circleRadius * (1 + sizeType.value) / 4)
-                .style("stroke-width", options.circleRadius/6 * (sizeType.value - 1.5))
-                .style("cursor", circleCursorStyle)
-                .on("mousedown.drag",  datapoint_drag)
-                .on("touchstart.drag", datapoint_drag);
-
-            circle
-                .attr("class", function(d) { return d === selected ? "selected" : null; })
-                .attr("cx",    function(d) { return xScale(d[0]); })
-                .attr("cy",    function(d) { return yScale(d[1]); })
-                .attr("r", options.circleRadius * (1 + sizeType.value) / 4)
-                .style("stroke-width", options.circleRadius/6 * (sizeType.value - 1.5));
-          }
-        }
-
-        circle.exit().remove();
-
-        if (d3.event && d3.event.keyCode) {
-          d3.event.preventDefault();
-          d3.event.stopPropagation();
-        }
-      }
-
-      function plot_drag() {
-        var p;
-        d3.event.preventDefault();
-        registerKeyboardHandler(keydown);
-        d3.select('body').style("cursor", "move");
-        if (d3.event.altKey) {
-          if (d3.event.shiftKey && options.addData) {
-            p = d3.mouse(vis.node());
-            var newpoint = [];
-            newpoint[0] = xScale.invert(Math.max(0, Math.min(size.width,  p[0])));
-            newpoint[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
-            points.push(newpoint);
-            points.sort(function(a, b) {
-              if (a[0] < b[0]) { return -1; }
-              if (a[0] > b[0]) { return  1; }
-              return 0;
-            });
-            selected = newpoint;
-            update();
-          } else {
-            p = d3.mouse(vis.node());
-            downx = xScale.invert(p[0]);
-            downy = yScale.invert(p[1]);
-            dragged = false;
-            d3.event.stopPropagation();
-          }
-          // d3.event.stopPropagation();
-        }
-      }
-
-      function xaxis_drag(d) {
-        document.onselectstart = function() { return false; };
-        d3.event.preventDefault();
-        var p = d3.mouse(vis.node());
-        downx = xScale.invert(p[0]);
-      }
-
-      function yaxis_drag(d) {
-        document.onselectstart = function() { return false; };
-        d3.event.preventDefault();
-        var p = d3.mouse(vis.node());
-        downy = yScale.invert(p[1]);
-      }
-
-      function datapoint_drag(d) {
-        registerKeyboardHandler(keydown);
-        document.onselectstart = function() { return false; };
-        selected = dragged = d;
-        update();
-      }
-
-      function mousemove() {
-        var p = d3.mouse(vis.node());
-
-        d3.event.preventDefault();
-        if (dragged && options.dataChange) {
-          dragged[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
-          update();
-        }
-
-        if (!isNaN(downx)) {
-          d3.select('body').style("cursor", "ew-resize");
-          xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
-          redraw();
-          d3.event.stopPropagation();
-        }
-
-        if (!isNaN(downy)) {
-          d3.select('body').style("cursor", "ns-resize");
-          yScale.domain(axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
-          redraw();
-          d3.event.stopPropagation();
-        }
-      }
-
-      function mouseup() {
-        document.onselectstart = function() { return true; };
-        d3.select('body').style("cursor", "auto");
-        if (!isNaN(downx)) {
-          downx = NaN;
-          redraw();
-        }
-        if (!isNaN(downy)) {
-          downy = NaN;
-          redraw();
-        }
-        dragged = null;
-      }
-
-      function updateOrRescale() {
-        var i,
-            domain = xScale.domain(),
-            xextent = domain[1] - domain[0],
-            shiftPoint = xextent * 0.8;
-
-        if (shiftingX) {
-          if (shiftingX = ds()) {
-            redraw();
-          } else {
-            update();
-          }
-        } else {
-          if (points[points.length-1][0] > domain[0] + shiftPoint) {
-            ds = shiftXDomain(shiftPoint*0.75, options.axisShift);
-            shiftingX = ds();
-            redraw();
-          } else {
-            update();
-          }
-        }
-      }
-
-      function shiftXDomain(shift, steps) {
-        var d0 = xScale.domain()[0],
-            d1 = xScale.domain()[1],
-            increment = 1/steps,
-            index = 0;
-        return function() {
-          var factor;
-          index += increment;
-          factor = shift * cubicEase(index);
-          xScale.domain([ d0 + factor, d1 + factor]);
-          return xScale.domain()[0] < (d0 + shift);
-        };
-      }
-
-      // make these private variables and functions available
-      graph.elem = elem;
-      graph.redraw = redraw;
-      graph.update = update;
-      graph.notify = notify;
-      graph.points = points;
-      graph.initialize = initialize;
-      graph.updateXScale = updateXScale;
-      graph.updateYScale = updateYScale;
-      graph.scale = scale;
-      graph.updateOrRescale = updateOrRescale;
-
-    }
-
-    // update the title
-    function updateTitle() {
-      if (options.title && title) {
-        title.text(options.title);
-      }
-    }
-
-    // update the x-axis label
-    function updateXlabel() {
-      if (options.xlabel && xlabel) {
-        xlabel.text(options.xlabel);
-      }
-    }
-
-    // update the y-axis label
-    function updateYlabel() {
-      if (options.ylabel && ylabel) {
-        ylabel.text(options.ylabel);
-      } else {
-        ylabel.style("display", "none");
-      }
-    }
-
-    // unused as of commit ef91f20b5abab1f063dc093d41e9dbd4712931f4
-    // (7/27/2012)
-
-    // // The x-accessor for the path generator
-    // function X(d) {
-    //   return xScale(d[0]);
-    // }
-
-    // // The y-accessor for the path generator
-    // function Y(d) {
-    //   return yScale(d[1]);
-    // }
-
-    graph.margin = function(_) {
-      if (!arguments.length) return margin;
-      margin = _;
-      return graph;
-    };
-
-    graph.xmin = function(_) {
-      if (!arguments.length) return options.xmin;
-      options.xmin = _;
-      options.xrange = options.xmax - options.xmin;
-      if (graph.updateXScale) {
-        graph.updateXScale();
-        graph.redraw();
-      }
-      return graph;
-    };
-
-    graph.xmax = function(_) {
-      if (!arguments.length) return options.xmax;
-      options.xmax = _;
-      options.xrange = options.xmax - options.xmin;
-      if (graph.updateXScale) {
-        graph.updateXScale();
-        graph.redraw();
-      }
-      return graph;
-    };
-
-    graph.ymin = function(_) {
-      if (!arguments.length) return options.ymin;
-      options.ymin = _;
-      options.yrange = options.ymax - options.ymin;
-      if (graph.updateYScale) {
-        graph.updateYScale();
-        graph.redraw();
-      }
-      return graph;
-    };
-
-    graph.ymax = function(_) {
-      if (!arguments.length) return options.ymax;
-      options.ymax = _;
-      options.yrange = options.ymax - options.ymin;
-      if (graph.updateYScale) {
-        graph.updateYScale();
-        graph.redraw();
-      }
-      return graph;
-    };
-
-    graph.xLabel = function(_) {
-      if (!arguments.length) return options.xlabel;
-      options.xlabel = _;
-      updateXlabel();
-      return graph;
-    };
-
-    graph.yLabel = function(_) {
-      if (!arguments.length) return options.ylabel;
-      options.ylabel = _;
-      updateYlabel();
-      return graph;
-    };
-
-    graph.title = function(_) {
-      if (!arguments.length) return options.title;
-      options.title = _;
-      updateTitle();
-      return graph;
-    };
-
-    graph.width = function(_) {
-      if (!arguments.length) return size.width;
-      size.width = _;
-      return graph;
-    };
-
-    graph.height = function(_) {
-      if (!arguments.length) return size.height;
-      size.height = _;
-      return graph;
-    };
-
-    graph.x = function(_) {
-      if (!arguments.length) return xValue;
-      xValue = _;
-      return graph;
-    };
-
-    graph.y = function(_) {
-      if (!arguments.length) return yValue;
-      yValue = _;
-      return graph;
-    };
-
-    graph.elem = function(_) {
-      if (!arguments.length) return elem;
-      elem = d3.select(_);
-      graph(elem);
-      return graph;
-    };
-
-    graph.data = function(_) {
-      if (!arguments.length) return points;
-      var domain = xScale.domain(),
-          xextent = domain[1] - domain[0],
-          shift = xextent * 0.8;
-      options.points = points = _;
-      if (points.length > domain[1]) {
-        domain[0] += shift;
-        domain[1] += shift;
-        xScale.domain(domain);
-        graph.redraw();
-      } else {
-        graph.update();
-      }
-      return graph;
-    };
-
-    graph.add_data = function(newdata) {
-      if (!arguments.length) return points;
-      var domain = xScale.domain(),
-          xextent = domain[1] - domain[0],
-          shift = xextent * 0.8,
-          i;
-      if (newdata instanceof Array && newdata.length > 0) {
-        if (newdata[0] instanceof Array) {
-          for(i = 0; i < newdata.length; i++) {
-            points.push(newdata[i]);
-          }
-        } else {
-          if (newdata.length === 2) {
-            points.push(newdata);
-          } else {
-            throw new Error("invalid argument to graph.add_data() " + newdata + " length should === 2.");
-          }
-        }
-      }
-      graph.updateOrRescale();
-      return graph;
-    };
-
-    /**
-      Set or get the selection domain (i.e., the range of x values that are selected).
-
-      Valid domain specifiers:
-        null     no current selection (selection is turned off)
-        []       a current selection exists but is empty (has_selection is true)
-        [x1, x2] the region between x1 and x2 is selected. Any data points between
-                 x1 and x2 (inclusive) would be considered to be selected.
-
-      Default value is null.
-    */
-    graph.selection_domain = function(a) {
-
-      if (!arguments.length) {
-        if (!has_selection) {
-          return null;
-        }
-        if (selection_region.xmax === Infinity && selection_region.xmin === Infinity ) {
-          return [];
-        }
-        return [selection_region.xmin, selection_region.xmax];
-      }
-
-      // setter
-
-      if (a === null) {
-        has_selection = false;
-      }
-      else if (a.length === 0) {
-        has_selection = true;
-        selection_region.xmin = Infinity;
-        selection_region.xmax = Infinity;
-      }
-      else {
-        has_selection = true;
-        selection_region.xmin = a[0];
-        selection_region.xmax = a[1];
-      }
-
-      update_brush_element();
-
-      if (selection_listener) {
-        selection_listener(graph.selection_domain());
-      }
-      return graph;
-    };
-
-    /**
-      Get whether the graph currently has a selection region. Default value is false.
-
-      If true, it would be valid to filter the data points to return a subset within the selection
-      region, although this region may be empty!
-
-      If false the graph is not considered to have a selection region.
-
-      Note that even if has_selection is true, the selection region may not be currently shown,
-      and if shown, it may be empty.
-    */
-    graph.has_selection = function() {
-      return has_selection;
-    };
-
-    /**
-      Set or get the visibility of the selection region. Default value is false.
-
-      Has no effect if the graph does not currently have a selection region
-      (selection_domain is null).
-
-      If the selection_enabled property is true, the user will also be able to interact
-      with the selection region.
-    */
-    graph.selection_visible = function(val) {
-      if (!arguments.length) {
-        return selection_visible;
-      }
-
-      // setter
-      val = !!val;
-      if (selection_visible !== val) {
-        selection_visible = val;
-        update_brush_element();
-      }
-      return graph;
-    };
-
-    /**
-      Set or get whether user manipulation of the selection region should be enabled
-      when a selection region exists and is visible. Default value is true.
-
-      Setting the value to true has no effect unless the graph has a selection region
-      (selection_domain is non-null) and the region is visible (selection_visible is true).
-      However, the selection_enabled setting is honored whenever those properties are
-      subsequently updated.
-
-      Setting the value to false does not affect the visibility of the selection region,
-      and does not affect the ability to change the region by calling selection_domain().
-
-      Note that graph panning and zooming are disabled while selection manipulation is enabled.
-    */
-    graph.selection_enabled = function(val) {
-      if (!arguments.length) {
-        return selection_enabled;
-      }
-
-      // setter
-      val = !!val;
-      if (selection_enabled !== val) {
-        selection_enabled = val;
-        update_brush_element();
-      }
-      return graph;
-    };
-
-    /**
-      Set or get the listener to be called when the selection_domain changes.
-
-      Both programatic and interactive updates of the selection region result in
-      notification of the listener.
-
-      The listener is called with the new selection_domain value in the first argument.
-    */
-    graph.selection_listener = function(cb) {
-      if (!arguments.length) {
-        return selection_listener;
-      }
-      // setter
-      selection_listener = cb;
-      return graph;
-    };
-
-    /**
-      Read only getter for the d3 selection referencing the DOM elements containing the d3
-      brush used to implement selection region manipulation.
-    */
-    graph.brush_element = function() {
-      return brush_element;
-    };
-
-    /**
-      Read-only getter for the d3 brush control (d3.svg.brush() function) used to implement
-      selection region manipulation.
-    */
-    graph.brush_control = function() {
-      return brush_control;
-    };
-
-    /**
-      Read-only getter for the internal listener to the d3 'brush' event.
-    */
-    graph.brush_listener = function() {
-      return brush_listener;
-    };
-
-    function brush_listener() {
-      var extent;
-      if (selection_enabled) {
-        // Note there is a brush.empty() method, but it still reports true after the
-        // brush extent has been programatically updated.
-        extent = brush_control.extent();
-        graph.selection_domain( extent[0] !== extent[1] ? extent : [] );
-      }
-    }
-
-    function update_brush_element() {
-      if (has_selection && selection_visible) {
-        brush_control = brush_control || d3.svg.brush()
-          .x(xScale)
-          .extent([selection_region.xmin || 0, selection_region.xmax || 0])
-          .on("brush", brush_listener);
-
-        brush_element
-          .call(brush_control.extent([selection_region.xmin || 0, selection_region.xmax || 0]))
-          .style('display', 'inline')
-          .style('pointer-events', selection_enabled ? 'all' : 'none')
-          .selectAll("rect")
-            .attr("height", size.height);
-
-      } else {
-        brush_element.style('display', 'none');
-      }
-    }
-
-    graph.reset = function(options, message) {
-      if (arguments.length) {
-        graph.initialize(options, message);
-      } else {
-        graph.initialize();
-      }
-      graph();
-      return graph;
-    };
-
-    graph.resize = function(w, h) {
-      graph.scale(w, h);
-      graph.initialize();
-      graph();
-      return graph;
-    };
-
-    if (elem) {
-      graph(elem);
-    }
-
-    return graph;
-  };
-});
-
-/*globals define, d3, $ */
-
-define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (require) {
-  // Dependencies.
-  var axis = require('grapher/core/axis');
-
-  return function RealTimeGraph(idOrElement, options, message) {
-    var elem,
-        node,
-        cx,
-        cy,
-
-        stroke = function(d) { return d ? "#ccc" : "#666"; },
-        tx = function(d) { return "translate(" + xScale(d) + ",0)"; },
-        ty = function(d) { return "translate(0," + yScale(d) + ")"; },
-        fx, fy,
-        svg, vis, plot, viewbox,
-        title, xlabel, ylabel, xtic, ytic,
-        notification,
-        padding, size,
-        xScale, yScale, line,
-        shiftingX = false,
-        cubicEase = d3.ease('cubic'),
-        ds,
-        circleCursorStyle,
-        displayProperties,
-        fontSizeInPixels,
-        halfFontSizeInPixels,
-        quarterFontSizeInPixels,
-        titleFontSizeInPixels,
-        axisFontSizeInPixels,
-        xlabelFontSizeInPixels,
-        ylabelFontSizeInPixels,
-        yAxisNumberWidth,
-        strokeWidth,
-        scaleFactor,
-        sizeType = {
-          category: "medium",
-          value: 3,
-          icon: 120,
-          tiny: 240,
-          small: 480,
-          medium: 960,
-          large: 1920
-        },
-        downx = Math.NaN,
-        downy = Math.NaN,
-        dragged = null,
-        selected = null,
-        titles = [],
-
-        points, pointArray,
-        markedPoint, marker,
-        sample,
-        gcanvas, gctx,
-        cplot = {},
-
-        default_options = {
-          responsiveLayout: false,
-          fontScaleRelativeToParent: true,
-          title   : "graph",
-          xlabel  : "x-axis",
-          ylabel  : "y-axis",
-          xscale  : 'linear',
-          yscale  : 'linear',
-          xTicCount: 10,
-          yTicCount: 10,
-          xscaleExponent: 0.5,
-          yscaleExponent: 0.5,
-          xFormatter: "3.2r",
-          yFormatter: "3.2r",
-          axisShift:  10,
-          xmax:       10,
-          xmin:       0,
-          ymax:       10,
-          ymin:       0,
-          dataset:    [0],
-          selectable_points: true,
-          circleRadius: false,
-          dataChange: false,
-          points: false,
-          sample: 1,
-          lines: true,
-          bars: false
-        };
 
     initialize(idOrElement, options, message);
 
@@ -1807,33 +703,10 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
       }
     }
 
-    function numberWidthUsingFormatter(formatter, number) {
-      var testSVG,
-          testText,
-          width;
-
-      testSVG = elem.append("svg")
-        .attr("width",  cx)
-        .attr("height", cy)
-        .attr("class", "graph");
-
-      testText = testSVG.append('g')
-        .append("text")
-          .attr("class", "axis")
-          .attr("x", -fontSizeInPixels/4 + "px")
-          .attr("dy", ".35em")
-          .attr("text-anchor", "end")
-          .text(d3.format(formatter)(number));
-
-      width = testText.node().getBBox().width;
-      testSVG.remove();
-      return width;
-    }
-
     function scale(w, h) {
       if (!w && !h) {
-        cx = Math.max(elem.property("clientWidth"), 32);
-        cy = Math.max(elem.property("clientHeight"), 32);
+        cx = Math.max(elem.property("clientWidth"), 120);
+        cy = Math.max(elem.property("clientHeight"), 62);
       } else {
         cx = w;
         node.style.width =  cx +"px";
@@ -1850,22 +723,40 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
       calculateSizeType();
     }
 
+    // Update the x-scale.
+    function updateXScale() {
+      xScale.domain([options.xmin, options.xmax])
+            .range([0, size.width]);
+    }
+
+    // Update the y-scale.
+    function updateYScale() {
+      yScale.domain([options.ymin, options.ymax])
+            .range([size.height, 0]);
+    }
+
+    function persistScaleChangesToOptions() {
+      var xdomain = xScale.domain(),
+          ydomain = yScale.domain();
+      options.xmax = xdomain[1];
+      options.xmin = xdomain[0];
+      options.ymax = ydomain[1];
+      options.ymin = ydomain[0];
+    }
+
     function calculateLayout() {
       scale();
 
-      fontSizeInPixels = parseFloat($(node).css("font-size"));
+      fontSizeInPixels = parseFloat($node.css("font-size"));
 
       if (!options.fontScaleRelativeToParent) {
-        $(node).css("font-size", 0.5 + sizeType.value/6 + 'em');
+        $node.css("font-size", 0.5 + sizeType.value/6 + 'em');
       }
 
-      fontSizeInPixels = parseFloat($(node).css("font-size"));
+      fontSizeInPixels = parseFloat($node.css("font-size"));
 
       halfFontSizeInPixels = fontSizeInPixels/2;
       quarterFontSizeInPixels = fontSizeInPixels/4;
-
-      yAxisNumberWidth = Math.max(numberWidthUsingFormatter(options.yFormatter, options.ymax)*1.5,
-                                  numberWidthUsingFormatter(options.yFormatter, options.ymin)*1.5);
 
       if (svg === undefined) {
         titleFontSizeInPixels =  fontSizeInPixels;
@@ -1878,6 +769,12 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         xlabelFontSizeInPixels = parseFloat($("svg.graph text.xlabel").css("font-size"));
         ylabelFontSizeInPixels = parseFloat($("svg.graph text.ylabel").css("font-size"));
       }
+
+      xAxisNumberWidth = Math.max(axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.xFormatter, options.xmax)*1.5,
+                                  axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.xFormatter, options.xmin)*1.5);
+
+      yAxisNumberWidth = Math.max(axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.yFormatter, options.ymax)*1.5,
+                                  axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.yFormatter, options.ymin)*1.5);
 
       switch(sizeType.value) {
         case 0:         // tiny
@@ -1901,7 +798,7 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         case 2:         // medium
         padding = {
          "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
-         "right":  fontSizeInPixels,
+         "right":  Math.max(fontSizeInPixels, xAxisNumberWidth*0.5),
          "bottom": axisFontSizeInPixels*1.25,
          "left":   yAxisNumberWidth
         };
@@ -1910,18 +807,18 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         case 3:         // large
         padding = {
          "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
-         "right":                   fontSizeInPixels,
+         "right":  Math.max(fontSizeInPixels, xAxisNumberWidth*0.5),
          "bottom": options.xlabel ? (xlabelFontSizeInPixels + axisFontSizeInPixels)*1.25 : axisFontSizeInPixels*1.25,
-         "left":   options.ylabel ? yAxisNumberWidth + axisFontSizeInPixels : yAxisNumberWidth
+         "left":   options.ylabel ? yAxisNumberWidth + axisFontSizeInPixels*1.2 : yAxisNumberWidth
         };
         break;
 
         default:         // extralarge
         padding = {
          "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
-         "right":                   fontSizeInPixels,
+         "right":  Math.max(fontSizeInPixels, xAxisNumberWidth*0.5),
          "bottom": options.xlabel ? (xlabelFontSizeInPixels + axisFontSizeInPixels)*1.25 : axisFontSizeInPixels*1.25,
-         "left":   options.ylabel ? yAxisNumberWidth + axisFontSizeInPixels : yAxisNumberWidth
+         "left":   options.ylabel ? yAxisNumberWidth + axisFontSizeInPixels*1.2 : yAxisNumberWidth
         };
         break;
       }
@@ -1953,24 +850,110 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         yScale.exponent(options.yscaleExponent);
       }
 
+      updateXScale();
+      updateYScale();
+
       line = d3.svg.line()
-            .x(function(d, i) { return xScale(points[i].x ); })
-            .y(function(d, i) { return yScale(points[i].y); });
+          .x(function(d, i) { return xScale(points[i][0]); })
+          .y(function(d, i) { return yScale(points[i][1]); });
 
     }
 
-    function initialize(idOrElement, opts, message) {
+    // ------------------------------------------------------------
+    //
+    // Imported from graph.js
+    //
+    // ------------------------------------------------------------
+
+    function fakeDataPoints() {
+      var yrange2 = options.yrange / 2,
+          yrange4 = yrange2 / 2,
+          pnts;
+
+      options.datacount = size.width/30;
+      options.xtic = options.xrange / options.datacount;
+      options.ytic = options.yrange / options.datacount;
+
+      pnts = d3.range(options.datacount).map(function(i) {
+        return [i * options.xtic + options.xmin, options.ymin + yrange4 + Math.random() * yrange2 ];
+      });
+      return pnts;
+    }
+
+    function setCurrentSample(samplePoint) {
+      if (typeof samplePoint === "number") {
+        currentSample = samplePoint;
+      }
+      if (typeof currentSample !== "number") {
+        currentSample = points.length-1;
+      }
+      return currentSample;
+    }
+
+    //
+    // Initialize
+    //
+    function initialize(idOrElement, opts, mesg) {
+      if (opts || !options) {
+        options = setupOptions(opts);
+      }
+
+      initializeLayout(idOrElement, mesg);
+
+      options.xrange = options.xmax - options.xmin;
+      options.yrange = options.ymax - options.ymin;
+
+      if (Object.prototype.toString.call(options.title) === "[object Array]") {
+        titles = options.title;
+      } else {
+        titles = [options.title];
+      }
+      titles.reverse();
+
+      fx = d3.format(options.xFormatter);
+      fy = d3.format(options.yFormatter);
+
+      // use local variable for access speed in add_point()
+      sample = options.sample;
+
+      strokeWidth = options.strokeWidth;
+
+      points = options.points;
+      if (points === "fake") {
+        points = fakeDataPoints();
+      }
+
+      // In realTime mode the grapher expects either an array if arrays of dependent data.
+      // The sample variable sets the interval spacing between data samples.
+      if (options.realTime) {
+        pointArray = [];
+
+        if (Object.prototype.toString.call(options.dataset[0]) === "[object Array]") {
+          for (var i = 0; i < options.dataset.length; i++) {
+            pointArray.push(indexedData(options.dataset[i], 0, sample));
+          }
+          points = pointArray[0];
+        } else {
+          points = indexedData(options.dataset, 0);
+          pointArray = [points];
+        }
+      }
+      setCurrentSample(points.length-1);
+    }
+
+    function initializeLayout(idOrElement, mesg) {
       if (idOrElement) {
         // d3.select works both for element ID (e.g. "#grapher")
         // and for DOM element.
         elem = d3.select(idOrElement);
         node = elem.node();
+        $node = $(node);
         cx = elem.property("clientWidth");
         cy = elem.property("clientHeight");
       }
 
-      if (opts || !options) {
-        options = setupOptions(opts);
+      if (mesg) {
+        message = mesg;
       }
 
       if (svg !== undefined) {
@@ -1983,9 +966,6 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         gcanvas = undefined;
       }
 
-      // use local variable for access speed in add_point()
-      sample = options.sample;
-
       if (options.dataChange) {
         circleCursorStyle = "ns-resize";
       } else {
@@ -1994,37 +974,11 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
 
       scale();
 
-      options.xrange = options.xmax - options.xmin;
-      options.yrange = options.ymax - options.ymin;
-
-      pointArray = [];
-
-      if (Object.prototype.toString.call(options.dataset[0]) === "[object Array]") {
-        for (var i = 0; i < options.dataset.length; i++) {
-          pointArray.push(indexedData(options.dataset[i], 0, sample));
-        }
-        points = pointArray[0];
-      } else {
-        points = indexedData(options.dataset, 0);
-        pointArray = [points];
-      }
-
-      if (Object.prototype.toString.call(options.title) === "[object Array]") {
-        titles = options.title;
-      } else {
-        titles = [options.title];
-      }
-      titles.reverse();
-
-      fx = d3.format(options.xFormatter);
-      fy = d3.format(options.yFormatter);
-
       // drag axis logic
-      downx = Math.NaN;
-      downy = Math.NaN;
+      downx = NaN;
+      downy = NaN;
       dragged = null;
     }
-
 
     function indexedData(dataset, initial_index, sample) {
       var i = 0,
@@ -2046,6 +1000,43 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
       }
     }
 
+    function createButtonLayer() {
+      var buttonLayer = $('<div>' +
+                          '  <a class="graph-autoscale-button" title="' + tooltips.autoscale + '">' +
+                          '    <i class="icon-picture"></i>' +
+                          '  </a>' +
+                          '</div>')
+            .appendTo($(elem.node()))
+            .addClass('graph-button-layer')
+            .css('z-index', 101);
+
+      buttonLayer.find('a.graph-autoscale-button').on('click', function() { graph.autoscale(); });
+      return buttonLayer;
+    }
+
+    function resizeButtonLayer() {
+      var rect = plot.node(),
+          rectTop,
+          rectLeft,
+          rectWidth,
+          layerWidth;
+
+      // Make safe for jsdom based tests
+      if (!rect.getCTM || !rect.width.baseVal ) {
+        return;
+      }
+
+      rectTop = rect.getCTM().f;
+      rectLeft = rect.getCTM().e;
+      rectWidth = rect.width.baseVal.value;
+      layerWidth = buttonLayer.width();
+
+      buttonLayer.css({
+        top: rectTop + 5,
+        left: rectLeft + rectWidth - layerWidth - 5
+      });
+    }
+
     function graph() {
       calculateLayout();
 
@@ -2055,6 +1046,7 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
             .attr("width",  cx)
             .attr("height", cy)
             .attr("class", "graph");
+            // .attr("tabindex", tabindex || 0);
 
         vis = svg.append("g")
               .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
@@ -2064,10 +1056,9 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
           .attr("width", size.width)
           .attr("height", size.height)
           .style("fill", "#EEEEEE")
-          // .attr("fill-opacity", 0.0)
           .attr("pointer-events", "all")
-          .on("mousedown", plot_drag)
-          .on("touchstart", plot_drag);
+          .on("mousedown", plotDrag)
+          .on("touchstart", plotDrag);
 
         plot.call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
 
@@ -2077,14 +1068,22 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
           .attr("left", 0)
           .attr("width", size.width)
           .attr("height", size.height)
-          .attr("viewBox", "0 0 "+size.width+" "+size.height)
-          .append("path")
-              .attr("class", "line")
-              .attr("d", line(points));
+          .attr("viewBox", "0 0 "+size.width+" "+size.height);
+
+        if (!options.realTime) {
+          viewbox.append("path")
+                .attr("class", "line")
+                .style("stroke-width", strokeWidth)
+                .attr("d", line(points));
+        }
 
         marker = viewbox.append("path").attr("class", "marker");
         // path without attributes cause SVG parse problem in IE9
         //     .attr("d", []);
+
+
+        brush_element = viewbox.append("g")
+              .attr("class", "brush");
 
         // add Chart Title
         if (options.title && sizeType.value > 1) {
@@ -2120,6 +1119,12 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
               .attr("transform","translate(" + -yAxisNumberWidth + " " + size.height/2+") rotate(-90)");
         }
 
+        d3.select(node)
+            .on("mousemove.drag", mousemove)
+            .on("touchmove.drag", mousemove)
+            .on("mouseup.drag",   mouseup)
+            .on("touchend.drag",  mouseup);
+
         notification = vis.append("text")
             .attr("class", "graph-notification")
             .text(message)
@@ -2127,14 +1132,10 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
             .attr("y", size.height/2)
             .style("text-anchor","middle");
 
-        d3.select(node)
-            .on("mousemove.drag", mousemove)
-            .on("touchmove.drag", mousemove)
-            .on("mouseup.drag",   mouseup)
-            .on("touchend.drag",  mouseup);
-
-        initialize_canvas();
-        show_canvas();
+        if (options.realTime) {
+          initializeCanvas();
+          showCanvas();
+        }
 
       } else {
 
@@ -2155,21 +1156,21 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
             .attr("viewBox", "0 0 "+size.width+" "+size.height);
 
         if (options.title && sizeType.value > 1) {
-            title.each(function(d, i) {
-              d3.select(this).attr("x", size.width/2);
-              d3.select(this).attr("dy", function(d, i) { return 1.4 * i - titles.length + "em"; });
-            });
+          title
+              .attr("x", size.width/2)
+              .attr("dy", function(d, i) { return -i * titleFontSizeInPixels - halfFontSizeInPixels + "px"; });
         }
 
         if (options.xlabel && sizeType.value > 1) {
           xlabel
               .attr("x", size.width/2)
-              .attr("y", size.height);
+              .attr("y", size.height)
+              .attr("dy", axisFontSizeInPixels*2 + "px");
         }
 
         if (options.ylabel && sizeType.value > 1) {
           ylabel
-              .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
+              .attr("transform","translate(" + -yAxisNumberWidth + " " + size.height/2+") rotate(-90)");
         }
 
         notification
@@ -2179,7 +1180,14 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         vis.selectAll("g.x").remove();
         vis.selectAll("g.y").remove();
 
-        resize_canvas();
+        if (options.realTime) {
+          resizeCanvas();
+        }
+      }
+
+      if (options.showButtons) {
+        if (!buttonLayer) buttonLayer = createButtonLayer();
+        resizeButtonLayer();
       }
 
       redraw();
@@ -2209,7 +1217,7 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
 
         // Regenerate x-ticks
         var gx = vis.selectAll("g.x")
-            .data(xScale.ticks(options.xTicCount), String)
+            .data(xScale.ticks(options.xTickCount), String)
             .attr("transform", tx);
 
         var gxe = gx.enter().insert("g", "a")
@@ -2229,17 +1237,17 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
               .attr("text-anchor", "middle")
               .style("cursor", "ew-resize")
               .text(fx)
-              .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-              .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-              .on("mousedown.drag",  xaxis_drag)
-              .on("touchstart.drag", xaxis_drag);
+              .on("mouseover", function() { d3.select(this).style("font-weight", "bold");})
+              .on("mouseout",  function() { d3.select(this).style("font-weight", "normal");})
+              .on("mousedown.drag",  xaxisDrag)
+              .on("touchstart.drag", xaxisDrag);
         }
 
         gx.exit().remove();
 
         // Regenerate y-ticks
         var gy = vis.selectAll("g.y")
-            .data(yScale.ticks(options.yTicCount), String)
+            .data(yScale.ticks(options.yTickCount), String)
             .attr("transform", ty);
 
         var gye = gy.enter().insert("g", "a")
@@ -2253,6 +1261,17 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
             .attr("x2", size.width);
 
         if (sizeType.value > 1) {
+          if (options.yscale === "log") {
+            var gye_length = gye[0].length;
+            if (gye_length > 100) {
+              gye = gye.filter(function(d) { return !!d.toString().match(/(\.[0]*|^)[1]/);});
+            } else if (gye_length > 50) {
+              gye = gye.filter(function(d) { return !!d.toString().match(/(\.[0]*|^)[12]/);});
+            } else {
+              gye = gye.filter(function(d) {
+                return !!d.toString().match(/(\.[0]*|^)[125]/);});
+            }
+          }
           gye.append("text")
               .attr("class", "axis")
               .attr("x", -axisFontSizeInPixels/4 + "px")
@@ -2260,10 +1279,10 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
               .attr("text-anchor", "end")
               .style("cursor", "ns-resize")
               .text(fy)
-              .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-              .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-              .on("mousedown.drag",  yaxis_drag)
-              .on("touchstart.drag", yaxis_drag);
+              .on("mouseover", function() { d3.select(this).style("font-weight", "bold");})
+              .on("mouseout",  function() { d3.select(this).style("font-weight", "normal");})
+              .on("mousedown.drag",  yaxisDrag)
+              .on("touchstart.drag", yaxisDrag);
         }
 
         gy.exit().remove();
@@ -2277,30 +1296,42 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
       //
       // ------------------------------------------------------------
 
-      function update(currentSample) {
-        update_canvas(currentSample);
-
-        if (graph.selectable_points) {
-          var circle = vis.selectAll("circle")
-              .data(points, function(d) { return d; });
-
-          circle.enter().append("circle")
-              .attr("class", function(d) { return d === selected ? "selected" : null; })
-              .attr("cx",    function(d) { return x(d.x); })
-              .attr("cy",    function(d) { return y(d.y); })
-              .attr("r", 1.0)
-              .on("mousedown", function(d) {
-                selected = dragged = d;
-                update();
-              });
-
-          circle
-              .attr("class", function(d) { return d === selected ? "selected" : null; })
-              .attr("cx",    function(d) { return x(d.x); })
-              .attr("cy",    function(d) { return y(d.y); });
-
-          circle.exit().remove();
+      function update(samplePoint) {
+        setCurrentSample(samplePoint);
+        if (options.realTime) {
+          realTimeUpdate(currentSample);
+        } else {
+          regularUpdate();
         }
+      }
+
+      function realTimeUpdate(samplePoint) {
+        setCurrentSample(samplePoint);
+        updateCanvas(currentSample);
+
+        // old code saved for reference:
+
+        // if (graph.selectablePoints) {
+        //   var circle = vis.selectAll("circle")
+        //       .data(points, function(d) { return d; });
+
+        //   circle.enter().append("circle")
+        //       .attr("class", function(d) { return d === selected ? "selected" : null; })
+        //       .attr("cx",    function(d) { return x(d.x); })
+        //       .attr("cy",    function(d) { return y(d.y); })
+        //       .attr("r", 1.0)
+        //       .on("mousedown", function(d) {
+        //         selected = dragged = d;
+        //         update();
+        //       });
+
+        //   circle
+        //       .attr("class", function(d) { return d === selected ? "selected" : null; })
+        //       .attr("cx",    function(d) { return x(d.x); })
+        //       .attr("cy",    function(d) { return y(d.y); });
+
+        //   circle.exit().remove();
+        // }
 
         if (d3.event && d3.event.keyCode) {
           d3.event.preventDefault();
@@ -2308,7 +1339,99 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         }
       }
 
-      function plot_drag() {
+
+      // ------------------------------------------------------------
+      //
+      // Update the slower SVG-based grapher canvas
+      //
+      // ------------------------------------------------------------
+
+      function regularUpdate() {
+
+        update_brush_element();
+
+        vis.select("path").attr("d", line(points));
+
+        var circle = vis.select("svg").selectAll("circle")
+            .data(points, function(d) { return d; });
+
+        if (options.circleRadius && sizeType.value > 1) {
+          if (!(options.circleRadius <= 4 && sizeType.value < 3)) {
+            circle.enter().append("circle")
+                .attr("class", function(d) { return d === selected ? "selected" : null; })
+                .attr("cx",    function(d) { return xScale(d[0]); })
+                .attr("cy",    function(d) { return yScale(d[1]); })
+                .attr("r", options.circleRadius * (1 + sizeType.value) / 4)
+                .style("stroke-width", strokeWidth)
+                .style("cursor", circleCursorStyle)
+                .on("mousedown.drag",  dataPointDrag)
+                .on("touchstart.drag", dataPointDrag);
+
+            circle
+                .attr("class", function(d) { return d === selected ? "selected" : null; })
+                .attr("cx",    function(d) { return xScale(d[0]); })
+                .attr("cy",    function(d) { return yScale(d[1]); })
+                .attr("r", options.circleRadius * (1 + sizeType.value) / 4)
+                .style("stroke-width", strokeWidth);
+          }
+        }
+
+        circle.exit().remove();
+
+        if (d3.event && d3.event.keyCode) {
+          d3.event.preventDefault();
+          d3.event.stopPropagation();
+        }
+      }
+
+      // ------------------------------------------------------------
+      //
+      // Update the real-time graph canvas
+      //
+      // ------------------------------------------------------------
+
+      // currently unused:
+
+      // function updateSample(currentSample) {
+      //   updateCanvas(currentSample);
+
+      //   if (graph.selectablePoints) {
+      //     var circle = vis.selectAll("circle")
+      //         .data(points, function(d) { return d; });
+
+      //     circle.enter().append("circle")
+      //         .attr("class", function(d) { return d === selected ? "selected" : null; })
+      //         .attr("cx",    function(d) { return x(d.x); })
+      //         .attr("cy",    function(d) { return y(d.y); })
+      //         .attr("r", 1.0)
+      //         .on("mousedown", function(d) {
+      //           selected = dragged = d;
+      //           update();
+      //         });
+
+      //     circle
+      //         .attr("class", function(d) { return d === selected ? "selected" : null; })
+      //         .attr("cx",    function(d) { return x(d.x); })
+      //         .attr("cy",    function(d) { return y(d.y); });
+
+      //     circle.exit().remove();
+      //   }
+
+      //   if (d3.event && d3.event.keyCode) {
+      //     d3.event.preventDefault();
+      //     d3.event.stopPropagation();
+      //   }
+      // }
+
+      function plotDrag() {
+        if (options.realTime) {
+          realTimePlotDrag();
+        } else {
+          regularPlotDrag();
+        }
+      }
+
+      function realTimePlotDrag() {
         d3.event.preventDefault();
         plot.style("cursor", "move");
         if (d3.event.altKey) {
@@ -2320,18 +1443,59 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         }
       }
 
-      function xaxis_drag(d) {
-        document.onselectstart = function() { return false; };
+      function regularPlotDrag() {
+        var p;
+        d3.event.preventDefault();
+        d3.select('body').style("cursor", "move");
+        if (d3.event.altKey) {
+          if (d3.event.shiftKey && options.addData) {
+            p = d3.mouse(vis.node());
+            var newpoint = [];
+            newpoint[0] = xScale.invert(Math.max(0, Math.min(size.width,  p[0])));
+            newpoint[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
+            points.push(newpoint);
+            points.sort(function(a, b) {
+              if (a[0] < b[0]) { return -1; }
+              if (a[0] > b[0]) { return  1; }
+              return 0;
+            });
+            selected = newpoint;
+            update();
+          } else {
+            p = d3.mouse(vis.node());
+            downx = xScale.invert(p[0]);
+            downy = yScale.invert(p[1]);
+            dragged = false;
+            d3.event.stopPropagation();
+          }
+          // d3.event.stopPropagation();
+        }
+      }
+
+      function falseFunction() {
+        return false;
+      }
+
+      function xaxisDrag() {
+        document.onselectstart = falseFunction;
         d3.event.preventDefault();
         var p = d3.mouse(vis.node());
         downx = xScale.invert(p[0]);
       }
 
-      function yaxis_drag(d) {
-        document.onselectstart = function() { return false; };
+      function yaxisDrag() {
         d3.event.preventDefault();
+        document.onselectstart = falseFunction;
         var p = d3.mouse(vis.node());
         downy = yScale.invert(p[1]);
+      }
+
+      function dataPointDrag(d) {
+        svg.node().focus();
+        d3.event.preventDefault();
+        document.onselectstart = falseFunction;
+        selected = dragged = d;
+        update();
       }
 
       // ------------------------------------------------------------
@@ -2343,21 +1507,29 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
       // ------------------------------------------------------------
 
       function mousemove() {
-        var p = d3.mouse(vis.node()),
-            changex, changey, new_domain,
-            t = d3.event.changedTouches;
+        var p = d3.mouse(vis.node());
+        // t = d3.event.changedTouches;
 
         document.onselectstart = function() { return true; };
         d3.event.preventDefault();
+        if (dragged && options.dataChange) {
+          dragged[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
+          persistScaleChangesToOptions();
+          update();
+        }
+
         if (!isNaN(downx)) {
           d3.select('body').style("cursor", "ew-resize");
           xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
+          persistScaleChangesToOptions();
           redraw();
           d3.event.stopPropagation();
         }
+
         if (!isNaN(downy)) {
           d3.select('body').style("cursor", "ns-resize");
           yScale.domain(axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
+          persistScaleChangesToOptions();
           redraw();
           d3.event.stopPropagation();
         }
@@ -2368,11 +1540,11 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         document.onselectstart = function() { return true; };
         if (!isNaN(downx)) {
           redraw();
-          downx = Math.NaN;
+          downx = NaN;
         }
         if (!isNaN(downy)) {
           redraw();
-          downy = Math.NaN;
+          downy = NaN;
         }
         dragged = null;
       }
@@ -2381,19 +1553,28 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         markedPoint = { x: points[index].x, y: points[index].y };
       }
 
-      function updateOrRescale(currentSample) {
+      // samplePoint is optional argument
+      function updateOrRescale(samplePoint) {
+        setCurrentSample(samplePoint);
+        if (options.realTime) {
+          updateOrRescaleRealTime(currentSample);
+        } else {
+          updateOrRescaleRegular();
+        }
+      }
+
+      // samplePoint is optional argument
+      function updateOrRescaleRealTime(samplePoint) {
         var i,
             domain = xScale.domain(),
             xAxisStart = Math.round(domain[0]/sample),
             xAxisEnd = Math.round(domain[1]/sample),
             start = Math.max(0, xAxisStart),
             xextent = domain[1] - domain[0],
-            shiftPoint = xextent * 0.9,
+            shiftPoint = xextent * 0.95,
             currentExtent;
 
-         if (typeof currentSample !== "number") {
-           currentSample = points.length;
-         }
+         setCurrentSample(samplePoint);
          currentExtent = currentSample * sample;
          if (shiftingX) {
            shiftingX = ds();
@@ -2404,17 +1585,17 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
           }
         } else {
           if (currentExtent > domain[0] + shiftPoint) {
-            ds = shiftXDomain(shiftPoint*0.9, options.axisShift);
+            ds = shiftXDomainRealTime(shiftPoint*0.9, options.axisShift);
             shiftingX = ds();
             redraw();
           } else if ( currentExtent < domain[1] - shiftPoint &&
                       currentSample < points.length &&
                       xAxisStart > 0) {
-            ds = shiftXDomain(shiftPoint*0.9, options.axisShift, -1);
+            ds = shiftXDomainRealTime(shiftPoint*0.9, options.axisShift, -1);
             shiftingX = ds();
             redraw();
           } else if (currentExtent < domain[0]) {
-            ds = shiftXDomain(shiftPoint*0.1, 1, -1);
+            ds = shiftXDomainRealTime(shiftPoint*0.1, 1, -1);
             shiftingX = ds();
             redraw();
 
@@ -2424,7 +1605,7 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         }
       }
 
-      function shiftXDomain(shift, steps, direction) {
+      function shiftXDomainRealTime(shift, steps, direction) {
         var d0 = xScale.domain()[0],
             d1 = xScale.domain()[1],
             increment = 1/steps,
@@ -2436,27 +1617,473 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
           factor = shift * cubicEase(index);
           if (direction > 0) {
             xScale.domain([d0 + factor, d1 + factor]);
+            persistScaleChangesToOptions();
             return xScale.domain()[0] < (d0 + shift);
           } else {
             xScale.domain([d0 - factor, d1 - factor]);
+            persistScaleChangesToOptions();
             return xScale.domain()[0] > (d0 - shift);
           }
         };
       }
 
-      function _add_point(p) {
+      function updateOrRescaleRegular() {
+        var i,
+            domain = xScale.domain(),
+            xextent = domain[1] - domain[0],
+            shiftPoint = xextent * 0.8;
+
+        if (shiftingX) {
+          shiftingX = ds();
+          if (shiftingX) {
+            redraw();
+          } else {
+            update();
+          }
+        } else {
+          if (points[points.length-1][0] > domain[0] + shiftPoint) {
+            ds = shiftXDomainRegular(shiftPoint*0.75, options.axisShift);
+            shiftingX = ds();
+            redraw();
+          } else {
+            update();
+          }
+        }
+      }
+
+      function shiftXDomainRegular(shift, steps) {
+        var d0 = xScale.domain()[0],
+            d1 = xScale.domain()[1],
+            increment = 1/steps,
+            index = 0;
+        return function() {
+          var factor;
+          index += increment;
+          factor = shift * cubicEase(index);
+          xScale.domain([ d0 + factor, d1 + factor]);
+          persistScaleChangesToOptions();
+          return xScale.domain()[0] < (d0 + shift);
+        };
+      }
+
+      // update the title
+      function updateTitle() {
+        if (options.title && title) {
+          title.text(options.title);
+        }
+      }
+
+      // update the x-axis label
+      function updateXlabel() {
+        if (options.xlabel && xlabel) {
+          xlabel.text(options.xlabel);
+        }
+      }
+
+      // update the y-axis label
+      function updateYlabel() {
+        if (options.ylabel && ylabel) {
+          ylabel.text(options.ylabel);
+        } else {
+          ylabel.style("display", "none");
+        }
+      }
+
+      /**
+        If there are more than 1 data points, scale the x axis to contain all x values,
+        and scale the y axis so that the y values lie in the middle 80% of the visible y range.
+
+        Then nice() the x and y scales (which means that the x and y domains will likely expand
+        somewhat).
+      */
+      graph.autoscale = function() {
+        var i,
+            len,
+            point,
+            x,
+            y,
+            xmin = Infinity,
+            xmax = -Infinity,
+            ymin = Infinity,
+            ymax = -Infinity,
+            transform,
+            pow;
+
+        if (points.length < 2) return;
+
+        for (i = 0, len = points.length; i < len; i++){
+          point = points[i];
+          x = point.length ? point[0] : point.x;
+          y = point.length ? point[1] : point.y;
+
+          if (x < xmin) xmin = x;
+          if (x > xmax) xmax = x;
+          if (y < ymin) ymin = y;
+          if (y > ymax) ymax = y;
+        }
+
+        // Like Math.pow but returns a value with the same sign as x: pow(-1, 0.5) -> -1
+        pow = function(x, exponent) {
+          return x < 0 ? -Math.pow(-x, exponent) : Math.pow(x, exponent);
+        };
+
+        // convert ymin, ymax to a linear scale, and set 'transform' to the function that
+        // converts the new min, max to the relevant scale.
+        switch (options.yscale) {
+          case 'linear':
+            transform = function(x) { return x; };
+            break;
+          case 'log':
+            ymin = Math.log(ymin) / Math.log(10);
+            ymax = Math.log(ymax) / Math.log(10);
+            transform = function(x) { return Math.pow(10, x); };
+            break;
+          case 'pow':
+            ymin = pow(ymin, options.yscaleExponent);
+            ymax = pow(ymax, options.yscaleExponent);
+            transform = function(x) { return pow(x, 1/options.yscaleExponent); };
+            break;
+        }
+
+        xScale.domain([xmin, xmax]).nice();
+        yScale.domain([transform(ymin - 0.15*(ymax-ymin)), transform(ymax + 0.15*(ymax-ymin))]).nice();
+        persistScaleChangesToOptions();
+        redraw();
+      };
+
+      // REMOVE
+      // 'margin' variable is undefined
+      // It is defined, but otherwise unused, in Lab.grapher.graph as of b1eeea703
+      // (12 March 2013)
+      // graph.margin = function(_) {
+      //   if (!arguments.length) return margin;
+      //   margin = _;
+      //   return graph;
+      // };
+
+      graph.xmin = function(_) {
+        if (!arguments.length) return options.xmin;
+        options.xmin = _;
+        options.xrange = options.xmax - options.xmin;
+        if (graph.updateXScale) {
+          graph.updateXScale();
+          graph.redraw();
+        }
+        return graph;
+      };
+
+      graph.xmax = function(_) {
+        if (!arguments.length) return options.xmax;
+        options.xmax = _;
+        options.xrange = options.xmax - options.xmin;
+        if (graph.updateXScale) {
+          graph.updateXScale();
+          graph.redraw();
+        }
+        return graph;
+      };
+
+      graph.ymin = function(_) {
+        if (!arguments.length) return options.ymin;
+        options.ymin = _;
+        options.yrange = options.ymax - options.ymin;
+        if (graph.updateYScale) {
+          graph.updateYScale();
+          graph.redraw();
+        }
+        return graph;
+      };
+
+      graph.ymax = function(_) {
+        if (!arguments.length) return options.ymax;
+        options.ymax = _;
+        options.yrange = options.ymax - options.ymin;
+        if (graph.updateYScale) {
+          graph.updateYScale();
+          graph.redraw();
+        }
+        return graph;
+      };
+
+      graph.xLabel = function(_) {
+        if (!arguments.length) return options.xlabel;
+        options.xlabel = _;
+        updateXlabel();
+        return graph;
+      };
+
+      graph.yLabel = function(_) {
+        if (!arguments.length) return options.ylabel;
+        options.ylabel = _;
+        updateYlabel();
+        return graph;
+      };
+
+      graph.title = function(_) {
+        if (!arguments.length) return options.title;
+        options.title = _;
+        updateTitle();
+        return graph;
+      };
+
+      graph.width = function(_) {
+        if (!arguments.length) return size.width;
+        size.width = _;
+        return graph;
+      };
+
+      graph.height = function(_) {
+        if (!arguments.length) return size.height;
+        size.height = _;
+        return graph;
+      };
+
+      // REMOVE?
+      // xValue doesn't appear to be used for anything as of b1eeea70, 3/12/13
+      // graph.x = function(_) {
+      //   if (!arguments.length) return xValue;
+      //   xValue = _;
+      //   return graph;
+      // };
+
+      // graph.y = function(_) {
+      //   if (!arguments.length) return yValue;
+      //   yValue = _;
+      //   return graph;
+      // };
+
+      graph.elem = function(_) {
+        if (!arguments.length) return elem;
+        elem = d3.select(_);
+        graph(elem);
+        return graph;
+      };
+
+      // ------------------------------------------------------------
+      //
+      // support for slower SVG-based graphing
+      //
+      // ------------------------------------------------------------
+
+      graph.data = function(_) {
+        if (!arguments.length) return points;
+        var domain = xScale.domain(),
+            xextent = domain[1] - domain[0],
+            shift = xextent * 0.8;
+        options.points = points = _;
+        if (points.length > domain[1]) {
+          domain[0] += shift;
+          domain[1] += shift;
+          xScale.domain(domain);
+          graph.redraw();
+        } else {
+          graph.update();
+        }
+        return graph;
+      };
+
+      /**
+        Set or get the selection domain (i.e., the range of x values that are selected).
+
+        Valid domain specifiers:
+          null     no current selection (selection is turned off)
+          []       a current selection exists but is empty (has_selection is true)
+          [x1, x2] the region between x1 and x2 is selected. Any data points between
+                   x1 and x2 (inclusive) would be considered to be selected.
+
+        Default value is null.
+      */
+      graph.selection_domain = function(a) {
+
+        if (!arguments.length) {
+          if (!has_selection) {
+            return null;
+          }
+          if (selection_region.xmax === Infinity && selection_region.xmin === Infinity ) {
+            return [];
+          }
+          return [selection_region.xmin, selection_region.xmax];
+        }
+
+        // setter
+
+        if (a === null) {
+          has_selection = false;
+        }
+        else if (a.length === 0) {
+          has_selection = true;
+          selection_region.xmin = Infinity;
+          selection_region.xmax = Infinity;
+        }
+        else {
+          has_selection = true;
+          selection_region.xmin = a[0];
+          selection_region.xmax = a[1];
+        }
+
+        update_brush_element();
+
+        if (selection_listener) {
+          selection_listener(graph.selection_domain());
+        }
+        return graph;
+      };
+
+      /**
+        Get whether the graph currently has a selection region. Default value is false.
+
+        If true, it would be valid to filter the data points to return a subset within the selection
+        region, although this region may be empty!
+
+        If false the graph is not considered to have a selection region.
+
+        Note that even if has_selection is true, the selection region may not be currently shown,
+        and if shown, it may be empty.
+      */
+      graph.has_selection = function() {
+        return has_selection;
+      };
+
+      /**
+        Set or get the visibility of the selection region. Default value is false.
+
+        Has no effect if the graph does not currently have a selection region
+        (selection_domain is null).
+
+        If the selection_enabled property is true, the user will also be able to interact
+        with the selection region.
+      */
+      graph.selection_visible = function(val) {
+        if (!arguments.length) {
+          return selection_visible;
+        }
+
+        // setter
+        val = !!val;
+        if (selection_visible !== val) {
+          selection_visible = val;
+          update_brush_element();
+        }
+        return graph;
+      };
+
+      /**
+        Set or get whether user manipulation of the selection region should be enabled
+        when a selection region exists and is visible. Default value is true.
+
+        Setting the value to true has no effect unless the graph has a selection region
+        (selection_domain is non-null) and the region is visible (selection_visible is true).
+        However, the selection_enabled setting is honored whenever those properties are
+        subsequently updated.
+
+        Setting the value to false does not affect the visibility of the selection region,
+        and does not affect the ability to change the region by calling selection_domain().
+
+        Note that graph panning and zooming are disabled while selection manipulation is enabled.
+      */
+      graph.selection_enabled = function(val) {
+        if (!arguments.length) {
+          return selection_enabled;
+        }
+
+        // setter
+        val = !!val;
+        if (selection_enabled !== val) {
+          selection_enabled = val;
+          update_brush_element();
+        }
+        return graph;
+      };
+
+      /**
+        Set or get the listener to be called when the selection_domain changes.
+
+        Both programatic and interactive updates of the selection region result in
+        notification of the listener.
+
+        The listener is called with the new selection_domain value in the first argument.
+      */
+      graph.selection_listener = function(cb) {
+        if (!arguments.length) {
+          return selection_listener;
+        }
+        // setter
+        selection_listener = cb;
+        return graph;
+      };
+
+      function brush_listener() {
+        var extent;
+        if (selection_enabled) {
+          // Note there is a brush.empty() method, but it still reports true after the
+          // brush extent has been programatically updated.
+          extent = brush_control.extent();
+          graph.selection_domain( extent[0] !== extent[1] ? extent : [] );
+        }
+      }
+
+      function update_brush_element() {
+        if (has_selection && selection_visible) {
+          brush_control = brush_control || d3.svg.brush()
+            .x(xScale)
+            .extent([selection_region.xmin || 0, selection_region.xmax || 0])
+            .on("brush", brush_listener);
+
+          brush_element
+            .call(brush_control.extent([selection_region.xmin || 0, selection_region.xmax || 0]))
+            .style('display', 'inline')
+            .style('pointer-events', selection_enabled ? 'all' : 'none')
+            .selectAll("rect")
+              .attr("height", size.height);
+
+        } else {
+          brush_element.style('display', 'none');
+        }
+      }
+
+      function add_data(newdata) {
+        if (!arguments.length) return points;
+        var i;
+           // domain = xScale.domain(),
+            // xextent = domain[1] - domain[0],
+            //shift = xextent * 0.8,
+            // ds,
+        if (newdata instanceof Array && newdata.length > 0) {
+          if (newdata[0] instanceof Array) {
+            for(i = 0; i < newdata.length; i++) {
+              points.push(newdata[i]);
+            }
+          } else {
+            if (newdata.length === 2) {
+              points.push(newdata);
+            } else {
+              throw new Error("invalid argument to graph.add_data() " + newdata + " length should === 2.");
+            }
+          }
+        }
+        updateOrRescale();
+        return graph;
+      }
+
+
+      // ------------------------------------------------------------
+      //
+      // support for the real-time canvas-based graphing
+      //
+      // ------------------------------------------------------------
+
+      function _realTimeAddPoint(p) {
         if (points.length === 0) { return; }
         markedPoint = false;
         var index = points.length,
             lengthX = index * sample,
-            point = { x: lengthX, y: p },
-            newx, newy;
+            point = { x: lengthX, y: p };
         points.push(point);
       }
 
       function add_point(p) {
         if (points.length === 0) { return; }
-        _add_point(p);
+        _realTimeAddPoint(p);
         updateOrRescale();
       }
 
@@ -2480,22 +2107,39 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         gctx.stroke();
       }
 
-      function add_points(pnts) {
+      function addPoints(pnts) {
         for (var i = 0; i < pointArray.length; i++) {
           points = pointArray[i];
-          _add_point(pnts[i]);
+          _realTimeAddPoint(pnts[i]);
         }
+        setCurrentSample(points.length-1);
         updateOrRescale();
       }
 
-
-      function add_canvas_points(pnts) {
-        for (var i = 0; i < pointArray.length; i++) {
-          points = pointArray[i];
-          setStrokeColor(i);
-          add_canvas_point(pnts[i]);
+      function newRealTimeData(d) {
+        var i;
+        pointArray = [];
+        if (Object.prototype.toString.call(d) === "[object Array]") {
+          for (i = 0; i < d.length; i++) {
+            points = indexedData(d[i], 0, sample);
+            pointArray.push(points);
+          }
+        } else {
+          points = indexedData(options.dataset, 0, sample);
+          pointArray = [points];
         }
+        shiftingX = false;
+        setCurrentSample(points.length-1);
+        updateOrRescale();
       }
+
+      // function addRealTimePoints(pnts) {
+      //   for (var i = 0; i < pointArray.length; i++) {
+      //     points = pointArray[i];
+      //     setStrokeColor(i);
+      //     add_canvas_point(pnts[i]);
+      //   }
+      // }
 
       function setStrokeColor(i, afterSamplePoint) {
         var opacity = afterSamplePoint ? 0.4 : 1.0;
@@ -2527,62 +2171,52 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         }
       }
 
-      function new_data(d) {
-        var i;
-        pointArray = [];
-        if (Object.prototype.toString.call(d) === "[object Array]") {
-          for (i = 0; i < d.length; i++) {
-            points = indexedData(d[i], 0, sample);
-            pointArray.push(points);
-          }
-        } else {
-          points = indexedData(options.dataset, 0, sample);
-          pointArray = [points];
-        }
-        updateOrRescale();
-      }
+      // REMOVE
+      // unused in b1eeea703
+      // function change_xaxis(xmax) {
+      //   x = d3.scale[options.xscale]()
+      //       .domain([0, xmax])
+      //       .range([0, size.width]);
+      //   graph.xmax = xmax;
 
-      function change_xaxis(xmax) {
-        x = d3.scale[options.xscale]()
-            .domain([0, xmax])
-            .range([0, size.width]);
-        graph.xmax = xmax;
-        x_tics_scale = d3.scale[options.xscale]()
-            .domain([graph.xmin*graph.sample, graph.xmax*graph.sample])
-            .range([0, size.width]);
-        update();
-        redraw();
-      }
+      //   x_tics_scale = d3.scale[options.xscale]()
+      //       .domain([graph.xmin*graph.sample, graph.xmax*graph.sample])
+      //       .range([0, size.width]);
+      //   update();
+      //   redraw();
+      // }
 
-      function change_yaxis(ymax) {
-        y = d3.scale[options.yscale]()
-            .domain([ymax, 0])
-            .range([0, size.height]);
-        graph.ymax = ymax;
-        update();
-        redraw();
-      }
+      // REMOVE
+      // unused in b1eeea703
+      // function change_yaxis(ymax) {
+      //   y = d3.scale[options.yscale]()
+      //       .domain([ymax, 0])
+      //       .range([0, size.height]);
+      //   graph.ymax = ymax;
+      //   update();
+      //   redraw();
+      // }
 
-      function clear_canvas() {
+      function clearCanvas() {
         gcanvas.width = gcanvas.width;
-        gctx.fillStyle = "rgba(0,255,0, 0.05)";
+        gctx.fillStyle = canvasFillStyle;
         gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
         gctx.strokeStyle = "rgba(255,65,0, 1.0)";
       }
 
-      function show_canvas() {
+      function showCanvas() {
         vis.select("path.line").remove();
         gcanvas.style.zIndex = 100;
       }
 
-      function hide_canvas() {
+      function hideCanvas() {
         gcanvas.style.zIndex = -100;
         update();
       }
 
       // update real-time canvas line graph
-      function update_canvas(currentSample) {
-        var i, index, py, samplePoint, pointStop,
+      function updateCanvas(samplePoint) {
+        var i, index, py, pointStop,
             yOrigin = yScale(0.00001),
             lines = options.lines,
             bars = options.bars,
@@ -2590,20 +2224,14 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
             pointsLength = pointArray[0].length,
             numberOfLines = pointArray.length,
             xAxisStart = Math.round(xScale.domain()[0]/sample),
-            xAxisEnd = Math.round(xScale.domain()[1]/sample),
-            start = Math.max(0, xAxisStart);
+            // xAxisEnd = Math.round(xScale.domain()[1]/sample),
+            start = Math.max(0, xAxisStart),
+            lengthX,
+            px;
 
 
-        if (typeof currentSample === 'undefined') {
-          samplePoint = pointsLength;
-        } else {
-          if (currentSample === pointsLength-1) {
-            samplePoint = pointsLength-1;
-          } else {
-            samplePoint = currentSample;
-          }
-        }
-        clear_canvas();
+        setCurrentSample(samplePoint);
+        clearCanvas();
         gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
         if (points.length === 0 || xAxisStart >= points.length) { return; }
         if (lines) {
@@ -2710,7 +2338,7 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         }
       }
 
-      function initialize_canvas() {
+      function initializeCanvas() {
         if (!gcanvas) {
           gcanvas = gcanvas || document.createElement('canvas');
           node.appendChild(gcanvas);
@@ -2719,9 +2347,9 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         setupCanvasProperties(gcanvas);
       }
 
-      function resize_canvas() {
+      function resizeCanvas() {
         setupCanvasProperties(gcanvas);
-        update_canvas();
+        updateCanvas();
       }
 
       function setupCanvasProperties(canvas) {
@@ -2745,61 +2373,95 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         gctx = gcanvas.getContext( '2d' );
         gctx.globalCompositeOperation = "source-over";
         gctx.lineWidth = 1;
-        gctx.fillStyle = "rgba(0,255,0, 0.05)";
+        gctx.fillStyle = canvasFillStyle;
         gctx.fillRect(0, 0, canvas.width, gcanvas.height);
         gctx.strokeStyle = "rgba(255,65,0, 1.0)";
-        gcanvas.style.border = 'solid 1px red';
+      }
+
+      // ------------------------------------------------------------
+      //
+      // Keyboard Handling
+      //
+      // ------------------------------------------------------------
+
+      function registerKeyboardHandler() {
+        svg.node().addEventListener("keydown", function (evt) {
+          if (!selected) return false;
+          if (evt.type == "keydown") {
+            switch (evt.keyCode) {
+              case 8:   // backspace
+              case 46:  // delete
+              if (options.dataChange) {
+                var i = points.indexOf(selected);
+                points.splice(i, 1);
+                selected = points.length ? points[i > 0 ? i - 1 : 0] : null;
+                update();
+              }
+              evt.preventDefault();
+              evt.stopPropagation();
+              break;
+            }
+            evt.preventDefault();
+          }
+        });
       }
 
       // make these private variables and functions available
       graph.node = node;
+      graph.elem = elem;
       graph.scale = scale;
       graph.update = update;
       graph.updateOrRescale = updateOrRescale;
       graph.redraw = redraw;
       graph.initialize = initialize;
+      graph.initializeLayout = initializeLayout;
       graph.notify = notify;
+      graph.updateXScale = updateXScale;
+      graph.updateYScale = updateYScale;
+      graph.registerKeyboardHandler = registerKeyboardHandler;
+
+      /**
+        Read only getter for the d3 selection referencing the DOM elements containing the d3
+        brush used to implement selection region manipulation.
+      */
+      graph.brush_element = function() {
+        return brush_element;
+      };
+
+      /**
+        Read-only getter for the d3 brush control (d3.svg.brush() function) used to implement
+        selection region manipulation.
+      */
+      graph.brush_control = function() {
+        return brush_control;
+      };
+
+      /**
+        Read-only getter for the internal listener to the d3 'brush' event.
+      */
+      graph.brush_listener = function() {
+        return brush_listener;
+      };
 
       graph.number_of_points = number_of_points;
-      graph.new_data = new_data;
+      graph.newRealTimeData = newRealTimeData;
       graph.add_point = add_point;
-      graph.add_points = add_points;
-      graph.add_canvas_point = add_canvas_point;
-      graph.add_canvas_points = add_canvas_points;
-      graph.initialize_canvas = initialize_canvas;
-      graph.show_canvas = show_canvas;
-      graph.hide_canvas = hide_canvas;
-      graph.clear_canvas = clear_canvas;
-      graph.update_canvas = update_canvas;
+      graph.addPoints = addPoints;
+      // graph.addRealTimePoints = addRealTimePoints;
+      graph.initializeCanvas = initializeCanvas;
+      graph.showCanvas = showCanvas;
+      graph.hideCanvas = hideCanvas;
+      graph.clearCanvas = clearCanvas;
+      graph.updateCanvas = updateCanvas;
       graph.showMarker = showMarker;
 
-      graph.change_xaxis = change_xaxis;
-      graph.change_yaxis = change_yaxis;
-    }
+      graph.add_data = add_data;
 
-    graph.add_data = function(newdata) {
-      if (!arguments.length) return points;
-      var domain = xScale.domain(),
-          xextent = domain[1] - domain[0],
-          shift = xextent * 0.8,
-          ds,
-          i;
-      if (newdata instanceof Array && newdata.length > 0) {
-        if (newdata[0] instanceof Array) {
-          for(i = 0; i < newdata.length; i++) {
-            points.push(newdata[i]);
-          }
-        } else {
-          if (newdata.length === 2) {
-            points.push(newdata);
-          } else {
-            throw new Error("invalid argument to graph.add_data() " + newdata + " length should === 2.");
-          }
-        }
-      }
-      updateOrRescale();
-      return graph;
-    };
+      // REMOVE
+      // Unused in b1eeea703
+      // graph.change_xaxis = change_xaxis;
+      // graph.change_yaxis = change_yaxis;
+    }
 
     graph.getXDomain = function () {
       return xScale.domain();
@@ -2818,12 +2480,13 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
       graph();
       // and then render again using actual size of SVG text elements are
       graph();
+      graph.registerKeyboardHandler();
       return graph;
     };
 
     graph.resize = function(w, h) {
       graph.scale(w, h);
-      graph.initialize();
+      graph.initializeLayout();
       graph();
       return graph;
     };
@@ -4050,9 +3713,9 @@ define("underscore", (function (global) {
     };
 }(this)));
 
-//     Backbone.js 0.9.10
+//     Backbone.js 1.0.0
 
-//     (c) 2010-2012 Jeremy Ashkenas, DocumentCloud Inc.
+//     (c) 2010-2013 Jeremy Ashkenas, DocumentCloud Inc.
 //     Backbone may be freely distributed under the MIT license.
 //     For all details and documentation:
 //     http://backbonejs.org
@@ -4070,14 +3733,14 @@ define("underscore", (function (global) {
   // restored later on, if `noConflict` is used.
   var previousBackbone = root.Backbone;
 
-  // Create a local reference to array methods.
+  // Create local references to array methods we'll want to use later.
   var array = [];
   var push = array.push;
   var slice = array.slice;
   var splice = array.splice;
 
   // The top-level namespace. All public Backbone classes and modules will
-  // be attached to this. Exported for both CommonJS and the browser.
+  // be attached to this. Exported for both the browser and the server.
   var Backbone;
   if (typeof exports !== 'undefined') {
     Backbone = exports;
@@ -4086,14 +3749,15 @@ define("underscore", (function (global) {
   }
 
   // Current version of the library. Keep in sync with `package.json`.
-  Backbone.VERSION = '0.9.10';
+  Backbone.VERSION = '1.0.0';
 
   // Require Underscore, if we're on the server, and it's not already present.
   var _ = root._;
   if (!_ && (typeof require !== 'undefined')) _ = require('underscore');
 
-  // For Backbone's purposes, jQuery, Zepto, or Ender owns the `$` variable.
-  Backbone.$ = root.jQuery || root.Zepto || root.ender;
+  // For Backbone's purposes, jQuery, Zepto, Ender, or My Library (kidding) owns
+  // the `$` variable.
+  Backbone.$ = root.jQuery || root.Zepto || root.ender || root.$;
 
   // Runs Backbone.js in *noConflict* mode, returning the `Backbone` variable
   // to its previous owner. Returns a reference to this Backbone object.
@@ -4116,45 +3780,6 @@ define("underscore", (function (global) {
   // Backbone.Events
   // ---------------
 
-  // Regular expression used to split event strings.
-  var eventSplitter = /\s+/;
-
-  // Implement fancy features of the Events API such as multiple event
-  // names `"change blur"` and jQuery-style event maps `{change: action}`
-  // in terms of the existing API.
-  var eventsApi = function(obj, action, name, rest) {
-    if (!name) return true;
-    if (typeof name === 'object') {
-      for (var key in name) {
-        obj[action].apply(obj, [key, name[key]].concat(rest));
-      }
-    } else if (eventSplitter.test(name)) {
-      var names = name.split(eventSplitter);
-      for (var i = 0, l = names.length; i < l; i++) {
-        obj[action].apply(obj, [names[i]].concat(rest));
-      }
-    } else {
-      return true;
-    }
-  };
-
-  // Optimized internal dispatch function for triggering events. Tries to
-  // keep the usual cases speedy (most Backbone events have 3 arguments).
-  var triggerEvents = function(events, args) {
-    var ev, i = -1, l = events.length;
-    switch (args.length) {
-    case 0: while (++i < l) (ev = events[i]).callback.call(ev.ctx);
-    return;
-    case 1: while (++i < l) (ev = events[i]).callback.call(ev.ctx, args[0]);
-    return;
-    case 2: while (++i < l) (ev = events[i]).callback.call(ev.ctx, args[0], args[1]);
-    return;
-    case 3: while (++i < l) (ev = events[i]).callback.call(ev.ctx, args[0], args[1], args[2]);
-    return;
-    default: while (++i < l) (ev = events[i]).callback.apply(ev.ctx, args);
-    }
-  };
-
   // A module that can be mixed in to *any object* in order to provide it with
   // custom events. You may bind with `on` or remove with `off` callback
   // functions to an event; `trigger`-ing an event fires all callbacks in
@@ -4167,29 +3792,27 @@ define("underscore", (function (global) {
   //
   var Events = Backbone.Events = {
 
-    // Bind one or more space separated events, or an events map,
-    // to a `callback` function. Passing `"all"` will bind the callback to
-    // all events fired.
+    // Bind an event to a `callback` function. Passing `"all"` will bind
+    // the callback to all events fired.
     on: function(name, callback, context) {
-      if (!(eventsApi(this, 'on', name, [callback, context]) && callback)) return this;
+      if (!eventsApi(this, 'on', name, [callback, context]) || !callback) return this;
       this._events || (this._events = {});
-      var list = this._events[name] || (this._events[name] = []);
-      list.push({callback: callback, context: context, ctx: context || this});
+      var events = this._events[name] || (this._events[name] = []);
+      events.push({callback: callback, context: context, ctx: context || this});
       return this;
     },
 
-    // Bind events to only be triggered a single time. After the first time
+    // Bind an event to only be triggered a single time. After the first time
     // the callback is invoked, it will be removed.
     once: function(name, callback, context) {
-      if (!(eventsApi(this, 'once', name, [callback, context]) && callback)) return this;
+      if (!eventsApi(this, 'once', name, [callback, context]) || !callback) return this;
       var self = this;
       var once = _.once(function() {
         self.off(name, once);
         callback.apply(this, arguments);
       });
       once._callback = callback;
-      this.on(name, once, context);
-      return this;
+      return this.on(name, once, context);
     },
 
     // Remove one or many callbacks. If `context` is null, removes all
@@ -4197,7 +3820,7 @@ define("underscore", (function (global) {
     // callbacks for the event. If `name` is null, removes all bound
     // callbacks for all events.
     off: function(name, callback, context) {
-      var list, ev, events, names, i, l, j, k;
+      var retain, ev, events, names, i, l, j, k;
       if (!this._events || !eventsApi(this, 'off', name, [callback, context])) return this;
       if (!name && !callback && !context) {
         this._events = {};
@@ -4207,19 +3830,18 @@ define("underscore", (function (global) {
       names = name ? [name] : _.keys(this._events);
       for (i = 0, l = names.length; i < l; i++) {
         name = names[i];
-        if (list = this._events[name]) {
-          events = [];
+        if (events = this._events[name]) {
+          this._events[name] = retain = [];
           if (callback || context) {
-            for (j = 0, k = list.length; j < k; j++) {
-              ev = list[j];
-              if ((callback && callback !== ev.callback &&
-                               callback !== ev.callback._callback) ||
+            for (j = 0, k = events.length; j < k; j++) {
+              ev = events[j];
+              if ((callback && callback !== ev.callback && callback !== ev.callback._callback) ||
                   (context && context !== ev.context)) {
-                events.push(ev);
+                retain.push(ev);
               }
             }
           }
-          this._events[name] = events;
+          if (!retain.length) delete this._events[name];
         }
       }
 
@@ -4241,34 +3863,81 @@ define("underscore", (function (global) {
       return this;
     },
 
-    // An inversion-of-control version of `on`. Tell *this* object to listen to
-    // an event in another object ... keeping track of what it's listening to.
-    listenTo: function(obj, name, callback) {
-      var listeners = this._listeners || (this._listeners = {});
-      var id = obj._listenerId || (obj._listenerId = _.uniqueId('l'));
-      listeners[id] = obj;
-      obj.on(name, typeof name === 'object' ? this : callback, this);
-      return this;
-    },
-
     // Tell this object to stop listening to either specific events ... or
     // to every object it's currently listening to.
     stopListening: function(obj, name, callback) {
       var listeners = this._listeners;
-      if (!listeners) return;
-      if (obj) {
-        obj.off(name, typeof name === 'object' ? this : callback, this);
-        if (!name && !callback) delete listeners[obj._listenerId];
-      } else {
-        if (typeof name === 'object') callback = this;
-        for (var id in listeners) {
-          listeners[id].off(name, callback, this);
-        }
-        this._listeners = {};
+      if (!listeners) return this;
+      var deleteListener = !name && !callback;
+      if (typeof name === 'object') callback = this;
+      if (obj) (listeners = {})[obj._listenerId] = obj;
+      for (var id in listeners) {
+        listeners[id].off(name, callback, this);
+        if (deleteListener) delete this._listeners[id];
       }
       return this;
     }
+
   };
+
+  // Regular expression used to split event strings.
+  var eventSplitter = /\s+/;
+
+  // Implement fancy features of the Events API such as multiple event
+  // names `"change blur"` and jQuery-style event maps `{change: action}`
+  // in terms of the existing API.
+  var eventsApi = function(obj, action, name, rest) {
+    if (!name) return true;
+
+    // Handle event maps.
+    if (typeof name === 'object') {
+      for (var key in name) {
+        obj[action].apply(obj, [key, name[key]].concat(rest));
+      }
+      return false;
+    }
+
+    // Handle space separated event names.
+    if (eventSplitter.test(name)) {
+      var names = name.split(eventSplitter);
+      for (var i = 0, l = names.length; i < l; i++) {
+        obj[action].apply(obj, [names[i]].concat(rest));
+      }
+      return false;
+    }
+
+    return true;
+  };
+
+  // A difficult-to-believe, but optimized internal dispatch function for
+  // triggering events. Tries to keep the usual cases speedy (most internal
+  // Backbone events have 3 arguments).
+  var triggerEvents = function(events, args) {
+    var ev, i = -1, l = events.length, a1 = args[0], a2 = args[1], a3 = args[2];
+    switch (args.length) {
+      case 0: while (++i < l) (ev = events[i]).callback.call(ev.ctx); return;
+      case 1: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1); return;
+      case 2: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1, a2); return;
+      case 3: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1, a2, a3); return;
+      default: while (++i < l) (ev = events[i]).callback.apply(ev.ctx, args);
+    }
+  };
+
+  var listenMethods = {listenTo: 'on', listenToOnce: 'once'};
+
+  // Inversion-of-control versions of `on` and `once`. Tell *this* object to
+  // listen to an event in another object ... keeping track of what it's
+  // listening to.
+  _.each(listenMethods, function(implementation, method) {
+    Events[method] = function(obj, name, callback) {
+      var listeners = this._listeners || (this._listeners = {});
+      var id = obj._listenerId || (obj._listenerId = _.uniqueId('l'));
+      listeners[id] = obj;
+      if (typeof name === 'object') callback = this;
+      obj[implementation](name, callback, this);
+      return this;
+    };
+  });
 
   // Aliases for backwards compatibility.
   Events.bind   = Events.on;
@@ -4281,15 +3950,21 @@ define("underscore", (function (global) {
   // Backbone.Model
   // --------------
 
-  // Create a new model, with defined attributes. A client id (`cid`)
+  // Backbone **Models** are the basic data object in the framework --
+  // frequently representing a row in a table in a database on your server.
+  // A discrete chunk of data and a bunch of useful, related methods for
+  // performing computations and transformations on that data.
+
+  // Create a new model with the specified attributes. A client id (`cid`)
   // is automatically generated and assigned for you.
   var Model = Backbone.Model = function(attributes, options) {
     var defaults;
     var attrs = attributes || {};
+    options || (options = {});
     this.cid = _.uniqueId('c');
     this.attributes = {};
-    if (options && options.collection) this.collection = options.collection;
-    if (options && options.parse) attrs = this.parse(attrs, options) || {};
+    _.extend(this, _.pick(options, modelOptions));
+    if (options.parse) attrs = this.parse(attrs, options) || {};
     if (defaults = _.result(this, 'defaults')) {
       attrs = _.defaults({}, attrs, defaults);
     }
@@ -4298,11 +3973,17 @@ define("underscore", (function (global) {
     this.initialize.apply(this, arguments);
   };
 
+  // A list of options to be attached directly to the model, if provided.
+  var modelOptions = ['url', 'urlRoot', 'collection'];
+
   // Attach all inheritable methods to the Model prototype.
   _.extend(Model.prototype, Events, {
 
     // A hash of attributes whose current and previous value differ.
     changed: null,
+
+    // The value returned during the last failed validation.
+    validationError: null,
 
     // The default name for the JSON `id` attribute is `"id"`. MongoDB and
     // CouchDB users may want to set this to `"_id"`.
@@ -4317,7 +3998,8 @@ define("underscore", (function (global) {
       return _.clone(this.attributes);
     },
 
-    // Proxy `Backbone.sync` by default.
+    // Proxy `Backbone.sync` by default -- but override this if you need
+    // custom syncing semantics for *this* particular model.
     sync: function() {
       return Backbone.sync.apply(this, arguments);
     },
@@ -4338,10 +4020,9 @@ define("underscore", (function (global) {
       return this.get(attr) != null;
     },
 
-    // ----------------------------------------------------------------------
-
-    // Set a hash of model attributes on the object, firing `"change"` unless
-    // you choose to silence it.
+    // Set a hash of model attributes on the object, firing `"change"`. This is
+    // the core primitive operation of a model, updating the data and notifying
+    // anyone who needs to know about the change in state. The heart of the beast.
     set: function(key, val, options) {
       var attr, attrs, unset, changes, silent, changing, prev, current;
       if (key == null) return this;
@@ -4395,6 +4076,8 @@ define("underscore", (function (global) {
         }
       }
 
+      // You might be wondering why there's a `while` loop here. Changes can
+      // be recursively nested within `"change"` events.
       if (changing) return this;
       if (!silent) {
         while (this._pending) {
@@ -4407,14 +4090,13 @@ define("underscore", (function (global) {
       return this;
     },
 
-    // Remove an attribute from the model, firing `"change"` unless you choose
-    // to silence it. `unset` is a noop if the attribute doesn't exist.
+    // Remove an attribute from the model, firing `"change"`. `unset` is a noop
+    // if the attribute doesn't exist.
     unset: function(attr, options) {
       return this.set(attr, void 0, _.extend({}, options, {unset: true}));
     },
 
-    // Clear all attributes on the model, firing `"change"` unless you choose
-    // to silence it.
+    // Clear all attributes on the model, firing `"change"`.
     clear: function(options) {
       var attrs = {};
       for (var key in this.attributes) attrs[key] = void 0;
@@ -4458,19 +4140,20 @@ define("underscore", (function (global) {
       return _.clone(this._previousAttributes);
     },
 
-    // ---------------------------------------------------------------------
-
     // Fetch the model from the server. If the server's representation of the
-    // model differs from its current attributes, they will be overriden,
+    // model differs from its current attributes, they will be overridden,
     // triggering a `"change"` event.
     fetch: function(options) {
       options = options ? _.clone(options) : {};
       if (options.parse === void 0) options.parse = true;
+      var model = this;
       var success = options.success;
-      options.success = function(model, resp, options) {
+      options.success = function(resp) {
         if (!model.set(model.parse(resp, options), options)) return false;
         if (success) success(model, resp, options);
+        model.trigger('sync', model, resp, options);
       };
+      wrapError(this, options);
       return this.sync('read', this, options);
     },
 
@@ -4478,7 +4161,7 @@ define("underscore", (function (global) {
     // If the server returns an attributes hash that differs, the model's
     // state will be `set` again.
     save: function(key, val, options) {
-      var attrs, success, method, xhr, attributes = this.attributes;
+      var attrs, method, xhr, attributes = this.attributes;
 
       // Handle both `"key", value` and `{key: value}` -style arguments.
       if (key == null || typeof key === 'object') {
@@ -4504,8 +4187,9 @@ define("underscore", (function (global) {
       // After a successful server-side save, the client is (optionally)
       // updated with the server-side state.
       if (options.parse === void 0) options.parse = true;
-      success = options.success;
-      options.success = function(model, resp, options) {
+      var model = this;
+      var success = options.success;
+      options.success = function(resp) {
         // Ensure attributes are restored during synchronous saves.
         model.attributes = attributes;
         var serverAttrs = model.parse(resp, options);
@@ -4514,9 +4198,10 @@ define("underscore", (function (global) {
           return false;
         }
         if (success) success(model, resp, options);
+        model.trigger('sync', model, resp, options);
       };
+      wrapError(this, options);
 
-      // Finish configuring and sending the Ajax request.
       method = this.isNew() ? 'create' : (options.patch ? 'patch' : 'update');
       if (method === 'patch') options.attrs = attrs;
       xhr = this.sync(method, this, options);
@@ -4539,15 +4224,17 @@ define("underscore", (function (global) {
         model.trigger('destroy', model, model.collection, options);
       };
 
-      options.success = function(model, resp, options) {
+      options.success = function(resp) {
         if (options.wait || model.isNew()) destroy();
         if (success) success(model, resp, options);
+        if (!model.isNew()) model.trigger('sync', model, resp, options);
       };
 
       if (this.isNew()) {
-        options.success(this, null, options);
+        options.success();
         return false;
       }
+      wrapError(this, options);
 
       var xhr = this.sync('delete', this, options);
       if (!options.wait) destroy();
@@ -4581,38 +4268,60 @@ define("underscore", (function (global) {
 
     // Check if the model is currently in a valid state.
     isValid: function(options) {
-      return !this.validate || !this.validate(this.attributes, options);
+      return this._validate({}, _.extend(options || {}, { validate: true }));
     },
 
     // Run validation against the next complete set of model attributes,
-    // returning `true` if all is well. Otherwise, fire a general
-    // `"error"` event and call the error callback, if specified.
+    // returning `true` if all is well. Otherwise, fire an `"invalid"` event.
     _validate: function(attrs, options) {
       if (!options.validate || !this.validate) return true;
       attrs = _.extend({}, this.attributes, attrs);
       var error = this.validationError = this.validate(attrs, options) || null;
       if (!error) return true;
-      this.trigger('invalid', this, error, options || {});
+      this.trigger('invalid', this, error, _.extend(options || {}, {validationError: error}));
       return false;
     }
 
   });
 
+  // Underscore methods that we want to implement on the Model.
+  var modelMethods = ['keys', 'values', 'pairs', 'invert', 'pick', 'omit'];
+
+  // Mix in each Underscore method as a proxy to `Model#attributes`.
+  _.each(modelMethods, function(method) {
+    Model.prototype[method] = function() {
+      var args = slice.call(arguments);
+      args.unshift(this.attributes);
+      return _[method].apply(_, args);
+    };
+  });
+
   // Backbone.Collection
   // -------------------
 
-  // Provides a standard collection class for our sets of models, ordered
-  // or unordered. If a `comparator` is specified, the Collection will maintain
+  // If models tend to represent a single row of data, a Backbone Collection is
+  // more analagous to a table full of data ... or a small slice or page of that
+  // table, or a collection of rows that belong together for a particular reason
+  // -- all of the messages in this particular folder, all of the documents
+  // belonging to this particular author, and so on. Collections maintain
+  // indexes of their models, both in order, and for lookup by `id`.
+
+  // Create a new **Collection**, perhaps to contain a specific type of `model`.
+  // If a `comparator` is specified, the Collection will maintain
   // its models in sort order, as they're added and removed.
   var Collection = Backbone.Collection = function(models, options) {
     options || (options = {});
+    if (options.url) this.url = options.url;
     if (options.model) this.model = options.model;
     if (options.comparator !== void 0) this.comparator = options.comparator;
-    this.models = [];
     this._reset();
     this.initialize.apply(this, arguments);
     if (models) this.reset(models, _.extend({silent: true}, options));
   };
+
+  // Default options for `Collection#set`.
+  var setOptions = {add: true, remove: true, merge: true};
+  var addOptions = {add: true, merge: false, remove: false};
 
   // Define the Collection's inheritable methods.
   _.extend(Collection.prototype, Events, {
@@ -4638,67 +4347,7 @@ define("underscore", (function (global) {
 
     // Add a model, or list of models to the set.
     add: function(models, options) {
-      models = _.isArray(models) ? models.slice() : [models];
-      options || (options = {});
-      var i, l, model, attrs, existing, doSort, add, at, sort, sortAttr;
-      add = [];
-      at = options.at;
-      sort = this.comparator && (at == null) && options.sort != false;
-      sortAttr = _.isString(this.comparator) ? this.comparator : null;
-
-      // Turn bare objects into model references, and prevent invalid models
-      // from being added.
-      for (i = 0, l = models.length; i < l; i++) {
-        if (!(model = this._prepareModel(attrs = models[i], options))) {
-          this.trigger('invalid', this, attrs, options);
-          continue;
-        }
-
-        // If a duplicate is found, prevent it from being added and
-        // optionally merge it into the existing model.
-        if (existing = this.get(model)) {
-          if (options.merge) {
-            existing.set(attrs === model ? model.attributes : attrs, options);
-            if (sort && !doSort && existing.hasChanged(sortAttr)) doSort = true;
-          }
-          continue;
-        }
-
-        // This is a new model, push it to the `add` list.
-        add.push(model);
-
-        // Listen to added models' events, and index models for lookup by
-        // `id` and by `cid`.
-        model.on('all', this._onModelEvent, this);
-        this._byId[model.cid] = model;
-        if (model.id != null) this._byId[model.id] = model;
-      }
-
-      // See if sorting is needed, update `length` and splice in new models.
-      if (add.length) {
-        if (sort) doSort = true;
-        this.length += add.length;
-        if (at != null) {
-          splice.apply(this.models, [at, 0].concat(add));
-        } else {
-          push.apply(this.models, add);
-        }
-      }
-
-      // Silently sort the collection if appropriate.
-      if (doSort) this.sort({silent: true});
-
-      if (options.silent) return this;
-
-      // Trigger `add` events.
-      for (i = 0, l = add.length; i < l; i++) {
-        (model = add[i]).trigger('add', model, this, options);
-      }
-
-      // Trigger `sort` if the collection was sorted.
-      if (doSort) this.trigger('sort', this, options);
-
-      return this;
+      return this.set(models, _.defaults(options || {}, addOptions));
     },
 
     // Remove a model, or a list of models from the set.
@@ -4720,6 +4369,96 @@ define("underscore", (function (global) {
         }
         this._removeReference(model);
       }
+      return this;
+    },
+
+    // Update a collection by `set`-ing a new list of models, adding new ones,
+    // removing models that are no longer present, and merging models that
+    // already exist in the collection, as necessary. Similar to **Model#set**,
+    // the core operation for updating the data contained by the collection.
+    set: function(models, options) {
+      options = _.defaults(options || {}, setOptions);
+      if (options.parse) models = this.parse(models, options);
+      if (!_.isArray(models)) models = models ? [models] : [];
+      var i, l, model, attrs, existing, sort;
+      var at = options.at;
+      var sortable = this.comparator && (at == null) && options.sort !== false;
+      var sortAttr = _.isString(this.comparator) ? this.comparator : null;
+      var toAdd = [], toRemove = [], modelMap = {};
+
+      // Turn bare objects into model references, and prevent invalid models
+      // from being added.
+      for (i = 0, l = models.length; i < l; i++) {
+        if (!(model = this._prepareModel(models[i], options))) continue;
+
+        // If a duplicate is found, prevent it from being added and
+        // optionally merge it into the existing model.
+        if (existing = this.get(model)) {
+          if (options.remove) modelMap[existing.cid] = true;
+          if (options.merge) {
+            existing.set(model.attributes, options);
+            if (sortable && !sort && existing.hasChanged(sortAttr)) sort = true;
+          }
+
+        // This is a new model, push it to the `toAdd` list.
+        } else if (options.add) {
+          toAdd.push(model);
+
+          // Listen to added models' events, and index models for lookup by
+          // `id` and by `cid`.
+          model.on('all', this._onModelEvent, this);
+          this._byId[model.cid] = model;
+          if (model.id != null) this._byId[model.id] = model;
+        }
+      }
+
+      // Remove nonexistent models if appropriate.
+      if (options.remove) {
+        for (i = 0, l = this.length; i < l; ++i) {
+          if (!modelMap[(model = this.models[i]).cid]) toRemove.push(model);
+        }
+        if (toRemove.length) this.remove(toRemove, options);
+      }
+
+      // See if sorting is needed, update `length` and splice in new models.
+      if (toAdd.length) {
+        if (sortable) sort = true;
+        this.length += toAdd.length;
+        if (at != null) {
+          splice.apply(this.models, [at, 0].concat(toAdd));
+        } else {
+          push.apply(this.models, toAdd);
+        }
+      }
+
+      // Silently sort the collection if appropriate.
+      if (sort) this.sort({silent: true});
+
+      if (options.silent) return this;
+
+      // Trigger `add` events.
+      for (i = 0, l = toAdd.length; i < l; i++) {
+        (model = toAdd[i]).trigger('add', model, this, options);
+      }
+
+      // Trigger `sort` if the collection was sorted.
+      if (sort) this.trigger('sort', this, options);
+      return this;
+    },
+
+    // When you have more items than you want to add or remove individually,
+    // you can reset the entire set with a new list of models, without firing
+    // any granular `add` or `remove` events. Fires `reset` when finished.
+    // Useful for bulk operations and optimizations.
+    reset: function(models, options) {
+      options || (options = {});
+      for (var i = 0, l = this.models.length; i < l; i++) {
+        this._removeReference(this.models[i]);
+      }
+      options.previousModels = this.models;
+      this._reset();
+      this.add(models, _.extend({silent: true}, options));
+      if (!options.silent) this.trigger('reset', this, options);
       return this;
     },
 
@@ -4759,8 +4498,7 @@ define("underscore", (function (global) {
     // Get a model from the set by id.
     get: function(obj) {
       if (obj == null) return void 0;
-      this._idAttr || (this._idAttr = this.model.prototype.idAttribute);
-      return this._byId[obj.id || obj.cid || obj[this._idAttr] || obj];
+      return this._byId[obj.id != null ? obj.id : obj.cid || obj];
     },
 
     // Get the model at the given index.
@@ -4768,10 +4506,11 @@ define("underscore", (function (global) {
       return this.models[index];
     },
 
-    // Return models with matching attributes. Useful for simple cases of `filter`.
-    where: function(attrs) {
-      if (_.isEmpty(attrs)) return [];
-      return this.filter(function(model) {
+    // Return models with matching attributes. Useful for simple cases of
+    // `filter`.
+    where: function(attrs, first) {
+      if (_.isEmpty(attrs)) return first ? void 0 : [];
+      return this[first ? 'find' : 'filter'](function(model) {
         for (var key in attrs) {
           if (attrs[key] !== model.get(key)) return false;
         }
@@ -4779,13 +4518,17 @@ define("underscore", (function (global) {
       });
     },
 
+    // Return the first model with matching attributes. Useful for simple cases
+    // of `find`.
+    findWhere: function(attrs) {
+      return this.where(attrs, true);
+    },
+
     // Force the collection to re-sort itself. You don't need to call this under
     // normal circumstances, as the set will maintain sort order as each item
     // is added.
     sort: function(options) {
-      if (!this.comparator) {
-        throw new Error('Cannot sort a set without a comparator');
-      }
+      if (!this.comparator) throw new Error('Cannot sort a set without a comparator');
       options || (options = {});
 
       // Run sort based on type of `comparator`.
@@ -4799,75 +4542,36 @@ define("underscore", (function (global) {
       return this;
     },
 
+    // Figure out the smallest index at which a model should be inserted so as
+    // to maintain order.
+    sortedIndex: function(model, value, context) {
+      value || (value = this.comparator);
+      var iterator = _.isFunction(value) ? value : function(model) {
+        return model.get(value);
+      };
+      return _.sortedIndex(this.models, model, iterator, context);
+    },
+
     // Pluck an attribute from each model in the collection.
     pluck: function(attr) {
       return _.invoke(this.models, 'get', attr);
     },
 
-    // Smartly update a collection with a change set of models, adding,
-    // removing, and merging as necessary.
-    update: function(models, options) {
-      options = _.extend({add: true, merge: true, remove: true}, options);
-      if (options.parse) models = this.parse(models, options);
-      var model, i, l, existing;
-      var add = [], remove = [], modelMap = {};
-
-      // Allow a single model (or no argument) to be passed.
-      if (!_.isArray(models)) models = models ? [models] : [];
-
-      // Proxy to `add` for this case, no need to iterate...
-      if (options.add && !options.remove) return this.add(models, options);
-
-      // Determine which models to add and merge, and which to remove.
-      for (i = 0, l = models.length; i < l; i++) {
-        model = models[i];
-        existing = this.get(model);
-        if (options.remove && existing) modelMap[existing.cid] = true;
-        if ((options.add && !existing) || (options.merge && existing)) {
-          add.push(model);
-        }
-      }
-      if (options.remove) {
-        for (i = 0, l = this.models.length; i < l; i++) {
-          model = this.models[i];
-          if (!modelMap[model.cid]) remove.push(model);
-        }
-      }
-
-      // Remove models (if applicable) before we add and merge the rest.
-      if (remove.length) this.remove(remove, options);
-      if (add.length) this.add(add, options);
-      return this;
-    },
-
-    // When you have more items than you want to add or remove individually,
-    // you can reset the entire set with a new list of models, without firing
-    // any `add` or `remove` events. Fires `reset` when finished.
-    reset: function(models, options) {
-      options || (options = {});
-      if (options.parse) models = this.parse(models, options);
-      for (var i = 0, l = this.models.length; i < l; i++) {
-        this._removeReference(this.models[i]);
-      }
-      options.previousModels = this.models.slice();
-      this._reset();
-      if (models) this.add(models, _.extend({silent: true}, options));
-      if (!options.silent) this.trigger('reset', this, options);
-      return this;
-    },
-
     // Fetch the default set of models for this collection, resetting the
-    // collection when they arrive. If `update: true` is passed, the response
-    // data will be passed through the `update` method instead of `reset`.
+    // collection when they arrive. If `reset: true` is passed, the response
+    // data will be passed through the `reset` method instead of `set`.
     fetch: function(options) {
       options = options ? _.clone(options) : {};
       if (options.parse === void 0) options.parse = true;
       var success = options.success;
-      options.success = function(collection, resp, options) {
-        var method = options.update ? 'update' : 'reset';
+      var collection = this;
+      options.success = function(resp) {
+        var method = options.reset ? 'reset' : 'set';
         collection[method](resp, options);
         if (success) success(collection, resp, options);
+        collection.trigger('sync', collection, resp, options);
       };
+      wrapError(this, options);
       return this.sync('read', this, options);
     },
 
@@ -4880,7 +4584,7 @@ define("underscore", (function (global) {
       if (!options.wait) this.add(model, options);
       var collection = this;
       var success = options.success;
-      options.success = function(model, resp, options) {
+      options.success = function(resp) {
         if (options.wait) collection.add(model, options);
         if (success) success(model, resp, options);
       };
@@ -4899,14 +4603,16 @@ define("underscore", (function (global) {
       return new this.constructor(this.models);
     },
 
-    // Reset all internal state. Called when the collection is reset.
+    // Private method to reset all internal state. Called when the collection
+    // is first initialized or reset.
     _reset: function() {
       this.length = 0;
-      this.models.length = 0;
+      this.models = [];
       this._byId  = {};
     },
 
-    // Prepare a model or hash of attributes to be added to this collection.
+    // Prepare a hash of attributes (or other model) to be added to this
+    // collection.
     _prepareModel: function(attrs, options) {
       if (attrs instanceof Model) {
         if (!attrs.collection) attrs.collection = this;
@@ -4915,11 +4621,14 @@ define("underscore", (function (global) {
       options || (options = {});
       options.collection = this;
       var model = new this.model(attrs, options);
-      if (!model._validate(attrs, options)) return false;
+      if (!model._validate(attrs, options)) {
+        this.trigger('invalid', this, attrs, options);
+        return false;
+      }
       return model;
     },
 
-    // Internal method to remove a model's ties to a collection.
+    // Internal method to sever a model's ties to a collection.
     _removeReference: function(model) {
       if (this === model.collection) delete model.collection;
       model.off('all', this._onModelEvent, this);
@@ -4937,19 +4646,13 @@ define("underscore", (function (global) {
         if (model.id != null) this._byId[model.id] = model;
       }
       this.trigger.apply(this, arguments);
-    },
-
-    sortedIndex: function (model, value, context) {
-      value || (value = this.comparator);
-      var iterator = _.isFunction(value) ? value : function(model) {
-        return model.get(value);
-      };
-      return _.sortedIndex(this.models, model, iterator, context);
     }
 
   });
 
   // Underscore methods that we want to implement on the Collection.
+  // 90% of the core usefulness of Backbone Collections is actually implemented
+  // right here:
   var methods = ['forEach', 'each', 'map', 'collect', 'reduce', 'foldl',
     'inject', 'reduceRight', 'foldr', 'find', 'detect', 'filter', 'select',
     'reject', 'every', 'all', 'some', 'any', 'include', 'contains', 'invoke',
@@ -4978,6 +4681,241 @@ define("underscore", (function (global) {
       return _[method](this.models, iterator, context);
     };
   });
+
+  // Backbone.View
+  // -------------
+
+  // Backbone Views are almost more convention than they are actual code. A View
+  // is simply a JavaScript object that represents a logical chunk of UI in the
+  // DOM. This might be a single item, an entire list, a sidebar or panel, or
+  // even the surrounding frame which wraps your whole app. Defining a chunk of
+  // UI as a **View** allows you to define your DOM events declaratively, without
+  // having to worry about render order ... and makes it easy for the view to
+  // react to specific changes in the state of your models.
+
+  // Creating a Backbone.View creates its initial element outside of the DOM,
+  // if an existing element is not provided...
+  var View = Backbone.View = function(options) {
+    this.cid = _.uniqueId('view');
+    this._configure(options || {});
+    this._ensureElement();
+    this.initialize.apply(this, arguments);
+    this.delegateEvents();
+  };
+
+  // Cached regex to split keys for `delegate`.
+  var delegateEventSplitter = /^(\S+)\s*(.*)$/;
+
+  // List of view options to be merged as properties.
+  var viewOptions = ['model', 'collection', 'el', 'id', 'attributes', 'className', 'tagName', 'events'];
+
+  // Set up all inheritable **Backbone.View** properties and methods.
+  _.extend(View.prototype, Events, {
+
+    // The default `tagName` of a View's element is `"div"`.
+    tagName: 'div',
+
+    // jQuery delegate for element lookup, scoped to DOM elements within the
+    // current view. This should be prefered to global lookups where possible.
+    $: function(selector) {
+      return this.$el.find(selector);
+    },
+
+    // Initialize is an empty function by default. Override it with your own
+    // initialization logic.
+    initialize: function(){},
+
+    // **render** is the core function that your view should override, in order
+    // to populate its element (`this.el`), with the appropriate HTML. The
+    // convention is for **render** to always return `this`.
+    render: function() {
+      return this;
+    },
+
+    // Remove this view by taking the element out of the DOM, and removing any
+    // applicable Backbone.Events listeners.
+    remove: function() {
+      this.$el.remove();
+      this.stopListening();
+      return this;
+    },
+
+    // Change the view's element (`this.el` property), including event
+    // re-delegation.
+    setElement: function(element, delegate) {
+      if (this.$el) this.undelegateEvents();
+      this.$el = element instanceof Backbone.$ ? element : Backbone.$(element);
+      this.el = this.$el[0];
+      if (delegate !== false) this.delegateEvents();
+      return this;
+    },
+
+    // Set callbacks, where `this.events` is a hash of
+    //
+    // *{"event selector": "callback"}*
+    //
+    //     {
+    //       'mousedown .title':  'edit',
+    //       'click .button':     'save'
+    //       'click .open':       function(e) { ... }
+    //     }
+    //
+    // pairs. Callbacks will be bound to the view, with `this` set properly.
+    // Uses event delegation for efficiency.
+    // Omitting the selector binds the event to `this.el`.
+    // This only works for delegate-able events: not `focus`, `blur`, and
+    // not `change`, `submit`, and `reset` in Internet Explorer.
+    delegateEvents: function(events) {
+      if (!(events || (events = _.result(this, 'events')))) return this;
+      this.undelegateEvents();
+      for (var key in events) {
+        var method = events[key];
+        if (!_.isFunction(method)) method = this[events[key]];
+        if (!method) continue;
+
+        var match = key.match(delegateEventSplitter);
+        var eventName = match[1], selector = match[2];
+        method = _.bind(method, this);
+        eventName += '.delegateEvents' + this.cid;
+        if (selector === '') {
+          this.$el.on(eventName, method);
+        } else {
+          this.$el.on(eventName, selector, method);
+        }
+      }
+      return this;
+    },
+
+    // Clears all callbacks previously bound to the view with `delegateEvents`.
+    // You usually don't need to use this, but may wish to if you have multiple
+    // Backbone views attached to the same DOM element.
+    undelegateEvents: function() {
+      this.$el.off('.delegateEvents' + this.cid);
+      return this;
+    },
+
+    // Performs the initial configuration of a View with a set of options.
+    // Keys with special meaning *(e.g. model, collection, id, className)* are
+    // attached directly to the view.  See `viewOptions` for an exhaustive
+    // list.
+    _configure: function(options) {
+      if (this.options) options = _.extend({}, _.result(this, 'options'), options);
+      _.extend(this, _.pick(options, viewOptions));
+      this.options = options;
+    },
+
+    // Ensure that the View has a DOM element to render into.
+    // If `this.el` is a string, pass it through `$()`, take the first
+    // matching element, and re-assign it to `el`. Otherwise, create
+    // an element from the `id`, `className` and `tagName` properties.
+    _ensureElement: function() {
+      if (!this.el) {
+        var attrs = _.extend({}, _.result(this, 'attributes'));
+        if (this.id) attrs.id = _.result(this, 'id');
+        if (this.className) attrs['class'] = _.result(this, 'className');
+        var $el = Backbone.$('<' + _.result(this, 'tagName') + '>').attr(attrs);
+        this.setElement($el, false);
+      } else {
+        this.setElement(_.result(this, 'el'), false);
+      }
+    }
+
+  });
+
+  // Backbone.sync
+  // -------------
+
+  // Override this function to change the manner in which Backbone persists
+  // models to the server. You will be passed the type of request, and the
+  // model in question. By default, makes a RESTful Ajax request
+  // to the model's `url()`. Some possible customizations could be:
+  //
+  // * Use `setTimeout` to batch rapid-fire updates into a single request.
+  // * Send up the models as XML instead of JSON.
+  // * Persist models via WebSockets instead of Ajax.
+  //
+  // Turn on `Backbone.emulateHTTP` in order to send `PUT` and `DELETE` requests
+  // as `POST`, with a `_method` parameter containing the true HTTP method,
+  // as well as all requests with the body as `application/x-www-form-urlencoded`
+  // instead of `application/json` with the model in a param named `model`.
+  // Useful when interfacing with server-side languages like **PHP** that make
+  // it difficult to read the body of `PUT` requests.
+  Backbone.sync = function(method, model, options) {
+    var type = methodMap[method];
+
+    // Default options, unless specified.
+    _.defaults(options || (options = {}), {
+      emulateHTTP: Backbone.emulateHTTP,
+      emulateJSON: Backbone.emulateJSON
+    });
+
+    // Default JSON-request options.
+    var params = {type: type, dataType: 'json'};
+
+    // Ensure that we have a URL.
+    if (!options.url) {
+      params.url = _.result(model, 'url') || urlError();
+    }
+
+    // Ensure that we have the appropriate request data.
+    if (options.data == null && model && (method === 'create' || method === 'update' || method === 'patch')) {
+      params.contentType = 'application/json';
+      params.data = JSON.stringify(options.attrs || model.toJSON(options));
+    }
+
+    // For older servers, emulate JSON by encoding the request into an HTML-form.
+    if (options.emulateJSON) {
+      params.contentType = 'application/x-www-form-urlencoded';
+      params.data = params.data ? {model: params.data} : {};
+    }
+
+    // For older servers, emulate HTTP by mimicking the HTTP method with `_method`
+    // And an `X-HTTP-Method-Override` header.
+    if (options.emulateHTTP && (type === 'PUT' || type === 'DELETE' || type === 'PATCH')) {
+      params.type = 'POST';
+      if (options.emulateJSON) params.data._method = type;
+      var beforeSend = options.beforeSend;
+      options.beforeSend = function(xhr) {
+        xhr.setRequestHeader('X-HTTP-Method-Override', type);
+        if (beforeSend) return beforeSend.apply(this, arguments);
+      };
+    }
+
+    // Don't process data on a non-GET request.
+    if (params.type !== 'GET' && !options.emulateJSON) {
+      params.processData = false;
+    }
+
+    // If we're sending a `PATCH` request, and we're in an old Internet Explorer
+    // that still has ActiveX enabled by default, override jQuery to use that
+    // for XHR instead. Remove this line when jQuery supports `PATCH` on IE8.
+    if (params.type === 'PATCH' && window.ActiveXObject &&
+          !(window.external && window.external.msActiveXFilteringEnabled)) {
+      params.xhr = function() {
+        return new ActiveXObject("Microsoft.XMLHTTP");
+      };
+    }
+
+    // Make the request, allowing the user to override any Ajax options.
+    var xhr = options.xhr = Backbone.ajax(_.extend(params, options));
+    model.trigger('request', model, xhr, options);
+    return xhr;
+  };
+
+  // Map from CRUD to HTTP for our default `Backbone.sync` implementation.
+  var methodMap = {
+    'create': 'POST',
+    'update': 'PUT',
+    'patch':  'PATCH',
+    'delete': 'DELETE',
+    'read':   'GET'
+  };
+
+  // Set the default implementation of `Backbone.ajax` to proxy through to `$`.
+  // Override this if you'd like to use a different library.
+  Backbone.ajax = function() {
+    return Backbone.$.ajax.apply(Backbone.$, arguments);
+  };
 
   // Backbone.Router
   // ---------------
@@ -5013,14 +4951,19 @@ define("underscore", (function (global) {
     //
     route: function(route, name, callback) {
       if (!_.isRegExp(route)) route = this._routeToRegExp(route);
+      if (_.isFunction(name)) {
+        callback = name;
+        name = '';
+      }
       if (!callback) callback = this[name];
-      Backbone.history.route(route, _.bind(function(fragment) {
-        var args = this._extractParameters(route, fragment);
-        callback && callback.apply(this, args);
-        this.trigger.apply(this, ['route:' + name].concat(args));
-        this.trigger('route', name, args);
-        Backbone.history.trigger('route', this, name, args);
-      }, this));
+      var router = this;
+      Backbone.history.route(route, function(fragment) {
+        var args = router._extractParameters(route, fragment);
+        callback && callback.apply(router, args);
+        router.trigger.apply(router, ['route:' + name].concat(args));
+        router.trigger('route', name, args);
+        Backbone.history.trigger('route', router, name, args);
+      });
       return this;
     },
 
@@ -5035,6 +4978,7 @@ define("underscore", (function (global) {
     // routes can be defined at the bottom of the route map.
     _bindRoutes: function() {
       if (!this.routes) return;
+      this.routes = _.result(this, 'routes');
       var route, routes = _.keys(this.routes);
       while ((route = routes.pop()) != null) {
         this.route(route, this.routes[route]);
@@ -5054,9 +4998,13 @@ define("underscore", (function (global) {
     },
 
     // Given a route, and a URL fragment that it matches, return the array of
-    // extracted parameters.
+    // extracted decoded parameters. Empty or unmatched parameters will be
+    // treated as `null` to normalize cross-browser behavior.
     _extractParameters: function(route, fragment) {
-      return route.exec(fragment).slice(1);
+      var params = route.exec(fragment).slice(1);
+      return _.map(params, function(param) {
+        return param ? decodeURIComponent(param) : null;
+      });
     }
 
   });
@@ -5064,8 +5012,11 @@ define("underscore", (function (global) {
   // Backbone.History
   // ----------------
 
-  // Handles cross-browser history management, based on URL fragments. If the
-  // browser does not support `onhashchange`, falls back to polling.
+  // Handles cross-browser history management, based on either
+  // [pushState](http://diveintohtml5.info/history.html) and real URLs, or
+  // [onhashchange](https://developer.mozilla.org/en-US/docs/DOM/window.onhashchange)
+  // and URL fragments. If the browser supports neither (old IE, natch),
+  // falls back to polling.
   var History = Backbone.History = function() {
     this.handlers = [];
     _.bindAll(this, 'checkUrl');
@@ -5276,230 +5227,6 @@ define("underscore", (function (global) {
   // Create the default Backbone.history.
   Backbone.history = new History;
 
-  // Backbone.View
-  // -------------
-
-  // Creating a Backbone.View creates its initial element outside of the DOM,
-  // if an existing element is not provided...
-  var View = Backbone.View = function(options) {
-    this.cid = _.uniqueId('view');
-    this._configure(options || {});
-    this._ensureElement();
-    this.initialize.apply(this, arguments);
-    this.delegateEvents();
-  };
-
-  // Cached regex to split keys for `delegate`.
-  var delegateEventSplitter = /^(\S+)\s*(.*)$/;
-
-  // List of view options to be merged as properties.
-  var viewOptions = ['model', 'collection', 'el', 'id', 'attributes', 'className', 'tagName', 'events'];
-
-  // Set up all inheritable **Backbone.View** properties and methods.
-  _.extend(View.prototype, Events, {
-
-    // The default `tagName` of a View's element is `"div"`.
-    tagName: 'div',
-
-    // jQuery delegate for element lookup, scoped to DOM elements within the
-    // current view. This should be prefered to global lookups where possible.
-    $: function(selector) {
-      return this.$el.find(selector);
-    },
-
-    // Initialize is an empty function by default. Override it with your own
-    // initialization logic.
-    initialize: function(){},
-
-    // **render** is the core function that your view should override, in order
-    // to populate its element (`this.el`), with the appropriate HTML. The
-    // convention is for **render** to always return `this`.
-    render: function() {
-      return this;
-    },
-
-    // Remove this view by taking the element out of the DOM, and removing any
-    // applicable Backbone.Events listeners.
-    remove: function() {
-      this.$el.remove();
-      this.stopListening();
-      return this;
-    },
-
-    // Change the view's element (`this.el` property), including event
-    // re-delegation.
-    setElement: function(element, delegate) {
-      if (this.$el) this.undelegateEvents();
-      this.$el = element instanceof Backbone.$ ? element : Backbone.$(element);
-      this.el = this.$el[0];
-      if (delegate !== false) this.delegateEvents();
-      return this;
-    },
-
-    // Set callbacks, where `this.events` is a hash of
-    //
-    // *{"event selector": "callback"}*
-    //
-    //     {
-    //       'mousedown .title':  'edit',
-    //       'click .button':     'save'
-    //       'click .open':       function(e) { ... }
-    //     }
-    //
-    // pairs. Callbacks will be bound to the view, with `this` set properly.
-    // Uses event delegation for efficiency.
-    // Omitting the selector binds the event to `this.el`.
-    // This only works for delegate-able events: not `focus`, `blur`, and
-    // not `change`, `submit`, and `reset` in Internet Explorer.
-    delegateEvents: function(events) {
-      if (!(events || (events = _.result(this, 'events')))) return;
-      this.undelegateEvents();
-      for (var key in events) {
-        var method = events[key];
-        if (!_.isFunction(method)) method = this[events[key]];
-        if (!method) throw new Error('Method "' + events[key] + '" does not exist');
-        var match = key.match(delegateEventSplitter);
-        var eventName = match[1], selector = match[2];
-        method = _.bind(method, this);
-        eventName += '.delegateEvents' + this.cid;
-        if (selector === '') {
-          this.$el.on(eventName, method);
-        } else {
-          this.$el.on(eventName, selector, method);
-        }
-      }
-    },
-
-    // Clears all callbacks previously bound to the view with `delegateEvents`.
-    // You usually don't need to use this, but may wish to if you have multiple
-    // Backbone views attached to the same DOM element.
-    undelegateEvents: function() {
-      this.$el.off('.delegateEvents' + this.cid);
-    },
-
-    // Performs the initial configuration of a View with a set of options.
-    // Keys with special meaning *(model, collection, id, className)*, are
-    // attached directly to the view.
-    _configure: function(options) {
-      if (this.options) options = _.extend({}, _.result(this, 'options'), options);
-      _.extend(this, _.pick(options, viewOptions));
-      this.options = options;
-    },
-
-    // Ensure that the View has a DOM element to render into.
-    // If `this.el` is a string, pass it through `$()`, take the first
-    // matching element, and re-assign it to `el`. Otherwise, create
-    // an element from the `id`, `className` and `tagName` properties.
-    _ensureElement: function() {
-      if (!this.el) {
-        var attrs = _.extend({}, _.result(this, 'attributes'));
-        if (this.id) attrs.id = _.result(this, 'id');
-        if (this.className) attrs['class'] = _.result(this, 'className');
-        var $el = Backbone.$('<' + _.result(this, 'tagName') + '>').attr(attrs);
-        this.setElement($el, false);
-      } else {
-        this.setElement(_.result(this, 'el'), false);
-      }
-    }
-
-  });
-
-  // Backbone.sync
-  // -------------
-
-  // Map from CRUD to HTTP for our default `Backbone.sync` implementation.
-  var methodMap = {
-    'create': 'POST',
-    'update': 'PUT',
-    'patch':  'PATCH',
-    'delete': 'DELETE',
-    'read':   'GET'
-  };
-
-  // Override this function to change the manner in which Backbone persists
-  // models to the server. You will be passed the type of request, and the
-  // model in question. By default, makes a RESTful Ajax request
-  // to the model's `url()`. Some possible customizations could be:
-  //
-  // * Use `setTimeout` to batch rapid-fire updates into a single request.
-  // * Send up the models as XML instead of JSON.
-  // * Persist models via WebSockets instead of Ajax.
-  //
-  // Turn on `Backbone.emulateHTTP` in order to send `PUT` and `DELETE` requests
-  // as `POST`, with a `_method` parameter containing the true HTTP method,
-  // as well as all requests with the body as `application/x-www-form-urlencoded`
-  // instead of `application/json` with the model in a param named `model`.
-  // Useful when interfacing with server-side languages like **PHP** that make
-  // it difficult to read the body of `PUT` requests.
-  Backbone.sync = function(method, model, options) {
-    var type = methodMap[method];
-
-    // Default options, unless specified.
-    _.defaults(options || (options = {}), {
-      emulateHTTP: Backbone.emulateHTTP,
-      emulateJSON: Backbone.emulateJSON
-    });
-
-    // Default JSON-request options.
-    var params = {type: type, dataType: 'json'};
-
-    // Ensure that we have a URL.
-    if (!options.url) {
-      params.url = _.result(model, 'url') || urlError();
-    }
-
-    // Ensure that we have the appropriate request data.
-    if (options.data == null && model && (method === 'create' || method === 'update' || method === 'patch')) {
-      params.contentType = 'application/json';
-      params.data = JSON.stringify(options.attrs || model.toJSON(options));
-    }
-
-    // For older servers, emulate JSON by encoding the request into an HTML-form.
-    if (options.emulateJSON) {
-      params.contentType = 'application/x-www-form-urlencoded';
-      params.data = params.data ? {model: params.data} : {};
-    }
-
-    // For older servers, emulate HTTP by mimicking the HTTP method with `_method`
-    // And an `X-HTTP-Method-Override` header.
-    if (options.emulateHTTP && (type === 'PUT' || type === 'DELETE' || type === 'PATCH')) {
-      params.type = 'POST';
-      if (options.emulateJSON) params.data._method = type;
-      var beforeSend = options.beforeSend;
-      options.beforeSend = function(xhr) {
-        xhr.setRequestHeader('X-HTTP-Method-Override', type);
-        if (beforeSend) return beforeSend.apply(this, arguments);
-      };
-    }
-
-    // Don't process data on a non-GET request.
-    if (params.type !== 'GET' && !options.emulateJSON) {
-      params.processData = false;
-    }
-
-    var success = options.success;
-    options.success = function(resp) {
-      if (success) success(model, resp, options);
-      model.trigger('sync', model, resp, options);
-    };
-
-    var error = options.error;
-    options.error = function(xhr) {
-      if (error) error(model, xhr, options);
-      model.trigger('error', model, xhr, options);
-    };
-
-    // Make the request, allowing the user to override any Ajax options.
-    var xhr = options.xhr = Backbone.ajax(_.extend(params, options));
-    model.trigger('request', model, xhr, options);
-    return xhr;
-  };
-
-  // Set the default implementation of `Backbone.ajax` to proxy through to `$`.
-  Backbone.ajax = function() {
-    return Backbone.$.ajax.apply(Backbone.$, arguments);
-  };
-
   // Helpers
   // -------
 
@@ -5545,6 +5272,15 @@ define("underscore", (function (global) {
   // Throw an error when a URL is needed, and none is supplied.
   var urlError = function() {
     throw new Error('A "url" property or function must be specified');
+  };
+
+  // Wrap an optional error callback with a fallback error event.
+  var wrapError = function (model, options) {
+    var error = options.error;
+    options.error = function(resp) {
+      if (error) error(model, resp, options);
+      model.trigger('error', model, resp, options);
+    };
   };
 
 }).call(this);
@@ -5865,13 +5601,12 @@ define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (requi
 
 /*global define: false, window: false */
 
-define('grapher/public-api',['require','../lab.version','../lab.config','grapher/core/graph','grapher/core/real-time-graph','grapher/bar-graph/bar-graph-model','grapher/bar-graph/bar-graph-view'],function (require) {
+define('grapher/public-api',['require','../lab.version','../lab.config','grapher/core/graph','grapher/bar-graph/bar-graph-model','grapher/bar-graph/bar-graph-view'],function (require) {
   'use strict';
   var
     version = require('../lab.version'),
     config  = require('../lab.config'),
-    graph         = require('grapher/core/graph'),
-    realTimeGraph = require('grapher/core/real-time-graph'),
+    Graph         = require('grapher/core/graph'),
     BarGraphModel = require('grapher/bar-graph/bar-graph-model'),
     BarGraphView  = require('grapher/bar-graph/bar-graph-view'),
     // Object to be returned.
@@ -5882,9 +5617,7 @@ define('grapher/public-api',['require','../lab.version','../lab.config','grapher
     // ==========================================================================
     // Add functions and modules which should belong to this API:
     // - graph constructor,
-    graph: graph,
-    // - realTimeGraph constructor,
-    realTimeGraph: realTimeGraph,
+    Graph: Graph,
     // - bar graph model,
     BarGraphModel: BarGraphModel,
     // - bar graph view.

@@ -4,13 +4,14 @@
   "subtitle": "A basic test of the proteins engine.",
   "fontScale": 0.6,
   "about": [
-    "Using this interactive you can:<ul>",
-    "<li>change type of amino acids (right click on the amino acid to open a special context menu),</li>",
-    "<li>test various coloring schemes and label types.</li></ul>",
-    "<li>watch their behavior in vacuum, oil and water,</li>",
-    "<li>modify strength of the force produced by the solvent,</li>",
-    "<li>switch on or off <i>realistic dielectric effect</i>,</li>",
-    "<li>experiment with advanced proteins engine settings like additional solvent force or polar amino acids attraction.</li>"
+    "Using this interactive you can:",
+    "",
+    "- change type of amino acids (right click on the amino acid to open a special context menu)",
+    "- test various coloring schemes and label types",
+    "- watch their behavior in vacuum, oil and water",
+    "- modify strength of the force produced by the solvent",
+    "- switch on or off _realistic dielectric effect_",
+    "- experiment with advanced proteins engine settings like additional solvent force or polar amino acids attraction"
 
   ],
   "models": [

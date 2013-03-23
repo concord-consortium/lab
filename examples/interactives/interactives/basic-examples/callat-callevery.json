@@ -3,8 +3,8 @@
   "publicationStatus": "public",
   "subtitle": "Use an callAt() to perform a script at any given time. Use callEvery() to perform a script repeatedly.",
   "about": [
-             "Changes in the model property: temperatureControl are monitored with an onPropertyChange() script."
-           ],
+    "Changes in the model property: temperatureControl are monitored with an onPropertyChange() script."
+  ],
   "models": [
     {
       "id": "simple-gas$0",

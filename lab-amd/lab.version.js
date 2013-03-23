@@ -4,14 +4,14 @@ define(function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "8f59c315ea565bd7b4dd3498c1e06ed6a68f4976",
-        "short_sha":      "8f59c315",
-        "url":            "https://github.com/concord-consortium/lab/commit/8f59c315",
-        "author":        "Sam Fentress",
-        "email":         "sfentress@concord.org",
-        "date":          "2013-03-12 19:59:33 -0400",
-        "short_message": "Fix relative reference to &quot;/resources&quot; in image urls.",
-        "message":       "Fix relative reference to &quot;/resources&quot; in image urls.\n\nUse Lab.config.actualRoot to get actual root, and use\nmore specific &quot;{resources}/&quot; pattern to specify files\nlocated in public/resources, so we don&#x27;t break any models\nwith a nested resources directory.\n\nNot sure why &quot;Lab&quot; may be undefined in Mocha tests."
+        "sha":           "f596aaec6a15b43300a957e9b3f8b696b0da4716",
+        "short_sha":      "f596aaec",
+        "url":            "https://github.com/concord-consortium/lab/commit/f596aaec",
+        "author":        "Stephen Bannasch",
+        "email":         "stephen.bannasch@gmail.com",
+        "date":          "2013-03-22 21:56:55 -0400",
+        "short_message": "changing metadata.js =&gt; update expected-json fixtures",
+        "message":       "changing metadata.js =&gt; update expected-json fixtures\n\nmetadata.js for MD2D was changed in ef797bb42e2d\n\nWhen changes occur in metadata.js normally the expected-json\nfixtures need to be updated.\n\nTest failures were thrown by the Mocha tests:\n\nThe serialized object does not match the original object used to create the MD2D mode"
       },
       "dirty": false
     }

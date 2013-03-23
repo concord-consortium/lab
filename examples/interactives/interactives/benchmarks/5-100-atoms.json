@@ -1,6 +1,6 @@
 {
   "title": "100 Charged Atoms",
-  "publicationStatus": "sample",
+  "publicationStatus": "public",
   "subtitle": "100 charged unbonded atoms: benchmarking long-range pairwise (Coulomb) calculations.",
   "about": [
     "This model has 100 charged atoms, this means that the modeling engine spends proportionally more time calculating pairwise forces for the long-range Coulomb forces than in some of the other models.",

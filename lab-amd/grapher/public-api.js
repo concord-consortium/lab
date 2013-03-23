@@ -5,8 +5,7 @@ define(function (require) {
   var
     version = require('../lab.version'),
     config  = require('../lab.config'),
-    graph         = require('grapher/core/graph'),
-    realTimeGraph = require('grapher/core/real-time-graph'),
+    Graph         = require('grapher/core/graph'),
     BarGraphModel = require('grapher/bar-graph/bar-graph-model'),
     BarGraphView  = require('grapher/bar-graph/bar-graph-view'),
     // Object to be returned.
@@ -17,9 +16,7 @@ define(function (require) {
     // ==========================================================================
     // Add functions and modules which should belong to this API:
     // - graph constructor,
-    graph: graph,
-    // - realTimeGraph constructor,
-    realTimeGraph: realTimeGraph,
+    Graph: Graph,
     // - bar graph model,
     BarGraphModel: BarGraphModel,
     // - bar graph view.

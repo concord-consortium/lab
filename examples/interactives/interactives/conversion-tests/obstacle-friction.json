@@ -1,7 +1,7 @@
 {
   "title": "Obstacle Friction",
   "publicationStatus": "public",
-  "subtitle": "Friction test: the obstacle should reach an atom after ~11 000 fs! You can also observe the Kinetic Energy graph.",
+  "subtitle": "Friction test: the obstacle should reach an atom after ~11 ps! You can also observe the Kinetic Energy graph.",
   "about": "",
   "models": [
     {

@@ -83,6 +83,8 @@ define(function (require) {
         particle, label, labelEnter,
         atomToolTip, atomToolTipPre,
 
+        fontSizeInPixels,
+
         // for model clock
         timeLabel,
         modelTimeFormatter = d3.format("5.1f"),
@@ -112,6 +114,7 @@ define(function (require) {
         forceVector,
         imageProp,
         imageMapping,
+        modelImagePath,
         imageSizes = [],
         textBoxes,
         imagePath,
@@ -516,7 +519,7 @@ define(function (require) {
             "d": function (d) { return findPoints(d,1); },
             "stroke-width": function (d) {
               if (isSpringBond(d)) {
-                return Math.log(d.strength) / 4 + modelSize2px(0.005);
+                return springStrokeWidth(d);
               } else {
                 return modelSize2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
               }
@@ -534,7 +537,7 @@ define(function (require) {
             "d": function (d) { return findPoints(d,2); },
             "stroke-width": function (d) {
               if (isSpringBond(d)) {
-                return Math.log(d.strength) / 4 + modelSize2px(0.005);
+                return springStrokeWidth(d);
               } else {
                 return modelSize2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
               }
@@ -621,6 +624,19 @@ define(function (require) {
 
     function isSpringBond(d){
       return d.type === RADIAL_BOND_TYPES.SHORT_SPRING;
+    }
+
+    function springStrokeWidth(d) {
+      return 1.25;
+      // The following code is intended to use a thicker stroke-width when
+      // the spring constant is larger ... but to work properly in models with
+      // both MD2D and MKS units schemes the model would need to supply
+      // an apprpriately scaled default spring constant.
+      // For example in the Spring and Mass Interactive which uses an MKS unit
+      // scheme the spring constant is varied between 0.001 and 0.003 ... while in
+      // the Comparing Dipole atom-pulling Interactive that uses an MD2D unit
+      // scheme the spring constant is 10.
+      // return (1 + Math.log(1+d.strength*1000)) * 0.25;
     }
 
     function vdwLinesEnter() {
@@ -803,7 +819,7 @@ define(function (require) {
             "width":  modelSize2px(size[0]),
             "height": modelSize2px(size[1]),
             "xml:space": "preserve",
-            "font-family": "'Open Sans', sans-serif",
+            "font-family": "'" + labConfig.fontface + "', sans-serif",
             "font-size": modelSize2px(0.12),
             "fill": function(d) { return d.color || "black"; },
             "text-data": function(d) { return d.text; },
@@ -1408,8 +1424,8 @@ define(function (require) {
           .attr("class", "modelTimeLabel")
           .text(modelTimeLabel())
           // Set text position to (0nm, 0nm) (model domain) and add small, constant offset in px.
-          .attr("x", model2px(0) + 3)
-          .attr("y", model2pxInv(0) - 3)
+          .attr("x", model2px(0) + fontSizeInPixels/3)
+          .attr("y", model2pxInv(0) - fontSizeInPixels/3)
           .attr("text-anchor", "start")
           .attr("fill", clockColor);
       }
@@ -1439,7 +1455,11 @@ define(function (require) {
     function setupRendererOptions() {
       imageProp = model.get("images");
       imageMapping = model.get("imageMapping");
-      if (model.url) {
+      modelImagePath = model.get('imagePath');
+      if (modelImagePath) {
+        imagePath = labConfig.actualRoot + modelImagePath;
+      }
+      else if (model.url) {
         imagePath = labConfig.actualRoot + model.url.slice(0, model.url.lastIndexOf("/") + 1);
       }
 
@@ -1557,6 +1577,8 @@ define(function (require) {
         model2pxInv = m2pxInv;
         modelSize2px = mSize2px;
       }
+      fontSizeInPixels = modelView.getFontSizeInPixels();
+
       setupObstacles();
       setupVdwPairs();
       setupColorsOfParticles();
@@ -1632,7 +1654,10 @@ define(function (require) {
       // Expose private methods.
       update: update,
       repaint: repaint,
-      reset: reset
+      reset: reset,
+      model2px: modelView.model2px,
+      model2pxInv: modelView.model2pxInv,
+      modelSize2px: modelView.modelSize2px
     };
 
     // Initialization.

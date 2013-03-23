@@ -38,11 +38,14 @@
       "groupKey": "basic-examples",
       "subtitle": "One way to display a table of atom properties.",
       "about": [
-        "There are three parts in this Interactive that work togerther to create the atom data table example.",
+        "There are three parts in this Interactive that work together to create the atom data table example.",
+        "",
         "1. Separate outputs are created for each datum to be represented in the table. The result is that the name values for these outputs can later be used for any component that can accept a model property.",
         "2. numericOutput compnents are created for each of the output properties. All the numericOutput components are given the same width in 'ems'.",
         "3. text components are created to make the row and column labels. The text components are given widths to match the rest of the values in that column.",
+        "",
         "The performance of this manual method for creating a table is not as high as if we made a custom table component.",
+        "",
         "atomToolTips are enabled in this Interactive, hover over an atom to display a tooltip, shift-click on an atom to make that tooltip persistent."
       ],
       "publicationStatus": "draft"
@@ -61,7 +64,8 @@
       "groupKey": "basic-examples",
       "subtitle": "Marking an atom and graphing it's kinetic energy.",
       "about": [
-        "There are 10 atoms in the model and the fifth one is both 'marked' and it's kinetic energy is graphed in the bar graph."
+        "There are 10 atoms in the model and the fifth one is both 'marked' and",
+        "it's kinetic energy is graphed in the bar graph."
       ],
       "publicationStatus": "public"
     },
@@ -71,7 +75,7 @@
       "groupKey": "basic-examples",
       "subtitle": "",
       "about": "",
-      "publicationStatus": "draft"
+      "publicationStatus": "public"
     },
     {
       "title": "callAt and callEvery Demo",
@@ -106,10 +110,16 @@
       "subtitle": "Overriding model and view properties in the Interactive.",
       "about": [
         "This interactive presents how an author can overwrite model properties.",
-        "Take a look at the interactive JSON and <b>models</b> hash. There are two nested objects:",
-        "<ul><li>viewOptions</li><li>modelOptions</li></ul>",
-        "Compare values of <i>showVelocityVectors</i> and <i>timeStep</i> with the model JSON.",
-        "You will notice that values defined in these sections take precedence over values in model JSON. Modify properties in these objects and click <b>Update Interactive</b> button to see changes."
+        "Take a look at the interactive JSON and **models** hash. There are two nested objects:",
+        "",
+        "- viewOptions",
+        "- modelOptions",
+        "",
+        "Compare values of _showVelocityVectors_ and _timeStep_ with the model JSON.",
+        "",
+        "You will notice that values defined in these sections take precedence over",
+        "values in model JSON. Modify properties in these objects and click the",
+        "**Update Interactive** button to see changes."
       ],
       "publicationStatus": "public"
     },
@@ -119,7 +129,7 @@
       "groupKey": "basic-examples",
       "subtitle": "Current layout system does not support embedded html.",
       "about": "",
-      "publicationStatus": "draft"
+      "publicationStatus": "broken"
     },
     {
       "title": "Testing: Layout Example",
@@ -130,13 +140,40 @@
       "publicationStatus": "public"
     },
     {
+      "title": "Markdown Demo",
+      "path": "interactives/basic-examples/markdown.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Use markdown syntax to format content of text components and about dialogs.",
+      "about": [
+        "*Markdown* can be also used in this dialog:",
+        "",
+        "#Heading 1#\n##Heading 2##\n###Heading 3####\n",
+        "",
+        "First paragraph. *Emphasis*.",
+        "",
+        "Second paragraph. **Strong**.",
+        "",
+        "Horizontal rule:\n- - -",
+        "",
+        "* An item in a bulleted list\n    * A subitem, indented with 4 spaces\n",
+        "",
+        "Inline image: ![Alt text](/resources/heatbath.gif \"CC logo\")",
+        "",
+        "Inline [link](http://daringfireball.net/projects/markdown/syntax \"Markdown Syntax\") pointing to Markdown Syntax description."
+      ],
+      "publicationStatus": "public"
+    },
+    {
       "title": "Oil and Water for Slow Computers",
       "path": "interactives/basic-examples/oil-and-water-for-slow-computers.json",
       "groupKey": "basic-examples",
       "subtitle": "44 charged and uncharged bonded atoms displaying both bonds and VDW lines.",
       "about": [
-        "This version of 'Oil and Water' is an experimental adaptation for slower computers amd browsers. Try the Performance Tuning selections for: <b>Regular</b>, <b>Slow Computer</b>, or <b>Tablet</b>.",
-        "Changing this selection sets the timeStep, timeStepsPerTick or modelSampleRate model parameters. See <a href=\"/readme.html#md2d-simulation-stepping\" class='opens-in-new-window' target='_blank'>readme</a> for more details."
+        "This version of 'Oil and Water' is an experimental adaptation for slower computers amd browsers.",
+        "Try the Performance Tuning selections for: **Regular**, **Slow Computer**, or **Tablet**.",
+        "",
+        "Changing this selection sets the timeStep, timeStepsPerTick or modelSampleRate model parameters.",
+        "See **[simulation-stepping](../../readme.html#md2d-simulation-stepping)** in readme for more details."
       ],
       "publicationStatus": "draft"
     },
@@ -175,7 +212,7 @@
       "publicationStatus": "public"
     },
     {
-      "title": "Pulldown and radio button used with custom parameters",
+      "title": "Pulldowns, radio buttons and custom parameters",
       "path": "interactives/basic-examples/pulldown-and-radio-buttons-with-custom-parameters.json",
       "groupKey": "basic-examples",
       "subtitle": "Testing property/value based pulldown and radio-button group using derived properties such as startingLength and startingAngle.",
@@ -187,7 +224,11 @@
       "path": "interactives/basic-examples/pulling-uncharged-atoms.json",
       "groupKey": "basic-examples",
       "subtitle": "Atoms can dragged to new positions, try pulling the red one a bit to the right and letting go. This model starts running when loaded.",
-      "about": "These atoms are uncharged and have a Van der Waals attraction. Pull one a short distance away and it will move back towards the other. However pull them far enough apart and they won't move back together.",
+      "about": [
+        "These atoms are uncharged and have a Van der Waals attraction. Pull one a short distance",
+        "away and it will move back towards the other. However pull them far enough apart and they",
+        "won't move back together."
+      ],
       "publicationStatus": "public"
     },
     {
@@ -199,13 +240,14 @@
       "publicationStatus": "public"
     },
     {
-      "title": "Explore model integration time step, period, and sample rate",
+      "title": "Model integration time step, period, and sample rate",
       "path": "interactives/basic-examples/sample-rate-and-refresh-rate.json",
       "groupKey": "basic-examples",
       "subtitle": "Model parameters controlling the integration time step, period, and sample rate can be customized.",
       "about": [
         "Try to change timeStep, timeStepsPerTick or modelSampleRate and observe changes in the speed of simulation execution.",
-        "See <a href=\"/readme.html#md2d-simulation-stepping\" class='opens-in-new-window' target='_blank'>readme</a> for more details."
+        "",
+        "See **[simulation-stepping](../../readme.html#md2d-simulation-stepping)** in readme for more details."
       ],
       "publicationStatus": "public"
     },
@@ -239,7 +281,7 @@
       "groupKey": "benchmarks",
       "subtitle": "19 uncharged and unbonded atoms.",
       "about": "",
-      "publicationStatus": "sample"
+      "publicationStatus": "public"
     },
     {
       "title": "Oil and Water",
@@ -247,7 +289,7 @@
       "groupKey": "benchmarks",
       "subtitle": "44 charged and uncharged bonded atoms displaying both bonds and VDW lines.",
       "about": "",
-      "publicationStatus": "sample"
+      "publicationStatus": "public"
     },
     {
       "title": "Temperature-Volume Relationship",
@@ -285,7 +327,7 @@
         "This model has 100 charged atoms, this means that the modeling engine spends proportionally more time calculating pairwise forces for the long-range Coulomb forces than in some of the other models.",
         "Since there are no bonds and no display of VDW lines the view is less computationaly intensive than other benchmarks."
       ],
-      "publicationStatus": "sample"
+      "publicationStatus": "public"
     },
     {
       "title": "Phase Changes Caused by Energy Input",
@@ -309,9 +351,17 @@
       "groupKey": "conversion-tests",
       "subtitle": "",
       "about": [
-        "A simple test checking whether the total momentum of each molecule (amino acids chain) is always equal to zero.",
-        "Amino acids in water or oil are pushed toward the molecule center of mass or in the opposite direction (it depends on the hydrophobicity of the amino acids). In most cases the sum of these forces would be different from zero and would cause a confusing movement of the molecule. They would drift and collide with boundaries.",
-        "To avoid this effect, Next Gen MW modifies velocities of each particle to ensure that the total momentum of the whole molecule is <b>always</b> equal to zero.",
+        "A simple test checking whether the total momentum of each molecule (amino acids chain)",
+        "is always equal to zero.",
+        "",
+        "Amino acids in water or oil are pushed toward the molecule center of mass or in the opposite",
+        "direction (it depends on the hydrophobicity of the amino acids). In most cases the sum of",
+        "these forces would be different from zero and would cause a confusing movement of the molecule.",
+        "They would drift and collide with boundaries.",
+        "",
+        "To avoid this effect, Next Gen MW modifies velocities of each particle to ensure that the",
+        "total momentum of the whole molecule is <b>always</b> equal to zero.",
+        "",
         "That's why you can observe that each molecule holds its initial position."
       ],
       "publicationStatus": "draft"
@@ -322,13 +372,14 @@
       "groupKey": "conversion-tests",
       "subtitle": "A basic test of the proteins engine.",
       "about": [
-        "Using this interactive you can:<ul>",
-        "<li>change type of amino acids (right click on the amino acid to open a special context menu),</li>",
-        "<li>test various coloring schemes and label types.</li></ul>",
-        "<li>watch their behavior in vacuum, oil and water,</li>",
-        "<li>modify strength of the force produced by the solvent,</li>",
-        "<li>switch on or off <i>realistic dielectric effect</i>,</li>",
-        "<li>experiment with advanced proteins engine settings like additional solvent force or polar amino acids attraction.</li>"
+        "Using this interactive you can:",
+        "",
+        "- change type of amino acids (right click on the amino acid to open a special context menu)",
+        "- test various coloring schemes and label types",
+        "- watch their behavior in vacuum, oil and water",
+        "- modify strength of the force produced by the solvent",
+        "- switch on or off _realistic dielectric effect_",
+        "- experiment with advanced proteins engine settings like additional solvent force or polar amino acids attraction"
       ],
       "publicationStatus": "draft"
     },
@@ -387,15 +438,33 @@
       "subtitle": "",
       "about": [
         "An interactive presenting the dielectric effect and its influence on Coulomb forces. The graph plots two variables:",
+        "",
         "- distance between particles (in nanometers),",
-        "- <b>effective</b> value of the dielectric constant (*).",
-        "What does <b>effective</b> mean in the context of dielectric constant?",
-        "Next Gen MW uses a special algorithm for calculation of the dielectric effect. When particles are close enough to each other, it assumes that the screening effect of the solvent (oil or water) should be diminished. That's why you can observe that the effective dielectric constant is significantly reduced when particles are closer than 1.2nm to each other.",
-        "The effective dielectric constant for Coulomb interaction of two particles is calculated using following equation:",
-        "<center><b>effectiveDC = 1 + (DC - 1)/(1 + exp(-12 * R + 7))</b></center>",
-        "where <b>DC</b> is an initial dielectric constant for solvent (e.g. 10 for water) and <b>R</b> is the distance between particles.",
-        "You can disable this algorithm and leave the value of the dielectric constant untouched (so, <b>effectiveDC = DC</b>) using the <b>Realistic Dielectric Effect</b> checkbox.",
-        "*<i>[ Note that the effectiveDielectric output property defined in the interactive JSON does <b>not</b> ask the model about the effective value, as it's unavailable in Scripting API and hidden deeply in the engine internals. Instead, it recalculates effective dielectric constant using the same algorithm like the engine. ]</i>"
+        "- **effective** value of the dielectric constant (*).",
+        "",
+        "What does **effective** mean in the context of dielectric constant?",
+        "",
+        "Next Gen MW uses a special algorithm for calculation of the dielectric effect.",
+        "When particles are close enough to each other, it assumes that the screening effect",
+        "of the solvent (oil or water) should be diminished. That's why you can observe that",
+        "the effective dielectric constant is significantly reduced when particles are closer",
+        "than 1.2nm to each other.",
+        "",
+        "The effective dielectric constant for Coulomb interaction of two particles is",
+        "calculated using following equation:",
+        "",
+        "**effectiveDC = 1 + (DC - 1)/(1 + exp(-12 * R + 7))**",
+        "",
+        "where **DC** is an initial dielectric constant for solvent (e.g. 10 for water)",
+        "and **R** is the distance between particles.",
+        "",
+        "You can disable this algorithm and leave the value of the dielectric constant",
+        "untouched (so, **effectiveDC = DC**) using the **Realistic Dielectric Effect** checkbox.",
+        "",
+        "_Note that the effectiveDielectric output property defined in the interactive JSON does",
+        "**not** ask the model about the effective value, as it's unavailable in Scripting API",
+        "and hidden deeply in the engine internals. Instead, it recalculates effective dielectric",
+        "constant using the same algorithm like the engine._"
       ],
       "publicationStatus": "public"
     },
@@ -438,6 +507,14 @@
       "subtitle": "",
       "about": "",
       "publicationStatus": "public"
+    },
+    {
+      "title": "Interactive with invalid model reference",
+      "path": "interactives/conversion-tests/invalid-model-reference.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
     },
     {
       "title": "Mark Atoms",
@@ -483,7 +560,7 @@
       "title": "Obstacle Friction",
       "path": "interactives/conversion-tests/obstacle-friction.json",
       "groupKey": "conversion-tests",
-      "subtitle": "Friction test: the obstacle should reach an atom after ~11 000 fs! You can also observe the Kinetic Energy graph.",
+      "subtitle": "Friction test: the obstacle should reach an atom after ~11 ps! You can also observe the Kinetic Energy graph.",
       "about": "",
       "publicationStatus": "public"
     },
@@ -626,8 +703,26 @@
       "subtitle": "Experiments replacing bitmap images with SVG documents to preserve quality when scaled up.",
       "about": [
         "This Interactive displays an image with a suggestion for how to start using the Interactive.",
+        "",
         "Current possible images including the SVG replacements for the png image:",
-        "<ol><li><a href='../../imports/legacy-mw-content/converted/layout-tests/svg-images/instructionBox.png' class='opens-in-new-window' target='_blank'>instructionBox.png</a> <i>(3.5K)</i><br>This is a 253x58 pixel png image. Will appear pixelated when scaled to larger sizes.</li><li><a href='../../imports/legacy-mw-content/converted/layout-tests/svg-images/instructionBox.svg' class='opens-in-new-window' target='_blank'>instructionBox.svg</a> <i>(33K)</i><br>Created with Adobe Illustrator this SVG image uses an embedded base64 image for the drop-shadow effect. Additionally explicit paths are used to draw the text instead of using SVG text objects, this makes the text rendering independent of whether a specific font is installed on the users computer.</li><li><a href='../../imports/legacy-mw-content/converted//layout-tests/svg-images/instructionBox2.svg' class='opens-in-new-window' target='_blank'>instructionBox2.svg</a> <i>(2.8K)</i><br>Created using the open-source Inkscape application this SVG image uses SVG text elements and does not have a drop shadow.</li><li><a href='../../imports/legacy-mw-content/converted//layout-tests/svg-images/instructionBox3.svg' class='opens-in-new-window' target='_blank'>instructionBox3.svg</a> <i>(1.2K)</i><br>Created by hand, this SVG image uses SVG text elements and the SVG feGaussianBlur filter to create the drop-shadow effect.</li></ol>"
+        "",
+        "1. [instructionBox.png](../../imports/legacy-mw-content/converted/layout-tests/svg-images/instructionBox.png)",
+        "",
+        "   This is a 253x58 pixel png image. Will appear pixelated when scaled to larger sizes.",
+        "",
+        "2. [instructionBox.svg](../../imports/legacy-mw-content/converted/layout-tests/svg-images/instructionBox.svg)",
+        "",
+        "   Created with Adobe Illustrator this SVG image uses an embedded base64 image for the drop-shadow effect.",
+        "   Additionally explicit paths are used to draw the text instead of using SVG text objects, this makes the text",
+        "   rendering independent of whether a specific font is installed on the users computer.",
+        "",
+        "3. [instructionBox2.svg](../../imports/legacy-mw-content/converted//layout-tests/svg-images/instructionBox2.svg)",
+        "",
+        "   Created using the open-source Inkscape application this SVG image uses SVG text elements and does not have a drop shadow.",
+        "",
+        "4. [instructionBox3.svg](../../imports/legacy-mw-content/converted//layout-tests/svg-images/instructionBox3.svg)",
+        "",
+        "   Created by hand, this SVG image uses SVG text elements and the SVG feGaussianBlur filter to create the drop-shadow effect."
       ],
       "publicationStatus": "public"
     },
@@ -664,11 +759,33 @@
       "publicationStatus": "draft"
     },
     {
+      "title": "Diffusion Temperature",
+      "path": "interactives/sam/diffusion/1-2-diffusion-temp.json",
+      "groupKey": "sam/diffusion",
+      "subtitle": "How does temperature affect the rate of diffusion?",
+      "about": "Click remove barrier to begin measuring how long it takes for the blue molecules to diffuse across the container.",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Basic Diffusion on click",
+      "path": "interactives/sam/diffusion/1-2-dropping-dye-on-click.json",
+      "groupKey": "sam/diffusion",
+      "subtitle": "Watch a drop of dye spreading out in water.",
+      "about": [
+        "Click in the model to add a drop of dye.  Watch how the molecules move through the water.",
+        "Trace a random individual molecule to see how it moves through the liquid."
+      ],
+      "publicationStatus": "draft"
+    },
+    {
       "title": "Basic Diffusion",
       "path": "interactives/sam/diffusion/1-2-dropping-dye.json",
       "groupKey": "sam/diffusion",
-      "subtitle": "A drop of dye spreading out in water.",
-      "about": "Click in the model to drop a small amount of dye and observe how it diffuses through the water.",
+      "subtitle": "Watch a drop of dye spreading out in water.",
+      "about": [
+        "Add a drop of dye to the model.  Watch how the molecules move through the water.",
+        "Trace a random individual molecule to see how it moves through the liquid."
+      ],
       "publicationStatus": "draft"
     },
     {
@@ -685,9 +802,14 @@
       "groupKey": "sam/gas-laws",
       "subtitle": "Explore how gas exerts pressure on the sides of a container.",
       "about": [
-        "Gases have no definite shape or volume. When they are constrained to a container, we can measure the pressure they exert on the container walls.",
-        "The model shows the inside (yellow atoms) and outside (pink atoms) of a balloon. The green barrier represents the wall of the balloon.",
-        "Add atoms to the balloon (the number of atoms in the balloon is shown on the slider). What happens to the balloon wall when atoms are added?"
+        "Gases have no definite shape or volume. When they are constrained to a container,",
+        "we can measure the pressure they exert on the container walls.",
+        "",
+        "The model shows the inside (yellow atoms) and outside (pink atoms) of a balloon.",
+        "The green barrier represents the wall of the balloon.",
+        "",
+        "Add atoms to the balloon (the number of atoms in the balloon is shown on the slider).",
+        "What happens to the balloon wall when atoms are added?"
       ],
       "publicationStatus": "public"
     },
@@ -698,7 +820,10 @@
       "subtitle": "Explore how the volume of a gas affects pressure.",
       "about": [
         "Gases can be compressed into smaller volumes. How does compressing a gas affect its pressure?",
-        "Run the model, then change the volume of the containers and observe the change in pressure. The moving wall converts the effect of molecular collisions into pressure and acts as a pressure gauge. What happens to the pressure when the volume changes?"
+        "",
+        "Run the model, then change the volume of the containers and observe the change in pressure.",
+        "The moving wall converts the effect of molecular collisions into pressure and acts as a pressure gauge.",
+        "What happens to the pressure when the volume changes?"
       ],
       "publicationStatus": "public"
     },
@@ -707,7 +832,11 @@
       "path": "interactives/sam/gas-laws/4-temperature-volume-relationship.json",
       "groupKey": "sam/gas-laws",
       "subtitle": "Investigate the relationship between temperature and the volume of a gas.",
-      "about": "This model contains gas molecules on the left side and a barrier that moves when the volume of gas expands or contracts, keeping the pressure constant. Run the model and change the temperature. Why does the barrier move when the temperature changes?",
+      "about": [
+        "This model contains gas molecules on the left side and a barrier that moves when the",
+        "volume of gas expands or contracts, keeping the pressure constant. Run the model and",
+        "change the temperature. Why does the barrier move when the temperature changes?"
+      ],
       "publicationStatus": "public"
     },
     {
@@ -723,7 +852,12 @@
       "path": "interactives/sam/gas-laws/6-number-volume-relationship.json",
       "groupKey": "sam/gas-laws",
       "subtitle": "Explore how the volume of a gas is related to the number of gas molecules.",
-      "about": "The model contains gas molecules under constant pressure. The barrier moves when the volume of gas expands or contracts. Run the model and select different numbers of molecules from the drop-down menu. What is the relationship between the number of molecules and the volume of a gas?",
+      "about": [
+        "The model contains gas molecules under constant pressure. The barrier moves when the",
+        "volume of gas expands or contracts. Run the model and select different numbers of",
+        "molecules from the drop-down menu. What is the relationship between the number of",
+        "molecules and the volume of a gas?"
+      ],
       "publicationStatus": "public"
     },
     {
@@ -732,9 +866,15 @@
       "groupKey": "sam/gas-laws",
       "subtitle": "Explore how heat and number of molecules affect pressure equilibrium between two gases.",
       "about": [
-        "There are gases on both sides of a moveable barrier (piston), which stays in the same place (more or less) when you run the model because the gas pressure on the piston is in equilibrium.",
-        "Add purple gas molecules and watch what happens to the piston. Reset the model. Now add yellow gas molecules. What happens to the piston?",
-        "Try heating or cooling the gas molecules. Explain the change in equilibrium with each change. Which has a greater effect on equilibrium -- changing the number of gas molecules or changing the temperature? Why?"
+        "There are gases on both sides of a moveable barrier (piston), which stays in the same place",
+        "(more or less) when you run the model because the gas pressure on the piston is in equilibrium.",
+        "",
+        "Add purple gas molecules and watch what happens to the piston. Reset the model. Now add",
+        "yellow gas molecules. What happens to the piston?",
+        "",
+        "Try heating or cooling the gas molecules. Explain the change in equilibrium with each",
+        "change. Which has a greater effect on equilibrium -- changing the number of gas molecules",
+        "or changing the temperature? Why?"
       ],
       "publicationStatus": "public"
     },
@@ -745,7 +885,10 @@
       "subtitle": "A very simple interactive with polar molecules on the left and non-polar molecules on the right.",
       "about": [
         "All matter is attracted to all other matter. How does this work?",
-        "This interactive shows polar molecules (with charges) and non-polar molecules in a container with each other. Drag molecules around to see how they are attracted to each other. Dotted lines indicate intermolecular attractions."
+        "",
+        "This interactive shows polar molecules (with charges) and non-polar molecules in a",
+        "container with each other. Drag molecules around to see how they are attracted to",
+        "each other. Dotted lines indicate intermolecular attractions."
       ],
       "publicationStatus": "public"
     },
@@ -755,8 +898,11 @@
       "groupKey": "sam/intermolecular-attractions",
       "subtitle": "Explore the difference in attractive forces between polar and non-polar molecules.",
       "about": [
-        "Explore the different strengths of dipole-dipole (polar) and London dispersion (non-polar) attractions. These intermolecular attractions are shown by dotted lines between the pairs of molecules.",
-        "Choose a pair of molecules from the drop-down menu and \"pull\" on the star to separate the molecules. Which type of intermolecular attraction is strongest?"
+        "Explore the different strengths of dipole-dipole (polar) and London dispersion (non-polar)",
+        "attractions. These intermolecular attractions are shown by dotted lines between the pairs of molecules.",
+        "",
+        "Choose a pair of molecules from the drop-down menu and \"pull\" on the star to separate the",
+        "molecules. Which type of intermolecular attraction is strongest?"
       ],
       "publicationStatus": "public"
     },
@@ -765,7 +911,11 @@
       "path": "interactives/sam/intermolecular-attractions/3-1-oil-and-water.json",
       "groupKey": "sam/intermolecular-attractions",
       "subtitle": "Explore how polar and non-polar substances interact.",
-      "about": "It is well known that \"oil and water don’t mix.\" But why? Run the model of polar water (blue and red) and non-polar oil (gray). \"Shake up the oil and water mixture,\" then run it again and watch what happens to the molecules over time.",
+      "about": [
+        "It is well known that \"oil and water don’t mix.\" But why? Run the model",
+        "of polar water (blue and red) and non-polar oil (gray). \"Shake up the oil and water mixture,\"",
+        "then run it again and watch what happens to the molecules over time."
+      ],
       "publicationStatus": "public"
     },
     {
@@ -773,7 +923,11 @@
       "path": "interactives/sam/intermolecular-attractions/3-2-boiling-point-and-solubility.json",
       "groupKey": "sam/intermolecular-attractions",
       "subtitle": "Explore what boiling looks like at the molecular level with both polar and non-polar substances.",
-      "about": "Non-polar molecules (gray) evaporate or boil more quickly than polar molecules (blue and red). Attractions between molecules are shown with dotted lines. Run the model, then heat the liquids. What does boiling look like at the molecular level?",
+      "about": [
+        "Non-polar molecules (gray) evaporate or boil more quickly than polar molecules (blue and red).",
+        "Attractions between molecules are shown with dotted lines. Run the model, then heat the liquids.",
+        "What does boiling look like at the molecular level?"
+      ],
       "publicationStatus": "public"
     },
     {
@@ -781,7 +935,11 @@
       "path": "interactives/sam/intermolecular-attractions/4-strengthening-dipole-dipole-attractions.json",
       "groupKey": "sam/intermolecular-attractions",
       "subtitle": "Explore the different attractive forces between molecules of varying polarity.",
-      "about": "Attractions between polar molecules vary. Choose a pair of molecules from the drop-down menu and \"pull\" on the star to separate the molecules. Why does polarity have an effect on the strength of attraction between molecules?",
+      "about": [
+        "Attractions between polar molecules vary. Choose a pair of molecules from the drop-down",
+        "menu and \"pull\" on the star to separate the molecules. Why does polarity have an effect",
+        "on the strength of attraction between molecules?"
+      ],
       "publicationStatus": "public"
     },
     {
@@ -789,7 +947,11 @@
       "path": "interactives/sam/intermolecular-attractions/5-strengthening-london-dispersion-attraction.json",
       "groupKey": "sam/intermolecular-attractions",
       "subtitle": "Explore how differences in molecular size and shape affect the strength of London Dispersion attractions.",
-      "about": "Some non-polar molecules have stronger attractions than others. Choose a pair of molecules from the drop-down menu and \"pull\" on the star to separate the molecules. Why do size and shape affect the strength of attraction between two non-polar molecules?",
+      "about": [
+        "Some non-polar molecules have stronger attractions than others. Choose a pair of",
+        "molecules from the drop-down menu and \"pull\" on the star to separate the molecules.",
+        "Why do size and shape affect the strength of attraction between two non-polar molecules?"
+      ],
       "publicationStatus": "public"
     },
     {
@@ -799,7 +961,9 @@
       "subtitle": "Explore how polar molecules interact via hydrogen bonds.",
       "about": [
         "Explore hydrogen bonds forming between polar molecules, such as water. Hydrogen bonds are shown with dotted lines.",
-        "Show partial charges and run the model. Where do hydrogen bonds form? Try changing the temperature of the model. How does the pattern of hydrogen bonding explain the lattice that makes up ice crystals?"
+        "",
+        "Show partial charges and run the model. Where do hydrogen bonds form? Try changing the temperature",
+        "of the model. How does the pattern of hydrogen bonding explain the lattice that makes up ice crystals?"
       ],
       "publicationStatus": "public"
     },
@@ -816,7 +980,11 @@
       "path": "interactives/sam/phase-change/2-two-types-of-gases.json",
       "groupKey": "sam/phase-change",
       "subtitle": "Explore how molecules in a gas move relative to each other.",
-      "about": "Molecules are in constant motion. \"Mark two atoms,\" then run the model to see how the molecules move relative to each other. How do the distances between gas molecules change over time?",
+      "about": [
+        "Molecules are in constant motion. \"Mark two atoms,\" then run the model to see",
+        "how the molecules move relative to each other. How do the distances between gas",
+        "molecules change over time?"
+      ],
       "publicationStatus": "public"
     },
     {
@@ -824,7 +992,11 @@
       "path": "interactives/sam/phase-change/3-liquids.json",
       "groupKey": "sam/phase-change",
       "subtitle": "Explore how molecules in a liquid move.",
-      "about": "Molecules are in constant motion. \"Mark two atoms,\" then run the model to see how the molecules in a liquid move relative to each other. How does the movement of molecules explain why liquids take the shape of their containers?",
+      "about": [
+        "Molecules are in constant motion. \"Mark two atoms,\" then run the model to see",
+        "how the molecules in a liquid move relative to each other. How does the movement",
+        "of molecules explain why liquids take the shape of their containers?"
+      ],
       "publicationStatus": "public"
     },
     {
@@ -832,7 +1004,11 @@
       "path": "interactives/sam/phase-change/4-solids.json",
       "groupKey": "sam/phase-change",
       "subtitle": "What does a solid look like at the molecular level?",
-      "about": "Molecules are in constant motion—even those in a solid! \"Mark two atoms,\" then run the model to see how the molecules in a solid move relative to each other. How would you describe the movement and arrangement of molecules in a solid?",
+      "about": [
+        "Molecules are in constant motion—even those in a solid! \"Mark two atoms,\" then",
+        "run the model to see how the molecules in a solid move relative to each other. How",
+        "would you describe the movement and arrangement of molecules in a solid?"
+      ],
       "publicationStatus": "public"
     },
     {
@@ -840,8 +1016,30 @@
       "path": "interactives/sam/phase-change/5-interatomic-interactions-and-states.json",
       "groupKey": "sam/phase-change",
       "subtitle": "Explore how states of matter are related to the strength of intermolecular attractions.",
-      "about": "There are three states of matter—solid, liquid and gas. Run the model and change the strength of attractions between the molecules. How does changing the force of attraction between molecules affect the state of that material?",
+      "about": [
+        "There are three states of matter—solid, liquid and gas. Run the model and change the",
+        "strength of attractions between the molecules. How does changing the force of attraction",
+        "between molecules affect the state of that material?"
+      ],
       "publicationStatus": "public"
+    },
+    {
+      "title": "Phase Changes",
+      "path": "interactives/sam/phase-change/6-phase-changes-caused-by-energy-input-two-bar-graphs.json",
+      "groupKey": "sam/phase-change",
+      "subtitle": "Explore how energy input causes matter to change states.",
+      "about": [
+        "Matter exists as solids, liquids and gases, and can change state between these.",
+        "",
+        "The model shows a liquid material on the left (small atoms). The amount of heat",
+        "energy is shown by kinetic energy (KE) shading, with deeper shades of red",
+        "representing more energetic atoms. On the right side of the barrier is a solid",
+        "material (large atoms).",
+        "",
+        "Run the model. How much energy is able to penetrate the barrier? Remove the barrier.",
+        "How quickly do the more energetic atoms melt the solid?"
+      ],
+      "publicationStatus": "draft"
     },
     {
       "title": "Phase Changes",
@@ -850,8 +1048,14 @@
       "subtitle": "Explore how energy input causes matter to change states.",
       "about": [
         "Matter exists as solids, liquids and gases, and can change state between these.",
-        "The model shows a liquid material on the left (small atoms). The amount of heat energy is shown by kinetic energy (KE) shading, with deeper shades of red representing more energetic atoms. On the right side of the barrier is a solid material (large atoms).",
-        "Run the model. How much energy is able to penetrate the barrier? Remove the barrier. How quickly do the more energetic atoms melt the solid?"
+        "",
+        "The model shows a liquid material on the left (small atoms). The amount of heat",
+        "energy is shown by kinetic energy (KE) shading, with deeper shades of red",
+        "representing more energetic atoms. On the right side of the barrier is a solid",
+        "material (large atoms).",
+        "",
+        "Run the model. How much energy is able to penetrate the barrier? Remove the barrier.",
+        "How quickly do the more energetic atoms melt the solid?"
       ],
       "publicationStatus": "public"
     },
@@ -868,7 +1072,11 @@
       "path": "interactives/samples/1-oil-and-water-shake.json",
       "groupKey": "samples",
       "subtitle": "Explore how polar and non-polar substances interact.",
-      "about": "It is well known that \"oil and water don’t mix.\" But why? Run the model of polar water (blue and red) and non-polar oil (gray). \"Shake up the oil and water mixture,\" then run it again and watch what happens to the molecules over time.",
+      "about": [
+        "It is well known that \"oil and water don’t mix.\" But why? Run the model of",
+        "polar water (blue and red) and non-polar oil (gray). \"Shake up the oil and water",
+        "mixture,\" then run it again and watch what happens to the molecules over time."
+      ],
       "publicationStatus": "sample"
     },
     {
@@ -885,8 +1093,11 @@
       "groupKey": "samples",
       "subtitle": "Explore Coulomb and Intermolecular Attractions",
       "about": [
-        "There are two kinds of attractive forces shown in this model: Coulomb forces (the attraction between ions) and Van der Waals forces (an additional attractive force between all atoms).",
-        "What kinds of patterns tend to form with charged and neutral atoms? How does changing the Van der Waals attraction or charging the atoms affect the melting and boiling point of the substance?"
+        "There are two kinds of attractive forces shown in this model: Coulomb forces (the attraction between ions)",
+        "and Van der Waals forces (an additional attractive force between all atoms).",
+        "",
+        "What kinds of patterns tend to form with charged and neutral atoms? How does changing the Van der Waals",
+        "attraction or charging the atoms affect the melting and boiling point of the substance?"
       ],
       "publicationStatus": "sample"
     },
@@ -896,8 +1107,11 @@
       "groupKey": "samples",
       "subtitle": "Explore Coulomb and Intermolecular Attractions",
       "about": [
-        "There are two kinds of attractive forces shown in this model: Coulomb forces (the attraction between ions) and Van der Waals forces (an additional attractive force between all atoms).",
-        "What kinds of patterns tend to form with charged and neutral atoms? How does changing the Van der Waals attraction or charging the atoms affect the melting and boiling point of the substance?"
+        "There are two kinds of attractive forces shown in this model: Coulomb forces (the attraction between ions)",
+        "and Van der Waals forces (an additional attractive force between all atoms).",
+        "",
+        "What kinds of patterns tend to form with charged and neutral atoms? How does changing the Van der Waals",
+        "attraction or charging the atoms affect the melting and boiling point of the substance?"
       ],
       "publicationStatus": "sample"
     },
@@ -907,16 +1121,1196 @@
       "groupKey": "samples",
       "subtitle": "Explore simple protein folding.",
       "about": [
-        "Discover how the properties of amino acids in a protein interact with their environment to cause proteins to fold in a particular way.",
-        "Generate different proteins, select the solvent type, and change the color scheme for amino acids using the buttons below the model.",
+        "Discover how the properties of amino acids in a protein interact with their",
+        "environment to cause proteins to fold in a particular way.",
+        "",
+        "Generate different proteins, select the solvent type, and change the color",
+        "scheme for amino acids using the buttons below the model.",
+        "",
         "Change specific amino acids in a protein by right-clicking on them."
       ],
       "publicationStatus": "public"
     },
     {
-      "title": "Pendulum 1",
-      "path": "interactives/student/classic/pendulum/1-pendulum1.json",
+      "title": "blockfeeder",
+      "path": "interactives/student/classic/motion/blockfeeder.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "bohr",
+      "path": "interactives/student/classic/motion/bohr.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "cantileverbeam",
+      "path": "interactives/student/classic/motion/cantileverbeam.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "centrifugal",
+      "path": "interactives/student/classic/motion/centrifugal.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "chain",
+      "path": "interactives/student/classic/motion/chain.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "chebyshev",
+      "path": "interactives/student/classic/motion/chebyshev.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "crawler",
+      "path": "interactives/student/classic/motion/crawler.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "cycloid",
+      "path": "interactives/student/classic/motion/cycloid.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "daintywalker",
+      "path": "interactives/student/classic/motion/daintywalker.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "dam",
+      "path": "interactives/student/classic/motion/dam.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "draftingmachine",
+      "path": "interactives/student/classic/motion/draftingmachine.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "epicycloid",
+      "path": "interactives/student/classic/motion/epicycloid.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "epitrochoid",
+      "path": "interactives/student/classic/motion/epitrochoid.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "friction",
+      "path": "interactives/student/classic/motion/friction.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "galtonboard",
+      "path": "interactives/student/classic/motion/galtonboard.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "galtonboard2",
+      "path": "interactives/student/classic/motion/galtonboard2.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "genevadrive",
+      "path": "interactives/student/classic/motion/genevadrive.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "genevadrive3arm0",
+      "path": "interactives/student/classic/motion/genevadrive3arm0.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hoekens",
+      "path": "interactives/student/classic/motion/hoekens.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hourglass",
+      "path": "interactives/student/classic/motion/hourglass.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hypocycloid",
+      "path": "interactives/student/classic/motion/hypocycloid.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "inclinedplane",
+      "path": "interactives/student/classic/motion/inclinedplane.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "inversependulum",
+      "path": "interactives/student/classic/motion/inversependulum.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "inversependulum2",
+      "path": "interactives/student/classic/motion/inversependulum2.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "inverteddoublependulum",
+      "path": "interactives/student/classic/motion/inverteddoublependulum.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "ladder",
+      "path": "interactives/student/classic/motion/ladder.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "longitudinalwavespring",
+      "path": "interactives/student/classic/motion/longitudinalwavespring.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "mechanicalwave",
+      "path": "interactives/student/classic/motion/mechanicalwave.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "momentumconservation",
+      "path": "interactives/student/classic/motion/momentumconservation.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "orbital1",
+      "path": "interactives/student/classic/motion/orbital1.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "pattern",
+      "path": "interactives/student/classic/motion/pattern.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "peaucellier",
+      "path": "interactives/student/classic/motion/peaucellier.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "pm1",
+      "path": "interactives/student/classic/motion/pm1.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "pouring",
+      "path": "interactives/student/classic/motion/pouring.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "pumpjack",
+      "path": "interactives/student/classic/motion/pumpjack.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "rolloninclinedplane",
+      "path": "interactives/student/classic/motion/rolloninclinedplane.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "rope",
+      "path": "interactives/student/classic/motion/rope.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "scotchyoke",
+      "path": "interactives/student/classic/motion/scotchyoke.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "stringwave",
+      "path": "interactives/student/classic/motion/stringwave.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "stringwave2",
+      "path": "interactives/student/classic/motion/stringwave2.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "undershotwaterwheel",
+      "path": "interactives/student/classic/motion/undershotwaterwheel.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "waterpump",
+      "path": "interactives/student/classic/motion/waterpump.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "waterwheel",
+      "path": "interactives/student/classic/motion/waterwheel.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "watt",
+      "path": "interactives/student/classic/motion/watt.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "windshieldwiper",
+      "path": "interactives/student/classic/motion/windshieldwiper.json",
+      "groupKey": "student/classic/motion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "NewtonCradle",
+      "path": "interactives/student/classic/pendulum/NewtonCradle.json",
       "groupKey": "student/classic/pendulum",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "doublependulum1",
+      "path": "interactives/student/classic/pendulum/doublependulum1.json",
+      "groupKey": "student/classic/pendulum",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "pendulum1",
+      "path": "interactives/student/classic/pendulum/pendulum1.json",
+      "groupKey": "student/classic/pendulum",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "pendulum2",
+      "path": "interactives/student/classic/pendulum/pendulum2.json",
+      "groupKey": "student/classic/pendulum",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "pendulum3",
+      "path": "interactives/student/classic/pendulum/pendulum3.json",
+      "groupKey": "student/classic/pendulum",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "pendulumarray14",
+      "path": "interactives/student/classic/pendulum/pendulumarray14.json",
+      "groupKey": "student/classic/pendulum",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "pendulumarray4",
+      "path": "interactives/student/classic/pendulum/pendulumarray4.json",
+      "groupKey": "student/classic/pendulum",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "pendulumarray8",
+      "path": "interactives/student/classic/pendulum/pendulumarray8.json",
+      "groupKey": "student/classic/pendulum",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "slidingpendulum",
+      "path": "interactives/student/classic/pendulum/slidingpendulum.json",
+      "groupKey": "student/classic/pendulum",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "triplependulum",
+      "path": "interactives/student/classic/pendulum/triplependulum.json",
+      "groupKey": "student/classic/pendulum",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "2dvs3d",
+      "path": "interactives/tutorial/2dvs3d.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "AvposAction",
+      "path": "interactives/tutorial/AvposAction.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "BuildMolecule",
+      "path": "interactives/tutorial/BuildMolecule.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "CountingTool",
+      "path": "interactives/tutorial/CountingTool.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "CustomerTask",
+      "path": "interactives/tutorial/CustomerTask.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "DampingAction",
+      "path": "interactives/tutorial/DampingAction.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "EllipseInModel$1",
+      "path": "interactives/tutorial/EllipseInModel$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "EllipseInModel",
+      "path": "interactives/tutorial/EllipseInModel.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "ImageInModel",
+      "path": "interactives/tutorial/ImageInModel.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "LineInModel$1",
+      "path": "interactives/tutorial/LineInModel$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "LineInModel",
+      "path": "interactives/tutorial/LineInModel.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "ModelA",
+      "path": "interactives/tutorial/ModelA.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "ModelB",
+      "path": "interactives/tutorial/ModelB.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "ModelC",
+      "path": "interactives/tutorial/ModelC.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Model_A",
+      "path": "interactives/tutorial/Model_A.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Model_B",
+      "path": "interactives/tutorial/Model_B.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Model_C",
+      "path": "interactives/tutorial/Model_C.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "NegativePressure",
+      "path": "interactives/tutorial/NegativePressure.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "NegativePressure_attraction",
+      "path": "interactives/tutorial/NegativePressure_attraction.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "NegativePressure_hardsphere",
+      "path": "interactives/tutorial/NegativePressure_hardsphere.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "PointHeater",
+      "path": "interactives/tutorial/PointHeater.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "RectangleInModel$1",
+      "path": "interactives/tutorial/RectangleInModel$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "RectangleInModel",
+      "path": "interactives/tutorial/RectangleInModel.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "RotatingBenzene",
+      "path": "interactives/tutorial/RotatingBenzene.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "SetupSimulation",
+      "path": "interactives/tutorial/SetupSimulation.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "SlidingObstacle",
+      "path": "interactives/tutorial/SlidingObstacle.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "SteerObstacle",
+      "path": "interactives/tutorial/SteerObstacle.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "SteerParticle",
+      "path": "interactives/tutorial/SteerParticle.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "TextBoxInModel",
+      "path": "interactives/tutorial/TextBoxInModel.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "TriangleInModel$1",
+      "path": "interactives/tutorial/TriangleInModel$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "TriangleInModel",
+      "path": "interactives/tutorial/TriangleInModel.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "accessAtomProp",
+      "path": "interactives/tutorial/accessAtomProp.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "accuracyproof1",
+      "path": "interactives/tutorial/accuracyproof1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "accuracyproof2",
+      "path": "interactives/tutorial/accuracyproof2.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "alphatext",
+      "path": "interactives/tutorial/alphatext.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "anytimeseries",
+      "path": "interactives/tutorial/anytimeseries.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "autoscrolltext",
+      "path": "interactives/tutorial/autoscrolltext.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "autostop",
+      "path": "interactives/tutorial/autostop.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "barostat$1",
+      "path": "interactives/tutorial/barostat$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "barostat",
+      "path": "interactives/tutorial/barostat.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "boundary",
+      "path": "interactives/tutorial/boundary.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "changeVelocityAction",
+      "path": "interactives/tutorial/changeVelocityAction.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "chargeAction",
+      "path": "interactives/tutorial/chargeAction.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "collisiondetectiontest",
+      "path": "interactives/tutorial/collisiondetectiontest.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "collisiondetectiontest1",
+      "path": "interactives/tutorial/collisiondetectiontest1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "compare",
+      "path": "interactives/tutorial/compare.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "dragAction",
+      "path": "interactives/tutorial/dragAction.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "dropAction$1",
+      "path": "interactives/tutorial/dropAction$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "dropAction",
+      "path": "interactives/tutorial/dropAction.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "duplicateAction",
+      "path": "interactives/tutorial/duplicateAction.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "flow",
+      "path": "interactives/tutorial/flow.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "gas",
+      "path": "interactives/tutorial/gas.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "h2o$1",
+      "path": "interactives/tutorial/h2o$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "h2o",
+      "path": "interactives/tutorial/h2o.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "h2o_energies",
+      "path": "interactives/tutorial/h2o_energies.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "h2o_molefraction_linegraph",
+      "path": "interactives/tutorial/h2o_molefraction_linegraph.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "h2o_pressure",
+      "path": "interactives/tutorial/h2o_pressure.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "h2o_spark",
+      "path": "interactives/tutorial/h2o_spark.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "heatbath$1",
+      "path": "interactives/tutorial/heatbath$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "heatbath",
+      "path": "interactives/tutorial/heatbath.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "heattransfer",
+      "path": "interactives/tutorial/heattransfer.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "html_button",
+      "path": "interactives/tutorial/html_button.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "html_checkbox",
+      "path": "interactives/tutorial/html_checkbox.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "html_combobox",
+      "path": "interactives/tutorial/html_combobox.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "html_layout",
+      "path": "interactives/tutorial/html_layout.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "html_radiobutton",
+      "path": "interactives/tutorial/html_radiobutton.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "html_textfield",
+      "path": "interactives/tutorial/html_textfield.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "imagequestion",
+      "path": "interactives/tutorial/imagequestion.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "insertCheckBox",
+      "path": "interactives/tutorial/insertCheckBox.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "insertGauge",
+      "path": "interactives/tutorial/insertGauge.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "insertModel",
+      "path": "interactives/tutorial/insertModel.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "insertRadioButton",
+      "path": "interactives/tutorial/insertRadioButton.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "insertSlider$1",
+      "path": "interactives/tutorial/insertSlider$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "insertSlider",
+      "path": "interactives/tutorial/insertSlider.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "insertSpinner",
+      "path": "interactives/tutorial/insertSpinner.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "instrument",
+      "path": "interactives/tutorial/instrument.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "intrapage$1",
+      "path": "interactives/tutorial/intrapage$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "intrapage",
+      "path": "interactives/tutorial/intrapage.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "intro4elem",
+      "path": "interactives/tutorial/intro4elem.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "intro_2d",
+      "path": "interactives/tutorial/intro_2d.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "isopressure",
+      "path": "interactives/tutorial/isopressure.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "isopressure_onetype",
+      "path": "interactives/tutorial/isopressure_onetype.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "laptest1",
+      "path": "interactives/tutorial/laptest1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "laptest2",
+      "path": "interactives/tutorial/laptest2.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "liquid",
+      "path": "interactives/tutorial/liquid.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "magneticreverse$1",
+      "path": "interactives/tutorial/magneticreverse$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "magneticreverse",
+      "path": "interactives/tutorial/magneticreverse.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "makeBendAction",
+      "path": "interactives/tutorial/makeBendAction.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "makeBondAction",
+      "path": "interactives/tutorial/makeBondAction.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "markAction",
+      "path": "interactives/tutorial/markAction.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "measureDistanceAction",
+      "path": "interactives/tutorial/measureDistanceAction.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "mesogen1",
+      "path": "interactives/tutorial/mesogen1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "microbuoyancy",
+      "path": "interactives/tutorial/microbuoyancy.json",
+      "groupKey": "tutorial",
       "subtitle": "",
       "about": "",
       "publicationStatus": "draft"
@@ -930,10 +2324,722 @@
       "publicationStatus": "draft"
     },
     {
+      "title": "modelIO",
+      "path": "interactives/tutorial/modelIO.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "model_example",
+      "path": "interactives/tutorial/model_example.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "monitortemperature",
+      "path": "interactives/tutorial/monitortemperature.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "mousesteer",
+      "path": "interactives/tutorial/mousesteer.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "multipressureprobe",
+      "path": "interactives/tutorial/multipressureprobe.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "osmoticpressure",
+      "path": "interactives/tutorial/osmoticpressure.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "periodic$1",
+      "path": "interactives/tutorial/periodic$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "periodic",
+      "path": "interactives/tutorial/periodic.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "phasedetection",
+      "path": "interactives/tutorial/phasedetection.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "pressurediff",
+      "path": "interactives/tutorial/pressurediff.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "pressureprobe",
+      "path": "interactives/tutorial/pressureprobe.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "probingphasetransition",
+      "path": "interactives/tutorial/probingphasetransition.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "prosyn",
+      "path": "interactives/tutorial/prosyn.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "prosyn2",
+      "path": "interactives/tutorial/prosyn2.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "recordSimulation",
+      "path": "interactives/tutorial/recordSimulation.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "report",
+      "path": "interactives/tutorial/report.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "report2",
+      "path": "interactives/tutorial/report2.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "report2_1",
+      "path": "interactives/tutorial/report2_1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "report2_2",
+      "path": "interactives/tutorial/report2_2.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "resizeAction",
+      "path": "interactives/tutorial/resizeAction.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "restrainAction",
+      "path": "interactives/tutorial/restrainAction.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "rotateAction",
+      "path": "interactives/tutorial/rotateAction.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_add",
+      "path": "interactives/tutorial/script_add.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_averageforce",
+      "path": "interactives/tutorial/script_averageforce.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_averageposition",
+      "path": "interactives/tutorial/script_averageposition.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_beep",
+      "path": "interactives/tutorial/script_beep.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_bond",
+      "path": "interactives/tutorial/script_bond.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_cancel",
+      "path": "interactives/tutorial/script_cancel.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_charge",
+      "path": "interactives/tutorial/script_charge.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_cursor",
+      "path": "interactives/tutorial/script_cursor.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_damp",
+      "path": "interactives/tutorial/script_damp.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_defvar",
+      "path": "interactives/tutorial/script_defvar.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_delay",
+      "path": "interactives/tutorial/script_delay.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_example",
+      "path": "interactives/tutorial/script_example.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_expression",
+      "path": "interactives/tutorial/script_expression.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_external$1",
+      "path": "interactives/tutorial/script_external$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_external",
+      "path": "interactives/tutorial/script_external.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_external2$1",
+      "path": "interactives/tutorial/script_external2$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_external2",
+      "path": "interactives/tutorial/script_external2.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_format",
+      "path": "interactives/tutorial/script_format.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_function",
+      "path": "interactives/tutorial/script_function.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_heat",
+      "path": "interactives/tutorial/script_heat.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_if",
+      "path": "interactives/tutorial/script_if.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_key",
+      "path": "interactives/tutorial/script_key.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_lac",
+      "path": "interactives/tutorial/script_lac.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_lap$1",
+      "path": "interactives/tutorial/script_lap$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_lap",
+      "path": "interactives/tutorial/script_lap.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_lat$1",
+      "path": "interactives/tutorial/script_lat$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_lat",
+      "path": "interactives/tutorial/script_lat.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_load",
+      "path": "interactives/tutorial/script_load.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_logical",
+      "path": "interactives/tutorial/script_logical.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_loop",
+      "path": "interactives/tutorial/script_loop.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_mark",
+      "path": "interactives/tutorial/script_mark.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_message",
+      "path": "interactives/tutorial/script_message.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_mouse",
+      "path": "interactives/tutorial/script_mouse.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_move",
+      "path": "interactives/tutorial/script_move.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_mvd",
+      "path": "interactives/tutorial/script_mvd.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_pcf$1",
+      "path": "interactives/tutorial/script_pcf$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_pcf",
+      "path": "interactives/tutorial/script_pcf.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_plot",
+      "path": "interactives/tutorial/script_plot.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_random",
+      "path": "interactives/tutorial/script_random.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_remove",
+      "path": "interactives/tutorial/script_remove.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_restrain",
+      "path": "interactives/tutorial/script_restrain.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_runtask",
+      "path": "interactives/tutorial/script_runtask.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_select",
+      "path": "interactives/tutorial/script_select.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_set",
+      "path": "interactives/tutorial/script_set.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_sound",
+      "path": "interactives/tutorial/script_sound.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_source",
+      "path": "interactives/tutorial/script_source.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_store",
+      "path": "interactives/tutorial/script_store.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "script_tcf$1",
+      "path": "interactives/tutorial/script_tcf$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_tcf",
+      "path": "interactives/tutorial/script_tcf.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_traj",
+      "path": "interactives/tutorial/script_traj.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_variable$1",
+      "path": "interactives/tutorial/script_variable$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_variable",
+      "path": "interactives/tutorial/script_variable.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_while",
+      "path": "interactives/tutorial/script_while.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "selectAction",
+      "path": "interactives/tutorial/selectAction.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "showTrajAction",
+      "path": "interactives/tutorial/showTrajAction.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "singlecontrol$1",
+      "path": "interactives/tutorial/singlecontrol$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "singlecontrol",
+      "path": "interactives/tutorial/singlecontrol.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "singleslider$1",
+      "path": "interactives/tutorial/singleslider$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "singleslider",
+      "path": "interactives/tutorial/singleslider.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "solid",
+      "path": "interactives/tutorial/solid.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "spatialequilibrium",
+      "path": "interactives/tutorial/spatialequilibrium.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "stickyfinger",
+      "path": "interactives/tutorial/stickyfinger.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "tearapart",
+      "path": "interactives/tutorial/tearapart.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "toolbar$1",
+      "path": "interactives/tutorial/toolbar$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "toolbar",
+      "path": "interactives/tutorial/toolbar.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "viewSettings",
+      "path": "interactives/tutorial/viewSettings.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "wallpressure",
+      "path": "interactives/tutorial/wallpressure.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "Hydrogen Combustion",
       "path": "interactives/visual/chemical-reactions/1-hydrogen1newcolors.json",
       "groupKey": "visual/chemical-reactions",
-      "subtitle": "",
+      "subtitle": "The physics in this model will be incomplete until the development of the Chemical Reactions engine.",
       "about": "",
       "publicationStatus": "draft"
     },
@@ -967,7 +3073,7 @@
       "groupKey": "visual/plate-tectonics",
       "subtitle": "",
       "about": "",
-      "publicationStatus": "draft"
+      "publicationStatus": "broken"
     },
     {
       "title": "Ceramic Forces",
@@ -1075,7 +3181,12 @@
     },
     {
       "path": "student/classic/pendulum",
-      "name": "Classic Java MW Examples",
+      "name": "Classic Java MW Examples: Pendulum",
+      "category": "Examples"
+    },
+    {
+      "path": "student/classic/motion",
+      "name": "Classic Java MW Examples: Motion",
       "category": "Examples"
     },
     {

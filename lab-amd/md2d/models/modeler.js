@@ -2251,6 +2251,15 @@ define(function(require) {
       };
     };
 
+
+    /**
+      Return a unitDefinition in the current unitScheme for a quantity
+      such as 'length', 'mass', etc.
+    */
+    model.getUnitDefinition = function(name) {
+      return unitsDefinition.units[name];
+    };
+
     /**
       Retrieve (a copy of) the hash describing property 'name', if one exists. This hash can store
       an arbitrary set of key-value pairs, but is expected to have 'label' and 'units' properties

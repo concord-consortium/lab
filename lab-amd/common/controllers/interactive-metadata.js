@@ -68,13 +68,16 @@ define(function() {
     },
 
     model: {
-      // Definition of a model. Note that it is *NOT* a physical model options hash.
-      // It includes a URL to physical model options.
+      // Definition of a model.
+      // Can include either a URL to model definition or model options hash..
       id: {
         required: true
       },
       url: {
-        required: true
+        conflictsWith: ["model"]
+      },
+      model: {
+        conflictsWith: ["url"]
       },
       // Optional "onLoad" script.
       onLoad: {},
@@ -170,11 +173,6 @@ define(function() {
         // Text content.
         defaultValue: ""
       },
-      style: {
-        // Semantic description of text style.
-        // Accepted values: "basic", "header".
-        defaultValue: "basic"
-      },
       width: {
         defaultValue: "auto"
       },
@@ -203,6 +201,30 @@ define(function() {
       },
       onClick: {
         // Script executed on user click, optional.
+      },
+    },
+
+    div: {
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "auto"
+      },
+      onClick: {
+        // Script executed on user click, optional.
+      },
+      classes: {
+        defaultValue: []
+      },
+      tooltip: {
+        // Optional tooltip text
       }
     },
 
@@ -285,7 +307,7 @@ define(function() {
         defaultValue: "12em"
       },
       height: {
-        defaultValue: "3.65em"
+        defaultValue: "3.3em"
       },
       displayValue: {},
       // Use "property" OR "action" + "initialValue".
@@ -466,6 +488,12 @@ define(function() {
       type: {
         required: true
       },
+      realTime: {
+        defaultValue: true
+      },
+      fontScaleRelativeToParent: {
+        defaultValue: true
+      },
       properties: {
         defaultValue: []
       },
@@ -496,10 +524,10 @@ define(function() {
       ymax: {
         defaultValue: 10
       },
-      xTicCount: {
+      xTickCount: {
         defaultValue: 10
       },
-      yTicCount: {
+      yTickCount: {
         defaultValue: 10
       },
       xscaleExponent: {

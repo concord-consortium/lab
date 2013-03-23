@@ -103,5 +103,22 @@
       "add-velocity"
     ]
   },
-  "template": "wide-right"
+  "template": [
+    {
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "height": "model.height",
+      "padding-left": "1em",
+      "padding-right": "0.5em",
+      "width": "model.width*1.5",
+      "min-width": "6em"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "interactive.width",
+      "padding-top": "0.5em"
+    }
+  ]
 }

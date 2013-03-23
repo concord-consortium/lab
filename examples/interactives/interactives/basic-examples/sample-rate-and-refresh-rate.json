@@ -1,10 +1,11 @@
 {
-  "title": "Explore model integration time step, period, and sample rate",
+  "title": "Model integration time step, period, and sample rate",
   "publicationStatus": "public",
   "subtitle": "Model parameters controlling the integration time step, period, and sample rate can be customized.",
   "about": [
     "Try to change timeStep, timeStepsPerTick or modelSampleRate and observe changes in the speed of simulation execution.",
-    "See <a href=\"/readme.html#md2d-simulation-stepping\" class='opens-in-new-window' target='_blank'>readme</a> for more details."
+    "",
+    "See **[simulation-stepping](../../readme.html#md2d-simulation-stepping)** in readme for more details."
   ],
   "fontScale": 0.8,
   "models": [

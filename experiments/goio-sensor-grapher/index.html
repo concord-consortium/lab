@@ -45,6 +45,8 @@
 
       </select>
     </p>
+    <div id="connect-status">
+    </div>
     <div id="vis">
       <div id="graph" class="chart"></div>
     </div>
@@ -73,11 +75,12 @@
             xmin: 0, xmax: 60,
             ylabel:    "Y Axis",
             ymin: 10, ymax: 40,
+            realTime: true,
             points: [],
             circleRadius: false,
             dataChange: false
           },
-          graph = Lab.grapher.realTimeGraph("#graph", blankGraphOptions, "Select a Sensor Type"),
+          graph = Lab.grapher.Graph("#graph", blankGraphOptions, "Select a Sensor Type"),
           applet,
           appletContainer = document.getElementById("applet-container"),
           appletLoadingStr = "Sensor Applet Loading ...",
@@ -124,6 +127,7 @@
                 xmin: 0, xmax: 60,
                 ylabel:    "Temperature, (Degrees C)",
                 ymin: 10, ymax: 40,
+                realTime: true,
                 points: temperature_data,
                 sample: 0.1,
                 circleRadius: false,
@@ -144,6 +148,7 @@
                 xmin: 0, xmax: 60,
                 ylabel:    "Temperature, (Degrees C)",
                 ymin: 10, ymax: 40,
+                realTime: true,
                 points: temperature_data,
                 sample: 0.1,
                 circleRadius: false,
@@ -164,6 +169,7 @@
                 xmin: 0, xmax: 20,
                 ylabel:    "Distance, (m)",
                 ymin: 0, ymax: 4,
+                realTime: true,
                 points: distance_data,
                 sample: 0.1,
                 circleRadius: false,
@@ -184,6 +190,7 @@
                 xmin: 0, xmax: 20,
                 ylabel:    "Distance, (m)",
                 ymin: 0, ymax: 4,
+                realTime: true,
                 points: distance_data,
                 sample: 0.1,
                 circleRadius: false,
@@ -204,6 +211,7 @@
                 xmin: 0, xmax: 20,
                 ylabel:    "Force, (N)",
                 ymin: -5, ymax: 5,
+                realTime: true,
                 points: force_data,
                 sample: 0.01,
                 circleRadius: false,
@@ -224,6 +232,7 @@
                 xmin: 0, xmax: 20,
                 ylabel:    "Force, (N)",
                 ymin: -5, ymax: 5,
+                realTime: true,
                 points: force_data,
                 sample: 0.01,
                 circleRadius: false,
@@ -244,6 +253,7 @@
                 xmin: 0, xmax: 20,
                 ylabel:    "Force, (N)",
                 ymin: -50, ymax: 50,
+                realTime: true,
                 points: force_data,
                 sample: 0.01,
                 circleRadius: false,
@@ -264,6 +274,7 @@
                 xmin: 0, xmax: 20,
                 ylabel:    "Force, (N)",
                 ymin: -50, ymax: 50,
+                realTime: true,
                 points: force_data,
                 sample: 0.01,
                 circleRadius: false,
@@ -284,6 +295,7 @@
                 xmin: 0, xmax: 60,
                 ylabel:    "CO2, (ppm)",
                 ymin: 0, ymax: 5000,
+                realTime: true,
                 points: co2_data,
                 sample: 1.0,
                 circleRadius: false,
@@ -304,6 +316,7 @@
                 xmin: 0, xmax: 60,
                 ylabel:    "CO2, (ppm)",
                 ymin: 0, ymax: 5000,
+                realTime: true,
                 points: co2_data,
                 sample: 1.0,
                 circleRadius: false,
@@ -324,6 +337,7 @@
                 xmin: 0, xmax: 60,
                 ylabel:    "O2, (%)",
                 ymin: 0, ymax: 100,
+                realTime: true,
                 points: o2_data,
                 sample: 1.0,
                 circleRadius: false,
@@ -344,6 +358,7 @@
                 xmin: 0, xmax: 60,
                 ylabel:    "O2, (%)",
                 ymin: 0, ymax: 100,
+                realTime: true,
                 points: o2_data,
                 sample: 1.0,
                 circleRadius: false,
@@ -364,6 +379,7 @@
                 xmin: 0, xmax: 60,
                 ylabel:    "pH, (pH)",
                 ymin: 0, ymax: 14,
+                realTime: true,
                 points: ph_data,
                 sample: 0.1,
                 circleRadius: false,
@@ -384,6 +400,7 @@
                 xmin: 0, xmax: 60,
                 ylabel:    "pH, (pH)",
                 ymin: 0, ymax: 14,
+                realTime: true,
                 points: ph_data,
                 sample: 0.1,
                 circleRadius: false,
@@ -404,6 +421,7 @@
                 xmin: 0, xmax: 60,
                 ylabel:    "Sound level, (db)",
                 ymin: 0, ymax: 120,
+                realTime: true,
                 points: sound_data,
                 sample: 0.1,
                 circleRadius: false,
@@ -431,6 +449,7 @@
                 xmin: 0, xmax: 60,
                 ylabel:    "Light, (Lux)",
                 ymin: 0, ymax: 10000,
+                realTime: true,
                 points: light_data,
                 sample: 0.1,
                 circleRadius: false,
@@ -451,6 +470,7 @@
                 xmin: 0, xmax: 60,
                 ylabel:    "Light, (Lux)",
                 ymin: 0, ymax: 10000,
+                realTime: true,
                 points: light_data,
                 sample: 0.1,
                 circleRadius: false,
@@ -473,6 +493,8 @@
         graph.reset("#graph", sensorConfig.graphOptions, appletLoadingStr);
         d3.selectAll(".sensorbuttons").remove();
         appletContainer.innerHTML = sensorConfig.appletString;
+        var status = document.getElementById("connect-status");
+        status.innerHTML = "";
         applet = document.getElementById("sensor-applet");
         applet_grapher = new sensor.AppletGrapher(applet, vis, graph, sensorConfig.sensor, sensorConfig.graphOptions.sample, "applet_grapher.JsListener()", graph.notify);
       }

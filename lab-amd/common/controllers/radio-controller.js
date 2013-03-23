@@ -99,6 +99,7 @@ define(function () {
         $option = $('<input>')
           .attr('type', "radio")
           .attr('name', component.id)
+          .attr('tabindex', interactivesController.getNextTabIndex())
           .attr('id', component.id + '-' + i);
         $options.push($option);
 

@@ -3,11 +3,14 @@
   "publicationStatus": "draft",
   "subtitle": "One way to display a table of atom properties.",
   "about": [
-    "There are three parts in this Interactive that work togerther to create the atom data table example.",
+    "There are three parts in this Interactive that work together to create the atom data table example.",
+    "",
     "1. Separate outputs are created for each datum to be represented in the table. The result is that the name values for these outputs can later be used for any component that can accept a model property.",
     "2. numericOutput compnents are created for each of the output properties. All the numericOutput components are given the same width in 'ems'.",
     "3. text components are created to make the row and column labels. The text components are given widths to match the rest of the values in that column.",
+    "",
     "The performance of this manual method for creating a table is not as high as if we made a custom table component.",
+    "",
     "atomToolTips are enabled in this Interactive, hover over an atom to display a tooltip, shift-click on an atom to make that tooltip persistent."
   ],
   "models": [
@@ -105,57 +108,49 @@
       "type": "text",
       "id": "x-label",
       "text": "X",
-      "width": "4em",
-      "style": "header"
+      "width": "4em"
     },
     {
       "type": "text",
       "id": "y-label",
       "text": "Y",
-      "width": "4em",
-      "style": "header"
+      "width": "4em"
     },
     {
       "type": "text",
       "id": "speed-label",
       "text": "Speed",
-      "width": "4em",
-      "style": "header"
+      "width": "4em"
     },
     {
       "type": "text",
       "id": "atoms-label",
       "text": "Atoms",
-      "width": "4em",
-      "style": "header"
+      "width": "4em"
     },
     {
       "type": "text",
       "id": "atom0-label",
       "text": "0",
-      "width": "6em",
-      "style": "header"
+      "width": "6em"
     },
     {
       "type": "text",
       "id": "atom1-label",
       "text": "1",
-      "width": "6em",
-      "style": "header"
+      "width": "6em"
     },
     {
       "type": "text",
       "id": "atom2-label",
       "text": "2",
-      "width": "6em",
-      "style": "header"
+      "width": "6em"
     },
     {
       "type": "text",
       "id": "atom3-label",
       "text": "3",
-      "width": "6em",
-      "style": "header"
+      "width": "6em"
     },
     {
       "type": "numericOutput",
@@ -244,8 +239,7 @@
     {
       "type": "text",
       "id": "axes-label",
-      "text": "Axes",
-      "style": "header"
+      "text": "#Axes#"
     },
     {
       "type": "checkbox",
@@ -308,7 +302,6 @@
   "template": [
     {
       "id": "right",
-      "top": "2em",
       "left": "model.right",
       "padding-left": "1em",
       "padding-right": "2em",

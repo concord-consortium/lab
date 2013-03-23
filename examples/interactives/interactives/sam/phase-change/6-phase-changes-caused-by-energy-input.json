@@ -4,8 +4,14 @@
   "subtitle": "Explore how energy input causes matter to change states.",
   "about": [
     "Matter exists as solids, liquids and gases, and can change state between these.",
-    "The model shows a liquid material on the left (small atoms). The amount of heat energy is shown by kinetic energy (KE) shading, with deeper shades of red representing more energetic atoms. On the right side of the barrier is a solid material (large atoms).",
-    "Run the model. How much energy is able to penetrate the barrier? Remove the barrier. How quickly do the more energetic atoms melt the solid?"
+    "",
+    "The model shows a liquid material on the left (small atoms). The amount of heat",
+    "energy is shown by kinetic energy (KE) shading, with deeper shades of red",
+    "representing more energetic atoms. On the right side of the barrier is a solid",
+    "material (large atoms).",
+    "",
+    "Run the model. How much energy is able to penetrate the barrier? Remove the barrier.",
+    "How quickly do the more energetic atoms melt the solid?"
   ],
   "models": [
     {

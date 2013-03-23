@@ -42,20 +42,44 @@ ISImporter.SensorApplet = defineClass({
 
   _waitForAppletReady: function() {
     var self = this,
+        attempts = 0,
         timer;
 
     timer = window.setInterval(function() {
+      attempts++;
       if (self.testAppletReady()) {
         window.clearInterval( timer );
+        attempts = 0;
         if (self.getState() === 'appended') self._state = 'applet ready';
         self.emit('appletReady');
+      } else {
+        if (attempts > 10) {
+          // failed to load the applet
+          window.clearInterval( timer );
+          $('#dialog-confirm').dialog({
+            resizable: false,
+            height: 300,
+            width: 400,
+            modal: true,
+            buttons: {
+              "OK": function() {
+                $(this).dialog("close");
+                window.setTimeout(function() { self._waitForAppletReady(); }, 100);
+              },
+              "Cancel": function() {
+                $(this).dialog("close");
+              }
+            }
+          });
+        }
       }
     }, this.testAppletReadyInterval);
   },
 
   sensorIsReady: function() {
+    var _this = this;
     this._state = 'stopped';
-    this.emit('sensorReady');
+    setTimeout(function() { _this.emit('sensorReady'); }, 10);
   },
 
   start: function() {
@@ -197,7 +221,34 @@ ISImporter.VernierSensorApplet = extendClass(ISImporter.SensorApplet, {
 
   initializeSensor: function() {
     var req = this.appletInstance.getSensorRequest(this.sensorType);
-    this.appletInstance.initSensorInterface(this.listenerPath, this.deviceType, [req]);
+    return this.checkIfConnected();
+  },
+
+  checkIfConnected: function() {
+    var self = this;
+    if (this.appletInstance.isInterfaceConnected(this.deviceType)) {
+      var req = this.appletInstance.getSensorRequest(this.sensorType);
+      return this.appletInstance.initSensorInterface(this.listenerPath, this.deviceType, [req]);
+    } else {
+      $('#dialog-confirm-content').text("No sensor device is connected! Please connect your device and click OK to try again, or Cancel to stop trying.");
+      $('#dialog-confirm').attr('title', "No sensor device found!");
+      $('#dialog-confirm').dialog({
+        resizable: false,
+        height: 300,
+        width: 400,
+        modal: true,
+        buttons: {
+          "OK": function() {
+            $(this).dialog("close");
+            window.setTimeout(function() { self.checkIfConnected(); }, 250);
+          },
+          "Cancel": function() {
+            $(this).dialog("close");
+          }
+        }
+      });
+    }
+    return false;
   },
 
   // In some browsers, calling an applet method from within a callback triggered by
@@ -244,10 +295,19 @@ ISImporter.VernierSensorApplet = extendClass(ISImporter.SensorApplet, {
     this.endAppletCallback();
   },
 
-  // the applet will may call this, so it has to exist
-  dataStreamEvent: function() {
-  }
+  deviceUnplugged: function() {
+    var self = this;
+    this.startAppletCallback();
+    window.setTimeout(function() { self.emit('deviceUnplugged'); }, 10);
+    this.endAppletCallback();
+  },
 
+  sensorUnplugged: function() {
+    var self = this;
+    this.startAppletCallback();
+    window.setTimeout(function() { self.emit('sensorUnplugged'); }, 10);
+    this.endAppletCallback();
+  }
 });
 
 

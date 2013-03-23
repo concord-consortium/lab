@@ -434,14 +434,16 @@ define('lab.config',['require','common/actual-root'],function (require) {
       publicAPI;
   publicAPI = {
   "sharing": true,
-  "logging": true,
-  "tracing": false,
   "home": "http://lab.concord.org",
+  "homeForSharing": "http://lab.concord.org",
   "homeInteractivePath": "/examples/interactives/interactive.html",
   "homeEmbeddablePath": "/examples/interactives/embeddable.html",
   "utmCampaign": null,
-  "hostName": "lab.concord.org",
+  "fontface": "Lato",
+  "hostName": "lab4.dev.concord.org",
   "dataGamesProxyPrefix": "DataGames/Games/concord/lab/",
+  "logging": true,
+  "tracing": false,
   "authoring": false,
   "actualRoot": ""
 };
@@ -774,6 +776,7 @@ define('common/console',['require','lab.config'],function (require) {
     console = {};
     if (window) window.console = console;
   }
+
   // Assign shortcut.
   cons = console;
   // Make sure that every method is defined.
@@ -789,6 +792,22 @@ define('common/console',['require','lab.config'],function (require) {
     cons.time = emptyFunction;
   if (cons.timeEnd === undefined)
     cons.timeEnd = emptyFunction;
+
+  // Make sure that every method has access to an 'apply' method
+  // This is a hack for IE9 and IE10 when using the built-in developer tools.
+  // See: http://stackoverflow.com/questions/5472938/does-ie9-support-console-log-and-is-it-a-real-function
+  if (cons.log.apply === undefined)
+    cons.log = Function.prototype.bind.call(console.log, console);
+  if (cons.info.apply === undefined)
+    cons.info = Function.prototype.bind.call(console.info, console);
+  if (cons.warn.apply === undefined)
+    cons.warn = Function.prototype.bind.call(console.warn, console);
+  if (cons.error.apply === undefined)
+    cons.error = Function.prototype.bind.call(console.error, console);
+  if (cons.time.apply === undefined)
+    cons.time = Function.prototype.bind.call(console.time, console);
+  if (cons.timeEnd.apply === undefined)
+    cons.timeEnd = Function.prototype.bind.call(console.timeEnd, console);
 
   publicAPI = {
     log: function () {
@@ -910,13 +929,16 @@ define('common/controllers/interactive-metadata',[],function() {
     },
 
     model: {
-      // Definition of a model. Note that it is *NOT* a physical model options hash.
-      // It includes a URL to physical model options.
+      // Definition of a model.
+      // Can include either a URL to model definition or model options hash..
       id: {
         required: true
       },
       url: {
-        required: true
+        conflictsWith: ["model"]
+      },
+      model: {
+        conflictsWith: ["url"]
       },
       // Optional "onLoad" script.
       onLoad: {},
@@ -1012,11 +1034,6 @@ define('common/controllers/interactive-metadata',[],function() {
         // Text content.
         defaultValue: ""
       },
-      style: {
-        // Semantic description of text style.
-        // Accepted values: "basic", "header".
-        defaultValue: "basic"
-      },
       width: {
         defaultValue: "auto"
       },
@@ -1045,6 +1062,30 @@ define('common/controllers/interactive-metadata',[],function() {
       },
       onClick: {
         // Script executed on user click, optional.
+      },
+    },
+
+    div: {
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "auto"
+      },
+      onClick: {
+        // Script executed on user click, optional.
+      },
+      classes: {
+        defaultValue: []
+      },
+      tooltip: {
+        // Optional tooltip text
       }
     },
 
@@ -1127,7 +1168,7 @@ define('common/controllers/interactive-metadata',[],function() {
         defaultValue: "12em"
       },
       height: {
-        defaultValue: "3.65em"
+        defaultValue: "3.3em"
       },
       displayValue: {},
       // Use "property" OR "action" + "initialValue".
@@ -1308,6 +1349,12 @@ define('common/controllers/interactive-metadata',[],function() {
       type: {
         required: true
       },
+      realTime: {
+        defaultValue: true
+      },
+      fontScaleRelativeToParent: {
+        defaultValue: true
+      },
       properties: {
         defaultValue: []
       },
@@ -1338,10 +1385,10 @@ define('common/controllers/interactive-metadata',[],function() {
       ymax: {
         defaultValue: 10
       },
-      xTicCount: {
+      xTickCount: {
         defaultValue: 10
       },
-      yTicCount: {
+      yTickCount: {
         defaultValue: 10
       },
       xscaleExponent: {
@@ -1537,9 +1584,9 @@ define('common/validator',['require','arrays'],function(require) {
   };
 });
 
-//     Underscore.js 1.4.2
+//     Underscore.js 1.4.4
 //     http://underscorejs.org
-//     (c) 2009-2012 Jeremy Ashkenas, DocumentCloud Inc.
+//     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud Inc.
 //     Underscore may be freely distributed under the MIT license.
 
 (function() {
@@ -1563,7 +1610,6 @@ define('common/validator',['require','arrays'],function(require) {
   var push             = ArrayProto.push,
       slice            = ArrayProto.slice,
       concat           = ArrayProto.concat,
-      unshift          = ArrayProto.unshift,
       toString         = ObjProto.toString,
       hasOwnProperty   = ObjProto.hasOwnProperty;
 
@@ -1600,11 +1646,11 @@ define('common/validator',['require','arrays'],function(require) {
     }
     exports._ = _;
   } else {
-    root['_'] = _;
+    root._ = _;
   }
 
   // Current version.
-  _.VERSION = '1.4.2';
+  _.VERSION = '1.4.4';
 
   // Collection Functions
   // --------------------
@@ -1641,6 +1687,8 @@ define('common/validator',['require','arrays'],function(require) {
     return results;
   };
 
+  var reduceError = 'Reduce of empty array with no initial value';
+
   // **Reduce** builds up a single result from a list of values, aka `inject`,
   // or `foldl`. Delegates to **ECMAScript 5**'s native `reduce` if available.
   _.reduce = _.foldl = _.inject = function(obj, iterator, memo, context) {
@@ -1658,7 +1706,7 @@ define('common/validator',['require','arrays'],function(require) {
         memo = iterator.call(context, memo, value, index, list);
       }
     });
-    if (!initial) throw new TypeError('Reduce of empty array with no initial value');
+    if (!initial) throw new TypeError(reduceError);
     return memo;
   };
 
@@ -1669,7 +1717,7 @@ define('common/validator',['require','arrays'],function(require) {
     if (obj == null) obj = [];
     if (nativeReduceRight && obj.reduceRight === nativeReduceRight) {
       if (context) iterator = _.bind(iterator, context);
-      return arguments.length > 2 ? obj.reduceRight(iterator, memo) : obj.reduceRight(iterator);
+      return initial ? obj.reduceRight(iterator, memo) : obj.reduceRight(iterator);
     }
     var length = obj.length;
     if (length !== +length) {
@@ -1685,7 +1733,7 @@ define('common/validator',['require','arrays'],function(require) {
         memo = iterator.call(context, memo, obj[index], index, list);
       }
     });
-    if (!initial) throw new TypeError('Reduce of empty array with no initial value');
+    if (!initial) throw new TypeError(reduceError);
     return memo;
   };
 
@@ -1762,8 +1810,9 @@ define('common/validator',['require','arrays'],function(require) {
   // Invoke a method (with arguments) on every item in a collection.
   _.invoke = function(obj, method) {
     var args = slice.call(arguments, 2);
+    var isFunc = _.isFunction(method);
     return _.map(obj, function(value) {
-      return (_.isFunction(method) ? method : value[method]).apply(value, args);
+      return (isFunc ? method : value[method]).apply(value, args);
     });
   };
 
@@ -1773,15 +1822,21 @@ define('common/validator',['require','arrays'],function(require) {
   };
 
   // Convenience version of a common use case of `filter`: selecting only objects
-  // with specific `key:value` pairs.
-  _.where = function(obj, attrs) {
-    if (_.isEmpty(attrs)) return [];
-    return _.filter(obj, function(value) {
+  // containing specific `key:value` pairs.
+  _.where = function(obj, attrs, first) {
+    if (_.isEmpty(attrs)) return first ? null : [];
+    return _[first ? 'find' : 'filter'](obj, function(value) {
       for (var key in attrs) {
         if (attrs[key] !== value[key]) return false;
       }
       return true;
     });
+  };
+
+  // Convenience version of a common use case of `find`: getting the first object
+  // containing specific `key:value` pairs.
+  _.findWhere = function(obj, attrs) {
+    return _.where(obj, attrs, true);
   };
 
   // Return the maximum element or (element-based computation).
@@ -1792,7 +1847,7 @@ define('common/validator',['require','arrays'],function(require) {
       return Math.max.apply(Math, obj);
     }
     if (!iterator && _.isEmpty(obj)) return -Infinity;
-    var result = {computed : -Infinity};
+    var result = {computed : -Infinity, value: -Infinity};
     each(obj, function(value, index, list) {
       var computed = iterator ? iterator.call(context, value, index, list) : value;
       computed >= result.computed && (result = {value : value, computed : computed});
@@ -1806,7 +1861,7 @@ define('common/validator',['require','arrays'],function(require) {
       return Math.min.apply(Math, obj);
     }
     if (!iterator && _.isEmpty(obj)) return Infinity;
-    var result = {computed : Infinity};
+    var result = {computed : Infinity, value: Infinity};
     each(obj, function(value, index, list) {
       var computed = iterator ? iterator.call(context, value, index, list) : value;
       computed < result.computed && (result = {value : value, computed : computed});
@@ -1855,7 +1910,7 @@ define('common/validator',['require','arrays'],function(require) {
   // An internal function used for aggregate "group by" operations.
   var group = function(obj, value, context, behavior) {
     var result = {};
-    var iterator = lookupIterator(value);
+    var iterator = lookupIterator(value || _.identity);
     each(obj, function(value, index) {
       var key = iterator.call(context, value, index, obj);
       behavior(result, key, value);
@@ -1875,7 +1930,7 @@ define('common/validator',['require','arrays'],function(require) {
   // either a string attribute to count by, or a function that returns the
   // criterion.
   _.countBy = function(obj, value, context) {
-    return group(obj, value, context, function(result, key, value) {
+    return group(obj, value, context, function(result, key) {
       if (!_.has(result, key)) result[key] = 0;
       result[key]++;
     });
@@ -1897,7 +1952,8 @@ define('common/validator',['require','arrays'],function(require) {
   // Safely convert anything iterable into a real, live array.
   _.toArray = function(obj) {
     if (!obj) return [];
-    if (obj.length === +obj.length) return slice.call(obj);
+    if (_.isArray(obj)) return slice.call(obj);
+    if (obj.length === +obj.length) return _.map(obj, _.identity);
     return _.values(obj);
   };
 
@@ -1947,7 +2003,7 @@ define('common/validator',['require','arrays'],function(require) {
 
   // Trim out all falsy values from an array.
   _.compact = function(array) {
-    return _.filter(array, function(value){ return !!value; });
+    return _.filter(array, _.identity);
   };
 
   // Internal implementation of a recursive `flatten` function.
@@ -2104,25 +2160,23 @@ define('common/validator',['require','arrays'],function(require) {
   // Function (ahem) Functions
   // ------------------
 
-  // Reusable constructor function for prototype setting.
-  var ctor = function(){};
-
   // Create a function bound to a given object (assigning `this`, and arguments,
-  // optionally). Binding with arguments is also known as `curry`.
-  // Delegates to **ECMAScript 5**'s native `Function.bind` if available.
-  // We check for `func.bind` first, to fail fast when `func` is undefined.
-  _.bind = function bind(func, context) {
-    var bound, args;
+  // optionally). Delegates to **ECMAScript 5**'s native `Function.bind` if
+  // available.
+  _.bind = function(func, context) {
     if (func.bind === nativeBind && nativeBind) return nativeBind.apply(func, slice.call(arguments, 1));
-    if (!_.isFunction(func)) throw new TypeError;
-    args = slice.call(arguments, 2);
-    return bound = function() {
-      if (!(this instanceof bound)) return func.apply(context, args.concat(slice.call(arguments)));
-      ctor.prototype = func.prototype;
-      var self = new ctor;
-      var result = func.apply(self, args.concat(slice.call(arguments)));
-      if (Object(result) === result) return result;
-      return self;
+    var args = slice.call(arguments, 2);
+    return function() {
+      return func.apply(context, args.concat(slice.call(arguments)));
+    };
+  };
+
+  // Partially apply a function by creating a version that has had some of its
+  // arguments pre-filled, without changing its dynamic `this` context.
+  _.partial = function(func) {
+    var args = slice.call(arguments, 1);
+    return function() {
+      return func.apply(this, args.concat(slice.call(arguments)));
     };
   };
 
@@ -2130,7 +2184,7 @@ define('common/validator',['require','arrays'],function(require) {
   // all callbacks defined on an object belong to it.
   _.bindAll = function(obj) {
     var funcs = slice.call(arguments, 1);
-    if (funcs.length == 0) funcs = _.functions(obj);
+    if (funcs.length === 0) funcs = _.functions(obj);
     each(funcs, function(f) { obj[f] = _.bind(obj[f], obj); });
     return obj;
   };
@@ -2175,6 +2229,7 @@ define('common/validator',['require','arrays'],function(require) {
       args = arguments;
       if (remaining <= 0) {
         clearTimeout(timeout);
+        timeout = null;
         previous = now;
         result = func.apply(context, args);
       } else if (!timeout) {
@@ -2297,8 +2352,10 @@ define('common/validator',['require','arrays'],function(require) {
   // Extend a given object with all the properties in passed-in object(s).
   _.extend = function(obj) {
     each(slice.call(arguments, 1), function(source) {
-      for (var prop in source) {
-        obj[prop] = source[prop];
+      if (source) {
+        for (var prop in source) {
+          obj[prop] = source[prop];
+        }
       }
     });
     return obj;
@@ -2327,8 +2384,10 @@ define('common/validator',['require','arrays'],function(require) {
   // Fill in a given object with default properties.
   _.defaults = function(obj) {
     each(slice.call(arguments, 1), function(source) {
-      for (var prop in source) {
-        if (obj[prop] == null) obj[prop] = source[prop];
+      if (source) {
+        for (var prop in source) {
+          if (obj[prop] == null) obj[prop] = source[prop];
+        }
       }
     });
     return obj;
@@ -2493,7 +2552,7 @@ define('common/validator',['require','arrays'],function(require) {
 
   // Is a given object a finite number?
   _.isFinite = function(obj) {
-    return isFinite( obj ) && !isNaN( parseFloat(obj) );
+    return isFinite(obj) && !isNaN(parseFloat(obj));
   };
 
   // Is the given value `NaN`? (NaN is the only number which does not equal itself).
@@ -2539,7 +2598,9 @@ define('common/validator',['require','arrays'],function(require) {
 
   // Run a function **n** times.
   _.times = function(n, iterator, context) {
-    for (var i = 0; i < n; i++) iterator.call(context, i);
+    var accum = Array(n);
+    for (var i = 0; i < n; i++) accum[i] = iterator.call(context, i);
+    return accum;
   };
 
   // Return a random integer between min and max (inclusive).
@@ -2548,7 +2609,7 @@ define('common/validator',['require','arrays'],function(require) {
       max = min;
       min = 0;
     }
-    return min + (0 | Math.random() * (max - min + 1));
+    return min + Math.floor(Math.random() * (max - min + 1));
   };
 
   // List of HTML entities for escaping.
@@ -2604,7 +2665,7 @@ define('common/validator',['require','arrays'],function(require) {
   // Useful for temporary DOM ids.
   var idCounter = 0;
   _.uniqueId = function(prefix) {
-    var id = idCounter++;
+    var id = ++idCounter + '';
     return prefix ? prefix + id : id;
   };
 
@@ -2639,6 +2700,7 @@ define('common/validator',['require','arrays'],function(require) {
   // Underscore templating handles arbitrary delimiters, preserves whitespace,
   // and correctly escapes quotes within interpolated code.
   _.template = function(text, data, settings) {
+    var render;
     settings = _.defaults({}, settings, _.templateSettings);
 
     // Combine delimiters into one regular expression via alternation.
@@ -2654,11 +2716,18 @@ define('common/validator',['require','arrays'],function(require) {
     text.replace(matcher, function(match, escape, interpolate, evaluate, offset) {
       source += text.slice(index, offset)
         .replace(escaper, function(match) { return '\\' + escapes[match]; });
-      source +=
-        escape ? "'+\n((__t=(" + escape + "))==null?'':_.escape(__t))+\n'" :
-        interpolate ? "'+\n((__t=(" + interpolate + "))==null?'':__t)+\n'" :
-        evaluate ? "';\n" + evaluate + "\n__p+='" : '';
+
+      if (escape) {
+        source += "'+\n((__t=(" + escape + "))==null?'':_.escape(__t))+\n'";
+      }
+      if (interpolate) {
+        source += "'+\n((__t=(" + interpolate + "))==null?'':__t)+\n'";
+      }
+      if (evaluate) {
+        source += "';\n" + evaluate + "\n__p+='";
+      }
       index = offset + match.length;
+      return match;
     });
     source += "';\n";
 
@@ -2670,7 +2739,7 @@ define('common/validator',['require','arrays'],function(require) {
       source + "return __p;\n";
 
     try {
-      var render = new Function(settings.variable || 'obj', '_', source);
+      render = new Function(settings.variable || 'obj', '_', source);
     } catch (e) {
       e.source = source;
       throw e;
@@ -2749,9 +2818,9 @@ define("underscore", (function (global) {
     };
 }(this)));
 
-//     Backbone.js 0.9.10
+//     Backbone.js 1.0.0
 
-//     (c) 2010-2012 Jeremy Ashkenas, DocumentCloud Inc.
+//     (c) 2010-2013 Jeremy Ashkenas, DocumentCloud Inc.
 //     Backbone may be freely distributed under the MIT license.
 //     For all details and documentation:
 //     http://backbonejs.org
@@ -2769,14 +2838,14 @@ define("underscore", (function (global) {
   // restored later on, if `noConflict` is used.
   var previousBackbone = root.Backbone;
 
-  // Create a local reference to array methods.
+  // Create local references to array methods we'll want to use later.
   var array = [];
   var push = array.push;
   var slice = array.slice;
   var splice = array.splice;
 
   // The top-level namespace. All public Backbone classes and modules will
-  // be attached to this. Exported for both CommonJS and the browser.
+  // be attached to this. Exported for both the browser and the server.
   var Backbone;
   if (typeof exports !== 'undefined') {
     Backbone = exports;
@@ -2785,14 +2854,15 @@ define("underscore", (function (global) {
   }
 
   // Current version of the library. Keep in sync with `package.json`.
-  Backbone.VERSION = '0.9.10';
+  Backbone.VERSION = '1.0.0';
 
   // Require Underscore, if we're on the server, and it's not already present.
   var _ = root._;
   if (!_ && (typeof require !== 'undefined')) _ = require('underscore');
 
-  // For Backbone's purposes, jQuery, Zepto, or Ender owns the `$` variable.
-  Backbone.$ = root.jQuery || root.Zepto || root.ender;
+  // For Backbone's purposes, jQuery, Zepto, Ender, or My Library (kidding) owns
+  // the `$` variable.
+  Backbone.$ = root.jQuery || root.Zepto || root.ender || root.$;
 
   // Runs Backbone.js in *noConflict* mode, returning the `Backbone` variable
   // to its previous owner. Returns a reference to this Backbone object.
@@ -2815,45 +2885,6 @@ define("underscore", (function (global) {
   // Backbone.Events
   // ---------------
 
-  // Regular expression used to split event strings.
-  var eventSplitter = /\s+/;
-
-  // Implement fancy features of the Events API such as multiple event
-  // names `"change blur"` and jQuery-style event maps `{change: action}`
-  // in terms of the existing API.
-  var eventsApi = function(obj, action, name, rest) {
-    if (!name) return true;
-    if (typeof name === 'object') {
-      for (var key in name) {
-        obj[action].apply(obj, [key, name[key]].concat(rest));
-      }
-    } else if (eventSplitter.test(name)) {
-      var names = name.split(eventSplitter);
-      for (var i = 0, l = names.length; i < l; i++) {
-        obj[action].apply(obj, [names[i]].concat(rest));
-      }
-    } else {
-      return true;
-    }
-  };
-
-  // Optimized internal dispatch function for triggering events. Tries to
-  // keep the usual cases speedy (most Backbone events have 3 arguments).
-  var triggerEvents = function(events, args) {
-    var ev, i = -1, l = events.length;
-    switch (args.length) {
-    case 0: while (++i < l) (ev = events[i]).callback.call(ev.ctx);
-    return;
-    case 1: while (++i < l) (ev = events[i]).callback.call(ev.ctx, args[0]);
-    return;
-    case 2: while (++i < l) (ev = events[i]).callback.call(ev.ctx, args[0], args[1]);
-    return;
-    case 3: while (++i < l) (ev = events[i]).callback.call(ev.ctx, args[0], args[1], args[2]);
-    return;
-    default: while (++i < l) (ev = events[i]).callback.apply(ev.ctx, args);
-    }
-  };
-
   // A module that can be mixed in to *any object* in order to provide it with
   // custom events. You may bind with `on` or remove with `off` callback
   // functions to an event; `trigger`-ing an event fires all callbacks in
@@ -2866,29 +2897,27 @@ define("underscore", (function (global) {
   //
   var Events = Backbone.Events = {
 
-    // Bind one or more space separated events, or an events map,
-    // to a `callback` function. Passing `"all"` will bind the callback to
-    // all events fired.
+    // Bind an event to a `callback` function. Passing `"all"` will bind
+    // the callback to all events fired.
     on: function(name, callback, context) {
-      if (!(eventsApi(this, 'on', name, [callback, context]) && callback)) return this;
+      if (!eventsApi(this, 'on', name, [callback, context]) || !callback) return this;
       this._events || (this._events = {});
-      var list = this._events[name] || (this._events[name] = []);
-      list.push({callback: callback, context: context, ctx: context || this});
+      var events = this._events[name] || (this._events[name] = []);
+      events.push({callback: callback, context: context, ctx: context || this});
       return this;
     },
 
-    // Bind events to only be triggered a single time. After the first time
+    // Bind an event to only be triggered a single time. After the first time
     // the callback is invoked, it will be removed.
     once: function(name, callback, context) {
-      if (!(eventsApi(this, 'once', name, [callback, context]) && callback)) return this;
+      if (!eventsApi(this, 'once', name, [callback, context]) || !callback) return this;
       var self = this;
       var once = _.once(function() {
         self.off(name, once);
         callback.apply(this, arguments);
       });
       once._callback = callback;
-      this.on(name, once, context);
-      return this;
+      return this.on(name, once, context);
     },
 
     // Remove one or many callbacks. If `context` is null, removes all
@@ -2896,7 +2925,7 @@ define("underscore", (function (global) {
     // callbacks for the event. If `name` is null, removes all bound
     // callbacks for all events.
     off: function(name, callback, context) {
-      var list, ev, events, names, i, l, j, k;
+      var retain, ev, events, names, i, l, j, k;
       if (!this._events || !eventsApi(this, 'off', name, [callback, context])) return this;
       if (!name && !callback && !context) {
         this._events = {};
@@ -2906,19 +2935,18 @@ define("underscore", (function (global) {
       names = name ? [name] : _.keys(this._events);
       for (i = 0, l = names.length; i < l; i++) {
         name = names[i];
-        if (list = this._events[name]) {
-          events = [];
+        if (events = this._events[name]) {
+          this._events[name] = retain = [];
           if (callback || context) {
-            for (j = 0, k = list.length; j < k; j++) {
-              ev = list[j];
-              if ((callback && callback !== ev.callback &&
-                               callback !== ev.callback._callback) ||
+            for (j = 0, k = events.length; j < k; j++) {
+              ev = events[j];
+              if ((callback && callback !== ev.callback && callback !== ev.callback._callback) ||
                   (context && context !== ev.context)) {
-                events.push(ev);
+                retain.push(ev);
               }
             }
           }
-          this._events[name] = events;
+          if (!retain.length) delete this._events[name];
         }
       }
 
@@ -2940,34 +2968,81 @@ define("underscore", (function (global) {
       return this;
     },
 
-    // An inversion-of-control version of `on`. Tell *this* object to listen to
-    // an event in another object ... keeping track of what it's listening to.
-    listenTo: function(obj, name, callback) {
-      var listeners = this._listeners || (this._listeners = {});
-      var id = obj._listenerId || (obj._listenerId = _.uniqueId('l'));
-      listeners[id] = obj;
-      obj.on(name, typeof name === 'object' ? this : callback, this);
-      return this;
-    },
-
     // Tell this object to stop listening to either specific events ... or
     // to every object it's currently listening to.
     stopListening: function(obj, name, callback) {
       var listeners = this._listeners;
-      if (!listeners) return;
-      if (obj) {
-        obj.off(name, typeof name === 'object' ? this : callback, this);
-        if (!name && !callback) delete listeners[obj._listenerId];
-      } else {
-        if (typeof name === 'object') callback = this;
-        for (var id in listeners) {
-          listeners[id].off(name, callback, this);
-        }
-        this._listeners = {};
+      if (!listeners) return this;
+      var deleteListener = !name && !callback;
+      if (typeof name === 'object') callback = this;
+      if (obj) (listeners = {})[obj._listenerId] = obj;
+      for (var id in listeners) {
+        listeners[id].off(name, callback, this);
+        if (deleteListener) delete this._listeners[id];
       }
       return this;
     }
+
   };
+
+  // Regular expression used to split event strings.
+  var eventSplitter = /\s+/;
+
+  // Implement fancy features of the Events API such as multiple event
+  // names `"change blur"` and jQuery-style event maps `{change: action}`
+  // in terms of the existing API.
+  var eventsApi = function(obj, action, name, rest) {
+    if (!name) return true;
+
+    // Handle event maps.
+    if (typeof name === 'object') {
+      for (var key in name) {
+        obj[action].apply(obj, [key, name[key]].concat(rest));
+      }
+      return false;
+    }
+
+    // Handle space separated event names.
+    if (eventSplitter.test(name)) {
+      var names = name.split(eventSplitter);
+      for (var i = 0, l = names.length; i < l; i++) {
+        obj[action].apply(obj, [names[i]].concat(rest));
+      }
+      return false;
+    }
+
+    return true;
+  };
+
+  // A difficult-to-believe, but optimized internal dispatch function for
+  // triggering events. Tries to keep the usual cases speedy (most internal
+  // Backbone events have 3 arguments).
+  var triggerEvents = function(events, args) {
+    var ev, i = -1, l = events.length, a1 = args[0], a2 = args[1], a3 = args[2];
+    switch (args.length) {
+      case 0: while (++i < l) (ev = events[i]).callback.call(ev.ctx); return;
+      case 1: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1); return;
+      case 2: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1, a2); return;
+      case 3: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1, a2, a3); return;
+      default: while (++i < l) (ev = events[i]).callback.apply(ev.ctx, args);
+    }
+  };
+
+  var listenMethods = {listenTo: 'on', listenToOnce: 'once'};
+
+  // Inversion-of-control versions of `on` and `once`. Tell *this* object to
+  // listen to an event in another object ... keeping track of what it's
+  // listening to.
+  _.each(listenMethods, function(implementation, method) {
+    Events[method] = function(obj, name, callback) {
+      var listeners = this._listeners || (this._listeners = {});
+      var id = obj._listenerId || (obj._listenerId = _.uniqueId('l'));
+      listeners[id] = obj;
+      if (typeof name === 'object') callback = this;
+      obj[implementation](name, callback, this);
+      return this;
+    };
+  });
 
   // Aliases for backwards compatibility.
   Events.bind   = Events.on;
@@ -2980,15 +3055,21 @@ define("underscore", (function (global) {
   // Backbone.Model
   // --------------
 
-  // Create a new model, with defined attributes. A client id (`cid`)
+  // Backbone **Models** are the basic data object in the framework --
+  // frequently representing a row in a table in a database on your server.
+  // A discrete chunk of data and a bunch of useful, related methods for
+  // performing computations and transformations on that data.
+
+  // Create a new model with the specified attributes. A client id (`cid`)
   // is automatically generated and assigned for you.
   var Model = Backbone.Model = function(attributes, options) {
     var defaults;
     var attrs = attributes || {};
+    options || (options = {});
     this.cid = _.uniqueId('c');
     this.attributes = {};
-    if (options && options.collection) this.collection = options.collection;
-    if (options && options.parse) attrs = this.parse(attrs, options) || {};
+    _.extend(this, _.pick(options, modelOptions));
+    if (options.parse) attrs = this.parse(attrs, options) || {};
     if (defaults = _.result(this, 'defaults')) {
       attrs = _.defaults({}, attrs, defaults);
     }
@@ -2997,11 +3078,17 @@ define("underscore", (function (global) {
     this.initialize.apply(this, arguments);
   };
 
+  // A list of options to be attached directly to the model, if provided.
+  var modelOptions = ['url', 'urlRoot', 'collection'];
+
   // Attach all inheritable methods to the Model prototype.
   _.extend(Model.prototype, Events, {
 
     // A hash of attributes whose current and previous value differ.
     changed: null,
+
+    // The value returned during the last failed validation.
+    validationError: null,
 
     // The default name for the JSON `id` attribute is `"id"`. MongoDB and
     // CouchDB users may want to set this to `"_id"`.
@@ -3016,7 +3103,8 @@ define("underscore", (function (global) {
       return _.clone(this.attributes);
     },
 
-    // Proxy `Backbone.sync` by default.
+    // Proxy `Backbone.sync` by default -- but override this if you need
+    // custom syncing semantics for *this* particular model.
     sync: function() {
       return Backbone.sync.apply(this, arguments);
     },
@@ -3037,10 +3125,9 @@ define("underscore", (function (global) {
       return this.get(attr) != null;
     },
 
-    // ----------------------------------------------------------------------
-
-    // Set a hash of model attributes on the object, firing `"change"` unless
-    // you choose to silence it.
+    // Set a hash of model attributes on the object, firing `"change"`. This is
+    // the core primitive operation of a model, updating the data and notifying
+    // anyone who needs to know about the change in state. The heart of the beast.
     set: function(key, val, options) {
       var attr, attrs, unset, changes, silent, changing, prev, current;
       if (key == null) return this;
@@ -3094,6 +3181,8 @@ define("underscore", (function (global) {
         }
       }
 
+      // You might be wondering why there's a `while` loop here. Changes can
+      // be recursively nested within `"change"` events.
       if (changing) return this;
       if (!silent) {
         while (this._pending) {
@@ -3106,14 +3195,13 @@ define("underscore", (function (global) {
       return this;
     },
 
-    // Remove an attribute from the model, firing `"change"` unless you choose
-    // to silence it. `unset` is a noop if the attribute doesn't exist.
+    // Remove an attribute from the model, firing `"change"`. `unset` is a noop
+    // if the attribute doesn't exist.
     unset: function(attr, options) {
       return this.set(attr, void 0, _.extend({}, options, {unset: true}));
     },
 
-    // Clear all attributes on the model, firing `"change"` unless you choose
-    // to silence it.
+    // Clear all attributes on the model, firing `"change"`.
     clear: function(options) {
       var attrs = {};
       for (var key in this.attributes) attrs[key] = void 0;
@@ -3157,19 +3245,20 @@ define("underscore", (function (global) {
       return _.clone(this._previousAttributes);
     },
 
-    // ---------------------------------------------------------------------
-
     // Fetch the model from the server. If the server's representation of the
-    // model differs from its current attributes, they will be overriden,
+    // model differs from its current attributes, they will be overridden,
     // triggering a `"change"` event.
     fetch: function(options) {
       options = options ? _.clone(options) : {};
       if (options.parse === void 0) options.parse = true;
+      var model = this;
       var success = options.success;
-      options.success = function(model, resp, options) {
+      options.success = function(resp) {
         if (!model.set(model.parse(resp, options), options)) return false;
         if (success) success(model, resp, options);
+        model.trigger('sync', model, resp, options);
       };
+      wrapError(this, options);
       return this.sync('read', this, options);
     },
 
@@ -3177,7 +3266,7 @@ define("underscore", (function (global) {
     // If the server returns an attributes hash that differs, the model's
     // state will be `set` again.
     save: function(key, val, options) {
-      var attrs, success, method, xhr, attributes = this.attributes;
+      var attrs, method, xhr, attributes = this.attributes;
 
       // Handle both `"key", value` and `{key: value}` -style arguments.
       if (key == null || typeof key === 'object') {
@@ -3203,8 +3292,9 @@ define("underscore", (function (global) {
       // After a successful server-side save, the client is (optionally)
       // updated with the server-side state.
       if (options.parse === void 0) options.parse = true;
-      success = options.success;
-      options.success = function(model, resp, options) {
+      var model = this;
+      var success = options.success;
+      options.success = function(resp) {
         // Ensure attributes are restored during synchronous saves.
         model.attributes = attributes;
         var serverAttrs = model.parse(resp, options);
@@ -3213,9 +3303,10 @@ define("underscore", (function (global) {
           return false;
         }
         if (success) success(model, resp, options);
+        model.trigger('sync', model, resp, options);
       };
+      wrapError(this, options);
 
-      // Finish configuring and sending the Ajax request.
       method = this.isNew() ? 'create' : (options.patch ? 'patch' : 'update');
       if (method === 'patch') options.attrs = attrs;
       xhr = this.sync(method, this, options);
@@ -3238,15 +3329,17 @@ define("underscore", (function (global) {
         model.trigger('destroy', model, model.collection, options);
       };
 
-      options.success = function(model, resp, options) {
+      options.success = function(resp) {
         if (options.wait || model.isNew()) destroy();
         if (success) success(model, resp, options);
+        if (!model.isNew()) model.trigger('sync', model, resp, options);
       };
 
       if (this.isNew()) {
-        options.success(this, null, options);
+        options.success();
         return false;
       }
+      wrapError(this, options);
 
       var xhr = this.sync('delete', this, options);
       if (!options.wait) destroy();
@@ -3280,38 +3373,60 @@ define("underscore", (function (global) {
 
     // Check if the model is currently in a valid state.
     isValid: function(options) {
-      return !this.validate || !this.validate(this.attributes, options);
+      return this._validate({}, _.extend(options || {}, { validate: true }));
     },
 
     // Run validation against the next complete set of model attributes,
-    // returning `true` if all is well. Otherwise, fire a general
-    // `"error"` event and call the error callback, if specified.
+    // returning `true` if all is well. Otherwise, fire an `"invalid"` event.
     _validate: function(attrs, options) {
       if (!options.validate || !this.validate) return true;
       attrs = _.extend({}, this.attributes, attrs);
       var error = this.validationError = this.validate(attrs, options) || null;
       if (!error) return true;
-      this.trigger('invalid', this, error, options || {});
+      this.trigger('invalid', this, error, _.extend(options || {}, {validationError: error}));
       return false;
     }
 
   });
 
+  // Underscore methods that we want to implement on the Model.
+  var modelMethods = ['keys', 'values', 'pairs', 'invert', 'pick', 'omit'];
+
+  // Mix in each Underscore method as a proxy to `Model#attributes`.
+  _.each(modelMethods, function(method) {
+    Model.prototype[method] = function() {
+      var args = slice.call(arguments);
+      args.unshift(this.attributes);
+      return _[method].apply(_, args);
+    };
+  });
+
   // Backbone.Collection
   // -------------------
 
-  // Provides a standard collection class for our sets of models, ordered
-  // or unordered. If a `comparator` is specified, the Collection will maintain
+  // If models tend to represent a single row of data, a Backbone Collection is
+  // more analagous to a table full of data ... or a small slice or page of that
+  // table, or a collection of rows that belong together for a particular reason
+  // -- all of the messages in this particular folder, all of the documents
+  // belonging to this particular author, and so on. Collections maintain
+  // indexes of their models, both in order, and for lookup by `id`.
+
+  // Create a new **Collection**, perhaps to contain a specific type of `model`.
+  // If a `comparator` is specified, the Collection will maintain
   // its models in sort order, as they're added and removed.
   var Collection = Backbone.Collection = function(models, options) {
     options || (options = {});
+    if (options.url) this.url = options.url;
     if (options.model) this.model = options.model;
     if (options.comparator !== void 0) this.comparator = options.comparator;
-    this.models = [];
     this._reset();
     this.initialize.apply(this, arguments);
     if (models) this.reset(models, _.extend({silent: true}, options));
   };
+
+  // Default options for `Collection#set`.
+  var setOptions = {add: true, remove: true, merge: true};
+  var addOptions = {add: true, merge: false, remove: false};
 
   // Define the Collection's inheritable methods.
   _.extend(Collection.prototype, Events, {
@@ -3337,67 +3452,7 @@ define("underscore", (function (global) {
 
     // Add a model, or list of models to the set.
     add: function(models, options) {
-      models = _.isArray(models) ? models.slice() : [models];
-      options || (options = {});
-      var i, l, model, attrs, existing, doSort, add, at, sort, sortAttr;
-      add = [];
-      at = options.at;
-      sort = this.comparator && (at == null) && options.sort != false;
-      sortAttr = _.isString(this.comparator) ? this.comparator : null;
-
-      // Turn bare objects into model references, and prevent invalid models
-      // from being added.
-      for (i = 0, l = models.length; i < l; i++) {
-        if (!(model = this._prepareModel(attrs = models[i], options))) {
-          this.trigger('invalid', this, attrs, options);
-          continue;
-        }
-
-        // If a duplicate is found, prevent it from being added and
-        // optionally merge it into the existing model.
-        if (existing = this.get(model)) {
-          if (options.merge) {
-            existing.set(attrs === model ? model.attributes : attrs, options);
-            if (sort && !doSort && existing.hasChanged(sortAttr)) doSort = true;
-          }
-          continue;
-        }
-
-        // This is a new model, push it to the `add` list.
-        add.push(model);
-
-        // Listen to added models' events, and index models for lookup by
-        // `id` and by `cid`.
-        model.on('all', this._onModelEvent, this);
-        this._byId[model.cid] = model;
-        if (model.id != null) this._byId[model.id] = model;
-      }
-
-      // See if sorting is needed, update `length` and splice in new models.
-      if (add.length) {
-        if (sort) doSort = true;
-        this.length += add.length;
-        if (at != null) {
-          splice.apply(this.models, [at, 0].concat(add));
-        } else {
-          push.apply(this.models, add);
-        }
-      }
-
-      // Silently sort the collection if appropriate.
-      if (doSort) this.sort({silent: true});
-
-      if (options.silent) return this;
-
-      // Trigger `add` events.
-      for (i = 0, l = add.length; i < l; i++) {
-        (model = add[i]).trigger('add', model, this, options);
-      }
-
-      // Trigger `sort` if the collection was sorted.
-      if (doSort) this.trigger('sort', this, options);
-
-      return this;
+      return this.set(models, _.defaults(options || {}, addOptions));
     },
 
     // Remove a model, or a list of models from the set.
@@ -3419,6 +3474,96 @@ define("underscore", (function (global) {
         }
         this._removeReference(model);
       }
+      return this;
+    },
+
+    // Update a collection by `set`-ing a new list of models, adding new ones,
+    // removing models that are no longer present, and merging models that
+    // already exist in the collection, as necessary. Similar to **Model#set**,
+    // the core operation for updating the data contained by the collection.
+    set: function(models, options) {
+      options = _.defaults(options || {}, setOptions);
+      if (options.parse) models = this.parse(models, options);
+      if (!_.isArray(models)) models = models ? [models] : [];
+      var i, l, model, attrs, existing, sort;
+      var at = options.at;
+      var sortable = this.comparator && (at == null) && options.sort !== false;
+      var sortAttr = _.isString(this.comparator) ? this.comparator : null;
+      var toAdd = [], toRemove = [], modelMap = {};
+
+      // Turn bare objects into model references, and prevent invalid models
+      // from being added.
+      for (i = 0, l = models.length; i < l; i++) {
+        if (!(model = this._prepareModel(models[i], options))) continue;
+
+        // If a duplicate is found, prevent it from being added and
+        // optionally merge it into the existing model.
+        if (existing = this.get(model)) {
+          if (options.remove) modelMap[existing.cid] = true;
+          if (options.merge) {
+            existing.set(model.attributes, options);
+            if (sortable && !sort && existing.hasChanged(sortAttr)) sort = true;
+          }
+
+        // This is a new model, push it to the `toAdd` list.
+        } else if (options.add) {
+          toAdd.push(model);
+
+          // Listen to added models' events, and index models for lookup by
+          // `id` and by `cid`.
+          model.on('all', this._onModelEvent, this);
+          this._byId[model.cid] = model;
+          if (model.id != null) this._byId[model.id] = model;
+        }
+      }
+
+      // Remove nonexistent models if appropriate.
+      if (options.remove) {
+        for (i = 0, l = this.length; i < l; ++i) {
+          if (!modelMap[(model = this.models[i]).cid]) toRemove.push(model);
+        }
+        if (toRemove.length) this.remove(toRemove, options);
+      }
+
+      // See if sorting is needed, update `length` and splice in new models.
+      if (toAdd.length) {
+        if (sortable) sort = true;
+        this.length += toAdd.length;
+        if (at != null) {
+          splice.apply(this.models, [at, 0].concat(toAdd));
+        } else {
+          push.apply(this.models, toAdd);
+        }
+      }
+
+      // Silently sort the collection if appropriate.
+      if (sort) this.sort({silent: true});
+
+      if (options.silent) return this;
+
+      // Trigger `add` events.
+      for (i = 0, l = toAdd.length; i < l; i++) {
+        (model = toAdd[i]).trigger('add', model, this, options);
+      }
+
+      // Trigger `sort` if the collection was sorted.
+      if (sort) this.trigger('sort', this, options);
+      return this;
+    },
+
+    // When you have more items than you want to add or remove individually,
+    // you can reset the entire set with a new list of models, without firing
+    // any granular `add` or `remove` events. Fires `reset` when finished.
+    // Useful for bulk operations and optimizations.
+    reset: function(models, options) {
+      options || (options = {});
+      for (var i = 0, l = this.models.length; i < l; i++) {
+        this._removeReference(this.models[i]);
+      }
+      options.previousModels = this.models;
+      this._reset();
+      this.add(models, _.extend({silent: true}, options));
+      if (!options.silent) this.trigger('reset', this, options);
       return this;
     },
 
@@ -3458,8 +3603,7 @@ define("underscore", (function (global) {
     // Get a model from the set by id.
     get: function(obj) {
       if (obj == null) return void 0;
-      this._idAttr || (this._idAttr = this.model.prototype.idAttribute);
-      return this._byId[obj.id || obj.cid || obj[this._idAttr] || obj];
+      return this._byId[obj.id != null ? obj.id : obj.cid || obj];
     },
 
     // Get the model at the given index.
@@ -3467,10 +3611,11 @@ define("underscore", (function (global) {
       return this.models[index];
     },
 
-    // Return models with matching attributes. Useful for simple cases of `filter`.
-    where: function(attrs) {
-      if (_.isEmpty(attrs)) return [];
-      return this.filter(function(model) {
+    // Return models with matching attributes. Useful for simple cases of
+    // `filter`.
+    where: function(attrs, first) {
+      if (_.isEmpty(attrs)) return first ? void 0 : [];
+      return this[first ? 'find' : 'filter'](function(model) {
         for (var key in attrs) {
           if (attrs[key] !== model.get(key)) return false;
         }
@@ -3478,13 +3623,17 @@ define("underscore", (function (global) {
       });
     },
 
+    // Return the first model with matching attributes. Useful for simple cases
+    // of `find`.
+    findWhere: function(attrs) {
+      return this.where(attrs, true);
+    },
+
     // Force the collection to re-sort itself. You don't need to call this under
     // normal circumstances, as the set will maintain sort order as each item
     // is added.
     sort: function(options) {
-      if (!this.comparator) {
-        throw new Error('Cannot sort a set without a comparator');
-      }
+      if (!this.comparator) throw new Error('Cannot sort a set without a comparator');
       options || (options = {});
 
       // Run sort based on type of `comparator`.
@@ -3498,75 +3647,36 @@ define("underscore", (function (global) {
       return this;
     },
 
+    // Figure out the smallest index at which a model should be inserted so as
+    // to maintain order.
+    sortedIndex: function(model, value, context) {
+      value || (value = this.comparator);
+      var iterator = _.isFunction(value) ? value : function(model) {
+        return model.get(value);
+      };
+      return _.sortedIndex(this.models, model, iterator, context);
+    },
+
     // Pluck an attribute from each model in the collection.
     pluck: function(attr) {
       return _.invoke(this.models, 'get', attr);
     },
 
-    // Smartly update a collection with a change set of models, adding,
-    // removing, and merging as necessary.
-    update: function(models, options) {
-      options = _.extend({add: true, merge: true, remove: true}, options);
-      if (options.parse) models = this.parse(models, options);
-      var model, i, l, existing;
-      var add = [], remove = [], modelMap = {};
-
-      // Allow a single model (or no argument) to be passed.
-      if (!_.isArray(models)) models = models ? [models] : [];
-
-      // Proxy to `add` for this case, no need to iterate...
-      if (options.add && !options.remove) return this.add(models, options);
-
-      // Determine which models to add and merge, and which to remove.
-      for (i = 0, l = models.length; i < l; i++) {
-        model = models[i];
-        existing = this.get(model);
-        if (options.remove && existing) modelMap[existing.cid] = true;
-        if ((options.add && !existing) || (options.merge && existing)) {
-          add.push(model);
-        }
-      }
-      if (options.remove) {
-        for (i = 0, l = this.models.length; i < l; i++) {
-          model = this.models[i];
-          if (!modelMap[model.cid]) remove.push(model);
-        }
-      }
-
-      // Remove models (if applicable) before we add and merge the rest.
-      if (remove.length) this.remove(remove, options);
-      if (add.length) this.add(add, options);
-      return this;
-    },
-
-    // When you have more items than you want to add or remove individually,
-    // you can reset the entire set with a new list of models, without firing
-    // any `add` or `remove` events. Fires `reset` when finished.
-    reset: function(models, options) {
-      options || (options = {});
-      if (options.parse) models = this.parse(models, options);
-      for (var i = 0, l = this.models.length; i < l; i++) {
-        this._removeReference(this.models[i]);
-      }
-      options.previousModels = this.models.slice();
-      this._reset();
-      if (models) this.add(models, _.extend({silent: true}, options));
-      if (!options.silent) this.trigger('reset', this, options);
-      return this;
-    },
-
     // Fetch the default set of models for this collection, resetting the
-    // collection when they arrive. If `update: true` is passed, the response
-    // data will be passed through the `update` method instead of `reset`.
+    // collection when they arrive. If `reset: true` is passed, the response
+    // data will be passed through the `reset` method instead of `set`.
     fetch: function(options) {
       options = options ? _.clone(options) : {};
       if (options.parse === void 0) options.parse = true;
       var success = options.success;
-      options.success = function(collection, resp, options) {
-        var method = options.update ? 'update' : 'reset';
+      var collection = this;
+      options.success = function(resp) {
+        var method = options.reset ? 'reset' : 'set';
         collection[method](resp, options);
         if (success) success(collection, resp, options);
+        collection.trigger('sync', collection, resp, options);
       };
+      wrapError(this, options);
       return this.sync('read', this, options);
     },
 
@@ -3579,7 +3689,7 @@ define("underscore", (function (global) {
       if (!options.wait) this.add(model, options);
       var collection = this;
       var success = options.success;
-      options.success = function(model, resp, options) {
+      options.success = function(resp) {
         if (options.wait) collection.add(model, options);
         if (success) success(model, resp, options);
       };
@@ -3598,14 +3708,16 @@ define("underscore", (function (global) {
       return new this.constructor(this.models);
     },
 
-    // Reset all internal state. Called when the collection is reset.
+    // Private method to reset all internal state. Called when the collection
+    // is first initialized or reset.
     _reset: function() {
       this.length = 0;
-      this.models.length = 0;
+      this.models = [];
       this._byId  = {};
     },
 
-    // Prepare a model or hash of attributes to be added to this collection.
+    // Prepare a hash of attributes (or other model) to be added to this
+    // collection.
     _prepareModel: function(attrs, options) {
       if (attrs instanceof Model) {
         if (!attrs.collection) attrs.collection = this;
@@ -3614,11 +3726,14 @@ define("underscore", (function (global) {
       options || (options = {});
       options.collection = this;
       var model = new this.model(attrs, options);
-      if (!model._validate(attrs, options)) return false;
+      if (!model._validate(attrs, options)) {
+        this.trigger('invalid', this, attrs, options);
+        return false;
+      }
       return model;
     },
 
-    // Internal method to remove a model's ties to a collection.
+    // Internal method to sever a model's ties to a collection.
     _removeReference: function(model) {
       if (this === model.collection) delete model.collection;
       model.off('all', this._onModelEvent, this);
@@ -3636,19 +3751,13 @@ define("underscore", (function (global) {
         if (model.id != null) this._byId[model.id] = model;
       }
       this.trigger.apply(this, arguments);
-    },
-
-    sortedIndex: function (model, value, context) {
-      value || (value = this.comparator);
-      var iterator = _.isFunction(value) ? value : function(model) {
-        return model.get(value);
-      };
-      return _.sortedIndex(this.models, model, iterator, context);
     }
 
   });
 
   // Underscore methods that we want to implement on the Collection.
+  // 90% of the core usefulness of Backbone Collections is actually implemented
+  // right here:
   var methods = ['forEach', 'each', 'map', 'collect', 'reduce', 'foldl',
     'inject', 'reduceRight', 'foldr', 'find', 'detect', 'filter', 'select',
     'reject', 'every', 'all', 'some', 'any', 'include', 'contains', 'invoke',
@@ -3677,6 +3786,241 @@ define("underscore", (function (global) {
       return _[method](this.models, iterator, context);
     };
   });
+
+  // Backbone.View
+  // -------------
+
+  // Backbone Views are almost more convention than they are actual code. A View
+  // is simply a JavaScript object that represents a logical chunk of UI in the
+  // DOM. This might be a single item, an entire list, a sidebar or panel, or
+  // even the surrounding frame which wraps your whole app. Defining a chunk of
+  // UI as a **View** allows you to define your DOM events declaratively, without
+  // having to worry about render order ... and makes it easy for the view to
+  // react to specific changes in the state of your models.
+
+  // Creating a Backbone.View creates its initial element outside of the DOM,
+  // if an existing element is not provided...
+  var View = Backbone.View = function(options) {
+    this.cid = _.uniqueId('view');
+    this._configure(options || {});
+    this._ensureElement();
+    this.initialize.apply(this, arguments);
+    this.delegateEvents();
+  };
+
+  // Cached regex to split keys for `delegate`.
+  var delegateEventSplitter = /^(\S+)\s*(.*)$/;
+
+  // List of view options to be merged as properties.
+  var viewOptions = ['model', 'collection', 'el', 'id', 'attributes', 'className', 'tagName', 'events'];
+
+  // Set up all inheritable **Backbone.View** properties and methods.
+  _.extend(View.prototype, Events, {
+
+    // The default `tagName` of a View's element is `"div"`.
+    tagName: 'div',
+
+    // jQuery delegate for element lookup, scoped to DOM elements within the
+    // current view. This should be prefered to global lookups where possible.
+    $: function(selector) {
+      return this.$el.find(selector);
+    },
+
+    // Initialize is an empty function by default. Override it with your own
+    // initialization logic.
+    initialize: function(){},
+
+    // **render** is the core function that your view should override, in order
+    // to populate its element (`this.el`), with the appropriate HTML. The
+    // convention is for **render** to always return `this`.
+    render: function() {
+      return this;
+    },
+
+    // Remove this view by taking the element out of the DOM, and removing any
+    // applicable Backbone.Events listeners.
+    remove: function() {
+      this.$el.remove();
+      this.stopListening();
+      return this;
+    },
+
+    // Change the view's element (`this.el` property), including event
+    // re-delegation.
+    setElement: function(element, delegate) {
+      if (this.$el) this.undelegateEvents();
+      this.$el = element instanceof Backbone.$ ? element : Backbone.$(element);
+      this.el = this.$el[0];
+      if (delegate !== false) this.delegateEvents();
+      return this;
+    },
+
+    // Set callbacks, where `this.events` is a hash of
+    //
+    // *{"event selector": "callback"}*
+    //
+    //     {
+    //       'mousedown .title':  'edit',
+    //       'click .button':     'save'
+    //       'click .open':       function(e) { ... }
+    //     }
+    //
+    // pairs. Callbacks will be bound to the view, with `this` set properly.
+    // Uses event delegation for efficiency.
+    // Omitting the selector binds the event to `this.el`.
+    // This only works for delegate-able events: not `focus`, `blur`, and
+    // not `change`, `submit`, and `reset` in Internet Explorer.
+    delegateEvents: function(events) {
+      if (!(events || (events = _.result(this, 'events')))) return this;
+      this.undelegateEvents();
+      for (var key in events) {
+        var method = events[key];
+        if (!_.isFunction(method)) method = this[events[key]];
+        if (!method) continue;
+
+        var match = key.match(delegateEventSplitter);
+        var eventName = match[1], selector = match[2];
+        method = _.bind(method, this);
+        eventName += '.delegateEvents' + this.cid;
+        if (selector === '') {
+          this.$el.on(eventName, method);
+        } else {
+          this.$el.on(eventName, selector, method);
+        }
+      }
+      return this;
+    },
+
+    // Clears all callbacks previously bound to the view with `delegateEvents`.
+    // You usually don't need to use this, but may wish to if you have multiple
+    // Backbone views attached to the same DOM element.
+    undelegateEvents: function() {
+      this.$el.off('.delegateEvents' + this.cid);
+      return this;
+    },
+
+    // Performs the initial configuration of a View with a set of options.
+    // Keys with special meaning *(e.g. model, collection, id, className)* are
+    // attached directly to the view.  See `viewOptions` for an exhaustive
+    // list.
+    _configure: function(options) {
+      if (this.options) options = _.extend({}, _.result(this, 'options'), options);
+      _.extend(this, _.pick(options, viewOptions));
+      this.options = options;
+    },
+
+    // Ensure that the View has a DOM element to render into.
+    // If `this.el` is a string, pass it through `$()`, take the first
+    // matching element, and re-assign it to `el`. Otherwise, create
+    // an element from the `id`, `className` and `tagName` properties.
+    _ensureElement: function() {
+      if (!this.el) {
+        var attrs = _.extend({}, _.result(this, 'attributes'));
+        if (this.id) attrs.id = _.result(this, 'id');
+        if (this.className) attrs['class'] = _.result(this, 'className');
+        var $el = Backbone.$('<' + _.result(this, 'tagName') + '>').attr(attrs);
+        this.setElement($el, false);
+      } else {
+        this.setElement(_.result(this, 'el'), false);
+      }
+    }
+
+  });
+
+  // Backbone.sync
+  // -------------
+
+  // Override this function to change the manner in which Backbone persists
+  // models to the server. You will be passed the type of request, and the
+  // model in question. By default, makes a RESTful Ajax request
+  // to the model's `url()`. Some possible customizations could be:
+  //
+  // * Use `setTimeout` to batch rapid-fire updates into a single request.
+  // * Send up the models as XML instead of JSON.
+  // * Persist models via WebSockets instead of Ajax.
+  //
+  // Turn on `Backbone.emulateHTTP` in order to send `PUT` and `DELETE` requests
+  // as `POST`, with a `_method` parameter containing the true HTTP method,
+  // as well as all requests with the body as `application/x-www-form-urlencoded`
+  // instead of `application/json` with the model in a param named `model`.
+  // Useful when interfacing with server-side languages like **PHP** that make
+  // it difficult to read the body of `PUT` requests.
+  Backbone.sync = function(method, model, options) {
+    var type = methodMap[method];
+
+    // Default options, unless specified.
+    _.defaults(options || (options = {}), {
+      emulateHTTP: Backbone.emulateHTTP,
+      emulateJSON: Backbone.emulateJSON
+    });
+
+    // Default JSON-request options.
+    var params = {type: type, dataType: 'json'};
+
+    // Ensure that we have a URL.
+    if (!options.url) {
+      params.url = _.result(model, 'url') || urlError();
+    }
+
+    // Ensure that we have the appropriate request data.
+    if (options.data == null && model && (method === 'create' || method === 'update' || method === 'patch')) {
+      params.contentType = 'application/json';
+      params.data = JSON.stringify(options.attrs || model.toJSON(options));
+    }
+
+    // For older servers, emulate JSON by encoding the request into an HTML-form.
+    if (options.emulateJSON) {
+      params.contentType = 'application/x-www-form-urlencoded';
+      params.data = params.data ? {model: params.data} : {};
+    }
+
+    // For older servers, emulate HTTP by mimicking the HTTP method with `_method`
+    // And an `X-HTTP-Method-Override` header.
+    if (options.emulateHTTP && (type === 'PUT' || type === 'DELETE' || type === 'PATCH')) {
+      params.type = 'POST';
+      if (options.emulateJSON) params.data._method = type;
+      var beforeSend = options.beforeSend;
+      options.beforeSend = function(xhr) {
+        xhr.setRequestHeader('X-HTTP-Method-Override', type);
+        if (beforeSend) return beforeSend.apply(this, arguments);
+      };
+    }
+
+    // Don't process data on a non-GET request.
+    if (params.type !== 'GET' && !options.emulateJSON) {
+      params.processData = false;
+    }
+
+    // If we're sending a `PATCH` request, and we're in an old Internet Explorer
+    // that still has ActiveX enabled by default, override jQuery to use that
+    // for XHR instead. Remove this line when jQuery supports `PATCH` on IE8.
+    if (params.type === 'PATCH' && window.ActiveXObject &&
+          !(window.external && window.external.msActiveXFilteringEnabled)) {
+      params.xhr = function() {
+        return new ActiveXObject("Microsoft.XMLHTTP");
+      };
+    }
+
+    // Make the request, allowing the user to override any Ajax options.
+    var xhr = options.xhr = Backbone.ajax(_.extend(params, options));
+    model.trigger('request', model, xhr, options);
+    return xhr;
+  };
+
+  // Map from CRUD to HTTP for our default `Backbone.sync` implementation.
+  var methodMap = {
+    'create': 'POST',
+    'update': 'PUT',
+    'patch':  'PATCH',
+    'delete': 'DELETE',
+    'read':   'GET'
+  };
+
+  // Set the default implementation of `Backbone.ajax` to proxy through to `$`.
+  // Override this if you'd like to use a different library.
+  Backbone.ajax = function() {
+    return Backbone.$.ajax.apply(Backbone.$, arguments);
+  };
 
   // Backbone.Router
   // ---------------
@@ -3712,14 +4056,19 @@ define("underscore", (function (global) {
     //
     route: function(route, name, callback) {
       if (!_.isRegExp(route)) route = this._routeToRegExp(route);
+      if (_.isFunction(name)) {
+        callback = name;
+        name = '';
+      }
       if (!callback) callback = this[name];
-      Backbone.history.route(route, _.bind(function(fragment) {
-        var args = this._extractParameters(route, fragment);
-        callback && callback.apply(this, args);
-        this.trigger.apply(this, ['route:' + name].concat(args));
-        this.trigger('route', name, args);
-        Backbone.history.trigger('route', this, name, args);
-      }, this));
+      var router = this;
+      Backbone.history.route(route, function(fragment) {
+        var args = router._extractParameters(route, fragment);
+        callback && callback.apply(router, args);
+        router.trigger.apply(router, ['route:' + name].concat(args));
+        router.trigger('route', name, args);
+        Backbone.history.trigger('route', router, name, args);
+      });
       return this;
     },
 
@@ -3734,6 +4083,7 @@ define("underscore", (function (global) {
     // routes can be defined at the bottom of the route map.
     _bindRoutes: function() {
       if (!this.routes) return;
+      this.routes = _.result(this, 'routes');
       var route, routes = _.keys(this.routes);
       while ((route = routes.pop()) != null) {
         this.route(route, this.routes[route]);
@@ -3753,9 +4103,13 @@ define("underscore", (function (global) {
     },
 
     // Given a route, and a URL fragment that it matches, return the array of
-    // extracted parameters.
+    // extracted decoded parameters. Empty or unmatched parameters will be
+    // treated as `null` to normalize cross-browser behavior.
     _extractParameters: function(route, fragment) {
-      return route.exec(fragment).slice(1);
+      var params = route.exec(fragment).slice(1);
+      return _.map(params, function(param) {
+        return param ? decodeURIComponent(param) : null;
+      });
     }
 
   });
@@ -3763,8 +4117,11 @@ define("underscore", (function (global) {
   // Backbone.History
   // ----------------
 
-  // Handles cross-browser history management, based on URL fragments. If the
-  // browser does not support `onhashchange`, falls back to polling.
+  // Handles cross-browser history management, based on either
+  // [pushState](http://diveintohtml5.info/history.html) and real URLs, or
+  // [onhashchange](https://developer.mozilla.org/en-US/docs/DOM/window.onhashchange)
+  // and URL fragments. If the browser supports neither (old IE, natch),
+  // falls back to polling.
   var History = Backbone.History = function() {
     this.handlers = [];
     _.bindAll(this, 'checkUrl');
@@ -3975,230 +4332,6 @@ define("underscore", (function (global) {
   // Create the default Backbone.history.
   Backbone.history = new History;
 
-  // Backbone.View
-  // -------------
-
-  // Creating a Backbone.View creates its initial element outside of the DOM,
-  // if an existing element is not provided...
-  var View = Backbone.View = function(options) {
-    this.cid = _.uniqueId('view');
-    this._configure(options || {});
-    this._ensureElement();
-    this.initialize.apply(this, arguments);
-    this.delegateEvents();
-  };
-
-  // Cached regex to split keys for `delegate`.
-  var delegateEventSplitter = /^(\S+)\s*(.*)$/;
-
-  // List of view options to be merged as properties.
-  var viewOptions = ['model', 'collection', 'el', 'id', 'attributes', 'className', 'tagName', 'events'];
-
-  // Set up all inheritable **Backbone.View** properties and methods.
-  _.extend(View.prototype, Events, {
-
-    // The default `tagName` of a View's element is `"div"`.
-    tagName: 'div',
-
-    // jQuery delegate for element lookup, scoped to DOM elements within the
-    // current view. This should be prefered to global lookups where possible.
-    $: function(selector) {
-      return this.$el.find(selector);
-    },
-
-    // Initialize is an empty function by default. Override it with your own
-    // initialization logic.
-    initialize: function(){},
-
-    // **render** is the core function that your view should override, in order
-    // to populate its element (`this.el`), with the appropriate HTML. The
-    // convention is for **render** to always return `this`.
-    render: function() {
-      return this;
-    },
-
-    // Remove this view by taking the element out of the DOM, and removing any
-    // applicable Backbone.Events listeners.
-    remove: function() {
-      this.$el.remove();
-      this.stopListening();
-      return this;
-    },
-
-    // Change the view's element (`this.el` property), including event
-    // re-delegation.
-    setElement: function(element, delegate) {
-      if (this.$el) this.undelegateEvents();
-      this.$el = element instanceof Backbone.$ ? element : Backbone.$(element);
-      this.el = this.$el[0];
-      if (delegate !== false) this.delegateEvents();
-      return this;
-    },
-
-    // Set callbacks, where `this.events` is a hash of
-    //
-    // *{"event selector": "callback"}*
-    //
-    //     {
-    //       'mousedown .title':  'edit',
-    //       'click .button':     'save'
-    //       'click .open':       function(e) { ... }
-    //     }
-    //
-    // pairs. Callbacks will be bound to the view, with `this` set properly.
-    // Uses event delegation for efficiency.
-    // Omitting the selector binds the event to `this.el`.
-    // This only works for delegate-able events: not `focus`, `blur`, and
-    // not `change`, `submit`, and `reset` in Internet Explorer.
-    delegateEvents: function(events) {
-      if (!(events || (events = _.result(this, 'events')))) return;
-      this.undelegateEvents();
-      for (var key in events) {
-        var method = events[key];
-        if (!_.isFunction(method)) method = this[events[key]];
-        if (!method) throw new Error('Method "' + events[key] + '" does not exist');
-        var match = key.match(delegateEventSplitter);
-        var eventName = match[1], selector = match[2];
-        method = _.bind(method, this);
-        eventName += '.delegateEvents' + this.cid;
-        if (selector === '') {
-          this.$el.on(eventName, method);
-        } else {
-          this.$el.on(eventName, selector, method);
-        }
-      }
-    },
-
-    // Clears all callbacks previously bound to the view with `delegateEvents`.
-    // You usually don't need to use this, but may wish to if you have multiple
-    // Backbone views attached to the same DOM element.
-    undelegateEvents: function() {
-      this.$el.off('.delegateEvents' + this.cid);
-    },
-
-    // Performs the initial configuration of a View with a set of options.
-    // Keys with special meaning *(model, collection, id, className)*, are
-    // attached directly to the view.
-    _configure: function(options) {
-      if (this.options) options = _.extend({}, _.result(this, 'options'), options);
-      _.extend(this, _.pick(options, viewOptions));
-      this.options = options;
-    },
-
-    // Ensure that the View has a DOM element to render into.
-    // If `this.el` is a string, pass it through `$()`, take the first
-    // matching element, and re-assign it to `el`. Otherwise, create
-    // an element from the `id`, `className` and `tagName` properties.
-    _ensureElement: function() {
-      if (!this.el) {
-        var attrs = _.extend({}, _.result(this, 'attributes'));
-        if (this.id) attrs.id = _.result(this, 'id');
-        if (this.className) attrs['class'] = _.result(this, 'className');
-        var $el = Backbone.$('<' + _.result(this, 'tagName') + '>').attr(attrs);
-        this.setElement($el, false);
-      } else {
-        this.setElement(_.result(this, 'el'), false);
-      }
-    }
-
-  });
-
-  // Backbone.sync
-  // -------------
-
-  // Map from CRUD to HTTP for our default `Backbone.sync` implementation.
-  var methodMap = {
-    'create': 'POST',
-    'update': 'PUT',
-    'patch':  'PATCH',
-    'delete': 'DELETE',
-    'read':   'GET'
-  };
-
-  // Override this function to change the manner in which Backbone persists
-  // models to the server. You will be passed the type of request, and the
-  // model in question. By default, makes a RESTful Ajax request
-  // to the model's `url()`. Some possible customizations could be:
-  //
-  // * Use `setTimeout` to batch rapid-fire updates into a single request.
-  // * Send up the models as XML instead of JSON.
-  // * Persist models via WebSockets instead of Ajax.
-  //
-  // Turn on `Backbone.emulateHTTP` in order to send `PUT` and `DELETE` requests
-  // as `POST`, with a `_method` parameter containing the true HTTP method,
-  // as well as all requests with the body as `application/x-www-form-urlencoded`
-  // instead of `application/json` with the model in a param named `model`.
-  // Useful when interfacing with server-side languages like **PHP** that make
-  // it difficult to read the body of `PUT` requests.
-  Backbone.sync = function(method, model, options) {
-    var type = methodMap[method];
-
-    // Default options, unless specified.
-    _.defaults(options || (options = {}), {
-      emulateHTTP: Backbone.emulateHTTP,
-      emulateJSON: Backbone.emulateJSON
-    });
-
-    // Default JSON-request options.
-    var params = {type: type, dataType: 'json'};
-
-    // Ensure that we have a URL.
-    if (!options.url) {
-      params.url = _.result(model, 'url') || urlError();
-    }
-
-    // Ensure that we have the appropriate request data.
-    if (options.data == null && model && (method === 'create' || method === 'update' || method === 'patch')) {
-      params.contentType = 'application/json';
-      params.data = JSON.stringify(options.attrs || model.toJSON(options));
-    }
-
-    // For older servers, emulate JSON by encoding the request into an HTML-form.
-    if (options.emulateJSON) {
-      params.contentType = 'application/x-www-form-urlencoded';
-      params.data = params.data ? {model: params.data} : {};
-    }
-
-    // For older servers, emulate HTTP by mimicking the HTTP method with `_method`
-    // And an `X-HTTP-Method-Override` header.
-    if (options.emulateHTTP && (type === 'PUT' || type === 'DELETE' || type === 'PATCH')) {
-      params.type = 'POST';
-      if (options.emulateJSON) params.data._method = type;
-      var beforeSend = options.beforeSend;
-      options.beforeSend = function(xhr) {
-        xhr.setRequestHeader('X-HTTP-Method-Override', type);
-        if (beforeSend) return beforeSend.apply(this, arguments);
-      };
-    }
-
-    // Don't process data on a non-GET request.
-    if (params.type !== 'GET' && !options.emulateJSON) {
-      params.processData = false;
-    }
-
-    var success = options.success;
-    options.success = function(resp) {
-      if (success) success(model, resp, options);
-      model.trigger('sync', model, resp, options);
-    };
-
-    var error = options.error;
-    options.error = function(xhr) {
-      if (error) error(model, xhr, options);
-      model.trigger('error', model, xhr, options);
-    };
-
-    // Make the request, allowing the user to override any Ajax options.
-    var xhr = options.xhr = Backbone.ajax(_.extend(params, options));
-    model.trigger('request', model, xhr, options);
-    return xhr;
-  };
-
-  // Set the default implementation of `Backbone.ajax` to proxy through to `$`.
-  Backbone.ajax = function() {
-    return Backbone.$.ajax.apply(Backbone.$, arguments);
-  };
-
   // Helpers
   // -------
 
@@ -4244,6 +4377,15 @@ define("underscore", (function (global) {
   // Throw an error when a URL is needed, and none is supplied.
   var urlError = function() {
     throw new Error('A "url" property or function must be specified');
+  };
+
+  // Wrap an optional error callback with a fallback error event.
+  var wrapError = function (model, options) {
+    var error = options.error;
+    options.error = function(resp) {
+      if (error) error(model, resp, options);
+      model.trigger('error', model, resp, options);
+    };
   };
 
 }).call(this);
@@ -4695,11 +4837,43 @@ define('common/controllers/bar-graph-controller',['require','grapher/bar-graph/b
   };
 });
 
-/*globals define */
+/*globals define, d3 */
 //TODO: Should change and newdomain be global variables?
 
 define('grapher/core/axis',['require'],function (require) {
   return {
+    numberWidthUsingFormatter: function (elem, cx, cy, fontSizeInPixels, formatter, number) {
+      var testSVG,
+          testText,
+          width,
+          node;
+
+      testSVG = elem.append("svg")
+        .attr("width",  cx)
+        .attr("height", cy)
+        .attr("class", "graph");
+
+      testText = testSVG.append('g')
+        .append("text")
+          .attr("class", "axis")
+          .attr("x", -fontSizeInPixels/4 + "px")
+          .attr("dy", ".35em")
+          .attr("text-anchor", "end")
+          .text(d3.format(formatter)(number));
+
+      node = testText.node();
+
+      // This code is sometimes called by tests that use d3's jsdom-based mock SVG DOm, which
+      // doesn't implement getBBox.
+      if (node.getBBox) {
+        width = testText.node().getBBox().width;
+      } else {
+        width = 0;
+      }
+
+      testSVG.remove();
+      return width;
+    },
     axisProcessDrag: function(dragstart, currentdrag, domain) {
       var originExtent, maxDragIn,
           newdomain = domain,
@@ -4741,15 +4915,20 @@ define('grapher/core/axis',['require'],function (require) {
   };
 });
 
-/*globals define, d3, $ */
+/*global define, d3, $ self */
 
-define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (require) {
+define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
   // Dependencies.
-  var axis = require('grapher/core/axis');
+  var axis = require('grapher/core/axis'),
+      tooltips = {
+        autoscale: "Show all data (autoscale)"
+      };
 
-  return function RealTimeGraph(idOrElement, options, message) {
+
+  return function Graph(idOrElement, options, message, tabindex) {
     var elem,
         node,
+        $node,
         cx,
         cy,
 
@@ -4758,7 +4937,8 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         ty = function(d) { return "translate(0," + yScale(d) + ")"; },
         fx, fy,
         svg, vis, plot, viewbox,
-        title, xlabel, ylabel, xtic, ytic,
+        buttonLayer,
+        title, xlabel, ylabel,
         notification,
         padding, size,
         xScale, yScale, line,
@@ -4766,7 +4946,6 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         cubicEase = d3.ease('cubic'),
         ds,
         circleCursorStyle,
-        displayProperties,
         fontSizeInPixels,
         halfFontSizeInPixels,
         quarterFontSizeInPixels,
@@ -4774,9 +4953,9 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         axisFontSizeInPixels,
         xlabelFontSizeInPixels,
         ylabelFontSizeInPixels,
+        xAxisNumberWidth,
         yAxisNumberWidth,
         strokeWidth,
-        scaleFactor,
         sizeType = {
           category: "medium",
           value: 3,
@@ -4786,46 +4965,66 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
           medium: 960,
           large: 1920
         },
-        downx = Math.NaN,
-        downy = Math.NaN,
+        downx = NaN,
+        downy = NaN,
         dragged = null,
         selected = null,
         titles = [],
 
         points, pointArray,
+        currentSample,
         markedPoint, marker,
         sample,
         gcanvas, gctx,
+        canvasFillStyle = "rgba(255,255,255, 0.0)",
         cplot = {},
 
         default_options = {
+          showButtons:    true,
           responsiveLayout: false,
           fontScaleRelativeToParent: true,
-          title   : "graph",
-          xlabel  : "x-axis",
-          ylabel  : "y-axis",
-          xscale  : 'linear',
-          yscale  : 'linear',
-          xTicCount: 10,
-          yTicCount: 10,
-          xscaleExponent: 0.5,
-          yscaleExponent: 0.5,
-          xFormatter: "3.2r",
-          yFormatter: "3.2r",
-          axisShift:  10,
-          xmax:       10,
-          xmin:       0,
-          ymax:       10,
-          ymin:       0,
-          dataset:    [0],
-          selectable_points: true,
-          circleRadius: false,
-          dataChange: false,
-          points: false,
-          sample: 1,
-          lines: true,
-          bars: false
-        };
+          realTime:       false,
+          title:          "graph",
+          xlabel:         "x-axis",
+          ylabel:         "y-axis",
+          xscale:         'linear',
+          yscale:         'linear',
+          xTickCount:      10,
+          yTickCount:      10,
+          xscaleExponent:  0.5,
+          yscaleExponent:  0.5,
+          xFormatter:      ".2s",
+          yFormatter:      ".2s",
+          axisShift:       10,
+          xmax:            10,
+          xmin:            0,
+          ymax:            10,
+          ymin:            0,
+          dataset:         [0],
+          selectablePoints: false,
+          circleRadius:    10.0,
+          strokeWidth:      2.0,
+          dataChange:      true,
+          addData:         true,
+          points:          false,
+          notification:    false,
+          sample:          1,
+          lines:           true,
+          bars:            false
+        },
+
+        selection_region = {
+          xmin: null,
+          xmax: null,
+          ymin: null,
+          ymax: null
+        },
+        has_selection = false,
+        selection_visible = false,
+        selection_enabled = true,
+        selection_listener,
+        brush_element,
+        brush_control;
 
     initialize(idOrElement, options, message);
 
@@ -4870,33 +5069,10 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
       }
     }
 
-    function numberWidthUsingFormatter(formatter, number) {
-      var testSVG,
-          testText,
-          width;
-
-      testSVG = elem.append("svg")
-        .attr("width",  cx)
-        .attr("height", cy)
-        .attr("class", "graph");
-
-      testText = testSVG.append('g')
-        .append("text")
-          .attr("class", "axis")
-          .attr("x", -fontSizeInPixels/4 + "px")
-          .attr("dy", ".35em")
-          .attr("text-anchor", "end")
-          .text(d3.format(formatter)(number));
-
-      width = testText.node().getBBox().width;
-      testSVG.remove();
-      return width;
-    }
-
     function scale(w, h) {
       if (!w && !h) {
-        cx = Math.max(elem.property("clientWidth"), 32);
-        cy = Math.max(elem.property("clientHeight"), 32);
+        cx = Math.max(elem.property("clientWidth"), 120);
+        cy = Math.max(elem.property("clientHeight"), 62);
       } else {
         cx = w;
         node.style.width =  cx +"px";
@@ -4913,22 +5089,40 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
       calculateSizeType();
     }
 
+    // Update the x-scale.
+    function updateXScale() {
+      xScale.domain([options.xmin, options.xmax])
+            .range([0, size.width]);
+    }
+
+    // Update the y-scale.
+    function updateYScale() {
+      yScale.domain([options.ymin, options.ymax])
+            .range([size.height, 0]);
+    }
+
+    function persistScaleChangesToOptions() {
+      var xdomain = xScale.domain(),
+          ydomain = yScale.domain();
+      options.xmax = xdomain[1];
+      options.xmin = xdomain[0];
+      options.ymax = ydomain[1];
+      options.ymin = ydomain[0];
+    }
+
     function calculateLayout() {
       scale();
 
-      fontSizeInPixels = parseFloat($(node).css("font-size"));
+      fontSizeInPixels = parseFloat($node.css("font-size"));
 
       if (!options.fontScaleRelativeToParent) {
-        $(node).css("font-size", 0.5 + sizeType.value/6 + 'em');
+        $node.css("font-size", 0.5 + sizeType.value/6 + 'em');
       }
 
-      fontSizeInPixels = parseFloat($(node).css("font-size"));
+      fontSizeInPixels = parseFloat($node.css("font-size"));
 
       halfFontSizeInPixels = fontSizeInPixels/2;
       quarterFontSizeInPixels = fontSizeInPixels/4;
-
-      yAxisNumberWidth = Math.max(numberWidthUsingFormatter(options.yFormatter, options.ymax)*1.5,
-                                  numberWidthUsingFormatter(options.yFormatter, options.ymin)*1.5);
 
       if (svg === undefined) {
         titleFontSizeInPixels =  fontSizeInPixels;
@@ -4941,6 +5135,12 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         xlabelFontSizeInPixels = parseFloat($("svg.graph text.xlabel").css("font-size"));
         ylabelFontSizeInPixels = parseFloat($("svg.graph text.ylabel").css("font-size"));
       }
+
+      xAxisNumberWidth = Math.max(axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.xFormatter, options.xmax)*1.5,
+                                  axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.xFormatter, options.xmin)*1.5);
+
+      yAxisNumberWidth = Math.max(axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.yFormatter, options.ymax)*1.5,
+                                  axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.yFormatter, options.ymin)*1.5);
 
       switch(sizeType.value) {
         case 0:         // tiny
@@ -4964,7 +5164,7 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         case 2:         // medium
         padding = {
          "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
-         "right":  fontSizeInPixels,
+         "right":  Math.max(fontSizeInPixels, xAxisNumberWidth*0.5),
          "bottom": axisFontSizeInPixels*1.25,
          "left":   yAxisNumberWidth
         };
@@ -4973,18 +5173,18 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         case 3:         // large
         padding = {
          "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
-         "right":                   fontSizeInPixels,
+         "right":  Math.max(fontSizeInPixels, xAxisNumberWidth*0.5),
          "bottom": options.xlabel ? (xlabelFontSizeInPixels + axisFontSizeInPixels)*1.25 : axisFontSizeInPixels*1.25,
-         "left":   options.ylabel ? yAxisNumberWidth + axisFontSizeInPixels : yAxisNumberWidth
+         "left":   options.ylabel ? yAxisNumberWidth + axisFontSizeInPixels*1.2 : yAxisNumberWidth
         };
         break;
 
         default:         // extralarge
         padding = {
          "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
-         "right":                   fontSizeInPixels,
+         "right":  Math.max(fontSizeInPixels, xAxisNumberWidth*0.5),
          "bottom": options.xlabel ? (xlabelFontSizeInPixels + axisFontSizeInPixels)*1.25 : axisFontSizeInPixels*1.25,
-         "left":   options.ylabel ? yAxisNumberWidth + axisFontSizeInPixels : yAxisNumberWidth
+         "left":   options.ylabel ? yAxisNumberWidth + axisFontSizeInPixels*1.2 : yAxisNumberWidth
         };
         break;
       }
@@ -5016,24 +5216,110 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         yScale.exponent(options.yscaleExponent);
       }
 
+      updateXScale();
+      updateYScale();
+
       line = d3.svg.line()
-            .x(function(d, i) { return xScale(points[i].x ); })
-            .y(function(d, i) { return yScale(points[i].y); });
+          .x(function(d, i) { return xScale(points[i][0]); })
+          .y(function(d, i) { return yScale(points[i][1]); });
 
     }
 
-    function initialize(idOrElement, opts, message) {
+    // ------------------------------------------------------------
+    //
+    // Imported from graph.js
+    //
+    // ------------------------------------------------------------
+
+    function fakeDataPoints() {
+      var yrange2 = options.yrange / 2,
+          yrange4 = yrange2 / 2,
+          pnts;
+
+      options.datacount = size.width/30;
+      options.xtic = options.xrange / options.datacount;
+      options.ytic = options.yrange / options.datacount;
+
+      pnts = d3.range(options.datacount).map(function(i) {
+        return [i * options.xtic + options.xmin, options.ymin + yrange4 + Math.random() * yrange2 ];
+      });
+      return pnts;
+    }
+
+    function setCurrentSample(samplePoint) {
+      if (typeof samplePoint === "number") {
+        currentSample = samplePoint;
+      }
+      if (typeof currentSample !== "number") {
+        currentSample = points.length-1;
+      }
+      return currentSample;
+    }
+
+    //
+    // Initialize
+    //
+    function initialize(idOrElement, opts, mesg) {
+      if (opts || !options) {
+        options = setupOptions(opts);
+      }
+
+      initializeLayout(idOrElement, mesg);
+
+      options.xrange = options.xmax - options.xmin;
+      options.yrange = options.ymax - options.ymin;
+
+      if (Object.prototype.toString.call(options.title) === "[object Array]") {
+        titles = options.title;
+      } else {
+        titles = [options.title];
+      }
+      titles.reverse();
+
+      fx = d3.format(options.xFormatter);
+      fy = d3.format(options.yFormatter);
+
+      // use local variable for access speed in add_point()
+      sample = options.sample;
+
+      strokeWidth = options.strokeWidth;
+
+      points = options.points;
+      if (points === "fake") {
+        points = fakeDataPoints();
+      }
+
+      // In realTime mode the grapher expects either an array if arrays of dependent data.
+      // The sample variable sets the interval spacing between data samples.
+      if (options.realTime) {
+        pointArray = [];
+
+        if (Object.prototype.toString.call(options.dataset[0]) === "[object Array]") {
+          for (var i = 0; i < options.dataset.length; i++) {
+            pointArray.push(indexedData(options.dataset[i], 0, sample));
+          }
+          points = pointArray[0];
+        } else {
+          points = indexedData(options.dataset, 0);
+          pointArray = [points];
+        }
+      }
+      setCurrentSample(points.length-1);
+    }
+
+    function initializeLayout(idOrElement, mesg) {
       if (idOrElement) {
         // d3.select works both for element ID (e.g. "#grapher")
         // and for DOM element.
         elem = d3.select(idOrElement);
         node = elem.node();
+        $node = $(node);
         cx = elem.property("clientWidth");
         cy = elem.property("clientHeight");
       }
 
-      if (opts || !options) {
-        options = setupOptions(opts);
+      if (mesg) {
+        message = mesg;
       }
 
       if (svg !== undefined) {
@@ -5046,9 +5332,6 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         gcanvas = undefined;
       }
 
-      // use local variable for access speed in add_point()
-      sample = options.sample;
-
       if (options.dataChange) {
         circleCursorStyle = "ns-resize";
       } else {
@@ -5057,37 +5340,11 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
 
       scale();
 
-      options.xrange = options.xmax - options.xmin;
-      options.yrange = options.ymax - options.ymin;
-
-      pointArray = [];
-
-      if (Object.prototype.toString.call(options.dataset[0]) === "[object Array]") {
-        for (var i = 0; i < options.dataset.length; i++) {
-          pointArray.push(indexedData(options.dataset[i], 0, sample));
-        }
-        points = pointArray[0];
-      } else {
-        points = indexedData(options.dataset, 0);
-        pointArray = [points];
-      }
-
-      if (Object.prototype.toString.call(options.title) === "[object Array]") {
-        titles = options.title;
-      } else {
-        titles = [options.title];
-      }
-      titles.reverse();
-
-      fx = d3.format(options.xFormatter);
-      fy = d3.format(options.yFormatter);
-
       // drag axis logic
-      downx = Math.NaN;
-      downy = Math.NaN;
+      downx = NaN;
+      downy = NaN;
       dragged = null;
     }
-
 
     function indexedData(dataset, initial_index, sample) {
       var i = 0,
@@ -5109,6 +5366,43 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
       }
     }
 
+    function createButtonLayer() {
+      var buttonLayer = $('<div>' +
+                          '  <a class="graph-autoscale-button" title="' + tooltips.autoscale + '">' +
+                          '    <i class="icon-picture"></i>' +
+                          '  </a>' +
+                          '</div>')
+            .appendTo($(elem.node()))
+            .addClass('graph-button-layer')
+            .css('z-index', 101);
+
+      buttonLayer.find('a.graph-autoscale-button').on('click', function() { graph.autoscale(); });
+      return buttonLayer;
+    }
+
+    function resizeButtonLayer() {
+      var rect = plot.node(),
+          rectTop,
+          rectLeft,
+          rectWidth,
+          layerWidth;
+
+      // Make safe for jsdom based tests
+      if (!rect.getCTM || !rect.width.baseVal ) {
+        return;
+      }
+
+      rectTop = rect.getCTM().f;
+      rectLeft = rect.getCTM().e;
+      rectWidth = rect.width.baseVal.value;
+      layerWidth = buttonLayer.width();
+
+      buttonLayer.css({
+        top: rectTop + 5,
+        left: rectLeft + rectWidth - layerWidth - 5
+      });
+    }
+
     function graph() {
       calculateLayout();
 
@@ -5118,6 +5412,7 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
             .attr("width",  cx)
             .attr("height", cy)
             .attr("class", "graph");
+            // .attr("tabindex", tabindex || 0);
 
         vis = svg.append("g")
               .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
@@ -5127,10 +5422,9 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
           .attr("width", size.width)
           .attr("height", size.height)
           .style("fill", "#EEEEEE")
-          // .attr("fill-opacity", 0.0)
           .attr("pointer-events", "all")
-          .on("mousedown", plot_drag)
-          .on("touchstart", plot_drag);
+          .on("mousedown", plotDrag)
+          .on("touchstart", plotDrag);
 
         plot.call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
 
@@ -5140,14 +5434,22 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
           .attr("left", 0)
           .attr("width", size.width)
           .attr("height", size.height)
-          .attr("viewBox", "0 0 "+size.width+" "+size.height)
-          .append("path")
-              .attr("class", "line")
-              .attr("d", line(points));
+          .attr("viewBox", "0 0 "+size.width+" "+size.height);
+
+        if (!options.realTime) {
+          viewbox.append("path")
+                .attr("class", "line")
+                .style("stroke-width", strokeWidth)
+                .attr("d", line(points));
+        }
 
         marker = viewbox.append("path").attr("class", "marker");
         // path without attributes cause SVG parse problem in IE9
         //     .attr("d", []);
+
+
+        brush_element = viewbox.append("g")
+              .attr("class", "brush");
 
         // add Chart Title
         if (options.title && sizeType.value > 1) {
@@ -5183,6 +5485,12 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
               .attr("transform","translate(" + -yAxisNumberWidth + " " + size.height/2+") rotate(-90)");
         }
 
+        d3.select(node)
+            .on("mousemove.drag", mousemove)
+            .on("touchmove.drag", mousemove)
+            .on("mouseup.drag",   mouseup)
+            .on("touchend.drag",  mouseup);
+
         notification = vis.append("text")
             .attr("class", "graph-notification")
             .text(message)
@@ -5190,14 +5498,10 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
             .attr("y", size.height/2)
             .style("text-anchor","middle");
 
-        d3.select(node)
-            .on("mousemove.drag", mousemove)
-            .on("touchmove.drag", mousemove)
-            .on("mouseup.drag",   mouseup)
-            .on("touchend.drag",  mouseup);
-
-        initialize_canvas();
-        show_canvas();
+        if (options.realTime) {
+          initializeCanvas();
+          showCanvas();
+        }
 
       } else {
 
@@ -5218,21 +5522,21 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
             .attr("viewBox", "0 0 "+size.width+" "+size.height);
 
         if (options.title && sizeType.value > 1) {
-            title.each(function(d, i) {
-              d3.select(this).attr("x", size.width/2);
-              d3.select(this).attr("dy", function(d, i) { return 1.4 * i - titles.length + "em"; });
-            });
+          title
+              .attr("x", size.width/2)
+              .attr("dy", function(d, i) { return -i * titleFontSizeInPixels - halfFontSizeInPixels + "px"; });
         }
 
         if (options.xlabel && sizeType.value > 1) {
           xlabel
               .attr("x", size.width/2)
-              .attr("y", size.height);
+              .attr("y", size.height)
+              .attr("dy", axisFontSizeInPixels*2 + "px");
         }
 
         if (options.ylabel && sizeType.value > 1) {
           ylabel
-              .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
+              .attr("transform","translate(" + -yAxisNumberWidth + " " + size.height/2+") rotate(-90)");
         }
 
         notification
@@ -5242,7 +5546,14 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         vis.selectAll("g.x").remove();
         vis.selectAll("g.y").remove();
 
-        resize_canvas();
+        if (options.realTime) {
+          resizeCanvas();
+        }
+      }
+
+      if (options.showButtons) {
+        if (!buttonLayer) buttonLayer = createButtonLayer();
+        resizeButtonLayer();
       }
 
       redraw();
@@ -5272,7 +5583,7 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
 
         // Regenerate x-ticks
         var gx = vis.selectAll("g.x")
-            .data(xScale.ticks(options.xTicCount), String)
+            .data(xScale.ticks(options.xTickCount), String)
             .attr("transform", tx);
 
         var gxe = gx.enter().insert("g", "a")
@@ -5292,17 +5603,17 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
               .attr("text-anchor", "middle")
               .style("cursor", "ew-resize")
               .text(fx)
-              .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-              .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-              .on("mousedown.drag",  xaxis_drag)
-              .on("touchstart.drag", xaxis_drag);
+              .on("mouseover", function() { d3.select(this).style("font-weight", "bold");})
+              .on("mouseout",  function() { d3.select(this).style("font-weight", "normal");})
+              .on("mousedown.drag",  xaxisDrag)
+              .on("touchstart.drag", xaxisDrag);
         }
 
         gx.exit().remove();
 
         // Regenerate y-ticks
         var gy = vis.selectAll("g.y")
-            .data(yScale.ticks(options.yTicCount), String)
+            .data(yScale.ticks(options.yTickCount), String)
             .attr("transform", ty);
 
         var gye = gy.enter().insert("g", "a")
@@ -5316,6 +5627,17 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
             .attr("x2", size.width);
 
         if (sizeType.value > 1) {
+          if (options.yscale === "log") {
+            var gye_length = gye[0].length;
+            if (gye_length > 100) {
+              gye = gye.filter(function(d) { return !!d.toString().match(/(\.[0]*|^)[1]/);});
+            } else if (gye_length > 50) {
+              gye = gye.filter(function(d) { return !!d.toString().match(/(\.[0]*|^)[12]/);});
+            } else {
+              gye = gye.filter(function(d) {
+                return !!d.toString().match(/(\.[0]*|^)[125]/);});
+            }
+          }
           gye.append("text")
               .attr("class", "axis")
               .attr("x", -axisFontSizeInPixels/4 + "px")
@@ -5323,10 +5645,10 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
               .attr("text-anchor", "end")
               .style("cursor", "ns-resize")
               .text(fy)
-              .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-              .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-              .on("mousedown.drag",  yaxis_drag)
-              .on("touchstart.drag", yaxis_drag);
+              .on("mouseover", function() { d3.select(this).style("font-weight", "bold");})
+              .on("mouseout",  function() { d3.select(this).style("font-weight", "normal");})
+              .on("mousedown.drag",  yaxisDrag)
+              .on("touchstart.drag", yaxisDrag);
         }
 
         gy.exit().remove();
@@ -5340,30 +5662,42 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
       //
       // ------------------------------------------------------------
 
-      function update(currentSample) {
-        update_canvas(currentSample);
-
-        if (graph.selectable_points) {
-          var circle = vis.selectAll("circle")
-              .data(points, function(d) { return d; });
-
-          circle.enter().append("circle")
-              .attr("class", function(d) { return d === selected ? "selected" : null; })
-              .attr("cx",    function(d) { return x(d.x); })
-              .attr("cy",    function(d) { return y(d.y); })
-              .attr("r", 1.0)
-              .on("mousedown", function(d) {
-                selected = dragged = d;
-                update();
-              });
-
-          circle
-              .attr("class", function(d) { return d === selected ? "selected" : null; })
-              .attr("cx",    function(d) { return x(d.x); })
-              .attr("cy",    function(d) { return y(d.y); });
-
-          circle.exit().remove();
+      function update(samplePoint) {
+        setCurrentSample(samplePoint);
+        if (options.realTime) {
+          realTimeUpdate(currentSample);
+        } else {
+          regularUpdate();
         }
+      }
+
+      function realTimeUpdate(samplePoint) {
+        setCurrentSample(samplePoint);
+        updateCanvas(currentSample);
+
+        // old code saved for reference:
+
+        // if (graph.selectablePoints) {
+        //   var circle = vis.selectAll("circle")
+        //       .data(points, function(d) { return d; });
+
+        //   circle.enter().append("circle")
+        //       .attr("class", function(d) { return d === selected ? "selected" : null; })
+        //       .attr("cx",    function(d) { return x(d.x); })
+        //       .attr("cy",    function(d) { return y(d.y); })
+        //       .attr("r", 1.0)
+        //       .on("mousedown", function(d) {
+        //         selected = dragged = d;
+        //         update();
+        //       });
+
+        //   circle
+        //       .attr("class", function(d) { return d === selected ? "selected" : null; })
+        //       .attr("cx",    function(d) { return x(d.x); })
+        //       .attr("cy",    function(d) { return y(d.y); });
+
+        //   circle.exit().remove();
+        // }
 
         if (d3.event && d3.event.keyCode) {
           d3.event.preventDefault();
@@ -5371,7 +5705,99 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         }
       }
 
-      function plot_drag() {
+
+      // ------------------------------------------------------------
+      //
+      // Update the slower SVG-based grapher canvas
+      //
+      // ------------------------------------------------------------
+
+      function regularUpdate() {
+
+        update_brush_element();
+
+        vis.select("path").attr("d", line(points));
+
+        var circle = vis.select("svg").selectAll("circle")
+            .data(points, function(d) { return d; });
+
+        if (options.circleRadius && sizeType.value > 1) {
+          if (!(options.circleRadius <= 4 && sizeType.value < 3)) {
+            circle.enter().append("circle")
+                .attr("class", function(d) { return d === selected ? "selected" : null; })
+                .attr("cx",    function(d) { return xScale(d[0]); })
+                .attr("cy",    function(d) { return yScale(d[1]); })
+                .attr("r", options.circleRadius * (1 + sizeType.value) / 4)
+                .style("stroke-width", strokeWidth)
+                .style("cursor", circleCursorStyle)
+                .on("mousedown.drag",  dataPointDrag)
+                .on("touchstart.drag", dataPointDrag);
+
+            circle
+                .attr("class", function(d) { return d === selected ? "selected" : null; })
+                .attr("cx",    function(d) { return xScale(d[0]); })
+                .attr("cy",    function(d) { return yScale(d[1]); })
+                .attr("r", options.circleRadius * (1 + sizeType.value) / 4)
+                .style("stroke-width", strokeWidth);
+          }
+        }
+
+        circle.exit().remove();
+
+        if (d3.event && d3.event.keyCode) {
+          d3.event.preventDefault();
+          d3.event.stopPropagation();
+        }
+      }
+
+      // ------------------------------------------------------------
+      //
+      // Update the real-time graph canvas
+      //
+      // ------------------------------------------------------------
+
+      // currently unused:
+
+      // function updateSample(currentSample) {
+      //   updateCanvas(currentSample);
+
+      //   if (graph.selectablePoints) {
+      //     var circle = vis.selectAll("circle")
+      //         .data(points, function(d) { return d; });
+
+      //     circle.enter().append("circle")
+      //         .attr("class", function(d) { return d === selected ? "selected" : null; })
+      //         .attr("cx",    function(d) { return x(d.x); })
+      //         .attr("cy",    function(d) { return y(d.y); })
+      //         .attr("r", 1.0)
+      //         .on("mousedown", function(d) {
+      //           selected = dragged = d;
+      //           update();
+      //         });
+
+      //     circle
+      //         .attr("class", function(d) { return d === selected ? "selected" : null; })
+      //         .attr("cx",    function(d) { return x(d.x); })
+      //         .attr("cy",    function(d) { return y(d.y); });
+
+      //     circle.exit().remove();
+      //   }
+
+      //   if (d3.event && d3.event.keyCode) {
+      //     d3.event.preventDefault();
+      //     d3.event.stopPropagation();
+      //   }
+      // }
+
+      function plotDrag() {
+        if (options.realTime) {
+          realTimePlotDrag();
+        } else {
+          regularPlotDrag();
+        }
+      }
+
+      function realTimePlotDrag() {
         d3.event.preventDefault();
         plot.style("cursor", "move");
         if (d3.event.altKey) {
@@ -5383,18 +5809,59 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         }
       }
 
-      function xaxis_drag(d) {
-        document.onselectstart = function() { return false; };
+      function regularPlotDrag() {
+        var p;
+        d3.event.preventDefault();
+        d3.select('body').style("cursor", "move");
+        if (d3.event.altKey) {
+          if (d3.event.shiftKey && options.addData) {
+            p = d3.mouse(vis.node());
+            var newpoint = [];
+            newpoint[0] = xScale.invert(Math.max(0, Math.min(size.width,  p[0])));
+            newpoint[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
+            points.push(newpoint);
+            points.sort(function(a, b) {
+              if (a[0] < b[0]) { return -1; }
+              if (a[0] > b[0]) { return  1; }
+              return 0;
+            });
+            selected = newpoint;
+            update();
+          } else {
+            p = d3.mouse(vis.node());
+            downx = xScale.invert(p[0]);
+            downy = yScale.invert(p[1]);
+            dragged = false;
+            d3.event.stopPropagation();
+          }
+          // d3.event.stopPropagation();
+        }
+      }
+
+      function falseFunction() {
+        return false;
+      }
+
+      function xaxisDrag() {
+        document.onselectstart = falseFunction;
         d3.event.preventDefault();
         var p = d3.mouse(vis.node());
         downx = xScale.invert(p[0]);
       }
 
-      function yaxis_drag(d) {
-        document.onselectstart = function() { return false; };
+      function yaxisDrag() {
         d3.event.preventDefault();
+        document.onselectstart = falseFunction;
         var p = d3.mouse(vis.node());
         downy = yScale.invert(p[1]);
+      }
+
+      function dataPointDrag(d) {
+        svg.node().focus();
+        d3.event.preventDefault();
+        document.onselectstart = falseFunction;
+        selected = dragged = d;
+        update();
       }
 
       // ------------------------------------------------------------
@@ -5406,21 +5873,29 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
       // ------------------------------------------------------------
 
       function mousemove() {
-        var p = d3.mouse(vis.node()),
-            changex, changey, new_domain,
-            t = d3.event.changedTouches;
+        var p = d3.mouse(vis.node());
+        // t = d3.event.changedTouches;
 
         document.onselectstart = function() { return true; };
         d3.event.preventDefault();
+        if (dragged && options.dataChange) {
+          dragged[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
+          persistScaleChangesToOptions();
+          update();
+        }
+
         if (!isNaN(downx)) {
           d3.select('body').style("cursor", "ew-resize");
           xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
+          persistScaleChangesToOptions();
           redraw();
           d3.event.stopPropagation();
         }
+
         if (!isNaN(downy)) {
           d3.select('body').style("cursor", "ns-resize");
           yScale.domain(axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
+          persistScaleChangesToOptions();
           redraw();
           d3.event.stopPropagation();
         }
@@ -5431,11 +5906,11 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         document.onselectstart = function() { return true; };
         if (!isNaN(downx)) {
           redraw();
-          downx = Math.NaN;
+          downx = NaN;
         }
         if (!isNaN(downy)) {
           redraw();
-          downy = Math.NaN;
+          downy = NaN;
         }
         dragged = null;
       }
@@ -5444,19 +5919,28 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         markedPoint = { x: points[index].x, y: points[index].y };
       }
 
-      function updateOrRescale(currentSample) {
+      // samplePoint is optional argument
+      function updateOrRescale(samplePoint) {
+        setCurrentSample(samplePoint);
+        if (options.realTime) {
+          updateOrRescaleRealTime(currentSample);
+        } else {
+          updateOrRescaleRegular();
+        }
+      }
+
+      // samplePoint is optional argument
+      function updateOrRescaleRealTime(samplePoint) {
         var i,
             domain = xScale.domain(),
             xAxisStart = Math.round(domain[0]/sample),
             xAxisEnd = Math.round(domain[1]/sample),
             start = Math.max(0, xAxisStart),
             xextent = domain[1] - domain[0],
-            shiftPoint = xextent * 0.9,
+            shiftPoint = xextent * 0.95,
             currentExtent;
 
-         if (typeof currentSample !== "number") {
-           currentSample = points.length;
-         }
+         setCurrentSample(samplePoint);
          currentExtent = currentSample * sample;
          if (shiftingX) {
            shiftingX = ds();
@@ -5467,17 +5951,17 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
           }
         } else {
           if (currentExtent > domain[0] + shiftPoint) {
-            ds = shiftXDomain(shiftPoint*0.9, options.axisShift);
+            ds = shiftXDomainRealTime(shiftPoint*0.9, options.axisShift);
             shiftingX = ds();
             redraw();
           } else if ( currentExtent < domain[1] - shiftPoint &&
                       currentSample < points.length &&
                       xAxisStart > 0) {
-            ds = shiftXDomain(shiftPoint*0.9, options.axisShift, -1);
+            ds = shiftXDomainRealTime(shiftPoint*0.9, options.axisShift, -1);
             shiftingX = ds();
             redraw();
           } else if (currentExtent < domain[0]) {
-            ds = shiftXDomain(shiftPoint*0.1, 1, -1);
+            ds = shiftXDomainRealTime(shiftPoint*0.1, 1, -1);
             shiftingX = ds();
             redraw();
 
@@ -5487,7 +5971,7 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         }
       }
 
-      function shiftXDomain(shift, steps, direction) {
+      function shiftXDomainRealTime(shift, steps, direction) {
         var d0 = xScale.domain()[0],
             d1 = xScale.domain()[1],
             increment = 1/steps,
@@ -5499,27 +5983,473 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
           factor = shift * cubicEase(index);
           if (direction > 0) {
             xScale.domain([d0 + factor, d1 + factor]);
+            persistScaleChangesToOptions();
             return xScale.domain()[0] < (d0 + shift);
           } else {
             xScale.domain([d0 - factor, d1 - factor]);
+            persistScaleChangesToOptions();
             return xScale.domain()[0] > (d0 - shift);
           }
         };
       }
 
-      function _add_point(p) {
+      function updateOrRescaleRegular() {
+        var i,
+            domain = xScale.domain(),
+            xextent = domain[1] - domain[0],
+            shiftPoint = xextent * 0.8;
+
+        if (shiftingX) {
+          shiftingX = ds();
+          if (shiftingX) {
+            redraw();
+          } else {
+            update();
+          }
+        } else {
+          if (points[points.length-1][0] > domain[0] + shiftPoint) {
+            ds = shiftXDomainRegular(shiftPoint*0.75, options.axisShift);
+            shiftingX = ds();
+            redraw();
+          } else {
+            update();
+          }
+        }
+      }
+
+      function shiftXDomainRegular(shift, steps) {
+        var d0 = xScale.domain()[0],
+            d1 = xScale.domain()[1],
+            increment = 1/steps,
+            index = 0;
+        return function() {
+          var factor;
+          index += increment;
+          factor = shift * cubicEase(index);
+          xScale.domain([ d0 + factor, d1 + factor]);
+          persistScaleChangesToOptions();
+          return xScale.domain()[0] < (d0 + shift);
+        };
+      }
+
+      // update the title
+      function updateTitle() {
+        if (options.title && title) {
+          title.text(options.title);
+        }
+      }
+
+      // update the x-axis label
+      function updateXlabel() {
+        if (options.xlabel && xlabel) {
+          xlabel.text(options.xlabel);
+        }
+      }
+
+      // update the y-axis label
+      function updateYlabel() {
+        if (options.ylabel && ylabel) {
+          ylabel.text(options.ylabel);
+        } else {
+          ylabel.style("display", "none");
+        }
+      }
+
+      /**
+        If there are more than 1 data points, scale the x axis to contain all x values,
+        and scale the y axis so that the y values lie in the middle 80% of the visible y range.
+
+        Then nice() the x and y scales (which means that the x and y domains will likely expand
+        somewhat).
+      */
+      graph.autoscale = function() {
+        var i,
+            len,
+            point,
+            x,
+            y,
+            xmin = Infinity,
+            xmax = -Infinity,
+            ymin = Infinity,
+            ymax = -Infinity,
+            transform,
+            pow;
+
+        if (points.length < 2) return;
+
+        for (i = 0, len = points.length; i < len; i++){
+          point = points[i];
+          x = point.length ? point[0] : point.x;
+          y = point.length ? point[1] : point.y;
+
+          if (x < xmin) xmin = x;
+          if (x > xmax) xmax = x;
+          if (y < ymin) ymin = y;
+          if (y > ymax) ymax = y;
+        }
+
+        // Like Math.pow but returns a value with the same sign as x: pow(-1, 0.5) -> -1
+        pow = function(x, exponent) {
+          return x < 0 ? -Math.pow(-x, exponent) : Math.pow(x, exponent);
+        };
+
+        // convert ymin, ymax to a linear scale, and set 'transform' to the function that
+        // converts the new min, max to the relevant scale.
+        switch (options.yscale) {
+          case 'linear':
+            transform = function(x) { return x; };
+            break;
+          case 'log':
+            ymin = Math.log(ymin) / Math.log(10);
+            ymax = Math.log(ymax) / Math.log(10);
+            transform = function(x) { return Math.pow(10, x); };
+            break;
+          case 'pow':
+            ymin = pow(ymin, options.yscaleExponent);
+            ymax = pow(ymax, options.yscaleExponent);
+            transform = function(x) { return pow(x, 1/options.yscaleExponent); };
+            break;
+        }
+
+        xScale.domain([xmin, xmax]).nice();
+        yScale.domain([transform(ymin - 0.15*(ymax-ymin)), transform(ymax + 0.15*(ymax-ymin))]).nice();
+        persistScaleChangesToOptions();
+        redraw();
+      };
+
+      // REMOVE
+      // 'margin' variable is undefined
+      // It is defined, but otherwise unused, in Lab.grapher.graph as of b1eeea703
+      // (12 March 2013)
+      // graph.margin = function(_) {
+      //   if (!arguments.length) return margin;
+      //   margin = _;
+      //   return graph;
+      // };
+
+      graph.xmin = function(_) {
+        if (!arguments.length) return options.xmin;
+        options.xmin = _;
+        options.xrange = options.xmax - options.xmin;
+        if (graph.updateXScale) {
+          graph.updateXScale();
+          graph.redraw();
+        }
+        return graph;
+      };
+
+      graph.xmax = function(_) {
+        if (!arguments.length) return options.xmax;
+        options.xmax = _;
+        options.xrange = options.xmax - options.xmin;
+        if (graph.updateXScale) {
+          graph.updateXScale();
+          graph.redraw();
+        }
+        return graph;
+      };
+
+      graph.ymin = function(_) {
+        if (!arguments.length) return options.ymin;
+        options.ymin = _;
+        options.yrange = options.ymax - options.ymin;
+        if (graph.updateYScale) {
+          graph.updateYScale();
+          graph.redraw();
+        }
+        return graph;
+      };
+
+      graph.ymax = function(_) {
+        if (!arguments.length) return options.ymax;
+        options.ymax = _;
+        options.yrange = options.ymax - options.ymin;
+        if (graph.updateYScale) {
+          graph.updateYScale();
+          graph.redraw();
+        }
+        return graph;
+      };
+
+      graph.xLabel = function(_) {
+        if (!arguments.length) return options.xlabel;
+        options.xlabel = _;
+        updateXlabel();
+        return graph;
+      };
+
+      graph.yLabel = function(_) {
+        if (!arguments.length) return options.ylabel;
+        options.ylabel = _;
+        updateYlabel();
+        return graph;
+      };
+
+      graph.title = function(_) {
+        if (!arguments.length) return options.title;
+        options.title = _;
+        updateTitle();
+        return graph;
+      };
+
+      graph.width = function(_) {
+        if (!arguments.length) return size.width;
+        size.width = _;
+        return graph;
+      };
+
+      graph.height = function(_) {
+        if (!arguments.length) return size.height;
+        size.height = _;
+        return graph;
+      };
+
+      // REMOVE?
+      // xValue doesn't appear to be used for anything as of b1eeea70, 3/12/13
+      // graph.x = function(_) {
+      //   if (!arguments.length) return xValue;
+      //   xValue = _;
+      //   return graph;
+      // };
+
+      // graph.y = function(_) {
+      //   if (!arguments.length) return yValue;
+      //   yValue = _;
+      //   return graph;
+      // };
+
+      graph.elem = function(_) {
+        if (!arguments.length) return elem;
+        elem = d3.select(_);
+        graph(elem);
+        return graph;
+      };
+
+      // ------------------------------------------------------------
+      //
+      // support for slower SVG-based graphing
+      //
+      // ------------------------------------------------------------
+
+      graph.data = function(_) {
+        if (!arguments.length) return points;
+        var domain = xScale.domain(),
+            xextent = domain[1] - domain[0],
+            shift = xextent * 0.8;
+        options.points = points = _;
+        if (points.length > domain[1]) {
+          domain[0] += shift;
+          domain[1] += shift;
+          xScale.domain(domain);
+          graph.redraw();
+        } else {
+          graph.update();
+        }
+        return graph;
+      };
+
+      /**
+        Set or get the selection domain (i.e., the range of x values that are selected).
+
+        Valid domain specifiers:
+          null     no current selection (selection is turned off)
+          []       a current selection exists but is empty (has_selection is true)
+          [x1, x2] the region between x1 and x2 is selected. Any data points between
+                   x1 and x2 (inclusive) would be considered to be selected.
+
+        Default value is null.
+      */
+      graph.selection_domain = function(a) {
+
+        if (!arguments.length) {
+          if (!has_selection) {
+            return null;
+          }
+          if (selection_region.xmax === Infinity && selection_region.xmin === Infinity ) {
+            return [];
+          }
+          return [selection_region.xmin, selection_region.xmax];
+        }
+
+        // setter
+
+        if (a === null) {
+          has_selection = false;
+        }
+        else if (a.length === 0) {
+          has_selection = true;
+          selection_region.xmin = Infinity;
+          selection_region.xmax = Infinity;
+        }
+        else {
+          has_selection = true;
+          selection_region.xmin = a[0];
+          selection_region.xmax = a[1];
+        }
+
+        update_brush_element();
+
+        if (selection_listener) {
+          selection_listener(graph.selection_domain());
+        }
+        return graph;
+      };
+
+      /**
+        Get whether the graph currently has a selection region. Default value is false.
+
+        If true, it would be valid to filter the data points to return a subset within the selection
+        region, although this region may be empty!
+
+        If false the graph is not considered to have a selection region.
+
+        Note that even if has_selection is true, the selection region may not be currently shown,
+        and if shown, it may be empty.
+      */
+      graph.has_selection = function() {
+        return has_selection;
+      };
+
+      /**
+        Set or get the visibility of the selection region. Default value is false.
+
+        Has no effect if the graph does not currently have a selection region
+        (selection_domain is null).
+
+        If the selection_enabled property is true, the user will also be able to interact
+        with the selection region.
+      */
+      graph.selection_visible = function(val) {
+        if (!arguments.length) {
+          return selection_visible;
+        }
+
+        // setter
+        val = !!val;
+        if (selection_visible !== val) {
+          selection_visible = val;
+          update_brush_element();
+        }
+        return graph;
+      };
+
+      /**
+        Set or get whether user manipulation of the selection region should be enabled
+        when a selection region exists and is visible. Default value is true.
+
+        Setting the value to true has no effect unless the graph has a selection region
+        (selection_domain is non-null) and the region is visible (selection_visible is true).
+        However, the selection_enabled setting is honored whenever those properties are
+        subsequently updated.
+
+        Setting the value to false does not affect the visibility of the selection region,
+        and does not affect the ability to change the region by calling selection_domain().
+
+        Note that graph panning and zooming are disabled while selection manipulation is enabled.
+      */
+      graph.selection_enabled = function(val) {
+        if (!arguments.length) {
+          return selection_enabled;
+        }
+
+        // setter
+        val = !!val;
+        if (selection_enabled !== val) {
+          selection_enabled = val;
+          update_brush_element();
+        }
+        return graph;
+      };
+
+      /**
+        Set or get the listener to be called when the selection_domain changes.
+
+        Both programatic and interactive updates of the selection region result in
+        notification of the listener.
+
+        The listener is called with the new selection_domain value in the first argument.
+      */
+      graph.selection_listener = function(cb) {
+        if (!arguments.length) {
+          return selection_listener;
+        }
+        // setter
+        selection_listener = cb;
+        return graph;
+      };
+
+      function brush_listener() {
+        var extent;
+        if (selection_enabled) {
+          // Note there is a brush.empty() method, but it still reports true after the
+          // brush extent has been programatically updated.
+          extent = brush_control.extent();
+          graph.selection_domain( extent[0] !== extent[1] ? extent : [] );
+        }
+      }
+
+      function update_brush_element() {
+        if (has_selection && selection_visible) {
+          brush_control = brush_control || d3.svg.brush()
+            .x(xScale)
+            .extent([selection_region.xmin || 0, selection_region.xmax || 0])
+            .on("brush", brush_listener);
+
+          brush_element
+            .call(brush_control.extent([selection_region.xmin || 0, selection_region.xmax || 0]))
+            .style('display', 'inline')
+            .style('pointer-events', selection_enabled ? 'all' : 'none')
+            .selectAll("rect")
+              .attr("height", size.height);
+
+        } else {
+          brush_element.style('display', 'none');
+        }
+      }
+
+      function add_data(newdata) {
+        if (!arguments.length) return points;
+        var i;
+           // domain = xScale.domain(),
+            // xextent = domain[1] - domain[0],
+            //shift = xextent * 0.8,
+            // ds,
+        if (newdata instanceof Array && newdata.length > 0) {
+          if (newdata[0] instanceof Array) {
+            for(i = 0; i < newdata.length; i++) {
+              points.push(newdata[i]);
+            }
+          } else {
+            if (newdata.length === 2) {
+              points.push(newdata);
+            } else {
+              throw new Error("invalid argument to graph.add_data() " + newdata + " length should === 2.");
+            }
+          }
+        }
+        updateOrRescale();
+        return graph;
+      }
+
+
+      // ------------------------------------------------------------
+      //
+      // support for the real-time canvas-based graphing
+      //
+      // ------------------------------------------------------------
+
+      function _realTimeAddPoint(p) {
         if (points.length === 0) { return; }
         markedPoint = false;
         var index = points.length,
             lengthX = index * sample,
-            point = { x: lengthX, y: p },
-            newx, newy;
+            point = { x: lengthX, y: p };
         points.push(point);
       }
 
       function add_point(p) {
         if (points.length === 0) { return; }
-        _add_point(p);
+        _realTimeAddPoint(p);
         updateOrRescale();
       }
 
@@ -5543,22 +6473,39 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         gctx.stroke();
       }
 
-      function add_points(pnts) {
+      function addPoints(pnts) {
         for (var i = 0; i < pointArray.length; i++) {
           points = pointArray[i];
-          _add_point(pnts[i]);
+          _realTimeAddPoint(pnts[i]);
         }
+        setCurrentSample(points.length-1);
         updateOrRescale();
       }
 
-
-      function add_canvas_points(pnts) {
-        for (var i = 0; i < pointArray.length; i++) {
-          points = pointArray[i];
-          setStrokeColor(i);
-          add_canvas_point(pnts[i]);
+      function newRealTimeData(d) {
+        var i;
+        pointArray = [];
+        if (Object.prototype.toString.call(d) === "[object Array]") {
+          for (i = 0; i < d.length; i++) {
+            points = indexedData(d[i], 0, sample);
+            pointArray.push(points);
+          }
+        } else {
+          points = indexedData(options.dataset, 0, sample);
+          pointArray = [points];
         }
+        shiftingX = false;
+        setCurrentSample(points.length-1);
+        updateOrRescale();
       }
+
+      // function addRealTimePoints(pnts) {
+      //   for (var i = 0; i < pointArray.length; i++) {
+      //     points = pointArray[i];
+      //     setStrokeColor(i);
+      //     add_canvas_point(pnts[i]);
+      //   }
+      // }
 
       function setStrokeColor(i, afterSamplePoint) {
         var opacity = afterSamplePoint ? 0.4 : 1.0;
@@ -5590,62 +6537,52 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         }
       }
 
-      function new_data(d) {
-        var i;
-        pointArray = [];
-        if (Object.prototype.toString.call(d) === "[object Array]") {
-          for (i = 0; i < d.length; i++) {
-            points = indexedData(d[i], 0, sample);
-            pointArray.push(points);
-          }
-        } else {
-          points = indexedData(options.dataset, 0, sample);
-          pointArray = [points];
-        }
-        updateOrRescale();
-      }
+      // REMOVE
+      // unused in b1eeea703
+      // function change_xaxis(xmax) {
+      //   x = d3.scale[options.xscale]()
+      //       .domain([0, xmax])
+      //       .range([0, size.width]);
+      //   graph.xmax = xmax;
 
-      function change_xaxis(xmax) {
-        x = d3.scale[options.xscale]()
-            .domain([0, xmax])
-            .range([0, size.width]);
-        graph.xmax = xmax;
-        x_tics_scale = d3.scale[options.xscale]()
-            .domain([graph.xmin*graph.sample, graph.xmax*graph.sample])
-            .range([0, size.width]);
-        update();
-        redraw();
-      }
+      //   x_tics_scale = d3.scale[options.xscale]()
+      //       .domain([graph.xmin*graph.sample, graph.xmax*graph.sample])
+      //       .range([0, size.width]);
+      //   update();
+      //   redraw();
+      // }
 
-      function change_yaxis(ymax) {
-        y = d3.scale[options.yscale]()
-            .domain([ymax, 0])
-            .range([0, size.height]);
-        graph.ymax = ymax;
-        update();
-        redraw();
-      }
+      // REMOVE
+      // unused in b1eeea703
+      // function change_yaxis(ymax) {
+      //   y = d3.scale[options.yscale]()
+      //       .domain([ymax, 0])
+      //       .range([0, size.height]);
+      //   graph.ymax = ymax;
+      //   update();
+      //   redraw();
+      // }
 
-      function clear_canvas() {
+      function clearCanvas() {
         gcanvas.width = gcanvas.width;
-        gctx.fillStyle = "rgba(0,255,0, 0.05)";
+        gctx.fillStyle = canvasFillStyle;
         gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
         gctx.strokeStyle = "rgba(255,65,0, 1.0)";
       }
 
-      function show_canvas() {
+      function showCanvas() {
         vis.select("path.line").remove();
         gcanvas.style.zIndex = 100;
       }
 
-      function hide_canvas() {
+      function hideCanvas() {
         gcanvas.style.zIndex = -100;
         update();
       }
 
       // update real-time canvas line graph
-      function update_canvas(currentSample) {
-        var i, index, py, samplePoint, pointStop,
+      function updateCanvas(samplePoint) {
+        var i, index, py, pointStop,
             yOrigin = yScale(0.00001),
             lines = options.lines,
             bars = options.bars,
@@ -5653,20 +6590,14 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
             pointsLength = pointArray[0].length,
             numberOfLines = pointArray.length,
             xAxisStart = Math.round(xScale.domain()[0]/sample),
-            xAxisEnd = Math.round(xScale.domain()[1]/sample),
-            start = Math.max(0, xAxisStart);
+            // xAxisEnd = Math.round(xScale.domain()[1]/sample),
+            start = Math.max(0, xAxisStart),
+            lengthX,
+            px;
 
 
-        if (typeof currentSample === 'undefined') {
-          samplePoint = pointsLength;
-        } else {
-          if (currentSample === pointsLength-1) {
-            samplePoint = pointsLength-1;
-          } else {
-            samplePoint = currentSample;
-          }
-        }
-        clear_canvas();
+        setCurrentSample(samplePoint);
+        clearCanvas();
         gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
         if (points.length === 0 || xAxisStart >= points.length) { return; }
         if (lines) {
@@ -5773,7 +6704,7 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         }
       }
 
-      function initialize_canvas() {
+      function initializeCanvas() {
         if (!gcanvas) {
           gcanvas = gcanvas || document.createElement('canvas');
           node.appendChild(gcanvas);
@@ -5782,9 +6713,9 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         setupCanvasProperties(gcanvas);
       }
 
-      function resize_canvas() {
+      function resizeCanvas() {
         setupCanvasProperties(gcanvas);
-        update_canvas();
+        updateCanvas();
       }
 
       function setupCanvasProperties(canvas) {
@@ -5808,61 +6739,95 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
         gctx = gcanvas.getContext( '2d' );
         gctx.globalCompositeOperation = "source-over";
         gctx.lineWidth = 1;
-        gctx.fillStyle = "rgba(0,255,0, 0.05)";
+        gctx.fillStyle = canvasFillStyle;
         gctx.fillRect(0, 0, canvas.width, gcanvas.height);
         gctx.strokeStyle = "rgba(255,65,0, 1.0)";
-        gcanvas.style.border = 'solid 1px red';
+      }
+
+      // ------------------------------------------------------------
+      //
+      // Keyboard Handling
+      //
+      // ------------------------------------------------------------
+
+      function registerKeyboardHandler() {
+        svg.node().addEventListener("keydown", function (evt) {
+          if (!selected) return false;
+          if (evt.type == "keydown") {
+            switch (evt.keyCode) {
+              case 8:   // backspace
+              case 46:  // delete
+              if (options.dataChange) {
+                var i = points.indexOf(selected);
+                points.splice(i, 1);
+                selected = points.length ? points[i > 0 ? i - 1 : 0] : null;
+                update();
+              }
+              evt.preventDefault();
+              evt.stopPropagation();
+              break;
+            }
+            evt.preventDefault();
+          }
+        });
       }
 
       // make these private variables and functions available
       graph.node = node;
+      graph.elem = elem;
       graph.scale = scale;
       graph.update = update;
       graph.updateOrRescale = updateOrRescale;
       graph.redraw = redraw;
       graph.initialize = initialize;
+      graph.initializeLayout = initializeLayout;
       graph.notify = notify;
+      graph.updateXScale = updateXScale;
+      graph.updateYScale = updateYScale;
+      graph.registerKeyboardHandler = registerKeyboardHandler;
+
+      /**
+        Read only getter for the d3 selection referencing the DOM elements containing the d3
+        brush used to implement selection region manipulation.
+      */
+      graph.brush_element = function() {
+        return brush_element;
+      };
+
+      /**
+        Read-only getter for the d3 brush control (d3.svg.brush() function) used to implement
+        selection region manipulation.
+      */
+      graph.brush_control = function() {
+        return brush_control;
+      };
+
+      /**
+        Read-only getter for the internal listener to the d3 'brush' event.
+      */
+      graph.brush_listener = function() {
+        return brush_listener;
+      };
 
       graph.number_of_points = number_of_points;
-      graph.new_data = new_data;
+      graph.newRealTimeData = newRealTimeData;
       graph.add_point = add_point;
-      graph.add_points = add_points;
-      graph.add_canvas_point = add_canvas_point;
-      graph.add_canvas_points = add_canvas_points;
-      graph.initialize_canvas = initialize_canvas;
-      graph.show_canvas = show_canvas;
-      graph.hide_canvas = hide_canvas;
-      graph.clear_canvas = clear_canvas;
-      graph.update_canvas = update_canvas;
+      graph.addPoints = addPoints;
+      // graph.addRealTimePoints = addRealTimePoints;
+      graph.initializeCanvas = initializeCanvas;
+      graph.showCanvas = showCanvas;
+      graph.hideCanvas = hideCanvas;
+      graph.clearCanvas = clearCanvas;
+      graph.updateCanvas = updateCanvas;
       graph.showMarker = showMarker;
 
-      graph.change_xaxis = change_xaxis;
-      graph.change_yaxis = change_yaxis;
-    }
+      graph.add_data = add_data;
 
-    graph.add_data = function(newdata) {
-      if (!arguments.length) return points;
-      var domain = xScale.domain(),
-          xextent = domain[1] - domain[0],
-          shift = xextent * 0.8,
-          ds,
-          i;
-      if (newdata instanceof Array && newdata.length > 0) {
-        if (newdata[0] instanceof Array) {
-          for(i = 0; i < newdata.length; i++) {
-            points.push(newdata[i]);
-          }
-        } else {
-          if (newdata.length === 2) {
-            points.push(newdata);
-          } else {
-            throw new Error("invalid argument to graph.add_data() " + newdata + " length should === 2.");
-          }
-        }
-      }
-      updateOrRescale();
-      return graph;
-    };
+      // REMOVE
+      // Unused in b1eeea703
+      // graph.change_xaxis = change_xaxis;
+      // graph.change_yaxis = change_yaxis;
+    }
 
     graph.getXDomain = function () {
       return xScale.domain();
@@ -5881,12 +6846,13 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
       graph();
       // and then render again using actual size of SVG text elements are
       graph();
+      graph.registerKeyboardHandler();
       return graph;
     };
 
     graph.resize = function(w, h) {
       graph.scale(w, h);
-      graph.initialize();
+      graph.initializeLayout();
       graph();
       return graph;
     };
@@ -5904,8 +6870,8 @@ define('grapher/core/real-time-graph',['require','grapher/core/axis'],function (
 /*global define $ model*/
 /*jslint boss: true eqnull: true*/
 
-define('common/controllers/graph-controller',['require','grapher/core/real-time-graph','common/controllers/interactive-metadata','common/validator'],function (require) {
-  var RealTimeGraph = require('grapher/core/real-time-graph'),
+define('common/controllers/graph-controller',['require','grapher/core/graph','common/controllers/interactive-metadata','common/validator'],function (require) {
+  var Graph = require('grapher/core/graph'),
       metadata  = require('common/controllers/interactive-metadata'),
       validator = require('common/validator'),
 
@@ -5914,14 +6880,16 @@ define('common/controllers/graph-controller',['require','grapher/core/real-time-
       // internal implementation detail (the grapher options format).
       grapherOptionForComponentSpecProperty = {
         title: 'title',
+        realTime: 'realTime',
+        fontScaleRelativeToParent: 'fontScaleRelativeToParent',
         xlabel: 'xlabel',
         xmin: 'xmin',
         xmax: 'xmax',
         ylabel: 'ylabel',
         ymin: 'ymin',
         ymax: 'ymax',
-        xTicCount: 'xTicCount',
-        yTicCount: 'yTicCount',
+        xTickCount: 'xTickCount',
+        yTickCount: 'yTickCount',
         xscaleExponent: 'xscaleExponent',
         yscaleExponent: 'yscaleExponent',
         xFormatter: 'xFormatter',
@@ -5933,7 +6901,7 @@ define('common/controllers/graph-controller',['require','grapher/core/real-time-
   graphControllerCount = 0;
 
 
-  return function graphController(component) {
+  return function graphController(component, scriptingAPI, interactivesController) {
     var // HTML element containing view
         $container,
         grapher,
@@ -5994,7 +6962,7 @@ define('common/controllers/graph-controller',['require','grapher/core/real-time-
       for (i = 0; i < dataPoint.length; i++) {
         data[i] = [dataPoint[i]];
       }
-      grapher.new_data(data);
+      grapher.newRealTimeData(data);
     }
 
     /**
@@ -6010,7 +6978,7 @@ define('common/controllers/graph-controller',['require','grapher/core/real-time-
       }
       // The grapher considers each individual (property, time) pair to be a "point", and therefore
       // considers the set of properties at any 1 time (what we consider a "point") to be "points".
-      grapher.add_points(dataPoint);
+      grapher.addPoints(dataPoint);
     }
 
     /**
@@ -6024,7 +6992,7 @@ define('common/controllers/graph-controller',['require','grapher/core/real-time-
         // Account for initial data, which corresponds to stepCounter == 0
         data[i].length = model.stepCounter() + 1;
       }
-      grapher.new_data(data);
+      grapher.newRealTimeData(data);
     }
 
     /**
@@ -6058,7 +7026,7 @@ define('common/controllers/graph-controller',['require','grapher/core/real-time-
         if (grapher.number_of_points() && model.stepCounter() < grapher.number_of_points()) {
           removeDataAfterStepPointer();
         }
-        grapher.show_canvas();
+        grapher.showCanvas();
       });
       model.on('invalidation.'+namespace, removeDataAfterStepPointer);
 
@@ -6077,7 +7045,7 @@ define('common/controllers/graph-controller',['require','grapher/core/real-time-
     component = validator.validateCompleteness(metadata.graph, component);
     // The list of properties we are being asked to graph.
     properties = component.properties.slice();
-    $container = $('<div>').attr('id', component.id).addClass('properties-graph');
+    $container = $('<div>').attr('id', component.id).addClass('graph');
     // Each interactive component has to have class "component".
     $container.addClass("component");
     // Apply custom width and height settings.
@@ -6096,7 +7064,7 @@ define('common/controllers/graph-controller',['require','grapher/core/real-time-
         if (grapher) {
           resetGrapher();
         } else {
-          grapher = new RealTimeGraph($container[0], getOptions());
+          grapher = new Graph($container[0], getOptions(), undefined, interactivesController.getNextTabIndex());
         }
         resetData();
         registerModelListeners();
@@ -6855,14 +7823,16 @@ define('common/controllers/button-controller',['common/controllers/interactive-m
   var metadata  = require('common/controllers/interactive-metadata'),
       validator = require('common/validator');
 
-  return function ButtonController(component, scriptingAPI) {
+  return function ButtonController(component, scriptingAPI, interactivesController) {
     var $button,
         controller;
 
     // Validate component definition, use validated copy of the properties.
     component = validator.validateCompleteness(metadata.button, component);
 
-    $button = $('<button>').attr('id', component.id).html(component.text);
+    $button = $('<button>')
+        .attr('tabindex', interactivesController.getNextTabIndex())
+        .attr('id', component.id).html(component.text);
     // Each interactive component has to have class "component".
     $button.addClass("component");
 
@@ -6905,7 +7875,7 @@ define('common/controllers/checkbox-controller',['common/controllers/interactive
   var metadata  = require('common/controllers/interactive-metadata'),
       validator = require('common/validator');
 
-  return function CheckboxController(component, scriptingAPI) {
+  return function CheckboxController(component, scriptingAPI, interactivesController) {
     var propertyName,
         onClickScript,
         initialValue,
@@ -6953,7 +7923,9 @@ define('common/controllers/checkbox-controller',['common/controllers/interactive
 
     $label = $('<label>').append('<span>' + component.text + '</span>');
     $label.attr('for', component.id);
-    $checkbox = $('<input type="checkbox">').attr('id', component.id);
+    $checkbox = $('<input type="checkbox">')
+        .attr('tabindex', interactivesController.getNextTabIndex())
+        .attr('id', component.id);
     $fakeCheckable = $('<div class="fakeCheckable">');
     // Hide native input, use fake checkable.
     $checkbox.css("display", "none");
@@ -7051,78 +8023,1629 @@ define('common/controllers/checkbox-controller',['common/controllers/interactive
   };
 });
 
-/*global define, $ */
+// Released under MIT license
+// Copyright (c) 2009-2010 Dominic Baggott
+// Copyright (c) 2009-2010 Ash Berlin
+// Copyright (c) 2011 Christoph Dorn <christoph@christophdorn.com> (http://www.christophdorn.com)
 
-define('common/controllers/text-controller',['require','common/controllers/interactive-metadata','common/validator'],function (require) {
+(function( expose ) {
 
-  var metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator');
-
-  return function TextController(component, scriptingAPI) {
-        // Public API.
-    var controller,
-        // The most outer DIV containing whole component.
-        $element,
-        // <p> element with text content.
-        $text,
-        // Custom "onClick" script.
-        onClickFunction;
-
-    function initialize() {
-      // Validate component definition, use validated copy of the properties.
-      component = validator.validateCompleteness(metadata.text, component);
-      $element = $("<div>").attr("id", component.id);
-      // Append class to the most outer container.
-      $element.addClass("interactive-text");
-      // Each interactive component has to have class "component".
-      $element.addClass("component");
-      // Append text content.
-      $text = $("<p>").text(component.text).appendTo($element);
-      // Add class defining style of the component ("basic" and "header" values supported,
-      // please see: sass/lab/_interactice-components.sass).
-      $text.addClass(component.style);
-      // Process optional onClick script.
-      if (component.onClick) {
-        if (typeof component.onClick !== "function") {
-          // Create function from the string or array of strings.
-          onClickFunction = scriptingAPI.makeFunctionInScriptContext(component.onClick);
-        } else {
-          // Just assign ready function.
-          onClickFunction = component.onClick;
-        }
-        $text.on("click", onClickFunction);
-        // Also add a special class indicating that this text node is a clickable.
-        $text.addClass("clickable");
+/**
+ *  class Markdown
+ *
+ *  Markdown processing in Javascript done right. We have very particular views
+ *  on what constitutes 'right' which include:
+ *
+ *  - produces well-formed HTML (this means that em and strong nesting is
+ *    important)
+ *
+ *  - has an intermediate representation to allow processing of parsed data (We
+ *    in fact have two, both as [JsonML]: a markdown tree and an HTML tree).
+ *
+ *  - is easily extensible to add new dialects without having to rewrite the
+ *    entire parsing mechanics
+ *
+ *  - has a good test suite
+ *
+ *  This implementation fulfills all of these (except that the test suite could
+ *  do with expanding to automatically run all the fixtures from other Markdown
+ *  implementations.)
+ *
+ *  ##### Intermediate Representation
+ *
+ *  *TODO* Talk about this :) Its JsonML, but document the node names we use.
+ *
+ *  [JsonML]: http://jsonml.org/ "JSON Markup Language"
+ **/
+var Markdown = expose.Markdown = function Markdown(dialect) {
+  switch (typeof dialect) {
+    case "undefined":
+      this.dialect = Markdown.dialects.Gruber;
+      break;
+    case "object":
+      this.dialect = dialect;
+      break;
+    default:
+      if (dialect in Markdown.dialects) {
+        this.dialect = Markdown.dialects[dialect];
       }
-      // Apply custom width and height.
-      $element.css({
-        width: component.width,
-        height: component.height
-      });
+      else {
+        throw new Error("Unknown Markdown dialect '" + String(dialect) + "'");
+      }
+      break;
+  }
+  this.em_state = [];
+  this.strong_state = [];
+  this.debug_indent = "";
+};
+
+/**
+ *  parse( markdown, [dialect] ) -> JsonML
+ *  - markdown (String): markdown string to parse
+ *  - dialect (String | Dialect): the dialect to use, defaults to gruber
+ *
+ *  Parse `markdown` and return a markdown document as a Markdown.JsonML tree.
+ **/
+expose.parse = function( source, dialect ) {
+  // dialect will default if undefined
+  var md = new Markdown( dialect );
+  return md.toTree( source );
+};
+
+/**
+ *  toHTML( markdown, [dialect]  ) -> String
+ *  toHTML( md_tree ) -> String
+ *  - markdown (String): markdown string to parse
+ *  - md_tree (Markdown.JsonML): parsed markdown tree
+ *
+ *  Take markdown (either as a string or as a JsonML tree) and run it through
+ *  [[toHTMLTree]] then turn it into a well-formated HTML fragment.
+ **/
+expose.toHTML = function toHTML( source , dialect , options ) {
+  var input = expose.toHTMLTree( source , dialect , options );
+
+  return expose.renderJsonML( input );
+};
+
+/**
+ *  toHTMLTree( markdown, [dialect] ) -> JsonML
+ *  toHTMLTree( md_tree ) -> JsonML
+ *  - markdown (String): markdown string to parse
+ *  - dialect (String | Dialect): the dialect to use, defaults to gruber
+ *  - md_tree (Markdown.JsonML): parsed markdown tree
+ *
+ *  Turn markdown into HTML, represented as a JsonML tree. If a string is given
+ *  to this function, it is first parsed into a markdown tree by calling
+ *  [[parse]].
+ **/
+expose.toHTMLTree = function toHTMLTree( input, dialect , options ) {
+  // convert string input to an MD tree
+  if ( typeof input ==="string" ) input = this.parse( input, dialect );
+
+  // Now convert the MD tree to an HTML tree
+
+  // remove references from the tree
+  var attrs = extract_attr( input ),
+      refs = {};
+
+  if ( attrs && attrs.references ) {
+    refs = attrs.references;
+  }
+
+  var html = convert_tree_to_html( input, refs , options );
+  merge_text_nodes( html );
+  return html;
+};
+
+// For Spidermonkey based engines
+function mk_block_toSource() {
+  return "Markdown.mk_block( " +
+          uneval(this.toString()) +
+          ", " +
+          uneval(this.trailing) +
+          ", " +
+          uneval(this.lineNumber) +
+          " )";
+}
+
+// node
+function mk_block_inspect() {
+  var util = require('util');
+  return "Markdown.mk_block( " +
+          util.inspect(this.toString()) +
+          ", " +
+          util.inspect(this.trailing) +
+          ", " +
+          util.inspect(this.lineNumber) +
+          " )";
+
+}
+
+var mk_block = Markdown.mk_block = function(block, trail, line) {
+  // Be helpful for default case in tests.
+  if ( arguments.length == 1 ) trail = "\n\n";
+
+  var s = new String(block);
+  s.trailing = trail;
+  // To make it clear its not just a string
+  s.inspect = mk_block_inspect;
+  s.toSource = mk_block_toSource;
+
+  if (line != undefined)
+    s.lineNumber = line;
+
+  return s;
+};
+
+function count_lines( str ) {
+  var n = 0, i = -1;
+  while ( ( i = str.indexOf('\n', i+1) ) !== -1) n++;
+  return n;
+}
+
+// Internal - split source into rough blocks
+Markdown.prototype.split_blocks = function splitBlocks( input, startLine ) {
+  // [\s\S] matches _anything_ (newline or space)
+  var re = /([\s\S]+?)($|\n(?:\s*\n|$)+)/g,
+      blocks = [],
+      m;
+
+  var line_no = 1;
+
+  if ( ( m = /^(\s*\n)/.exec(input) ) != null ) {
+    // skip (but count) leading blank lines
+    line_no += count_lines( m[0] );
+    re.lastIndex = m[0].length;
+  }
+
+  while ( ( m = re.exec(input) ) !== null ) {
+    blocks.push( mk_block( m[1], m[2], line_no ) );
+    line_no += count_lines( m[0] );
+  }
+
+  return blocks;
+};
+
+/**
+ *  Markdown#processBlock( block, next ) -> undefined | [ JsonML, ... ]
+ *  - block (String): the block to process
+ *  - next (Array): the following blocks
+ *
+ * Process `block` and return an array of JsonML nodes representing `block`.
+ *
+ * It does this by asking each block level function in the dialect to process
+ * the block until one can. Succesful handling is indicated by returning an
+ * array (with zero or more JsonML nodes), failure by a false value.
+ *
+ * Blocks handlers are responsible for calling [[Markdown#processInline]]
+ * themselves as appropriate.
+ *
+ * If the blocks were split incorrectly or adjacent blocks need collapsing you
+ * can adjust `next` in place using shift/splice etc.
+ *
+ * If any of this default behaviour is not right for the dialect, you can
+ * define a `__call__` method on the dialect that will get invoked to handle
+ * the block processing.
+ */
+Markdown.prototype.processBlock = function processBlock( block, next ) {
+  var cbs = this.dialect.block,
+      ord = cbs.__order__;
+
+  if ( "__call__" in cbs ) {
+    return cbs.__call__.call(this, block, next);
+  }
+
+  for ( var i = 0; i < ord.length; i++ ) {
+    //D:this.debug( "Testing", ord[i] );
+    var res = cbs[ ord[i] ].call( this, block, next );
+    if ( res ) {
+      //D:this.debug("  matched");
+      if ( !isArray(res) || ( res.length > 0 && !( isArray(res[0]) ) ) )
+        this.debug(ord[i], "didn't return a proper array");
+      //D:this.debug( "" );
+      return res;
+    }
+  }
+
+  // Uhoh! no match! Should we throw an error?
+  return [];
+};
+
+Markdown.prototype.processInline = function processInline( block ) {
+  return this.dialect.inline.__call__.call( this, String( block ) );
+};
+
+/**
+ *  Markdown#toTree( source ) -> JsonML
+ *  - source (String): markdown source to parse
+ *
+ *  Parse `source` into a JsonML tree representing the markdown document.
+ **/
+// custom_tree means set this.tree to `custom_tree` and restore old value on return
+Markdown.prototype.toTree = function toTree( source, custom_root ) {
+  var blocks = source instanceof Array ? source : this.split_blocks( source );
+
+  // Make tree a member variable so its easier to mess with in extensions
+  var old_tree = this.tree;
+  try {
+    this.tree = custom_root || this.tree || [ "markdown" ];
+
+    blocks:
+    while ( blocks.length ) {
+      var b = this.processBlock( blocks.shift(), blocks );
+
+      // Reference blocks and the like won't return any content
+      if ( !b.length ) continue blocks;
+
+      this.tree.push.apply( this.tree, b );
+    }
+    return this.tree;
+  }
+  finally {
+    if ( custom_root ) {
+      this.tree = old_tree;
+    }
+  }
+};
+
+// Noop by default
+Markdown.prototype.debug = function () {
+  var args = Array.prototype.slice.call( arguments);
+  args.unshift(this.debug_indent);
+  if (typeof print !== "undefined")
+      print.apply( print, args );
+  if (typeof console !== "undefined" && typeof console.log !== "undefined")
+      console.log.apply( null, args );
+}
+
+Markdown.prototype.loop_re_over_block = function( re, block, cb ) {
+  // Dont use /g regexps with this
+  var m,
+      b = block.valueOf();
+
+  while ( b.length && (m = re.exec(b) ) != null) {
+    b = b.substr( m[0].length );
+    cb.call(this, m);
+  }
+  return b;
+};
+
+/**
+ * Markdown.dialects
+ *
+ * Namespace of built-in dialects.
+ **/
+Markdown.dialects = {};
+
+/**
+ * Markdown.dialects.Gruber
+ *
+ * The default dialect that follows the rules set out by John Gruber's
+ * markdown.pl as closely as possible. Well actually we follow the behaviour of
+ * that script which in some places is not exactly what the syntax web page
+ * says.
+ **/
+Markdown.dialects.Gruber = {
+  block: {
+    atxHeader: function atxHeader( block, next ) {
+      var m = block.match( /^(#{1,6})\s*(.*?)\s*#*\s*(?:\n|$)/ );
+
+      if ( !m ) return undefined;
+
+      var header = [ "header", { level: m[ 1 ].length } ];
+      Array.prototype.push.apply(header, this.processInline(m[ 2 ]));
+
+      if ( m[0].length < block.length )
+        next.unshift( mk_block( block.substr( m[0].length ), block.trailing, block.lineNumber + 2 ) );
+
+      return [ header ];
+    },
+
+    setextHeader: function setextHeader( block, next ) {
+      var m = block.match( /^(.*)\n([-=])\2\2+(?:\n|$)/ );
+
+      if ( !m ) return undefined;
+
+      var level = ( m[ 2 ] === "=" ) ? 1 : 2;
+      var header = [ "header", { level : level }, m[ 1 ] ];
+
+      if ( m[0].length < block.length )
+        next.unshift( mk_block( block.substr( m[0].length ), block.trailing, block.lineNumber + 2 ) );
+
+      return [ header ];
+    },
+
+    code: function code( block, next ) {
+      // |    Foo
+      // |bar
+      // should be a code block followed by a paragraph. Fun
+      //
+      // There might also be adjacent code block to merge.
+
+      var ret = [],
+          re = /^(?: {0,3}\t| {4})(.*)\n?/,
+          lines;
+
+      // 4 spaces + content
+      if ( !block.match( re ) ) return undefined;
+
+      block_search:
+      do {
+        // Now pull out the rest of the lines
+        var b = this.loop_re_over_block(
+                  re, block.valueOf(), function( m ) { ret.push( m[1] ); } );
+
+        if (b.length) {
+          // Case alluded to in first comment. push it back on as a new block
+          next.unshift( mk_block(b, block.trailing) );
+          break block_search;
+        }
+        else if (next.length) {
+          // Check the next block - it might be code too
+          if ( !next[0].match( re ) ) break block_search;
+
+          // Pull how how many blanks lines follow - minus two to account for .join
+          ret.push ( block.trailing.replace(/[^\n]/g, '').substring(2) );
+
+          block = next.shift();
+        }
+        else {
+          break block_search;
+        }
+      } while (true);
+
+      return [ [ "code_block", ret.join("\n") ] ];
+    },
+
+    horizRule: function horizRule( block, next ) {
+      // this needs to find any hr in the block to handle abutting blocks
+      var m = block.match( /^(?:([\s\S]*?)\n)?[ \t]*([-_*])(?:[ \t]*\2){2,}[ \t]*(?:\n([\s\S]*))?$/ );
+
+      if ( !m ) {
+        return undefined;
+      }
+
+      var jsonml = [ [ "hr" ] ];
+
+      // if there's a leading abutting block, process it
+      if ( m[ 1 ] ) {
+        jsonml.unshift.apply( jsonml, this.processBlock( m[ 1 ], [] ) );
+      }
+
+      // if there's a trailing abutting block, stick it into next
+      if ( m[ 3 ] ) {
+        next.unshift( mk_block( m[ 3 ] ) );
+      }
+
+      return jsonml;
+    },
+
+    // There are two types of lists. Tight and loose. Tight lists have no whitespace
+    // between the items (and result in text just in the <li>) and loose lists,
+    // which have an empty line between list items, resulting in (one or more)
+    // paragraphs inside the <li>.
+    //
+    // There are all sorts weird edge cases about the original markdown.pl's
+    // handling of lists:
+    //
+    // * Nested lists are supposed to be indented by four chars per level. But
+    //   if they aren't, you can get a nested list by indenting by less than
+    //   four so long as the indent doesn't match an indent of an existing list
+    //   item in the 'nest stack'.
+    //
+    // * The type of the list (bullet or number) is controlled just by the
+    //    first item at the indent. Subsequent changes are ignored unless they
+    //    are for nested lists
+    //
+    lists: (function( ) {
+      // Use a closure to hide a few variables.
+      var any_list = "[*+-]|\\d+\\.",
+          bullet_list = /[*+-]/,
+          number_list = /\d+\./,
+          // Capture leading indent as it matters for determining nested lists.
+          is_list_re = new RegExp( "^( {0,3})(" + any_list + ")[ \t]+" ),
+          indent_re = "(?: {0,3}\\t| {4})";
+
+      // TODO: Cache this regexp for certain depths.
+      // Create a regexp suitable for matching an li for a given stack depth
+      function regex_for_depth( depth ) {
+
+        return new RegExp(
+          // m[1] = indent, m[2] = list_type
+          "(?:^(" + indent_re + "{0," + depth + "} {0,3})(" + any_list + ")\\s+)|" +
+          // m[3] = cont
+          "(^" + indent_re + "{0," + (depth-1) + "}[ ]{0,4})"
+        );
+      }
+      function expand_tab( input ) {
+        return input.replace( / {0,3}\t/g, "    " );
+      }
+
+      // Add inline content `inline` to `li`. inline comes from processInline
+      // so is an array of content
+      function add(li, loose, inline, nl) {
+        if (loose) {
+          li.push( [ "para" ].concat(inline) );
+          return;
+        }
+        // Hmmm, should this be any block level element or just paras?
+        var add_to = li[li.length -1] instanceof Array && li[li.length - 1][0] == "para"
+                   ? li[li.length -1]
+                   : li;
+
+        // If there is already some content in this list, add the new line in
+        if (nl && li.length > 1) inline.unshift(nl);
+
+        for (var i=0; i < inline.length; i++) {
+          var what = inline[i],
+              is_str = typeof what == "string";
+          if (is_str && add_to.length > 1 && typeof add_to[add_to.length-1] == "string" ) {
+            add_to[ add_to.length-1 ] += what;
+          }
+          else {
+            add_to.push( what );
+          }
+        }
+      }
+
+      // contained means have an indent greater than the current one. On
+      // *every* line in the block
+      function get_contained_blocks( depth, blocks ) {
+
+        var re = new RegExp( "^(" + indent_re + "{" + depth + "}.*?\\n?)*$" ),
+            replace = new RegExp("^" + indent_re + "{" + depth + "}", "gm"),
+            ret = [];
+
+        while ( blocks.length > 0 ) {
+          if ( re.exec( blocks[0] ) ) {
+            var b = blocks.shift(),
+                // Now remove that indent
+                x = b.replace( replace, "");
+
+            ret.push( mk_block( x, b.trailing, b.lineNumber ) );
+          }
+          break;
+        }
+        return ret;
+      }
+
+      // passed to stack.forEach to turn list items up the stack into paras
+      function paragraphify(s, i, stack) {
+        var list = s.list;
+        var last_li = list[list.length-1];
+
+        if (last_li[1] instanceof Array && last_li[1][0] == "para") {
+          return;
+        }
+        if (i+1 == stack.length) {
+          // Last stack frame
+          // Keep the same array, but replace the contents
+          last_li.push( ["para"].concat( last_li.splice(1) ) );
+        }
+        else {
+          var sublist = last_li.pop();
+          last_li.push( ["para"].concat( last_li.splice(1) ), sublist );
+        }
+      }
+
+      // The matcher function
+      return function( block, next ) {
+        var m = block.match( is_list_re );
+        if ( !m ) return undefined;
+
+        function make_list( m ) {
+          var list = bullet_list.exec( m[2] )
+                   ? ["bulletlist"]
+                   : ["numberlist"];
+
+          stack.push( { list: list, indent: m[1] } );
+          return list;
+        }
+
+
+        var stack = [], // Stack of lists for nesting.
+            list = make_list( m ),
+            last_li,
+            loose = false,
+            ret = [ stack[0].list ],
+            i;
+
+        // Loop to search over block looking for inner block elements and loose lists
+        loose_search:
+        while( true ) {
+          // Split into lines preserving new lines at end of line
+          var lines = block.split( /(?=\n)/ );
+
+          // We have to grab all lines for a li and call processInline on them
+          // once as there are some inline things that can span lines.
+          var li_accumulate = "";
+
+          // Loop over the lines in this block looking for tight lists.
+          tight_search:
+          for (var line_no=0; line_no < lines.length; line_no++) {
+            var nl = "",
+                l = lines[line_no].replace(/^\n/, function(n) { nl = n; return ""; });
+
+            // TODO: really should cache this
+            var line_re = regex_for_depth( stack.length );
+
+            m = l.match( line_re );
+            //print( "line:", uneval(l), "\nline match:", uneval(m) );
+
+            // We have a list item
+            if ( m[1] !== undefined ) {
+              // Process the previous list item, if any
+              if ( li_accumulate.length ) {
+                add( last_li, loose, this.processInline( li_accumulate ), nl );
+                // Loose mode will have been dealt with. Reset it
+                loose = false;
+                li_accumulate = "";
+              }
+
+              m[1] = expand_tab( m[1] );
+              var wanted_depth = Math.floor(m[1].length/4)+1;
+              //print( "want:", wanted_depth, "stack:", stack.length);
+              if ( wanted_depth > stack.length ) {
+                // Deep enough for a nested list outright
+                //print ( "new nested list" );
+                list = make_list( m );
+                last_li.push( list );
+                last_li = list[1] = [ "listitem" ];
+              }
+              else {
+                // We aren't deep enough to be strictly a new level. This is
+                // where Md.pl goes nuts. If the indent matches a level in the
+                // stack, put it there, else put it one deeper then the
+                // wanted_depth deserves.
+                var found = false;
+                for (i = 0; i < stack.length; i++) {
+                  if ( stack[ i ].indent != m[1] ) continue;
+                  list = stack[ i ].list;
+                  stack.splice( i+1 );
+                  found = true;
+                  break;
+                }
+
+                if (!found) {
+                  //print("not found. l:", uneval(l));
+                  wanted_depth++;
+                  if (wanted_depth <= stack.length) {
+                    stack.splice(wanted_depth);
+                    //print("Desired depth now", wanted_depth, "stack:", stack.length);
+                    list = stack[wanted_depth-1].list;
+                    //print("list:", uneval(list) );
+                  }
+                  else {
+                    //print ("made new stack for messy indent");
+                    list = make_list(m);
+                    last_li.push(list);
+                  }
+                }
+
+                //print( uneval(list), "last", list === stack[stack.length-1].list );
+                last_li = [ "listitem" ];
+                list.push(last_li);
+              } // end depth of shenegains
+              nl = "";
+            }
+
+            // Add content
+            if (l.length > m[0].length) {
+              li_accumulate += nl + l.substr( m[0].length );
+            }
+          } // tight_search
+
+          if ( li_accumulate.length ) {
+            add( last_li, loose, this.processInline( li_accumulate ), nl );
+            // Loose mode will have been dealt with. Reset it
+            loose = false;
+            li_accumulate = "";
+          }
+
+          // Look at the next block - we might have a loose list. Or an extra
+          // paragraph for the current li
+          var contained = get_contained_blocks( stack.length, next );
+
+          // Deal with code blocks or properly nested lists
+          if (contained.length > 0) {
+            // Make sure all listitems up the stack are paragraphs
+            forEach( stack, paragraphify, this);
+
+            last_li.push.apply( last_li, this.toTree( contained, [] ) );
+          }
+
+          var next_block = next[0] && next[0].valueOf() || "";
+
+          if ( next_block.match(is_list_re) || next_block.match( /^ / ) ) {
+            block = next.shift();
+
+            // Check for an HR following a list: features/lists/hr_abutting
+            var hr = this.dialect.block.horizRule( block, next );
+
+            if (hr) {
+              ret.push.apply(ret, hr);
+              break;
+            }
+
+            // Make sure all listitems up the stack are paragraphs
+            forEach( stack, paragraphify, this);
+
+            loose = true;
+            continue loose_search;
+          }
+          break;
+        } // loose_search
+
+        return ret;
+      };
+    })(),
+
+    blockquote: function blockquote( block, next ) {
+      if ( !block.match( /^>/m ) )
+        return undefined;
+
+      var jsonml = [];
+
+      // separate out the leading abutting block, if any
+      if ( block[ 0 ] != ">" ) {
+        var lines = block.split( /\n/ ),
+            prev = [];
+
+        // keep shifting lines until you find a crotchet
+        while ( lines.length && lines[ 0 ][ 0 ] != ">" ) {
+            prev.push( lines.shift() );
+        }
+
+        // reassemble!
+        block = lines.join( "\n" );
+        jsonml.push.apply( jsonml, this.processBlock( prev.join( "\n" ), [] ) );
+      }
+
+      // if the next block is also a blockquote merge it in
+      while ( next.length && next[ 0 ][ 0 ] == ">" ) {
+        var b = next.shift();
+        block = new String(block + block.trailing + b);
+        block.trailing = b.trailing;
+      }
+
+      // Strip off the leading "> " and re-process as a block.
+      var input = block.replace( /^> ?/gm, '' ),
+          old_tree = this.tree;
+      jsonml.push( this.toTree( input, [ "blockquote" ] ) );
+
+      return jsonml;
+    },
+
+    referenceDefn: function referenceDefn( block, next) {
+      var re = /^\s*\[(.*?)\]:\s*(\S+)(?:\s+(?:(['"])(.*?)\3|\((.*?)\)))?\n?/;
+      // interesting matches are [ , ref_id, url, , title, title ]
+
+      if ( !block.match(re) )
+        return undefined;
+
+      // make an attribute node if it doesn't exist
+      if ( !extract_attr( this.tree ) ) {
+        this.tree.splice( 1, 0, {} );
+      }
+
+      var attrs = extract_attr( this.tree );
+
+      // make a references hash if it doesn't exist
+      if ( attrs.references === undefined ) {
+        attrs.references = {};
+      }
+
+      var b = this.loop_re_over_block(re, block, function( m ) {
+
+        if ( m[2] && m[2][0] == '<' && m[2][m[2].length-1] == '>' )
+          m[2] = m[2].substring( 1, m[2].length - 1 );
+
+        var ref = attrs.references[ m[1].toLowerCase() ] = {
+          href: m[2]
+        };
+
+        if (m[4] !== undefined)
+          ref.title = m[4];
+        else if (m[5] !== undefined)
+          ref.title = m[5];
+
+      } );
+
+      if (b.length)
+        next.unshift( mk_block( b, block.trailing ) );
+
+      return [];
+    },
+
+    para: function para( block, next ) {
+      // everything's a para!
+      return [ ["para"].concat( this.processInline( block ) ) ];
+    }
+  }
+};
+
+Markdown.dialects.Gruber.inline = {
+
+    __oneElement__: function oneElement( text, patterns_or_re, previous_nodes ) {
+      var m,
+          res,
+          lastIndex = 0;
+
+      patterns_or_re = patterns_or_re || this.dialect.inline.__patterns__;
+      var re = new RegExp( "([\\s\\S]*?)(" + (patterns_or_re.source || patterns_or_re) + ")" );
+
+      m = re.exec( text );
+      if (!m) {
+        // Just boring text
+        return [ text.length, text ];
+      }
+      else if ( m[1] ) {
+        // Some un-interesting text matched. Return that first
+        return [ m[1].length, m[1] ];
+      }
+
+      var res;
+      if ( m[2] in this.dialect.inline ) {
+        res = this.dialect.inline[ m[2] ].call(
+                  this,
+                  text.substr( m.index ), m, previous_nodes || [] );
+      }
+      // Default for now to make dev easier. just slurp special and output it.
+      res = res || [ m[2].length, m[2] ];
+      return res;
+    },
+
+    __call__: function inline( text, patterns ) {
+
+      var out = [],
+          res;
+
+      function add(x) {
+        //D:self.debug("  adding output", uneval(x));
+        if (typeof x == "string" && typeof out[out.length-1] == "string")
+          out[ out.length-1 ] += x;
+        else
+          out.push(x);
+      }
+
+      while ( text.length > 0 ) {
+        res = this.dialect.inline.__oneElement__.call(this, text, patterns, out );
+        text = text.substr( res.shift() );
+        forEach(res, add )
+      }
+
+      return out;
+    },
+
+    // These characters are intersting elsewhere, so have rules for them so that
+    // chunks of plain text blocks don't include them
+    "]": function () {},
+    "}": function () {},
+
+    "\\": function escaped( text ) {
+      // [ length of input processed, node/children to add... ]
+      // Only esacape: \ ` * _ { } [ ] ( ) # * + - . !
+      if ( text.match( /^\\[\\`\*_{}\[\]()#\+.!\-]/ ) )
+        return [ 2, text[1] ];
+      else
+        // Not an esacpe
+        return [ 1, "\\" ];
+    },
+
+    "![": function image( text ) {
+
+      // Unlike images, alt text is plain text only. no other elements are
+      // allowed in there
+
+      // ![Alt text](/path/to/img.jpg "Optional title")
+      //      1          2            3       4         <--- captures
+      var m = text.match( /^!\[(.*?)\][ \t]*\([ \t]*(\S*)(?:[ \t]+(["'])(.*?)\3)?[ \t]*\)/ );
+
+      if ( m ) {
+        if ( m[2] && m[2][0] == '<' && m[2][m[2].length-1] == '>' )
+          m[2] = m[2].substring( 1, m[2].length - 1 );
+
+        m[2] = this.dialect.inline.__call__.call( this, m[2], /\\/ )[0];
+
+        var attrs = { alt: m[1], href: m[2] || "" };
+        if ( m[4] !== undefined)
+          attrs.title = m[4];
+
+        return [ m[0].length, [ "img", attrs ] ];
+      }
+
+      // ![Alt text][id]
+      m = text.match( /^!\[(.*?)\][ \t]*\[(.*?)\]/ );
+
+      if ( m ) {
+        // We can't check if the reference is known here as it likely wont be
+        // found till after. Check it in md tree->hmtl tree conversion
+        return [ m[0].length, [ "img_ref", { alt: m[1], ref: m[2].toLowerCase(), original: m[0] } ] ];
+      }
+
+      // Just consume the '!['
+      return [ 2, "![" ];
+    },
+
+    "[": function link( text ) {
+
+      var orig = String(text);
+      // Inline content is possible inside `link text`
+      var res = Markdown.DialectHelpers.inline_until_char.call( this, text.substr(1), ']' );
+
+      // No closing ']' found. Just consume the [
+      if ( !res ) return [ 1, '[' ];
+
+      var consumed = 1 + res[ 0 ],
+          children = res[ 1 ],
+          link,
+          attrs;
+
+      // At this point the first [...] has been parsed. See what follows to find
+      // out which kind of link we are (reference or direct url)
+      text = text.substr( consumed );
+
+      // [link text](/path/to/img.jpg "Optional title")
+      //                 1            2       3         <--- captures
+      // This will capture up to the last paren in the block. We then pull
+      // back based on if there a matching ones in the url
+      //    ([here](/url/(test))
+      // The parens have to be balanced
+      var m = text.match( /^\s*\([ \t]*(\S+)(?:[ \t]+(["'])(.*?)\2)?[ \t]*\)/ );
+      if ( m ) {
+        var url = m[1];
+        consumed += m[0].length;
+
+        if ( url && url[0] == '<' && url[url.length-1] == '>' )
+          url = url.substring( 1, url.length - 1 );
+
+        // If there is a title we don't have to worry about parens in the url
+        if ( !m[3] ) {
+          var open_parens = 1; // One open that isn't in the capture
+          for (var len = 0; len < url.length; len++) {
+            switch ( url[len] ) {
+            case '(':
+              open_parens++;
+              break;
+            case ')':
+              if ( --open_parens == 0) {
+                consumed -= url.length - len;
+                url = url.substring(0, len);
+              }
+              break;
+            }
+          }
+        }
+
+        // Process escapes only
+        url = this.dialect.inline.__call__.call( this, url, /\\/ )[0];
+
+        attrs = { href: url || "" };
+        if ( m[3] !== undefined)
+          attrs.title = m[3];
+
+        link = [ "link", attrs ].concat( children );
+        return [ consumed, link ];
+      }
+
+      // [Alt text][id]
+      // [Alt text] [id]
+      m = text.match( /^\s*\[(.*?)\]/ );
+
+      if ( m ) {
+
+        consumed += m[ 0 ].length;
+
+        // [links][] uses links as its reference
+        attrs = { ref: ( m[ 1 ] || String(children) ).toLowerCase(),  original: orig.substr( 0, consumed ) };
+
+        link = [ "link_ref", attrs ].concat( children );
+
+        // We can't check if the reference is known here as it likely wont be
+        // found till after. Check it in md tree->hmtl tree conversion.
+        // Store the original so that conversion can revert if the ref isn't found.
+        return [ consumed, link ];
+      }
+
+      // [id]
+      // Only if id is plain (no formatting.)
+      if ( children.length == 1 && typeof children[0] == "string" ) {
+
+        attrs = { ref: children[0].toLowerCase(),  original: orig.substr( 0, consumed ) };
+        link = [ "link_ref", attrs, children[0] ];
+        return [ consumed, link ];
+      }
+
+      // Just consume the '['
+      return [ 1, "[" ];
+    },
+
+
+    "<": function autoLink( text ) {
+      var m;
+
+      if ( ( m = text.match( /^<(?:((https?|ftp|mailto):[^>]+)|(.*?@.*?\.[a-zA-Z]+))>/ ) ) != null ) {
+        if ( m[3] ) {
+          return [ m[0].length, [ "link", { href: "mailto:" + m[3] }, m[3] ] ];
+
+        }
+        else if ( m[2] == "mailto" ) {
+          return [ m[0].length, [ "link", { href: m[1] }, m[1].substr("mailto:".length ) ] ];
+        }
+        else
+          return [ m[0].length, [ "link", { href: m[1] }, m[1] ] ];
+      }
+
+      return [ 1, "<" ];
+    },
+
+    "`": function inlineCode( text ) {
+      // Inline code block. as many backticks as you like to start it
+      // Always skip over the opening ticks.
+      var m = text.match( /(`+)(([\s\S]*?)\1)/ );
+
+      if ( m && m[2] )
+        return [ m[1].length + m[2].length, [ "inlinecode", m[3] ] ];
+      else {
+        // TODO: No matching end code found - warn!
+        return [ 1, "`" ];
+      }
+    },
+
+    "  \n": function lineBreak( text ) {
+      return [ 3, [ "linebreak" ] ];
     }
 
-    // Public API.
-    controller = {
-      // modelLoadedCallback is optional and unnecessary for this component.
-      // modelLoadedCallback: function () {
-      // },
+};
 
-      getViewContainer: function () {
-        return $element;
-      },
+// Meta Helper/generator method for em and strong handling
+function strong_em( tag, md ) {
 
-      // Returns serialized component definition.
-      serialize: function () {
-        return $.extend(true, {}, component);
+  var state_slot = tag + "_state",
+      other_slot = tag == "strong" ? "em_state" : "strong_state";
+
+  function CloseTag(len) {
+    this.len_after = len;
+    this.name = "close_" + md;
+  }
+
+  return function ( text, orig_match ) {
+
+    if (this[state_slot][0] == md) {
+      // Most recent em is of this type
+      //D:this.debug("closing", md);
+      this[state_slot].shift();
+
+      // "Consume" everything to go back to the recrusion in the else-block below
+      return[ text.length, new CloseTag(text.length-md.length) ];
+    }
+    else {
+      // Store a clone of the em/strong states
+      var other = this[other_slot].slice(),
+          state = this[state_slot].slice();
+
+      this[state_slot].unshift(md);
+
+      //D:this.debug_indent += "  ";
+
+      // Recurse
+      var res = this.processInline( text.substr( md.length ) );
+      //D:this.debug_indent = this.debug_indent.substr(2);
+
+      var last = res[res.length - 1];
+
+      //D:this.debug("processInline from", tag + ": ", uneval( res ) );
+
+      var check = this[state_slot].shift();
+      if (last instanceof CloseTag) {
+        res.pop();
+        // We matched! Huzzah.
+        var consumed = text.length - last.len_after;
+        return [ consumed, [ tag ].concat(res) ];
       }
-    };
+      else {
+        // Restore the state of the other kind. We might have mistakenly closed it.
+        this[other_slot] = other;
+        this[state_slot] = state;
 
-    initialize();
+        // We can't reuse the processed result as it could have wrong parsing contexts in it.
+        return [ md.length, md ];
+      }
+    }
+  }; // End returned function
+}
 
-    // Return Public API object.
-    return controller;
+Markdown.dialects.Gruber.inline["**"] = strong_em("strong", "**");
+Markdown.dialects.Gruber.inline["__"] = strong_em("strong", "__");
+Markdown.dialects.Gruber.inline["*"]  = strong_em("em", "*");
+Markdown.dialects.Gruber.inline["_"]  = strong_em("em", "_");
+
+
+// Build default order from insertion order.
+Markdown.buildBlockOrder = function(d) {
+  var ord = [];
+  for ( var i in d ) {
+    if ( i == "__order__" || i == "__call__" ) continue;
+    ord.push( i );
+  }
+  d.__order__ = ord;
+};
+
+// Build patterns for inline matcher
+Markdown.buildInlinePatterns = function(d) {
+  var patterns = [];
+
+  for ( var i in d ) {
+    // __foo__ is reserved and not a pattern
+    if ( i.match( /^__.*__$/) ) continue;
+    var l = i.replace( /([\\.*+?|()\[\]{}])/g, "\\$1" )
+             .replace( /\n/, "\\n" );
+    patterns.push( i.length == 1 ? l : "(?:" + l + ")" );
+  }
+
+  patterns = patterns.join("|");
+  d.__patterns__ = patterns;
+  //print("patterns:", uneval( patterns ) );
+
+  var fn = d.__call__;
+  d.__call__ = function(text, pattern) {
+    if (pattern != undefined) {
+      return fn.call(this, text, pattern);
+    }
+    else
+    {
+      return fn.call(this, text, patterns);
+    }
   };
-});
+};
+
+Markdown.DialectHelpers = {};
+Markdown.DialectHelpers.inline_until_char = function( text, want ) {
+  var consumed = 0,
+      nodes = [];
+
+  while ( true ) {
+    if ( text[ consumed ] == want ) {
+      // Found the character we were looking for
+      consumed++;
+      return [ consumed, nodes ];
+    }
+
+    if ( consumed >= text.length ) {
+      // No closing char found. Abort.
+      return null;
+    }
+
+    res = this.dialect.inline.__oneElement__.call(this, text.substr( consumed ) );
+    consumed += res[ 0 ];
+    // Add any returned nodes.
+    nodes.push.apply( nodes, res.slice( 1 ) );
+  }
+}
+
+// Helper function to make sub-classing a dialect easier
+Markdown.subclassDialect = function( d ) {
+  function Block() {}
+  Block.prototype = d.block;
+  function Inline() {}
+  Inline.prototype = d.inline;
+
+  return { block: new Block(), inline: new Inline() };
+};
+
+Markdown.buildBlockOrder ( Markdown.dialects.Gruber.block );
+Markdown.buildInlinePatterns( Markdown.dialects.Gruber.inline );
+
+Markdown.dialects.Maruku = Markdown.subclassDialect( Markdown.dialects.Gruber );
+
+Markdown.dialects.Maruku.processMetaHash = function processMetaHash( meta_string ) {
+  var meta = split_meta_hash( meta_string ),
+      attr = {};
+
+  for ( var i = 0; i < meta.length; ++i ) {
+    // id: #foo
+    if ( /^#/.test( meta[ i ] ) ) {
+      attr.id = meta[ i ].substring( 1 );
+    }
+    // class: .foo
+    else if ( /^\./.test( meta[ i ] ) ) {
+      // if class already exists, append the new one
+      if ( attr['class'] ) {
+        attr['class'] = attr['class'] + meta[ i ].replace( /./, " " );
+      }
+      else {
+        attr['class'] = meta[ i ].substring( 1 );
+      }
+    }
+    // attribute: foo=bar
+    else if ( /\=/.test( meta[ i ] ) ) {
+      var s = meta[ i ].split( /\=/ );
+      attr[ s[ 0 ] ] = s[ 1 ];
+    }
+  }
+
+  return attr;
+}
+
+function split_meta_hash( meta_string ) {
+  var meta = meta_string.split( "" ),
+      parts = [ "" ],
+      in_quotes = false;
+
+  while ( meta.length ) {
+    var letter = meta.shift();
+    switch ( letter ) {
+      case " " :
+        // if we're in a quoted section, keep it
+        if ( in_quotes ) {
+          parts[ parts.length - 1 ] += letter;
+        }
+        // otherwise make a new part
+        else {
+          parts.push( "" );
+        }
+        break;
+      case "'" :
+      case '"' :
+        // reverse the quotes and move straight on
+        in_quotes = !in_quotes;
+        break;
+      case "\\" :
+        // shift off the next letter to be used straight away.
+        // it was escaped so we'll keep it whatever it is
+        letter = meta.shift();
+      default :
+        parts[ parts.length - 1 ] += letter;
+        break;
+    }
+  }
+
+  return parts;
+}
+
+Markdown.dialects.Maruku.block.document_meta = function document_meta( block, next ) {
+  // we're only interested in the first block
+  if ( block.lineNumber > 1 ) return undefined;
+
+  // document_meta blocks consist of one or more lines of `Key: Value\n`
+  if ( ! block.match( /^(?:\w+:.*\n)*\w+:.*$/ ) ) return undefined;
+
+  // make an attribute node if it doesn't exist
+  if ( !extract_attr( this.tree ) ) {
+    this.tree.splice( 1, 0, {} );
+  }
+
+  var pairs = block.split( /\n/ );
+  for ( p in pairs ) {
+    var m = pairs[ p ].match( /(\w+):\s*(.*)$/ ),
+        key = m[ 1 ].toLowerCase(),
+        value = m[ 2 ];
+
+    this.tree[ 1 ][ key ] = value;
+  }
+
+  // document_meta produces no content!
+  return [];
+};
+
+Markdown.dialects.Maruku.block.block_meta = function block_meta( block, next ) {
+  // check if the last line of the block is an meta hash
+  var m = block.match( /(^|\n) {0,3}\{:\s*((?:\\\}|[^\}])*)\s*\}$/ );
+  if ( !m ) return undefined;
+
+  // process the meta hash
+  var attr = this.dialect.processMetaHash( m[ 2 ] );
+
+  var hash;
+
+  // if we matched ^ then we need to apply meta to the previous block
+  if ( m[ 1 ] === "" ) {
+    var node = this.tree[ this.tree.length - 1 ];
+    hash = extract_attr( node );
+
+    // if the node is a string (rather than JsonML), bail
+    if ( typeof node === "string" ) return undefined;
+
+    // create the attribute hash if it doesn't exist
+    if ( !hash ) {
+      hash = {};
+      node.splice( 1, 0, hash );
+    }
+
+    // add the attributes in
+    for ( a in attr ) {
+      hash[ a ] = attr[ a ];
+    }
+
+    // return nothing so the meta hash is removed
+    return [];
+  }
+
+  // pull the meta hash off the block and process what's left
+  var b = block.replace( /\n.*$/, "" ),
+      result = this.processBlock( b, [] );
+
+  // get or make the attributes hash
+  hash = extract_attr( result[ 0 ] );
+  if ( !hash ) {
+    hash = {};
+    result[ 0 ].splice( 1, 0, hash );
+  }
+
+  // attach the attributes to the block
+  for ( a in attr ) {
+    hash[ a ] = attr[ a ];
+  }
+
+  return result;
+};
+
+Markdown.dialects.Maruku.block.definition_list = function definition_list( block, next ) {
+  // one or more terms followed by one or more definitions, in a single block
+  var tight = /^((?:[^\s:].*\n)+):\s+([\s\S]+)$/,
+      list = [ "dl" ],
+      i;
+
+  // see if we're dealing with a tight or loose block
+  if ( ( m = block.match( tight ) ) ) {
+    // pull subsequent tight DL blocks out of `next`
+    var blocks = [ block ];
+    while ( next.length && tight.exec( next[ 0 ] ) ) {
+      blocks.push( next.shift() );
+    }
+
+    for ( var b = 0; b < blocks.length; ++b ) {
+      var m = blocks[ b ].match( tight ),
+          terms = m[ 1 ].replace( /\n$/, "" ).split( /\n/ ),
+          defns = m[ 2 ].split( /\n:\s+/ );
+
+      // print( uneval( m ) );
+
+      for ( i = 0; i < terms.length; ++i ) {
+        list.push( [ "dt", terms[ i ] ] );
+      }
+
+      for ( i = 0; i < defns.length; ++i ) {
+        // run inline processing over the definition
+        list.push( [ "dd" ].concat( this.processInline( defns[ i ].replace( /(\n)\s+/, "$1" ) ) ) );
+      }
+    }
+  }
+  else {
+    return undefined;
+  }
+
+  return [ list ];
+};
+
+Markdown.dialects.Maruku.inline[ "{:" ] = function inline_meta( text, matches, out ) {
+  if ( !out.length ) {
+    return [ 2, "{:" ];
+  }
+
+  // get the preceeding element
+  var before = out[ out.length - 1 ];
+
+  if ( typeof before === "string" ) {
+    return [ 2, "{:" ];
+  }
+
+  // match a meta hash
+  var m = text.match( /^\{:\s*((?:\\\}|[^\}])*)\s*\}/ );
+
+  // no match, false alarm
+  if ( !m ) {
+    return [ 2, "{:" ];
+  }
+
+  // attach the attributes to the preceeding element
+  var meta = this.dialect.processMetaHash( m[ 1 ] ),
+      attr = extract_attr( before );
+
+  if ( !attr ) {
+    attr = {};
+    before.splice( 1, 0, attr );
+  }
+
+  for ( var k in meta ) {
+    attr[ k ] = meta[ k ];
+  }
+
+  // cut out the string and replace it with nothing
+  return [ m[ 0 ].length, "" ];
+};
+
+Markdown.buildBlockOrder ( Markdown.dialects.Maruku.block );
+Markdown.buildInlinePatterns( Markdown.dialects.Maruku.inline );
+
+var isArray = Array.isArray || function(obj) {
+  return Object.prototype.toString.call(obj) == '[object Array]';
+};
+
+var forEach;
+// Don't mess with Array.prototype. Its not friendly
+if ( Array.prototype.forEach ) {
+  forEach = function( arr, cb, thisp ) {
+    return arr.forEach( cb, thisp );
+  };
+}
+else {
+  forEach = function(arr, cb, thisp) {
+    for (var i = 0; i < arr.length; i++) {
+      cb.call(thisp || arr, arr[i], i, arr);
+    }
+  }
+}
+
+function extract_attr( jsonml ) {
+  return isArray(jsonml)
+      && jsonml.length > 1
+      && typeof jsonml[ 1 ] === "object"
+      && !( isArray(jsonml[ 1 ]) )
+      ? jsonml[ 1 ]
+      : undefined;
+}
+
+
+
+/**
+ *  renderJsonML( jsonml[, options] ) -> String
+ *  - jsonml (Array): JsonML array to render to XML
+ *  - options (Object): options
+ *
+ *  Converts the given JsonML into well-formed XML.
+ *
+ *  The options currently understood are:
+ *
+ *  - root (Boolean): wether or not the root node should be included in the
+ *    output, or just its children. The default `false` is to not include the
+ *    root itself.
+ */
+expose.renderJsonML = function( jsonml, options ) {
+  options = options || {};
+  // include the root element in the rendered output?
+  options.root = options.root || false;
+
+  var content = [];
+
+  if ( options.root ) {
+    content.push( render_tree( jsonml ) );
+  }
+  else {
+    jsonml.shift(); // get rid of the tag
+    if ( jsonml.length && typeof jsonml[ 0 ] === "object" && !( jsonml[ 0 ] instanceof Array ) ) {
+      jsonml.shift(); // get rid of the attributes
+    }
+
+    while ( jsonml.length ) {
+      content.push( render_tree( jsonml.shift() ) );
+    }
+  }
+
+  return content.join( "\n\n" );
+};
+
+function escapeHTML( text ) {
+  return text.replace( /&/g, "&amp;" )
+             .replace( /</g, "&lt;" )
+             .replace( />/g, "&gt;" )
+             .replace( /"/g, "&quot;" )
+             .replace( /'/g, "&#39;" );
+}
+
+function render_tree( jsonml ) {
+  // basic case
+  if ( typeof jsonml === "string" ) {
+    return escapeHTML( jsonml );
+  }
+
+  var tag = jsonml.shift(),
+      attributes = {},
+      content = [];
+
+  if ( jsonml.length && typeof jsonml[ 0 ] === "object" && !( jsonml[ 0 ] instanceof Array ) ) {
+    attributes = jsonml.shift();
+  }
+
+  while ( jsonml.length ) {
+    content.push( arguments.callee( jsonml.shift() ) );
+  }
+
+  var tag_attrs = "";
+  for ( var a in attributes ) {
+    tag_attrs += " " + a + '="' + escapeHTML( attributes[ a ] ) + '"';
+  }
+
+  // be careful about adding whitespace here for inline elements
+  if ( tag == "img" || tag == "br" || tag == "hr" ) {
+    return "<"+ tag + tag_attrs + "/>";
+  }
+  else {
+    return "<"+ tag + tag_attrs + ">" + content.join( "" ) + "</" + tag + ">";
+  }
+}
+
+function convert_tree_to_html( tree, references, options ) {
+  var i;
+  options = options || {};
+
+  // shallow clone
+  var jsonml = tree.slice( 0 );
+
+  if (typeof options.preprocessTreeNode === "function") {
+      jsonml = options.preprocessTreeNode(jsonml, references);
+  }
+
+  // Clone attributes if they exist
+  var attrs = extract_attr( jsonml );
+  if ( attrs ) {
+    jsonml[ 1 ] = {};
+    for ( i in attrs ) {
+      jsonml[ 1 ][ i ] = attrs[ i ];
+    }
+    attrs = jsonml[ 1 ];
+  }
+
+  // basic case
+  if ( typeof jsonml === "string" ) {
+    return jsonml;
+  }
+
+  // convert this node
+  switch ( jsonml[ 0 ] ) {
+    case "header":
+      jsonml[ 0 ] = "h" + jsonml[ 1 ].level;
+      delete jsonml[ 1 ].level;
+      break;
+    case "bulletlist":
+      jsonml[ 0 ] = "ul";
+      break;
+    case "numberlist":
+      jsonml[ 0 ] = "ol";
+      break;
+    case "listitem":
+      jsonml[ 0 ] = "li";
+      break;
+    case "para":
+      jsonml[ 0 ] = "p";
+      break;
+    case "markdown":
+      jsonml[ 0 ] = "html";
+      if ( attrs ) delete attrs.references;
+      break;
+    case "code_block":
+      jsonml[ 0 ] = "pre";
+      i = attrs ? 2 : 1;
+      var code = [ "code" ];
+      code.push.apply( code, jsonml.splice( i ) );
+      jsonml[ i ] = code;
+      break;
+    case "inlinecode":
+      jsonml[ 0 ] = "code";
+      break;
+    case "img":
+      jsonml[ 1 ].src = jsonml[ 1 ].href;
+      delete jsonml[ 1 ].href;
+      break;
+    case "linebreak":
+      jsonml[ 0 ] = "br";
+    break;
+    case "link":
+      jsonml[ 0 ] = "a";
+      break;
+    case "link_ref":
+      jsonml[ 0 ] = "a";
+
+      // grab this ref and clean up the attribute node
+      var ref = references[ attrs.ref ];
+
+      // if the reference exists, make the link
+      if ( ref ) {
+        delete attrs.ref;
+
+        // add in the href and title, if present
+        attrs.href = ref.href;
+        if ( ref.title ) {
+          attrs.title = ref.title;
+        }
+
+        // get rid of the unneeded original text
+        delete attrs.original;
+      }
+      // the reference doesn't exist, so revert to plain text
+      else {
+        return attrs.original;
+      }
+      break;
+    case "img_ref":
+      jsonml[ 0 ] = "img";
+
+      // grab this ref and clean up the attribute node
+      var ref = references[ attrs.ref ];
+
+      // if the reference exists, make the link
+      if ( ref ) {
+        delete attrs.ref;
+
+        // add in the href and title, if present
+        attrs.src = ref.href;
+        if ( ref.title ) {
+          attrs.title = ref.title;
+        }
+
+        // get rid of the unneeded original text
+        delete attrs.original;
+      }
+      // the reference doesn't exist, so revert to plain text
+      else {
+        return attrs.original;
+      }
+      break;
+  }
+
+  // convert all the children
+  i = 1;
+
+  // deal with the attribute node, if it exists
+  if ( attrs ) {
+    // if there are keys, skip over it
+    for ( var key in jsonml[ 1 ] ) {
+      i = 2;
+    }
+    // if there aren't, remove it
+    if ( i === 1 ) {
+      jsonml.splice( i, 1 );
+    }
+  }
+
+  for ( ; i < jsonml.length; ++i ) {
+    jsonml[ i ] = arguments.callee( jsonml[ i ], references, options );
+  }
+
+  return jsonml;
+}
+
+
+// merges adjacent text nodes into a single node
+function merge_text_nodes( jsonml ) {
+  // skip the tag name and attribute hash
+  var i = extract_attr( jsonml ) ? 2 : 1;
+
+  while ( i < jsonml.length ) {
+    // if it's a string check the next item too
+    if ( typeof jsonml[ i ] === "string" ) {
+      if ( i + 1 < jsonml.length && typeof jsonml[ i + 1 ] === "string" ) {
+        // merge the second string into the first and remove it
+        jsonml[ i ] += jsonml.splice( i + 1, 1 )[ 0 ];
+      }
+      else {
+        ++i;
+      }
+    }
+    // if it's not a string recurse
+    else {
+      arguments.callee( jsonml[ i ] );
+      ++i;
+    }
+  }
+}
+
+} )( (function() {
+  if ( typeof exports === "undefined" ) {
+    window.markdown = {};
+    return window.markdown;
+  }
+  else {
+    return exports;
+  }
+} )() );
+
+define("markdown", (function (global) {
+    return function () {
+        var ret, fn;
+        return ret || global.markdown;
+    };
+}(this)));
 
 /*global define: false */
 /**
@@ -7175,8 +9698,9 @@ define('common/controllers/interactive-component',['require','common/controllers
    * @constructor
    * @param {string} type Component type, should match definition in interactive metadata.
    * @param {Object} component Component JSON definition.
+   * @param {ScriptingAPI} scriptingAPI
    */
-  function InteractiveComponent(type, component) {
+  function InteractiveComponent(type, component, scriptingAPI) {
     var onClickFunction;
 
     /**
@@ -7199,6 +9723,9 @@ define('common/controllers/interactive-component',['require','common/controllers
     if (this.component.height) {
       this.$element.css("height", this.component.height);
     }
+
+    // optionally add onClick handler. If components such as buttons and sliders
+    // start inheriting from InteractiveComponent, we should think further on this.
     if (this.component.onClick) {
       if (typeof this.component.onClick !== "function") {
         // Create function from the string or array of strings.
@@ -7210,6 +9737,16 @@ define('common/controllers/interactive-component',['require','common/controllers
       this.$element.on("click", onClickFunction);
       // Also add a special class indicating that this text node is a clickable.
       this.$element.addClass("clickable");
+    }
+
+    // optionally add new css classes
+    if (this.component.classes && this.component.classes.length) {
+      this.$element.addClass(this.component.classes.join(" "))
+    }
+
+    // optionally add tooltip as title text
+    if (this.component.tooltip) {
+      this.$element.attr("title", this.component.tooltip)
     }
   }
 
@@ -7228,6 +9765,48 @@ define('common/controllers/interactive-component',['require','common/controllers
   };
 
   return InteractiveComponent;
+});
+
+/*global define, $ */
+
+define('common/controllers/text-controller',['require','markdown','common/inherit','common/controllers/interactive-component'],function (require) {
+
+  var markdown             = require('markdown'),
+      inherit              = require('common/inherit'),
+      InteractiveComponent = require('common/controllers/interactive-component');
+
+  /**
+   * Text controller.
+   * It supports markdown (syntax: http://daringfireball.net/projects/markdown/syntax).
+   *
+   * @constructor
+   * @extends InteractiveComponent
+   * @param {Object} component Component JSON definition.
+   * @param {ScriptingAPI} scriptingAPI
+   */
+  function TextController(component, scriptingAPI) {
+    var text, $element, content, html,
+        openInNewWindow = 'class="opens-in-new-window" target="blank"';
+    // Call super constructor.
+    InteractiveComponent.call(this, "text", component, scriptingAPI);
+    // Setup custom class.
+    this.$element.addClass("interactive-text");
+    // Ensure that common typography for markdown-generated content is used.
+    this.$element.addClass("markdown-typography");
+    // Use markdown to parse the 'text' content.
+    text = $.isArray(this.component.text) ? this.component.text : [this.component.text];
+    $element = this.$element;
+    content = "";
+    $.each(text, function (idx, val) {
+      content += val + "\n";
+    });
+    html = markdown.toHTML(content);
+    html = html.replace(/<a(.*?)>/, "<a$1 " + openInNewWindow + ">");
+    $element.append(html);
+  }
+  inherit(TextController, InteractiveComponent);
+
+  return TextController;
 });
 
 /*global Lab, define, $ */
@@ -7255,7 +9834,7 @@ define('common/controllers/image-controller',['require','lab.config','common/inh
     var root = typeof Lab !== "undefined" ? Lab.config.actualRoot : "";
 
     // Call super constructor.
-    InteractiveComponent.call(this, "image", component);
+    InteractiveComponent.call(this, "image", component, scriptingAPI);
 
     /** @private */
     this._controller = controller;
@@ -7409,6 +9988,7 @@ define('common/controllers/radio-controller',['common/controllers/interactive-me
         $option = $('<input>')
           .attr('type', "radio")
           .attr('name', component.id)
+          .attr('tabindex', interactivesController.getNextTabIndex())
           .attr('id', component.id + '-' + i);
         $options.push($option);
 
@@ -7506,7 +10086,7 @@ define('common/controllers/slider-controller',['common/controllers/interactive-m
   var metadata  = require('common/controllers/interactive-metadata'),
       validator = require('common/validator');
 
-  return function SliderController(component, scriptingAPI) {
+  return function SliderController(component, scriptingAPI, interactivesController) {
     var min, max, steps, propertyName,
         action, initialValue,
         title, labels, displayValue,
@@ -7635,6 +10215,8 @@ define('common/controllers/slider-controller',['common/controllers/interactive-m
     });
 
     $sliderHandle = $slider.find(".ui-slider-handle");
+
+    $sliderHandle.attr('tabindex', interactivesController.getNextTabIndex());
 
     $elem = $('<div class="interactive-slider">')
               .append($title)
@@ -7911,14 +10493,17 @@ define('common/controllers/numeric-output-controller',['common/controllers/inter
 
     // Setup view.
     $label  = $('<span class="label"></span>');
+    $output = $('<span class="output"></span>');
     $number = $('<span class="value"></span>');
     $units  = $('<span class="units"></span>');
     if (label) { $label.html(label); }
     if (units) { $units.html(units); }
     $numericOutput = $('<div class="numeric-output">').attr('id', component.id)
         .append($label)
-        .append($number)
-        .append($units);
+        .append($output
+          .append($number)
+          .append($units)
+        );
 
     // Each interactive component has to have class "component".
     $numericOutput.addClass("component");
@@ -8363,11 +10948,40 @@ define('common/controllers/thermometer-controller',['require','cs!common/compone
 
 /*global define */
 
-define('common/controllers/setup-banner',['lab.config','common/controllers/text-controller','common/controllers/image-controller'],function () {
+define('common/controllers/div-controller',['require','common/inherit','common/controllers/interactive-component'],function (require) {
+
+  var inherit              = require('common/inherit'),
+      InteractiveComponent = require('common/controllers/interactive-component');
+
+  /**
+   * Simplest component controller which just inherits from InteractiveComponent, simply
+   * creating a div element. Component can have dimensions, css classes and on onClick
+   * function.
+   * @param {Object} component Component JSON definition.
+   * @param {ScriptingAPI} scriptingAPI
+   */
+  function DivController(component, scriptingAPI) {
+
+    // Call super constructor.
+    InteractiveComponent.call(this, "div", component);
+
+  }
+  inherit(DivController, InteractiveComponent);
+
+  return DivController;
+});
+
+/*global define, $ */
+
+define('common/controllers/setup-banner',['lab.config','common/controllers/text-controller','common/controllers/image-controller','common/controllers/div-controller'],function () {
 
   var labConfig       = require('lab.config'),
       TextController  = require('common/controllers/text-controller'),
-      ImageController = require('common/controllers/image-controller');
+      ImageController = require('common/controllers/image-controller'),
+      DivController   = require('common/controllers/div-controller'),
+      topBarHeight    = 1.5,
+      topBarFontScale = topBarHeight*0.65,
+      topBarVerticalPadding = topBarHeight/10;
 
   /**
    * Returns a hash containing:
@@ -8386,14 +11000,17 @@ define('common/controllers/setup-banner',['lab.config','common/controllers/text-
         template = [],
         layout = {},
         // About link visible if there is about section or subtitle.
-        haveAboutText = interactive.about || interactive.subtitle;
+        haveAboutText = interactive.about || interactive.subtitle,
+        body, requestFullscreenMethod;
 
     template.push({
       "id": "top-bar",
       "top": "0",
       "left": "0",
+      "height": topBarHeight + "em",
+      "padding-top": topBarVerticalPadding + "em",
+      "padding-bottom": topBarVerticalPadding + "em",
       "width": "container.width",
-      "height": "banner-right.height",
       "aboveOthers": true
     });
 
@@ -8402,38 +11019,50 @@ define('common/controllers/setup-banner',['lab.config','common/controllers/text-
       "bottom": "container.height",
       "left": "0",
       "width": "container.width",
-      "height": "banner-bottom-left.height",
+      "height": "2.5em",
       "belowOthers": true
     });
 
-    function createLinkInContainer(link, container) {
-      components[link.id] = new TextController(link);
-      template.push(container);
-      layout[container.id] = [link.id];
-    }
+    function createElementInContainer(element, container) {
+      var Controller;
 
-    function createImageInContainer(image, container) {
-      components[image.id] = new ImageController(image);
+      if (element.type === "text") {
+        Controller = TextController;
+      } else if (element.type === "image") {
+        Controller = ImageController;
+      } else if (element.type === "div") {
+        Controller = DivController;
+      }
+
+      components[element.id] = new Controller(element);
       template.push(container);
-      layout[container.id] = [image.id];
+      layout[container.id] = [element.id];
     }
 
     // Define about link only if "about" or "subtitle" section is available.
     aboutDialog.update(interactive);
-    createLinkInContainer(
-    {
+    createElementInContainer({
       "type": "text",
       "id": "about-link",
       "text": "About",
-      "style": "header",
-      "onClick": function () { if (haveAboutText) {aboutDialog.open()} else {creditsDialog.open()}}
+      "onClick": function () {
+        if (haveAboutText) {
+          aboutDialog.open();
+        } else {
+          creditsDialog.open();
+        }
+      }
     },
     {
       "id": "banner-right",
+      "fontScale": topBarFontScale,
       "top": "0",
+      "height": topBarHeight + "em",
+      "padding-top": topBarVerticalPadding + "em",
+      "padding-bottom": topBarVerticalPadding + "em",
       "right": "interactive.width",
       "padding-left": "1em",
-      "padding-right": "1em",
+      "padding-right": "0.75em",
       "align": "right",
       "aboveOthers": true
     });
@@ -8444,17 +11073,20 @@ define('common/controllers/setup-banner',['lab.config','common/controllers/text-
     // in its specification!
     if (labConfig.sharing) {
       shareDialog.update(interactive);
-      createLinkInContainer(
+      createElementInContainer(
       {
         "type": "text",
         "id": "share-link",
         "text": "Share",
-        "style": "header",
         "onClick": function () { shareDialog.open(); }
       },
       {
         "id": "banner-middle",
+        "fontScale": topBarFontScale,
         "top": "0",
+        "height": topBarHeight + "em",
+        "padding-top": topBarVerticalPadding + "em",
+        "padding-bottom": topBarVerticalPadding + "em",
         // "banner-right" can be undefined, so check it.
         "right": "banner-right.left",
         "padding-right": "1em",
@@ -8465,19 +11097,88 @@ define('common/controllers/setup-banner',['lab.config','common/controllers/text-
 
     // bottom bar
     creditsDialog.update(interactive);
-    createImageInContainer(
+    createElementInContainer(
     {
-      "type": "image",
+      "type": "div",
       "id": "credits-link",
       "height": "2.5em",
-      "src": "{resources}/layout/cc-logo.png",
+      "width": "8.1em",
+      "classes": ["credits"],
+      "tooltip": "Credits",
       "onClick": function () { creditsDialog.open(); }
     },
     {
       "id": "banner-bottom-left",
       "bottom": "container.height",
       "left": "0",
+      "padding-left": "0.3em",
       "align": "left",
+      "belowOthers": true
+    });
+
+    // see if we can go fullscreen. If we can, add a fullscreen button.
+    // Note: This requires iframe to be embedded with 'allowfullscreen=true' (and
+    // browser-specific variants). If iframe is not embedded with this property, button
+    // will show but will not work. It is not clear whether we can find out at this moment
+    // whether iframe was embedded appropriately.
+    body = document.body;
+
+    requestFullscreenMethod =
+         body.requestFullScreen ||
+         body.webkitRequestFullScreen ||
+         body.mozRequestFullScreen ||
+         body.msRequestFullScreen;
+
+    document.cancelFullscreenMethod =
+         document.cancelFullScreen ||
+         document.webkitCancelFullScreen ||
+         document.mozCancelFullScreen ||
+         document.msCancelFullScreen;
+
+    function isFullscreen() {
+      // this doesn't yet exist in Safari
+      if (document.fullscreenElement||
+          document.webkitFullscreenElement ||
+          document.mozFullScreenElement) {
+        return true;
+      }
+      // annoying hack to check Safari
+      return ~$(".fullscreen").css("background-image").indexOf("exit");
+    }
+
+    if (requestFullscreenMethod) {
+      createElementInContainer(
+      {
+        "type": "div",
+        "id": "fullsize-link",
+        "height": "2.5em",
+        "width": "2.5em",
+        "classes": ["fullscreen"],
+        "tooltip": "Open interactive in full-screen mode",
+        "onClick": function () {
+          if (!isFullscreen()) {
+            requestFullscreenMethod.call(body);
+          } else {
+            document.cancelFullscreenMethod();
+          }
+        }
+      },
+      {
+        "id": "banner-bottom-right",
+        "bottom": "container.height",
+        "right": "container.width",
+        "align": "left",
+        "padding-left": "1em",
+        "belowOthers": true
+      });
+    }
+
+    template.push({
+      "id": "interactive-playback-container",
+      "bottom": "container.height",
+      "left": "container.width/2 - interactive-playback-container.width/2",
+      "width": "12em",
+      "height": "banner-bottom-left.height",
       "belowOthers": true
     });
 
@@ -8553,9 +11254,10 @@ define('common/controllers/basic-dialog',[],function () {
 });
 
 /*global define, $ */
-define('common/controllers/about-dialog',['require','arrays','common/inherit','common/controllers/basic-dialog'],function (require) {
+define('common/controllers/about-dialog',['require','arrays','markdown','common/inherit','common/controllers/basic-dialog'],function (require) {
 
   var arrays      = require('arrays'),
+      markdown    = require('markdown'),
       inherit     = require('common/inherit'),
       BasicDialog = require('common/controllers/basic-dialog');
 
@@ -8576,17 +11278,28 @@ define('common/controllers/about-dialog',['require','arrays','common/inherit','c
    */
   AboutDialog.prototype.update = function(interactive) {
     var $aboutContent = $("<div>"),
-        about;
+        about,
+        content,
+        html,
+        openInNewWindow = 'class="opens-in-new-window" target="blank"';
 
     this.set("title", "About: " + interactive.title);
 
+    // Ensure that common typography for markdown-generated content is used.
+    $aboutContent.addClass("markdown-typography");
     if (interactive.subtitle) {
-      $aboutContent.append("<p>" + interactive.subtitle + "</p>");
+      html = markdown.toHTML(interactive.subtitle);
+      html = html.replace(/<a(.*?)>/, "<a$1 " + openInNewWindow + ">");
+      $aboutContent.append(html);
     }
     about = arrays.isArray(interactive.about) ? interactive.about : [interactive.about];
+    content = "";
     $.each(about, function(idx, val) {
-      $aboutContent.append("<p>" + val + "</p>");
+      content += val + "\n";
     });
+    html = markdown.toHTML(content);
+    html = html.replace(/<a(.*?)>/, "<a$1 " + openInNewWindow + ">");
+    $aboutContent.append(html);
 
     this.setContent($aboutContent);
   };
@@ -9529,7 +12242,8 @@ define('common/controllers/share-dialog',['require','lab.config','mustache','com
 
       // A tiny template, so define it inline and compile immediately.
       iframeTpl = mustache.compile('<iframe width="{{width}}px" height="{{height}}px" ' +
-        'frameborder="no" scrolling="no" src="{{{embeddableSharingUrl}}}"></iframe>');
+        'frameborder="no" scrolling="no" allowfullscreen="true" webkitallowfullscreen="true"' +
+        ' mozallowfullscreen="true" src="{{{embeddableSharingUrl}}}"></iframe>');
 
   /**
    * Share Dialog. Inherits from Basic Dialog.
@@ -9806,13 +12520,13 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
     }
 
     function setFontSize() {
-      var containerAspectRatio = availableWidth / availableHeight,
+      var containerAspectRatio = $interactiveContainer.width() / $interactiveContainer.height(),
           containerScale, font;
 
       if (interactiveAspectRatio <= containerAspectRatio) {
-        containerScale = availableHeight / basicInteractiveHeight;
+        containerScale = $interactiveContainer.height() / basicInteractiveHeight;
       } else {
-        containerScale = availableWidth / basicInteractiveWidth;
+        containerScale = $interactiveContainer.width() / basicInteractiveWidth;
       }
 
       padding = containerScale * 10;
@@ -10224,6 +12938,15 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
       }
     }
 
+    function setupInteractivePlaybackController() {
+      var wrapper, svgContainer;
+
+      if (wrapper = document.getElementById("interactive-playback-container")) {
+        svgContainer = d3.select(wrapper).append("svg");
+        modelController.setPlaybackContainer(svgContainer);
+      }
+    }
+
     // Public API.
     layout = {
       /**
@@ -10251,6 +12974,7 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
 
         createContainers();
         placeComponentsInContainers();
+
         // Clear previous aspect ratio, as new components
         // can completely change it.
         interactiveAspectRatio = null;
@@ -10286,6 +13010,12 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
         });
         $modelContainer.appendTo($interactiveContainer);
         $containerByID.model = $modelContainer;
+
+        // For now we have only one model, we we assume we always want to set up a
+        // interactive-wide controller. When we have more than one model, we can
+        // easily check for that and not set this up, which will make every model
+        // use their own playback controllers.
+        setupInteractivePlaybackController();
       },
 
       /**
@@ -10379,6 +13109,7 @@ define('common/layout/templates',[],function () {
         "left": "model.right",
         "height": "model.height",
         "padding-left": "1em",
+        "padding-right": "0.5em",
         "width": "model.width / 4",
         "min-width": "6em"
       },
@@ -10401,6 +13132,7 @@ define('common/layout/templates',[],function () {
         "left": "model.right",
         "height": "model.height",
         "padding-left": "1em",
+        "padding-right": "0.5em",
         "width": "model.width",
         "min-width": "6em"
       },
@@ -10469,7 +13201,7 @@ define('common/controllers/model-controller',['require','arrays','cs!common/comp
   var arrays            = require('arrays'),
       ModelPlayer       = require('cs!common/components/model_player');
 
-  return function modelController(modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig,
+  return function modelController(modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, interactivesController,
                                   Model, ModelContainer, ScriptingAPI, Benchmarks) {
     var controller = {},
 
@@ -10614,7 +13346,7 @@ define('common/controllers/model-controller',['require','arrays','cs!common/comp
           controller.modelContainer.update();
         };
 
-        controller.modelContainer = new ModelContainer(controller.modelUrl, model);
+        controller.modelContainer = new ModelContainer(controller.modelUrl, model, interactivesController.getNextTabIndex);
       }
 
       function resetModelPlayer() {
@@ -10670,6 +13402,14 @@ define('common/controllers/model-controller',['require','arrays','cs!common/comp
       controller.getHeightForWidth = function (width) {
         return controller.modelContainer.getHeightForWidth(width);
       };
+
+      controller.setPlaybackContainer = function (svgPlaybackContainer) {
+        return controller.modelContainer.setPlaybackContainer(svgPlaybackContainer);
+      }
+
+      controller.enableKeyboardHandlers = function () {
+        return model.get("enableKeyboardHandlers");
+      }
 
       controller.reload = reload;
       controller.repaint = repaint;
@@ -11980,6 +14720,10 @@ define('md2d/models/metadata',[],function() {
     mainProperties: {
       type: {
         defaultValue: "md2d",
+        immutable: true
+      },
+      imagePath: {
+        defaultValue: "",
         immutable: true
       },
       minX: {
@@ -19947,6 +22691,15 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       };
     };
 
+
+    /**
+      Return a unitDefinition in the current unitScheme for a quantity
+      such as 'length', 'mass', etc.
+    */
+    model.getUnitDefinition = function(name) {
+      return unitsDefinition.units[name];
+    };
+
     /**
       Retrieve (a copy of) the hash describing property 'name', if one exists. This hash can store
       an arbitrary set of key-value pairs, but is expected to have 'label' and 'units' properties
@@ -20728,13 +23481,14 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
       PlaybackComponentSVG  = require('cs!common/components/playback_svg'),
       gradients             = require('common/views/gradients');
 
-  return function ModelView(modelUrl, model, Renderer) {
+  return function ModelView(modelUrl, model, Renderer, getNextTabIndex) {
         // Public API object to be returned.
     var api = {},
         renderer,
         $el,
         node,
         emsize,
+        fontSizeInPixels,
         imagePath,
         vis1, vis, plot,
         playbackComponent,
@@ -20765,6 +23519,12 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
         textContainerBelow,
         textContainerTop,
 
+        // we can ask the view to render the playback controls to some other container
+        useExternalPlaybackContainer = false,
+        playbackContainer,
+
+        preexistingControls,
+
         clickHandler,
 
         offsetLeft, offsetTop;
@@ -20777,36 +23537,40 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
       }
     }
 
+    function getFontSizeInPixels() {
+      return parseFloat($el.css('font-size')) || 18;
+    }
+
     // Padding is based on the calculated font-size used for the model view container.
     function updatePadding() {
-      emsize = $el.css('font-size');
-      // Remove "px", convert to number.
-      emsize = Number(emsize.substring(0, emsize.length - 2));
+      fontSizeInPixels = getFontSizeInPixels();
       // Convert value to "em", using 18px as a basic font size.
       // It doesn't have to reflect true 1em value in current context.
       // It just means, that we assume that for 18px font-size,
       // padding and playback have scale 1.
-      emsize /= 18;
+      emsize = fontSizeInPixels / 18;
 
       padding = {
-         "top":    10 * emsize,
-         "right":  10 * emsize,
-         "bottom": 10 * emsize,
-         "left":   10 * emsize
+         "top":    0 * emsize,
+         "right":  0 * emsize,
+         "bottom": 0 * emsize,
+         "left":   0 * emsize
       };
 
-      if (model.get("xunits")) {
-        padding.bottom += (15  * emsize);
+      if (model.get("xunits") || model.get("yunits")) {
+        padding.bottom += (fontSizeInPixels * 1.2);
+        padding.left +=   (fontSizeInPixels * 1.3);
+        padding.top +=    (fontSizeInPixels/2);
+        padding.right +=  (fontSizeInPixels/2);
       }
 
-      if (model.get("yunits")) {
-        padding.left += (15  * emsize);
+      if (model.get("xlabel") || model.get("ylabel")) {
+        padding.bottom += (fontSizeInPixels * 0.8);
+        padding.left +=   (fontSizeInPixels * 0.8);
       }
 
-      if (model.get("controlButtons")) {
-        padding.bottom += (40  * emsize);
-      } else {
-        padding.bottom += (15  * emsize);
+      if (model.get("controlButtons") && !useExternalPlaybackContainer) {
+        padding.bottom += (fontSizeInPixels * 2.5);
       }
     }
 
@@ -20830,9 +23594,15 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
 
       // Plot size in px.
       size = {
+        "width":  cx - padding.left - padding.right,
+        "height": cy - padding.top  - padding.bottom
+      };
+
+      size = {
         "width":  width,
         "height": height
       };
+
       // Model size in model units.
       modelSize = {
         "width":  modelWidth,
@@ -20846,21 +23616,26 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
       offsetTop  = node.offsetTop + padding.top;
       offsetLeft = node.offsetLeft + padding.left;
 
-      switch (model.get("controlButtons")) {
-        case "play":
-          playbackXPos = padding.left + (size.width - (75 * emsize))/2;
-          break;
-        case "play_reset":
-          playbackXPos = padding.left + (size.width - (140 * emsize))/2;
-          break;
-        case "play_reset_step":
-          playbackXPos = padding.left + (size.width - (230 * emsize))/2;
-          break;
-        default:
-          playbackXPos = padding.left + (size.width - (230 * emsize))/2;
-      }
+      if (!useExternalPlaybackContainer) {
+        switch (model.get("controlButtons")) {
+          case "play":
+            playbackXPos = padding.left + (size.width - (75 * emsize))/2;
+            break;
+          case "play_reset":
+            playbackXPos = padding.left + (size.width - (140 * emsize))/2;
+            break;
+          case "play_reset_step":
+            playbackXPos = padding.left + (size.width - (230 * emsize))/2;
+            break;
+          default:
+            playbackXPos = padding.left + (size.width - (230 * emsize))/2;
+        }
 
-      playbackYPos = cy - 42 * emsize;
+        playbackYPos = cy - 42 * emsize;
+      } else {
+        playbackXPos = 0;
+        playbackYPos = fontSizeInPixels/6;
+      }
 
       // Basic model2px scaling function for position.
       model2px = d3.scale.linear()
@@ -20884,7 +23659,8 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
           ty = function(d) { return "translate(0," + model2pxInv(d) + ")"; },
           stroke = function(d) { return d ? "#ccc" : "#666"; },
           fx = model2px.tickFormat(5),
-          fy = model2pxInv.tickFormat(5);
+          fy = model2pxInv.tickFormat(5),
+          lengthUnits = model.getUnitDefinition('length');
 
       if (d3.event && d3.event.transform) {
           d3.event.transform(model2px, model2pxInv);
@@ -20911,14 +23687,30 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
         gxe.selectAll("line").remove();
       }
 
+      // x-axis units
       if (model.get("xunits")) {
         gxe.append("text")
+            .attr("class", "xunits")
             .attr("y", size.height)
-            .attr("dy", "1.25em")
+            .attr("dy", fontSizeInPixels*0.8 + "px")
             .attr("text-anchor", "middle")
             .text(fx);
       } else {
-        gxe.select("text").remove();
+        gxe.select("text.xunits").remove();
+      }
+
+      // x-axis label
+      if (model.get("xlabel")) {
+        vis.append("text")
+            .attr("class", "axis")
+            .attr("class", "xlabel")
+            .text(lengthUnits.pluralName)
+            .attr("x", size.width/2)
+            .attr("y", size.height)
+            .attr("dy", fontSizeInPixels*1.6 + "px")
+            .style("text-anchor","middle");
+      } else {
+        vis.select("text.xlabel").remove();
       }
 
       gx.exit().remove();
@@ -20946,14 +23738,28 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
         gye.selectAll("line").remove();
       }
 
+      // y-axis units
       if (model.get("yunits")) {
         gye.append("text")
-            .attr("x", "-0.15em")
-            .attr("dy", "0.30em")
+            .attr("class", "yunits")
+            .attr("x", "-0.3em")
+            .attr("dy", fontSizeInPixels/6 + "px")
             .attr("text-anchor", "end")
             .text(fy);
       } else {
-        gye.select("text").remove();
+        gxe.select("text.yunits").remove();
+      }
+
+      // y-axis label
+      if (model.get("ylabel")) {
+        vis.append("g").append("text")
+            .attr("class", "axis")
+            .attr("class", "ylabel")
+            .text(lengthUnits.pluralName)
+            .style("text-anchor","middle")
+            .attr("transform","translate(" + -fontSizeInPixels*1.6 + " " + size.height/2+") rotate(-90)");
+      } else {
+        vis.select("text.ylabel").remove();
       }
 
       gy.exit().remove();
@@ -20993,54 +23799,6 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
       if (model.get("enableKeyboardHandlers")) {
         node.focus();
       }
-    }
-
-    // ------------------------------------------------------------
-    //
-    // Handle keyboard shortcuts for model operation
-    //
-    // ------------------------------------------------------------
-
-    function setupKeyboardHandler() {
-      if (!model.get("enableKeyboardHandlers")) return;
-      $(node).keydown(function(event) {
-        var keycode = event.keycode || event.which;
-        switch(keycode) {
-          case 13:                 // return
-          event.preventDefault();
-          if (!model_player.isPlaying()) {
-            model_player.play();
-          }
-          break;
-
-          case 32:                 // space
-          event.preventDefault();
-          if (model_player.isPlaying()) {
-            model_player.stop();
-          } else {
-            model_player.play();
-          }
-          break;
-
-          case 37:                 // left-arrow
-          event.preventDefault();
-          if (model_player.isPlaying()) {
-            model_player.stop();
-          } else {
-            model_player.back();
-          }
-          break;
-
-          case 39:                 // right-arrow
-          event.preventDefault();
-          if (model_player.isPlaying()) {
-            model_player.stop();
-          } else {
-            model_player.forward();
-          }
-          break;
-        }
-      });
     }
 
     function renderContainer() {
@@ -21095,8 +23853,9 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
           textContainerTop:     textContainerTop
         };
 
-        setupKeyboardHandler();
         createGradients();
+
+        playbackContainer = vis1;
       } else {
         // TODO: ?? what g, why is it here?
         vis.selectAll("g.x").remove();
@@ -21125,19 +23884,29 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
     }
 
     function setupPlaybackControls() {
-      vis1.select('.model-controller').remove();
+      if (preexistingControls) preexistingControls.remove();
       switch (model.get("controlButtons")) {
         case "play":
-          playbackComponent = new PlayOnlyComponentSVG(vis1, model_player, playbackXPos, playbackYPos, emsize);
+          playbackComponent = new PlayOnlyComponentSVG(playbackContainer, model_player, playbackXPos, playbackYPos, emsize);
           break;
         case "play_reset":
-          playbackComponent = new PlayResetComponentSVG(vis1, model_player, playbackXPos, playbackYPos, emsize);
+          playbackComponent = new PlayResetComponentSVG(playbackContainer, model_player, playbackXPos, playbackYPos, emsize);
           break;
         case "play_reset_step":
-          playbackComponent = new PlaybackComponentSVG(vis1, model_player, playbackXPos, playbackYPos, emsize);
+          playbackComponent = new PlaybackComponentSVG(playbackContainer, model_player, playbackXPos, playbackYPos, emsize);
           break;
         default:
           playbackComponent = null;
+      }
+      preexistingControls = playbackContainer.select('.model-controller');
+    }
+
+    function removeClickHandlers() {
+      var selector;
+      for (selector in clickHandler) {
+        if (clickHandler.hasOwnProperty(selector)) {
+          vis.selectAll(selector).on("click.custom", null);
+        }
       }
     }
 
@@ -21163,7 +23932,7 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
       // Register listeners.
       // Redraw container each time when some visual-related property is changed.
       model.addPropertiesListener([ "backgroundColor"], repaint);
-      model.addPropertiesListener(["gridLines", "xunits", "yunits"],
+      model.addPropertiesListener(["gridLines", "xunits", "yunits", "xlabel", "ylabel" ],
         function() {
           renderContainer();
           setupPlaybackControls();
@@ -21190,6 +23959,7 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
       containers: null,
       scale: scale,
       setFocus: setFocus,
+      getFontSizeInPixels: getFontSizeInPixels,
       resize: function() {
         renderContainer();
         setupPlaybackControls();
@@ -21207,10 +23977,15 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
         height = width / aspectRatio;
         return height + padding.top  + padding.bottom;
       },
+      setPlaybackContainer: function(svgPlaybackContainer) {
+        useExternalPlaybackContainer = true;
+        playbackContainer = svgPlaybackContainer;
+      },
       repaint: function() {
         repaint();
       },
       reset: function(newModelUrl, newModel) {
+        removeClickHandlers();
         processOptions(newModelUrl, newModel);
         renderContainer();
         setupPlaybackControls();
@@ -21274,7 +24049,9 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
 
         for (selector in clickHandler) {
           if (clickHandler.hasOwnProperty(selector)) {
-            vis.selectAll(selector).on("click", getClickHandler(clickHandler[selector]));
+            // Use 'custom' namespace to don't overwrite other click handlers which
+            // can be added by default.
+            vis.selectAll(selector).on("click.custom", getClickHandler(clickHandler[selector]));
           }
         }
       }
@@ -21285,7 +24062,8 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
     $el = $("<div>")
       .attr({
         "id": "model-container",
-        "class": "container"
+        "class": "container",
+        "tabindex": getNextTabIndex
       })
       // Set initial dimensions.
       .css({
@@ -22018,11 +24796,13 @@ define('md2d/views/genetic-renderer',['require'],function (require) {
     var api,
         model2px,
         model2pxInv,
+        modelSize2px,
 
         init = function() {
           // Save shortcuts.
           model2px = parentView.model2px;
           model2pxInv = parentView.model2pxInv;
+          modelSize2px = parentView.modelSize2px;
           // Redraw DNA / mRNA on every genetic properties change.
           model.getGeneticProperties().on("change", api.setup);
         },
@@ -22055,7 +24835,7 @@ define('md2d/views/genetic-renderer',['require'],function (require) {
               "dy": dy
             })
             .style({
-                "stroke-width": model2px(0.01),
+                "stroke-width": modelSize2px(0.01),
                 "font-size": fontSize
             });
 
@@ -22094,8 +24874,8 @@ define('md2d/views/genetic-renderer',['require'],function (require) {
           "transform": "translate(" + model2px(props.x) + "," + model2pxInv(props.y) + ")"
         });
 
-        fontSize = model2px(props.height);
-        dx = model2px(props.width);
+        fontSize = modelSize2px(props.height);
+        dx = modelSize2px(props.width);
 
         // DNA code on sense strand.
         renderText(dnaGElement, props.DNA, fontSize, dx, -fontSize);
@@ -22295,6 +25075,8 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         particle, label, labelEnter,
         atomToolTip, atomToolTipPre,
 
+        fontSizeInPixels,
+
         // for model clock
         timeLabel,
         modelTimeFormatter = d3.format("5.1f"),
@@ -22324,6 +25106,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         forceVector,
         imageProp,
         imageMapping,
+        modelImagePath,
         imageSizes = [],
         textBoxes,
         imagePath,
@@ -22728,7 +25511,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
             "d": function (d) { return findPoints(d,1); },
             "stroke-width": function (d) {
               if (isSpringBond(d)) {
-                return Math.log(d.strength) / 4 + modelSize2px(0.005);
+                return springStrokeWidth(d);
               } else {
                 return modelSize2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
               }
@@ -22746,7 +25529,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
             "d": function (d) { return findPoints(d,2); },
             "stroke-width": function (d) {
               if (isSpringBond(d)) {
-                return Math.log(d.strength) / 4 + modelSize2px(0.005);
+                return springStrokeWidth(d);
               } else {
                 return modelSize2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
               }
@@ -22833,6 +25616,19 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
     function isSpringBond(d){
       return d.type === RADIAL_BOND_TYPES.SHORT_SPRING;
+    }
+
+    function springStrokeWidth(d) {
+      return 1.25;
+      // The following code is intended to use a thicker stroke-width when
+      // the spring constant is larger ... but to work properly in models with
+      // both MD2D and MKS units schemes the model would need to supply
+      // an apprpriately scaled default spring constant.
+      // For example in the Spring and Mass Interactive which uses an MKS unit
+      // scheme the spring constant is varied between 0.001 and 0.003 ... while in
+      // the Comparing Dipole atom-pulling Interactive that uses an MD2D unit
+      // scheme the spring constant is 10.
+      // return (1 + Math.log(1+d.strength*1000)) * 0.25;
     }
 
     function vdwLinesEnter() {
@@ -23015,7 +25811,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
             "width":  modelSize2px(size[0]),
             "height": modelSize2px(size[1]),
             "xml:space": "preserve",
-            "font-family": "'Open Sans', sans-serif",
+            "font-family": "'" + labConfig.fontface + "', sans-serif",
             "font-size": modelSize2px(0.12),
             "fill": function(d) { return d.color || "black"; },
             "text-data": function(d) { return d.text; },
@@ -23620,8 +26416,8 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
           .attr("class", "modelTimeLabel")
           .text(modelTimeLabel())
           // Set text position to (0nm, 0nm) (model domain) and add small, constant offset in px.
-          .attr("x", model2px(0) + 3)
-          .attr("y", model2pxInv(0) - 3)
+          .attr("x", model2px(0) + fontSizeInPixels/3)
+          .attr("y", model2pxInv(0) - fontSizeInPixels/3)
           .attr("text-anchor", "start")
           .attr("fill", clockColor);
       }
@@ -23651,7 +26447,11 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
     function setupRendererOptions() {
       imageProp = model.get("images");
       imageMapping = model.get("imageMapping");
-      if (model.url) {
+      modelImagePath = model.get('imagePath');
+      if (modelImagePath) {
+        imagePath = labConfig.actualRoot + modelImagePath;
+      }
+      else if (model.url) {
         imagePath = labConfig.actualRoot + model.url.slice(0, model.url.lastIndexOf("/") + 1);
       }
 
@@ -23769,6 +26569,8 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         model2pxInv = m2pxInv;
         modelSize2px = mSize2px;
       }
+      fontSizeInPixels = modelView.getFontSizeInPixels();
+
       setupObstacles();
       setupVdwPairs();
       setupColorsOfParticles();
@@ -23844,7 +26646,10 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       // Expose private methods.
       update: update,
       repaint: repaint,
-      reset: reset
+      reset: reset,
+      model2px: modelView.model2px,
+      model2pxInv: modelView.model2pxInv,
+      modelSize2px: modelView.modelSize2px
     };
 
     // Initialization.
@@ -24539,15 +27344,15 @@ define('md2d/controllers/controller',['require','common/controllers/model-contro
       ScriptingAPI      = require('md2d/controllers/scripting-api'),
       Benchmarks        = require('md2d/benchmarks/benchmarks');
 
-  return function (modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig) {
-    return new ModelController(modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig,
-                                     Model, ModelContainer, ScriptingAPI, Benchmarks);
+  return function (modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, interactiveController) {
+    return new ModelController(modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, interactiveController,
+                               Model, ModelContainer, ScriptingAPI, Benchmarks);
   };
 });
 
-/*global define, model, $ */
+/*global define, model, $, setTimeout, document, window */
 
-define('common/controllers/interactives-controller',['require','lab.config','arrays','common/alert','common/controllers/interactive-metadata','common/validator','common/controllers/bar-graph-controller','common/controllers/graph-controller','common/controllers/export-controller','common/controllers/scripting-api','common/controllers/button-controller','common/controllers/checkbox-controller','common/controllers/text-controller','common/controllers/image-controller','common/controllers/radio-controller','common/controllers/slider-controller','common/controllers/pulldown-controller','common/controllers/numeric-output-controller','common/controllers/parent-message-api','common/controllers/thermometer-controller','common/controllers/setup-banner','common/controllers/about-dialog','common/controllers/share-dialog','common/controllers/credits-dialog','common/layout/semantic-layout','common/layout/templates','md2d/controllers/controller'],function (require) {
+define('common/controllers/interactives-controller',['require','lab.config','arrays','common/alert','common/controllers/interactive-metadata','common/validator','common/controllers/bar-graph-controller','common/controllers/graph-controller','common/controllers/export-controller','common/controllers/scripting-api','common/controllers/button-controller','common/controllers/checkbox-controller','common/controllers/text-controller','common/controllers/image-controller','common/controllers/radio-controller','common/controllers/slider-controller','common/controllers/pulldown-controller','common/controllers/numeric-output-controller','common/controllers/parent-message-api','common/controllers/thermometer-controller','common/controllers/div-controller','common/controllers/setup-banner','common/controllers/about-dialog','common/controllers/share-dialog','common/controllers/credits-dialog','common/layout/semantic-layout','common/layout/templates','md2d/controllers/controller'],function (require) {
   // Dependencies.
   var labConfig               = require('lab.config'),
       arrays                  = require('arrays'),
@@ -24568,6 +27373,7 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
       NumericOutputController = require('common/controllers/numeric-output-controller'),
       ParentMessageAPI        = require('common/controllers/parent-message-api'),
       ThermometerController   = require('common/controllers/thermometer-controller'),
+      DivController           = require('common/controllers/div-controller'),
 
       // Helper function which just provides banner definition.
       setupBanner             = require('common/controllers/setup-banner'),
@@ -24617,7 +27423,8 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
         'barGraph':      BarGraphController,
         'graph':         GraphController,
         'slider':        SliderController,
-        'numericOutput': NumericOutputController
+        'numericOutput': NumericOutputController,
+        'div':           DivController
       };
 
   return function interactivesController(interactive, viewSelector) {
@@ -24661,8 +27468,17 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
         shareDialog,
         creditsDialog,
 
-        semanticLayout;
+        semanticLayout,
+        getNextTabIndex;
 
+
+    // simple tabindex support, also exposed via api.getNextTabIndex()
+    getNextTabIndex = (function () {
+      var tabIndex = -1;
+      return function() {
+        return tabIndex++;
+      };
+    });
 
     function getModel(modelId) {
       if (modelsHash[modelId]) {
@@ -24706,13 +27522,38 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
       if (modelConfig) {
         finishWithLoadedModel(modelDefinition.url, modelConfig);
       } else {
-        $.get(labConfig.actualRoot + modelDefinition.url).done(function(modelConfig) {
-
-          // Deal with the servers that return the json as text/plain
-          modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
-
-          finishWithLoadedModel(modelDefinition.url, modelConfig);
-        });
+        if (modelDefinition.url) {
+          $.get(labConfig.actualRoot + modelDefinition.url).done(function(modelConfig) {
+            // Deal with the servers that return the json as text/plain
+            modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
+            finishWithLoadedModel(modelDefinition.url, modelConfig);
+          }).fail(function() {
+            modelConfig = {
+              "type": "md2d",
+              "width": 2.5,
+              "height": 1.5,
+              "viewOptions": {
+                "backgroundColor": "rgba(245,200,200,255)",
+                "showClock": false,
+                "textBoxes": [
+                  {
+                    "text": "Model could not be loaded: " + modelDefinition.url,
+                    "x": 0.25,
+                    "y": 1.0,
+                    "width": 2,
+                    "layer": 1,
+                    "frame": "rounded rectangle",
+                    "backgroundColor": "rgb(232,231,231)"
+                  }
+                ]
+              }
+            };
+            finishWithLoadedModel(modelDefinition.url, modelConfig);
+          });
+        } else {
+          modelConfig = modelDefinition.model;
+          finishWithLoadedModel("", modelConfig);
+        }
       }
 
       function finishWithLoadedModel(modelUrl, modelConfig) {
@@ -24726,6 +27567,9 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
           // Setup model and notify observers that model was loaded.
           modelLoaded(modelConfig);
         }
+        // and setup model player keyboard handlers (if enabled)
+        setupModelPlayerKeyboardHandler();
+
         // Setup model in layout.
         semanticLayout.setupModel(modelController);
         // Finally, layout interactive.
@@ -24737,7 +27581,7 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
         var modelType = type || "md2d";
         switch(modelType) {
           case "md2d":
-          modelController = new MD2DModelController(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions);
+          modelController = new MD2DModelController(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions, controller);
           break;
         }
         // Extending universal Interactive scriptingAPI with model-specific scripting API
@@ -24748,8 +27592,59 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
       }
     }
 
+    // ------------------------------------------------------------
+    //
+    // Handle keyboard shortcuts for model operation ...
+    // events routed through model_player object.
+    //
+    // ------------------------------------------------------------
+
+    function setupModelPlayerKeyboardHandler() {
+      if (modelController && modelController.enableKeyboardHandlers()) {
+        $interactiveContainer.keydown(function(event) {
+          var keycode = event.keycode || event.which;
+          switch(keycode) {
+            case 13:                 // return
+            event.preventDefault();
+            if (!model_player.isPlaying()) {
+              model_player.play();
+            }
+            break;
+
+            case 32:                 // space
+            event.preventDefault();
+            if (model_player.isPlaying()) {
+              model_player.stop();
+            } else {
+              model_player.play();
+            }
+            break;
+
+            case 37:                 // left-arrow
+            event.preventDefault();
+            if (model_player.isPlaying()) {
+              model_player.stop();
+            } else {
+              model_player.back();
+            }
+            break;
+
+            case 39:                 // right-arrow
+            event.preventDefault();
+            if (model_player.isPlaying()) {
+              model_player.stop();
+            } else {
+              model_player.forward();
+            }
+            break;
+          }
+        });
+        $interactiveContainer.focus();
+      }
+    }
+
     function setupLayout() {
-      var template, layout, components, fontScale, banner;
+      var template, layout, components, fontScale, banner, resizeAfterFullscreen;
 
       if (typeof interactive.template === "string") {
         template = templates[interactive.template];
@@ -24785,6 +27680,19 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
           controller.resize();
         });
       }
+
+      // in all cases, call resize when entering and existing fullscreen
+      resizeAfterFullscreen = function() {
+        // need to call twice, as safari requires two attempts before it has
+        // the correct dimensions.
+        controller.resize();
+        setTimeout(controller.resize, 50);
+      };
+      document.addEventListener("fullscreenchange", resizeAfterFullscreen, false);
+
+      document.addEventListener("mozfullscreenchange", resizeAfterFullscreen, false);
+
+      document.addEventListener("webkitfullscreenchange", resizeAfterFullscreen, false);
     }
 
     function createComponent(component) {
@@ -24978,9 +27886,6 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
         modelsHash[models[i].id] = models[i];
       }
 
-      // Load first model.
-      loadModel(models[0].id);
-
       // Prepare interactive components.
       componentJsons = interactive.components || [];
 
@@ -25014,6 +27919,17 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
 
       // When all components are created, we can initialize semantic layout.
       setupLayout();
+
+      // FIXME: I moved this after setupLayout() on the previous line
+      // when I added the possiblity of including the model definition in the model
+      // section of the Interactive. We were counting on the ajax get operation taking
+      // long enough to not occur until after setupLayout() finished.
+      //
+      // But ... there is a performance issue, it makes sense to start the ajax request
+      // for the model definition as soon as the Interactive Controller can.
+      //
+      // Load first model
+      loadModel(models[0].id);
     }
 
     /**
@@ -25130,6 +28046,9 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
       pushOnLoadScript: function (callback) {
         onLoadScripts.push(callback);
       },
+
+      getNextTabIndex: getNextTabIndex,
+
       /**
         Notifies interactive controller that the dimensions of its container have changed.
         It triggers the layout algorithm again.
