@@ -358,6 +358,7 @@ server/public/vendor/mathjax:
 server/public/vendor/fonts: $(FONT_FOLDERS)
 	mkdir -p server/public/vendor/fonts
 	cp -R src/vendor/fonts server/public/vendor/
+	rm -rf server/public/vendor/fonts/Font-Awesome/.git
 
 server/public/vendor/requirejs:
 	mkdir -p server/public/vendor/requirejs
