@@ -1,5 +1,6 @@
 {
   "type": "md2d",
+  "imagePath": "",
   "lennardJonesForces": true,
   "coulombForces": true,
   "viscosity": 0.25,
