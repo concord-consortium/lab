@@ -3,10 +3,10 @@ if [ ! -d server/public/.git ]
 then
 cat <<heredoc
 
-*** dir server/public not yet a separate git repository
+*** dir: server/public not yet setup as a separate gh-pages tracking branch
 
-    please setup the server/public as a separate git checkout tracking the gh-pages branch first
-    see: http://lab.dev.concord.org/readme.html#making-the-serverpublic-folder-track-the-gh-pages-branch
+    Please setup the server/public as a separate git checkout tracking the gh-pages branch first.
+    See: http://lab.dev.concord.org/readme.html#making-the-serverpublic-folder-track-the-gh-pages-branch
 
 heredoc
 exit
