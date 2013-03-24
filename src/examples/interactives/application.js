@@ -193,8 +193,10 @@ AUTHORING = false;
             "id": "interactive-not-found",
             "text": [
               "#Oops!",
+              "",
               "###We couldn't find Interactive definition:",
               "[" + hash.substr(1) + "](" + interactiveUrl + ")",
+              "",
               "###It's possible that the Interactive has moved.",
               "Try going to our [Next-Generation Molecular Workbench Activities page](http://mw.concord.org/nextgen/interactives/) to explore all our models."
             ]
