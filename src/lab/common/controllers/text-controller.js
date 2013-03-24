@@ -32,7 +32,7 @@ define(function (require) {
       content += val + "\n";
     });
     html = markdown.toHTML(content);
-    html = html.replace(/<a(.*?)>/, "<a$1 " + openInNewWindow + ">");
+    html = html.replace(/<a(.*?)>/g, "<a$1 " + openInNewWindow + ">");
     $element.append(html);
   }
   inherit(TextController, InteractiveComponent);
