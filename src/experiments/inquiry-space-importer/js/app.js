@@ -708,7 +708,14 @@ ISImporter.appController = new ISImporter.Object({
     try {
       var values = this.currentApplet.appletInstance.getConfiguredSensorsValues(this.currentApplet.deviceType);
       if (values != null) {
-        this.$realtimeDisplayValue.text(values[0].toFixed(1));
+        var val = values[0];
+
+        if (this.sensor.tareable) {
+          console.log("taring: " + this.sensor.tareValue);
+          val -= (this.sensor.tareValue || 0);
+        }
+
+        this.$realtimeDisplayValue.text(val.toFixed(1));
         this.$realtimeDisplayUnits.show();
       }
     } catch(e) {
@@ -773,6 +780,11 @@ ISImporter.appController = new ISImporter.Object({
 
     if (this.started) return false;
 
+    if (this.singleValueTimerId) {
+      window.clearInterval(this.singleValueTimerId);
+      this.singleValueTimerId = null;
+    }
+
     this.taring = true;
     this.$tareButton.text("Zeroing...");
     this.disable(this.$tareButton);
@@ -805,6 +817,11 @@ ISImporter.appController = new ISImporter.Object({
     this.$tareButton.text("Zero");
     if (this.sensor.tareable) {
       this.enable(this.$tareButton);
+    }
+
+    var _this = this;
+    if (this.singleValueTimerId === null) {
+      this.singleValueTimerId = window.setInterval(function() {_this.readSingleValue();}, 1000);
     }
   },
 
