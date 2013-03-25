@@ -10,7 +10,7 @@
       "viewOptions": {
         "controlButtons": "play_reset",
         "imageMapping": {
-          "waterDyeKey.png": "waterDyeKey.svg"
+          "GasSensor.png": "GasSensor.svg"
         }
       },
       "modelOptions": {
@@ -19,12 +19,19 @@
       "onLoad": [
         "set('targetTemperature',500);",
         "start();",
+        "set({ timeStep: 0.00015, timeStepsPerTick: 75, modelSampleRate: 'default' });",
         "onPropertyChange('time', function(t) {",
-        "  var atoms = atomsWithin(6.9,1.96,0.1,1.96);",
-        "  for( var i = 0; i < atoms.length; i++ ) {",
-        "    if (getAtomProperties(atoms[i]).element == 0) { stop(); }",
+        "  var atoms               = atomsWithin(6.75,1.96,0.25,1.96,2);",
+        "  var nNewAtomsInTarget   = 0;",
+        "  var nAtomsInTargetTotal = get('nAtomsInTargetTotal')",
+        "  for( var i = 0; i < atoms.length; i++) {",
+        "    if (!getAtomProperties(atoms[i]).pinned) { ",
+        "      setAtomProperties(atoms[i], {pinned: 1});",
+        "      nNewAtomsInTarget++;",
+        "    }",
         "  }",
-        "  set('experimentTime', get('experimentRunning') ? t - get('timeBarrierRemoved') : 0)",
+        "  set('nAtomsInTargetTotal', nAtomsInTargetTotal + nNewAtomsInTarget);",
+        "  set('experimentTime', get('experimentRunning') ? t - get('timeBarrierRemoved') : 0);",
         "});"
       ]
     }
@@ -34,6 +41,11 @@
       "name": "tracedAtom",
       "initialValue": -99,
       "onChange": ""
+    },
+    {
+      "name": "nAtomsInTargetTotal",
+      "initialValue": 0,
+      "onChange": "if (value >= 3) { stop() }"
     },
     {
       "name": "wasMarked",
@@ -59,9 +71,9 @@
     },
     {
       "name": "selectedTemperature",
-      "initialValue": 1,
+      "initialValue": 2,
       "onChange": [
-        "var targets = [50, 500, 5000];",
+        "var targets = [100, 250, 500, 1500, 2500];",
         "set('targetTemperature', targets[value]);"
       ]
     }
@@ -91,32 +103,31 @@
       "type": "slider",
       "id": "temperature-slider",
       "min": 0,
-      "max": 2,
+      "max": 4,
       "labels": [
         {
           "value": 0,
           "label": "Low"
         },
         {
-          "value": 1,
+          "value": 2,
           "label": "Medium"
         },
         {
-          "value": 2,
+          "value": 4,
           "label": "High"
         }
       ],
-      "steps": 2,
+      "steps": 4,
       "title": "Temperature",
       "property": "selectedTemperature"
     },
     {
       "type": "thermometer",
       "id": "thermometer",
-      "min": 10,
-      "max": 6000,
-      "width": "15%",
-      "align": "center"
+      "min": 0,
+      "max": 3000,
+      "width": "15%"
     },
     {
       "type": "numericOutput",

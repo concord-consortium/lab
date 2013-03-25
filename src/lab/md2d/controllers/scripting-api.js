@@ -133,12 +133,12 @@ define(function (require) {
       },
 
       /**
-        Returns array of atom indices.
+        Returns array of atom indices, optionally specifying an element_type of interest
         within(1,1,0.5) returns all atoms within 0.5 nm of position (1nm,1nm) within the model.
         within(1,1,0.2,0.3) returns all atoms within a rectangle of width 0.2nm by height 0.3nm,
           with the upper-left corner specified by the postion (1nm,1nm).
       **/
-      atomsWithin: function(x,y,p1,p2) {
+      atomsWithin: function(x,y,p1,p2,element_type) {
         var atomsWithin = [];
         var numAtoms = model.get_num_atoms();
         var props, dist, inX, inY;
@@ -146,6 +146,7 @@ define(function (require) {
 
         for (var i = 0; i < numAtoms; i++) {
           props = model.getAtomProperties(i);
+          if (typeof element_type !== 'undefined' && props.element !== element_type) continue;
           if (typeof p2 === 'undefined') {
             dist = Math.sqrt(Math.pow(x-props.x,2) + Math.pow(y-props.y,2));
             if (dist <= p1) {

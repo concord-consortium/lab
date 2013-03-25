@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="32.998886"
+   height="193.71875"
+   id="svg3183">
+  <metadata
+     id="metadata3189">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs3187">
+    <linearGradient
+       id="linearGradient3974">
+      <stop
+         id="stop3976"
+         style="stop-color:#000000;stop-opacity:1"
+         offset="0" />
+    </linearGradient>
+  </defs>
+  <g
+     transform="translate(-672.30881,-59.875)"
+     id="layer1"
+     style="display:inline">
+    <rect
+       width="31.751375"
+       height="192.698"
+       x="672.80072"
+       y="60.390308"
+       transform="matrix(1.0075996,0,0,1,-5.1129968,0)"
+       id="rect3194"
+       style="fill:#65127d;fill-opacity:0.32850246;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <text
+       x="-155.87949"
+       y="683.80621"
+       transform="matrix(6.8135725e-4,-0.99999977,0.99999977,6.8135725e-4,0,0)"
+       id="text5456"
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#543070;fill-opacity:1;stroke:none;font-family:Sans"><tspan
+         x="-155.87949"
+         y="683.80621"
+         rotate="0 0 0 0 0 0 0 0 0 0 0"
+         id="tspan5458"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#543070;fill-opacity:1;stroke:none;font-family:Lato;-inkscape-font-specification:Lato">Gas Sensor</tspan><tspan
+         x="-155.87949"
+         y="698.80621"
+         rotate="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
+         id="tspan5460"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#543070;fill-opacity:1;stroke:none;font-family:Lato;-inkscape-font-specification:Lato">(sensitive to min. 3 molecules)</tspan></text>
+  </g>
+</svg>
