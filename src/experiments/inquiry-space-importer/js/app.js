@@ -50,7 +50,6 @@ ISImporter.sensors = {
     maxReading: 3,
     readingUnits: "m",
     samplesPerSecond: 20,
-    downsampleRate: 2,
     maxSeconds: 20
   },
 
@@ -99,7 +98,6 @@ ISImporter.sensors = {
     minReading: -50,
     maxReading: 50,
     samplesPerSecond: 20,
-    downsampleRate: 2,
     maxSeconds: 10
   },
 
@@ -164,7 +162,6 @@ ISImporter.sensors = {
     maxReading: 3,
     readingUnits: "m",
     samplesPerSecond: 20,
-    downsampleRate: 2,
     maxSeconds: 20
   },
 
@@ -213,7 +210,6 @@ ISImporter.sensors = {
     minReading: -50,
     maxReading: 50,
     samplesPerSecond: 20,
-    downsampleRate: 2,
     maxSeconds: 10
   },
 
