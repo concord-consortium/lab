@@ -711,11 +711,10 @@ ISImporter.appController = new ISImporter.Object({
         var val = values[0];
 
         if (this.sensor.tareable) {
-          console.log("taring: " + this.sensor.tareValue);
           val -= (this.sensor.tareValue || 0);
         }
 
-        this.$realtimeDisplayValue.text(val.toFixed(1));
+        this.$realtimeDisplayValue.text(ISImporter.fixed(val, 1));
         this.$realtimeDisplayUnits.show();
       }
     } catch(e) {
