@@ -44,6 +44,21 @@
       ]
     }
   ],
+  "outputs": [
+    {
+      "name": "fps",
+      "value": [
+        "return getFPS();"
+      ]
+    },
+    {
+      "name": "progressRate",
+      "value": [
+        "return getSimulationProgressRate();"
+      ],
+      "unitName": "femtoseconds per actual second"
+    }
+  ],
   "components": [
     {
       "type": "button",
@@ -148,12 +163,29 @@
           "value": 120
         }
       ]
+    },
+    {
+      "id": "fps",
+      "type": "numericOutput",
+      "property": "fps",
+      "label": "Rendering Speed",
+      "displayValue": "return format('1.2f')(value)",
+      "units": "frames per second"
+    },
+    {
+      "id": "progress-rate",
+      "type": "numericOutput",
+      "property": "progressRate",
+      "label": "Simulation Progress Rate",
+      "displayValue": "return format('1.2f')(value)",
+      "units": "model femtoseconds per actual second"
     }
   ],
   "layout": {
     "bottom": [
        [ "shake", "select-overall" ],
-       [ "timestep-slider", "refreshrate-slider", "select-model-sample-rate" ]
+       [ "timestep-slider", "refreshrate-slider", "select-model-sample-rate" ],
+       ["fps", "progress-rate"]
     ]
   }
 }
