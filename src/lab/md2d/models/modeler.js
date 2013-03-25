@@ -374,6 +374,7 @@ define(function(require) {
         t = Date.now();
         if (lastSampleTime) {
           sampleTime = t - lastSampleTime;
+          lastSampleTime = t;
           sampleTimes.push(sampleTime);
           sampleTimes.splice(0, sampleTimes.length - 128);
         } else {
@@ -406,13 +407,6 @@ define(function(require) {
       }
 
       return stopped;
-    }
-
-    function average_rate() {
-      var i, ave, s = 0, n = sampleTimes.length;
-      i = -1; while (++i < n) { s += sampleTimes[i]; }
-      ave = s/n;
-      return (ave ? 1/ave*1000: 0);
     }
 
     /* This setter for internal use uses "raw", untranslated property values only. */
@@ -1713,8 +1707,30 @@ define(function(require) {
       return arrays.copy(engine.atoms.speed, []);
     };
 
-    model.get_rate = function() {
-      return average_rate();
+    /**
+     * Returns number of frames per second.
+     * @return {number} frames per second.
+     */
+    model.getFPS = function() {
+      var s = 0,
+          n = sampleTimes.length,
+          i = -1;
+
+      while (++i < n) {
+        s += sampleTimes[i];
+      }
+      s /= n;
+      return (s ? 1 / s * 1000 : 0);
+    };
+
+    /**
+     * Returns "simulation progress rate".
+     * It presents how many femtoseconds of simulation
+     * are calculated during one second.
+     * @return {number} simulation progress rate.
+     */
+    model.getSimulationProgressRate = function() {
+      return model.getFPS() * model.get('timeStep') * model.get('timeStepsPerTick');
     };
 
     model.is_stopped = function() {
