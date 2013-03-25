@@ -1971,6 +1971,7 @@ define(function(require) {
       });
 
       restart = false;
+      lastSampleTime = null;
       if (stopped) {
         stopped = false;
         dispatch.play();
