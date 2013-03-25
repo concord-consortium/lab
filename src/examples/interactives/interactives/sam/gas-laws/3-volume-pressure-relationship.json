@@ -91,7 +91,7 @@
       "type": "button",
       "id": "decrease-volume",
       "text": "Volume &#8595;",
-      "action": "if (get('volume') > 0.5) { set({ volume: get('volume') * (1/1.1) }) };"
+      "action": "if (get('volume') > 0.75) { set({ volume: get('volume') * (1/1.1) }) };"
     },
     {
       "type": "numericOutput",
@@ -105,7 +105,7 @@
       "id": "bar-graph",
       "options": {
         "minValue": 0,
-        "maxValue": 8,
+        "maxValue": 3,
         "title": "Pressure (Bar)"
       },
       "property": "pressureProbeFiltered"
