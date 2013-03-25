@@ -26,6 +26,7 @@ module Presenters
           p.add('id')
           p.set('location', self.json_path)
           p.add('imagePath')
+          p.add('unitsScheme')
           p.add('height')
           p.add('width')
           p.add('lennardJonesForces')
@@ -38,9 +39,12 @@ module Presenters
           p.add('solventForceFactor')
           p.add('solventForceType')
           p.add('additionalSolventForceThreshold')
+          p.add('additionalSolventForceMult')
           p.add('polarAAEpsilon')
           p.add('viscosity')
-          p.add('viewRefreshInterval')
+          p.add('targetTemperature')
+          p.add('modelSampleRate')
+          p.add('timeStepsPerTick')
 
           # these are all objects in the generated models
           p.add('viewOptions')
