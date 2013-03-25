@@ -1725,8 +1725,8 @@ define(function(require) {
 
     /**
      * Returns "simulation progress rate".
-     * It presents how many femtoseconds of simulation
-     * are calculated during one second.
+     * It indicates how much of simulation time is calculated for
+     * one second of real time.
      * @return {number} simulation progress rate.
      */
     model.getSimulationProgressRate = function() {

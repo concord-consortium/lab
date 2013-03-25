@@ -216,6 +216,24 @@ define(function (require) {
           return model.get('time');
         },
 
+        /**
+         * Returns number of frames per second.
+         * @return {number} frames per second.
+         */
+        getFPS: function getFPS() {
+          return model.getFPS();
+        },
+
+        /**
+         * Returns "simulation progress rate".
+         * It indicates how much of simulation time is calculated for
+         * one second of real time.
+         * @return {number} simulation progress rate.
+         */
+        getSimulationProgressRate: function getSimulationProgressRate() {
+          return model.getSimulationProgressRate();
+        },
+
         repaint: function repaint() {
           interactivesController.getModelController().repaint();
         },
