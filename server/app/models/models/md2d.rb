@@ -7,6 +7,7 @@ module Models
     property :url,                  String
     property :local_ref_id,         String
     property :imagePath,            String
+    property :unitsScheme,          String
 
     # these are all in the generated models
     property :height,                           Float
@@ -16,7 +17,7 @@ module Models
     property :temperatureControl,               TrueClass
     property :gravitationalField,               Float
     property :timeStep,                         Float
-    property :dielectricConstant,               TrueClass
+    property :dielectricConstant,               Float
     property :realisticDielectricEffect,        TrueClass
     property :solventForceFactor,               Float
     property :solventForceType,                 Float
@@ -24,8 +25,9 @@ module Models
     property :additionalSolventForceMult,       Float
     property :polarAAEpsilon,                   Float
     property :viscosity,                        Float
-    property :viewRefreshInterval,              Float
     property :targetTemperature,                Float
+    property :modelSampleRate,                  Float
+    property :timeStepsPerTick,                 Float
 
     # these are all objects in the generated models
     property :viewOptions,                      Object
