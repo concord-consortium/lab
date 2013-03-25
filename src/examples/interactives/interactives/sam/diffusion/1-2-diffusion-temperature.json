@@ -21,9 +21,17 @@
         "start();",
         "set({ timeStep: 0.00015, timeStepsPerTick: 75, modelSampleRate: 'default' });",
         "onPropertyChange('time', function(t) {",
-        "  var atoms = atomsWithin(6.75,1.96,0.25,1.96,2);",
-        "  if (atoms !== -1) { stop() }",
-        "  set('experimentTime', get('experimentRunning') ? t - get('timeBarrierRemoved') : 0)",
+        "  var atoms               = atomsWithin(6.75,1.96,0.25,1.96,2);",
+        "  var nNewAtomsInTarget   = 0;",
+        "  var nAtomsInTargetTotal = get('nAtomsInTargetTotal')",
+        "  for( var i = 0; i < atoms.length; i++) {",
+        "    if (!getAtomProperties(atoms[i]).pinned) { ",
+        "      setAtomProperties(atoms[i], {pinned: 1});",
+        "      nNewAtomsInTarget++;",
+        "    }",
+        "  }",
+        "  set('nAtomsInTargetTotal', nAtomsInTargetTotal + nNewAtomsInTarget);",
+        "  set('experimentTime', get('experimentRunning') ? t - get('timeBarrierRemoved') : 0);",
         "});"
       ]
     }
@@ -33,6 +41,11 @@
       "name": "tracedAtom",
       "initialValue": -99,
       "onChange": ""
+    },
+    {
+      "name": "nAtomsInTargetTotal",
+      "initialValue": 0,
+      "onChange": "if (value >= 3) { stop() }"
     },
     {
       "name": "wasMarked",
