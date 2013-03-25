@@ -154,7 +154,7 @@ ISImporter.sensors = {
     applet: new ISImporter.LabQuestApplet({
       listenerPath: 'ISImporter.sensors.labQuestMotion.applet',
       sensorType: 'distance',
-      appletId: 'light-sensor'
+      appletId: 'distance-sensor'
     }),
     menuGroup:  MENU_GROUPS.LAB_QUEST,
     menuText: "Motion",
