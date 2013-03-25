@@ -43,7 +43,7 @@ module Presenters
         p.add('exports')
         p.add('publicationStatus')
         p.add('subtitle')
-        p.add('about')
+        p.set('about', about_to_json(self.interactive.about))
         p.add('publicationStatus')
         p.add('components')
         p.add('layout')
@@ -52,6 +52,10 @@ module Presenters
         p.add('parameters')
         p.set('models',self.model_summary)
       end
+    end
+
+    def about_to_json(about_json)
+       about_json.present? ? JSON.parse(about_json) : about_json
     end
 
     def model_summary
