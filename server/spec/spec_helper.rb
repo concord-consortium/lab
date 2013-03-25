@@ -23,7 +23,7 @@ DB = TEST_SERVER.database(TESTDB)
 RSpec.configure do |config|
 
   config.include FactoryGirl::Syntax::Methods
-  
+
   config.before(:each) { reset_test_db! }
 
   config.after(:each) do
@@ -63,7 +63,7 @@ RSpec.configure do |config|
 end
 
 def reset_test_db!
-  DB.recreate! rescue nil 
+  DB.recreate! rescue nil
   # Reset the Design Cache
   Thread.current[:couchrest_design_cache] = {}
   DB

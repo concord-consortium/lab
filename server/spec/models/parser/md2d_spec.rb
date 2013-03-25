@@ -5,7 +5,7 @@ describe Parsers::Models::Md2d do
   context ".new()" do
     it "should not parse without an id and url" do
       expect do
-        Parsers::Models::Md2d.new()        
+        Parsers::Models::Md2d.new()
       end.to raise_error(ArgumentError)
     end
   end
@@ -13,7 +13,7 @@ describe Parsers::Models::Md2d do
   context ".new(Dir.pwd, {'url' => '/some/path'})" do
     it "should not parse without a id" do
       expect do
-        Parsers::Models::Md2d.new(Dir.pwd, { 'url' => "/some/path"})        
+        Parsers::Models::Md2d.new(Dir.pwd, { 'url' => "/some/path"})
       end.to raise_error(ArgumentError, "Missing id key in second argument")
     end
   end
@@ -21,7 +21,7 @@ describe Parsers::Models::Md2d do
   context ".new(Dir.pwd, {'id' => 'some_id'})" do
     it "should not parse without a url" do
       expect do
-        Parsers::Models::Md2d.new(Dir.pwd, { 'id' => "some_id"})        
+        Parsers::Models::Md2d.new(Dir.pwd, { 'id' => "some_id"})
       end.to raise_error(ArgumentError, "Missing url key in second argument")
     end
   end

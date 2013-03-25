@@ -8,7 +8,7 @@ module Parsers
         data.fetch('url'){ fail ArgumentError, "Missing url key in second argument"}
         super(uri, data)
       end
-      
+
       def parse
         url = self.data_hash['url']
         unless url.blank?

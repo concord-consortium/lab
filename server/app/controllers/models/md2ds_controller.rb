@@ -35,7 +35,7 @@ module Models
                  :json => @interactive.errors,
                  :status => :unprocessable_entity
                })
-        
+
       end
     end
 

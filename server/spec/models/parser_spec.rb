@@ -1,16 +1,16 @@
 require 'spec_helper'
 
 describe Parsers::Base do
-  let(:uri )      {"http://mockserver.nowhere/foo.json"} 
+  let(:uri )      {"http://mockserver.nowhere/foo.json"}
   let(:json)      {"{\"one\":1,\"two\":2}"             }
-  let(:data_hash) { {'from_import' => true, 'one'=> 1,'two'=> 2}              }  
+  let(:data_hash) { {'from_import' => true, 'one'=> 1,'two'=> 2}              }
 
   describe "#initialize" do
     context "without a nil uri spec" do
       subject { Parsers::Base.new(nil) }
       its(:uri_helper) { should be_nil }
     end
-    
+
     context "with a uri" do
       subject { Parsers::Base.new(uri) }
       its(:uri_helper) { should be_kind_of UriHelper::Base }
@@ -19,7 +19,7 @@ describe Parsers::Base do
     context "with initial data" do
       let(:json)      { "{\"one\":1,\"two\":2}"     }
       let(:data_hash) {  {'from_import' => true, 'one' => 1, 'two' => 2}   }
-      
+
       context "from a hash" do
         subject { Parsers::Base.new(nil,data_hash) }
         its(:data_hash) { should == data_hash }
@@ -41,7 +41,7 @@ describe Parsers::Base do
 
     context "with existing data" do
       let(:existing_data) { {'something_else' => true, 'two' => 3 } }
-      subject do 
+      subject do
         Parsers::Base.new(nil,existing_data).
         update_from_hash!(data_hash)
       end
@@ -53,14 +53,14 @@ describe Parsers::Base do
     end
   end
 
-  describe "#update_from_json!" do    
+  describe "#update_from_json!" do
     context "with an empty data_hash" do
       subject { Parsers::Base.new().update_from_json!(json)}
       its(:data_hash) { should == data_hash }
     end
 
   end
-  
+
   describe "#update_from_uri!" do
     subject { Parsers::Base.new(uri).update_from_uri!}
     before :each do
@@ -71,7 +71,7 @@ describe Parsers::Base do
 
   describe "#parse" do
     pending
-  end    
+  end
 
   describe "#migrate" do
     pending
@@ -80,11 +80,11 @@ describe Parsers::Base do
   describe "#parse_collection" do
     let(:label) { 'models' }
     let(:collection)      { [] }
-    let(:initial_data) do 
+    let(:initial_data) do
       {'models' => [
         {
           'name' => 'first',
-          'number' => 1 
+          'number' => 1
         },
         {
           'name' => 'second',
@@ -92,7 +92,7 @@ describe Parsers::Base do
         }
       ]}
     end
-    subject do 
+    subject do
       collection = []
       Parsers::Base.new.
         update_from_hash!(initial_data).
