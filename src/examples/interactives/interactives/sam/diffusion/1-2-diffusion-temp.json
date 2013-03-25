@@ -10,7 +10,7 @@
       "viewOptions": {
         "controlButtons": "play_reset",
         "imageMapping": {
-          "waterDyeKey.png": "waterDyeKey.svg"
+          "GasSensor.png": "GasSensor.svg"
         }
       },
       "modelOptions": {

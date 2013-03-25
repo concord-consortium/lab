@@ -353,7 +353,7 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1364079048000</long> 
+     <long>1364170954000</long> 
     </object> 
    </void> 
    <void method="put"> 
@@ -362,7 +362,7 @@
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>62409</long> 
+    <long>62904</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
@@ -400,6 +400,26 @@
      <int>255</int> 
     </object> 
    </void> 
+  </void> 
+  <void property="images"> 
+   <array class="org.concord.mw2d.models.ImageComponent$Delegate" length="1"> 
+    <void index="0"> 
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
+      <void property="URI"> 
+       <string>GasSensor.png</string> 
+      </void> 
+      <void property="layer"> 
+       <int>1</int> 
+      </void> 
+      <void property="x"> 
+       <double>666.0</double> 
+      </void> 
+      <void property="y"> 
+       <double>1.0</double> 
+      </void> 
+     </object> 
+    </void> 
+   </array> 
   </void> 
   <void property="momentumFlavor"> 
    <void property="color"> 
