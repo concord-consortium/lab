@@ -1,7 +1,7 @@
 require 'open-uri'
 
 module UriHelper
-  
+
   def self.from_def(uri_def)
     return nil unless uri_def
     return uri_def.dup if (uri_def.kind_of? UriHelper::Base)
@@ -17,7 +17,7 @@ module UriHelper
   class Base
     attr_accessor :instance
     attr_accessor :path
-    attr_accessor :relative_root 
+    attr_accessor :relative_root
 
     def kind
       return self.class
@@ -36,7 +36,7 @@ module UriHelper
       self.path = relative_path(relative)
     end
 
-    def read  
+    def read
       # TODO: maybe error trapping
       # will shell out to open-uri
       open(self.uri_string).read
@@ -58,13 +58,13 @@ module UriHelper
       return self.path
     end
   end
-    
+
   class Remote < UriHelper::Base
     attr_accessor :uri
     def initialize(uri)
       self.uri = uri
     end
-    
+
     def path
       return self.uri.path
     end

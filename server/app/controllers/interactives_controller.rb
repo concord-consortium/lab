@@ -33,7 +33,7 @@ class InteractivesController < ApplicationController
 
     interactive_model = create_interactive_model
     @interactive.interactive_models << interactive_model
-    
+
     if @interactive.save
       render({
         :json     => presenter(@interactive).runtime_properties,
@@ -62,10 +62,10 @@ class InteractivesController < ApplicationController
         :json => @interactive.errors,
         :status => :unprocessable_entity
       })
-      
+
     end
   end
-  
+
   private
   def presenter(model=nil)
     model ||= Interactive.get(params[:id])
@@ -77,7 +77,7 @@ class InteractivesController < ApplicationController
   def create_path_and_id(group)
     groupKey = group.path.gsub('/','_')
     title = params[:interactive][:title].gsub(' ', '_')
-    
+
     params[:interactive][:id] = "interactives_#{groupKey}_#{title}"
     params[:interactive][:path] = "/interactives/#{params[:interactive][:id]}"
 

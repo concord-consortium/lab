@@ -1,4 +1,3 @@
-
 module SampleFileHelper
 
   def sample_root
@@ -19,7 +18,7 @@ module SampleFileHelper
       :status => 200
     )
   end
-  
+
   def stub_endpoint_with_file(endpoint,filename)
     stub_endpoint_with_data(endpoint,read_sample_file(filename))
   end

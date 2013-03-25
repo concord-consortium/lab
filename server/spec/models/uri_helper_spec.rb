@@ -24,7 +24,7 @@ describe UriHelper do
       subject { UriHelper.from_def(nil) }
       it { should be_nil }
     end
-  
+
   end
   describe "#base_dir" do
     context "for a local file" do

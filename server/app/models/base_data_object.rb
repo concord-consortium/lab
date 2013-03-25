@@ -1,7 +1,7 @@
 class BaseDataObject < CouchRest::Model::Base
 
   include Recloner
-  
+
   class_attribute :alternate_id_key
 
   # track imorted (from buld process)

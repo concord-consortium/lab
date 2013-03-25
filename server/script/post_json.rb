@@ -40,7 +40,7 @@ class WebClient
     end
     response = http.request(request)
     puts response
-    puts 
+    puts
       "Response #{response.code} #{response.message}:
       #{response.body}"
   end

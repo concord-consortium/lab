@@ -11,7 +11,7 @@ FactoryGirl.define do
     from_import true
 
     factory :oil_and_water do
-      title "Oil and Water" 
+      title "Oil and Water"
       publicationStatus 'public'
       subtitle "Explore how polar and non-polar substances interact."
       path "/interactives/interactives_samples_1-oil-and-water-shake"
@@ -30,6 +30,6 @@ FactoryGirl.define do
         interactive.interactive_models = FactoryGirl.create_list(:first_oilwater, 1)
       end
     end
-    
+
   end
 end
