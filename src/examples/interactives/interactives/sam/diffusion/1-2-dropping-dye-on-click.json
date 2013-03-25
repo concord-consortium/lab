@@ -17,7 +17,7 @@
         }
       },
       "onLoad": [
-        "onClick('plot', function (x, y) {",
+        "function onClickHandler(x, y) {",
         "  batch(function() {",
         "    var atomsToMark = atomsWithin(x, y, 0.5);",
         "    if (atomsToMark != -1) {",
@@ -25,7 +25,9 @@
         "    }",
         "  });",
         "  start();",
-        "});"
+        "}",
+        "onClick('plot', onClickHandler);",
+        "onClick('atom', onClickHandler);"
       ]
     }
   ],
