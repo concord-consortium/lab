@@ -620,7 +620,7 @@ ISImporter.appController = new ISImporter.Object({
         clearInterval(self.singleValueTimerId);
         self.singleValueTimerId = null;
       }
-      $('#dialog-confirm-content').text("No sensor is connected! Please connect your sensor and click OK to try again, or Cancel to stop trying.");
+      $('#dialog-confirm-content').text("No sensor (or the wrong sensor) is connected! Please connect your sensor and click OK to try again, or Cancel to stop trying.");
       $('#dialog-confirm').attr('title', "No sensor found!");
       $('#dialog-confirm').dialog({
         resizable: false,
