@@ -1,9 +1,16 @@
+@font-face {
+  font-family: "Lato";
+  font-style: italic;
+  font-weight: normal;
+  src: url("../../vendor/fonts/lato-fontfacekit/Lato-LigIta-webfont.eot"), url("../../vendor/fonts/lato-fontfacekit/Lato-LigIta-webfont.ttf") format("truetype"); }
+
 body {
-  font: 13px sans-serif;
+  font-family: 'Lato', Verdana, Geneva, sans-serif;
+  font-size: 1em;
   margin: 1em 2em; }
-h1 { font-size: 1.6em; }
+h1 { font-size: 1.4em; }
 p {
-  font-size: 1.4em;
+  font-size: 1.0em;
   margin-left: 1.0em;
   margin-right: 4.0em; }
 rect { fill: #fff; }
@@ -16,40 +23,27 @@ ul {
     vertical-align: middle;
     margin: 0em;
     padding: 0em 1em; }
-.title { font-size: 1.6em; }
-.axis  { font-size: 1.4em; }
-.graph-notification {
-  font-size: 4em;
-  fill: rgba(0, 0, 0, 0.1); }
-.chart {
-  position: relative;
-  background-color: #F7F2C5;
+#chart {
   width: 960px;
   height: 500px; }
-.line {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 2px; }
-circle {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 1px; }
-circle {
-  fill: white;
-  fill-opacity: 0.2;
-  cursor: move; }
-  circle.selected {
-    fill: #ff7f0e;
-    stroke: #ff7f0e; }
-  circle:hover {
-    fill: #ff7f0e;
-    stroke: #707f0e; }
-  circle.selected:hover {
-    fill: #ff7f0e;
-    stroke: #ff7f0e; }
+
+.graph-notification {
+  font-size: 3em;
+  fill: rgba(0, 0, 0, 0.1); }
+
+svg.graph text.title {
+  font-size: 1.4em; }
+svg.graph text.ylabel {
+  font-size: 1.2em; }
+svg.graph text.xlabel {
+  font-size: 1.2em; }
+svg.graph text.axis {
+  font-size: 1em; }
+svg.graph text.axis:focus {
+  outline: #76d2b8 solid 0.2em; }
 
 .sensor-selector {
-  font-size: 2.0em;
+  font-size: 1.4em;
   font-weight: bold }
   .sensor-selector select {
      background: #eee;
@@ -57,11 +51,16 @@ circle {
      font-size: 0.9em;
      border: 1px solid #ddd; }
 
+ul.sensorbuttons {
+  margin: 0em 0em 0em 2em;
+  padding: 0em;
+}
+
 ul.sensorbuttons li {
 display: inline;
 list-style-type: none;
-font-size: 200%;
-padding 2em;
+font-size: 160%;
+padding 0em 2em 1em 2em;
 border 1px;
 }
 
