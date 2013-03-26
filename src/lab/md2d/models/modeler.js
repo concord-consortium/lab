@@ -18,6 +18,7 @@ define(function(require) {
       PropertyDescription  = require('md2d/models/property-description'),
       unitDefinitions      = require('md2d/models/unit-definitions/index'),
       UnitsTranslation     = require('md2d/models/units-translation'),
+      PerformanceOptimizer = require('md2d/models/performance-optimizer'),
       _ = require('underscore');
 
   return function Model(initialProperties) {
@@ -2602,6 +2603,8 @@ define(function(require) {
     });
 
     updateAllOutputProperties();
+
+    model.performanceOptimizer = new PerformanceOptimizer(model);
 
     return model;
   };

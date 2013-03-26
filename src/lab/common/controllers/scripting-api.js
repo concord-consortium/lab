@@ -234,6 +234,10 @@ define(function (require) {
           return model.getSimulationProgressRate();
         },
 
+        startPerformanceTuning: function startPerformanceTuning() {
+          model.performanceOptimizer.enable();
+        },
+
         repaint: function repaint() {
           interactivesController.getModelController().repaint();
         },
