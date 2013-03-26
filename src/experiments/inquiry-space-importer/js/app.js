@@ -8,17 +8,23 @@ if (typeof ISImporter === 'undefined') ISImporter = {};
   Quick & dirty fixed-digit formatter. Should work for reasonable ranges of numbers.
 */
 ISImporter.fixed = function(d, n) {
-  var str;
+  var str, out = "", negative = false;
+
+  if (d < 0) { negative = true; }
 
   // round and right zero pad
-  str = ""+Math.round(d*Math.pow(10, n));
+  str = ""+Math.round(Math.abs(d)*Math.pow(10, n));
 
   // left zero pad
   while (str.length < n+1) {
     str = '0' + str;
   }
   // And put the decimal point in the right place
-  return str.slice(0, str.length-n) + '.' + str.slice(-n);
+  if (negative) {
+    out = "-";
+  }
+  out += str.slice(0, str.length-n) + '.' + str.slice(-n);
+  return out;
 };
 
 // Returns true if the argument is a string that represents a valid, finite number (or is a valid, finite number)
