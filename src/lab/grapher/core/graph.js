@@ -372,7 +372,7 @@ define(function (require) {
         points = fakeDataPoints();
       }
 
-      // In realTime mode the grapher expects either an array if arrays of dependent data.
+      // In realTime mode the grapher expects either an array or arrays of dependent data.
       // The sample variable sets the interval spacing between data samples.
       if (options.realTime) {
         pointArray = [];
@@ -1818,7 +1818,9 @@ define(function (require) {
         canvas.style.top = cplot.top + 'px';
         canvas.style.border = 'solid 1px red';
         canvas.style.pointerEvents = "none";
-        canvas.className += "canvas-overlay";
+        if (canvas.className.search("canvas-overlay") < 0) {
+           canvas.className += " canvas-overlay";
+        }
         gctx = gcanvas.getContext( '2d' );
         gctx.globalCompositeOperation = "source-over";
         gctx.lineWidth = 1;
