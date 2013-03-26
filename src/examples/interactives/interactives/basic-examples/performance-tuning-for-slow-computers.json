@@ -3,9 +3,6 @@
   "publicationStatus": "draft",
   "subtitle": "Adjust timeStep and timeStepsPerTick to provide a better experience on your device.",
   "about": [
-    "Try the Performance Tuning selections for: **Regular**, **Slow Computer**, or **Tablet**.",
-    "",
-    "Changing this selection sets the timeStep, timeStepsPerTick or modelSampleRate model parameters.",
     "See **[simulation-stepping](../../readme.html#md2d-simulation-stepping)** in readme for more details."
   ],
   "fontScale": 0.8,
@@ -71,20 +68,6 @@
     }
   ],
   "parameters": [
-    {
-      "name": "computerSpeed",
-      "initialValue": 1,
-      "onChange": [
-        "switch(value) {                                                                     ",
-        "  case 1: set({ timeStep: 1.0, timeStepsPerTick: 50, modelSampleRate: 'default' }); ",
-        "  break;                                                                            ",
-        "  case 2: set({ timeStep: 1.5, timeStepsPerTick: 50, modelSampleRate: 'default' }); ",
-        "  break;                                                                            ",
-        "  case 3: set({ timeStep: 2.0, timeStepsPerTick: 80, modelSampleRate: 'default' }); ",
-        "  break;                                                                            ",
-        "}                                                                                   "
-      ]
-    }
   ],
   "outputs": [
     {
@@ -134,26 +117,6 @@
         {
           "text": "Plastic Force",
           "action": "loadModel('plasticforce');"
-        }
-      ]
-    },
-    {
-      "type": "pulldown",
-      "id": "select-overall",
-      "label": "Performance tuning for",
-      "property": "computerSpeed",
-      "options": [
-        {
-          "text": "Regular Computer",
-          "value": 1
-        },
-        {
-          "text": "Slow Computer",
-          "value": 2
-        },
-        {
-          "text": "Tablet",
-          "value": 3
         }
       ]
     },
@@ -244,14 +207,21 @@
       "label": "Simulation Progress Rate",
       "displayValue": "return format('1.2f')(value)",
       "units": "model femtoseconds per actual second"
+    },
+    {
+      "id": "auto-perf-tuning",
+      "type": "button",
+      "text": "Auto Performance Tuning",
+      "action": "startPerformanceTuning();"
     }
   ],
   "layout": {
     "bottom": [
-       [ "select-model", "select-overall" ],
+       [ "select-model" ],
        [ "timestep-slider", "refreshrate-slider", "select-model-sample-rate" ],
        ["fps"],
-       ["progress-rate"]
+       ["progress-rate"],
+       ["auto-perf-tuning"]
     ]
   }
 }
