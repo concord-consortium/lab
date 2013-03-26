@@ -50,6 +50,7 @@ ISImporter.sensors = {
     tareable: true,
     maxReading: 3,
     readingUnits: "m",
+    precision: 2,
     samplesPerSecond: 20,
     maxSeconds: 20
   },
@@ -98,6 +99,7 @@ ISImporter.sensors = {
     readingUnits: "N",
     minReading: -50,
     maxReading: 50,
+    precision: 2,
     samplesPerSecond: 20,
     maxSeconds: 10
   },
@@ -163,6 +165,7 @@ ISImporter.sensors = {
     tareable: true,
     maxReading: 3,
     readingUnits: "m",
+    precision: 2,
     samplesPerSecond: 20,
     maxSeconds: 20
   },
@@ -211,6 +214,7 @@ ISImporter.sensors = {
     readingUnits: "N",
     minReading: -50,
     maxReading: 50,
+    precision: 2,
     samplesPerSecond: 20,
     maxSeconds: 10
   },
@@ -546,8 +550,13 @@ ISImporter.appController = new ISImporter.Object({
     this.$realtimeDisplayValue.text('');
     self.$realtimeDisplayUnits.text(units).hide();
 
+    var precision = self.sensor.precision;
+    if (typeof(precision) === 'undefined' || precision === null) {
+      precision = 1;
+    }
+
     this.dataset.on('data', function(d) {
-      self.$realtimeDisplayValue.text(ISImporter.fixed(d[1], 1));
+      self.$realtimeDisplayValue.text(ISImporter.fixed(d[1], precision));
       self.$realtimeDisplayUnits.show();
     });
 
@@ -556,7 +565,7 @@ ISImporter.appController = new ISImporter.Object({
           text;
 
       if (length > 0) {
-        text = ISImporter.fixed(self.dataset.getDataPoints()[length-1], 1);
+        text = ISImporter.fixed(self.dataset.getDataPoints()[length-1], precision);
       } else {
         text = self.$realtimeDisplayValue.text();
         // text = '';
@@ -716,7 +725,12 @@ ISImporter.appController = new ISImporter.Object({
           val -= (this.sensor.tareValue || 0);
         }
 
-        this.$realtimeDisplayValue.text(ISImporter.fixed(val, 1));
+        var precision = this.sensor.precision;
+        if (typeof(precision) === 'undefined' || precision === null) {
+          precision = 1;
+        }
+
+        this.$realtimeDisplayValue.text(ISImporter.fixed(val, precision));
         this.$realtimeDisplayUnits.show();
       }
     } catch(e) {
