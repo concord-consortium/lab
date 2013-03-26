@@ -1,10 +1,10 @@
-/*global define: false, d3: false, $: false */
-/*jslint onevar: true devel:true eqnull: true boss: true */
+/*global define: false, d3: false */
 
 define(function(require) {
   // Dependencies.
   var arrays               = require('arrays'),
       console              = require('common/console'),
+      performance          = require('common/performance'),
       md2d                 = require('md2d/models/engine/md2d'),
       metadata             = require('md2d/models/metadata'),
       TickHistory          = require('common/models/tick-history'),
@@ -371,12 +371,12 @@ define(function(require) {
           t, sampleTime;
 
       if (!stopped) {
-        t = Date.now();
+        t = performance.now();
         if (lastSampleTime) {
           sampleTime = t - lastSampleTime;
           lastSampleTime = t;
           sampleTimes.push(sampleTime);
-          sampleTimes.splice(0, sampleTimes.length - 128);
+          sampleTimes.splice(0, sampleTimes.length - 64);
         } else {
           lastSampleTime = t;
         }
