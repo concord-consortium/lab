@@ -1,9 +1,8 @@
 {
-  "title": "Oil and Water for Slow Computers",
+  "title": "Performance Tuning for Slow Computers",
   "publicationStatus": "draft",
-  "subtitle": "44 charged and uncharged bonded atoms displaying both bonds and VDW lines.",
+  "subtitle": "Adjust timeStep and timeStepsPerTick to provide a better experience on your device.",
   "about": [
-    "This version of 'Oil and Water' is an experimental adaptation for slower computers amd browsers.",
     "Try the Performance Tuning selections for: **Regular**, **Slow Computer**, or **Tablet**.",
     "",
     "Changing this selection sets the timeStep, timeStepsPerTick or modelSampleRate model parameters.",
@@ -12,20 +11,63 @@
   "fontScale": 0.8,
   "models": [
     {
-      "id": "page3$1",
+      "id": "simple-gas",
+      "url": "/imports/legacy-mw-content/converted/benchmarks/simple-gas/simple-gas$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "set({ showClock: true})"
+    },
+    {
+      "id": "oil-and-water",
       "url": "/imports/legacy-mw-content/converted/benchmarks/oil-and-water/page3$1.json",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       },
-      "onLoad": "set({ showClock: true });"
+      "onLoad": "set({ showClock: true})"
     },
     {
-      "id": "oilAndWaterMix",
-      "url": "/imports/legacy-mw-content/converted/benchmarks/oil-and-water/oilAndWaterMix.json",
+      "id": "temperature-volume",
+      "url": "/imports/legacy-mw-content/converted/benchmarks/gas-laws-temperature-volume/page4$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "imageMapping": {
+          "ruler.png": "ruler.svg"
+        },
+        "onLoad": "set({ showClock: true})"
+      }
+    },
+    {
+      "id": "hydrogen-bonds",
+      "url": "/imports/legacy-mw-content/converted/benchmarks/hydrogen-bonds/page6$0.json",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       },
-      "onLoad": "set({ showClock: true });"
+      "onLoad": "set({ showClock: true}); set({temperatureControl: true}); set({targetTemperature: 10000});"
+    },
+    {
+      "id": "100-atoms-charged",
+      "url": "/imports/legacy-mw-content/converted/benchmarks/100-atoms/100-atoms-charged.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "set({ showClock: true})"
+    },
+    {
+      "id": "phase-change",
+      "url": "/imports/legacy-mw-content/converted/benchmarks/phase-change-energy-input/page6$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "set({ showClock: true})"
+    },
+    {
+      "id": "plasticforce",
+      "url": "/imports/legacy-mw-content/converted/benchmarks/plastic-forces/plasticforcesimple$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "set({ showClock: true})"
     }
   ],
   "parameters": [
@@ -61,20 +103,46 @@
   ],
   "components": [
     {
-      "type": "button",
-      "id": "shake",
-      "text": "Shake up the oil and water mixture",
-      "action": "loadModel('oilAndWaterMix');"
+      "type": "pulldown",
+      "id": "select-model",
+      "label": "Model",
+      "options": [
+        {
+          "text": "Simple Gas",
+          "action": "loadModel('simple-gas');"
+        },
+        {
+          "text": "Oil and Water",
+          "action": "loadModel('oil-and-water');"
+        },
+        {
+          "text": "Temperature-Volume",
+          "action": "loadModel('temperature-volume');"
+        },
+        {
+          "text": "Hydrogen Bonds",
+          "action": "loadModel('hydrogen-bonds');"
+        },
+        {
+          "text": "100 Atoms Charged",
+          "action": "loadModel('100-atoms-charged');"
+        },
+        {
+          "text": "Phase Change",
+          "action": "loadModel('phase-change');"
+        },
+        {
+          "text": "Plastic Force",
+          "action": "loadModel('plasticforce');"
+        }
+      ]
     },
     {
       "type": "pulldown",
       "id": "select-overall",
+      "label": "Performance tuning for",
       "property": "computerSpeed",
       "options": [
-        {
-          "text": "Set performance tuning for ...",
-          "disabled": true
-        },
         {
           "text": "Regular Computer",
           "value": 1
@@ -132,11 +200,12 @@
     {
       "type": "pulldown",
       "id": "select-model-sample-rate",
+      "label": "Model Sample Rate (Hz)",
       "property": "modelSampleRate",
       "options": [
         {
-          "text": "Model Sample Rate (Hz) ...",
-          "disabled": true
+          "text": "default (requestAnimFrame)",
+          "value": "default"
         },
         {
           "text": "10",
@@ -148,15 +217,11 @@
         },
         {
           "text": "20",
-          "value": 10
+          "value": 20
         },
         {
           "text": "30",
-          "value": 10
-        },
-        {
-          "text": "default (requestAnimationFrame)",
-          "value": "default"
+          "value": 30
         },
         {
           "text": "120",
@@ -183,9 +248,10 @@
   ],
   "layout": {
     "bottom": [
-       [ "shake", "select-overall" ],
+       [ "select-model", "select-overall" ],
        [ "timestep-slider", "refreshrate-slider", "select-model-sample-rate" ],
-       ["fps", "progress-rate"]
+       ["fps"],
+       ["progress-rate"]
     ]
   }
 }
