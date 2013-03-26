@@ -615,7 +615,9 @@ ISImporter.appController = new ISImporter.Object({
         buttons: {
           "OK": function() {
             $(this).dialog("close");
-            self.singleValueTimerId = setInterval(function() {self.readSingleValue();}, 1000);
+            if (self.singleValueTimerId === null) {
+              self.singleValueTimerId = setInterval(function() {self.readSingleValue();}, 1000);
+            }
           },
           "Cancel": function() {
             $(this).dialog("close");
@@ -639,7 +641,9 @@ ISImporter.appController = new ISImporter.Object({
         buttons: {
           "OK": function() {
             $(this).dialog("close");
-            self.singleValueTimerId = setInterval(function() {self.readSingleValue();}, 1000);
+            if (self.singleValueTimerId === null) {
+              self.singleValueTimerId = setInterval(function() {self.readSingleValue();}, 1000);
+            }
           },
           "Cancel": function() {
             $(this).dialog("close");
@@ -711,7 +715,9 @@ ISImporter.appController = new ISImporter.Object({
     // TODO Poll and update this every second while we're not collecting and not errored out
     this.readSingleValue();
     var _this = this;
-    this.singleValueTimerId = setInterval(function() {_this.readSingleValue();}, 1000);
+    if (self.singleValueTimerId === null) {
+      this.singleValueTimerId = setInterval(function() {_this.readSingleValue();}, 1000);
+    }
   },
 
   singleValueTimerId: null,
