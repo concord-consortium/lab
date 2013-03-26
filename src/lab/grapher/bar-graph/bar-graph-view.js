@@ -6,10 +6,10 @@ define(function (require) {
 
       VIEW = {
         padding: {
-          left:   10,
-          top:    10,
-          right:  10,
-          bottom: 10
+          left:   0,
+          top:    8,
+          right:  0,
+          bottom: 8
         }
       },
 
@@ -23,16 +23,12 @@ define(function (require) {
         return d3selection.node().getBBox().height;
       },
 
-      // Bar graph scales itself according to the given height.
-      // We assume some CANONICAL_HEIGHT. All values which should
-      // be scaled, should assume this canonical height as basic
-      // reference.
-      CANONICAL_HEIGHT = 500,
-      getScaleFunc = function (height) {
-        var factor = height / CANONICAL_HEIGHT;
-        // Prevent from too small fonts.
-        if (factor < 0.6)
-          factor = 0.6;
+      // Bar graph scales itself according to the font size.
+      // We assume some CANONICAL_FONT_SIZE. All values which should
+      // be scaled, should use returned function.
+      CANONICAL_FONT_SIZE = 16,
+      getScaleFunc = function (fontSize) {
+        var factor = fontSize / CANONICAL_FONT_SIZE;
 
         return function (val) {
           return val * factor;
@@ -88,7 +84,7 @@ define(function (require) {
               // etc.
           var options    = this.model.toJSON(),
               // Scale function.
-              scale      = getScaleFunc(options.height),
+              scale      = getScaleFunc(parseFloat(this.$el.css("font-size"))),
               // Basic padding (scaled).
               paddingLeft   = scale(VIEW.padding.left),
               paddingTop    = scale(VIEW.padding.top),
@@ -107,7 +103,7 @@ define(function (require) {
               "height": options.height
             })
             .style({
-              "font-size": scale(15) + "px"
+              "font-size": "1em"
             });
 
           // Setup Y scale.
@@ -125,7 +121,7 @@ define(function (require) {
             this.title
               .text(options.title)
               .style({
-                "font-size": "140%",
+                "font-size": "1em",
                 "text-anchor": "middle",
                 "fill": options.textColor
               });
@@ -142,7 +138,7 @@ define(function (require) {
           this.yAxis
             .scale(this.yScale)
             .tickSubdivide(options.tickSubdivide)
-            .tickSize(scale(10), scale(5), scale(10))
+            .tickSize(scale(8), scale(5), scale(8))
             .orient("right");
 
           if (typeof options.ticks === "number") {
@@ -175,7 +171,7 @@ define(function (require) {
               // Workaround for hiding numeric labels. D3 doesn't provide any convenient function
               // for that. Returning empty string as tickFormat causes that bounding box width is
               // calculated incorrectly.
-              "font-size": options.displayLabels ? "100%" : 0
+              "font-size": options.displayLabels ? "0.8em" : 0
           });
 
           // Remove axis completely if ticks are equal to 0.
