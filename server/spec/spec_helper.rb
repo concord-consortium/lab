@@ -10,10 +10,15 @@ require 'capybara/poltergeist'
 Capybara.javascript_driver = :poltergeist
 Capybara.register_driver :poltergeist do |app|
   options = {
-    :js_errors => false,
+    # cannot have :js_errors => true when inspector (debug) is set
+    # :js_errors => false,
+    :js_errors => true,
     # :phantomjs_options => ['--debug=yes', '--load-images=no', '--ignore-ssl-errors=yes'],
-    :inspector => 'open'
+    :phantomjs_options => ['--web-security=false','--ignore-ssl-errors=yes'],
+    # set to 'open' for OSX
+    # :inspector => 'open'
     #:inspector => true
+    :debug => true
   }
   Capybara::Poltergeist::Driver.new(app, options)
 end
