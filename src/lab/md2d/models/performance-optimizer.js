@@ -2,7 +2,7 @@
 
 define(function() {
 
-  var MIN_FPS = 10;
+  var MIN_FPS = 2.5;
 
   function PerformanceOptimizer(model) {
     /** @private */
