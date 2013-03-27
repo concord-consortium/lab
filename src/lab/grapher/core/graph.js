@@ -1583,7 +1583,7 @@ define(function (require) {
         updateOrRescale();
       }
 
-      function newRealTimeData(d) {
+      function updatePointArray(d) {
         var i;
         pointArray = [];
         if (Object.prototype.toString.call(d) === "[object Array]") {
@@ -1595,6 +1595,22 @@ define(function (require) {
           points = indexedData(options.dataset, 0, sample);
           pointArray = [points];
         }
+      }
+
+      function truncateRealTimeData(d) {
+        var oldLength = pointArray[0].length;
+        updatePointArray(d);
+        if (pointArray[0].length === oldLength) {
+          return;
+        } else {
+          shiftingX = false;
+          setCurrentSample(points.length);
+          updateOrRescale();
+        }
+      }
+
+      function newRealTimeData(d) {
+        updatePointArray(d);
         shiftingX = false;
         setCurrentSample(points.length-1);
         updateOrRescale();
@@ -1914,6 +1930,7 @@ define(function (require) {
 
       graph.number_of_points = number_of_points;
       graph.newRealTimeData = newRealTimeData;
+      graph.truncateRealTimeData = truncateRealTimeData;
       graph.add_point = add_point;
       graph.addPoints = addPoints;
       // graph.addRealTimePoints = addRealTimePoints;

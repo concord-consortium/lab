@@ -8,6 +8,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
   mock =
     Graph: ->
       newRealTimeData:   sinon.spy()
+      truncateRealTimeData: sinon.spy()
       addPoints:         sinon.spy()
       updateOrRescale:   sinon.spy()
       showMarker:        sinon.spy()
@@ -243,19 +244,20 @@ helpers.withIsolatedRequireJS (requirejs) ->
             model.stepBack()
             grapher.addPoints.reset()
             grapher.newRealTimeData.reset()
+            grapher.truncateRealTimeData.reset()
             # This should invalidate the third data point (corresponding to stepCounter == 2)
             model.set gravitationalField: 1
 
           it "should not call grapher.addPoints", ->
             grapher.addPoints.callCount.should.equal 0
 
-          it "should call grapher.newRealTimeData", ->
-            grapher.newRealTimeData.callCount.should.equal 1
+          it "should call grapher.truncateRealTimeData", ->
+            grapher.truncateRealTimeData.callCount.should.equal 1
 
-          describe "the array passed to newRealTimeData", ->
+          describe "the array passed to truncateRealTimeData", ->
             newData = null
             beforeEach ->
-              newData = grapher.newRealTimeData.getCall(0).args[0]
+              newData = grapher.truncateRealTimeData.getCall(0).args[0]
 
             it "should contain 2 arrays", ->
               newData.should.have.length 2
