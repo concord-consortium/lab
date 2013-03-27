@@ -135,7 +135,7 @@
       "id": "thermometer",
       "min": 0,
       "max": 3000,
-      "width": "15%"
+      "width": "1.5em"
     },
     {
       "type": "numericOutput",
@@ -153,5 +153,27 @@
     "right": [
       "thermometer"
     ]
-  }
+  },
+  "template": [
+    {
+      "id": "top",
+      "bottom": "model.top",
+      "width": "interactive.width"
+    },
+    {
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "height": "model.height",
+      "padding-left": "1em",
+      "padding-right": "0.5em"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "interactive.width",
+      "padding-top": "0.5em",
+      "align": "center"
+    }
+  ]
 }
