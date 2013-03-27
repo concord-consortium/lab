@@ -192,13 +192,13 @@ AUTHORING = false;
             "type": "text",
             "id": "interactive-not-found",
             "text": [
-              "#Oops!",
+              "##Oops!",
               "",
-              "###We couldn't find Interactive definition:",
+              "####We couldn't find the Interactive you are looking for:",
               "[" + hash.substr(1) + "](" + interactiveUrl + ")",
               "",
-              "###It's possible that the Interactive has moved.",
-              "Try going to our [Next-Generation Molecular Workbench Activities page](http://mw.concord.org/nextgen/interactives/) to explore all our models."
+              "It may have moved (without leaving a forwarding address).",
+              "Try searching our [Next-Generation Molecular Workbench Activities page](http://mw.concord.org/nextgen/interactives/)."
             ]
           }
         ],
