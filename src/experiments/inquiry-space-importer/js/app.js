@@ -721,9 +721,9 @@ ISImporter.appController = new ISImporter.Object({
     if (this.sensor.tareable) this.enable(this.$tareButton);
     // Read the current sensor value and inject it into the display
     // TODO Poll and update this every second while we're not collecting and not errored out
-    this.readSingleValue();
     var _this = this;
-    if (self.singleValueTimerId === null) {
+    if (this.singleValueTimerId === null) {
+      this.readSingleValue();
       this.singleValueTimerId = setInterval(function() {_this.readSingleValue();}, 1000);
     }
   },
