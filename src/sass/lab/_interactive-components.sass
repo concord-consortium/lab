@@ -187,6 +187,9 @@ button.component
     width: 100%
     height: 100%
   .ui-slider-handle
+    // This is default height of slider handle, when slider height is set to "auto".
+    // Otherwise, it will be overwritten by dynamically calculated value.
+    height: 1.75em
     font-size: 0.8em
     font-weight: normal
     text-align: center
@@ -203,6 +206,9 @@ button.component
     margin: 0 0 0.3em 0
     vertical-align: top
   .container
+    // This is default height of slider, when its height is set to "auto".
+    // Otherwise, it will be overwritten by dynamically calculated value.
+    height: 1em
     // make this a positioned element so the .label can be positioned absolute
     position: relative
     // bottom margin has to account for size of labels, which are taken out of flow
