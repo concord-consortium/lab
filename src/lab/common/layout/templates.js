@@ -12,7 +12,8 @@ define(function () {
         "top": "model.top",
         "left": "model.right",
         "height": "model.height",
-        "padding-left": "1em"
+        "padding-left": "1em",
+        "padding-right": "0.5em"
       },
       {
         "id": "bottom",
