@@ -31,17 +31,27 @@ define(function () {
         // Options definitions from component JSON definition.
         options,
         // List of jQuery objects wrapping <select> elements.
-        $options = [];
+        $options = [],
+        // Indicates which change event are caused by the user and which are
+        // caused by select box update after property change.
+        ignoreChangeEvent = false;
 
     // Updates pulldown using model property. Used in modelLoadedCallback.
     // Make sure that this function is only called when:
     // a) model is loaded,
     // b) pulldown is bound to some property.
     function updatePulldown() {
-      // Clear current selection.
-      $pulldown.val([]);
-      // Try to set a new value.
-      $pulldown.val(model.get(component.property));
+      // Set flag indicating that change event should be ignored by our own
+      // change listener. It prevents from infinite loop like: pulldown update
+      // => property update => pulldown update => ...
+      // It's necessary as selectOption() call below will trigger change event
+      // of original select. It's used by selectBoxIt to update its view.
+      ignoreChangeEvent = true;
+      // Retrieve all of the SelectBoxIt methods and call selectOption(). Note
+      // that we have to call .toString() as numeric values are interpreted as
+      // option index by selectBoxIt. See:
+      // http://gregfranko.com/jquery.selectBoxIt.js/#Methods
+      $pulldown.data("selectBox-selectBoxIt").selectOption(model.get(component.property).toString());
     }
 
     function initialize() {
@@ -76,16 +86,24 @@ define(function () {
       }
 
       $pulldown.change(function() {
+        if (ignoreChangeEvent) {
+          // Ignore change event caused by the pulldown menu update. It
+          // prevents from infinite loop of pulldown - property updates.
+          ignoreChangeEvent = false;
+          return;
+        }
+
         var index = $(this).prop('selectedIndex'),
-            action = component.options[index].action;
+            action = component.options[index].action,
+            value = component.options[index].value;
 
         if (action){
           scriptingAPI.makeFunctionInScriptContext(action)();
         } else if (component.options[index].loadModel){
           model.stop();
           interactivesController.loadModel(component.options[index].loadModel);
-        } else if (option.value !== undefined) {
-          model.set(component.property, options[index].value);
+        } else if (value !== undefined) {
+          model.set(component.property, value);
         }
       });
 
