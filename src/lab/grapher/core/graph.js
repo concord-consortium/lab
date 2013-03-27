@@ -20,6 +20,10 @@ define(function (require) {
         ty = function(d) { return "translate(0," + yScale(d) + ")"; },
         fx, fy,
         svg, vis, plot, viewbox,
+        background,
+        gcanvas, gctx,
+        canvasFillStyle = "rgba(255,255,255, 0.0)",
+        cplot = {},
         buttonLayer,
         title, xlabel, ylabel,
         notification,
@@ -58,9 +62,6 @@ define(function (require) {
         currentSample,
         markedPoint, marker,
         sample,
-        gcanvas, gctx,
-        canvasFillStyle = "rgba(255,255,255, 0.0)",
-        cplot = {},
 
         default_options = {
           showButtons:    true,
@@ -410,6 +411,11 @@ define(function (require) {
         svg = undefined;
       }
 
+      if (background !== undefined) {
+        background.remove();
+        background = undefined;
+      }
+
       if (gcanvas !== undefined) {
         $(gcanvas).remove();
         gcanvas = undefined;
@@ -450,40 +456,33 @@ define(function (require) {
     }
 
     function createButtonLayer() {
-      var buttonLayer = $('<div>' +
-                          '  <a class="graph-autoscale-button" title="' + tooltips.autoscale + '">' +
-                          '    <i class="icon-picture"></i>' +
-                          '  </a>' +
-                          '</div>')
-            .appendTo($(elem.node()))
-            .addClass('graph-button-layer')
-            .css('z-index', 101);
+      buttonLayer = elem.append("div");
 
-      buttonLayer.find('a.graph-autoscale-button').on('click', function() { graph.autoscale(); });
-      return buttonLayer;
+      buttonLayer
+        .attr("class", "button-layer")
+        .style("z-index", 3)
+        .append('a')
+          .attr({
+            "class": "autoscale-button",
+            "title": tooltips.autoscale
+          })
+          .on("click", function() {
+            graph.autoscale();
+          })
+          .append("i")
+            .attr("class", "icon-picture");
+
+      resizeButtonLayer();
     }
 
     function resizeButtonLayer() {
-      var rect = plot.node(),
-          rectTop,
-          rectLeft,
-          rectWidth,
-          layerWidth;
-
-      // Make safe for jsdom based tests
-      if (!rect.getCTM || !rect.width.baseVal ) {
-        return;
-      }
-
-      rectTop = rect.getCTM().f;
-      rectLeft = rect.getCTM().e;
-      rectWidth = rect.width.baseVal.value;
-      layerWidth = buttonLayer.width();
-
-      buttonLayer.css({
-        top: rectTop + 5,
-        left: rectLeft + rectWidth - layerWidth - 5
-      });
+      buttonLayer
+        .style({
+          "width":   fontSizeInPixels*1.75 + "px",
+          "height":  fontSizeInPixels*1.25 + "px",
+          "top":     padding.top + halfFontSizeInPixels + "px",
+          "left":    padding.left + (size.width - fontSizeInPixels*2.0) + "px"
+        });
     }
 
     function graph() {
@@ -494,7 +493,8 @@ define(function (require) {
         svg = elem.append("svg")
             .attr("width",  cx)
             .attr("height", cy)
-            .attr("class", "graph");
+            .attr("class", "graph")
+            .style('z-index', 2);
             // .attr("tabindex", tabindex || 0);
 
         vis = svg.append("g")
@@ -504,12 +504,22 @@ define(function (require) {
           .attr("class", "plot")
           .attr("width", size.width)
           .attr("height", size.height)
-          .style("fill", "#EEEEEE")
           .attr("pointer-events", "all")
+          .attr("fill", "rgba(255,255,255,0)")
           .on("mousedown", plotDrag)
           .on("touchstart", plotDrag);
 
         plot.call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
+
+        background = elem.append("div")
+            .attr("class", "background")
+            .style({
+              "width":   size.width + "px",
+              "height":  size.height + "px",
+              "top":     padding.top + "px",
+              "left":    padding.left + "px",
+              "z-index": 0
+            });
 
         viewbox = vis.append("svg")
           .attr("class", "viewbox")
@@ -594,8 +604,16 @@ define(function (require) {
 
         plot
           .attr("width", size.width)
-          .attr("height", size.height)
-          .style("fill", "#EEEEEE");
+          .attr("height", size.height);
+
+        background
+          .style({
+            "width":   size.width + "px",
+            "height":  size.height + "px",
+            "top":     padding.top + "px",
+            "left":    padding.left + "px",
+            "z-index": 0
+          });
 
         viewbox
             .attr("top", 0)
@@ -635,7 +653,7 @@ define(function (require) {
       }
 
       if (options.showButtons) {
-        if (!buttonLayer) buttonLayer = createButtonLayer();
+        if (!buttonLayer) createButtonLayer();
         resizeButtonLayer();
       }
 
@@ -1655,11 +1673,11 @@ define(function (require) {
 
       function showCanvas() {
         vis.select("path.line").remove();
-        gcanvas.style.zIndex = 100;
+        gcanvas.style.zIndex = 1;
       }
 
       function hideCanvas() {
-        gcanvas.style.zIndex = -100;
+        gcanvas.style.zIndex = -1;
         update();
       }
 
@@ -1792,7 +1810,7 @@ define(function (require) {
           gcanvas = gcanvas || document.createElement('canvas');
           node.appendChild(gcanvas);
         }
-        gcanvas.style.zIndex = -100;
+        gcanvas.style.zIndex = -1;
         setupCanvasProperties(gcanvas);
       }
 
@@ -1818,8 +1836,8 @@ define(function (require) {
         canvas.style.top = cplot.top + 'px';
         canvas.style.border = 'solid 1px red';
         canvas.style.pointerEvents = "none";
-        if (canvas.className.search("canvas-overlay") < 0) {
-           canvas.className += " canvas-overlay";
+        if (canvas.className.search("overlay") < 0) {
+           canvas.className += " overlay";
         }
         gctx = gcanvas.getContext( '2d' );
         gctx.globalCompositeOperation = "source-over";

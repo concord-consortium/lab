@@ -1,16 +1,30 @@
 @import 'sass/bourbon/bourbon'
 
 $graph-background-color: rgba(0,255,0,0.05)
+$canvas-background-color: rgba(0,255,0,0.05)
+
 
 .graph
   position: relative
-  background: $component-background-color
+  background: rgba(255,255,255,0)
   &:focus
     outline: $focus-outline-color solid 0.2em
-  .canvas-overlay
+  div.background
+    position: absolute
+    background: $very-light-gray
+  div.button-layer
+    position: absolute
+    text-align: right
+    a
+      opacity: 0.3
+      color: black
+      font-size: 120%
+    a:hover
+      opacity: 1
+  canvas.overlay
     position: absolute
     border: solid 1px red
-    background-color: $graph-background-color
+    background: $canvas-background-color
 
 svg.graph
   &:focus
@@ -26,14 +40,3 @@ svg.graph
     &:focus
       outline: $focus-outline-color solid 0.2em
 
-.graph-button-layer
-  position: absolute
-  z-index: 1
-  width: 40px
-  height: 20px
-  text-align: right
-  a
-    opacity: 0.5
-    color: black
-  a:hover
-    opacity: 1
