@@ -5,7 +5,7 @@
    <double>0.0010000000474974513</double> 
   </void> 
   <void property="mass"> 
-   <double>0.3333333333333333</double> 
+   <double>0.08333333333333333</double> 
   </void> 
   <void property="sigma"> 
    <double>14.0</double> 
@@ -43,11 +43,14 @@
   <void property="ID"> 
    <int>3</int> 
   </void> 
+  <void property="epsilon"> 
+   <double>0.0010000000474974513</double> 
+  </void> 
   <void property="mass"> 
-   <double>0.6666666666666666</double> 
+   <double>1.25</double> 
   </void> 
   <void property="sigma"> 
-   <double>28.0</double> 
+   <double>14.0</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Affinity"> 
@@ -353,7 +356,7 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1364170954000</long> 
+     <long>1364402541000</long> 
     </object> 
    </void> 
    <void method="put"> 
@@ -362,7 +365,7 @@
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>62904</long> 
+    <long>62993</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
@@ -385,7 +388,7 @@
   </void> 
   <void property="elementColors"> 
    <void index="0"> 
-    <int>-16776961</int> 
+    <int>-65536</int> 
    </void> 
   </void> 
   <void property="energizer"> 

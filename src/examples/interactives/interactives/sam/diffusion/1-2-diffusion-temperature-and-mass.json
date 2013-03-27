@@ -1,0 +1,188 @@
+{
+  "title": "Diffusion Temperature and Mass",
+  "publicationStatus": "draft",
+  "subtitle": "How do temperature and mass affect the rate of diffusion?",
+  "about": "Click remove barrier to begin measuring how long it takes for the molecules to diffuse across the container.",
+  "models": [
+    {
+      "id": "model1",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/diffusion/DiffusionTemp/DiffusionBarrier$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "imageMapping": {
+          "GasSensor.png": "GasSensor.svg"
+        }
+      },
+      "modelOptions": {
+        "unitsScheme": "mks"
+      },
+      "onLoad": [
+        "set('targetTemperature',500);",
+        "set('gasElementType',2);",
+        "start();",
+        "set({ timeStep: 0.00015, timeStepsPerTick: 75, modelSampleRate: 'default' });",
+        "onPropertyChange('time', function(t) {",
+        "  var atoms               = atomsWithin(6.75,1.96,0.25,1.96,get('gasElementType'));",
+        "  var nNewAtomsInTarget   = 0;",
+        "  var nAtomsInTargetTotal = get('nAtomsInTargetTotal')",
+        "  for( var i = 0; i < atoms.length; i++) {",
+        "    if (!getAtomProperties(atoms[i]).pinned) { ",
+        "      setAtomProperties(atoms[i], {pinned: 1});",
+        "      nNewAtomsInTarget++;",
+        "    }",
+        "  }",
+        "  set('nAtomsInTargetTotal', nAtomsInTargetTotal + nNewAtomsInTarget);",
+        "  set('experimentTime', get('experimentRunning') ? t - get('timeBarrierRemoved') : 0);",
+        "});"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "gasElementType",
+      "initialValue": 2,
+      "onChange": [
+        "for (var i = 0; i < 17; i++) {",
+        "  setAtomProperties(i, {element: value});",
+        "}"
+      ]
+    },
+    {
+      "name": "tracedAtom",
+      "initialValue": -99,
+      "onChange": ""
+    },
+    {
+      "name": "nAtomsInTargetTotal",
+      "initialValue": 0,
+      "onChange": "if (value >= 3) { stop() }"
+    },
+    {
+      "name": "wasMarked",
+      "initialValue": 0,
+      "onChange": ""
+    },
+    {
+      "name": "timeBarrierRemoved",
+      "initialValue": 0,
+      "onChange": ""
+    },
+    {
+      "name": "experimentRunning",
+      "initialValue": false,
+      "onChange": ""
+    },
+    {
+      "name": "experimentTime",
+      "label": "Experiment Time",
+      "unitType": "time",
+      "initialValue": 0,
+      "onChange": ""
+    },
+    {
+      "name": "selectedTemperature",
+      "initialValue": 2,
+      "onChange": [
+        "var targets = [100, 250, 500, 1500, 2500];",
+        "set('targetTemperature', targets[value]);"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "pulldown",
+      "id": "mass-pulldown",
+      "property": "gasElementType",
+      "label": "Element Type",
+      "labelOn": "top",
+      "options": [
+        {
+          "text": "Lightest",
+          "value": 0
+        },
+        {
+          "text": "Heavier",
+          "value": 2
+        },
+        {
+          "text": "Heaviest",
+          "value": 3
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "id": "trace-gas-element",
+      "text": "Trace Atom",
+      "action" : [
+        "traceAtom(randomInteger(18));"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "remove-obstacle",
+      "text": "Remove Barrier",
+      "action" : [
+        "if (getNumberOfObstacles() > 0) { ",
+        "  removeObstacle(0); ",
+        "  set('timeBarrierRemoved', get('time'));",
+        "  set('experimentRunning', true)",
+        "}"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "reset-barrier",
+      "text": "Reset Experiment",
+      "action" : [
+        "reset();"
+      ]
+    },
+    {
+      "type": "slider",
+      "id": "temperature-slider",
+      "min": 0,
+      "max": 4,
+      "labels": [
+        {
+          "value": 0,
+          "label": "Low"
+        },
+        {
+          "value": 2,
+          "label": "Medium"
+        },
+        {
+          "value": 4,
+          "label": "High"
+        }
+      ],
+      "steps": 4,
+      "title": "Temperature",
+      "property": "selectedTemperature"
+    },
+    {
+      "type": "thermometer",
+      "id": "thermometer",
+      "min": 0,
+      "max": 3000,
+      "width": "15%"
+    },
+    {
+      "type": "numericOutput",
+      "id": "experiment-time",
+      "property": "experimentTime",
+      "displayValue": "return format('1.1f')(value)"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      ["mass-pulldown","temperature-slider","experiment-time"],
+      ["remove-obstacle","reset-barrier"],
+      ["trace-gas-element"]
+    ],
+    "right": [
+      "thermometer"
+    ]
+  }
+}
