@@ -14,14 +14,14 @@ describe BaseDataObject do
     DbCleaner.clean
   end
 
-  let(:data_hash) do 
+  let(:data_hash) do
     { "id" => "xyzzy", "alt_key" => "plugh", "value" => "bar"}
   end
 
-  let(:instance) { Subclass.create(data_hash) } 
+  let(:instance) { Subclass.create(data_hash) }
   subject { Subclass }
-    
-  
+
+
   describe "self.find_matching(hash_def)" do
     context "find with existing id" do
       it "it should search for the item by id" do
@@ -73,13 +73,13 @@ describe BaseDataObject do
         subject.should_receive(:find_matching).and_return(instance)
         instance.should_receive(:update_attributes).with(update_hash).and_call_original
         updated = subject.create_or_update(update_hash)
-        
+
         updated.should_not    be_nil
         updated.value2.should eq "yy"
         updated.value.should  eq "xx"
       end
     end
-    
+
     context "no existing object to update" do
 
     end

@@ -691,10 +691,11 @@ AUTHORING = false;
         document.location.hash = interactiveRemote.path;
       },
       error: function(jqXHR, textStatus, errorThrown) {
-        var updateErrors = JSON.parse(jqXHR.responseText);
+        var updateErrors = JSON.parse(jqXHR.responseText),
+            key;
         $interactiveErrorDialog.html("<ul></ul>");
         for(key in updateErrors){
-          $interactiveErrorDialog.find('ul').append("<li>" + key + " " + updateErrors[key] + "</li>");          
+          $interactiveErrorDialog.find('ul').append("<li>" + key + " " + updateErrors[key] + "</li>");
         }
 
         $interactiveErrorDialog.dialog("open");
@@ -746,7 +747,7 @@ AUTHORING = false;
         if (publicFilter && interactive.publicationStatus === 'public') return true;
         if (draftFilter && interactive.publicationStatus === 'draft') return true;
       });
-      
+
       $selectInteractiveGroups.append($("<option>")
                                       .attr('value', group.id)
                                       .text(group.name));
@@ -794,7 +795,7 @@ AUTHORING = false;
         $('.save-interactive-form').dialog("open");
     });
 
-    $saveInteractiveButton.on('click', function() {      
+    $saveInteractiveButton.on('click', function() {
       interactiveState = JSON.parse(editor.getValue());
       interactiveState.title = interactive.title;
       // update this interactive, false = don't copy this interactive.
@@ -909,8 +910,8 @@ AUTHORING = false;
       if (!isStaticPage()){
         // disable save, save as button when interactive json has changed
         editor.on('change', function(instance, changeObj){
-          if (!editor.isClean() && 
-              (!$saveInteractiveButton.attr('disabled') || 
+          if (!editor.isClean() &&
+              (!$saveInteractiveButton.attr('disabled') ||
                !$saveAsInteractiveButton.attr('disabled')) ){
             $saveInteractiveButton.attr('disabled', 'disabled');
             $saveAsInteractiveButton.attr('disabled', 'disabled');
@@ -989,7 +990,7 @@ AUTHORING = false;
         modelButtonHandlersAdded = true;
 
         if (!isStaticPage()){
-          !setupSaveModel(md2dModel);
+          setupSaveModel(md2dModel);
         }
 
         $updateModelButton.on('click', function() {
