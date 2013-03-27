@@ -304,10 +304,10 @@ define(function() {
         defaultValue: []
       },
       width: {
-        defaultValue: "12em"
+        defaultValue: "auto"
       },
       height: {
-        defaultValue: "3.3em"
+        defaultValue: "auto"
       },
       displayValue: {},
       // Use "property" OR "action" + "initialValue".
