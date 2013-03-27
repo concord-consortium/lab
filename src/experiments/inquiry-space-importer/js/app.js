@@ -608,7 +608,7 @@ ISImporter.appController = new ISImporter.Object({
       self.sensorAppletReady();
     });
     this.currentApplet.on('deviceUnplugged', function() {
-      self.stop();
+      if (self.started) self.stop();
       if (self.singleValueTimerId) {
         clearInterval(self.singleValueTimerId);
         self.singleValueTimerId = null;
@@ -634,7 +634,7 @@ ISImporter.appController = new ISImporter.Object({
       });
     });
     this.currentApplet.on('sensorUnplugged', function() {
-      self.stop();
+      if (self.started) self.stop();
       if (self.singleValueTimerId) {
         clearInterval(self.singleValueTimerId);
         self.singleValueTimerId = null;
