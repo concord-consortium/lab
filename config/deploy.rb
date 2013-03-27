@@ -54,7 +54,7 @@ namespace :deploy do
     run "cd /var/www/app; bundle install"
     run "cd /var/www/app; make public"
     webapp.make_server_settings
-    webapp.import_interactives    
+    webapp.import_interactives
   end
 
 
@@ -65,6 +65,8 @@ namespace :deploy do
     run "cd /var/www/app; bundle install"
     run "cd /var/www/app/server; bundle install"
     run "cd /var/www/app; make clean; make"
+    webapp.make_server_settings
+    webapp.import_interactives
   end
 
   desc "clean and rebuild jars in public/jnlp dir on server"
@@ -110,4 +112,3 @@ namespace :deploy do
     end
   end
 end
-
