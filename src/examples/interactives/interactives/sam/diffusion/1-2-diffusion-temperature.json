@@ -93,6 +93,14 @@
     },
     {
       "type": "button",
+      "id": "trace-gas-element",
+      "text": "Trace Atom",
+      "action" : [
+        "traceAtom(randomInteger(18));"
+      ]
+    },
+    {
+      "type": "button",
       "id": "reset-barrier",
       "text": "Reset Experiment",
       "action" : [
@@ -139,7 +147,8 @@
   "layout": {
     "bottom": [
       ["temperature-slider","experiment-time"],
-      ["remove-obstacle","reset-barrier"]
+      ["remove-obstacle","reset-barrier"],
+      ["trace-gas-element"]
     ],
     "right": [
       "thermometer"
