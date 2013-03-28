@@ -594,7 +594,9 @@ define(function (require) {
         }
       },
       /**
-       * Sets custom select handler.
+       * Sets custom select handler. When you provide function as a handler, select action
+       * is enabled and the provided handler executed when select action is finished.
+       * To disable select action, pass 'null' as an argument.
        *
        * @param {Function} handler Custom select handler. It will be called
        *                           when select action is finished with (x, y, w, h) arguments:
@@ -602,12 +604,21 @@ define(function (require) {
        *                             y - y coordinate of lower left selection corner (in model units),
        *                             width  - width of selection rectangle (in model units),
        *                             height - height of selection rectangle (in model units).
+       *
+       *                            Pass 'null' to disable select action.
        */
       setSelectHandler: function (handler) {
-        if (typeof handler !== "function") {
-          throw new Error("Select handler should be a function.");
+        var brush;
+        if (typeof handler !== "function" && handler !== null) {
+          throw new Error("Select handler should be a function or null.");
         }
-        var brush = d3.svg.brush()
+        // Remove previous select handler.
+        brushContainer.select("g.select-area").remove();
+        if (handler === null) {
+          // Previous handler removed, so just return.
+          return;
+        }
+        brush = d3.svg.brush()
           .x(model2px)
           .y(model2pxInv)
           .on("brushend.select", function() {
@@ -630,7 +641,9 @@ define(function (require) {
             // Redraw brush (which is now empty).
             brushContainer.call(brush);
           });
-        brushContainer.call(brush);
+        // Add a new "g" to easily remove it while
+        // disabling / reseting select action.
+        brushContainer.append("g").classed("select-area", true).call(brush);
       }
     };
 
