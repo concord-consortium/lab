@@ -63,7 +63,7 @@ div.CodeMirror span.CodeMirror-matchingbracket {
   font-weight: bold; }
 div.CodeMirror span.CodeMirror-nonmatchingbracket {
   color: #f22;
-  font-weight:: normal; }
+  font-weight: normal; }
 
 .interactive-top {
   position: relative; }
