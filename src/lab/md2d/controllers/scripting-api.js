@@ -1,4 +1,4 @@
-/*global define model */
+/*global define, model */
 
 define(function (require) {
 
