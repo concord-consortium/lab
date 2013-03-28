@@ -521,6 +521,7 @@ define(function (require) {
       },
       reset: function(newModelUrl, newModel) {
         removeClickHandlers();
+        api.setSelectHandler(null);
         processOptions(newModelUrl, newModel);
         renderContainer();
         setupPlaybackControls();
