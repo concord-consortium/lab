@@ -50,6 +50,7 @@ define(function (require) {
         imageContainerTop,
         textContainerBelow,
         textContainerTop,
+        brushContainer,
 
         // we can ask the view to render the playback controls to some other container
         useExternalPlaybackContainer = false,
@@ -183,7 +184,6 @@ define(function (require) {
       modelSize2px = function (sizeX) {
         return model2px(modelMinX + sizeX);
       };
-
     }
 
     function redraw() {
@@ -373,7 +373,10 @@ define(function (require) {
         mainContainer        = vis.append("g").attr("class", "main-container");
         imageContainerTop    = vis.append("g").attr("class", "image-container-top");
         textContainerTop     = vis.append("g").attr("class", "text-container-top");
+        brushContainer       = vis.append("g").attr("class", "brush-container");
 
+        // Make all layers available for subviews, expect from brush layer
+        // which is used only internally.
         api.containers = {
           gridContainer:        gridContainer,
           imageContainerBelow:  imageContainerBelow,
@@ -549,33 +552,36 @@ define(function (require) {
        * Sets custom click handler.
        *
        * @param {string}   selector Selector string defining clickable objects.
-       * @param {Function} callback Custom click handler. It will be called
+       * @param {Function} handler  Custom click handler. It will be called
        *                            when object is clicked with (x, y, d, i) arguments:
        *                              x - x coordinate in model units,
        *                              y - y coordinate in model units,
        *                              d - data associated with a given object (can be undefined!),
        *                              i - ID of clicked object (usually its value makes sense if d is defined).
        */
-      setClickHandler: function (selector, callback) {
-        clickHandler[selector] = callback;
+      setClickHandler: function (selector, handler) {
+        if (typeof handler !== "function") {
+          throw new Error("Click handler should be a function.");
+        }
+        clickHandler[selector] = handler;
         api.updateClickHandlers();
       },
       /**
-       * Applies all custom callback to objects matching selector
+       * Applies all custom click handlers to objects matching selector
        * Note that this function should be called each time when possibly
        * clickable object is added or repainted!
        */
       updateClickHandlers: function () {
         var selector;
 
-        function getClickHandler (callback) {
+        function getClickHandler (handler) {
           return function (d, i) {
             // Get current coordinates relative to the plot area!
             var coords = d3.mouse(plot.node()),
                 x = model2px.invert(coords[0]),
                 y = model2pxInv.invert(coords[1]);
             console.log("[view] click at (" + x.toFixed(3) + ", " + y.toFixed(3) + ")");
-            callback(x, y, d, i);
+            handler(x, y, d, i);
           };
         }
 
@@ -586,6 +592,45 @@ define(function (require) {
             vis.selectAll(selector).on("click.custom", getClickHandler(clickHandler[selector]));
           }
         }
+      },
+      /**
+       * Sets custom select handler.
+       *
+       * @param {Function} handler Custom select handler. It will be called
+       *                           when select action is finished with (x, y, w, h) arguments:
+       *                             x - x coordinate of lower left selection corner (in model units),
+       *                             y - y coordinate of lower left selection corner (in model units),
+       *                             width  - width of selection rectangle (in model units),
+       *                             height - height of selection rectangle (in model units).
+       */
+      setSelectHandler: function (handler) {
+        if (typeof handler !== "function") {
+          throw new Error("Select handler should be a function.");
+        }
+        var brush = d3.svg.brush()
+          .x(model2px)
+          .y(model2pxInv)
+          .on("brushend.select", function() {
+            var r = brush.extent(),
+                x      = r[0][0],
+                y      = r[0][1],
+                width  = r[1][0] - x,
+                height = r[1][1] - y;
+
+            console.log("[view] selection area (" + x.toFixed(3) + ", " +
+              y.toFixed(3) + "), width: " + width + ", height: " + height);
+
+            // Call the user defined callback, passing selected area, as
+            // rectangle defined by:
+            // x, y, width, height
+            // where (x, y) defines its lower left corner in model units.
+            handler(x, y, width, height);
+            // Clear and hide the brush.
+            brush.clear();
+            // Redraw brush (which is now empty).
+            brushContainer.call(brush);
+          });
+        brushContainer.call(brush);
       }
     };
 
