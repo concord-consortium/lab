@@ -11,5 +11,28 @@
         "controlButtons": ""
       }
     }
+  ],
+  "components": [
+    {
+      "type": "radio",
+      "id": "mark-color",
+      "property": "markColor",
+      "label": "Mark Color",
+      "orientation": "horizontal",
+      "options": [
+        {
+          "text": "default",
+          "value": "#f8b500"
+        },
+        {
+          "text": "green",
+          "value": "green"
+        },
+        {
+          "text": "purple",
+          "value": "purple"
+        }
+      ]
+    }
   ]
 }
