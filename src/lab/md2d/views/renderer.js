@@ -181,11 +181,20 @@ define(function (require) {
      * @private
      */
     function setupDynamicGradients() {
-      var i;
+      var i, color, lightColor, medColor, darkColor;
+
       for (i= 0; i < 4; i++) {
         // Use names defined in gradientNameForElement array!
         createElementColorGradient("elem" + i + "-grad", modelElements.color[i], mainContainer);
       }
+
+      // "Marked" particle gradient.
+      medColor   = model.get("markColor");
+      // Mark color defined in JSON defines medium color of a gradient.
+      color      = d3.rgb(medColor);
+      lightColor = color.brighter(1).toString();
+      darkColor  = color.darker(1).toString();
+      gradients.createRadialGradient("mark-grad", lightColor, medColor, darkColor, mainContainer);
     }
 
     /**
@@ -216,16 +225,10 @@ define(function (require) {
         gradientNameForKELevel[i] = gradientUrl;
       }
 
-      // "Marked" particle gradient.
-      gradients.createRadialGradient("mark-grad", "#fceabb", "#fccd4d", "#f8b500", mainContainer);
-
       // "Charge" gradients.
       gradients.createRadialGradient("neg-grad", "#ffefff", "#fdadad", "#e95e5e", mainContainer);
       gradients.createRadialGradient("pos-grad", "#dfffff", "#9abeff", "#767fbf", mainContainer);
       gradients.createRadialGradient("neutral-grad", "#FFFFFF", "#f2f2f2", "#A4A4A4", mainContainer);
-
-      // "Marked" atom gradient.
-      gradients.createRadialGradient("mark-grad", "#fceabb", "#fccd4d", "#f8b500", mainContainer);
 
       // Colored gradients, used for amino acids.
       gradients.createRadialGradient("green-grad", "#dfffef", "#75a643", "#2a7216", mainContainer);
@@ -1563,7 +1566,7 @@ define(function (require) {
         "showVDWLines", "VDWLinesCutoff",
         "showVelocityVectors", "showForceVectors",
         "showAtomTrace", "atomTraceId", "aminoAcidColorScheme",
-        "showClock", "backgroundColor"],
+        "showClock", "backgroundColor", "markColor"],
           repaint);
 
 

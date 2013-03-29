@@ -112,6 +112,9 @@ define(function() {
       showClock: {
         defaultValue: true
       },
+      markColor: {
+        defaultValue: "#f8b500"
+      },
       keShading: {
         defaultValue: false
       },
