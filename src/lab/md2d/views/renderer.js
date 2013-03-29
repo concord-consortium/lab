@@ -834,9 +834,16 @@ define(function (require) {
           .append("rect")
           .attr({
             "class": function(d, i) { return "textBoxFrame text-"+i; },
+            "transform": function(d) {
+              var rotate = (typeof d.rotate === 'undefined') ? 0 : d.rotate,
+                  pos = getTextBoxCoords(d);
+              return "rotate("+rotate+" "+pos[0]+" "+pos[1]+")";
+            },
             "style": function(d) {
-              var backgroundColor = d.backgroundColor || "white";
-              return "fill:"+backgroundColor+";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-opacity:1";
+              var backgroundColor = d.backgroundColor || "white",
+                  strokeWidth = (typeof d.strokeWidth === 'undefined') ? 0.5 : d.strokeWidth,
+                  strokeOpacity = (typeof d.strokeOpacity === 'undefined') ? 1.0 : d.strokeOpacity;
+              return "fill:"+backgroundColor+";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:"+strokeWidth+";stroke-opacity:"+strokeOpacity;
             },
             "width": 0,
             "height": 0,
@@ -849,6 +856,11 @@ define(function (require) {
         text.append("text")
           .attr({
             "class": function() { return "textBox" + (AUTHORING ? " draggable" : ""); },
+            "transform": function(d) {
+              var rotate = (typeof d.rotate === 'undefined') ? 0 : d.rotate,
+                  pos = getTextBoxCoords(d);
+              return "rotate("+rotate+" "+pos[0]+" "+pos[1]+")";
+            },
             "x-data": function(d,i) { return getTextBoxCoords(d,i)[0]; },
             "y": function(d,i)      { return getTextBoxCoords(d,i)[1]; },
             "width-data": function(d) { return modelSize2px(d.width); },

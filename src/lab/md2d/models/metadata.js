@@ -528,7 +528,18 @@ define(function() {
       width: {},
       frame: {},
       color: {},
-      backgroundColor: {},
+      backgroundColor: {
+        defaultValue: "white"
+      },
+      strokeWidth: {
+        defaultValue: 0.5
+      },
+      strokeOpacity: {
+        defaultValue: 1.0
+      },
+      rotate: {
+        defaultValue: 0
+      },
       hostType: {},
       hostIndex: {},
       textAlign: {}
