@@ -10,8 +10,7 @@ define(function (require) {
       console               = require('common/console'),
       PlayResetComponentSVG = require('cs!common/components/play_reset_svg'),
       PlayOnlyComponentSVG  = require('cs!common/components/play_only_svg'),
-      PlaybackComponentSVG  = require('cs!common/components/playback_svg'),
-      gradients             = require('common/views/gradients');
+      PlaybackComponentSVG  = require('cs!common/components/playback_svg');
 
   return function ModelView(modelUrl, model, Renderer, getNextTabIndex) {
         // Public API object to be returned.
@@ -297,26 +296,6 @@ define(function (require) {
       gy.exit().remove();
     }
 
-    function createGradients() {
-      // "Marked" particle gradient.
-      gradients.createRadialGradient("mark-grad", "#fceabb", "#fccd4d", "#f8b500", mainContainer);
-
-      // "Charge" gradients.
-      gradients.createRadialGradient("neg-grad", "#ffefff", "#fdadad", "#e95e5e", mainContainer);
-      gradients.createRadialGradient("pos-grad", "#dfffff", "#9abeff", "#767fbf", mainContainer);
-      gradients.createRadialGradient("neutral-grad", "#FFFFFF", "#f2f2f2", "#A4A4A4", mainContainer);
-
-      // "Marked" atom gradient.
-      gradients.createRadialGradient("mark-grad", "#fceabb", "#fccd4d", "#f8b500", mainContainer);
-
-      // Colored gradients, used for MD2D Editable element
-      gradients.createRadialGradient("green-grad", "#dfffef", "#75a643", "#2a7216", mainContainer);
-      gradients.createRadialGradient("blue-grad", "#dfefff", "#7543a6", "#2a1672", mainContainer);
-      gradients.createRadialGradient("purple-grad", "#EED3F0", "#D941E0", "#84198A", mainContainer);
-      gradients.createRadialGradient("aqua-grad", "#DCF5F4", "#41E0D8", "#12827C", mainContainer);
-      gradients.createRadialGradient("orange-grad", "#F0E6D1", "#E0A21B", "#AD7F1C", mainContainer);
-    }
-
     // Setup background.
     function setupBackground() {
       // Just set the color.
@@ -387,8 +366,6 @@ define(function (require) {
           imageContainerTop:    imageContainerTop,
           textContainerTop:     textContainerTop
         };
-
-        createGradients();
 
         playbackContainer = vis1;
       } else {

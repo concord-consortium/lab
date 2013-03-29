@@ -70,7 +70,12 @@ define(function (require) {
         // new renderers in separate files for clarity and easier testing.
         geneticRenderer,
 
-        gradientNameForElement,
+        gradientNameForElement = [
+          "url(#elem0-grad)",
+          "url(#elem1-grad)",
+          "url(#elem2-grad)",
+          "url(#elem3-grad)"
+        ],
         // Set of gradients used for Kinetic Energy Shading.
         gradientNameForKELevel = [],
         // Number of gradients used for Kinetic Energy Shading.
@@ -170,7 +175,25 @@ define(function (require) {
       return gradients.createRadialGradient(id, lightColor, medColor, darkColor, mainContainer);
     }
 
-    function createAdditionalGradients() {
+    /**
+     * Setups set of gradient which can be changed by the user.
+     * They should be recreated during each reset / repaint operation.
+     * @private
+     */
+    function setupDynamicGradients() {
+      var i;
+      for (i= 0; i < 4; i++) {
+        // Use names defined in gradientNameForElement array!
+        createElementColorGradient("elem" + i + "-grad", modelElements.color[i], mainContainer);
+      }
+    }
+
+    /**
+     * Creates set of gradient which cannot be changed, they are constant
+     * for each possible model. So, it is enough to setup them just once.
+     * @private
+     */
+    function createImmutableGradients() {
           // Scale used for Kinetic Energy Shading gradients.
       var medColorScale = d3.scale.linear()
             .interpolate(d3.interpolateRgb)
@@ -193,10 +216,20 @@ define(function (require) {
         gradientNameForKELevel[i] = gradientUrl;
       }
 
-      for (i= 0; i < 4; i++) {
-        createElementColorGradient("elem" + i + "-grad", modelElements.color[i], mainContainer);
-      }
-      gradientNameForElement = ["url(#elem0-grad)", "url(#elem1-grad)", "url(#elem2-grad)", "url(#elem3-grad)"];
+      // "Marked" particle gradient.
+      gradients.createRadialGradient("mark-grad", "#fceabb", "#fccd4d", "#f8b500", mainContainer);
+
+      // "Charge" gradients.
+      gradients.createRadialGradient("neg-grad", "#ffefff", "#fdadad", "#e95e5e", mainContainer);
+      gradients.createRadialGradient("pos-grad", "#dfffff", "#9abeff", "#767fbf", mainContainer);
+      gradients.createRadialGradient("neutral-grad", "#FFFFFF", "#f2f2f2", "#A4A4A4", mainContainer);
+
+      // "Marked" atom gradient.
+      gradients.createRadialGradient("mark-grad", "#fceabb", "#fccd4d", "#f8b500", mainContainer);
+
+      // Colored gradients, used for amino acids.
+      gradients.createRadialGradient("green-grad", "#dfffef", "#75a643", "#2a7216", mainContainer);
+      gradients.createRadialGradient("orange-grad", "#F0E6D1", "#E0A21B", "#AD7F1C", mainContainer);
     }
 
     function createVectorArrowHeads(color, name) {
@@ -1478,7 +1511,7 @@ define(function (require) {
       createVectorArrowHeads(forceVectorColor, FORCE_STR);
 
       createSymbolImages();
-      createAdditionalGradients();
+      createImmutableGradients();
 
       // Register additional controls, context menus etc.
       // Note that special selector for class is used. Typical class selectors
@@ -1579,6 +1612,7 @@ define(function (require) {
       }
       fontSizeInPixels = modelView.getFontSizeInPixels();
 
+      setupDynamicGradients();
       setupObstacles();
       setupVdwPairs();
       setupColorsOfParticles();
