@@ -85,6 +85,8 @@ public:
 
 .PHONY: src
 src: \
+	src/experiments/netlogo-visual/models/data-export-modular.nls \
+	src/experiments/netlogo-is-exporter/models/data-export-modular.nls \
 	$(MARKDOWN_EXAMPLE_FILES) \
 	$(LAB_JS_FILES) \
 	$(LAB_JS_FILES:.js=.min.js) \
@@ -98,6 +100,7 @@ src: \
 	server/public/index.css \
 	server/public/grapher.css \
 	server/public/lab-amd
+	
 
 .PHONY: import-interactives
 import-interactives:
@@ -446,6 +449,14 @@ server/public/lab/lab.md2d.js: \
 server/public/lab/lab.mw-helpers.js: src/mw-helpers/*.coffee
 	cat $^ | $(COFFEESCRIPT_COMPILER) --stdio --print > $@
 	@chmod ug+w $@
+
+src/experiments/netlogo-visual/models/data-export-modular.nls: \
+	src/experiments/netlogo-modules/data-export-modular.nls
+	cp src/experiments/netlogo-modules/data-export-modular.nls src/experiments/netlogo-visual/models/data-export-modular.nls
+
+src/experiments/netlogo-is-exporter/models/data-export-modular.nls: \
+	src/experiments/netlogo-modules/data-export-modular.nls
+	cp src/experiments/netlogo-modules/data-export-modular.nls src/experiments/netlogo-is-exporter/models/data-export-modular.nls
 
 test: test/layout.html \
 	src/vendor/d3 \
