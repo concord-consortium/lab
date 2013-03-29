@@ -20,6 +20,7 @@
   "polarAAEpsilon": -2,
   "viewOptions": {
     "backgroundColor": "#eeeeee",
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": true,
     "showChargeSymbols": true,

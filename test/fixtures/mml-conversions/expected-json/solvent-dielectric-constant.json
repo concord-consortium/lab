@@ -20,6 +20,7 @@
   "timeStepsPerTick": 50,
   "viewOptions": {
     "backgroundColor": "#a5d9da",
+    "markColor": "#f8b500",
     "showClock": true,
     "keShading": false,
     "chargeShading": true,

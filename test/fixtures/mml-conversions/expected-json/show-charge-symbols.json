@@ -21,6 +21,7 @@
   "viewOptions": {
     "showClock": true,
     "backgroundColor": "#eeeeee",
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
