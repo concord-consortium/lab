@@ -95,6 +95,18 @@
             "strokeOpacity": 0,
             "backgroundColor": "rgba(255,32,32,0.2)",
             "layer": 1
+          },
+          {
+            "text": "rotated wrapped",
+            "x": 3.2,
+            "y": 0.4,
+            "width": 0.75,
+            "rotate": -10,
+            "frame": "rounded rectangle",
+            "textAlign": "center",
+            "strokeOpacity": 0,
+            "backgroundColor": "rgba(255,32,32,0.2)",
+            "layer": 1
           }
         ]
       }
