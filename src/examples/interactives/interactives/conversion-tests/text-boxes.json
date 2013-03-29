@@ -75,6 +75,16 @@
             "y": 0.8,
             "rotate": -90,
             "layer": 1
+          },
+          {
+            "text": "Rotated 180 degrees",
+            "x": 2.0,
+            "y": 0.3,
+            "frame": "rounded rectangle",
+            "rotate": 180,
+            "strokeOpacity": 0,
+            "backgroundColor": "rgba(0,32,255,0.2)",
+            "layer": 1
           }
         ]
       }
