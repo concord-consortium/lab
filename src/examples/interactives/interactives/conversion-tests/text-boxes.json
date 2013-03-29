@@ -44,6 +44,23 @@
             "frame": "rectangle"
           },
           {
+            "text": "Square frame with translucent background color",
+            "x": 0.4,
+            "y": 1.6,
+            "layer": 1,
+            "backgroundColor": "rgba(32,255,32,0.2)",
+            "frame": "rectangle"
+          },
+          {
+            "text": "Square frame with translucent background color and no visible stroke",
+            "x": 0.2,
+            "y": 2.3,
+            "layer": 1,
+            "strokeOpacity": 0,
+            "backgroundColor": "rgba(32,255,32,0.2)",
+            "frame": "rectangle"
+          },
+          {
             "text": "Rounded frame with very long, centered text that wraps and wraps",
             "x": 1.9,
             "y": 1,
@@ -51,6 +68,13 @@
             "width": 0.9,
             "frame": "rounded rectangle",
             "textAlign": "center"
+          },
+          {
+            "text": "Rotated 90 degrees",
+            "x": 3.8,
+            "y": 0.8,
+            "rotate": -90,
+            "layer": 1
           }
         ]
       }
