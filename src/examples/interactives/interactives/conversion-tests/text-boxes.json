@@ -70,7 +70,7 @@
             "textAlign": "center"
           },
           {
-            "text": "Rotated 90 degrees",
+            "text": "Rotated -90 degrees",
             "x": 3.8,
             "y": 0.8,
             "rotate": -90,
