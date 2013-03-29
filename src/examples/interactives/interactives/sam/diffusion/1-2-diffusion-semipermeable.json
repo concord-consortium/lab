@@ -1,0 +1,48 @@
+{
+  "title": "Diffusion Across a Semipermeable Membrane",
+  "publicationStatus": "draft",
+  "subtitle": "How does membrane pore size affect the diffusion of different molecules?",
+  "about": "",
+  "models": [
+    {
+      "id": "model1",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/diffusion/semipermeable/semipermeable$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "modelOptions": {
+        "unitsScheme": "mks"
+      },
+      "onLoad": [ 
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "poreSize",
+      "initialValue": 0.2,
+      "onChange": [
+        "var h = get('height');",
+        "var barrierHeight = (h - 2*value)/3;",
+        "setObstacleProperties(0,{height: barrierHeight, y: 2*(barrierHeight + value)});",
+        "setObstacleProperties(1,{height: barrierHeight, y: barrierHeight + value});",
+        "setObstacleProperties(2,{height: barrierHeight, y: 0});"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "barrier-height",
+      "min": 0,
+      "max": 1,
+      "steps": 50,
+      "title": "Pore Size",
+      "property": "poreSize"
+    }
+  ],
+  "layout": {
+    "bottom": [  ],
+    "right": [  ]
+  }
+}
