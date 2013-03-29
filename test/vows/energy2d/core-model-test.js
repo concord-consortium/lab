@@ -30,19 +30,19 @@ suite.addBatch({
           ny = model.getGridHeight(),
           array_size = nx * ny;
 
-        assert.lengthOf(model.getTemperatureArray(), array_size);
-        assert.lengthOf(model.getUVelocityArray(), array_size);
-        assert.lengthOf(model.getVVelocityArray(), array_size);
-        assert.lengthOf(model.getUWindArray(), array_size);
-        assert.lengthOf(model.getVWindArray(), array_size);
-        assert.lengthOf(model.getBoundaryTemperatureArray(), array_size);
-        assert.lengthOf(model.getPowerArray(), array_size);
-        assert.lengthOf(model.getConductivityArray(), array_size);
-        assert.lengthOf(model.getCapacityArray(), array_size);
-        assert.lengthOf(model.getDensityArray(), array_size);
-        assert.lengthOf(model.getFluidityArray(), array_size);
-        assert.lengthOf(model.getPhotonsArray(), 0);
-        assert.lengthOf(model.getPartsArray(), 0);
+        assert.equal(model.getTemperatureArray().length, array_size);
+        assert.equal(model.getUVelocityArray().length, array_size);
+        assert.equal(model.getVVelocityArray().length, array_size);
+        assert.equal(model.getUWindArray().length, array_size);
+        assert.equal(model.getVWindArray().length, array_size);
+        assert.equal(model.getBoundaryTemperatureArray().length, array_size);
+        assert.equal(model.getPowerArray().length, array_size);
+        assert.equal(model.getConductivityArray().length, array_size);
+        assert.equal(model.getCapacityArray().length, array_size);
+        assert.equal(model.getDensityArray().length, array_size);
+        assert.equal(model.getFluidityArray().length, array_size);
+        assert.equal(model.getPhotonsArray().length, 0);
+        assert.equal(model.getPartsArray().length, 0);
       },
       'should allow to add and remove photons': function (model) {
         var
