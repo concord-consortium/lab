@@ -23,7 +23,7 @@
             "layer": 1
           },
           {
-            "text": "Choose a pair of molecule from the menu below.",
+            "text": "Choose a pair of molecules from the menu below.",
             "x": 0.59,
             "y": 0.29,
             "layer": 1
@@ -39,7 +39,7 @@
         "enableKeyboardHandlers": false,
         "textBoxes": [
           {
-            "text": "Least Polar Molecule",
+            "text": "Low Polarity Molecules",
             "x": 1.48,
             "y": 1.87,
             "layer": 1,
@@ -57,7 +57,7 @@
         "enableKeyboardHandlers": false,
         "textBoxes": [
           {
-            "text": "Medium Polar Molecule",
+            "text": "Medium Polarity Molecules",
             "x": 1.45,
             "y": 1.87,
             "layer": 1,
@@ -75,7 +75,7 @@
         "enableKeyboardHandlers": false,
         "textBoxes": [
           {
-            "text": "Most Polar Molecule",
+            "text": "High Polarity Molecules",
             "x": 1.48,
             "y": 1.87,
             "layer": 1,
@@ -96,15 +96,15 @@
           "loadModel": "instructions"
         },
         {
-          "text": "least polar molecules",
+          "text": "low polarity",
           "action": "loadModel('leastPolarPull', start);"
         },
         {
-          "text": "medium polar molecules",
+          "text": "medium polarity",
           "action": "loadModel('medPolarPull', start);"
         },
         {
-          "text": "most polar molecules",
+          "text": "high polarity",
           "action": "loadModel('mostPolarPull', start);"
         }
       ]
