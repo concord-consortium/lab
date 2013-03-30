@@ -409,7 +409,7 @@ define(function (require) {
       Call this wherever a d3 selection is being used to add circles for atoms
     */
 
-    function particleEnter() {
+    function particleEnterExit() {
       particle.enter().append("circle")
           .attr({
             "class": function (d) { return d.isAminoAcid() ? "draggable atom amino-acid" : "atom draggable"; },
@@ -427,6 +427,8 @@ define(function (require) {
             .on("drag", nodeDrag)
             .on("dragend", nodeDragEnd)
           );
+
+      particle.exit().remove();
     }
 
     function vectorEnter(vector, pathFunc, widthFunc, color, name) {
@@ -981,7 +983,7 @@ define(function (require) {
       particle = mainContainer.selectAll("circle").data(modelResults);
       updateParticleRadius();
 
-      particleEnter();
+      particleEnterExit();
 
       label = mainContainer.selectAll("g.label")
           .data(modelResults);
