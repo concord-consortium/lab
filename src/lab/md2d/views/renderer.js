@@ -842,7 +842,7 @@ define(function (require) {
             },
             "style": function(d) {
               var backgroundColor = d.backgroundColor || "white",
-                  strokeWidth = (typeof d.strokeWidth === 'undefined') ? 0.5 : d.strokeWidth,
+                  strokeWidth = (typeof d.strokeWidthEms === 'undefined') ? fontSizeInPixels * 0.03 : d.strokeWidthEms * fontSizeInPixels,
                   strokeOpacity = (typeof d.strokeOpacity === 'undefined') ? 1.0 : d.strokeOpacity;
               return "fill:"+backgroundColor+";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:"+strokeWidth+";stroke-opacity:"+strokeOpacity;
             },

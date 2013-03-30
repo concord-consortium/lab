@@ -532,8 +532,8 @@ define(function() {
       backgroundColor: {
         defaultValue: "white"
       },
-      strokeWidth: {
-        defaultValue: 0.5
+      strokeWidthEms: {
+        defaultValue: 0.03
       },
       strokeOpacity: {
         defaultValue: 1.0

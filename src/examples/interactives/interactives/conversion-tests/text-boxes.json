@@ -71,7 +71,7 @@
             "width": 1.2,
             "frame": "rounded rectangle",
             "strokeOpacity": 0.1,
-            "strokeWidth": 5.0,
+            "strokeWidthEms": 0.2,
             "textAlign": "center"
           },
           {
@@ -113,7 +113,7 @@
             "text": "smaller text",
             "x": 3.15,
             "y": 1.7,
-            "fontScale": 0.6,
+            "fontScale": 0.7,
             "frame": "rounded rectangle",
             "strokeOpacity": 0,
             "backgroundColor": "rgba(255,32,32,0.2)",
@@ -121,12 +121,12 @@
           },
           {
             "text": "Smaller Centered Text in Larger Frame that Wraps",
-            "x": 2.7,
+            "x": 2.5,
             "y": 1.4,
-            "width": 1.0,
+            "width": 1.2,
             "height": 0.4,
             "textAlign": "center",
-            "fontScale": 0.6,
+            "fontScale": 0.7,
             "frame": "rounded rectangle",
             "strokeOpacity": 0,
             "backgroundColor": "rgba(32,255,32,0.2)",
