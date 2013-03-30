@@ -3568,14 +3568,30 @@ define(function (require, exports, module) {
           new CloneRestoreWrapper(springForces),
           // PairwiseLJProperties class implements Clone-Restore Interface.
           pairwiseLJProperties,
-          // Save time value.
-          // Create one-line wrapper to provide required interface.
+
+          // Also save toplevel state (time, number of atoms, etc):
           {
             clone: function () {
-              return time;
+              return {
+                time          : time,
+                N             : N,
+                N_elements    : N_elements,
+                N_obstacles   : N_obstacles,
+                N_radialBonds : N_radialBonds,
+                N_angularBonds: N_angularBonds,
+                N_restraints  : N_restraints,
+                N_springForces: N_springForces
+              };
             },
             restore: function(state) {
-              engine.setTime(state);
+              time           = state.time;
+              N              = state.N;
+              N_elements     = state.N_elements;
+              N_obstacles    = state.N_obstacles;
+              N_radialBonds  = state.N_radialBonds;
+              N_angularBonds = state.N_angularBonds;
+              N_restraints   = state.N_restraints;
+              N_springForces = state.N_springForces;
             }
           }
         ];
