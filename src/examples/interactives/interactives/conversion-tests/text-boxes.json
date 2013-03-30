@@ -97,10 +97,10 @@
             "layer": 1
           },
           {
-            "text": "rotated wrapped",
-            "x": 3.0,
-            "y": 0.4,
-            "width": 0.6,
+            "text": "larger font rotated wrapped",
+            "x": 2.9,
+            "y": 0.5,
+            "width": 0.7,
             "rotate": -15,
             "fontScale": 1.2,
             "frame": "rounded rectangle",
