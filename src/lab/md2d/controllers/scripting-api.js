@@ -49,12 +49,12 @@ define(function (require) {
       },
 
       addAtom: function addAtom(props, options) {
-        if (options && options.supressRepaint) {
-          // Translate supressRepaint option to
+        if (options && options.suppressRepaint) {
+          // Translate suppressRepaint option to
           // option understable by modeler.
           // supresRepaint is a conveniance option for
           // Scripting API users.
-          options.supressEvent = true;
+          options.suppressEvent = true;
         }
         return model.addAtom(props, options);
       },
@@ -63,13 +63,13 @@ define(function (require) {
         Removes atom 'i'.
       */
       removeAtom: function removeAtom(i, options) {
-        if (options && options.supressRepaint) {
-          // Translate supressRepaint option to
+        if (options && options.suppressRepaint) {
+          // Translate suppressRepaint option to
           // option understable by modeler.
           // supresRepaint is a conveniance option for
           // Scripting API users.
-          options.supressEvent = true;
-          delete options.supressRepaint;
+          options.suppressEvent = true;
+          delete options.suppressRepaint;
         }
         try {
           model.removeAtom(i, options);
@@ -439,7 +439,7 @@ define(function (require) {
       },
 
       repaintIfReady: function(options) {
-        if (!(inBatch || options && options.supressRepaint)) {
+        if (!(inBatch || options && options.suppressRepaint)) {
           api.repaint();
         }
       },

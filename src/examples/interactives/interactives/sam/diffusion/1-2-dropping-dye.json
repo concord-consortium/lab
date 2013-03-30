@@ -36,7 +36,7 @@
       "id": "trace",
       "text": "Trace Random Molecule",
       "action": [
-        "var opt = {supressRepaint: true};",
+        "var opt = {suppressRepaint: true};",
         "var atomID = randomAtoms(1);",
         "var tracedAtomID = get('tracedAtom');",
         "if (tracedAtomID != -99) {",

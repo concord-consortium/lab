@@ -94,7 +94,7 @@ define(function(require) {
         listeners = {},
 
         // If this is true, output properties will not be recalculated on changes
-        supressInvalidatingChangeHooks = false,
+        suppressInvalidatingChangeHooks = false,
 
         // Invalidating change hooks might between others
         invalidatingChangeHookNestingLevel = 0,
@@ -528,7 +528,7 @@ define(function(require) {
       by considered non-invalidating changes that don't require calling this hook.
     */
     function invalidatingChangePreHook() {
-      if (supressInvalidatingChangeHooks) return;
+      if (suppressInvalidatingChangeHooks) return;
       invalidatingChangeHookNestingLevel++;
 
       storeOutputPropertiesBeforeChange();
@@ -540,7 +540,7 @@ define(function(require) {
       ALWAYS CALL THIS FUNCTION after any change to model state outside a model step.
     */
     function invalidatingChangePostHook() {
-      if (supressInvalidatingChangeHooks) return;
+      if (suppressInvalidatingChangeHooks) return;
       invalidatingChangeHookNestingLevel--;
 
       if (invalidatingChangeHookNestingLevel === 0) {
@@ -984,7 +984,7 @@ define(function(require) {
           // Options for addAtom method.
       var options = {
             // Do not check the position of atom, assume that it's valid.
-            supressCheck: true
+            suppressCheck: true
           },
           i, num, prop, atomProps;
 
@@ -1230,7 +1230,7 @@ define(function(require) {
       if (props.y > (maxY - radius)) props.y = maxY - radius;
 
       // check the potential energy change caused by adding an *uncharged* atom at (x,y)
-      if (!options.supressCheck && !engine.canPlaceAtom(props.element, props.x, props.y)) {
+      if (!options.suppressCheck && !engine.canPlaceAtom(props.element, props.x, props.y)) {
         // return false on failure
         return false;
       }
@@ -1243,7 +1243,7 @@ define(function(require) {
       if (!options.deserialization)
         invalidatingChangePostHook();
 
-      if (!options.supressEvent) {
+      if (!options.suppressEvent) {
         dispatch.addAtom();
       }
 
@@ -1262,7 +1262,7 @@ define(function(require) {
       results.length = 0;
       invalidatingChangePostHook();
 
-      if (!options.supressEvent) {
+      if (!options.suppressEvent) {
         // Notify listeners that atoms is removed.
         dispatch.removeAtom();
 
@@ -2314,11 +2314,11 @@ define(function(require) {
       */
     model.startBatch = function() {
       invalidatingChangePreHook();
-      supressInvalidatingChangeHooks = true;
+      suppressInvalidatingChangeHooks = true;
     }
 
     model.endBatch = function() {
-      supressInvalidatingChangeHooks = false;
+      suppressInvalidatingChangeHooks = false;
       invalidatingChangePostHook();
     }
 
