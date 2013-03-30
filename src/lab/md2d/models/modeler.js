@@ -691,7 +691,7 @@ define(function(require) {
 
       engine.computeOutputState(modelOutputState);
 
-      extendResultsArray();
+      resizeResultsArray();
 
       // Transpose 'atoms' object into 'results' for easier consumption by view code
       for (i = 0, n = model.get_num_atoms(); i < n; i++) {
@@ -714,7 +714,7 @@ define(function(require) {
       Ensure that the 'results' array of arrays is defined and contains one typed array per atom
       for containing the atom properties.
     */
-    function extendResultsArray() {
+    function resizeResultsArray() {
       var isAminoAcid = function () {
             return aminoacidsHelper.isAminoAcid(this.element);
           },
@@ -738,6 +738,9 @@ define(function(require) {
           };
         }
       }
+
+      // Also make sure to truncate the results array if it got shorter (i.e., atoms were removed)
+      results.length = len;
     }
 
     /**
