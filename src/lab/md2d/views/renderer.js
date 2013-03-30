@@ -758,7 +758,8 @@ define(function (require) {
     }
 
     function getTextBoxCoords(d) {
-      var x, y, frameX, frameY;
+      var x, y, frameX, frameY,
+          pixelScale = fontSizeInPixels * (d.fontScale || 1);
       if (d.hostType) {
         if (d.hostType === "Atom") {
           x = modelResults[d.hostIndex].x;
@@ -771,9 +772,9 @@ define(function (require) {
         x = d.x;
         y = d.y;
       }
-      frameX = x - 0.1;
-      frameY = y + 0.15;
-      return [model2px(x), model2pxInv(y), model2px(frameX), model2pxInv(frameY)];
+      frameX = model2px(x) - pixelScale*0.75;
+      frameY = model2pxInv(y) - pixelScale*1.2;
+      return [model2px(x), model2pxInv(y), frameX, frameY];
     }
 
     function updateTextBoxes() {
@@ -789,8 +790,8 @@ define(function (require) {
         layer.selectAll("g.textBoxWrapper rect")
           .data(layerTextBoxes.filter( function(d) { return d.frame; } ))
           .attr({
-            "x": function(d,i) { return getTextBoxCoords(d,i)[2]; },
-            "y": function(d,i) { return getTextBoxCoords(d,i)[3]; }
+            "x": function(d) { return getTextBoxCoords(d)[2]; },
+            "y": function(d) { return getTextBoxCoords(d)[3]; }
           });
 
         layer.selectAll("g.textBoxWrapper text")
@@ -861,14 +862,16 @@ define(function (require) {
                   pos = getTextBoxCoords(d);
               return "rotate("+rotate+" "+pos[0]+" "+pos[1]+")";
             },
-            "x-data": function(d,i) { return getTextBoxCoords(d,i)[0]; },
-            "y": function(d,i)      { return getTextBoxCoords(d,i)[1]; },
-            "width-data": function(d) { return modelSize2px(d.width); },
+            "x-data": function(d) { return getTextBoxCoords(d)[0]; },
+            "y": function(d)      { return getTextBoxCoords(d)[1]; },
+            "width-data": function(d) { return d.width; },
             "width":  modelSize2px(size[0]),
             "height": modelSize2px(size[1]),
             "xml:space": "preserve",
             "font-family": "'" + labConfig.fontface + "', sans-serif",
-            "font-size": modelSize2px(0.12),
+            "font-size": function(d) {
+              return fontSizeInPixels * (d.fontScale || 1);
+            },
             "fill": function(d) { return d.color || "black"; },
             "text-data": function(d) { return d.text; },
             "text-anchor": function(d) {
@@ -895,13 +898,25 @@ define(function (require) {
 
       // wrap text
       $(".textBox").each( function() {
-        var text  = this.getAttributeNS(null, "text-data"),
-            x     = this.getAttributeNS(null, "x-data"),
-            width = this.getAttributeNS(null, "width-data") || -1,
-            dy    = modelSize2px(0.16),
-            hasHost = this.getAttributeNS(null, "has-host"),
+        var text      = this.getAttributeNS(null, "text-data"),
+            x         = this.getAttributeNS(null, "x-data"),
+            width     = this.getAttributeNS(null, "width-data"),
+            fontSize  = this.getAttributeNS(null, "font-size"),
+            transform = this.getAttributeNS(null, "transform"),
+            hasHost   = this.getAttributeNS(null, "has-host"),
             textAlign = this.getAttributeNS(null, "text-anchor"),
-            result, frame, dx;
+            horizontalPadding, verticalPadding,
+            result, frame, dx, dy;
+
+        dy = fontSize*1.2;
+        horizontalPadding = +fontSize*1.5;
+        verticalPadding = fontSize/2;
+
+        if (width === '') {
+          width = -1;
+        } else {
+          width = modelSize2px(width);
+        }
 
         while (this.firstChild) {     // clear element first
           this.removeChild(this.firstChild);
@@ -911,19 +926,19 @@ define(function (require) {
 
         if (this.parentNode.childElementCount > 1) {
           frame = this.parentNode.childNodes[0];
-          frame.setAttributeNS(null, "width", result.width + modelSize2px(0.2));
-          frame.setAttributeNS(null, "height", (result.lines * dy) + modelSize2px(0.06));
+          frame.setAttributeNS(null, "width", result.width + horizontalPadding);
+          frame.setAttributeNS(null, "height", (result.lines * dy) + verticalPadding);
         }
 
         // center all hosted labels simply by tweaking the g.transform
         if (textAlign === "middle") {
           dx = result.width / 2;
-          $(this).attr("transform", "translate("+dx+",0)");
+          $(this).attr("transform", transform + " translate("+dx+",0)");
         }
         if (hasHost === "true") {
           dx = -result.width / 2;
           dy = (result.lines-1) * dy / -2 + 4.5;
-          $(this.parentNode).attr("transform", "translate("+dx+","+dy+")");
+          $(this.parentNode).attr("transform", transform + "translate("+dx+","+dy+")");
         }
       });
     }

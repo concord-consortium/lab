@@ -23,12 +23,12 @@ define (require) ->
     numLines           = 1
     widestWidth        = 0
 
-    maxWidth = Infinity if maxWidth is -1
+    # maxWidth = Infinity if maxWidth is -1
 
     for word, i in words
       curLineLength += word.length + 1
 
-      if computedTextLength > maxWidth or i is 0    # create new tspan
+      if i is 0 or maxWidth > 0 and computedTextLength > maxWidth    # create new tspan
         if i > 0
           tempText = tspanNode.firstChild.nodeValue
           if tempText.length > words[i-1].length+1
@@ -62,7 +62,7 @@ define (require) ->
       computedTextLength = tspanNode.getComputedTextLength()
 
       # awkward, have to do this one last time for the last word
-      if i and i is words.length - 1 and computedTextLength > maxWidth
+      if i and i is words.length - 1 and maxWidth > 0 and computedTextLength > maxWidth
         tempText = tspanNode.firstChild.nodeValue
         tspanNode.firstChild.nodeValue = tempText.slice 0, (tempText.length - words[i].length - 1)
 
@@ -76,5 +76,9 @@ define (require) ->
         numLines++
 
     if widestWidth is 0 then widestWidth = svgTextNode.childNodes[0].getComputedTextLength()
+    if maxWidth > widestWidth
+      width = maxWidth
+    else
+      width = widestWidth
 
-    return {lines: numLines, width: widestWidth}
+    return {lines: numLines, width: width, textWidth: widestWidth}

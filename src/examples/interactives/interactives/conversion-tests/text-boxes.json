@@ -9,6 +9,9 @@
       "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
       "viewOptions": {
         "controlButtons": "play_reset",
+        "gridLines": true,
+        "xunits": false,
+        "yunits": false,
         "textBoxes": [
           {
             "text": "No frame, on Atom",
@@ -71,9 +74,14 @@
           },
           {
             "text": "Rotated -90 degrees",
-            "x": 3.8,
-            "y": 0.8,
+            "x": 3.9,
+            "y": 0,
             "rotate": -90,
+            "width": 2.5,
+            "textAlign": "center",
+            "frame": "rectangle",
+            "strokeOpacity": 0,
+            "backgroundColor": "rgba(255,32,32,0.2)",
             "layer": 1
           },
           {
@@ -87,23 +95,23 @@
             "layer": 1
           },
           {
-            "text": "full width",
-            "x": 0.0,
-            "y": 0.8,
-            "width": 4.0,
+            "text": "rotated wrapped",
+            "x": 3.2,
+            "y": 0.4,
+            "width": 0.4,
+            "rotate": -10,
             "frame": "rounded rectangle",
+            "textAlign": "center",
             "strokeOpacity": 0,
             "backgroundColor": "rgba(255,32,32,0.2)",
             "layer": 1
           },
           {
-            "text": "rotated wrapped",
-            "x": 3.2,
-            "y": 0.4,
-            "width": 0.75,
-            "rotate": -10,
+            "text": "smaller text",
+            "x": 3.1,
+            "y": 0.8,
+            "fontScale": 0.6,
             "frame": "rounded rectangle",
-            "textAlign": "center",
             "strokeOpacity": 0,
             "backgroundColor": "rgba(255,32,32,0.2)",
             "layer": 1

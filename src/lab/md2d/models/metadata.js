@@ -540,6 +540,9 @@ define(function() {
       rotate: {
         defaultValue: 0
       },
+      fontScale: {
+        defaultValue: 1
+      },
       hostType: {},
       hostIndex: {},
       textAlign: {}
