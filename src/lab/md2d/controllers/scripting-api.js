@@ -284,7 +284,7 @@ define(function (require) {
 
       /**
         Sets individual obstacle properties using human-readable hash.
-        e.g. setObstacleProperties(0, {x: 1, y: 0.5, externalFx: 0.00001})
+        e.g. setObstacleProperties(0, {x: 1, y: 0.5, externalAx: 0.00001})
       */
       setObstacleProperties: function setObstacleProperties(i, props) {
         model.setObstacleProperties(i, props);
@@ -293,7 +293,7 @@ define(function (require) {
 
       /**
         Returns obstacle properties as a human-readable hash.
-        e.g. getObstacleProperties(0) --> {x: 1, y: 0.5, externalFx: 0.00001, ... }
+        e.g. getObstacleProperties(0) --> {x: 1, y: 0.5, externalAx: 0.00001, ... }
       */
       getObstacleProperties: function getObstacleProperties(i) {
         return model.getObstacleProperties(i);

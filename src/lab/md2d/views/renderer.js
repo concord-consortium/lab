@@ -478,7 +478,7 @@ define(function (require) {
       // Append external force markers.
       obstacleGroup.each(function (d, i) {
         // Fast path, if no forces are defined.
-        if (!obstacles.externalFx[i] && !obstacles.externalFy[i])
+        if (!obstacles.externalAx[i] && !obstacles.externalAy[i])
           return;
 
         // Note that arrows indicating obstacle external force use
@@ -487,15 +487,15 @@ define(function (require) {
         var obstacleGroupEl = d3.select(this),
             obsHeight = obstacles.height[i],
             obsWidth = obstacles.width[i],
-            obsFx = obstacles.externalFx[i],
-            obsFy = obstacles.externalFy[i],
+            obsAx = obstacles.externalAx[i],
+            obsAy = obstacles.externalAy[i],
             // Use fixed length of force vectors (in nm).
             vecLen = 0.06,
             space = 0.06,
             step, coords;
 
         // Set arrows indicating horizontal force.
-        if (obsFx) {
+        if (obsAx) {
           // Make sure that arrows keep constant distance between both ends of an obstacle.
           step = (obsHeight - 2 * space) / Math.round((obsHeight - 2 * space) / 0.2);
           coords = d3.range(space, obsHeight, step);
@@ -503,7 +503,7 @@ define(function (require) {
             .attr({
               "class": "obstacle-force-hor",
               "d": function (d) {
-                if (obsFx < 0)
+                if (obsAx < 0)
                   return "M " + modelSize2px(obsWidth + vecLen + space) +
                               "," + modelSize2px(d) +
                               " L " + modelSize2px(obsWidth + space) +
@@ -517,7 +517,7 @@ define(function (require) {
             });
         }
         // Later set arrows indicating vertical force.
-        if (obsFy) {
+        if (obsAy) {
           // Make sure that arrows keep constant distance between both ends of an obstacle.
           step = (obsWidth - 2 * space) / Math.round((obsWidth - 2 * space) / 0.2);
           coords = d3.range(space, obsWidth, step);
@@ -525,7 +525,7 @@ define(function (require) {
             .attr({
               "class": "obstacle-force-vert",
               "d": function (d) {
-                if (obsFy < 0)
+                if (obsAy < 0)
                   return "M " + modelSize2px(d) +
                               "," + modelSize2px(-vecLen - space) +
                               " L " + modelSize2px(d) +

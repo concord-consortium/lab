@@ -127,8 +127,8 @@ parseMML = (mmlString) ->
         y          = getFloatProperty $node, 'y'
         vx         = getFloatProperty $node, 'vx'
         vy         = getFloatProperty $node, 'vy'
-        externalFx = getFloatProperty $node, 'externalFx'
-        externalFy = getFloatProperty $node, 'externalFy'
+        externalAx = getFloatProperty $node, 'externalFx'
+        externalAy = getFloatProperty $node, 'externalFy'
         friction   = getFloatProperty $node, 'friction'
         density    = getFloatProperty $node, 'density'
         westProbe  = getBooleanProperty $node, 'westProbe'
@@ -160,8 +160,8 @@ parseMML = (mmlString) ->
         # External forces are specified per mass unit. So, in fact it's acceleration.
         # Convert from units of 0.1Å/fs^2 to units of nm/fs^2
         # Conversion: 1 0.1Å/fs^2 * 0.01 nm/0.1Å = 0.01 nm/fs^2
-        externalFx *= 0.01
-        externalFy *= 0.01
+        externalAx *= 0.01
+        externalAy *= 0.01
 
         # Mimic Classic MW behavior. When obstacle density is bigger than
         # 500 [120amu/0.1A^2], it is considered to be fixed
@@ -191,7 +191,7 @@ parseMML = (mmlString) ->
           x, y,
           height, width,
           vx, vy,
-          externalFx, externalFy,
+          externalAx, externalAy,
           friction,
           mass,
           westProbe, northProbe, eastProbe, southProbe,
@@ -867,7 +867,7 @@ parseMML = (mmlString) ->
       json.restraints = unroll restraints, 'atomIndex', 'k', 'x0', 'y0'
 
     if obstacles.length > 0
-      json.obstacles = unroll obstacles, 'x', 'y', 'vx', 'vy', 'externalFx', 'externalFy', 'friction',
+      json.obstacles = unroll obstacles, 'x', 'y', 'vx', 'vy', 'externalAx', 'externalAy', 'friction',
         'height', 'width', 'mass', 'westProbe', 'northProbe', 'eastProbe', 'southProbe', 'color', 'visible'
 
     # Remove some properties from the final serialized model.

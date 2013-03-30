@@ -347,13 +347,13 @@ define(function() {
         defaultValue: 0,
         unitType: "velocity"
       },
-      // External horizontal force, per mass unit (i.e., despite the name it's an acceleration)
-      externalFx: {
+      // Externally applied horizontal acceleration
+      externalAx: {
         defaultValue: 0,
         unitType: "acceleration"
       },
-      // External vertical force, per mass unit.
-      externalFy: {
+      // Externally applied vertical acceleration
+      externalAy: {
         defaultValue: 0,
         unitType: "accleration"
       },

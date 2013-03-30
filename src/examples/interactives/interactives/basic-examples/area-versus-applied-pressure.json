@@ -36,7 +36,7 @@
                    "    height = getObstacleProperties(0).height,",
                    "    mass   = getObstacleProperties(0).mass,",
                    "    ax     = value * height * MW_FORCE_UNITS_PER_PICONEWTON / mass;",
-                   "setObstacleProperties(0, { externalFx: -ax });"],
+                   "setObstacleProperties(0, { externalAx: -ax });"],
       "initialValue": 60
     }
   ],
