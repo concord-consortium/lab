@@ -115,6 +115,32 @@
             "strokeOpacity": 0,
             "backgroundColor": "rgba(255,32,32,0.2)",
             "layer": 1
+          },
+          {
+            "text": "Smaller Centered Text in Larger Frame that Wraps",
+            "x": 2.7,
+            "y": 1.4,
+            "width": 1.0,
+            "height": 0.4,
+            "textAlign": "center",
+            "fontScale": 0.6,
+            "frame": "rounded rectangle",
+            "strokeOpacity": 0,
+            "backgroundColor": "rgba(32,255,32,0.2)",
+            "layer": 1
+          },
+          {
+            "text": "Smaller Text in Larger Frame",
+            "x": 0.2,
+            "y": 2.1,
+            "width": 1.0,
+            "height": 0.3,
+            "textAlign": "center",
+            "fontScale": 0.6,
+            "frame": "rounded rectangle",
+            "strokeOpacity": 0,
+            "backgroundColor": "rgba(255,32,32,0.2)",
+            "layer": 1
           }
         ]
       }

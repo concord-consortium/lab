@@ -526,6 +526,7 @@ define(function() {
         defaultValue: 1
       },
       width: {},
+      height: {},
       frame: {},
       color: {},
       backgroundColor: {
