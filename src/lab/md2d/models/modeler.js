@@ -552,6 +552,44 @@ define(function(require) {
       dispatch.invalidation();
     }
 
+    /**
+      Executes the closure 'extract' which extracts from the tick history, then dispatches
+      addAtom/removeAtom, etc, events as needed.
+
+      This prevents unneessary creation and removal of atoms.
+    */
+    var runAndDispatchObjectNumberChanges = (function() {
+      var objects = [{
+        getNum: 'getNumberOfAtoms',
+        addEvent: 'addAtom',
+        removeEvent: 'removeAtom'
+      }, {
+        getNum: 'getNumberOfRadialBonds',
+        addEvent: 'addRadialBond',
+        removeEvent: 'removeRadialBond'
+      }];
+
+      return function (extract) {
+        var i, o, newNum;
+        for (i = 0; i < objects.length; i++) {
+          o = objects[i];
+          o.num = engine[o.getNum]();
+        }
+
+        extract();
+
+        for (i = 0; i < objects.length; i++) {
+          o = objects[i];
+          newNum = engine[o.getNum]();
+          if (newNum > o.num) {
+            dispatch[o.addEvent]();
+          } else if (newNum < o.num) {
+            dispatch[o.removeEvent]();
+          }
+        }
+      };
+    })();
+
     function deleteOutputPropertyCachedValues() {
       var i, output;
 
@@ -825,43 +863,49 @@ define(function(require) {
       if (!arguments.length) { location = 0; }
       stopped = true;
       newStep = false;
-      tickHistory.seekExtract(location);
-      updateAllOutputProperties();
-      dispatch.seek();
+      runAndDispatchObjectNumberChanges(function() {
+        tickHistory.seekExtract(location);
+        updateAllOutputProperties();
+        dispatch.seek();
+      });
       return tickHistory.get("counter");
     };
 
     model.stepBack = function(num) {
       if (!arguments.length) { num = 1; }
-      var i, index;
       stopped = true;
       newStep = false;
-      i=-1; while(++i < num) {
-        index = tickHistory.get("index");
-        if (index > 0) {
-          tickHistory.decrementExtract();
-          updateAllOutputProperties();
-          dispatch.stepBack();
+      runAndDispatchObjectNumberChanges(function() {
+        var i, index;
+        i=-1; while(++i < num) {
+          index = tickHistory.get("index");
+          if (index > 0) {
+            tickHistory.decrementExtract();
+            updateAllOutputProperties();
+            dispatch.stepBack();
+          }
         }
-      }
+      });
       return tickHistory.get("counter");
     };
 
     model.stepForward = function(num) {
       if (!arguments.length) { num = 1; }
-      var i, index, size;
       stopped = true;
-      i=-1; while(++i < num) {
-        index = tickHistory.get("index");
-        size = tickHistory.get("length");
-        if (index < size-1) {
-          tickHistory.incrementExtract();
-          updateAllOutputProperties();
-          dispatch.stepForward();
-        } else {
-          tick();
+      runAndDispatchObjectNumberChanges(function() {
+        var i, index, size;
+        i=-1; while(++i < num) {
+          index = tickHistory.get("index");
+          size = tickHistory.get("length");
+          if (index < size-1) {
+            tickHistory.incrementExtract();
+            updateAllOutputProperties();
+            dispatch.stepForward();
+          } else {
+            tick();
+          }
         }
-      }
+      });
       return tickHistory.get("counter");
     };
 
