@@ -506,7 +506,8 @@ define(function(require) {
       }
 
       for (i = 0; i < outputNames.length; i++) {
-        if (l = listeners[outputNames[i]]) {
+        l = listeners[outputNames[i]];
+        if (l) {
           for (j = 0; j < l.length; j++) {
             l[j]();
           }
