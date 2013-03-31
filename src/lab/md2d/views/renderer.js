@@ -859,8 +859,8 @@ define(function (require) {
             },
             "width": 0,
             "height": 0,
-            "rx": function(d) { return d.frame === "rounded rectangle" ? textBoxFontSizeInPixels/6  : 0; },
-            "ry": function(d) { return d.frame === "rounded rectangle" ? textBoxFontSizeInPixels/5 : 0; },
+            "rx": function(d) { return d.frame === "rounded rectangle" ? textBoxFontSizeInPixels/2.5  : 0; },
+            "ry": function(d) { return d.frame === "rounded rectangle" ? textBoxFontSizeInPixels/2 : 0; },
             "x":  function(d) { return getTextBoxCoords(d)[2]; },
             "y":  function(d) { return getTextBoxCoords(d)[3]; }
           });
@@ -923,7 +923,7 @@ define(function (require) {
 
         dy = fontSize*1.2;
         horizontalPadding = +fontSize*1.5;
-        verticalPadding = fontSize/2;
+        verticalPadding = fontSize/1.8;
 
         if (width === '') {
           width = -1;
