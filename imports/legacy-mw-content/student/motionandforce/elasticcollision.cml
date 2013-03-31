@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Collisons result from interactions.</page_title>
+<text>Collisons result from interactions.
+
+ 
+ 
+ 
+
+This simple simulation shows that collisions result from the Lennard-Jones interactions between molecules. When there is a collision, a spike will appear in the above potential energy curve.</text>
+<section start="0" end="235">
+<paragraph start="0" end="36">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="35">
+<family>Book Antiqua</family><bold>true</bold><size>18</size></content>
+
+<content start="35" end="36">
+<family>Microsoft Sans Serif</family><bold>true</bold><size>18</size></content>
+
+</paragraph>
+<paragraph start="36" end="37">
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="39">
+<Alignment>1</Alignment>
+<content start="37" end="38">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>elasticcollision$0.mml</resource><menubar>false</menubar><button>Toggle Trajectory</button><button>Select Object</button></component></content>
+
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="41">
+<Alignment>1</Alignment>
+<content start="39" end="40">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-1000000" style="0" width="1.0" symbol="1" size="4" spacing="5">Potential Energy/Particle</time_series_y1>
+<autofity>false</autofity>
+<axis_y_min>-0.05</axis_y_min><axis_y_max>0.05</axis_y_max>
+<width>500</width>
+<height>120</height>
+<axis_x_title>Time</axis_x_title>
+<axis_y_title>Potential Energy</axis_y_title>
+<legend_x>280</legend_x>
+<legend_y>25</legend_y>
+<legend_font_name>Arial</legend_font_name>
+<legend_font_style>0</legend_font_style>
+<legend_font_size>9</legend_font_size>
+<axis_font_name>Arial</axis_font_name>
+<axis_font_size>9</axis_font_size>
+<axis_font_style>0</axis_font_style>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<toolbar>false</toolbar>
+<model>0</model>
+</component></content>
+
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="43">
+<Alignment>1</Alignment>
+<content start="41" end="42">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show distance vs. time</title>
+<tooltip>Show distance vs. time</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<disabled_at_script>true</disabled_at_script>
+<script>plot &quot;sqrt((%atom[0].rx-%atom[1].rx)*(%atom[0].rx-%atom[1].rx)+(%atom[0].ry-%atom[1].ry)*(%atom[0].ry-%atom[1].ry))&quot;;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="42" end="43">
+</content>
+
+</paragraph>
+<paragraph start="43" end="44">
+<LeftIndent>6.0</LeftIndent>
+<content start="43" end="44">
+</content>
+
+</paragraph>
+<paragraph start="44" end="235">
+<LeftIndent>6.0</LeftIndent>
+<content start="44" end="234">
+</content>
+
+</paragraph>
+</section>
+</document>

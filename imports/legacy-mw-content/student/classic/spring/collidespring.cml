@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Collision between a free mass and a mass connected to a spring</page_title>
+<text>Collision between a free mass and a mass connected to a spring
+  
+ 
+
+Related simulation: A mass connected to a spring
+Related simulation: A mass connected to two springs
+Related simulation: A mass hung on a sping
+
+</text>
+<section start="0" end="215">
+<paragraph start="0" end="63">
+<SpaceAbove>6.0</SpaceAbove>
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="0" end="62">
+<size>15</size><bold>true</bold><family>Trebuchet MS</family></content>
+
+<content start="62" end="63">
+</content>
+
+</paragraph>
+<paragraph start="63" end="66">
+<Alignment>1</Alignment>
+<content start="63" end="64">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>collidespring$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="64" end="65">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-1000000" style="0" width="1.0" symbol="0" size="4" spacing="5">Rx: 0Ck</time_series_y1>
+<autofity>false</autofity>
+<axis_y_min>100.0</axis_y_min>
+<axis_y_max>200.0</axis_y_max>
+<width>300</width>
+<height>360</height>
+<axis_x_title>Time</axis_x_title>
+<axis_y_title>x coordinate of the middle mass</axis_y_title>
+<legend_x>600</legend_x>
+<legend_y>141</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<toolbar>false</toolbar>
+</component></content>
+
+<content start="65" end="66">
+</content>
+
+</paragraph>
+<paragraph start="66" end="68">
+<Alignment>1</Alignment>
+<content start="66" end="67">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Friction</title>
+<tooltip>Apply friction force</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select atom 0;
+damp 0.05;
+select atom none;</script>
+<script2>select atom 0;
+damp 0;
+select atom none;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="67" end="68">
+</content>
+
+</paragraph>
+<paragraph start="68" end="69">
+<LeftIndent>6.0</LeftIndent>
+<content start="68" end="69">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="69" end="118">
+<LeftIndent>6.0</LeftIndent>
+<content start="69" end="89">
+<size>10</size></content>
+
+<content start="89" end="117">
+<size>10</size><href>spring.cml</href></content>
+
+<content start="117" end="118">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="118" end="170">
+<LeftIndent>6.0</LeftIndent>
+<content start="118" end="138">
+<size>10</size></content>
+
+<content start="138" end="169">
+<size>10</size><href>twosprings.cml</href></content>
+
+<content start="169" end="170">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="170" end="213">
+<LeftIndent>6.0</LeftIndent>
+<content start="170" end="190">
+<size>10</size></content>
+
+<content start="190" end="212">
+<size>10</size><href>hangspring.cml</href></content>
+
+<content start="212" end="213">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="213" end="214">
+<content start="213" end="214">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="214" end="215">
+</paragraph>
+</section>
+</document>

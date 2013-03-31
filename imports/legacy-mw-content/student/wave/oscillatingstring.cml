@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Oscillating String</page_title>
+<text>
+Oscillating String
+
+Use the buttons to make this chain of atoms oscillate like a guitar string.   
+
+ 
+
+   
+    
+
+Notes: It would be great to show the different modes of vibration with this.  Plucking the whole string gives you the 1st mode.  The &quot;excite to 2nd mode&quot; button pushes half the string down and half up, to force it into that mode.
+
+</text>
+<section start="0" end="346">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="20">
+<Alignment>1</Alignment>
+<content start="1" end="19">
+<bold>true</bold><family>Century Gothic</family><size>20</size></content>
+
+<content start="19" end="20">
+<bold>true</bold></content>
+
+</paragraph>
+<paragraph start="20" end="21">
+<Alignment>1</Alignment>
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="100">
+<Alignment>1</Alignment>
+<content start="21" end="100">
+<family>Century Gothic</family></content>
+
+</paragraph>
+<paragraph start="100" end="101">
+<Alignment>1</Alignment>
+<content start="100" end="101">
+</content>
+
+</paragraph>
+<paragraph start="101" end="103">
+<Alignment>1</Alignment>
+<content start="101" end="102">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>oscillatingstring$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="102" end="103">
+</content>
+
+</paragraph>
+<paragraph start="103" end="104">
+<Alignment>1</Alignment>
+<content start="103" end="104">
+</content>
+
+</paragraph>
+<paragraph start="104" end="108">
+<Alignment>1</Alignment>
+<content start="104" end="105">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Pluck whole string</title>
+<border>Raised Bevel</border>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select element 0;
+set vy 300;
+select element none;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="105" end="106">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Strike one end</title>
+<border>Raised Bevel</border>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select atom 35-40;
+set vy 300;
+select atom none;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="106" end="107">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Excite to 2nd mode</title>
+<border>Raised Bevel</border>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select atom within (20, 0, 20, 25);
+set vy 250;
+select atom within (0, 0, 20, 25); 
+set vy -250;
+select atom none;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="107" end="108">
+</content>
+
+</paragraph>
+<paragraph start="108" end="113">
+<Alignment>1</Alignment>
+<content start="108" end="109">
+</content>
+
+<content start="109" end="110">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Pin in middle</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select atom 10; 
+set movable off;
+select atom none;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="110" end="111">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Pin 1/3 from end</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select atom 18;
+set movable off;
+select atom none;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="111" end="112">
+<component><class>org.concord.modeler.PageButton</class>
+<title>No pinning</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select element 0;
+set movable on;
+select atom none;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="112" end="113">
+</content>
+
+</paragraph>
+<paragraph start="113" end="114">
+<Alignment>1</Alignment>
+<content start="113" end="114">
+</content>
+
+</paragraph>
+<paragraph start="114" end="344">
+<LeftIndent>20.0</LeftIndent>
+<content start="114" end="119">
+<bold>true</bold><family>Century Gothic</family></content>
+
+<content start="119" end="344">
+<family>Century Gothic</family></content>
+
+</paragraph>
+<paragraph start="344" end="345">
+<content start="344" end="345">
+</content>
+
+</paragraph>
+<paragraph start="345" end="346">
+</paragraph>
+</section>
+</document>

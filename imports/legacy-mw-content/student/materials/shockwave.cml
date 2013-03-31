@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Shock wave propagation</page_title>
+<referenced_files>hexshockwave_planewave.mml,
+hexshockwave_ellipticalwave.mml,
+hexshockwave_hexagonalwave.mml,
+hexshockwave_thermalexpansion.mml,
+hexshockwave_defect.mml,
+hexshockwave_stronginterface.mml,
+hexshockwave_weakinterface.mml,
+hexshockwave_reflect.mml,
+hexshockwave_collide.mml,
+hexshockwave_meltingfront.mml,
+recshockwave.mml</referenced_files>
+<text>Shock wave propagation
+ 
+ 
+    
+
+Observe the density waves and pressure waves.
+
+
+
+</text>
+<section start="0" end="83">
+<paragraph start="0" end="23">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="22">
+<size>15</size><bold>true</bold></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="25">
+<Alignment>1</Alignment>
+<content start="23" end="24">
+<component><class>org.concord.modeler.PageComboBox</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Execute MW script</action>
+<script>{option=&quot;Hexagonal structure: plane wave&quot;, script=&quot;load hexshockwave_planewave.mml&quot;}
+{option=&quot;Hexagonal structure: elliptical wave&quot;, script=&quot;load hexshockwave_ellipticalwave.mml&quot;}
+{option=&quot;Hexagonal structure: hexagonal wave&quot;, script=&quot;load hexshockwave_hexagonalwave.mml&quot;}
+{option=&quot;Hexagonal structure: lateral thermal expansion&quot;, script=&quot;load hexshockwave_thermalexpansion.mml&quot;}
+{option=&quot;Hexagonal structure: encountering defects&quot;, script=&quot;load hexshockwave_defect.mml&quot;}
+{option=&quot;Hexagonal structure: encountering a strong interface&quot;, script=&quot;load hexshockwave_stronginterface.mml&quot;}
+{option=&quot;Hexagonal structure: encountering a weak interface&quot;, script=&quot;load hexshockwave_weakinterface.mml&quot;}
+{option=&quot;Hexagonal structure: collision of two plane waves&quot;, script=&quot;load hexshockwave_reflect.mml&quot;}
+{option=&quot;Hexagonal structure: collision of two elliptical waves&quot;, script=&quot;load hexshockwave_collide.mml&quot;}
+{option=&quot;Hexagonal structure: a destructive wave&quot;, script=&quot;load hexshockwave_meltingfront.mml&quot;}
+{option=&quot;Rectangular structure: from center&quot;, script=&quot;load recshockwave.mml&quot;}
+</script>
+<disabled_at_script>true</disabled_at_script>
+<tooltip>Load a structure</tooltip>
+</component></content>
+
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="27">
+<Alignment>1</Alignment>
+<content start="25" end="26">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>shockwave$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="32">
+<Alignment>1</Alignment>
+<content start="27" end="28">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Momentum Vector</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Momentum Vector</action>
+</component></content>
+
+<content start="28" end="29">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Force Vector</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Force Vector</action>
+</component></content>
+
+<content start="29" end="30">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>K. E. Shading</title>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>K. E. Shading</action>
+</component></content>
+
+<content start="30" end="31">
+<component><class>org.concord.modeler.PageComboBox</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Display Style</action>
+</component></content>
+
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="33">
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="79">
+<LeftIndent>8.0</LeftIndent>
+<content start="33" end="79">
+</content>
+
+</paragraph>
+<paragraph start="79" end="80">
+<content start="79" end="80">
+</content>
+
+</paragraph>
+<paragraph start="80" end="81">
+<content start="80" end="81">
+</content>
+
+</paragraph>
+<paragraph start="81" end="82">
+<content start="81" end="82">
+</content>
+
+</paragraph>
+<paragraph start="82" end="83">
+</paragraph>
+</section>
+</document>

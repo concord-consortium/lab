@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Debye Sheath</page_title>
+<text>
+Debye Sheath
+
+ 
+
+The Debye sheath is a layer in a plasma which has a greater density of positive ions that balances an opposite negative charge in the surface of a material in which it is in contact. This occurs in plasma because the electrons move much faster and have a higher probability of being conducted into the wires. The thickness of the sheath depends on the temperature (and clearly the density of ions).</text>
+<section start="0" end="417">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="14">
+<Alignment>1</Alignment>
+<content start="1" end="13">
+<bold>true</bold><size>20</size></content>
+
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="15">
+<Alignment>1</Alignment>
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="17">
+<Alignment>1</Alignment>
+<content start="15" end="16">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>debyesheath$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="18">
+<Alignment>1</Alignment>
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="417">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>20.0</LeftIndent>
+<content start="18" end="416">
+</content>
+
+</paragraph>
+</section>
+</document>

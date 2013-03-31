@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>The dance of two molecules</page_title>
+<text>The Dance of Two Molecules
+
+ 
+    </text>
+<section start="0" end="35">
+<paragraph start="0" end="27">
+<content start="0" end="26">
+<size>16</size><bold>true</bold></content>
+
+<content start="26" end="27">
+<size>18</size><bold>true</bold><family>Microsoft Sans Serif</family></content>
+
+</paragraph>
+<paragraph start="27" end="28">
+<content start="27" end="28">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="28" end="30">
+<Alignment>1</Alignment>
+<content start="28" end="29">
+<size>14</size><component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>micelle$0.mml</resource><button>Mark Object</button><button>Toggle Trajectory</button><button>Select Object</button><button>What's This?</button><button>Measure Distance</button><button>Drag Object</button><button>Rotate Object</button><button>Count Objects</button></component></content>
+
+<content start="29" end="30">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="30" end="35">
+<Alignment>1</Alignment>
+<content start="30" end="31">
+<size>14</size><component><class>org.concord.modeler.PageComboBox</class>
+<model>0</model>
+<selectedIndex>1</selectedIndex>
+<action>Display Style</action>
+</component></content>
+
+<content start="31" end="32">
+<size>14</size><component><class>org.concord.modeler.PageCheckBox</class>
+<title>Kinetic Energy Shading</title>
+<model>0</model>
+<action>K. E. Shading</action>
+</component></content>
+
+<content start="32" end="33">
+<size>14</size><component><class>org.concord.modeler.PageCheckBox</class>
+<title>Acceleration Vector</title>
+<model>0</model>
+<action>Acceleration Vector</action>
+</component></content>
+
+<content start="33" end="34">
+<size>14</size><component><class>org.concord.modeler.PageCheckBox</class>
+<title>Velocity Vector</title>
+<model>0</model>
+<action>Velocity Vector</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

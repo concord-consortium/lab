@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Lorentz Force 3D</page_title>
+<text>Lorentz Force 3D
+ 
+  
+Watch how a charged particle moves in a magnetic field.</text>
+<section start="0" end="78">
+<paragraph start="0" end="17">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="0" end="16">
+<italic>true</italic><size>20</size><family>Book Antiqua</family><bold>true</bold></content>
+
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="19">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="17" end="18">
+<component><class>org.concord.modeler.PageMd3d</class><resource>lorentzforce3d$0.mdd</resource><coordinate>lorentzforce3d$0.xyz</coordinate><width>500</width><height>400</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="22">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="19" end="20">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<value>46.0</value>
+<minimum>0.0</minimum>
+<maximum>100.0</maximum>
+<nstep>50</nstep>
+<title>Magnetic field intensity</title>
+<width>300</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;100.0&quot;, label=&quot;Maximum&quot;}{value=&quot;0.0&quot;, label=&quot;0&quot;}</labeltable>
+<script>set bfield 0, 0, %val*0.1; </script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="20" end="21">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<value>48.0</value>
+<minimum>-100.0</minimum>
+<maximum>100.0</maximum>
+<nstep>50</nstep>
+<title>Particle speed in line with field</title>
+<width>300</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;-100.0&quot;, label=&quot;-500 m/s&quot;}{value=&quot;100.0&quot;, label=&quot;500 m/s&quot;}{value=&quot;0.0&quot;, label=&quot;0&quot;}</labeltable>
+<script>select atom 0;
+set vz %val*5;
+select atom none;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="78">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="22" end="77">
+</content>
+
+</paragraph>
+</section>
+</document>

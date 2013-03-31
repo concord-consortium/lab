@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Visualizing osmotic pressure in an osmotic equilibrium </page_title>
+<bg_color><Red>245</Red><Green>224</Green><Blue>218</Blue></bg_color>
+<text> 
+ 
+
+The initial state of this model shows an osmotic equilibrium between a solution and a pure solvent through a semipermeable membrane. This model is very abstract. The solute molecules and solvent molecules are represented by the Lennard-Jones particles. The membrane is represented by a chain of Lennard-Jones particles that are connected by springs, with its two ends anchored down in the middle line of the container (this membrane model is inspired by Murad and Powles). Although real solutions and semipermeable membranes are much more complex than this abstract model, the basic physics should be the same as considered in this model.
+
+Calibrating the membrane: The membrane, on average, bends to the pure solvent side (the right side). The force that bends the membrane is the osmotic pressure. To prove this, you can remove all the solute and solvent particles using the corresponding button below and the membrane will oscillate between the two sides without significantly favoring one side. If you are not convinced by just staring at the motion of the membrane, hit the button right below the model&apos;s window to calculate the mean X position averaged from all the membrane particles. The result will pop out on the Script Console to the right of the model&apos;s window. If you remove all the solute particles using the corresponding button, you will see a similar result after a longer time of simulation. These two special cases can be regarded as the calibration of the membrane, which ensures what we see in the osmosis simulation is a valid result.
+
+An interesting experiment is to remove all the solvent particles (using the corresponding button below). The question to ask in this case is: does the membrane bend to the same extent in the absence of solvent as in the presence of solvent?
+
+The simulation results of this model seem to favor the traditional theory based on van&apos;t Hoff&apos;s Law of Osmosis that the osmotic pressure is mainly caused by the collisions of solute particles onto the membrane. For an excellent explanation and illustration of this theory, see D. R. Finley, Osmosis Demystified - How It Works
+
+Green particle=solute; blue particle=solvent; white particle=membrane
+ 
+   
+   
+
+Tech note: A heat bath is applied in this demo. However, further simulations show that the results hold true without it (i.e. NVE or microcanonical simulation). In the absence of a heat bath, the total energy of this system is perfectly conserved, meaning that osmosis can emerge from the Newtonian dynamics without the possible artifact caused by a heat bath.
+
+
+ 
+
+
+
+</text>
+<section start="0" end="2582">
+<paragraph start="0" end="2">
+<SpaceAbove>10.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="0" end="1">
+<icon><class>org.concord.modeler.text.LineIcon</class><height>50</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;&lt;table width=&quot;100%&quot; align=&quot;center&quot;&gt;
+&lt;tr&gt;
+&lt;td align=&quot;center&quot;&gt;
+&lt;b&gt;&lt;font size=&quot;5&quot; face=&quot;Trebuchet MS&quot;&gt;Visualizing osmotic pressure in an osmotic equilibrium&lt;/font&gt;&lt;/b&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;</title><bgcolor>-a485c</bgcolor><leftmargin>75</leftmargin><rightmargin>75</rightmargin></icon></content>
+
+<content start="1" end="2">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><height>40</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;&lt;body face=&quot;Trebuchet MS&quot;&gt;&lt;table width=&quot;100%&quot;&gt;
+&lt;tr&gt;
+&lt;td width=&quot;50&quot;&gt;
+&lt;a href=&quot;timeline.cml&quot;&gt;&lt;img src=&quot;previous.png&quot; border=&quot;0&quot;&gt;&lt;/a&gt;
+&lt;/td&gt;
+&lt;td width=&quot;50&quot;&gt;
+&lt;a href=&quot;index.cml&quot;&gt;&lt;img src=&quot;index.png&quot; border=&quot;0&quot;&gt;&lt;/a&gt;
+&lt;/td&gt;
+&lt;td width=&quot;50&quot;&gt;
+&lt;a href=&quot;demo2.cml&quot;&gt;&lt;img src=&quot;next.png&quot; border=&quot;0&quot;&gt;&lt;/a&gt;
+&lt;/td&gt;
+&lt;td&gt;
+
+&lt;table width=&quot;98%&quot;&gt;
+&lt;tr&gt;
+&lt;td width=40% bgcolor=&quot;#F4B7A4&quot;&gt;
+Charles Xie
+&lt;/td&gt;
+&lt;td align=right bgcolor=&quot;#F4DFD9&quot;&gt;
+&lt;a href=&quot;../../monograph.cml&quot;&gt;&lt;img src=&quot;arrow.gif&quot; border=&quot;0&quot;&gt;&lt;/a&gt;
+&lt;td width=40% bgcolor=&quot;#F4DFD9&quot;&gt;&amp;nbsp;Interactive Essays&amp;nbsp;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;</title><bgcolor>-a8db7</bgcolor><leftmargin>75</leftmargin><rightmargin>75</rightmargin></icon></content>
+
+<content start="3" end="4">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4" end="5">
+<LeftIndent>8.0</LeftIndent>
+<content start="4" end="5">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5" end="644">
+<LeftIndent>75.0</LeftIndent>
+<RightIndent>75.0</RightIndent>
+<content start="5" end="644">
+</content>
+
+</paragraph>
+<paragraph start="644" end="645">
+<LeftIndent>75.0</LeftIndent>
+<RightIndent>75.0</RightIndent>
+<content start="644" end="645">
+</content>
+
+</paragraph>
+<paragraph start="645" end="1562">
+<LeftIndent>75.0</LeftIndent>
+<RightIndent>75.0</RightIndent>
+<content start="645" end="669">
+<bold>true</bold></content>
+
+<content start="669" end="1135">
+</content>
+
+<content start="1135" end="1195">
+<bold>true</bold></content>
+
+<content start="1195" end="1562">
+</content>
+
+</paragraph>
+<paragraph start="1562" end="1563">
+<LeftIndent>75.0</LeftIndent>
+<RightIndent>75.0</RightIndent>
+<content start="1562" end="1563">
+</content>
+
+</paragraph>
+<paragraph start="1563" end="1804">
+<LeftIndent>75.0</LeftIndent>
+<RightIndent>75.0</RightIndent>
+<content start="1563" end="1705">
+</content>
+
+<content start="1705" end="1803">
+<bold>true</bold></content>
+
+<content start="1803" end="1804">
+</content>
+
+</paragraph>
+<paragraph start="1804" end="1805">
+<LeftIndent>75.0</LeftIndent>
+<RightIndent>75.0</RightIndent>
+<content start="1804" end="1805">
+</content>
+
+</paragraph>
+<paragraph start="1805" end="2131">
+<LeftIndent>75.0</LeftIndent>
+<RightIndent>75.0</RightIndent>
+<content start="1805" end="2096">
+</content>
+
+<content start="2096" end="2130">
+<href>http://alienryderflex.com/osmosis/</href></content>
+
+<content start="2130" end="2131">
+</content>
+
+</paragraph>
+<paragraph start="2131" end="2132">
+<LeftIndent>75.0</LeftIndent>
+<RightIndent>75.0</RightIndent>
+<content start="2131" end="2132">
+</content>
+
+</paragraph>
+<paragraph start="2132" end="2202">
+<Alignment>1</Alignment>
+<LeftIndent>75.0</LeftIndent>
+<RightIndent>75.0</RightIndent>
+<content start="2132" end="2201">
+<bold>true</bold></content>
+
+<content start="2201" end="2202">
+</content>
+
+</paragraph>
+<paragraph start="2202" end="2204">
+<Alignment>1</Alignment>
+<LeftIndent>75.0</LeftIndent>
+<RightIndent>75.0</RightIndent>
+<content start="2202" end="2203">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>demo1$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="2203" end="2204">
+</content>
+
+</paragraph>
+<paragraph start="2204" end="2208">
+<Alignment>1</Alignment>
+<LeftIndent>75.0</LeftIndent>
+<RightIndent>75.0</RightIndent>
+<content start="2204" end="2205">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show average positions of the membrane particles</title>
+<tooltip>Show average positions of the membrane particles</tooltip>
+<disabled_at_script>true</disabled_at_script>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select element 0;
+avpos on;
+select element none;</script>
+<script2>select element 0;
+avpos off;
+select element none;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="2205" end="2206">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Mark solvent molecules in the left compartment</title>
+<tooltip>Mark solvent molecules in the left compartment</tooltip>
+<border>Raised Bevel</border>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>show selectionhalo off;
+select element 2 within (0, 0, &quot;0.5*%width&quot;, %height);
+mark;
+delay 0.5;
+select element none;
+show selectionhalo on;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="2206" end="2207">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<tooltip>Reset</tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>load demo1$0.mml;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="2207" end="2208">
+</content>
+
+</paragraph>
+<paragraph start="2208" end="2212">
+<Alignment>1</Alignment>
+<LeftIndent>75.0</LeftIndent>
+<RightIndent>75.0</RightIndent>
+<content start="2208" end="2209">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Remove all solute and solvent particles</title>
+<tooltip>Remove all solute and solvent particles</tooltip>
+<border>Raised Bevel</border>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>select element 1, 2;
+remove;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="2209" end="2210">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Remove all solvent particles</title>
+<tooltip>Remove all solvent particles</tooltip>
+<border>Raised Bevel</border>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>select element 2;
+remove;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="2210" end="2211">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Remove all solute particles</title>
+<tooltip>Remove all solute particles</tooltip>
+<border>Raised Bevel</border>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>select element 1;
+remove;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="2211" end="2212">
+</content>
+
+</paragraph>
+<paragraph start="2212" end="2213">
+<LeftIndent>75.0</LeftIndent>
+<RightIndent>75.0</RightIndent>
+<content start="2212" end="2213">
+</content>
+
+</paragraph>
+<paragraph start="2213" end="2574">
+<LeftIndent>75.0</LeftIndent>
+<RightIndent>75.0</RightIndent>
+<content start="2213" end="2223">
+<bold>true</bold></content>
+
+<content start="2223" end="2574">
+</content>
+
+</paragraph>
+<paragraph start="2574" end="2575">
+<LeftIndent>75.0</LeftIndent>
+<RightIndent>75.0</RightIndent>
+<content start="2574" end="2575">
+</content>
+
+</paragraph>
+<paragraph start="2575" end="2576">
+<LeftIndent>75.0</LeftIndent>
+<RightIndent>75.0</RightIndent>
+<content start="2575" end="2576">
+</content>
+
+</paragraph>
+<paragraph start="2576" end="2578">
+<Alignment>1</Alignment>
+<content start="2576" end="2577">
+<icon><class>org.concord.modeler.text.LineIcon</class><height>40</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;&lt;body face=&quot;Trebuchet MS&quot;&gt;&lt;table width=&quot;100%&quot;&gt;
+&lt;tr&gt;
+&lt;td width=&quot;50&quot;&gt;
+&lt;a href=&quot;timeline.cml&quot;&gt;&lt;img src=&quot;previous.png&quot; border=&quot;0&quot;&gt;&lt;/a&gt;
+&lt;/td&gt;
+&lt;td width=&quot;50&quot;&gt;
+&lt;a href=&quot;index.cml&quot;&gt;&lt;img src=&quot;index.png&quot; border=&quot;0&quot;&gt;&lt;/a&gt;
+&lt;/td&gt;
+&lt;td width=&quot;50&quot;&gt;
+&lt;a href=&quot;demo2.cml&quot;&gt;&lt;img src=&quot;next.png&quot; border=&quot;0&quot;&gt;&lt;/a&gt;
+&lt;/td&gt;
+&lt;td&gt;
+
+&lt;table width=&quot;98%&quot;&gt;
+&lt;tr&gt;
+&lt;td width=40% bgcolor=&quot;#F4B7A4&quot;&gt;
+Charles Xie
+&lt;/td&gt;
+&lt;td align=right bgcolor=&quot;#F4DFD9&quot;&gt;
+&lt;a href=&quot;../../monograph.cml&quot;&gt;&lt;img src=&quot;arrow.gif&quot; border=&quot;0&quot;&gt;&lt;/a&gt;
+&lt;td width=40% bgcolor=&quot;#F4DFD9&quot;&gt;&amp;nbsp;Interactive Essays&amp;nbsp;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;</title><bgcolor>-a8db7</bgcolor><leftmargin>75</leftmargin><rightmargin>75</rightmargin></icon></content>
+
+<content start="2577" end="2578">
+</content>
+
+</paragraph>
+<paragraph start="2578" end="2579">
+<content start="2578" end="2579">
+</content>
+
+</paragraph>
+<paragraph start="2579" end="2580">
+<content start="2579" end="2580">
+</content>
+
+</paragraph>
+<paragraph start="2580" end="2581">
+<content start="2580" end="2581">
+</content>
+
+</paragraph>
+<paragraph start="2581" end="2582">
+</paragraph>
+</section>
+</document>

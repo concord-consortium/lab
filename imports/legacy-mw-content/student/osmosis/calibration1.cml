@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Osmosis CSI: Calibration</page_title>
+<text>Osmosis CSI: Calibration
+
+If there are no solutes at all, the membrane should not bend to any side when the system is in equilibrium, i.e. there is no net flux between the two compartments.
+  
+  </text>
+<section start="0" end="196">
+<paragraph start="0" end="25">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="24">
+<bold>true</bold><size>14</size></content>
+
+<content start="24" end="25">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="25" end="26">
+<LeftIndent>8.0</LeftIndent>
+<content start="25" end="26">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="26" end="190">
+<LeftIndent>8.0</LeftIndent>
+<content start="26" end="190">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="190" end="193">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="190" end="191">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>calibration1$0.mml</resource><menubar>false</menubar></component><size>11</size></content>
+
+<content start="191" end="192">
+<component><class>org.concord.modeler.PageScriptConsole</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<width>300</width><height>350</height>
+<border>Raised Bevel</border></component></content>
+
+<content start="192" end="193">
+</content>
+
+</paragraph>
+<paragraph start="193" end="196">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="193" end="194">
+<component><class>org.concord.modeler.PageButton</class>
+<title>compute mean shift of membrane (results will be thrown out on the console)</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>stop;
+delay 1;
+select element 0;
+print &lt;rx&gt;;
+select element none;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="194" end="195">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show confidence index</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Show kinetic, potential and total energies</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

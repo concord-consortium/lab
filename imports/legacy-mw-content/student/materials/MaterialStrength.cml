@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>A virtual bullet experiment on material strength</page_title>
+<text>A virtual bullet experiment on material strength
+
+ 
+   
+
+Instructions: Reset the model to the initial condition, and then adjust the above slider, and redo the collision simulation.
+
+ 
+
+Related simulation: Strength of materials: A free-fall experiment
+Related simulation: Breaking a rubberband
+
+
+</text>
+<section start="0" end="297">
+<paragraph start="0" end="49">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="48">
+<size>14</size><bold>true</bold></content>
+
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="50">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="52">
+<Alignment>1</Alignment>
+<content start="50" end="51">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>MaterialStrength$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="56">
+<Alignment>1</Alignment>
+<content start="52" end="53">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>1.0</value>
+<minimum>0.0</minimum>
+<maximum>10.0</maximum>
+<nstep>50</nstep>
+<title>Strength of interatomic interactions</title>
+<width>400</width>
+<height>70</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;Strong&quot;}{value=&quot;0.0&quot;, label=&quot;Weak&quot;}</labeltable>
+<script>set element[0].epsilon &quot;0.001+%val*0.05&quot;;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="53" end="54">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<bgcolor>-333334</bgcolor>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Reset to the latest saved conditions</action>
+</component></content>
+
+<content start="54" end="55">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Surprise</title>
+<tooltip>Reverse the velocities after one ps and see what happens!</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>run;
+delay modeltime 1000;
+stop immediately;
+loop 1;
+set atom[%loop_count].vx &quot;-%atom[%loop_count].vx&quot;;
+set atom[%loop_count].vy &quot;-%atom[%loop_count].vy&quot;;
+loop %number_of_atoms;
+run;
+delay modeltime 1000;
+stop immediately;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="55" end="56">
+</content>
+
+</paragraph>
+<paragraph start="56" end="57">
+<Alignment>1</Alignment>
+<content start="56" end="57">
+</content>
+
+</paragraph>
+<paragraph start="57" end="182">
+<LeftIndent>8.0</LeftIndent>
+<content start="57" end="182">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="182" end="183">
+<LeftIndent>8.0</LeftIndent>
+<content start="182" end="183">
+</content>
+
+</paragraph>
+<paragraph start="183" end="185">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="183" end="184">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Click here to see an explanation</title>
+<bgcolor>-993400</bgcolor>
+<border>Raised Bevel</border>
+<hint_text>&lt;html&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;The atoms in the material to be bombarded move in the force fields &lt;br&gt;formed by their neighbors. Given the same amount of kinetic energy &lt;br&gt;transferred to the atoms of the material from the incident atom &lt;br&gt;during the impact, the atoms will move less if the interatomic &lt;br&gt;interactions are stronger. The fact that the atoms move less means &lt;br&gt;that they unite more strongly against the impact and the destruction&lt;br&gt;is therefore less.&lt;/font&gt;&lt;/html&gt;</hint_text>
+<action>Hint</action></component></content>
+
+<content start="184" end="185">
+</content>
+
+</paragraph>
+<paragraph start="185" end="186">
+<LeftIndent>8.0</LeftIndent>
+<content start="185" end="186">
+</content>
+
+</paragraph>
+<paragraph start="186" end="252">
+<LeftIndent>8.0</LeftIndent>
+<content start="186" end="206">
+<size>10</size></content>
+
+<content start="206" end="251">
+<href>drop.cml</href><size>10</size></content>
+
+<content start="251" end="252">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="252" end="294">
+<LeftIndent>8.0</LeftIndent>
+<content start="252" end="272">
+<size>10</size></content>
+
+<content start="272" end="293">
+<href>Rubberband.cml</href><size>10</size></content>
+
+<content start="293" end="294">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="294" end="295">
+<LeftIndent>8.0</LeftIndent>
+<content start="294" end="295">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="295" end="296">
+<content start="295" end="296">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="296" end="297">
+</paragraph>
+</section>
+</document>

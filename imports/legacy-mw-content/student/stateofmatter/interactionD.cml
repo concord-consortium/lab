@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Atomic Mass and Melting Point</page_title>
+<text>Atomic Mass and Melting Point
+
+ 
+  
+You can change the atomic mass. At a given temperature and interaction strength, increasing mass will slow down the motion of atoms, and decreasing mass will make them move faster, but there is no tendency that changing mass will result in a change of melting point. Through this activity, student should learn that materials composed of heavier atoms do not have to have higher melting points.
+
+Macro-micro relationship: Mercury is heavy, but it is a liquid at room temperature.
+
+   What does a heat bath mean?
+   What are periodic boundary conditions?
+
+</text>
+<section start="0" end="592">
+<paragraph start="0" end="30">
+<content start="0" end="30">
+<size>15</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="30" end="31">
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="33">
+<Alignment>1</Alignment>
+<content start="31" end="32">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>interactionD$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="32" end="33">
+<italic>true</italic><family>Book Antiqua</family></content>
+
+</paragraph>
+<paragraph start="33" end="36">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="33" end="34">
+<component><class>org.concord.modeler.PageSlider</class>
+<title>Temperature</title>
+<width>300</width>
+<height>70</height>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>500.0</value>
+<minimum>0.0</minimum>
+<maximum>1000.0</maximum>
+<tick>true</tick>
+<nstep>20</nstep>
+<labeltable>{value=&quot;1000.0&quot;, label=&quot;1000 K&quot;}{value=&quot;0.0&quot;, label=&quot;0 K&quot;}</labeltable>
+<change>Temperature</change>
+</component></content>
+
+<content start="34" end="35">
+<component><class>org.concord.modeler.PageSlider</class>
+<title>Mass</title>
+<width>300</width>
+<height>70</height>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>95.0</value>
+<minimum>100.0</minimum>
+<maximum>2000.0</maximum>
+<tick>true</tick>
+<nstep>20</nstep>
+<labeltable>{value=&quot;1995.0&quot;, label=&quot;Heavy&quot;}{value=&quot;95.0&quot;, label=&quot;Light&quot;}</labeltable>
+<change>Element Pl: Mass</change>
+</component></content>
+
+<content start="35" end="36">
+<italic>true</italic><family>Book Antiqua</family></content>
+
+</paragraph>
+<paragraph start="36" end="431">
+<LeftIndent>10.0</LeftIndent>
+<content start="36" end="431">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="431" end="432">
+<LeftIndent>10.0</LeftIndent>
+<content start="431" end="432">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="432" end="516">
+<LeftIndent>10.0</LeftIndent>
+<content start="432" end="516">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="516" end="517">
+<content start="516" end="517">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="517" end="548">
+<LeftIndent>20.0</LeftIndent>
+<content start="517" end="518">
+<icon>org.concord.modeler.text.BulletIcon$SolidSquareBulletIcon</icon></content>
+
+<content start="518" end="520">
+<size>11</size></content>
+
+<content start="520" end="547">
+<href>../../tutorial/heatbath.cml</href><size>11</size></content>
+
+<content start="547" end="548">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="548" end="590">
+<LeftIndent>20.0</LeftIndent>
+<content start="548" end="549">
+<icon>org.concord.modeler.text.BulletIcon$SolidSquareBulletIcon</icon></content>
+
+<content start="549" end="551">
+<size>11</size></content>
+
+<content start="551" end="589">
+<href>../../tutorial/periodic.cml</href><size>11</size></content>
+
+<content start="589" end="590">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="590" end="591">
+<content start="590" end="591">
+</content>
+
+</paragraph>
+<paragraph start="591" end="592">
+</paragraph>
+</section>
+</document>

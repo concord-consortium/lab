@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Gas effusion in a two-compartment container</page_title>
+<bg_gradient><gradient_color1><Red>0</Red><Green>255</Green><Blue>0</Blue></gradient_color1>
+<gradient_color2><Red>255</Red><Green>255</Green><Blue>255</Blue></gradient_color2>
+<gradient_style>1031</gradient_style>
+<gradient_variant>1044</gradient_variant>
+</bg_gradient>
+<text>Gas Effusion in a Two-Compartment Container
+
+ 
+     
+
+Click here to see another effusion experiment.</text>
+<section start="0" end="101">
+<paragraph start="0" end="44">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="43">
+<size>16</size><bold>true</bold></content>
+
+<content start="43" end="44">
+<size>18</size><family>Microsoft Sans Serif</family><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="44" end="45">
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="47">
+<Alignment>1</Alignment>
+<content start="45" end="46">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>effusion$0.mml</resource><recorder>true</recorder><button>Select Object</button><button>Mark Object</button><button>Toggle Trajectory</button><button>What's This?</button><button>Measure Distance</button><button>Count Objects</button><button>Heat Selected Objects</button><button>Cool Selected Objects</button></component></content>
+
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="53">
+<Alignment>1</Alignment>
+<content start="47" end="48">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat</title>
+<bgcolor>-6667</bgcolor>
+<border>Raised Bevel</border>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<step>0.01</step>
+<action>Heat the system up</action>
+</component></content>
+
+<content start="48" end="49">
+</content>
+
+<content start="49" end="50">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Cool</title>
+<bgcolor>-333301</bgcolor>
+<border>Raised Bevel</border>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<step>-0.01</step>
+<action>Cool the system down</action>
+</component></content>
+
+<content start="50" end="51">
+</content>
+
+<content start="51" end="52">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Insert More Particles</title>
+<border>Raised Bevel</border>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<action>Insert Nt</action>
+</component></content>
+
+<content start="52" end="53">
+<italic>true</italic></content>
+
+</paragraph>
+<paragraph start="53" end="54">
+<content start="53" end="54">
+</content>
+
+</paragraph>
+<paragraph start="54" end="101">
+<content start="54" end="60">
+<size>11</size></content>
+
+<content start="60" end="64">
+<href>effusion2.cml</href><size>11</size></content>
+
+<content start="64" end="100">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

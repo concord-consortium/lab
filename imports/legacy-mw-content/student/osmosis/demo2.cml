@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>The effect of hydration on the osmotic pressure</page_title>
+<text>The effect of hydration on the osmotic pressure
+
+The following model shows that if the solute-solvent attraction is strong enough to form a &quot;solvent shell&quot; around each solute, there will still be osmotic pressure, even if the solute molecules do not directly hit the membrane.
+
+ 
+ 
+ </text>
+<section start="0" end="284">
+<paragraph start="0" end="48">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="47">
+<size>14</size><bold>true</bold></content>
+
+<content start="47" end="48">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<LeftIndent>8.0</LeftIndent>
+<content start="48" end="49">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="49" end="277">
+<LeftIndent>8.0</LeftIndent>
+<content start="49" end="277">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="277" end="278">
+<LeftIndent>8.0</LeftIndent>
+<content start="277" end="278">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="278" end="280">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="278" end="279">
+<size>11</size><component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>demo2$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="279" end="280">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="280" end="282">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="280" end="281">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Mark solvent in the left compartment</title>
+<tooltip>Mark solvent in the left compartment</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>show selectionhalo off;
+select element 2 within (0, 0, &quot;0.5*%width&quot;, %height);
+mark;
+delay 0.5;
+select element none;
+show slectionhalo on;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="281" end="282">
+</content>
+
+</paragraph>
+<paragraph start="282" end="284">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="282" end="283">
+<component><class>org.concord.modeler.PageSlider</class>
+<title>Temperature</title>
+<width>400</width>
+<height>70</height>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>600.0</value>
+<minimum>300.0</minimum>
+<maximum>600.0</maximum>
+<tick>true</tick>
+<nstep>50</nstep>
+<labeltable>{value=&quot;498.0&quot;, label=&quot;500 K&quot;}{value=&quot;300.0&quot;, label=&quot;300 K&quot;}{value=&quot;600.0&quot;, label=&quot;600 K&quot;}{value=&quot;402.0&quot;, label=&quot;400 K&quot;}</labeltable>
+<change>Temperature</change>
+</component></content>
+
+</paragraph>
+</section>
+</document>

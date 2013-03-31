@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Rutherford&apos;s experiment</page_title>
+<text>Rutherford&apos;s experiment
+
+ 
+
+
+Instructions:  Click on an alpha particle to adjust its position, or press DELETE to remove it (to adjust the density of incident particles).
+ 
+
+</text>
+<section start="0" end="175">
+<paragraph start="0" end="24">
+<LeftIndent>6.0</LeftIndent>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="0" end="23">
+<family>Broadway</family><bold>true</bold><size>20</size></content>
+
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="25">
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="27">
+<Alignment>1</Alignment>
+<content start="25" end="26">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>rutherford$0.mml</resource><button>Select Object</button><button>What's This?</button><button>Draw Lines</button><button>Draw Rectangle</button><button>Draw Ellipse</button><button>Draw Triangle</button><button>Mark Object</button><button>Count Objects</button><button>Measure Distance</button><button>Toggle Trajectory</button><button>Toggle Average Position</button><button>Add Nt</button><button>Add Pl</button><button>Add Ws</button><button>Add Ck</button><button>Add Diatomic Molecule</button><button>Add Triatomic Molecule</button><button>Add Benzene</button><button>Add Chain Molecule</button><button>Add Obstacle</button><button>Fill Area with Nt Atoms</button><button>Fill Area with Pl Atoms</button><button>Fill Area with Ws Atoms</button><button>Fill Area with Ck Atoms</button><button>Add Rectangular Molecular Surface</button><button>Add Rectangular Molecular Ribbon</button><button>Add Circular Molecular Surface</button><button>Add Circular Molecular Ribbon</button><button>Add Curved Molecular Surface</button><button>Add Curved Molecular Ribbon</button><button>Add Molecular Surface in Free-Form Shape</button><button>Add an Amino Acid to Polypeptide</button><button>Subtract an Amino Acid from Polypeptide</button><button>Add a Nucleotide to DNA</button><button>Subtract a Nucleotide from DNA</button><button>Heat Selected Objects</button><button>Cool Selected Objects</button><button>Add Positive Charge</button><button>Add Negative Charge</button><button>Increase Restraint</button><button>Decrease Restraint</button><button>Increase Damping</button><button>Decrease Damping</button><button>Rotate Object</button><button>Duplicate Object</button><button>Delete Objects</button><button>Setup Boundary</button><button>Change Type</button><button>Change Velocity</button><button>Build Radial Bond</button><button>Create Radial Bond</button><button>Build Angular Bond</button></component></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="28">
+<Alignment>1</Alignment>
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="29">
+<Alignment>1</Alignment>
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="171">
+<LeftIndent>20.0</LeftIndent>
+<content start="29" end="42">
+<bold>true</bold><family>Century Gothic</family><size>13</size></content>
+
+<content start="42" end="170">
+<family>Century Gothic</family><size>13</size></content>
+
+<content start="170" end="171">
+<italic>true</italic><family>Book Antiqua</family></content>
+
+</paragraph>
+<paragraph start="171" end="173">
+<RightIndent>50.0</RightIndent>
+<LeftIndent>50.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="171" end="173">
+</content>
+
+</paragraph>
+<paragraph start="173" end="174">
+<content start="173" end="174">
+</content>
+
+</paragraph>
+<paragraph start="174" end="175">
+</paragraph>
+</section>
+</document>

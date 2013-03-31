@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>3D Demo Simulation: A Benzene Trap</page_title>
+<text>3D Demo Simulation: A Benzene Trap
+
+ 
+ 
+
+This simulation demonstrates that a benzene molecule can be trapped, at low temperature (&lt;100 K), between two xeon atoms by the van der Waals forces among them. When the temperature rises, the benzene molecule can escape the trap.
+
+ 
+Note: This model was created from scratch using the molecular constructor. The C-H and C-C bond lengths were not checked against the real benzene structure. Also, the bond strengths were not checked against infrared data of molecular vibrations. The purpose of this demo is to show that you can sketch up your own molecular world from vacuum. In this case, the structure appears to be simple. The construction, however, may take a little while, because you will need to set up the force fields needed to stablize the structure. These force fields include 6 radial bonds connecting C-C atoms and 6 others connecting C-H atoms, 12 angular bonds maintaining C-C-C or C-C-H angles, and 6 torsional bonds maintaining the planarity of the molecule (C-C-C-C or H-C-C-H torsions).
+
+As a matter o fact, you do not have to create a benzene molecule like what we did here. You can directly import a benzene molecule to the position specified by a mouse click, using the &quot;Drop Molecule&quot; button.
+ 
+
+A variation of this model shows that the benzene molecule can rotate freely about the axis that runs from one xeon atom to another.
+
+Go to butane molecules on a gold surface for another 3D demo.</text>
+<section start="0" end="1456">
+<paragraph start="0" end="35">
+<Alignment>1</Alignment>
+<content start="0" end="34">
+<size>15</size><bold>true</bold></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="38">
+<Alignment>1</Alignment>
+<content start="36" end="37">
+<component><class>org.concord.modeler.PageMd3d</class><resource>benzenetrap$0.mdd</resource><coordinate>benzenetrap$0.xyz</coordinate><width>500</width><height>400</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="40">
+<Alignment>1</Alignment>
+<content start="38" end="39">
+<component><class>org.concord.modeler.PageComboBox</class>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<action>Molecular display style</action>
+</component></content>
+
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="41">
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="272">
+<LeftIndent>10.0</LeftIndent>
+<content start="41" end="272">
+</content>
+
+</paragraph>
+<paragraph start="272" end="273">
+<LeftIndent>10.0</LeftIndent>
+<content start="272" end="273">
+</content>
+
+</paragraph>
+<paragraph start="273" end="275">
+<Alignment>1</Alignment>
+<content start="273" end="274">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.95</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="274" end="275">
+</content>
+
+</paragraph>
+<paragraph start="275" end="1048">
+<LeftIndent>100.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="275" end="279">
+<bold>true</bold></content>
+
+<content start="279" end="1048">
+</content>
+
+</paragraph>
+<paragraph start="1048" end="1049">
+<LeftIndent>100.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="1048" end="1049">
+</content>
+
+</paragraph>
+<paragraph start="1049" end="1258">
+<LeftIndent>100.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="1049" end="1258">
+</content>
+
+</paragraph>
+<paragraph start="1258" end="1260">
+<Alignment>1</Alignment>
+<content start="1258" end="1259">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.95</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1259" end="1260">
+</content>
+
+</paragraph>
+<paragraph start="1260" end="1261">
+<LeftIndent>10.0</LeftIndent>
+<content start="1260" end="1261">
+</content>
+
+</paragraph>
+<paragraph start="1261" end="1393">
+<LeftIndent>10.0</LeftIndent>
+<content start="1261" end="1263">
+</content>
+
+<content start="1263" end="1286">
+<href>benzenetrap2.cml</href></content>
+
+<content start="1286" end="1393">
+</content>
+
+</paragraph>
+<paragraph start="1393" end="1394">
+<LeftIndent>10.0</LeftIndent>
+<content start="1393" end="1394">
+</content>
+
+</paragraph>
+<paragraph start="1394" end="1456">
+<LeftIndent>10.0</LeftIndent>
+<content start="1394" end="1400">
+</content>
+
+<content start="1400" end="1434">
+<href>butaneongold.cml</href></content>
+
+<content start="1434" end="1455">
+</content>
+
+</paragraph>
+</section>
+</document>

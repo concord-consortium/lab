@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Comparison of Gas and Liquid States: A Study Based on Pair Correlations</page_title>
+<text>Comparison of the Gas and Liquid States: A Study Based on Pair Correlations
+
+Scientists sometimes measure a function called pair correlation function, derived from the structure factor obtained from X-ray or neutron diffraction experiments, to analyze the structures of materials. The pair correlation function (PCF) characterizes the distribution of other atoms around an atom in an isotropic structure.
+ 
+In the gas phase, atoms move chaotically in space. But because there exists an attractive force when they get close to one another, the pair correlation function shows a peak, which indicates that atoms still prefer a closer distance than randomly far from each other. Beyond the peak, the function is pretty flat, which means there is no structural preference around an atom beyond that distance. The value of the pair correlation function approaches to unity, meaning there is no correlation.
+
+In the liquid state, besides the first peak around the collision diameter, we see one more significant peak. This means that there is structure formation around an atom in liquid phase: An atom in liquids is surrounded by a dynamical shell structure. We say the shell structure is dynamical because, if viewed on the perspective of an atom, its neighboring atoms do not stay permanently --- they just stay transiently in its vicinity; after a while they leave the atom, the space left behind then occupied by a newcoming atom.
+
+You can use the following two models to verify this picture. Run the simulation until the tape is full. Then STOP the simulation, and click on the &quot;Show pair correlation function&quot; button. It will bring up a new window, in which the PCF will be shown.
+
+ 
+  
+
+ 
+  
+
+Related simulation: Comparison of liquid and solid states</text>
+<section start="0" end="1753">
+<paragraph start="0" end="76">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="75">
+<family>Book Antiqua</family><bold>true</bold><size>18</size></content>
+
+<content start="75" end="76">
+</content>
+
+</paragraph>
+<paragraph start="76" end="77">
+<content start="76" end="77">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="77" end="405">
+<LeftIndent>8.0</LeftIndent>
+<content start="77" end="124">
+<size>11</size></content>
+
+<content start="124" end="149">
+<link_statusbar>false</link_statusbar><link_width>700</link_width><link_fullscreen>false</link_fullscreen><href>../../tutorial/glossary/pcf.cml</href><link_height>400</link_height><link_left>200</link_left><link_menubar>false</link_menubar><link_top>200</link_top><size>11</size><link_toolbar>false</link_toolbar><target>_blank</target><link_resizable>false</link_resizable></content>
+
+<content start="149" end="404">
+<size>11</size></content>
+
+<content start="404" end="405">
+<family>Book Antiqua</family></content>
+
+</paragraph>
+<paragraph start="405" end="407">
+<content start="405" end="406">
+<family>Book Antiqua</family></content>
+
+<content start="406" end="407">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="407" end="902">
+<LeftIndent>8.0</LeftIndent>
+<content start="407" end="902">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="902" end="903">
+<LeftIndent>8.0</LeftIndent>
+<content start="902" end="903">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="903" end="1430">
+<LeftIndent>8.0</LeftIndent>
+<content start="903" end="1430">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1430" end="1431">
+<LeftIndent>8.0</LeftIndent>
+<content start="1430" end="1431">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1431" end="1682">
+<LeftIndent>8.0</LeftIndent>
+<content start="1431" end="1682">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1682" end="1683">
+<LeftIndent>8.0</LeftIndent>
+<content start="1682" end="1683">
+<italic>true</italic><family>Book Antiqua</family></content>
+
+</paragraph>
+<paragraph start="1683" end="1685">
+<Alignment>1</Alignment>
+<content start="1683" end="1684">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>gasliquid$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="1684" end="1685">
+</content>
+
+</paragraph>
+<paragraph start="1685" end="1688">
+<Alignment>1</Alignment>
+<content start="1685" end="1686">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show van der Waals interactions</title>
+<model>0</model>
+<action>Show van der Waals interactions</action>
+</component></content>
+
+<content start="1686" end="1687">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show pair correlation function</title>
+<border>Raised Bevel</border>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<action>Show pair correlation function: Pl-Pl</action>
+</component></content>
+
+<content start="1687" end="1688">
+</content>
+
+</paragraph>
+<paragraph start="1688" end="1689">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="1688" end="1689">
+</content>
+
+</paragraph>
+<paragraph start="1689" end="1691">
+<Alignment>1</Alignment>
+<content start="1689" end="1690">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>gasliquid$1.mml</resource><menubar>false</menubar></component></content>
+
+<content start="1690" end="1691">
+</content>
+
+</paragraph>
+<paragraph start="1691" end="1694">
+<Alignment>1</Alignment>
+<content start="1691" end="1692">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show van der Waals interactions</title>
+<model>1</model>
+<action>Show van der Waals interactions</action>
+</component></content>
+
+<content start="1692" end="1693">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show pair correlation function</title>
+<border>Raised Bevel</border>
+<model>1</model>
+<disabled_at_run>true</disabled_at_run>
+<action>Show pair correlation function: Pl-Pl</action>
+</component></content>
+
+<content start="1693" end="1694">
+</content>
+
+</paragraph>
+<paragraph start="1694" end="1695">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="1694" end="1695">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1695" end="1753">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="1695" end="1715">
+<size>10</size></content>
+
+<content start="1715" end="1752">
+<size>10</size><href>liquidsolid.cml</href></content>
+
+</paragraph>
+</section>
+</document>

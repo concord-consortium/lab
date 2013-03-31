@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>The Relationship between Interaction Strength and Melting Point</page_title>
+<text>The Relationship between Interaction Strength and Melting Point
+
+    
+
+     
+You can change the Interaction Strength (the potential well depth parameter Epsilon). At a given temperature, increasing Epsilon will result in condensation, and decreasing Epsilon will lead to  melting. Through this activity, student should learn that for crystals, higher melting temperature is a result of stronger bonding among atoms.
+
+   What does a heat bath mean?
+   What are periodic boundary conditions?
+
+</text>
+<section start="0" end="492">
+<paragraph start="0" end="64">
+<content start="0" end="64">
+<size>15</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="64" end="65">
+<content start="64" end="65">
+</content>
+
+</paragraph>
+<paragraph start="65" end="70">
+<Alignment>1</Alignment>
+<content start="65" end="66">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>4</row>
+<width>250</width>
+<height>250</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;b&gt;Question&lt;/b&gt; :&lt;br&gt;&lt;br&gt;&lt;font size=&quot;2&quot;&gt;When the interatomic interactions 
+    are stronger, the melting point becomes (please play with the model and 
+    choose from following)&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit><choice>Higher</choice>
+<choice>Lower</choice>
+<choice>Does not change</choice>
+<choice>Unpredictable</choice>
+<answer>0 </answer>
+<opaque>false</opaque>
+</component></content>
+
+<content start="66" end="68">
+</content>
+
+<content start="68" end="69">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>interactionC$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="69" end="70">
+<italic>true</italic><size>11</size></content>
+
+</paragraph>
+<paragraph start="70" end="71">
+<content start="70" end="71">
+</content>
+
+</paragraph>
+<paragraph start="71" end="77">
+<LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
+<RightIndent>100.0</RightIndent>
+<content start="71" end="72">
+<component><class>org.concord.modeler.PageSlider</class>
+<title>Temperature</title>
+<width>250</width>
+<height>70</height>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>400.0</value>
+<minimum>100.0</minimum>
+<maximum>5100.0</maximum>
+<tick>true</tick>
+<nstep>25</nstep>
+<labeltable>{value=&quot;5200.0&quot;, label=&quot;High&quot;}{value=&quot;200.0&quot;, label=&quot;Low&quot;}</labeltable>
+<change>Temperature</change>
+</component></content>
+
+<content start="72" end="74">
+</content>
+
+<content start="74" end="75">
+<size>13</size><bold>true</bold></content>
+
+<content start="75" end="76">
+<component><class>org.concord.modeler.PageSlider</class>
+<title>Potential well depth</title>
+<width>300</width>
+<height>70</height>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.1899999998509884</value>
+<minimum>0.10000000149011612</minimum>
+<maximum>2.0</maximum>
+<tick>true</tick>
+<nstep>20</nstep>
+<labeltable>{value=&quot;1.9949999984353781&quot;, label=&quot;Deep&quot;}{value=&quot;0.0949999999254942&quot;, label=&quot;Shallow&quot;}</labeltable>
+<change>Element Pl: Epsilon</change>
+</component></content>
+
+<content start="76" end="77">
+<italic>true</italic><family>Book Antiqua</family></content>
+
+</paragraph>
+<paragraph start="77" end="416">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="77" end="416">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="416" end="417">
+<content start="416" end="417">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="417" end="448">
+<LeftIndent>40.0</LeftIndent>
+<content start="417" end="418">
+<icon>org.concord.modeler.text.BulletIcon$SolidSquareBulletIcon</icon></content>
+
+<content start="418" end="420">
+<size>11</size></content>
+
+<content start="420" end="447">
+<href>../../tutorial/heatbath.cml</href><size>11</size></content>
+
+<content start="447" end="448">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="448" end="490">
+<LeftIndent>40.0</LeftIndent>
+<content start="448" end="449">
+<icon>org.concord.modeler.text.BulletIcon$SolidSquareBulletIcon</icon></content>
+
+<content start="449" end="451">
+<size>11</size></content>
+
+<content start="451" end="489">
+<href>../../tutorial/periodic.cml</href><size>11</size></content>
+
+<content start="489" end="490">
+</content>
+
+</paragraph>
+<paragraph start="490" end="491">
+<content start="490" end="491">
+</content>
+
+</paragraph>
+<paragraph start="491" end="492">
+</paragraph>
+</section>
+</document>

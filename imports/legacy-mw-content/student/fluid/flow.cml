@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Flowing through a bottleneck</page_title>
+<text>
+Flowing through a bottleneck
+
+ 
+  </text>
+<section start="0" end="36">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="30">
+<Alignment>1</Alignment>
+<content start="1" end="29">
+<family>Trebuchet MS</family><size>16</size><bold>true</bold></content>
+
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="31">
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="33">
+<Alignment>1</Alignment>
+<content start="31" end="32">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>flow$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="36">
+<Alignment>1</Alignment>
+<content start="33" end="34">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Velocity Vector</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Velocity Vector</action>
+</component></content>
+
+<content start="34" end="35">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show Kinetic Energy Distribution</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>show grid 4;</script>
+<script2>show grid -1;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

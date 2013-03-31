@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>A pulley system can help lift heavy loads</page_title>
+<text>A pulley system can help lift heavy loads
+
+ 
+ 
+
+Instruction: Pull the above slider to adjust the weights of the two loads. You will find that in order to lift the left load, the load on the right needs not be heavier. Compare this result with the previous simulation and think why.
+
+Related simulation: Weight balance on a pulley.</text>
+<section start="0" end="331">
+<paragraph start="0" end="42">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<SpaceAbove>3.0</SpaceAbove>
+<content start="0" end="41">
+<family>Trebuchet MS</family><size>15</size><bold>true</bold></content>
+
+<content start="41" end="42">
+</content>
+
+</paragraph>
+<paragraph start="42" end="43">
+<content start="42" end="43">
+</content>
+
+</paragraph>
+<paragraph start="43" end="45">
+<Alignment>1</Alignment>
+<content start="43" end="44">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>pulley2$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="47">
+<Alignment>1</Alignment>
+<content start="45" end="46">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.0</value>
+<minimum>0.0</minimum>
+<maximum>10.0</maximum>
+<nstep>50</nstep>
+<title>Weights of the two loads</title>
+<width>400</width>
+<height>70</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;Right load heavier&quot;}{value=&quot;5.0&quot;, label=&quot;Equal&quot;}{value=&quot;0.0&quot;, label=&quot;Left load heavier&quot;}</labeltable>
+<script>select atom all;
+set vx 0;
+set vy 0;
+select atom none;
+set element[2].mass &quot;2000+(%max-%val)*200&quot;;
+set element[3].mass &quot;2000+%val*200&quot;;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="48">
+<LeftIndent>6.0</LeftIndent>
+<content start="47" end="48">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="48" end="282">
+<LeftIndent>6.0</LeftIndent>
+<content start="48" end="247">
+<size>11</size></content>
+
+<content start="247" end="266">
+<href>pulley1.cml</href><size>11</size></content>
+
+<content start="266" end="282">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="282" end="283">
+<LeftIndent>6.0</LeftIndent>
+<content start="282" end="283">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="283" end="331">
+<LeftIndent>6.0</LeftIndent>
+<content start="283" end="303">
+<size>10</size></content>
+
+<content start="303" end="329">
+<href>pulley1.cml</href><size>10</size></content>
+
+<content start="329" end="330">
+<size>10</size></content>
+
+</paragraph>
+</section>
+</document>

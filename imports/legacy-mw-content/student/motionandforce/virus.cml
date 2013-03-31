@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>A Virus</page_title>
+<bg_color><Red>0</Red><Green>0</Green><Blue>0</Blue></bg_color>
+<text>A Virus
+
+ 
+     </text>
+<section start="0" end="17">
+<paragraph start="0" end="8">
+<Alignment>1</Alignment>
+<content start="0" end="7">
+<family>Book Antiqua</family><size>20</size><bold>true</bold><foreground>255 255 255</foreground></content>
+
+<content start="7" end="8">
+<family>Bookman Old Style</family><size>15</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="8" end="9">
+<content start="8" end="9">
+<size>13</size><family>Book Antiqua</family></content>
+
+</paragraph>
+<paragraph start="9" end="11">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>virus$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border><recorder>true</recorder></component></content>
+
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="17">
+<Alignment>1</Alignment>
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<tooltip>Start simulation</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>run</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="12" end="13">
+</content>
+
+<content start="13" end="14">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<tooltip>Stop simulation</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="14" end="15">
+</content>
+
+<content start="15" end="16">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<tooltip>Reset simulation</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

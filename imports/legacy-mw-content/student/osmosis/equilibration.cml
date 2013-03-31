@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>A process of osmotic equilibration</page_title>
+<text>A process of osmotic equilibration
+
+Initially, there are only solute molecules (green particles) in the left compartment and only solvent molecules (blue particles) in the right compartment. This simulation shows that the membrane bends to the left in the initial stage as the solvents flow from the right compartment to the left one. Eventually (if you let the simulation run for a long time), it will bend to the right --- indicating that an osmotic order is established.
+
+ 
+ </text>
+<section start="0" end="479">
+<paragraph start="0" end="35">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="34">
+<size>14</size><bold>true</bold></content>
+
+<content start="34" end="35">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<LeftIndent>8.0</LeftIndent>
+<content start="35" end="36">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="36" end="474">
+<LeftIndent>8.0</LeftIndent>
+<content start="36" end="474">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="474" end="475">
+<LeftIndent>8.0</LeftIndent>
+<content start="474" end="475">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="475" end="477">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="475" end="476">
+<size>11</size><component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>equilibration$0.mml</resource><menubar>false</menubar><button>Count Objects</button><button>Mark Object</button><button>What's This?</button><button>Select Object</button></component></content>
+
+<content start="476" end="477">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="477" end="479">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="477" end="478">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show the average positions of the membrane particles</title>
+<tooltip>Show the average positions of the membrane particles</tooltip>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select element 0;
+avpos on;
+select element none;</script>
+<script2>select element 0;
+avpos off;
+select element none;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

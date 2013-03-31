@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Mixture of Carbon Dioxide and Oxygen Molecules</page_title>
+<text>Mixture of Carbon Dioxide and Oxygen Molecules
+
+   
+ 
+
+Would CO2 sink to the bottom?</text>
+<section start="0" end="85">
+<paragraph start="0" end="47">
+<Alignment>1</Alignment>
+<content start="0" end="46">
+<size>15</size><bold>true</bold></content>
+
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="48">
+<Alignment>1</Alignment>
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="52">
+<Alignment>1</Alignment>
+<content start="48" end="49">
+<component><class>org.concord.modeler.PageSlider</class>
+<model>0</model>
+<value>0.002999999932944775</value>
+<minimum>0.0</minimum>
+<maximum>0.009999999776482582</maximum>
+<nstep>20</nstep>
+<title>Gravitational Acceleration</title>
+<width>200</width>
+<height>40</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<change>Gravitational Field</change>
+</component></content>
+
+<content start="49" end="50">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Cool</title>
+<bgcolor>-333301</bgcolor>
+<model>0</model>
+<action>Cool the system down</action>
+<step>-0.01</step>
+</component></content>
+
+<content start="50" end="51">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat</title>
+<bgcolor>-3334</bgcolor>
+<model>0</model>
+<action>Heat the system up</action>
+<step>0.01</step>
+</component></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="54">
+<Alignment>1</Alignment>
+<content start="52" end="53">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>CO2O2$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="53" end="54">
+</content>
+
+</paragraph>
+<paragraph start="54" end="55">
+<Alignment>1</Alignment>
+<content start="54" end="55">
+</content>
+
+</paragraph>
+<paragraph start="55" end="85">
+<Alignment>1</Alignment>
+<content start="55" end="63">
+</content>
+
+<content start="63" end="64">
+<subscript>true</subscript></content>
+
+<content start="64" end="84">
+</content>
+
+</paragraph>
+</section>
+</document>

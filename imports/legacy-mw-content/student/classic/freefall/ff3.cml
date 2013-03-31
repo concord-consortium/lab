@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Experiment with free-fall motion: Accelerations vs. time</page_title>
+<bg_gradient><gradient_color1><Red>255</Red><Green>255</Green><Blue>255</Blue></gradient_color1>
+<gradient_color2><Red>20</Red><Green>100</Green><Blue>200</Blue></gradient_color2>
+<gradient_style>1034</gradient_style>
+<gradient_variant>1044</gradient_variant>
+</bg_gradient>
+<text>Experiment with free-fall motion: Accelerations vs. time
+
+  
+
+  
+
+Through this activity, students should be able to discover the following:
+
+   The vertical accelation is a constant, but can be changed by changing the gravitational acceleration.</text>
+<section start="0" end="246">
+<paragraph start="0" end="57">
+<SpaceAbove>3.0</SpaceAbove>
+<LeftIndent>6.0</LeftIndent>
+<content start="0" end="56">
+<bold>true</bold><family>Book Antiqua</family><size>20</size></content>
+
+<content start="56" end="57">
+<bold>true</bold><family>Microsoft Sans Serif</family><size>18</size></content>
+
+</paragraph>
+<paragraph start="57" end="58">
+<content start="57" end="58">
+<size>18</size></content>
+
+</paragraph>
+<paragraph start="58" end="61">
+<Alignment>1</Alignment>
+<content start="58" end="59">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-ffff01" style="0" width="1.0" symbol="2" size="4" spacing="5">Ax: 0Ck</time_series_y1>
+<time_series_y2 color="-1000000" style="0" width="1.0" symbol="1" size="4" spacing="5">Ay: 0Ck</time_series_y2>
+<width>350</width>
+<height>254</height>
+<axis_x_title>Time</axis_x_title>
+<axis_y_title>Accelerations</axis_y_title>
+<hline>true</hline>
+<legend_x>200</legend_x>
+<legend_y>126</legend_y>
+<bgcolor>-2b2f38</bgcolor>
+<fgcolor>-1</fgcolor>
+<border>Raised Bevel</border>
+</component><foreground>255 0 0</foreground></content>
+
+<content start="59" end="60">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>ff3$0.mml</resource><menubar>false</menubar></component><size>18</size></content>
+
+<content start="60" end="61">
+<size>18</size></content>
+
+</paragraph>
+<paragraph start="61" end="62">
+<Alignment>1</Alignment>
+<content start="61" end="62">
+</content>
+
+</paragraph>
+<paragraph start="62" end="65">
+<Alignment>1</Alignment>
+<content start="62" end="63">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.010000000149011612</value>
+<minimum>0.0</minimum>
+<maximum>0.10000000149011612</maximum>
+<nstep>50</nstep>
+<title>Gravitational Acceleration</title>
+<width>400</width>
+<height>70</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;0.10000000149011612&quot;, label=&quot;Large&quot;}{value=&quot;0.0&quot;, label=&quot;Zero&quot;}</labeltable>
+<change>Gravitational Field</change>
+</component></content>
+
+<content start="63" end="65">
+</content>
+
+</paragraph>
+<paragraph start="65" end="66">
+<Alignment>1</Alignment>
+<content start="65" end="66">
+</content>
+
+</paragraph>
+<paragraph start="66" end="140">
+<content start="66" end="140">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="140" end="141">
+<content start="140" end="141">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="141" end="246">
+<LeftIndent>20.0</LeftIndent>
+<content start="141" end="142">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="142" end="245">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

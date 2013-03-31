@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>The Role of Attractive Forces on the Formation of a Nanoparticle</page_title>
+<text>The Role of Attractive Forces on the Formation of a Nanoparticle
+
+   
+          
+
+ 
+
+ </text>
+<section start="0" end="87">
+<paragraph start="0" end="65">
+<LeftIndent>5.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="0" end="64">
+<size>16</size><bold>true</bold></content>
+
+<content start="64" end="65">
+<family>Book Antiqua</family><size>16</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="65" end="66">
+<content start="65" end="66">
+</content>
+
+</paragraph>
+<paragraph start="66" end="70">
+<Alignment>1</Alignment>
+<content start="66" end="67">
+<component><class>org.concord.modeler.PageSlider</class>
+<title>Temperature</title>
+<width>300</width>
+<height>60</height>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>80.0</value>
+<minimum>0.0</minimum>
+<maximum>2000.0</maximum>
+<tick>true</tick>
+<nstep>50</nstep>
+<labeltable>{value=&quot;2000.0&quot;, label=&quot;2000 K&quot;}{value=&quot;0.0&quot;, label=&quot;0 K&quot;}</labeltable>
+<change>Temperature</change>
+</component></content>
+
+<content start="67" end="68">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Kinetic Energy Shading</title>
+<model>0</model>
+<action>K. E. Shading</action>
+</component></content>
+
+<content start="68" end="69">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Toggle attraction forces</title>
+<tooltip>Toggle van der Waals attractions</tooltip>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>I want van der Waals attractions</action>
+</component></content>
+
+<content start="69" end="70">
+</content>
+
+</paragraph>
+<paragraph start="70" end="81">
+<Alignment>1</Alignment>
+<content start="70" end="71">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>220.0</width>
+<height>336.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;font size=&quot;2&quot;&gt;In this activity, the temperature (i.e. the kinetic energy 
+    of the particles) with or without attraction forces remains the same. In 
+    the presence of attraction forces, the kinetic energy is mainly the 
+    vibrational energy of particles in the potential well formed by the 
+    attraction force. In the absence of attraction forces, the kinetic energy 
+    is mainly the translational energy of particles. Students may have the 
+    misconception that the particles without attraction forces are &amp;quot;hotter&amp;quot; 
+    because their motion appears to be more significant than those with 
+    attraction forces.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="71" end="72">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>attraction$0.mml</resource><button>Select Object</button><button>Mark Object</button><button>Toggle Trajectory</button><button>What's This?</button><button>Measure Distance</button><button>Count Objects</button><button>Duplicate Object</button><button>Delete Objects</button><button>Heat Selected Objects</button><button>Cool Selected Objects</button></component></content>
+
+<content start="72" end="78">
+</content>
+
+<content start="78" end="79">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<timeseries>Kinetic Energy/Particle</timeseries>
+<description>Kinetic energy per particle</description>
+<max_fraction_digits>2</max_fraction_digits>
+<max_integer_digits>1</max_integer_digits>
+<width>90</width>
+<height>336</height>
+<tick>true</tick>
+<major_tick>10</major_tick>
+<nstep>10</nstep>
+<label>true</label>
+<title>true</title>
+<bgcolor>-2b2f38</bgcolor>
+<fgcolor>-10000</fgcolor>
+<model>0</model>
+<minimum>0.0</minimum>
+<maximum>0.20000000298023224</maximum>
+<value>0.0075473058968782425</value>
+</component></content>
+
+<content start="79" end="81">
+</content>
+
+</paragraph>
+<paragraph start="81" end="82">
+<Alignment>1</Alignment>
+<content start="81" end="82">
+</content>
+
+</paragraph>
+<paragraph start="82" end="84">
+<Alignment>1</Alignment>
+<content start="82" end="83">
+<component><class>org.concord.modeler.PageTextArea</class>
+<column>60</column>
+<title>&lt;html&gt;
+   &lt;font size=&quot;2&quot;&gt;Please write down your observations. Can you explain the results?&lt;/font&gt;
+&lt;/html&gt;</title>
+</component></content>
+
+<content start="83" end="84">
+</content>
+
+</paragraph>
+<paragraph start="84" end="85">
+<Alignment>1</Alignment>
+<content start="84" end="85">
+</content>
+
+</paragraph>
+<paragraph start="85" end="87">
+<Alignment>1</Alignment>
+<content start="85" end="86">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Create a report</title>
+<border>Raised Bevel</border>
+<action>Create a report about this page in a new window</action></component></content>
+
+</paragraph>
+</section>
+</document>

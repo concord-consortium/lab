@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>The projectile motion</page_title>
+<text>The projectile motion
+ 
+   </text>
+<section start="0" end="28">
+<paragraph start="0" end="22">
+<SpaceAbove>6.0</SpaceAbove>
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="0" end="21">
+<bold>true</bold><size>20</size><family>Book Antiqua</family></content>
+
+<content start="21" end="22">
+<size>18</size></content>
+
+</paragraph>
+<paragraph start="22" end="24">
+<Alignment>1</Alignment>
+<content start="22" end="23">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>pm1$0.mml</resource><menubar>false</menubar></component><size>18</size></content>
+
+<content start="23" end="24">
+<size>18</size></content>
+
+</paragraph>
+<paragraph start="24" end="28">
+<Alignment>1</Alignment>
+<content start="24" end="25">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.014000000208616257</value>
+<minimum>0.0</minimum>
+<maximum>0.05000000074505806</maximum>
+<nstep>50</nstep>
+<title>Gravitational acceleration</title>
+<width>280</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;0.10000000149011612&quot;, label=&quot;High&quot;}{value=&quot;0.0&quot;, label=&quot;Zero&quot;}</labeltable>
+<change>Gravitational Field</change>
+</component></content>
+
+<content start="25" end="26">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Air resistance</title>
+<tooltip>Air resistance</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select atom 0;
+damp 0.1;
+select atom none;</script>
+<script2>select atom 0;
+damp 0;
+select atom none;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="26" end="27">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>1.4</value>
+<minimum>0.0</minimum>
+<maximum>10.0</maximum>
+<nstep>50</nstep>
+<title>Initial velocity</title>
+<width>300</width>
+<height>70</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;Horizontal&quot;}{value=&quot;0.0&quot;, label=&quot;Vertical&quot;}</labeltable>
+<script>set atom[0].vx &quot;%val*200&quot;;
+set atom[0].vy &quot;(%val-10)*200&quot;;</script>
+<change>Execute MW script</change>
+</component></content>
+
+</paragraph>
+</section>
+</document>

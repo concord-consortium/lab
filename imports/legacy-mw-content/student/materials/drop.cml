@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>A virutal free-fall experiment on material strength</page_title>
+<text>A virutal free-fall experiment on material strength
+	
+  
+    
+   
+
+Instruction: Run the simulation for weak material. Reset the model and run the simulation for strong material. Compare the results.</text>
+<section start="0" end="199">
+<paragraph start="0" end="52">
+<SpaceAbove>6.0</SpaceAbove>
+<LeftIndent>6.0</LeftIndent>
+<content start="0" end="51">
+<size>15</size><bold>true</bold></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="54">
+<Alignment>1</Alignment>
+<content start="52" end="54">
+</content>
+
+</paragraph>
+<paragraph start="54" end="57">
+<Alignment>1</Alignment>
+<content start="54" end="55">
+</content>
+
+<content start="55" end="56">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>drop$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="56" end="57">
+</content>
+
+</paragraph>
+<paragraph start="57" end="62">
+<Alignment>1</Alignment>
+<content start="57" end="58">
+</content>
+
+<content start="58" end="59">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>9.999999776482583E-4</value>
+<minimum>0.0</minimum>
+<maximum>0.004999999888241291</maximum>
+<nstep>50</nstep>
+<title>Gravitational Acceleration</title>
+<width>200</width>
+<height>70</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<labeltable>{value=&quot;0.004999999888241291&quot;, label=&quot;High&quot;}{value=&quot;0.0&quot;, label=&quot;Zero&quot;}</labeltable>
+<change>Gravitational Field</change>
+</component></content>
+
+<content start="59" end="60">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<bgcolor>-1</bgcolor>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Reset to the latest saved conditions</action>
+</component></content>
+
+<content start="60" end="61">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Snapshot</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="61" end="62">
+</content>
+
+</paragraph>
+<paragraph start="62" end="66">
+<Alignment>1</Alignment>
+<content start="62" end="63">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>K. E. Shading</title>
+<model>0</model>
+<action>K. E. Shading</action>
+</component></content>
+
+<content start="63" end="64">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Weak material</title>
+<tooltip>Weaken the interatomic interactions</tooltip>
+<disabled_at_run>true</disabled_at_run>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1124640435805</groupid>
+<script>set element[0].epsilon 0.1;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="64" end="65">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Strong material</title>
+<tooltip>Strengthen the interatomic interactions</tooltip>
+<disabled_at_run>true</disabled_at_run>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1124640435805</groupid>
+<script>set element[0].epsilon 1;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="65" end="66">
+</content>
+
+</paragraph>
+<paragraph start="66" end="67">
+<Alignment>1</Alignment>
+<content start="66" end="67">
+</content>
+
+</paragraph>
+<paragraph start="67" end="199">
+<LeftIndent>6.0</LeftIndent>
+<content start="67" end="198">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

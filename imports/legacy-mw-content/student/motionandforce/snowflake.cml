@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Bob&apos;s snowflake</page_title>
+<text>Bob&apos;s snowflake
+
+Warm up the snowflake by clicking the red arrow on the thermometer, 
+then click the play button below the model to watch what happens at the atomic scale.
+
+ 
+
+</text>
+<section start="0" end="177">
+<paragraph start="0" end="16">
+<Alignment>1</Alignment>
+<content start="0" end="16">
+<bold>true</bold><size>15</size></content>
+
+</paragraph>
+<paragraph start="16" end="17">
+<Alignment>1</Alignment>
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="86">
+<LeftIndent>20.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="17" end="86">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="86" end="172">
+<LeftIndent>20.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="86" end="172">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="172" end="173">
+<LeftIndent>20.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="172" end="173">
+</content>
+
+</paragraph>
+<paragraph start="173" end="175">
+<Alignment>1</Alignment>
+<content start="173" end="174">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>snowflake$0.mml</resource><menubar>false</menubar><button>Select Object</button><button>Delete Objects</button><button>Add Ws</button><button>Fill Area with Ws Atoms</button><button>Heat Selected Objects</button><button>Cool Selected Objects</button></component></content>
+
+<content start="174" end="175">
+</content>
+
+</paragraph>
+<paragraph start="175" end="176">
+<content start="175" end="176">
+</content>
+
+</paragraph>
+<paragraph start="176" end="177">
+</paragraph>
+</section>
+</document>

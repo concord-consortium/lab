@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Effect of ionic bonds on molecular structure</page_title>
+<referenced_files>FullCharge.mml, FewCharge.mml, NoCharge.mml</referenced_files>
+<text>Effect of Ionic Bonds on Molecular Structure
+
+ 
+   
+ 
+Tip: Hold down the Cool or Heat Button to cool or heat contineously.
+ 
+Ionic bonds are formed by electrostatic forces between charges on atoms. Ionic bonds are usually much stronger than the van der Waals potentials between atoms. Because of them, ions with positive and negative charges tend to stick together. When such a system crystalizes, negative and positive ions will distribute alternatively on a lattice, and the system becomes an ionic crystal. Salt is the most common ionic crystal.
+
+This model allows you to see how an ionic crystal is formed when the temperature is lowered (use the &quot;Cool&quot; button to lower the temperature). You will observe that in contrast to the fact that the particles without charges often crystalize to the most close-packed lattice structure, the particles with charges tend to crystalize to a square lattice, which is not the most close-packed structure.
+
+ </text>
+<section start="0" end="950">
+<paragraph start="0" end="45">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="44">
+<size>16</size><bold>true</bold></content>
+
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="46">
+<Alignment>1</Alignment>
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="48">
+<Alignment>1</Alignment>
+<content start="46" end="47">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>charge$0.mml</resource><button>Select Object</button><button>Mark Object</button><button>Toggle Trajectory</button><button>What's This?</button><button>Measure Distance</button><button>Count Objects</button><button>Add Positive Charge</button><button>Add Negative Charge</button><button>Duplicate Object</button><button>Delete Objects</button><button>Heat Selected Objects</button><button>Cool Selected Objects</button></component></content>
+
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="52">
+<Alignment>1</Alignment>
+<content start="48" end="49">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Cool</title>
+<bgcolor>-333301</bgcolor>
+<border>Lowered Etched</border>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<action>Cool the system down</action>
+<step>-0.01</step>
+</component></content>
+
+<content start="49" end="50">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat</title>
+<bgcolor>-3334</bgcolor>
+<border>Lowered Etched</border>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<action>Heat the system up</action>
+<step>0.01</step>
+</component></content>
+
+<content start="50" end="51">
+<component><class>org.concord.modeler.PageComboBox</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Execute MW script</action>
+<script>{option=&quot;All atoms charged&quot;, script=&quot;load FullCharge.mml&quot;}
+{option=&quot;Few atoms charged&quot;, script=&quot;load FewCharge.mml&quot;}
+{option=&quot;No atom charged&quot;, script=&quot;load NoCharge.mml&quot;}
+</script>
+<tooltip>Change charges on atoms</tooltip>
+</component></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="54">
+<Alignment>1</Alignment>
+<SpaceBelow>2.0</SpaceBelow>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="52" end="53">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="53" end="54">
+</content>
+
+</paragraph>
+<paragraph start="54" end="123">
+<Alignment>1</Alignment>
+<content start="54" end="122">
+<size>11</size></content>
+
+<content start="122" end="123">
+</content>
+
+</paragraph>
+<paragraph start="123" end="125">
+<Alignment>1</Alignment>
+<SpaceBelow>2.0</SpaceBelow>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="123" end="124">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="124" end="125">
+</content>
+
+</paragraph>
+<paragraph start="125" end="549">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="125" end="126">
+<bold>true</bold><size>40</size></content>
+
+<content start="126" end="549">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="549" end="550">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="549" end="550">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="550" end="947">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="550" end="947">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="947" end="948">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="947" end="948">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="948" end="950">
+<Alignment>1</Alignment>
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="948" end="949">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>An explanation about the ionic square lattice</title>
+<border>Raised Bevel</border>
+<hint_text>&lt;html&gt; When materials crystalize, their internal energy is lowered. But &lt;br&gt; this does not necessarily result in closed-packness. When the &lt;br&gt; number of molecules with positive charges and the number of atoms &lt;br&gt; with negative charges are equal (a requirement of neutrality), &lt;br&gt; ionic crystal lattices favor alternate alignment of positive and &lt;br&gt; negative charges on the vertices, which is obvious on a square &lt;br&gt; lattice but not on a hexganoal lattice.&lt;/html&gt;</hint_text>
+<action>Hint</action></component></content>
+
+</paragraph>
+</section>
+</document>

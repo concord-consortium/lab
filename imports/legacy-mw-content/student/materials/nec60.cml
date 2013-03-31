@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The collision between a buckyball and a small neon crystal</page_title>
+<text>The collision between a buckyball and a small neon crystal
+
+
+ </text>
+<section start="0" end="63">
+<paragraph start="0" end="59">
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="0" end="58">
+<size>15</size><bold>true</bold><italic>true</italic></content>
+
+<content start="58" end="59">
+</content>
+
+</paragraph>
+<paragraph start="59" end="60">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="59" end="60">
+</content>
+
+</paragraph>
+<paragraph start="60" end="61">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>20.0</LeftIndent>
+<content start="60" end="61">
+</content>
+
+</paragraph>
+<paragraph start="61" end="63">
+<Alignment>1</Alignment>
+<content start="61" end="62">
+<component><class>org.concord.modeler.PageMd3d</class><resource>nec60$0.mdd</resource><coordinate>nec60$0.xyz</coordinate><width>340</width><height>320</height><border>Raised Bevel</border>
+</component></content>
+
+</paragraph>
+</section>
+</document>

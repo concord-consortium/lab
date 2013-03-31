@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>How do mass affect molecular motion?</page_title>
+<text>How do mass affect molecular motion?
+
+In the first model, the pink atoms are 50 times more massive than the green ones. When the model starts, most of the atoms are nearly at rest, except for two pink ones. What do you predict will happen after a while? Which atoms will be moving fastest? The effect you observe has a name: Graham&apos;s Law. 
+
+         
+                                                 
+
+In the second model, the light blue molecule has one-tenth of the mass of the blue ones (so is the moment of inertia). When you run the model, look at the rotation of the molecules. Which kind of molecule rotates more?</text>
+<section start="0" end="621">
+<paragraph start="0" end="37">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="36">
+<bold>true</bold><size>16</size></content>
+
+<content start="36" end="37">
+<bold>true</bold><size>18</size><family>Microsoft Sans Serif</family></content>
+
+</paragraph>
+<paragraph start="37" end="38">
+<content start="37" end="38">
+<size>18</size></content>
+
+</paragraph>
+<paragraph start="38" end="340">
+<LeftIndent>8.0</LeftIndent>
+<content start="38" end="325">
+</content>
+
+<content start="325" end="337">
+<href>http://en.wikipedia.org/wiki/Graham%27s_law</href><size>11</size></content>
+
+<content start="337" end="339">
+<size>11</size></content>
+
+<content start="339" end="340">
+</content>
+
+</paragraph>
+<paragraph start="340" end="341">
+<content start="340" end="341">
+<size>18</size></content>
+
+</paragraph>
+<paragraph start="341" end="351">
+<Alignment>1</Alignment>
+<content start="341" end="342">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>masseffect$0.mml</resource><menubar>false</menubar><button>Select Object</button><button>What's This?</button><button>Toggle Trajectory</button><button>Mark Object</button><button>Measure Distance</button><button>Count Objects</button></component></content>
+
+<content start="342" end="349">
+</content>
+
+<content start="349" end="350">
+<component><class>org.concord.mw2d.activity.GBContainer</class>
+<resource>masseffect$0.gbl</resource><menubar>false</menubar><button>Select Object</button><button>What's This?</button><button>Mark Object</button><button>Measure Distance</button><button>Toggle Trajectory</button><button>Count Objects</button></component></content>
+
+<content start="350" end="351">
+</content>
+
+</paragraph>
+<paragraph start="351" end="401">
+<Alignment>1</Alignment>
+<content start="351" end="352">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat</title>
+<bgcolor>-999a</bgcolor>
+<border>Raised Bevel</border>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<step>0.01</step>
+<action>Heat the system up</action>
+</component></content>
+
+<content start="352" end="353">
+</content>
+
+<content start="353" end="354">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Cool</title>
+<bgcolor>-663301</bgcolor>
+<border>Raised Bevel</border>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<step>-0.01</step>
+<action>Cool the system down</action>
+</component></content>
+
+<content start="354" end="397">
+</content>
+
+<content start="397" end="398">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat</title>
+<bgcolor>-999a</bgcolor>
+<border>Raised Bevel</border>
+<model>2</model>
+<continuous_fire>true</continuous_fire>
+<step>0.01</step>
+<action>Heat the system up</action>
+</component></content>
+
+<content start="398" end="399">
+</content>
+
+<content start="399" end="400">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Cool</title>
+<bgcolor>-663301</bgcolor>
+<border>Raised Bevel</border>
+<model>2</model>
+<continuous_fire>true</continuous_fire>
+<step>-0.01</step>
+<action>Cool the system down</action>
+</component></content>
+
+<content start="400" end="401">
+</content>
+
+</paragraph>
+<paragraph start="401" end="402">
+<content start="401" end="402">
+</content>
+
+</paragraph>
+<paragraph start="402" end="621">
+<LeftIndent>8.0</LeftIndent>
+<content start="402" end="620">
+</content>
+
+</paragraph>
+</section>
+</document>

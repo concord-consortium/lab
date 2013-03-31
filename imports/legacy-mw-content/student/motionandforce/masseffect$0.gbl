@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.5.0_06" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.mw2d.models.MesoModel$State"> 
+  <void property="boundary"> 
+   <object class="org.concord.mw2d.models.RectangularBoundary$Delegate"> 
+    <void property="height"> 
+     <double>200.0</double> 
+    </void> 
+    <void property="viewSize"> 
+     <object class="java.awt.Dimension"> 
+      <int>293</int> 
+      <int>200</int> 
+     </object> 
+    </void> 
+    <void property="width"> 
+     <double>293.0</double> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="numberOfParticles"> 
+   <int>4</int> 
+  </void> 
+  <void property="properties"> 
+   <void method="put"> 
+    <string>codebase</string> 
+    <string>C:\Tomcat\webapps\modeler1.3\student\motionandforce</string> 
+   </void> 
+   <void method="put"> 
+    <string>url</string> 
+    <string>C:\Tomcat\webapps\modeler1.3\student\motionandforce\masseffect$0.gbl</string> 
+   </void> 
+   <void method="put"> 
+    <string>size</string> 
+    <long>4680</long> 
+   </void> 
+   <void method="put"> 
+    <string>filename</string> 
+    <string>masseffect$0.gbl</string> 
+   </void> 
+   <void method="put"> 
+    <string>date</string> 
+    <object class="java.util.Date"> 
+     <long>1143731041810</long> 
+    </object> 
+   </void> 
+  </void> 
+  <void property="universe"> 
+   <object class="org.concord.mw2d.models.Universe"/> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.MesoView$State"/> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>40.0</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>1600.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>80.0</double> 
+  </void> 
+  <void property="marked"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="omega"> 
+   <double>9.302430365380231E-4</double> 
+  </void> 
+  <void property="rx"> 
+   <double>43.629182296721254</double> 
+  </void> 
+  <void property="ry"> 
+   <double>60.33039887245037</double> 
+  </void> 
+  <void property="theta"> 
+   <double>7.534829339066223</double> 
+  </void> 
+  <void property="vx"> 
+   <double>0.00264085320263463</double> 
+  </void> 
+  <void property="vy"> 
+   <double>0.030206960357798348</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>40.0</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>16000.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>80.0</double> 
+  </void> 
+  <void property="mass"> 
+   <double>10.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>3.0217164757441613E-4</double> 
+  </void> 
+  <void property="rx"> 
+   <double>249.8695146962581</double> 
+  </void> 
+  <void property="ry"> 
+   <double>164.00733866665496</double> 
+  </void> 
+  <void property="theta"> 
+   <double>46.37598833797636</double> 
+  </void> 
+  <void property="vx"> 
+   <double>0.01593171447546421</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-0.004583718286079144</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>40.0</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>16000.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>80.0</double> 
+  </void> 
+  <void property="mass"> 
+   <double>10.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>-2.0970180491120736E-4</double> 
+  </void> 
+  <void property="rx"> 
+   <double>218.48053946574473</double> 
+  </void> 
+  <void property="ry"> 
+   <double>103.65863324908797</double> 
+  </void> 
+  <void property="theta"> 
+   <double>12.99069879613492</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-0.0017569722137788233</double> 
+  </void> 
+  <void property="vy"> 
+   <double>0.007654696619156807</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>40.0</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>16000.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>80.0</double> 
+  </void> 
+  <void property="mass"> 
+   <double>10.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>-3.587284464206439E-4</double> 
+  </void> 
+  <void property="rx"> 
+   <double>184.93571797726915</double> 
+  </void> 
+  <void property="ry"> 
+   <double>156.35596368981996</double> 
+  </void> 
+  <void property="theta"> 
+   <double>19.888500381134577</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-0.007716893895605744</double> 
+  </void> 
+  <void property="vy"> 
+   <double>0.007681244526934423</double> 
+  </void> 
+ </object> 
+</java> 

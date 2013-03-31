@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The collision between a buckyball and a small neon crystal</page_title>
+<text> </text>
+<section start="0" end="2">
+<paragraph start="0" end="2">
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="0" end="1">
+<component><class>org.concord.modeler.PageMd3d</class><resource>c60$0.mdd</resource><coordinate>c60$0.xyz</coordinate><width>500</width><height>400</height><border>Raised Bevel</border>
+</component></content>
+
+</paragraph>
+</section>
+</document>

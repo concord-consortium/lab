@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Effect of ionic bonds on molecular structure</page_title>
+<info>null</info>
+<text>Effect of Ionic Bonds on Molecular Structure
+
+ 
+  
+This model contains the same number and species of atoms. The atoms are of the same size as those in the previous model, but do not have charges on them. You will observe that, in contrast to the fact that the charged atoms in the previous model condense to a square lattice, atoms in this model cystalize into the most close-packed lattice structure.
+
+ 
+
+ 
+
+(Disclaimer: Clicking the above button will automatically create a report, which you can edit and submit to our database. Your submission will be used for only research purpose and will not be disclosed to the general public.)</text>
+<section start="0" end="637">
+<paragraph start="0" end="45">
+<content start="0" end="45">
+<family>Book Antiqua</family><size>18</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="45" end="46">
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="48">
+<Alignment>1</Alignment>
+<content start="46" end="47">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>charge1$0.mml</resource><button>Select Object</button><button>What's This?</button><button>Mark Object</button><button>Measure Distance</button><button>Toggle Trajectory</button><button>Count Objects</button><button>Heat Selected Objects</button><button>Cool Selected Objects</button></component></content>
+
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="51">
+<Alignment>1</Alignment>
+<content start="48" end="49">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Cool</title>
+<background><red>51</red><green>204</green><blue>255</blue></background>
+<borderpainted>true</borderpainted><border>Lowered Etched</border>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<step>-0.01</step>
+<action>Cool the system down</action>
+</component></content>
+
+<content start="49" end="50">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat</title>
+<background><red>255</red><green>153</green><blue>153</blue></background>
+<borderpainted>true</borderpainted><border>Lowered Etched</border>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<step>0.01</step>
+<action>Heat the system up</action>
+</component></content>
+
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="403">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="51" end="52">
+<bold>true</bold><size>25</size></content>
+
+<content start="52" end="402">
+<size>13</size></content>
+
+<content start="402" end="403">
+</content>
+
+</paragraph>
+<paragraph start="403" end="404">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="403" end="404">
+</content>
+
+</paragraph>
+<paragraph start="404" end="406">
+<RightIndent>10.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>10.0</LeftIndent>
+<content start="404" end="405">
+<component><class>org.concord.modeler.PageTextArea</class>
+<column>60</column>
+<title>&lt;html&gt;
+   &lt;font size=&quot;3&quot;&gt;Please write down your observations. Can you explain the results?&lt;/font&gt;
+&lt;/html&gt;</title>
+</component></content>
+
+<content start="405" end="406">
+</content>
+
+</paragraph>
+<paragraph start="406" end="407">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="406" end="407">
+</content>
+
+</paragraph>
+<paragraph start="407" end="409">
+<RightIndent>10.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>10.0</LeftIndent>
+<content start="407" end="408">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Create a report and submit</title>
+<borderpainted>true</borderpainted><border>Raised Bevel</border>
+<action>Create a report about this page in a new window</action></component></content>
+
+<content start="408" end="409">
+</content>
+
+</paragraph>
+<paragraph start="409" end="410">
+<RightIndent>10.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>10.0</LeftIndent>
+<content start="409" end="410">
+</content>
+
+</paragraph>
+<paragraph start="410" end="637">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="410" end="411">
+<size>10</size></content>
+
+<content start="411" end="421">
+<bold>true</bold><size>10</size></content>
+
+<content start="421" end="636">
+<size>10</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>A Mass Hung on Two Springs</page_title>
+<text>A Mass Hung on Two Springs
+
+ 
+  
+Related simulation: A mass connected to a spring
+Related simulation: A mass connected to two springs
+Related simulation: A mass hung on two springs
+
+</text>
+<section start="0" end="183">
+<paragraph start="0" end="27">
+<SpaceAbove>6.0</SpaceAbove>
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="0" end="26">
+<size>15</size><bold>true</bold><family>Trebuchet MS</family></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="28">
+<Alignment>1</Alignment>
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="30">
+<Alignment>1</Alignment>
+<content start="28" end="29">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>spring1$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="33">
+<Alignment>1</Alignment>
+<content start="30" end="31">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Air resistance</title>
+<tooltip>Apply air resistance</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select atom 0;
+damp 0.2;
+select atom none;</script>
+<script2>select atom 0;
+damp 0;
+select atom none;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="31" end="32">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>29.4</value>
+<minimum>10.0</minimum>
+<maximum>500.0</maximum>
+<nstep>50</nstep>
+<title>Mass</title>
+<width>200</width>
+<height>70</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;499.8&quot;, label=&quot;Large&quot;}{value=&quot;9.799999999999999&quot;, label=&quot;Small&quot;}</labeltable>
+<change>Element Ck: Mass</change>
+</component></content>
+
+<content start="32" end="33">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="33" end="82">
+<LeftIndent>6.0</LeftIndent>
+<content start="33" end="53">
+<size>10</size></content>
+
+<content start="53" end="81">
+<size>10</size><href>spring.cml</href></content>
+
+<content start="81" end="82">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="82" end="134">
+<LeftIndent>6.0</LeftIndent>
+<content start="82" end="102">
+<size>10</size></content>
+
+<content start="102" end="133">
+<size>10</size><href>twosprings.cml</href></content>
+
+<content start="133" end="134">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="134" end="181">
+<LeftIndent>6.0</LeftIndent>
+<content start="134" end="154">
+<size>10</size></content>
+
+<content start="154" end="180">
+<size>10</size><href>hangspring.cml</href></content>
+
+<content start="180" end="181">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="181" end="182">
+<content start="181" end="182">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="182" end="183">
+</paragraph>
+</section>
+</document>

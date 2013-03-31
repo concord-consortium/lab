@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Oscillatory behavior of adhesion on the surface of a nanoparticle</page_title>
+<text>Oscillatory Behavior of Adhesion on the Surface of a Nanoparticle
+
+  
+  </text>
+<section start="0" end="73">
+<paragraph start="0" end="66">
+<content start="0" end="65">
+<bold>true</bold><size>20</size><family>Book Antiqua</family></content>
+
+<content start="65" end="66">
+<bold>true</bold><size>24</size><family>Book Antiqua</family></content>
+
+</paragraph>
+<paragraph start="66" end="67">
+<Alignment>1</Alignment>
+<content start="66" end="67">
+</content>
+
+</paragraph>
+<paragraph start="67" end="70">
+<Alignment>1</Alignment>
+<content start="67" end="68">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>200.0</width>
+<height>320.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;font size=&quot;3&quot;&gt;The adhesion behavior of the much larger atom to a 
+    nanoparticle formed by the smaller atoms is unique and reproducible.&lt;br&gt;If 
+    we were to do an experiment, we should be able to observe a peculiar 
+    frequency due to the oscillatory motion of the larger atom on a side face 
+    of the nanoparticle.&lt;br&gt;&lt;br&gt;&amp;gt;&amp;gt;&amp;gt;&lt;a href=&quot;adhesion2.cml&quot;&gt;Two adatoms&lt;/a&gt;&lt;br&gt;&amp;gt;&amp;gt;&amp;gt;&lt;a href=&quot;adhesion3.cml&quot;&gt;Size 
+    dependence&lt;/a&gt;&lt;br&gt;&amp;gt;&amp;gt;&amp;gt;&lt;a href=&quot;adhesion4.cml&quot;&gt;Mass dependence&lt;/a&gt;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="68" end="69">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>adhesion5$0.mml</resource><button>Mark Object</button><button>Toggle Trajectory</button><button>Select Object</button><button>What's This?</button><button>Measure Distance</button><button>Count Objects</button></component></content>
+
+<content start="69" end="70">
+</content>
+
+</paragraph>
+<paragraph start="70" end="73">
+<Alignment>1</Alignment>
+<content start="70" end="71">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>K. E. Shading</title>
+<model>0</model>
+<action>K. E. Shading</action>
+</component></content>
+
+<content start="71" end="72">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show the Interatomic Interactions</title>
+<model>0</model>
+<action>Show van der Waals interactions</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Two kinds of particles that do not mix with each other</page_title>
+<bg_color><Red>0</Red><Green>0</Green><Blue>0</Blue></bg_color>
+<text>Two kinds of particles that do not mix with each other
+
+ 
+         
+
+Phase separation is a phenonmenon we observe every day. For example, oil does not mix with water. Even if you shake hard to mix them, they will completely separate from each other after some time.</text>
+<section start="0" end="266">
+<paragraph start="0" end="55">
+<Alignment>1</Alignment>
+<content start="0" end="54">
+<size>15</size><bold>true</bold><foreground>255 255 255</foreground></content>
+
+<content start="54" end="55">
+<family>Microsoft Sans Serif</family><size>18</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="55" end="56">
+<content start="55" end="56">
+</content>
+
+</paragraph>
+<paragraph start="56" end="58">
+<Alignment>1</Alignment>
+<content start="56" end="57">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>phaseseparation$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border><recorder>true</recorder></component></content>
+
+<content start="57" end="58">
+</content>
+
+</paragraph>
+<paragraph start="58" end="68">
+<Alignment>1</Alignment>
+<content start="58" end="59">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Cool</title>
+<border>Raised Bevel</border>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<step>-0.01</step>
+<action>Cool the system down</action>
+</component></content>
+
+<content start="59" end="60">
+</content>
+
+<content start="60" end="61">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat</title>
+<border>Raised Bevel</border>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<step>0.01</step>
+<action>Heat the system up</action>
+</component></content>
+
+<content start="61" end="62">
+</content>
+
+<content start="62" end="63">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<tooltip>Run</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>run</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="63" end="64">
+</content>
+
+<content start="64" end="65">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<tooltip>Stop</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="65" end="66">
+</content>
+
+<content start="66" end="67">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<tooltip>Reset</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="67" end="68">
+</content>
+
+</paragraph>
+<paragraph start="68" end="69">
+<content start="68" end="69">
+</content>
+
+</paragraph>
+<paragraph start="69" end="266">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="69" end="265">
+<size>11</size><foreground>255 255 255</foreground></content>
+
+</paragraph>
+</section>
+</document>

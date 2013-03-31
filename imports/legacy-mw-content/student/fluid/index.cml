@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Fluid mechanics and dynamics</page_title>
+<bg_image>sidebar1b.gif</bg_image>
+<text>Fluid mechanics and dynamics
+
+
+   Flowing through a bottleneck
+   A rotating drum mixer
+   Hourglass
+   Archimedes&apos; Principle
+   Pascal&apos;s Principle: a hydraulic lever
+   Pressure conveyance
+   Pouring water
+   The collapse of a dam
+
+
+
+</text>
+<section start="0" end="236">
+<paragraph start="0" end="29">
+<LeftIndent>180.0</LeftIndent>
+<Alignment>2</Alignment>
+<RightIndent>10.0</RightIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="28">
+<bold>true</bold><family>Trebuchet MS</family><size>20</size></content>
+
+<content start="28" end="29">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="29" end="30">
+<LeftIndent>180.0</LeftIndent>
+<content start="29" end="30">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="30" end="31">
+<LeftIndent>180.0</LeftIndent>
+<content start="30" end="31">
+<family>Trebuchet MS</family><size>14</size></content>
+
+</paragraph>
+<paragraph start="31" end="63">
+<LeftIndent>200.0</LeftIndent>
+<content start="31" end="32">
+<family>Trebuchet MS</family><size>14</size><icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="32" end="34">
+<family>Trebuchet MS</family><size>14</size></content>
+
+<content start="34" end="62">
+<href>flow.cml</href><family>Trebuchet MS</family><size>14</size></content>
+
+<content start="62" end="63">
+<family>Trebuchet MS</family><size>14</size></content>
+
+</paragraph>
+<paragraph start="63" end="88">
+<LeftIndent>200.0</LeftIndent>
+<content start="63" end="64">
+<family>Trebuchet MS</family><size>14</size><icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="64" end="66">
+<family>Trebuchet MS</family><size>14</size></content>
+
+<content start="66" end="87">
+<href>drum.cml</href><family>Trebuchet MS</family><size>14</size></content>
+
+<content start="87" end="88">
+</content>
+
+</paragraph>
+<paragraph start="88" end="101">
+<LeftIndent>200.0</LeftIndent>
+<content start="88" end="89">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="89" end="91">
+</content>
+
+<content start="91" end="100">
+<href>../classic/motion/hourglass.cml</href><family>Trebuchet MS</family><size>14</size></content>
+
+<content start="100" end="101">
+</content>
+
+</paragraph>
+<paragraph start="101" end="126">
+<LeftIndent>200.0</LeftIndent>
+<content start="101" end="102">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="102" end="104">
+</content>
+
+<content start="104" end="125">
+<href>archimedes.cml</href><family>Trebuchet MS</family><size>14</size></content>
+
+<content start="125" end="126">
+<family>Trebuchet MS</family><size>14</size></content>
+
+</paragraph>
+<paragraph start="126" end="167">
+<LeftIndent>200.0</LeftIndent>
+<content start="126" end="127">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="127" end="129">
+</content>
+
+<content start="129" end="166">
+<href>pascal.cml</href><family>Trebuchet MS</family><size>14</size></content>
+
+<content start="166" end="167">
+<family>Trebuchet MS</family><size>14</size></content>
+
+</paragraph>
+<paragraph start="167" end="190">
+<LeftIndent>200.0</LeftIndent>
+<content start="167" end="168">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="168" end="170">
+</content>
+
+<content start="170" end="189">
+<href>pressureconveyance1.cml</href><family>Trebuchet MS</family><size>14</size></content>
+
+<content start="189" end="190">
+<family>Trebuchet MS</family><size>14</size></content>
+
+</paragraph>
+<paragraph start="190" end="207">
+<LeftIndent>200.0</LeftIndent>
+<content start="190" end="191">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="191" end="193">
+</content>
+
+<content start="193" end="206">
+<href>../classic/motion/pouring.cml</href><family>Trebuchet MS</family><size>14</size></content>
+
+<content start="206" end="207">
+<family>Trebuchet MS</family><size>14</size></content>
+
+</paragraph>
+<paragraph start="207" end="232">
+<LeftIndent>200.0</LeftIndent>
+<content start="207" end="208">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="208" end="210">
+</content>
+
+<content start="210" end="231">
+<href>../classic/motion/dam.cml</href><family>Trebuchet MS</family><size>14</size></content>
+
+<content start="231" end="232">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="232" end="233">
+<RightIndent>10.0</RightIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<SpaceBelow>2.0</SpaceBelow>
+<content start="232" end="233">
+</content>
+
+</paragraph>
+<paragraph start="233" end="234">
+<RightIndent>10.0</RightIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<SpaceBelow>2.0</SpaceBelow>
+<content start="233" end="234">
+</content>
+
+</paragraph>
+<paragraph start="234" end="235">
+<content start="234" end="235">
+</content>
+
+</paragraph>
+<paragraph start="235" end="236">
+</paragraph>
+</section>
+</document>

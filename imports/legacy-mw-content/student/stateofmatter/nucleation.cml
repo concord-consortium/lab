@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Nucleation of water vapor with dust particles</page_title>
+<text>Nucleation of water vapor with dust particles
+
+ 
+  </text>
+<section start="0" end="52">
+<paragraph start="0" end="46">
+<SpaceAbove>4.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="0" end="45">
+<bold>true</bold><size>16</size><family>Century Gothic</family></content>
+
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="47">
+<Alignment>1</Alignment>
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="49">
+<Alignment>1</Alignment>
+<content start="47" end="48">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>nucleation$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="52">
+<Alignment>1</Alignment>
+<content start="49" end="50">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Add Dust Particles</title>
+<tooltip>Add dust particles</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>set %currentNum count(3);
+while (%currentNum &lt; %numToAdd);
+  add atom 3;
+  set %currentNum count(3);
+endwhile;
+run;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="50" end="51">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.0</value>
+<minimum>0.0</minimum>
+<maximum>40.0</maximum>
+<nstep>40</nstep>
+<title>Temperature</title>
+<width>250</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;40.0&quot;, label=&quot;High&quot;}{value=&quot;0.0&quot;, label=&quot;Low&quot;}</labeltable>
+<script>set heatbath 500+%val*200;</script>
+<change>Execute MW script</change>
+</component></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Gas law: density vs. temperature</page_title>
+<text>Gas law: density vs. temperature
+
+Under the condition of constant pressure and constant volume, the density of an open system is approximately inversely proportional to the temperature. That is to say, the higher the temperature, the lower the density. The following model illustrates this. (This is the physics of hot air ballons).
+ 
+ 
+ 
+
+Instructions: Adjust the temperature slider and let the model run for a while after each temperature change. Observe the trend of the changes of the number of atoms in the container versus the temperature. Take some snapshots under different temperatures to include in your report. Note that the container&apos;s right border is open for molecules to come in and go out, and the other three borders are closed.
+
+ </text>
+<section start="0" end="749">
+<paragraph start="0" end="33">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="32">
+<size>14</size><bold>true</bold></content>
+
+<content start="32" end="33">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="33" end="34">
+<LeftIndent>8.0</LeftIndent>
+<content start="33" end="34">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="34" end="333">
+<LeftIndent>8.0</LeftIndent>
+<content start="34" end="332">
+<size>11</size></content>
+
+<content start="332" end="333">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="333" end="335">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="333" end="334">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>gaslaw1$0.mml</resource><menubar>false</menubar><recorder>true</recorder><button>Select Object</button><button>What's This?</button><button>Count Objects</button><button>Measure Distance</button></component><size>14</size></content>
+
+<content start="334" end="335">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="335" end="337">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="335" end="336">
+<component><class>org.concord.modeler.PageSlider</class>
+<title>Temperature</title>
+<width>400</width>
+<height>70</height>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>300.0</value>
+<minimum>50.0</minimum>
+<maximum>550.0</maximum>
+<tick>true</tick>
+<nstep>100</nstep>
+<labeltable>{value=&quot;100.0&quot;, label=&quot;100 K&quot;}{value=&quot;300.0&quot;, label=&quot;300 K&quot;}{value=&quot;500.0&quot;, label=&quot;500 K&quot;}</labeltable>
+<change>Temperature</change>
+</component></content>
+
+<content start="336" end="337">
+</content>
+
+</paragraph>
+<paragraph start="337" end="339">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="337" end="338">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="338" end="339">
+</content>
+
+</paragraph>
+<paragraph start="339" end="340">
+<LeftIndent>8.0</LeftIndent>
+<content start="339" end="340">
+</content>
+
+</paragraph>
+<paragraph start="340" end="746">
+<LeftIndent>8.0</LeftIndent>
+<content start="340" end="353">
+<size>11</size><bold>true</bold></content>
+
+<content start="353" end="746">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="746" end="747">
+<LeftIndent>8.0</LeftIndent>
+<content start="746" end="747">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="747" end="749">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="747" end="748">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Create a report</title>
+<border>Raised Bevel</border>
+<action>Create a report about this page in a new window</action></component></content>
+
+</paragraph>
+</section>
+</document>

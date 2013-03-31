@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Converting rotary motion into waves</page_title>
+<text>
+Converting rotary motion into waves
+
+ 
+
+Note: the reverse process --- converting waves into rotary motion --- is much more difficult. Engineers are searching for efficient methods for converting waves into rotary motion so that many sources of clean, natural energy (such as tides) can be harnessed to generate electricity.</text>
+<section start="0" end="325">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="37">
+<Alignment>1</Alignment>
+<content start="1" end="36">
+<family>Trebuchet MS</family><size>15</size><bold>true</bold></content>
+
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="38">
+<Alignment>1</Alignment>
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="40">
+<Alignment>1</Alignment>
+<content start="38" end="39">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>mechanicalwave$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="41">
+<Alignment>1</Alignment>
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="325">
+<LeftIndent>20.0</LeftIndent>
+<content start="41" end="324">
+<family>Trebuchet MS</family><size>14</size></content>
+
+</paragraph>
+</section>
+</document>

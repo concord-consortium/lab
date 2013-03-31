@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Interfacial defects: grain boundaries</page_title>
+<bg_color><Red>0</Red><Green>0</Green><Blue>0</Blue></bg_color>
+<text>Interfacial Defect: Grain Boundaries
+
+Grain boundaries are the most common interfacial defects in polycrystalline materials. They determine the engineering properties of almost all materials. They act as barriers to dislocation motion and as nucleation sites for corrosion, precipitation, and fracture. In particular, because the metallic bonds along grain boundaries are typically weaker, they are often the origins of brittle or premature failure of materials.
+
+      
+
+         
+(A=atoms on the left, B=atoms in the middle, C=atoms on the right) </text>
+<section start="0" end="550">
+<paragraph start="0" end="37">
+<LeftIndent>6.0</LeftIndent>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="0" end="36">
+<foreground>255 255 255</foreground><bold>true</bold></content>
+
+<content start="36" end="37">
+<size>18</size><foreground>255 255 255</foreground><family>Arial Unicode MS</family><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="37" end="38">
+<LeftIndent>8.0</LeftIndent>
+<content start="37" end="38">
+<foreground>255 255 255</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="38" end="463">
+<LeftIndent>8.0</LeftIndent>
+<content start="38" end="463">
+<foreground>255 255 255</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="463" end="464">
+<LeftIndent>8.0</LeftIndent>
+<content start="463" end="464">
+<foreground>255 255 255</foreground></content>
+
+</paragraph>
+<paragraph start="464" end="471">
+<Alignment>1</Alignment>
+<content start="464" end="469">
+<foreground>255 255 255</foreground></content>
+
+<content start="469" end="470">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>GrainBoundary$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component><foreground>255 255 255</foreground></content>
+
+<content start="470" end="471">
+<foreground>255 255 255</foreground></content>
+
+</paragraph>
+<paragraph start="471" end="472">
+<content start="471" end="472">
+<foreground>255 255 255</foreground></content>
+
+</paragraph>
+<paragraph start="472" end="482">
+<Alignment>1</Alignment>
+<content start="472" end="473">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<tooltip>Run</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>run</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="473" end="474">
+</content>
+
+<content start="474" end="475">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<tooltip>Stop</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>stop</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="475" end="476">
+</content>
+
+<content start="476" end="477">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<tooltip>Reset</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="477" end="478">
+</content>
+
+<content start="478" end="479">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Pair correlation: B-A</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Show pair correlation function: Pl-Ck</action>
+</component><foreground>255 255 255</foreground></content>
+
+<content start="479" end="480">
+<foreground>255 255 255</foreground></content>
+
+<content start="480" end="481">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Pair correlation: B-C</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Show pair correlation function: Pl-Ws</action>
+</component><foreground>255 255 255</foreground></content>
+
+<content start="481" end="482">
+<foreground>255 255 255</foreground></content>
+
+</paragraph>
+<paragraph start="482" end="550">
+<Alignment>1</Alignment>
+<content start="482" end="549">
+<foreground>255 255 255</foreground><size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>A nano boat floating on a nano ocean</page_title>
+<text>A nano boat floating on a nano ocean
+
+By Bob Tinker
+
+ 
+			 
+The blue atoms are lighter than the green ones. Green mass=3 Blue mass=2.5
+
+If you turn on &quot;K.E. Shading,&quot; you can see which atoms are hot. There is a bit of gravity to hold everything in place. If you heat up this model, perhaps the boat will melt and sink to the bottom. Try it!!</text>
+<section start="0" end="342">
+<paragraph start="0" end="37">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="37">
+<size>14</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="37" end="38">
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="52">
+<LeftIndent>8.0</LeftIndent>
+<content start="38" end="51">
+<italic>true</italic><size>11</size></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="53">
+<LeftIndent>8.0</LeftIndent>
+<content start="52" end="53">
+</content>
+
+</paragraph>
+<paragraph start="53" end="55">
+<Alignment>1</Alignment>
+<content start="53" end="54">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>nanoboat$0.mml</resource><button>Select Object</button><button>Delete Objects</button><button>Add Pl</button><button>Add Ws</button><button>Count Objects</button><button>Heat Selected Objects</button><button>Cool Selected Objects</button><button>Add Obstacle</button></component></content>
+
+<content start="54" end="55">
+</content>
+
+</paragraph>
+<paragraph start="55" end="60">
+<Alignment>1</Alignment>
+<content start="55" end="58">
+</content>
+
+<content start="58" end="59">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>K. E. Shading</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>K. E. Shading</action>
+</component></content>
+
+<content start="59" end="60">
+</content>
+
+</paragraph>
+<paragraph start="60" end="135">
+<LeftIndent>8.0</LeftIndent>
+<content start="60" end="135">
+<underline>true</underline><size>11</size></content>
+
+</paragraph>
+<paragraph start="135" end="136">
+<LeftIndent>8.0</LeftIndent>
+<content start="135" end="136">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="136" end="342">
+<LeftIndent>8.0</LeftIndent>
+<content start="136" end="341">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

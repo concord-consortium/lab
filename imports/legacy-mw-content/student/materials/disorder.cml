@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Characterizing Amorphous Materials Using Pair Correlation Functions</page_title>
+<text>Characterizing Amorphous Materials Using Pair Correlation Functions
+
+The pair correlation functions (PCFs) obtained from X-ray or neutron diffraction experiments contain rich information about the structures of liquids, glasses (amorphous materials), and mixtures.
+
+The following model shows an amorphous material A52.8B30.2C17 (where the small particles are A, the medium-size ones are B, and the larger ones are C). The model is such set that the A-B interactions are weak, whereas the A-C and B-C interactions are much stronger. Would the PCFs for the A-B, B-C and A-C pairs reveal the strengths of these interactions?
+
+Run the simulation until the tape is full. Then STOP the simulation, and click on the &quot;Show pair correlation function&quot; buttons. They will bring up new windows, in which the PCFs will be shown.
+
+ 
+   
+(A=small-size particle, B=medium-size particle, C=large-size particle)
+
+ 
+
+ </text>
+<section start="0" end="900">
+<paragraph start="0" end="68">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="67">
+<size>18</size><family>Book Antiqua</family><bold>true</bold></content>
+
+<content start="67" end="68">
+</content>
+
+</paragraph>
+<paragraph start="68" end="69">
+<content start="68" end="69">
+</content>
+
+</paragraph>
+<paragraph start="69" end="265">
+<LeftIndent>8.0</LeftIndent>
+<content start="69" end="73">
+<size>11</size></content>
+
+<content start="73" end="99">
+<link_statusbar>false</link_statusbar><target>_blank</target><link_width>600</link_width><link_fullscreen>false</link_fullscreen><link_height>400</link_height><size>11</size><link_left>200</link_left><link_menubar>false</link_menubar><link_top>200</link_top><link_toolbar>false</link_toolbar><link_resizable>false</link_resizable><href>../../tutorial/glossary/pcf.cml</href></content>
+
+<content start="99" end="265">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="265" end="266">
+<LeftIndent>8.0</LeftIndent>
+<content start="265" end="266">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="266" end="622">
+<LeftIndent>8.0</LeftIndent>
+<content start="266" end="315">
+<size>11</size></content>
+
+<content start="315" end="319">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="319" end="320">
+<size>11</size></content>
+
+<content start="320" end="324">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="324" end="325">
+<size>11</size></content>
+
+<content start="325" end="327">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="327" end="622">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="622" end="623">
+<LeftIndent>8.0</LeftIndent>
+<content start="622" end="623">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="623" end="816">
+<LeftIndent>8.0</LeftIndent>
+<content start="623" end="816">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="816" end="817">
+<Alignment>1</Alignment>
+<content start="816" end="817">
+</content>
+
+</paragraph>
+<paragraph start="817" end="819">
+<Alignment>1</Alignment>
+<content start="817" end="818">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>disorder$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="818" end="819">
+</content>
+
+</paragraph>
+<paragraph start="819" end="823">
+<Alignment>1</Alignment>
+<content start="819" end="820">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show pair correlation function: A-B</title>
+<border>Raised Bevel</border>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<action>Show pair correlation function: Pl-Ws</action>
+</component></content>
+
+<content start="820" end="821">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show pair correlation function: B-C</title>
+<border>Raised Bevel</border>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<action>Show pair correlation function: Ws-Ck</action>
+</component></content>
+
+<content start="821" end="822">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show pair correlation function: A-C</title>
+<border>Raised Bevel</border>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<action>Show pair correlation function: Pl-Ck</action>
+</component></content>
+
+<content start="822" end="823">
+</content>
+
+</paragraph>
+<paragraph start="823" end="894">
+<Alignment>1</Alignment>
+<content start="823" end="894">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="894" end="895">
+<Alignment>1</Alignment>
+<content start="894" end="895">
+</content>
+
+</paragraph>
+<paragraph start="895" end="897">
+<Alignment>1</Alignment>
+<content start="895" end="896">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>480</width>
+<height>194</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;8&quot; face=&quot;verdana&quot; marginheight=&quot;8&quot;&gt;
+    What useful information can you obtain from the pair correlation 
+    functions? (compared the molecular view and the graphs.)
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-1</bgcolor>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="896" end="897">
+</content>
+
+</paragraph>
+<paragraph start="897" end="898">
+<content start="897" end="898">
+</content>
+
+</paragraph>
+<paragraph start="898" end="900">
+<Alignment>1</Alignment>
+<content start="898" end="899">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Create a report</title>
+<border>Raised Bevel</border>
+<action>Create a report about this page in a new window</action></component></content>
+
+</paragraph>
+</section>
+</document>

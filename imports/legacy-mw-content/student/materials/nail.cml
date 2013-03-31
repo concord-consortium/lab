@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Nailing down</page_title>
+<referenced_files>nailsoft.mml, nailhard.mml</referenced_files>
+<text>Nailing down
+
+ 
+  
+
+In the above model, the interatomic interactions in the soft material are much weaker than those in the nano-nail, whereas those in the hard material are comparable. As a result, the nano-nail can be easily pushed into the soft material, but it cannot be pushed into the hard material. If you run the simulation for the latter case, you will find the nail bends and breaks.
+
+The interactions between the particles of the nail and those in the material are the same in both cases. Hence, the difference of the simulation results is solely caused by the difference of interactions among the particles in the soft and hard materials.
+
+ 
+Tip about making this model:
+
+When the piston exerts force on the nail, it passes a lot of energy to the particles. As a result, they may run away and cause the nail to collapse. To stablize the particles, each is applied a damping force to absorb its kinetic energy.
+ </text>
+<section start="0" end="924">
+<paragraph start="0" end="13">
+<Alignment>1</Alignment>
+<content start="0" end="12">
+<size>16</size><bold>true</bold></content>
+
+<content start="12" end="13">
+<foreground>255 0 0</foreground></content>
+
+</paragraph>
+<paragraph start="13" end="14">
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="16">
+<Alignment>1</Alignment>
+<LeftIndent>20.0</LeftIndent>
+<content start="14" end="15">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>nail$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="19">
+<Alignment>1</Alignment>
+<LeftIndent>40.0</LeftIndent>
+<content start="16" end="17">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Soft material</title>
+<tooltip>Soft material</tooltip>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1154030587569</groupid>
+<script>load nailsoft.mml</script>
+<action>Execute MW script</action></component></content>
+
+<content start="17" end="18">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Hard material</title>
+<tooltip>Hard material</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1154030587569</groupid>
+<script>load nailhard.mml</script>
+<action>Execute MW script</action></component></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<LeftIndent>40.0</LeftIndent>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="394">
+<LeftIndent>10.0</LeftIndent>
+<content start="20" end="394">
+</content>
+
+</paragraph>
+<paragraph start="394" end="395">
+<LeftIndent>10.0</LeftIndent>
+<content start="394" end="395">
+</content>
+
+</paragraph>
+<paragraph start="395" end="651">
+<LeftIndent>10.0</LeftIndent>
+<content start="395" end="651">
+</content>
+
+</paragraph>
+<paragraph start="651" end="652">
+<LeftIndent>10.0</LeftIndent>
+<content start="651" end="652">
+</content>
+
+</paragraph>
+<paragraph start="652" end="654">
+<SpaceBelow>2.0</SpaceBelow>
+<Alignment>1</Alignment>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="652" end="653">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.95</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="653" end="654">
+</content>
+
+</paragraph>
+<paragraph start="654" end="683">
+<RightIndent>50.0</RightIndent>
+<LeftIndent>50.0</LeftIndent>
+<content start="654" end="683">
+</content>
+
+</paragraph>
+<paragraph start="683" end="684">
+<RightIndent>50.0</RightIndent>
+<LeftIndent>50.0</LeftIndent>
+<content start="683" end="684">
+</content>
+
+</paragraph>
+<paragraph start="684" end="922">
+<RightIndent>50.0</RightIndent>
+<LeftIndent>50.0</LeftIndent>
+<content start="684" end="922">
+</content>
+
+</paragraph>
+<paragraph start="922" end="924">
+<SpaceBelow>2.0</SpaceBelow>
+<Alignment>1</Alignment>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="922" end="923">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.95</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+</paragraph>
+</section>
+</document>

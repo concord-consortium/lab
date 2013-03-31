@@ -985,7 +985,7 @@ end
 ;;;;;;;;    Run Procedure       ;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to run-airbag ; computes and draws the position or velocity graphs of the airbag and dummy 
+to run-airbag ; computes and draws the position or velocity graphs of the airbag and dummy
   ; first, stop if there is no question selected
   if what-is-your-goal? = "" and not omit-question? [
     ; "To continue, first pick a goal."
@@ -999,6 +999,9 @@ to run-airbag ; computes and draws the position or velocity graphs of the airbag
   setup-for-run   ; housekeeping. advances run-number, saves the-question, hids old data
                   ; locks the sliders, resets logging variables
                      
+  ; and always call the data-export module's setup-run function when starting a run
+  data-export:setup-run
+
   ; Compute position, velocity, and acceleration for the actors
   ; the car follows an equation given by car-loc
   ; the dummy position is determined by solving F=ma for the pseudo force of the accelerated reference frame, 
@@ -1936,6 +1939,10 @@ to setup-data-export
   data-export:initialize setup
 end
 
+to setup-run
+  data-export:setup-run
+end
+
 ;;;
 ;;; update-run-series
 ;;;
@@ -2081,7 +2088,7 @@ Airbag-size
 Airbag-size
 0.1
 .5
-0.34
+0.5
 .02
 1
 m
@@ -2096,7 +2103,7 @@ Time-to-fill-bag
 Time-to-fill-bag
 .01
 .05
-0.015
+0.01
 .002
 1
 sec

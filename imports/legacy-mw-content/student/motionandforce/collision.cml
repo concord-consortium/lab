@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Observing Newton&apos;s Third Law</page_title>
+<text>Observing Newton&apos;s Third Law
+
+           
+      
+
+In this simulation, you will observe Newton&apos;s Third Law. You may observe some (more rarely) three-body collision events.</text>
+<section start="0" end="171">
+<paragraph start="0" end="29">
+<LeftIndent>6.0</LeftIndent>
+<SpaceAbove>6.0</SpaceAbove>
+<content start="0" end="28">
+<size>16</size><bold>true</bold></content>
+
+<content start="28" end="29">
+<family>Lucida Sans Unicode</family><size>18</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="29" end="30">
+<content start="29" end="30">
+<size>18</size></content>
+
+</paragraph>
+<paragraph start="30" end="42">
+<Alignment>1</Alignment>
+<content start="30" end="31">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>180.0</width>
+<height>280.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;font size=&quot;2&quot;&gt;&lt;img src=&quot;Newton.gif&quot;&gt;
+    &lt;br&gt;
+    Sir Isaac Newton (1642 - 1727)&lt;br&gt;In 1687, Newton published the 
+    Philosophiae naturalis principia mathematica or Principia.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="31" end="34">
+</content>
+
+<content start="34" end="35">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>200.0</width>
+<height>275.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;b&gt;Newton&apos;s Third Law&lt;/b&gt;:
+
+    &lt;p&gt;
+      &lt;i&gt;&lt;font size=&quot;2&quot;&gt;Forces always occur in pairs. If object A exerts a 
+      force F on object B, then object B exerts an equal and opposite force -F 
+      on object A. In other words, every action has an equal and opposite 
+      reaction.&lt;/font&gt;&lt;/i&gt;&lt;font size=&quot;3&quot;&gt; &lt;/font&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;font size=&quot;2&quot;&gt;When two particles collide, the forces that act on them 
+      from each other will be equal and opposite.&lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="35" end="40">
+</content>
+
+<content start="40" end="41">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>collision$0.mml</resource><menubar>false</menubar></component><size>18</size></content>
+
+<content start="41" end="42">
+</content>
+
+</paragraph>
+<paragraph start="42" end="49">
+<Alignment>1</Alignment>
+<content start="42" end="43">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat</title>
+<bgcolor>-999a</bgcolor>
+<border>Raised Bevel</border>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<step>0.01</step>
+<action>Heat the system up</action>
+</component></content>
+
+<content start="43" end="45">
+</content>
+
+<content start="45" end="46">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Cool</title>
+<bgcolor>-666601</bgcolor>
+<border>Raised Bevel</border>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<step>-0.01</step>
+<action>Cool the system down</action>
+</component></content>
+
+<content start="46" end="47">
+</content>
+
+<content start="47" end="48">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Kinetic Energy Shading</title>
+<selected>true</selected>
+<model>0</model>
+<action>K. E. Shading</action>
+</component></content>
+
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="50">
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="171">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="50" end="170">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

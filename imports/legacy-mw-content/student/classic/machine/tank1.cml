@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Simulation of a tank moving on a caterpillar track</page_title>
+<text>Simulation of a tank moving on a caterpillar track 
+
+ 
+  
+Instruction: For simplicity, we use just two wheels. The blue balls represent some sort of uneven road condition, and those above the water represent a suspension bridge. The tank is initially started by an electric field, which acts on the rear wheel. This simulates the effect of an electric motor driving the whole vehicle from the rear part. The rotation of the rear wheel starts to cause the chain to move on through the gear mechanism between the white and green balls (the green balls are slighter smaller than the white ones so that they fit each other better). The chain then passses energy to the front wheel, causing it to rotate as well.</text>
+<section start="0" end="708">
+<paragraph start="0" end="52">
+<LeftIndent>6.0</LeftIndent>
+<SpaceAbove>3.0</SpaceAbove>
+<content start="0" end="51">
+<bold>true</bold><size>15</size></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="53">
+<content start="52" end="53">
+</content>
+
+</paragraph>
+<paragraph start="53" end="55">
+<Alignment>1</Alignment>
+<content start="53" end="54">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>tank1$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="54" end="55">
+</content>
+
+</paragraph>
+<paragraph start="55" end="58">
+<Alignment>1</Alignment>
+<content start="55" end="56">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Tracked</title>
+<tooltip>Use a  caterpillar track</tooltip>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1125111912845</groupid>
+<script>load tank1.mml</script>
+<action>Execute MW script</action></component></content>
+
+<content start="56" end="57">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Not tracked</title>
+<tooltip>Do not use a  caterpillar track</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1125111912845</groupid>
+<script>load tank2.mml</script>
+<action>Execute MW script</action></component></content>
+
+<content start="57" end="58">
+</content>
+
+</paragraph>
+<paragraph start="58" end="708">
+<LeftIndent>6.0</LeftIndent>
+<content start="58" end="707">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

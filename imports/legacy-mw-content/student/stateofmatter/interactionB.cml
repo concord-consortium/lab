@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>The Formation of Condensed Matter</page_title>
+<text>The Formation of Condensed Matter
+
+   
+  
+Comparison of hard-sphere and attracting particle systems.
+ 
+We unite because we attract.
+ 
+
+This activity allows students to compare the characteristic dynamics of a hard-sphere particle system with that of an attractive-force particle system. Student should see that in the first system (the left one), the system does not form a stable structure when the temperature is lowered down, whereas in the second system (the right one), the particles can form a hexagonal lattice at lower temperature.
+
+A student can discover that the hard-sphere model is not adequate to produce temperature-induced phase transitions, which result in condensation or melting of substances. The teacher should encourage students to raise the temperature. At higher temperature, the difference between the two systems can hardly be seen. This explains why the hard-sphere model is a good approximation for gas phase.
+
+What does a heat bath mean?
+
+</text>
+<section start="0" end="968">
+<paragraph start="0" end="34">
+<Alignment>1</Alignment>
+<content start="0" end="33">
+<size>15</size><bold>true</bold></content>
+
+<content start="33" end="34">
+<size>18</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="39">
+<Alignment>1</Alignment>
+<content start="35" end="36">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>interactionB$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="36" end="37">
+</content>
+
+<content start="37" end="38">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>interactionB$1.mml</resource><menubar>false</menubar></component></content>
+
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="42">
+<RightIndent>10.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>10.0</LeftIndent>
+<content start="39" end="40">
+<component><class>org.concord.modeler.PageSlider</class>
+<title>Temperature of the Left Model</title>
+<width>300</width>
+<height>64</height>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>90.0</value>
+<minimum>100.0</minimum>
+<maximum>1000.0</maximum>
+<tick>true</tick>
+<nstep>20</nstep>
+<labeltable>{value=&quot;90.0&quot;, label=&quot;Low&quot;}{value=&quot;990.0&quot;, label=&quot;High&quot;}</labeltable>
+<change>Temperature</change>
+</component></content>
+
+<content start="40" end="41">
+<component><class>org.concord.modeler.PageSlider</class>
+<title>Temperature of the Right Model</title>
+<width>300</width>
+<height>64</height>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>1</model>
+<value>90.0</value>
+<minimum>100.0</minimum>
+<maximum>1000.0</maximum>
+<tick>true</tick>
+<nstep>20</nstep>
+<labeltable>{value=&quot;90.0&quot;, label=&quot;Low&quot;}{value=&quot;990.0&quot;, label=&quot;High&quot;}</labeltable>
+<change>Temperature</change>
+</component></content>
+
+<content start="41" end="42">
+</content>
+
+</paragraph>
+<paragraph start="42" end="101">
+<Alignment>1</Alignment>
+<content start="42" end="100">
+<italic>true</italic><size>11</size></content>
+
+<content start="100" end="101">
+<italic>true</italic><size>11</size><family>Book Antiqua</family></content>
+
+</paragraph>
+<paragraph start="101" end="103">
+<RightIndent>10.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>10.0</LeftIndent>
+<content start="101" end="102">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.9</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="102" end="103">
+</content>
+
+</paragraph>
+<paragraph start="103" end="132">
+<RightIndent>10.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>10.0</LeftIndent>
+<content start="103" end="131">
+<size>11</size><bold>true</bold></content>
+
+<content start="131" end="132">
+</content>
+
+</paragraph>
+<paragraph start="132" end="134">
+<RightIndent>10.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>10.0</LeftIndent>
+<content start="132" end="133">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.9</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="133" end="134">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="134" end="135">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="134" end="135">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="135" end="540">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="135" end="540">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="540" end="541">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="540" end="541">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="541" end="937">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="541" end="936">
+<size>11</size></content>
+
+<content start="936" end="937">
+</content>
+
+</paragraph>
+<paragraph start="937" end="938">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="937" end="938">
+</content>
+
+</paragraph>
+<paragraph start="938" end="966">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="938" end="965">
+<href>../../tutorial/heatbath.cml</href><size>11</size></content>
+
+<content start="965" end="966">
+</content>
+
+</paragraph>
+<paragraph start="966" end="967">
+<content start="966" end="967">
+</content>
+
+</paragraph>
+<paragraph start="967" end="968">
+</paragraph>
+</section>
+</document>

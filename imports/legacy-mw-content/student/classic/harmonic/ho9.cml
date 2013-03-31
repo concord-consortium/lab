@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Experiment with a harmonic oscillator: Ax-Ay cross section</page_title>
+<bg_gradient><gradient_color1><Red>255</Red><Green>255</Green><Blue>255</Blue></gradient_color1>
+<gradient_color2><Red>20</Red><Green>100</Green><Blue>200</Blue></gradient_color2>
+<gradient_style>1034</gradient_style>
+<gradient_variant>1044</gradient_variant>
+</bg_gradient>
+<text>Experiment with a Harmonic Oscillator: Ax-Ay Cross Section of Phase Space
+
+  </text>
+<section start="0" end="78">
+<paragraph start="0" end="74">
+<content start="0" end="73">
+<bold>true</bold><family>Book Antiqua</family><size>20</size></content>
+
+<content start="73" end="74">
+<bold>true</bold><family>Microsoft Sans Serif</family><size>18</size></content>
+
+</paragraph>
+<paragraph start="74" end="75">
+<content start="74" end="75">
+<size>18</size></content>
+
+</paragraph>
+<paragraph start="75" end="78">
+<Alignment>1</Alignment>
+<content start="75" end="76">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>Ax: 0Ck</time_series_x>
+<time_series_y1 color="-ffff01" style="0" width="1.0" symbol="2" size="4" spacing="5">Ay: 0Ck</time_series_y1>
+<width>350</width>
+<height>254</height>
+<axis_x_title>Ax</axis_x_title>
+<axis_y_title>Ay</axis_y_title>
+<legend_x>200</legend_x>
+<legend_y>126</legend_y>
+<bgcolor>-2b2f38</bgcolor>
+<fgcolor>-1</fgcolor>
+<border>Raised Bevel</border>
+</component><foreground>255 0 0</foreground></content>
+
+<content start="76" end="77">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>ho9$0.mml</resource><menubar>false</menubar></component><size>18</size></content>
+
+</paragraph>
+</section>
+</document>

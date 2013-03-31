@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Slider-Crank </page_title>
+<text>Slider-Crank
+The slider-crank mechanism converts linear motion into rotary motion, or vice versa.
+
+ 
+
+In an internal combuston engine, the piston is pushed by the force resulting from the burning of gas.</text>
+<section start="0" end="204">
+<paragraph start="0" end="13">
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="0" end="12">
+<bold>true</bold><size>15</size></content>
+
+<content start="12" end="13">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="13" end="98">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="13" end="97">
+<size>11</size></content>
+
+<content start="97" end="98">
+</content>
+
+</paragraph>
+<paragraph start="98" end="99">
+<LeftIndent>6.0</LeftIndent>
+<content start="98" end="99">
+</content>
+
+</paragraph>
+<paragraph start="99" end="101">
+<Alignment>1</Alignment>
+<content start="99" end="100">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>SliderCrank$0.mml</resource><menubar>false</menubar></component><size>11</size></content>
+
+<content start="100" end="101">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="101" end="102">
+<Alignment>1</Alignment>
+<content start="101" end="102">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="102" end="204">
+<LeftIndent>6.0</LeftIndent>
+<content start="102" end="203">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

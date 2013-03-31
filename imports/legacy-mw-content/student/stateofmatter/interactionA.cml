@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>The Hard-Sphere Model for Gases</page_title>
+<text>The Hard-Sphere Model for Gases
+
+   
+Comparison of non-interacting and hard-sphere particle systems. 
+
+ 
+Atoms exist because they interact.
+ 
+
+Using these two simulations, the concept of interatomic interactions can be introduced. This first activity allows students to compare the behavior of the dynamics between a non-interacting particle system with that of a hard-sphere particle system. Students should see that in the first system (the left one), the particles run over one another when they meet, as if they do not see each other at all, whereas in the second system (the right-hand one), the particles get bounced back when they collide.
+
+Gas cannot be infinitely compressed, because there exist replusive forces among the atoms when they come close to one another.</text>
+<section start="0" end="775">
+<paragraph start="0" end="32">
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="0" end="31">
+<size>15</size><bold>true</bold></content>
+
+<content start="31" end="32">
+<size>16</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="32" end="33">
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="37">
+<Alignment>1</Alignment>
+<content start="33" end="34">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>interactionA$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="34" end="35">
+</content>
+
+<content start="35" end="36">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>interactionA$1.mml</resource><menubar>false</menubar></component></content>
+
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="102">
+<Alignment>1</Alignment>
+<content start="37" end="101">
+<italic>true</italic><size>11</size></content>
+
+<content start="101" end="102">
+<italic>true</italic><family>Book Antiqua</family></content>
+
+</paragraph>
+<paragraph start="102" end="103">
+<content start="102" end="103">
+</content>
+
+</paragraph>
+<paragraph start="103" end="105">
+<Alignment>1</Alignment>
+<content start="103" end="104">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.9</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="104" end="105">
+</content>
+
+</paragraph>
+<paragraph start="105" end="140">
+<Alignment>1</Alignment>
+<content start="105" end="139">
+<size>11</size><bold>true</bold></content>
+
+<content start="139" end="140">
+</content>
+
+</paragraph>
+<paragraph start="140" end="142">
+<Alignment>1</Alignment>
+<content start="140" end="141">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.9</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="141" end="142">
+</content>
+
+</paragraph>
+<paragraph start="142" end="143">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="142" end="143">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="143" end="647">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="143" end="647">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="647" end="648">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="647" end="648">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="648" end="775">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="648" end="774">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

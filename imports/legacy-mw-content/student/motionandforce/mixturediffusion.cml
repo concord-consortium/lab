@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Diffusion in mixture</page_title>
+<text>Diffusion in mixture
+
+Diffusion is related to interatomic interactions. Diffusion in mixture demonstrates different behaviors than diffusion in pure substance. The following two models illustrate this. The larger particles are ten times heavier than the smaller ones in both models. In the model on the right, the two substances are separated by two partitions that are wide enough to isolate the particles in the two areas.
+
+   
+
+ 
+
+ </text>
+<section start="0" end="436">
+<paragraph start="0" end="21">
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="20">
+<bold>true</bold><size>14</size></content>
+
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="22">
+<LeftIndent>8.0</LeftIndent>
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="425">
+<LeftIndent>8.0</LeftIndent>
+<content start="22" end="424">
+<size>11</size></content>
+
+<content start="424" end="425">
+</content>
+
+</paragraph>
+<paragraph start="425" end="426">
+<LeftIndent>8.0</LeftIndent>
+<content start="425" end="426">
+</content>
+
+</paragraph>
+<paragraph start="426" end="430">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="426" end="427">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>mixturediffusion$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="427" end="428">
+</content>
+
+<content start="428" end="429">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>mixturediffusion$1.mml</resource><menubar>false</menubar></component></content>
+
+<content start="429" end="430">
+</content>
+
+</paragraph>
+<paragraph start="430" end="431">
+<LeftIndent>8.0</LeftIndent>
+<content start="430" end="431">
+</content>
+
+</paragraph>
+<paragraph start="431" end="433">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="431" end="432">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>480</width>
+<height>203</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;3&quot;&gt;Please write down your observations. Can you explain the 
+    results?&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-1</bgcolor>
+</component></content>
+
+<content start="432" end="433">
+</content>
+
+</paragraph>
+<paragraph start="433" end="434">
+<LeftIndent>8.0</LeftIndent>
+<content start="433" end="434">
+</content>
+
+</paragraph>
+<paragraph start="434" end="436">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="434" end="435">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Create a report</title>
+<border>Raised Bevel</border>
+<action>Create a report about this page in a new window</action></component></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>The balance between osmotic pressure and gravity: a three-compartment setup</page_title>
+<text>The balance between osmotic pressure and gravity: a three-compartment setup
+
+The following experiment seeks to demonstrate that the osmotic pressure can result in a raising column in the middle compartment.
+
+ 
+ 
+  </text>
+<section start="0" end="215">
+<paragraph start="0" end="76">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="75">
+<size>14</size><bold>true</bold></content>
+
+<content start="75" end="76">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="76" end="77">
+<LeftIndent>8.0</LeftIndent>
+<content start="76" end="77">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="77" end="207">
+<LeftIndent>8.0</LeftIndent>
+<content start="77" end="207">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="207" end="208">
+<LeftIndent>8.0</LeftIndent>
+<content start="207" end="208">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="208" end="210">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="208" end="209">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>go3$0.mml</resource><menubar>false</menubar></component><size>11</size></content>
+
+<content start="209" end="210">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="210" end="212">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="210" end="211">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Mark the solvent molecules in the middle compartment</title>
+<tooltip>Mark the solvent molecules in the middle compartment</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>show selectionhalo off;
+select element 2 within (12, 0, 18, &quot;%height+2&quot;);
+mark;
+delay 0.5;
+select element none;
+show selectionhalo on;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="211" end="212">
+</content>
+
+</paragraph>
+<paragraph start="212" end="215">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="212" end="213">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Remove all solute molecules</title>
+<tooltip>Remove all solute molecules</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>select element 1;
+remove;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="213" end="214">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Remove all solvent molecules</title>
+<tooltip>Remove all solvent molecules</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>select element 2;
+remove;</script>
+<action>Execute MW script</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

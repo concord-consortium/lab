@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Size segregation of particles on a vibrating base</page_title>
+<text>Size segregation of particles on a vibrating base
+
+  
+   
+ 
+
+</text>
+<section start="0" end="62">
+<paragraph start="0" end="50">
+<Alignment>1</Alignment>
+<content start="0" end="49">
+<bold>true</bold><size>16</size><family>Trebuchet MS</family></content>
+
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="51">
+<Alignment>1</Alignment>
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="54">
+<Alignment>1</Alignment>
+<content start="51" end="52">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>300.0</width>
+<height>190.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Trebuchet MS&quot;&gt;
+    Have you ever tried to get rid of small stones from rice or wheat grains? 
+    You probably know that stones will emerge after shaking the grains that 
+    may have stones inside for many times. The model on the right simulates 
+    this process.&lt;hr&gt;
+
+    &lt;p&gt;
+      See: &lt;a href=&quot;shake2.cml&quot;&gt;Density segregation&lt;/a&gt;.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="52" end="53">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>shake$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="53" end="54">
+</content>
+
+</paragraph>
+<paragraph start="54" end="58">
+<Alignment>1</Alignment>
+<content start="54" end="55">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Stop shaking the base</title>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1204637422540</groupid>
+<script>set %speed 0;
+set obstacle[0].density 1000000;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="55" end="56">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Shake the base</title>
+<disabled_at_script>true</disabled_at_script>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1204637422540</groupid>
+<script>set %speed 500;
+set obstacle[0].density 0.1;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="56" end="57">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Shake the base harder</title>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1204637422540</groupid>
+<script>set %speed 1000;
+set obstacle[0].density 0.1;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="57" end="58">
+</content>
+
+</paragraph>
+<paragraph start="58" end="60">
+<Alignment>1</Alignment>
+<content start="58" end="59">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>5.0</value>
+<minimum>1.0</minimum>
+<maximum>20.0</maximum>
+<nstep>19</nstep>
+<title>The mass of the large particles vs. that of the small ones</title>
+<width>300</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;10 times&quot;}{value=&quot;20.0&quot;, label=&quot;20 times&quot;}{value=&quot;1.0&quot;, label=&quot;Same&quot;}</labeltable>
+<script>set element[2].mass %val*%element[0].mass;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="59" end="60">
+</content>
+
+</paragraph>
+<paragraph start="60" end="61">
+<content start="60" end="61">
+</content>
+
+</paragraph>
+<paragraph start="61" end="62">
+</paragraph>
+</section>
+</document>

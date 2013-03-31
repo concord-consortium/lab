@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Different phases formed by anisotropic particles: phase 2</page_title>
+<text>Introduction    Phase 1     Phase 2     Phase 3
+ 
+Phase formed when particles prefer end-to-end.</text>
+<section start="0" end="97">
+<paragraph start="0" end="48">
+<Alignment>1</Alignment>
+<content start="0" end="12">
+<href>lq0.cml</href><size>18</size><family>Book Antiqua</family><bold>true</bold></content>
+
+<content start="12" end="16">
+<size>18</size><family>Book Antiqua</family><bold>true</bold></content>
+
+<content start="16" end="23">
+<href>lq1.cml</href><size>18</size><family>Book Antiqua</family><bold>true</bold></content>
+
+<content start="23" end="40">
+<size>18</size><family>Book Antiqua</family><bold>true</bold></content>
+
+<content start="40" end="47">
+<href>lq2.cml</href><size>18</size><family>Book Antiqua</family><bold>true</bold></content>
+
+<content start="47" end="48">
+<family>Book Antiqua</family></content>
+
+</paragraph>
+<paragraph start="48" end="50">
+<Alignment>1</Alignment>
+<content start="48" end="49">
+<component><class>org.concord.mw2d.activity.GBContainer</class>
+<resource>lq3$0.gbl</resource><menubar>false</menubar></component><family>Book Antiqua</family></content>
+
+<content start="49" end="50">
+<family>Book Antiqua</family></content>
+
+</paragraph>
+<paragraph start="50" end="97">
+<Alignment>1</Alignment>
+<content start="50" end="96">
+<size>13</size></content>
+
+</paragraph>
+</section>
+</document>

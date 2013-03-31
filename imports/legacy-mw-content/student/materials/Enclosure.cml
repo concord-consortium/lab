@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Micro-inclusion and microvoid</page_title>
+<bg_color><Red>0</Red><Green>0</Green><Blue>0</Blue></bg_color>
+<text>Micro-inclusion and microvoid
+
+   
+     
+     </text>
+<section start="0" end="47">
+<paragraph start="0" end="30">
+<SpaceAbove>8.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="0" end="29">
+<size>15</size><foreground>255 255 255</foreground><bold>true</bold></content>
+
+<content start="29" end="30">
+<size>14</size><italic>true</italic><family>Book Antiqua</family></content>
+
+</paragraph>
+<paragraph start="30" end="31">
+<Alignment>1</Alignment>
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="35">
+<Alignment>1</Alignment>
+<content start="31" end="32">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Run</title>
+<tooltip>Run</tooltip>
+<border>Raised Bevel</border>
+<script>script:mw:1:run;
+script:mw:2:run;</script>
+<action>Script</action></component></content>
+
+<content start="32" end="33">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Stop</title>
+<tooltip>Stop</tooltip>
+<border>Raised Bevel</border>
+<script>script:mw:1:stop;
+script:mw:2:stop;</script>
+<action>Script</action></component></content>
+
+<content start="33" end="34">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Reset</title>
+<tooltip>Reset</tooltip>
+<border>Raised Bevel</border>
+<script>script:mw:1:reset;
+script:mw:2:reset;</script>
+<action>Script</action></component></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="41">
+<Alignment>1</Alignment>
+<content start="35" end="39">
+</content>
+
+<content start="39" end="40">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>Enclosure$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border><recorder>true</recorder></component></content>
+
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="47">
+<Alignment>1</Alignment>
+<content start="41" end="45">
+</content>
+
+<content start="45" end="46">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>Enclosure$1.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border><recorder>true</recorder></component></content>
+
+</paragraph>
+</section>
+</document>

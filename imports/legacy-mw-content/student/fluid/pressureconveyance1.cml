@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Pressure conveyance through fluids I</page_title>
+<bg_color><Red>255</Red><Green>255</Green><Blue>204</Blue></bg_color>
+<text> 
+ 
+
+The models on this page seek to demonstrate that fluids are capable of conveying pressure. Adding obstacles into the fluid only increases the resistance to flow, i.e. it flows slower (Case 2). It does not cause pressure to diminish.
+
+Case 1:
+
+ 
+ 
+
+Case 2:
+
+ 
+ 
+
+The simulations also show that fluids flow in the direction in which pressure decreases. In other words, pressure difference is the driving force for the flow of fluids. This is different from the case of diffusion, in which concentration difference is the cause of molecular movement. The major difference between the two mechanisms is that work is done to the molecular system when the system moves under exerted pressure, whereas diffusion is a spantaneous process that needs no input of energy.
+
+
+
+ 
+
+
+</text>
+<section start="0" end="774">
+<paragraph start="0" end="2">
+<Alignment>1</Alignment>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="1">
+<icon><class>org.concord.modeler.text.LineIcon</class><height>40</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;&lt;body&gt;
+&lt;table width=&quot;100%&quot; align=&quot;center&quot;&gt;
+&lt;tr&gt;
+&lt;td align=&quot;center&quot;&gt;
+&lt;b&gt;&lt;font size=&quot;5&quot; face=&quot;Trebuchet MS&quot;&gt;Pressure conveyance through fluids&lt;/font&gt;&lt;/b&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/body&gt;&lt;/html&gt;</title><bgcolor>-e1750</bgcolor><leftmargin>75</leftmargin><rightmargin>75</rightmargin></icon></content>
+
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><height>42</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;&lt;body face=&quot;Trebuchet MS&quot;&gt;
+&lt;table width=&quot;100%&quot;&gt;
+&lt;tr&gt;
+&lt;td width=&quot;50&quot;&gt;
+&lt;img src=&quot;previous-disabled.png&quot; border=0&gt;
+&lt;/td&gt;
+&lt;td width=&quot;50&quot;&gt;
+&lt;a href=&quot;pressureconveyance2.cml&quot;&gt;&lt;img src=&quot;next.png&quot; border=0&gt;&lt;/a&gt;
+&lt;/td&gt;
+&lt;td&gt;
+
+&lt;table width=&quot;98%&quot;&gt;
+&lt;tr&gt;
+&lt;td width=&quot;20%&quot; bgcolor=&quot;#eeeeaa&quot;&gt;
+Page 1 of 4
+&lt;/td&gt;
+&lt;td bgcolor=&quot;#Ffffdd&quot; width=50%&gt;
+&lt;/td&gt;
+&lt;td align=right&gt;
+&lt;a href=&quot;../../monograph.cml&quot;&gt;&lt;img src=&quot;arrow.gif&quot; border=0&gt;&lt;/a&gt;&lt;td&gt; Interactive Essays&amp;nbsp;&lt;/td&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</title><bgcolor>-243f9a</bgcolor><leftmargin>75</leftmargin><rightmargin>75</rightmargin></icon></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="5">
+<LeftIndent>8.0</LeftIndent>
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="238">
+<LeftIndent>75.0</LeftIndent>
+<RightIndent>75.0</RightIndent>
+<content start="5" end="238">
+</content>
+
+</paragraph>
+<paragraph start="238" end="239">
+<LeftIndent>8.0</LeftIndent>
+<content start="238" end="239">
+</content>
+
+</paragraph>
+<paragraph start="239" end="247">
+<LeftIndent>75.0</LeftIndent>
+<content start="239" end="246">
+<family>Trebuchet MS</family><bold>true</bold><size>18</size></content>
+
+<content start="246" end="247">
+</content>
+
+</paragraph>
+<paragraph start="247" end="248">
+<LeftIndent>75.0</LeftIndent>
+<content start="247" end="248">
+</content>
+
+</paragraph>
+<paragraph start="248" end="250">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="248" end="249">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>pressureconveyance1$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="249" end="250">
+</content>
+
+</paragraph>
+<paragraph start="250" end="252">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="250" end="251">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>5.0</value>
+<minimum>0.0</minimum>
+<maximum>10.0</maximum>
+<nstep>10</nstep>
+<title>Adjust pressure on the two pistons</title>
+<width>400</width>
+<height>70</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;Higher on right piston&quot;}{value=&quot;5.0&quot;, label=&quot;Equal pressure&quot;}{value=&quot;0.0&quot;, label=&quot;Higher on left piston&quot;}</labeltable>
+<script>set obstacle[0].externalfx &quot;0.1+(0.5*(%min+%max)-%val)*0.01&quot;;
+set obstacle[1].externalfx &quot;-0.1-(%val-0.5*(%min+%max))*0.01&quot;;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="251" end="252">
+</content>
+
+</paragraph>
+<paragraph start="252" end="253">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="252" end="253">
+</content>
+
+</paragraph>
+<paragraph start="253" end="261">
+<LeftIndent>75.0</LeftIndent>
+<RightIndent>75.0</RightIndent>
+<content start="253" end="260">
+<family>Trebuchet MS</family><bold>true</bold><size>18</size></content>
+
+<content start="260" end="261">
+</content>
+
+</paragraph>
+<paragraph start="261" end="262">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="261" end="262">
+</content>
+
+</paragraph>
+<paragraph start="262" end="264">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="262" end="263">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>pressureconveyance1$1.mml</resource><menubar>false</menubar></component></content>
+
+<content start="263" end="264">
+</content>
+
+</paragraph>
+<paragraph start="264" end="266">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="264" end="265">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>1</model>
+<value>5.0</value>
+<minimum>0.0</minimum>
+<maximum>10.0</maximum>
+<nstep>10</nstep>
+<title>Adjust pressure on pistons</title>
+<tooltip>Adjust pressure on pistons</tooltip>
+<width>400</width>
+<height>70</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;Higher on right piston&quot;}{value=&quot;5.0&quot;, label=&quot;Equal pressure&quot;}{value=&quot;0.0&quot;, label=&quot;Higher on left piston&quot;}</labeltable>
+<script>set obstacle[0].externalfx &quot;0.1+(0.5*(%min+%max)-%val)*0.01&quot;;
+set obstacle[1].externalfx &quot;-0.1-(%val-0.5*(%min+%max))*0.01&quot;;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="265" end="266">
+</content>
+
+</paragraph>
+<paragraph start="266" end="267">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="266" end="267">
+</content>
+
+</paragraph>
+<paragraph start="267" end="766">
+<LeftIndent>75.0</LeftIndent>
+<RightIndent>75.0</RightIndent>
+<content start="267" end="766">
+</content>
+
+</paragraph>
+<paragraph start="766" end="767">
+<LeftIndent>8.0</LeftIndent>
+<content start="766" end="767">
+</content>
+
+</paragraph>
+<paragraph start="767" end="768">
+<content start="767" end="768">
+</content>
+
+</paragraph>
+<paragraph start="768" end="769">
+<LeftIndent>8.0</LeftIndent>
+<content start="768" end="769">
+</content>
+
+</paragraph>
+<paragraph start="769" end="771">
+<Alignment>1</Alignment>
+<content start="769" end="770">
+<icon><class>org.concord.modeler.text.LineIcon</class><height>45</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;&lt;body face=&quot;Trebuchet MS&quot;&gt;
+&lt;table width=&quot;100%&quot;&gt;
+&lt;tr&gt;
+&lt;td width=&quot;50&quot;&gt;
+&lt;img src=&quot;previous-disabled.png&quot; border=0&gt;
+&lt;/td&gt;
+&lt;td width=&quot;50&quot;&gt;
+&lt;a href=&quot;pressureconveyance2.cml&quot;&gt;&lt;img src=&quot;next.png&quot; border=0&gt;&lt;/a&gt;
+&lt;/td&gt;
+&lt;td&gt;
+
+&lt;table width=&quot;98%&quot;&gt;
+&lt;tr&gt;
+&lt;td width=&quot;20%&quot; bgcolor=&quot;#eeeeaa&quot;&gt;
+Page 1 of 4
+&lt;/td&gt;
+&lt;td bgcolor=&quot;#Ffffdd&quot; width=50%&gt;
+&lt;/td&gt;
+&lt;td align=right&gt;
+&lt;a href=&quot;../../monograph.cml&quot;&gt;&lt;img src=&quot;arrow.gif&quot; border=0&gt;&lt;/a&gt;&lt;td&gt; Interactive Essays&amp;nbsp;&lt;/td&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</title><bgcolor>-243f9a</bgcolor><leftmargin>75</leftmargin><rightmargin>75</rightmargin></icon></content>
+
+<content start="770" end="771">
+</content>
+
+</paragraph>
+<paragraph start="771" end="772">
+<content start="771" end="772">
+</content>
+
+</paragraph>
+<paragraph start="772" end="773">
+<content start="772" end="773">
+</content>
+
+</paragraph>
+<paragraph start="773" end="774">
+</paragraph>
+</section>
+</document>

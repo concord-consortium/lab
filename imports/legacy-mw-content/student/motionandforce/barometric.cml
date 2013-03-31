@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The barometric formula</page_title>
+<text>The barometric formula
+
+The barometric formula states that the pressure decreases exponentially when the altitude increases. The formula is a manifestation of the Boltzmann distribution. The following model demonstrates this effect. A virtual pressure gauge is placed in the middle of the model container to measure the pressure. It can be raised or lowered.
+
+   
+     
+
+Instruction: Reset the simulation and lift the gauge to a higher position. Let the simulation run until it automatically stops and read the bar graph. The value is the pressure measured at that altitude. Repeat this procedure for different heights. Does the pressure-altitude relationship exhibit an exponential behavior?
+
+Note: The gravitational acceleration has been exaggerated in the above model to make the Boltzmann distribution effect significant enough to be measurable. In the earth atmosphere, the altitude will be much higher in order to show a comparable pressure decreasing.
+
+
+</text>
+<section start="0" end="962">
+<paragraph start="0" end="23">
+<SpaceAbove>10.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="0" end="22">
+<bold>true</bold><family>Century Gothic</family><size>20</size></content>
+
+<content start="22" end="23">
+<family>Century Gothic</family></content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<content start="23" end="24">
+<family>Century Gothic</family></content>
+
+</paragraph>
+<paragraph start="24" end="359">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>75.0</LeftIndent>
+<content start="24" end="28">
+<family>Century Gothic</family></content>
+
+<content start="28" end="46">
+<family>Century Gothic</family><href>http://hyperphysics.phy-astr.gsu.edu/hbase/kinetic/barfor.html#c2</href></content>
+
+<content start="46" end="163">
+<family>Century Gothic</family></content>
+
+<content start="163" end="185">
+<family>Century Gothic</family><bold>true</bold></content>
+
+<content start="185" end="359">
+<family>Century Gothic</family></content>
+
+</paragraph>
+<paragraph start="359" end="360">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>75.0</LeftIndent>
+<content start="359" end="360">
+<family>Century Gothic</family></content>
+
+</paragraph>
+<paragraph start="360" end="364">
+<RightIndent>75.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>75.0</LeftIndent>
+<content start="360" end="361">
+<family>Century Gothic</family><component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>barometric$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
+
+<content start="361" end="362">
+<family>Century Gothic</family></content>
+
+<content start="362" end="363">
+<family>Century Gothic</family><component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<timeseries>South pressure:Obstacle #0</timeseries>
+<description>Pressure (bar)</description>
+<average>true</average>
+<max_fraction_digits>1</max_fraction_digits>
+<max_integer_digits>2</max_integer_digits>
+<width>90</width>
+<height>350</height>
+<tick>true</tick>
+<major_tick>5</major_tick>
+<nstep>50</nstep>
+<label>true</label>
+<title>true</title>
+<fgcolor>-7f7f80</fgcolor>
+<minimum>0.0</minimum>
+<maximum>0.5</maximum>
+<value>0.02352782152593136</value>
+</component></content>
+
+<content start="363" end="364">
+<family>Century Gothic</family></content>
+
+</paragraph>
+<paragraph start="364" end="370">
+<RightIndent>75.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>75.0</LeftIndent>
+<content start="364" end="365">
+<family>Century Gothic</family><component><class>org.concord.modeler.PageButton</class>
+<title>Lift up pressure gauge</title>
+<tooltip>Lift up pressure gauge</tooltip>
+<border>Raised Bevel</border>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>show selectionhalo off;
+select obstacle 0;
+move (0, -1);
+select obstacle none;
+show selectionhalo on;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="365" end="366">
+<family>Century Gothic</family><component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<border>Raised Bevel</border>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>run</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="366" end="367">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="367" end="368">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="368" end="369">
+<component><class>org.concord.modeler.PageSpinner</class>
+<title>Temperature</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<minimum>0.0</minimum>
+<maximum>600.0</maximum>
+<step>50.0</step>
+<value>300.0</value>
+<change>Temperature</change>
+</component></content>
+
+<content start="369" end="370">
+<family>Century Gothic</family></content>
+
+</paragraph>
+<paragraph start="370" end="371">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>75.0</LeftIndent>
+<content start="370" end="371">
+<family>Century Gothic</family></content>
+
+</paragraph>
+<paragraph start="371" end="693">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>75.0</LeftIndent>
+<content start="371" end="382">
+<family>Century Gothic</family><bold>true</bold></content>
+
+<content start="382" end="693">
+<family>Century Gothic</family></content>
+
+</paragraph>
+<paragraph start="693" end="694">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>75.0</LeftIndent>
+<content start="693" end="694">
+<family>Century Gothic</family></content>
+
+</paragraph>
+<paragraph start="694" end="959">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>75.0</LeftIndent>
+<content start="694" end="698">
+<family>Century Gothic</family><bold>true</bold></content>
+
+<content start="698" end="959">
+<family>Century Gothic</family></content>
+
+</paragraph>
+<paragraph start="959" end="960">
+<content start="959" end="960">
+<family>Century Gothic</family></content>
+
+</paragraph>
+<paragraph start="960" end="961">
+<content start="960" end="961">
+<family>Century Gothic</family></content>
+
+</paragraph>
+<paragraph start="961" end="962">
+</paragraph>
+</section>
+</document>

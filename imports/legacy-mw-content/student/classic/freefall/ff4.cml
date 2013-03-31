@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Experiment with free-fall motion: Interconversion between kinetic and potential energy</page_title>
+<bg_gradient><gradient_color1><Red>255</Red><Green>255</Green><Blue>255</Blue></gradient_color1>
+<gradient_color2><Red>20</Red><Green>100</Green><Blue>200</Blue></gradient_color2>
+<gradient_style>1034</gradient_style>
+<gradient_variant>1044</gradient_variant>
+</bg_gradient>
+<text>Experiment with free-fall motion: Interconversion between kinetic energy and potential energy
+
+  
+
+  
+
+Through this activity, students should be able to discover the following:
+
+   As kinetic enery increases(decreases), potential energy decreases(increases). The total energy, which is a summation of kinetic and potential energy, remains constant (energy conservation).</text>
+<section start="0" end="371">
+<paragraph start="0" end="94">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="93">
+<bold>true</bold><family>Book Antiqua</family><size>20</size></content>
+
+<content start="93" end="94">
+<bold>true</bold><family>Microsoft Sans Serif</family><size>18</size></content>
+
+</paragraph>
+<paragraph start="94" end="95">
+<content start="94" end="95">
+<size>18</size></content>
+
+</paragraph>
+<paragraph start="95" end="98">
+<Alignment>1</Alignment>
+<content start="95" end="96">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-10000" style="0" width="1.0" symbol="2" size="4" spacing="5">Kinetic Energy/Particle</time_series_y1>
+<time_series_y2 color="-ffff01" style="0" width="1.0" symbol="2" size="4" spacing="5">Potential Energy/Particle</time_series_y2>
+<time_series_y3 color="-ff01" style="0" width="1.0" symbol="3" size="4" spacing="5">Total Energy/Particle</time_series_y3>
+<width>350</width>
+<height>254</height>
+<axis_x_title>Time</axis_x_title>
+<axis_y_title>Energies</axis_y_title>
+<hline>true</hline>
+<legend_x>120</legend_x>
+<legend_y>120</legend_y>
+<bgcolor>-2b2f38</bgcolor>
+<fgcolor>-1</fgcolor>
+<border>Raised Bevel</border>
+</component><foreground>255 0 0</foreground></content>
+
+<content start="96" end="97">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>ff4$0.mml</resource><menubar>false</menubar></component><size>18</size></content>
+
+<content start="97" end="98">
+<size>18</size></content>
+
+</paragraph>
+<paragraph start="98" end="99">
+<Alignment>1</Alignment>
+<content start="98" end="99">
+</content>
+
+</paragraph>
+<paragraph start="99" end="102">
+<Alignment>1</Alignment>
+<content start="99" end="100">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.010000000149011612</value>
+<minimum>0.0</minimum>
+<maximum>0.10000000149011612</maximum>
+<nstep>50</nstep>
+<title>Gravitational Acceleration</title>
+<width>400</width>
+<height>70</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;0.10000000149011612&quot;, label=&quot;Large&quot;}{value=&quot;0.0&quot;, label=&quot;Zero&quot;}</labeltable>
+<change>Gravitational Field</change>
+</component></content>
+
+<content start="100" end="102">
+</content>
+
+</paragraph>
+<paragraph start="102" end="103">
+<Alignment>1</Alignment>
+<content start="102" end="103">
+</content>
+
+</paragraph>
+<paragraph start="103" end="177">
+<LeftIndent>8.0</LeftIndent>
+<content start="103" end="177">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="177" end="178">
+<content start="177" end="178">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="178" end="371">
+<LeftIndent>20.0</LeftIndent>
+<content start="178" end="179">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="179" end="370">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

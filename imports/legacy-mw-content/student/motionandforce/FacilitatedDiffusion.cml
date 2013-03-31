@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Passive Transport: Facilitated Diffusion</page_title>
+<text>Passive Transport: Facilitated Diffusion
+
+ </text>
+<section start="0" end="44">
+<paragraph start="0" end="41">
+<Alignment>1</Alignment>
+<content start="0" end="41">
+<size>18</size></content>
+
+</paragraph>
+<paragraph start="41" end="42">
+<content start="41" end="42">
+<size>18</size></content>
+
+</paragraph>
+<paragraph start="42" end="44">
+<Alignment>1</Alignment>
+<content start="42" end="43">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>FacilitatedDiffusion$0.mml</resource><menubar>false</menubar></component><size>18</size></content>
+
+</paragraph>
+</section>
+</document>

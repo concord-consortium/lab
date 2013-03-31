@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Seeing Specific Heat and Latent Heat in a Condensation Experiment</page_title>
+<text> 
+        
+
+ 
+
+ </text>
+<section start="0" end="17">
+<paragraph start="0" end="2">
+<SpaceAbove>6.0</SpaceAbove>
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="0" end="1">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>740.0</width><height>40</height><arcwidth>20</arcwidth><archeight>20</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;&lt;center&gt;&lt;font face=Verdana size=4&gt;&lt;b&gt;Seeing Specific Heat and Latent Heat in a Condensation Experiment&lt;/font&gt;&lt;/html&gt;</title><bgcolor>-333301</bgcolor></icon></content>
+
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="11">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>latentheat3$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
+
+<content start="3" end="4">
+</content>
+
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<timeseries>Kinetic Energy/Particle</timeseries>
+<description>Kinetic energy</description>
+<width>55</width>
+<height>250</height>
+<tick>true</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>true</title>
+<fgcolor>-10000</fgcolor>
+<model>0</model>
+<minimum>0.0</minimum>
+<maximum>1.0</maximum>
+<value>0.2615435719490051</value>
+</component></content>
+
+<content start="5" end="8">
+</content>
+
+<content start="8" end="9">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<timeseries>Potential Energy/Particle</timeseries>
+<description>Potential energy</description>
+<width>55</width>
+<height>250</height>
+<tick>true</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>true</title>
+<fgcolor>-ffff01</fgcolor>
+<model>0</model>
+<minimum>-1.0</minimum>
+<maximum>0.0</maximum>
+<value>-0.06285971403121948</value>
+</component><foreground>255 0 0</foreground></content>
+
+<content start="9" end="10">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>Total Energy/Particle</time_series_x>
+<time_series_y1 color="-1000000" style="0" width="1.0" symbol="0" size="4" spacing="5" multiplier="11594.0">Kinetic Energy/Particle</time_series_y1>
+<autofitx>false</autofitx>
+<axis_x_min>-0.8</axis_x_min>
+<axis_x_max>0.3</axis_x_max>
+<autofity>false</autofity>
+<axis_y_min>0.0</axis_y_min>
+<axis_y_max>4000.0</axis_y_max>
+<width>200</width>
+<height>250</height>
+<axis_x_title>Total energy (eV)</axis_x_title>
+<axis_y_title>Temperature (K)</axis_y_title>
+<legend_x>272</legend_x>
+<legend_y>157</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<toolbar>false</toolbar>
+<border>Line</border>
+</component></content>
+
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="12">
+<content start="11" end="12">
+</content>
+
+</paragraph>
+<paragraph start="12" end="14">
+<Alignment>1</Alignment>
+<content start="12" end="13">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Start cooling</title>
+<tooltip>Start cooling down the system</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>run;
+show selectionhalo off;
+loop 1;
+select atom all;
+delay modeltime 1000;
+heat -0.006;
+loop 65;
+delay modeltime 1000;
+heat -0.002;
+loop 65;
+delay modeltime 1000;
+heat -0.007;
+loop 65;
+stop;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="15">
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="17">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="15" end="16">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>740.0</width><height>40</height><arcwidth>20</arcwidth><archeight>20</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;&lt;center&gt;&lt;font face=Verdana size=2&gt;&lt;b&gt;This is a condensation experiment. For more information, see &lt;a href=&quot;latentheat2.cml&quot;&gt;the melting experiment&lt;/a&gt;.&lt;/font&gt;&lt;/html&gt;</title><bgcolor>-333301</bgcolor></icon></content>
+
+</paragraph>
+</section>
+</document>

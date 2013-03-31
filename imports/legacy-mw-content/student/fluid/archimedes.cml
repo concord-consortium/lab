@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Archimedes&apos; Principle of Buoyancy</page_title>
+<referenced_files>ring50.mml, ring150_broken.mml, ring20.mml</referenced_files>
+<text>Archimedes&apos; Principle of Buoyancy
+
+Archimedes&apos; Principle states that the buoyant force is equal to the weight of the displaced fluid. This principle, discovered by the ancient Greek, can be proven with the following simulation. (Note that the particles in this simulation should be best viewed as some fluid elements, instead of atoms.)
+
+ 
+The ratio of the mass of the white particles vs. that of the blue ones:
+      
+(for an interactive simulation of diving and surfacing, click here.)
+ 
+How does buoyancy work?
+
+In this particle model, the buoyant force is undoubtedly due to the fact that the pressure on the ring is lower from the upper side than that from the lower side. As we know, pressure depends not only on the frequency of collisions but also on the mean impulse of each collision. We will leave this question for you to investigate through the simulations.
+ 
+
+
+Making this model: This script is used to create the ring structure.
+
+&lt; Return to Interactive Essays &gt;</text>
+<section start="0" end="978">
+<paragraph start="0" end="34">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="0" end="33">
+<bold>true</bold><family>Trebuchet MS</family><size>15</size></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="337">
+<LeftIndent>8.0</LeftIndent>
+<content start="35" end="336">
+<family>Trebuchet MS</family></content>
+
+<content start="336" end="337">
+</content>
+
+</paragraph>
+<paragraph start="337" end="338">
+<content start="337" end="338">
+</content>
+
+</paragraph>
+<paragraph start="338" end="340">
+<Alignment>1</Alignment>
+<content start="338" end="339">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>archimedes$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="339" end="340">
+</content>
+
+</paragraph>
+<paragraph start="340" end="412">
+<Alignment>1</Alignment>
+<content start="340" end="411">
+<size>11</size></content>
+
+<content start="411" end="412">
+</content>
+
+</paragraph>
+<paragraph start="412" end="419">
+<Alignment>1</Alignment>
+<content start="412" end="413">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>1.25</title>
+<tooltip>Slightly heavier than fluid</tooltip>
+<disabled_at_script>true</disabled_at_script>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1140919807822</groupid>
+<script>load ring50.mml</script>
+<action>Execute MW script</action></component></content>
+
+<content start="413" end="414">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>3.75</title>
+<tooltip>Heavier than fluid</tooltip>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1140919807822</groupid>
+<script>load ring50.mml;
+set element[0].mass 150;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="414" end="415">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>6.25</title>
+<tooltip>Heavier than fluid</tooltip>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1140919807822</groupid>
+<script>load ring50.mml;
+set element[0].mass 250;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="415" end="416">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>12.5</title>
+<tooltip>Much heavier than fluid</tooltip>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1140919807822</groupid>
+<script>load ring50.mml;
+set element[0].mass 500;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="416" end="417">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>3.75 (broken ring)</title>
+<tooltip>Heavier than fluid</tooltip>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1140919807822</groupid>
+<script>load ring150_broken.mml;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="417" end="418">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>0.5 (surfacing)</title>
+<tooltip>Lighter than fluid</tooltip>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1140919807822</groupid>
+<script>load ring20.mml;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="418" end="419">
+</content>
+
+</paragraph>
+<paragraph start="419" end="488">
+<Alignment>1</Alignment>
+<content start="419" end="481">
+<size>11</size></content>
+
+<content start="481" end="485">
+<size>11</size><href>archimedes1.cml</href></content>
+
+<content start="485" end="487">
+<size>11</size></content>
+
+<content start="487" end="488">
+</content>
+
+</paragraph>
+<paragraph start="488" end="490">
+<SpaceBelow>2.0</SpaceBelow>
+<SpaceAbove>2.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="488" end="489">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.9</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="489" end="490">
+</content>
+
+</paragraph>
+<paragraph start="490" end="514">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>100.0</LeftIndent>
+<content start="490" end="513">
+<size>11</size><bold>true</bold></content>
+
+<content start="513" end="514">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="514" end="515">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>100.0</LeftIndent>
+<content start="514" end="515">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="515" end="871">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>100.0</LeftIndent>
+<content start="515" end="870">
+<size>11</size></content>
+
+<content start="870" end="871">
+</content>
+
+</paragraph>
+<paragraph start="871" end="873">
+<SpaceBelow>2.0</SpaceBelow>
+<SpaceAbove>2.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="871" end="872">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.9</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="872" end="873">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="873" end="874">
+<LeftIndent>8.0</LeftIndent>
+<content start="873" end="874">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="874" end="875">
+<LeftIndent>8.0</LeftIndent>
+<content start="874" end="875">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="875" end="944">
+<LeftIndent>8.0</LeftIndent>
+<content start="875" end="892">
+<size>10</size><bold>true</bold></content>
+
+<content start="892" end="894">
+<size>10</size></content>
+
+<content start="894" end="905">
+<size>10</size><href>../../tutorial/ring.mws</href></content>
+
+<content start="905" end="944">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="944" end="945">
+<content start="944" end="945">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="945" end="978">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="945" end="957">
+</content>
+
+<content start="957" end="975">
+<href>../../monograph.cml</href></content>
+
+<content start="975" end="977">
+</content>
+
+</paragraph>
+</section>
+</document>

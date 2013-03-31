@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_12" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.mw3d.ModelState"> 
+  <void property="cameraPosition"> 
+   <string>0.0 0.0 0.0</string> 
+  </void> 
+  <void property="gravitationalAcceleration"> 
+   <float>0.0010</float> 
+  </void> 
+  <void property="heatBath"> 
+   <object class="org.concord.mw3d.models.HeatBath"> 
+    <void property="expectedTemperature"> 
+     <float>1997.5005</float> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="rotation"> 
+   <string>694 -695 -188 159.2 93</string> 
+  </void> 
+  <void property="showClock"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="showEnergizer"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="timeStep"> 
+   <float>2.0</float> 
+  </void> 
+  <void property="xyzFileName"> 
+   <string>evaporation3d$0.xyz</string> 
+  </void> 
+ </object> 
+</java> 

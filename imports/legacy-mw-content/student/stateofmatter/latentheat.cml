@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Demonstrating the latent heat</page_title>
+<text>Demonstrating the Latent Heat of a Nanoparticle
+
+     
+                  
+
+If you watch carefully, and wait for several seconds between adding heat, you will see an interesting pattern. At first the average kinetic energy (temperature) will increase, then the temperature will stay at about the same level for a while, and then, if you keep adding heat, the temperature will start to increase again. Think about why this happens, take some snapshots during your simulation (play back the simulation if you have missed some critical changes), and write down your thoughts below:
+
+ 
+
+ </text>
+<section start="0" end="584">
+<paragraph start="0" end="48">
+<LeftIndent>6.0</LeftIndent>
+<SpaceAbove>6.0</SpaceAbove>
+<content start="0" end="47">
+<size>15</size><bold>true</bold></content>
+
+<content start="47" end="48">
+<size>16</size></content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="55">
+<Alignment>1</Alignment>
+<content start="49" end="50">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat</title>
+<bgcolor>-6667</bgcolor>
+<border>Raised Bevel</border>
+<model>0</model>
+<step>0.01</step>
+<action>Heat the system up</action>
+</component></content>
+
+<content start="50" end="51">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Cool</title>
+<bgcolor>-333301</bgcolor>
+<border>Raised Bevel</border>
+<model>0</model>
+<step>-0.01</step>
+<action>Cool the system down</action>
+</component></content>
+
+<content start="51" end="53">
+</content>
+
+<content start="53" end="54">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Kinetic Energy Shading</title>
+<model>0</model>
+<action>K. E. Shading</action>
+</component></content>
+
+<content start="54" end="55">
+</content>
+
+</paragraph>
+<paragraph start="55" end="74">
+<Alignment>1</Alignment>
+<content start="55" end="56">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>130.0</width>
+<height>280.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;i&gt;&lt;font size=&quot;2&quot;&gt;Latent heat&lt;/font&gt;&lt;/i&gt;&lt;font size=&quot;2&quot;&gt; is an amount of 
+    energy a material absorbs or releases during phase transformation. It is 
+    called latent heat because it does not result in a change in temperature. 
+    For an isolated system, latent heat is usually associated with the 
+    rearrangement of atom positions in a phase transition.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="56" end="62">
+</content>
+
+<content start="62" end="63">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>latentheat$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="63" end="68">
+</content>
+
+<content start="68" end="69">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<timeseries>Kinetic Energy/Particle</timeseries>
+<width>55</width>
+<height>280</height>
+<tick>true</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>true</title>
+<bgcolor>-660067</bgcolor>
+<fgcolor>-10000</fgcolor>
+<model>0</model>
+<minimum>0.0</minimum>
+<maximum>1.0</maximum>
+<value>2.7672420401358977E-5</value>
+</component></content>
+
+<content start="69" end="72">
+</content>
+
+<content start="72" end="73">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<timeseries>Potential Energy/Particle</timeseries>
+<width>55</width>
+<height>280</height>
+<tick>true</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>true</title>
+<fgcolor>-ffff01</fgcolor>
+<model>0</model>
+<minimum>-1.0</minimum>
+<maximum>0.0</maximum>
+<value>-0.7788481116294861</value>
+</component><foreground>255 0 0</foreground></content>
+
+<content start="73" end="74">
+<foreground>255 0 0</foreground></content>
+
+</paragraph>
+<paragraph start="74" end="75">
+<Alignment>1</Alignment>
+<content start="74" end="75">
+<foreground>255 0 0</foreground></content>
+
+</paragraph>
+<paragraph start="75" end="578">
+<LeftIndent>5.0</LeftIndent>
+<content start="75" end="577">
+<size>11</size></content>
+
+<content start="577" end="578">
+</content>
+
+</paragraph>
+<paragraph start="578" end="579">
+<LeftIndent>5.0</LeftIndent>
+<content start="578" end="579">
+</content>
+
+</paragraph>
+<paragraph start="579" end="581">
+<Alignment>1</Alignment>
+<LeftIndent>5.0</LeftIndent>
+<content start="579" end="580">
+<component><class>org.concord.modeler.PageTextArea</class>
+<column>60</column>
+<title>Write your observations and thoughts:</title>
+</component></content>
+
+<content start="580" end="581">
+</content>
+
+</paragraph>
+<paragraph start="581" end="582">
+<Alignment>1</Alignment>
+<LeftIndent>5.0</LeftIndent>
+<content start="581" end="582">
+</content>
+
+</paragraph>
+<paragraph start="582" end="584">
+<Alignment>1</Alignment>
+<LeftIndent>5.0</LeftIndent>
+<content start="582" end="583">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Create a report</title>
+<border>Raised Bevel</border>
+<action>Create a report about this page in a new window</action></component></content>
+
+</paragraph>
+</section>
+</document>

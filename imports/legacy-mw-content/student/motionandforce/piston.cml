@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>A gas under a piston</page_title>
+<text>A gas under a piston
+
+This model shows a gas under pressure. When temperature increases, the gas molecules will move more violently and push the weight on top of it further upwards. Conversely, when the temperature decreases, the gas molecules will move less violently and the weight will move downward. This model is chosen as a gas law demo, not because it is of primary importance but because many people have implemented it one way or another. If you are authoring with Molecular Workbench, you can modify this model and derive your own variations.
+
+ 
+         
+
+   Related simulation: Density vs. temperature
+   Related simulation: NPT-simulation using Andersen barostat
+   Related simulation: Another pressure experiment</text>
+<section start="0" end="727">
+<paragraph start="0" end="21">
+<LeftIndent>6.0</LeftIndent>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="0" end="20">
+<size>15</size><bold>true</bold></content>
+
+<content start="20" end="21">
+<size>18</size><bold>true</bold><family>Microsoft Sans Serif</family></content>
+
+</paragraph>
+<paragraph start="21" end="22">
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="553">
+<LeftIndent>6.0</LeftIndent>
+<content start="22" end="552">
+<size>11</size></content>
+
+<content start="552" end="553">
+</content>
+
+</paragraph>
+<paragraph start="553" end="554">
+<content start="553" end="554">
+</content>
+
+</paragraph>
+<paragraph start="554" end="556">
+<Alignment>1</Alignment>
+<content start="554" end="555">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>piston$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="555" end="556">
+<family>Book Antiqua</family><italic>true</italic></content>
+
+</paragraph>
+<paragraph start="556" end="566">
+<LeftIndent>50.0</LeftIndent>
+<RightIndent>50.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="556" end="558">
+</content>
+
+<content start="558" end="559">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>5.0</value>
+<minimum>0.0</minimum>
+<maximum>10.0</maximum>
+<nstep>20</nstep>
+<title>External pressure</title>
+<width>300</width>
+<height>60</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;High&quot;}{value=&quot;0.0&quot;, label=&quot;Zero&quot;}</labeltable>
+<script>set obstacle[0].externalfy &quot;%val*0.02&quot;;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="559" end="563">
+</content>
+
+<content start="563" end="564">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat</title>
+<bgcolor>-999a</bgcolor>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<action>Heat the system up</action>
+<step>0.1</step>
+</component></content>
+
+<content start="564" end="565">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Cool</title>
+<bgcolor>-663301</bgcolor>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<action>Cool the system down</action>
+<step>-0.1</step>
+</component></content>
+
+<content start="565" end="566">
+</content>
+
+</paragraph>
+<paragraph start="566" end="567">
+<content start="566" end="567">
+</content>
+
+</paragraph>
+<paragraph start="567" end="614">
+<LeftIndent>20.0</LeftIndent>
+<content start="567" end="568">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="568" end="570">
+</content>
+
+<content start="570" end="590">
+<size>10</size></content>
+
+<content start="590" end="613">
+<href>../stateofmatter/gaslaw1.cml</href><size>10</size></content>
+
+<content start="613" end="614">
+</content>
+
+</paragraph>
+<paragraph start="614" end="676">
+<LeftIndent>20.0</LeftIndent>
+<content start="614" end="615">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="615" end="617">
+</content>
+
+<content start="617" end="637">
+<size>10</size></content>
+
+<content start="637" end="675">
+<href>../stateofmatter/interactionE.cml</href><size>10</size></content>
+
+<content start="675" end="676">
+</content>
+
+</paragraph>
+<paragraph start="676" end="727">
+<LeftIndent>20.0</LeftIndent>
+<content start="676" end="677">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="677" end="679">
+</content>
+
+<content start="679" end="699">
+<size>10</size></content>
+
+<content start="699" end="726">
+<href>../stateofmatter/pressure.cml</href><size>10</size></content>
+
+</paragraph>
+</section>
+</document>

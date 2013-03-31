@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Alloys and intermetallic compounds</page_title>
+<text>Alloys and Intermetallic Compounds
+
+  
+  
+
+  
+  </text>
+<section start="0" end="49">
+<paragraph start="0" end="35">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="34">
+<size>15</size><bold>true</bold></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<content start="35" end="36">
+<italic>true</italic><size>14</size><family>Book Antiqua</family></content>
+
+</paragraph>
+<paragraph start="36" end="39">
+<Alignment>1</Alignment>
+<content start="36" end="37">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>240.0</width>
+<height>280.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;font size=&quot;2&quot;&gt;Alloys are mixtures of more than one metallic elements. 
+    Conventional alloys may not have a chemical formula. They are often 
+    described by a composition formula, in which the percentages of added 
+    elements to the base one are stated. For example, a kind of stainless 
+    steel is written as Fe-18%Cr-8%Ni. &lt;/font&gt;
+
+    &lt;p&gt;
+      &lt;font size=&quot;2&quot;&gt;Alloys have a history of over 5000 years. For example, 
+      beta bronze has been used for thousands of years.&lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="37" end="38">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>MetallicAlloy$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="42">
+<Alignment>1</Alignment>
+<content start="39" end="40">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Kinetic Energy Shading</title>
+<model>0</model>
+<action>K. E. Shading</action>
+</component></content>
+
+<content start="40" end="41">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show pair correlation function: green-blue</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Show pair correlation function: Pl-Ws</action>
+</component></content>
+
+<content start="41" end="42">
+</content>
+
+</paragraph>
+<paragraph start="42" end="43">
+<Alignment>1</Alignment>
+<content start="42" end="43">
+</content>
+
+</paragraph>
+<paragraph start="43" end="46">
+<Alignment>1</Alignment>
+<content start="43" end="44">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>240.0</width>
+<height>280.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;font size=&quot;2&quot;&gt;Compared with conventional alloys, intermetallic compounds 
+    have definite chemical formulas. The bonds in intermetallic compounds are 
+    often stronger. As a result, the atomic arrangement on the lattice 
+    exhibits ordering (instead of randomness in alloys). &lt;/font&gt;
+
+    &lt;p&gt;
+      &lt;font size=&quot;2&quot;&gt;Many intermetallic compounds are important 
+      high-performance structural materials with aerospace applications. For 
+      example, the nickel aluminide NiAl is used in Boeing jet turbines.&lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="44" end="45">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>MetallicAlloy$1.mml</resource><menubar>false</menubar></component></content>
+
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="49">
+<Alignment>1</Alignment>
+<content start="46" end="47">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Kinetic Energy Shading</title>
+<model>1</model>
+<action>K. E. Shading</action>
+</component></content>
+
+<content start="47" end="48">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show pair correlation function: anion-cation</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>1</model>
+<action>Show pair correlation function: Pl-Ws</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

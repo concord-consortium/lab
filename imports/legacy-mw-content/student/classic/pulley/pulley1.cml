@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Weight balance on a pulley</page_title>
+<text>Weight balance on a pulley
+
+  
+
+Related simulation: a pulley system can help lift heavy loads.</text>
+<section start="0" end="95">
+<paragraph start="0" end="27">
+<Alignment>1</Alignment>
+<LeftIndent>6.0</LeftIndent>
+<SpaceAbove>3.0</SpaceAbove>
+<content start="0" end="26">
+<family>Trebuchet MS</family><size>15</size><bold>true</bold></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="28">
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="31">
+<Alignment>1</Alignment>
+<content start="28" end="29">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>300.0</width>
+<height>360.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;Adjust the weights of the two balls:&lt;br&gt;&lt;br&gt;&lt;input name=&quot;w&quot; alt=&quot;left&lt;right&quot; type=&quot;radio&quot; script=&quot;script:mw:1:set element[3].mass 2000;set element[1].mass 1000;select atom all;set vx 0;set vy 0;select atom none;&quot;&gt;The 
+    right ball is heavier;&lt;br&gt;&lt;input name=&quot;w&quot; alt=&quot;left&gt;right&quot; type=&quot;radio&quot; checked=&quot;checked&quot; script=&quot;script:mw:1:set element[3].mass 1000;set element[1].mass 2000;select atom all;set vx 0;set vy 0;select atom none;&quot;&gt;The 
+    left ball is heavier;&lt;br&gt;&lt;input name=&quot;w&quot; alt=&quot;left=right&quot; type=&quot;radio&quot; script=&quot;script:mw:1:set element[3].mass 1000;set element[1].mass 1000;select atom all;set vx 0;set vy 0;select atom none;&quot;&gt;Equal 
+    weight. &lt;/font&gt;
+
+    &lt;p&gt;
+      &lt;input name=&quot;Run&quot; alt=&quot;Click this button to run the simulation.&quot; type=&quot;submit&quot; value=&quot;Run simulation&quot; script=&quot;script:mw:1:run;&quot;&gt;
+      &lt;br&gt;
+      &lt;input name=&quot;Pause&quot; alt=&quot;Click this button to stop the simulation.&quot; type=&quot;submit&quot; value=&quot;Stop simulation&quot; script=&quot;script:mw:1:stop;&quot;&gt;
+      &lt;br&gt;
+      &lt;input name=&quot;reset&quot; alt=&quot;Click this button to reset the simulation and restore the parameters.&quot; type=&quot;submit&quot; value=&quot;Reset simulation and parameters&quot; script=&quot;script:mw:1:reset;&quot;&gt;
+      
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;This is a very &lt;b&gt;realistic&lt;/b&gt; 
+      simulation. Note that the pulley&apos;s wheel will rotate as a result of the 
+      friction force between the chain mounted on it and its edge. Also note 
+      that the chain has weight as well, which can cause the chain to slip to 
+      one side.&lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="29" end="30">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>pulley1$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border><recorderless>true</recorderless>
+</component></content>
+
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="32">
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="95">
+<LeftIndent>6.0</LeftIndent>
+<content start="32" end="52">
+<size>10</size></content>
+
+<content start="52" end="93">
+<href>pulley2.cml</href><size>10</size></content>
+
+<content start="93" end="94">
+<size>10</size></content>
+
+</paragraph>
+</section>
+</document>

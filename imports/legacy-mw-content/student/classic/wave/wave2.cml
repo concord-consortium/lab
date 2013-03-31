@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Molecular Workbench Home Page</page_title>
+<text> 
+  
+</text>
+<section start="0" end="6">
+<paragraph start="0" end="2">
+<content start="0" end="1">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>wave2$0.mml</resource><menubar>false</menubar><recorder>true</recorder></component></content>
+
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="5">
+<content start="2" end="3">
+<component><class>org.concord.modeler.PageSlider</class>
+<title>Mass of the string</title>
+<width>300</width>
+<height>80</height>
+<opaque>false</opaque>
+<background><red>212</red><green>208</green><blue>200</blue></background>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>4.2</value>
+<minimum>0.0</minimum>
+<maximum>10.0</maximum>
+<tick>true</tick>
+<nstep>50</nstep>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;Large&quot;}{value=&quot;0.0&quot;, label=&quot;Small&quot;}</labeltable>
+<script>set element[0].mass &quot;100+%val*100&quot;;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="3" end="4">
+<component><class>org.concord.modeler.PageSlider</class>
+<title>Elasticity of the string</title>
+<width>300</width>
+<height>80</height>
+<opaque>false</opaque>
+<background><red>212</red><green>208</green><blue>200</blue></background>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>5.2</value>
+<minimum>0.0</minimum>
+<maximum>10.0</maximum>
+<tick>true</tick>
+<nstep>50</nstep>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;Strong&quot;}{value=&quot;0.0&quot;, label=&quot;Weak&quot;}</labeltable>
+<script>select rbond all;
+set strength &quot;0.1+%val*0.1&quot;;
+select rbond none;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+</paragraph>
+</section>
+</document>

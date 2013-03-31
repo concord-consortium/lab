@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Different phases formed by elliptical particles</page_title>
+<text>Different phases formed by elliptical particles
+
+Introduction     Phase 1     Phase 2     Phase 3
+  
+
+See: The validity of using elliptical particles to model molecules.</text>
+<section start="0" end="170">
+<paragraph start="0" end="48">
+<SpaceAbove>4.0</SpaceAbove>
+<LeftIndent>6.0</LeftIndent>
+<content start="0" end="47">
+<size>18</size><family>Book Antiqua</family><bold>true</bold></content>
+
+<content start="47" end="48">
+<size>16</size><family>Book Antiqua</family><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<content start="48" end="49">
+<size>16</size><family>Book Antiqua</family><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="49" end="98">
+<Alignment>1</Alignment>
+<content start="49" end="66">
+<size>16</size><family>Book Antiqua</family><bold>true</bold></content>
+
+<content start="66" end="73">
+<size>16</size><href>lq1.cml</href><bold>true</bold><family>Book Antiqua</family></content>
+
+<content start="73" end="78">
+<size>16</size><family>Book Antiqua</family><bold>true</bold></content>
+
+<content start="78" end="85">
+<size>16</size><href>lq3.cml</href><bold>true</bold><family>Book Antiqua</family></content>
+
+<content start="85" end="90">
+<size>16</size><family>Book Antiqua</family><bold>true</bold></content>
+
+<content start="90" end="97">
+<size>16</size><href>lq2.cml</href><bold>true</bold><family>Book Antiqua</family></content>
+
+<content start="97" end="98">
+</content>
+
+</paragraph>
+<paragraph start="98" end="101">
+<Alignment>1</Alignment>
+<content start="98" end="99">
+<component><class>org.concord.mw2d.activity.GBContainer</class>
+<resource>lq0$0.gbl</resource><menubar>false</menubar></component></content>
+
+<content start="99" end="100">
+<component><class>org.concord.mw2d.activity.GBContainer</class>
+<resource>lq0$1.gbl</resource><menubar>false</menubar></component></content>
+
+<content start="100" end="101">
+</content>
+
+</paragraph>
+<paragraph start="101" end="102">
+<Alignment>1</Alignment>
+<content start="101" end="102">
+</content>
+
+</paragraph>
+<paragraph start="102" end="170">
+<LeftIndent>10.0</LeftIndent>
+<content start="102" end="107">
+<size>11</size></content>
+
+<content start="107" end="168">
+<size>11</size><href>../../tutorial/compare.cml</href></content>
+
+<content start="168" end="169">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

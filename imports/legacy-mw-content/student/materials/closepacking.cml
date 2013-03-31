@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Hexagonal closest packing and cubic closest packing</page_title>
+<text>Hexagonal closest packing and cubic closest packing
+
+Hexagonal closest packing (HCP) and cubic closest packing (CCP, also known as face centered cubic, or FCC) are two common crystal structures for metals (another command structure is body centered cubic, or BCC, which is not close-packed).
+
+   
+Instructions: Hold SHIFT and drag mouse to zoom in and out.
+
+The Kepler Conjecture: The most efficient way to fill space with identical spheres is CCP and HCP --- both have a packing density of about 0.74048. The Kepler Conjecture is the oldest puzzle in discrete geometry. There is currently no proof of it, although there is currently one proof that looks promising.</text>
+<section start="0" end="666">
+<paragraph start="0" end="52">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="51">
+<size>16</size><bold>true</bold></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="53">
+<Alignment>1</Alignment>
+<content start="52" end="53">
+</content>
+
+</paragraph>
+<paragraph start="53" end="292">
+<LeftIndent>8.0</LeftIndent>
+<content start="53" end="292">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="292" end="293">
+<LeftIndent>8.0</LeftIndent>
+<content start="292" end="293">
+</content>
+
+</paragraph>
+<paragraph start="293" end="297">
+<Alignment>1</Alignment>
+<content start="293" end="294">
+<component><class>org.concord.modeler.PageMd3d</class><resource>closepacking$0.mdd</resource><coordinate>closepacking$0.xyz</coordinate><width>360</width><height>360</height><menubar>false</menubar>
+<toolbar>false</toolbar>
+<border>Line</border>
+</component></content>
+
+<content start="294" end="295">
+</content>
+
+<content start="295" end="296">
+<component><class>org.concord.modeler.PageMd3d</class><resource>closepacking$1.mdd</resource><coordinate>closepacking$1.xyz</coordinate><width>360</width><height>360</height><menubar>false</menubar>
+<toolbar>false</toolbar>
+<border>Line</border>
+</component></content>
+
+<content start="296" end="297">
+</content>
+
+</paragraph>
+<paragraph start="297" end="357">
+<Alignment>1</Alignment>
+<content start="297" end="357">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="357" end="358">
+<content start="357" end="358">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="358" end="666">
+<LeftIndent>8.0</LeftIndent>
+<content start="358" end="379">
+<bold>true</bold><size>11</size></content>
+
+<content start="379" end="665">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

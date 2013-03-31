@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Maxwell speed and velocity distributions</page_title>
+<text>Maxwell speed and velocity distributions
+
+The Maxwell speed distribution is a well-known statistic law in kinetic molecular theory. In this activity, you will experiment with the Maxwell speed and velocity distribution functions for a system of identical interacting particles.
+
+ 
+  
+
+Instruction: Please run the simulation until the recorder is full, and then stop the simulation. Click the two buttons above to produce Maxwell speed and velocity distribution curves. If you would like to create a report, take some snapshots of the curves.
+
+You can also explore the effect of temperature on velocity distribution.
+
+ 
+Note: If you ever wonder why atoms leave the box and where they head for, check out periodic boundary conditions.
+ 
+
+   Related simulation: Mass dependence of Maxwell distributions
+   Related simulation: Effect of interactions on Maxwell distributions
+
+
+</text>
+<section start="0" end="874">
+<paragraph start="0" end="41">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="40">
+<size>14</size><bold>true</bold></content>
+
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="42">
+<LeftIndent>8.0</LeftIndent>
+<content start="41" end="42">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="42" end="278">
+<LeftIndent>8.0</LeftIndent>
+<content start="42" end="278">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="278" end="279">
+<LeftIndent>8.0</LeftIndent>
+<content start="278" end="279">
+</content>
+
+</paragraph>
+<paragraph start="279" end="281">
+<Alignment>1</Alignment>
+<content start="279" end="280">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>maxwell1$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="280" end="281">
+</content>
+
+</paragraph>
+<paragraph start="281" end="284">
+<Alignment>1</Alignment>
+<content start="281" end="282">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show Maxwell speed distribution function</title>
+<border>Raised Bevel</border>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<action>Show Maxwell speed distribution function: Pl</action>
+</component></content>
+
+<content start="282" end="283">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show Maxwell velocity distribution function</title>
+<border>Raised Bevel</border>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<action>Show Maxwell velocity distribution function: Pl</action>
+</component></content>
+
+<content start="283" end="284">
+</content>
+
+</paragraph>
+<paragraph start="284" end="285">
+<LeftIndent>8.0</LeftIndent>
+<content start="284" end="285">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="285" end="542">
+<LeftIndent>8.0</LeftIndent>
+<content start="285" end="542">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="542" end="543">
+<LeftIndent>8.0</LeftIndent>
+<content start="542" end="543">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="543" end="616">
+<LeftIndent>8.0</LeftIndent>
+<content start="543" end="616">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="616" end="617">
+<LeftIndent>8.0</LeftIndent>
+<content start="616" end="617">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="617" end="619">
+<SpaceAbove>2.0</SpaceAbove>
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>8.0</LeftIndent>
+<content start="617" end="618">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.95</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="618" end="619">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="619" end="733">
+<LeftIndent>28.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="619" end="703">
+<size>11</size></content>
+
+<content start="703" end="731">
+<href>../../tutorial/periodic.cml</href><size>11</size></content>
+
+<content start="731" end="733">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="733" end="735">
+<SpaceAbove>2.0</SpaceAbove>
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>8.0</LeftIndent>
+<content start="733" end="734">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.95</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="734" end="735">
+</content>
+
+</paragraph>
+<paragraph start="735" end="736">
+<LeftIndent>8.0</LeftIndent>
+<content start="735" end="736">
+</content>
+
+</paragraph>
+<paragraph start="736" end="800">
+<LeftIndent>28.0</LeftIndent>
+<content start="736" end="737">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="737" end="739">
+</content>
+
+<content start="739" end="759">
+<size>10</size></content>
+
+<content start="759" end="799">
+<href>maxwell2.cml</href><size>10</size></content>
+
+<content start="799" end="800">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="800" end="871">
+<LeftIndent>28.0</LeftIndent>
+<content start="800" end="801">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="801" end="803">
+</content>
+
+<content start="803" end="823">
+<size>10</size></content>
+
+<content start="823" end="870">
+<href>maxwell3.cml</href><size>10</size></content>
+
+<content start="870" end="871">
+</content>
+
+</paragraph>
+<paragraph start="871" end="872">
+<LeftIndent>28.0</LeftIndent>
+<content start="871" end="872">
+</content>
+
+</paragraph>
+<paragraph start="872" end="873">
+<LeftIndent>28.0</LeftIndent>
+<content start="872" end="873">
+</content>
+
+</paragraph>
+<paragraph start="873" end="874">
+<LeftIndent>28.0</LeftIndent>
+</paragraph>
+</section>
+</document>

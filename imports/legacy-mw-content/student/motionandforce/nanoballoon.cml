@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>A nano balloon floating on an atomic sea</page_title>
+<text>A nano balloon floating on an atomic sea
+By Bob Tinker
+ 
+			 
+The blue atoms are lighter than the green ones. Green mass=3 Blue mass=2.5
+
+The hole in the green bubble decreases its density, so it floats. I had problems with the bubble collapsing, so I put some gas in the cavity. This seems to help. Try removing the purple gas. Once in a while, the bubble will break, the gas will escape, and then the bubble collapses and sinks. If you turn on &quot;K.E. Shading,&quot; you can see which atoms are hot. If you heat up this model, perhaps the bubble will melt and sink to the bottom. Try it!!</text>
+<section start="0" end="584">
+<paragraph start="0" end="41">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="40">
+<size>14</size><bold>true</bold></content>
+
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="55">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="41" end="54">
+<italic>true</italic><size>11</size></content>
+
+<content start="54" end="55">
+</content>
+
+</paragraph>
+<paragraph start="55" end="57">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="55" end="56">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>nanoballoon$0.mml</resource><button>Select Object</button><button>Delete Objects</button><button>Add Pl</button><button>Add Ws</button><button>Count Objects</button><button>Heat Selected Objects</button><button>Cool Selected Objects</button><button>Add Obstacle</button><button>Add Ck</button></component></content>
+
+<content start="56" end="57">
+</content>
+
+</paragraph>
+<paragraph start="57" end="62">
+<Alignment>1</Alignment>
+<content start="57" end="60">
+</content>
+
+<content start="60" end="61">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>K. E. Shading</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>K. E. Shading</action>
+</component></content>
+
+<content start="61" end="62">
+</content>
+
+</paragraph>
+<paragraph start="62" end="137">
+<LeftIndent>8.0</LeftIndent>
+<content start="62" end="137">
+<underline>true</underline><size>11</size></content>
+
+</paragraph>
+<paragraph start="137" end="138">
+<LeftIndent>8.0</LeftIndent>
+<content start="137" end="138">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="138" end="584">
+<LeftIndent>8.0</LeftIndent>
+<content start="138" end="583">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

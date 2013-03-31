@@ -62,6 +62,58 @@
   :name: "Classic Java MW Examples: Motion"
   :category: Examples
 
+- :path: student/classic/freefall
+  :name: "Classic Java MW Examples: Freefall"
+  :category: Examples
+
+- :path: student/classic/gear
+  :name: "Classic Java MW Examples: Gear"
+  :category: Examples
+
+- :path: student/classic/harmonic
+  :name: "Classic Java MW Examples: Harmonic"
+  :category: Examples
+
+- :path: student/classic/machine
+  :name: "Classic Java MW Examples: Machine"
+  :category: Examples
+
+- :path: student/classic/pulley
+  :name: "Classic Java MW Examples: Pulley"
+  :category: Examples
+
+- :path: student/classic/spring
+  :name: "Classic Java MW Examples: Spring"
+  :category: Examples
+
+- :path: student/fluid
+  :name: "Classic Java MW Examples: Fluid"
+  :category: Examples
+
+- :path: student/materials
+  :name: "Classic Java MW Examples: Materials"
+  :category: Examples
+
+- :path: student/motionandforce
+  :name: "Classic Java MW Examples: Motion and Force"
+  :category: Examples
+
+- :path: student/osmosis
+  :name: "Classic Java MW Examples: Osmosis"
+  :category: Examples
+
+- :path: student/stateofmatter
+  :name: "Classic Java MW Examples: States of Matter"
+  :category: Examples
+
+- :path: student/wave
+  :name: "Classic Java MW Examples: Waves"
+  :category: Examples
+
+- :path: student/classic/wave
+  :name: "Classic Java MW Examples: Wave"
+  :category: Examples
+
 - :path: tutorial
   :name: "Classic Java MW Tutorial"
   :category: Examples

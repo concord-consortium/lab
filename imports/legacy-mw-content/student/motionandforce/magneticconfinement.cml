@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Confining a charged particle in a circular path with two magnetic fields</page_title>
+<text>Confining a charged particle in a circular path with two magnetic fields
+
+ 
+
+  </text>
+<section start="0" end="80">
+<paragraph start="0" end="73">
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="0" end="72">
+<bold>true</bold><size>16</size><family>Trebuchet MS</family></content>
+
+<content start="72" end="73">
+</content>
+
+</paragraph>
+<paragraph start="73" end="74">
+<RightIndent>20.0</RightIndent>
+<content start="73" end="74">
+</content>
+
+</paragraph>
+<paragraph start="74" end="76">
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="74" end="75">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>magneticconfinement$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="75" end="76">
+</content>
+
+</paragraph>
+<paragraph start="76" end="77">
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="76" end="77">
+</content>
+
+</paragraph>
+<paragraph start="77" end="80">
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="77" end="78">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reverse charge sign</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>set atom[0].charge -%atom[0].charge;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="78" end="79">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

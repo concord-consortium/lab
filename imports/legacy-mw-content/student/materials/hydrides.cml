@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>HYDRIDES or Molecular Fillings</page_title>
+<text>Hydrides or Molecular Fillings
+ 
+   
+  
+
+See an article on Nickel hydride.  http://data.energizer.com/PDFs/nickelmetalhydride_appman.pdf
+
+ </text>
+<section start="0" end="140">
+<paragraph start="0" end="31">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="30">
+<size>20</size></content>
+
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="33">
+<LeftIndent>8.0</LeftIndent>
+<content start="31" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="37">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="33" end="34">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>hydrides$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="34" end="35">
+</content>
+
+<content start="35" end="36">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>380.0</width>
+<height>330.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;8&quot; marginheight=&quot;8&quot; face=&quot;Verdana&quot;&gt;
+    &lt;b&gt;&lt;font size=&quot;2&quot;&gt;Problems in the Hydrogen Economy? &lt;/font&gt;&lt;/b&gt;
+
+    &lt;p&gt;
+      &lt;font size=&quot;2&quot;&gt;Hydrogen can degrade metals because it changes their 
+      volume and probably their strength. This process is called 
+      &amp;quot;embrittlement.&amp;quot; Look at the way the smaller atoms surround the larger 
+      ones. Things might not fit, or expand in relation to one another. 
+      Hydrogen Treatment of Materials (HTM) might also change properties in an 
+      advantageous way. &lt;/font&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;font size=&quot;2&quot;&gt;High strength steel is particularly vulnerable, a real 
+      problem with cars and rockets! &lt;/font&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;font size=&quot;2&quot;&gt;If you want hydrogen to work in place of gasoline, you 
+      need many hydrogen atoms in a small volume. This model might indicate a 
+      way of doing this that doesn&apos;t require high pressure. &lt;/font&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;font size=&quot;2&quot;&gt;This is an area of active research, not very well 
+      understood.&lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-333301</bgcolor>
+</component></content>
+
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="40">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="37" end="38">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Cool</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<action>Cool the system down</action>
+<step>-0.01</step>
+</component></content>
+
+<content start="38" end="39">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<action>Heat the system up</action>
+<step>0.01</step>
+</component></content>
+
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="41">
+<LeftIndent>8.0</LeftIndent>
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="137">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="41" end="73">
+<href>http://data.energizer.com/PDFs/nickelmetalhydride_appman.pdf</href></content>
+
+<content start="73" end="137">
+</content>
+
+</paragraph>
+<paragraph start="137" end="138">
+<LeftIndent>8.0</LeftIndent>
+<content start="137" end="138">
+</content>
+
+</paragraph>
+<paragraph start="138" end="140">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="138" end="139">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>0.95</width>
+<height>150.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;8&quot; marginheight=&quot;8&quot;&gt;
+    &lt;b&gt;Towards a Better Battery&lt;/b&gt;
+
+    &lt;p&gt;
+      A nickel alloy has been suggested as a metal on which to absorb hydrogen 
+      atoms. Hydrogen is produced in the battery and it is absorbed into the 
+      nickel.
+    &lt;/p&gt;
+    &lt;p&gt;
+      A good metal can store hydrogen gas up to 1000x the metal&apos;s own volume.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-34</bgcolor>
+</component></content>
+
+</paragraph>
+</section>
+</document>

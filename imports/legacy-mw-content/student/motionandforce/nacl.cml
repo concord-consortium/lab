@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Ionic Crystal: Sodium Chloride</page_title>
+<text>Ionic Crystal: Sodium Chloride
+
+ 
+ 
+Instructions: Hold SHIFT and drag mouse to zoom in and out.</text>
+<section start="0" end="96">
+<paragraph start="0" end="31">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="30">
+<bold>true</bold><size>16</size></content>
+
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="32">
+<Alignment>1</Alignment>
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="34">
+<Alignment>1</Alignment>
+<content start="32" end="33">
+<component><class>org.concord.modeler.PageMd3d</class><resource>nacl$0.mdd</resource><coordinate>nacl$0.xyz</coordinate><width>500</width><height>400</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="36">
+<Alignment>1</Alignment>
+<content start="34" end="35">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="96">
+<Alignment>1</Alignment>
+<content start="36" end="95">
+<size>10</size></content>
+
+</paragraph>
+</section>
+</document>

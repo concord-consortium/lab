@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>A chain drive</page_title>
+<text>A chain drive
+
+ </text>
+<section start="0" end="17">
+<paragraph start="0" end="14">
+<Alignment>1</Alignment>
+<SpaceAbove>3.0</SpaceAbove>
+<LeftIndent>6.0</LeftIndent>
+<content start="0" end="13">
+<size>15</size><bold>true</bold><family>Trebuchet MS</family></content>
+
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="15">
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="17">
+<Alignment>1</Alignment>
+<content start="15" end="16">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>pulley3$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+</paragraph>
+</section>
+</document>

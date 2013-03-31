@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Migration of point defects in a nanoparticle</page_title>
+<text>Migration of Point Defects in a Nanoparticle
+
+        
+  
+This simulation provides information about point defect dynamics that you can discover, if you run the simulation and observe for enough time:
+
+   Migration of a point defect to the surface
+   Migration of a point defect inside the nanoparticle
+   Migration of an interstitial inside the nanoparticle
+   Merging of point defects</text>
+<section start="0" end="387">
+<paragraph start="0" end="45">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="44">
+<size>15</size><bold>true</bold></content>
+
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="46">
+<content start="45" end="46">
+<italic>true</italic><size>14</size><family>Book Antiqua</family></content>
+
+</paragraph>
+<paragraph start="46" end="55">
+<Alignment>1</Alignment>
+<content start="46" end="47">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>200.0</width>
+<height>300.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;font size=&quot;2&quot;&gt;Point defects are believed to play an important role in the 
+    properties of materials such as phase transitions. &lt;/font&gt;
+
+    &lt;p&gt;
+      &lt;font size=&quot;2&quot;&gt;Point defects can migrate from one place to another. Two 
+      point defects can merge. A vacancy and a self-interstitial can 
+      recombine. &lt;/font&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;font size=&quot;2&quot;&gt;Can you find in this simulation which point defects in 
+      the nanoparticle migrate? Warning: Keep the temperature as it is. Do not 
+      overheat the system.&lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="47" end="53">
+</content>
+
+<content start="53" end="54">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>PointDefects2$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="54" end="55">
+</content>
+
+</paragraph>
+<paragraph start="55" end="58">
+<Alignment>1</Alignment>
+<content start="55" end="56">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Kinetic Energy Shading</title>
+<model>0</model>
+<action>K. E. Shading</action>
+</component></content>
+
+<content start="56" end="57">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show Trajectories of Interstitials</title>
+<tooltip>Show Trajectories of Interstitials</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select element 0;
+traj ON;
+select element none;</script>
+<script2>select element 0;
+traj OFF;
+select element none;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="57" end="58">
+</content>
+
+</paragraph>
+<paragraph start="58" end="201">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="58" end="201">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="201" end="202">
+<content start="201" end="202">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="202" end="248">
+<LeftIndent>40.0</LeftIndent>
+<content start="202" end="203">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="203" end="248">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="248" end="303">
+<LeftIndent>40.0</LeftIndent>
+<content start="248" end="249">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="249" end="303">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="303" end="359">
+<LeftIndent>40.0</LeftIndent>
+<content start="303" end="304">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="304" end="359">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="359" end="387">
+<LeftIndent>40.0</LeftIndent>
+<content start="359" end="360">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="360" end="386">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

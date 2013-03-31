@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Plasma</page_title>
+<text>Electron Avalanche
+
+An electron avalanche is a process in which a number of free electrons in a medium (usually a gas) are subjected to strong acceleration by an electric field, ionizing the medium&apos;s atoms by collisions, thereby forming more free electrons to undergo the same process in successive cycles. Electron avalanches cause the dielectric breakdown process within gases. The process can culminate in corona discharges, streamers, leaders, or in a spark or continuous arc. The following simulation shows the avalanche process.
+
+  
+
+
+
+</text>
+<section start="0" end="543">
+<paragraph start="0" end="19">
+<LeftIndent>6.0</LeftIndent>
+<SpaceAbove>3.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="0" end="18">
+<family>Microsoft Sans Serif</family><bold>true</bold><size>18</size></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<Alignment>1</Alignment>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="535">
+<LeftIndent>20.0</LeftIndent>
+<content start="20" end="535">
+</content>
+
+</paragraph>
+<paragraph start="535" end="536">
+<content start="535" end="536">
+</content>
+
+</paragraph>
+<paragraph start="536" end="539">
+<Alignment>1</Alignment>
+<content start="536" end="537">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>electronavalanche$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="537" end="538">
+<component><class>org.concord.modeler.PageGauge</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<timeseries>Channel 0</timeseries>
+<description>Ammeter</description>
+<datatype>3</datatype>
+<smoothingfactor>0.05</smoothingfactor>
+<width>300</width>
+<height>200</height>
+<tick>true</tick>
+<major_tick>10</major_tick>
+<nstep>20</nstep>
+<label>true</label>
+<title>true</title>
+<minimum>0.0</minimum>
+<maximum>1.0</maximum>
+<value>-0.08865199983119965</value>
+</component></content>
+
+<content start="538" end="539">
+</content>
+
+</paragraph>
+<paragraph start="539" end="540">
+<Alignment>1</Alignment>
+<content start="539" end="540">
+</content>
+
+</paragraph>
+<paragraph start="540" end="541">
+<Alignment>1</Alignment>
+<content start="540" end="541">
+</content>
+
+</paragraph>
+<paragraph start="541" end="542">
+<content start="541" end="542">
+</content>
+
+</paragraph>
+<paragraph start="542" end="543">
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>A Rhombohedral Structure of NaCl?</page_title>
+<text>A Rhombohedral Structure of NaCl?
+
+ 
+ 
+Instructions: Hold SHIFT and drag mouse to zoom in and out.
+
+Under normal conditions, sodium chloride is composed of a face-centered cubic sublattice (FCC) of anions and another of cations, which interpenetrate each other. (Why does NaCl prefer this structure?)
+
+The above model suggests a plausible structure for NaCl. This structure is also composed of two interwoven sublattices of  Na+ and Cl-. </text>
+<section start="0" end="439">
+<paragraph start="0" end="34">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="33">
+<bold>true</bold><size>15</size></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="37">
+<Alignment>1</Alignment>
+<content start="35" end="36">
+<component><class>org.concord.modeler.PageMd3d</class><resource>rhombohedron$0.mdd</resource><coordinate>rhombohedron$0.xyz</coordinate><width>500</width><height>360</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="39">
+<Alignment>1</Alignment>
+<content start="37" end="38">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<bgcolor>-333301</bgcolor>
+<border>Raised Bevel</border>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="99">
+<Alignment>1</Alignment>
+<content start="39" end="99">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="99" end="100">
+<content start="99" end="100">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="100" end="301">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="100" end="301">
+</content>
+
+</paragraph>
+<paragraph start="301" end="302">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="301" end="302">
+</content>
+
+</paragraph>
+<paragraph start="302" end="439">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="302" end="438">
+</content>
+
+</paragraph>
+</section>
+</document>

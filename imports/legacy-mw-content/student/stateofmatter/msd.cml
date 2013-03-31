@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Comparison of Atomic Displacements in Liquid and Solid States</page_title>
+<text>Comparison of Atomic Displacements in Liquid and Solid States
+
+In theory, mean square displacements (MSDs) can be used to characterize the differences between the liquid state and the solid state. The greater the MSD is, the longer distances the atoms travel on average. In liquids and gases, since most atoms can move quite freely, the MSDs will increase over time. In comparison, in solids, since most atoms only vibrate nearby, the MSDs will oscillate. They will not increase with respect to time, a fact that reflects the nature of atomic motion in solids.
+
+  
+  </text>
+<section start="0" end="568">
+<paragraph start="0" end="62">
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="61">
+<bold>true</bold><size>15</size></content>
+
+<content start="61" end="62">
+</content>
+
+</paragraph>
+<paragraph start="62" end="63">
+<Alignment>1</Alignment>
+<content start="62" end="63">
+</content>
+
+</paragraph>
+<paragraph start="63" end="561">
+<LeftIndent>8.0</LeftIndent>
+<content start="63" end="74">
+<size>11</size></content>
+
+<content start="74" end="99">
+<link_statusbar>false</link_statusbar><link_width>500</link_width><link_fullscreen>false</link_fullscreen><href>../../tutorial/glossary/msd.cml</href><link_height>400</link_height><link_left>100</link_left><link_menubar>false</link_menubar><link_top>50</link_top><link_toolbar>false</link_toolbar><target>_blank</target><size>11</size><link_resizable>false</link_resizable></content>
+
+<content start="99" end="560">
+<size>11</size></content>
+
+<content start="560" end="561">
+</content>
+
+</paragraph>
+<paragraph start="561" end="562">
+<LeftIndent>8.0</LeftIndent>
+<content start="561" end="562">
+</content>
+
+</paragraph>
+<paragraph start="562" end="565">
+<Alignment>1</Alignment>
+<content start="562" end="563">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>msd$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="563" end="564">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-1000000" style="0" width="1.0" symbol="1" size="4" spacing="5">Channel 0</time_series_y1>
+<width>300</width>
+<height>290</height>
+<axis_x_title>Time (fs)</axis_x_title>
+<axis_y_title>Mean Displacement (A)</axis_y_title>
+<legend_x>600</legend_x>
+<legend_y>45</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<toolbar>false</toolbar>
+</component></content>
+
+<content start="564" end="565">
+</content>
+
+</paragraph>
+<paragraph start="565" end="568">
+<Alignment>1</Alignment>
+<content start="565" end="566">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>msd$1.mml</resource><menubar>false</menubar></component></content>
+
+<content start="566" end="567">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>1</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-1000000" style="0" width="1.0" symbol="1" size="4" spacing="5">Channel 0</time_series_y1>
+<width>300</width>
+<height>290</height>
+<axis_x_title>Time (fs)</axis_x_title>
+<axis_y_title>Mean displacement (A)</axis_y_title>
+<legend_x>600</legend_x>
+<legend_y>45</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<toolbar>false</toolbar>
+</component></content>
+
+</paragraph>
+</section>
+</document>
