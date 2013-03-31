@@ -17,7 +17,8 @@
           {
             "text": "Separated Oil and Water",
             "x": 1.08,
-            "y": 1.84,
+            "y": 2.2,
+            "fontScale": 1.2,
             "layer": 1,
             "frame": "rounded rectangle",
             "backgroundColor": "rgb(245,245,245)"
@@ -34,7 +35,8 @@
           {
             "text": "Oil and Water Shaken Up and Mixed",
             "x": 0.804,
-            "y": 1.84,
+            "y": 2.2,
+            "fontScale": 1.2,
             "layer": 1,
             "frame": "rounded rectangle",
             "backgroundColor": "rgb(245,245,245)"
