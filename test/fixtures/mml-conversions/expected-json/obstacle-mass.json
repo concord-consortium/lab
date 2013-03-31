@@ -19,6 +19,10 @@
   "additionalSolventForceThreshold": 10,
   "polarAAEpsilon": -2,
   "viewOptions": {
+    "viewPortWidth": 9.23, 
+    "viewPortHeight": 1.3, 
+    "viewPortX": -0.06, 
+    "viewPortY": -0.06, 
     "backgroundColor": "#eeeeee",
     "markColor": "#f8b500",
     "keShading": false,

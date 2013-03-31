@@ -106,6 +106,26 @@ define(function() {
     },
 
     viewOptions: {
+      viewPortWidth: {
+        defaultValue: 10,
+        unitType: "length",
+        immutable: true
+      },
+      viewPortHeight: {
+        defaultValue: 10,
+        unitType: "length",
+        immutable: true
+      },
+      viewPortX: {
+        defaultValue: 0,
+        unitType: "length",
+        immutable: true
+      },
+      viewPortY: {
+        defaultValue: 0,
+        unitType: "length",
+        immutable: true
+      },
       backgroundColor: {
         defaultValue: "#eeeeee"
       },

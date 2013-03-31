@@ -106,11 +106,11 @@ parseMML = (mmlString) ->
     ### Transform an (x,y) coordinate pair from MML frame to nextgen frame ###
     toNextgenCoordinates = (x, y) ->
       # MW 0,0 is top left, NGMW 0,0 is bottom left
-      y = viewPortHeight - y
+      y = originalViewPortHeight - y
 
       # if there is a view-port, x and y are actually in view-port coords... map to model coords
-      x = x - viewPortX
-      y = y - viewPortY
+      x = x - originalViewPortX
+      y = y - originalViewPortY
 
       toNextgenLengths x, y
 
@@ -226,22 +226,24 @@ parseMML = (mmlString) ->
     height = getIntProperty viewProps, "height", "double"
 
     ###
-      Find the view-port size. Do it at the beginning, as view-port dimensions
+      Find the view-port size. Do it at the beginning, as view-port X and Y dimensions
       are used during conversion of other objects.
     ###
     viewPort = viewProps.find("[property=viewSize] .java-awt-Dimension int")
     if (viewPort)
-      viewPortWidth  = parseInt viewPort[0].children[0].data
-      viewPortHeight = parseInt viewPort[1].children[0].data
-      viewPortX = parseInt viewProps.find("[property=x] double").text() || 0
-      viewPortY = parseInt viewProps.find("[property=y] double").text() || 0
+      originalViewPortWidth  = parseInt viewPort[0].children[0].data
+      originalViewPortHeight = parseInt viewPort[1].children[0].data
+      originalViewPortX = parseInt viewProps.find("[property=x] double").text() || 0
+      originalViewPortY = parseInt viewProps.find("[property=y] double").text() || 0
     else
-      viewPortWidth  = width
-      viewPortHeight = height
-      viewPortX = viewPortY = 0
+      originalViewPortWidth  = width
+      originalViewPortHeight = height
+      originalViewPortX = originalViewPortY = 0
 
     # scale from MML units to Lab's units
     [height, width] = toNextgenLengths height, width
+    [viewPortHeight, viewPortWidth] = toNextgenLengths originalViewPortHeight, originalViewPortWidth
+    [viewPortY, viewPortX] = toNextgenLengths -originalViewPortY, -originalViewPortX
 
     ###
       Find the force interaction booleans
@@ -813,6 +815,10 @@ parseMML = (mmlString) ->
     # Properties which are managed by model, but they define view.
     # Model handles them, as they are e.g. stored in the history.
     viewOptions =
+      viewPortWidth       : viewPortWidth
+      viewPortHeight      : viewPortHeight
+      viewPortX           : viewPortX
+      viewPortY           : viewPortY
       backgroundColor     : backgroundColor
       keShading           : keShading
       chargeShading       : chargeShading
