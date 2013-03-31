@@ -57,7 +57,7 @@
     },
     "textBoxes": [
       {
-        "text": "Drag the molecules close to each other, and look for intermolecular attractions.",
+        "text": "Drag the molecules close to each other, \nand look for intermolecular attractions.",
         "x": 0.53,
         "y": 2.02,
         "layer": 1,
