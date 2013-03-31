@@ -409,7 +409,8 @@ parseMML = (mmlString) ->
       Text boxes. TODO: factor out pattern common to MML parsing of images and text boxes
     ###
     wrapTextBoxText = (t) ->
-      (line.replace(/^\s+|\s+$/g, '') for line in t.split('\n')).join(' ')
+      t = t.replace(/^\s+|\s+$/g, '')
+      t.replace(/\n\s+/g, "\n")
 
     parseTextBoxNode = (textBoxNode) ->
       $textBoxNode = getNode cheerio textBoxNode

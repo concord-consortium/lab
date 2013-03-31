@@ -797,7 +797,12 @@ define(function (require) {
           .data(layerTextBoxes.filter( function(d) { return d.frame; } ))
           .attr({
             "x": function(d) { return getTextBoxCoords(d)[2]; },
-            "y": function(d) { return getTextBoxCoords(d)[3]; }
+            "y": function(d) { return getTextBoxCoords(d)[3]; },
+            "transform": function(d) {
+              var rotate = (typeof d.rotate === 'undefined') ? 0 : d.rotate,
+                  pos = getTextBoxCoords(d);
+              return "rotate("+rotate+" "+pos[0]+" "+pos[1]+")";
+            }
           });
 
         layer.selectAll("g.textBoxWrapper text")
@@ -877,7 +882,7 @@ define(function (require) {
             "xml:space": "preserve",
             "font-family": "'" + labConfig.fontface + "', sans-serif",
             "font-size": function(d) {
-              return fontSizeInPixels * (d.fontScale || 1);
+              return textBoxFontSizeInPixels * (d.fontScale || 1);
             },
             "fill": function(d) { return d.color || "black"; },
             "text-data": function(d) { return d.text; },
@@ -914,7 +919,7 @@ define(function (require) {
             hasHost   = this.getAttributeNS(null, "has-host"),
             textAlign = this.getAttributeNS(null, "text-anchor"),
             horizontalPadding, verticalPadding,
-            result, frame, dx, dy;
+            result, frame, dx, dy, tx, ty;
 
         dy = fontSize*1.2;
         horizontalPadding = +fontSize*1.5;
@@ -950,18 +955,19 @@ define(function (require) {
 
         // center all hosted labels simply by tweaking the g.transform
         if (textAlign === "middle") {
-          dx = result.width / 2;
+          tx = result.width / 2;
           if (height > 0) {
-            dy = height / 2 - verticalPadding * 1.5 - (result.lines-1) * dy / 2;
+            ty = height / 2 - verticalPadding * 1.5 - (result.lines-1) * dy / 2;
           } else {
-            dy = 0;
+            ty = 0;
           }
-          $(this).attr("transform", transform + " translate("+dx+","+dy+")");
+          transform = transform + " translate("+tx+","+ty+")";
+          $(this).attr("transform", transform);
         }
         if (hasHost === "true") {
-          dx = -result.width / 2;
-          dy = (result.lines-1) * dy / -2 + 4.5;
-          $(this.parentNode).attr("transform", transform + "translate("+dx+","+dy+")");
+          tx = result.width / -2 - horizontalPadding/2;
+          ty = result.lines * dy / -2 - verticalPadding/2;
+          $(this.parentNode).attr("transform", "translate("+tx+","+ty+")");
         }
       });
     }
