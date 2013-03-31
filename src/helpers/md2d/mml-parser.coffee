@@ -414,8 +414,8 @@ parseMML = (mmlString) ->
     parseTextBoxNode = (textBoxNode) ->
       $textBoxNode = getNode cheerio textBoxNode
       text = wrapTextBoxText $textBoxNode.find("[property=text] string").text()
-      $x = parseFloat $textBoxNode.find("[property=x] double").text()
-      $y = parseFloat $textBoxNode.find("[property=y] double").text()
+      $x = parseFloat $textBoxNode.find("[property=x] double").text() || 0.001
+      $y = parseFloat $textBoxNode.find("[property=y] double").text() || 0
       layer = parseInt($textBoxNode.find("[property=layer] int").text()) || 1
       textHostIndex = parseInt $textBoxNode.find("[property=hostIndex] int").text()
       if (isNaN(textHostIndex))

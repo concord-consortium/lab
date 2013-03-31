@@ -89,6 +89,7 @@ define(function (require) {
         atomToolTip, atomToolTipPre,
 
         fontSizeInPixels,
+        textBoxFontSizeInPixels,
 
         // for model clock
         timeLabel,
@@ -760,8 +761,8 @@ define(function (require) {
     }
 
     function getTextBoxCoords(d) {
-      var x, y, frameX, frameY,
-          pixelScale = fontSizeInPixels * (d.fontScale || 1);
+      var x, y, textX, textY, frameX, frameY,
+          pixelScale = textBoxFontSizeInPixels * (d.fontScale || 1);
       if (d.hostType) {
         if (d.hostType === "Atom") {
           x = modelResults[d.hostIndex].x;
@@ -774,9 +775,12 @@ define(function (require) {
         x = d.x;
         y = d.y;
       }
-      frameX = model2px(x) - pixelScale*0.75;
-      frameY = model2pxInv(y) - pixelScale*1.2;
-      return [model2px(x), model2pxInv(y), frameX, frameY];
+      frameX = model2px(x);
+      frameY = model2pxInv(y);
+
+      textX = frameX + pixelScale*0.75;
+      textY = frameY + pixelScale*1.2;
+      return [textX, textY, frameX, frameY];
     }
 
     function updateTextBoxes() {
@@ -800,7 +804,7 @@ define(function (require) {
           .data(layerTextBoxes)
           .attr({
             "y": function(d) {
-              $(this).find("tspan").attr("x", getTextBoxCoords()[0]);
+              $(this).find("tspan").attr("x", getTextBoxCoords(d)[0]);
               return getTextBoxCoords(d)[1];
             }
           });
@@ -850,10 +854,10 @@ define(function (require) {
             },
             "width": 0,
             "height": 0,
-            "rx": function(d)  { return d.frame === "rounded rectangle" ? 8  : 0; },
-            "ry": function(d)  { return d.frame === "rounded rectangle" ? 10 : 0; },
-            "x": function(d,i) { return getTextBoxCoords(d,i)[2]; },
-            "y": function(d,i) { return getTextBoxCoords(d,i)[3]; }
+            "rx": function(d) { return d.frame === "rounded rectangle" ? textBoxFontSizeInPixels/6  : 0; },
+            "ry": function(d) { return d.frame === "rounded rectangle" ? textBoxFontSizeInPixels/5 : 0; },
+            "x":  function(d) { return getTextBoxCoords(d)[2]; },
+            "y":  function(d) { return getTextBoxCoords(d)[3]; }
           });
 
         text.append("text")
@@ -1660,6 +1664,7 @@ define(function (require) {
         modelSize2px = mSize2px;
       }
       fontSizeInPixels = modelView.getFontSizeInPixels();
+      textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
 
       setupDynamicGradients();
       setupObstacles();
