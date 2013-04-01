@@ -887,7 +887,7 @@ define(function (require) {
             "xml:space": "preserve",
             "font-family": "'" + labConfig.fontface + "', sans-serif",
             "font-size": function(d) {
-              return textBoxFontSizeInPixels * (d.fontScale || 1);
+              return d.fontScale * textBoxFontSizeInPixels + "px";
             },
             "fill": function(d) { return d.color || "black"; },
             "text-data": function(d) { return d.text; },
@@ -919,7 +919,7 @@ define(function (require) {
             x         = this.getAttributeNS(null, "x-data"),
             width     = this.getAttributeNS(null, "width-data"),
             height    = this.getAttributeNS(null, "height-data"),
-            fontSize  = this.getAttributeNS(null, "font-size"),
+            fontSize  = parseFloat(this.getAttributeNS(null, "font-size")),
             transform = this.getAttributeNS(null, "transform"),
             hasHost   = this.getAttributeNS(null, "has-host"),
             textAlign = this.getAttributeNS(null, "text-anchor"),
@@ -1609,6 +1609,9 @@ define(function (require) {
       model2px = modelView.model2px;
       model2pxInv = modelView.model2pxInv;
       modelSize2px = modelView.modelSize2px;
+
+      fontSizeInPixels = modelView.getFontSizeInPixels();
+      textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
 
       modelResults  = model.get_results();
       modelElements = model.get_elements();
