@@ -268,6 +268,13 @@ parseMML = (mmlString) ->
       backgroundColor = new md2dAPI.Solvent("oil").color
 
     ###
+      Find mark color
+    ###
+    markColor = getIntProperty $mml.root(), "markColor", "int"
+    # Convert signedInt value used in Classic MW to hex color definition.
+    markColor = "#" + (markColor + Math.pow(2, 24)).toString 16 if markColor?
+
+    ###
       Find the solvent force type.
       In Classic MW it's a type of solvent. However, to avoid confusion in Next Gen MW
       it's named 'solventForceType', as it affects force driving amino acids. We do not
@@ -536,7 +543,7 @@ parseMML = (mmlString) ->
       mass *= 120         #convert to mass in Daltons
 
       # elementColor
-      color = elementColors[colorIndex] 
+      color = elementColors[colorIndex]
       colorIndex++
 
       elementRawData = { mass, sigma, epsilon, color }
@@ -820,6 +827,7 @@ parseMML = (mmlString) ->
       viewPortX           : viewPortX
       viewPortY           : viewPortY
       backgroundColor     : backgroundColor
+      markColor           : markColor
       keShading           : keShading
       chargeShading       : chargeShading
       showChargeSymbols   : showChargeSymbols
