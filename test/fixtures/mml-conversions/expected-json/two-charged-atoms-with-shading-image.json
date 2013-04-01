@@ -54,7 +54,8 @@
         "y": 1.88,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(232,231,231)"
+        "backgroundColor": "rgb(232,231,231)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

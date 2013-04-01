@@ -68,7 +68,8 @@
         "color": "rgb(153,0,0)", 
         "hostType": "RectangularObstacle", 
         "hostIndex": 0, 
-        "backgroundColor": "rgb(255,100,100)"
+        "backgroundColor": "rgb(255,100,100)", 
+        "anchor": "upper-left"
       }
     ]
   },

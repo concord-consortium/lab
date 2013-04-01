@@ -459,6 +459,9 @@ parseMML = (mmlString) ->
         textBox.hostType = textHostType
         textBox.hostIndex = textHostIndex
       textBox.backgroundColor = backgroundTextColor if backgroundTextColor
+
+      # default anchor is upper-left when importing from Java MW
+      textBox.anchor = "upper-left"
       textBox
 
     $textBoxesArray = $mml "[property=textBoxes] array"

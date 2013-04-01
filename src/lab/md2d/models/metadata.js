@@ -542,6 +542,9 @@ define(function() {
         defaultValue: 0,
         unitType: "length"
       },
+      anchor: {
+        defaultValue: "lower-left"
+      },
       layer: {
         defaultValue: 1
       },
