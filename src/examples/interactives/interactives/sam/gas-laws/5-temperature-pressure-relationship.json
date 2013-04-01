@@ -12,8 +12,9 @@
         "textBoxes": [
           {
             "text": "Pressure Gauge >>",
-            "x": 2.3,
+            "x": 2.15,
             "y": 2.27,
+            "width": 1.05,
             "layer": 1,
             "frame": "rounded rectangle",
             "backgroundColor": "rgb(250,250,250)"
