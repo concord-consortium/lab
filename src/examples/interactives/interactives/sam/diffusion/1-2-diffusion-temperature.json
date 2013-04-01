@@ -1,6 +1,6 @@
 {
   "title": "Diffusion Temperature",
-  "publicationStatus": "draft",
+  "publicationStatus": "public",
   "subtitle": "How does temperature affect the rate of diffusion?",
   "about": "Click remove barrier to begin measuring how long it takes for the blue molecules to diffuse across the container.",
   "models": [

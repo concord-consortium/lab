@@ -1,6 +1,6 @@
 {
   "title": "Diffusion Temperature and Mass",
-  "publicationStatus": "draft",
+  "publicationStatus": "public",
   "subtitle": "How do temperature and mass affect the rate of diffusion?",
   "about": "Click remove barrier to begin measuring how long it takes for the molecules to diffuse across the container.",
   "models": [
