@@ -138,7 +138,12 @@ define(function (require) {
 
         // this is a hack put in place to temporarily deal with an image-size
         // caching bug in Chrome Canary
-        needCachebusting = browser.browser = "Chrome" && browser.version >= "26";
+        needCachebusting = browser.browser == "Chrome" && browser.version >= "26",
+
+        // this is a hack put in place to temporarily deal with a IE 10 bug which
+        // does not update line markers when svg lines are moved
+        // see https://connect.microsoft.com/IE/feedback/details/781964/
+        hideLineMarkers = browser.browser == "MSIE" && browser.version >= "10.0";
 
 
     function modelTimeLabel() {
@@ -436,7 +441,7 @@ define(function (require) {
       vector.enter().append("path")
         .attr({
           "class": "vector-"+name,
-          "marker-end": "url(#Triangle-"+name+")",
+          "marker-end": hideLineMarkers ? "" : "url(#Triangle-"+name+")",
           "d": pathFunc,
           "stroke-width": widthFunc,
           "stroke": color,
@@ -544,7 +549,7 @@ define(function (require) {
         // Finally, set common attributes and stying for both vertical and horizontal forces.
         obstacleGroupEl.selectAll("path.obstacle-force-hor, path.obstacle-force-vert")
           .attr({
-            "marker-end": "url(#Triangle-"+ FORCE_STR +")",
+            "marker-end": hideLineMarkers ? "" : "url(#Triangle-"+ FORCE_STR +")",
             "stroke-width": modelSize2px(forceVectorWidth),
             "stroke": forceVectorColor,
             "fill": "none"
