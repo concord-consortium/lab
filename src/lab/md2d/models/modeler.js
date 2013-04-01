@@ -2473,6 +2473,21 @@ define(function(require) {
     // not defined in meta model as mainProperties (like atoms, obstacles, viewOptions etc).
     set_properties(validator.validateCompleteness(metadata.mainProperties, initialProperties));
 
+    (function () {
+      if (!initialProperties.viewOptions || !initialProperties.viewOptions.textBoxes) {
+        return;
+      }
+      // Temporal workaround to provide text boxes validation.
+      // Note that text boxes are handled completely different from other objects
+      // like atoms or obstacles. There is much of inconsistency and probably
+      // it should be refactored anyway.
+      var textBoxes = initialProperties.viewOptions.textBoxes,
+          i, len;
+
+      for (i = 0, len = textBoxes.length; i < len; i++) {
+        textBoxes[i] = validator.validateCompleteness(metadata.textBox, textBoxes[i]);
+      }
+    }());
     // Set the model view options.
     set_properties(validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {}));
 

@@ -799,7 +799,7 @@ define(function (require) {
             "x": function(d) { return getTextBoxCoords(d)[2]; },
             "y": function(d) { return getTextBoxCoords(d)[3]; },
             "transform": function(d) {
-              var rotate = (typeof d.rotate === 'undefined') ? 0 : d.rotate,
+              var rotate = d.rotate,
                   pos = getTextBoxCoords(d);
               return "rotate("+rotate+" "+pos[0]+" "+pos[1]+")";
             }
@@ -847,14 +847,14 @@ define(function (require) {
           .attr({
             "class": function(d, i) { return "textBoxFrame text-"+i; },
             "transform": function(d) {
-              var rotate = (typeof d.rotate === 'undefined') ? 0 : d.rotate,
+              var rotate = d.rotate,
                   pos = getTextBoxCoords(d);
               return "rotate("+rotate+" "+pos[0]+" "+pos[1]+")";
             },
             "style": function(d) {
               var backgroundColor = d.backgroundColor || "white",
-                  strokeWidth = (typeof d.strokeWidthEms === 'undefined') ? fontSizeInPixels * 0.03 : d.strokeWidthEms * fontSizeInPixels,
-                  strokeOpacity = (typeof d.strokeOpacity === 'undefined') ? 1.0 : d.strokeOpacity;
+                  strokeWidth = d.strokeWidthEms * fontSizeInPixels,
+                  strokeOpacity = d.strokeOpacity;
               return "fill:"+backgroundColor+";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:"+strokeWidth+";stroke-opacity:"+strokeOpacity;
             },
             "width": 0,
@@ -869,7 +869,7 @@ define(function (require) {
           .attr({
             "class": function() { return "textBox" + (AUTHORING ? " draggable" : ""); },
             "transform": function(d) {
-              var rotate = (typeof d.rotate === 'undefined') ? 0 : d.rotate,
+              var rotate = d.rotate,
                   pos = getTextBoxCoords(d);
               return "rotate("+rotate+" "+pos[0]+" "+pos[1]+")";
             },
@@ -919,7 +919,7 @@ define(function (require) {
             hasHost   = this.getAttributeNS(null, "has-host"),
             textAlign = this.getAttributeNS(null, "text-anchor"),
             horizontalPadding, verticalPadding,
-            result, frame, dx, dy, tx, ty;
+            result, frame, dy, tx, ty;
 
         dy = fontSize*1.2;
         horizontalPadding = +fontSize*1.5;
