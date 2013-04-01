@@ -58,6 +58,9 @@ define(function (require) {
         preexistingControls,
 
         clickHandler,
+        // d3.svg.brush object used to implement select action. It should be
+        // updated each time model2px and model2pxInv functions are changed!
+        selectBrush,
 
         offsetLeft, offsetTop;
 
@@ -183,6 +186,13 @@ define(function (require) {
       modelSize2px = function (sizeX) {
         return model2px(modelMinX + sizeX);
       };
+
+      if (selectBrush) {
+        // Update brush to use new scaling functions.
+        selectBrush
+          .x(model2px)
+          .y(model2pxInv);
+      }
     }
 
     function redraw() {
@@ -586,7 +596,6 @@ define(function (require) {
        *                            Pass 'null' to disable select action.
        */
       setSelectHandler: function (handler) {
-        var brush;
         if (typeof handler !== "function" && handler !== null) {
           throw new Error("Select handler should be a function or null.");
         }
@@ -596,11 +605,11 @@ define(function (require) {
           // Previous handler removed, so just return.
           return;
         }
-        brush = d3.svg.brush()
+        selectBrush = d3.svg.brush()
           .x(model2px)
           .y(model2pxInv)
           .on("brushend.select", function() {
-            var r = brush.extent(),
+            var r = selectBrush.extent(),
                 x      = r[0][0],
                 y      = r[0][1],
                 width  = r[1][0] - x,
@@ -615,13 +624,13 @@ define(function (require) {
             // where (x, y) defines its lower left corner in model units.
             handler(x, y, width, height);
             // Clear and hide the brush.
-            brush.clear();
+            selectBrush.clear();
             // Redraw brush (which is now empty).
-            brushContainer.call(brush);
+            brushContainer.call(selectBrush);
           });
         // Add a new "g" to easily remove it while
         // disabling / reseting select action.
-        brushContainer.append("g").classed("select-area", true).call(brush);
+        brushContainer.append("g").classed("select-area", true).call(selectBrush);
       }
     };
 
