@@ -762,7 +762,7 @@ define(function (require) {
 
     function getTextBoxCoords(d) {
       var x, y, textX, textY, frameX, frameY,
-          pixelScale = textBoxFontSizeInPixels * (d.fontScale || 1);
+          pixelScale = textBoxFontSizeInPixels * d.fontScale;
       if (d.hostType) {
         if (d.hostType === "Atom") {
           x = modelResults[d.hostIndex].x;
@@ -852,7 +852,7 @@ define(function (require) {
               return "rotate("+rotate+" "+pos[0]+" "+pos[1]+")";
             },
             "style": function(d) {
-              var backgroundColor = d.backgroundColor || "white",
+              var backgroundColor = d.backgroundColor,
                   strokeWidth = d.strokeWidthEms * fontSizeInPixels,
                   strokeOpacity = d.strokeOpacity;
               return "fill:"+backgroundColor+";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:"+strokeWidth+";stroke-opacity:"+strokeOpacity;
