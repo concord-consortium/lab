@@ -370,6 +370,9 @@
     </object>
    </void>
   </void>
+  <void property="markColor">
+   <int>-65485</int>
+  </void>
   <void property="momentumFlavor">
    <void property="color">
     <object class="java.awt.Color">
