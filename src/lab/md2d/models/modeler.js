@@ -1696,11 +1696,15 @@ define(function(require) {
     };
 
     model.setTextBoxProperties = function(i, props) {
-      var textBox = properties.textBoxes[i];
+      var textBox = properties.textBoxes[i],
+          prop;
+
       if (textBox) {
         props = validator.validate(metadata.textBox, props);
         for (prop in props) {
-          textBox[prop] = props[prop];
+          if (props.hasOwnProperty(prop)) {
+            textBox[prop] = props[prop];
+          }
         }
         dispatch.textBoxesChanged();
       } else {
@@ -2363,12 +2367,12 @@ define(function(require) {
     model.startBatch = function() {
       invalidatingChangePreHook();
       suppressInvalidatingChangeHooks = true;
-    }
+    };
 
     model.endBatch = function() {
       suppressInvalidatingChangeHooks = false;
       invalidatingChangePostHook();
-    }
+    };
 
     // FIXME: Broken!! Includes property setter methods, does not include radialBonds, etc.
     model.serialize = function() {
