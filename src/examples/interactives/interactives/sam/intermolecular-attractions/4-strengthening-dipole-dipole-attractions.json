@@ -17,15 +17,19 @@
         "textBoxes": [
           {
             "text": "Explore the different attractive forces between molecules of varying polarity.",
-            "x": 0.83,
-            "y": 1.68,
+            "x": 0.85,
+            "y": 1.8,
+            "width": 2.7,
+            "fontScale": 1.4,
             "width": 2.5,
             "layer": 1
           },
           {
             "text": "Choose a pair of molecules from the menu below.",
-            "x": 0.59,
-            "y": 0.29,
+            "x": 0.6,
+            "y": 0.5,
+            "width": 2.7,
+            "fontScale": 1.4,
             "layer": 1
           }
         ]

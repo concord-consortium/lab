@@ -21,16 +21,16 @@
         "textBoxes": [
           {
             "text": "Inside balloon",
-            "x": 0.275,
-            "y": 2.33,
+            "x": 0.05,
+            "y": 2.45,
             "layer": 1,
             "frame": "rounded rectangle",
             "backgroundColor": "rgb(250,250,250)"
           },
           {
             "text": "Outside balloon",
-            "x": 3.86,
-            "y": 2.33,
+            "x": 4.0,
+            "y": 2.45,
             "layer": 1,
             "frame": "rounded rectangle",
             "backgroundColor": "rgb(250,250,250)"
@@ -38,7 +38,7 @@
           {
             "text": "Balloon skin",
             "x": 2.1593974304199217,
-            "y": 1.43,
+            "y": 1.5,
             "width": 0.3,
             "textAlign": "center",
             "layer": 1,
@@ -47,8 +47,8 @@
           },
           {
             "text": "Atoms inside: 40",
-            "x": 0.15,
-            "y": 0.125,
+            "x": 0.05,
+            "y": 0.25,
             "layer": 1,
             "frame": "rounded rectangle",
             "backgroundColor": "rgb(160,206,219)"

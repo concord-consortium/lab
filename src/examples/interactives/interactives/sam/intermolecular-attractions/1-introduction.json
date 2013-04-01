@@ -19,9 +19,10 @@
         "textBoxes": [
           {
             "text": "Drag the molecules close to each other and look for intermolecular attractions.",
-            "x": 0.7,
-            "y": 1.9,
-            "width": 2.31,
+            "x": 0.6,
+            "y": 2.05,
+            "width": 2.1,
+            "fontScale": 1.4,
             "layer": 1,
             "frame": "rounded rectangle",
             "backgroundColor": "rgb(245,245,245)"
