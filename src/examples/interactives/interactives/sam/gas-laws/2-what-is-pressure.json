@@ -29,7 +29,7 @@
           },
           {
             "text": "Outside balloon",
-            "x": 4.0,
+            "x": 3.95,
             "y": 2.45,
             "layer": 1,
             "frame": "rounded rectangle",

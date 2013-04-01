@@ -28,7 +28,6 @@
             "text": "Choose a pair of molecules from the menu below.",
             "x": 0.6,
             "y": 0.5,
-            "width": 2.7,
             "fontScale": 1.4,
             "layer": 1
           }
