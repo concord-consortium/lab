@@ -9,9 +9,20 @@
       "url": "/imports/legacy-mw-content/converted/sam-activities/diffusion/DiffusionTemp/DiffusionBarrier$0.json",
       "viewOptions": {
         "controlButtons": "play_reset",
-        "imageMapping": {
-          "GasSensor.png": "GasSensor.svg"
-        }
+        "textBoxes" : [
+          {
+            "text": "Gas Sensor",
+            "x": 6.8,
+            "y": 0.2,
+            "rotate": -90,
+            "width": 2,
+            "textAlign": "center",
+            "frame": "rectangle",
+            "strokeOpacity": 0,
+            "backgroundColor": "rgba(145,83,205,0.5)",
+            "layer": 1
+          }
+        ]
       },
       "modelOptions": {
         "unitsScheme": "mks"
