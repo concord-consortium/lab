@@ -95,7 +95,17 @@
         "offset": 0,
         "scale": 1,
         "digits": 0
-      }
+      },
+      "labels": [
+        {
+          "value": 10,
+          "label": "10 K"
+        },
+        {
+          "value": 5000,
+          "label": "5000 K"
+        }
+      ]
     }
   ],
   "layout": {
