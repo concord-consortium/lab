@@ -22,7 +22,6 @@
         "    var atomsToMark = atomsWithin(x, y, 0.5);",
         "    markAtoms(atomsToMark);",
         "  });",
-        "  start();",
         "}",
         "onClick('plot', onClickHandler);",
         "onClick('atom', onClickHandler);"
