@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Strength of a Plastic</page_title>
+<text>Strength of a Plastic
+
+Plastics consist of long chains of molecules. This experiment explores what happens when a plastic is put under strain. 
+The green bar is made of chains of four atoms. In real plastics, the chains would be longer. Let&apos;s see whether this model acts like a plastic. Later on, you can build a bar out of longer chains to see whether that has any effect on the result. 
+
+  
+
+  
+
+ 
+
+
+ 
+
+ 
+
+
+Created by Bob Tinker
+2006 Concord Consortium</text>
+<section start="0" end="455">
+<paragraph start="0" end="22">
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="21">
+<size>15</size><bold>true</bold></content>
+
+<content start="21" end="22">
+<size>24</size><family>Gadget</family></content>
+
+</paragraph>
+<paragraph start="22" end="23">
+<LeftIndent>8.0</LeftIndent>
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="144">
+<LeftIndent>8.0</LeftIndent>
+<content start="23" end="144">
+</content>
+
+</paragraph>
+<paragraph start="144" end="389">
+<LeftIndent>8.0</LeftIndent>
+<content start="144" end="389">
+</content>
+
+</paragraph>
+<paragraph start="389" end="390">
+<content start="389" end="390">
+</content>
+
+</paragraph>
+<paragraph start="390" end="393">
+<Alignment>1</Alignment>
+<content start="390" end="391">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>plasticstrength$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="391" end="392">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.0010000000474974513</value>
+<minimum>0.0</minimum>
+<maximum>0.0010000000474974513</maximum>
+<nstep>50</nstep>
+<title>Applied force</title>
+<width>400</width>
+<height>70</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;0.0010000000474974513&quot;, label=&quot;Strong&quot;}{value=&quot;0.0&quot;, label=&quot;None&quot;}</labeltable>
+<change>Gravitational Field</change>
+</component></content>
+
+<content start="392" end="393">
+</content>
+
+</paragraph>
+<paragraph start="393" end="394">
+<content start="393" end="394">
+</content>
+
+</paragraph>
+<paragraph start="394" end="397">
+<Alignment>1</Alignment>
+<content start="394" end="395">
+</content>
+
+<content start="395" end="396">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>400</width>
+<height>205</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    The first thing to do is to look carefully at the &amp;quot;plastic.&amp;quot; How is it 
+    like and unlike a crystal? What do you predict will happen when force is 
+    applied downward to the green bar?
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-1</bgcolor>
+</component></content>
+
+<content start="396" end="397">
+</content>
+
+</paragraph>
+<paragraph start="397" end="398">
+<content start="397" end="398">
+</content>
+
+</paragraph>
+<paragraph start="398" end="400">
+<Alignment>1</Alignment>
+<content start="398" end="399">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>400</width>
+<height>205</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    Next, slowly apply some force to it. As soon as you see the bar deform, 
+    reduce the force as much as possible, but have the bar decend slowly. 
+    Describe what happens.
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-1</bgcolor>
+</component></content>
+
+<content start="399" end="400">
+</content>
+
+</paragraph>
+<paragraph start="400" end="401">
+<content start="400" end="401">
+</content>
+
+</paragraph>
+<paragraph start="401" end="402">
+<content start="401" end="402">
+</content>
+
+</paragraph>
+<paragraph start="402" end="404">
+<Alignment>1</Alignment>
+<content start="402" end="403">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>400</width>
+<height>205</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    Do a second run and see whether removing the force will allow the bar to 
+    snap back once it starts deforming. Write down your observation:
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-1</bgcolor>
+</component></content>
+
+<content start="403" end="404">
+</content>
+
+</paragraph>
+<paragraph start="404" end="405">
+<Alignment>1</Alignment>
+<content start="404" end="405">
+</content>
+
+</paragraph>
+<paragraph start="405" end="407">
+<Alignment>1</Alignment>
+<content start="405" end="406">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Create a report</title>
+<bgcolor>-373738</bgcolor>
+<border>Raised Bevel</border>
+<action>Create a report about this page in a new window</action></component></content>
+
+<content start="406" end="407">
+</content>
+
+</paragraph>
+<paragraph start="407" end="408">
+<content start="407" end="408">
+</content>
+
+</paragraph>
+<paragraph start="408" end="409">
+<content start="408" end="409">
+</content>
+
+</paragraph>
+<paragraph start="409" end="431">
+<Alignment>1</Alignment>
+<content start="409" end="431">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="431" end="455">
+<Alignment>1</Alignment>
+<content start="431" end="454">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

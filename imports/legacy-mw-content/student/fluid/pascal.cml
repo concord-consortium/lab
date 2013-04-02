@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>A hydraulic lever</page_title>
+<text>A hydraulic lever
+
+According to Pascal&apos;s Principle, pressure is transmitted undiminished in an enclosed static fluid. This is the theoretical foundation of hydraulic levers. The following molecular dynamics simulation shows this mechanism.
+
+ 
+   
+(where Fa is the force on the piston on the left and Fb is the force on the piston on the right. This model contains 451 particles and can run very slowly on old machines.)
+
+In the above model, the blue particles represent some sort of fluid. Some friction is applied to both pistons to prevent it from oscillating due to the elastic collisions with the particles. The particles initially in the connector tube are marked with a different color, in order to see their diffusion more clearly.</text>
+<section start="0" end="739">
+<paragraph start="0" end="18">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="17">
+<bold>true</bold><size>14</size></content>
+
+<content start="17" end="18">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<LeftIndent>8.0</LeftIndent>
+<content start="18" end="19">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="19" end="240">
+<LeftIndent>8.0</LeftIndent>
+<content start="19" end="240">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="240" end="241">
+<LeftIndent>8.0</LeftIndent>
+<content start="240" end="241">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="241" end="243">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="241" end="242">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>pascal$0.mml</resource><menubar>false</menubar></component><size>14</size></content>
+
+<content start="242" end="243">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="243" end="247">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="243" end="244">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Fa=0.44Fb (pressure balance)</title>
+<tooltip>Fa=0.44Fb (pressure balance)</tooltip>
+<disabled_at_script>true</disabled_at_script>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1141313981514</groupid>
+<script>load equalpressure.mml;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="244" end="245">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Fa=0.88Fb (higher pressure on the left)</title>
+<tooltip>Fa=0.88Fb (higher pressure on the left)</tooltip>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1141313981514</groupid>
+<script>load moreonleft.mml;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="245" end="246">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Fa=0.22Fb (higher pressure on the right)</title>
+<tooltip>Fa=0.22Fb (higher pressure on the right)</tooltip>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1141313981514</groupid>
+<script>load moreonright.mml;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="246" end="247">
+</content>
+
+</paragraph>
+<paragraph start="247" end="420">
+<LeftIndent>8.0</LeftIndent>
+<content start="247" end="364">
+<size>11</size></content>
+
+<content start="364" end="377">
+<bold>true</bold><size>11</size></content>
+
+<content start="377" end="420">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="420" end="421">
+<LeftIndent>8.0</LeftIndent>
+<content start="420" end="421">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="421" end="739">
+<LeftIndent>8.0</LeftIndent>
+<content start="421" end="738">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

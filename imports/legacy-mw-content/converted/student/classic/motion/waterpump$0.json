@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 4,
+    "viewPortHeight": 3.2,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -35,12 +40,13 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "Press Run and then drag the mouse or press up and down arrow to move the crank.",
+        "text": "Press Run and then\ndrag the mouse or\npress up and down\narrow to move the\ncrank.",
         "x": 0.13,
         "y": 3.11,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(0,255,0)"
+        "backgroundColor": "rgb(0,255,0)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,
@@ -237,12 +243,12 @@
       0,
       0
     ],
-    "externalFx": [
+    "externalAx": [
       0,
       0,
       0
     ],
-    "externalFy": [
+    "externalAy": [
       0,
       0,
       0

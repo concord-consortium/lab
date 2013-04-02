@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 3.6,
+    "viewPortHeight": 2.5,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": true,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -40,14 +45,16 @@
         "y": 1.77,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(0,255,0)"
+        "backgroundColor": "rgb(0,255,0)",
+        "anchor": "upper-left"
       },
       {
         "text": "External gauge",
         "x": 1.84,
         "y": 1.76,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,
@@ -169,7 +176,7 @@
       0,
       0
     ],
-    "externalFx": [
+    "externalAx": [
       0,
       0,
       0,
@@ -177,7 +184,7 @@
       0,
       0
     ],
-    "externalFy": [
+    "externalAy": [
       0,
       0,
       0,

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Sputtering</page_title>
+<text>Sputtering
+Sputtering is a process in which atoms are ejected from a solid target material due to bombardment of the target by energetic ions. It is commonly used for thin-film deposition, etching and analytical techniques. The following model simulates this important process.
+
+   
+   
+
+Instruction: The average number of atoms ejected from the target per incident ion is called the sputter yield. It depends on the ion incident angle, the energy of the ion, the masses of the ion and target atoms, and the surface binding energy of atoms in the target. Use the controls below the model to investigate these dependencies. To reset to the initial state, please click the first small blue button.
+
+</text>
+<section start="0" end="698">
+<paragraph start="0" end="11">
+<Alignment>1</Alignment>
+<SpaceBelow>5.0</SpaceBelow>
+<content start="0" end="11">
+<family>Century Gothic</family><size>20</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="11" end="278">
+<LeftIndent>20.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="11" end="277">
+<size>14</size><family>Century Gothic</family></content>
+
+<content start="277" end="278">
+<family>Century Gothic</family></content>
+
+</paragraph>
+<paragraph start="278" end="279">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="278" end="279">
+</content>
+
+</paragraph>
+<paragraph start="279" end="283">
+<Alignment>1</Alignment>
+<SpaceBelow>5.0</SpaceBelow>
+<content start="279" end="280">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>sputtering$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="280" end="281">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Slow mode</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>set timestep 0.1;</script>
+<script2>set timestep 0.5;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="281" end="282">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>K. E. Shading</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>set timestep 0.1;</script>
+<script2>set timestep 0.5;</script2>
+<action>K. E. Shading</action>
+</component></content>
+
+<content start="282" end="283">
+</content>
+
+</paragraph>
+<paragraph start="283" end="287">
+<Alignment>1</Alignment>
+<content start="283" end="284">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>5.0</value>
+<minimum>0.0</minimum>
+<maximum>10.0</maximum>
+<nstep>20</nstep>
+<title>Horizontal speed (m/s)</title>
+<width>200</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;2000&quot;}{value=&quot;0.0&quot;, label=&quot;0&quot;}</labeltable>
+<script>set atom[348].vx %val*200;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="284" end="285">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>4.5</value>
+<minimum>0.0</minimum>
+<maximum>10.0</maximum>
+<nstep>20</nstep>
+<title>Vertical speed (m/s)</title>
+<width>200</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;4000&quot;}{value=&quot;0.0&quot;, label=&quot;0&quot;}</labeltable>
+<script>set atom[348].vy %val*400;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="285" end="286">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>4.5</value>
+<minimum>0.0</minimum>
+<maximum>10.0</maximum>
+<nstep>20</nstep>
+<title>Mass of the incident ion</title>
+<width>200</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;Heavy&quot;}{value=&quot;0.0&quot;, label=&quot;Light&quot;}</labeltable>
+<script>set element[0].mass %val*40;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="286" end="287">
+</content>
+
+</paragraph>
+<paragraph start="287" end="288">
+<Alignment>1</Alignment>
+<content start="287" end="288">
+</content>
+
+</paragraph>
+<paragraph start="288" end="696">
+<LeftIndent>20.0</LeftIndent>
+<content start="288" end="384">
+<size>14</size><family>Century Gothic</family></content>
+
+<content start="384" end="397">
+<size>14</size><bold>true</bold><family>Century Gothic</family></content>
+
+<content start="397" end="695">
+<size>14</size><family>Century Gothic</family></content>
+
+<content start="695" end="696">
+</content>
+
+</paragraph>
+<paragraph start="696" end="697">
+<content start="696" end="697">
+</content>
+
+</paragraph>
+<paragraph start="697" end="698">
+</paragraph>
+</section>
+</document>

@@ -20,8 +20,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 3.5,
+    "viewPortHeight": 2.5,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -49,7 +54,8 @@
         "x": 0.38,
         "y": 2.41,
         "layer": 2,
-        "color": "rgb(153,0,0)"
+        "color": "rgb(153,0,0)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,
@@ -517,10 +523,10 @@
     "vy": [
       0
     ],
-    "externalFx": [
+    "externalAx": [
       0
     ],
-    "externalFy": [
+    "externalAy": [
       0
     ],
     "friction": [

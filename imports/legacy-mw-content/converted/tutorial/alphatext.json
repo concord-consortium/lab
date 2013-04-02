@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 5,
+    "viewPortHeight": 2.5,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": true,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -41,7 +46,8 @@
         "layer": 1,
         "frame": "rounded rectangle",
         "color": "rgb(0,0,0)",
-        "backgroundColor": "rgb(255,0,0)"
+        "backgroundColor": "rgb(255,0,0)",
+        "anchor": "upper-left"
       },
       {
         "text": "This text box dims out.",
@@ -50,23 +56,26 @@
         "layer": 1,
         "frame": "rounded rectangle",
         "color": "rgb(0,0,0)",
-        "backgroundColor": "rgb(255,255,128)"
+        "backgroundColor": "rgb(255,255,128)",
+        "anchor": "upper-left"
       },
       {
-        "text": "月落烏啼霜滿天， 江楓漁火對愁眠， 姑蘇城外寒山寺， 夜半鐘聲到客船。 ",
+        "text": "月落烏啼霜滿天，\n江楓漁火對愁眠，\n姑蘇城外寒山寺，\n夜半鐘聲到客船。",
         "x": 0.46,
         "y": 2.15,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(192,192,0)"
+        "backgroundColor": "rgb(192,192,0)",
+        "anchor": "upper-left"
       },
       {
-        "text": "月落乌啼霜满天， 江枫渔火对愁眠， 姑苏城外寒山寺， 夜半钟声到客船。",
+        "text": "月落乌啼霜满天，\n江枫渔火对愁眠，\n姑苏城外寒山寺，\n夜半钟声到客船。",
         "x": 0.45,
         "y": 2.15,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(0,192,255)"
+        "backgroundColor": "rgb(0,192,255)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

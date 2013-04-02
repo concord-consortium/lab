@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 3.6,
+    "viewPortHeight": 3.8,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -42,7 +47,8 @@
         "frame": "rounded rectangle",
         "hostType": "Atom",
         "hostIndex": 1,
-        "backgroundColor": "rgb(0,255,0)"
+        "backgroundColor": "rgb(0,255,0)",
+        "anchor": "upper-left"
       },
       {
         "text": "Gravity",
@@ -50,7 +56,8 @@
         "y": 3.53,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,255,0)"
+        "backgroundColor": "rgb(255,255,0)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,
@@ -207,11 +214,11 @@
       0,
       0
     ],
-    "externalFx": [
+    "externalAx": [
       0,
       0
     ],
-    "externalFy": [
+    "externalAy": [
       0,
       0
     ],

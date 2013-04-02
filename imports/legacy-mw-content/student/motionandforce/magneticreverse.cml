@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Reversing velocity of a charged particle with magnetic field</page_title>
+<text>Reversing velocity of a charged particle with magnetic field
+
+A charged particle in a magnetic field will experience a force (known as the Lorentz force). The force is proportional to its charge, speed and the intensity of the magnetic field. Its direction is perpendicular to the plane formed by the velocity vector and the field vector of the magnetic field, according to the right-hand rule. The following simulations show the effect of this force.
+
+Simulation 1
+ 
+
+  
+
+Simulation 2
+ 
+
+  </text>
+<section start="0" end="492">
+<paragraph start="0" end="61">
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="0" end="60">
+<family>Trebuchet MS</family><size>16</size><bold>true</bold></content>
+
+<content start="60" end="61">
+</content>
+
+</paragraph>
+<paragraph start="61" end="62">
+<RightIndent>20.0</RightIndent>
+<content start="61" end="62">
+</content>
+
+</paragraph>
+<paragraph start="62" end="452">
+<LeftIndent>20.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="62" end="452">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="452" end="453">
+<LeftIndent>20.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="452" end="453">
+</content>
+
+</paragraph>
+<paragraph start="453" end="466">
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="453" end="465">
+<italic>true</italic><family>Trebuchet MS</family></content>
+
+<content start="465" end="466">
+</content>
+
+</paragraph>
+<paragraph start="466" end="468">
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="466" end="467">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>magneticreverse$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="467" end="468">
+</content>
+
+</paragraph>
+<paragraph start="468" end="469">
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="468" end="469">
+</content>
+
+</paragraph>
+<paragraph start="469" end="472">
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="469" end="470">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>10.0</value>
+<minimum>1.0</minimum>
+<maximum>10.0</maximum>
+<nstep>9</nstep>
+<title>Change speed</title>
+<width>300</width>
+<height>70</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;Fast&quot;}{value=&quot;1.0&quot;, label=&quot;Slow&quot;}</labeltable>
+<script>set atom[0].vx %val*100;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="470" end="471">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="471" end="472">
+</content>
+
+</paragraph>
+<paragraph start="472" end="473">
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="472" end="473">
+</content>
+
+</paragraph>
+<paragraph start="473" end="486">
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="473" end="485">
+<italic>true</italic><family>Trebuchet MS</family></content>
+
+<content start="485" end="486">
+</content>
+
+</paragraph>
+<paragraph start="486" end="488">
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="486" end="487">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>magneticreverse$1.mml</resource><menubar>false</menubar></component></content>
+
+<content start="487" end="488">
+</content>
+
+</paragraph>
+<paragraph start="488" end="489">
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="488" end="489">
+</content>
+
+</paragraph>
+<paragraph start="489" end="492">
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="489" end="490">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reverse charge sign</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>1</model>
+<script>set atom[0].charge -%atom[0].charge;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="490" end="491">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>1</model>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

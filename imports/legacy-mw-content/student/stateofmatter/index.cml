@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>States of matter</page_title>
+<bg_image>sidebar1b.gif</bg_image>
+<text>States of Matter
+
+
+   States of matter
+   Electron avalanche
+   Comparing vapor water and gas water in a box (3D)
+   Debye Sheath
+   Plasma
+   Phase affected by interatomic interactions vs. temperature
+   Seeing specific heat and latent heat
+   A drop of neon liquid (3D)
+   A neon gas in a box (3D)
+   Nucleation of water vapor with dust particles
+   Evaporation (3D)
+   Evaporation (2D)
+   A gas of carbon dioxides
+   The hard-sphere model for gases
+   The formation of condensed matter
+   The role of attractive forces on the formation of a nanoparticle
+   The relationship between interaction strength and melting point
+   Atomic mass and melting point
+   Comparison of gas and liquid states
+   Comparison of liquid and solid states
+   Two kinds of particles that do not mix with each other
+   Different phases of anisotropic particles
+   Nematic phase liquid crystals
+   Smectic A phase liquid crystals</text>
+<section start="0" end="908">
+<paragraph start="0" end="17">
+<RightIndent>8.0</RightIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<Alignment>2</Alignment>
+<content start="0" end="16">
+<bold>true</bold><size>16</size><italic>true</italic></content>
+
+<content start="16" end="17">
+<size>13</size></content>
+
+</paragraph>
+<paragraph start="17" end="18">
+<content start="17" end="18">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<content start="18" end="19">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="19" end="39">
+<LeftIndent>180.0</LeftIndent>
+<content start="19" end="20">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="20" end="22">
+</content>
+
+<content start="22" end="38">
+<href>sm.cml</href></content>
+
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="61">
+<LeftIndent>180.0</LeftIndent>
+<content start="39" end="40">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="40" end="42">
+</content>
+
+<content start="42" end="60">
+<href>electronavalanche.cml</href></content>
+
+<content start="60" end="61">
+</content>
+
+</paragraph>
+<paragraph start="61" end="114">
+<LeftIndent>180.0</LeftIndent>
+<content start="61" end="62">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="62" end="64">
+</content>
+
+<content start="64" end="113">
+<href>vaporliquidcomp.cml</href></content>
+
+<content start="113" end="114">
+</content>
+
+</paragraph>
+<paragraph start="114" end="130">
+<LeftIndent>180.0</LeftIndent>
+<content start="114" end="115">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="115" end="117">
+</content>
+
+<content start="117" end="129">
+<href>debyesheath.cml</href></content>
+
+<content start="129" end="130">
+</content>
+
+</paragraph>
+<paragraph start="130" end="140">
+<LeftIndent>180.0</LeftIndent>
+<content start="130" end="131">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="131" end="133">
+</content>
+
+<content start="133" end="139">
+<href>plasma.cml</href></content>
+
+<content start="139" end="140">
+</content>
+
+</paragraph>
+<paragraph start="140" end="202">
+<LeftIndent>180.0</LeftIndent>
+<content start="140" end="141">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="141" end="143">
+</content>
+
+<content start="143" end="201">
+<href>interactionvstemperature.cml</href></content>
+
+<content start="201" end="202">
+</content>
+
+</paragraph>
+<paragraph start="202" end="242">
+<LeftIndent>180.0</LeftIndent>
+<content start="202" end="203">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="203" end="205">
+</content>
+
+<content start="205" end="241">
+<href>latentheat2.cml</href></content>
+
+<content start="241" end="242">
+</content>
+
+</paragraph>
+<paragraph start="242" end="272">
+<LeftIndent>180.0</LeftIndent>
+<content start="242" end="243">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="243" end="245">
+</content>
+
+<content start="245" end="271">
+<href>neon_drop.cml</href></content>
+
+<content start="271" end="272">
+</content>
+
+</paragraph>
+<paragraph start="272" end="300">
+<LeftIndent>180.0</LeftIndent>
+<content start="272" end="273">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="273" end="275">
+</content>
+
+<content start="275" end="299">
+<href>neon_gas.cml</href></content>
+
+<content start="299" end="300">
+</content>
+
+</paragraph>
+<paragraph start="300" end="349">
+<LeftIndent>180.0</LeftIndent>
+<content start="300" end="301">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="301" end="303">
+</content>
+
+<content start="303" end="348">
+<href>nucleation.cml</href><size>14</size><family>Trebuchet MS</family></content>
+
+<content start="348" end="349">
+</content>
+
+</paragraph>
+<paragraph start="349" end="369">
+<LeftIndent>180.0</LeftIndent>
+<content start="349" end="350">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="350" end="352">
+</content>
+
+<content start="352" end="368">
+<href>evaporation3d.cml</href><size>14</size><family>Trebuchet MS</family></content>
+
+<content start="368" end="369">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="369" end="389">
+<LeftIndent>180.0</LeftIndent>
+<content start="369" end="370">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="370" end="372">
+</content>
+
+<content start="372" end="388">
+<href>evaporation.cml</href><size>14</size><family>Trebuchet MS</family></content>
+
+<content start="388" end="389">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="389" end="417">
+<LeftIndent>180.0</LeftIndent>
+<content start="389" end="390">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><size>14</size><family>Trebuchet MS</family></content>
+
+<content start="390" end="392">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="392" end="416">
+<href>../motionandforce/CarbonDioxide.cml</href><size>14</size><family>Trebuchet MS</family></content>
+
+<content start="416" end="417">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="417" end="452">
+<LeftIndent>180.0</LeftIndent>
+<content start="417" end="418">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="418" end="420">
+</content>
+
+<content start="420" end="451">
+<href>interactionA.cml</href></content>
+
+<content start="451" end="452">
+</content>
+
+</paragraph>
+<paragraph start="452" end="489">
+<LeftIndent>180.0</LeftIndent>
+<content start="452" end="453">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="453" end="455">
+</content>
+
+<content start="455" end="488">
+<href>interactionB.cml</href></content>
+
+<content start="488" end="489">
+</content>
+
+</paragraph>
+<paragraph start="489" end="557">
+<LeftIndent>180.0</LeftIndent>
+<content start="489" end="490">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="490" end="492">
+</content>
+
+<content start="492" end="556">
+<href>attraction.cml</href></content>
+
+<content start="556" end="557">
+</content>
+
+</paragraph>
+<paragraph start="557" end="624">
+<LeftIndent>180.0</LeftIndent>
+<content start="557" end="558">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="558" end="560">
+</content>
+
+<content start="560" end="623">
+<href>interactionC.cml</href></content>
+
+<content start="623" end="624">
+</content>
+
+</paragraph>
+<paragraph start="624" end="657">
+<LeftIndent>180.0</LeftIndent>
+<content start="624" end="625">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="625" end="627">
+</content>
+
+<content start="627" end="656">
+<href>interactionD.cml</href></content>
+
+<content start="656" end="657">
+</content>
+
+</paragraph>
+<paragraph start="657" end="696">
+<LeftIndent>180.0</LeftIndent>
+<content start="657" end="658">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="658" end="660">
+</content>
+
+<content start="660" end="695">
+<href>gasliquid.cml</href></content>
+
+<content start="695" end="696">
+</content>
+
+</paragraph>
+<paragraph start="696" end="737">
+<LeftIndent>180.0</LeftIndent>
+<content start="696" end="697">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="697" end="699">
+</content>
+
+<content start="699" end="736">
+<href>liquidsolid.cml</href></content>
+
+<content start="736" end="737">
+</content>
+
+</paragraph>
+<paragraph start="737" end="795">
+<LeftIndent>180.0</LeftIndent>
+<content start="737" end="738">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="738" end="740">
+</content>
+
+<content start="740" end="794">
+<href>phaseseparation.cml</href></content>
+
+<content start="794" end="795">
+</content>
+
+</paragraph>
+<paragraph start="795" end="840">
+<LeftIndent>180.0</LeftIndent>
+<content start="795" end="796">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="796" end="798">
+</content>
+
+<content start="798" end="839">
+<href>lq0.cml</href></content>
+
+<content start="839" end="840">
+</content>
+
+</paragraph>
+<paragraph start="840" end="873">
+<LeftIndent>180.0</LeftIndent>
+<content start="840" end="841">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="841" end="843">
+</content>
+
+<content start="843" end="872">
+<href>nematic.cml</href></content>
+
+<content start="872" end="873">
+</content>
+
+</paragraph>
+<paragraph start="873" end="908">
+<LeftIndent>180.0</LeftIndent>
+<content start="873" end="874">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="874" end="876">
+</content>
+
+<content start="876" end="907">
+<href>liquidcrystal.cml</href></content>
+
+</paragraph>
+</section>
+</document>

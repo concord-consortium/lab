@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 4,
+    "viewPortHeight": 2.5,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": true,
+    "markColor": "#f8b500",
     "keShading": true,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -40,14 +45,16 @@
         "y": 2.43,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(0,255,0)"
+        "backgroundColor": "rgb(0,255,0)",
+        "anchor": "upper-left"
       },
       {
         "text": "Cool",
         "x": 0.78,
         "y": 2.44,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

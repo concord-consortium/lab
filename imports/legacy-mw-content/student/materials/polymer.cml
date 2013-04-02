@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>The bead model of polymers</page_title>
+<text>A bead model of polymers
+
+A very simple mode for polymers is to represent each monomer using a simple particle (bead) and link them together.
+
+ 
+
+   </text>
+<section start="0" end="150">
+<paragraph start="0" end="25">
+<Alignment>1</Alignment>
+<content start="0" end="25">
+<size>15</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="25" end="26">
+<LeftIndent>10.0</LeftIndent>
+<content start="25" end="26">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="26" end="142">
+<LeftIndent>10.0</LeftIndent>
+<content start="26" end="141">
+<size>11</size></content>
+
+<content start="141" end="142">
+<size>20</size><bold>true</bold><family>Microsoft Sans Serif</family></content>
+
+</paragraph>
+<paragraph start="142" end="143">
+<content start="142" end="143">
+</content>
+
+</paragraph>
+<paragraph start="143" end="145">
+<Alignment>1</Alignment>
+<content start="143" end="144">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>polymer$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="144" end="145">
+</content>
+
+</paragraph>
+<paragraph start="145" end="146">
+<content start="145" end="146">
+<italic>true</italic></content>
+
+</paragraph>
+<paragraph start="146" end="150">
+<Alignment>1</Alignment>
+<content start="146" end="147">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Cool</title>
+<border>Raised Bevel</border>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<step>-0.01</step>
+<action>Cool the system down</action>
+</component></content>
+
+<content start="147" end="148">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat</title>
+<border>Raised Bevel</border>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<step>0.01</step>
+<action>Heat the system up</action>
+</component></content>
+
+<content start="148" end="149">
+<component><class>org.concord.modeler.PageComboBox</class>
+<model>0</model>
+<selectedIndex>1</selectedIndex>
+<action>Display Style</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

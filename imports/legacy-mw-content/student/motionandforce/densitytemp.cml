@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Density vs. temperature</page_title>
+<text>Density vs. temperature 
+
+      
+
+    
+
+
+
+
+
+</text>
+<section start="0" end="45">
+<paragraph start="0" end="25">
+<LeftIndent>6.0</LeftIndent>
+<SpaceAbove>4.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="0" end="24">
+<family>Book Antiqua</family><bold>true</bold><size>20</size></content>
+
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="26">
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="33">
+<Alignment>1</Alignment>
+<content start="26" end="27">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>densitytemp$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
+
+<content start="27" end="30">
+</content>
+
+<content start="30" end="31">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<timeseries>Kinetic Energy/Particle</timeseries>
+<description>Temperature</description>
+<multiplier>100.0</multiplier>
+<width>100</width>
+<height>250</height>
+<tick>true</tick>
+<major_tick>4</major_tick>
+<nstep>8</nstep>
+<label>true</label>
+<title>true</title>
+<fgcolor>-10000</fgcolor>
+<minimum>0.0</minimum>
+<maximum>400.0</maximum>
+<value>0.0</value>
+</component></content>
+
+<content start="31" end="32">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<timeseries>Channel 0</timeseries>
+<description>Number of molecules in the window</description>
+<width>100</width>
+<height>250</height>
+<tick>true</tick>
+<major_tick>4</major_tick>
+<nstep>8</nstep>
+<label>true</label>
+<title>true</title>
+<fgcolor>-7f7f80</fgcolor>
+<minimum>0.0</minimum>
+<maximum>100.0</maximum>
+<value>0.0</value>
+</component></content>
+
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="34">
+<Alignment>1</Alignment>
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="39">
+<Alignment>1</Alignment>
+<content start="34" end="35">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<tooltip>Run</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>run</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="35" end="36">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<tooltip>Stop</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="36" end="37">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<tooltip>Reset</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="37" end="38">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>5000.0</value>
+<minimum>5000.0</minimum>
+<maximum>45000.0</maximum>
+<nstep>40</nstep>
+<title>Temperature</title>
+<width>200</width>
+<height>60</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;5000.0&quot;, label=&quot;Low&quot;}{value=&quot;45000.0&quot;, label=&quot;High&quot;}</labeltable>
+<change>Temperature</change>
+</component></content>
+
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="40">
+<Alignment>1</Alignment>
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="41">
+<Alignment>1</Alignment>
+<content start="40" end="41">
+<italic>true</italic><family>Book Antiqua</family></content>
+
+</paragraph>
+<paragraph start="41" end="42">
+<Alignment>1</Alignment>
+<content start="41" end="42">
+</content>
+
+</paragraph>
+<paragraph start="42" end="43">
+<content start="42" end="43">
+</content>
+
+</paragraph>
+<paragraph start="43" end="44">
+<content start="43" end="44">
+</content>
+
+</paragraph>
+<paragraph start="44" end="45">
+</paragraph>
+</section>
+</document>

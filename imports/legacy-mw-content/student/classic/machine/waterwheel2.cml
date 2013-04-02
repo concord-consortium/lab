@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>A piston driven by a water wheel</page_title>
+<text>A piston driven by a water wheel
+ 
+
+Related simulation: Water wheel without a load
+
+</text>
+<section start="0" end="85">
+<paragraph start="0" end="33">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<SpaceAbove>3.0</SpaceAbove>
+<content start="0" end="32">
+<bold>true</bold><size>14</size></content>
+
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="35">
+<Alignment>1</Alignment>
+<content start="33" end="34">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>waterwheel2$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="83">
+<LeftIndent>6.0</LeftIndent>
+<content start="36" end="56">
+<size>10</size></content>
+
+<content start="56" end="82">
+<size>10</size><href>waterwheel.cml</href></content>
+
+<content start="82" end="83">
+</content>
+
+</paragraph>
+<paragraph start="83" end="84">
+<content start="83" end="84">
+</content>
+
+</paragraph>
+<paragraph start="84" end="85">
+</paragraph>
+</section>
+</document>

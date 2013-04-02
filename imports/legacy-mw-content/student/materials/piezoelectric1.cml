@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The piezoelectric effect</page_title>
+<text>The Piezoelectric Effect
+
+     
+ </text>
+<section start="0" end="34">
+<paragraph start="0" end="25">
+<RightIndent>8.0</RightIndent>
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="24">
+<size>20</size><family>Book Antiqua</family><bold>true</bold></content>
+
+<content start="24" end="25">
+<family>Book Antiqua</family></content>
+
+</paragraph>
+<paragraph start="25" end="26">
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="32">
+<Alignment>1</Alignment>
+<content start="26" end="27">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>240.0</width>
+<height>340.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;font size=&quot;2&quot;&gt;The piezoelectric effect is the conversion between 
+    electricity and mechanical motion. Mechanical forces on piezoelectric 
+    materials can produce electricity (e.g. piezoelectric sparkers). 
+    Conversely, applying voltage on some piezoelectric materials results in 
+    distortion or deformation. For example, piezoelectric ceramic materials 
+    have been used to move the tip of a scanning tunneling microscope (STM).&lt;br&gt;&lt;br&gt;This 
+    model shows the conversion of electricity to mechanical motion. Pull the 
+    slider to change the voltage and observe the change of the crystal. The 
+    bottom of the slider corresponds to zero voltage.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="27" end="28">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>piezoelectric1$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="28" end="30">
+</content>
+
+<content start="30" end="31">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.0</value>
+<minimum>0.0</minimum>
+<maximum>8.0</maximum>
+<nstep>40</nstep>
+<title>Voltage</title>
+<width>100</width>
+<height>334</height>
+<orientation>1</orientation>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;8.0&quot;, label=&quot;High&quot;}{value=&quot;0.0&quot;, label=&quot;Low&quot;}</labeltable>
+<change>Electric Field (D.C.)</change>
+</component></content>
+
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="34">
+<Alignment>1</Alignment>
+<content start="32" end="33">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show Charge</title>
+<model>0</model>
+<action>Show Charge</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

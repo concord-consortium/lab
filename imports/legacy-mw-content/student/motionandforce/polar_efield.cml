@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Polar molecules in an electric field</page_title>
+<text>Polar molecules in an electric field
+
+ 
+ 
+
+
+Instructions:  Pull the slider to change the intensity and direction of the electric field. Use the cut tool and duplication tool if you need to adjust the numbers of molecules.
+ 
+
+</text>
+<section start="0" end="226">
+<paragraph start="0" end="37">
+<SpaceAbove>4.0</SpaceAbove>
+<LeftIndent>6.0</LeftIndent>
+<content start="0" end="36">
+<bold>true</bold><family>Broadway</family><size>20</size></content>
+
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="38">
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="40">
+<Alignment>1</Alignment>
+<content start="38" end="39">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>polar_efield$0.mml</resource><recorderless>true</recorderless>
+<button>Select Object</button><button>Draw Lines</button><button>Draw Rectangle</button><button>Draw Ellipse</button><button>Draw Triangle</button><button>Mark Object</button><button>Duplicate Object</button><button>Delete Objects</button></component></content>
+
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="42">
+<Alignment>1</Alignment>
+<content start="40" end="41">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>1.0</value>
+<minimum>-1.0</minimum>
+<maximum>1.0</maximum>
+<nstep>20</nstep>
+<title>Electric field</title>
+<width>200</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;1.0&quot;, label=&quot;Max&quot;}{value=&quot;-1.0&quot;, label=&quot;-Max&quot;}{value=&quot;0.0&quot;, label=&quot;0&quot;}</labeltable>
+<script>set efield %val;
+if(%val==0);
+  set line[2].visible off;
+  set line[3].visible off;
+  set line[4].visible off;
+  set line[5].visible off;
+  set line[6].visible off;
+else;
+  set line[2].visible on;
+  set line[3].visible on;
+  set line[4].visible on;
+  set line[5].visible on;
+  set line[6].visible on;
+endif;
+if((%val!=0 and %efield0==0) or (%val*%efield0&lt;0));
+  print before=%efield0;
+  define %i 2;
+  define %x1 0;
+  define %x2 0;
+  while(%i&lt;7);
+    set %x1 %line[%i].x1;
+    set %x2 %line[%i].x2;
+	set line[%i].x1 %x2;
+	set line[%i].x2 %x1;
+    ++%i;
+  endwhile;
+  set %efield0 %val;
+  print after=%efield0;
+endif;
+</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="41" end="42">
+</content>
+
+</paragraph>
+<paragraph start="42" end="43">
+<Alignment>1</Alignment>
+<content start="42" end="43">
+</content>
+
+</paragraph>
+<paragraph start="43" end="44">
+<Alignment>1</Alignment>
+<content start="43" end="44">
+</content>
+
+</paragraph>
+<paragraph start="44" end="222">
+<LeftIndent>20.0</LeftIndent>
+<content start="44" end="57">
+<family>Century Gothic</family><bold>true</bold><size>13</size></content>
+
+<content start="57" end="221">
+<family>Century Gothic</family><size>13</size></content>
+
+<content start="221" end="222">
+<italic>true</italic><family>Book Antiqua</family></content>
+
+</paragraph>
+<paragraph start="222" end="224">
+<Alignment>1</Alignment>
+<LeftIndent>50.0</LeftIndent>
+<RightIndent>50.0</RightIndent>
+<content start="222" end="224">
+</content>
+
+</paragraph>
+<paragraph start="224" end="225">
+<content start="224" end="225">
+</content>
+
+</paragraph>
+<paragraph start="225" end="226">
+</paragraph>
+</section>
+</document>

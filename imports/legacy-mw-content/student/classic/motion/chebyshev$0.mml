@@ -555,7 +555,7 @@
        <double>7.0</double> 
       </void> 
       <void property="y"> 
-       <double>8.0</double> 
+       <double>10.0</double> 
       </void> 
      </object> 
     </void> 
@@ -593,14 +593,13 @@
 that converts rotational
 motion to approximate
 straight-line motion.
-
 </string> 
       </void> 
       <void property="x"> 
        <double>225.0</double> 
       </void> 
       <void property="y"> 
-       <double>13.0</double> 
+       <double>10.0</double> 
       </void> 
      </object> 
     </void> 

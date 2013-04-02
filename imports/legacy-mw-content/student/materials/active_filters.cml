@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Active filters and surface area</page_title>
+<bg_color><Red>192</Red><Green>255</Green><Blue>192</Blue></bg_color>
+<text>
+Active filters and surface area
+
+    
+
+ 
+
+ 
+
+
+ 
+
+ </text>
+<section start="0" end="52">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="33">
+<Alignment>1</Alignment>
+<content start="1" end="32">
+<bold>true</bold><size>16</size></content>
+
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="34">
+<Alignment>1</Alignment>
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="39">
+<Alignment>1</Alignment>
+<content start="34" end="35">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>active_filters$0.mml</resource><button>Select Object</button><button>Delete Objects</button><button>Add Nt</button><button>Add Pl</button><button>Count Objects</button><button>Add Ck</button><button>Increase Restraint</button><button>Decrease Restraint</button><button>Duplicate Object</button></component></content>
+
+<content start="35" end="37">
+</content>
+
+<content start="37" end="38">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>active_filters$1.mml</resource><button>Select Object</button><button>Delete Objects</button><button>Duplicate Object</button><button>Add Nt</button><button>Add Pl</button><button>Add Ck</button><button>Count Objects</button><button>Increase Restraint</button><button>Decrease Restraint</button></component></content>
+
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="40">
+<Alignment>1</Alignment>
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="42">
+<Alignment>1</Alignment>
+<content start="40" end="41">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>0.95</width>
+<height>270.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    This is a model of two ways to filter a toxin (green molecules) out of the 
+    air (white). The purple molecules make up an active filter- they have a 
+    strong, specific attraction to the toxin. The concentration of the toxin 
+    in the air declines as it sticks to the filter, then levels off as the 
+    filter saturates. The two models are identical, except for the arrangement 
+    of the molecules in the filter. As the models run, you can see that one of 
+    the filters gets more of the toxin out of the air, because it has a higher 
+    surface area.&lt;br&gt;&lt;br&gt;In the real world, activated charcoal is a good 
+    filter of this type because it has an enormous surface area (it&apos;s full of 
+    tiny pores). The charcoal doesn&apos;t really need a specific attraction to 
+    whatever impurities it&apos;s filtering- that was just used in this model to 
+    make it work. Apparently van der Waal&apos;s forces and hydrogen bonds are 
+    sufficient to make things adsorb to it.&lt;br&gt;&lt;br&gt;Activated charcoal is used 
+    in things like gas masks, Brita water filters, and even for removing 
+    caffeine from coffee. Here&apos;s an electron micrograph of a particle of 
+    activated charcoal, where you can see the tiny pores:
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-330034</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="41" end="42">
+</content>
+
+</paragraph>
+<paragraph start="42" end="43">
+<LeftIndent>60.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="42" end="43">
+</content>
+
+</paragraph>
+<paragraph start="43" end="45">
+<Alignment>1</Alignment>
+<content start="43" end="44">
+<icon>charcoalmicrograph.jpg</icon></content>
+
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="46">
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="47">
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="49">
+<Alignment>1</Alignment>
+<content start="47" end="48">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>480</width>
+<height>203</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;3&quot;&gt;Please write down your observations. Can you explain the 
+    results?&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-3f0040</bgcolor>
+</component></content>
+
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="50">
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="52">
+<Alignment>1</Alignment>
+<content start="50" end="51">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Create a report</title>
+<border>Raised Bevel</border>
+<action>Create a report about this page in a new window</action></component></content>
+
+</paragraph>
+</section>
+</document>

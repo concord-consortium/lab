@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Virtual mechanical systems</page_title>
+<bg_image>sidebar1b.gif</bg_image>
+<text> 
+
+This section collects virtual mechanical systems constructed using MW.
+
+   An electric bike
+   A stamper machine
+   A suspension bridge
+   Pendulum, slider and spring
+   Slider-crank
+   Simulation of a tank moving on a caterpillar track
+   Water wheel
+   A piston driven by a water wheel
+
+
+
+
+</text>
+<section start="0" end="296">
+<paragraph start="0" end="2">
+<Alignment>2</Alignment>
+<SpaceAbove>10.0</SpaceAbove>
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="0" end="1">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>300.0</width><height>60</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;&lt;center&gt;&lt;h2&gt;&lt;font face=Verdana color=#ffffff&gt;Mechanical systems&lt;/font&gt;&lt;/center&gt;&lt;/html&gt;</title><bgcolor>-ff6601</bgcolor></icon></content>
+
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="3">
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="74">
+<LeftIndent>160.0</LeftIndent>
+<content start="3" end="74">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="74" end="75">
+<LeftIndent>160.0</LeftIndent>
+<content start="74" end="75">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="75" end="95">
+<LeftIndent>180.0</LeftIndent>
+<content start="75" end="76">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><size>14</size><family>Trebuchet MS</family></content>
+
+<content start="76" end="78">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="78" end="94">
+<size>14</size><family>Trebuchet MS</family><href>bike.cml</href></content>
+
+<content start="94" end="95">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="95" end="116">
+<LeftIndent>180.0</LeftIndent>
+<content start="95" end="96">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><size>14</size><family>Trebuchet MS</family></content>
+
+<content start="96" end="98">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="98" end="115">
+<size>14</size><family>Trebuchet MS</family><href>stamper.cml</href></content>
+
+<content start="115" end="116">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="116" end="139">
+<LeftIndent>180.0</LeftIndent>
+<content start="116" end="117">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><size>14</size><family>Trebuchet MS</family></content>
+
+<content start="117" end="119">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="119" end="138">
+<size>14</size><family>Trebuchet MS</family><href>suspensionbridge.cml</href></content>
+
+<content start="138" end="139">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="139" end="170">
+<LeftIndent>180.0</LeftIndent>
+<content start="139" end="140">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><size>14</size><family>Trebuchet MS</family></content>
+
+<content start="140" end="142">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="142" end="169">
+<size>14</size><family>Trebuchet MS</family><href>machine1.cml</href></content>
+
+<content start="169" end="170">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="170" end="186">
+<LeftIndent>180.0</LeftIndent>
+<content start="170" end="171">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><size>14</size><family>Trebuchet MS</family></content>
+
+<content start="171" end="173">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="173" end="185">
+<size>14</size><family>Trebuchet MS</family><href>SliderCrank.cml</href></content>
+
+<content start="185" end="186">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="186" end="240">
+<LeftIndent>180.0</LeftIndent>
+<content start="186" end="187">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><size>14</size><family>Trebuchet MS</family></content>
+
+<content start="187" end="189">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="189" end="239">
+<size>14</size><family>Trebuchet MS</family><href>tank1.cml</href></content>
+
+<content start="239" end="240">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="240" end="255">
+<LeftIndent>180.0</LeftIndent>
+<content start="240" end="241">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><size>14</size><family>Trebuchet MS</family></content>
+
+<content start="241" end="243">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="243" end="254">
+<size>14</size><family>Trebuchet MS</family><href>waterwheel.cml</href></content>
+
+<content start="254" end="255">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="255" end="291">
+<LeftIndent>180.0</LeftIndent>
+<content start="255" end="256">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><size>14</size><family>Trebuchet MS</family></content>
+
+<content start="256" end="258">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="258" end="290">
+<size>14</size><family>Trebuchet MS</family><href>waterwheel2.cml</href></content>
+
+<content start="290" end="291">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="291" end="292">
+<LeftIndent>180.0</LeftIndent>
+<content start="291" end="292">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="292" end="293">
+<LeftIndent>180.0</LeftIndent>
+<content start="292" end="293">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="293" end="294">
+<content start="293" end="294">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="294" end="295">
+<content start="294" end="295">
+</content>
+
+</paragraph>
+<paragraph start="295" end="296">
+</paragraph>
+</section>
+</document>

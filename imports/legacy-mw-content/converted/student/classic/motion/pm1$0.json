@@ -19,8 +19,13 @@
   "viscosity": 1.5,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 5,
+    "viewPortHeight": 2.5,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": true,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -52,12 +57,13 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "Let's kick the soccer ball.",
+        "text": "Let's kick the\nsoccer ball.",
         "x": 2.35,
         "y": 2.37,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,192,0)"
+        "backgroundColor": "rgb(255,192,0)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,
@@ -151,10 +157,10 @@
     "vy": [
       0
     ],
-    "externalFx": [
+    "externalAx": [
       0
     ],
-    "externalFy": [
+    "externalAy": [
       0
     ],
     "friction": [

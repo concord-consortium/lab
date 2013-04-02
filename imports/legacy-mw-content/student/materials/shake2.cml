@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Density segregation of particles on a vibrating base</page_title>
+<text>Density segregation of particles on a vibrating base
+
+  
+   
+ 
+
+</text>
+<section start="0" end="65">
+<paragraph start="0" end="53">
+<Alignment>1</Alignment>
+<content start="0" end="52">
+<family>Trebuchet MS</family><bold>true</bold><size>16</size></content>
+
+<content start="52" end="53">
+</content>
+
+</paragraph>
+<paragraph start="53" end="54">
+<Alignment>1</Alignment>
+<content start="53" end="54">
+</content>
+
+</paragraph>
+<paragraph start="54" end="57">
+<Alignment>1</Alignment>
+<content start="54" end="55">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>300.0</width>
+<height>190.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Trebuchet MS&quot;&gt;
+    This model shows that particles of different densities can segregate on a 
+    vibrating base. NOTE: The segregation will take a LONG time. Please let 
+    the model run for at least 10 minutes. If you can&apos;t wait to see the 
+    result, &lt;a href=&quot;script:page:0:message &lt;t&gt;&lt;font face=verdana&gt;Segregation for the case when the white particles are 5 times&lt;br&gt;more massive than the gray ones:&lt;br&gt;&lt;p align=center&gt;&lt;img src=densitysegregationresult.gif width=400 height=150&gt;&lt;/p&gt;&lt;hr&gt;&lt;font face=verdana&gt;No segregation for the case when the white particles are as&lt;br&gt; massive as the gray ones:&lt;br&gt;&lt;p align=center&gt;&lt;img src=densitysegregationresult2.gif width=400 height=150&gt;&lt;/p&gt;&lt;/t&gt;;&quot;&gt;here 
+    is a screenshot&lt;/a&gt; of it.&lt;hr&gt;
+
+    &lt;p&gt;
+      See: &lt;a href=&quot;shake.cml&quot;&gt;Size segregation&lt;/a&gt;.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="55" end="56">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>shake2$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="56" end="57">
+</content>
+
+</paragraph>
+<paragraph start="57" end="61">
+<Alignment>1</Alignment>
+<content start="57" end="58">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Stop shaking the base</title>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1204637422540</groupid>
+<script>set %speed 0;
+set obstacle[0].density 1000000;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="58" end="59">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Shake the base</title>
+<disabled_at_script>true</disabled_at_script>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1204637422540</groupid>
+<script>set %speed 500;
+set obstacle[0].density 0.1;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="59" end="60">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Shake the base harder</title>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1204637422540</groupid>
+<script>set %speed 1000;
+set obstacle[0].density 0.1;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="60" end="61">
+</content>
+
+</paragraph>
+<paragraph start="61" end="63">
+<Alignment>1</Alignment>
+<content start="61" end="62">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>5.0</value>
+<minimum>1.0</minimum>
+<maximum>10.0</maximum>
+<nstep>9</nstep>
+<title>The mass of the white particles vs. that of the gray ones</title>
+<width>300</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;10 times&quot;}{value=&quot;5.0&quot;, label=&quot;5 times&quot;}{value=&quot;1.0&quot;, label=&quot;Same&quot;}</labeltable>
+<script>set element[1].mass %element[0].mass/%val;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="62" end="63">
+</content>
+
+</paragraph>
+<paragraph start="63" end="64">
+<content start="63" end="64">
+</content>
+
+</paragraph>
+<paragraph start="64" end="65">
+</paragraph>
+</section>
+</document>

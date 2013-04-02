@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Equipotential Contour Plot of Force Fields </page_title>
+<bg_pattern><pattern_fg><Red>0</Red><Green>0</Green><Blue>0</Blue></pattern_fg>
+<pattern_bg><Red>255</Red><Green>255</Green><Blue>255</Blue></pattern_bg>
+<pattern_style>16</pattern_style>
+<pattern_width>12</pattern_width>
+<pattern_height>12</pattern_height>
+</bg_pattern>
+<text>Equipotential Contour Plot of Force Fields
+
+ 
+
+Equipotential contour plot of force fields shows the distribution of potential energy of a probe in a system of particles. Shown in the above is the superposition of van der Waals and electrostatic potential energy contours.</text>
+<section start="0" end="272">
+<paragraph start="0" end="43">
+<content start="0" end="42">
+<family>Book Antiqua</family><bold>true</bold><size>18</size></content>
+
+<content start="42" end="43">
+<family>Microsoft Sans Serif</family><bold>true</bold><size>18</size></content>
+
+</paragraph>
+<paragraph start="43" end="44">
+<content start="43" end="44">
+<size>18</size></content>
+
+</paragraph>
+<paragraph start="44" end="46">
+<Alignment>1</Alignment>
+<content start="44" end="45">
+<size>18</size><component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>contour$0.mml</resource><button>Mark Object</button><button>Toggle Trajectory</button><button>Select Object</button><button>What's This?</button><button>Measure Distance</button><button>Count Objects</button></component></content>
+
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="47">
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="272">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="47" end="271">
+<size>14</size></content>
+
+</paragraph>
+</section>
+</document>

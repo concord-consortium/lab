@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Illustrating osmosis and osmotic pressure</page_title>
+<text> 
+   
+
+</text>
+<section start="0" end="8">
+<paragraph start="0" end="2">
+<SpaceAbove>8.0</SpaceAbove>
+<RightIndent>8.0</RightIndent>
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="0" end="1">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>osmosis$0.mml</resource><menubar>false</menubar></component><size>14</size></content>
+
+<content start="1" end="2">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="2" end="6">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Cool</title>
+<bgcolor>-3334</bgcolor>
+<border>Raised Bevel</border>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<action>Cool the system down</action>
+<step>-0.01</step>
+</component><size>14</size></content>
+
+<content start="3" end="4">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat</title>
+<bgcolor>-333301</bgcolor>
+<border>Raised Bevel</border>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<action>Heat the system up</action>
+<step>0.01</step>
+</component><size>14</size></content>
+
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show interactions</title>
+<tooltip>Show interactions</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Show van der Waals interactions</action>
+</component></content>
+
+<content start="5" end="6">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="8">
+</paragraph>
+</section>
+</document>

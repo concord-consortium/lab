@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Trapped in a Local Potential Well on the Surface of a Nanoparticle</page_title>
+<text>Trapped in a Local Potential Well on the Surface of a Nanoparticle
+
+  
+  </text>
+<section start="0" end="74">
+<paragraph start="0" end="67">
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="66">
+<size>15</size><bold>true</bold></content>
+
+<content start="66" end="67">
+<family>Book Antiqua</family><size>24</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="67" end="68">
+<content start="67" end="68">
+</content>
+
+</paragraph>
+<paragraph start="68" end="71">
+<Alignment>1</Alignment>
+<content start="68" end="69">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>200.0</width>
+<height>300.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;font size=&quot;3&quot;&gt;If the atomic radius of an adatom is comparable to that of 
+    those forming the nanoparticle (but the mass remains the same), it will 
+    get trapped in a local potential well quickly without oscillating on a 
+    side face.&lt;br&gt;&lt;br&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/font&gt;&lt;a href=&quot;adhesion.cml&quot;&gt;&lt;font size=&quot;3&quot;&gt;Back&lt;/font&gt;&lt;/a&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="69" end="70">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>adhesion3$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="70" end="71">
+</content>
+
+</paragraph>
+<paragraph start="71" end="74">
+<Alignment>1</Alignment>
+<content start="71" end="72">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>K. E. Shading</title>
+<model>0</model>
+<action>K. E. Shading</action>
+</component></content>
+
+<content start="72" end="73">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show the Interatomic Interactions</title>
+<model>0</model>
+<action>Show van der Waals interactions</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

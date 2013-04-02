@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 4,
+    "viewPortHeight": 3.6,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -35,20 +40,22 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "Hoekens Linkage  ",
+        "text": "Hoekens Linkage",
         "x": 0.07,
         "y": 3.52,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(0,255,0)"
+        "backgroundColor": "rgb(0,255,0)",
+        "anchor": "upper-left"
       },
       {
-        "text": "A four bar mechanism that converts rotational motion to approximate straight-line motion.  ",
+        "text": "A four bar mechanism\nthat converts rotational\nmotion to approximate\nstraight-line motion.",
         "x": 2.34,
         "y": 0.77,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,192,255)"
+        "backgroundColor": "rgb(255,192,255)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

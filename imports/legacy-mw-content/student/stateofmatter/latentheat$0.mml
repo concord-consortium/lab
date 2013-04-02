@@ -1,0 +1,2677 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.5.0_06" class="java.beans.XMLDecoder"> 
+ <object id="Element0" class="org.concord.mw2d.models.Element"> 
+  <void property="epsilon"> 
+   <double>0.3</double> 
+  </void> 
+  <void property="sigma"> 
+   <double>7.0</double> 
+  </void> 
+ </object> 
+ <object id="Element1" class="org.concord.mw2d.models.Element"> 
+  <void property="ID"> 
+   <int>1</int> 
+  </void> 
+  <void property="mass"> 
+   <double>2.0</double> 
+  </void> 
+  <void property="sigma"> 
+   <double>14.0</double> 
+  </void> 
+ </object> 
+ <object id="Element2" class="org.concord.mw2d.models.Element"> 
+  <void property="ID"> 
+   <int>2</int> 
+  </void> 
+  <void property="mass"> 
+   <double>3.0</double> 
+  </void> 
+  <void property="sigma"> 
+   <double>21.0</double> 
+  </void> 
+ </object> 
+ <object id="Element3" class="org.concord.mw2d.models.Element"> 
+  <void property="ID"> 
+   <int>3</int> 
+  </void> 
+  <void property="mass"> 
+   <double>4.0</double> 
+  </void> 
+  <void property="sigma"> 
+   <double>28.0</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Affinity"> 
+  <void property="epsilon"> 
+   <void method="put"> 
+    <object id="Pair0" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element1"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element3"/> 
+     </void> 
+    </object> 
+    <double>1.0</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair1" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element0"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element2"/> 
+     </void> 
+    </object> 
+    <double>1.0</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair2" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element2"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element3"/> 
+     </void> 
+    </object> 
+    <double>1.0</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair3" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element0"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element1"/> 
+     </void> 
+    </object> 
+    <double>1.0</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair4" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element1"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element2"/> 
+     </void> 
+    </object> 
+    <double>1.0</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair5" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element0"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element3"/> 
+     </void> 
+    </object> 
+    <double>1.0</double> 
+   </void> 
+  </void> 
+  <void property="lbMixing"> 
+   <void method="put"> 
+    <object idref="Pair0"/> 
+    <boolean>true</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair1"/> 
+    <boolean>true</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair2"/> 
+    <boolean>true</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair3"/> 
+    <boolean>true</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair4"/> 
+    <boolean>true</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair5"/> 
+    <boolean>true</boolean> 
+   </void> 
+  </void> 
+  <void property="repulsive"> 
+   <void method="put"> 
+    <object idref="Pair0"/> 
+    <boolean>false</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair1"/> 
+    <boolean>false</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair2"/> 
+    <boolean>false</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair3"/> 
+    <boolean>false</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair4"/> 
+    <boolean>false</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair5"/> 
+    <boolean>false</boolean> 
+   </void> 
+  </void> 
+  <void property="sigma"> 
+   <void method="put"> 
+    <object idref="Pair0"/> 
+    <double>21.0</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair1"/> 
+    <double>14.0</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair2"/> 
+    <double>24.5</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair3"/> 
+    <double>10.5</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair4"/> 
+    <double>17.5</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair5"/> 
+    <double>17.5</double> 
+   </void> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.AtomicModel$State"> 
+  <void property="boundary"> 
+   <object class="org.concord.mw2d.models.RectangularBoundary$Delegate"> 
+    <void property="height"> 
+     <double>250.0</double> 
+    </void> 
+    <void property="viewSize"> 
+     <object class="java.awt.Dimension"> 
+      <int>400</int> 
+      <int>250</int> 
+     </object> 
+    </void> 
+    <void property="width"> 
+     <double>400.0</double> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="lightSource"> 
+   <object class="org.concord.mw2d.models.LightSource"/> 
+  </void> 
+  <void property="numberOfParticles"> 
+   <int>169</int> 
+  </void> 
+  <void property="properties"> 
+   <void method="put"> 
+    <string>codebase</string> 
+    <string>C:\Tomcat\webapps\modeler1.3\student\stateofmatter</string> 
+   </void> 
+   <void method="put"> 
+    <string>url</string> 
+    <string>C:\Tomcat\webapps\modeler1.3\student\stateofmatter\latentheat$0.mml</string> 
+   </void> 
+   <void method="put"> 
+    <string>size</string> 
+    <long>69678</long> 
+   </void> 
+   <void method="put"> 
+    <string>filename</string> 
+    <string>latentheat$0.mml</string> 
+   </void> 
+   <void method="put"> 
+    <string>date</string> 
+    <object class="java.util.Date"> 
+     <long>1142908245358</long> 
+    </object> 
+   </void> 
+  </void> 
+  <void property="quantumRule"> 
+   <object class="org.concord.mw2d.models.QuantumRule"/> 
+  </void> 
+  <void property="universe"> 
+   <object class="org.concord.mw2d.models.Universe"/> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.AtomisticView$State"/> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>199.83791327353453</double> 
+  </void> 
+  <void property="ry"> 
+   <double>119.55596187360422</double> 
+  </void> 
+  <void property="vx"> 
+   <double>0.0013105687235516975</double> 
+  </void> 
+  <void property="vy"> 
+   <double>7.430061134231201E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>190.74144612610277</double> 
+  </void> 
+  <void property="ry"> 
+   <double>100.97943185589679</double> 
+  </void> 
+  <void property="vx"> 
+   <double>4.2352329908495746E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>3.769555994396E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>193.1794418159374</double> 
+  </void> 
+  <void property="ry"> 
+   <double>65.24284138425381</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-2.564469452724331E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-3.151551857084292E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>195.09652391622495</double> 
+  </void> 
+  <void property="ry"> 
+   <double>80.77363446504896</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-2.1951070484585295E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>2.8890920340886463E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>189.79345540454028</double> 
+  </void> 
+  <void property="ry"> 
+   <double>93.2322346183065</double> 
+  </void> 
+  <void property="vx"> 
+   <double>2.343907534409869E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>6.329308340492772E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>210.42180471046981</double> 
+  </void> 
+  <void property="ry"> 
+   <double>94.63024228900801</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-3.7601118981739725E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-2.7558017678644484E-5</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>197.93003920977668</double> 
+  </void> 
+  <void property="ry"> 
+   <double>104.0341628075719</double> 
+  </void> 
+  <void property="vx"> 
+   <double>6.692019723022226E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>3.5850050666713044E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>200.78600096900465</double> 
+  </void> 
+  <void property="ry"> 
+   <double>127.30333074367584</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-5.494865422521971E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-1.6042928330247994E-5</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>198.89319097580974</double> 
+  </void> 
+  <void property="ry"> 
+   <double>111.80444329180177</double> 
+  </void> 
+  <void property="vx"> 
+   <double>2.7036563648587025E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>4.8564093984752366E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>211.36942548807642</double> 
+  </void> 
+  <void property="ry"> 
+   <double>102.38739311107665</double> 
+  </void> 
+  <void property="vx"> 
+   <double>1.1117040311414331E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-2.5314505303955016E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>217.61259104586162</double> 
+  </void> 
+  <void property="ry"> 
+   <double>97.69939385039149</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-2.3274912937778778E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-3.9921325964876667E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>196.04727651179886</double> 
+  </void> 
+  <void property="ry"> 
+   <double>88.52842158283995</double> 
+  </void> 
+  <void property="vx"> 
+   <double>1.50119814407087E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>3.535622292487051E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>201.3351374480635</double> 
+  </void> 
+  <void property="ry"> 
+   <double>76.0639029066866</double> 
+  </void> 
+  <void property="vx"> 
+   <double>2.3739415301457555E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-2.9681249602068056E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>163.85906537489333</double> 
+  </void> 
+  <void property="ry"> 
+   <double>104.27443271241076</double> 
+  </void> 
+  <void property="vx"> 
+   <double>6.0231107260007625E-6</double> 
+  </void> 
+  <void property="vy"> 
+   <double>3.68390732753646E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>158.57863208769476</double> 
+  </void> 
+  <void property="ry"> 
+   <double>116.72417054299792</double> 
+  </void> 
+  <void property="vx"> 
+   <double>6.376096847979147E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-4.323415247227833E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>192.63785630953444</double> 
+  </void> 
+  <void property="ry"> 
+   <double>116.4838832024087</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-3.4421838036545347E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-6.122474048847321E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>187.3449888075527</double> 
+  </void> 
+  <void property="ry"> 
+   <double>128.94577420054563</double> 
+  </void> 
+  <void property="vx"> 
+   <double>4.210154037115978E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>1.9884640413684687E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>188.2911213405739</double> 
+  </void> 
+  <void property="ry"> 
+   <double>136.70527745431693</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-5.073179584928434E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-2.8946581704369814E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>204.18234637519382</double> 
+  </void> 
+  <void property="ry"> 
+   <double>99.34038263456773</double> 
+  </void> 
+  <void property="vx"> 
+   <double>5.153459311818005E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-1.5234278176597894E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>212.31672060270517</double> 
+  </void> 
+  <void property="ry"> 
+   <double>110.13911016878274</double> 
+  </void> 
+  <void property="vx"> 
+   <double>8.125955655296194E-5</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-5.542892438912832E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>223.85399447031853</double> 
+  </void> 
+  <void property="ry"> 
+   <double>92.99930287606647</double> 
+  </void> 
+  <void property="vx"> 
+   <double>2.5806662569880293E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-5.67226858743677E-5</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>222.91925159810975</double> 
+  </void> 
+  <void property="ry"> 
+   <double>85.24921777503612</double> 
+  </void> 
+  <void property="vx"> 
+   <double>2.7940252820491453E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>3.4440730082314783E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>214.7720356403759</double> 
+  </void> 
+  <void property="ry"> 
+   <double>74.40114202952337</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-3.9807754287818695E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>1.7555419289202548E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>208.53691678173502</double> 
+  </void> 
+  <void property="ry"> 
+   <double>79.12341922725405</double> 
+  </void> 
+  <void property="vx"> 
+   <double>1.3072829784412657E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-3.744839444269356E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>202.2947676094334</double> 
+  </void> 
+  <void property="ry"> 
+   <double>83.82977732680281</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-3.3756988472197913E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>3.2657653839484495E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>209.47847052731308</double> 
+  </void> 
+  <void property="ry"> 
+   <double>86.87176629608643</double> 
+  </void> 
+  <void property="vx"> 
+   <double>2.3372901908897065E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>3.206642774711899E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>224.81145902491406</double> 
+  </void> 
+  <void property="ry"> 
+   <double>100.75968711550921</double> 
+  </void> 
+  <void property="vx"> 
+   <double>5.7116468423891676E-6</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-2.214316468404051E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>205.1206943951132</double> 
+  </void> 
+  <void property="ry"> 
+   <double>107.09417904662618</double> 
+  </void> 
+  <void property="vx"> 
+   <double>6.249207550381585E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-3.975619323046873E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>194.53429909735829</double> 
+  </void> 
+  <void property="ry"> 
+   <double>132.0113027160992</double> 
+  </void> 
+  <void property="vx"> 
+   <double>2.6235591274670464E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-3.282616385246943E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>193.58320876967227</double> 
+  </void> 
+  <void property="ry"> 
+   <double>124.24427519771051</double> 
+  </void> 
+  <void property="vx"> 
+   <double>3.287101205439685E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>2.3306370085802216E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>194.1413041098626</double> 
+  </void> 
+  <void property="ry"> 
+   <double>73.01525498352265</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-4.8654291831611214E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-1.5211824628089604E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>157.61487165649362</double> 
+  </void> 
+  <void property="ry"> 
+   <double>108.96585894378876</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-6.690008179308341E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-7.644129768149006E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>152.35430178494173</double> 
+  </void> 
+  <void property="ry"> 
+   <double>121.4359471711218</double> 
+  </void> 
+  <void property="vx"> 
+   <double>1.2139560748514116E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-2.1578752954192534E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>151.3883271444997</double> 
+  </void> 
+  <void property="ry"> 
+   <double>113.68202232676707</double> 
+  </void> 
+  <void property="vx"> 
+   <double>4.287587140541391E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>3.082854066219179E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>156.65971213528266</double> 
+  </void> 
+  <void property="ry"> 
+   <double>101.21776436617714</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-5.1350772461730026E-5</double> 
+  </void> 
+  <void property="vy"> 
+   <double>6.54418500725281E-5</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>200.37690152373864</double> 
+  </void> 
+  <void property="ry"> 
+   <double>68.29274618584378</double> 
+  </void> 
+  <void property="vx"> 
+   <double>4.8058730252282893E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-3.859131704406374E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>207.56945385066462</double> 
+  </void> 
+  <void property="ry"> 
+   <double>71.34840250429178</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-3.413052246713569E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-5.538944270023195E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>215.71823425310671</double> 
+  </void> 
+  <void property="ry"> 
+   <double>82.17860591411967</double> 
+  </void> 
+  <void property="vx"> 
+   <double>5.020000140461955E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>8.581863033822335E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>229.17009074801683</double> 
+  </void> 
+  <void property="ry"> 
+   <double>80.53739208166563</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-3.3421857047282065E-5</double> 
+  </void> 
+  <void property="vy"> 
+   <double>1.5839694430735957E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>216.66700347666816</double> 
+  </void> 
+  <void property="ry"> 
+   <double>89.93746407715005</double> 
+  </void> 
+  <void property="vx"> 
+   <double>5.023575615571047E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>2.933557270960318E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>218.566662795067</double> 
+  </void> 
+  <void property="ry"> 
+   <double>105.43790424392226</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-8.929778224669514E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>4.2885656023840236E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>206.08965131848637</double> 
+  </void> 
+  <void property="ry"> 
+   <double>114.84341319399833</double> 
+  </void> 
+  <void property="vx"> 
+   <double>6.49641708983029E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-1.3656379940957218E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>172.01689505099455</double> 
+  </void> 
+  <void property="ry"> 
+   <double>115.08576377773952</double> 
+  </void> 
+  <void property="vx"> 
+   <double>9.353792818668991E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-3.722001802753317E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>181.10787433895987</double> 
+  </void> 
+  <void property="ry"> 
+   <double>133.6508170772383</double> 
+  </void> 
+  <void property="vx"> 
+   <double>1.1961997480382393E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>2.880300533176442E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>196.44309410928108</double> 
+  </void> 
+  <void property="ry"> 
+   <double>147.496348095121</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-4.531235364037658E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>5.2990885888701175E-5</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>195.49233026824544</double> 
+  </void> 
+  <void property="ry"> 
+   <double>139.75710350295807</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-6.0958786454934205E-5</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-3.1591589824523806E-5</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>207.02953591664416</double> 
+  </void> 
+  <void property="ry"> 
+   <double>122.61090276763521</double> 
+  </void> 
+  <void property="vx"> 
+   <double>1.0904904685924089E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>7.93332378619281E-6</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>173.91006253929189</double> 
+  </void> 
+  <void property="ry"> 
+   <double>130.60032600489623</double> 
+  </void> 
+  <void property="vx"> 
+   <double>5.797137876426289E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-4.470184199964519E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>186.39275085506557</double> 
+  </void> 
+  <void property="ry"> 
+   <double>121.19720707962198</double> 
+  </void> 
+  <void property="vx"> 
+   <double>1.9931758027611128E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-7.974707807085651E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>180.14735065155904</double> 
+  </void> 
+  <void property="ry"> 
+   <double>125.90480426684188</double> 
+  </void> 
+  <void property="vx"> 
+   <double>2.2387208549478688E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-2.5174410620724545E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>145.14687773841734</double> 
+  </void> 
+  <void property="ry"> 
+   <double>118.37696146402472</double> 
+  </void> 
+  <void property="vx"> 
+   <double>2.5744078948053954E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-1.4837281320045117E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>144.18057465078462</double> 
+  </void> 
+  <void property="ry"> 
+   <double>110.62061850584915</double> 
+  </void> 
+  <void property="vx"> 
+   <double>8.969842497873811E-5</double> 
+  </void> 
+  <void property="vy"> 
+   <double>2.194199853866614E-5</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>149.47590350460894</double> 
+  </void> 
+  <void property="ry"> 
+   <double>98.16128648647265</double> 
+  </void> 
+  <void property="vx"> 
+   <double>2.8174687097270995E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-3.817173582776038E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>155.72352325704898</double> 
+  </void> 
+  <void property="ry"> 
+   <double>93.46241382699552</double> 
+  </void> 
+  <void property="vx"> 
+   <double>7.974402423568591E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-4.7052472954219976E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>161.97352409541287</double> 
+  </void> 
+  <void property="ry"> 
+   <double>88.76491305125916</double> 
+  </void> 
+  <void property="vx"> 
+   <double>2.883873211732494E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>4.40350373703145E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>221.97365381367027</double> 
+  </void> 
+  <void property="ry"> 
+   <double>77.48794279907291</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-6.834582277663638E-5</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-9.498824995965692E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>231.04711929488226</double> 
+  </void> 
+  <void property="ry"> 
+   <double>96.05185756462046</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-8.518139845916591E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>1.2363236823042107E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>230.09967336764817</double> 
+  </void> 
+  <void property="ry"> 
+   <double>88.29489496879172</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-3.1791575154498986E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-2.3633850363854496E-6</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>219.5115352529351</double> 
+  </void> 
+  <void property="ry"> 
+   <double>113.20302214840225</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-3.9005672022769493E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-2.941785061349101E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>201.7371531030097</double> 
+  </void> 
+  <void property="ry"> 
+   <double>135.05410301822408</double> 
+  </void> 
+  <void property="vx"> 
+   <double>4.875577740130325E-5</double> 
+  </void> 
+  <void property="vy"> 
+   <double>3.3724361114011945E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>207.98254902398557</double> 
+  </void> 
+  <void property="ry"> 
+   <double>130.35486269690165</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-4.382974402222121E-5</double> 
+  </void> 
+  <void property="vy"> 
+   <double>6.875359759367927E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>165.7674192982613</double> 
+  </void> 
+  <void property="ry"> 
+   <double>119.78856112373553</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-8.840320226758083E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>8.531687105479057E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>189.25156097478828</double> 
+  </void> 
+  <void property="ry"> 
+   <double>144.44985133322578</double> 
+  </void> 
+  <void property="vx"> 
+   <double>4.677782062967331E-5</double> 
+  </void> 
+  <void property="vy"> 
+   <double>0.0012501681720544177</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>182.05620697377853</double> 
+  </void> 
+  <void property="ry"> 
+   <double>141.39579323820928</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-1.1711737916755849E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-2.8616357268728665E-5</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>203.23491337555492</double> 
+  </void> 
+  <void property="ry"> 
+   <double>91.58595815959663</double> 
+  </void> 
+  <void property="vx"> 
+   <double>0.0015600629092251967</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-5.012890624815309E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>188.84676631448565</double> 
+  </void> 
+  <void property="ry"> 
+   <double>85.47986942769109</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-1.4685594211904325E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-0.001006415867190109</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>150.43051461531635</double> 
+  </void> 
+  <void property="ry"> 
+   <double>105.92302494561412</double> 
+  </void> 
+  <void property="vx"> 
+   <double>6.919203982140717E-5</double> 
+  </void> 
+  <void property="vy"> 
+   <double>2.720349461824714E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>162.91117232837794</double> 
+  </void> 
+  <void property="ry"> 
+   <double>96.52163916354668</double> 
+  </void> 
+  <void property="vx"> 
+   <double>5.157684610050942E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-4.969623403531655E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>196.9917831409463</double> 
+  </void> 
+  <void property="ry"> 
+   <double>96.29259813843966</double> 
+  </void> 
+  <void property="vx"> 
+   <double>4.7748696804777665E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>5.878282236657941E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>225.7717177520826</double> 
+  </void> 
+  <void property="ry"> 
+   <double>108.52196579676945</double> 
+  </void> 
+  <void property="vx"> 
+   <double>7.300361716451663E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-4.741304792690271E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>213.27436491838353</double> 
+  </void> 
+  <void property="ry"> 
+   <double>117.90289863781781</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-0.0010562928775922277</double> 
+  </void> 
+  <void property="vy"> 
+   <double>1.1933323198437984E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>232.00358016655775</double> 
+  </void> 
+  <void property="ry"> 
+   <double>103.8107194327374</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-7.165910089961495E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-2.27311118086217E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>179.2193752783537</double> 
+  </void> 
+  <void property="ry"> 
+   <double>118.14054824782521</double> 
+  </void> 
+  <void property="vx"> 
+   <double>4.0219522442763776E-5</double> 
+  </void> 
+  <void property="vy"> 
+   <double>1.5290220286219913E-5</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>172.96760513508616</double> 
+  </void> 
+  <void property="ry"> 
+   <double>122.84626050485764</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-7.559841449266282E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-1.297422865782175E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>167.67955881037167</double> 
+  </void> 
+  <void property="ry"> 
+   <double>135.30130480547865</double> 
+  </void> 
+  <void property="vx"> 
+   <double>5.64508144712587E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>1.6582511573403534E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>164.81711939880026</double> 
+  </void> 
+  <void property="ry"> 
+   <double>112.0371618683356</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-3.838398095246024E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>5.21554225565272E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>174.8638895726037</double> 
+  </void> 
+  <void property="ry"> 
+   <double>138.34364087142663</double> 
+  </void> 
+  <void property="vx"> 
+   <double>1.7383419306293434E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-1.1348915885435596E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>166.7345292747574</double> 
+  </void> 
+  <void property="ry"> 
+   <double>127.53481249297272</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-2.867770442896061E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>3.151469833042253E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>159.54128171639974</double> 
+  </void> 
+  <void property="ry"> 
+   <double>124.48205427755825</double> 
+  </void> 
+  <void property="vx"> 
+   <double>8.738415644741371E-5</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-3.9675039615762224E-5</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>146.08638267262683</double> 
+  </void> 
+  <void property="ry"> 
+   <double>126.13572929098832</double> 
+  </void> 
+  <void property="vx"> 
+   <double>6.348199860066474E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-2.1557249310442646E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>143.21872358191422</double> 
+  </void> 
+  <void property="ry"> 
+   <double>102.86043161173828</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-5.35934371734642E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-4.779766388026351E-5</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>148.51563009553675</double> 
+  </void> 
+  <void property="ry"> 
+   <double>90.39442024097369</double> 
+  </void> 
+  <void property="vx"> 
+   <double>1.0375425436638624E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>2.951178444151524E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>161.00386475223294</double> 
+  </void> 
+  <void property="ry"> 
+   <double>80.98181068706408</double> 
+  </void> 
+  <void property="vx"> 
+   <double>3.188338105261708E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-5.3577066909895605E-5</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>154.77161844906442</double> 
+  </void> 
+  <void property="ry"> 
+   <double>85.7058687733851</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-3.1394129805188784E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>2.3615788464099285E-5</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>185.44336372778778</double> 
+  </void> 
+  <void property="ry"> 
+   <double>113.4332184019352</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-2.374646783014778E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>4.8364498477034907E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>191.68995496469807</double> 
+  </void> 
+  <void property="ry"> 
+   <double>108.7361650935654</double> 
+  </void> 
+  <void property="vx"> 
+   <double>1.4378758718776207E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-3.651873009514909E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>184.4953021547364</double> 
+  </void> 
+  <void property="ry"> 
+   <double>105.68837683080991</double> 
+  </void> 
+  <void property="vx"> 
+   <double>1.0072706834414064E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>8.712747871657156E-5</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>176.3569077212356</double> 
+  </void> 
+  <void property="ry"> 
+   <double>94.87774191726429</double> 
+  </void> 
+  <void property="vx"> 
+   <double>7.551184474296747E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-5.08839694733297E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>177.29934744789654</double> 
+  </void> 
+  <void property="ry"> 
+   <double>102.63174784794327</double> 
+  </void> 
+  <void property="vx"> 
+   <double>2.1932273852145394E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-3.8844019818361236E-5</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>171.0491718729359</double> 
+  </void> 
+  <void property="ry"> 
+   <double>107.33764060590192</double> 
+  </void> 
+  <void property="vx"> 
+   <double>3.2588154761450727E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-3.6430183677296676E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>169.15371907146346</double> 
+  </void> 
+  <void property="ry"> 
+   <double>91.81805793703491</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-1.139867562313879E-5</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-0.0011023557560742219</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>170.10395030496346</double> 
+  </void> 
+  <void property="ry"> 
+   <double>99.56670640717914</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-3.7234716554855347E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-3.9896219261371536E-5</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>178.24381237116384</double> 
+  </void> 
+  <void property="ry"> 
+   <double>110.39541193110095</double> 
+  </void> 
+  <void property="vx"> 
+   <double>0.0010265072702581163</double> 
+  </void> 
+  <void property="vy"> 
+   <double>5.110535015246978E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>183.54493932993972</double> 
+  </void> 
+  <void property="ry"> 
+   <double>97.9306708888035</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-1.3429409264752656E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-0.00104866468768004</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>187.90923618492414</double> 
+  </void> 
+  <void property="ry"> 
+   <double>77.7177183565568</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-4.251306462070589E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-8.193801291603569E-5</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>181.65637941812471</double> 
+  </void> 
+  <void property="ry"> 
+   <double>82.42157524436976</double> 
+  </void> 
+  <void property="vx"> 
+   <double>2.501722973557903E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>6.540559544581836E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>185.9883864556386</double> 
+  </void> 
+  <void property="ry"> 
+   <double>62.19141886918557</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-4.2225151063283203E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>3.250806988591016E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>186.93885362428205</double> 
+  </void> 
+  <void property="ry"> 
+   <double>69.9716879617565</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-3.459041924145421E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-8.382595591367113E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>182.59462779703327</double> 
+  </void> 
+  <void property="ry"> 
+   <double>90.17134015613308</double> 
+  </void> 
+  <void property="vx"> 
+   <double>7.168236693646964E-5</double> 
+  </void> 
+  <void property="vy"> 
+   <double>7.732880845895422E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>174.47022010349397</double> 
+  </void> 
+  <void property="ry"> 
+   <double>79.37270244175846</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-3.749299475386599E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>5.151581646095217E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>180.71332597171116</double> 
+  </void> 
+  <void property="ry"> 
+   <double>74.66960877192905</double> 
+  </void> 
+  <void property="vx"> 
+   <double>1.0234064219026555E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-2.2542625823315768E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>175.40191535257858</double> 
+  </void> 
+  <void property="ry"> 
+   <double>87.12535451673382</double> 
+  </void> 
+  <void property="vx"> 
+   <double>4.459353428375739E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>4.0469879042854867E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>168.2118053286106</double> 
+  </void> 
+  <void property="ry"> 
+   <double>84.06081533922101</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-3.009594425886193E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>8.511267181151827E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>226.7079201429621</double> 
+  </void> 
+  <void property="ry"> 
+   <double>116.25808725234353</double> 
+  </void> 
+  <void property="vx"> 
+   <double>7.646310741015068E-5</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-2.624872228329992E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>220.4623503486364</double> 
+  </void> 
+  <void property="ry"> 
+   <double>120.9529473606826</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-1.5390002733433995E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>2.0263623433107659E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>209.87753564343464</double> 
+  </void> 
+  <void property="ry"> 
+   <double>145.85342229397256</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-1.968701135487529E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>2.075010889082725E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>197.39025058320263</double> 
+  </void> 
+  <void property="ry"> 
+   <double>155.24427368430014</double> 
+  </void> 
+  <void property="vx"> 
+   <double>1.8816939108825528E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>9.989643529889473E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>168.62156658310275</double> 
+  </void> 
+  <void property="ry"> 
+   <double>143.04069467965556</double> 
+  </void> 
+  <void property="vx"> 
+   <double>5.844472835676703E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>7.415909742558754E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>153.2965530870752</double> 
+  </void> 
+  <void property="ry"> 
+   <double>129.1905089613976</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-4.2826977633524285E-6</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-2.496328635930541E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>147.0326973697147</double> 
+  </void> 
+  <void property="ry"> 
+   <double>133.9016411815143</double> 
+  </void> 
+  <void property="vx"> 
+   <double>3.1868517113798234E-5</double> 
+  </void> 
+  <void property="vy"> 
+   <double>5.158836169995004E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>232.96121058216826</double> 
+  </void> 
+  <void property="ry"> 
+   <double>111.56116669883238</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-6.064673655377217E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-9.487426729748944E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>202.68684839743415</double> 
+  </void> 
+  <void property="ry"> 
+   <double>142.7919163244899</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-6.109355373442806E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>3.687958807550753E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>203.63406150433175</double> 
+  </void> 
+  <void property="ry"> 
+   <double>150.53679048117812</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-3.7536010012245973E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-9.44449591074636E-5</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>190.1922554474174</double> 
+  </void> 
+  <void property="ry"> 
+   <double>152.19755329437714</double> 
+  </void> 
+  <void property="vx"> 
+   <double>4.1131594320772274E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-1.3347133264134657E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>204.58576994707462</double> 
+  </void> 
+  <void property="ry"> 
+   <double>158.2932130716981</double> 
+  </void> 
+  <void property="vx"> 
+   <double>3.627674377758011E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-2.523277345151957E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="radical"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>210.82469416106474</double> 
+  </void> 
+  <void property="ry"> 
+   <double>153.59846026160682</double> 
+  </void> 
+  <void property="vx"> 
+   <double>6.042319841697379E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-2.709341023209426E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="radical"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>214.21640429142292</double> 
+  </void> 
+  <void property="ry"> 
+   <double>125.65245402513804</double> 
+  </void> 
+  <void property="vx"> 
+   <double>1.3415215067591967E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>1.070737185089525E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="radical"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>227.6564938537998</double> 
+  </void> 
+  <void property="ry"> 
+   <double>124.01534455489531</double> 
+  </void> 
+  <void property="vx"> 
+   <double>2.6978992372909154E-5</double> 
+  </void> 
+  <void property="vy"> 
+   <double>6.289187902939325E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="radical"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>233.902173590027</double> 
+  </void> 
+  <void property="ry"> 
+   <double>119.31978727210667</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-2.0718683380911064E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>2.8817409583534713E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="radical"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>208.9346410071221</double> 
+  </void> 
+  <void property="ry"> 
+   <double>138.1102416527761</double> 
+  </void> 
+  <void property="vx"> 
+   <double>3.557396411958453E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>1.7283035878003933E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="radical"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>215.16929660718102</double> 
+  </void> 
+  <void property="ry"> 
+   <double>133.41144881225875</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-7.359983704260032E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>1.3219284698162464E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="radical"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>216.12488197821048</double> 
+  </void> 
+  <void property="ry"> 
+   <double>141.1598315745462</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-1.896997108545108E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>1.6235984336236044E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="radical"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>228.59722207513028</double> 
+  </void> 
+  <void property="ry"> 
+   <double>131.76213818633576</double> 
+  </void> 
+  <void property="vx"> 
+   <double>5.551173229510398E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>2.9705594521276083E-5</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="radical"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>221.40266024582695</double> 
+  </void> 
+  <void property="ry"> 
+   <double>128.71116238120928</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-7.063442939666577E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-3.690143132105892E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="radical"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>239.22083920133542</double> 
+  </void> 
+  <void property="ry"> 
+   <double>106.85755161467809</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-2.4835846476906737E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>2.422101006653681E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="radical"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>238.2685282913547</double> 
+  </void> 
+  <void property="ry"> 
+   <double>99.09873493827713</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-0.001489197393480155</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-4.200759569945089E-5</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="radical"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>237.29867995171196</double> 
+  </void> 
+  <void property="ry"> 
+   <double>91.3451488287711</double> 
+  </void> 
+  <void property="vx"> 
+   <double>9.714069455300622E-5</double> 
+  </void> 
+  <void property="vy"> 
+   <double>9.58702161218165E-5</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="radical"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>236.37567137424682</double> 
+  </void> 
+  <void property="ry"> 
+   <double>83.58331160328784</double> 
+  </void> 
+  <void property="vx"> 
+   <double>3.150700108127114E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-2.2189951723203537E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="radical"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>173.5118322544202</double> 
+  </void> 
+  <void property="ry"> 
+   <double>71.60411073081652</double> 
+  </void> 
+  <void property="vx"> 
+   <double>2.9217185351310793E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>1.779581318401731E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="radical"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>167.27527497982823</double> 
+  </void> 
+  <void property="ry"> 
+   <double>76.30856729913422</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-7.245703176180643E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-7.179564588204578E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="radical"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>161.4224290524262</double> 
+  </void> 
+  <void property="ry"> 
+   <double>140.00181546481446</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-7.699352707414693E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-2.536333699249166E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="radical"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>160.49368669054698</double> 
+  </void> 
+  <void property="ry"> 
+   <double>132.2340885142342</double> 
+  </void> 
+  <void property="vx"> 
+   <double>3.3179395674389595E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>0.0011740641872421474</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="radical"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>147.98331759671532</double> 
+  </void> 
+  <void property="ry"> 
+   <double>141.65519967565828</double> 
+  </void> 
+  <void property="vx"> 
+   <double>3.364253408683032E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-2.90922490798612E-5</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="radical"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>191.1516771725806</double> 
+  </void> 
+  <void property="ry"> 
+   <double>159.95264207475415</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-3.730839381011311E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>0.0010301116517140443</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="radical"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>198.3496929954387</double> 
+  </void> 
+  <void property="ry"> 
+   <double>162.9963523092104</double> 
+  </void> 
+  <void property="vx"> 
+   <double>6.122776823570339E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>2.1927334286314909E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="radical"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>222.37195128658095</double> 
+  </void> 
+  <void property="ry"> 
+   <double>136.46345252543435</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-0.0014636397275022324</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-1.8732253760575342E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>217.07744784551866</double> 
+  </void> 
+  <void property="ry"> 
+   <double>148.9218323842927</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-0.001003200788289256</double> 
+  </void> 
+  <void property="vy"> 
+   <double>5.102117016333624E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>183.00511416222363</double> 
+  </void> 
+  <void property="ry"> 
+   <double>149.1455840135444</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-8.365688663812322E-5</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-2.7864155081722375E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>154.24218398460224</double> 
+  </void> 
+  <void property="ry"> 
+   <double>136.94137453454914</double> 
+  </void> 
+  <void property="vx"> 
+   <double>1.7919206947979044E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>6.590734590865658E-6</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>183.96586474930527</double> 
+  </void> 
+  <void property="ry"> 
+   <double>156.90948060058076</double> 
+  </void> 
+  <void property="vx"> 
+   <double>9.904894884678252E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>1.735979374035234E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>184.92062493489559</double> 
+  </void> 
+  <void property="ry"> 
+   <double>164.6813774799762</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-6.989178099103948E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>7.437749623227403E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>223.30804808079566</double> 
+  </void> 
+  <void property="ry"> 
+   <double>144.2230645174842</double> 
+  </void> 
+  <void property="vx"> 
+   <double>3.877855573610006E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>2.7941021145688684E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>205.53985363123445</double> 
+  </void> 
+  <void property="ry"> 
+   <double>166.05973791545557</double> 
+  </void> 
+  <void property="vx"> 
+   <double>2.0805079546142984E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-6.577670783729845E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>211.78740667366958</double> 
+  </void> 
+  <void property="ry"> 
+   <double>161.36241209873603</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-5.244537604982744E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-2.1056915645029832E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>240.17501119333784</double> 
+  </void> 
+  <void property="ry"> 
+   <double>114.61966637821023</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-4.473348332453468E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>4.511954819568866E-5</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>224.28550565438636</double> 
+  </void> 
+  <void property="ry"> 
+   <double>151.98860380659397</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-5.869910297024304E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-3.430201751387717E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>175.81586350739892</double> 
+  </void> 
+  <void property="ry"> 
+   <double>146.0908953730971</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-5.288010468963103E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-2.346667927100615E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>162.37951530222614</double> 
+  </void> 
+  <void property="ry"> 
+   <double>147.75090947384155</double> 
+  </void> 
+  <void property="vx"> 
+   <double>2.3221340140869572E-5</double> 
+  </void> 
+  <void property="vy"> 
+   <double>0.0011143948693376335</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>155.18550607546763</double> 
+  </void> 
+  <void property="ry"> 
+   <double>144.70472430181377</double> 
+  </void> 
+  <void property="vx"> 
+   <double>4.228252556860736E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>2.7877012432043217E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>192.11355843004895</double> 
+  </void> 
+  <void property="ry"> 
+   <double>167.73011119024346</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-5.667224566517397E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-7.399027653995249E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>176.7735988306711</double> 
+  </void> 
+  <void property="ry"> 
+   <double>153.83672946395967</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-7.134258005011822E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>5.76048722513984E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>169.5771634974466</double> 
+  </void> 
+  <void property="ry"> 
+   <double>150.797909733449</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-2.2910566955703694E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-1.9253963069349763E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>156.14158193803775</double> 
+  </void> 
+  <void property="ry"> 
+   <double>152.47095147804527</double> 
+  </void> 
+  <void property="vx"> 
+   <double>2.9738675079310554E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>1.7277886605842737E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>170.53078232601044</double> 
+  </void> 
+  <void property="ry"> 
+   <double>158.5576679685855</double> 
+  </void> 
+  <void property="vx"> 
+   <double>7.400850530454625E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-2.8814535719080315E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>177.7184936904503</double> 
+  </void> 
+  <void property="ry"> 
+   <double>161.62310049197987</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-9.854212798947575E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-5.57040683669443E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>163.3211058496826</double> 
+  </void> 
+  <void property="ry"> 
+   <double>155.52541883122626</double> 
+  </void> 
+  <void property="vx"> 
+   <double>5.313657057876353E-5</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-8.346562726357638E-5</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>199.30286333924698</double> 
+  </void> 
+  <void property="ry"> 
+   <double>170.79784199386083</double> 
+  </void> 
+  <void property="vx"> 
+   <double>7.609000501140629E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-3.7503460938886196E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>218.03840721824875</double> 
+  </void> 
+  <void property="ry"> 
+   <double>156.69071754680184</double> 
+  </void> 
+  <void property="vx"> 
+   <double>2.5245911042740086E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-1.0156070335847087E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>229.55815975418164</double> 
+  </void> 
+  <void property="ry"> 
+   <double>139.51836725173317</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-1.0099809515160059E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>3.0842795936154074E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>234.8487204596142</double> 
+  </void> 
+  <void property="ry"> 
+   <double>127.06991926527971</double> 
+  </void> 
+  <void property="vx"> 
+   <double>1.7129673860541092E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-4.81333374438069E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>241.1042583307325</double> 
+  </void> 
+  <void property="ry"> 
+   <double>122.37384774612485</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-7.5609633984385925E-6</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-2.967954729824062E-6</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>142.264060161381</double> 
+  </void> 
+  <void property="ry"> 
+   <double>95.08296965921903</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-0.0011011569227122276</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-6.674673249028708E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>235.78968183456533</double> 
+  </void> 
+  <void property="ry"> 
+   <double>134.82044181604115</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-2.8749232370591703E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>2.7947409677101496E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>242.03972911058997</double> 
+  </void> 
+  <void property="ry"> 
+   <double>130.1293263720964</double> 
+  </void> 
+  <void property="vx"> 
+   <double>1.812463201625463E-5</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-2.5326784855724915E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>243.017056355749</double> 
+  </void> 
+  <void property="ry"> 
+   <double>137.89395159540683</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-2.1419628178482913E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>1.7009417110645206E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>230.51861426927886</double> 
+  </void> 
+  <void property="ry"> 
+   <double>147.29225761764374</double> 
+  </void> 
+  <void property="vx"> 
+   <double>8.199052519814133E-5</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-1.8404901531281513E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>236.7677553132361</double> 
+  </void> 
+  <void property="ry"> 
+   <double>142.5939014805434</double> 
+  </void> 
+  <void property="vx"> 
+   <double>1.567972085782658E-5</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-4.884078068322061E-5</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>179.74618492133112</double> 
+  </void> 
+  <void property="ry"> 
+   <double>66.90384455021363</double> 
+  </void> 
+  <void property="vx"> 
+   <double>6.880324688606962E-6</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-9.765738012152798E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="rx"> 
+   <double>148.9274745438012</double> 
+  </void> 
+  <void property="ry"> 
+   <double>149.4226398566211</double> 
+  </void> 
+  <void property="vx"> 
+   <double>1.4277991872888696E-4</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-7.17373207973776E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.MolecularModel$State"/> 
+</java> 

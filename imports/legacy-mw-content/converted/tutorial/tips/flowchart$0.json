@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 6,
+    "viewPortHeight": 2.5,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -40,7 +45,8 @@
         "y": 2.47,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,255,0)"
+        "backgroundColor": "rgb(255,255,0)",
+        "anchor": "upper-left"
       },
       {
         "text": "CEO",
@@ -48,7 +54,8 @@
         "y": 2.03,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,192,255)"
+        "backgroundColor": "rgb(255,192,255)",
+        "anchor": "upper-left"
       },
       {
         "text": "CTO",
@@ -56,35 +63,40 @@
         "y": 1.48,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,255,255)"
+        "backgroundColor": "rgb(255,255,255)",
+        "anchor": "upper-left"
       },
       {
         "text": "Project Manager",
         "x": 1.33,
         "y": 1.06,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
         "text": "CFO",
         "x": 2.24,
         "y": 1.47,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
         "text": "VP",
         "x": 3.41,
         "y": 1.48,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
         "text": "Employee A",
         "x": 0.62,
         "y": 0.58,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
         "text": "HR Director",
@@ -92,60 +104,68 @@
         "y": 1.26,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(192,192,192)"
+        "backgroundColor": "rgb(192,192,192)",
+        "anchor": "upper-left"
       },
       {
         "text": "Project Manager",
         "x": 3.08,
         "y": 1.07,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
         "text": "Employee B",
         "x": 1.47,
         "y": 0.58,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
         "text": "Employee C",
         "x": 2.3,
         "y": 0.58,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
         "text": "Employee D",
         "x": 3.12,
         "y": 0.58,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
-        "text": "Marketing Director",
+        "text": "Marketing\nDirector",
         "x": 4.53,
         "y": 1.79,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,255,192)"
+        "backgroundColor": "rgb(255,255,192)",
+        "anchor": "upper-left"
       },
       {
         "text": "Employee E",
         "x": 3.94,
         "y": 0.58,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
         "text": "Employee F",
         "x": 4.74,
         "y": 0.58,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
-        "text": "Nonexistence Inc. ",
+        "text": "Nonexistence Inc.",
         "x": 2.499600067138672,
         "y": 0.2546467590332031,
         "layer": 1,
@@ -153,7 +173,8 @@
         "color": "rgb(153,0,153)",
         "hostType": "Atom",
         "hostIndex": 0,
-        "backgroundColor": "rgb(204,204,255)"
+        "backgroundColor": "rgb(204,204,255)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.mw3d.ModelState"> 
+  <void property="cameraPosition"> 
+   <string>0.0 0.0 0.0</string> 
+  </void> 
+  <void property="height"> 
+   <float>27.0</float> 
+  </void> 
+  <void property="length"> 
+   <float>10.0</float> 
+  </void> 
+  <void property="moleculeStyle"> 
+   <byte>1</byte> 
+  </void> 
+  <void property="rotation"> 
+   <string>-533 670 -517 124.0 669</string> 
+  </void> 
+  <void property="showEnergizer"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="showGlassSimulationBox"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="showVdwLines"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="vdwLinesRatio"> 
+   <float>1.33</float> 
+  </void> 
+  <void property="width"> 
+   <float>24.0</float> 
+  </void> 
+ </object> 
+</java> 

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Doppler effect</page_title>
+<text>Doppler effect animation
+
+  
+
+(Note: This is an animation created using MW scripts. This is not a particle-based simulation.)</text>
+<section start="0" end="126">
+<paragraph start="0" end="25">
+<Alignment>1</Alignment>
+<content start="0" end="24">
+<family>Trebuchet MS</family><bold>true</bold><size>15</size></content>
+
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="26">
+<Alignment>1</Alignment>
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="29">
+<Alignment>1</Alignment>
+<content start="26" end="27">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>400.0</width>
+<height>310.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    The Doppler effect is the change in frequency and wavelength of a wave as 
+    perceived by an observer moving relative to the source of the waves.&lt;br&gt;&lt;br&gt;&lt;input selfscript=&quot;enablecomponent 0 false;enablecomponent 1 true;&quot; type=&quot;submit&quot; script=&quot;script:mw2d:1:run;&quot; value=&quot;Run&quot;&gt;&lt;input selfscript=&quot;enablecomponent 0 true;enablecomponent 1 false;&quot; type=&quot;submit&quot; script=&quot;script:mw2d:1:stop;&quot; value=&quot;Stop&quot;&gt;&lt;input script=&quot;script:mw2d:1:reset;&quot; type=&quot;submit&quot; value=&quot;Reset&quot;&gt;&lt;br&gt;&lt;br&gt;&lt;input name=&quot;group1&quot; checked=&quot;checked&quot; type=&quot;radio&quot; script=&quot;script:mw2d:1:set atom[0].vx 0;&quot;&gt;Moving 
+    speed = 0&lt;br&gt;&lt;input name=&quot;group1&quot; script=&quot;script:mw2d:1:set atom[0].vx 1000*sgn(%atom[0].vx+0.01);&quot; type=&quot;radio&quot;&gt;Moving 
+    speed wave speed&lt;br&gt;&lt;input name=&quot;group1&quot; script=&quot;script:mw2d:1:set atom[0].vx 2000*sgn(%atom[0].vx+0.01)&quot; type=&quot;radio&quot;&gt;Moving 
+    speed = wave speed&lt;br&gt;&lt;input name=&quot;group1&quot; script=&quot;script:mw2d:1:set atom[0].vx 3000*sgn(%atom[0].vx+0.01)&quot; type=&quot;radio&quot;&gt;Moving 
+    speed &amp;gt; wave speed
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="27" end="28">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>doppler$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorderless>true</recorderless>
+</component></content>
+
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="30">
+<Alignment>1</Alignment>
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="126">
+<Alignment>1</Alignment>
+<content start="30" end="72">
+</content>
+
+<content start="72" end="82">
+<href>../../tutorial/mwscripts.cml</href></content>
+
+<content start="82" end="125">
+</content>
+
+</paragraph>
+</section>
+</document>

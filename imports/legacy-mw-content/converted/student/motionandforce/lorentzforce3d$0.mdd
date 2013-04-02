@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_14" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.mw3d.ModelState"> 
+  <void property="BFieldDirection"> 
+   <array class="float" length="3"> 
+    <void index="2"> 
+     <float>1.0</float> 
+    </void> 
+   </array> 
+  </void> 
+  <void property="BFieldIntensity"> 
+   <float>4.6</float> 
+  </void> 
+  <void property="cameraPosition"> 
+   <string>0.0 0.0 0.0</string> 
+  </void> 
+  <void property="height"> 
+   <float>69.0</float> 
+  </void> 
+  <void property="length"> 
+   <float>89.0</float> 
+  </void> 
+  <void property="obstacles"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <object class="org.concord.mw3d.models.CuboidObstacleState"> 
+      <void property="color"> 
+       <int>-65536</int> 
+      </void> 
+      <void property="lx"> 
+       <float>44.5</float> 
+      </void> 
+      <void property="ly"> 
+       <float>32.0</float> 
+      </void> 
+      <void property="lz"> 
+       <float>1.0</float> 
+      </void> 
+      <void property="rz"> 
+       <float>-33.410366</float> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.mw3d.models.CuboidObstacleState"> 
+      <void property="color"> 
+       <int>-16776961</int> 
+      </void> 
+      <void property="lx"> 
+       <float>44.5</float> 
+      </void> 
+      <void property="ly"> 
+       <float>32.0</float> 
+      </void> 
+      <void property="lz"> 
+       <float>1.0</float> 
+      </void> 
+      <void property="rz"> 
+       <float>33.640636</float> 
+      </void> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="rotation"> 
+   <string>912 -410 22 108.6 5</string> 
+  </void> 
+  <void property="timeStep"> 
+   <float>2.0</float> 
+  </void> 
+  <void property="trajectorySelection"> 
+   <string>0</string> 
+  </void> 
+  <void property="velocitySelection"> 
+   <string>0</string> 
+  </void> 
+  <void property="width"> 
+   <float>64.0</float> 
+  </void> 
+  <void property="xyzFileName"> 
+   <string>lorentzforce3d$0.xyz</string> 
+  </void> 
+ </object> 
+</java> 

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Three parallel gears</page_title>
+<text>Three parallel gears
+ 
+    
+
+Instruction: The three numbers are markers that will help you see the motion transmission more clearly --- they have no physical implication. Some friction force is applied to damp the system, so you may observe some energy loss.</text>
+<section start="0" end="259">
+<paragraph start="0" end="21">
+<Alignment>1</Alignment>
+<SpaceAbove>3.0</SpaceAbove>
+<LeftIndent>6.0</LeftIndent>
+<content start="0" end="20">
+<size>18</size><bold>true</bold><family>Trebuchet MS</family></content>
+
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="23">
+<Alignment>1</Alignment>
+<content start="21" end="22">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>parallelgears$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="28">
+<Alignment>1</Alignment>
+<content start="23" end="24">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Line alignment: driver on the left</title>
+<tooltip>Gears align in a line, driver on the left</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1125235489852</groupid>
+<script>load parallelgears_horizontal.mml;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="24" end="25">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Line alignment: driver in the middle</title>
+<tooltip>Gears align in a line: driver in the middle</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1125235489852</groupid>
+<script>load parallelgears_horizontal2.mml;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="25" end="26">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Triangular alignment</title>
+<tooltip>Gears align in a triangular arrangement</tooltip>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1125235489852</groupid>
+<script>load parallelgears_triangle.mml;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="26" end="27">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Dead lock</title>
+<tooltip>Dead lock</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1125235489852</groupid>
+<script>load parallelgears_deadlock.mml;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="29">
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="259">
+<LeftIndent>6.0</LeftIndent>
+<content start="29" end="258">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

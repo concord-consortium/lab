@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Evaporation</page_title>
+<text>Evaporation
+
+ 
+ </text>
+<section start="0" end="17">
+<paragraph start="0" end="12">
+<Alignment>1</Alignment>
+<content start="0" end="11">
+<family>Century Gothic</family><size>16</size><bold>true</bold></content>
+
+<content start="11" end="12">
+</content>
+
+</paragraph>
+<paragraph start="12" end="13">
+<Alignment>1</Alignment>
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="15">
+<Alignment>1</Alignment>
+<content start="13" end="14">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>evaporation$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="17">
+<Alignment>1</Alignment>
+<content start="15" end="16">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat from the Sun</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>set %count count(0, 0, %rectangle[0].y, %width, %rectangle[0].height);
+if(%count&lt;40);
+  if(%rectangle[0].y&lt;%height-%rectangle[0].height);
+    set %rectangle[0].y %rectangle[0].y+1;
+  endif;
+else;
+  if(%count&gt;80);
+    set %rectangle[0].y %rectangle[0].y-1;
+  endif;
+endif;
+show selectionhalo off;
+set image[0].y 1;
+select image none;
+select atom within (%rectangle[0].x, %rectangle[0].y, %rectangle[0].width, %rectangle[0].height);
+heat 0.1;
+select atom none;
+show selectionhalo on;
+delay 0.5;
+set image[0].y -10;
+run;</script>
+<action>Execute MW script</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

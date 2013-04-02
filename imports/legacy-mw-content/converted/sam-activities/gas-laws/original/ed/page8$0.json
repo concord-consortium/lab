@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 5,
+    "viewPortHeight": 4,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": true,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -40,14 +45,16 @@
         "y": 3.9,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,192,192)"
+        "backgroundColor": "rgb(255,192,192)",
+        "anchor": "upper-left"
       },
       {
         "text": "Lungs",
         "x": 2.64,
         "y": 3.9,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
         "text": "diaphragm",
@@ -56,7 +63,8 @@
         "layer": 1,
         "frame": "rounded rectangle",
         "hostType": "RectangularObstacle",
-        "hostIndex": 1
+        "hostIndex": 1,
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,
@@ -836,12 +844,12 @@
       -8.273003386874724e-7,
       0
     ],
-    "externalFx": [
+    "externalAx": [
       0,
       0,
       0
     ],
-    "externalFy": [
+    "externalAy": [
       0,
       0,
       0

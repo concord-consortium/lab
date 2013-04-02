@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 3.5,
+    "viewPortHeight": 2.7,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "rgba(0,0,0,255)",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -35,11 +40,12 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "Can you identify what invisible particles are present in this window by the type of electric field they produce?   Try it yourself",
+        "text": "Can you identify what invisible particles\nare present in this window by the type of \nelectric field they produce?\nTry it yourself",
         "x": 0.01,
         "y": 2.3,
         "layer": 1,
-        "color": "rgb(255,255,255)"
+        "color": "rgb(255,255,255)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 4.5,
+    "viewPortHeight": 2.6,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -38,7 +43,8 @@
         "text": "Find the hidden particle.",
         "x": 1.34,
         "y": 2.54,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

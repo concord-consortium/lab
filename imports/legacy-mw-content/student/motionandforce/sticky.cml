@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Shapes and charges</page_title>
+<text> 
+ 
+   
+
+Shapes and charges are two important factors in governing conformations of biomolecular complexes. The combination of distribution of charges and shapes can result in many variations of conformations from the same set of building blocks.</text>
+<section start="0" end="247">
+<paragraph start="0" end="2">
+<SpaceAbove>4.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="0" end="1">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>560.0</width><height>56</height><arcwidth>250</arcwidth><archeight>20</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;&lt;body face=Verdana&gt;&lt;center&gt;&lt;h2&gt;&lt;font color=#555555&gt;Shapes and charges &lt;/font&gt;&lt;/h2&gt;&lt;/html&gt;</title><bgcolor>-333301</bgcolor></icon></content>
+
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>sticky$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="8">
+<Alignment>1</Alignment>
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Charged</title>
+<tooltip>Charged locations as sticky points</tooltip>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1174272515185</groupid>
+<script>show selectionhalo off;
+select atom 48,56,66,76,84,94,104,112,122,132,140,150,176,184,194;
+charge -1;
+select atom 0,9,16,25,32,41,160,169,204,213;
+charge 1;
+show selectionhalo on;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="5" end="6">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Remove charges</title>
+<tooltip>Remove charges</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1174272515185</groupid>
+<script>select atom all;
+charge 0;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="6" end="7">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>440.0</value>
+<minimum>0.0</minimum>
+<maximum>2000.0</maximum>
+<nstep>50</nstep>
+<title>Temperature</title>
+<width>200</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;2000.0&quot;, label=&quot;High&quot;}{value=&quot;0.0&quot;, label=&quot;Zero&quot;}</labeltable>
+<change>Temperature</change>
+</component></content>
+
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="9">
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="247">
+<LeftIndent>20.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="9" end="246">
+</content>
+
+</paragraph>
+</section>
+</document>

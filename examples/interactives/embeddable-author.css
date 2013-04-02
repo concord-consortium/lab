@@ -160,10 +160,22 @@ code {
   background: rgba(255, 255, 255, 0); }
   .graph:focus {
     outline: #76d2b8 solid 0.2em; }
-  .graph .canvas-overlay {
+  .graph div.background {
+    position: absolute;
+    background: #efefef; }
+  .graph div.button-layer {
+    position: absolute;
+    text-align: right; }
+    .graph div.button-layer a {
+      opacity: 0.3;
+      color: black;
+      font-size: 120%; }
+    .graph div.button-layer a:hover {
+      opacity: 1; }
+  .graph canvas.overlay {
     position: absolute;
     border: solid 1px red;
-    background-color: rgba(0, 255, 0, 0.05); }
+    background: rgba(0, 255, 0, 0.05); }
 
 svg.graph:focus {
   outline: #76d2b8 solid 0.2em; }
@@ -177,18 +189,6 @@ svg.graph text.axis {
   font-size: 0.8em; }
   svg.graph text.axis:focus {
     outline: #76d2b8 solid 0.2em; }
-
-.graph-button-layer {
-  position: absolute;
-  z-index: 1;
-  width: 40px;
-  height: 20px;
-  text-align: right; }
-  .graph-button-layer a {
-    opacity: 0.5;
-    color: black; }
-  .graph-button-layer a:hover {
-    opacity: 1; }
 
 .markdown-typography * {
   margin: 0.2em 0 !important; }
@@ -362,16 +362,22 @@ button.component {
 .interactive-slider {
   padding: 0 0.7em; }
   .interactive-slider .ui-slider {
-    width: 100%;
-    height: 100%; }
+    width: 94%;
+    height: 0;
+    left: 3%;
+    top: 0.5em; }
   .interactive-slider .ui-slider-handle {
+    top: -1em;
+    height: 1.75em;
     font-size: 0.8em;
     font-weight: normal;
     text-align: center;
     width: auto;
-    min-width: 1.2em;
-    min-height: 1.5em;
-    padding: 0.1em 0.2em 0em 0.2em; }
+    min-width: 2em;
+    min-height: 2em;
+    margin-left: -1em;
+    border-radius: 4em;
+    padding: 0.3em 0.2em 0em 0.2em; }
     .interactive-slider .ui-slider-handle:focus {
       outline: #76d2b8 solid 0.2em; }
   .interactive-slider .title {
@@ -381,14 +387,18 @@ button.component {
     margin: 0 0 0.3em 0;
     vertical-align: top; }
   .interactive-slider .container {
+    height: 1.1em;
     position: relative;
     margin-bottom: 1em;
-    width: 100%; }
+    width: 100%;
+    background-color: rgba(134, 178, 180, 0.45);
+    border-radius: 0.4em; }
     .interactive-slider .container .label {
       position: absolute;
       display: inline-block;
+      top: 1.4em;
       width: 6em;
-      margin: 0 0 0 -3em;
+      margin: 0.2em 0 0 -3em;
       text-align: center;
       font-size: 0.8em; }
 
@@ -401,29 +411,40 @@ button.component {
     margin: 0.5em 0 0 0.5em;
     line-height: 1.3em; }
 
-.interactive-thermometer .label {
-  margin: 0;
-  text-align: center;
-  font-size: 1em; }
-.interactive-thermometer .thermometer {
-  display: block;
-  margin: auto;
-  border: 2px solid #f4b626;
-  position: relative;
-  border-radius: 1.5em 1.5em 0.2em 0.2em;
-  background: white; }
-  .interactive-thermometer .thermometer div {
-    display: block;
-    position: relative;
-    margin: 0px;
-    padding: 0px; }
-  .interactive-thermometer .thermometer .thermometer_fill {
+.interactive-thermometer {
+  white-space: nowrap; }
+  .interactive-thermometer .label {
+    margin: 0;
+    text-align: center;
+    font-size: 1em; }
+  .interactive-thermometer .value-label {
     position: absolute;
-    width: 70%;
-    left: 15%;
-    bottom: 0;
-    background: #e16a3e;
-    border-radius: 0.75em 0.75em 0em 0em; }
+    white-space: nowrap;
+    margin-bottom: -0.75em; }
+  .interactive-thermometer .labels-container {
+    position: relative; }
+  .interactive-thermometer .thermometer-main-container, .interactive-thermometer .labels-container {
+    display: inline-block;
+    vertical-align: top; }
+  .interactive-thermometer .thermometer {
+    display: block;
+    margin: auto;
+    border: 2px solid #f4b626;
+    position: relative;
+    border-radius: 1.5em 1.5em 0.2em 0.2em;
+    background: white; }
+    .interactive-thermometer .thermometer div {
+      display: block;
+      position: relative;
+      margin: 0px;
+      padding: 0px; }
+    .interactive-thermometer .thermometer .thermometer-fill {
+      position: absolute;
+      width: 70%;
+      left: 15%;
+      bottom: 0;
+      background: #e16a3e;
+      border-radius: 0.75em 0.75em 0em 0em; }
 
 * {
   -webkit-box-sizing: border-box;
@@ -625,6 +646,10 @@ body:fullscreen .fullscreen {
     pointer-events: none; }
     #model-container div.tooltip pre {
       margin: 0.2em; }
+  #model-container .extent {
+    stroke: white;
+    fill-opacity: 0.125;
+    shape-rendering: crispEdges; }
 
 * {
   -webkit-box-sizing: border-box;

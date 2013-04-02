@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Investigating Interactions and Energy </page_title>
+<text>Investigating Interactions and Energy
+       
+     
+To examine the simulation more easily, hit the pause button on the bottom panel of the above container, and then draw the knob of the slider. A pointer in the graphs will move to indicate the correspondence of the distribution of the molecules and the energy values.</text>
+<section start="0" end="319">
+<paragraph start="0" end="38">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="37">
+<size>16</size><bold>true</bold></content>
+
+<content start="37" end="38">
+<size>13</size></content>
+
+</paragraph>
+<paragraph start="38" end="46">
+<LeftIndent>8.0</LeftIndent>
+<content start="38" end="39">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>interaction$0.mml</resource><menubar>false</menubar></component><size>13</size></content>
+
+<content start="39" end="41">
+<size>13</size></content>
+
+<content start="41" end="42">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-1000000" style="0" width="1.0" symbol="1" size="4" spacing="5">Kinetic Energy/Particle</time_series_y1>
+<width>200</width>
+<height>300</height>
+<axis_x_title>Time (fs)</axis_x_title>
+<axis_y_title>Kinetic Energy (eV)</axis_y_title>
+<legend_x>80</legend_x>
+<legend_y>14</legend_y>
+<legend_font_name>Arial</legend_font_name>
+<legend_font_style>0</legend_font_style>
+<legend_font_size>9</legend_font_size>
+<axis_font_name>Arial</axis_font_name>
+<axis_font_size>9</axis_font_size>
+<axis_font_style>0</axis_font_style>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<toolbar>false</toolbar>
+<model>0</model>
+</component><foreground>255 0 0</foreground></content>
+
+<content start="42" end="44">
+<foreground>128 0 0</foreground></content>
+
+<content start="44" end="45">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-1000000" style="0" width="1.0" symbol="3" size="4" spacing="5">Potential Energy/Particle</time_series_y1>
+<width>200</width>
+<height>300</height>
+<axis_x_title>Time (fs)</axis_x_title>
+<axis_y_title>Potential Energy (eV)</axis_y_title>
+<legend_x>100</legend_x>
+<legend_y>24</legend_y>
+<legend_font_name>Arial</legend_font_name>
+<legend_font_style>0</legend_font_style>
+<legend_font_size>9</legend_font_size>
+<axis_font_name>Arial</axis_font_name>
+<axis_font_size>9</axis_font_size>
+<axis_font_style>0</axis_font_style>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<toolbar>false</toolbar>
+<model>0</model>
+</component><foreground>255 0 0</foreground></content>
+
+<content start="45" end="46">
+<size>18</size></content>
+
+</paragraph>
+<paragraph start="46" end="52">
+<LeftIndent>8.0</LeftIndent>
+<content start="46" end="47">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Turn van der Waals attractions on</title>
+<selected>true</selected>
+<model>0</model>
+<action>I want van der Waals attractions</action>
+</component></content>
+
+<content start="47" end="48">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show van der Waals interactions</title>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Show van der Waals interactions</action>
+</component></content>
+
+<content start="48" end="49">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>K. E. Shading</title>
+<model>0</model>
+<action>K. E. Shading</action>
+</component></content>
+
+<content start="49" end="50">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Force Vector</title>
+<model>0</model>
+<action>Force Vector</action>
+</component></content>
+
+<content start="50" end="51">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Velocity Vector</title>
+<model>0</model>
+<action>Velocity Vector</action>
+</component></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="319">
+<LeftIndent>8.0</LeftIndent>
+<content start="52" end="318">
+</content>
+
+</paragraph>
+</section>
+</document>

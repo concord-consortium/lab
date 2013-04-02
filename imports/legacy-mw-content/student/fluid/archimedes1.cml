@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Buoyancy vs. weight: an interactive investigation</page_title>
+<text>Buoyancy vs. weight: an interactive investigation
+
+In the previous page, we demonstrated Archimedes&apos; Principle with a few cases with preset weights. In the following, we present an interactive model with which you can adjust the weight of the ring while the simulation is running. This will enable you to control the diving depth. In reality, one cannot change the mass of the material to change the buoyant force (a submarine usually controls its level of depth by changing the amount of ocean water it carries with it in its ballast tank).
+
+Note: The following model contains 410 particles and may run very slowly on some old machines.
+
+ 
+ </text>
+<section start="0" end="643">
+<paragraph start="0" end="50">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="49">
+<size>15</size><bold>true</bold></content>
+
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="51">
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="542">
+<LeftIndent>8.0</LeftIndent>
+<content start="51" end="542">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="542" end="543">
+<LeftIndent>8.0</LeftIndent>
+<content start="542" end="543">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="543" end="638">
+<LeftIndent>8.0</LeftIndent>
+<content start="543" end="638">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="638" end="639">
+<LeftIndent>8.0</LeftIndent>
+<content start="638" end="639">
+</content>
+
+</paragraph>
+<paragraph start="639" end="641">
+<Alignment>1</Alignment>
+<content start="639" end="640">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>archimedes1$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="640" end="641">
+</content>
+
+</paragraph>
+<paragraph start="641" end="643">
+<Alignment>1</Alignment>
+<content start="641" end="642">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>4.0</value>
+<minimum>0.0</minimum>
+<maximum>100.0</maximum>
+<nstep>50</nstep>
+<title>Changing the weight of the ring particles</title>
+<width>400</width>
+<height>70</height>
+<opaque>false</opaque>
+<disabled_at_script>true</disabled_at_script>
+<tick>true</tick>
+<labeltable>{value=&quot;100.0&quot;, label=&quot;Much heavier&quot;}{value=&quot;4.0&quot;, label=&quot;Equal mass&quot;}</labeltable>
+<script>set element[0].mass &quot;20+%val*5&quot;;</script>
+<change>Execute MW script</change>
+</component></content>
+
+</paragraph>
+</section>
+</document>

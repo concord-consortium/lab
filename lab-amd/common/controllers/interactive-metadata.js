@@ -301,13 +301,18 @@ define(function() {
         defaultValue: ""
       },
       labels: {
+        // Label is specified by the following object:
+        // {
+        //   "value": [value, e.g. 100],
+        //   "label": [label, e.g. "High"]
+        // }
         defaultValue: []
       },
       width: {
-        defaultValue: "12em"
+        defaultValue: "auto"
       },
       height: {
-        defaultValue: "3.3em"
+        defaultValue: "auto"
       },
       displayValue: {},
       // Use "property" OR "action" + "initialValue".
@@ -478,6 +483,14 @@ define(function() {
           scale: 1,
           digits: 0
         }
+      },
+      labels: {
+        // Label is specified by the following object:
+        // {
+        //   "value": [value, e.g. 100],
+        //   "label": [label, e.g. "High"]
+        // }
+        defaultValue: []
       }
     },
 

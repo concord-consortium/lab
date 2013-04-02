@@ -38,7 +38,7 @@
         {
           "text": "120 molecules",
           "action": [
-            "var opt = {supressRepaint: true};",
+            "var opt = {suppressRepaint: true};",
             "var obsX = getObstacleProperties(0).x;",
             "/* Ensure that available volume is enough for 100 molecules. */",
             "if (obsX < 1) { obsX = 1; setObstacleProperties(0, {x: obsX}); }",
@@ -56,7 +56,7 @@
         {
           "text": "100 molecules",
           "action": [
-            "var opt = {supressRepaint: true};",
+            "var opt = {suppressRepaint: true};",
             "var obsX = getObstacleProperties(0).x;",
             "/* Ensure that available volume is enough for 100 molecules. */",
             "if (obsX < 1) { obsX = 1; setObstacleProperties(0, {x: obsX}); }",
@@ -74,7 +74,7 @@
         {
           "text": "80 molecules",
           "action": [
-            "var opt = {supressRepaint: true};",
+            "var opt = {suppressRepaint: true};",
             "var obsX = getObstacleProperties(0).x;",
             "var xMax = obsX - getElementProperties(3).sigma;",
             "var h = get('height');",
@@ -90,7 +90,7 @@
         {
           "text": "60 molecules",
           "action": [
-            "var opt = {supressRepaint: true};",
+            "var opt = {suppressRepaint: true};",
             "var obsX = getObstacleProperties(0).x;",
             "var xMax = obsX - getElementProperties(3).sigma;",
             "var h = get('height');",
@@ -106,7 +106,7 @@
         {
           "text": "40 molecules",
           "action": [
-            "var opt = {supressRepaint: true};",
+            "var opt = {suppressRepaint: true};",
             "var obsX = getObstacleProperties(0).x;",
             "var xMax = obsX - getElementProperties(3).sigma;",
             "var h = get('height');",
@@ -122,7 +122,7 @@
         {
           "text": "20 molecules",
           "action": [
-            "var opt = {supressRepaint: true};",
+            "var opt = {suppressRepaint: true};",
             "var obsX = getObstacleProperties(0).x;",
             "var xMax = obsX - getElementProperties(3).sigma;",
             "var h = get('height');",

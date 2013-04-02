@@ -185,12 +185,27 @@ define(function (require) {
                 "showClock": false,
                 "textBoxes": [
                   {
-                    "text": "Model could not be loaded: " + modelDefinition.url,
-                    "x": 0.25,
+                    "text": "Model could not be loaded:",
+                    "x": 0.0,
                     "y": 1.0,
-                    "width": 2,
+                    "width": 2.5,
+                    "fontScale": 1.4,
                     "layer": 1,
-                    "frame": "rounded rectangle",
+                    "frame": "rectangle",
+                    "textAlign": "center",
+                    "strokeOpacity": 0,
+                    "backgroundColor": "rgb(232,231,231)"
+                  },
+                  {
+                    "text": modelDefinition.url,
+                    "x": 0.0,
+                    "y": 0.9,
+                    "width": 2.5,
+                    "fontScale": 0.9,
+                    "layer": 1,
+                    "frame": "rectangle",
+                    "textAlign": "center",
+                    "strokeOpacity": 0,
                     "backgroundColor": "rgb(232,231,231)"
                   }
                 ]

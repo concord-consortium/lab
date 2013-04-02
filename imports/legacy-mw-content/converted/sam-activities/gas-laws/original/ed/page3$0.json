@@ -20,8 +20,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 4.5,
+    "viewPortHeight": 2.5,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": true,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -36,12 +41,13 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "Pressure gauge on the left face measures pressure by recording impacts.",
+        "text": "Pressure gauge\non the left face \nmeasures\npressure by\nrecording\nimpacts.",
         "x": 3.46,
         "y": 2.05,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(0,255,0)"
+        "backgroundColor": "rgb(0,255,0)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,
@@ -1343,10 +1349,10 @@
     "vy": [
       0
     ],
-    "externalFx": [
+    "externalAx": [
       -9.9999e-7
     ],
-    "externalFy": [
+    "externalAy": [
       0
     ],
     "friction": [

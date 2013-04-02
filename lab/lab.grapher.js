@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "4be557e254f2b850e0d90b4b68826ce8d8a7dde7",
-        "short_sha":      "4be557e2",
-        "url":            "https://github.com/concord-consortium/lab/commit/4be557e2",
+        "sha":           "4b760a87a5417aceda1499000b4169b2a618ded3",
+        "short_sha":      "4b760a87",
+        "url":            "https://github.com/concord-consortium/lab/commit/4b760a87",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-03-23 10:51:22 -0400",
-        "short_message": "use relative path for fontawesome-webfont request",
-        "message":       "use relative path for fontawesome-webfont request\n\n[#46761677]\n\nTo make these requests valid for static distributions in\nsubdirectories and also when served through a proxy like\nDataGames"
+        "date":          "2013-04-02 14:14:09 -0400",
+        "short_message": "make diffusion on-click version public",
+        "message":       "make diffusion on-click version public\n\nchange older version to draft"
       },
       "dirty": false
     }
@@ -571,6 +571,10 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         ty = function(d) { return "translate(0," + yScale(d) + ")"; },
         fx, fy,
         svg, vis, plot, viewbox,
+        background,
+        gcanvas, gctx,
+        canvasFillStyle = "rgba(255,255,255, 0.0)",
+        cplot = {},
         buttonLayer,
         title, xlabel, ylabel,
         notification,
@@ -609,9 +613,6 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         currentSample,
         markedPoint, marker,
         sample,
-        gcanvas, gctx,
-        canvasFillStyle = "rgba(255,255,255, 0.0)",
-        cplot = {},
 
         default_options = {
           showButtons:    true,
@@ -923,7 +924,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         points = fakeDataPoints();
       }
 
-      // In realTime mode the grapher expects either an array if arrays of dependent data.
+      // In realTime mode the grapher expects either an array or arrays of dependent data.
       // The sample variable sets the interval spacing between data samples.
       if (options.realTime) {
         pointArray = [];
@@ -959,6 +960,11 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       if (svg !== undefined) {
         svg.remove();
         svg = undefined;
+      }
+
+      if (background !== undefined) {
+        background.remove();
+        background = undefined;
       }
 
       if (gcanvas !== undefined) {
@@ -1001,40 +1007,33 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
     }
 
     function createButtonLayer() {
-      var buttonLayer = $('<div>' +
-                          '  <a class="graph-autoscale-button" title="' + tooltips.autoscale + '">' +
-                          '    <i class="icon-picture"></i>' +
-                          '  </a>' +
-                          '</div>')
-            .appendTo($(elem.node()))
-            .addClass('graph-button-layer')
-            .css('z-index', 101);
+      buttonLayer = elem.append("div");
 
-      buttonLayer.find('a.graph-autoscale-button').on('click', function() { graph.autoscale(); });
-      return buttonLayer;
+      buttonLayer
+        .attr("class", "button-layer")
+        .style("z-index", 3)
+        .append('a')
+          .attr({
+            "class": "autoscale-button",
+            "title": tooltips.autoscale
+          })
+          .on("click", function() {
+            graph.autoscale();
+          })
+          .append("i")
+            .attr("class", "icon-picture");
+
+      resizeButtonLayer();
     }
 
     function resizeButtonLayer() {
-      var rect = plot.node(),
-          rectTop,
-          rectLeft,
-          rectWidth,
-          layerWidth;
-
-      // Make safe for jsdom based tests
-      if (!rect.getCTM || !rect.width.baseVal ) {
-        return;
-      }
-
-      rectTop = rect.getCTM().f;
-      rectLeft = rect.getCTM().e;
-      rectWidth = rect.width.baseVal.value;
-      layerWidth = buttonLayer.width();
-
-      buttonLayer.css({
-        top: rectTop + 5,
-        left: rectLeft + rectWidth - layerWidth - 5
-      });
+      buttonLayer
+        .style({
+          "width":   fontSizeInPixels*1.75 + "px",
+          "height":  fontSizeInPixels*1.25 + "px",
+          "top":     padding.top + halfFontSizeInPixels + "px",
+          "left":    padding.left + (size.width - fontSizeInPixels*2.0) + "px"
+        });
     }
 
     function graph() {
@@ -1045,7 +1044,8 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         svg = elem.append("svg")
             .attr("width",  cx)
             .attr("height", cy)
-            .attr("class", "graph");
+            .attr("class", "graph")
+            .style('z-index', 2);
             // .attr("tabindex", tabindex || 0);
 
         vis = svg.append("g")
@@ -1055,12 +1055,22 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           .attr("class", "plot")
           .attr("width", size.width)
           .attr("height", size.height)
-          .style("fill", "#EEEEEE")
           .attr("pointer-events", "all")
+          .attr("fill", "rgba(255,255,255,0)")
           .on("mousedown", plotDrag)
           .on("touchstart", plotDrag);
 
         plot.call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
+
+        background = elem.append("div")
+            .attr("class", "background")
+            .style({
+              "width":   size.width + "px",
+              "height":  size.height + "px",
+              "top":     padding.top + "px",
+              "left":    padding.left + "px",
+              "z-index": 0
+            });
 
         viewbox = vis.append("svg")
           .attr("class", "viewbox")
@@ -1145,8 +1155,16 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
 
         plot
           .attr("width", size.width)
-          .attr("height", size.height)
-          .style("fill", "#EEEEEE");
+          .attr("height", size.height);
+
+        background
+          .style({
+            "width":   size.width + "px",
+            "height":  size.height + "px",
+            "top":     padding.top + "px",
+            "left":    padding.left + "px",
+            "z-index": 0
+          });
 
         viewbox
             .attr("top", 0)
@@ -1186,7 +1204,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       }
 
       if (options.showButtons) {
-        if (!buttonLayer) buttonLayer = createButtonLayer();
+        if (!buttonLayer) createButtonLayer();
         resizeButtonLayer();
       }
 
@@ -2116,7 +2134,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         updateOrRescale();
       }
 
-      function newRealTimeData(d) {
+      function updatePointArray(d) {
         var i;
         pointArray = [];
         if (Object.prototype.toString.call(d) === "[object Array]") {
@@ -2128,6 +2146,22 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           points = indexedData(options.dataset, 0, sample);
           pointArray = [points];
         }
+      }
+
+      function truncateRealTimeData(d) {
+        var oldLength = pointArray[0].length;
+        updatePointArray(d);
+        if (pointArray[0].length === oldLength) {
+          return;
+        } else {
+          shiftingX = false;
+          setCurrentSample(points.length);
+          updateOrRescale();
+        }
+      }
+
+      function newRealTimeData(d) {
+        updatePointArray(d);
         shiftingX = false;
         setCurrentSample(points.length-1);
         updateOrRescale();
@@ -2206,11 +2240,11 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
 
       function showCanvas() {
         vis.select("path.line").remove();
-        gcanvas.style.zIndex = 100;
+        gcanvas.style.zIndex = 1;
       }
 
       function hideCanvas() {
-        gcanvas.style.zIndex = -100;
+        gcanvas.style.zIndex = -1;
         update();
       }
 
@@ -2343,7 +2377,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           gcanvas = gcanvas || document.createElement('canvas');
           node.appendChild(gcanvas);
         }
-        gcanvas.style.zIndex = -100;
+        gcanvas.style.zIndex = -1;
         setupCanvasProperties(gcanvas);
       }
 
@@ -2369,7 +2403,9 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         canvas.style.top = cplot.top + 'px';
         canvas.style.border = 'solid 1px red';
         canvas.style.pointerEvents = "none";
-        canvas.className += "canvas-overlay";
+        if (canvas.className.search("overlay") < 0) {
+           canvas.className += " overlay";
+        }
         gctx = gcanvas.getContext( '2d' );
         gctx.globalCompositeOperation = "source-over";
         gctx.lineWidth = 1;
@@ -2445,6 +2481,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
 
       graph.number_of_points = number_of_points;
       graph.newRealTimeData = newRealTimeData;
+      graph.truncateRealTimeData = truncateRealTimeData;
       graph.add_point = add_point;
       graph.addPoints = addPoints;
       // graph.addRealTimePoints = addRealTimePoints;
@@ -5348,10 +5385,10 @@ define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (requi
 
       VIEW = {
         padding: {
-          left:   10,
-          top:    10,
-          right:  10,
-          bottom: 10
+          left:   0,
+          top:    8,
+          right:  0,
+          bottom: 8
         }
       },
 
@@ -5365,16 +5402,12 @@ define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (requi
         return d3selection.node().getBBox().height;
       },
 
-      // Bar graph scales itself according to the given height.
-      // We assume some CANONICAL_HEIGHT. All values which should
-      // be scaled, should assume this canonical height as basic
-      // reference.
-      CANONICAL_HEIGHT = 500,
-      getScaleFunc = function (height) {
-        var factor = height / CANONICAL_HEIGHT;
-        // Prevent from too small fonts.
-        if (factor < 0.6)
-          factor = 0.6;
+      // Bar graph scales itself according to the font size.
+      // We assume some CANONICAL_FONT_SIZE. All values which should
+      // be scaled, should use returned function.
+      CANONICAL_FONT_SIZE = 16,
+      getScaleFunc = function (fontSize) {
+        var factor = fontSize / CANONICAL_FONT_SIZE;
 
         return function (val) {
           return val * factor;
@@ -5430,7 +5463,7 @@ define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (requi
               // etc.
           var options    = this.model.toJSON(),
               // Scale function.
-              scale      = getScaleFunc(options.height),
+              scale      = getScaleFunc(parseFloat(this.$el.css("font-size"))),
               // Basic padding (scaled).
               paddingLeft   = scale(VIEW.padding.left),
               paddingTop    = scale(VIEW.padding.top),
@@ -5449,7 +5482,7 @@ define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (requi
               "height": options.height
             })
             .style({
-              "font-size": scale(15) + "px"
+              "font-size": "1em"
             });
 
           // Setup Y scale.
@@ -5467,7 +5500,7 @@ define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (requi
             this.title
               .text(options.title)
               .style({
-                "font-size": "140%",
+                "font-size": "1em",
                 "text-anchor": "middle",
                 "fill": options.textColor
               });
@@ -5484,7 +5517,7 @@ define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (requi
           this.yAxis
             .scale(this.yScale)
             .tickSubdivide(options.tickSubdivide)
-            .tickSize(scale(10), scale(5), scale(10))
+            .tickSize(scale(8), scale(5), scale(8))
             .orient("right");
 
           if (typeof options.ticks === "number") {
@@ -5517,7 +5550,7 @@ define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (requi
               // Workaround for hiding numeric labels. D3 doesn't provide any convenient function
               // for that. Returning empty string as tickFormat causes that bounding box width is
               // calculated incorrectly.
-              "font-size": options.displayLabels ? "100%" : 0
+              "font-size": options.displayLabels ? "0.8em" : 0
           });
 
           // Remove axis completely if ticks are equal to 0.

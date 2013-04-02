@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 4.5,
+    "viewPortHeight": 3.5,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -35,18 +40,20 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x",
+        "text": "x  x  x  x  x  x  x  x\nx  x  x  x  x  x  x  x\nx  x  x  x  x  x  x  x\nx  x  x  x  x  x  x  x\nx  x  x  x  x  x  x  x\nx  x  x  x  x  x  x  x",
         "x": 0.34,
         "y": 2.47,
         "layer": 1,
-        "color": "rgb(128,128,128)"
+        "color": "rgb(128,128,128)",
+        "anchor": "upper-left"
       },
       {
-        "text": "A model for a mass spectrometer",
+        "text": "A model for a \nmass spectrometer",
         "x": 0.05,
         "y": 3.45,
         "layer": 1,
-        "color": "rgb(102,102,0)"
+        "color": "rgb(102,102,0)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

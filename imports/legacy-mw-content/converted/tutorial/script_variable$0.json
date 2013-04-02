@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 5,
+    "viewPortHeight": 2.5,
+    "viewPortX": -0.06,
+    "viewPortY": -0.06,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -35,51 +40,56 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "I am an Nt element. My element index is 0.",
+        "text": "I am an Nt element.\nMy element index is 0.",
         "x": 0.33,
         "y": 1.88,
         "layer": 2,
         "frame": "rounded rectangle",
         "hostType": "Atom",
         "hostIndex": 0,
-        "backgroundColor": "rgb(255,255,255)"
+        "backgroundColor": "rgb(255,255,255)",
+        "anchor": "upper-left"
       },
       {
-        "text": "I am a Ws element. My element index is 2.",
+        "text": "I am a Ws element.\nMy element index is 2.",
         "x": 0.34,
         "y": 0.96,
         "layer": 2,
         "frame": "rounded rectangle",
         "hostType": "Atom",
         "hostIndex": 2,
-        "backgroundColor": "rgb(0,0,255)"
+        "backgroundColor": "rgb(0,0,255)",
+        "anchor": "upper-left"
       },
       {
-        "text": "I am a Pl element. My element index is 1.",
+        "text": "I am a Pl element.\nMy element index is 1.",
         "x": 0.35,
         "y": 1.44,
         "layer": 2,
         "frame": "rounded rectangle",
         "hostType": "Atom",
         "hostIndex": 1,
-        "backgroundColor": "rgb(0,255,0)"
+        "backgroundColor": "rgb(0,255,0)",
+        "anchor": "upper-left"
       },
       {
-        "text": "I am a Ck element. My element index is 3.",
+        "text": "I am a Ck element.\nMy element index is 3.",
         "x": 0.35,
         "y": 0.48,
         "layer": 2,
         "frame": "rounded rectangle",
         "hostType": "Atom",
         "hostIndex": 3,
-        "backgroundColor": "rgb(255,128,255)"
+        "backgroundColor": "rgb(255,128,255)",
+        "anchor": "upper-left"
       },
       {
-        "text": "These abstract elements in 2D models are given names similar to conventional names of elements to reinforce the fact that they are not atoms but elements (types of atoms).  Atoms that are the same element have the same physical and chemical properties.  Mass, sigma and epsilon are the three parameters of the elements that can be changed via scripts.",
+        "text": "These abstract elements in 2D models\nare given names similar to conventional\nnames of elements to reinforce the fact\nthat they are not atoms but elements \n(types of atoms).\nAtoms that are the same element have\nthe same physical and chemical\nproperties.\nMass, sigma and epsilon are the three\nparameters of the elements that can be\nchanged via scripts.",
         "x": 2.21,
         "y": 1.96,
         "layer": 2,
-        "color": "rgb(128,128,128)"
+        "color": "rgb(128,128,128)",
+        "anchor": "upper-left"
       },
       {
         "text": "Nt",
@@ -87,7 +97,8 @@
         "y": 1.575,
         "layer": 1,
         "hostType": "Atom",
-        "hostIndex": 0
+        "hostIndex": 0,
+        "anchor": "upper-left"
       },
       {
         "text": "Pl",
@@ -95,7 +106,8 @@
         "y": 1.105,
         "layer": 1,
         "hostType": "Atom",
-        "hostIndex": 1
+        "hostIndex": 1,
+        "anchor": "upper-left"
       },
       {
         "text": "Ws",
@@ -103,7 +115,8 @@
         "y": 0.685,
         "layer": 1,
         "hostType": "Atom",
-        "hostIndex": 2
+        "hostIndex": 2,
+        "anchor": "upper-left"
       },
       {
         "text": "Ck",
@@ -111,7 +124,8 @@
         "y": 0.275,
         "layer": 1,
         "hostType": "Atom",
-        "hostIndex": 3
+        "hostIndex": 3,
+        "anchor": "upper-left"
       },
       {
         "text": "The indices of 2D model's four abstract elements",
@@ -119,7 +133,8 @@
         "y": 2.34,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(128,128,128)"
+        "backgroundColor": "rgb(128,128,128)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

@@ -20,8 +20,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 5,
+    "viewPortHeight": 3.3,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -85,12 +90,13 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "CALCIUM TRANSPORT CHANNEL. (A protein complex for pumping calcium.)",
+        "text": "CALCIUM TRANSPORT CHANNEL.\n(A protein complex for\npumping calcium.)",
         "x": 0.11,
         "y": 3.22,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,255,255)"
+        "backgroundColor": "rgb(255,255,255)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,
@@ -317,12 +323,12 @@
       0,
       0
     ],
-    "externalFx": [
+    "externalAx": [
       0,
       0,
       0
     ],
-    "externalFy": [
+    "externalAy": [
       0,
       0,
       0

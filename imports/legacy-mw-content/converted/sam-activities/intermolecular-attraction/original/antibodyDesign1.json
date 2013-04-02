@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 3.5,
+    "viewPortHeight": 3,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "rgba(255,255,192,255)",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": true,
     "useThreeLetterCode": true,
@@ -51,7 +56,8 @@
         "frame": "rounded rectangle",
         "hostType": "Atom",
         "hostIndex": 34,
-        "backgroundColor": "rgb(255,255,255)"
+        "backgroundColor": "rgb(255,255,255)",
+        "anchor": "upper-left"
       },
       {
         "text": "ANTIBODY",
@@ -59,7 +65,8 @@
         "y": 0.31,
         "layer": 2,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(199,242,199)"
+        "backgroundColor": "rgb(199,242,199)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

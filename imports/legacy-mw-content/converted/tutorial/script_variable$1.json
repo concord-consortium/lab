@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 5,
+    "viewPortHeight": 2.5,
+    "viewPortX": -0.06,
+    "viewPortY": -0.06,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -42,7 +47,8 @@
         "frame": "rounded rectangle",
         "hostType": "Atom",
         "hostIndex": 0,
-        "backgroundColor": "rgb(255,255,0)"
+        "backgroundColor": "rgb(255,255,0)",
+        "anchor": "upper-left"
       },
       {
         "text": "My atom index is 2.",
@@ -51,7 +57,8 @@
         "layer": 2,
         "frame": "rounded rectangle",
         "hostType": "Atom",
-        "hostIndex": 2
+        "hostIndex": 2,
+        "anchor": "upper-left"
       },
       {
         "text": "My atom index is 1.",
@@ -60,7 +67,8 @@
         "layer": 2,
         "frame": "rounded rectangle",
         "hostType": "Atom",
-        "hostIndex": 1
+        "hostIndex": 1,
+        "anchor": "upper-left"
       },
       {
         "text": "My atom index is 3.",
@@ -69,14 +77,16 @@
         "layer": 2,
         "frame": "rounded rectangle",
         "hostType": "Atom",
-        "hostIndex": 3
+        "hostIndex": 3,
+        "anchor": "upper-left"
       },
       {
-        "text": "To access the properties of an atom through the expressions of system variables, we must know its index first. There are a couple of different ways to show the index of an atom:  (1) The Query Tool can be used to show the index of the selected object. (2) The \"View Options\" dialog provides an option to show the indices of all particles (this can be put on the page, as is shown by the check box below this window). (3) Double-click on the atom and look up its index in its Properties Panel.",
+        "text": "To access the properties of an atom \nthrough the expressions of system \nvariables, we must know its index first.\nThere are a couple of different ways to\nshow the index of an atom:\n(1) The Query Tool can be used to show\nthe index of the selected object.\n(2) The \"View Options\" dialog provides\nan option to show the indices of all particles\n(this can be put on the page, as is shown\nby the check box below this window).\n(3) Double-click on the atom and look up\nits index in its Properties Panel.",
         "x": 2.07,
         "y": 2.22,
         "layer": 2,
-        "color": "rgb(128,128,128)"
+        "color": "rgb(128,128,128)",
+        "anchor": "upper-left"
       },
       {
         "text": "The indices of atoms",
@@ -84,7 +94,8 @@
         "y": 2.36,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(128,128,128)"
+        "backgroundColor": "rgb(128,128,128)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

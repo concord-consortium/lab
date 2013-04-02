@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Ethylene molecules</page_title>
+<bg_color><Red>0</Red><Green>0</Green><Blue>0</Blue></bg_color>
+<text>Ethylene molecules
+
+ 
+     </text>
+<section start="0" end="28">
+<paragraph start="0" end="19">
+<SpaceAbove>4.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="0" end="18">
+<size>14</size><foreground>255 255 255</foreground><bold>true</bold></content>
+
+<content start="18" end="19">
+<size>20</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<Alignment>1</Alignment>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="22">
+<Alignment>1</Alignment>
+<content start="20" end="21">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>molecularsystem$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border><recorder>true</recorder></component></content>
+
+<content start="21" end="22">
+<italic>true</italic></content>
+
+</paragraph>
+<paragraph start="22" end="28">
+<Alignment>1</Alignment>
+<content start="22" end="23">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<tooltip>Start simulation</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>run</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="23" end="24">
+</content>
+
+<content start="24" end="25">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<tooltip>Stop simulation</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="25" end="26">
+</content>
+
+<content start="26" end="27">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<tooltip>Reset to initial state</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_03" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.mw3d.ModelState"> 
+  <void property="cameraPosition"> 
+   <string>0.0 0.0 0.0</string> 
+  </void> 
+  <void property="rotation"> 
+   <string>-284 -674 682 143.5 58</string> 
+  </void> 
+  <void property="showGlassSimulationBox"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="timeStep"> 
+   <float>1.0</float> 
+  </void> 
+  <void property="unmovableSelection"> 
+   <string>7 9 11 62</string> 
+  </void> 
+  <void property="velocitySelection"> 
+   <string>14</string> 
+  </void> 
+ </object> 
+</java> 

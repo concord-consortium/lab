@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 4.8,
+    "viewPortHeight": 2.5,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": true,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -35,12 +40,13 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "You can double-click the above buttons to customize the objects to be added. (Not all are customizable though.)",
+        "text": "You can double-click the above buttons \nto customize the objects to be added.\n(Not all are customizable though.)",
         "x": 1.36,
         "y": 2.25,
         "layer": 2,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,255,0)"
+        "backgroundColor": "rgb(255,255,0)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

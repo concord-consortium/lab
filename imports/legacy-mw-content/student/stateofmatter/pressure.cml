@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Understanding pressure</page_title>
+<text>Understanding pressure
+
+This activity focuses on understanding pressure from a microscopic perspective.
+  
+ 
+  
+  
+ 
+
+By clicking the &quot;Insert More Particles&quot; button, you can add more particles to the left of the piston. Observe where the piston stays under different conditions (e.g. different temperature and density) between the two compartments. The force that drives the piston is the difference of pressure from the two compartments.
+
+Answer the following questions and take some snapshots to support your conclusions.
+
+  
+
+ </text>
+<section start="0" end="531">
+<paragraph start="0" end="23">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="23">
+<size>15</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<LeftIndent>8.0</LeftIndent>
+<content start="23" end="24">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="24" end="104">
+<LeftIndent>8.0</LeftIndent>
+<content start="24" end="103">
+<size>11</size></content>
+
+<content start="103" end="104">
+</content>
+
+</paragraph>
+<paragraph start="104" end="107">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="104" end="105">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Insert More Particles</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<action>Insert Nt</action>
+</component></content>
+
+<content start="105" end="106">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Kinetic Energy Shading</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>K. E. Shading</action>
+</component></content>
+
+<content start="106" end="107">
+<size>18</size></content>
+
+</paragraph>
+<paragraph start="107" end="109">
+<Alignment>1</Alignment>
+<content start="107" end="108">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>pressure$0.mml</resource><menubar>false</menubar><recorder>true</recorder></component><size>18</size></content>
+
+<content start="108" end="109">
+</content>
+
+</paragraph>
+<paragraph start="109" end="112">
+<Alignment>1</Alignment>
+<content start="109" end="110">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat the Left Compartment</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<step>0.01</step>
+<action>Heat Nt Atoms</action>
+</component></content>
+
+<content start="110" end="111">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat the Right Compartment</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<step>0.01</step>
+<action>Heat Ck Atoms</action>
+</component></content>
+
+<content start="111" end="112">
+<italic>true</italic><size>15</size><family>Book Antiqua</family></content>
+
+</paragraph>
+<paragraph start="112" end="115">
+<Alignment>1</Alignment>
+<content start="112" end="113">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Cool the Left Compartment</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<step>-0.01</step>
+<action>Cool Nt Atoms</action>
+</component></content>
+
+<content start="113" end="114">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Cool the Right Compartment</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<step>-0.01</step>
+<action>Cool Ck Atoms</action>
+</component></content>
+
+<content start="114" end="115">
+</content>
+
+</paragraph>
+<paragraph start="115" end="117">
+<Alignment>1</Alignment>
+<content start="115" end="116">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="116" end="117">
+</content>
+
+</paragraph>
+<paragraph start="117" end="118">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="117" end="118">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="118" end="439">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="118" end="439">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="439" end="440">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="439" end="440">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="440" end="524">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="440" end="524">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="524" end="525">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="524" end="525">
+</content>
+
+</paragraph>
+<paragraph start="525" end="528">
+<RightIndent>10.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>10.0</LeftIndent>
+<content start="525" end="526">
+<component><class>org.concord.modeler.PageTextArea</class>
+<column>30</column>
+<title>&lt;html&gt;
+   &lt;font size=&quot;2&quot;&gt;Describe the motion of the piston and explain why it swings between two sides.&lt;/font&gt;
+&lt;/html&gt;</title>
+</component></content>
+
+<content start="526" end="527">
+<component><class>org.concord.modeler.PageTextArea</class>
+<column>30</column>
+<title>&lt;html&gt;
+   &lt;font size=&quot;2&quot;&gt;Describe the relationships between pressure vs. density and pressure vs. temperature.&lt;/font&gt;
+&lt;/html&gt;</title>
+</component></content>
+
+<content start="527" end="528">
+</content>
+
+</paragraph>
+<paragraph start="528" end="529">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="528" end="529">
+</content>
+
+</paragraph>
+<paragraph start="529" end="531">
+<RightIndent>10.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>10.0</LeftIndent>
+<content start="529" end="530">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Create a report</title>
+<border>Raised Bevel</border>
+<action>Create a report about this page in a new window</action></component></content>
+
+</paragraph>
+</section>
+</document>

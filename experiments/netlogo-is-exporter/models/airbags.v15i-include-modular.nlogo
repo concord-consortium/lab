@@ -60,7 +60,7 @@
 ; Datasets are named by their color in a way that makes it trivial to add datasets by adding new colors in the pull-down lists. 
 ; The x,y values of data are saved in turtles called dots in x-val and y-val. ploce x-val y-val converts these into screen coordinates and shows the resulting dots
 
-__includes [ "../../netlogo-modules/data-export-modular.nls" ]
+__includes [ "data-export-modular.nls" ]
 
 globals [
   grid-params ; see below

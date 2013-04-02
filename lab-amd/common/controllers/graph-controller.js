@@ -123,7 +123,7 @@ define(function (require) {
         // Account for initial data, which corresponds to stepCounter == 0
         data[i].length = model.stepCounter() + 1;
       }
-      grapher.newRealTimeData(data);
+      grapher.truncateRealTimeData(data);
     }
 
     /**

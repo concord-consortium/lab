@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 5,
+    "viewPortHeight": 2.5,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -49,7 +54,8 @@
         "y": 0.45,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,192,0)"
+        "backgroundColor": "rgb(255,192,0)",
+        "anchor": "upper-left"
       },
       {
         "text": "An image",
@@ -57,28 +63,32 @@
         "y": 2.41,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,255,0)"
+        "backgroundColor": "rgb(255,255,0)",
+        "anchor": "upper-left"
       },
       {
         "text": "A line",
         "x": 2.91,
         "y": 1.95,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
-        "text": "An interacting object of arbitrary shape",
+        "text": "An interacting object \nof arbitrary shape",
         "x": 1.82,
         "y": 1.64,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
         "text": "An obstacle",
         "x": 2.98,
         "y": 1.1,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
         "text": "An atom",
@@ -87,7 +97,8 @@
         "layer": 1,
         "frame": "rounded rectangle",
         "hostType": "Atom",
-        "hostIndex": 5
+        "hostIndex": 5,
+        "anchor": "upper-left"
       },
       {
         "text": "A molecule",
@@ -96,21 +107,24 @@
         "layer": 1,
         "frame": "rounded rectangle",
         "hostType": "Atom",
-        "hostIndex": 8
+        "hostIndex": 8,
+        "anchor": "upper-left"
       },
       {
         "text": "A radial bond",
         "x": 0.6,
         "y": 1.07,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
-        "text": "An angular bond",
+        "text": "An angular\nbond",
         "x": 0.57,
         "y": 1.94,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
         "text": "A restrained atom",
@@ -119,21 +133,24 @@
         "layer": 1,
         "frame": "rounded rectangle",
         "hostType": "Atom",
-        "hostIndex": 3
+        "hostIndex": 3,
+        "anchor": "upper-left"
       },
       {
         "text": "A rectangle",
         "x": 1.14,
         "y": 2.16,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
         "text": "An ellipse",
         "x": 2.74,
         "y": 2.41,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,
@@ -779,10 +796,10 @@
     "vy": [
       0.000009243539
     ],
-    "externalFx": [
+    "externalAx": [
       0
     ],
-    "externalFy": [
+    "externalAy": [
       0
     ],
     "friction": [

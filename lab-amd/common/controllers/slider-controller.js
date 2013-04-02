@@ -61,29 +61,21 @@ define(function () {
       },
 
       resize: function () {
-        var emSize = parseFloat($sliderHandle.css("font-size")),
-            remainingHeight;
-        // Apply custom width and height settings.
-        // In fact width can be applied only once during initialization, because
-        // it doesn't need any calculations when container size is changed.
-        // However, to keep resizing in one place both width and height
-        // adjustment are performed in this method.
-        // Also not that we set dimensions of the most outer container, not slider.
-        // Slider itself will always follow dimensions of container DIV.
-        // We have to do it that way to ensure that labels refer correct dimensions.
-        $elem.css("width", component.width);
-        // Height calculation is more complex, calculate dynamically
-        // available height for slider itself.
-        // Note that component.height refers to the height of the
-        // *whole* component!
-        $elem.css("height", component.height);
-        remainingHeight = $elem.height() - $title.outerHeight(true);
-        if ($label !== undefined) {
-          remainingHeight -= $label.outerHeight(true);
+        var remainingHeight, emSize;
+        if (component.height !== "auto") {
+          // Height calculation is more complex when height is different from
+          // "auto". Calculate dynamically available height for slider itself.
+          // Note that component.height refers to the height of the *whole*
+          // component!
+          remainingHeight = $elem.height() - $title.outerHeight(true);
+          if ($label !== undefined) {
+            remainingHeight -= $label.outerHeight(true);
+          }
+          $container.css("height", remainingHeight);
+          // Handle also requires dynamic styling.
+          emSize = parseFloat($sliderHandle.css("font-size"));
+          $sliderHandle.css("height", remainingHeight + emSize * 0.4);
         }
-        $container.css("height", remainingHeight);
-        // Handle also requires dynamic styling.
-        $sliderHandle.css("height", remainingHeight + emSize * 0.4);
       },
 
       // Returns serialized component definition.
@@ -179,6 +171,21 @@ define(function () {
       displayValue = scriptingAPI.makeFunctionInScriptContext('value', displayValue);
     }
 
+    // Apply custom width and height settings.
+    // Also not that we set dimensions of the most outer container, not slider.
+    // Slider itself will always follow dimensions of container DIV.
+    // We have to do it that way to ensure that labels refer correct dimensions.
+    $elem.css({
+      "width": component.width,
+      "height": component.height
+    });
+    if (component.width === "auto") {
+      // Ensure that min width is 12em, when width is set to "auto".
+      // Prevent from situation when all sliders with short labels have
+      // different widths, what looks distracting.
+      $elem.css("min-width", "12em");
+    }
+    // Call resize function to support complex resizing when height is different from "auto".
     controller.resize();
 
     // Return Public API object.

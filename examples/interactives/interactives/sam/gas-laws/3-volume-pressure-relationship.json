@@ -21,9 +21,10 @@
         "textBoxes": [
           {
             "text": "A wall with a pressure gauge.",
-            "x": 1.4000009155273438,
-            "y": 1.495,
-            "width": 0.65,
+            "x": 1.4,
+            "y": 1.6,
+            "width": 0.6,
+            "fontScale": 1.2,
             "layer": 1,
             "frame": "rounded rectangle",
             "hostType": "RectangularObstacle",
@@ -91,7 +92,7 @@
       "type": "button",
       "id": "decrease-volume",
       "text": "Volume &#8595;",
-      "action": "if (get('volume') > 0.5) { set({ volume: get('volume') * (1/1.1) }) };"
+      "action": "if (get('volume') > 0.75) { set({ volume: get('volume') * (1/1.1) }) };"
     },
     {
       "type": "numericOutput",
@@ -105,7 +106,7 @@
       "id": "bar-graph",
       "options": {
         "minValue": 0,
-        "maxValue": 8,
+        "maxValue": 3,
         "title": "Pressure (Bar)"
       },
       "property": "pressureProbeFiltered"

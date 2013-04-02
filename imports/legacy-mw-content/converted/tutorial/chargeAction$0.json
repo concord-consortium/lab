@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 4,
+    "viewPortHeight": 2.5,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": true,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -35,33 +40,37 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "To add an opposite charge, hold down the SHIFT key.",
+        "text": "To add an opposite\ncharge, hold down \nthe SHIFT key.",
         "x": 2.62,
         "y": 2.36,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,255,0)"
+        "backgroundColor": "rgb(255,255,0)",
+        "anchor": "upper-left"
       },
       {
-        "text": "To set an arbitrary charge, double-click the particle and type a value in the \"Charge\" field.",
+        "text": "To set an arbitrary charge,\ndouble-click the particle\nand type a value in the\n\"Charge\" field.",
         "x": 2.48,
         "y": 0.66,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
-        "text": "Button for adding a positive charge",
+        "text": "Button for\nadding a \npositive charge",
         "x": 0.04,
         "y": 1.95,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
-        "text": "Button for adding a negative charge",
+        "text": "Button for \nadding a \nnegative charge",
         "x": 1.01,
         "y": 2.35,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

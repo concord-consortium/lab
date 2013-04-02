@@ -20,8 +20,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 3.6,
+    "viewPortHeight": 2.5,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -36,56 +41,64 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "A wall with a pressure gauge",
+        "text": "A wall\nwith a\npressure\ngauge",
         "x": 1.3800009155273438,
         "y": 1.495,
         "layer": 1,
         "frame": "rounded rectangle",
         "hostType": "RectangularObstacle",
         "hostIndex": 0,
-        "backgroundColor": "rgb(0,255,0)"
+        "backgroundColor": "rgb(0,255,0)",
+        "anchor": "upper-left"
       },
       {
         "text": "1",
         "x": 0.36,
         "y": 2.31,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
         "text": "2",
         "x": 0.86,
         "y": 2.31,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
         "text": "3",
         "x": 1.35,
         "y": 2.31,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
         "text": "4",
         "x": 1.85,
         "y": 2.31,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
         "text": "5",
         "x": 2.36,
         "y": 2.31,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
         "text": "6",
         "x": 2.86,
         "y": 2.31,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
         "text": "7",
         "x": 3.36,
         "y": 2.32,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,
@@ -411,10 +424,10 @@
     "vy": [
       0
     ],
-    "externalFx": [
+    "externalAx": [
       0
     ],
-    "externalFy": [
+    "externalAy": [
       0
     ],
     "friction": [

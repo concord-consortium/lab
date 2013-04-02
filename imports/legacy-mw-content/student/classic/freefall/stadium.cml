@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The Bunimovich Stadium</page_title>
+<text>
+The Bunimovich Stadium
+
+ 
+     </text>
+<section start="0" end="33">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="24">
+<Alignment>1</Alignment>
+<content start="1" end="23">
+<size>16</size><bold>true</bold><family>Trebuchet MS</family></content>
+
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="25">
+<Alignment>1</Alignment>
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="27">
+<Alignment>1</Alignment>
+<content start="25" end="26">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>stadium$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="33">
+<Alignment>1</Alignment>
+<content start="27" end="28">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<tooltip>Run</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>run;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="28" end="29">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<tooltip>Stop</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="29" end="30">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<tooltip>Reset</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="30" end="31">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Step back</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Step back movie</action>
+</component></content>
+
+<content start="31" end="32">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Step forward</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Step forward movie</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

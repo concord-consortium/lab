@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 20,
   "viewOptions": {
+    "viewPortWidth": 7.5,
+    "viewPortHeight": 4,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "rgba(0,0,0,255)",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": true,
     "useThreeLetterCode": true,
@@ -35,11 +40,12 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "Electron Gun",
+        "text": "Electron\nGun",
         "x": 0.23,
         "y": 2.71,
         "layer": 1,
-        "color": "rgb(255,255,255)"
+        "color": "rgb(255,255,255)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,
@@ -141,7 +147,7 @@
       0,
       0
     ],
-    "externalFx": [
+    "externalAx": [
       0,
       0,
       0,
@@ -150,7 +156,7 @@
       0,
       0
     ],
-    "externalFy": [
+    "externalAy": [
       0,
       0,
       0,

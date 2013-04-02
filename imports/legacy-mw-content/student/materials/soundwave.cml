@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The propagation of sound waves in solids</page_title>
+<text>
+The propagation of sound waves in solids
+
+ 
+
+Crystal A:                                   
+Crystal B:                                   
+
+Instructions:
+Set the kicking force for one of the crystals using its slider, then press the kick button.  
+You should see a wave move across the crystal.
+Redder atoms have more kinetic energy.  
+Arrows on atoms show what direction they are moving, and how fast.
+Hit the Reset button and then re-adjust the sliders to change the parameters and then redo the experiment.
+
+Things to try:
+Can you find out how the kicking force affects the speed of the wave?
+Design an experiment, where you kick two crystals with different forces, then watch the waves race.  
+You can do a similar experiment for the strength of the attraction between atoms.
+You can also experiment with defects in the crystal: drag some atoms out of one of the crystals, and see how this affects the wave.</text>
+<section start="0" end="911">
+<paragraph start="0" end="1">
+<LeftIndent>20.0</LeftIndent>
+<content start="0" end="1">
+<bold>true</bold><size>15</size></content>
+
+</paragraph>
+<paragraph start="1" end="42">
+<LeftIndent>20.0</LeftIndent>
+<content start="1" end="41">
+<bold>true</bold><size>15</size></content>
+
+<content start="41" end="42">
+</content>
+
+</paragraph>
+<paragraph start="42" end="43">
+<LeftIndent>20.0</LeftIndent>
+<content start="42" end="43">
+</content>
+
+</paragraph>
+<paragraph start="43" end="45">
+<LeftIndent>20.0</LeftIndent>
+<content start="43" end="44">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>soundwave$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="46">
+<LeftIndent>20.0</LeftIndent>
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="92">
+<LeftIndent>20.0</LeftIndent>
+<content start="46" end="58">
+<bold>true</bold></content>
+
+<content start="58" end="63">
+</content>
+
+<content start="63" end="64">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>460.0</value>
+<minimum>0.0</minimum>
+<maximum>1000.0</maximum>
+<nstep>50</nstep>
+<title>Kicking Force</title>
+<width>200</width>
+<height>50</height>
+<opaque>false</opaque>
+<labeltable>{value=&quot;1000.0&quot;, label=&quot;Strong&quot;}{value=&quot;0.0&quot;, label=&quot;Weak&quot;}</labeltable>
+<script>set %kickforce %val;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="64" end="68">
+</content>
+
+<content start="68" end="69">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.49999999917215765</value>
+<minimum>0.10000000149011612</minimum>
+<maximum>1.0</maximum>
+<nstep>9</nstep>
+<title>Strength of Attraction between Atoms</title>
+<width>250</width>
+<height>50</height>
+<opaque>false</opaque>
+<labeltable>{value=&quot;0.9999999983443153&quot;, label=&quot;high&quot;}{value=&quot;0.09999999983443153&quot;, label=&quot;low&quot;}</labeltable>
+<change>Element Ws: Epsilon</change>
+</component></content>
+
+<content start="69" end="90">
+</content>
+
+<content start="90" end="91">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset;
+set %kickForce 500;
+set %kickForce2 500;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="91" end="92">
+</content>
+
+</paragraph>
+<paragraph start="92" end="138">
+<LeftIndent>20.0</LeftIndent>
+<content start="92" end="103">
+<bold>true</bold></content>
+
+<content start="103" end="109">
+</content>
+
+<content start="109" end="110">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>460.0</value>
+<minimum>0.0</minimum>
+<maximum>1000.0</maximum>
+<nstep>50</nstep>
+<title>Kicking Force</title>
+<width>200</width>
+<height>50</height>
+<opaque>false</opaque>
+<labeltable>{value=&quot;1000.0&quot;, label=&quot;Strong&quot;}{value=&quot;0.0&quot;, label=&quot;Weak&quot;}</labeltable>
+<script>set %kickforce2 %val;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="110" end="114">
+</content>
+
+<content start="114" end="115">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.49999999917215765</value>
+<minimum>0.10000000149011612</minimum>
+<maximum>1.0</maximum>
+<nstep>9</nstep>
+<title>Strength of Attraction between Atoms</title>
+<width>250</width>
+<height>50</height>
+<opaque>false</opaque>
+<labeltable>{value=&quot;0.9999999983443153&quot;, label=&quot;high&quot;}{value=&quot;0.09999999983443153&quot;, label=&quot;low&quot;}</labeltable>
+<change>Element Ck: Epsilon</change>
+</component></content>
+
+<content start="115" end="136">
+</content>
+
+<content start="136" end="137">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Kick!</title>
+<tooltip>Kick the crystal</tooltip>
+<border>Raised Bevel</border>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select atom 0, 30, 60, 90;
+set vx %kickforce;
+select atom 120, 150, 180, 210;
+set vx %kickforce2;
+run;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="137" end="138">
+</content>
+
+</paragraph>
+<paragraph start="138" end="139">
+<LeftIndent>20.0</LeftIndent>
+<content start="138" end="139">
+</content>
+
+</paragraph>
+<paragraph start="139" end="153">
+<LeftIndent>20.0</LeftIndent>
+<content start="139" end="152">
+<bold>true</bold></content>
+
+<content start="152" end="153">
+</content>
+
+</paragraph>
+<paragraph start="153" end="247">
+<LeftIndent>20.0</LeftIndent>
+<content start="153" end="247">
+</content>
+
+</paragraph>
+<paragraph start="247" end="294">
+<LeftIndent>20.0</LeftIndent>
+<content start="247" end="294">
+</content>
+
+</paragraph>
+<paragraph start="294" end="335">
+<LeftIndent>20.0</LeftIndent>
+<content start="294" end="335">
+</content>
+
+</paragraph>
+<paragraph start="335" end="402">
+<LeftIndent>20.0</LeftIndent>
+<content start="335" end="402">
+</content>
+
+</paragraph>
+<paragraph start="402" end="509">
+<LeftIndent>20.0</LeftIndent>
+<content start="402" end="509">
+</content>
+
+</paragraph>
+<paragraph start="509" end="510">
+<LeftIndent>20.0</LeftIndent>
+<content start="509" end="510">
+</content>
+
+</paragraph>
+<paragraph start="510" end="525">
+<LeftIndent>20.0</LeftIndent>
+<content start="510" end="525">
+<bold>true</bold></content>
+
+</paragraph>
+<paragraph start="525" end="595">
+<LeftIndent>20.0</LeftIndent>
+<content start="525" end="595">
+</content>
+
+</paragraph>
+<paragraph start="595" end="697">
+<LeftIndent>20.0</LeftIndent>
+<content start="595" end="697">
+</content>
+
+</paragraph>
+<paragraph start="697" end="779">
+<LeftIndent>20.0</LeftIndent>
+<content start="697" end="779">
+</content>
+
+</paragraph>
+<paragraph start="779" end="911">
+<LeftIndent>20.0</LeftIndent>
+<content start="779" end="910">
+</content>
+
+</paragraph>
+</section>
+</document>

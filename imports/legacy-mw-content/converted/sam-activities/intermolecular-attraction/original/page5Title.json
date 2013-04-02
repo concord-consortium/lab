@@ -19,8 +19,13 @@
   "viscosity": 0.25,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 4,
+    "viewPortHeight": 2.1,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "rgba(225,239,222,255)",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": true,
     "useThreeLetterCode": true,
@@ -35,11 +40,12 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "You will pull apart pairs of molecules with varying size and shape. By doing this you can see how these factors affect the strength of the London Dispersion attraction.   Choose a pair of moleucles from the menu below.",
+        "text": "You will pull apart pairs of molecules with\nvarying size and shape. By doing this you can \nsee how these factors affect the strength \nof the London Dispersion attraction.\nChoose a pair of moleucles\nfrom the menu below.",
         "x": 0.28,
         "y": 1.81,
         "layer": 1,
-        "color": "rgb(153,0,0)"
+        "color": "rgb(153,0,0)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Experiment with free-fall motion: Mass independence</page_title>
+<bg_gradient><gradient_color1><Red>255</Red><Green>255</Green><Blue>255</Blue></gradient_color1>
+<gradient_color2><Red>20</Red><Green>100</Green><Blue>200</Blue></gradient_color2>
+<gradient_style>1034</gradient_style>
+<gradient_variant>1044</gradient_variant>
+</bg_gradient>
+<text>Experiment with free-fall motion: Mass independence
+
+    
+mass: 4:3:2:1 (from left to right)
+
+Through this activity, students should be able to discover the following:
+
+   Free-motion is independent of mass.
+
+Related story: Galileo and the leaning tower of Pisa</text>
+<section start="0" end="262">
+<paragraph start="0" end="52">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="51">
+<bold>true</bold><family>Book Antiqua</family><size>20</size></content>
+
+<content start="51" end="52">
+<bold>true</bold><family>Microsoft Sans Serif</family><size>18</size></content>
+
+</paragraph>
+<paragraph start="52" end="53">
+<content start="52" end="53">
+<size>18</size></content>
+
+</paragraph>
+<paragraph start="53" end="58">
+<Alignment>1</Alignment>
+<content start="53" end="54">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>ff5$0.mml</resource><menubar>false</menubar></component><size>18</size></content>
+
+<content start="54" end="56">
+<size>18</size></content>
+
+<content start="56" end="57">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.010000000149011612</value>
+<minimum>0.0</minimum>
+<maximum>0.10000000149011612</maximum>
+<nstep>50</nstep>
+<title>Gravitational acceleration</title>
+<width>120</width>
+<height>300</height>
+<orientation>1</orientation>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;0.10000000149011612&quot;, label=&quot;High&quot;}{value=&quot;0.0&quot;, label=&quot;Zero&quot;}</labeltable>
+<change>Gravitational Field</change>
+</component></content>
+
+<content start="57" end="58">
+<size>18</size></content>
+
+</paragraph>
+<paragraph start="58" end="93">
+<Alignment>1</Alignment>
+<content start="58" end="92">
+<italic>true</italic></content>
+
+<content start="92" end="93">
+</content>
+
+</paragraph>
+<paragraph start="93" end="94">
+<Alignment>1</Alignment>
+<content start="93" end="94">
+</content>
+
+</paragraph>
+<paragraph start="94" end="168">
+<LeftIndent>8.0</LeftIndent>
+<content start="94" end="168">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="168" end="169">
+<content start="168" end="169">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="169" end="208">
+<LeftIndent>20.0</LeftIndent>
+<content start="169" end="170">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="170" end="208">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="208" end="209">
+<content start="208" end="209">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="209" end="262">
+<LeftIndent>8.0</LeftIndent>
+<content start="209" end="261">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

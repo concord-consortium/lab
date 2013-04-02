@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Graphite: Chemical Bond Network</page_title>
+<bg_color><Red>0</Red><Green>0</Green><Blue>0</Blue></bg_color>
+<text>Graphite: Chemical Bond Network
+
+ 
+ 
+
+         </text>
+<section start="0" end="48">
+<paragraph start="0" end="32">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="31">
+<size>16</size><bold>true</bold><foreground>255 255 255</foreground></content>
+
+<content start="31" end="32">
+<size>18</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="32" end="33">
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="35">
+<Alignment>1</Alignment>
+<content start="33" end="34">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>graphite$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border><recorder>true</recorder></component></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="37">
+<Alignment>1</Alignment>
+<content start="35" end="36">
+<component><class>org.concord.modeler.PageComboBox</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Display Style</action>
+<tooltip></tooltip>
+</component></content>
+
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="38">
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="48">
+<Alignment>1</Alignment>
+<content start="38" end="39">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat</title>
+<bgcolor>-3334</bgcolor>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<step>0.01</step>
+<action>Heat the system up</action>
+</component></content>
+
+<content start="39" end="40">
+</content>
+
+<content start="40" end="41">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Cool</title>
+<bgcolor>-333301</bgcolor>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<step>-0.01</step>
+<action>Cool the system down</action>
+</component></content>
+
+<content start="41" end="42">
+</content>
+
+<content start="42" end="43">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<tooltip>Run</tooltip>
+<bgcolor>-7f7f80</bgcolor>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>run;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="43" end="44">
+</content>
+
+<content start="44" end="45">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<tooltip>Stop</tooltip>
+<bgcolor>-7f7f80</bgcolor>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="45" end="46">
+</content>
+
+<content start="46" end="47">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<tooltip>Reset</tooltip>
+<bgcolor>-7f7f80</bgcolor>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

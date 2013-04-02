@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Mass dependence of speed distributions of molecules</page_title>
+<text>Mass dependence of speed distributions of molecules
+    
+  
+
+Explanation: The big atoms are 10 times heavier than the small ones. The interatomic forces between a pair of big atom and small atom are identical in the strength, according to Newton&apos;s third law (they are called action and reaction forces in physics). But the acceleration of the big atom resulted from the action force is 10 times smaller than the acceleration of the small atom resulted from the reaction force. As a result, the big atom will move more slowly, because the velocity of an atom derives from its acceleration.
+
+The question is: why isn&apos;t the mean speed of the big atoms exactly one tenth of that of the small atoms?
+
+ 
+Note: If you are wondering why atoms leave the box, it is because periodic boundary conditions are applied to the above model.
+ 
+
+
+
+</text>
+<section start="0" end="831">
+<paragraph start="0" end="52">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="51">
+<size>14</size><bold>true</bold></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="57">
+<Alignment>1</Alignment>
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="52" end="53">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>200.0</width>
+<height>320.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;According to the Maxwell speed distribution 
+    theorem, the mean speeds of gas molecules are inversely propotional to the 
+    square root of their masses. In other words, the lighter a molecule is, 
+    the faster it will move, on average.&lt;br&gt;&lt;br&gt;In this activity, you will 
+    discover the effect of mass on the speed distribution functions. Just run 
+    the simulation until the tape of the recorder is full, stop the 
+    simulation, and click the two buttons below the model window. Compare the 
+    graphs and draw your conclusion.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="53" end="55">
+</content>
+
+<content start="55" end="56">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>maxwell2$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="56" end="57">
+</content>
+
+</paragraph>
+<paragraph start="57" end="60">
+<Alignment>1</Alignment>
+<content start="57" end="58">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show speed distribution for small atoms</title>
+<border>Raised Bevel</border>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<action>Show Maxwell speed distribution function: Pl</action>
+</component></content>
+
+<content start="58" end="59">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show speed distribution for big atoms</title>
+<border>Raised Bevel</border>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<action>Show Maxwell speed distribution function: Ws</action>
+</component></content>
+
+<content start="59" end="60">
+</content>
+
+</paragraph>
+<paragraph start="60" end="61">
+<LeftIndent>8.0</LeftIndent>
+<content start="60" end="61">
+<bold>true</bold><size>11</size></content>
+
+</paragraph>
+<paragraph start="61" end="589">
+<LeftIndent>8.0</LeftIndent>
+<content start="61" end="72">
+<bold>true</bold><size>11</size></content>
+
+<content start="72" end="589">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="589" end="590">
+<LeftIndent>8.0</LeftIndent>
+<content start="589" end="590">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="590" end="695">
+<LeftIndent>8.0</LeftIndent>
+<content start="590" end="695">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="695" end="696">
+<LeftIndent>8.0</LeftIndent>
+<content start="695" end="696">
+</content>
+
+</paragraph>
+<paragraph start="696" end="698">
+<SpaceAbove>2.0</SpaceAbove>
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>8.0</LeftIndent>
+<content start="696" end="697">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.95</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="697" end="698">
+</content>
+
+</paragraph>
+<paragraph start="698" end="825">
+<LeftIndent>28.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="698" end="702">
+<bold>true</bold><size>11</size></content>
+
+<content start="702" end="764">
+<size>11</size></content>
+
+<content start="764" end="792">
+<href>../stateofmatter/periodic.cml</href><size>11</size></content>
+
+<content start="792" end="825">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="825" end="827">
+<SpaceAbove>2.0</SpaceAbove>
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>8.0</LeftIndent>
+<content start="825" end="826">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.95</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="826" end="827">
+</content>
+
+</paragraph>
+<paragraph start="827" end="828">
+<SpaceAbove>2.0</SpaceAbove>
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>8.0</LeftIndent>
+<content start="827" end="828">
+</content>
+
+</paragraph>
+<paragraph start="828" end="829">
+<SpaceAbove>2.0</SpaceAbove>
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>8.0</LeftIndent>
+<content start="828" end="829">
+</content>
+
+</paragraph>
+<paragraph start="829" end="830">
+<SpaceAbove>2.0</SpaceAbove>
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>8.0</LeftIndent>
+<content start="829" end="830">
+</content>
+
+</paragraph>
+<paragraph start="830" end="831">
+<SpaceAbove>2.0</SpaceAbove>
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>8.0</LeftIndent>
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.5.0_09" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.mw3d.ModelState"> 
+  <void property="fullSizeUnbondedAtoms"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="length"> 
+   <float>71.0</float> 
+  </void> 
+  <void property="rotation"> 
+   <string> 655 560 -507 121.3 64</string> 
+  </void> 
+  <void property="showEnergizer"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="showGlassSimulationBox"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="showVdwLines"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="timeStep"> 
+   <float>0.5</float> 
+  </void> 
+  <void property="vdwLinesRatio"> 
+   <float>1.33</float> 
+  </void> 
+  <void property="width"> 
+   <float>42.0</float> 
+  </void> 
+ </object> 
+</java> 

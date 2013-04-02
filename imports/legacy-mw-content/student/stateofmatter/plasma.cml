@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Plasma</page_title>
+<text>Plasma
+
+A plasma is a partially ionized gas in which some electrons are not bound to atoms or molecules any more. Plasma is called the fourth state of matter, in addition to solid, liquid, and gas. A plasma can be created by heating a gas or applying a strong electric field. A plasma can conduct electricity. The following simulation shows this.
+
+  
+ 
+
+
+</text>
+<section start="0" end="356">
+<paragraph start="0" end="7">
+<SpaceAbove>3.0</SpaceAbove>
+<Alignment>1</Alignment>
+<LeftIndent>6.0</LeftIndent>
+<content start="0" end="6">
+<family>Microsoft Sans Serif</family><bold>true</bold><size>18</size></content>
+
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="8">
+<Alignment>1</Alignment>
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="347">
+<LeftIndent>20.0</LeftIndent>
+<content start="8" end="347">
+</content>
+
+</paragraph>
+<paragraph start="347" end="348">
+<content start="347" end="348">
+</content>
+
+</paragraph>
+<paragraph start="348" end="351">
+<Alignment>1</Alignment>
+<content start="348" end="349">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>plasma$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="349" end="350">
+<component><class>org.concord.modeler.PageGauge</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<timeseries>Channel 0</timeseries>
+<description>Ammeter</description>
+<datatype>3</datatype>
+<smoothingfactor>0.05</smoothingfactor>
+<width>300</width>
+<height>200</height>
+<tick>true</tick>
+<major_tick>10</major_tick>
+<nstep>20</nstep>
+<label>true</label>
+<title>true</title>
+<minimum>0.0</minimum>
+<maximum>1.0</maximum>
+<value>0.021337689831852913</value>
+</component></content>
+
+<content start="350" end="351">
+</content>
+
+</paragraph>
+<paragraph start="351" end="353">
+<Alignment>1</Alignment>
+<content start="351" end="352">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>3200.0</value>
+<minimum>2000.0</minimum>
+<maximum>22000.0</maximum>
+<nstep>50</nstep>
+<title>Temperature</title>
+<width>400</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;2000.0&quot;, label=&quot;Cold&quot;}{value=&quot;22000.0&quot;, label=&quot;Hot&quot;}</labeltable>
+<change>Temperature</change>
+</component></content>
+
+<content start="352" end="353">
+</content>
+
+</paragraph>
+<paragraph start="353" end="354">
+<Alignment>1</Alignment>
+<content start="353" end="354">
+</content>
+
+</paragraph>
+<paragraph start="354" end="355">
+<content start="354" end="355">
+</content>
+
+</paragraph>
+<paragraph start="355" end="356">
+</paragraph>
+</section>
+</document>

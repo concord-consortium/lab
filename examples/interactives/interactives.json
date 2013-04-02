@@ -33,6 +33,14 @@
       "publicationStatus": "public"
     },
     {
+      "title": "Area versus Number of Atoms",
+      "path": "interactives/basic-examples/area-versus-number.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Demo showing how the area (two-dimensional \"volume\") of a gas at constant temperature and pressure changes with the number of atoms",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
       "title": "Atom Data Table",
       "path": "interactives/basic-examples/atom-data-table.json",
       "groupKey": "basic-examples",
@@ -56,6 +64,14 @@
       "groupKey": "basic-examples",
       "subtitle": "Tracing and marking atoms.",
       "about": "Atom Tracing example",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "atomsWithinTriangle Demo",
+      "path": "interactives/basic-examples/atomsWithinTriangle.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Use atomsWithinTriangle() to select atoms within a triangle defined by its three vertices.",
+      "about": "In this text interactive you should see a clear, triangular shape created by marked atoms.",
       "publicationStatus": "public"
     },
     {
@@ -164,20 +180,6 @@
       "publicationStatus": "public"
     },
     {
-      "title": "Oil and Water for Slow Computers",
-      "path": "interactives/basic-examples/oil-and-water-for-slow-computers.json",
-      "groupKey": "basic-examples",
-      "subtitle": "44 charged and uncharged bonded atoms displaying both bonds and VDW lines.",
-      "about": [
-        "This version of 'Oil and Water' is an experimental adaptation for slower computers amd browsers.",
-        "Try the Performance Tuning selections for: **Regular**, **Slow Computer**, or **Tablet**.",
-        "",
-        "Changing this selection sets the timeStep, timeStepsPerTick or modelSampleRate model parameters.",
-        "See **[simulation-stepping](../../readme.html#md2d-simulation-stepping)** in readme for more details."
-      ],
-      "publicationStatus": "draft"
-    },
-    {
       "title": "onClick Demo",
       "path": "interactives/basic-examples/on-click.json",
       "groupKey": "basic-examples",
@@ -196,6 +198,14 @@
       "publicationStatus": "public"
     },
     {
+      "title": "onSelect Demo",
+      "path": "interactives/basic-examples/on-select.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Use onSelect() to attach an event handler function for select action.",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
       "title": "Testing: Only One Atom",
       "path": "interactives/basic-examples/one-atom.json",
       "groupKey": "basic-examples",
@@ -210,6 +220,16 @@
       "subtitle": "",
       "about": "",
       "publicationStatus": "public"
+    },
+    {
+      "title": "Performance Tuning for Slow Computers",
+      "path": "interactives/basic-examples/performance-tuning-for-slow-computers.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Adjust timeStep and timeStepsPerTick to provide a better experience on your device.",
+      "about": [
+        "See **[simulation-stepping](../../readme.html#md2d-simulation-stepping)** in readme for more details."
+      ],
+      "publicationStatus": "draft"
     },
     {
       "title": "Pulldowns, radio buttons and custom parameters",
@@ -613,6 +633,30 @@
       "publicationStatus": "public"
     },
     {
+      "title": "Text Box in Center (imported from MML)",
+      "path": "interactives/conversion-tests/text-box-in-center-imported-from-mml.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "Upper-left corner of textBox should be at model center.",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Text Boxes (imported from MML)",
+      "path": "interactives/conversion-tests/text-boxes-imported-from-mml.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "Examples showing textBoxes imported from MML.",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Text Boxes on Atoms",
+      "path": "interactives/conversion-tests/text-boxes-on-atoms.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "Examples of different styles and positioning of text boxes attached to atoms.",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
       "title": "Text Boxes",
       "path": "interactives/conversion-tests/text-boxes.json",
       "groupKey": "conversion-tests",
@@ -759,27 +803,19 @@
       "publicationStatus": "draft"
     },
     {
-      "title": "Diffusion Temperature",
-      "path": "interactives/sam/diffusion/1-2-diffusion-temp.json",
-      "groupKey": "sam/diffusion",
-      "subtitle": "How does temperature affect the rate of diffusion?",
-      "about": "Click remove barrier to begin measuring how long it takes for the blue molecules to diffuse across the container.",
-      "publicationStatus": "draft"
-    },
-    {
       "title": "Basic Diffusion on click",
-      "path": "interactives/sam/diffusion/1-2-dropping-dye-on-click.json",
+      "path": "interactives/sam/diffusion/1-dropping-dye-on-click.json",
       "groupKey": "sam/diffusion",
       "subtitle": "Watch a drop of dye spreading out in water.",
       "about": [
         "Click in the model to add a drop of dye.  Watch how the molecules move through the water.",
         "Trace a random individual molecule to see how it moves through the liquid."
       ],
-      "publicationStatus": "draft"
+      "publicationStatus": "public"
     },
     {
       "title": "Basic Diffusion",
-      "path": "interactives/sam/diffusion/1-2-dropping-dye.json",
+      "path": "interactives/sam/diffusion/1-dropping-dye.json",
       "groupKey": "sam/diffusion",
       "subtitle": "Watch a drop of dye spreading out in water.",
       "about": [
@@ -787,6 +823,30 @@
         "Trace a random individual molecule to see how it moves through the liquid."
       ],
       "publicationStatus": "draft"
+    },
+    {
+      "title": "Diffusion Temperature",
+      "path": "interactives/sam/diffusion/2-temperature.json",
+      "groupKey": "sam/diffusion",
+      "subtitle": "How does temperature affect the rate of diffusion?",
+      "about": "Click remove barrier to begin measuring how long it takes for the blue molecules to diffuse across the container.",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Diffusion Temperature and Mass",
+      "path": "interactives/sam/diffusion/3-mass.json",
+      "groupKey": "sam/diffusion",
+      "subtitle": "How do temperature and mass affect the rate of diffusion?",
+      "about": "Click remove barrier to begin measuring how long it takes for the molecules to diffuse across the container.",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Diffusion Across a Semipermeable Membrane",
+      "path": "interactives/sam/diffusion/4-semipermeable.json",
+      "groupKey": "sam/diffusion",
+      "subtitle": "How does membrane pore size affect the diffusion of different molecules?",
+      "about": "",
+      "publicationStatus": "public"
     },
     {
       "title": "Empty",
@@ -1130,6 +1190,422 @@
         "Change specific amino acids in a protein by right-clicking on them."
       ],
       "publicationStatus": "public"
+    },
+    {
+      "title": "ff1",
+      "path": "interactives/student/classic/freefall/ff1.json",
+      "groupKey": "student/classic/freefall",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "ff2",
+      "path": "interactives/student/classic/freefall/ff2.json",
+      "groupKey": "student/classic/freefall",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "ff3",
+      "path": "interactives/student/classic/freefall/ff3.json",
+      "groupKey": "student/classic/freefall",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "ff4",
+      "path": "interactives/student/classic/freefall/ff4.json",
+      "groupKey": "student/classic/freefall",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "ff5",
+      "path": "interactives/student/classic/freefall/ff5.json",
+      "groupKey": "student/classic/freefall",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "ladder",
+      "path": "interactives/student/classic/freefall/ladder.json",
+      "groupKey": "student/classic/freefall",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "pm1",
+      "path": "interactives/student/classic/freefall/pm1.json",
+      "groupKey": "student/classic/freefall",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "stadium",
+      "path": "interactives/student/classic/freefall/stadium.json",
+      "groupKey": "student/classic/freefall",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "parallelgears",
+      "path": "interactives/student/classic/gear/parallelgears.json",
+      "groupKey": "student/classic/gear",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "parallelgears_deadlock",
+      "path": "interactives/student/classic/gear/parallelgears_deadlock.json",
+      "groupKey": "student/classic/gear",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "parallelgears_horizontal",
+      "path": "interactives/student/classic/gear/parallelgears_horizontal.json",
+      "groupKey": "student/classic/gear",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "parallelgears_horizontal2",
+      "path": "interactives/student/classic/gear/parallelgears_horizontal2.json",
+      "groupKey": "student/classic/gear",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "parallelgears_triangle",
+      "path": "interactives/student/classic/gear/parallelgears_triangle.json",
+      "groupKey": "student/classic/gear",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "twogears",
+      "path": "interactives/student/classic/gear/twogears.json",
+      "groupKey": "student/classic/gear",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "ho1",
+      "path": "interactives/student/classic/harmonic/ho1.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "ho2",
+      "path": "interactives/student/classic/harmonic/ho2.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "ho3",
+      "path": "interactives/student/classic/harmonic/ho3.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "ho4",
+      "path": "interactives/student/classic/harmonic/ho4.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "ho5",
+      "path": "interactives/student/classic/harmonic/ho5.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "ho6",
+      "path": "interactives/student/classic/harmonic/ho6.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "ho61",
+      "path": "interactives/student/classic/harmonic/ho61.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "ho7",
+      "path": "interactives/student/classic/harmonic/ho7.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "ho8",
+      "path": "interactives/student/classic/harmonic/ho8.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "ho9",
+      "path": "interactives/student/classic/harmonic/ho9.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hoa",
+      "path": "interactives/student/classic/harmonic/hoa.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hob",
+      "path": "interactives/student/classic/harmonic/hob.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hoc",
+      "path": "interactives/student/classic/harmonic/hoc.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hod",
+      "path": "interactives/student/classic/harmonic/hod.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hoe",
+      "path": "interactives/student/classic/harmonic/hoe.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hof",
+      "path": "interactives/student/classic/harmonic/hof.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hog",
+      "path": "interactives/student/classic/harmonic/hog.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hoh",
+      "path": "interactives/student/classic/harmonic/hoh.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hoi",
+      "path": "interactives/student/classic/harmonic/hoi.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hoj",
+      "path": "interactives/student/classic/harmonic/hoj.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hok",
+      "path": "interactives/student/classic/harmonic/hok.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hol",
+      "path": "interactives/student/classic/harmonic/hol.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hom",
+      "path": "interactives/student/classic/harmonic/hom.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hon",
+      "path": "interactives/student/classic/harmonic/hon.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hoo",
+      "path": "interactives/student/classic/harmonic/hoo.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hop",
+      "path": "interactives/student/classic/harmonic/hop.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hoq",
+      "path": "interactives/student/classic/harmonic/hoq.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hor",
+      "path": "interactives/student/classic/harmonic/hor.json",
+      "groupKey": "student/classic/harmonic",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "SliderCrank",
+      "path": "interactives/student/classic/machine/SliderCrank.json",
+      "groupKey": "student/classic/machine",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "bike",
+      "path": "interactives/student/classic/machine/bike.json",
+      "groupKey": "student/classic/machine",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "machine1",
+      "path": "interactives/student/classic/machine/machine1.json",
+      "groupKey": "student/classic/machine",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "machine2",
+      "path": "interactives/student/classic/machine/machine2.json",
+      "groupKey": "student/classic/machine",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "stamper",
+      "path": "interactives/student/classic/machine/stamper.json",
+      "groupKey": "student/classic/machine",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "suspensionbridge",
+      "path": "interactives/student/classic/machine/suspensionbridge.json",
+      "groupKey": "student/classic/machine",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "tank1",
+      "path": "interactives/student/classic/machine/tank1.json",
+      "groupKey": "student/classic/machine",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "tank2",
+      "path": "interactives/student/classic/machine/tank2.json",
+      "groupKey": "student/classic/machine",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "waterwheel",
+      "path": "interactives/student/classic/machine/waterwheel.json",
+      "groupKey": "student/classic/machine",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "waterwheel2",
+      "path": "interactives/student/classic/machine/waterwheel2.json",
+      "groupKey": "student/classic/machine",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
     },
     {
       "title": "blockfeeder",
@@ -1567,6 +2043,1550 @@
       "title": "triplependulum",
       "path": "interactives/student/classic/pendulum/triplependulum.json",
       "groupKey": "student/classic/pendulum",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "pulley1",
+      "path": "interactives/student/classic/pulley/pulley1.json",
+      "groupKey": "student/classic/pulley",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "pulley2",
+      "path": "interactives/student/classic/pulley/pulley2.json",
+      "groupKey": "student/classic/pulley",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "pulley3",
+      "path": "interactives/student/classic/pulley/pulley3.json",
+      "groupKey": "student/classic/pulley",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "pulley4",
+      "path": "interactives/student/classic/pulley/pulley4.json",
+      "groupKey": "student/classic/pulley",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "angularmomentum",
+      "path": "interactives/student/classic/spring/angularmomentum.json",
+      "groupKey": "student/classic/spring",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "buffer",
+      "path": "interactives/student/classic/spring/buffer.json",
+      "groupKey": "student/classic/spring",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "collidespring",
+      "path": "interactives/student/classic/spring/collidespring.json",
+      "groupKey": "student/classic/spring",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hangspring",
+      "path": "interactives/student/classic/spring/hangspring.json",
+      "groupKey": "student/classic/spring",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "spring",
+      "path": "interactives/student/classic/spring/spring.json",
+      "groupKey": "student/classic/spring",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "spring1",
+      "path": "interactives/student/classic/spring/spring1.json",
+      "groupKey": "student/classic/spring",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "spring2",
+      "path": "interactives/student/classic/spring/spring2.json",
+      "groupKey": "student/classic/spring",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "twosprings",
+      "path": "interactives/student/classic/spring/twosprings.json",
+      "groupKey": "student/classic/spring",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "wave1",
+      "path": "interactives/student/classic/wave/wave1.json",
+      "groupKey": "student/classic/wave",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "wave2",
+      "path": "interactives/student/classic/wave/wave2.json",
+      "groupKey": "student/classic/wave",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "archimedes",
+      "path": "interactives/student/fluid/archimedes.json",
+      "groupKey": "student/fluid",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "archimedes1",
+      "path": "interactives/student/fluid/archimedes1.json",
+      "groupKey": "student/fluid",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "drum",
+      "path": "interactives/student/fluid/drum.json",
+      "groupKey": "student/fluid",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "equalpressure",
+      "path": "interactives/student/fluid/equalpressure.json",
+      "groupKey": "student/fluid",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "flow",
+      "path": "interactives/student/fluid/flow.json",
+      "groupKey": "student/fluid",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "moreonleft",
+      "path": "interactives/student/fluid/moreonleft.json",
+      "groupKey": "student/fluid",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "[#47172851]"
+    },
+    {
+      "title": "moreonright",
+      "path": "interactives/student/fluid/moreonright.json",
+      "groupKey": "student/fluid",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "[#47172851]"
+    },
+    {
+      "title": "pascal",
+      "path": "interactives/student/fluid/pascal.json",
+      "groupKey": "student/fluid",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "pressureconveyance1$1",
+      "path": "interactives/student/fluid/pressureconveyance1$1.json",
+      "groupKey": "student/fluid",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "pressureconveyance1",
+      "path": "interactives/student/fluid/pressureconveyance1.json",
+      "groupKey": "student/fluid",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "pressureconveyance2",
+      "path": "interactives/student/fluid/pressureconveyance2.json",
+      "groupKey": "student/fluid",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "pressureconveyance3",
+      "path": "interactives/student/fluid/pressureconveyance3.json",
+      "groupKey": "student/fluid",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "pressureconveyance4",
+      "path": "interactives/student/fluid/pressureconveyance4.json",
+      "groupKey": "student/fluid",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "ring150_broken",
+      "path": "interactives/student/fluid/ring150_broken.json",
+      "groupKey": "student/fluid",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "ring20",
+      "path": "interactives/student/fluid/ring20.json",
+      "groupKey": "student/fluid",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "ring50",
+      "path": "interactives/student/fluid/ring50.json",
+      "groupKey": "student/fluid",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Enclosure$1",
+      "path": "interactives/student/materials/Enclosure$1.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Enclosure",
+      "path": "interactives/student/materials/Enclosure.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "GrainBoundary",
+      "path": "interactives/student/materials/GrainBoundary.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "MaterialStrength",
+      "path": "interactives/student/materials/MaterialStrength.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "MetallicAlloy$1",
+      "path": "interactives/student/materials/MetallicAlloy$1.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "MetallicAlloy",
+      "path": "interactives/student/materials/MetallicAlloy.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "PointDefects",
+      "path": "interactives/student/materials/PointDefects.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "PointDefects2",
+      "path": "interactives/student/materials/PointDefects2.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Rubberband",
+      "path": "interactives/student/materials/Rubberband.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "SchottkyDefect",
+      "path": "interactives/student/materials/SchottkyDefect.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "active_filters$1",
+      "path": "interactives/student/materials/active_filters$1.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "active_filters",
+      "path": "interactives/student/materials/active_filters.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "adhesion",
+      "path": "interactives/student/materials/adhesion.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "adhesion2",
+      "path": "interactives/student/materials/adhesion2.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "adhesion3",
+      "path": "interactives/student/materials/adhesion3.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "adhesion4",
+      "path": "interactives/student/materials/adhesion4.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "adhesion5",
+      "path": "interactives/student/materials/adhesion5.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "airpurifier",
+      "path": "interactives/student/materials/airpurifier.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "disorder",
+      "path": "interactives/student/materials/disorder.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "drop",
+      "path": "interactives/student/materials/drop.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "fracture",
+      "path": "interactives/student/materials/fracture.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hexshockwave_collide",
+      "path": "interactives/student/materials/hexshockwave_collide.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hexshockwave_defect",
+      "path": "interactives/student/materials/hexshockwave_defect.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hexshockwave_ellipticalwave",
+      "path": "interactives/student/materials/hexshockwave_ellipticalwave.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hexshockwave_hexagonalwave",
+      "path": "interactives/student/materials/hexshockwave_hexagonalwave.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hexshockwave_meltingfront",
+      "path": "interactives/student/materials/hexshockwave_meltingfront.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hexshockwave_planewave",
+      "path": "interactives/student/materials/hexshockwave_planewave.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hexshockwave_reflect",
+      "path": "interactives/student/materials/hexshockwave_reflect.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hexshockwave_stronginterface",
+      "path": "interactives/student/materials/hexshockwave_stronginterface.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hexshockwave_thermalexpansion",
+      "path": "interactives/student/materials/hexshockwave_thermalexpansion.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hexshockwave_weakinterface",
+      "path": "interactives/student/materials/hexshockwave_weakinterface.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hydrides",
+      "path": "interactives/student/materials/hydrides.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "nail",
+      "path": "interactives/student/materials/nail.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "nailhard",
+      "path": "interactives/student/materials/nailhard.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "nailsoft",
+      "path": "interactives/student/materials/nailsoft.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "nocrack",
+      "path": "interactives/student/materials/nocrack.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "peel",
+      "path": "interactives/student/materials/peel.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "peelcenter",
+      "path": "interactives/student/materials/peelcenter.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "peelright",
+      "path": "interactives/student/materials/peelright.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "piezoelectric1",
+      "path": "interactives/student/materials/piezoelectric1.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "plasticstrength",
+      "path": "interactives/student/materials/plasticstrength.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "polymer",
+      "path": "interactives/student/materials/polymer.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "recshockwave",
+      "path": "interactives/student/materials/recshockwave.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "rod2wire",
+      "path": "interactives/student/materials/rod2wire.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "shake",
+      "path": "interactives/student/materials/shake.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "shake2",
+      "path": "interactives/student/materials/shake2.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "shockwave",
+      "path": "interactives/student/materials/shockwave.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "soundwave",
+      "path": "interactives/student/materials/soundwave.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "sputtering",
+      "path": "interactives/student/materials/sputtering.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "CO2O2",
+      "path": "interactives/student/motionandforce/CO2O2.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "CarbonDioxide",
+      "path": "interactives/student/motionandforce/CarbonDioxide.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "FacilitatedDiffusion",
+      "path": "interactives/student/motionandforce/FacilitatedDiffusion.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "Fast",
+      "path": "interactives/student/motionandforce/Fast.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "FewCharge",
+      "path": "interactives/student/motionandforce/FewCharge.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "FullCharge",
+      "path": "interactives/student/motionandforce/FullCharge.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "NoCharge",
+      "path": "interactives/student/motionandforce/NoCharge.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Slow",
+      "path": "interactives/student/motionandforce/Slow.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "aromatic",
+      "path": "interactives/student/motionandforce/aromatic.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "barometric",
+      "path": "interactives/student/motionandforce/barometric.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "brownianmotion",
+      "path": "interactives/student/motionandforce/brownianmotion.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "cartooncell",
+      "path": "interactives/student/motionandforce/cartooncell.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "charge",
+      "path": "interactives/student/motionandforce/charge.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "charge1",
+      "path": "interactives/student/motionandforce/charge1.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "collision",
+      "path": "interactives/student/motionandforce/collision.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "contour",
+      "path": "interactives/student/motionandforce/contour.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "debyesphere",
+      "path": "interactives/student/motionandforce/debyesphere.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "deepimpact",
+      "path": "interactives/student/motionandforce/deepimpact.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "densitytemp",
+      "path": "interactives/student/motionandforce/densitytemp.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "distill",
+      "path": "interactives/student/motionandforce/distill.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "distill1$1",
+      "path": "interactives/student/motionandforce/distill1$1.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "distill1",
+      "path": "interactives/student/motionandforce/distill1.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "drugdelivery",
+      "path": "interactives/student/motionandforce/drugdelivery.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "effusion",
+      "path": "interactives/student/motionandforce/effusion.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "effusion2",
+      "path": "interactives/student/motionandforce/effusion2.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "elasticcollision",
+      "path": "interactives/student/motionandforce/elasticcollision.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "electrophoresis",
+      "path": "interactives/student/motionandforce/electrophoresis.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "friction",
+      "path": "interactives/student/motionandforce/friction.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "frictionheat",
+      "path": "interactives/student/motionandforce/frictionheat.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "graphite",
+      "path": "interactives/student/motionandforce/graphite.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "hiv",
+      "path": "interactives/student/motionandforce/hiv.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "interaction",
+      "path": "interactives/student/motionandforce/interaction.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "iontransport",
+      "path": "interactives/student/motionandforce/iontransport.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "ladder",
+      "path": "interactives/student/motionandforce/ladder.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "magneticconfinement",
+      "path": "interactives/student/motionandforce/magneticconfinement.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "magneticforce",
+      "path": "interactives/student/motionandforce/magneticforce.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "magneticreverse$1",
+      "path": "interactives/student/motionandforce/magneticreverse$1.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "magneticreverse",
+      "path": "interactives/student/motionandforce/magneticreverse.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "masseffect",
+      "path": "interactives/student/motionandforce/masseffect.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "maxwell1",
+      "path": "interactives/student/motionandforce/maxwell1.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "maxwell2",
+      "path": "interactives/student/motionandforce/maxwell2.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "maxwell3",
+      "path": "interactives/student/motionandforce/maxwell3.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "micelle",
+      "path": "interactives/student/motionandforce/micelle.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "mixturediffusion$1",
+      "path": "interactives/student/motionandforce/mixturediffusion$1.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "mixturediffusion",
+      "path": "interactives/student/motionandforce/mixturediffusion.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "molecularsystem",
+      "path": "interactives/student/motionandforce/molecularsystem.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "nanoballoon",
+      "path": "interactives/student/motionandforce/nanoballoon.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "nanoboat",
+      "path": "interactives/student/motionandforce/nanoboat.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "osmosis",
+      "path": "interactives/student/motionandforce/osmosis.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "piston",
+      "path": "interactives/student/motionandforce/piston.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "polar_efield",
+      "path": "interactives/student/motionandforce/polar_efield.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "polymerimpact",
+      "path": "interactives/student/motionandforce/polymerimpact.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "popballoon",
+      "path": "interactives/student/motionandforce/popballoon.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "rutherford",
+      "path": "interactives/student/motionandforce/rutherford.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "simpleosmosis",
+      "path": "interactives/student/motionandforce/simpleosmosis.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "sink",
+      "path": "interactives/student/motionandforce/sink.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "snowflake",
+      "path": "interactives/student/motionandforce/snowflake.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "sticky",
+      "path": "interactives/student/motionandforce/sticky.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "temperature",
+      "path": "interactives/student/motionandforce/temperature.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "useobstacle",
+      "path": "interactives/student/motionandforce/useobstacle.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "virus",
+      "path": "interactives/student/motionandforce/virus.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "calibration1",
+      "path": "interactives/student/osmosis/calibration1.json",
+      "groupKey": "student/osmosis",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "calibration2",
+      "path": "interactives/student/osmosis/calibration2.json",
+      "groupKey": "student/osmosis",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "demo1",
+      "path": "interactives/student/osmosis/demo1.json",
+      "groupKey": "student/osmosis",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "demo2",
+      "path": "interactives/student/osmosis/demo2.json",
+      "groupKey": "student/osmosis",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "equilibration",
+      "path": "interactives/student/osmosis/equilibration.json",
+      "groupKey": "student/osmosis",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "go3",
+      "path": "interactives/student/osmosis/go3.json",
+      "groupKey": "student/osmosis",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "isotonic",
+      "path": "interactives/student/osmosis/isotonic.json",
+      "groupKey": "student/osmosis",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "measure1",
+      "path": "interactives/student/osmosis/measure1.json",
+      "groupKey": "student/osmosis",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "periodic1",
+      "path": "interactives/student/osmosis/periodic1.json",
+      "groupKey": "student/osmosis",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "periodic2",
+      "path": "interactives/student/osmosis/periodic2.json",
+      "groupKey": "student/osmosis",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "reverse3",
+      "path": "interactives/student/osmosis/reverse3.json",
+      "groupKey": "student/osmosis",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "rigidmembrane",
+      "path": "interactives/student/osmosis/rigidmembrane.json",
+      "groupKey": "student/osmosis",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "soluterestrained",
+      "path": "interactives/student/osmosis/soluterestrained.json",
+      "groupKey": "student/osmosis",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "timeline",
+      "path": "interactives/student/osmosis/timeline.json",
+      "groupKey": "student/osmosis",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "attraction",
+      "path": "interactives/student/stateofmatter/attraction.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "barostat$1",
+      "path": "interactives/student/stateofmatter/barostat$1.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "barostat",
+      "path": "interactives/student/stateofmatter/barostat.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "debyesheath",
+      "path": "interactives/student/stateofmatter/debyesheath.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "electronavalanche",
+      "path": "interactives/student/stateofmatter/electronavalanche.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "evaporation",
+      "path": "interactives/student/stateofmatter/evaporation.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "gaslaw1",
+      "path": "interactives/student/stateofmatter/gaslaw1.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "gasliquid$1",
+      "path": "interactives/student/stateofmatter/gasliquid$1.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "gasliquid",
+      "path": "interactives/student/stateofmatter/gasliquid.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "impactionization",
+      "path": "interactives/student/stateofmatter/impactionization.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "interactionA$1",
+      "path": "interactives/student/stateofmatter/interactionA$1.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "interactionA",
+      "path": "interactives/student/stateofmatter/interactionA.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "interactionB$1",
+      "path": "interactives/student/stateofmatter/interactionB$1.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "interactionB",
+      "path": "interactives/student/stateofmatter/interactionB.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "interactionC",
+      "path": "interactives/student/stateofmatter/interactionC.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "interactionD",
+      "path": "interactives/student/stateofmatter/interactionD.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "interactionE",
+      "path": "interactives/student/stateofmatter/interactionE.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "latentheat",
+      "path": "interactives/student/stateofmatter/latentheat.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "latentheat2",
+      "path": "interactives/student/stateofmatter/latentheat2.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "latentheat3",
+      "path": "interactives/student/stateofmatter/latentheat3.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "liquidsolid$1",
+      "path": "interactives/student/stateofmatter/liquidsolid$1.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "liquidsolid",
+      "path": "interactives/student/stateofmatter/liquidsolid.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "msd$1",
+      "path": "interactives/student/stateofmatter/msd$1.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "msd",
+      "path": "interactives/student/stateofmatter/msd.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "nucleation",
+      "path": "interactives/student/stateofmatter/nucleation.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "phaseseparation",
+      "path": "interactives/student/stateofmatter/phaseseparation.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "plasma",
+      "path": "interactives/student/stateofmatter/plasma.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "pressure",
+      "path": "interactives/student/stateofmatter/pressure.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "sm",
+      "path": "interactives/student/stateofmatter/sm.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "sm_gas",
+      "path": "interactives/student/stateofmatter/sm_gas.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "sm_liq",
+      "path": "interactives/student/stateofmatter/sm_liq.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "sm_sol",
+      "path": "interactives/student/stateofmatter/sm_sol.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "doppler",
+      "path": "interactives/student/wave/doppler.json",
+      "groupKey": "student/wave",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "longitudinalwavespring",
+      "path": "interactives/student/wave/longitudinalwavespring.json",
+      "groupKey": "student/wave",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "mechanicalwave",
+      "path": "interactives/student/wave/mechanicalwave.json",
+      "groupKey": "student/wave",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "oscillatingstring",
+      "path": "interactives/student/wave/oscillatingstring.json",
+      "groupKey": "student/wave",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "soundwave",
+      "path": "interactives/student/wave/soundwave.json",
+      "groupKey": "student/wave",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "stringwave",
+      "path": "interactives/student/wave/stringwave.json",
+      "groupKey": "student/wave",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "stringwave2",
+      "path": "interactives/student/wave/stringwave2.json",
+      "groupKey": "student/wave",
       "subtitle": "",
       "about": "",
       "publicationStatus": "draft"
@@ -3187,6 +5207,71 @@
     {
       "path": "student/classic/motion",
       "name": "Classic Java MW Examples: Motion",
+      "category": "Examples"
+    },
+    {
+      "path": "student/classic/freefall",
+      "name": "Classic Java MW Examples: Freefall",
+      "category": "Examples"
+    },
+    {
+      "path": "student/classic/gear",
+      "name": "Classic Java MW Examples: Gear",
+      "category": "Examples"
+    },
+    {
+      "path": "student/classic/harmonic",
+      "name": "Classic Java MW Examples: Harmonic",
+      "category": "Examples"
+    },
+    {
+      "path": "student/classic/machine",
+      "name": "Classic Java MW Examples: Machine",
+      "category": "Examples"
+    },
+    {
+      "path": "student/classic/pulley",
+      "name": "Classic Java MW Examples: Pulley",
+      "category": "Examples"
+    },
+    {
+      "path": "student/classic/spring",
+      "name": "Classic Java MW Examples: Spring",
+      "category": "Examples"
+    },
+    {
+      "path": "student/fluid",
+      "name": "Classic Java MW Examples: Fluid",
+      "category": "Examples"
+    },
+    {
+      "path": "student/materials",
+      "name": "Classic Java MW Examples: Materials",
+      "category": "Examples"
+    },
+    {
+      "path": "student/motionandforce",
+      "name": "Classic Java MW Examples: Motion and Force",
+      "category": "Examples"
+    },
+    {
+      "path": "student/osmosis",
+      "name": "Classic Java MW Examples: Osmosis",
+      "category": "Examples"
+    },
+    {
+      "path": "student/stateofmatter",
+      "name": "Classic Java MW Examples: States of Matter",
+      "category": "Examples"
+    },
+    {
+      "path": "student/wave",
+      "name": "Classic Java MW Examples: Waves",
+      "category": "Examples"
+    },
+    {
+      "path": "student/classic/wave",
+      "name": "Classic Java MW Examples: Wave",
       "category": "Examples"
     },
     {

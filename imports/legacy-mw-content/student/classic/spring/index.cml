@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Virtual experiments on springs</page_title>
+<bg_image>sidebar1b.gif</bg_image>
+<text> 
+
+Springs are classic examples for learning Newtonian mechanics. Here are a collection of virtual experiments on spring systems.
+
+   Conservation of angular momentum shown by two masses connected by a spring
+   A spring and a mass
+   Two springs and a mass
+   A mass hung on a spring
+   A mass hung on two springs
+   Free fall of two masses linked by a spring
+   Collision between a free mass and a mass connected to a spring
+
+
+
+</text>
+<section start="0" end="431">
+<paragraph start="0" end="2">
+<RightIndent>10.0</RightIndent>
+<SpaceAbove>10.0</SpaceAbove>
+<LeftIndent>160.0</LeftIndent>
+<Alignment>2</Alignment>
+<content start="0" end="1">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>400.0</width><height>60</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;&lt;center&gt;&lt;h2&gt;&lt;font face=Verdana color=#ffffff&gt;Virtual experiments on springs&lt;/font&gt;&lt;/center&gt;&lt;/html&gt;</title><bgcolor>-ff6601</bgcolor></icon></content>
+
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="3">
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="130">
+<LeftIndent>160.0</LeftIndent>
+<content start="3" end="130">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="130" end="131">
+<LeftIndent>160.0</LeftIndent>
+<content start="130" end="131">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="131" end="209">
+<LeftIndent>180.0</LeftIndent>
+<content start="131" end="132">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><size>14</size><family>Trebuchet MS</family></content>
+
+<content start="132" end="134">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="134" end="208">
+<size>14</size><family>Trebuchet MS</family><href>angularmomentum.cml</href></content>
+
+<content start="208" end="209">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="209" end="232">
+<LeftIndent>180.0</LeftIndent>
+<content start="209" end="210">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><size>14</size><family>Trebuchet MS</family></content>
+
+<content start="210" end="212">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="212" end="231">
+<size>14</size><family>Trebuchet MS</family><href>spring.cml</href></content>
+
+<content start="231" end="232">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="232" end="258">
+<LeftIndent>180.0</LeftIndent>
+<content start="232" end="233">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><size>14</size><family>Trebuchet MS</family></content>
+
+<content start="233" end="235">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="235" end="257">
+<size>14</size><family>Trebuchet MS</family><href>twosprings.cml</href></content>
+
+<content start="257" end="258">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="258" end="285">
+<LeftIndent>180.0</LeftIndent>
+<content start="258" end="259">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><size>14</size><family>Trebuchet MS</family></content>
+
+<content start="259" end="261">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="261" end="284">
+<size>14</size><family>Trebuchet MS</family><href>hangspring.cml</href></content>
+
+<content start="284" end="285">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="285" end="315">
+<LeftIndent>180.0</LeftIndent>
+<content start="285" end="286">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><size>14</size><family>Trebuchet MS</family></content>
+
+<content start="286" end="288">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="288" end="314">
+<size>14</size><family>Trebuchet MS</family><href>spring1.cml</href></content>
+
+<content start="314" end="315">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="315" end="361">
+<LeftIndent>180.0</LeftIndent>
+<content start="315" end="316">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><size>14</size><family>Trebuchet MS</family></content>
+
+<content start="316" end="318">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="318" end="360">
+<size>14</size><family>Trebuchet MS</family><href>spring2.cml</href></content>
+
+<content start="360" end="361">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="361" end="427">
+<LeftIndent>180.0</LeftIndent>
+<content start="361" end="362">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><size>14</size><family>Trebuchet MS</family></content>
+
+<content start="362" end="364">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="364" end="426">
+<size>14</size><family>Trebuchet MS</family><href>collidespring.cml</href></content>
+
+<content start="426" end="427">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="427" end="428">
+<LeftIndent>180.0</LeftIndent>
+<content start="427" end="428">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="428" end="429">
+<content start="428" end="429">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="429" end="430">
+<content start="429" end="430">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="430" end="431">
+</paragraph>
+</section>
+</document>

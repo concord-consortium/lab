@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 3.5,
+    "viewPortHeight": 2.5,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -55,7 +60,8 @@
         "text": "Choose a reaction to run.",
         "x": 0.18,
         "y": 0.41,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

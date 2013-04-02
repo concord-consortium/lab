@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 5,
+    "viewPortHeight": 2.5,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": true,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -35,12 +40,13 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "Double-click on a button to bring up a customization dialog window.",
+        "text": "Double-click on a button to bring\nup a customization dialog window.",
         "x": 1.11,
         "y": 1.97,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(0,255,0)"
+        "backgroundColor": "rgb(0,255,0)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

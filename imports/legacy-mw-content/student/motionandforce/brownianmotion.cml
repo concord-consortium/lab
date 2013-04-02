@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Brownian Motion</page_title>
+<bg_image>yellow_fabric.gif</bg_image>
+<text>Brownian Motion
+
+        
+      
+
+Brownian motion is a classical example in the history of modern science. The studies of Brownian motion provided indirectly a strong evidence that atoms exist. At the time when Brown discovered this motion, the theory of atom was not yet accepted. The atom theory gave a convincing explanation of Brownian motion: Particles are constantly and randomly collided by smaller particles around them; If they receive more hits from one side than the other, there will be a net force causing them to move.
+
+In the above model, the white big particle is 100 times heavier than the smaller ones. The simulation shows that the motion of the big particle is affected by the small surrounding ones.
+
+For a review of contemporary research on Brownian motion, see http://www.doc.ic.ac.uk/~nd/surprise_95/journal/vol4/ykl/report.html</text>
+<section start="0" end="853">
+<paragraph start="0" end="16">
+<content start="0" end="15">
+<family>Book Antiqua</family><size>18</size><bold>true</bold></content>
+
+<content start="15" end="16">
+<family>Microsoft Sans Serif</family><size>18</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="16" end="17">
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="26">
+<Alignment>1</Alignment>
+<content start="17" end="18">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>350.0</width>
+<height>300.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;5&quot; face=&quot;Verdana&quot; marginheight=&quot;5&quot;&gt;
+    &lt;img src=&quot;coffee.gif&quot;&gt;
+    &lt;font size=&quot;3&quot;&gt;In 1827, botanist Robert Brown observed under microscope 
+    that pollen grains suspended in fluid move in a zigzag path. In 1889 G.L. 
+    Gouy found that the &amp;quot;Brownian&amp;quot; movement was more rapid for smaller 
+    particles. In 1900 F.M. Exner carried out the first quantitative studies, 
+    measuring how the motion depended on temperature and particle size. In 
+    1905, Albert Einstein proposed the first mathematical theory of Brownian 
+    motion. With this model, you can easily find the relationships between the 
+    motion of the suspension particle and its mass and the system&apos;s 
+    temperature by yourself, and see what used to be only seen by a genius 
+    more than 100 years ago.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<border>Raised Bevel</border>
+<background><red>0</red><green>255</green><blue>153</blue></background></component></content>
+
+<content start="18" end="24">
+</content>
+
+<content start="24" end="25">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>brownianmotion$0.mml</resource><menubar>false</menubar><button>Mark Object</button><button>Toggle Trajectory</button><button>Select Object</button><button>What's This?</button><button>Measure Distance</button><button>Count Objects</button></component></content>
+
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="33">
+<Alignment>1</Alignment>
+<content start="26" end="27">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat</title>
+<background><red>255</red><green>153</green><blue>153</blue></background>
+<border>Raised Bevel</border>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<step>0.01</step>
+<action>Heat the system up</action>
+</component></content>
+
+<content start="27" end="28">
+</content>
+
+<content start="28" end="29">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Cool</title>
+<background><red>204</red><green>204</green><blue>255</blue></background>
+<border>Raised Bevel</border>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<step>-0.01</step>
+<action>Cool the system down</action>
+</component></content>
+
+<content start="29" end="30">
+</content>
+
+<content start="30" end="31">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show surrounding particles</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Plain Disc</action>
+</component></content>
+
+<content start="31" end="32">
+<component><class>org.concord.modeler.PageSlider</class>
+<title>Mass of the Suspension Particle</title>
+<width>300</width>
+<height>70</height>
+<opaque>false</opaque>
+<background><red>212</red><green>208</green><blue>200</blue></background>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>2120.0</value>
+<minimum>100.0</minimum>
+<maximum>2100.0</maximum>
+<tick>true</tick>
+<nstep>50</nstep>
+<labeltable>{value=&quot;2120.0&quot;, label=&quot;Heavy&quot;}{value=&quot;120.0&quot;, label=&quot;Light&quot;}</labeltable>
+<change>Element Ck: Mass</change>
+</component></content>
+
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="34">
+<Alignment>1</Alignment>
+<LeftIndent>100.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="533">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="34" end="35">
+<bold>true</bold><size>40</size></content>
+
+<content start="35" end="533">
+</content>
+
+</paragraph>
+<paragraph start="533" end="534">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="533" end="534">
+</content>
+
+</paragraph>
+<paragraph start="534" end="721">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="534" end="721">
+</content>
+
+</paragraph>
+<paragraph start="721" end="722">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="721" end="722">
+</content>
+
+</paragraph>
+<paragraph start="722" end="853">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="722" end="784">
+</content>
+
+<content start="784" end="852">
+<href>http://www.doc.ic.ac.uk/~nd/surprise_95/journal/vol4/ykl/report.html</href></content>
+
+</paragraph>
+</section>
+</document>

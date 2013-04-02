@@ -20,14 +20,16 @@
           {
             "text": "Explore the different attractive forces between polar and non-polar molecules by dragging the \"star\" image found in the following simulations.",
             "x": 0.4,
-            "y": 1.57,
+            "y": 1.7,
             "width": 2.7,
+            "fontScale": 1.4,
             "layer": 1
           },
           {
             "text": "Choose a pair of molecules from the menu below.",
             "x": 0.40,
-            "y": 0.3,
+            "y": 0.4,
+            "fontScale": 1.4,
             "width": 3,
             "layer": 1
           }

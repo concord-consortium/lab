@@ -19,8 +19,13 @@
   "viscosity": 0.25,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 3.5,
+    "viewPortHeight": 2,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "rgba(225,239,222,255)",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": true,
     "useThreeLetterCode": true,
@@ -44,12 +49,13 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "Polar molecules: Dipole-Dipole Attraction",
+        "text": "Polar molecules:\nDipole-Dipole Attraction",
         "x": 0.81,
         "y": 1.89,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(232,231,231)"
+        "backgroundColor": "rgb(232,231,231)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

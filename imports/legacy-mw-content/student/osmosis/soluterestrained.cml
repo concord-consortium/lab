@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>There is no osmotic pressure if solute molecules cannot hit the membrane</page_title>
+<text>There is no osmotic pressure if solute molecules cannot hit the membrane
+
+The following model shows that if the solute molecules do not move to hit the membrane, there will not be osmotic pressure.
+
+ 
+  </text>
+<section start="0" end="204">
+<paragraph start="0" end="73">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="72">
+<size>14</size><bold>true</bold></content>
+
+<content start="72" end="73">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="73" end="74">
+<LeftIndent>8.0</LeftIndent>
+<content start="73" end="74">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="74" end="198">
+<LeftIndent>8.0</LeftIndent>
+<content start="74" end="198">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="198" end="199">
+<LeftIndent>8.0</LeftIndent>
+<content start="198" end="199">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="199" end="201">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="199" end="200">
+<size>11</size><component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>soluterestrained$0.mml</resource><menubar>false</menubar><button>Count Objects</button><button>Mark Object</button><button>What's This?</button><button>Select Object</button><button>Add Ws</button></component></content>
+
+<content start="200" end="201">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="201" end="204">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="201" end="202">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show the average positions of the membrane particles</title>
+<tooltip>Show the average positions of the membrane particles</tooltip>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select element 0;
+avpos on;
+select element none;</script>
+<script2>select element 0;
+avpos off;
+select element none;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="202" end="203">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Mark solvent molecules in the left compartment</title>
+<tooltip>Mark solvent molecules in the left compartment</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>show selectionhalo off;
+select element 2 within (0, 0, &quot;0.5*%width&quot;, %height);
+mark;
+delay 0.5;
+select element none;
+show selectionhalo on;</script>
+<action>Execute MW script</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

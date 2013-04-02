@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 4,
+    "viewPortHeight": 2.5,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": true,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -35,12 +40,13 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "Select a particle, and then double-click on this button to change the color of its trajectory line.",
+        "text": "Select a particle, and\nthen double-click on\nthis button to change\nthe color of its trajectory\nline.",
         "x": 0.12,
         "y": 2.27,
         "layer": 2,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,255,128)"
+        "backgroundColor": "rgb(255,255,128)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

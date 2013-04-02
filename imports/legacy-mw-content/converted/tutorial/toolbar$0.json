@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 4,
+    "viewPortHeight": 1,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": true,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -35,19 +40,21 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "A tool bar that has all the tools.",
+        "text": "A tool bar that has\nall the tools.",
         "x": 0.08,
         "y": 0.89,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(0,255,0)"
+        "backgroundColor": "rgb(0,255,0)",
+        "anchor": "upper-left"
       },
       {
-        "text": "Click the arrow to get to the buttons that cannot be placed in the visible part of the tool bar.",
+        "text": "Click the arrow to get to\nthe buttons that cannot\nbe placed in the visible\npart of the tool bar.",
         "x": 2.01,
         "y": 0.88,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

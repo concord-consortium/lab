@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 5,
+    "viewPortHeight": 3,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -40,15 +45,17 @@
         "y": 2.92,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(0,255,0)"
+        "backgroundColor": "rgb(0,255,0)",
+        "anchor": "upper-left"
       },
       {
-        "text": "A three bar mechanism that converts rotational motion to approximate straight-line motion.  ",
+        "text": "A three bar mechanism\nthat converts rotational\nmotion to approximate\nstraight-line motion.",
         "x": 0.08,
         "y": 0.75,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,192,255)"
+        "backgroundColor": "rgb(255,192,255)",
+        "anchor": "upper-left"
       },
       {
         "text": "Obstacle",
@@ -56,14 +63,16 @@
         "y": 2.92,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,255,0)"
+        "backgroundColor": "rgb(255,255,0)",
+        "anchor": "upper-left"
       },
       {
         "text": "Obstacle",
         "x": 2.01,
         "y": 0.47,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

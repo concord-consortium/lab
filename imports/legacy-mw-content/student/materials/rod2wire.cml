@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Plasticity: Producing a wire from a rod</page_title>
+<text>Plasticity: Producing a wire from a rod
+
+ 
+
+ 
+Instructions: Click the Run button. This simulation shows the plasticity of metals.
+
+
+
+</text>
+<section start="0" end="134">
+<paragraph start="0" end="40">
+<SpaceAbove>4.0</SpaceAbove>
+<LeftIndent>6.0</LeftIndent>
+<content start="0" end="39">
+<family>Broadway</family><size>20</size></content>
+
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="41">
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="43">
+<Alignment>1</Alignment>
+<content start="41" end="42">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>rod2wire$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="42" end="43">
+</content>
+
+</paragraph>
+<paragraph start="43" end="44">
+<Alignment>1</Alignment>
+<content start="43" end="44">
+<family>Book Antiqua</family><italic>true</italic></content>
+
+</paragraph>
+<paragraph start="44" end="46">
+<RightIndent>50.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>50.0</LeftIndent>
+<content start="44" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="130">
+<LeftIndent>20.0</LeftIndent>
+<content start="46" end="59">
+<family>Century Gothic</family><bold>true</bold><size>16</size></content>
+
+<content start="59" end="130">
+<family>Century Gothic</family><size>16</size></content>
+
+</paragraph>
+<paragraph start="130" end="131">
+<LeftIndent>20.0</LeftIndent>
+<content start="130" end="131">
+<family>Century Gothic</family><size>16</size></content>
+
+</paragraph>
+<paragraph start="131" end="132">
+<LeftIndent>20.0</LeftIndent>
+<content start="131" end="132">
+<family>Century Gothic</family><size>16</size></content>
+
+</paragraph>
+<paragraph start="132" end="133">
+<content start="132" end="133">
+</content>
+
+</paragraph>
+<paragraph start="133" end="134">
+</paragraph>
+</section>
+</document>

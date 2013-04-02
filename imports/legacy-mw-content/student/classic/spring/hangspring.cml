@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>A Mass Hung on a Spring</page_title>
+<text>A Mass Hung on a Spring
+
+  
+  
+
+Related simulation: A mass connected to a spring
+Related simulation: A mass connected to two springs
+
+</text>
+<section start="0" end="135">
+<paragraph start="0" end="24">
+<SpaceAbove>6.0</SpaceAbove>
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="0" end="23">
+<bold>true</bold><size>15</size></content>
+
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="25">
+<Alignment>1</Alignment>
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="28">
+<Alignment>1</Alignment>
+<content start="25" end="26">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>hangspring$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="26" end="27">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-1000000" style="0" width="1.0" symbol="0" size="4" spacing="5">Ry: 0Ck</time_series_y1>
+<width>300</width>
+<height>320</height>
+<axis_x_title>Time</axis_x_title>
+<axis_y_title>y</axis_y_title>
+<legend_x>600</legend_x>
+<legend_y>141</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<toolbar>false</toolbar>
+</component></content>
+
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="31">
+<Alignment>1</Alignment>
+<content start="28" end="29">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Air resistance</title>
+<tooltip>Apply air resistance</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select atom 0;
+damp 0.02;
+select atom none;</script>
+<script2>select atom 0;
+damp 0;
+select atom none;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="29" end="30">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>100.0</value>
+<minimum>50.0</minimum>
+<maximum>100.0</maximum>
+<nstep>10</nstep>
+<title>Mass</title>
+<width>200</width>
+<height>70</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;50.0&quot;, label=&quot;Small&quot;}{value=&quot;100.0&quot;, label=&quot;Large&quot;}</labeltable>
+<change>Element Ck: Mass</change>
+</component></content>
+
+<content start="30" end="31">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="31" end="32">
+<LeftIndent>6.0</LeftIndent>
+<content start="31" end="32">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="32" end="81">
+<LeftIndent>6.0</LeftIndent>
+<content start="32" end="52">
+<size>10</size></content>
+
+<content start="52" end="80">
+<href>spring.cml</href><size>10</size></content>
+
+<content start="80" end="81">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="81" end="133">
+<LeftIndent>6.0</LeftIndent>
+<content start="81" end="101">
+<size>10</size></content>
+
+<content start="101" end="132">
+<href>twosprings.cml</href><size>10</size></content>
+
+<content start="132" end="133">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="133" end="134">
+<content start="133" end="134">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="134" end="135">
+</paragraph>
+</section>
+</document>

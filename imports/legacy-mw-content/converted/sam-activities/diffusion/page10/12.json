@@ -20,8 +20,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 5,
+    "viewPortHeight": 3.3,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -301,33 +306,37 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "Waiting for binding of calcium ion.",
+        "text": "Waiting for binding\nof calcium ion.",
         "x": 0.96,
         "y": 2.58,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,255,255)"
+        "backgroundColor": "rgb(255,255,255)",
+        "anchor": "upper-left"
       },
       {
-        "text": "Forming ATP binding site.",
+        "text": "Forming ATP\nbinding site.",
         "x": 0.89,
         "y": 1.29,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
-        "text": "Waiting for binding of ATP.",
+        "text": "Waiting for binding\nof ATP.",
         "x": 1.12,
         "y": 1.02,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
-        "text": "Waiting for reaction of ATP with transport protein.",
+        "text": "Waiting for reaction of\nATP with transport protein.",
         "x": 0.54,
         "y": 1.22,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,
@@ -925,12 +934,12 @@
       0,
       0
     ],
-    "externalFx": [
+    "externalAx": [
       0,
       0,
       0
     ],
-    "externalFy": [
+    "externalAy": [
       0,
       0,
       0

@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 6,
+    "viewPortHeight": 2.5,
+    "viewPortX": -0.06,
+    "viewPortY": -0.06,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -40,43 +45,49 @@
         "y": 2.37,
         "layer": 2,
         "frame": "rectangle",
-        "backgroundColor": "rgb(255,192,128)"
+        "backgroundColor": "rgb(255,192,128)",
+        "anchor": "upper-left"
       },
       {
-        "text": "Calcuate forces f(t) from potentials V({r(t)}) Get accelerations at time t: a(t)=f(t)/m",
+        "text": "Calcuate forces f(t) from potentials V({r(t)})\nGet accelerations at time t: a(t)=f(t)/m",
         "x": 1.87,
         "y": 1.97,
         "layer": 2,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,255,192)"
+        "backgroundColor": "rgb(255,255,192)",
+        "anchor": "upper-left"
       },
       {
-        "text": "Equations of motion: r(t+dt)=r(t)+v(t)*dt+0.5*a(t)*dt^2 v(t+dt)=v(t)+a(t)*dt",
+        "text": "Equations of motion:\nr(t+dt)=r(t)+v(t)*dt+0.5*a(t)*dt^2\nv(t+dt)=v(t)+a(t)*dt",
         "x": 2.17,
         "y": 1.43,
         "layer": 2,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
-        "text": "In actuality, use Verlet's algorithm",
+        "text": "In actuality, use\nVerlet's algorithm",
         "x": 4.35,
         "y": 1.35,
         "layer": 2,
         "frame": "rectangle",
-        "backgroundColor": "rgb(192,255,192)"
+        "backgroundColor": "rgb(192,255,192)",
+        "anchor": "upper-left"
       },
       {
         "text": "t=t+dt",
         "x": 1.49,
         "y": 0.25,
-        "layer": 2
+        "layer": 2,
+        "anchor": "upper-left"
       },
       {
-        "text": "Output results at time t+dt: energies, temperature, pressure, etc.",
+        "text": "Output results at time t+dt:\nenergies, temperature,\npressure, etc.",
         "x": 2.3,
         "y": 0.73,
         "layer": 2,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

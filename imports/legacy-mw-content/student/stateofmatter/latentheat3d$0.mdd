@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_07" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.mw3d.ModelState"> 
+  <void property="cameraPosition"> 
+   <string>0.0 0.0 0.0</string> 
+  </void> 
+  <void property="drawList"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <object class="org.concord.modeler.draw.TextContainerState"> 
+      <void property="callOutPoint"> 
+       <object class="java.awt.Point"> 
+        <int>60</int> 
+        <int>64</int> 
+       </object> 
+      </void> 
+      <void property="font"> 
+       <object class="java.awt.Font"> 
+        <string>Book Antiqua Bold</string> 
+        <int>1</int> 
+        <int>15</int> 
+       </object> 
+      </void> 
+      <void property="foregroundColor"> 
+       <object class="java.awt.Color"> 
+        <int>255</int> 
+        <int>255</int> 
+        <int>255</int> 
+        <int>255</int> 
+       </object> 
+      </void> 
+      <void property="text"> 
+       <string>Copper</string> 
+      </void> 
+      <void property="x"> 
+       <float>9.0</float> 
+      </void> 
+      <void property="y"> 
+       <float>13.0</float> 
+      </void> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="frameInterval"> 
+   <int>1000</int> 
+  </void> 
+  <void property="height"> 
+   <float>19.0</float> 
+  </void> 
+  <void property="length"> 
+   <float>19.0</float> 
+  </void> 
+  <void property="rotation"> 
+   <string>-269 -480 -835 149.4 58</string> 
+  </void> 
+  <void property="tasks"> 
+   <void method="add"> 
+    <object class="org.concord.modeler.process.TaskState"> 
+     <void property="description"> 
+      <string>Adds heat to the system.</string> 
+     </void> 
+     <void property="interval"> 
+      <int>500</int> 
+     </void> 
+     <void property="name"> 
+      <string>Heater</string> 
+     </void> 
+     <void property="priority"> 
+      <int>4</int> 
+     </void> 
+     <void property="script"> 
+      <string>show selectionhalo off;
+select atom all;
+heat 0.002;
+select atom none;
+show selectionhalo on;</string> 
+     </void> 
+    </object> 
+   </void> 
+  </void> 
+  <void property="timeStep"> 
+   <float>5.0</float> 
+  </void> 
+  <void property="width"> 
+   <float>19.0</float> 
+  </void> 
+  <void property="xyzFileName"> 
+   <string>latentheat3d$0.xyz</string> 
+  </void> 
+ </object> 
+</java> 

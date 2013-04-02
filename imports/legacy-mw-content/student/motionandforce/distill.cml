@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Fractional Distillation</page_title>
+<text>Fractional Distillation
+
+ 
+
+
+Instructions: Click
+ 
+
+</text>
+<section start="0" end="53">
+<paragraph start="0" end="24">
+<SpaceAbove>4.0</SpaceAbove>
+<LeftIndent>6.0</LeftIndent>
+<content start="0" end="23">
+<size>20</size><family>Broadway</family><bold>true</bold></content>
+
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="25">
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="27">
+<Alignment>1</Alignment>
+<content start="25" end="26">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>distill$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="28">
+<Alignment>1</Alignment>
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="29">
+<Alignment>1</Alignment>
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="49">
+<LeftIndent>20.0</LeftIndent>
+<content start="29" end="42">
+<size>13</size><family>Century Gothic</family><bold>true</bold></content>
+
+<content start="42" end="48">
+<size>13</size><family>Century Gothic</family></content>
+
+<content start="48" end="49">
+<italic>true</italic><family>Book Antiqua</family></content>
+
+</paragraph>
+<paragraph start="49" end="51">
+<Alignment>1</Alignment>
+<LeftIndent>50.0</LeftIndent>
+<RightIndent>50.0</RightIndent>
+<content start="49" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="52">
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="53">
+</paragraph>
+</section>
+</document>

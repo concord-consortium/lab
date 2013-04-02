@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Interaction vs. temperature</page_title>
+<text>Interaction vs. temperature
+
+ 
+     
+
+
+
+</text>
+<section start="0" end="41">
+<paragraph start="0" end="28">
+<Alignment>1</Alignment>
+<content start="0" end="27">
+<bold>true</bold><size>15</size></content>
+
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="29">
+<Alignment>1</Alignment>
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="31">
+<Alignment>1</Alignment>
+<content start="29" end="30">
+<component><class>org.concord.modeler.PageMd3d</class><resource>interactionvstemperature$0.mdd</resource><coordinate>interactionvstemperature$0.xyz</coordinate><width>400</width><height>400</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="37">
+<Alignment>1</Alignment>
+<content start="31" end="32">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<value>0.45</value>
+<minimum>0.0</minimum>
+<maximum>1.0</maximum>
+<nstep>20</nstep>
+<title>Interatomic interaction</title>
+<width>200</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;1.0&quot;, label=&quot;Strong&quot;}{value=&quot;0.0&quot;, label=&quot;Zero&quot;}</labeltable>
+<script>set element[111].epsilon %val*0.1;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="32" end="33">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<value>0.1</value>
+<minimum>0.0</minimum>
+<maximum>1.0</maximum>
+<nstep>20</nstep>
+<title>Temperature</title>
+<width>200</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;1.0&quot;, label=&quot;High&quot;}{value=&quot;0.0&quot;, label=&quot;Low&quot;}</labeltable>
+<script>set heatbath %val*1000+1;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="33" end="34">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Snapshot</title>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="34" end="35">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Inside view</title>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<script>set navigation on;</script>
+<script2>set navigation off;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="35" end="36">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>KE Shading</title>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<script>show keshading on;</script>
+<script2>show keshading off;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="38">
+<Alignment>1</Alignment>
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="39">
+<Alignment>1</Alignment>
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="40">
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="41">
+</paragraph>
+</section>
+</document>

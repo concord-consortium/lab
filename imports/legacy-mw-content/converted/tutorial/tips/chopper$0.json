@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 7,
+    "viewPortHeight": 4,
+    "viewPortX": -0.06,
+    "viewPortY": -0.06,
     "backgroundColor": "rgba(37,59,108,255)",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -89,23 +94,26 @@
         "y": 2.55,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(0,255,0)"
+        "backgroundColor": "rgb(0,255,0)",
+        "anchor": "upper-left"
       },
       {
-        "text": "An animated GIF image not attached to any particle",
+        "text": "An animated GIF image\nnot attached to any particle",
         "x": 3.32,
         "y": 1.2,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
-        "text": "An animated GIF image attached to a particle",
+        "text": "An animated GIF image\nattached to a particle",
         "x": 0.42,
         "y": 3.8,
         "layer": 1,
         "frame": "rounded rectangle",
         "hostType": "Atom",
-        "hostIndex": 2
+        "hostIndex": 2,
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

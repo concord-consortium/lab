@@ -1,10 +1,10 @@
-/*global define: false, d3: false, $: false */
-/*jslint onevar: true devel:true eqnull: true boss: true */
+/*global define: false, d3: false */
 
 define(function(require) {
   // Dependencies.
   var arrays               = require('arrays'),
       console              = require('common/console'),
+      performance          = require('common/performance'),
       md2d                 = require('md2d/models/engine/md2d'),
       metadata             = require('md2d/models/metadata'),
       TickHistory          = require('common/models/tick-history'),
@@ -18,6 +18,7 @@ define(function(require) {
       PropertyDescription  = require('md2d/models/property-description'),
       unitDefinitions      = require('md2d/models/unit-definitions/index'),
       UnitsTranslation     = require('md2d/models/units-translation'),
+      PerformanceOptimizer = require('md2d/models/performance-optimizer'),
       _ = require('underscore');
 
   return function Model(initialProperties) {
@@ -93,7 +94,7 @@ define(function(require) {
         listeners = {},
 
         // If this is true, output properties will not be recalculated on changes
-        supressInvalidatingChangeHooks = false,
+        suppressInvalidatingChangeHooks = false,
 
         // Invalidating change hooks might between others
         invalidatingChangeHookNestingLevel = 0,
@@ -371,11 +372,12 @@ define(function(require) {
           t, sampleTime;
 
       if (!stopped) {
-        t = Date.now();
+        t = performance.now();
         if (lastSampleTime) {
           sampleTime = t - lastSampleTime;
+          lastSampleTime = t;
           sampleTimes.push(sampleTime);
-          sampleTimes.splice(0, sampleTimes.length - 128);
+          sampleTimes.splice(0, sampleTimes.length - 64);
         } else {
           lastSampleTime = t;
         }
@@ -406,13 +408,6 @@ define(function(require) {
       }
 
       return stopped;
-    }
-
-    function average_rate() {
-      var i, ave, s = 0, n = sampleTimes.length;
-      i = -1; while (++i < n) { s += sampleTimes[i]; }
-      ave = s/n;
-      return (ave ? 1/ave*1000: 0);
     }
 
     /* This setter for internal use uses "raw", untranslated property values only. */
@@ -511,7 +506,8 @@ define(function(require) {
       }
 
       for (i = 0; i < outputNames.length; i++) {
-        if (l = listeners[outputNames[i]]) {
+        l = listeners[outputNames[i]];
+        if (l) {
           for (j = 0; j < l.length; j++) {
             l[j]();
           }
@@ -533,7 +529,7 @@ define(function(require) {
       by considered non-invalidating changes that don't require calling this hook.
     */
     function invalidatingChangePreHook() {
-      if (supressInvalidatingChangeHooks) return;
+      if (suppressInvalidatingChangeHooks) return;
       invalidatingChangeHookNestingLevel++;
 
       storeOutputPropertiesBeforeChange();
@@ -545,7 +541,7 @@ define(function(require) {
       ALWAYS CALL THIS FUNCTION after any change to model state outside a model step.
     */
     function invalidatingChangePostHook() {
-      if (supressInvalidatingChangeHooks) return;
+      if (suppressInvalidatingChangeHooks) return;
       invalidatingChangeHookNestingLevel--;
 
       if (invalidatingChangeHookNestingLevel === 0) {
@@ -555,6 +551,44 @@ define(function(require) {
       if (tickHistory) tickHistory.invalidateFollowingState();
       dispatch.invalidation();
     }
+
+    /**
+      Executes the closure 'extract' which extracts from the tick history, then dispatches
+      addAtom/removeAtom, etc, events as needed.
+
+      This prevents unneessary creation and removal of atoms.
+    */
+    var runAndDispatchObjectNumberChanges = (function() {
+      var objects = [{
+        getNum: 'getNumberOfAtoms',
+        addEvent: 'addAtom',
+        removeEvent: 'removeAtom'
+      }, {
+        getNum: 'getNumberOfRadialBonds',
+        addEvent: 'addRadialBond',
+        removeEvent: 'removeRadialBond'
+      }];
+
+      return function (extract) {
+        var i, o, newNum;
+        for (i = 0; i < objects.length; i++) {
+          o = objects[i];
+          o.num = engine[o.getNum]();
+        }
+
+        extract();
+
+        for (i = 0; i < objects.length; i++) {
+          o = objects[i];
+          newNum = engine[o.getNum]();
+          if (newNum > o.num) {
+            dispatch[o.addEvent]();
+          } else if (newNum < o.num) {
+            dispatch[o.removeEvent]();
+          }
+        }
+      };
+    })();
 
     function deleteOutputPropertyCachedValues() {
       var i, output;
@@ -657,7 +691,7 @@ define(function(require) {
 
       engine.computeOutputState(modelOutputState);
 
-      extendResultsArray();
+      resizeResultsArray();
 
       // Transpose 'atoms' object into 'results' for easier consumption by view code
       for (i = 0, n = model.get_num_atoms(); i < n; i++) {
@@ -680,7 +714,7 @@ define(function(require) {
       Ensure that the 'results' array of arrays is defined and contains one typed array per atom
       for containing the atom properties.
     */
-    function extendResultsArray() {
+    function resizeResultsArray() {
       var isAminoAcid = function () {
             return aminoacidsHelper.isAminoAcid(this.element);
           },
@@ -704,6 +738,9 @@ define(function(require) {
           };
         }
       }
+
+      // Also make sure to truncate the results array if it got shorter (i.e., atoms were removed)
+      results.length = len;
     }
 
     /**
@@ -829,43 +866,49 @@ define(function(require) {
       if (!arguments.length) { location = 0; }
       stopped = true;
       newStep = false;
-      tickHistory.seekExtract(location);
-      updateAllOutputProperties();
-      dispatch.seek();
+      runAndDispatchObjectNumberChanges(function() {
+        tickHistory.seekExtract(location);
+        updateAllOutputProperties();
+        dispatch.seek();
+      });
       return tickHistory.get("counter");
     };
 
     model.stepBack = function(num) {
       if (!arguments.length) { num = 1; }
-      var i, index;
       stopped = true;
       newStep = false;
-      i=-1; while(++i < num) {
-        index = tickHistory.get("index");
-        if (index > 0) {
-          tickHistory.decrementExtract();
-          updateAllOutputProperties();
-          dispatch.stepBack();
+      runAndDispatchObjectNumberChanges(function() {
+        var i, index;
+        i=-1; while(++i < num) {
+          index = tickHistory.get("index");
+          if (index > 0) {
+            tickHistory.decrementExtract();
+            updateAllOutputProperties();
+            dispatch.stepBack();
+          }
         }
-      }
+      });
       return tickHistory.get("counter");
     };
 
     model.stepForward = function(num) {
       if (!arguments.length) { num = 1; }
-      var i, index, size;
       stopped = true;
-      i=-1; while(++i < num) {
-        index = tickHistory.get("index");
-        size = tickHistory.get("length");
-        if (index < size-1) {
-          tickHistory.incrementExtract();
-          updateAllOutputProperties();
-          dispatch.stepForward();
-        } else {
-          tick();
+      runAndDispatchObjectNumberChanges(function() {
+        var i, index, size;
+        i=-1; while(++i < num) {
+          index = tickHistory.get("index");
+          size = tickHistory.get("length");
+          if (index < size-1) {
+            tickHistory.incrementExtract();
+            updateAllOutputProperties();
+            dispatch.stepForward();
+          } else {
+            tick();
+          }
         }
-      }
+      });
       return tickHistory.get("counter");
     };
 
@@ -989,7 +1032,7 @@ define(function(require) {
           // Options for addAtom method.
       var options = {
             // Do not check the position of atom, assume that it's valid.
-            supressCheck: true
+            suppressCheck: true
           },
           i, num, prop, atomProps;
 
@@ -1235,7 +1278,7 @@ define(function(require) {
       if (props.y > (maxY - radius)) props.y = maxY - radius;
 
       // check the potential energy change caused by adding an *uncharged* atom at (x,y)
-      if (!options.supressCheck && !engine.canPlaceAtom(props.element, props.x, props.y)) {
+      if (!options.suppressCheck && !engine.canPlaceAtom(props.element, props.x, props.y)) {
         // return false on failure
         return false;
       }
@@ -1248,7 +1291,7 @@ define(function(require) {
       if (!options.deserialization)
         invalidatingChangePostHook();
 
-      if (!options.supressEvent) {
+      if (!options.suppressEvent) {
         dispatch.addAtom();
       }
 
@@ -1267,7 +1310,7 @@ define(function(require) {
       results.length = 0;
       invalidatingChangePostHook();
 
-      if (!options.supressEvent) {
+      if (!options.suppressEvent) {
         // Notify listeners that atoms is removed.
         dispatch.removeAtom();
 
@@ -1653,11 +1696,15 @@ define(function(require) {
     };
 
     model.setTextBoxProperties = function(i, props) {
-      var textBox = properties.textBoxes[i];
+      var textBox = properties.textBoxes[i],
+          prop;
+
       if (textBox) {
         props = validator.validate(metadata.textBox, props);
         for (prop in props) {
-          textBox[prop] = props[prop];
+          if (props.hasOwnProperty(prop)) {
+            textBox[prop] = props[prop];
+          }
         }
         dispatch.textBoxesChanged();
       } else {
@@ -1713,8 +1760,30 @@ define(function(require) {
       return arrays.copy(engine.atoms.speed, []);
     };
 
-    model.get_rate = function() {
-      return average_rate();
+    /**
+     * Returns number of frames per second.
+     * @return {number} frames per second.
+     */
+    model.getFPS = function() {
+      var s = 0,
+          n = sampleTimes.length,
+          i = -1;
+
+      while (++i < n) {
+        s += sampleTimes[i];
+      }
+      s /= n;
+      return (s ? 1 / s * 1000 : 0);
+    };
+
+    /**
+     * Returns "simulation progress rate".
+     * It indicates how much of simulation time is calculated for
+     * one second of real time.
+     * @return {number} simulation progress rate.
+     */
+    model.getSimulationProgressRate = function() {
+      return model.getFPS() * model.get('timeStep') * model.get('timeStepsPerTick');
     };
 
     model.is_stopped = function() {
@@ -1955,6 +2024,7 @@ define(function(require) {
       });
 
       restart = false;
+      lastSampleTime = null;
       if (stopped) {
         stopped = false;
         dispatch.play();
@@ -2296,13 +2366,13 @@ define(function(require) {
       */
     model.startBatch = function() {
       invalidatingChangePreHook();
-      supressInvalidatingChangeHooks = true;
-    }
+      suppressInvalidatingChangeHooks = true;
+    };
 
     model.endBatch = function() {
-      supressInvalidatingChangeHooks = false;
+      suppressInvalidatingChangeHooks = false;
       invalidatingChangePostHook();
-    }
+    };
 
     // FIXME: Broken!! Includes property setter methods, does not include radialBonds, etc.
     model.serialize = function() {
@@ -2403,6 +2473,21 @@ define(function(require) {
     // not defined in meta model as mainProperties (like atoms, obstacles, viewOptions etc).
     set_properties(validator.validateCompleteness(metadata.mainProperties, initialProperties));
 
+    (function () {
+      if (!initialProperties.viewOptions || !initialProperties.viewOptions.textBoxes) {
+        return;
+      }
+      // Temporal workaround to provide text boxes validation.
+      // Note that text boxes are handled completely different from other objects
+      // like atoms or obstacles. There is much of inconsistency and probably
+      // it should be refactored anyway.
+      var textBoxes = initialProperties.viewOptions.textBoxes,
+          i, len;
+
+      for (i = 0, len = textBoxes.length; i < len; i++) {
+        textBoxes[i] = validator.validateCompleteness(metadata.textBox, textBoxes[i]);
+      }
+    }());
     // Set the model view options.
     set_properties(validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {}));
 
@@ -2585,6 +2670,8 @@ define(function(require) {
     });
 
     updateAllOutputProperties();
+
+    model.performanceOptimizer = new PerformanceOptimizer(model);
 
     return model;
   };

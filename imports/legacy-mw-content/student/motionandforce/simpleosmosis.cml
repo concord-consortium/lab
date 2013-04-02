@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Illustrating osmosis and osmotic pressure</page_title>
+<text>Illustrating Osmosis and Osmotic Pressure
+
+  
+   
+
+This is a very simple osmosis model. The small particles represent water molecules, while the larger ones represent solute molecules. In the middle stands a semipermeable membrane, which has a pore that allows only smaller particles to pass through. Note that this model does not explain osmosis. It is just a rudimentary illustration of the diffusion process across the membrane.</text>
+<section start="0" end="432">
+<paragraph start="0" end="42">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<RightIndent>8.0</RightIndent>
+<content start="0" end="41">
+<size>16</size><bold>true</bold></content>
+
+<content start="41" end="42">
+<family>Microsoft Sans Serif</family><size>18</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="42" end="43">
+<content start="42" end="43">
+<bold>true</bold><size>14</size></content>
+
+</paragraph>
+<paragraph start="43" end="46">
+<Alignment>1</Alignment>
+<content start="43" end="44">
+<size>14</size><component><class>org.concord.modeler.PageTextBox</class>
+<width>200.0</width>
+<height>300.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;font size=&quot;2&quot;&gt;Osmosis is the movement of water molecules from an area of 
+    high concentration across a semipermeable membrane to an area of low 
+    concentration. The semipermeable membrane permits water molecules to pass 
+    through it, but not the solute molecules. The diffusion of water molecules 
+    from the hypotonic left side into the hypertonic right side will cause the 
+    build-up of pressure on the right. This is called the osmotic pressure.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="44" end="45">
+<size>14</size><component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>simpleosmosis$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="45" end="46">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="46" end="50">
+<Alignment>1</Alignment>
+<content start="46" end="47">
+<size>14</size><component><class>org.concord.modeler.PageButton</class>
+<title>Cool</title>
+<bgcolor>-3334</bgcolor>
+<border>Raised Bevel</border>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<step>-0.01</step>
+<action>Cool the system down</action>
+</component></content>
+
+<content start="47" end="48">
+<size>14</size><component><class>org.concord.modeler.PageButton</class>
+<title>Heat</title>
+<bgcolor>-333301</bgcolor>
+<border>Raised Bevel</border>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<step>0.01</step>
+<action>Heat the system up</action>
+</component></content>
+
+<content start="48" end="49">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show interactions</title>
+<tooltip>Show interactions</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Show van der Waals interactions</action>
+</component></content>
+
+<content start="49" end="50">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="50" end="51">
+<content start="50" end="51">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="51" end="432">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="51" end="431">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

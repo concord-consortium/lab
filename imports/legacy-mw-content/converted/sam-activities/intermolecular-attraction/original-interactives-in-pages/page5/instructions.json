@@ -19,8 +19,13 @@
   "viscosity": 0.25,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 4,
+    "viewPortHeight": 2.1,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "rgba(225,239,222,255)",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": true,
     "useThreeLetterCode": true,
@@ -35,16 +40,18 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "Explore the different attractive forces between molecules of varying size and shape. Look for how the area of close contact between the molecules influences their attraction.",
+        "text": "Explore the different attractive forces\nbetween molecules of varying size and\nshape. Look for how the area of close\ncontact between the molecules\ninfluences their attraction.",
         "x": 0.35,
         "y": 1.89,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
-        "text": "Choose a pair of molecules from the menu below.",
+        "text": "Choose a pair of molecules from the\nmenu below.",
         "x": 0.46,
         "y": 0.58,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

@@ -22,16 +22,18 @@
         "textBoxes": [
           {
             "text": "Cold Solid",
-            "x": 4.28,
-            "y": 0.1,
+            "x": 4.1,
+            "y": 0.4,
+            "fontScale": 0.9,
             "layer": 1,
             "frame": "rounded rectangle",
             "backgroundColor": "rgb(128,192,255)"
           },
           {
             "text": "Hot Liquid",
-            "x": 0.13,
-            "y": 0.1,
+            "x": 0.05,
+            "y": 0.4,
+            "fontScale": 0.9,
             "layer": 1,
             "frame": "rounded rectangle",
             "backgroundColor": "rgb(255, 190, 194)"

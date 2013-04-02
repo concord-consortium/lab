@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 4.5,
+    "viewPortHeight": 3,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -35,12 +40,13 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "Drag the knob with mouse, or press the slider and use the left and right arrow key, or roll the wheel of the mouse (if any) to play back the recorded simulation freely.",
+        "text": "Drag the knob with mouse, or\npress the slider and use the left\nand right arrow key, or roll the\nwheel of the mouse (if any) to \nplay back the recorded simulation\nfreely.",
         "x": 0.08,
         "y": 1.49,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(0,255,0)"
+        "backgroundColor": "rgb(0,255,0)",
+        "anchor": "upper-left"
       },
       {
         "text": "Reset",
@@ -48,50 +54,57 @@
         "y": 0.26,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(0,255,0)"
+        "backgroundColor": "rgb(0,255,0)",
+        "anchor": "upper-left"
       },
       {
         "text": "Rewind",
         "x": 1.05,
         "y": 0.52,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
-        "text": "Step back",
+        "text": "Step\nback",
         "x": 1.66,
         "y": 0.58,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
         "text": "Stop",
         "x": 2.12,
         "y": 0.49,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
-        "text": "Step forward",
+        "text": "Step\nforward",
         "x": 2.6,
         "y": 0.67,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
         "text": "Run or play back",
         "x": 2.63,
         "y": 0.27,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
-        "text": "The VCR-like control panel of the simulation recorder is at the bottom of each simulator. If the recorder is turned off, the panel will be replaced by a simple panel with \"Run\", \"Stop\" and \"Reset\" buttons.",
+        "text": "The VCR-like control panel of the simulation recorder\nis at the bottom of each simulator. If the recorder is \nturned off, the panel will be replaced by a simple \npanel with \"Run\", \"Stop\" and \"Reset\" buttons.",
         "x": 0.7,
         "y": 2.74,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(192,192,255)"
+        "backgroundColor": "rgb(192,192,255)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

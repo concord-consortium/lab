@@ -1162,13 +1162,18 @@ define('common/controllers/interactive-metadata',[],function() {
         defaultValue: ""
       },
       labels: {
+        // Label is specified by the following object:
+        // {
+        //   "value": [value, e.g. 100],
+        //   "label": [label, e.g. "High"]
+        // }
         defaultValue: []
       },
       width: {
-        defaultValue: "12em"
+        defaultValue: "auto"
       },
       height: {
-        defaultValue: "3.3em"
+        defaultValue: "auto"
       },
       displayValue: {},
       // Use "property" OR "action" + "initialValue".
@@ -1339,6 +1344,14 @@ define('common/controllers/interactive-metadata',[],function() {
           scale: 1,
           digits: 0
         }
+      },
+      labels: {
+        // Label is specified by the following object:
+        // {
+        //   "value": [value, e.g. 100],
+        //   "label": [label, e.g. "High"]
+        // }
+        defaultValue: []
       }
     },
 
@@ -4453,10 +4466,10 @@ define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (requi
 
       VIEW = {
         padding: {
-          left:   10,
-          top:    10,
-          right:  10,
-          bottom: 10
+          left:   0,
+          top:    8,
+          right:  0,
+          bottom: 8
         }
       },
 
@@ -4470,16 +4483,12 @@ define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (requi
         return d3selection.node().getBBox().height;
       },
 
-      // Bar graph scales itself according to the given height.
-      // We assume some CANONICAL_HEIGHT. All values which should
-      // be scaled, should assume this canonical height as basic
-      // reference.
-      CANONICAL_HEIGHT = 500,
-      getScaleFunc = function (height) {
-        var factor = height / CANONICAL_HEIGHT;
-        // Prevent from too small fonts.
-        if (factor < 0.6)
-          factor = 0.6;
+      // Bar graph scales itself according to the font size.
+      // We assume some CANONICAL_FONT_SIZE. All values which should
+      // be scaled, should use returned function.
+      CANONICAL_FONT_SIZE = 16,
+      getScaleFunc = function (fontSize) {
+        var factor = fontSize / CANONICAL_FONT_SIZE;
 
         return function (val) {
           return val * factor;
@@ -4535,7 +4544,7 @@ define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (requi
               // etc.
           var options    = this.model.toJSON(),
               // Scale function.
-              scale      = getScaleFunc(options.height),
+              scale      = getScaleFunc(parseFloat(this.$el.css("font-size"))),
               // Basic padding (scaled).
               paddingLeft   = scale(VIEW.padding.left),
               paddingTop    = scale(VIEW.padding.top),
@@ -4554,7 +4563,7 @@ define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (requi
               "height": options.height
             })
             .style({
-              "font-size": scale(15) + "px"
+              "font-size": "1em"
             });
 
           // Setup Y scale.
@@ -4572,7 +4581,7 @@ define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (requi
             this.title
               .text(options.title)
               .style({
-                "font-size": "140%",
+                "font-size": "1em",
                 "text-anchor": "middle",
                 "fill": options.textColor
               });
@@ -4589,7 +4598,7 @@ define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (requi
           this.yAxis
             .scale(this.yScale)
             .tickSubdivide(options.tickSubdivide)
-            .tickSize(scale(10), scale(5), scale(10))
+            .tickSize(scale(8), scale(5), scale(8))
             .orient("right");
 
           if (typeof options.ticks === "number") {
@@ -4622,7 +4631,7 @@ define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (requi
               // Workaround for hiding numeric labels. D3 doesn't provide any convenient function
               // for that. Returning empty string as tickFormat causes that bounding box width is
               // calculated incorrectly.
-              "font-size": options.displayLabels ? "100%" : 0
+              "font-size": options.displayLabels ? "0.8em" : 0
           });
 
           // Remove axis completely if ticks are equal to 0.
@@ -4937,6 +4946,10 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         ty = function(d) { return "translate(0," + yScale(d) + ")"; },
         fx, fy,
         svg, vis, plot, viewbox,
+        background,
+        gcanvas, gctx,
+        canvasFillStyle = "rgba(255,255,255, 0.0)",
+        cplot = {},
         buttonLayer,
         title, xlabel, ylabel,
         notification,
@@ -4975,9 +4988,6 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         currentSample,
         markedPoint, marker,
         sample,
-        gcanvas, gctx,
-        canvasFillStyle = "rgba(255,255,255, 0.0)",
-        cplot = {},
 
         default_options = {
           showButtons:    true,
@@ -5289,7 +5299,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         points = fakeDataPoints();
       }
 
-      // In realTime mode the grapher expects either an array if arrays of dependent data.
+      // In realTime mode the grapher expects either an array or arrays of dependent data.
       // The sample variable sets the interval spacing between data samples.
       if (options.realTime) {
         pointArray = [];
@@ -5325,6 +5335,11 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       if (svg !== undefined) {
         svg.remove();
         svg = undefined;
+      }
+
+      if (background !== undefined) {
+        background.remove();
+        background = undefined;
       }
 
       if (gcanvas !== undefined) {
@@ -5367,40 +5382,33 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
     }
 
     function createButtonLayer() {
-      var buttonLayer = $('<div>' +
-                          '  <a class="graph-autoscale-button" title="' + tooltips.autoscale + '">' +
-                          '    <i class="icon-picture"></i>' +
-                          '  </a>' +
-                          '</div>')
-            .appendTo($(elem.node()))
-            .addClass('graph-button-layer')
-            .css('z-index', 101);
+      buttonLayer = elem.append("div");
 
-      buttonLayer.find('a.graph-autoscale-button').on('click', function() { graph.autoscale(); });
-      return buttonLayer;
+      buttonLayer
+        .attr("class", "button-layer")
+        .style("z-index", 3)
+        .append('a')
+          .attr({
+            "class": "autoscale-button",
+            "title": tooltips.autoscale
+          })
+          .on("click", function() {
+            graph.autoscale();
+          })
+          .append("i")
+            .attr("class", "icon-picture");
+
+      resizeButtonLayer();
     }
 
     function resizeButtonLayer() {
-      var rect = plot.node(),
-          rectTop,
-          rectLeft,
-          rectWidth,
-          layerWidth;
-
-      // Make safe for jsdom based tests
-      if (!rect.getCTM || !rect.width.baseVal ) {
-        return;
-      }
-
-      rectTop = rect.getCTM().f;
-      rectLeft = rect.getCTM().e;
-      rectWidth = rect.width.baseVal.value;
-      layerWidth = buttonLayer.width();
-
-      buttonLayer.css({
-        top: rectTop + 5,
-        left: rectLeft + rectWidth - layerWidth - 5
-      });
+      buttonLayer
+        .style({
+          "width":   fontSizeInPixels*1.75 + "px",
+          "height":  fontSizeInPixels*1.25 + "px",
+          "top":     padding.top + halfFontSizeInPixels + "px",
+          "left":    padding.left + (size.width - fontSizeInPixels*2.0) + "px"
+        });
     }
 
     function graph() {
@@ -5411,7 +5419,8 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         svg = elem.append("svg")
             .attr("width",  cx)
             .attr("height", cy)
-            .attr("class", "graph");
+            .attr("class", "graph")
+            .style('z-index', 2);
             // .attr("tabindex", tabindex || 0);
 
         vis = svg.append("g")
@@ -5421,12 +5430,22 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           .attr("class", "plot")
           .attr("width", size.width)
           .attr("height", size.height)
-          .style("fill", "#EEEEEE")
           .attr("pointer-events", "all")
+          .attr("fill", "rgba(255,255,255,0)")
           .on("mousedown", plotDrag)
           .on("touchstart", plotDrag);
 
         plot.call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
+
+        background = elem.append("div")
+            .attr("class", "background")
+            .style({
+              "width":   size.width + "px",
+              "height":  size.height + "px",
+              "top":     padding.top + "px",
+              "left":    padding.left + "px",
+              "z-index": 0
+            });
 
         viewbox = vis.append("svg")
           .attr("class", "viewbox")
@@ -5511,8 +5530,16 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
 
         plot
           .attr("width", size.width)
-          .attr("height", size.height)
-          .style("fill", "#EEEEEE");
+          .attr("height", size.height);
+
+        background
+          .style({
+            "width":   size.width + "px",
+            "height":  size.height + "px",
+            "top":     padding.top + "px",
+            "left":    padding.left + "px",
+            "z-index": 0
+          });
 
         viewbox
             .attr("top", 0)
@@ -5552,7 +5579,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       }
 
       if (options.showButtons) {
-        if (!buttonLayer) buttonLayer = createButtonLayer();
+        if (!buttonLayer) createButtonLayer();
         resizeButtonLayer();
       }
 
@@ -6482,7 +6509,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         updateOrRescale();
       }
 
-      function newRealTimeData(d) {
+      function updatePointArray(d) {
         var i;
         pointArray = [];
         if (Object.prototype.toString.call(d) === "[object Array]") {
@@ -6494,6 +6521,22 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           points = indexedData(options.dataset, 0, sample);
           pointArray = [points];
         }
+      }
+
+      function truncateRealTimeData(d) {
+        var oldLength = pointArray[0].length;
+        updatePointArray(d);
+        if (pointArray[0].length === oldLength) {
+          return;
+        } else {
+          shiftingX = false;
+          setCurrentSample(points.length);
+          updateOrRescale();
+        }
+      }
+
+      function newRealTimeData(d) {
+        updatePointArray(d);
         shiftingX = false;
         setCurrentSample(points.length-1);
         updateOrRescale();
@@ -6572,11 +6615,11 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
 
       function showCanvas() {
         vis.select("path.line").remove();
-        gcanvas.style.zIndex = 100;
+        gcanvas.style.zIndex = 1;
       }
 
       function hideCanvas() {
-        gcanvas.style.zIndex = -100;
+        gcanvas.style.zIndex = -1;
         update();
       }
 
@@ -6709,7 +6752,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           gcanvas = gcanvas || document.createElement('canvas');
           node.appendChild(gcanvas);
         }
-        gcanvas.style.zIndex = -100;
+        gcanvas.style.zIndex = -1;
         setupCanvasProperties(gcanvas);
       }
 
@@ -6735,7 +6778,9 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         canvas.style.top = cplot.top + 'px';
         canvas.style.border = 'solid 1px red';
         canvas.style.pointerEvents = "none";
-        canvas.className += "canvas-overlay";
+        if (canvas.className.search("overlay") < 0) {
+           canvas.className += " overlay";
+        }
         gctx = gcanvas.getContext( '2d' );
         gctx.globalCompositeOperation = "source-over";
         gctx.lineWidth = 1;
@@ -6811,6 +6856,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
 
       graph.number_of_points = number_of_points;
       graph.newRealTimeData = newRealTimeData;
+      graph.truncateRealTimeData = truncateRealTimeData;
       graph.add_point = add_point;
       graph.addPoints = addPoints;
       // graph.addRealTimePoints = addRealTimePoints;
@@ -6992,7 +7038,7 @@ define('common/controllers/graph-controller',['require','grapher/core/graph','co
         // Account for initial data, which corresponds to stepCounter == 0
         data[i].length = model.stepCounter() + 1;
       }
-      grapher.newRealTimeData(data);
+      grapher.truncateRealTimeData(data);
     }
 
     /**
@@ -7470,6 +7516,15 @@ define('common/controllers/scripting-api',['require','common/alert'],function (r
         return typeof obj === 'object' && obj.slice === Array.prototype.slice;
       }
 
+      /** return a number randomly chosen between 0..max */
+      function randomFloat(max) {
+        if (max) {
+          return Math.random() * max;
+        } else {
+          return Math.random();
+        }
+      }
+
       /** return an integer randomly chosen from the set of integers 0..n-1 */
       function randomInteger(n) {
         return Math.floor(Math.random() * n);
@@ -7501,6 +7556,7 @@ define('common/controllers/scripting-api',['require','common/alert'],function (r
         isInteger: isInteger,
         isArray: isArray,
         randomInteger: randomInteger,
+        randomFloat: randomFloat,
         swapElementsOfArray: swapElementsOfArray,
         choose: choose,
 
@@ -7624,18 +7680,34 @@ define('common/controllers/scripting-api',['require','common/alert'],function (r
          * Supported types: "plot", "atom", "obstacle", "image", "textBox".
          * TODO: move it to MD2D related docs in the future.
          *
-         * @param {string}   type     Name of the type of clickable objects.
-         * @param {Function} callback Custom click handler. It will be called
-         *                            when object is clicked with (x, y, d, i) arguments:
-         *                              x - x coordinate in model units,
-         *                              y - y coordinate in model units,
-         *                              d - data associated with a given object (can be undefined!),
-         *                              i - ID of clicked object (usually its value makes sense if d is defined).
+         * @param {string}   type    Name of the type of clickable objects.
+         * @param {Function} handler Custom click handler. It will be called
+         *                           when object is clicked with (x, y, d, i) arguments:
+         *                             x - x coordinate in model units,
+         *                             y - y coordinate in model units,
+         *                             d - data associated with a given object (can be undefined!),
+         *                             i - ID of clicked object (usually its value makes sense if d is defined).
          */
-        onClick: function onClick(type, callback) {
+        onClick: function onClick(type, handler) {
           // Append '.' to make API simpler.
           // So authors can just specify onClick("atom", ...) instead of class selectors.
-          interactivesController.getModelController().modelContainer.setClickHandler("." + type, callback);
+          interactivesController.getModelController().modelContainer.setClickHandler("." + type, handler);
+        },
+
+        /**
+         * Sets custom select handler. It enables select action and lets author provide custom handler
+         * which is executed when select action is finished. The area of selection is passed to handler
+         * as arguments. It is defined by rectangle - its lower left corner coordinates, width and height.
+         *
+         * @param {Function} handler Custom select handler. It will be called
+         *                           when select action is finished with (x, y, w, h) arguments:
+         *                             x - x coordinate of lower left selection corner (in model units),
+         *                             y - y coordinate of lower left selection corner (in model units),
+         *                             width  - width of selection rectangle (in model units),
+         *                             height - height of selection rectangle (in model units).
+         */
+        onSelect: function onSelect(handler) {
+          interactivesController.getModelController().modelContainer.setSelectHandler(handler);
         },
 
         start: function start() {
@@ -7658,6 +7730,28 @@ define('common/controllers/scripting-api',['require','common/alert'],function (r
 
         getTime: function getTime() {
           return model.get('time');
+        },
+
+        /**
+         * Returns number of frames per second.
+         * @return {number} frames per second.
+         */
+        getFPS: function getFPS() {
+          return model.getFPS();
+        },
+
+        /**
+         * Returns "simulation progress rate".
+         * It indicates how much of simulation time is calculated for
+         * one second of real time.
+         * @return {number} simulation progress rate.
+         */
+        getSimulationProgressRate: function getSimulationProgressRate() {
+          return model.getSimulationProgressRate();
+        },
+
+        startPerformanceTuning: function startPerformanceTuning() {
+          model.performanceOptimizer.enable();
         },
 
         repaint: function repaint() {
@@ -9801,7 +9895,7 @@ define('common/controllers/text-controller',['require','markdown','common/inheri
       content += val + "\n";
     });
     html = markdown.toHTML(content);
-    html = html.replace(/<a(.*?)>/, "<a$1 " + openInNewWindow + ">");
+    html = html.replace(/<a(.*?)>/g, "<a$1 " + openInNewWindow + ">");
     $element.append(html);
   }
   inherit(TextController, InteractiveComponent);
@@ -10142,29 +10236,21 @@ define('common/controllers/slider-controller',['common/controllers/interactive-m
       },
 
       resize: function () {
-        var emSize = parseFloat($sliderHandle.css("font-size")),
-            remainingHeight;
-        // Apply custom width and height settings.
-        // In fact width can be applied only once during initialization, because
-        // it doesn't need any calculations when container size is changed.
-        // However, to keep resizing in one place both width and height
-        // adjustment are performed in this method.
-        // Also not that we set dimensions of the most outer container, not slider.
-        // Slider itself will always follow dimensions of container DIV.
-        // We have to do it that way to ensure that labels refer correct dimensions.
-        $elem.css("width", component.width);
-        // Height calculation is more complex, calculate dynamically
-        // available height for slider itself.
-        // Note that component.height refers to the height of the
-        // *whole* component!
-        $elem.css("height", component.height);
-        remainingHeight = $elem.height() - $title.outerHeight(true);
-        if ($label !== undefined) {
-          remainingHeight -= $label.outerHeight(true);
+        var remainingHeight, emSize;
+        if (component.height !== "auto") {
+          // Height calculation is more complex when height is different from
+          // "auto". Calculate dynamically available height for slider itself.
+          // Note that component.height refers to the height of the *whole*
+          // component!
+          remainingHeight = $elem.height() - $title.outerHeight(true);
+          if ($label !== undefined) {
+            remainingHeight -= $label.outerHeight(true);
+          }
+          $container.css("height", remainingHeight);
+          // Handle also requires dynamic styling.
+          emSize = parseFloat($sliderHandle.css("font-size"));
+          $sliderHandle.css("height", remainingHeight + emSize * 0.4);
         }
-        $container.css("height", remainingHeight);
-        // Handle also requires dynamic styling.
-        $sliderHandle.css("height", remainingHeight + emSize * 0.4);
       },
 
       // Returns serialized component definition.
@@ -10260,6 +10346,21 @@ define('common/controllers/slider-controller',['common/controllers/interactive-m
       displayValue = scriptingAPI.makeFunctionInScriptContext('value', displayValue);
     }
 
+    // Apply custom width and height settings.
+    // Also not that we set dimensions of the most outer container, not slider.
+    // Slider itself will always follow dimensions of container DIV.
+    // We have to do it that way to ensure that labels refer correct dimensions.
+    $elem.css({
+      "width": component.width,
+      "height": component.height
+    });
+    if (component.width === "auto") {
+      // Ensure that min width is 12em, when width is set to "auto".
+      // Prevent from situation when all sliders with short labels have
+      // different widths, what looks distracting.
+      $elem.css("min-width", "12em");
+    }
+    // Call resize function to support complex resizing when height is different from "auto".
     controller.resize();
 
     // Return Public API object.
@@ -10267,30 +10368,45 @@ define('common/controllers/slider-controller',['common/controllers/interactive-m
   };
 });
 
+/*global define, $ */
+
+/**
+ * Require this module to initialize Lab jQuery plugins.
+ */
+define('common/jquery-plugins',[],function () {
+  /**
+   * Allows to measure element when it isn't already added to the page.
+   * @param  {Function} fn       Function which will be executed.
+   * @param  {string}   selector jQuery selector.
+   * @param  {Object}   parent   Element which will be used as a temporal container.
+   * @return {*}                 Result of 'fn' execution.
+   */
+  $.fn.measure = function(fn, selector, parent) {
+    var el, selection, result;
+    el = $(this).clone(false);
+    el.css({
+      visibility: 'hidden',
+      position: 'absolute'
+    });
+    el.appendTo(parent);
+    if (selector) {
+      selection = el.find(selector);
+    } else {
+      selection = el;
+    }
+    result = fn.apply(selection);
+    el.remove();
+    return result;
+  };
+});
+
 /*global require, define, $, model */
 
-$.fn.measure = function(fn, selector, parent) {
-  var el, selection, result;
-  el = $(this).clone(false);
-  el.css({
-    visibility: 'hidden',
-    position: 'absolute'
-  });
-  el.appendTo(parent);
-  if (selector) {
-    selection = el.find(selector);
-  } else {
-    selection = el;
-  }
-  result = fn.apply(selection);
-  el.remove();
-  return result;
-};
-
-define('common/controllers/pulldown-controller',['common/controllers/interactive-metadata','common/validator'],function () {
+define('common/controllers/pulldown-controller',['common/controllers/interactive-metadata','common/validator','common/jquery-plugins'],function () {
 
   var metadata  = require('common/controllers/interactive-metadata'),
       validator = require('common/validator');
+      require('common/jquery-plugins');
 
   return function PulldownController(component, scriptingAPI, interactivesController) {
         // Public API.
@@ -10300,17 +10416,27 @@ define('common/controllers/pulldown-controller',['common/controllers/interactive
         // Options definitions from component JSON definition.
         options,
         // List of jQuery objects wrapping <select> elements.
-        $options = [];
+        $options = [],
+        // Indicates which change event are caused by the user and which are
+        // caused by select box update after property change.
+        ignoreChangeEvent = false;
 
     // Updates pulldown using model property. Used in modelLoadedCallback.
     // Make sure that this function is only called when:
     // a) model is loaded,
     // b) pulldown is bound to some property.
     function updatePulldown() {
-      // Clear current selection.
-      $pulldown.val([]);
-      // Try to set a new value.
-      $pulldown.val(model.get(component.property));
+      // Set flag indicating that change event should be ignored by our own
+      // change listener. It prevents from infinite loop like: pulldown update
+      // => property update => pulldown update => ...
+      // It's necessary as selectOption() call below will trigger change event
+      // of original select. It's used by selectBoxIt to update its view.
+      ignoreChangeEvent = true;
+      // Retrieve all of the SelectBoxIt methods and call selectOption(). Note
+      // that we have to call .toString() as numeric values are interpreted as
+      // option index by selectBoxIt. See:
+      // http://gregfranko.com/jquery.selectBoxIt.js/#Methods
+      $pulldown.data("selectBox-selectBoxIt").selectOption(model.get(component.property).toString());
     }
 
     function initialize() {
@@ -10345,16 +10471,24 @@ define('common/controllers/pulldown-controller',['common/controllers/interactive
       }
 
       $pulldown.change(function() {
+        if (ignoreChangeEvent) {
+          // Ignore change event caused by the pulldown menu update. It
+          // prevents from infinite loop of pulldown - property updates.
+          ignoreChangeEvent = false;
+          return;
+        }
+
         var index = $(this).prop('selectedIndex'),
-            action = component.options[index].action;
+            action = component.options[index].action,
+            value = component.options[index].value;
 
         if (action){
           scriptingAPI.makeFunctionInScriptContext(action)();
         } else if (component.options[index].loadModel){
           model.stop();
           interactivesController.loadModel(component.options[index].loadModel);
-        } else if (option.value !== undefined) {
-          model.set(component.property, options[index].value);
+        } else if (value !== undefined) {
+          model.set(component.property, value);
         }
       });
 
@@ -10775,536 +10909,6 @@ define('common/controllers/parent-message-api',['require','common/parent-message
 
     parentMessageController.initialize();
   };
-});
-
-define('cs',{load: function(id){throw new Error("Dynamic load not allowed: " + id);}});
-(function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-  define('cs!common/components/thermometer',['require'],function(require) {
-    var Thermometer;
-    return Thermometer = (function() {
-
-      function Thermometer(dom_selector, value, min, max) {
-        this.dom_selector = dom_selector != null ? dom_selector : "#thermometer";
-        this.value = value;
-        this.min = min;
-        this.max = max;
-        this.resize = __bind(this.resize, this);
-
-        this.dom_element = typeof this.dom_selector === "string" ? $(this.dom_selector) : this.dom_selector;
-        this.dom_element.addClass('thermometer');
-        this.thermometer_fill = $('<div>').addClass('thermometer_fill');
-        this.dom_element.append(this.thermometer_fill);
-        this.redraw();
-      }
-
-      Thermometer.prototype.add_value = function(value) {
-        this.value = value;
-        return this.redraw();
-      };
-
-      Thermometer.prototype.scaled_value = function() {
-        return (this.value - this.min) / (this.max - this.min);
-      };
-
-      Thermometer.prototype.resize = function() {
-        return this.redraw();
-      };
-
-      Thermometer.prototype.redraw = function() {
-        return this.thermometer_fill.css("height", (this.scaled_value() * 100) + "%");
-      };
-
-      return Thermometer;
-
-    })();
-  });
-
-}).call(this);
-
-/*global define $ model */
-
-define('common/controllers/thermometer-controller',['require','cs!common/components/thermometer','common/controllers/interactive-metadata','common/validator'],function (require) {
-
-  var Thermometer = require('cs!common/components/thermometer'),
-      metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator');
-
-  /**
-    An 'interactive thermometer' object, that wraps a base Thermometer with a label for use
-    in Interactives.
-
-    Properties are:
-
-     modelLoadedCallback:  Standard interactive component callback, called as soon as the model is loaded.
-     getViewContainer:     DOM element containing the Thermometer div and the label div.
-     getView:              Returns base Thermometer object, with no label.
-  */
-  return function ThermometerController(component) {
-    var reading = component.reading,
-        units,
-        offset,
-        scale,
-        digits,
-
-        labelIsReading,
-        labelText,
-
-        $thermometer, $label, $elem,
-
-        thermometerComponent,
-        controller,
-
-        updateLabel = function (temperature) {
-          temperature = scale * temperature + offset;
-          $label.text(temperature.toFixed(digits) + " " + units);
-        },
-
-        // Updates thermometer using model property. Used in modelLoadedCallback.
-        // Make sure that this function is only called when model is loaded.
-        updateThermometer = function () {
-          var t = model.get('targetTemperature');
-          thermometerComponent.add_value(t);
-          if (labelIsReading) updateLabel(t);
-        };
-
-    //
-    // Initialization.
-    //
-    component = validator.validateCompleteness(metadata.thermometer, component);
-    reading = component.reading;
-    units = reading.units;
-    offset = reading.offset;
-    scale  = reading.scale;
-    digits = reading.digits;
-
-    labelIsReading = !!component.labelIsReading;
-    labelText = labelIsReading ? "" : "Thermometer";
-
-    $thermometer = $('<div>').attr('id', component.id);
-    $label = $('<p class="label">').text(labelText);
-    $elem = $('<div class="interactive-thermometer">')
-      .append($thermometer)
-      .append($label);
-    // Each interactive component has to have class "component".
-    $elem.addClass("component");
-
-    // Support custom dimensions. Implementation may seem unclear,
-    // but the goal is to provide most obvious behavior for authors.
-    // We can simply set height of the most outer container.
-    // Thermometer will adjusts itself appropriately.
-    $elem.css("height", component.height);
-    // Width is more tricky.
-    if (!/%$/.test(component.width)) {
-      // When it's ems or px, its enough to set thermometer width.
-      $thermometer.css("width", component.width);
-    } else {
-      // Whet it's defined in %, set width of the most outer container
-      // to that value and thermometer width to 100%.
-      $elem.css("width", component.width);
-      $thermometer.css("width", "100%");
-    }
-
-    thermometerComponent = new Thermometer($thermometer, null, component.min, component.max);
-
-    // Public API.
-    controller = {
-      // No modelLoadeCallback is defined. In case of need:
-      modelLoadedCallback: function () {
-        // TODO: update to observe actual system temperature once output properties are observable
-        model.addPropertiesListener('targetTemperature', function() {
-          updateThermometer();
-        });
-        thermometerComponent.resize();
-        updateThermometer();
-      },
-
-      // Returns view container.
-      getViewContainer: function () {
-        return $elem;
-      },
-
-      getView: function () {
-        return thermometerComponent;
-      },
-
-      resize: function () {
-        $thermometer.height($elem.height() - $label.height());
-      },
-
-      // Returns serialized component definition.
-      serialize: function () {
-        // Return the initial component definition.
-        // Displayed value is always defined by the model,
-        // so it shouldn't be serialized.
-        return component;
-      }
-    };
-    // Return Public API object.
-    return controller;
-  };
-});
-
-/*global define */
-
-define('common/controllers/div-controller',['require','common/inherit','common/controllers/interactive-component'],function (require) {
-
-  var inherit              = require('common/inherit'),
-      InteractiveComponent = require('common/controllers/interactive-component');
-
-  /**
-   * Simplest component controller which just inherits from InteractiveComponent, simply
-   * creating a div element. Component can have dimensions, css classes and on onClick
-   * function.
-   * @param {Object} component Component JSON definition.
-   * @param {ScriptingAPI} scriptingAPI
-   */
-  function DivController(component, scriptingAPI) {
-
-    // Call super constructor.
-    InteractiveComponent.call(this, "div", component);
-
-  }
-  inherit(DivController, InteractiveComponent);
-
-  return DivController;
-});
-
-/*global define, $ */
-
-define('common/controllers/setup-banner',['lab.config','common/controllers/text-controller','common/controllers/image-controller','common/controllers/div-controller'],function () {
-
-  var labConfig       = require('lab.config'),
-      TextController  = require('common/controllers/text-controller'),
-      ImageController = require('common/controllers/image-controller'),
-      DivController   = require('common/controllers/div-controller'),
-      topBarHeight    = 1.5,
-      topBarFontScale = topBarHeight*0.65,
-      topBarVerticalPadding = topBarHeight/10;
-
-  /**
-   * Returns a hash containing:
-   *  - components,
-   *  - containers,
-   *  - layout definition (components location).
-   * All these things are used to build the interactive banner.
-   *
-   * @param {Object} interactive Interactive JSON definition.
-   * @param {CreditsDialog} creditsDialog
-   * @param {AboutDialog} aboutDialog
-   * @param {ShareDialog} shareDialog
-   */
-  return function setupBanner(interactive, creditsDialog, aboutDialog, shareDialog) {
-    var components = {},
-        template = [],
-        layout = {},
-        // About link visible if there is about section or subtitle.
-        haveAboutText = interactive.about || interactive.subtitle,
-        body, requestFullscreenMethod;
-
-    template.push({
-      "id": "top-bar",
-      "top": "0",
-      "left": "0",
-      "height": topBarHeight + "em",
-      "padding-top": topBarVerticalPadding + "em",
-      "padding-bottom": topBarVerticalPadding + "em",
-      "width": "container.width",
-      "aboveOthers": true
-    });
-
-    template.push({
-      "id": "bottom-bar",
-      "bottom": "container.height",
-      "left": "0",
-      "width": "container.width",
-      "height": "2.5em",
-      "belowOthers": true
-    });
-
-    function createElementInContainer(element, container) {
-      var Controller;
-
-      if (element.type === "text") {
-        Controller = TextController;
-      } else if (element.type === "image") {
-        Controller = ImageController;
-      } else if (element.type === "div") {
-        Controller = DivController;
-      }
-
-      components[element.id] = new Controller(element);
-      template.push(container);
-      layout[container.id] = [element.id];
-    }
-
-    // Define about link only if "about" or "subtitle" section is available.
-    aboutDialog.update(interactive);
-    createElementInContainer({
-      "type": "text",
-      "id": "about-link",
-      "text": "About",
-      "onClick": function () {
-        if (haveAboutText) {
-          aboutDialog.open();
-        } else {
-          creditsDialog.open();
-        }
-      }
-    },
-    {
-      "id": "banner-right",
-      "fontScale": topBarFontScale,
-      "top": "0",
-      "height": topBarHeight + "em",
-      "padding-top": topBarVerticalPadding + "em",
-      "padding-bottom": topBarVerticalPadding + "em",
-      "right": "interactive.width",
-      "padding-left": "1em",
-      "padding-right": "0.75em",
-      "align": "right",
-      "aboveOthers": true
-    });
-
-    // Define sharing link only if sharing is enabled.
-    // Note that due to layout limitations, banner-middle container
-    // has to be defined *after* banner-right container which is used
-    // in its specification!
-    if (labConfig.sharing) {
-      shareDialog.update(interactive);
-      createElementInContainer(
-      {
-        "type": "text",
-        "id": "share-link",
-        "text": "Share",
-        "onClick": function () { shareDialog.open(); }
-      },
-      {
-        "id": "banner-middle",
-        "fontScale": topBarFontScale,
-        "top": "0",
-        "height": topBarHeight + "em",
-        "padding-top": topBarVerticalPadding + "em",
-        "padding-bottom": topBarVerticalPadding + "em",
-        // "banner-right" can be undefined, so check it.
-        "right": "banner-right.left",
-        "padding-right": "1em",
-        "align": "right",
-        "aboveOthers": true
-      });
-    }
-
-    // bottom bar
-    creditsDialog.update(interactive);
-    createElementInContainer(
-    {
-      "type": "div",
-      "id": "credits-link",
-      "height": "2.5em",
-      "width": "8.1em",
-      "classes": ["credits"],
-      "tooltip": "Credits",
-      "onClick": function () { creditsDialog.open(); }
-    },
-    {
-      "id": "banner-bottom-left",
-      "bottom": "container.height",
-      "left": "0",
-      "padding-left": "0.3em",
-      "align": "left",
-      "belowOthers": true
-    });
-
-    // see if we can go fullscreen. If we can, add a fullscreen button.
-    // Note: This requires iframe to be embedded with 'allowfullscreen=true' (and
-    // browser-specific variants). If iframe is not embedded with this property, button
-    // will show but will not work. It is not clear whether we can find out at this moment
-    // whether iframe was embedded appropriately.
-    body = document.body;
-
-    requestFullscreenMethod =
-         body.requestFullScreen ||
-         body.webkitRequestFullScreen ||
-         body.mozRequestFullScreen ||
-         body.msRequestFullScreen;
-
-    document.cancelFullscreenMethod =
-         document.cancelFullScreen ||
-         document.webkitCancelFullScreen ||
-         document.mozCancelFullScreen ||
-         document.msCancelFullScreen;
-
-    function isFullscreen() {
-      // this doesn't yet exist in Safari
-      if (document.fullscreenElement||
-          document.webkitFullscreenElement ||
-          document.mozFullScreenElement) {
-        return true;
-      }
-      // annoying hack to check Safari
-      return ~$(".fullscreen").css("background-image").indexOf("exit");
-    }
-
-    if (requestFullscreenMethod) {
-      createElementInContainer(
-      {
-        "type": "div",
-        "id": "fullsize-link",
-        "height": "2.5em",
-        "width": "2.5em",
-        "classes": ["fullscreen"],
-        "tooltip": "Open interactive in full-screen mode",
-        "onClick": function () {
-          if (!isFullscreen()) {
-            requestFullscreenMethod.call(body);
-          } else {
-            document.cancelFullscreenMethod();
-          }
-        }
-      },
-      {
-        "id": "banner-bottom-right",
-        "bottom": "container.height",
-        "right": "container.width",
-        "align": "left",
-        "padding-left": "1em",
-        "belowOthers": true
-      });
-    }
-
-    template.push({
-      "id": "interactive-playback-container",
-      "bottom": "container.height",
-      "left": "container.width/2 - interactive-playback-container.width/2",
-      "width": "12em",
-      "height": "banner-bottom-left.height",
-      "belowOthers": true
-    });
-
-    return {
-      components: components,
-      template: template,
-      layout: layout
-    };
-  };
-});
-
-/*global define, $ */
-
-define('common/controllers/basic-dialog',[],function () {
-
-  var defOptions = {
-    autoOpen: false,
-    dialogClass: "interactive-dialog",
-    // Ensure that font is being scaled dynamically!
-    appendTo: "#responsive-content",
-    width: "80%"
-  };
-
-  /**
-   * Simple wrapper around the jQuery UI Dialog,
-   * which provides useful defaults and simple interface.
-   *
-   * @constructor
-   * @param {Object} options jQuery UI Dialog options.
-   */
-  function BasicDialog(options) {
-    /**
-     * Basic dialog elements.
-     * @type {jQuery}
-     */
-    this.$element = $('<div>');
-    // Create jQuery UI Dialog.
-    this.$element.dialog($.extend({}, defOptions, options));
-  }
-
-  /**
-   * Opens the dialog.
-   */
-  BasicDialog.prototype.open = function() {
-    this.$element.dialog("open");
-  };
-
-  /**
-   * Sets jQuery UI Dialog option.
-   *
-   * @param {string} key
-   * @param {Object} value
-   */
-  BasicDialog.prototype.set = function(key, value) {
-    this.$element.dialog("option", key, value);
-  };
-
-  /**
-   * Sets content of the dialog.
-   *
-   * @param {jQuery|DOM|string} $content Any value that can be accepted by the jQuery constructor.
-   */
-  BasicDialog.prototype.setContent = function ($content) {
-    this.$element.empty();
-    // Not very pretty, but probably the simplest and most reliable way to
-    // disable autofocus in jQuery UI dialogs. See:
-    // http://jqueryui.com/upgrade-guide/1.10/#added-ability-to-specify-which-element-to-focus-on-open
-    this.$element.append('<input type="hidden" autofocus="autofocus" />');
-    this.$element.append($content);
-  };
-
-  return BasicDialog;
-});
-
-/*global define, $ */
-define('common/controllers/about-dialog',['require','arrays','markdown','common/inherit','common/controllers/basic-dialog'],function (require) {
-
-  var arrays      = require('arrays'),
-      markdown    = require('markdown'),
-      inherit     = require('common/inherit'),
-      BasicDialog = require('common/controllers/basic-dialog');
-
-  /**
-   * About Dialog. Inherits from Basic Dialog.
-   *
-   * @constructor
-   */
-  function AboutDialog() {
-    BasicDialog.call(this, {dialogClass: "about-dialog"});
-  }
-  inherit(AboutDialog, BasicDialog);
-
-  /**
-   * Updates dialog content using interactive JSON definition.
-   *
-   * @param {Object} interactive Interactive JSON definition.
-   */
-  AboutDialog.prototype.update = function(interactive) {
-    var $aboutContent = $("<div>"),
-        about,
-        content,
-        html,
-        openInNewWindow = 'class="opens-in-new-window" target="blank"';
-
-    this.set("title", "About: " + interactive.title);
-
-    // Ensure that common typography for markdown-generated content is used.
-    $aboutContent.addClass("markdown-typography");
-    if (interactive.subtitle) {
-      html = markdown.toHTML(interactive.subtitle);
-      html = html.replace(/<a(.*?)>/, "<a$1 " + openInNewWindow + ">");
-      $aboutContent.append(html);
-    }
-    about = arrays.isArray(interactive.about) ? interactive.about : [interactive.about];
-    content = "";
-    $.each(about, function(idx, val) {
-      content += val + "\n";
-    });
-    html = markdown.toHTML(content);
-    html = html.replace(/<a(.*?)>/, "<a$1 " + openInNewWindow + ">");
-    $aboutContent.append(html);
-
-    this.setContent($aboutContent);
-  };
-
-  return AboutDialog;
 });
 
 /*!
@@ -12224,6 +11828,550 @@ define('text',['module'], function (module) {
     return text;
 });
 
+define('text!common/controllers/thermometer.tpl',[],function () { return '<div class="interactive-thermometer component" id="{{id}}">\n  <div class="thermometer-main-container">\n    <div class="thermometer">\n      <div class="thermometer-fill"></div>\n    </div>\n    <p class="label">{{labelText}}</p>\n  </div>\n  <div class="labels-container">\n    {{#labels}}\n      <span class="value-label" style="bottom: {{position}}">{{label}}</span>\n    {{/labels}}\n  </div>\n</div>';});
+
+/*global define, $, model */
+
+define('common/controllers/thermometer-controller',['require','mustache','text!common/controllers/thermometer.tpl','common/controllers/interactive-metadata','common/validator','common/jquery-plugins'],function (require) {
+
+  var mustache       = require('mustache'),
+      thermometerTpl = require('text!common/controllers/thermometer.tpl'),
+      metadata       = require('common/controllers/interactive-metadata'),
+      validator      = require('common/validator');
+      require('common/jquery-plugins');
+
+  /**
+    An 'interactive thermometer' object, that wraps a base Thermometer with a label for use
+    in Interactives.
+
+    Properties are:
+
+     modelLoadedCallback:  Standard interactive component callback, called as soon as the model is loaded.
+     getViewContainer:     DOM element containing the Thermometer div and the label div.
+     getView:              Returns base Thermometer object, with no label.
+  */
+  return function ThermometerController(component, scriptingAPI, interactivesController) {
+    var units,
+        digits,
+        // Returns scaled value using provided 'scale' and 'offset' component properties.
+        scaleFunc,
+        // Returns value between 0% and 100% using provided 'min' and 'max' component properties.
+        normalize,
+
+        labelIsReading,
+        fitWidth,
+        $elem,
+        $thermometer,
+        $thermometerFill,
+        $bottomLabel,
+        $labelsContainer,
+
+        controller,
+
+        updateLabel = function (temperature) {
+          temperature = scaleFunc(temperature);
+          $bottomLabel.text(temperature.toFixed(digits) + " " + units);
+        },
+
+        // Updates thermometer using model property. Used in modelLoadedCallback.
+        // Make sure that this function is only called when model is loaded.
+        updateThermometer = function () {
+          var t = model.get('targetTemperature');
+          $thermometerFill.css("height", normalize(scaleFunc(t)));
+          if (labelIsReading) updateLabel(t);
+        };
+
+    //
+    // Initialization.
+    //
+    function initialize() {
+      var reading, offset, scale,
+          view, labelText, labels,
+          longestLabelIdx, maxLength,
+          max, min, i, len;
+
+      component = validator.validateCompleteness(metadata.thermometer, component);
+      reading = component.reading;
+      units = reading.units;
+      offset = reading.offset;
+      scale  = reading.scale;
+      digits = reading.digits;
+      min = component.min;
+      max = component.max;
+
+      scaleFunc = function (val) {
+        return scale * val + offset;
+      };
+
+      normalize = function (val) {
+        return ((val - min) / (max - min) * 100) + "%";
+      };
+
+      labelIsReading = component.labelIsReading;
+      labelText = labelIsReading ? "" : "Thermometer";
+
+      // Calculate view.
+      view = {
+        id: component.id,
+        labelText: labelIsReading ? "" : "Thermometer"
+      };
+      // Calculate tick labels positions.
+      labels = component.labels;
+      maxLength = -Infinity;
+      view.labels = [];
+      for (i = 0, len = labels.length; i < len; i++) {
+        view.labels.push({
+          label: labels[i].label,
+          position: normalize(scaleFunc(labels[i].value))
+        });
+        if (labels[i].label.length > maxLength) {
+          maxLength = labels[i].label.length;
+          longestLabelIdx = i;
+        }
+      }
+      // Render view.
+      $elem = $(mustache.render(thermometerTpl, view));
+      // Save useful references.
+      $thermometer = $elem.find(".thermometer");
+      $thermometerFill = $elem.find(".thermometer-fill");
+      $bottomLabel = $elem.find(".label");
+      $labelsContainer = $elem.find(".labels-container");
+
+      // Calculate size of the "labels container" div.
+      // It's used to ensure that wrapping DIV ($elem) has correct width
+      // so layout system can work fine. We have to explicitly set its
+      // width, as absolutely positioned elements (labels) are excluded
+      // from the layout workflow.
+      maxLength = $elem.measure(function() {
+        // Calculate width of the longest label in ems (!).
+        return (this.width() / parseFloat(this.css("font-size"))) + "em";
+      }, ".value-label:eq(" + longestLabelIdx + ")", interactivesController.interactiveContainer);
+      $labelsContainer.css("width", maxLength);
+
+      // Support custom dimensions. Implementation may seem unclear,
+      // but the goal is to provide most obvious behavior for authors.
+      // We can simply set height of the most outer container.
+      // Thermometer will adjusts itself appropriately.
+      $elem.css("height", component.height);
+      // Width is more tricky.
+      fitWidth = false;
+      if (!/%$/.test(component.width)) {
+        // When it's ems or px, its enough to set thermometer width.
+        $thermometer.css("width", component.width);
+      } else {
+        // Whet it's defined in %, set width of the most outer container
+        // to that value and thermometer should use all available space
+        // (100% or 100% - labels width).
+        $elem.css("width", component.width);
+        fitWidth = true;
+      }
+    }
+
+    // Public API.
+    controller = {
+      // No modelLoadeCallback is defined. In case of need:
+      modelLoadedCallback: function () {
+        // TODO: update to observe actual system temperature once output properties are observable
+        model.addPropertiesListener('targetTemperature', function() {
+          updateThermometer();
+        });
+        updateThermometer();
+      },
+
+      // Returns view container.
+      getViewContainer: function () {
+        return $elem;
+      },
+
+      resize: function () {
+        var thermometerHeight = $elem.height() - $bottomLabel.height();
+        $thermometer.height(thermometerHeight);
+        $labelsContainer.height(thermometerHeight);
+        if (fitWidth) {
+          // When user sets width in %, it means that the most outer container
+          // width is equal to this value and thermometer shape should try to
+          // use maximum available space.
+          $thermometer.width($elem.width() - $labelsContainer.width());
+        }
+      },
+
+      // Returns serialized component definition.
+      serialize: function () {
+        // Return the initial component definition.
+        // Displayed value is always defined by the model,
+        // so it shouldn't be serialized.
+        return component;
+      }
+    };
+
+    initialize();
+
+    // Return Public API object.
+    return controller;
+  };
+});
+
+/*global define */
+
+define('common/controllers/div-controller',['require','common/inherit','common/controllers/interactive-component'],function (require) {
+
+  var inherit              = require('common/inherit'),
+      InteractiveComponent = require('common/controllers/interactive-component');
+
+  /**
+   * Simplest component controller which just inherits from InteractiveComponent, simply
+   * creating a div element. Component can have dimensions, css classes and on onClick
+   * function.
+   * @param {Object} component Component JSON definition.
+   * @param {ScriptingAPI} scriptingAPI
+   */
+  function DivController(component, scriptingAPI) {
+
+    // Call super constructor.
+    InteractiveComponent.call(this, "div", component);
+
+  }
+  inherit(DivController, InteractiveComponent);
+
+  return DivController;
+});
+
+/*global define, $ */
+
+define('common/controllers/setup-banner',['lab.config','common/controllers/text-controller','common/controllers/image-controller','common/controllers/div-controller'],function () {
+
+  var labConfig       = require('lab.config'),
+      TextController  = require('common/controllers/text-controller'),
+      ImageController = require('common/controllers/image-controller'),
+      DivController   = require('common/controllers/div-controller'),
+      topBarHeight    = 1.5,
+      topBarFontScale = topBarHeight*0.65,
+      topBarVerticalPadding = topBarHeight/10;
+
+  /**
+   * Returns a hash containing:
+   *  - components,
+   *  - containers,
+   *  - layout definition (components location).
+   * All these things are used to build the interactive banner.
+   *
+   * @param {Object} interactive Interactive JSON definition.
+   * @param {CreditsDialog} creditsDialog
+   * @param {AboutDialog} aboutDialog
+   * @param {ShareDialog} shareDialog
+   */
+  return function setupBanner(interactive, creditsDialog, aboutDialog, shareDialog) {
+    var components = {},
+        template = [],
+        layout = {},
+        // About link visible if there is about section or subtitle.
+        haveAboutText = interactive.about || interactive.subtitle,
+        body, requestFullscreenMethod;
+
+    template.push({
+      "id": "top-bar",
+      "top": "0",
+      "left": "0",
+      "height": topBarHeight + "em",
+      "padding-top": topBarVerticalPadding + "em",
+      "padding-bottom": topBarVerticalPadding + "em",
+      "width": "container.width",
+      "aboveOthers": true
+    });
+
+    template.push({
+      "id": "bottom-bar",
+      "bottom": "container.height",
+      "left": "0",
+      "width": "container.width",
+      "height": "2.5em",
+      "belowOthers": true
+    });
+
+    function createElementInContainer(element, container) {
+      var Controller;
+
+      if (element.type === "text") {
+        Controller = TextController;
+      } else if (element.type === "image") {
+        Controller = ImageController;
+      } else if (element.type === "div") {
+        Controller = DivController;
+      }
+
+      components[element.id] = new Controller(element);
+      template.push(container);
+      layout[container.id] = [element.id];
+    }
+
+    // Define about link only if "about" or "subtitle" section is available.
+    aboutDialog.update(interactive);
+    createElementInContainer({
+      "type": "text",
+      "id": "about-link",
+      "text": "About",
+      "onClick": function () {
+        if (haveAboutText) {
+          aboutDialog.open();
+        } else {
+          creditsDialog.open();
+        }
+      }
+    },
+    {
+      "id": "banner-right",
+      "fontScale": topBarFontScale,
+      "top": "0",
+      "height": topBarHeight + "em",
+      "padding-top": topBarVerticalPadding + "em",
+      "padding-bottom": topBarVerticalPadding + "em",
+      "right": "interactive.width",
+      "padding-left": "1em",
+      "padding-right": "0.75em",
+      "align": "right",
+      "aboveOthers": true
+    });
+
+    // Define sharing link only if sharing is enabled.
+    // Note that due to layout limitations, banner-middle container
+    // has to be defined *after* banner-right container which is used
+    // in its specification!
+    if (labConfig.sharing) {
+      shareDialog.update(interactive);
+      createElementInContainer(
+      {
+        "type": "text",
+        "id": "share-link",
+        "text": "Share",
+        "onClick": function () { shareDialog.open(); }
+      },
+      {
+        "id": "banner-middle",
+        "fontScale": topBarFontScale,
+        "top": "0",
+        "height": topBarHeight + "em",
+        "padding-top": topBarVerticalPadding + "em",
+        "padding-bottom": topBarVerticalPadding + "em",
+        // "banner-right" can be undefined, so check it.
+        "right": "banner-right.left",
+        "padding-right": "1em",
+        "align": "right",
+        "aboveOthers": true
+      });
+    }
+
+    // bottom bar
+    creditsDialog.update(interactive);
+    createElementInContainer(
+    {
+      "type": "div",
+      "id": "credits-link",
+      "height": "2.5em",
+      "width": "8.1em",
+      "classes": ["credits"],
+      "tooltip": "Credits",
+      "onClick": function () { creditsDialog.open(); }
+    },
+    {
+      "id": "banner-bottom-left",
+      "bottom": "container.height",
+      "left": "0",
+      "padding-left": "0.3em",
+      "align": "left",
+      "belowOthers": true
+    });
+
+    // see if we can go fullscreen. If we can, add a fullscreen button.
+    // Note: This requires iframe to be embedded with 'allowfullscreen=true' (and
+    // browser-specific variants). If iframe is not embedded with this property, button
+    // will show but will not work. It is not clear whether we can find out at this moment
+    // whether iframe was embedded appropriately.
+    body = document.body;
+
+    requestFullscreenMethod =
+         body.requestFullScreen ||
+         body.webkitRequestFullScreen ||
+         body.mozRequestFullScreen ||
+         body.msRequestFullScreen;
+
+    document.cancelFullscreenMethod =
+         document.cancelFullScreen ||
+         document.webkitCancelFullScreen ||
+         document.mozCancelFullScreen ||
+         document.msCancelFullScreen;
+
+    function isFullscreen() {
+      // this doesn't yet exist in Safari
+      if (document.fullscreenElement||
+          document.webkitFullscreenElement ||
+          document.mozFullScreenElement) {
+        return true;
+      }
+      // annoying hack to check Safari
+      return ~$(".fullscreen").css("background-image").indexOf("exit");
+    }
+
+    if (requestFullscreenMethod) {
+      createElementInContainer(
+      {
+        "type": "div",
+        "id": "fullsize-link",
+        "height": "2.5em",
+        "width": "2.5em",
+        "classes": ["fullscreen"],
+        "tooltip": "Open interactive in full-screen mode",
+        "onClick": function () {
+          if (!isFullscreen()) {
+            requestFullscreenMethod.call(body);
+          } else {
+            document.cancelFullscreenMethod();
+          }
+        }
+      },
+      {
+        "id": "banner-bottom-right",
+        "bottom": "container.height",
+        "right": "container.width",
+        "align": "left",
+        "padding-left": "1em",
+        "belowOthers": true
+      });
+    }
+
+    template.push({
+      "id": "interactive-playback-container",
+      "bottom": "container.height",
+      "left": "container.width/2 - interactive-playback-container.width/2",
+      "width": "12em",
+      "height": "banner-bottom-left.height",
+      "belowOthers": true
+    });
+
+    return {
+      components: components,
+      template: template,
+      layout: layout
+    };
+  };
+});
+
+/*global define, $ */
+
+define('common/controllers/basic-dialog',[],function () {
+
+  var defOptions = {
+    autoOpen: false,
+    dialogClass: "interactive-dialog",
+    // Ensure that font is being scaled dynamically!
+    appendTo: "#responsive-content",
+    width: "80%"
+  };
+
+  /**
+   * Simple wrapper around the jQuery UI Dialog,
+   * which provides useful defaults and simple interface.
+   *
+   * @constructor
+   * @param {Object} options jQuery UI Dialog options.
+   */
+  function BasicDialog(options) {
+    /**
+     * Basic dialog elements.
+     * @type {jQuery}
+     */
+    this.$element = $('<div>');
+    // Create jQuery UI Dialog.
+    this.$element.dialog($.extend({}, defOptions, options));
+  }
+
+  /**
+   * Opens the dialog.
+   */
+  BasicDialog.prototype.open = function() {
+    this.$element.dialog("open");
+  };
+
+  /**
+   * Sets jQuery UI Dialog option.
+   *
+   * @param {string} key
+   * @param {Object} value
+   */
+  BasicDialog.prototype.set = function(key, value) {
+    this.$element.dialog("option", key, value);
+  };
+
+  /**
+   * Sets content of the dialog.
+   *
+   * @param {jQuery|DOM|string} $content Any value that can be accepted by the jQuery constructor.
+   */
+  BasicDialog.prototype.setContent = function ($content) {
+    this.$element.empty();
+    // Not very pretty, but probably the simplest and most reliable way to
+    // disable autofocus in jQuery UI dialogs. See:
+    // http://jqueryui.com/upgrade-guide/1.10/#added-ability-to-specify-which-element-to-focus-on-open
+    this.$element.append('<input type="hidden" autofocus="autofocus" />');
+    this.$element.append($content);
+  };
+
+  return BasicDialog;
+});
+
+/*global define, $ */
+define('common/controllers/about-dialog',['require','arrays','markdown','common/inherit','common/controllers/basic-dialog'],function (require) {
+
+  var arrays      = require('arrays'),
+      markdown    = require('markdown'),
+      inherit     = require('common/inherit'),
+      BasicDialog = require('common/controllers/basic-dialog');
+
+  /**
+   * About Dialog. Inherits from Basic Dialog.
+   *
+   * @constructor
+   */
+  function AboutDialog() {
+    BasicDialog.call(this, {dialogClass: "about-dialog"});
+  }
+  inherit(AboutDialog, BasicDialog);
+
+  /**
+   * Updates dialog content using interactive JSON definition.
+   *
+   * @param {Object} interactive Interactive JSON definition.
+   */
+  AboutDialog.prototype.update = function(interactive) {
+    var $aboutContent = $("<div>"),
+        about,
+        content,
+        html,
+        openInNewWindow = 'class="opens-in-new-window" target="blank"';
+
+    this.set("title", "About: " + interactive.title);
+
+    // Ensure that common typography for markdown-generated content is used.
+    $aboutContent.addClass("markdown-typography");
+    if (interactive.subtitle) {
+      html = markdown.toHTML(interactive.subtitle);
+      html = html.replace(/<a(.*?)>/, "<a$1 " + openInNewWindow + ">");
+      $aboutContent.append(html);
+    }
+    about = arrays.isArray(interactive.about) ? interactive.about : [interactive.about];
+    content = "";
+    $.each(about, function(idx, val) {
+      content += val + "\n";
+    });
+    html = markdown.toHTML(content);
+    html = html.replace(/<a(.*?)>/g, "<a$1 " + openInNewWindow + ">");
+    $aboutContent.append(html);
+
+    this.setContent($aboutContent);
+  };
+
+  return AboutDialog;
+});
+
 define('text!common/controllers/share-dialog.tpl',[],function () { return '<div>\n  <h2>\n    Paste this\n    <a class=\'opens-in-new-window\' href=\'{{embeddableSharingUrl}}\' target=\'_blank\'>link</a>\n    in email or IM.\n  </h2>\n  <textarea>{{embeddableSharingUrl}}</textarea>\n  <h2>Paste HTML to embed in website or blog.</h2>\n  <p>Select Size:\n    <select id=\'iframe-size\'>\n      <option value=\'smaller\'>30% smaller</option>\n      <option selected value=\'actual\'>actual</option>\n      <option value=\'larger\'>50% larger</option>\n    </select>\n  </p>\n  <textarea id=\'share-iframe-content\'></textarea>\n  {{> copyright}}\n</div>\n';});
 
 define('text!common/controllers/copyright.tpl',[],function () { return '<div class="copyright-section"><strong>Copyright © 2013&nbsp;</strong><a class="opens-in-new-window" href="http://concord.org" id="share-license-link" target="_blank">The Concord Consortium</a>. All rights reserved. The software is licensed under&nbsp;<a class="opens-in-new-window" href="http://opensource.org/licenses/BSD-2-Clause" id="share-license-link" target="_blank">Simplified BSD</a>, <a class="opens-in-new-window" href="http://opensource.org/licenses/MIT" id="share-license-link" target="_blank">MIT</a> or <a class="opens-in-new-window" href="http://opensource.org/licenses/Apache-2.0" id="share-license-link" target="_blank">Apache 2.0</a> licenses. Please provide attribution to the Concord Consortium and the URL&nbsp;<a class="opens-in-new-window" href="http://concord.org/" id="share-license-link" target="_blank">http://concord.org</a>.</div>';});
@@ -12314,7 +12462,7 @@ define('common/controllers/share-dialog',['require','lab.config','mustache','com
    * @param {Object} interactive Interactive JSON definition.
    */
   ShareDialog.prototype.update = function(interactive) {
-    this.set("title", "Credits: " + interactive.title);
+    this.set("title", "Share: " + interactive.title);
   };
 
   return ShareDialog;
@@ -13088,7 +13236,8 @@ define('common/layout/templates',[],function () {
         "top": "model.top",
         "left": "model.right",
         "height": "model.height",
-        "padding-left": "1em"
+        "padding-left": "1em",
+        "padding-right": "0.5em"
       },
       {
         "id": "bottom",
@@ -13146,6 +13295,7 @@ define('common/layout/templates',[],function () {
   };
 });
 
+define('cs',{load: function(id){throw new Error("Dynamic load not allowed: " + id);}});
 (function() {
 
   define('cs!common/components/model_player',['require'],function(require) {
@@ -13450,6 +13600,27 @@ define('common/controllers/model-controller',['require','arrays','cs!common/comp
 
       return controller;
   };
+});
+
+/*global define, performance, $ */
+
+define('common/performance',[],function () {
+  var nowFunc;
+
+  if (typeof performance !== 'undefined' && typeof performance.now !== 'undefined') {
+    nowFunc = $.proxy(performance.now, performance);
+  } else {
+    nowFunc = $.proxy(Date.now, Date);
+  }
+
+  return {
+    /**
+     * window.performance.now or Date.now when performance.now is not available.
+     * @type {Function}
+     */
+    now: nowFunc
+  };
+
 });
 
 /*global define: true */
@@ -14820,11 +14991,34 @@ define('md2d/models/metadata',[],function() {
     },
 
     viewOptions: {
+      viewPortWidth: {
+        defaultValue: 10,
+        unitType: "length",
+        immutable: true
+      },
+      viewPortHeight: {
+        defaultValue: 10,
+        unitType: "length",
+        immutable: true
+      },
+      viewPortX: {
+        defaultValue: 0,
+        unitType: "length",
+        immutable: true
+      },
+      viewPortY: {
+        defaultValue: 0,
+        unitType: "length",
+        immutable: true
+      },
       backgroundColor: {
         defaultValue: "#eeeeee"
       },
       showClock: {
         defaultValue: true
+      },
+      markColor: {
+        defaultValue: "#f8b500"
       },
       keShading: {
         defaultValue: false
@@ -15058,13 +15252,13 @@ define('md2d/models/metadata',[],function() {
         defaultValue: 0,
         unitType: "velocity"
       },
-      // External horizontal force, per mass unit (i.e., despite the name it's an acceleration)
-      externalFx: {
+      // Externally applied horizontal acceleration
+      externalAx: {
         defaultValue: 0,
         unitType: "acceleration"
       },
-      // External vertical force, per mass unit.
-      externalFy: {
+      // Externally applied vertical acceleration
+      externalAy: {
         defaultValue: 0,
         unitType: "accleration"
       },
@@ -15233,13 +15427,31 @@ define('md2d/models/metadata',[],function() {
         defaultValue: 0,
         unitType: "length"
       },
+      anchor: {
+        defaultValue: "lower-left"
+      },
       layer: {
         defaultValue: 1
       },
       width: {},
+      height: {},
       frame: {},
       color: {},
-      backgroundColor: {},
+      backgroundColor: {
+        defaultValue: "white"
+      },
+      strokeWidthEms: {
+        defaultValue: 0.03
+      },
+      strokeOpacity: {
+        defaultValue: 1.0
+      },
+      rotate: {
+        defaultValue: 0
+      },
+      fontScale: {
+        defaultValue: 1
+      },
       hostType: {},
       hostIndex: {},
       textAlign: {}
@@ -16182,8 +16394,8 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         obstacleHeight,
         obstacleVX,
         obstacleVY,
-        obstacleExtFX,
-        obstacleExtFY,
+        obstacleExtAX,
+        obstacleExtAY,
         obstacleFriction,
         obstacleMass,
         obstacleWestProbe,
@@ -16548,8 +16760,8 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
             obstacleMass        = obstacles.mass;
             obstacleVX          = obstacles.vx;
             obstacleVY          = obstacles.vy;
-            obstacleExtFX       = obstacles.externalFx;
-            obstacleExtFY       = obstacles.externalFy;
+            obstacleExtAX       = obstacles.externalAx;
+            obstacleExtAY       = obstacles.externalAy;
             obstacleFriction    = obstacles.friction;
             obstacleWestProbe   = obstacles.westProbe;
             obstacleNorthProbe  = obstacles.northProbe;
@@ -16689,8 +16901,8 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
           obstacles.mass        = arrays.create(num, 0, arrayTypes.floatType);
           obstacles.vx          = arrays.create(num, 0, arrayTypes.floatType);
           obstacles.vy          = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.externalFx  = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.externalFy  = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.externalAx  = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.externalAy  = arrays.create(num, 0, arrayTypes.floatType);
           obstacles.friction    = arrays.create(num, 0, arrayTypes.floatType);
           obstacles.westProbe   = arrays.create(num, 0, arrayTypes.uint8Type);
           obstacles.northProbe  = arrays.create(num, 0, arrayTypes.uint8Type);
@@ -17626,8 +17838,8 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
             vy = obstacleVY[i],
             // External forces are defined per mass unit!
             // So, they are accelerations in fact.
-            extFx = obstacleExtFX[i],
-            extFy = obstacleExtFY[i];
+            extFx = obstacleExtAX[i],
+            extFy = obstacleExtAY[i];
 
             if (vx || vy || extFx || extFy || gravitationalField) {
               drag = viscosity * obstacleFriction[i];
@@ -19482,14 +19694,30 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
           new CloneRestoreWrapper(springForces),
           // PairwiseLJProperties class implements Clone-Restore Interface.
           pairwiseLJProperties,
-          // Save time value.
-          // Create one-line wrapper to provide required interface.
+
+          // Also save toplevel state (time, number of atoms, etc):
           {
             clone: function () {
-              return time;
+              return {
+                time          : time,
+                N             : N,
+                N_elements    : N_elements,
+                N_obstacles   : N_obstacles,
+                N_radialBonds : N_radialBonds,
+                N_angularBonds: N_angularBonds,
+                N_restraints  : N_restraints,
+                N_springForces: N_springForces
+              };
             },
             restore: function(state) {
-              engine.setTime(state);
+              time           = state.time;
+              N              = state.N;
+              N_elements     = state.N_elements;
+              N_obstacles    = state.N_obstacles;
+              N_radialBonds  = state.N_radialBonds;
+              N_angularBonds = state.N_angularBonds;
+              N_restraints   = state.N_restraints;
+              N_springForces = state.N_springForces;
             }
           }
         ];
@@ -20438,13 +20666,80 @@ define('md2d/models/units-translation',['require','underscore','md2d/models/engi
    };
 });
 
-/*global define: false, d3: false, $: false */
-/*jslint onevar: true devel:true eqnull: true boss: true */
+/*global define, $ */
 
-define('md2d/models/modeler',['require','arrays','common/console','md2d/models/engine/md2d','md2d/models/metadata','common/models/tick-history','cs!md2d/models/running-average-filter','cs!md2d/models/solvent','common/serialize','common/validator','md2d/models/aminoacids-props','cs!md2d/models/aminoacids-helper','md2d/models/engine/constants/units','md2d/models/property-description','md2d/models/unit-definitions/index','md2d/models/units-translation','underscore'],function(require) {
+define('md2d/models/performance-optimizer',[],function() {
+
+  var MIN_FPS = 2.5;
+
+  function PerformanceOptimizer(model) {
+    /** @private */
+    this._model = model;
+    /** @private */
+    this._initialTimeStep = this._model.get('timeStep');
+    /** @private */
+    this._maxTimeStep = this._initialTimeStep * 2;
+    /** @private */
+    this._targetProgressRate = this._initialTimeStep * this._model.get('timeStepsPerTick') * 60; // 60fps
+    /**
+     * Indicates whether performance optimizer is enabled or not.
+     * @type {Boolean}
+     */
+    this.enabled = false;
+  }
+
+  PerformanceOptimizer.prototype._assessPerformance = function() {
+    if (!this.enabled || this._model.is_stopped()) {
+      return;
+    }
+
+    var progressRate = this._model.getSimulationProgressRate(),
+        fps = this._model.getFPS(),
+        timeStep = this._model.get('timeStep'),
+        timeStepsPerTick = this._model.get('timeStepsPerTick'),
+        currentMaxTimeStep = this._model.get('temperatureControl') ? this._maxTimeStep * 2.5 : this._maxTimeStep;
+
+    if (progressRate < 0.9 * this._targetProgressRate) {
+      // Try to increase timeStep and if it's impossible,
+      // touch timeStepsPerTick (what probably decrease FPS and
+      // animation smoothness).
+      if (1.1 * timeStep < currentMaxTimeStep) {
+        this._model.set('timeStep', 1.1 * timeStep);
+      } else if (fps > MIN_FPS) {
+        this._model.set('timeStepsPerTick', Math.round(1.1 * timeStepsPerTick + 0.5));
+      }
+    } else if (progressRate > 1.1 * this._targetProgressRate) {
+      // If simulation is going to fast, decrease timeStepsPerTick
+      // what should make animations smoother.
+      this._model.set('timeStepsPerTick', Math.round(0.9 * timeStepsPerTick - 0.5));
+    }
+    setTimeout($.proxy(this._assessPerformance, this), 250);
+  };
+
+  PerformanceOptimizer.prototype.enable = function() {
+    if (this.enabled) {
+      return;
+    }
+    this._model.start();
+    this.enabled = true;
+    this._model.set('timeStepsPerTick', 5);
+    setTimeout($.proxy(this._assessPerformance, this), 250);
+  };
+
+  PerformanceOptimizer.prototype.disable = function() {
+    this.enabled = false;
+  };
+
+  return PerformanceOptimizer;
+});
+
+/*global define: false, d3: false */
+
+define('md2d/models/modeler',['require','arrays','common/console','common/performance','md2d/models/engine/md2d','md2d/models/metadata','common/models/tick-history','cs!md2d/models/running-average-filter','cs!md2d/models/solvent','common/serialize','common/validator','md2d/models/aminoacids-props','cs!md2d/models/aminoacids-helper','md2d/models/engine/constants/units','md2d/models/property-description','md2d/models/unit-definitions/index','md2d/models/units-translation','md2d/models/performance-optimizer','underscore'],function(require) {
   // Dependencies.
   var arrays               = require('arrays'),
       console              = require('common/console'),
+      performance          = require('common/performance'),
       md2d                 = require('md2d/models/engine/md2d'),
       metadata             = require('md2d/models/metadata'),
       TickHistory          = require('common/models/tick-history'),
@@ -20458,6 +20753,7 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       PropertyDescription  = require('md2d/models/property-description'),
       unitDefinitions      = require('md2d/models/unit-definitions/index'),
       UnitsTranslation     = require('md2d/models/units-translation'),
+      PerformanceOptimizer = require('md2d/models/performance-optimizer'),
       _ = require('underscore');
 
   return function Model(initialProperties) {
@@ -20533,7 +20829,7 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
         listeners = {},
 
         // If this is true, output properties will not be recalculated on changes
-        supressInvalidatingChangeHooks = false,
+        suppressInvalidatingChangeHooks = false,
 
         // Invalidating change hooks might between others
         invalidatingChangeHookNestingLevel = 0,
@@ -20811,11 +21107,12 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
           t, sampleTime;
 
       if (!stopped) {
-        t = Date.now();
+        t = performance.now();
         if (lastSampleTime) {
           sampleTime = t - lastSampleTime;
+          lastSampleTime = t;
           sampleTimes.push(sampleTime);
-          sampleTimes.splice(0, sampleTimes.length - 128);
+          sampleTimes.splice(0, sampleTimes.length - 64);
         } else {
           lastSampleTime = t;
         }
@@ -20846,13 +21143,6 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       }
 
       return stopped;
-    }
-
-    function average_rate() {
-      var i, ave, s = 0, n = sampleTimes.length;
-      i = -1; while (++i < n) { s += sampleTimes[i]; }
-      ave = s/n;
-      return (ave ? 1/ave*1000: 0);
     }
 
     /* This setter for internal use uses "raw", untranslated property values only. */
@@ -20951,7 +21241,8 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       }
 
       for (i = 0; i < outputNames.length; i++) {
-        if (l = listeners[outputNames[i]]) {
+        l = listeners[outputNames[i]];
+        if (l) {
           for (j = 0; j < l.length; j++) {
             l[j]();
           }
@@ -20973,7 +21264,7 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       by considered non-invalidating changes that don't require calling this hook.
     */
     function invalidatingChangePreHook() {
-      if (supressInvalidatingChangeHooks) return;
+      if (suppressInvalidatingChangeHooks) return;
       invalidatingChangeHookNestingLevel++;
 
       storeOutputPropertiesBeforeChange();
@@ -20985,7 +21276,7 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       ALWAYS CALL THIS FUNCTION after any change to model state outside a model step.
     */
     function invalidatingChangePostHook() {
-      if (supressInvalidatingChangeHooks) return;
+      if (suppressInvalidatingChangeHooks) return;
       invalidatingChangeHookNestingLevel--;
 
       if (invalidatingChangeHookNestingLevel === 0) {
@@ -20995,6 +21286,44 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       if (tickHistory) tickHistory.invalidateFollowingState();
       dispatch.invalidation();
     }
+
+    /**
+      Executes the closure 'extract' which extracts from the tick history, then dispatches
+      addAtom/removeAtom, etc, events as needed.
+
+      This prevents unneessary creation and removal of atoms.
+    */
+    var runAndDispatchObjectNumberChanges = (function() {
+      var objects = [{
+        getNum: 'getNumberOfAtoms',
+        addEvent: 'addAtom',
+        removeEvent: 'removeAtom'
+      }, {
+        getNum: 'getNumberOfRadialBonds',
+        addEvent: 'addRadialBond',
+        removeEvent: 'removeRadialBond'
+      }];
+
+      return function (extract) {
+        var i, o, newNum;
+        for (i = 0; i < objects.length; i++) {
+          o = objects[i];
+          o.num = engine[o.getNum]();
+        }
+
+        extract();
+
+        for (i = 0; i < objects.length; i++) {
+          o = objects[i];
+          newNum = engine[o.getNum]();
+          if (newNum > o.num) {
+            dispatch[o.addEvent]();
+          } else if (newNum < o.num) {
+            dispatch[o.removeEvent]();
+          }
+        }
+      };
+    })();
 
     function deleteOutputPropertyCachedValues() {
       var i, output;
@@ -21097,7 +21426,7 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
 
       engine.computeOutputState(modelOutputState);
 
-      extendResultsArray();
+      resizeResultsArray();
 
       // Transpose 'atoms' object into 'results' for easier consumption by view code
       for (i = 0, n = model.get_num_atoms(); i < n; i++) {
@@ -21120,7 +21449,7 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       Ensure that the 'results' array of arrays is defined and contains one typed array per atom
       for containing the atom properties.
     */
-    function extendResultsArray() {
+    function resizeResultsArray() {
       var isAminoAcid = function () {
             return aminoacidsHelper.isAminoAcid(this.element);
           },
@@ -21144,6 +21473,9 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
           };
         }
       }
+
+      // Also make sure to truncate the results array if it got shorter (i.e., atoms were removed)
+      results.length = len;
     }
 
     /**
@@ -21269,43 +21601,49 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       if (!arguments.length) { location = 0; }
       stopped = true;
       newStep = false;
-      tickHistory.seekExtract(location);
-      updateAllOutputProperties();
-      dispatch.seek();
+      runAndDispatchObjectNumberChanges(function() {
+        tickHistory.seekExtract(location);
+        updateAllOutputProperties();
+        dispatch.seek();
+      });
       return tickHistory.get("counter");
     };
 
     model.stepBack = function(num) {
       if (!arguments.length) { num = 1; }
-      var i, index;
       stopped = true;
       newStep = false;
-      i=-1; while(++i < num) {
-        index = tickHistory.get("index");
-        if (index > 0) {
-          tickHistory.decrementExtract();
-          updateAllOutputProperties();
-          dispatch.stepBack();
+      runAndDispatchObjectNumberChanges(function() {
+        var i, index;
+        i=-1; while(++i < num) {
+          index = tickHistory.get("index");
+          if (index > 0) {
+            tickHistory.decrementExtract();
+            updateAllOutputProperties();
+            dispatch.stepBack();
+          }
         }
-      }
+      });
       return tickHistory.get("counter");
     };
 
     model.stepForward = function(num) {
       if (!arguments.length) { num = 1; }
-      var i, index, size;
       stopped = true;
-      i=-1; while(++i < num) {
-        index = tickHistory.get("index");
-        size = tickHistory.get("length");
-        if (index < size-1) {
-          tickHistory.incrementExtract();
-          updateAllOutputProperties();
-          dispatch.stepForward();
-        } else {
-          tick();
+      runAndDispatchObjectNumberChanges(function() {
+        var i, index, size;
+        i=-1; while(++i < num) {
+          index = tickHistory.get("index");
+          size = tickHistory.get("length");
+          if (index < size-1) {
+            tickHistory.incrementExtract();
+            updateAllOutputProperties();
+            dispatch.stepForward();
+          } else {
+            tick();
+          }
         }
-      }
+      });
       return tickHistory.get("counter");
     };
 
@@ -21429,7 +21767,7 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
           // Options for addAtom method.
       var options = {
             // Do not check the position of atom, assume that it's valid.
-            supressCheck: true
+            suppressCheck: true
           },
           i, num, prop, atomProps;
 
@@ -21675,7 +22013,7 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       if (props.y > (maxY - radius)) props.y = maxY - radius;
 
       // check the potential energy change caused by adding an *uncharged* atom at (x,y)
-      if (!options.supressCheck && !engine.canPlaceAtom(props.element, props.x, props.y)) {
+      if (!options.suppressCheck && !engine.canPlaceAtom(props.element, props.x, props.y)) {
         // return false on failure
         return false;
       }
@@ -21688,7 +22026,7 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       if (!options.deserialization)
         invalidatingChangePostHook();
 
-      if (!options.supressEvent) {
+      if (!options.suppressEvent) {
         dispatch.addAtom();
       }
 
@@ -21707,7 +22045,7 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       results.length = 0;
       invalidatingChangePostHook();
 
-      if (!options.supressEvent) {
+      if (!options.suppressEvent) {
         // Notify listeners that atoms is removed.
         dispatch.removeAtom();
 
@@ -22093,11 +22431,15 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
     };
 
     model.setTextBoxProperties = function(i, props) {
-      var textBox = properties.textBoxes[i];
+      var textBox = properties.textBoxes[i],
+          prop;
+
       if (textBox) {
         props = validator.validate(metadata.textBox, props);
         for (prop in props) {
-          textBox[prop] = props[prop];
+          if (props.hasOwnProperty(prop)) {
+            textBox[prop] = props[prop];
+          }
         }
         dispatch.textBoxesChanged();
       } else {
@@ -22153,8 +22495,30 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       return arrays.copy(engine.atoms.speed, []);
     };
 
-    model.get_rate = function() {
-      return average_rate();
+    /**
+     * Returns number of frames per second.
+     * @return {number} frames per second.
+     */
+    model.getFPS = function() {
+      var s = 0,
+          n = sampleTimes.length,
+          i = -1;
+
+      while (++i < n) {
+        s += sampleTimes[i];
+      }
+      s /= n;
+      return (s ? 1 / s * 1000 : 0);
+    };
+
+    /**
+     * Returns "simulation progress rate".
+     * It indicates how much of simulation time is calculated for
+     * one second of real time.
+     * @return {number} simulation progress rate.
+     */
+    model.getSimulationProgressRate = function() {
+      return model.getFPS() * model.get('timeStep') * model.get('timeStepsPerTick');
     };
 
     model.is_stopped = function() {
@@ -22395,6 +22759,7 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       });
 
       restart = false;
+      lastSampleTime = null;
       if (stopped) {
         stopped = false;
         dispatch.play();
@@ -22736,13 +23101,13 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
       */
     model.startBatch = function() {
       invalidatingChangePreHook();
-      supressInvalidatingChangeHooks = true;
-    }
+      suppressInvalidatingChangeHooks = true;
+    };
 
     model.endBatch = function() {
-      supressInvalidatingChangeHooks = false;
+      suppressInvalidatingChangeHooks = false;
       invalidatingChangePostHook();
-    }
+    };
 
     // FIXME: Broken!! Includes property setter methods, does not include radialBonds, etc.
     model.serialize = function() {
@@ -22843,6 +23208,21 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
     // not defined in meta model as mainProperties (like atoms, obstacles, viewOptions etc).
     set_properties(validator.validateCompleteness(metadata.mainProperties, initialProperties));
 
+    (function () {
+      if (!initialProperties.viewOptions || !initialProperties.viewOptions.textBoxes) {
+        return;
+      }
+      // Temporal workaround to provide text boxes validation.
+      // Note that text boxes are handled completely different from other objects
+      // like atoms or obstacles. There is much of inconsistency and probably
+      // it should be refactored anyway.
+      var textBoxes = initialProperties.viewOptions.textBoxes,
+          i, len;
+
+      for (i = 0, len = textBoxes.length; i < len; i++) {
+        textBoxes[i] = validator.validateCompleteness(metadata.textBox, textBoxes[i]);
+      }
+    }());
     // Set the model view options.
     set_properties(validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {}));
 
@@ -23025,6 +23405,8 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
     });
 
     updateAllOutputProperties();
+
+    model.performanceOptimizer = new PerformanceOptimizer(model);
 
     return model;
   };
@@ -23414,72 +23796,19 @@ define('md2d/models/modeler',['require','arrays','common/console','md2d/models/e
 
 }).call(this);
 
-/*global define: false console: true */
-
-define('common/views/gradients',['require'],function (require) {
-  // Dependencies.
-  var publicAPI;
-
-  publicAPI = {
-    // Hash which defines the main color of a given created gradient.
-    // E.g. useful for radial bonds, which can adjust their color to gradient.
-    // Note that for convenience, keys are in forms of URLs (e.g. url(#some-gradient)).
-    mainColorOfGradient: {},
-    createRadialGradient: function (id, lightColor, medColor, darkColor, mainContainer) {
-      var gradientUrl,
-          defs,
-          gradient;
-      defs = mainContainer.select("defs");
-      if (defs.empty()) {
-        defs = mainContainer.append("defs");
-      }
-      gradient = defs.select("#" + id);
-      if (gradient.empty()) {
-        gradient = defs.append("radialGradient")
-          .attr("id", id)
-          .attr("cx", "50%")
-          .attr("cy", "47%")
-          .attr("r", "53%")
-          .attr("fx", "35%")
-          .attr("fy", "30%");
-        gradient.append("stop")
-          .attr("stop-color", lightColor)
-          .attr("offset", "0%");
-        gradient.append("stop")
-          .attr("stop-color", medColor)
-          .attr("offset", "40%");
-        gradient.append("stop")
-          .attr("stop-color", darkColor)
-          .attr("offset", "80%");
-        gradient.append("stop")
-          .attr("stop-color", medColor)
-          .attr("offset", "100%");
-      }
-      gradientUrl = "url(#" + id + ")";
-      // Store main color (for now - dark color) of the gradient.
-      // Useful for radial bonds. Keys are URLs for convenience.
-      publicAPI.mainColorOfGradient[gradientUrl] = darkColor;
-      return gradientUrl;
-    }
-  };
-
-  return publicAPI;
-});
-
 /*global $, model_player, define: false, d3: false */
 // ------------------------------------------------------------
 //
 //   PTA View Container
 //
 // ------------------------------------------------------------
-define('common/views/model-view',['require','lab.config','common/console','cs!common/components/play_reset_svg','cs!common/components/play_only_svg','cs!common/components/playback_svg','common/views/gradients'],function (require) {
+define('common/views/model-view',['require','lab.config','common/console','cs!common/components/play_reset_svg','cs!common/components/play_only_svg','cs!common/components/playback_svg'],function (require) {
   // Dependencies.
   var labConfig             = require('lab.config'),
       console               = require('common/console'),
       PlayResetComponentSVG = require('cs!common/components/play_reset_svg'),
       PlayOnlyComponentSVG  = require('cs!common/components/play_only_svg'),
-      PlaybackComponentSVG  = require('cs!common/components/playback_svg'),
-      gradients             = require('common/views/gradients');
+      PlaybackComponentSVG  = require('cs!common/components/playback_svg');
 
   return function ModelView(modelUrl, model, Renderer, getNextTabIndex) {
         // Public API object to be returned.
@@ -23518,6 +23847,7 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
         imageContainerTop,
         textContainerBelow,
         textContainerTop,
+        brushContainer,
 
         // we can ask the view to render the playback controls to some other container
         useExternalPlaybackContainer = false,
@@ -23526,6 +23856,9 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
         preexistingControls,
 
         clickHandler,
+        // d3.svg.brush object used to implement select action. It should be
+        // updated each time model2px and model2pxInv functions are changed!
+        selectBrush,
 
         offsetLeft, offsetTop;
 
@@ -23652,6 +23985,12 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
         return model2px(modelMinX + sizeX);
       };
 
+      if (selectBrush) {
+        // Update brush to use new scaling functions.
+        selectBrush
+          .x(model2px)
+          .y(model2pxInv);
+      }
     }
 
     function redraw() {
@@ -23765,26 +24104,6 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
       gy.exit().remove();
     }
 
-    function createGradients() {
-      // "Marked" particle gradient.
-      gradients.createRadialGradient("mark-grad", "#fceabb", "#fccd4d", "#f8b500", mainContainer);
-
-      // "Charge" gradients.
-      gradients.createRadialGradient("neg-grad", "#ffefff", "#fdadad", "#e95e5e", mainContainer);
-      gradients.createRadialGradient("pos-grad", "#dfffff", "#9abeff", "#767fbf", mainContainer);
-      gradients.createRadialGradient("neutral-grad", "#FFFFFF", "#f2f2f2", "#A4A4A4", mainContainer);
-
-      // "Marked" atom gradient.
-      gradients.createRadialGradient("mark-grad", "#fceabb", "#fccd4d", "#f8b500", mainContainer);
-
-      // Colored gradients, used for MD2D Editable element
-      gradients.createRadialGradient("green-grad", "#dfffef", "#75a643", "#2a7216", mainContainer);
-      gradients.createRadialGradient("blue-grad", "#dfefff", "#7543a6", "#2a1672", mainContainer);
-      gradients.createRadialGradient("purple-grad", "#EED3F0", "#D941E0", "#84198A", mainContainer);
-      gradients.createRadialGradient("aqua-grad", "#DCF5F4", "#41E0D8", "#12827C", mainContainer);
-      gradients.createRadialGradient("orange-grad", "#F0E6D1", "#E0A21B", "#AD7F1C", mainContainer);
-    }
-
     // Setup background.
     function setupBackground() {
       // Just set the color.
@@ -23841,7 +24160,10 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
         mainContainer        = vis.append("g").attr("class", "main-container");
         imageContainerTop    = vis.append("g").attr("class", "image-container-top");
         textContainerTop     = vis.append("g").attr("class", "text-container-top");
+        brushContainer       = vis.append("g").attr("class", "brush-container");
 
+        // Make all layers available for subviews, expect from brush layer
+        // which is used only internally.
         api.containers = {
           gridContainer:        gridContainer,
           imageContainerBelow:  imageContainerBelow,
@@ -23852,8 +24174,6 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
           imageContainerTop:    imageContainerTop,
           textContainerTop:     textContainerTop
         };
-
-        createGradients();
 
         playbackContainer = vis1;
       } else {
@@ -23986,6 +24306,7 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
       },
       reset: function(newModelUrl, newModel) {
         removeClickHandlers();
+        api.setSelectHandler(null);
         processOptions(newModelUrl, newModel);
         renderContainer();
         setupPlaybackControls();
@@ -24017,33 +24338,36 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
        * Sets custom click handler.
        *
        * @param {string}   selector Selector string defining clickable objects.
-       * @param {Function} callback Custom click handler. It will be called
+       * @param {Function} handler  Custom click handler. It will be called
        *                            when object is clicked with (x, y, d, i) arguments:
        *                              x - x coordinate in model units,
        *                              y - y coordinate in model units,
        *                              d - data associated with a given object (can be undefined!),
        *                              i - ID of clicked object (usually its value makes sense if d is defined).
        */
-      setClickHandler: function (selector, callback) {
-        clickHandler[selector] = callback;
+      setClickHandler: function (selector, handler) {
+        if (typeof handler !== "function") {
+          throw new Error("Click handler should be a function.");
+        }
+        clickHandler[selector] = handler;
         api.updateClickHandlers();
       },
       /**
-       * Applies all custom callback to objects matching selector
+       * Applies all custom click handlers to objects matching selector
        * Note that this function should be called each time when possibly
        * clickable object is added or repainted!
        */
       updateClickHandlers: function () {
         var selector;
 
-        function getClickHandler (callback) {
+        function getClickHandler (handler) {
           return function (d, i) {
             // Get current coordinates relative to the plot area!
             var coords = d3.mouse(plot.node()),
                 x = model2px.invert(coords[0]),
                 y = model2pxInv.invert(coords[1]);
             console.log("[view] click at (" + x.toFixed(3) + ", " + y.toFixed(3) + ")");
-            callback(x, y, d, i);
+            handler(x, y, d, i);
           };
         }
 
@@ -24054,6 +24378,57 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
             vis.selectAll(selector).on("click.custom", getClickHandler(clickHandler[selector]));
           }
         }
+      },
+      /**
+       * Sets custom select handler. When you provide function as a handler, select action
+       * is enabled and the provided handler executed when select action is finished.
+       * To disable select action, pass 'null' as an argument.
+       *
+       * @param {Function} handler Custom select handler. It will be called
+       *                           when select action is finished with (x, y, w, h) arguments:
+       *                             x - x coordinate of lower left selection corner (in model units),
+       *                             y - y coordinate of lower left selection corner (in model units),
+       *                             width  - width of selection rectangle (in model units),
+       *                             height - height of selection rectangle (in model units).
+       *
+       *                            Pass 'null' to disable select action.
+       */
+      setSelectHandler: function (handler) {
+        if (typeof handler !== "function" && handler !== null) {
+          throw new Error("Select handler should be a function or null.");
+        }
+        // Remove previous select handler.
+        brushContainer.select("g.select-area").remove();
+        if (handler === null) {
+          // Previous handler removed, so just return.
+          return;
+        }
+        selectBrush = d3.svg.brush()
+          .x(model2px)
+          .y(model2pxInv)
+          .on("brushend.select", function() {
+            var r = selectBrush.extent(),
+                x      = r[0][0],
+                y      = r[0][1],
+                width  = r[1][0] - x,
+                height = r[1][1] - y;
+
+            console.log("[view] selection area (" + x.toFixed(3) + ", " +
+              y.toFixed(3) + "), width: " + width + ", height: " + height);
+
+            // Call the user defined callback, passing selected area, as
+            // rectangle defined by:
+            // x, y, width, height
+            // where (x, y) defines its lower left corner in model units.
+            handler(x, y, width, height);
+            // Clear and hide the brush.
+            selectBrush.clear();
+            // Redraw brush (which is now empty).
+            brushContainer.call(selectBrush);
+          });
+        // Add a new "g" to easily remove it while
+        // disabling / reseting select action.
+        brushContainer.append("g").classed("select-area", true).call(selectBrush);
       }
     };
 
@@ -24910,38 +25285,47 @@ define('md2d/views/genetic-renderer',['require'],function (require) {
     var svgUrl, wrapSVGText;
     svgUrl = "http://www.w3.org/2000/svg";
     return wrapSVGText = window.wrapSVGText = function(text, svgTextNode, maxWidth, x, dy) {
-      var computedTextLength, curLineLength, dashArray, dashes, i, lastWord, line, numLines, result, tempText, textNode, tspanNode, widestWidth, word, words, _i, _len;
+      var computedTextLength, curLineLength, dashArray, dashes, i, lastWord, line, newlinemode, numLines, result, tempText, textNode, tspanNode, widestWidth, width, word, words, _i, _len;
       dashes = /-/gi;
-      dashArray = (function() {
-        var _results;
-        _results = [];
-        while (result = dashes.exec(text)) {
-          _results.push(result.index);
-        }
-        return _results;
-      })();
-      words = text.split(/[\s-]/);
+      if (text.search("\n") > 0) {
+        words = text.split("\n");
+        newlinemode = true;
+        dashArray = [];
+      } else {
+        words = text.split(/[\s-]/);
+        newlinemode = false;
+        dashArray = (function() {
+          var _results;
+          _results = [];
+          while (result = dashes.exec(text)) {
+            _results.push(result.index);
+          }
+          return _results;
+        })();
+      }
       curLineLength = 0;
       computedTextLength = 0;
       numLines = 1;
       widestWidth = 0;
-      if (maxWidth === -1) {
-        maxWidth = Infinity;
-      }
       for (i = _i = 0, _len = words.length; _i < _len; i = ++_i) {
         word = words[i];
         curLineLength += word.length + 1;
-        if (computedTextLength > maxWidth || i === 0) {
+        if (i === 0 || newlinemode || maxWidth > 0 && computedTextLength > maxWidth) {
           if (i > 0) {
-            tempText = tspanNode.firstChild.nodeValue;
-            if (tempText.length > words[i - 1].length + 1) {
-              lastWord = tempText.slice(tempText.length - words[i - 1].length - 1);
-              tspanNode.firstChild.nodeValue = tempText.slice(0, tempText.length - words[i - 1].length - 1);
-            } else if (tempText.length === words[i - 1].length + 1) {
-              tspanNode.firstChild.nodeValue = tempText.slice(0, tempText.length - 1);
+            if (newlinemode) {
+              widestWidth = Math.max(tspanNode.getComputedTextLength(), widestWidth);
+              numLines++;
+            } else {
+              tempText = tspanNode.firstChild.nodeValue;
+              if (tempText.length > words[i - 1].length + 1) {
+                lastWord = tempText.slice(tempText.length - words[i - 1].length - 1);
+                tspanNode.firstChild.nodeValue = tempText.slice(0, tempText.length - words[i - 1].length - 1);
+              } else if (tempText.length === words[i - 1].length + 1) {
+                tspanNode.firstChild.nodeValue = tempText.slice(0, tempText.length - 1);
+              }
+              widestWidth = Math.max(tspanNode.getComputedTextLength(), widestWidth);
+              numLines++;
             }
-            widestWidth = Math.max(tspanNode.getComputedTextLength(), widestWidth);
-            numLines++;
           }
           tspanNode = document.createElementNS(svgUrl, "tspan");
           tspanNode.setAttributeNS(null, "x", x);
@@ -24966,29 +25350,108 @@ define('md2d/views/genetic-renderer',['require'],function (require) {
         }
         tspanNode.firstChild.nodeValue = line;
         computedTextLength = tspanNode.getComputedTextLength();
-        if (i && i === words.length - 1 && computedTextLength > maxWidth) {
-          tempText = tspanNode.firstChild.nodeValue;
-          tspanNode.firstChild.nodeValue = tempText.slice(0, tempText.length - words[i].length - 1);
-          tspanNode = document.createElementNS(svgUrl, "tspan");
-          tspanNode.setAttributeNS(null, "x", x);
-          tspanNode.setAttributeNS(null, "dy", dy);
-          textNode = document.createTextNode(words[i]);
-          tspanNode.appendChild(textNode);
-          svgTextNode.appendChild(tspanNode);
-          numLines++;
+        if (newlinemode) {
+          widestWidth = Math.max(tspanNode.getComputedTextLength(), widestWidth);
+        }
+        if (!newlinemode) {
+          if (i && i === words.length - 1 && maxWidth > 0 && computedTextLength > maxWidth) {
+            tempText = tspanNode.firstChild.nodeValue;
+            tspanNode.firstChild.nodeValue = tempText.slice(0, tempText.length - words[i].length - 1);
+            tspanNode = document.createElementNS(svgUrl, "tspan");
+            tspanNode.setAttributeNS(null, "x", x);
+            tspanNode.setAttributeNS(null, "dy", dy);
+            textNode = document.createTextNode(words[i]);
+            tspanNode.appendChild(textNode);
+            svgTextNode.appendChild(tspanNode);
+            numLines++;
+          }
         }
       }
       if (widestWidth === 0) {
         widestWidth = svgTextNode.childNodes[0].getComputedTextLength();
       }
+      if (maxWidth > widestWidth) {
+        width = maxWidth;
+      } else {
+        width = widestWidth;
+      }
       return {
         lines: numLines,
-        width: widestWidth
+        width: width,
+        textWidth: widestWidth
       };
     };
   });
 
 }).call(this);
+
+/*global define: false */
+
+define('common/views/gradients',[],function () {
+  return {
+    /**
+     * Creates a new radial gradient or updates existing one.
+     *
+     * @param  {[type]} id
+     * @param  {[type]} lightColor
+     * @param  {[type]} medColor
+     * @param  {[type]} darkColor
+     * @param  {[type]} container SVG container which will be used to store gradients definitions.
+     * @return {string}           Gradient URL string, e.g. "url(#green-gradient)"
+     */
+    createRadialGradient: function (id, lightColor, medColor, darkColor, container) {
+      var gradientUrl,
+          defs,
+          gradient;
+      defs = container.select("defs");
+      if (defs.empty()) {
+        // Store gradients in 'defs' element.
+        defs = container.append("defs");
+      }
+
+      gradient = defs.select("#" + id);
+
+      if (gradient.empty()) {
+        // Create a new gradient.
+        gradient = defs.append("radialGradient")
+          .attr("id", id)
+          .attr("cx", "50%")
+          .attr("cy", "47%")
+          .attr("r", "53%")
+          .attr("fx", "35%")
+          .attr("fy", "30%");
+      } else {
+        gradient.selectAll("stop").remove()
+      }
+
+      gradient.append("stop")
+        .attr("stop-color", lightColor)
+        .attr("offset", "0%");
+      gradient.append("stop")
+        .attr("stop-color", medColor)
+        .attr("offset", "40%");
+      gradient.append("stop")
+        .attr("stop-color", darkColor)
+        .attr("offset", "80%");
+      gradient.append("stop")
+        .attr("stop-color", medColor)
+        .attr("offset", "100%");
+
+      gradientUrl = "url(#" + id + ")";
+      // Store main color (for now - dark color) of the gradient.
+      // Useful for radial bonds. Keys are URLs for convenience.
+      this.mainColorOfGradient[gradientUrl] = darkColor;
+      return gradientUrl;
+    },
+
+    /**
+     * Hash which defines the main color of a given gradient.
+     * Note that for convenience, keys are in forms of URLs (e.g. url(#some-gradient)).
+     * e.g. useful for MD2D radial bonds, which can adjust their color to gradient.
+     */
+    mainColorOfGradient: {}
+  };
+});
 
 /*global $, define: false, d3: false, Image */
 // ------------------------------------------------------------
@@ -25062,7 +25525,12 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         // new renderers in separate files for clarity and easier testing.
         geneticRenderer,
 
-        gradientNameForElement,
+        gradientNameForElement = [
+          "url(#elem0-grad)",
+          "url(#elem1-grad)",
+          "url(#elem2-grad)",
+          "url(#elem3-grad)"
+        ],
         // Set of gradients used for Kinetic Energy Shading.
         gradientNameForKELevel = [],
         // Number of gradients used for Kinetic Energy Shading.
@@ -25076,6 +25544,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         atomToolTip, atomToolTipPre,
 
         fontSizeInPixels,
+        textBoxFontSizeInPixels,
 
         // for model clock
         timeLabel,
@@ -25124,7 +25593,12 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
         // this is a hack put in place to temporarily deal with an image-size
         // caching bug in Chrome Canary
-        needCachebusting = browser.browser = "Chrome" && browser.version >= "26";
+        needCachebusting = browser.browser == "Chrome" && browser.version >= "26",
+
+        // this is a hack put in place to temporarily deal with a IE 10 bug which
+        // does not update line markers when svg lines are moved
+        // see https://connect.microsoft.com/IE/feedback/details/781964/
+        hideLineMarkers = browser.browser == "MSIE" && browser.version >= "10.0";
 
 
     function modelTimeLabel() {
@@ -25162,7 +25636,34 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       return gradients.createRadialGradient(id, lightColor, medColor, darkColor, mainContainer);
     }
 
-    function createAdditionalGradients() {
+    /**
+     * Setups set of gradient which can be changed by the user.
+     * They should be recreated during each reset / repaint operation.
+     * @private
+     */
+    function setupDynamicGradients() {
+      var i, color, lightColor, medColor, darkColor;
+
+      for (i= 0; i < 4; i++) {
+        // Use names defined in gradientNameForElement array!
+        createElementColorGradient("elem" + i + "-grad", modelElements.color[i], mainContainer);
+      }
+
+      // "Marked" particle gradient.
+      medColor   = model.get("markColor");
+      // Mark color defined in JSON defines medium color of a gradient.
+      color      = d3.rgb(medColor);
+      lightColor = color.brighter(1).toString();
+      darkColor  = color.darker(1).toString();
+      gradients.createRadialGradient("mark-grad", lightColor, medColor, darkColor, mainContainer);
+    }
+
+    /**
+     * Creates set of gradient which cannot be changed, they are constant
+     * for each possible model. So, it is enough to setup them just once.
+     * @private
+     */
+    function createImmutableGradients() {
           // Scale used for Kinetic Energy Shading gradients.
       var medColorScale = d3.scale.linear()
             .interpolate(d3.interpolateRgb)
@@ -25185,10 +25686,14 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         gradientNameForKELevel[i] = gradientUrl;
       }
 
-      for (i= 0; i < 4; i++) {
-        createElementColorGradient("elem" + i + "-grad", modelElements.color[i], mainContainer);
-      }
-      gradientNameForElement = ["url(#elem0-grad)", "url(#elem1-grad)", "url(#elem2-grad)", "url(#elem3-grad)"];
+      // "Charge" gradients.
+      gradients.createRadialGradient("neg-grad", "#ffefff", "#fdadad", "#e95e5e", mainContainer);
+      gradients.createRadialGradient("pos-grad", "#dfffff", "#9abeff", "#767fbf", mainContainer);
+      gradients.createRadialGradient("neutral-grad", "#FFFFFF", "#f2f2f2", "#A4A4A4", mainContainer);
+
+      // Colored gradients, used for amino acids.
+      gradients.createRadialGradient("green-grad", "#dfffef", "#75a643", "#2a7216", mainContainer);
+      gradients.createRadialGradient("orange-grad", "#F0E6D1", "#E0A21B", "#AD7F1C", mainContainer);
     }
 
     function createVectorArrowHeads(color, name) {
@@ -25365,7 +25870,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       Call this wherever a d3 selection is being used to add circles for atoms
     */
 
-    function particleEnter() {
+    function particleEnterExit() {
       particle.enter().append("circle")
           .attr({
             "class": function (d) { return d.isAminoAcid() ? "draggable atom amino-acid" : "atom draggable"; },
@@ -25383,13 +25888,15 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
             .on("drag", nodeDrag)
             .on("dragend", nodeDragEnd)
           );
+
+      particle.exit().remove();
     }
 
     function vectorEnter(vector, pathFunc, widthFunc, color, name) {
       vector.enter().append("path")
         .attr({
           "class": "vector-"+name,
-          "marker-end": "url(#Triangle-"+name+")",
+          "marker-end": hideLineMarkers ? "" : "url(#Triangle-"+name+")",
           "d": pathFunc,
           "stroke-width": widthFunc,
           "stroke": color,
@@ -25434,7 +25941,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       // Append external force markers.
       obstacleGroup.each(function (d, i) {
         // Fast path, if no forces are defined.
-        if (!obstacles.externalFx[i] && !obstacles.externalFy[i])
+        if (!obstacles.externalAx[i] && !obstacles.externalAy[i])
           return;
 
         // Note that arrows indicating obstacle external force use
@@ -25443,15 +25950,15 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         var obstacleGroupEl = d3.select(this),
             obsHeight = obstacles.height[i],
             obsWidth = obstacles.width[i],
-            obsFx = obstacles.externalFx[i],
-            obsFy = obstacles.externalFy[i],
+            obsAx = obstacles.externalAx[i],
+            obsAy = obstacles.externalAy[i],
             // Use fixed length of force vectors (in nm).
             vecLen = 0.06,
             space = 0.06,
             step, coords;
 
         // Set arrows indicating horizontal force.
-        if (obsFx) {
+        if (obsAx) {
           // Make sure that arrows keep constant distance between both ends of an obstacle.
           step = (obsHeight - 2 * space) / Math.round((obsHeight - 2 * space) / 0.2);
           coords = d3.range(space, obsHeight, step);
@@ -25459,7 +25966,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
             .attr({
               "class": "obstacle-force-hor",
               "d": function (d) {
-                if (obsFx < 0)
+                if (obsAx < 0)
                   return "M " + modelSize2px(obsWidth + vecLen + space) +
                               "," + modelSize2px(d) +
                               " L " + modelSize2px(obsWidth + space) +
@@ -25473,7 +25980,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
             });
         }
         // Later set arrows indicating vertical force.
-        if (obsFy) {
+        if (obsAy) {
           // Make sure that arrows keep constant distance between both ends of an obstacle.
           step = (obsWidth - 2 * space) / Math.round((obsWidth - 2 * space) / 0.2);
           coords = d3.range(space, obsWidth, step);
@@ -25481,7 +25988,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
             .attr({
               "class": "obstacle-force-vert",
               "d": function (d) {
-                if (obsFy < 0)
+                if (obsAy < 0)
                   return "M " + modelSize2px(d) +
                               "," + modelSize2px(-vecLen - space) +
                               " L " + modelSize2px(d) +
@@ -25497,7 +26004,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         // Finally, set common attributes and stying for both vertical and horizontal forces.
         obstacleGroupEl.selectAll("path.obstacle-force-hor, path.obstacle-force-vert")
           .attr({
-            "marker-end": "url(#Triangle-"+ FORCE_STR +")",
+            "marker-end": hideLineMarkers ? "" : "url(#Triangle-"+ FORCE_STR +")",
             "stroke-width": modelSize2px(forceVectorWidth),
             "stroke": forceVectorColor,
             "fill": "none"
@@ -25714,7 +26221,8 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
     }
 
     function getTextBoxCoords(d) {
-      var x, y, frameX, frameY;
+      var x, y, textX, textY, frameX, frameY,
+          pixelScale = textBoxFontSizeInPixels * d.fontScale;
       if (d.hostType) {
         if (d.hostType === "Atom") {
           x = modelResults[d.hostIndex].x;
@@ -25727,9 +26235,12 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         x = d.x;
         y = d.y;
       }
-      frameX = x - 0.1;
-      frameY = y + 0.15;
-      return [model2px(x), model2pxInv(y), model2px(frameX), model2pxInv(frameY)];
+      frameX = model2px(x);
+      frameY = model2pxInv(y);
+
+      textX = frameX + pixelScale*0.75;
+      textY = frameY + pixelScale*1.2;
+      return [textX, textY, frameX, frameY];
     }
 
     function updateTextBoxes() {
@@ -25745,16 +26256,21 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         layer.selectAll("g.textBoxWrapper rect")
           .data(layerTextBoxes.filter( function(d) { return d.frame; } ))
           .attr({
-            "x": function(d,i) { return getTextBoxCoords(d,i)[2]; },
-            "y": function(d,i) { return getTextBoxCoords(d,i)[3]; }
+            "x": function(d) { return getTextBoxCoords(d)[2]; },
+            "y": function(d) { return getTextBoxCoords(d)[3]; },
+            "transform": function(d) {
+              var rotate = d.rotate,
+                  pos = getTextBoxCoords(d);
+              return "rotate("+rotate+" "+pos[0]+" "+pos[1]+")";
+            }
           });
 
         layer.selectAll("g.textBoxWrapper text")
           .data(layerTextBoxes)
           .attr({
-            "y": function(d,i) {
-              $(this).find("tspan").attr("x", getTextBoxCoords(d,i)[0]);
-              return getTextBoxCoords(d,i)[1];
+            "y": function(d) {
+              $(this).find("tspan").attr("x", getTextBoxCoords(d)[0]);
+              return getTextBoxCoords(d)[1];
             }
           });
       };
@@ -25790,29 +26306,44 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
           .append("rect")
           .attr({
             "class": function(d, i) { return "textBoxFrame text-"+i; },
+            "transform": function(d) {
+              var rotate = d.rotate,
+                  pos = getTextBoxCoords(d);
+              return "rotate("+rotate+" "+pos[0]+" "+pos[1]+")";
+            },
             "style": function(d) {
-              var backgroundColor = d.backgroundColor || "white";
-              return "fill:"+backgroundColor+";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-opacity:1";
+              var backgroundColor = d.backgroundColor,
+                  strokeWidth = d.strokeWidthEms * fontSizeInPixels,
+                  strokeOpacity = d.strokeOpacity;
+              return "fill:"+backgroundColor+";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:"+strokeWidth+";stroke-opacity:"+strokeOpacity;
             },
             "width": 0,
             "height": 0,
-            "rx": function(d)  { return d.frame === "rounded rectangle" ? 8  : 0; },
-            "ry": function(d)  { return d.frame === "rounded rectangle" ? 10 : 0; },
-            "x": function(d,i) { return getTextBoxCoords(d,i)[2]; },
-            "y": function(d,i) { return getTextBoxCoords(d,i)[3]; }
+            "rx": function(d) { return d.frame === "rounded rectangle" ? textBoxFontSizeInPixels/2.5  : 0; },
+            "ry": function(d) { return d.frame === "rounded rectangle" ? textBoxFontSizeInPixels/2 : 0; },
+            "x":  function(d) { return getTextBoxCoords(d)[2]; },
+            "y":  function(d) { return getTextBoxCoords(d)[3]; }
           });
 
         text.append("text")
           .attr({
             "class": function() { return "textBox" + (AUTHORING ? " draggable" : ""); },
-            "x-data": function(d,i) { return getTextBoxCoords(d,i)[0]; },
-            "y": function(d,i)      { return getTextBoxCoords(d,i)[1]; },
-            "width-data": function(d) { return modelSize2px(d.width); },
+            "transform": function(d) {
+              var rotate = d.rotate,
+                  pos = getTextBoxCoords(d);
+              return "rotate("+rotate+" "+pos[0]+" "+pos[1]+")";
+            },
+            "x-data": function(d) { return getTextBoxCoords(d)[0]; },
+            "y": function(d)      { return getTextBoxCoords(d)[1]; },
+            "width-data": function(d) { return d.width; },
+            "height-data": function(d) { return d.height; },
             "width":  modelSize2px(size[0]),
             "height": modelSize2px(size[1]),
             "xml:space": "preserve",
             "font-family": "'" + labConfig.fontface + "', sans-serif",
-            "font-size": modelSize2px(0.12),
+            "font-size": function(d) {
+              return d.fontScale * textBoxFontSizeInPixels + "px";
+            },
             "fill": function(d) { return d.color || "black"; },
             "text-data": function(d) { return d.text; },
             "text-anchor": function(d) {
@@ -25839,13 +26370,32 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
       // wrap text
       $(".textBox").each( function() {
-        var text  = this.getAttributeNS(null, "text-data"),
-            x     = this.getAttributeNS(null, "x-data"),
-            width = this.getAttributeNS(null, "width-data") || -1,
-            dy    = modelSize2px(0.16),
-            hasHost = this.getAttributeNS(null, "has-host"),
+        var text      = this.getAttributeNS(null, "text-data"),
+            x         = this.getAttributeNS(null, "x-data"),
+            width     = this.getAttributeNS(null, "width-data"),
+            height    = this.getAttributeNS(null, "height-data"),
+            fontSize  = parseFloat(this.getAttributeNS(null, "font-size")),
+            transform = this.getAttributeNS(null, "transform"),
+            hasHost   = this.getAttributeNS(null, "has-host"),
             textAlign = this.getAttributeNS(null, "text-anchor"),
-            result, frame, dx;
+            horizontalPadding, verticalPadding,
+            result, frame, dy, tx, ty;
+
+        dy = fontSize*1.2;
+        horizontalPadding = +fontSize*1.5;
+        verticalPadding = fontSize/1.8;
+
+        if (width === '') {
+          width = -1;
+        } else {
+          width = modelSize2px(width);
+        }
+
+        if (height === '') {
+          height = -1;
+        } else {
+          height = modelSize2px(height);
+        }
 
         while (this.firstChild) {     // clear element first
           this.removeChild(this.firstChild);
@@ -25855,19 +26405,29 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
         if (this.parentNode.childElementCount > 1) {
           frame = this.parentNode.childNodes[0];
-          frame.setAttributeNS(null, "width", result.width + modelSize2px(0.2));
-          frame.setAttributeNS(null, "height", (result.lines * dy) + modelSize2px(0.06));
+          frame.setAttributeNS(null, "width", result.width + horizontalPadding);
+          if (height > 0) {
+            frame.setAttributeNS(null, "height", height);
+          } else {
+            frame.setAttributeNS(null, "height", (result.lines * dy) + verticalPadding);
+          }
         }
 
         // center all hosted labels simply by tweaking the g.transform
         if (textAlign === "middle") {
-          dx = result.width / 2;
-          $(this).attr("transform", "translate("+dx+",0)");
+          tx = result.width / 2;
+          if (height > 0) {
+            ty = height / 2 - verticalPadding * 1.5 - (result.lines-1) * dy / 2;
+          } else {
+            ty = 0;
+          }
+          transform = transform + " translate("+tx+","+ty+")";
+          $(this).attr("transform", transform);
         }
         if (hasHost === "true") {
-          dx = -result.width / 2;
-          dy = (result.lines-1) * dy / -2 + 4.5;
-          $(this.parentNode).attr("transform", "translate("+dx+","+dy+")");
+          tx = result.width / -2 - horizontalPadding/2;
+          ty = result.lines * dy / -2 - verticalPadding/2;
+          $(this.parentNode).attr("transform", "translate("+tx+","+ty+")");
         }
       });
     }
@@ -25893,7 +26453,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       particle = mainContainer.selectAll("circle").data(modelResults);
       updateParticleRadius();
 
-      particleEnter();
+      particleEnterExit();
 
       label = mainContainer.selectAll("g.label")
           .data(modelResults);
@@ -26470,7 +27030,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       createVectorArrowHeads(forceVectorColor, FORCE_STR);
 
       createSymbolImages();
-      createAdditionalGradients();
+      createImmutableGradients();
 
       // Register additional controls, context menus etc.
       // Note that special selector for class is used. Typical class selectors
@@ -26505,6 +27065,9 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       model2pxInv = modelView.model2pxInv;
       modelSize2px = modelView.modelSize2px;
 
+      fontSizeInPixels = modelView.getFontSizeInPixels();
+      textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
+
       modelResults  = model.get_results();
       modelElements = model.get_elements();
       modelWidth    = model.get('width');
@@ -26522,7 +27085,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         "showVDWLines", "VDWLinesCutoff",
         "showVelocityVectors", "showForceVectors",
         "showAtomTrace", "atomTraceId", "aminoAcidColorScheme",
-        "showClock", "backgroundColor"],
+        "showClock", "backgroundColor", "markColor"],
           repaint);
 
 
@@ -26570,7 +27133,9 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         modelSize2px = mSize2px;
       }
       fontSizeInPixels = modelView.getFontSizeInPixels();
+      textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
 
+      setupDynamicGradients();
       setupObstacles();
       setupVdwPairs();
       setupColorsOfParticles();
@@ -26748,7 +27313,7 @@ define('md2d/views/dna-edit-dialog',[],function () {
   };
 });
 
-/*global define model */
+/*global define, model */
 
 define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog'],function (require) {
 
@@ -26765,7 +27330,6 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
 
     @param: api
   */
-
   return function MD2DScriptingAPI (api) {
 
     var dnaEditDialog = new DNAEditDialog(),
@@ -26799,12 +27363,12 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
       },
 
       addAtom: function addAtom(props, options) {
-        if (options && options.supressRepaint) {
-          // Translate supressRepaint option to
+        if (options && options.suppressRepaint) {
+          // Translate suppressRepaint option to
           // option understable by modeler.
           // supresRepaint is a conveniance option for
           // Scripting API users.
-          options.supressEvent = true;
+          options.suppressEvent = true;
         }
         return model.addAtom(props, options);
       },
@@ -26813,13 +27377,13 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
         Removes atom 'i'.
       */
       removeAtom: function removeAtom(i, options) {
-        if (options && options.supressRepaint) {
-          // Translate supressRepaint option to
+        if (options && options.suppressRepaint) {
+          // Translate suppressRepaint option to
           // option understable by modeler.
           // supresRepaint is a conveniance option for
           // Scripting API users.
-          options.supressEvent = true;
-          delete options.supressRepaint;
+          options.suppressEvent = true;
+          delete options.suppressRepaint;
         }
         try {
           model.removeAtom(i, options);
@@ -26883,33 +27447,88 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
       },
 
       /**
-        Returns array of atom indices.
-        within(1,1,0.5) returns all atoms within 0.5 nm of position (1nm,1nm) within the model.
-        within(1,1,0.2,0.3) returns all atoms within a rectangle of width 0.2nm by height 0.3nm,
-          with the upper-left corner specified by the postion (1nm,1nm).
-      **/
-      atomsWithin: function(x,y,p1,p2) {
-        var atomsWithin = [];
-        var numAtoms = model.get_num_atoms();
-        var props, dist, inX, inY;
-        var n = 0;
+       * Returns array of atom indices, optionally specifying an element of interest.
+       * atomsWithin(1, 1, 0.5) returns all atoms within 0.5 nm of position (1nm, 1nm) within the model.
+       * atomsWithin(1, 1, 0.2, 0.3) returns all atoms within a rectangle of width 0.2nm by height 0.3nm,
+       * with the bottom-left corner specified by the postion (1nm, 1nm).
+       * @param  {number} x       X coordinate of the bottom-left rectangle corner
+       *                          or circle center (when h is not provided).
+       * @param  {number} y       Y coordinate of the bottom-left rectangle corner
+       *                          or circle center (when h is not provided).
+       * @param  {number} w       Width of the rectangle
+       *                          or radius of the circle (when h is not provided).
+       * @param  {number} h       Height of the rectangle.
+       * @param  {number} element Optional ID of the desired element type.
+       * @return {Array}          Array of atoms indices within a given area.
+       */
+      atomsWithin: function(x, y, w, h, element) {
+        var result = [],
+            props, dist, inX, inY, i, len;
 
-        for (var i = 0; i < numAtoms; i++) {
+        for (i = 0, len = model.get_num_atoms(); i < len; i++) {
           props = model.getAtomProperties(i);
-          if (typeof p2 === 'undefined') {
-            dist = Math.sqrt(Math.pow(x-props.x,2) + Math.pow(y-props.y,2));
-            if (dist <= p1) {
-              atomsWithin[n++] = i;
+          if (typeof element !== 'undefined' && props.element !== element) continue;
+          if (typeof h === 'undefined') {
+            dist = Math.sqrt(Math.pow(x - props.x, 2) + Math.pow(y - props.y, 2));
+            if (dist <= w) {
+              result.push(i);
             }
           } else {
-            inX = ((props.x >= x) && (props.x <= (x+p1)));
-            inY = ((props.y <= y) && (props.y >= (y-p2)));
+            inX = ((props.x >= x) && (props.x <= (x + w)));
+            inY = ((props.y >= y) && (props.y <= (y + h)));
             if (inX && inY) {
-              atomsWithin[n++] = i;
+              result.push(i);
             }
           }
         }
-        return (n === 0 ? -1 : atomsWithin);
+        return result;
+      },
+
+      /**
+       * Returns an array of atom indices within triangular area,
+       * optionally specifying an element ID of interest.
+       *
+       * @param  {number} ax      X coordinate of 1st triangle vertex.
+       * @param  {number} ay      Y coordinate of 1st triangle vertex.
+       * @param  {number} bx      X coordinate of 2nd triangle vertex.
+       * @param  {number} by      Y coordinate of 2nd triangle vertex.
+       * @param  {number} cx      X coordinate of 3rd triangle vertex.
+       * @param  {number} cy      Y coordinate of 3rd triangle vertex.
+       * @param  {number} element Optional ID of the desired element type.
+       * @return {Array}          Array of atoms indices within a given area.
+       */
+      atomsWithinTriangle: function(ax, ay, bx, by, cx, cy, element) {
+        var result = [],
+            props, i, len;
+
+        function isInTriangle(px, py) {
+          // See: http://www.blackpawn.com/texts/pointinpoly/default.html
+          var v0 = [cx - ax, cy - ay],
+              v1 = [bx - ax, by - ay],
+              v2 = [px - ax, py - ay],
+
+              dot00 = (v0[0] * v0[0]) + (v0[1] * v0[1]),
+              dot01 = (v0[0] * v1[0]) + (v0[1] * v1[1]),
+              dot02 = (v0[0] * v2[0]) + (v0[1] * v2[1]),
+              dot11 = (v1[0] * v1[0]) + (v1[1] * v1[1]),
+              dot12 = (v1[0] * v2[0]) + (v1[1] * v2[1]),
+
+              invDenom = 1 / (dot00 * dot11 - dot01 * dot01),
+
+              u = (dot11 * dot02 - dot01 * dot12) * invDenom,
+              v = (dot00 * dot12 - dot01 * dot02) * invDenom;
+
+          return ((u >= 0) && (v >= 0) && (u + v < 1));
+        }
+
+        for (i = 0, len = model.get_num_atoms(); i < len; i++) {
+          props = model.getAtomProperties(i);
+          if (typeof element !== 'undefined' && props.element !== element) continue;
+          if (isInTriangle(props.x, props.y)) {
+            result.push(i);
+          }
+        }
+        return result;
       },
 
       /**
@@ -26917,22 +27536,22 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
         Unmarks all atoms, then marks the requested atom indices.
         Repaints the screen to make the marks visible.
       */
-      markAtoms: function markAtoms() {
+      markAtoms: function markAtoms(indices) {
         var i,
             len;
 
         if (arguments.length === 0) return;
 
-        // allow passing an array instead of a list of atom indices
-        if (api.isArray(arguments[0])) {
-          return markAtoms.apply(null, arguments[0]);
+        // allow passing a list of arguments instead of an array of atom indices
+        if (!api.isArray(arguments[0])) {
+          indices = arguments;
         }
 
         api.unmarkAllAtoms();
 
         // mark the requested atoms
-        for (i = 0, len = arguments.length; i < len; i++) {
-          model.setAtomProperties(arguments[i], {marked: 1});
+        for (i = 0, len = indices.length; i < len; i++) {
+          model.setAtomProperties(indices[i], {marked: 1});
         }
 
         api.repaintIfReady();
@@ -27033,7 +27652,7 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
 
       /**
         Sets individual obstacle properties using human-readable hash.
-        e.g. setObstacleProperties(0, {x: 1, y: 0.5, externalFx: 0.00001})
+        e.g. setObstacleProperties(0, {x: 1, y: 0.5, externalAx: 0.00001})
       */
       setObstacleProperties: function setObstacleProperties(i, props) {
         model.setObstacleProperties(i, props);
@@ -27042,7 +27661,7 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
 
       /**
         Returns obstacle properties as a human-readable hash.
-        e.g. getObstacleProperties(0) --> {x: 1, y: 0.5, externalFx: 0.00001, ... }
+        e.g. getObstacleProperties(0) --> {x: 1, y: 0.5, externalAx: 0.00001, ... }
       */
       getObstacleProperties: function getObstacleProperties(i) {
         return model.getObstacleProperties(i);
@@ -27188,7 +27807,7 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
       },
 
       repaintIfReady: function(options) {
-        if (!(inBatch || options && options.supressRepaint)) {
+        if (!(inBatch || options && options.suppressRepaint)) {
           api.repaint();
         }
       },
@@ -27537,12 +28156,27 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
                 "showClock": false,
                 "textBoxes": [
                   {
-                    "text": "Model could not be loaded: " + modelDefinition.url,
-                    "x": 0.25,
+                    "text": "Model could not be loaded:",
+                    "x": 0.0,
                     "y": 1.0,
-                    "width": 2,
+                    "width": 2.5,
+                    "fontScale": 1.4,
                     "layer": 1,
-                    "frame": "rounded rectangle",
+                    "frame": "rectangle",
+                    "textAlign": "center",
+                    "strokeOpacity": 0,
+                    "backgroundColor": "rgb(232,231,231)"
+                  },
+                  {
+                    "text": modelDefinition.url,
+                    "x": 0.0,
+                    "y": 0.9,
+                    "width": 2.5,
+                    "fontScale": 0.9,
+                    "layer": 1,
+                    "frame": "rectangle",
+                    "textAlign": "center",
+                    "strokeOpacity": 0,
                     "backgroundColor": "rgb(232,231,231)"
                   }
                 ]

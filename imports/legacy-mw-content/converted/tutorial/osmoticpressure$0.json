@@ -20,8 +20,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 3.8,
+    "viewPortHeight": 2.7,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": true,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -41,28 +46,32 @@
         "y": 2.66,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,192,255)"
+        "backgroundColor": "rgb(255,192,255)",
+        "anchor": "upper-left"
       },
       {
         "text": "gauge#3",
         "x": 3.03,
         "y": 2.66,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
         "text": "gauge#2",
         "x": 2.42,
         "y": 0.21,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
         "text": "gauge#1",
         "x": 0.73,
         "y": 0.21,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
         "text": "Membrane",
@@ -70,7 +79,8 @@
         "y": 2.67,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,255,192)"
+        "backgroundColor": "rgb(255,255,192)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,
@@ -1712,13 +1722,13 @@
       0,
       0
     ],
-    "externalFx": [
+    "externalAx": [
       0,
       0,
       0,
       0
     ],
-    "externalFy": [
+    "externalAy": [
       0,
       0,
       0,

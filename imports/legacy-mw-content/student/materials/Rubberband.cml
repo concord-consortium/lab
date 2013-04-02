@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Breaking a Rubberband</page_title>
+<text>
+Breaking a Rubberband
+
+ 
+
+  
+With what initial speed can the rubberband be broken? Which part of the rubberband will be first broken? Does the place where the ball first hits the rubberband matter?
+
+Related simulation: Breaking a crystal
+
+
+</text>
+<section start="0" end="242">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="23">
+<Alignment>1</Alignment>
+<content start="1" end="22">
+<bold>true</bold><size>15</size></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="26">
+<Alignment>1</Alignment>
+<content start="24" end="25">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>Rubberband$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="27">
+<Alignment>1</Alignment>
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="30">
+<Alignment>1</Alignment>
+<content start="27" end="28">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>44.0</value>
+<minimum>0.0</minimum>
+<maximum>100.0</maximum>
+<nstep>50</nstep>
+<title>Starting speed of the green ball</title>
+<width>300</width>
+<height>70</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;100.0&quot;, label=&quot;Fast&quot;}{value=&quot;0.0&quot;, label=&quot;Stopped&quot;}</labeltable>
+<script>select element 1;
+set vy -%val*10;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="28" end="29">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>50.0</value>
+<minimum>0.0</minimum>
+<maximum>100.0</maximum>
+<nstep>50</nstep>
+<title>Position of the green ball</title>
+<width>300</width>
+<height>70</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;100.0&quot;, label=&quot;Right&quot;}{value=&quot;0.0&quot;, label=&quot;Left&quot;}</labeltable>
+<script>set atom[0].rx &quot;7+%val*0.25&quot;;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="199">
+<LeftIndent>8.0</LeftIndent>
+<content start="30" end="199">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="199" end="200">
+<LeftIndent>8.0</LeftIndent>
+<content start="199" end="200">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="200" end="239">
+<LeftIndent>8.0</LeftIndent>
+<content start="200" end="220">
+<size>10</size></content>
+
+<content start="220" end="238">
+<size>10</size><href>MaterialStrength.cml</href></content>
+
+<content start="238" end="239">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="239" end="240">
+<LeftIndent>8.0</LeftIndent>
+<content start="239" end="240">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="240" end="241">
+<content start="240" end="241">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="241" end="242">
+</paragraph>
+</section>
+</document>

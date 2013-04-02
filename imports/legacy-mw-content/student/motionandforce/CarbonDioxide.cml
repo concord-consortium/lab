@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Carbon Dioxide Molecules</page_title>
+<bg_color><Red>0</Red><Green>0</Green><Blue>0</Blue></bg_color>
+<text>Carbon Dioxide Molecules
+
+ 
+   
+
+Related simulation: Mixture of CO2 and O2</text>
+<section start="0" end="75">
+<paragraph start="0" end="25">
+<Alignment>1</Alignment>
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="24">
+<size>16</size><foreground>255 255 255</foreground><bold>true</bold></content>
+
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="26">
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="28">
+<Alignment>1</Alignment>
+<content start="26" end="27">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>CarbonDioxide$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border><recorder>true</recorder></component></content>
+
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="32">
+<Alignment>1</Alignment>
+<content start="28" end="29">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<tooltip>Start simulation</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>run</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="29" end="30">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<tooltip>Stop simulation</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="30" end="31">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<tooltip>Reset to initial state</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="33">
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="75">
+<LeftIndent>6.0</LeftIndent>
+<content start="33" end="52">
+<foreground>255 255 255</foreground><size>10</size></content>
+
+<content start="52" end="53">
+<size>10</size></content>
+
+<content start="53" end="74">
+<size>10</size><href>CO2O2.cml</href></content>
+
+</paragraph>
+</section>
+</document>

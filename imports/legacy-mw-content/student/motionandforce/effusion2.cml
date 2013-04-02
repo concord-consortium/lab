@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Diffusion of gas molecules</page_title>
+<text>Diffusion of gas molecules
+
+Imagine there is a source of perfume in a room. If you are outside the room and the door is open, you will smell it. This is because the perfume molecules can diffuse in the air. The follow model illustrates this.
+
+ 
+   
+
+There are two subsets of molecules, marked by different colors. These molecules are identical except for their colors. The big rectangle in the middle of the room and the four smaller ones represent some sort of furniture inside the room. Like the brick walls, they stay on the &quot;stage&quot; to provide objects with which the molecules will collide with in their movement.
+
+  
+
+ </text>
+<section start="0" end="624">
+<paragraph start="0" end="27">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="26">
+<bold>true</bold><size>15</size></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="28">
+<LeftIndent>8.0</LeftIndent>
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="242">
+<LeftIndent>8.0</LeftIndent>
+<content start="28" end="242">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="242" end="243">
+<LeftIndent>8.0</LeftIndent>
+<content start="242" end="243">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="243" end="245">
+<Alignment>1</Alignment>
+<content start="243" end="244">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>effusion2$0.mml</resource><button>Select Object</button><button>Mark Object</button><button>Toggle Trajectory</button><button>What's This?</button><button>Measure Distance</button><button>Count Objects</button></component></content>
+
+<content start="244" end="245">
+</content>
+
+</paragraph>
+<paragraph start="245" end="249">
+<Alignment>1</Alignment>
+<content start="245" end="246">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Cool</title>
+<bgcolor>-333301</bgcolor>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<action>Cool the system down</action>
+<step>-0.01</step>
+</component></content>
+
+<content start="246" end="247">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat</title>
+<bgcolor>-339a</bgcolor>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<action>Heat the system up</action>
+<step>0.01</step>
+</component></content>
+
+<content start="247" end="248">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<bgcolor>-ff339a</bgcolor>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="248" end="249">
+</content>
+
+</paragraph>
+<paragraph start="249" end="250">
+<Alignment>1</Alignment>
+<content start="249" end="250">
+</content>
+
+</paragraph>
+<paragraph start="250" end="617">
+<LeftIndent>8.0</LeftIndent>
+<content start="250" end="617">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="617" end="618">
+<LeftIndent>8.0</LeftIndent>
+<content start="617" end="618">
+</content>
+
+</paragraph>
+<paragraph start="618" end="621">
+<Alignment>1</Alignment>
+<content start="618" end="619">
+<component><class>org.concord.modeler.PageTextArea</class>
+<column>30</column>
+<title>&lt;html&gt;
+   &lt;font size=&quot;2&quot;&gt;If you walk around the room from the outside, where will the smell be the strongest?&lt;/font&gt;
+&lt;/html&gt;</title>
+</component></content>
+
+<content start="619" end="620">
+<component><class>org.concord.modeler.PageTextArea</class>
+<column>30</column>
+<title>&lt;html&gt;
+   &lt;font size=&quot;2&quot;&gt;Overall, does one subset of molecules diffuse more than the other?&lt;/font&gt;
+&lt;/html&gt;</title>
+</component></content>
+
+<content start="620" end="621">
+</content>
+
+</paragraph>
+<paragraph start="621" end="622">
+<Alignment>1</Alignment>
+<content start="621" end="622">
+</content>
+
+</paragraph>
+<paragraph start="622" end="624">
+<Alignment>1</Alignment>
+<content start="622" end="623">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Create a report</title>
+<border>Raised Bevel</border>
+<action>Create a report about this page in a new window</action></component></content>
+
+</paragraph>
+</section>
+</document>

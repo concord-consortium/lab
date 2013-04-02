@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>When the membrane is rigid</page_title>
+<text>When the membrane is rigid
+
+The following experiment seeks to demonstrate that the osmotic pressure on a rigid membrane by visualizing the net forces acting on them from the solvents and solutes.
+
+ 
+ 
+ 
+  </text>
+<section start="0" end="206">
+<paragraph start="0" end="27">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="26">
+<bold>true</bold><size>14</size></content>
+
+<content start="26" end="27">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="27" end="28">
+<LeftIndent>8.0</LeftIndent>
+<content start="27" end="28">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="28" end="196">
+<LeftIndent>8.0</LeftIndent>
+<content start="28" end="196">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="196" end="197">
+<LeftIndent>8.0</LeftIndent>
+<content start="196" end="197">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="197" end="199">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="197" end="198">
+<size>11</size><component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>rigidmembrane$0.mml</resource></component></content>
+
+<content start="198" end="199">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="199" end="201">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="199" end="200">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show average forces on the membrane particles</title>
+<tooltip>Show average forces on the membrane particles</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>show selectionhalo off;
+select element 0;
+avfor on;
+delay 0.5;
+select element none;
+show selectionhalo on;</script>
+<script2>show selectionhalo off;
+select element 0;
+avfor off;
+delay 0.5;
+select element none;
+show selectionhalo on;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="200" end="201">
+</content>
+
+</paragraph>
+<paragraph start="201" end="203">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="201" end="202">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Mark the solvent molecules in the middle compartment</title>
+<tooltip>Mark the solvent molecules in the middle compartment</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>show selectionhalo off;
+select element 2 within (12, 0, 18, &quot;%height+2&quot;);
+mark;
+delay 0.5;
+select element none;
+show selectionhalo on;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="202" end="203">
+</content>
+
+</paragraph>
+<paragraph start="203" end="206">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="203" end="204">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Remove all solute particles</title>
+<tooltip>Remove all solute particles</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>show selectionhalo off;
+select element 1;
+remove;
+select element none;
+show selectionhalo on;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="204" end="205">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Remove all solvent particles</title>
+<tooltip>Remove all solvent particles</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>show selectionhalo off;
+select element 2;
+remove;
+select element none;
+show selectionhalo on;</script>
+<action>Execute MW script</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

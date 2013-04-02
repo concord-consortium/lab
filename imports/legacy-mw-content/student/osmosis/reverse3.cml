@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>osmosis</page_title>
+<text>osmosis
+
+
+Green particle=solute; blue particle=solvent; white particle=semipermeable membrane
+  
+  
+   
+   </text>
+<section start="0" end="108">
+<paragraph start="0" end="8">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="7">
+<bold>true</bold><size>16</size></content>
+
+<content start="7" end="8">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="8" end="9">
+<LeftIndent>8.0</LeftIndent>
+<content start="8" end="9">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<LeftIndent>8.0</LeftIndent>
+<content start="9" end="10">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="10" end="94">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="10" end="93">
+<bold>true</bold></content>
+
+<content start="93" end="94">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="94" end="97">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="94" end="95">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>reverse3$0.mml</resource><menubar>false</menubar><button>Select Object</button><button>Count Objects</button></component><size>11</size></content>
+
+<content start="95" end="96">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-1000000" style="0" width="1.0" symbol="0" size="4" spacing="5">East pressure:Obstacle #0</time_series_y1><time_series_y2 color="-1000000" style="2" width="1.0" symbol="0" size="4" spacing="5">West pressure:Obstacle #1</time_series_y2><time_series_y3 color="-ffff01" style="0" width="1.0" symbol="2" size="4" spacing="5">Ws east pressure:Obstacle #0</time_series_y3><time_series_y4 color="-10000" style="0" width="1.0" symbol="1" size="4" spacing="5">Pl east pressure:Obstacle #0</time_series_y4>
+<autofity>false</autofity>
+<axis_y_min>0.0</axis_y_min><axis_y_max>15.0</axis_y_max>
+<autoupdate>false</autoupdate>
+<width>320</width>
+<height>300</height>
+<border>Lowered Etched</border>
+<axis_x_title>Time (fs)</axis_x_title>
+<axis_y_title>Pressure (bar)</axis_y_title>
+<hline>true</hline>
+<legend_x>80</legend_x>
+<legend_y>40</legend_y>
+<legend_font_name>Arial</legend_font_name>
+<legend_font_style>0</legend_font_style>
+<legend_font_size>9</legend_font_size>
+<axis_font_name>Arial</axis_font_name>
+<axis_font_size>9</axis_font_size>
+<axis_font_style>0</axis_font_style>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<model>0</model>
+</component></content>
+
+<content start="96" end="97">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="97" end="100">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="97" end="98">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Re-mark solvents in the left compartment to observe their movement</title>
+<tooltip>Re-mark solvents in the left compartment to observe their movement</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>show selectionhalo off;
+select element 2 within(0, 0, &quot;0.5*%width+1&quot;, &quot;%height+2&quot;);
+mark;
+delay 0.5;
+select element none;
+show selectionhalo on;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="98" end="99">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show kinetic, potential and total energies</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Show kinetic, potential and total energies</action>
+</component></content>
+
+<content start="99" end="100">
+</content>
+
+</paragraph>
+<paragraph start="100" end="104">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="100" end="101">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>500K heat bath</title>
+<tooltip>Toggle 500K heat bath</tooltip>
+<disabled_at_script>true</disabled_at_script>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>set heatbath 500;</script>
+<script2>set heatbath -1;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="101" end="102">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show solvent-solvent pair correlation</title>
+<tooltip>Show solvent-solvent pair correlation function</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Show pair correlation function: Ws-Ws</action>
+</component></content>
+
+<content start="102" end="103">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show solvent-solute pair correlation</title>
+<tooltip>Show solvent-solute pair correlation function</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Show pair correlation function: Pl-Ws</action>
+</component></content>
+
+<content start="103" end="104">
+</content>
+
+</paragraph>
+<paragraph start="104" end="108">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="104" end="105">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Remove all solvents</title>
+<tooltip>Remove all solvents</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>select element 2;
+remove;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="105" end="106">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Remove all solutes</title>
+<tooltip>Remove all solutes</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>select element 1;
+remove;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="106" end="107">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<tooltip>Reset</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

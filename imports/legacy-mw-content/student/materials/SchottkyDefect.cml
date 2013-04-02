@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Schottky defects</page_title>
+<text>Schottky Defects
+
+        
+    </text>
+<section start="0" end="32">
+<paragraph start="0" end="17">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="16">
+<size>15</size><bold>true</bold></content>
+
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="18">
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="27">
+<Alignment>1</Alignment>
+<content start="18" end="19">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>160.0</width>
+<height>280.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;font size=&quot;2&quot;&gt;Schottky defects are combinations of a pair of cation 
+    vacancies and anion vacancies in ceramics and ionic crystals. &lt;/font&gt;
+
+    &lt;p&gt;
+      &lt;font size=&quot;2&quot;&gt;Controllable impurities such as the Schotty defects in 
+      semiconductors can lead to transitor properties.&lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="19" end="25">
+</content>
+
+<content start="25" end="26">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>SchottkyDefect$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="32">
+<Alignment>1</Alignment>
+<content start="27" end="28">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Cool</title>
+<border>Raised Bevel</border>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<step>-0.01</step>
+<action>Cool the system down</action>
+</component></content>
+
+<content start="28" end="29">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat</title>
+<border>Raised Bevel</border>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<step>0.01</step>
+<action>Heat the system up</action>
+</component></content>
+
+<content start="29" end="30">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Kinetic Energy Shading</title>
+<model>0</model>
+<action>K. E. Shading</action>
+</component></content>
+
+<content start="30" end="31">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show kinetic, potential and total energies</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<action>Show kinetic, potential and total energies</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

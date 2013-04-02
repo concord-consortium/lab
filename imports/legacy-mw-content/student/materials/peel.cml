@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Ripping a piece of duct tape off a surface</page_title>
+<text>Ripping a piece of duct tape off a surface
+The following model simulates what happens when you rip a piece of duct tape off a surface and why we usually start from an end. Note that the van der Waals bonds break one by one during the process.
+ 
+   </text>
+<section start="0" end="249">
+<paragraph start="0" end="43">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="0" end="43">
+<bold>true</bold><size>20</size><family>Century Gothic</family></content>
+
+</paragraph>
+<paragraph start="43" end="243">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="43" end="242">
+<family>Century Gothic</family></content>
+
+<content start="242" end="243">
+</content>
+
+</paragraph>
+<paragraph start="243" end="245">
+<Alignment>1</Alignment>
+<content start="243" end="244">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>peel$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="244" end="245">
+</content>
+
+</paragraph>
+<paragraph start="245" end="249">
+<Alignment>1</Alignment>
+<content start="245" end="246">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Rip from left end</title>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1207225631307</groupid>
+<script>load peel$0.mml;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="246" end="247">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Rip from middle</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1207225631307</groupid>
+<script>load peelcenter.mml;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="247" end="248">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Rip from right end</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1207225631307</groupid>
+<script>load peelright.mml;</script>
+<action>Execute MW script</action></component></content>
+
+</paragraph>
+</section>
+</document>

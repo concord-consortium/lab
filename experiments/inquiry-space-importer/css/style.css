@@ -72,6 +72,18 @@ td { vertical-align: top; }
    Author:
    ========================================================================== */
 
+#main {
+  padding: 0.25em;
+}
+
+select {
+  display: inline-block;
+  margin: 0em 0.1em;
+}
+
+applet {
+  z-index: -1;
+}
 
 /* custom button styles generated using http://css-tricks.com/examples/ButtonMaker/
    and tweaked slightly to deal with cascade problems from above CSS */
@@ -100,6 +112,7 @@ td { vertical-align: top; }
    height: 16px;
    cursor: pointer;
    display: inline-block;
+   margin: 0em 0.1em;
 }
 
 .button.disabled {
@@ -153,24 +166,30 @@ body {
   user-select: none;
 }
 
-header h1 {
-  margin-bottom: 0.4em;
-  margin-top: 0.4em;
+header h3 {
+  margin-bottom: 0.2em;
+  margin-top: 0.2em;
   text-align: center;
 }
 
 .left {
-  width: 68%;
+  width: 76%;
   float: left;
-  padding-top: 2em;
+  padding-top: 0.5em;
   position: relative;
 }
 
 .right {
-  width: 28%;
+  width: 24%;
   float: right;
-  padding-top: 2em;
+  padding-top: 2.5em;
   position: relative;
+}
+
+.left-aligned-container {
+  width: 100%;
+  margin-left: 1em;
+  text-align: left;
 }
 
 .centering-container {
@@ -183,21 +202,18 @@ header h1 {
 }
 
 #sensor-selector {
-  position: absolute;
   top: 0.3em;
   left: 4em;
-  width: 60%;
 }
 
 #tare-button {
-  position: absolute;
   top: 0;
   left: 21em;
 }
 
 #realtime-display {
   position: absolute;
-  top: 0;
+  top: 0.2em;
   left:;
   font-size: 1.6em;
   line-height: 1.2;
@@ -207,7 +223,8 @@ header h1 {
 }
 
 #graph {
-  height: 15.4em;
+  height: 18.4em;
+  width: 24em;
   margin-top: 0.5em;
   position: relative;
 }

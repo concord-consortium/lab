@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Free fall 3D</page_title>
+<text>Free fall 3D
+ 
+ </text>
+<section start="0" end="17">
+<paragraph start="0" end="13">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="12">
+<size>20</size><family>Book Antiqua</family><bold>true</bold></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="15">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="13" end="14">
+<component><class>org.concord.modeler.PageMd3d</class><resource>ff3d$0.mdd</resource><coordinate>ff3d$0.xyz</coordinate><width>500</width><height>400</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="17">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="15" end="16">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<value>0.0</value>
+<minimum>0.0</minimum>
+<maximum>100.0</maximum>
+<nstep>50</nstep>
+<title>Air resistance</title>
+<width>400</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;100.0&quot;, label=&quot;Max&quot;}{value=&quot;0.0&quot;, label=&quot;0&quot;}</labeltable>
+<script>select atom all;
+damp %val*0.02;
+select atom none;</script>
+<change>Execute MW script</change>
+</component></content>
+
+</paragraph>
+</section>
+</document>

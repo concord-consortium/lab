@@ -106,11 +106,34 @@ define(function() {
     },
 
     viewOptions: {
+      viewPortWidth: {
+        defaultValue: 10,
+        unitType: "length",
+        immutable: true
+      },
+      viewPortHeight: {
+        defaultValue: 10,
+        unitType: "length",
+        immutable: true
+      },
+      viewPortX: {
+        defaultValue: 0,
+        unitType: "length",
+        immutable: true
+      },
+      viewPortY: {
+        defaultValue: 0,
+        unitType: "length",
+        immutable: true
+      },
       backgroundColor: {
         defaultValue: "#eeeeee"
       },
       showClock: {
         defaultValue: true
+      },
+      markColor: {
+        defaultValue: "#f8b500"
       },
       keShading: {
         defaultValue: false
@@ -344,13 +367,13 @@ define(function() {
         defaultValue: 0,
         unitType: "velocity"
       },
-      // External horizontal force, per mass unit (i.e., despite the name it's an acceleration)
-      externalFx: {
+      // Externally applied horizontal acceleration
+      externalAx: {
         defaultValue: 0,
         unitType: "acceleration"
       },
-      // External vertical force, per mass unit.
-      externalFy: {
+      // Externally applied vertical acceleration
+      externalAy: {
         defaultValue: 0,
         unitType: "accleration"
       },
@@ -519,13 +542,31 @@ define(function() {
         defaultValue: 0,
         unitType: "length"
       },
+      anchor: {
+        defaultValue: "lower-left"
+      },
       layer: {
         defaultValue: 1
       },
       width: {},
+      height: {},
       frame: {},
       color: {},
-      backgroundColor: {},
+      backgroundColor: {
+        defaultValue: "white"
+      },
+      strokeWidthEms: {
+        defaultValue: 0.03
+      },
+      strokeOpacity: {
+        defaultValue: 1.0
+      },
+      rotate: {
+        defaultValue: 0
+      },
+      fontScale: {
+        defaultValue: 1
+      },
       hostType: {},
       hostIndex: {},
       textAlign: {}

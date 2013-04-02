@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 3.5,
+    "viewPortHeight": 2,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -40,13 +45,15 @@
         "y": 1.85,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,192,0)"
+        "backgroundColor": "rgb(255,192,0)",
+        "anchor": "upper-left"
       },
       {
         "text": "Simulator Window",
         "x": 1.03,
         "y": 1.19,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
         "text": "X-axis",
@@ -54,24 +61,27 @@
         "y": 1.87,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,192,255)"
+        "backgroundColor": "rgb(255,192,255)",
+        "anchor": "upper-left"
       },
       {
         "text": "Y-axis",
         "x": 0.18,
         "y": 0.28,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
-        "text": "Double-click on me and type in the X/Y fields to change my position.",
+        "text": "Double-click on me and type \nin the X/Y fields to change my\nposition.",
         "x": 0.98,
         "y": 0.84,
         "layer": 1,
         "frame": "rounded rectangle",
         "hostType": "Atom",
         "hostIndex": 1,
-        "backgroundColor": "rgb(0,255,0)"
+        "backgroundColor": "rgb(0,255,0)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

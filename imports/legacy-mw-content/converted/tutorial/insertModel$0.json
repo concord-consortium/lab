@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 4,
+    "viewPortHeight": 2.5,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": true,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -40,44 +45,50 @@
         "y": 2.15,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(0,255,0)"
+        "backgroundColor": "rgb(0,255,0)",
+        "anchor": "upper-left"
       },
       {
         "text": "The tool bar",
         "x": 0.11,
         "y": 2.4,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
-        "text": "The recorder control panel",
+        "text": "The recorder \ncontrol panel",
         "x": 1.78,
         "y": 0.65,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
-        "text": "The simulation clock",
+        "text": "The simulation\nclock",
         "x": 0.1,
         "y": 0.77,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
-        "text": "The heat/cool tool or temperature controller (optional)",
+        "text": "The heat/cool tool\nor temperature\ncontroller (optional)",
         "x": 2.16,
         "y": 1.64,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
-        "text": "The anatomy of the user interface of a model container",
+        "text": "The anatomy of the\nuser interface of a\nmodel container",
         "x": 0.3,
         "y": 1.66,
         "layer": 1,
         "frame": "rounded rectangle",
         "color": "rgb(128,128,128)",
-        "backgroundColor": "rgb(204,204,255)"
+        "backgroundColor": "rgb(204,204,255)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

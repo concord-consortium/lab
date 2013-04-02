@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Ion transport in an electric field</page_title>
+<text>Ion transport in an electric field
+
+ 
+Direction of applied electric field:
+ 
+    
+In this example, there are three types of particles: One with positive charge, one with negative charge, and the third with no charge. An electric field is applied in the horizontal direction pointing eastward. Periodic boundary conditions are applied in order to allow continuous flowing of the particles. The heat bath is also activated to prevent the charged particles from getting infinitely accelerated by the electric field.
+
+With this model, you can investigate, for example, the temperature effect on the electric conductivity of an aqueous solution.</text>
+<section start="0" end="641">
+<paragraph start="0" end="35">
+<LeftIndent>8.0</LeftIndent>
+<RightIndent>8.0</RightIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="34">
+<bold>true</bold><size>16</size></content>
+
+<content start="34" end="35">
+<family>Microsoft Sans Serif</family><bold>true</bold><size>18</size></content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<content start="35" end="36">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="36" end="38">
+<Alignment>1</Alignment>
+<content start="36" end="37">
+<size>14</size><component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>iontransport$0.mml</resource><menubar>false</menubar><button>Select Object</button><button>Add Positive Charge</button><button>Add Negative Charge</button></component></content>
+
+<content start="37" end="38">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="38" end="75">
+<Alignment>1</Alignment>
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="38" end="74">
+<size>10</size></content>
+
+<content start="74" end="75">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="75" end="77">
+<Alignment>1</Alignment>
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="75" end="76">
+<component><class>org.concord.modeler.PageComboBox</class>
+<model>0</model>
+<action>Electric Field Direction</action>
+</component></content>
+
+<content start="76" end="77">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="77" end="82">
+<Alignment>1</Alignment>
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="77" end="78">
+<size>14</size><component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>1540.0</value>
+<minimum>200.0</minimum>
+<maximum>3000.0</maximum>
+<nstep>20</nstep>
+<title>Temperature</title>
+<width>300</width>
+<height>70</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;2940.0&quot;, label=&quot;Hot&quot;}{value=&quot;140.0&quot;, label=&quot;Cold&quot;}</labeltable>
+<change>Temperature</change>
+</component></content>
+
+<content start="78" end="80">
+<size>14</size></content>
+
+<content start="80" end="81">
+<size>14</size><component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.2</value>
+<minimum>0.0</minimum>
+<maximum>2.0</maximum>
+<nstep>20</nstep>
+<title>Field Intensity</title>
+<width>300</width>
+<height>70</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;2.0&quot;, label=&quot;Strong&quot;}{value=&quot;0.0&quot;, label=&quot;Weak&quot;}</labeltable>
+<change>Electric Field (D.C.)</change>
+</component></content>
+
+<content start="81" end="82">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="82" end="513">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="82" end="513">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="513" end="514">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="513" end="514">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="514" end="641">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="514" end="640">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

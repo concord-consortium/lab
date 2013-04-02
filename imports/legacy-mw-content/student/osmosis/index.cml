@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>A comprehensive study of osmosis</page_title>
+<bg_color><Red>245</Red><Green>224</Green><Blue>218</Blue></bg_color>
+<text> 
+ 
+&#9997;Under construction..............
+
+Osmosis is a chemical process in which the solvent molecules move from a region of higher solvent concentration through a semipermeable membrane to a region of lower solvent concentration. The membrane must be permeable to the solvent molecules, but not to the solute molecules.
+
+Osmosis plays a critically important role in biology. Without osmosis, water would not have been able to reach cells and there would not have been life in our current form. &quot;No physical phenomenon has any greater importance in biology than does osmosis.&quot; Thus did the Editor of The American Journal of Physiology introduce the 1979 Forum on Osmosis.
+
+&#8680;  An incomplete timeline of major experiments, theories and applications of osmosis
+&#8680;  Visualizing osmotic pressure in an osmotic equilibrium
+&#8680;  A sandwich setup using the periodic boundary conditions: pure solvent in the middle compartment
+&#8680;  A sandwich setup using the periodic boundary conditions: solution in the middle compartment
+&#8680;  The balance between the osmotic pressure and gravity: a three-compartment setup
+&#8680;  Osmosis is a colligative property
+&#8680;  Van&apos;t Hoff&apos;s Law of Osmosis
+&#8680;  No osmostic pressure between isotonic solutions
+&#8680;  There is no osmotic pressure if no solute molecules hit the membrane
+&#8680;  A process of osmotic equilibration
+&#8680;  The effect of hydration on the osmotic pressure
+
+Warning: These models consist of about 500 particles each. It may run very slowly if you have an old computer.
+ 
+&#10064; Literature:
+
+&#10122; For the history of osmosis, see J. V. Pickstone, Discovering the movement of life: osmosis and microstructure in 1826, International journal of microcirculation, clinical and experimental, 14: 77-82 (1994); G. Richet, The osmotic pressure of the urine&#8212;from Dutrochet to Kor&#225;nyi, a trans-European interdisciplinary epic, Nephrol Dial Transplant, 16: 420-424 (2001)
+&#10123; J. H. van&apos;t Hoff, The role of osmotic pressure in the analogy between solutions and gases, Zeitschrift f&#252;r Physikalische Chemie 1, 481-508 (1887)
+&#10124; H. T. Hammel, Evolving ideas about osmosis and capillary fluid exchange, The FASEB Journal, 13, 213-231 (1999)
+&#10125; F. Borg, What is osmosis? Explanation and understanding of a physical phenomenon, http://arxiv.org/pdf/physics/0305011
+&#10106; S. Murad and J. G. Powles, A computer simulation of the classical experiment on osmosis and osmotic pressure, Journal of Chemical Physics, 99, 7271-7272 (1993)
+&#10107; S. A Ben-Sasson and N. B. Grover, Osmosis: a macroscopic phenomenon, a microscopic view, Advances in Physiology Education, 27, 15-19 (2003)
+&#10128; E. Meir, J. Perry, D. Stal, S. Maruca and E. Klopfer, How effective are simulated molecular-level experiments for teaching diffusion and osmosis?, Cell Biology Education, 4, 235-249 (2005)
+
+ 
+
+
+</text>
+<section start="0" end="2748">
+<paragraph start="0" end="2">
+<SpaceAbove>10.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="0" end="1">
+<icon><class>org.concord.modeler.text.LineIcon</class><height>90</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;table width=&quot;100%&quot; align=&quot;center&quot;&gt;
+&lt;tr&gt;
+&lt;td align=&quot;left&quot;&gt;
+&lt;font size=&quot;4&quot; face=&quot;Trebuchet MS&quot;&gt;&lt;b&gt;The power of simulations&lt;/b&gt;&lt;/font&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&quot;right&quot;&gt;
+&lt;b&gt;&lt;font size=&quot;7&quot; face=&quot;Trebuchet MS&quot;&gt;A study of osmosis&lt;/font&gt;&lt;/b&gt;
+&lt;/td&gt;
+&lt;td width=10&gt;&amp;nbsp;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;</title><bgcolor>-a485c</bgcolor><leftmargin>75</leftmargin><rightmargin>75</rightmargin></icon></content>
+
+<content start="1" end="2">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<SpaceAbove>1.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><height>40</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;
+&lt;body face=&quot;Trebuchet MS&quot;&gt;
+&lt;table width=&quot;98%&quot;&gt;
+&lt;tr&gt;
+&lt;td width=&quot;45%&quot; bgcolor=&quot;#F4B7A4&quot;&gt;
+&lt;a href=&quot;../../monograph.cml&quot;&gt;&lt;img src=&quot;arrow.gif&quot; border=&quot;0&quot;&gt;&lt;/a&gt;&amp;nbsp;Interactive Essays
+&lt;/td&gt;
+&lt;td align=right bgcolor=&quot;#F4DFD9&quot; width=45%&gt;By Charles Xie
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/html&gt;</title><bgcolor>-a8db7</bgcolor><leftmargin>75</leftmargin><rightmargin>75</rightmargin></icon></content>
+
+<content start="3" end="4">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4" end="38">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="4" end="5">
+<foreground>153 153 0</foreground><size>40</size></content>
+
+<content start="5" end="37">
+<foreground>128 128 128</foreground><bold>true</bold><size>11</size></content>
+
+<content start="37" end="38">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="38" end="39">
+<LeftIndent>8.0</LeftIndent>
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="318">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>75.0</LeftIndent>
+<content start="39" end="318">
+</content>
+
+</paragraph>
+<paragraph start="318" end="319">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>75.0</LeftIndent>
+<content start="318" end="319">
+</content>
+
+</paragraph>
+<paragraph start="319" end="669">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>75.0</LeftIndent>
+<content start="319" end="668">
+</content>
+
+<content start="668" end="669">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="669" end="670">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>75.0</LeftIndent>
+<content start="669" end="670">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="670" end="755">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>95.0</LeftIndent>
+<content start="670" end="671">
+<size>15</size></content>
+
+<content start="671" end="673">
+</content>
+
+<content start="673" end="754">
+<href>timeline.cml</href></content>
+
+<content start="754" end="755">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="755" end="813">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>95.0</LeftIndent>
+<content start="755" end="756">
+<size>15</size></content>
+
+<content start="756" end="758">
+</content>
+
+<content start="758" end="812">
+<href>demo1.cml</href></content>
+
+<content start="812" end="813">
+</content>
+
+</paragraph>
+<paragraph start="813" end="912">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>95.0</LeftIndent>
+<content start="813" end="814">
+<size>15</size></content>
+
+<content start="814" end="816">
+</content>
+
+<content start="816" end="911">
+<href>periodic1.cml</href></content>
+
+<content start="911" end="912">
+</content>
+
+</paragraph>
+<paragraph start="912" end="1007">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>95.0</LeftIndent>
+<content start="912" end="913">
+<size>15</size></content>
+
+<content start="913" end="915">
+</content>
+
+<content start="915" end="1006">
+<href>periodic2.cml</href></content>
+
+<content start="1006" end="1007">
+</content>
+
+</paragraph>
+<paragraph start="1007" end="1090">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>95.0</LeftIndent>
+<content start="1007" end="1008">
+<size>15</size></content>
+
+<content start="1008" end="1010">
+</content>
+
+<content start="1010" end="1089">
+<href>go3.cml</href></content>
+
+<content start="1089" end="1090">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="1090" end="1127">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>95.0</LeftIndent>
+<content start="1090" end="1091">
+<size>15</size></content>
+
+<content start="1091" end="1093">
+</content>
+
+<content start="1093" end="1126">
+<href>colligative.cml</href></content>
+
+<content start="1126" end="1127">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="1127" end="1158">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>95.0</LeftIndent>
+<content start="1127" end="1128">
+<size>15</size></content>
+
+<content start="1128" end="1130">
+</content>
+
+<content start="1130" end="1157">
+<href>vanthoff.cml</href></content>
+
+<content start="1157" end="1158">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="1158" end="1209">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>95.0</LeftIndent>
+<content start="1158" end="1159">
+<size>15</size></content>
+
+<content start="1159" end="1161">
+</content>
+
+<content start="1161" end="1208">
+<href>isotonic.cml</href></content>
+
+<content start="1208" end="1209">
+</content>
+
+</paragraph>
+<paragraph start="1209" end="1281">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>95.0</LeftIndent>
+<content start="1209" end="1210">
+<size>15</size></content>
+
+<content start="1210" end="1212">
+</content>
+
+<content start="1212" end="1280">
+<href>soluterestrained.cml</href></content>
+
+<content start="1280" end="1281">
+</content>
+
+</paragraph>
+<paragraph start="1281" end="1319">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>95.0</LeftIndent>
+<content start="1281" end="1282">
+<size>15</size></content>
+
+<content start="1282" end="1284">
+</content>
+
+<content start="1284" end="1318">
+<href>equilibration.cml</href></content>
+
+<content start="1318" end="1319">
+</content>
+
+</paragraph>
+<paragraph start="1319" end="1370">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>95.0</LeftIndent>
+<content start="1319" end="1320">
+<size>15</size></content>
+
+<content start="1320" end="1322">
+</content>
+
+<content start="1322" end="1369">
+<href>demo2.cml</href></content>
+
+<content start="1369" end="1370">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1370" end="1371">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>75.0</LeftIndent>
+<content start="1370" end="1371">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1371" end="1482">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>75.0</LeftIndent>
+<content start="1371" end="1481">
+<bold>true</bold><size>11</size></content>
+
+<content start="1481" end="1482">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1482" end="1484">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>75.0</LeftIndent>
+<content start="1482" end="1483">
+<icon><class>org.concord.modeler.text.LineIcon</class><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor><leftmargin>75</leftmargin><rightmargin>75</rightmargin></icon></content>
+
+<content start="1483" end="1484">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1484" end="1498">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>75.0</LeftIndent>
+<content start="1484" end="1485">
+<foreground>255 0 0</foreground><size>15</size></content>
+
+<content start="1485" end="1486">
+</content>
+
+<content start="1486" end="1497">
+<bold>true</bold></content>
+
+<content start="1497" end="1498">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1498" end="1499">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>75.0</LeftIndent>
+<content start="1498" end="1499">
+</content>
+
+</paragraph>
+<paragraph start="1499" end="1865">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>75.0</LeftIndent>
+<content start="1499" end="1550">
+</content>
+
+<content start="1550" end="1618">
+<href>http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=PubMed&amp;list_uids=7960449&amp;dopt=Abstract</href></content>
+
+<content start="1618" end="1719">
+</content>
+
+<content start="1719" end="1819">
+<href>http://ndt.oxfordjournals.org/cgi/content/full/16/2/420</href></content>
+
+<content start="1819" end="1865">
+</content>
+
+</paragraph>
+<paragraph start="1865" end="2013">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>75.0</LeftIndent>
+<content start="1865" end="1885">
+</content>
+
+<content start="1885" end="1956">
+<href>http://dbhs.wvusd.k12.ca.us/webdocs/Chem-History/vantHoff.1887.html</href><italic>true</italic></content>
+
+<content start="1956" end="1995">
+</content>
+
+<content start="1995" end="1996">
+<bold>true</bold></content>
+
+<content start="1996" end="2013">
+</content>
+
+</paragraph>
+<paragraph start="2013" end="2126">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>75.0</LeftIndent>
+<content start="2013" end="2029">
+</content>
+
+<content start="2029" end="2086">
+<href>http://www.fasebj.org/cgi/content/abstract/13/2/213</href><italic>true</italic></content>
+
+<content start="2086" end="2107">
+</content>
+
+<content start="2107" end="2109">
+<bold>true</bold></content>
+
+<content start="2109" end="2126">
+</content>
+
+</paragraph>
+<paragraph start="2126" end="2247">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>75.0</LeftIndent>
+<content start="2126" end="2137">
+</content>
+
+<content start="2137" end="2208">
+<italic>true</italic></content>
+
+<content start="2208" end="2210">
+</content>
+
+<content start="2210" end="2246">
+<href>http://arxiv.org/pdf/physics/0305011</href></content>
+
+<content start="2246" end="2247">
+</content>
+
+</paragraph>
+<paragraph start="2247" end="2409">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>75.0</LeftIndent>
+<content start="2247" end="2276">
+</content>
+
+<content start="2276" end="2357">
+<italic>true</italic></content>
+
+<content start="2357" end="2388">
+</content>
+
+<content start="2388" end="2390">
+<bold>true</bold></content>
+
+<content start="2390" end="2409">
+</content>
+
+</paragraph>
+<paragraph start="2409" end="2551">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>75.0</LeftIndent>
+<content start="2409" end="2445">
+</content>
+
+<content start="2445" end="2498">
+<href>http://advan.physiology.org/cgi/content/full/27/1/15</href><italic>true</italic></content>
+
+<content start="2498" end="2534">
+</content>
+
+<content start="2534" end="2536">
+<bold>true</bold></content>
+
+<content start="2536" end="2551">
+</content>
+
+</paragraph>
+<paragraph start="2551" end="2742">
+<RightIndent>75.0</RightIndent>
+<LeftIndent>75.0</LeftIndent>
+<content start="2551" end="2605">
+</content>
+
+<content start="2605" end="2607">
+<italic>true</italic></content>
+
+<content start="2607" end="2698">
+<href>http://www.pubmedcentral.nih.gov/articlerender.fcgi?artid=1200778</href><italic>true</italic></content>
+
+<content start="2698" end="2724">
+</content>
+
+<content start="2724" end="2725">
+<bold>true</bold></content>
+
+<content start="2725" end="2742">
+</content>
+
+</paragraph>
+<paragraph start="2742" end="2743">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>60.0</LeftIndent>
+<content start="2742" end="2743">
+</content>
+
+</paragraph>
+<paragraph start="2743" end="2745">
+<Alignment>1</Alignment>
+<content start="2743" end="2744">
+<icon><class>org.concord.modeler.text.LineIcon</class><height>40</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;
+&lt;body face=&quot;Trebuchet MS&quot;&gt;
+&lt;table width=&quot;98%&quot;&gt;
+&lt;tr&gt;
+&lt;td width=&quot;45%&quot; bgcolor=&quot;#F4B7A4&quot;&gt;
+&lt;a href=&quot;../../monograph.cml&quot;&gt;&lt;img src=&quot;arrow.gif&quot; border=&quot;0&quot;&gt;&lt;/a&gt;&amp;nbsp;Interactive Essays
+&lt;/td&gt;
+&lt;td align=right bgcolor=&quot;#F4DFD9&quot; width=45%&gt;By Charles Xie
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/html&gt;</title><bgcolor>-a8db7</bgcolor><leftmargin>75</leftmargin><rightmargin>75</rightmargin></icon></content>
+
+<content start="2744" end="2745">
+</content>
+
+</paragraph>
+<paragraph start="2745" end="2746">
+<content start="2745" end="2746">
+</content>
+
+</paragraph>
+<paragraph start="2746" end="2747">
+<content start="2746" end="2747">
+</content>
+
+</paragraph>
+<paragraph start="2747" end="2748">
+</paragraph>
+</section>
+</document>

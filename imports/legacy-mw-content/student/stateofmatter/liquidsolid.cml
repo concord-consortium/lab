@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Comparison of Liquid and Solid States</page_title>
+<text>Comparison of Liquid and Solid States: A Study Based on Pair Correlations
+
+Scientists sometimes measure a function called pair correlation function, derived from the structure factor obtained from X-ray or neutron diffraction experiments, to analyze the structures of materials. The pair correlation function (PCF) characterizes the distribution of other atoms around an atom in an isotropic structure.
+
+In the solid state, atoms do not move much. Mostly, they vibrate around fixed positions. Occasionally, they can exchange their positions, thus causing a slow diffusion. The PCF of a solid will basically show a number of peaks, which represent the nearest neighbors, the second nearest neighbors, and so on. From this information, scientists can determine the structure of the sample crystal.
+
+In the liquid state, the motion of atoms is quite different. Atoms do not stay in fixed positions but move around frequently. But because of the compactness in liquids, when an atom moves, it usually will cause the atoms in its vicinity to move. As a result, there is a dynamical structure formation around an atom in liquid phase. If long-range effects can be neglected, we can say that an atom in liquids is surrounded by a dynamical shell structure. The shell structure is dynamic because, if viewed from the perspective of an atom, its neighboring atoms do not stay permanently --- they just stay transiently --- in its vicinity; after a while they leave the atom, the space left behind is then occupied by a newcomer.
+
+You can use the following two models to verify this picture. Run the simulation until the tape is full. Then STOP the simulation, and click on the &quot;Show pair correlation function&quot; button. It will bring up a new window, in which the PCF will be shown.
+
+ 
+  
+
+ 
+  
+
+Related simulation: Comparison of gas and liquid states.
+
+ 
+ </text>
+<section start="0" end="1847">
+<paragraph start="0" end="74">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="73">
+<family>Book Antiqua</family><size>18</size><bold>true</bold></content>
+
+<content start="73" end="74">
+</content>
+
+</paragraph>
+<paragraph start="74" end="75">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="74" end="75">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="75" end="403">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="75" end="122">
+<size>11</size></content>
+
+<content start="122" end="147">
+<link_statusbar>false</link_statusbar><link_width>700</link_width><link_fullscreen>false</link_fullscreen><size>11</size><link_height>400</link_height><href>../../tutorial/glossary/pcf.cml</href><link_left>200</link_left><link_menubar>false</link_menubar><target>_blank</target><link_top>200</link_top><link_toolbar>false</link_toolbar><link_resizable>false</link_resizable></content>
+
+<content start="147" end="402">
+<size>11</size></content>
+
+<content start="402" end="403">
+<family>Book Antiqua</family></content>
+
+</paragraph>
+<paragraph start="403" end="404">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="403" end="404">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="404" end="796">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="404" end="796">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="796" end="797">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="796" end="797">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="797" end="1520">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="797" end="1520">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1520" end="1521">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="1520" end="1521">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1521" end="1772">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="1521" end="1771">
+<size>11</size></content>
+
+<content start="1771" end="1772">
+<italic>true</italic><size>14</size><family>Book Antiqua</family></content>
+
+</paragraph>
+<paragraph start="1772" end="1773">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="1772" end="1773">
+<italic>true</italic><size>14</size><family>Book Antiqua</family></content>
+
+</paragraph>
+<paragraph start="1773" end="1775">
+<Alignment>1</Alignment>
+<content start="1773" end="1774">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>liquidsolid$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="1774" end="1775">
+</content>
+
+</paragraph>
+<paragraph start="1775" end="1778">
+<Alignment>1</Alignment>
+<content start="1775" end="1776">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show van der Waals interactions</title>
+<model>0</model>
+<action>Show van der Waals interactions</action>
+</component></content>
+
+<content start="1776" end="1777">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show pair correlation function</title>
+<border>Raised Bevel</border>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<action>Show pair correlation function: Pl-Pl</action>
+</component></content>
+
+<content start="1777" end="1778">
+</content>
+
+</paragraph>
+<paragraph start="1778" end="1779">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="1778" end="1779">
+</content>
+
+</paragraph>
+<paragraph start="1779" end="1781">
+<Alignment>1</Alignment>
+<content start="1779" end="1780">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>liquidsolid$1.mml</resource><menubar>false</menubar></component></content>
+
+<content start="1780" end="1781">
+</content>
+
+</paragraph>
+<paragraph start="1781" end="1784">
+<Alignment>1</Alignment>
+<content start="1781" end="1782">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show van der Waals interactions</title>
+<model>1</model>
+<action>Show van der Waals interactions</action>
+</component></content>
+
+<content start="1782" end="1783">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show pair correlation function</title>
+<border>Raised Bevel</border>
+<model>1</model>
+<disabled_at_run>true</disabled_at_run>
+<action>Show pair correlation function: Pl-Pl</action>
+</component></content>
+
+<content start="1783" end="1784">
+</content>
+
+</paragraph>
+<paragraph start="1784" end="1785">
+<Alignment>1</Alignment>
+<content start="1784" end="1785">
+</content>
+
+</paragraph>
+<paragraph start="1785" end="1842">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="1785" end="1805">
+<size>10</size></content>
+
+<content start="1805" end="1840">
+<size>10</size><href>gasliquid.cml</href></content>
+
+<content start="1840" end="1841">
+<size>10</size></content>
+
+<content start="1841" end="1842">
+</content>
+
+</paragraph>
+<paragraph start="1842" end="1843">
+<content start="1842" end="1843">
+</content>
+
+</paragraph>
+<paragraph start="1843" end="1845">
+<Alignment>1</Alignment>
+<content start="1843" end="1844">
+<component><class>org.concord.modeler.PageTextArea</class>
+<column>60</column>
+<title>&lt;html&gt;
+   &lt;font size=&quot;2&quot;&gt;Imagine using the information contained in the pair correlation functions to deduce microstructures. Is it possible to reconstruct the structures from the graphs?&lt;/font&gt;
+&lt;/html&gt;</title>
+</component></content>
+
+<content start="1844" end="1845">
+</content>
+
+</paragraph>
+<paragraph start="1845" end="1847">
+<Alignment>1</Alignment>
+<content start="1845" end="1846">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Create a report</title>
+<border>Raised Bevel</border>
+<action>Create a report about this page in a new window</action></component></content>
+
+</paragraph>
+</section>
+</document>

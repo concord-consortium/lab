@@ -3,6 +3,8 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <title>Vernier GoIO Sensor Grapher</title>
+    <link rel="stylesheet" href="../../grapher.css">
+    <link rel="stylesheet" href="../../vendor/fonts/Font-Awesome/css/font-awesome.css">
     <link href='style.css' rel='stylesheet' type='text/css' />
     <script type="text/javascript" src="../../vendor/modernizr/modernizr.js"></script>
     <script type="text/javascript">
@@ -45,12 +47,11 @@
 
       </select>
     </p>
-    <div id="connect-status">
-    </div>
     <div id="vis">
-      <div id="graph" class="chart"></div>
+      <div id="chart" class="graph"></div>
     </div>
     <div id="applet-container" ></div>
+    <p id="connect-status"></p>
     <p>
       <b>Temperature Sensors</b>: connect either a <a href="http://www.vernier.com/products/sensors/temperature-sensors/go-temp/">Vernier GoTemp</a>
       or a <a href="http://www.vernier.com/products/interfaces/go-link/">Vernier GoLink</a> with an attached
@@ -71,16 +72,21 @@
       var vis = document.getElementById("vis"),
           blankGraphOptions = {
             title: "GoIO Sensor Graph",
+            fontScaleRelativeToParent: false,
             xlabel:    "Time (s)",
-            xmin: 0, xmax: 60,
-            ylabel:    "Y Axis",
-            ymin: 10, ymax: 40,
+            xmin: 0,
+            xmax: 30,
+            xTickCount: 10,
+            ylabel: "Y Axis",
+            ymin: 10,
+            ymax: 40,
+            yTickCount: 8,
             realTime: true,
             points: [],
             circleRadius: false,
             dataChange: false
           },
-          graph = Lab.grapher.Graph("#graph", blankGraphOptions, "Select a Sensor Type"),
+          graph = new Lab.grapher.Graph("#chart", blankGraphOptions, "Select a Sensor Type"),
           applet,
           appletContainer = document.getElementById("applet-container"),
           appletLoadingStr = "Sensor Applet Loading ...",
@@ -490,7 +496,7 @@
         graph.notify(appletLoadingStr);
         sensorType = sensorTypeSelector.value;
         sensorConfig = sensorConfigurations[sensorType];
-        graph.reset("#graph", sensorConfig.graphOptions, appletLoadingStr);
+        graph.reset("#chart", sensorConfig.graphOptions, appletLoadingStr);
         d3.selectAll(".sensorbuttons").remove();
         appletContainer.innerHTML = sensorConfig.appletString;
         var status = document.getElementById("connect-status");

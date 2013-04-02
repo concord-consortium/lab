@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 2.5,
+    "viewPortHeight": 2,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -35,10 +40,11 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "Random Number Meters  ->",
+        "text": "Random\nNumber\nMeters  ->",
         "x": 0.53,
         "y": 1.51,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

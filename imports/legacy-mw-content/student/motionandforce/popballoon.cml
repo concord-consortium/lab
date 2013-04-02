@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Pop the balloon</page_title>
+<text>
+ 
+  
+
+</text>
+<section start="0" end="8">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="3">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>popballoon$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorderless>true</recorderless>
+</component></content>
+
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="6">
+<Alignment>1</Alignment>
+<content start="3" end="4">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Pop the balloon in a random direction</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>if (not %popped);	
+	set %popped 1
+	stop;
+	select element 2;
+	remove;
+	set %a round(rand()*33)+1;
+	set %prevAtom %a-1;
+	select atom  %a;
+	remove;
+	select atom %a; 
+	remove;
+	select atom %a;
+	remove;
+	rbond %prevAtom %a 0.1;
+	set %newBond %number_of_rbonds-1;
+	set rbond[%newBond].style GHOST_STYLE;
+	select atom none;
+	run;
+endif;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>reset;
+set %popped 0;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<content start="6" end="7">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="7" end="8">
+</paragraph>
+</section>
+</document>

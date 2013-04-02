@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 2.9,
+    "viewPortHeight": 2,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -44,10 +49,11 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "Select each reaction to the left and then answer a question on that reaction below.",
+        "text": "Select each reaction to the left \nand then answer a question on\nthat reaction below.",
         "x": 0.25,
         "y": 0.91,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

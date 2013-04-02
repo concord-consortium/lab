@@ -29,14 +29,14 @@
         "if (value) {",
           "var chargeVal = 1.5;",
           "for (var i=0; i < getNumberOfAtoms(); i++) {",
-            "setAtomProperties(i, {charge: chargeVal}, false, false, {supressRepaint: true});",
+            "setAtomProperties(i, {charge: chargeVal}, false, false, {suppressRepaint: true});",
             "chargeVal *= -1;",
           "}",
           "set({chargeShading: true});",
         "}",
         "else {",
           "for (var i=0; i < getNumberOfAtoms(); i++) {",
-            "setAtomProperties(i, { charge: 0}, false, false, {supressRepaint: true});",
+            "setAtomProperties(i, { charge: 0}, false, false, {suppressRepaint: true});",
           "}",
           "set({chargeShading: false});",
         "}"
@@ -95,7 +95,17 @@
         "offset": 0,
         "scale": 1,
         "digits": 0
-      }
+      },
+      "labels": [
+        {
+          "value": 10,
+          "label": "10 K"
+        },
+        {
+          "value": 5000,
+          "label": "5000 K"
+        }
+      ]
     }
   ],
   "layout": {

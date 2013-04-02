@@ -20,8 +20,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 3.5,
+    "viewPortHeight": 2.1,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "rgba(225,239,222,255)",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -50,13 +55,15 @@
         "y": 2.01,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(230,230,230)"
+        "backgroundColor": "rgb(230,230,230)",
+        "anchor": "upper-left"
       },
       {
         "text": "press run to see  the mixture \"settle\"",
         "x": 0.56,
         "y": 0.23,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

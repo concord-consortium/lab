@@ -20,8 +20,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 3.5,
+    "viewPortHeight": 3.2,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -36,12 +41,13 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "In this compartment, particles below the obstacle represent a fixed amount of air molecules inside the balloon.",
+        "text": "In this compartment, particles below \nthe obstacle represent a fixed amount \nof air molecules inside the balloon.",
         "x": 0.73,
         "y": 3.04,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(0,255,0)"
+        "backgroundColor": "rgb(0,255,0)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,
@@ -455,10 +461,10 @@
     "vy": [
       -0.000002118017079881311
     ],
-    "externalFx": [
+    "externalAx": [
       0
     ],
-    "externalFy": [
+    "externalAy": [
       1.9e-7
     ],
     "friction": [

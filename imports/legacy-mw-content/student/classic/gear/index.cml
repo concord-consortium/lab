@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Virtual experiments on gears</page_title>
+<bg_image>sidebar1b.gif</bg_image>
+<text> 
+
+   Three parallel gears
+
+
+
+
+
+</text>
+<section start="0" end="33">
+<paragraph start="0" end="2">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>180.0</LeftIndent>
+<Alignment>2</Alignment>
+<SpaceAbove>10.0</SpaceAbove>
+<content start="0" end="1">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>400.0</width><height>60</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;&lt;center&gt;&lt;h2&gt;&lt;font face=Verdana color=#ffffff&gt;Virtual experiments on gears&lt;/font&gt;&lt;/center&gt;&lt;/html&gt;</title><bgcolor>-ff6601</bgcolor></icon></content>
+
+<content start="1" end="2">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2" end="3">
+<LeftIndent>160.0</LeftIndent>
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="27">
+<LeftIndent>180.0</LeftIndent>
+<content start="3" end="4">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="4" end="6">
+</content>
+
+<content start="6" end="26">
+<href>parallelgears.cml</href></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="28">
+<LeftIndent>180.0</LeftIndent>
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="29">
+<LeftIndent>180.0</LeftIndent>
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="30">
+<LeftIndent>180.0</LeftIndent>
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="31">
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="32">
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="33">
+</paragraph>
+</section>
+</document>

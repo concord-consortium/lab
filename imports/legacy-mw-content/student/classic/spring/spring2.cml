@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Free fall: two masses connected by a spring</page_title>
+<text>Free fall: two masses connected by a spring
+
+ 
+
+
+</text>
+<section start="0" end="50">
+<paragraph start="0" end="44">
+<Alignment>1</Alignment>
+<content start="0" end="43">
+<size>15</size><bold>true</bold><family>Trebuchet MS</family></content>
+
+<content start="43" end="44">
+</content>
+
+</paragraph>
+<paragraph start="44" end="45">
+<Alignment>1</Alignment>
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="47">
+<Alignment>1</Alignment>
+<content start="45" end="46">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>spring2$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="48">
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="50">
+</paragraph>
+</section>
+</document>

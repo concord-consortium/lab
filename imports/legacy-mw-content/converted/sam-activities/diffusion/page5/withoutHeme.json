@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 5.35,
+    "viewPortHeight": 2.5,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "rgba(226,245,255,255)",
     "showClock": false,
+    "markColor": "#ff0033",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -750,7 +755,7 @@
       0,
       0
     ],
-    "externalFx": [
+    "externalAx": [
       0,
       0,
       0,
@@ -777,7 +782,7 @@
       0,
       0
     ],
-    "externalFy": [
+    "externalAy": [
       0,
       0,
       0,

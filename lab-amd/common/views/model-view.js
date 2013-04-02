@@ -10,8 +10,7 @@ define(function (require) {
       console               = require('common/console'),
       PlayResetComponentSVG = require('cs!common/components/play_reset_svg'),
       PlayOnlyComponentSVG  = require('cs!common/components/play_only_svg'),
-      PlaybackComponentSVG  = require('cs!common/components/playback_svg'),
-      gradients             = require('common/views/gradients');
+      PlaybackComponentSVG  = require('cs!common/components/playback_svg');
 
   return function ModelView(modelUrl, model, Renderer, getNextTabIndex) {
         // Public API object to be returned.
@@ -50,6 +49,7 @@ define(function (require) {
         imageContainerTop,
         textContainerBelow,
         textContainerTop,
+        brushContainer,
 
         // we can ask the view to render the playback controls to some other container
         useExternalPlaybackContainer = false,
@@ -58,6 +58,9 @@ define(function (require) {
         preexistingControls,
 
         clickHandler,
+        // d3.svg.brush object used to implement select action. It should be
+        // updated each time model2px and model2pxInv functions are changed!
+        selectBrush,
 
         offsetLeft, offsetTop;
 
@@ -184,6 +187,12 @@ define(function (require) {
         return model2px(modelMinX + sizeX);
       };
 
+      if (selectBrush) {
+        // Update brush to use new scaling functions.
+        selectBrush
+          .x(model2px)
+          .y(model2pxInv);
+      }
     }
 
     function redraw() {
@@ -297,26 +306,6 @@ define(function (require) {
       gy.exit().remove();
     }
 
-    function createGradients() {
-      // "Marked" particle gradient.
-      gradients.createRadialGradient("mark-grad", "#fceabb", "#fccd4d", "#f8b500", mainContainer);
-
-      // "Charge" gradients.
-      gradients.createRadialGradient("neg-grad", "#ffefff", "#fdadad", "#e95e5e", mainContainer);
-      gradients.createRadialGradient("pos-grad", "#dfffff", "#9abeff", "#767fbf", mainContainer);
-      gradients.createRadialGradient("neutral-grad", "#FFFFFF", "#f2f2f2", "#A4A4A4", mainContainer);
-
-      // "Marked" atom gradient.
-      gradients.createRadialGradient("mark-grad", "#fceabb", "#fccd4d", "#f8b500", mainContainer);
-
-      // Colored gradients, used for MD2D Editable element
-      gradients.createRadialGradient("green-grad", "#dfffef", "#75a643", "#2a7216", mainContainer);
-      gradients.createRadialGradient("blue-grad", "#dfefff", "#7543a6", "#2a1672", mainContainer);
-      gradients.createRadialGradient("purple-grad", "#EED3F0", "#D941E0", "#84198A", mainContainer);
-      gradients.createRadialGradient("aqua-grad", "#DCF5F4", "#41E0D8", "#12827C", mainContainer);
-      gradients.createRadialGradient("orange-grad", "#F0E6D1", "#E0A21B", "#AD7F1C", mainContainer);
-    }
-
     // Setup background.
     function setupBackground() {
       // Just set the color.
@@ -373,7 +362,10 @@ define(function (require) {
         mainContainer        = vis.append("g").attr("class", "main-container");
         imageContainerTop    = vis.append("g").attr("class", "image-container-top");
         textContainerTop     = vis.append("g").attr("class", "text-container-top");
+        brushContainer       = vis.append("g").attr("class", "brush-container");
 
+        // Make all layers available for subviews, expect from brush layer
+        // which is used only internally.
         api.containers = {
           gridContainer:        gridContainer,
           imageContainerBelow:  imageContainerBelow,
@@ -384,8 +376,6 @@ define(function (require) {
           imageContainerTop:    imageContainerTop,
           textContainerTop:     textContainerTop
         };
-
-        createGradients();
 
         playbackContainer = vis1;
       } else {
@@ -518,6 +508,7 @@ define(function (require) {
       },
       reset: function(newModelUrl, newModel) {
         removeClickHandlers();
+        api.setSelectHandler(null);
         processOptions(newModelUrl, newModel);
         renderContainer();
         setupPlaybackControls();
@@ -549,33 +540,36 @@ define(function (require) {
        * Sets custom click handler.
        *
        * @param {string}   selector Selector string defining clickable objects.
-       * @param {Function} callback Custom click handler. It will be called
+       * @param {Function} handler  Custom click handler. It will be called
        *                            when object is clicked with (x, y, d, i) arguments:
        *                              x - x coordinate in model units,
        *                              y - y coordinate in model units,
        *                              d - data associated with a given object (can be undefined!),
        *                              i - ID of clicked object (usually its value makes sense if d is defined).
        */
-      setClickHandler: function (selector, callback) {
-        clickHandler[selector] = callback;
+      setClickHandler: function (selector, handler) {
+        if (typeof handler !== "function") {
+          throw new Error("Click handler should be a function.");
+        }
+        clickHandler[selector] = handler;
         api.updateClickHandlers();
       },
       /**
-       * Applies all custom callback to objects matching selector
+       * Applies all custom click handlers to objects matching selector
        * Note that this function should be called each time when possibly
        * clickable object is added or repainted!
        */
       updateClickHandlers: function () {
         var selector;
 
-        function getClickHandler (callback) {
+        function getClickHandler (handler) {
           return function (d, i) {
             // Get current coordinates relative to the plot area!
             var coords = d3.mouse(plot.node()),
                 x = model2px.invert(coords[0]),
                 y = model2pxInv.invert(coords[1]);
             console.log("[view] click at (" + x.toFixed(3) + ", " + y.toFixed(3) + ")");
-            callback(x, y, d, i);
+            handler(x, y, d, i);
           };
         }
 
@@ -586,6 +580,57 @@ define(function (require) {
             vis.selectAll(selector).on("click.custom", getClickHandler(clickHandler[selector]));
           }
         }
+      },
+      /**
+       * Sets custom select handler. When you provide function as a handler, select action
+       * is enabled and the provided handler executed when select action is finished.
+       * To disable select action, pass 'null' as an argument.
+       *
+       * @param {Function} handler Custom select handler. It will be called
+       *                           when select action is finished with (x, y, w, h) arguments:
+       *                             x - x coordinate of lower left selection corner (in model units),
+       *                             y - y coordinate of lower left selection corner (in model units),
+       *                             width  - width of selection rectangle (in model units),
+       *                             height - height of selection rectangle (in model units).
+       *
+       *                            Pass 'null' to disable select action.
+       */
+      setSelectHandler: function (handler) {
+        if (typeof handler !== "function" && handler !== null) {
+          throw new Error("Select handler should be a function or null.");
+        }
+        // Remove previous select handler.
+        brushContainer.select("g.select-area").remove();
+        if (handler === null) {
+          // Previous handler removed, so just return.
+          return;
+        }
+        selectBrush = d3.svg.brush()
+          .x(model2px)
+          .y(model2pxInv)
+          .on("brushend.select", function() {
+            var r = selectBrush.extent(),
+                x      = r[0][0],
+                y      = r[0][1],
+                width  = r[1][0] - x,
+                height = r[1][1] - y;
+
+            console.log("[view] selection area (" + x.toFixed(3) + ", " +
+              y.toFixed(3) + "), width: " + width + ", height: " + height);
+
+            // Call the user defined callback, passing selected area, as
+            // rectangle defined by:
+            // x, y, width, height
+            // where (x, y) defines its lower left corner in model units.
+            handler(x, y, width, height);
+            // Clear and hide the brush.
+            selectBrush.clear();
+            // Redraw brush (which is now empty).
+            brushContainer.call(selectBrush);
+          });
+        // Add a new "g" to easily remove it while
+        // disabling / reseting select action.
+        brushContainer.append("g").classed("select-area", true).call(selectBrush);
       }
     };
 

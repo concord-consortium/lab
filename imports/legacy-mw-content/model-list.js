@@ -2484,11 +2484,46 @@ modelList = [
         "json": "converted/new-examples-for-nextgen/simple-ball-drop$0.json"
       },
       {
-        "name": "simple-gas",
+        "name": "simple-gas-and-obstacles",
+        "path": "new-examples-for-nextgen/",
+        "cml": "new-examples-for-nextgen/simple-gas-and-obstacles.cml",
+        "mml": "new-examples-for-nextgen/simple-gas-and-obstacles$0.mml",
+        "json": "converted/new-examples-for-nextgen/simple-gas-and-obstacles$0.json"
+      },
+      {
+        "name": "simple-gas-with-textboxes",
+        "path": "new-examples-for-nextgen/",
+        "cml": "new-examples-for-nextgen/simple-gas-with-textboxes.cml",
+        "mml": "new-examples-for-nextgen/simple-gas-with-textboxes$0.mml",
+        "json": "converted/new-examples-for-nextgen/simple-gas-with-textboxes$0.json"
+      },
+      {
+        "name": "simple-gas-1",
         "path": "new-examples-for-nextgen/",
         "cml": "new-examples-for-nextgen/simple-gas.cml",
         "mml": "new-examples-for-nextgen/simple-gas$0.mml",
         "json": "converted/new-examples-for-nextgen/simple-gas$0.json"
+      },
+      {
+        "name": "simple-gas-2",
+        "path": "new-examples-for-nextgen/",
+        "cml": "new-examples-for-nextgen/simple-gas.cml",
+        "mml": "new-examples-for-nextgen/simple-gas-and-obstacles$0.mml",
+        "json": "converted/new-examples-for-nextgen/simple-gas-and-obstacles$0.json"
+      },
+      {
+        "name": "simple-gas-3",
+        "path": "new-examples-for-nextgen/",
+        "cml": "new-examples-for-nextgen/simple-gas.cml",
+        "mml": "new-examples-for-nextgen/simple-gas-with-textboxes$0.mml",
+        "json": "converted/new-examples-for-nextgen/simple-gas-with-textboxes$0.json"
+      },
+      {
+        "name": "sinple-gas-with-textbox-at-center",
+        "path": "new-examples-for-nextgen/",
+        "cml": "new-examples-for-nextgen/sinple-gas-with-textbox-at-center.cml",
+        "mml": "new-examples-for-nextgen/sinple-gas-with-textbox-at-center$0.mml",
+        "json": "converted/new-examples-for-nextgen/sinple-gas-with-textbox-at-center$0.json"
       }
     ]
   },
@@ -2877,6 +2912,1744 @@ modelList = [
         "cml": "student/classic/motion/windshieldwiper.cml",
         "mml": "student/classic/motion/windshieldwiper$0.mml",
         "json": "converted/student/classic/motion/windshieldwiper$0.json"
+      }
+    ]
+  },
+  {
+    "section": "student/classic/freefall",
+    "content": [
+      {
+        "name": "ff1",
+        "path": "student/classic/freefall/",
+        "cml": "student/classic/freefall/ff1.cml",
+        "mml": "student/classic/freefall/ff1$0.mml",
+        "json": "converted/student/classic/freefall/ff1$0.json"
+      },
+      {
+        "name": "ff2",
+        "path": "student/classic/freefall/",
+        "cml": "student/classic/freefall/ff2.cml",
+        "mml": "student/classic/freefall/ff2$0.mml",
+        "json": "converted/student/classic/freefall/ff2$0.json"
+      },
+      {
+        "name": "ff3",
+        "path": "student/classic/freefall/",
+        "cml": "student/classic/freefall/ff3.cml",
+        "mml": "student/classic/freefall/ff3$0.mml",
+        "json": "converted/student/classic/freefall/ff3$0.json"
+      },
+      {
+        "name": "ff4",
+        "path": "student/classic/freefall/",
+        "cml": "student/classic/freefall/ff4.cml",
+        "mml": "student/classic/freefall/ff4$0.mml",
+        "json": "converted/student/classic/freefall/ff4$0.json"
+      },
+      {
+        "name": "ff5",
+        "path": "student/classic/freefall/",
+        "cml": "student/classic/freefall/ff5.cml",
+        "mml": "student/classic/freefall/ff5$0.mml",
+        "json": "converted/student/classic/freefall/ff5$0.json"
+      },
+      {
+        "name": "ladder",
+        "path": "student/classic/freefall/",
+        "cml": "student/classic/freefall/ladder.cml",
+        "mml": "student/classic/freefall/ladder$0.mml",
+        "json": "converted/student/classic/freefall/ladder$0.json"
+      },
+      {
+        "name": "pm1",
+        "path": "student/classic/freefall/",
+        "cml": "student/classic/freefall/pm1.cml",
+        "mml": "student/classic/freefall/pm1$0.mml",
+        "json": "converted/student/classic/freefall/pm1$0.json"
+      },
+      {
+        "name": "stadium",
+        "path": "student/classic/freefall/",
+        "cml": "student/classic/freefall/stadium.cml",
+        "mml": "student/classic/freefall/stadium$0.mml",
+        "json": "converted/student/classic/freefall/stadium$0.json"
+      }
+    ]
+  },
+  {
+    "section": "student/classic/gear",
+    "content": [
+      {
+        "name": "parallelgears-1",
+        "path": "student/classic/gear/",
+        "cml": "student/classic/gear/parallelgears.cml",
+        "mml": "student/classic/gear/parallelgears$0.mml",
+        "json": "converted/student/classic/gear/parallelgears$0.json"
+      },
+      {
+        "name": "parallelgears-2",
+        "path": "student/classic/gear/",
+        "cml": "student/classic/gear/parallelgears.cml",
+        "mml": "student/classic/gear/parallelgears_deadlock.mml",
+        "json": "converted/student/classic/gear/parallelgears_deadlock.json"
+      },
+      {
+        "name": "parallelgears-3",
+        "path": "student/classic/gear/",
+        "cml": "student/classic/gear/parallelgears.cml",
+        "mml": "student/classic/gear/parallelgears_horizontal.mml",
+        "json": "converted/student/classic/gear/parallelgears_horizontal.json"
+      },
+      {
+        "name": "parallelgears-4",
+        "path": "student/classic/gear/",
+        "cml": "student/classic/gear/parallelgears.cml",
+        "mml": "student/classic/gear/parallelgears_horizontal2.mml",
+        "json": "converted/student/classic/gear/parallelgears_horizontal2.json"
+      },
+      {
+        "name": "parallelgears-5",
+        "path": "student/classic/gear/",
+        "cml": "student/classic/gear/parallelgears.cml",
+        "mml": "student/classic/gear/parallelgears_triangle.mml",
+        "json": "converted/student/classic/gear/parallelgears_triangle.json"
+      }
+    ]
+  },
+  {
+    "section": "student/classic/harmonic",
+    "content": [
+      {
+        "name": "ho1",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/ho1.cml",
+        "mml": "student/classic/harmonic/ho1$0.mml",
+        "json": "converted/student/classic/harmonic/ho1$0.json"
+      },
+      {
+        "name": "ho2",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/ho2.cml",
+        "mml": "student/classic/harmonic/ho2$0.mml",
+        "json": "converted/student/classic/harmonic/ho2$0.json"
+      },
+      {
+        "name": "ho3",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/ho3.cml",
+        "mml": "student/classic/harmonic/ho3$0.mml",
+        "json": "converted/student/classic/harmonic/ho3$0.json"
+      },
+      {
+        "name": "ho4",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/ho4.cml",
+        "mml": "student/classic/harmonic/ho4$0.mml",
+        "json": "converted/student/classic/harmonic/ho4$0.json"
+      },
+      {
+        "name": "ho5",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/ho5.cml",
+        "mml": "student/classic/harmonic/ho5$0.mml",
+        "json": "converted/student/classic/harmonic/ho5$0.json"
+      },
+      {
+        "name": "ho6-1",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/ho6.cml",
+        "mml": "student/classic/harmonic/ho6$0.mml",
+        "json": "converted/student/classic/harmonic/ho6$0.json"
+      },
+      {
+        "name": "ho6-2",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/ho6.cml",
+        "mml": "student/classic/harmonic/ho61$0.mml",
+        "json": "converted/student/classic/harmonic/ho61$0.json"
+      },
+      {
+        "name": "ho61",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/ho61.cml",
+        "mml": "student/classic/harmonic/ho61$0.mml",
+        "json": "converted/student/classic/harmonic/ho61$0.json"
+      },
+      {
+        "name": "ho7",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/ho7.cml",
+        "mml": "student/classic/harmonic/ho7$0.mml",
+        "json": "converted/student/classic/harmonic/ho7$0.json"
+      },
+      {
+        "name": "ho8",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/ho8.cml",
+        "mml": "student/classic/harmonic/ho8$0.mml",
+        "json": "converted/student/classic/harmonic/ho8$0.json"
+      },
+      {
+        "name": "ho9",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/ho9.cml",
+        "mml": "student/classic/harmonic/ho9$0.mml",
+        "json": "converted/student/classic/harmonic/ho9$0.json"
+      },
+      {
+        "name": "hoa",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/hoa.cml",
+        "mml": "student/classic/harmonic/hoa$0.mml",
+        "json": "converted/student/classic/harmonic/hoa$0.json"
+      },
+      {
+        "name": "hob",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/hob.cml",
+        "mml": "student/classic/harmonic/hob$0.mml",
+        "json": "converted/student/classic/harmonic/hob$0.json"
+      },
+      {
+        "name": "hoc",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/hoc.cml",
+        "mml": "student/classic/harmonic/hoc$0.mml",
+        "json": "converted/student/classic/harmonic/hoc$0.json"
+      },
+      {
+        "name": "hod",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/hod.cml",
+        "mml": "student/classic/harmonic/hod$0.mml",
+        "json": "converted/student/classic/harmonic/hod$0.json"
+      },
+      {
+        "name": "hoe",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/hoe.cml",
+        "mml": "student/classic/harmonic/hoe$0.mml",
+        "json": "converted/student/classic/harmonic/hoe$0.json"
+      },
+      {
+        "name": "hof",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/hof.cml",
+        "mml": "student/classic/harmonic/hof$0.mml",
+        "json": "converted/student/classic/harmonic/hof$0.json"
+      },
+      {
+        "name": "hog",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/hog.cml",
+        "mml": "student/classic/harmonic/hog$0.mml",
+        "json": "converted/student/classic/harmonic/hog$0.json"
+      },
+      {
+        "name": "hoh",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/hoh.cml",
+        "mml": "student/classic/harmonic/hoh$0.mml",
+        "json": "converted/student/classic/harmonic/hoh$0.json"
+      },
+      {
+        "name": "hoi",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/hoi.cml",
+        "mml": "student/classic/harmonic/hoi$0.mml",
+        "json": "converted/student/classic/harmonic/hoi$0.json"
+      },
+      {
+        "name": "hoj",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/hoj.cml",
+        "mml": "student/classic/harmonic/hoj$0.mml",
+        "json": "converted/student/classic/harmonic/hoj$0.json"
+      },
+      {
+        "name": "hok",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/hok.cml",
+        "mml": "student/classic/harmonic/hok$0.mml",
+        "json": "converted/student/classic/harmonic/hok$0.json"
+      },
+      {
+        "name": "hol",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/hol.cml",
+        "mml": "student/classic/harmonic/hol$0.mml",
+        "json": "converted/student/classic/harmonic/hol$0.json"
+      },
+      {
+        "name": "hom",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/hom.cml",
+        "mml": "student/classic/harmonic/hom$0.mml",
+        "json": "converted/student/classic/harmonic/hom$0.json"
+      },
+      {
+        "name": "hon",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/hon.cml",
+        "mml": "student/classic/harmonic/hon$0.mml",
+        "json": "converted/student/classic/harmonic/hon$0.json"
+      },
+      {
+        "name": "hoo",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/hoo.cml",
+        "mml": "student/classic/harmonic/hoo$0.mml",
+        "json": "converted/student/classic/harmonic/hoo$0.json"
+      },
+      {
+        "name": "hop",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/hop.cml",
+        "mml": "student/classic/harmonic/hop$0.mml",
+        "json": "converted/student/classic/harmonic/hop$0.json"
+      },
+      {
+        "name": "hoq",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/hoq.cml",
+        "mml": "student/classic/harmonic/hoq$0.mml",
+        "json": "converted/student/classic/harmonic/hoq$0.json"
+      },
+      {
+        "name": "hor",
+        "path": "student/classic/harmonic/",
+        "cml": "student/classic/harmonic/hor.cml",
+        "mml": "student/classic/harmonic/hor$0.mml",
+        "json": "converted/student/classic/harmonic/hor$0.json"
+      }
+    ]
+  },
+  {
+    "section": "student/classic/machine",
+    "content": [
+      {
+        "name": "bike",
+        "path": "student/classic/machine/",
+        "cml": "student/classic/machine/bike.cml",
+        "mml": "student/classic/machine/bike$0.mml",
+        "json": "converted/student/classic/machine/bike$0.json"
+      },
+      {
+        "name": "machine1",
+        "path": "student/classic/machine/",
+        "cml": "student/classic/machine/machine1.cml",
+        "mml": "student/classic/machine/machine1$0.mml",
+        "json": "converted/student/classic/machine/machine1$0.json"
+      },
+      {
+        "name": "machine2",
+        "path": "student/classic/machine/",
+        "cml": "student/classic/machine/machine2.cml",
+        "mml": "student/classic/machine/machine2$0.mml",
+        "json": "converted/student/classic/machine/machine2$0.json"
+      },
+      {
+        "name": "SliderCrank",
+        "path": "student/classic/machine/",
+        "cml": "student/classic/machine/SliderCrank.cml",
+        "mml": "student/classic/machine/SliderCrank$0.mml",
+        "json": "converted/student/classic/machine/SliderCrank$0.json"
+      },
+      {
+        "name": "stamper",
+        "path": "student/classic/machine/",
+        "cml": "student/classic/machine/stamper.cml",
+        "mml": "student/classic/machine/stamper$0.mml",
+        "json": "converted/student/classic/machine/stamper$0.json"
+      },
+      {
+        "name": "suspensionbridge",
+        "path": "student/classic/machine/",
+        "cml": "student/classic/machine/suspensionbridge.cml",
+        "mml": "student/classic/machine/suspensionbridge$0.mml",
+        "json": "converted/student/classic/machine/suspensionbridge$0.json"
+      },
+      {
+        "name": "tank1-1",
+        "path": "student/classic/machine/",
+        "cml": "student/classic/machine/tank1.cml",
+        "mml": "student/classic/machine/tank1$0.mml",
+        "json": "converted/student/classic/machine/tank1$0.json"
+      },
+      {
+        "name": "tank1-2",
+        "path": "student/classic/machine/",
+        "cml": "student/classic/machine/tank1.cml",
+        "mml": "student/classic/machine/tank1.mml",
+        "json": "converted/student/classic/machine/tank1.json"
+      },
+      {
+        "name": "waterwheel-1",
+        "path": "student/classic/machine/",
+        "cml": "student/classic/machine/waterwheel.cml",
+        "mml": "student/classic/machine/waterwheel$0.mml",
+        "json": "converted/student/classic/machine/waterwheel$0.json"
+      },
+      {
+        "name": "waterwheel-2",
+        "path": "student/classic/machine/",
+        "cml": "student/classic/machine/waterwheel.cml",
+        "mml": "student/classic/machine/waterwheel2$0.mml",
+        "json": "converted/student/classic/machine/waterwheel2$0.json"
+      },
+      {
+        "name": "waterwheel2",
+        "path": "student/classic/machine/",
+        "cml": "student/classic/machine/waterwheel2.cml",
+        "mml": "student/classic/machine/waterwheel2$0.mml",
+        "json": "converted/student/classic/machine/waterwheel2$0.json"
+      }
+    ]
+  },
+  {
+    "section": "student/classic/pulley",
+    "content": [
+      {
+        "name": "pulley1",
+        "path": "student/classic/pulley/",
+        "cml": "student/classic/pulley/pulley1.cml",
+        "mml": "student/classic/pulley/pulley1$0.mml",
+        "json": "converted/student/classic/pulley/pulley1$0.json"
+      },
+      {
+        "name": "pulley2",
+        "path": "student/classic/pulley/",
+        "cml": "student/classic/pulley/pulley2.cml",
+        "mml": "student/classic/pulley/pulley2$0.mml",
+        "json": "converted/student/classic/pulley/pulley2$0.json"
+      },
+      {
+        "name": "pulley3",
+        "path": "student/classic/pulley/",
+        "cml": "student/classic/pulley/pulley3.cml",
+        "mml": "student/classic/pulley/pulley3$0.mml",
+        "json": "converted/student/classic/pulley/pulley3$0.json"
+      },
+      {
+        "name": "pulley4",
+        "path": "student/classic/pulley/",
+        "cml": "student/classic/pulley/pulley4.cml",
+        "mml": "student/classic/pulley/pulley4$0.mml",
+        "json": "converted/student/classic/pulley/pulley4$0.json"
+      }
+    ]
+  },
+  {
+    "section": "student/classic/spring",
+    "content": [
+      {
+        "name": "angularmomentum",
+        "path": "student/classic/spring/",
+        "cml": "student/classic/spring/angularmomentum.cml",
+        "mml": "student/classic/spring/angularmomentum$0.mml",
+        "json": "converted/student/classic/spring/angularmomentum$0.json"
+      },
+      {
+        "name": "buffer",
+        "path": "student/classic/spring/",
+        "cml": "student/classic/spring/buffer.cml",
+        "mml": "student/classic/spring/buffer$0.mml",
+        "json": "converted/student/classic/spring/buffer$0.json"
+      },
+      {
+        "name": "collidespring",
+        "path": "student/classic/spring/",
+        "cml": "student/classic/spring/collidespring.cml",
+        "mml": "student/classic/spring/collidespring$0.mml",
+        "json": "converted/student/classic/spring/collidespring$0.json"
+      },
+      {
+        "name": "hangspring",
+        "path": "student/classic/spring/",
+        "cml": "student/classic/spring/hangspring.cml",
+        "mml": "student/classic/spring/hangspring$0.mml",
+        "json": "converted/student/classic/spring/hangspring$0.json"
+      },
+      {
+        "name": "spring-1",
+        "path": "student/classic/spring/",
+        "cml": "student/classic/spring/spring.cml",
+        "mml": "student/classic/spring/spring$0.mml",
+        "json": "converted/student/classic/spring/spring$0.json"
+      },
+      {
+        "name": "spring-2",
+        "path": "student/classic/spring/",
+        "cml": "student/classic/spring/spring.cml",
+        "mml": "student/classic/spring/spring1$0.mml",
+        "json": "converted/student/classic/spring/spring1$0.json"
+      },
+      {
+        "name": "spring-3",
+        "path": "student/classic/spring/",
+        "cml": "student/classic/spring/spring.cml",
+        "mml": "student/classic/spring/spring2$0.mml",
+        "json": "converted/student/classic/spring/spring2$0.json"
+      },
+      {
+        "name": "spring1",
+        "path": "student/classic/spring/",
+        "cml": "student/classic/spring/spring1.cml",
+        "mml": "student/classic/spring/spring1$0.mml",
+        "json": "converted/student/classic/spring/spring1$0.json"
+      },
+      {
+        "name": "spring2",
+        "path": "student/classic/spring/",
+        "cml": "student/classic/spring/spring2.cml",
+        "mml": "student/classic/spring/spring2$0.mml",
+        "json": "converted/student/classic/spring/spring2$0.json"
+      },
+      {
+        "name": "twosprings",
+        "path": "student/classic/spring/",
+        "cml": "student/classic/spring/twosprings.cml",
+        "mml": "student/classic/spring/twosprings$0.mml",
+        "json": "converted/student/classic/spring/twosprings$0.json"
+      }
+    ]
+  },
+  {
+    "section": "student/classic/wave",
+    "content": [
+      {
+        "name": "wave1",
+        "path": "student/classic/wave/",
+        "cml": "student/classic/wave/wave1.cml",
+        "mml": "student/classic/wave/wave1$0.mml",
+        "json": "converted/student/classic/wave/wave1$0.json"
+      },
+      {
+        "name": "wave2",
+        "path": "student/classic/wave/",
+        "cml": "student/classic/wave/wave2.cml",
+        "mml": "student/classic/wave/wave2$0.mml",
+        "json": "converted/student/classic/wave/wave2$0.json"
+      }
+    ]
+  },
+  {
+    "section": "student/fluid",
+    "content": [
+      {
+        "name": "archimedes-1",
+        "path": "student/fluid/",
+        "cml": "student/fluid/archimedes.cml",
+        "mml": "student/fluid/archimedes$0.mml",
+        "json": "converted/student/fluid/archimedes$0.json"
+      },
+      {
+        "name": "archimedes-2",
+        "path": "student/fluid/",
+        "cml": "student/fluid/archimedes.cml",
+        "mml": "student/fluid/archimedes1$0.mml",
+        "json": "converted/student/fluid/archimedes1$0.json"
+      },
+      {
+        "name": "archimedes1",
+        "path": "student/fluid/",
+        "cml": "student/fluid/archimedes1.cml",
+        "mml": "student/fluid/archimedes1$0.mml",
+        "json": "converted/student/fluid/archimedes1$0.json"
+      },
+      {
+        "name": "drum",
+        "path": "student/fluid/",
+        "cml": "student/fluid/drum.cml",
+        "mml": "student/fluid/drum$0.mml",
+        "json": "converted/student/fluid/drum$0.json"
+      },
+      {
+        "name": "flow",
+        "path": "student/fluid/",
+        "cml": "student/fluid/flow.cml",
+        "mml": "student/fluid/flow$0.mml",
+        "json": "converted/student/fluid/flow$0.json"
+      },
+      {
+        "name": "pascal",
+        "path": "student/fluid/",
+        "cml": "student/fluid/pascal.cml",
+        "mml": "student/fluid/pascal$0.mml",
+        "json": "converted/student/fluid/pascal$0.json"
+      },
+      {
+        "name": "pressureconveyance1-1",
+        "path": "student/fluid/",
+        "cml": "student/fluid/pressureconveyance1.cml",
+        "mml": "student/fluid/pressureconveyance1$0.mml",
+        "json": "converted/student/fluid/pressureconveyance1$0.json"
+      },
+      {
+        "name": "pressureconveyance1-2",
+        "path": "student/fluid/",
+        "cml": "student/fluid/pressureconveyance1.cml",
+        "mml": "student/fluid/pressureconveyance1$1.mml",
+        "json": "converted/student/fluid/pressureconveyance1$1.json"
+      },
+      {
+        "name": "pressureconveyance2",
+        "path": "student/fluid/",
+        "cml": "student/fluid/pressureconveyance2.cml",
+        "mml": "student/fluid/pressureconveyance2$0.mml",
+        "json": "converted/student/fluid/pressureconveyance2$0.json"
+      },
+      {
+        "name": "pressureconveyance3",
+        "path": "student/fluid/",
+        "cml": "student/fluid/pressureconveyance3.cml",
+        "mml": "student/fluid/pressureconveyance3$0.mml",
+        "json": "converted/student/fluid/pressureconveyance3$0.json"
+      },
+      {
+        "name": "pressureconveyance4",
+        "path": "student/fluid/",
+        "cml": "student/fluid/pressureconveyance4.cml",
+        "mml": "student/fluid/pressureconveyance4$0.mml",
+        "json": "converted/student/fluid/pressureconveyance4$0.json"
+      }
+    ]
+  },
+  {
+    "section": "student/materials",
+    "content": [
+      {
+        "name": "active_filters-1",
+        "path": "student/materials/",
+        "cml": "student/materials/active_filters.cml",
+        "mml": "student/materials/active_filters$0.mml",
+        "json": "converted/student/materials/active_filters$0.json"
+      },
+      {
+        "name": "active_filters-2",
+        "path": "student/materials/",
+        "cml": "student/materials/active_filters.cml",
+        "mml": "student/materials/active_filters$1.mml",
+        "json": "converted/student/materials/active_filters$1.json"
+      },
+      {
+        "name": "adhesion-1",
+        "path": "student/materials/",
+        "cml": "student/materials/adhesion.cml",
+        "mml": "student/materials/adhesion$0.mml",
+        "json": "converted/student/materials/adhesion$0.json"
+      },
+      {
+        "name": "adhesion-2",
+        "path": "student/materials/",
+        "cml": "student/materials/adhesion.cml",
+        "mml": "student/materials/adhesion2$0.mml",
+        "json": "converted/student/materials/adhesion2$0.json"
+      },
+      {
+        "name": "adhesion-3",
+        "path": "student/materials/",
+        "cml": "student/materials/adhesion.cml",
+        "mml": "student/materials/adhesion3$0.mml",
+        "json": "converted/student/materials/adhesion3$0.json"
+      },
+      {
+        "name": "adhesion-4",
+        "path": "student/materials/",
+        "cml": "student/materials/adhesion.cml",
+        "mml": "student/materials/adhesion4$0.mml",
+        "json": "converted/student/materials/adhesion4$0.json"
+      },
+      {
+        "name": "adhesion-5",
+        "path": "student/materials/",
+        "cml": "student/materials/adhesion.cml",
+        "mml": "student/materials/adhesion5$0.mml",
+        "json": "converted/student/materials/adhesion5$0.json"
+      },
+      {
+        "name": "adhesion2",
+        "path": "student/materials/",
+        "cml": "student/materials/adhesion2.cml",
+        "mml": "student/materials/adhesion2$0.mml",
+        "json": "converted/student/materials/adhesion2$0.json"
+      },
+      {
+        "name": "adhesion3",
+        "path": "student/materials/",
+        "cml": "student/materials/adhesion3.cml",
+        "mml": "student/materials/adhesion3$0.mml",
+        "json": "converted/student/materials/adhesion3$0.json"
+      },
+      {
+        "name": "adhesion4",
+        "path": "student/materials/",
+        "cml": "student/materials/adhesion4.cml",
+        "mml": "student/materials/adhesion4$0.mml",
+        "json": "converted/student/materials/adhesion4$0.json"
+      },
+      {
+        "name": "adhesion5",
+        "path": "student/materials/",
+        "cml": "student/materials/adhesion5.cml",
+        "mml": "student/materials/adhesion5$0.mml",
+        "json": "converted/student/materials/adhesion5$0.json"
+      },
+      {
+        "name": "airpurifier",
+        "path": "student/materials/",
+        "cml": "student/materials/airpurifier.cml",
+        "mml": "student/materials/airpurifier$0.mml",
+        "json": "converted/student/materials/airpurifier$0.json"
+      },
+      {
+        "name": "disorder",
+        "path": "student/materials/",
+        "cml": "student/materials/disorder.cml",
+        "mml": "student/materials/disorder$0.mml",
+        "json": "converted/student/materials/disorder$0.json"
+      },
+      {
+        "name": "drop",
+        "path": "student/materials/",
+        "cml": "student/materials/drop.cml",
+        "mml": "student/materials/drop$0.mml",
+        "json": "converted/student/materials/drop$0.json"
+      },
+      {
+        "name": "Enclosure-1",
+        "path": "student/materials/",
+        "cml": "student/materials/Enclosure.cml",
+        "mml": "student/materials/Enclosure$0.mml",
+        "json": "converted/student/materials/Enclosure$0.json"
+      },
+      {
+        "name": "Enclosure-2",
+        "path": "student/materials/",
+        "cml": "student/materials/Enclosure.cml",
+        "mml": "student/materials/Enclosure$1.mml",
+        "json": "converted/student/materials/Enclosure$1.json"
+      },
+      {
+        "name": "fracture",
+        "path": "student/materials/",
+        "cml": "student/materials/fracture.cml",
+        "mml": "student/materials/fracture$0.mml",
+        "json": "converted/student/materials/fracture$0.json"
+      },
+      {
+        "name": "GrainBoundary",
+        "path": "student/materials/",
+        "cml": "student/materials/GrainBoundary.cml",
+        "mml": "student/materials/GrainBoundary$0.mml",
+        "json": "converted/student/materials/GrainBoundary$0.json"
+      },
+      {
+        "name": "hydrides",
+        "path": "student/materials/",
+        "cml": "student/materials/hydrides.cml",
+        "mml": "student/materials/hydrides$0.mml",
+        "json": "converted/student/materials/hydrides$0.json"
+      },
+      {
+        "name": "MaterialStrength",
+        "path": "student/materials/",
+        "cml": "student/materials/MaterialStrength.cml",
+        "mml": "student/materials/MaterialStrength$0.mml",
+        "json": "converted/student/materials/MaterialStrength$0.json"
+      },
+      {
+        "name": "MetallicAlloy-1",
+        "path": "student/materials/",
+        "cml": "student/materials/MetallicAlloy.cml",
+        "mml": "student/materials/MetallicAlloy$0.mml",
+        "json": "converted/student/materials/MetallicAlloy$0.json"
+      },
+      {
+        "name": "MetallicAlloy-2",
+        "path": "student/materials/",
+        "cml": "student/materials/MetallicAlloy.cml",
+        "mml": "student/materials/MetallicAlloy$1.mml",
+        "json": "converted/student/materials/MetallicAlloy$1.json"
+      },
+      {
+        "name": "nail-1",
+        "path": "student/materials/",
+        "cml": "student/materials/nail.cml",
+        "mml": "student/materials/nail$0.mml",
+        "json": "converted/student/materials/nail$0.json"
+      },
+      {
+        "name": "nail-2",
+        "path": "student/materials/",
+        "cml": "student/materials/nail.cml",
+        "mml": "student/materials/nailhard.mml",
+        "json": "converted/student/materials/nailhard.json"
+      },
+      {
+        "name": "nail-3",
+        "path": "student/materials/",
+        "cml": "student/materials/nail.cml",
+        "mml": "student/materials/nailsoft.mml",
+        "json": "converted/student/materials/nailsoft.json"
+      },
+      {
+        "name": "peel-1",
+        "path": "student/materials/",
+        "cml": "student/materials/peel.cml",
+        "mml": "student/materials/peel$0.mml",
+        "json": "converted/student/materials/peel$0.json"
+      },
+      {
+        "name": "peel-2",
+        "path": "student/materials/",
+        "cml": "student/materials/peel.cml",
+        "mml": "student/materials/peelcenter.mml",
+        "json": "converted/student/materials/peelcenter.json"
+      },
+      {
+        "name": "peel-3",
+        "path": "student/materials/",
+        "cml": "student/materials/peel.cml",
+        "mml": "student/materials/peelright.mml",
+        "json": "converted/student/materials/peelright.json"
+      },
+      {
+        "name": "piezoelectric1",
+        "path": "student/materials/",
+        "cml": "student/materials/piezoelectric1.cml",
+        "mml": "student/materials/piezoelectric1$0.mml",
+        "json": "converted/student/materials/piezoelectric1$0.json"
+      },
+      {
+        "name": "plasticstrength",
+        "path": "student/materials/",
+        "cml": "student/materials/plasticstrength.cml",
+        "mml": "student/materials/plasticstrength$0.mml",
+        "json": "converted/student/materials/plasticstrength$0.json"
+      },
+      {
+        "name": "PointDefects-1",
+        "path": "student/materials/",
+        "cml": "student/materials/PointDefects.cml",
+        "mml": "student/materials/PointDefects$0.mml",
+        "json": "converted/student/materials/PointDefects$0.json"
+      },
+      {
+        "name": "PointDefects-2",
+        "path": "student/materials/",
+        "cml": "student/materials/PointDefects.cml",
+        "mml": "student/materials/PointDefects2$0.mml",
+        "json": "converted/student/materials/PointDefects2$0.json"
+      },
+      {
+        "name": "PointDefects2",
+        "path": "student/materials/",
+        "cml": "student/materials/PointDefects2.cml",
+        "mml": "student/materials/PointDefects2$0.mml",
+        "json": "converted/student/materials/PointDefects2$0.json"
+      },
+      {
+        "name": "polymer",
+        "path": "student/materials/",
+        "cml": "student/materials/polymer.cml",
+        "mml": "student/materials/polymer$0.mml",
+        "json": "converted/student/materials/polymer$0.json"
+      },
+      {
+        "name": "rod2wire",
+        "path": "student/materials/",
+        "cml": "student/materials/rod2wire.cml",
+        "mml": "student/materials/rod2wire$0.mml",
+        "json": "converted/student/materials/rod2wire$0.json"
+      },
+      {
+        "name": "Rubberband",
+        "path": "student/materials/",
+        "cml": "student/materials/Rubberband.cml",
+        "mml": "student/materials/Rubberband$0.mml",
+        "json": "converted/student/materials/Rubberband$0.json"
+      },
+      {
+        "name": "SchottkyDefect",
+        "path": "student/materials/",
+        "cml": "student/materials/SchottkyDefect.cml",
+        "mml": "student/materials/SchottkyDefect$0.mml",
+        "json": "converted/student/materials/SchottkyDefect$0.json"
+      },
+      {
+        "name": "shake-1",
+        "path": "student/materials/",
+        "cml": "student/materials/shake.cml",
+        "mml": "student/materials/shake$0.mml",
+        "json": "converted/student/materials/shake$0.json"
+      },
+      {
+        "name": "shake-2",
+        "path": "student/materials/",
+        "cml": "student/materials/shake.cml",
+        "mml": "student/materials/shake2$0.mml",
+        "json": "converted/student/materials/shake2$0.json"
+      },
+      {
+        "name": "shake2",
+        "path": "student/materials/",
+        "cml": "student/materials/shake2.cml",
+        "mml": "student/materials/shake2$0.mml",
+        "json": "converted/student/materials/shake2$0.json"
+      },
+      {
+        "name": "shockwave",
+        "path": "student/materials/",
+        "cml": "student/materials/shockwave.cml",
+        "mml": "student/materials/shockwave$0.mml",
+        "json": "converted/student/materials/shockwave$0.json"
+      },
+      {
+        "name": "soundwave",
+        "path": "student/materials/",
+        "cml": "student/materials/soundwave.cml",
+        "mml": "student/materials/soundwave$0.mml",
+        "json": "converted/student/materials/soundwave$0.json"
+      },
+      {
+        "name": "sputtering",
+        "path": "student/materials/",
+        "cml": "student/materials/sputtering.cml",
+        "mml": "student/materials/sputtering$0.mml",
+        "json": "converted/student/materials/sputtering$0.json"
+      }
+    ]
+  },
+  {
+    "section": "student/motionandforce",
+    "content": [
+      {
+        "name": "aromatic",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/aromatic.cml",
+        "mml": "student/motionandforce/aromatic$0.mml",
+        "json": "converted/student/motionandforce/aromatic$0.json"
+      },
+      {
+        "name": "barometric",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/barometric.cml",
+        "mml": "student/motionandforce/barometric$0.mml",
+        "json": "converted/student/motionandforce/barometric$0.json"
+      },
+      {
+        "name": "brownianmotion",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/brownianmotion.cml",
+        "mml": "student/motionandforce/brownianmotion$0.mml",
+        "json": "converted/student/motionandforce/brownianmotion$0.json"
+      },
+      {
+        "name": "CarbonDioxide",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/CarbonDioxide.cml",
+        "mml": "student/motionandforce/CarbonDioxide$0.mml",
+        "json": "converted/student/motionandforce/CarbonDioxide$0.json"
+      },
+      {
+        "name": "cartooncell",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/cartooncell.cml",
+        "mml": "student/motionandforce/cartooncell$0.mml",
+        "json": "converted/student/motionandforce/cartooncell$0.json"
+      },
+      {
+        "name": "charge-1",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/charge.cml",
+        "mml": "student/motionandforce/charge$0.mml",
+        "json": "converted/student/motionandforce/charge$0.json"
+      },
+      {
+        "name": "charge-2",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/charge.cml",
+        "mml": "student/motionandforce/charge1$0.mml",
+        "json": "converted/student/motionandforce/charge1$0.json"
+      },
+      {
+        "name": "charge1",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/charge1.cml",
+        "mml": "student/motionandforce/charge1$0.mml",
+        "json": "converted/student/motionandforce/charge1$0.json"
+      },
+      {
+        "name": "CO2O2",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/CO2O2.cml",
+        "mml": "student/motionandforce/CO2O2$0.mml",
+        "json": "converted/student/motionandforce/CO2O2$0.json"
+      },
+      {
+        "name": "collision",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/collision.cml",
+        "mml": "student/motionandforce/collision$0.mml",
+        "json": "converted/student/motionandforce/collision$0.json"
+      },
+      {
+        "name": "contour",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/contour.cml",
+        "mml": "student/motionandforce/contour$0.mml",
+        "json": "converted/student/motionandforce/contour$0.json"
+      },
+      {
+        "name": "debyesphere",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/debyesphere.cml",
+        "mml": "student/motionandforce/debyesphere$0.mml",
+        "json": "converted/student/motionandforce/debyesphere$0.json"
+      },
+      {
+        "name": "deepimpact",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/deepimpact.cml",
+        "mml": "student/motionandforce/deepimpact$0.mml",
+        "json": "converted/student/motionandforce/deepimpact$0.json"
+      },
+      {
+        "name": "densitytemp",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/densitytemp.cml",
+        "mml": "student/motionandforce/densitytemp$0.mml",
+        "json": "converted/student/motionandforce/densitytemp$0.json"
+      },
+      {
+        "name": "distill-1",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/distill.cml",
+        "mml": "student/motionandforce/distill$0.mml",
+        "json": "converted/student/motionandforce/distill$0.json"
+      },
+      {
+        "name": "distill-2",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/distill.cml",
+        "mml": "student/motionandforce/distill1$0.mml",
+        "json": "converted/student/motionandforce/distill1$0.json"
+      },
+      {
+        "name": "distill-3",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/distill.cml",
+        "mml": "student/motionandforce/distill1$1.mml",
+        "json": "converted/student/motionandforce/distill1$1.json"
+      },
+      {
+        "name": "distill1-1",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/distill1.cml",
+        "mml": "student/motionandforce/distill1$0.mml",
+        "json": "converted/student/motionandforce/distill1$0.json"
+      },
+      {
+        "name": "distill1-2",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/distill1.cml",
+        "mml": "student/motionandforce/distill1$1.mml",
+        "json": "converted/student/motionandforce/distill1$1.json"
+      },
+      {
+        "name": "drugdelivery",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/drugdelivery.cml",
+        "mml": "student/motionandforce/drugdelivery$0.mml",
+        "json": "converted/student/motionandforce/drugdelivery$0.json"
+      },
+      {
+        "name": "effusion-1",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/effusion.cml",
+        "mml": "student/motionandforce/effusion$0.mml",
+        "json": "converted/student/motionandforce/effusion$0.json"
+      },
+      {
+        "name": "effusion-2",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/effusion.cml",
+        "mml": "student/motionandforce/effusion2$0.mml",
+        "json": "converted/student/motionandforce/effusion2$0.json"
+      },
+      {
+        "name": "effusion2",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/effusion2.cml",
+        "mml": "student/motionandforce/effusion2$0.mml",
+        "json": "converted/student/motionandforce/effusion2$0.json"
+      },
+      {
+        "name": "elasticcollision",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/elasticcollision.cml",
+        "mml": "student/motionandforce/elasticcollision$0.mml",
+        "json": "converted/student/motionandforce/elasticcollision$0.json"
+      },
+      {
+        "name": "electrophoresis",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/electrophoresis.cml",
+        "mml": "student/motionandforce/electrophoresis$0.mml",
+        "json": "converted/student/motionandforce/electrophoresis$0.json"
+      },
+      {
+        "name": "FacilitatedDiffusion",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/FacilitatedDiffusion.cml",
+        "mml": "student/motionandforce/FacilitatedDiffusion$0.mml",
+        "json": "converted/student/motionandforce/FacilitatedDiffusion$0.json"
+      },
+      {
+        "name": "friction-1",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/friction.cml",
+        "mml": "student/motionandforce/friction$0.mml",
+        "json": "converted/student/motionandforce/friction$0.json"
+      },
+      {
+        "name": "friction-2",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/friction.cml",
+        "mml": "student/motionandforce/frictionheat$0.mml",
+        "json": "converted/student/motionandforce/frictionheat$0.json"
+      },
+      {
+        "name": "frictionheat",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/frictionheat.cml",
+        "mml": "student/motionandforce/frictionheat$0.mml",
+        "json": "converted/student/motionandforce/frictionheat$0.json"
+      },
+      {
+        "name": "graphite",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/graphite.cml",
+        "mml": "student/motionandforce/graphite$0.mml",
+        "json": "converted/student/motionandforce/graphite$0.json"
+      },
+      {
+        "name": "hiv",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/hiv.cml",
+        "mml": "student/motionandforce/hiv$0.mml",
+        "json": "converted/student/motionandforce/hiv$0.json"
+      },
+      {
+        "name": "interaction",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/interaction.cml",
+        "mml": "student/motionandforce/interaction$0.mml",
+        "json": "converted/student/motionandforce/interaction$0.json"
+      },
+      {
+        "name": "iontransport",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/iontransport.cml",
+        "mml": "student/motionandforce/iontransport$0.mml",
+        "json": "converted/student/motionandforce/iontransport$0.json"
+      },
+      {
+        "name": "ladder",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/ladder.cml",
+        "mml": "student/motionandforce/ladder$0.mml",
+        "json": "converted/student/motionandforce/ladder$0.json"
+      },
+      {
+        "name": "magneticconfinement",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/magneticconfinement.cml",
+        "mml": "student/motionandforce/magneticconfinement$0.mml",
+        "json": "converted/student/motionandforce/magneticconfinement$0.json"
+      },
+      {
+        "name": "magneticforce",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/magneticforce.cml",
+        "mml": "student/motionandforce/magneticforce$0.mml",
+        "json": "converted/student/motionandforce/magneticforce$0.json"
+      },
+      {
+        "name": "magneticreverse-1",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/magneticreverse.cml",
+        "mml": "student/motionandforce/magneticreverse$0.mml",
+        "json": "converted/student/motionandforce/magneticreverse$0.json"
+      },
+      {
+        "name": "magneticreverse-2",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/magneticreverse.cml",
+        "mml": "student/motionandforce/magneticreverse$1.mml",
+        "json": "converted/student/motionandforce/magneticreverse$1.json"
+      },
+      {
+        "name": "masseffect",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/masseffect.cml",
+        "mml": "student/motionandforce/masseffect$0.mml",
+        "json": "converted/student/motionandforce/masseffect$0.json"
+      },
+      {
+        "name": "maxwell1",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/maxwell1.cml",
+        "mml": "student/motionandforce/maxwell1$0.mml",
+        "json": "converted/student/motionandforce/maxwell1$0.json"
+      },
+      {
+        "name": "maxwell2",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/maxwell2.cml",
+        "mml": "student/motionandforce/maxwell2$0.mml",
+        "json": "converted/student/motionandforce/maxwell2$0.json"
+      },
+      {
+        "name": "maxwell3",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/maxwell3.cml",
+        "mml": "student/motionandforce/maxwell3$0.mml",
+        "json": "converted/student/motionandforce/maxwell3$0.json"
+      },
+      {
+        "name": "micelle",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/micelle.cml",
+        "mml": "student/motionandforce/micelle$0.mml",
+        "json": "converted/student/motionandforce/micelle$0.json"
+      },
+      {
+        "name": "mixturediffusion-1",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/mixturediffusion.cml",
+        "mml": "student/motionandforce/mixturediffusion$0.mml",
+        "json": "converted/student/motionandforce/mixturediffusion$0.json"
+      },
+      {
+        "name": "mixturediffusion-2",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/mixturediffusion.cml",
+        "mml": "student/motionandforce/mixturediffusion$1.mml",
+        "json": "converted/student/motionandforce/mixturediffusion$1.json"
+      },
+      {
+        "name": "molecularsystem",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/molecularsystem.cml",
+        "mml": "student/motionandforce/molecularsystem$0.mml",
+        "json": "converted/student/motionandforce/molecularsystem$0.json"
+      },
+      {
+        "name": "nanoballoon",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/nanoballoon.cml",
+        "mml": "student/motionandforce/nanoballoon$0.mml",
+        "json": "converted/student/motionandforce/nanoballoon$0.json"
+      },
+      {
+        "name": "nanoboat",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/nanoboat.cml",
+        "mml": "student/motionandforce/nanoboat$0.mml",
+        "json": "converted/student/motionandforce/nanoboat$0.json"
+      },
+      {
+        "name": "osmosis",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/osmosis.cml",
+        "mml": "student/motionandforce/osmosis$0.mml",
+        "json": "converted/student/motionandforce/osmosis$0.json"
+      },
+      {
+        "name": "piston",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/piston.cml",
+        "mml": "student/motionandforce/piston$0.mml",
+        "json": "converted/student/motionandforce/piston$0.json"
+      },
+      {
+        "name": "polar_efield",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/polar_efield.cml",
+        "mml": "student/motionandforce/polar_efield$0.mml",
+        "json": "converted/student/motionandforce/polar_efield$0.json"
+      },
+      {
+        "name": "popballoon",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/popballoon.cml",
+        "mml": "student/motionandforce/popballoon$0.mml",
+        "json": "converted/student/motionandforce/popballoon$0.json"
+      },
+      {
+        "name": "rutherford",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/rutherford.cml",
+        "mml": "student/motionandforce/rutherford$0.mml",
+        "json": "converted/student/motionandforce/rutherford$0.json"
+      },
+      {
+        "name": "simpleosmosis",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/simpleosmosis.cml",
+        "mml": "student/motionandforce/simpleosmosis$0.mml",
+        "json": "converted/student/motionandforce/simpleosmosis$0.json"
+      },
+      {
+        "name": "sink",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/sink.cml",
+        "mml": "student/motionandforce/sink$0.mml",
+        "json": "converted/student/motionandforce/sink$0.json"
+      },
+      {
+        "name": "snowflake",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/snowflake.cml",
+        "mml": "student/motionandforce/snowflake$0.mml",
+        "json": "converted/student/motionandforce/snowflake$0.json"
+      },
+      {
+        "name": "sticky",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/sticky.cml",
+        "mml": "student/motionandforce/sticky$0.mml",
+        "json": "converted/student/motionandforce/sticky$0.json"
+      },
+      {
+        "name": "temperature",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/temperature.cml",
+        "mml": "student/motionandforce/temperature$0.mml",
+        "json": "converted/student/motionandforce/temperature$0.json"
+      },
+      {
+        "name": "useobstacle",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/useobstacle.cml",
+        "mml": "student/motionandforce/useobstacle$0.mml",
+        "json": "converted/student/motionandforce/useobstacle$0.json"
+      },
+      {
+        "name": "virus",
+        "path": "student/motionandforce/",
+        "cml": "student/motionandforce/virus.cml",
+        "mml": "student/motionandforce/virus$0.mml",
+        "json": "converted/student/motionandforce/virus$0.json"
+      }
+    ]
+  },
+  {
+    "section": "student/osmosis",
+    "content": [
+      {
+        "name": "calibration1",
+        "path": "student/osmosis/",
+        "cml": "student/osmosis/calibration1.cml",
+        "mml": "student/osmosis/calibration1$0.mml",
+        "json": "converted/student/osmosis/calibration1$0.json"
+      },
+      {
+        "name": "calibration2",
+        "path": "student/osmosis/",
+        "cml": "student/osmosis/calibration2.cml",
+        "mml": "student/osmosis/calibration2$0.mml",
+        "json": "converted/student/osmosis/calibration2$0.json"
+      },
+      {
+        "name": "demo1",
+        "path": "student/osmosis/",
+        "cml": "student/osmosis/demo1.cml",
+        "mml": "student/osmosis/demo1$0.mml",
+        "json": "converted/student/osmosis/demo1$0.json"
+      },
+      {
+        "name": "demo2",
+        "path": "student/osmosis/",
+        "cml": "student/osmosis/demo2.cml",
+        "mml": "student/osmosis/demo2$0.mml",
+        "json": "converted/student/osmosis/demo2$0.json"
+      },
+      {
+        "name": "equilibration",
+        "path": "student/osmosis/",
+        "cml": "student/osmosis/equilibration.cml",
+        "mml": "student/osmosis/equilibration$0.mml",
+        "json": "converted/student/osmosis/equilibration$0.json"
+      },
+      {
+        "name": "go3",
+        "path": "student/osmosis/",
+        "cml": "student/osmosis/go3.cml",
+        "mml": "student/osmosis/go3$0.mml",
+        "json": "converted/student/osmosis/go3$0.json"
+      },
+      {
+        "name": "isotonic",
+        "path": "student/osmosis/",
+        "cml": "student/osmosis/isotonic.cml",
+        "mml": "student/osmosis/isotonic$0.mml",
+        "json": "converted/student/osmosis/isotonic$0.json"
+      },
+      {
+        "name": "measure1",
+        "path": "student/osmosis/",
+        "cml": "student/osmosis/measure1.cml",
+        "mml": "student/osmosis/measure1$0.mml",
+        "json": "converted/student/osmosis/measure1$0.json"
+      },
+      {
+        "name": "periodic1",
+        "path": "student/osmosis/",
+        "cml": "student/osmosis/periodic1.cml",
+        "mml": "student/osmosis/periodic1$0.mml",
+        "json": "converted/student/osmosis/periodic1$0.json"
+      },
+      {
+        "name": "periodic2",
+        "path": "student/osmosis/",
+        "cml": "student/osmosis/periodic2.cml",
+        "mml": "student/osmosis/periodic2$0.mml",
+        "json": "converted/student/osmosis/periodic2$0.json"
+      },
+      {
+        "name": "reverse3",
+        "path": "student/osmosis/",
+        "cml": "student/osmosis/reverse3.cml",
+        "mml": "student/osmosis/reverse3$0.mml",
+        "json": "converted/student/osmosis/reverse3$0.json"
+      },
+      {
+        "name": "rigidmembrane",
+        "path": "student/osmosis/",
+        "cml": "student/osmosis/rigidmembrane.cml",
+        "mml": "student/osmosis/rigidmembrane$0.mml",
+        "json": "converted/student/osmosis/rigidmembrane$0.json"
+      },
+      {
+        "name": "soluterestrained",
+        "path": "student/osmosis/",
+        "cml": "student/osmosis/soluterestrained.cml",
+        "mml": "student/osmosis/soluterestrained$0.mml",
+        "json": "converted/student/osmosis/soluterestrained$0.json"
+      },
+      {
+        "name": "timeline",
+        "path": "student/osmosis/",
+        "cml": "student/osmosis/timeline.cml",
+        "mml": "student/osmosis/timeline$0.mml",
+        "json": "converted/student/osmosis/timeline$0.json"
+      }
+    ]
+  },
+  {
+    "section": "student/stateofmatter",
+    "content": [
+      {
+        "name": "attraction",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/attraction.cml",
+        "mml": "student/stateofmatter/attraction$0.mml",
+        "json": "converted/student/stateofmatter/attraction$0.json"
+      },
+      {
+        "name": "barostat-1",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/barostat.cml",
+        "mml": "student/stateofmatter/barostat$0.mml",
+        "json": "converted/student/stateofmatter/barostat$0.json"
+      },
+      {
+        "name": "barostat-2",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/barostat.cml",
+        "mml": "student/stateofmatter/barostat$1.mml",
+        "json": "converted/student/stateofmatter/barostat$1.json"
+      },
+      {
+        "name": "debyesheath",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/debyesheath.cml",
+        "mml": "student/stateofmatter/debyesheath$0.mml",
+        "json": "converted/student/stateofmatter/debyesheath$0.json"
+      },
+      {
+        "name": "electronavalanche",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/electronavalanche.cml",
+        "mml": "student/stateofmatter/electronavalanche$0.mml",
+        "json": "converted/student/stateofmatter/electronavalanche$0.json"
+      },
+      {
+        "name": "evaporation",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/evaporation.cml",
+        "mml": "student/stateofmatter/evaporation$0.mml",
+        "json": "converted/student/stateofmatter/evaporation$0.json"
+      },
+      {
+        "name": "gaslaw1",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/gaslaw1.cml",
+        "mml": "student/stateofmatter/gaslaw1$0.mml",
+        "json": "converted/student/stateofmatter/gaslaw1$0.json"
+      },
+      {
+        "name": "gasliquid-1",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/gasliquid.cml",
+        "mml": "student/stateofmatter/gasliquid$0.mml",
+        "json": "converted/student/stateofmatter/gasliquid$0.json"
+      },
+      {
+        "name": "gasliquid-2",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/gasliquid.cml",
+        "mml": "student/stateofmatter/gasliquid$1.mml",
+        "json": "converted/student/stateofmatter/gasliquid$1.json"
+      },
+      {
+        "name": "impactionization",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/impactionization.cml",
+        "mml": "student/stateofmatter/impactionization$0.mml",
+        "json": "converted/student/stateofmatter/impactionization$0.json"
+      },
+      {
+        "name": "interactionA-1",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/interactionA.cml",
+        "mml": "student/stateofmatter/interactionA$0.mml",
+        "json": "converted/student/stateofmatter/interactionA$0.json"
+      },
+      {
+        "name": "interactionA-2",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/interactionA.cml",
+        "mml": "student/stateofmatter/interactionA$1.mml",
+        "json": "converted/student/stateofmatter/interactionA$1.json"
+      },
+      {
+        "name": "interactionB-1",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/interactionB.cml",
+        "mml": "student/stateofmatter/interactionB$0.mml",
+        "json": "converted/student/stateofmatter/interactionB$0.json"
+      },
+      {
+        "name": "interactionB-2",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/interactionB.cml",
+        "mml": "student/stateofmatter/interactionB$1.mml",
+        "json": "converted/student/stateofmatter/interactionB$1.json"
+      },
+      {
+        "name": "interactionC",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/interactionC.cml",
+        "mml": "student/stateofmatter/interactionC$0.mml",
+        "json": "converted/student/stateofmatter/interactionC$0.json"
+      },
+      {
+        "name": "interactionD",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/interactionD.cml",
+        "mml": "student/stateofmatter/interactionD$0.mml",
+        "json": "converted/student/stateofmatter/interactionD$0.json"
+      },
+      {
+        "name": "interactionE",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/interactionE.cml",
+        "mml": "student/stateofmatter/interactionE$0.mml",
+        "json": "converted/student/stateofmatter/interactionE$0.json"
+      },
+      {
+        "name": "latentheat-1",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/latentheat.cml",
+        "mml": "student/stateofmatter/latentheat$0.mml",
+        "json": "converted/student/stateofmatter/latentheat$0.json"
+      },
+      {
+        "name": "latentheat-2",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/latentheat.cml",
+        "mml": "student/stateofmatter/latentheat2$0.mml",
+        "json": "converted/student/stateofmatter/latentheat2$0.json"
+      },
+      {
+        "name": "latentheat-3",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/latentheat.cml",
+        "mml": "student/stateofmatter/latentheat3$0.mml",
+        "json": "converted/student/stateofmatter/latentheat3$0.json"
+      },
+      {
+        "name": "latentheat2",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/latentheat2.cml",
+        "mml": "student/stateofmatter/latentheat2$0.mml",
+        "json": "converted/student/stateofmatter/latentheat2$0.json"
+      },
+      {
+        "name": "latentheat3",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/latentheat3.cml",
+        "mml": "student/stateofmatter/latentheat3$0.mml",
+        "json": "converted/student/stateofmatter/latentheat3$0.json"
+      },
+      {
+        "name": "liquidsolid-1",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/liquidsolid.cml",
+        "mml": "student/stateofmatter/liquidsolid$0.mml",
+        "json": "converted/student/stateofmatter/liquidsolid$0.json"
+      },
+      {
+        "name": "liquidsolid-2",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/liquidsolid.cml",
+        "mml": "student/stateofmatter/liquidsolid$1.mml",
+        "json": "converted/student/stateofmatter/liquidsolid$1.json"
+      },
+      {
+        "name": "msd-1",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/msd.cml",
+        "mml": "student/stateofmatter/msd$0.mml",
+        "json": "converted/student/stateofmatter/msd$0.json"
+      },
+      {
+        "name": "msd-2",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/msd.cml",
+        "mml": "student/stateofmatter/msd$1.mml",
+        "json": "converted/student/stateofmatter/msd$1.json"
+      },
+      {
+        "name": "nucleation",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/nucleation.cml",
+        "mml": "student/stateofmatter/nucleation$0.mml",
+        "json": "converted/student/stateofmatter/nucleation$0.json"
+      },
+      {
+        "name": "phaseseparation",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/phaseseparation.cml",
+        "mml": "student/stateofmatter/phaseseparation$0.mml",
+        "json": "converted/student/stateofmatter/phaseseparation$0.json"
+      },
+      {
+        "name": "plasma",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/plasma.cml",
+        "mml": "student/stateofmatter/plasma$0.mml",
+        "json": "converted/student/stateofmatter/plasma$0.json"
+      },
+      {
+        "name": "pressure",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/pressure.cml",
+        "mml": "student/stateofmatter/pressure$0.mml",
+        "json": "converted/student/stateofmatter/pressure$0.json"
+      },
+      {
+        "name": "sm-1",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/sm.cml",
+        "mml": "student/stateofmatter/sm$0.mml",
+        "json": "converted/student/stateofmatter/sm$0.json"
+      },
+      {
+        "name": "sm-2",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/sm.cml",
+        "mml": "student/stateofmatter/sm_gas.mml",
+        "json": "converted/student/stateofmatter/sm_gas.json"
+      },
+      {
+        "name": "sm-3",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/sm.cml",
+        "mml": "student/stateofmatter/sm_liq.mml",
+        "json": "converted/student/stateofmatter/sm_liq.json"
+      },
+      {
+        "name": "sm-4",
+        "path": "student/stateofmatter/",
+        "cml": "student/stateofmatter/sm.cml",
+        "mml": "student/stateofmatter/sm_sol.mml",
+        "json": "converted/student/stateofmatter/sm_sol.json"
+      }
+    ]
+  },
+  {
+    "section": "student/wave",
+    "content": [
+      {
+        "name": "doppler",
+        "path": "student/wave/",
+        "cml": "student/wave/doppler.cml",
+        "mml": "student/wave/doppler$0.mml",
+        "json": "converted/student/wave/doppler$0.json"
+      },
+      {
+        "name": "longitudinalwavespring",
+        "path": "student/wave/",
+        "cml": "student/wave/longitudinalwavespring.cml",
+        "mml": "student/wave/longitudinalwavespring$0.mml",
+        "json": "converted/student/wave/longitudinalwavespring$0.json"
+      },
+      {
+        "name": "mechanicalwave",
+        "path": "student/wave/",
+        "cml": "student/wave/mechanicalwave.cml",
+        "mml": "student/wave/mechanicalwave$0.mml",
+        "json": "converted/student/wave/mechanicalwave$0.json"
+      },
+      {
+        "name": "oscillatingstring",
+        "path": "student/wave/",
+        "cml": "student/wave/oscillatingstring.cml",
+        "mml": "student/wave/oscillatingstring$0.mml",
+        "json": "converted/student/wave/oscillatingstring$0.json"
+      },
+      {
+        "name": "soundwave",
+        "path": "student/wave/",
+        "cml": "student/wave/soundwave.cml",
+        "mml": "student/wave/soundwave$0.mml",
+        "json": "converted/student/wave/soundwave$0.json"
+      },
+      {
+        "name": "stringwave-1",
+        "path": "student/wave/",
+        "cml": "student/wave/stringwave.cml",
+        "mml": "student/wave/stringwave$0.mml",
+        "json": "converted/student/wave/stringwave$0.json"
+      },
+      {
+        "name": "stringwave-2",
+        "path": "student/wave/",
+        "cml": "student/wave/stringwave.cml",
+        "mml": "student/wave/stringwave2$0.mml",
+        "json": "converted/student/wave/stringwave2$0.json"
+      },
+      {
+        "name": "stringwave2",
+        "path": "student/wave/",
+        "cml": "student/wave/stringwave2.cml",
+        "mml": "student/wave/stringwave2$0.mml",
+        "json": "converted/student/wave/stringwave2$0.json"
       }
     ]
   },

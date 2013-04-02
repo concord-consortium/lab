@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 5,
+    "viewPortHeight": 2,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": true,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -35,26 +40,29 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "An electric field is used as a reflector of charge inside this rectangle.",
+        "text": "An electric field\nis used as a\nreflector of\ncharge inside\nthis rectangle.",
         "x": 3.88,
         "y": 0.89,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(0,255,0)"
+        "backgroundColor": "rgb(0,255,0)",
+        "anchor": "upper-left"
       },
       {
-        "text": "A magnetic field is applied in this rectange.",
+        "text": "A magnetic field\nis applied in this\nrectange.",
         "x": 0.08,
         "y": 1.9,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
         "text": "Viscous",
         "x": 2.23,
         "y": 1.14,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

@@ -20,8 +20,8 @@
       "id": "invert-fx",
       "text": "Invert horizontal force",
       "action": [
-        "var fx = -1 * getObstacleProperties(0).externalFx;",
-        "setObstacleProperties(0, {externalFx: fx});"
+        "var ax = -1 * getObstacleProperties(0).externalAx;",
+        "setObstacleProperties(0, {externalAx: ax});"
       ]
     },
     {
@@ -29,8 +29,8 @@
       "id": "invert-fy",
       "text": "Invert vertical force",
       "action": [
-        "var fy = -1 * getObstacleProperties(0).externalFy;",
-        "setObstacleProperties(0, {externalFy: fy});"
+        "var fy = -1 * getObstacleProperties(0).externalAy;",
+        "setObstacleProperties(0, {externalAy: fy});"
       ]
     }
   ],

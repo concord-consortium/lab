@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Experiment with a harmonic oscillator: Potential and kinetic energies vs. Ry</page_title>
+<bg_gradient><gradient_color1><Red>255</Red><Green>255</Green><Blue>255</Blue></gradient_color1>
+<gradient_color2><Red>20</Red><Green>100</Green><Blue>200</Blue></gradient_color2>
+<gradient_style>1034</gradient_style>
+<gradient_variant>1044</gradient_variant>
+</bg_gradient>
+<text>Experiment with a Harmonic Oscillator: Potential and Kinetic Energies vs. Ry
+
+  </text>
+<section start="0" end="81">
+<paragraph start="0" end="77">
+<content start="0" end="76">
+<bold>true</bold><family>Book Antiqua</family><size>20</size></content>
+
+<content start="76" end="77">
+<bold>true</bold><family>Microsoft Sans Serif</family><size>18</size></content>
+
+</paragraph>
+<paragraph start="77" end="78">
+<content start="77" end="78">
+<size>18</size></content>
+
+</paragraph>
+<paragraph start="78" end="81">
+<Alignment>1</Alignment>
+<content start="78" end="79">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>Ry: 0Ck</time_series_x>
+<time_series_y1 color="-ffff01" style="0" width="1.0" symbol="2" size="4" spacing="5">Potential Energy/Particle</time_series_y1>
+<time_series_y2 color="-1000000" style="0" width="1.0" symbol="1" size="4" spacing="5">Kinetic Energy/Particle</time_series_y2>
+<width>350</width>
+<height>254</height>
+<axis_x_title>Ry</axis_x_title>
+<axis_y_title>Energies</axis_y_title>
+<legend_x>120</legend_x>
+<legend_y>126</legend_y>
+<bgcolor>-2b2f38</bgcolor>
+<fgcolor>-1</fgcolor>
+<border>Raised Bevel</border>
+</component><foreground>255 0 0</foreground></content>
+
+<content start="79" end="80">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>hon$0.mml</resource><menubar>false</menubar></component><size>18</size></content>
+
+</paragraph>
+</section>
+</document>

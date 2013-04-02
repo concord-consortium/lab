@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Oscillatory behavior of adhesion on the surface of a nanoparticle: Two adatoms</page_title>
+<text>Oscillatory Behavior of Adhesion on the Surface of a Nanoparticle: Two adatoms
+
+  
+  </text>
+<section start="0" end="86">
+<paragraph start="0" end="79">
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="78">
+<size>15</size><bold>true</bold></content>
+
+<content start="78" end="79">
+<family>Book Antiqua</family><size>24</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="79" end="80">
+<Alignment>1</Alignment>
+<content start="79" end="80">
+</content>
+
+</paragraph>
+<paragraph start="80" end="83">
+<Alignment>1</Alignment>
+<content start="80" end="81">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>200.0</width>
+<height>300.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;font size=&quot;3&quot;&gt;More than one adatom can oscillate on the side faces of a 
+    nanoparticle.&lt;br&gt;&lt;br&gt;&lt;/font&gt;&lt;a href=&quot;adhesion.cml&quot;&gt;&lt;font size=&quot;3&quot;&gt;Back&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;3&quot;&gt; 
+    &lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="81" end="82">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>adhesion2$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="82" end="83">
+</content>
+
+</paragraph>
+<paragraph start="83" end="86">
+<Alignment>1</Alignment>
+<content start="83" end="84">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>K. E. Shading</title>
+<model>0</model>
+<action>K. E. Shading</action>
+</component></content>
+
+<content start="84" end="85">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show the Interatomic Interactions</title>
+<model>0</model>
+<action>Show van der Waals interactions</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

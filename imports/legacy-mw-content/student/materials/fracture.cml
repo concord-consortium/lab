@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Crack propagation and fracture</page_title>
+<text>Crack propagation and fracture
+
+ 
+       
+
+In addition to using the above preset cut tool, you can also use the scissor button in the tool bar above the model to create cavities or cracks.
+
+    </text>
+<section start="0" end="195">
+<paragraph start="0" end="31">
+<Alignment>1</Alignment>
+<content start="0" end="30">
+<bold>true</bold><family>Century Gothic</family><size>16</size></content>
+
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="32">
+<Alignment>1</Alignment>
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="34">
+<Alignment>1</Alignment>
+<content start="32" end="33">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>fracture$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorderless>true</recorderless>
+<button>Select Object</button><button>Delete Objects</button></component></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="42">
+<Alignment>1</Alignment>
+<content start="34" end="35">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Shift cut area to the left</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>if(%rectangle[0].x==-100);
+  set rectangle[0].x %oldx;
+endif;
+select rectangle 0;
+move (-1, 0);
+select rectangle none;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="35" end="36">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Shift cut area to the right</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>if(%rectangle[0].x==-100);
+  set rectangle[0].x %oldx;
+endif;
+select rectangle 0;
+move (1, 0);
+select rectangle none;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="36" end="37">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Cut</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>select atom within (&quot;%rectangle[0].x&quot;, &quot;%rectangle[0].y&quot;, &quot;%rectangle[0].width&quot;, &quot;%rectangle[0].height&quot;);
+remove;
+set %oldx %rectangle[0].x;
+set rectangle[0].x -100;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="37" end="38">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>run</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="38" end="39">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Pause</title>
+<tooltip>Pause</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="39" end="40">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="40" end="41">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="41" end="42">
+</content>
+
+</paragraph>
+<paragraph start="42" end="43">
+<Alignment>1</Alignment>
+<content start="42" end="43">
+</content>
+
+</paragraph>
+<paragraph start="43" end="189">
+<Alignment>1</Alignment>
+<content start="43" end="189">
+<family>Century Gothic</family></content>
+
+</paragraph>
+<paragraph start="189" end="190">
+<Alignment>1</Alignment>
+<content start="189" end="190">
+<family>Century Gothic</family></content>
+
+</paragraph>
+<paragraph start="190" end="195">
+<Alignment>1</Alignment>
+<content start="190" end="191">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Comment</title>
+<action>Comment</action></component></content>
+
+<content start="191" end="192">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>View comments</title>
+<action>View comments</action></component></content>
+
+<content start="192" end="193">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>View snapshots</title>
+<action>View snapshots</action></component></content>
+
+<content start="193" end="194">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Collect my snapshot images</title>
+<action>Create a report about this page in a new window</action></component></content>
+
+</paragraph>
+</section>
+</document>

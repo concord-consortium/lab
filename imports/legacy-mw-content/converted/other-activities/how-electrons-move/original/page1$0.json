@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 4.5,
+    "viewPortHeight": 3.5,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "rgba(244,245,239,255)",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -39,37 +44,43 @@
         "x": 0.39,
         "y": 3.52,
         "layer": 1,
-        "color": "rgb(102,102,0)"
+        "color": "rgb(102,102,0)",
+        "anchor": "upper-left"
       },
       {
         "text": "Deflecting plates",
         "x": 1.8,
         "y": 2.85,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
         "text": "Cathode",
         "x": 0.13,
         "y": 2.15,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
-        "text": "Fluorescent screen",
+        "text": "Fluorescent\nscreen",
         "x": 3.57,
         "y": 0.49,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
         "text": "- - - - -",
         "x": 1.94,
         "y": 1.36,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
         "text": "+ + + + +",
         "x": 1.93,
         "y": 2.55,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,
@@ -163,10 +174,10 @@
     "vy": [
       0
     ],
-    "externalFx": [
+    "externalAx": [
       0
     ],
-    "externalFy": [
+    "externalAy": [
       0
     ],
     "friction": [

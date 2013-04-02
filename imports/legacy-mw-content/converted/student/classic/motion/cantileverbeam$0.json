@@ -19,8 +19,13 @@
   "viscosity": 1.5,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 4,
+    "viewPortHeight": 3,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -35,11 +40,13 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "Deflection of a cantilever beam under self-weight",
+        "text": "Deflection of a cantilever beam\nunder self-weight",
         "x": 0.65,
+        "y": 3,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(0,255,0)"
+        "backgroundColor": "rgb(0,255,0)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

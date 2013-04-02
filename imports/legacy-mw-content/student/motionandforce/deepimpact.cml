@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Impacts</page_title>
+<bg_image>vas.jpg</bg_image>
+<text>Impacts
+
+ 
+ </text>
+<section start="0" end="13">
+<paragraph start="0" end="8">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="7">
+<size>16</size><bold>true</bold></content>
+
+<content start="7" end="8">
+<bold>true</bold><size>18</size><family>Microsoft Sans Serif</family></content>
+
+</paragraph>
+<paragraph start="8" end="9">
+<content start="8" end="9">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="9" end="11">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+<size>14</size><component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>deepimpact$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="10" end="11">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="11" end="13">
+<Alignment>1</Alignment>
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageComboBox</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>{option=&quot;Impact a soild cluster by a slow object&quot;, script=&quot;load Slow.mml&quot;}{option=&quot;Impact a solid cluster by a fast object&quot;, script=&quot;load Fast.mml&quot;}{option=&quot;Impact a polymer by a fast object&quot;, script=&quot;load polymerimpact.mml&quot;}</script>
+<action>Execute MW script</action>
+<tooltip>Select a model</tooltip>
+</component></content>
+
+</paragraph>
+</section>
+</document>

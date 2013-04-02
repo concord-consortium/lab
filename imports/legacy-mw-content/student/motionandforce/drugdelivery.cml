@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Thermosensitive liposomes for drug delivery</page_title>
+<text>
+Thermosensitive liposomes for drug delivery
+
+ 
+
+ 
+
+A liposome is a tiny sphere made of lipid molecules.  Liposomes can be filled with drug molecules and put into the bloodstream.  Heating a small part of the body will cause the liposomes to leak, releasing the drug only to the relevant tissue.
+
+The model shows liposomes (yellow) containing drug molecules (green).  At a low temperature, the drugs stay inside the liposomes.  Heat the model gradually to find the temperature at which they start to leak.  Try clicking on the temperature slider, then using the arrow keys to make small temperature changes.  </text>
+<section start="0" end="610">
+<paragraph start="0" end="1">
+<LeftIndent>40.0</LeftIndent>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="45">
+<Alignment>1</Alignment>
+<content start="1" end="44">
+<size>18</size><bold>true</bold><family>Century Gothic</family></content>
+
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="46">
+<LeftIndent>40.0</LeftIndent>
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="48">
+<LeftIndent>40.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="46" end="47">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>drugdelivery$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<LeftIndent>40.0</LeftIndent>
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="51">
+<LeftIndent>40.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="49" end="50">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>2793.0</value>
+<minimum>50.0</minimum>
+<maximum>20000.0</maximum>
+<nstep>50</nstep>
+<title>Temperature</title>
+<width>400</width>
+<height>70</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;19950.0&quot;, label=&quot;High&quot;}{value=&quot;0.0&quot;, label=&quot;Low&quot;}</labeltable>
+<change>Temperature</change>
+</component></content>
+
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="52">
+<LeftIndent>40.0</LeftIndent>
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="296">
+<LeftIndent>20.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="52" end="296">
+<size>14</size><family>Century Gothic</family></content>
+
+</paragraph>
+<paragraph start="296" end="297">
+<LeftIndent>20.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="296" end="297">
+<size>14</size><family>Century Gothic</family></content>
+
+</paragraph>
+<paragraph start="297" end="610">
+<LeftIndent>20.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="297" end="608">
+<size>14</size><family>Century Gothic</family></content>
+
+<content start="608" end="609">
+</content>
+
+</paragraph>
+</section>
+</document>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.6.0_35" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_43" class="java.beans.XMLDecoder"> 
  <object id="Element0" class="org.concord.mw2d.models.Element"> 
   <void property="mass"> 
    <double>2.0</double> 
@@ -365,20 +365,20 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1347760182000</long> 
+     <long>1364416620000</long> 
     </object> 
    </void> 
    <void method="put"> 
     <string>url</string> 
-    <string>/Users/ddamelin/Development/lab/imports/legacy-mw-content/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$0-with-heatbath.mml</string> 
+    <string>/Users/wsd/cc/lab/imports/legacy-mw-content/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$0-with-heatbath.mml</string> 
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>42699</long> 
+    <long>43666</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
-    <string>/Users/ddamelin/Development/lab/imports/legacy-mw-content/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3</string> 
+    <string>/Users/wsd/cc/lab/imports/legacy-mw-content/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3</string> 
    </void> 
   </void> 
   <void property="quantumRule"> 
@@ -438,6 +438,26 @@
      <object idref="Color0"/> 
     </void> 
    </object> 
+  </void> 
+  <void property="images"> 
+   <array class="org.concord.mw2d.models.ImageComponent$Delegate" length="1"> 
+    <void index="0"> 
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
+      <void property="URI"> 
+       <string>Barrier.png</string> 
+      </void> 
+      <void property="layer"> 
+       <int>1</int> 
+      </void> 
+      <void property="x"> 
+       <double>244.0</double> 
+      </void> 
+      <void property="y"> 
+       <double>-10.0</double> 
+      </void> 
+     </object> 
+    </void> 
+   </array> 
   </void> 
   <void property="monochromatic"> 
    <boolean>false</boolean> 

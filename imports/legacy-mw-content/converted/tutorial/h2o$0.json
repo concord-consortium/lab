@@ -20,8 +20,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 4,
+    "viewPortHeight": 2.5,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": true,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -36,54 +41,61 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "A H free radical to initiate the chain reactions",
+        "text": "A H free radical to initiate\nthe chain reactions",
         "x": 1.51,
         "y": 1.54,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,192,128)"
+        "backgroundColor": "rgb(255,192,128)",
+        "anchor": "upper-left"
       },
       {
-        "text": "Button for adding H",
+        "text": "Button for\nadding H",
         "x": 1.03,
         "y": 2.27,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
-        "text": "Button for adding O",
+        "text": "Button for\nadding O",
         "x": 1.74,
         "y": 2.29,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
-        "text": "Button for copying objects",
+        "text": "Button for\ncopying objects",
         "x": 0.03,
         "y": 2.26,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
         "text": "Run button",
         "x": 2.29,
         "y": 0.3,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
         "text": "Stop button",
         "x": 1.45,
         "y": 0.3,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
         "text": "Reset button",
         "x": 0.58,
         "y": 0.29,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 5,
+    "viewPortHeight": 3,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "rgba(0,0,0,255)",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": true,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -40,7 +45,8 @@
         "y": 0.31,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(128,192,255)"
+        "backgroundColor": "rgb(128,192,255)",
+        "anchor": "upper-left"
       },
       {
         "text": "Hot Liquid",
@@ -48,7 +54,8 @@
         "y": 0.35,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,102,102)"
+        "backgroundColor": "rgb(255,102,102)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,
@@ -1702,10 +1709,10 @@
     "vy": [
       0
     ],
-    "externalFx": [
+    "externalAx": [
       0
     ],
-    "externalFy": [
+    "externalAy": [
       0
     ],
     "friction": [

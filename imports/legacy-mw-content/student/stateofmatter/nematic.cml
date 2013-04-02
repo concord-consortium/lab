@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Nematic phase liquid crystals</page_title>
+<text>Nematic Phase Liquid Crystals
+
+    
+Liquid crystals are materials that are composed of rigid rod-like or disc-like molecules (mesogens[2]) that have strong dipoles and/or are easily polarizable by substitution. According to the PLC Virtual Textbook made by Case Western Reserve University, the distinguishing characteristic of liquid crystals is &quot;the tendency of the mesogens to point along a common axis, called the director&quot;. This is &quot;in contrast to molecules in the liquid phase, which have no intrinsic order&quot;, and to the solid state, in which molecules are &quot;highly ordered and have little translational freedom&quot;.</text>
+<section start="0" end="618">
+<paragraph start="0" end="30">
+<content start="0" end="29">
+<size>14</size><bold>true</bold></content>
+
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="31">
+<Alignment>1</Alignment>
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="36">
+<Alignment>1</Alignment>
+<content start="31" end="32">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>290.0</width>
+<height>310.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;b&gt;&lt;font size=&quot;2&quot;&gt;Nematic phases of liquid crystals&lt;/font&gt;&lt;/b&gt;&lt;font size=&quot;2&quot;&gt; 
+    are characterized by only orientational but no long range positional 
+    order. See also &lt;/font&gt;&lt;a href=&quot;liquidcrystal.cml&quot;&gt;&lt;font size=&quot;2&quot;&gt;smectic 
+    A phase&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot;&gt;. &lt;/font&gt;
+
+    &lt;p&gt;
+      &lt;b&gt;&lt;font size=&quot;2&quot;&gt;MBBA&lt;/font&gt;&lt;/b&gt;&lt;font size=&quot;2&quot;&gt; (4-&lt;u&gt;m&lt;/u&gt;ethoxy&lt;u&gt;b&lt;/u&gt; 
+      enzyliden- 4&apos;-&lt;u&gt;b&lt;/u&gt; utyl&lt;u&gt;a&lt;/u&gt;nilin)&lt;br&gt;&lt;img src=&quot;MBBA.gif&quot;&gt;&lt;br&gt;&lt;b&gt;5CB&lt;/b&gt; 
+      (4-&lt;u&gt;pentyl&lt;/u&gt;-4&apos;-&lt;u&gt;c&lt;/u&gt;yano&lt;u&gt;b&lt;/u&gt;iphenyl)&lt;br&gt;&lt;img src=&quot;5CB.gif&quot;&gt;&lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="32" end="34">
+</content>
+
+<content start="34" end="35">
+<component><class>org.concord.mw2d.activity.GBContainer</class>
+<resource>nematic$0.gbl</resource><menubar>false</menubar></component></content>
+
+<content start="35" end="36">
+<size>14</size><family>Book Antiqua</family></content>
+
+</paragraph>
+<paragraph start="36" end="618">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="36" end="224">
+<size>11</size></content>
+
+<content start="224" end="288">
+<href>http://plc.cwru.edu/tutorial/enhanced/main.htm</href><size>11</size></content>
+
+<content start="288" end="617">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

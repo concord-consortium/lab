@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 4.5,
+    "viewPortHeight": 2.4,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -40,41 +45,47 @@
         "y": 0.6,
         "layer": 1,
         "hostType": "Atom",
-        "hostIndex": 4
+        "hostIndex": 4,
+        "anchor": "upper-left"
       },
       {
         "text": "2",
         "x": 1.66,
         "y": 0.6,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
         "text": "3",
         "x": 2.68,
         "y": 0.59,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
         "text": "4",
         "x": 3.66,
         "y": 0.6,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
-        "text": "Escape region",
+        "text": "Escape\nregion",
         "x": 3.71,
         "y": 2.27,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(0,255,0)"
+        "backgroundColor": "rgb(0,255,0)",
+        "anchor": "upper-left"
       },
       {
-        "text": "Attraction region",
+        "text": "Attraction\nregion",
         "x": 3.71,
         "y": 1.62,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,255,128)"
+        "backgroundColor": "rgb(255,255,128)",
+        "anchor": "upper-left"
       },
       {
         "text": "Liquid Interior",
@@ -82,15 +93,17 @@
         "y": 0.3,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,192,255)"
+        "backgroundColor": "rgb(255,192,255)",
+        "anchor": "upper-left"
       },
       {
-        "text": "Direction of attraction",
+        "text": "Direction of\nattraction",
         "x": 0.05,
         "y": 1.9,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,192,192)"
+        "backgroundColor": "rgb(255,192,192)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

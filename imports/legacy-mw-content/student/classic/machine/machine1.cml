@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Pendulm, slider and spring</page_title>
+<text>Pendulm, slider and spring
+
+This simulation shows the motion of a mechanical system consisting of a pendulum, a slider and a spring. It demonstrates the application of the Molecular Workbench software beyond the molecular context.
+
+ 
+
+How to create mechanics simulations
+
+Some of the modeling elements can also be used to create classical mechanics simulations. However, they are not obvious to use in that context, because the vocabulary on the user interface is all about atoms and molecules.
+
+In order to create a model such as the one shown above, you can think in this way: the &quot;atoms&quot; are just balls, which are somehow sticky but their stickiness can be adjusted or cut off from the Lennard-Jones potential panel, and the &quot;covalent bonds&quot; are just springs connecting balls. This is not surprising, because simulations in MW are based on molecular mechanics, which assumes that bonds can approximately be viewed as springs, and atoms as sticky or non-sticky balls.
+
+Let&apos;s change our mindset to the context of general mechanics and see what we can do about it:
+
+Q: How do I make a spring?
+
+A: There are two types of objects in MW that can become a spring. The first is a covalent bond between two atoms. In this case, you will want to make the bond much longer than it ought to be should it be a covalent bond. Once you make such a long bond, you can right-click on it and select &quot;Properties&quot; from the pop-up menu. In the pop-up menu, there is a drop-down menu named &quot;Style&quot;, from which you can set the bond to be displayed as &quot;Short Spring&quot; or &quot;Long Spring&quot;. The second type is a restraint that you can apply to an atom. If you right-click an atom (or SHIFT-right-click if it is already bonded), you can see there is an item called &quot;Restrain&quot;. Selecting that item will prompt a dialog that allows you to set a harmonic restraint, which will anchor the selected atom down at its current position. By default, a harmonic restraint is shown as a cross. In order for it to look like a spring, you should right-click on the model and select &quot;Show View Option&quot; item from the pop-up menu. In the dialog window, look for the &quot;Restraint Style&quot; item and select &quot;Spring&quot; from the corresponding drop-down menu.
+
+ 
+The slider in the above model is an atom anchored using a harmonic restraint, which is shown as a spring. The atom was dragged away from its equilibrium position after it was anchored down to create the initial pulling force. A rectangle is attached to it to cover it up and make it look like a knob.
+ 
+
+Q: How do I make a stick?
+
+A: Make the spring first and set a large force constant. Instead of using the &quot;Spring&quot; display mode, use the &quot;Standard Stick&quot; mode.
+
+In addition to the balls and springs, MW also provides obtacles, which are objects that collide with balls. Two obstacles are used in the above model to restrain the atom so that it moves only in the horizontal direction. Thus, a slider is created.
+
+The MW modeling system may be better viewed as a generic simulation system of discrete points.</text>
+<section start="0" end="3016">
+<paragraph start="0" end="27">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<SpaceAbove>6.0</SpaceAbove>
+<content start="0" end="26">
+<bold>true</bold><size>20</size></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="28">
+<Alignment>1</Alignment>
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="231">
+<LeftIndent>6.0</LeftIndent>
+<content start="28" end="231">
+</content>
+
+</paragraph>
+<paragraph start="231" end="232">
+<Alignment>1</Alignment>
+<content start="231" end="232">
+</content>
+
+</paragraph>
+<paragraph start="232" end="234">
+<Alignment>1</Alignment>
+<content start="232" end="233">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>machine1$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="233" end="234">
+</content>
+
+</paragraph>
+<paragraph start="234" end="235">
+<content start="234" end="235">
+</content>
+
+</paragraph>
+<paragraph start="235" end="271">
+<Alignment>1</Alignment>
+<content start="235" end="270">
+<bold>true</bold><size>14</size></content>
+
+<content start="270" end="271">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="271" end="272">
+<content start="271" end="272">
+</content>
+
+</paragraph>
+<paragraph start="272" end="495">
+<LeftIndent>6.0</LeftIndent>
+<content start="272" end="495">
+</content>
+
+</paragraph>
+<paragraph start="495" end="496">
+<LeftIndent>6.0</LeftIndent>
+<content start="495" end="496">
+</content>
+
+</paragraph>
+<paragraph start="496" end="970">
+<LeftIndent>6.0</LeftIndent>
+<content start="496" end="843">
+</content>
+
+<content start="843" end="862">
+<bold>true</bold></content>
+
+<content start="862" end="970">
+</content>
+
+</paragraph>
+<paragraph start="970" end="971">
+<LeftIndent>6.0</LeftIndent>
+<content start="970" end="971">
+</content>
+
+</paragraph>
+<paragraph start="971" end="1065">
+<LeftIndent>6.0</LeftIndent>
+<content start="971" end="1065">
+</content>
+
+</paragraph>
+<paragraph start="1065" end="1066">
+<LeftIndent>6.0</LeftIndent>
+<content start="1065" end="1066">
+</content>
+
+</paragraph>
+<paragraph start="1066" end="1093">
+<LeftIndent>6.0</LeftIndent>
+<content start="1066" end="1093">
+</content>
+
+</paragraph>
+<paragraph start="1093" end="1094">
+<LeftIndent>6.0</LeftIndent>
+<content start="1093" end="1094">
+</content>
+
+</paragraph>
+<paragraph start="1094" end="2204">
+<LeftIndent>6.0</LeftIndent>
+<content start="1094" end="2204">
+</content>
+
+</paragraph>
+<paragraph start="2204" end="2205">
+<LeftIndent>6.0</LeftIndent>
+<content start="2204" end="2205">
+</content>
+
+</paragraph>
+<paragraph start="2205" end="2207">
+<SpaceBelow>2.0</SpaceBelow>
+<Alignment>1</Alignment>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="2205" end="2206">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.95</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2206" end="2207">
+</content>
+
+</paragraph>
+<paragraph start="2207" end="2508">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>100.0</LeftIndent>
+<content start="2207" end="2508">
+</content>
+
+</paragraph>
+<paragraph start="2508" end="2510">
+<SpaceBelow>2.0</SpaceBelow>
+<Alignment>1</Alignment>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="2508" end="2509">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.95</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2509" end="2510">
+</content>
+
+</paragraph>
+<paragraph start="2510" end="2511">
+<LeftIndent>6.0</LeftIndent>
+<content start="2510" end="2511">
+</content>
+
+</paragraph>
+<paragraph start="2511" end="2537">
+<LeftIndent>6.0</LeftIndent>
+<content start="2511" end="2537">
+</content>
+
+</paragraph>
+<paragraph start="2537" end="2538">
+<LeftIndent>6.0</LeftIndent>
+<content start="2537" end="2538">
+</content>
+
+</paragraph>
+<paragraph start="2538" end="2670">
+<LeftIndent>6.0</LeftIndent>
+<content start="2538" end="2670">
+</content>
+
+</paragraph>
+<paragraph start="2670" end="2671">
+<LeftIndent>6.0</LeftIndent>
+<content start="2670" end="2671">
+</content>
+
+</paragraph>
+<paragraph start="2671" end="2920">
+<LeftIndent>6.0</LeftIndent>
+<content start="2671" end="2920">
+</content>
+
+</paragraph>
+<paragraph start="2920" end="2921">
+<LeftIndent>6.0</LeftIndent>
+<content start="2920" end="2921">
+</content>
+
+</paragraph>
+<paragraph start="2921" end="3016">
+<LeftIndent>6.0</LeftIndent>
+<content start="2921" end="3015">
+</content>
+
+</paragraph>
+</section>
+</document>

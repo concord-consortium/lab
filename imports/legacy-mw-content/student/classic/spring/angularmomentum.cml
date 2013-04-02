@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Conservation of angular momentum shown by two masses connected by a spring</page_title>
+<text>
+Conservation of angular momentum shown by two masses connected by a spring
+
+ </text>
+<section start="0" end="79">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="76">
+<Alignment>1</Alignment>
+<content start="1" end="75">
+<size>20</size><family>Century Gothic</family></content>
+
+<content start="75" end="76">
+</content>
+
+</paragraph>
+<paragraph start="76" end="77">
+<Alignment>1</Alignment>
+<content start="76" end="77">
+</content>
+
+</paragraph>
+<paragraph start="77" end="79">
+<Alignment>1</Alignment>
+<content start="77" end="78">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>angularmomentum$0.mml</resource><menubar>false</menubar></component></content>
+
+</paragraph>
+</section>
+</document>

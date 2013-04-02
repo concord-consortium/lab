@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 4,
+    "viewPortHeight": 2.5,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -35,12 +40,13 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "Piston wall",
+        "text": "Piston\nwall",
         "x": 1.7465425109863282,
         "y": 1.43,
         "layer": 1,
         "hostType": "RectangularObstacle",
-        "hostIndex": 0
+        "hostIndex": 0,
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,
@@ -606,10 +612,10 @@
     "vy": [
       0
     ],
-    "externalFx": [
+    "externalAx": [
       0
     ],
-    "externalFy": [
+    "externalAy": [
       0
     ],
     "friction": [

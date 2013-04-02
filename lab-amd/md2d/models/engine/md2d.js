@@ -268,8 +268,8 @@ define(function (require, exports, module) {
         obstacleHeight,
         obstacleVX,
         obstacleVY,
-        obstacleExtFX,
-        obstacleExtFY,
+        obstacleExtAX,
+        obstacleExtAY,
         obstacleFriction,
         obstacleMass,
         obstacleWestProbe,
@@ -634,8 +634,8 @@ define(function (require, exports, module) {
             obstacleMass        = obstacles.mass;
             obstacleVX          = obstacles.vx;
             obstacleVY          = obstacles.vy;
-            obstacleExtFX       = obstacles.externalFx;
-            obstacleExtFY       = obstacles.externalFy;
+            obstacleExtAX       = obstacles.externalAx;
+            obstacleExtAY       = obstacles.externalAy;
             obstacleFriction    = obstacles.friction;
             obstacleWestProbe   = obstacles.westProbe;
             obstacleNorthProbe  = obstacles.northProbe;
@@ -775,8 +775,8 @@ define(function (require, exports, module) {
           obstacles.mass        = arrays.create(num, 0, arrayTypes.floatType);
           obstacles.vx          = arrays.create(num, 0, arrayTypes.floatType);
           obstacles.vy          = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.externalFx  = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.externalFy  = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.externalAx  = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.externalAy  = arrays.create(num, 0, arrayTypes.floatType);
           obstacles.friction    = arrays.create(num, 0, arrayTypes.floatType);
           obstacles.westProbe   = arrays.create(num, 0, arrayTypes.uint8Type);
           obstacles.northProbe  = arrays.create(num, 0, arrayTypes.uint8Type);
@@ -1712,8 +1712,8 @@ define(function (require, exports, module) {
             vy = obstacleVY[i],
             // External forces are defined per mass unit!
             // So, they are accelerations in fact.
-            extFx = obstacleExtFX[i],
-            extFy = obstacleExtFY[i];
+            extFx = obstacleExtAX[i],
+            extFy = obstacleExtAY[i];
 
             if (vx || vy || extFx || extFy || gravitationalField) {
               drag = viscosity * obstacleFriction[i];
@@ -3568,14 +3568,30 @@ define(function (require, exports, module) {
           new CloneRestoreWrapper(springForces),
           // PairwiseLJProperties class implements Clone-Restore Interface.
           pairwiseLJProperties,
-          // Save time value.
-          // Create one-line wrapper to provide required interface.
+
+          // Also save toplevel state (time, number of atoms, etc):
           {
             clone: function () {
-              return time;
+              return {
+                time          : time,
+                N             : N,
+                N_elements    : N_elements,
+                N_obstacles   : N_obstacles,
+                N_radialBonds : N_radialBonds,
+                N_angularBonds: N_angularBonds,
+                N_restraints  : N_restraints,
+                N_springForces: N_springForces
+              };
             },
             restore: function(state) {
-              engine.setTime(state);
+              time           = state.time;
+              N              = state.N;
+              N_elements     = state.N_elements;
+              N_obstacles    = state.N_obstacles;
+              N_radialBonds  = state.N_radialBonds;
+              N_angularBonds = state.N_angularBonds;
+              N_restraints   = state.N_restraints;
+              N_springForces = state.N_springForces;
             }
           }
         ];

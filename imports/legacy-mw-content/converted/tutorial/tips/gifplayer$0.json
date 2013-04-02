@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 6,
+    "viewPortHeight": 4,
+    "viewPortX": -0.06,
+    "viewPortY": -0.06,
     "backgroundColor": "rgba(0,0,192,255)",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -44,12 +49,13 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "Click Osprey and use arrow keys to fly it",
+        "text": "Click Osprey and use\narrow keys to fly it",
         "x": -0.01,
         "y": 3.89,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(0,255,0)"
+        "backgroundColor": "rgb(0,255,0)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 5,
+    "viewPortHeight": 2.5,
+    "viewPortX": -0.06,
+    "viewPortY": -0.06,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -38,67 +43,78 @@
         "text": "0",
         "x": 1.38,
         "y": 0.1,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
         "text": "1",
         "x": 1.51,
         "y": 0.1,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
         "text": "2",
         "x": 1.63,
         "y": 0.1,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
         "text": "3",
         "x": 1.75,
         "y": 0.1,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
         "text": "4",
         "x": 1.87,
         "y": 0.1,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
         "text": "5",
         "x": 2,
         "y": 0.1,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
         "text": "6",
         "x": 2.13,
         "y": 0.1,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
         "text": "7",
         "x": 2.25,
         "y": 0.1,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
         "text": "y",
         "x": 2.46,
         "y": 2.47,
-        "layer": 2
+        "layer": 2,
+        "anchor": "upper-left"
       },
       {
         "text": "x",
         "x": 3.23,
         "y": 1.84,
-        "layer": 2
+        "layer": 2,
+        "anchor": "upper-left"
       },
       {
         "text": "0",
         "x": 2.34,
         "y": 1.86,
-        "layer": 2
+        "layer": 2,
+        "anchor": "upper-left"
       },
       {
         "text": "Flow chart",
@@ -106,7 +122,8 @@
         "y": 0.67,
         "layer": 2,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(128,192,255)"
+        "backgroundColor": "rgb(128,192,255)",
+        "anchor": "upper-left"
       },
       {
         "text": "Flow chart",
@@ -114,7 +131,8 @@
         "y": 0.68,
         "layer": 2,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,192,255)"
+        "backgroundColor": "rgb(255,192,255)",
+        "anchor": "upper-left"
       },
       {
         "text": "Flow chart",
@@ -122,20 +140,23 @@
         "y": 1.03,
         "layer": 2,
         "frame": "rectangle",
-        "backgroundColor": "rgb(255,192,128)"
+        "backgroundColor": "rgb(255,192,128)",
+        "anchor": "upper-left"
       },
       {
         "text": "Flow chart",
         "x": 2.84,
         "y": 1.43,
         "layer": 2,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       },
       {
-        "text": "A Cartesian coordinate system",
+        "text": "A Cartesian \ncoordinate system",
         "x": 2.65,
         "y": 2.32,
-        "layer": 2
+        "layer": 2,
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

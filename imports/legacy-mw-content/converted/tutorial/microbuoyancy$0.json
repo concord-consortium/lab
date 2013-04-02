@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 4,
+    "viewPortHeight": 3,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": true,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -40,14 +45,16 @@
         "y": 3.02,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,192,128)"
+        "backgroundColor": "rgb(255,192,128)",
+        "anchor": "upper-left"
       },
       {
         "text": "Obstacle #0",
         "x": 1.61,
         "y": 0.22,
         "layer": 1,
-        "frame": "rounded rectangle"
+        "frame": "rounded rectangle",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,
@@ -1425,11 +1432,11 @@
       0,
       0
     ],
-    "externalFx": [
+    "externalAx": [
       0,
       0
     ],
-    "externalFy": [
+    "externalAy": [
       0,
       0
     ],

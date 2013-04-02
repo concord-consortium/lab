@@ -26,6 +26,15 @@ define(function (require) {
         return typeof obj === 'object' && obj.slice === Array.prototype.slice;
       }
 
+      /** return a number randomly chosen between 0..max */
+      function randomFloat(max) {
+        if (max) {
+          return Math.random() * max;
+        } else {
+          return Math.random();
+        }
+      }
+
       /** return an integer randomly chosen from the set of integers 0..n-1 */
       function randomInteger(n) {
         return Math.floor(Math.random() * n);
@@ -57,6 +66,7 @@ define(function (require) {
         isInteger: isInteger,
         isArray: isArray,
         randomInteger: randomInteger,
+        randomFloat: randomFloat,
         swapElementsOfArray: swapElementsOfArray,
         choose: choose,
 
@@ -180,18 +190,34 @@ define(function (require) {
          * Supported types: "plot", "atom", "obstacle", "image", "textBox".
          * TODO: move it to MD2D related docs in the future.
          *
-         * @param {string}   type     Name of the type of clickable objects.
-         * @param {Function} callback Custom click handler. It will be called
-         *                            when object is clicked with (x, y, d, i) arguments:
-         *                              x - x coordinate in model units,
-         *                              y - y coordinate in model units,
-         *                              d - data associated with a given object (can be undefined!),
-         *                              i - ID of clicked object (usually its value makes sense if d is defined).
+         * @param {string}   type    Name of the type of clickable objects.
+         * @param {Function} handler Custom click handler. It will be called
+         *                           when object is clicked with (x, y, d, i) arguments:
+         *                             x - x coordinate in model units,
+         *                             y - y coordinate in model units,
+         *                             d - data associated with a given object (can be undefined!),
+         *                             i - ID of clicked object (usually its value makes sense if d is defined).
          */
-        onClick: function onClick(type, callback) {
+        onClick: function onClick(type, handler) {
           // Append '.' to make API simpler.
           // So authors can just specify onClick("atom", ...) instead of class selectors.
-          interactivesController.getModelController().modelContainer.setClickHandler("." + type, callback);
+          interactivesController.getModelController().modelContainer.setClickHandler("." + type, handler);
+        },
+
+        /**
+         * Sets custom select handler. It enables select action and lets author provide custom handler
+         * which is executed when select action is finished. The area of selection is passed to handler
+         * as arguments. It is defined by rectangle - its lower left corner coordinates, width and height.
+         *
+         * @param {Function} handler Custom select handler. It will be called
+         *                           when select action is finished with (x, y, w, h) arguments:
+         *                             x - x coordinate of lower left selection corner (in model units),
+         *                             y - y coordinate of lower left selection corner (in model units),
+         *                             width  - width of selection rectangle (in model units),
+         *                             height - height of selection rectangle (in model units).
+         */
+        onSelect: function onSelect(handler) {
+          interactivesController.getModelController().modelContainer.setSelectHandler(handler);
         },
 
         start: function start() {
@@ -214,6 +240,28 @@ define(function (require) {
 
         getTime: function getTime() {
           return model.get('time');
+        },
+
+        /**
+         * Returns number of frames per second.
+         * @return {number} frames per second.
+         */
+        getFPS: function getFPS() {
+          return model.getFPS();
+        },
+
+        /**
+         * Returns "simulation progress rate".
+         * It indicates how much of simulation time is calculated for
+         * one second of real time.
+         * @return {number} simulation progress rate.
+         */
+        getSimulationProgressRate: function getSimulationProgressRate() {
+          return model.getSimulationProgressRate();
+        },
+
+        startPerformanceTuning: function startPerformanceTuning() {
+          model.performanceOptimizer.enable();
         },
 
         repaint: function repaint() {

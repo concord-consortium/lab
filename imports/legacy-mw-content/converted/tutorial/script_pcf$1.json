@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 3.5,
+    "viewPortHeight": 2,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": true,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -35,12 +40,13 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "Compute PCF for this cut-out area to get rid of the reflecting boundary effect.",
+        "text": "Compute PCF for this cut-out\narea to get rid of the reflecting\nboundary effect.",
         "x": 0.09,
         "y": 1.92,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,192,128)"
+        "backgroundColor": "rgb(255,192,128)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

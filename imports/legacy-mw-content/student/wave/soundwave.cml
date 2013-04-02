@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Sound wave</page_title>
+<text>Sound wave
+ 
+
+   </text>
+<section start="0" end="18">
+<paragraph start="0" end="11">
+<Alignment>1</Alignment>
+<content start="0" end="10">
+<size>16</size><family>Trebuchet MS</family><bold>true</bold></content>
+
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="13">
+<Alignment>1</Alignment>
+<content start="11" end="12">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>soundwave$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="14">
+<Alignment>1</Alignment>
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="18">
+<Alignment>1</Alignment>
+<content start="14" end="15">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>run</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="15" end="16">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="16" end="17">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

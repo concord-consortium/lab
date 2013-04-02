@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>STM tips: A Demo of the 3D Molecular Simulator</page_title>
+<bg_color><Red>0</Red><Green>0</Green><Blue>0</Blue></bg_color>
+<text>STM tips: A Demo of the 3D Molecular Simulator
+
+ 
+   </text>
+<section start="0" end="54">
+<paragraph start="0" end="47">
+<Alignment>1</Alignment>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="0" end="47">
+<size>15</size><bold>true</bold><foreground>255 255 255</foreground></content>
+
+</paragraph>
+<paragraph start="47" end="48">
+<SpaceAbove>2.0</SpaceAbove>
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="50">
+<Alignment>1</Alignment>
+<content start="48" end="49">
+<component><class>org.concord.modeler.PageMd3d</class><resource>stmtips$0.mdd</resource><coordinate>stmtips$0.xyz</coordinate><width>500</width><height>400</height><menubar>false</menubar>
+<toolbar>false</toolbar>
+<statusbar>false</statusbar>
+</component></content>
+
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="54">
+<Alignment>1</Alignment>
+<content start="50" end="51">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<action>Run the model</action>
+</component></content>
+
+<content start="51" end="52">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<action>Stop</action>
+</component></content>
+
+<content start="52" end="53">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<action>Reset</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

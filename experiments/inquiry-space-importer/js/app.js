@@ -8,17 +8,23 @@ if (typeof ISImporter === 'undefined') ISImporter = {};
   Quick & dirty fixed-digit formatter. Should work for reasonable ranges of numbers.
 */
 ISImporter.fixed = function(d, n) {
-  var str;
+  var str, out = "", negative = false;
+
+  if (d < 0) { negative = true; }
 
   // round and right zero pad
-  str = ""+Math.round(d*Math.pow(10, n));
+  str = ""+Math.round(Math.abs(d)*Math.pow(10, n));
 
   // left zero pad
   while (str.length < n+1) {
     str = '0' + str;
   }
   // And put the decimal point in the right place
-  return str.slice(0, str.length-n) + '.' + str.slice(-n);
+  if (negative) {
+    out = "-";
+  }
+  out += str.slice(0, str.length-n) + '.' + str.slice(-n);
+  return out;
 };
 
 // Returns true if the argument is a string that represents a valid, finite number (or is a valid, finite number)
@@ -47,10 +53,12 @@ ISImporter.sensors = {
     menuGroup: MENU_GROUPS.NONE,
     menuText: "GoMotion",
     title: "Distance",
-    maxReading: 3,
+    tareable: true,
+    maxReading: 2,
+    minReading: -1,
     readingUnits: "m",
+    precision: 2,
     samplesPerSecond: 20,
-    downsampleRate: 2,
     maxSeconds: 20
   },
 
@@ -98,8 +106,8 @@ ISImporter.sensors = {
     readingUnits: "N",
     minReading: -50,
     maxReading: 50,
+    precision: 2,
     samplesPerSecond: 20,
-    downsampleRate: 2,
     maxSeconds: 10
   },
 
@@ -156,15 +164,17 @@ ISImporter.sensors = {
     applet: new ISImporter.LabQuestApplet({
       listenerPath: 'ISImporter.sensors.labQuestMotion.applet',
       sensorType: 'distance',
-      appletId: 'light-sensor'
+      appletId: 'distance-sensor'
     }),
     menuGroup:  MENU_GROUPS.LAB_QUEST,
     menuText: "Motion",
     title: "Distance",
-    maxReading: 3,
+    tareable: true,
+    maxReading: 2,
+    minReading: -1,
     readingUnits: "m",
+    precision: 2,
     samplesPerSecond: 20,
-    downsampleRate: 2,
     maxSeconds: 20
   },
 
@@ -212,8 +222,8 @@ ISImporter.sensors = {
     readingUnits: "N",
     minReading: -50,
     maxReading: 50,
+    precision: 2,
     samplesPerSecond: 20,
-    downsampleRate: 2,
     maxSeconds: 10
   },
 
@@ -340,6 +350,10 @@ ISImporter.GraphController = defineClass({
       ylabel      : this.yLabel,
       ymin        : this.yMin,
       ymax        : this.yMax,
+      xTickCount  : 6,
+      yTickCount  : 7,
+      xFormatter  : ".1s",
+      yFormatter  : ".2s",
       points      : [],
       circleRadius: false,
       dataChange  : false
@@ -409,11 +423,14 @@ ISImporter.appController = new ISImporter.Object({
   selecting: false,
 
   // could split interface controller from generic app container--but not yet.
+  $body: null,
+  $sensorDisconnect: null,
   $tareButton: null,
   $sensorSelector: null,
   $startButton: null,
   $stopButton: null,
   $resetButton: null,
+  $realtimeDisplay: null,
   $realtimeDisplayValue: null,
   $realtimeDisplayUnits: null,
 
@@ -451,7 +468,16 @@ ISImporter.appController = new ISImporter.Object({
       self.sensorChanged();
     });
 
+    this.$realtimeDisplay = $('#realtime-display');
+
     // Set up button handlers. Surely this boilerplate can be eliminated.
+
+    this.$sensorDisconnect = $('#sensor-disconnect-button');
+    this.$sensorDisconnect.on('click', function() {
+      if ($(this).hasClass('disabled')) return false;
+      self.sensorDisconnect();
+    });
+
     this.$tareButton = $('#tare-button');
     this.$tareButton.on('click', function() {
       if ($(this).hasClass('disabled')) return false;
@@ -548,8 +574,13 @@ ISImporter.appController = new ISImporter.Object({
     this.$realtimeDisplayValue.text('');
     self.$realtimeDisplayUnits.text(units).hide();
 
+    var precision = self.sensor.precision;
+    if (typeof(precision) === 'undefined' || precision === null) {
+      precision = 1;
+    }
+
     this.dataset.on('data', function(d) {
-      self.$realtimeDisplayValue.text(ISImporter.fixed(d[1], 1));
+      self.$realtimeDisplayValue.text(ISImporter.fixed(d[1], precision));
       self.$realtimeDisplayUnits.show();
     });
 
@@ -558,7 +589,7 @@ ISImporter.appController = new ISImporter.Object({
           text;
 
       if (length > 0) {
-        text = ISImporter.fixed(self.dataset.getDataPoints()[length-1], 1);
+        text = ISImporter.fixed(self.dataset.getDataPoints()[length-1], precision);
       } else {
         text = self.$realtimeDisplayValue.text();
         // text = '';
@@ -568,6 +599,31 @@ ISImporter.appController = new ISImporter.Object({
     });
   },
 
+  stopInterface: function(self) {
+    if (self.started) self.stop();
+    if (self.taring) self.endTare();
+    if (self.singleValueTimerId) {
+      clearInterval(self.singleValueTimerId);
+      self.singleValueTimerId = null;
+    }
+  },
+
+  // events
+  sensorDisconnect: function() {
+    this.logAction('disconnect');
+    this.stopInterface(this);
+    this.currentApplet.removeListeners('data');
+    this.currentApplet.remove();
+    this.disable(this.$startButton);
+    this.disable(this.$stopButton);
+    this.disable(this.$resetButton);
+    this.hide(this.$tareButton);
+    this.hide(this.$realtimeDisplay);
+    if (this.taring) this.endTare();
+    this.$sensorSelector.val("select-sensor");
+    this.disable(this.$sensorDisconnect);
+  },
+
   // events
   sensorChanged: function() {
     var val        = this.getSensorSelection(),
@@ -575,12 +631,11 @@ ISImporter.appController = new ISImporter.Object({
 
     this.sensor = ISImporter.sensors[val];
 
-    if (this.currentApplet === this.sensor.applet) {
+    if (this.currentApplet === this.sensor.applet && this.currentApplet.getState() !== "not appended") {
       return;
     }
 
-    if (this.started) this.stop();
-    if (this.taring) this.endTare();
+    this.stopInterface(self);
 
     if (this.currentApplet) {
       this.currentApplet.removeListeners('data');
@@ -593,11 +648,8 @@ ISImporter.appController = new ISImporter.Object({
       self.sensorAppletReady();
     });
     this.currentApplet.on('deviceUnplugged', function() {
-      self.stop();
-      if (self.singleValueTimerId) {
-        clearInterval(self.singleValueTimerId);
-        self.singleValueTimerId = null;
-      }
+      self.stopInterface(self);
+      self.logAction('deviceUnplugged');
       $('#dialog-confirm-content').text("No sensor device is connected! Please connect your device and click OK to try again, or Cancel to stop trying.");
       $('#dialog-confirm').attr('title', "No sensor device found!");
       $('#dialog-confirm').dialog({
@@ -608,21 +660,21 @@ ISImporter.appController = new ISImporter.Object({
         buttons: {
           "OK": function() {
             $(this).dialog("close");
-            self.singleValueTimerId = setInterval(function() {self.readSingleValue();}, 1000);
+            if (self.singleValueTimerId === null) {
+              self.singleValueTimerId = setInterval(function() {self.readSingleValue();}, 1000);
+            }
           },
           "Cancel": function() {
             $(this).dialog("close");
+            self.sensorDisconnect();
           }
         }
       });
     });
     this.currentApplet.on('sensorUnplugged', function() {
-      self.stop();
-      if (self.singleValueTimerId) {
-        clearInterval(self.singleValueTimerId);
-        self.singleValueTimerId = null;
-      }
-      $('#dialog-confirm-content').text("No sensor is connected! Please connect your sensor and click OK to try again, or Cancel to stop trying.");
+      self.stopInterface(self);
+      self.logAction('sensorUnplugged');
+      $('#dialog-confirm-content').text("No sensor (or the wrong sensor) is connected! Please connect your sensor and click OK to try again, or Cancel to stop trying.");
       $('#dialog-confirm').attr('title', "No sensor found!");
       $('#dialog-confirm').dialog({
         resizable: false,
@@ -632,10 +684,13 @@ ISImporter.appController = new ISImporter.Object({
         buttons: {
           "OK": function() {
             $(this).dialog("close");
-            self.singleValueTimerId = setInterval(function() {self.readSingleValue();}, 1000);
+            if (self.singleValueTimerId === null) {
+              self.singleValueTimerId = setInterval(function() {self.readSingleValue();}, 1000);
+            }
           },
           "Cancel": function() {
             $(this).dialog("close");
+            self.sensorDisconnect();
           }
         }
       });
@@ -664,6 +719,9 @@ ISImporter.appController = new ISImporter.Object({
     } else {
       this.hide(this.$tareButton);
     }
+
+    this.enable(this.$sensorDisconnect);
+    this.show(this.$realtimeDisplay);
 
     ISImporter.graphController.removeNotification();
   },
@@ -702,9 +760,11 @@ ISImporter.appController = new ISImporter.Object({
     if (this.sensor.tareable) this.enable(this.$tareButton);
     // Read the current sensor value and inject it into the display
     // TODO Poll and update this every second while we're not collecting and not errored out
-    this.readSingleValue();
     var _this = this;
-    this.singleValueTimerId = setInterval(function() {_this.readSingleValue();}, 1000);
+    if (this.singleValueTimerId === null) {
+      this.readSingleValue();
+      this.singleValueTimerId = setInterval(function() {_this.readSingleValue();}, 1000);
+    }
   },
 
   singleValueTimerId: null,
@@ -712,7 +772,18 @@ ISImporter.appController = new ISImporter.Object({
     try {
       var values = this.currentApplet.appletInstance.getConfiguredSensorsValues(this.currentApplet.deviceType);
       if (values != null) {
-        this.$realtimeDisplayValue.text(values[0].toFixed(1));
+        var val = values[0];
+
+        if (this.sensor.tareable) {
+          val -= (this.sensor.tareValue || 0);
+        }
+
+        var precision = this.sensor.precision;
+        if (typeof(precision) === 'undefined' || precision === null) {
+          precision = 1;
+        }
+
+        this.$realtimeDisplayValue.text(ISImporter.fixed(val, precision));
         this.$realtimeDisplayUnits.show();
       }
     } catch(e) {
@@ -777,6 +848,11 @@ ISImporter.appController = new ISImporter.Object({
 
     if (this.started) return false;
 
+    if (this.singleValueTimerId) {
+      window.clearInterval(this.singleValueTimerId);
+      this.singleValueTimerId = null;
+    }
+
     this.taring = true;
     this.$tareButton.text("Zeroing...");
     this.disable(this.$tareButton);
@@ -809,6 +885,11 @@ ISImporter.appController = new ISImporter.Object({
     this.$tareButton.text("Zero");
     if (this.sensor.tareable) {
       this.enable(this.$tareButton);
+    }
+
+    var _this = this;
+    if (this.singleValueTimerId === null) {
+      this.singleValueTimerId = window.setInterval(function() {_this.readSingleValue();}, 1000);
     }
   },
 

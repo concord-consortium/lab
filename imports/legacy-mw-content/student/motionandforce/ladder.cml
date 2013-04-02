@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Molecular Ladders</page_title>
+<bg_gradient><gradient_color1><Red>255</Red><Green>255</Green><Blue>255</Blue></gradient_color1>
+<gradient_color2><Red>255</Red><Green>255</Green><Blue>0</Blue></gradient_color2>
+<gradient_style>1034</gradient_style>
+<gradient_variant>1044</gradient_variant>
+</bg_gradient>
+<text>Molecular Ladders
+
+ 
+  </text>
+<section start="0" end="24">
+<paragraph start="0" end="18">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="17">
+<size>18</size><bold>true</bold><family>Book Antiqua</family></content>
+
+<content start="17" end="18">
+<size>18</size><bold>true</bold><family>Microsoft Sans Serif</family></content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="21">
+<Alignment>1</Alignment>
+<content start="19" end="20">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>ladder$0.mml</resource><button>Mark Object</button><button>Toggle Trajectory</button><button>Select Object</button><button>What's This?</button><button>Measure Distance</button><button>Count Objects</button></component></content>
+
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="24">
+<Alignment>1</Alignment>
+<content start="21" end="22">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Cool</title>
+<border>Raised Bevel</border>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<step>-0.01</step>
+<action>Cool the system down</action>
+</component></content>
+
+<content start="22" end="23">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat</title>
+<border>Raised Bevel</border>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<step>0.01</step>
+<action>Heat the system up</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

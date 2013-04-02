@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Waves</page_title>
+<bg_image>sidebar1b.gif</bg_image>
+<text> 
+
+This section collects simulations related to waves.
+
+   Ripple tank (by Paul Falstad)
+   Doppler effect
+   Longitudinal waves in springs
+   Wave on a string
+   Oscillating string
+   Converting rotary motion into waves
+
+
+
+</text>
+<section start="0" end="225">
+<paragraph start="0" end="2">
+<Alignment>2</Alignment>
+<SpaceAbove>10.0</SpaceAbove>
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="0" end="1">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>200.0</width><height>60</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;h2&gt;
+        &lt;font color=&quot;#ffffff&quot; face=&quot;Trebuchet MS&quot;&gt;Waves&lt;/font&gt;
+      &lt;/h2&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-ff6601</bgcolor></icon></content>
+
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="3">
+<content start="2" end="3">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3" end="55">
+<LeftIndent>160.0</LeftIndent>
+<content start="3" end="55">
+<family>Trebuchet MS</family><size>14</size></content>
+
+</paragraph>
+<paragraph start="55" end="56">
+<LeftIndent>160.0</LeftIndent>
+<content start="55" end="56">
+</content>
+
+</paragraph>
+<paragraph start="56" end="89">
+<LeftIndent>180.0</LeftIndent>
+<content start="56" end="57">
+<family>Trebuchet MS</family><size>14</size><icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="57" end="59">
+<family>Trebuchet MS</family><size>14</size></content>
+
+<content start="59" end="88">
+<family>Trebuchet MS</family><href>../../applets/ripple/ripple.cml</href><size>14</size></content>
+
+<content start="88" end="89">
+<family>Trebuchet MS</family><size>14</size></content>
+
+</paragraph>
+<paragraph start="89" end="107">
+<LeftIndent>180.0</LeftIndent>
+<content start="89" end="90">
+<family>Trebuchet MS</family><size>14</size><icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="90" end="92">
+<family>Trebuchet MS</family><size>14</size></content>
+
+<content start="92" end="106">
+<family>Trebuchet MS</family><href>doppler.cml</href><size>14</size></content>
+
+<content start="106" end="107">
+<family>Trebuchet MS</family><size>14</size></content>
+
+</paragraph>
+<paragraph start="107" end="140">
+<LeftIndent>180.0</LeftIndent>
+<content start="107" end="108">
+<family>Trebuchet MS</family><size>14</size><icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="108" end="110">
+<family>Trebuchet MS</family><size>14</size></content>
+
+<content start="110" end="139">
+<family>Trebuchet MS</family><href>longitudinalwavespring.cml</href><size>14</size></content>
+
+<content start="139" end="140">
+<family>Trebuchet MS</family><size>14</size></content>
+
+</paragraph>
+<paragraph start="140" end="160">
+<LeftIndent>180.0</LeftIndent>
+<content start="140" end="141">
+<family>Trebuchet MS</family><size>14</size><icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="141" end="143">
+<family>Trebuchet MS</family><size>14</size></content>
+
+<content start="143" end="159">
+<family>Trebuchet MS</family><href>stringwave.cml</href><size>14</size></content>
+
+<content start="159" end="160">
+<family>Trebuchet MS</family><size>14</size></content>
+
+</paragraph>
+<paragraph start="160" end="182">
+<LeftIndent>180.0</LeftIndent>
+<content start="160" end="161">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="161" end="163">
+</content>
+
+<content start="163" end="181">
+<family>Trebuchet MS</family><href>oscillatingstring.cml</href><size>14</size></content>
+
+<content start="181" end="182">
+<family>Trebuchet MS</family><size>14</size></content>
+
+</paragraph>
+<paragraph start="182" end="221">
+<LeftIndent>180.0</LeftIndent>
+<content start="182" end="183">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="183" end="185">
+</content>
+
+<content start="185" end="220">
+<family>Trebuchet MS</family><href>mechanicalwave.cml</href><size>14</size></content>
+
+<content start="220" end="221">
+</content>
+
+</paragraph>
+<paragraph start="221" end="222">
+<LeftIndent>180.0</LeftIndent>
+<content start="221" end="222">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="222" end="223">
+<LeftIndent>180.0</LeftIndent>
+<content start="222" end="223">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="223" end="224">
+<content start="223" end="224">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="224" end="225">
+</paragraph>
+</section>
+</document>

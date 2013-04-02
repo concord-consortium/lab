@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>A reverse micelle</page_title>
+<text>A reverse micelle
+
+ 
+ 
+
+Lipid molecules have polar head groups with zero net charges. In a non-polar solvent (omitted in the above model for simplicity), the head groups will seek to stay together so as to minimize the electrostatic potential energy. As a result, the individual molecules (called monomers) will form an approximately spherical structure with the head groups united at the core and the tails pointing outside.
+
+The above model uses a simplified model for the monomer, which is shown below:
+
+  
+
+A real lipid molecule is much more complex. For example, check out DMPG. This simulation shows that the above reverse micelle is thermodynamically stable at 300 K.
+
+</text>
+<section start="0" end="677">
+<paragraph start="0" end="18">
+<Alignment>1</Alignment>
+<content start="0" end="17">
+<size>16</size><bold>true</bold></content>
+
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="21">
+<Alignment>1</Alignment>
+<content start="19" end="20">
+<component><class>org.concord.modeler.PageMd3d</class><resource>reversemicelle$0.mdd</resource><coordinate>reversemicelle$0.xyz</coordinate><width>500</width><height>400</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="23">
+<Alignment>1</Alignment>
+<content start="21" end="22">
+<component><class>org.concord.modeler.PageComboBox</class>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<selectedIndex>2</selectedIndex>
+<action>Molecular display style</action>
+</component></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="426">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="24" end="426">
+</content>
+
+</paragraph>
+<paragraph start="426" end="427">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="426" end="427">
+</content>
+
+</paragraph>
+<paragraph start="427" end="506">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="427" end="506">
+</content>
+
+</paragraph>
+<paragraph start="506" end="507">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="506" end="507">
+</content>
+
+</paragraph>
+<paragraph start="507" end="510">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="507" end="508">
+</content>
+
+<content start="508" end="509">
+<icon>hypotheticalmonomer.gif</icon></content>
+
+<content start="509" end="510">
+</content>
+
+</paragraph>
+<paragraph start="510" end="511">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="510" end="511">
+</content>
+
+</paragraph>
+<paragraph start="511" end="675">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="511" end="578">
+</content>
+
+<content start="578" end="582">
+<href>../../molecules/lipid/dmpg.pdb</href></content>
+
+<content start="582" end="675">
+</content>
+
+</paragraph>
+<paragraph start="675" end="676">
+<content start="675" end="676">
+</content>
+
+</paragraph>
+<paragraph start="676" end="677">
+</paragraph>
+</section>
+</document>

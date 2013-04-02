@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 6.15,
+    "viewPortHeight": 2.5,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "rgba(226,245,255,255)",
     "showClock": false,
+    "markColor": "#ff0033",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -76,12 +81,13 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "Drag this to change the oxygen concentration surrounding the cell.",
+        "text": "Drag this to\nchange the\noxygen\nconcentration\nsurrounding\nthe cell.",
         "x": 4.28,
         "y": 2.38,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(220,236,218)"
+        "backgroundColor": "rgb(220,236,218)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,
@@ -3031,7 +3037,7 @@
       0,
       0
     ],
-    "externalFx": [
+    "externalAx": [
       0,
       0,
       0,
@@ -3054,7 +3060,7 @@
       0,
       0
     ],
-    "externalFy": [
+    "externalAy": [
       0,
       0,
       0,

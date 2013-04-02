@@ -70,7 +70,12 @@ define(function (require) {
         // new renderers in separate files for clarity and easier testing.
         geneticRenderer,
 
-        gradientNameForElement,
+        gradientNameForElement = [
+          "url(#elem0-grad)",
+          "url(#elem1-grad)",
+          "url(#elem2-grad)",
+          "url(#elem3-grad)"
+        ],
         // Set of gradients used for Kinetic Energy Shading.
         gradientNameForKELevel = [],
         // Number of gradients used for Kinetic Energy Shading.
@@ -84,6 +89,7 @@ define(function (require) {
         atomToolTip, atomToolTipPre,
 
         fontSizeInPixels,
+        textBoxFontSizeInPixels,
 
         // for model clock
         timeLabel,
@@ -132,7 +138,12 @@ define(function (require) {
 
         // this is a hack put in place to temporarily deal with an image-size
         // caching bug in Chrome Canary
-        needCachebusting = browser.browser = "Chrome" && browser.version >= "26";
+        needCachebusting = browser.browser == "Chrome" && browser.version >= "26",
+
+        // this is a hack put in place to temporarily deal with a IE 10 bug which
+        // does not update line markers when svg lines are moved
+        // see https://connect.microsoft.com/IE/feedback/details/781964/
+        hideLineMarkers = browser.browser == "MSIE" && browser.version >= "10.0";
 
 
     function modelTimeLabel() {
@@ -170,7 +181,34 @@ define(function (require) {
       return gradients.createRadialGradient(id, lightColor, medColor, darkColor, mainContainer);
     }
 
-    function createAdditionalGradients() {
+    /**
+     * Setups set of gradient which can be changed by the user.
+     * They should be recreated during each reset / repaint operation.
+     * @private
+     */
+    function setupDynamicGradients() {
+      var i, color, lightColor, medColor, darkColor;
+
+      for (i= 0; i < 4; i++) {
+        // Use names defined in gradientNameForElement array!
+        createElementColorGradient("elem" + i + "-grad", modelElements.color[i], mainContainer);
+      }
+
+      // "Marked" particle gradient.
+      medColor   = model.get("markColor");
+      // Mark color defined in JSON defines medium color of a gradient.
+      color      = d3.rgb(medColor);
+      lightColor = color.brighter(1).toString();
+      darkColor  = color.darker(1).toString();
+      gradients.createRadialGradient("mark-grad", lightColor, medColor, darkColor, mainContainer);
+    }
+
+    /**
+     * Creates set of gradient which cannot be changed, they are constant
+     * for each possible model. So, it is enough to setup them just once.
+     * @private
+     */
+    function createImmutableGradients() {
           // Scale used for Kinetic Energy Shading gradients.
       var medColorScale = d3.scale.linear()
             .interpolate(d3.interpolateRgb)
@@ -193,10 +231,14 @@ define(function (require) {
         gradientNameForKELevel[i] = gradientUrl;
       }
 
-      for (i= 0; i < 4; i++) {
-        createElementColorGradient("elem" + i + "-grad", modelElements.color[i], mainContainer);
-      }
-      gradientNameForElement = ["url(#elem0-grad)", "url(#elem1-grad)", "url(#elem2-grad)", "url(#elem3-grad)"];
+      // "Charge" gradients.
+      gradients.createRadialGradient("neg-grad", "#ffefff", "#fdadad", "#e95e5e", mainContainer);
+      gradients.createRadialGradient("pos-grad", "#dfffff", "#9abeff", "#767fbf", mainContainer);
+      gradients.createRadialGradient("neutral-grad", "#FFFFFF", "#f2f2f2", "#A4A4A4", mainContainer);
+
+      // Colored gradients, used for amino acids.
+      gradients.createRadialGradient("green-grad", "#dfffef", "#75a643", "#2a7216", mainContainer);
+      gradients.createRadialGradient("orange-grad", "#F0E6D1", "#E0A21B", "#AD7F1C", mainContainer);
     }
 
     function createVectorArrowHeads(color, name) {
@@ -373,7 +415,7 @@ define(function (require) {
       Call this wherever a d3 selection is being used to add circles for atoms
     */
 
-    function particleEnter() {
+    function particleEnterExit() {
       particle.enter().append("circle")
           .attr({
             "class": function (d) { return d.isAminoAcid() ? "draggable atom amino-acid" : "atom draggable"; },
@@ -391,13 +433,15 @@ define(function (require) {
             .on("drag", nodeDrag)
             .on("dragend", nodeDragEnd)
           );
+
+      particle.exit().remove();
     }
 
     function vectorEnter(vector, pathFunc, widthFunc, color, name) {
       vector.enter().append("path")
         .attr({
           "class": "vector-"+name,
-          "marker-end": "url(#Triangle-"+name+")",
+          "marker-end": hideLineMarkers ? "" : "url(#Triangle-"+name+")",
           "d": pathFunc,
           "stroke-width": widthFunc,
           "stroke": color,
@@ -442,7 +486,7 @@ define(function (require) {
       // Append external force markers.
       obstacleGroup.each(function (d, i) {
         // Fast path, if no forces are defined.
-        if (!obstacles.externalFx[i] && !obstacles.externalFy[i])
+        if (!obstacles.externalAx[i] && !obstacles.externalAy[i])
           return;
 
         // Note that arrows indicating obstacle external force use
@@ -451,15 +495,15 @@ define(function (require) {
         var obstacleGroupEl = d3.select(this),
             obsHeight = obstacles.height[i],
             obsWidth = obstacles.width[i],
-            obsFx = obstacles.externalFx[i],
-            obsFy = obstacles.externalFy[i],
+            obsAx = obstacles.externalAx[i],
+            obsAy = obstacles.externalAy[i],
             // Use fixed length of force vectors (in nm).
             vecLen = 0.06,
             space = 0.06,
             step, coords;
 
         // Set arrows indicating horizontal force.
-        if (obsFx) {
+        if (obsAx) {
           // Make sure that arrows keep constant distance between both ends of an obstacle.
           step = (obsHeight - 2 * space) / Math.round((obsHeight - 2 * space) / 0.2);
           coords = d3.range(space, obsHeight, step);
@@ -467,7 +511,7 @@ define(function (require) {
             .attr({
               "class": "obstacle-force-hor",
               "d": function (d) {
-                if (obsFx < 0)
+                if (obsAx < 0)
                   return "M " + modelSize2px(obsWidth + vecLen + space) +
                               "," + modelSize2px(d) +
                               " L " + modelSize2px(obsWidth + space) +
@@ -481,7 +525,7 @@ define(function (require) {
             });
         }
         // Later set arrows indicating vertical force.
-        if (obsFy) {
+        if (obsAy) {
           // Make sure that arrows keep constant distance between both ends of an obstacle.
           step = (obsWidth - 2 * space) / Math.round((obsWidth - 2 * space) / 0.2);
           coords = d3.range(space, obsWidth, step);
@@ -489,7 +533,7 @@ define(function (require) {
             .attr({
               "class": "obstacle-force-vert",
               "d": function (d) {
-                if (obsFy < 0)
+                if (obsAy < 0)
                   return "M " + modelSize2px(d) +
                               "," + modelSize2px(-vecLen - space) +
                               " L " + modelSize2px(d) +
@@ -505,7 +549,7 @@ define(function (require) {
         // Finally, set common attributes and stying for both vertical and horizontal forces.
         obstacleGroupEl.selectAll("path.obstacle-force-hor, path.obstacle-force-vert")
           .attr({
-            "marker-end": "url(#Triangle-"+ FORCE_STR +")",
+            "marker-end": hideLineMarkers ? "" : "url(#Triangle-"+ FORCE_STR +")",
             "stroke-width": modelSize2px(forceVectorWidth),
             "stroke": forceVectorColor,
             "fill": "none"
@@ -722,7 +766,8 @@ define(function (require) {
     }
 
     function getTextBoxCoords(d) {
-      var x, y, frameX, frameY;
+      var x, y, textX, textY, frameX, frameY,
+          pixelScale = textBoxFontSizeInPixels * d.fontScale;
       if (d.hostType) {
         if (d.hostType === "Atom") {
           x = modelResults[d.hostIndex].x;
@@ -735,9 +780,12 @@ define(function (require) {
         x = d.x;
         y = d.y;
       }
-      frameX = x - 0.1;
-      frameY = y + 0.15;
-      return [model2px(x), model2pxInv(y), model2px(frameX), model2pxInv(frameY)];
+      frameX = model2px(x);
+      frameY = model2pxInv(y);
+
+      textX = frameX + pixelScale*0.75;
+      textY = frameY + pixelScale*1.2;
+      return [textX, textY, frameX, frameY];
     }
 
     function updateTextBoxes() {
@@ -753,16 +801,21 @@ define(function (require) {
         layer.selectAll("g.textBoxWrapper rect")
           .data(layerTextBoxes.filter( function(d) { return d.frame; } ))
           .attr({
-            "x": function(d,i) { return getTextBoxCoords(d,i)[2]; },
-            "y": function(d,i) { return getTextBoxCoords(d,i)[3]; }
+            "x": function(d) { return getTextBoxCoords(d)[2]; },
+            "y": function(d) { return getTextBoxCoords(d)[3]; },
+            "transform": function(d) {
+              var rotate = d.rotate,
+                  pos = getTextBoxCoords(d);
+              return "rotate("+rotate+" "+pos[0]+" "+pos[1]+")";
+            }
           });
 
         layer.selectAll("g.textBoxWrapper text")
           .data(layerTextBoxes)
           .attr({
-            "y": function(d,i) {
-              $(this).find("tspan").attr("x", getTextBoxCoords(d,i)[0]);
-              return getTextBoxCoords(d,i)[1];
+            "y": function(d) {
+              $(this).find("tspan").attr("x", getTextBoxCoords(d)[0]);
+              return getTextBoxCoords(d)[1];
             }
           });
       };
@@ -798,29 +851,44 @@ define(function (require) {
           .append("rect")
           .attr({
             "class": function(d, i) { return "textBoxFrame text-"+i; },
+            "transform": function(d) {
+              var rotate = d.rotate,
+                  pos = getTextBoxCoords(d);
+              return "rotate("+rotate+" "+pos[0]+" "+pos[1]+")";
+            },
             "style": function(d) {
-              var backgroundColor = d.backgroundColor || "white";
-              return "fill:"+backgroundColor+";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-opacity:1";
+              var backgroundColor = d.backgroundColor,
+                  strokeWidth = d.strokeWidthEms * fontSizeInPixels,
+                  strokeOpacity = d.strokeOpacity;
+              return "fill:"+backgroundColor+";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:"+strokeWidth+";stroke-opacity:"+strokeOpacity;
             },
             "width": 0,
             "height": 0,
-            "rx": function(d)  { return d.frame === "rounded rectangle" ? 8  : 0; },
-            "ry": function(d)  { return d.frame === "rounded rectangle" ? 10 : 0; },
-            "x": function(d,i) { return getTextBoxCoords(d,i)[2]; },
-            "y": function(d,i) { return getTextBoxCoords(d,i)[3]; }
+            "rx": function(d) { return d.frame === "rounded rectangle" ? textBoxFontSizeInPixels/2.5  : 0; },
+            "ry": function(d) { return d.frame === "rounded rectangle" ? textBoxFontSizeInPixels/2 : 0; },
+            "x":  function(d) { return getTextBoxCoords(d)[2]; },
+            "y":  function(d) { return getTextBoxCoords(d)[3]; }
           });
 
         text.append("text")
           .attr({
             "class": function() { return "textBox" + (AUTHORING ? " draggable" : ""); },
-            "x-data": function(d,i) { return getTextBoxCoords(d,i)[0]; },
-            "y": function(d,i)      { return getTextBoxCoords(d,i)[1]; },
-            "width-data": function(d) { return modelSize2px(d.width); },
+            "transform": function(d) {
+              var rotate = d.rotate,
+                  pos = getTextBoxCoords(d);
+              return "rotate("+rotate+" "+pos[0]+" "+pos[1]+")";
+            },
+            "x-data": function(d) { return getTextBoxCoords(d)[0]; },
+            "y": function(d)      { return getTextBoxCoords(d)[1]; },
+            "width-data": function(d) { return d.width; },
+            "height-data": function(d) { return d.height; },
             "width":  modelSize2px(size[0]),
             "height": modelSize2px(size[1]),
             "xml:space": "preserve",
             "font-family": "'" + labConfig.fontface + "', sans-serif",
-            "font-size": modelSize2px(0.12),
+            "font-size": function(d) {
+              return d.fontScale * textBoxFontSizeInPixels + "px";
+            },
             "fill": function(d) { return d.color || "black"; },
             "text-data": function(d) { return d.text; },
             "text-anchor": function(d) {
@@ -847,13 +915,32 @@ define(function (require) {
 
       // wrap text
       $(".textBox").each( function() {
-        var text  = this.getAttributeNS(null, "text-data"),
-            x     = this.getAttributeNS(null, "x-data"),
-            width = this.getAttributeNS(null, "width-data") || -1,
-            dy    = modelSize2px(0.16),
-            hasHost = this.getAttributeNS(null, "has-host"),
+        var text      = this.getAttributeNS(null, "text-data"),
+            x         = this.getAttributeNS(null, "x-data"),
+            width     = this.getAttributeNS(null, "width-data"),
+            height    = this.getAttributeNS(null, "height-data"),
+            fontSize  = parseFloat(this.getAttributeNS(null, "font-size")),
+            transform = this.getAttributeNS(null, "transform"),
+            hasHost   = this.getAttributeNS(null, "has-host"),
             textAlign = this.getAttributeNS(null, "text-anchor"),
-            result, frame, dx;
+            horizontalPadding, verticalPadding,
+            result, frame, dy, tx, ty;
+
+        dy = fontSize*1.2;
+        horizontalPadding = +fontSize*1.5;
+        verticalPadding = fontSize/1.8;
+
+        if (width === '') {
+          width = -1;
+        } else {
+          width = modelSize2px(width);
+        }
+
+        if (height === '') {
+          height = -1;
+        } else {
+          height = modelSize2px(height);
+        }
 
         while (this.firstChild) {     // clear element first
           this.removeChild(this.firstChild);
@@ -863,19 +950,29 @@ define(function (require) {
 
         if (this.parentNode.childElementCount > 1) {
           frame = this.parentNode.childNodes[0];
-          frame.setAttributeNS(null, "width", result.width + modelSize2px(0.2));
-          frame.setAttributeNS(null, "height", (result.lines * dy) + modelSize2px(0.06));
+          frame.setAttributeNS(null, "width", result.width + horizontalPadding);
+          if (height > 0) {
+            frame.setAttributeNS(null, "height", height);
+          } else {
+            frame.setAttributeNS(null, "height", (result.lines * dy) + verticalPadding);
+          }
         }
 
         // center all hosted labels simply by tweaking the g.transform
         if (textAlign === "middle") {
-          dx = result.width / 2;
-          $(this).attr("transform", "translate("+dx+",0)");
+          tx = result.width / 2;
+          if (height > 0) {
+            ty = height / 2 - verticalPadding * 1.5 - (result.lines-1) * dy / 2;
+          } else {
+            ty = 0;
+          }
+          transform = transform + " translate("+tx+","+ty+")";
+          $(this).attr("transform", transform);
         }
         if (hasHost === "true") {
-          dx = -result.width / 2;
-          dy = (result.lines-1) * dy / -2 + 4.5;
-          $(this.parentNode).attr("transform", "translate("+dx+","+dy+")");
+          tx = result.width / -2 - horizontalPadding/2;
+          ty = result.lines * dy / -2 - verticalPadding/2;
+          $(this.parentNode).attr("transform", "translate("+tx+","+ty+")");
         }
       });
     }
@@ -901,7 +998,7 @@ define(function (require) {
       particle = mainContainer.selectAll("circle").data(modelResults);
       updateParticleRadius();
 
-      particleEnter();
+      particleEnterExit();
 
       label = mainContainer.selectAll("g.label")
           .data(modelResults);
@@ -1478,7 +1575,7 @@ define(function (require) {
       createVectorArrowHeads(forceVectorColor, FORCE_STR);
 
       createSymbolImages();
-      createAdditionalGradients();
+      createImmutableGradients();
 
       // Register additional controls, context menus etc.
       // Note that special selector for class is used. Typical class selectors
@@ -1513,6 +1610,9 @@ define(function (require) {
       model2pxInv = modelView.model2pxInv;
       modelSize2px = modelView.modelSize2px;
 
+      fontSizeInPixels = modelView.getFontSizeInPixels();
+      textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
+
       modelResults  = model.get_results();
       modelElements = model.get_elements();
       modelWidth    = model.get('width');
@@ -1530,7 +1630,7 @@ define(function (require) {
         "showVDWLines", "VDWLinesCutoff",
         "showVelocityVectors", "showForceVectors",
         "showAtomTrace", "atomTraceId", "aminoAcidColorScheme",
-        "showClock", "backgroundColor"],
+        "showClock", "backgroundColor", "markColor"],
           repaint);
 
 
@@ -1578,7 +1678,9 @@ define(function (require) {
         modelSize2px = mSize2px;
       }
       fontSizeInPixels = modelView.getFontSizeInPixels();
+      textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
 
+      setupDynamicGradients();
       setupObstacles();
       setupVdwPairs();
       setupColorsOfParticles();

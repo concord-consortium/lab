@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>A cartoonized cell model</page_title>
+<bg_color><Red>0</Red><Green>0</Green><Blue>0</Blue></bg_color>
+<text>A Cartoonized Cell Model
+
+ 
+      </text>
+<section start="0" end="35">
+<paragraph start="0" end="25">
+<Alignment>1</Alignment>
+<content start="0" end="24">
+<family>Book Antiqua</family><size>18</size><bold>true</bold><foreground>255 255 255</foreground></content>
+
+<content start="24" end="25">
+<family>Microsoft Sans Serif</family><size>18</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="25" end="26">
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="28">
+<Alignment>1</Alignment>
+<content start="26" end="27">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>cartooncell$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border><recorder>true</recorder></component></content>
+
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="35">
+<Alignment>1</Alignment>
+<content start="28" end="29">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<tooltip>Start simulation</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>run</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="29" end="30">
+</content>
+
+<content start="30" end="31">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<tooltip>Stop simulation</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="31" end="32">
+</content>
+
+<content start="32" end="33">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<tooltip>Reset simulation</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="33" end="34">
+<component><class>org.concord.modeler.PageComboBox</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<selectedIndex>3</selectedIndex>
+<action>Display Style</action>
+<tooltip></tooltip>
+</component></content>
+
+</paragraph>
+</section>
+</document>

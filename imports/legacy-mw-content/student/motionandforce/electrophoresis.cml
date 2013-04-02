@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Illustrating electrophoresis</page_title>
+<text>Illustrating Electrophoresis
+
+  
+   Direction of D. C. electric field:     
+
+In this model, there are four different types of particle, all with the same magnitude of charge (+0.1 or -0.1), but the masses are different. There is an electric field applied to this system, the direction of which you can change with the above drop-down menu.
+
+In reality, electrophoresis is often carried out in gels that play the role of convection suppressor and molecular sieves.
+
+ 
+
+ </text>
+<section start="0" end="470">
+<paragraph start="0" end="29">
+<LeftIndent>6.0</LeftIndent>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="0" end="28">
+<bold>true</bold><size>16</size></content>
+
+<content start="28" end="29">
+<bold>true</bold><size>18</size><family>Book Antiqua</family></content>
+
+</paragraph>
+<paragraph start="29" end="30">
+<content start="29" end="30">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="30" end="33">
+<Alignment>1</Alignment>
+<content start="30" end="31">
+<size>14</size><component><class>org.concord.modeler.PageTextBox</class>
+<width>300.0</width>
+<height>360.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;font size=&quot;2&quot;&gt;Electrophoresis is a technique for separating proteins and 
+    other macromolecules in biochemistry lab. Electrophoresis rests on the 
+    fact that macromolecules with different net charges and different masses 
+    will migrate at different speeds in a direct current electric field. &lt;/font&gt;&lt;br&gt;&lt;br&gt;&lt;img src=&quot;ElectrophoresisDevice.gif&quot;&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="31" end="32">
+<size>14</size><component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>electrophoresis$0.mml</resource><menubar>false</menubar><button>Select Object</button><button>Mark Object</button><button>Count Objects</button><button>Toggle Trajectory</button></component></content>
+
+<content start="32" end="33">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="33" end="76">
+<Alignment>1</Alignment>
+<content start="33" end="34">
+<size>14</size><component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>225.0</value>
+<minimum>0.0</minimum>
+<maximum>500.0</maximum>
+<nstep>20</nstep>
+<title>Temperature</title>
+<width>200</width>
+<height>70</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;2000.0&quot;, label=&quot;Hot&quot;}{value=&quot;0.0&quot;, label=&quot;Cold&quot;}</labeltable>
+<change>Temperature</change>
+</component></content>
+
+<content start="34" end="73">
+<size>14</size></content>
+
+<content start="73" end="74">
+<size>14</size><component><class>org.concord.modeler.PageComboBox</class>
+<model>0</model>
+<action>Electric Field Direction</action>
+</component></content>
+
+<content start="74" end="75">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show Charges</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Show Charge</action>
+</component></content>
+
+<content start="75" end="76">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="76" end="77">
+<content start="76" end="77">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="77" end="340">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="77" end="340">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="340" end="341">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="340" end="341">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="341" end="464">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="341" end="463">
+<size>11</size></content>
+
+<content start="463" end="464">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="464" end="465">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="464" end="465">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="465" end="467">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<RightIndent>10.0</RightIndent>
+<content start="465" end="466">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>480</width>
+<height>200</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;2&quot;&gt;Please write down your observations. Can you explain the 
+    results?&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-1</bgcolor>
+</component></content>
+
+<content start="466" end="467">
+</content>
+
+</paragraph>
+<paragraph start="467" end="468">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="467" end="468">
+</content>
+
+</paragraph>
+<paragraph start="468" end="470">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<RightIndent>10.0</RightIndent>
+<content start="468" end="469">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Create a report</title>
+<bgcolor>-333334</bgcolor>
+<border>Raised Bevel</border>
+<action>Create a report about this page in a new window</action></component></content>
+
+</paragraph>
+</section>
+</document>

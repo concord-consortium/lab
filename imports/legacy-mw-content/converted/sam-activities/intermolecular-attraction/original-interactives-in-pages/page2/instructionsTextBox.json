@@ -19,8 +19,13 @@
   "viscosity": 0.25,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 3.5,
+    "viewPortHeight": 2,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "rgba(225,239,222,255)",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": true,
     "useThreeLetterCode": true,
@@ -35,8 +40,11 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "Explore the different attractive forces between polar and non-polar molecules by dragging the “star” image found in the following simulations. Choose a pair of molecules from the menu below. ",
-        "layer": 1
+        "text": "Explore the different attractive forces between polar and non-polar molecules by dragging the “star” image found in the following simulations.\nChoose a pair of molecules from the menu below.",
+        "x": 0.00001,
+        "y": 2,
+        "layer": 1,
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

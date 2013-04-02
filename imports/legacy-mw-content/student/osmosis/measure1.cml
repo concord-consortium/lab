@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>CSI: Osmosis</page_title>
+<text>CSI: Osmosis
+
+This weeks to construct a credible &quot;crime scene&quot; of osmosis that will allow us to delve into what happens in osmosis in the future. No heat bath, not damping force for the white particles used to model membrane.
+  
+  </text>
+<section start="0" end="232">
+<paragraph start="0" end="13">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="12">
+<bold>true</bold><size>14</size></content>
+
+<content start="12" end="13">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="13" end="14">
+<LeftIndent>8.0</LeftIndent>
+<content start="13" end="14">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="14" end="226">
+<LeftIndent>8.0</LeftIndent>
+<content start="14" end="226">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="226" end="229">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="226" end="227">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>measure1$0.mml</resource><menubar>false</menubar></component><size>11</size></content>
+
+<content start="227" end="228">
+<component><class>org.concord.modeler.PageScriptConsole</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<width>300</width><height>350</height>
+<border>Raised Bevel</border></component></content>
+
+<content start="228" end="229">
+</content>
+
+</paragraph>
+<paragraph start="229" end="232">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="229" end="230">
+<component><class>org.concord.modeler.PageButton</class>
+<title>compute mean shift of membrane (results will be thrown out on the console)</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>select element 0;
+print &lt;rx&gt;;
+select element none;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="230" end="231">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show confidence index</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Show kinetic, potential and total energies</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

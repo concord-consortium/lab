@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>A Charged Particle in Fields</page_title>
+<text>A Charged Particle in Fields
+
+This model demonstrates the motion of a charged particle in three fields: gravitational, electric, and magnetic. The motion of particles in fields are the physical foundation of techniques such as electrolysis, mass spectroscopy and electrophoresis.
+
+  
+  
+
+                 
+   
+
+The gravitational field always points downward. The electric field can take four directions: east, west, south and north. Because the model is 2D, the magnetic field can only take the direction perpendicular to the page in order for the force to be on the plane.
+
+ 
+Note: The regular gravity on the Earth is not a significant effect at atomic scale. The gravitational effect on atoms is so weak that it only shows up at macroscopic scale, with billions and billions of atoms adding up their weak contributions. In our model with so few atoms, we use an unrealistically strong gravitational field to amplify the effect.
+ 
+
+If the magnetic field and the gravitational field are both applied, you may observe that when the parameters are appropriately set,  the magnetic force can counter-balance gravity, i.e. the particle can levitate above the ground (maglev?).
+
+Related simulation: ion transport in electric fields</text>
+<section start="0" end="1227">
+<paragraph start="0" end="29">
+<LeftIndent>6.0</LeftIndent>
+<SpaceAbove>6.0</SpaceAbove>
+<content start="0" end="28">
+<bold>true</bold><size>14</size></content>
+
+<content start="28" end="29">
+<family>Microsoft Sans Serif</family><bold>true</bold><size>18</size></content>
+
+</paragraph>
+<paragraph start="29" end="30">
+<content start="29" end="30">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="30" end="280">
+<LeftIndent>6.0</LeftIndent>
+<content start="30" end="280">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="280" end="281">
+<LeftIndent>6.0</LeftIndent>
+<content start="280" end="281">
+</content>
+
+</paragraph>
+<paragraph start="281" end="284">
+<Alignment>1</Alignment>
+<content start="281" end="282">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show Velocity Vector</title>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Velocity Vector</action>
+</component></content>
+
+<content start="282" end="283">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show Acceleration Vector</title>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Acceleration Vector</action>
+</component></content>
+
+<content start="283" end="284">
+</content>
+
+</paragraph>
+<paragraph start="284" end="287">
+<Alignment>1</Alignment>
+<content start="284" end="285">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>magneticforce$0.mml</resource><button>Toggle Trajectory</button><button>Select Object</button><button>Measure Distance</button></component></content>
+
+<content start="285" end="287">
+</content>
+
+</paragraph>
+<paragraph start="287" end="288">
+<Alignment>1</Alignment>
+<content start="287" end="288">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="288" end="306">
+<Alignment>1</Alignment>
+<content start="288" end="289">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.0900000013411045</value>
+<minimum>0.0</minimum>
+<maximum>0.10000000149011612</maximum>
+<nstep>20</nstep>
+<title>Magnetic Field</title>
+<width>200</width>
+<height>70</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<labeltable>{value=&quot;0.10000000149011612&quot;, label=&quot;Strong&quot;}{value=&quot;0.0&quot;, label=&quot;Zero&quot;}</labeltable>
+<change>Magnetic Field</change>
+</component></content>
+
+<content start="289" end="290">
+<component><class>org.concord.modeler.PageComboBox</class>
+<model>0</model>
+<selectedIndex>1</selectedIndex>
+<action>Magnetic Field Direction</action>
+</component></content>
+
+<content start="290" end="301">
+</content>
+
+<content start="301" end="302">
+<size>11</size></content>
+
+<content start="302" end="303">
+</content>
+
+<content start="303" end="304">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.0</value>
+<minimum>0.0</minimum>
+<maximum>0.05000000074505806</maximum>
+<nstep>20</nstep>
+<title>Electric Field</title>
+<width>200</width>
+<height>70</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<labeltable>{value=&quot;0.05000000074505806&quot;, label=&quot;Strong&quot;}{value=&quot;0.0&quot;, label=&quot;Zero&quot;}</labeltable>
+<change>Electric Field (D.C.)</change>
+</component></content>
+
+<content start="304" end="305">
+<component><class>org.concord.modeler.PageComboBox</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Electric Field Direction</action>
+</component></content>
+
+<content start="305" end="306">
+</content>
+
+</paragraph>
+<paragraph start="306" end="310">
+<Alignment>1</Alignment>
+<content start="306" end="307">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.0</value>
+<minimum>0.0</minimum>
+<maximum>0.5</maximum>
+<nstep>20</nstep>
+<title>Gravitational Field</title>
+<width>200</width>
+<height>70</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<labeltable>{value=&quot;0.5&quot;, label=&quot;Strong&quot;}{value=&quot;0.0&quot;, label=&quot;Zero&quot;}</labeltable>
+<change>Gravitational Field</change>
+</component></content>
+
+<content start="307" end="308">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.0</value>
+<minimum>-5.0</minimum>
+<maximum>5.0</maximum>
+<nstep>20</nstep>
+<title>Charge</title>
+<width>200</width>
+<height>70</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<labeltable>{value=&quot;5.0&quot;, label=&quot;5e&quot;}{value=&quot;-5.0&quot;, label=&quot;-5e&quot;}{value=&quot;0.0&quot;, label=&quot;0e&quot;}</labeltable>
+<script>set atom[0].charge %val;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="308" end="309">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>110.0</value>
+<minimum>10.0</minimum>
+<maximum>110.0</maximum>
+<nstep>20</nstep>
+<title>Mass</title>
+<width>200</width>
+<height>70</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;Small&quot;}{value=&quot;110.0&quot;, label=&quot;Large&quot;}</labeltable>
+<script>set element[3].mass %val;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="309" end="310">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="310" end="311">
+<LeftIndent>6.0</LeftIndent>
+<content start="310" end="311">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="311" end="574">
+<LeftIndent>6.0</LeftIndent>
+<content start="311" end="574">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="574" end="575">
+<LeftIndent>6.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="574" end="575">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="575" end="577">
+<Alignment>1</Alignment>
+<SpaceAbove>2.0</SpaceAbove>
+<SpaceBelow>2.0</SpaceBelow>
+<content start="575" end="576">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.9</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="576" end="577">
+</content>
+
+</paragraph>
+<paragraph start="577" end="930">
+<LeftIndent>100.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="577" end="581">
+<bold>true</bold><size>11</size></content>
+
+<content start="581" end="929">
+<size>11</size></content>
+
+<content start="929" end="930">
+</content>
+
+</paragraph>
+<paragraph start="930" end="932">
+<Alignment>1</Alignment>
+<SpaceAbove>2.0</SpaceAbove>
+<SpaceBelow>2.0</SpaceBelow>
+<content start="930" end="931">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.9</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="931" end="932">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="932" end="933">
+<LeftIndent>6.0</LeftIndent>
+<content start="932" end="933">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="933" end="1173">
+<LeftIndent>6.0</LeftIndent>
+<content start="933" end="1173">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1173" end="1174">
+<LeftIndent>6.0</LeftIndent>
+<content start="1173" end="1174">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1174" end="1227">
+<LeftIndent>6.0</LeftIndent>
+<content start="1174" end="1194">
+<size>10</size></content>
+
+<content start="1194" end="1226">
+<href>iontransport.cml</href><size>10</size></content>
+
+</paragraph>
+</section>
+</document>

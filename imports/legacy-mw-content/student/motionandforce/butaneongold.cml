@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Butane Molecules on a &#12296;100&#12297; Surface of Gold</page_title>
+<text>3D Demo Simulation: Butane Molecules on a &#12296;100&#12297; Surface of Gold
+
+ 
+
+This simulation demonstrates the adsorption of three butane molecules on a gold surface (Miller Index:&#12296;100&#12297;).
+
+Go to trapped benzene for another 3D demo.</text>
+<section start="0" end="222">
+<paragraph start="0" end="64">
+<Alignment>1</Alignment>
+<content start="0" end="42">
+<size>15</size><bold>true</bold></content>
+
+<content start="42" end="43">
+</content>
+
+<content start="43" end="46">
+<size>15</size><bold>true</bold></content>
+
+<content start="46" end="47">
+</content>
+
+<content start="47" end="63">
+<size>15</size><bold>true</bold></content>
+
+<content start="63" end="64">
+</content>
+
+</paragraph>
+<paragraph start="64" end="65">
+<content start="64" end="65">
+</content>
+
+</paragraph>
+<paragraph start="65" end="67">
+<Alignment>1</Alignment>
+<content start="65" end="66">
+<component><class>org.concord.modeler.PageMd3d</class><resource>butaneongold$0.mdd</resource><coordinate>butaneongold$0.xyz</coordinate><width>500</width><height>400</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="66" end="67">
+</content>
+
+</paragraph>
+<paragraph start="67" end="68">
+<content start="67" end="68">
+</content>
+
+</paragraph>
+<paragraph start="68" end="178">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="68" end="178">
+</content>
+
+</paragraph>
+<paragraph start="178" end="179">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="178" end="179">
+</content>
+
+</paragraph>
+<paragraph start="179" end="222">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="179" end="185">
+</content>
+
+<content start="185" end="200">
+<href>benzenetrap.cml</href></content>
+
+<content start="200" end="221">
+</content>
+
+</paragraph>
+</section>
+</document>

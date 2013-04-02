@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 4,
+    "viewPortHeight": 2.5,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -40,7 +45,8 @@
         "y": 0.3,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,255,128)"
+        "backgroundColor": "rgb(255,255,128)",
+        "anchor": "upper-left"
       },
       {
         "text": "Outside soda can",
@@ -48,7 +54,8 @@
         "y": 0.3,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(128,255,255)"
+        "backgroundColor": "rgb(128,255,255)",
+        "anchor": "upper-left"
       },
       {
         "text": "Can wall",
@@ -56,7 +63,8 @@
         "y": 1.365,
         "layer": 1,
         "hostType": "RectangularObstacle",
-        "hostIndex": 0
+        "hostIndex": 0,
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,
@@ -622,10 +630,10 @@
     "vy": [
       0
     ],
-    "externalFx": [
+    "externalAx": [
       0
     ],
-    "externalFy": [
+    "externalAy": [
       0
     ],
     "friction": [

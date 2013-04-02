@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 3.9,
+    "viewPortHeight": 1.98,
+    "viewPortX": -0.28,
+    "viewPortY": -0.24,
     "backgroundColor": "rgba(192,255,192,255)",
     "showClock": true,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,

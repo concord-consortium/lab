@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Virtual experiments on pulleys</page_title>
+<bg_image>sidebar1b.gif</bg_image>
+<text> 
+
+   Weight balance on a pulley
+   A pulley system can help lift heavy loads
+   Energy transfer between wheels through a chain
+
+
+
+
+</text>
+<section start="0" end="133">
+<paragraph start="0" end="2">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>160.0</LeftIndent>
+<Alignment>2</Alignment>
+<SpaceAbove>10.0</SpaceAbove>
+<content start="0" end="1">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>400.0</width><height>60</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;&lt;center&gt;&lt;h2&gt;&lt;font face=Verdana color=#ffffff&gt;Virtual experiments on pulleys&lt;/font&gt;&lt;/center&gt;&lt;/html&gt;</title><bgcolor>-ff6601</bgcolor></icon></content>
+
+<content start="1" end="2">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2" end="3">
+<LeftIndent>160.0</LeftIndent>
+<content start="2" end="3">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3" end="33">
+<LeftIndent>180.0</LeftIndent>
+<content start="3" end="4">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><size>14</size><family>Trebuchet MS</family></content>
+
+<content start="4" end="6">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="6" end="32">
+<size>14</size><href>pulley1.cml</href><family>Trebuchet MS</family></content>
+
+<content start="32" end="33">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="33" end="78">
+<LeftIndent>180.0</LeftIndent>
+<content start="33" end="34">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><size>14</size><family>Trebuchet MS</family></content>
+
+<content start="34" end="36">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="36" end="77">
+<size>14</size><href>pulley2.cml</href><family>Trebuchet MS</family></content>
+
+<content start="77" end="78">
+<size>14</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="78" end="128">
+<LeftIndent>180.0</LeftIndent>
+<content start="78" end="79">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><size>14</size><family>Trebuchet MS</family></content>
+
+<content start="79" end="81">
+<size>14</size><family>Trebuchet MS</family></content>
+
+<content start="81" end="127">
+<size>14</size><href>pulley3.cml</href><family>Trebuchet MS</family></content>
+
+<content start="127" end="128">
+</content>
+
+</paragraph>
+<paragraph start="128" end="129">
+<LeftIndent>180.0</LeftIndent>
+<content start="128" end="129">
+</content>
+
+</paragraph>
+<paragraph start="129" end="130">
+<LeftIndent>180.0</LeftIndent>
+<content start="129" end="130">
+</content>
+
+</paragraph>
+<paragraph start="130" end="131">
+<content start="130" end="131">
+</content>
+
+</paragraph>
+<paragraph start="131" end="132">
+<content start="131" end="132">
+</content>
+
+</paragraph>
+<paragraph start="132" end="133">
+</paragraph>
+</section>
+</document>

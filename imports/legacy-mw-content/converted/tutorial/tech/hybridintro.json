@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 6,
+    "viewPortHeight": 3,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -35,39 +40,46 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "DNA bases (Purines or pyrimidines)",
+        "text": "DNA bases\n(Purines or pyrimidines)",
+        "x": 0.00001,
         "y": 2.51,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
-        "text": "DNA bases (Purines or pyrimidines)",
+        "text": "DNA bases\n(Purines or pyrimidines)",
         "x": 0.94,
         "y": 0.78,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
         "text": "Hydrogen bonds",
         "x": 0.31,
         "y": 1.24,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
-        "text": "Ester links (Phosphodiester bonds)",
+        "text": "Ester links\n(Phosphodiester bonds)",
         "x": 2.58,
         "y": 1.14,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
-        "text": "Deoxyribose sugar + phosphodiester (DNA backbone)",
+        "text": "Deoxyribose sugar + phosphodiester\n(DNA backbone)",
         "x": 3.75,
         "y": 2.42,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       },
       {
         "text": "Schematical illustration of the 2D DNA model",
         "x": 1.39,
         "y": 2.87,
-        "layer": 1
+        "layer": 1,
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

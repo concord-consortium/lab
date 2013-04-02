@@ -20,8 +20,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 2.6,
+    "viewPortHeight": 2.8,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -36,12 +41,13 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "<--- Select a reaction to run from the menu.",
+        "text": "<--- Select a reaction to\nrun from the menu.",
         "x": 0.09,
         "y": 0.65,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(199,209,244)"
+        "backgroundColor": "rgb(199,209,244)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

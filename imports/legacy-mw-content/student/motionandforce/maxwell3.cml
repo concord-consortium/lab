@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Changes of van der Waals forces do not affect speed distributions</page_title>
+<text>Changes of van der Waals forces do not affect speed distributions
+    
+  
+ 
+This computer experiment shows that Maxwell&apos;s theorem, which didn&apos;t originally consider interatomic interactions, can be applied to interacting atoms. The speed distributions seem to be solely determined by the masses of the atoms and the temperature --- you can tell this from the above simulation that the two types of atoms that apparently have different sizes have almost identical shape of distribution function.
+Can you explain why?
+
+</text>
+<section start="0" end="517">
+<paragraph start="0" end="66">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="65">
+<size>14</size><bold>true</bold></content>
+
+<content start="65" end="66">
+</content>
+
+</paragraph>
+<paragraph start="66" end="71">
+<Alignment>1</Alignment>
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="66" end="67">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>260.0</width>
+<height>340.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;The Maxwell speed distribution theorem was 
+    derived based on the ideal gas, with the assumption that there are no 
+    interactions between the atoms. The reality is that there always exist 
+    interatomic interactions (e.g. the van der Waals forces) among atoms. Do 
+    they play a role in making the speed distributions? In this activity, you 
+    will find out the answer.&lt;br&gt;&lt;br&gt;Please run the simulation until the tape 
+    of the recorder is full, stop the simulation, and click the button below 
+    the model window. Take a snapshot of the graph. Now, reset the model, 
+    adjust the interactions using the two sliders below the model window. 
+    Compare the graphs produced at different times, and draw your conclusion. 
+    You can compare the take snapshots in the Snapshot Gallery.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="67" end="69">
+</content>
+
+<content start="69" end="70">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>maxwell3$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="70" end="71">
+</content>
+
+</paragraph>
+<paragraph start="71" end="74">
+<Alignment>1</Alignment>
+<content start="71" end="72">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.050400000959634775</value>
+<minimum>0.009999999776482582</minimum>
+<maximum>0.10000000149011612</maximum>
+<nstep>50</nstep>
+<title>Change the interactions between big atoms</title>
+<width>320</width>
+<height>70</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;0.010800000205636024&quot;, label=&quot;weaker&quot;}{value=&quot;0.10080000191926955&quot;, label=&quot;stronger&quot;}</labeltable>
+<change>Element Ws: Epsilon</change>
+</component></content>
+
+<content start="72" end="73">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.05580000106245279</value>
+<minimum>0.009999999776482582</minimum>
+<maximum>0.10000000149011612</maximum>
+<nstep>50</nstep>
+<title>Change the interactions between small atoms</title>
+<width>320</width>
+<height>60</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;0.010800000205636024&quot;, label=&quot;weaker&quot;}{value=&quot;0.10080000191926955&quot;, label=&quot;stronger&quot;}</labeltable>
+<change>Element Pl: Epsilon</change>
+</component></content>
+
+<content start="73" end="74">
+</content>
+
+</paragraph>
+<paragraph start="74" end="76">
+<Alignment>1</Alignment>
+<content start="74" end="75">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show speed distributions</title>
+<tooltip>Show speed distributions</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<disabled_at_script>true</disabled_at_script>
+<script>mvd true all 2000 2 and true all 2000 1;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="75" end="76">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="76" end="494">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="76" end="494">
+</content>
+
+</paragraph>
+<paragraph start="494" end="515">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="494" end="515">
+</content>
+
+</paragraph>
+<paragraph start="515" end="516">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="515" end="516">
+</content>
+
+</paragraph>
+<paragraph start="516" end="517">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+</paragraph>
+</section>
+</document>

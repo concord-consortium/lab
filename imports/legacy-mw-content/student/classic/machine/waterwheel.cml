@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Water Wheel</page_title>
+<text>Water wheel
+ 
+
+  </text>
+<section start="0" end="18">
+<paragraph start="0" end="12">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<SpaceAbove>3.0</SpaceAbove>
+<content start="0" end="11">
+<bold>true</bold><size>14</size></content>
+
+<content start="11" end="12">
+</content>
+
+</paragraph>
+<paragraph start="12" end="14">
+<Alignment>1</Alignment>
+<content start="12" end="13">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>waterwheel$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="15">
+<Alignment>1</Alignment>
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="18">
+<Alignment>1</Alignment>
+<content start="15" end="16">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>320.0</value>
+<minimum>0.0</minimum>
+<maximum>2000.0</maximum>
+<nstep>50</nstep>
+<title>Flow rate</title>
+<width>300</width>
+<height>70</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;2000.0&quot;, label=&quot;low&quot;}{value=&quot;0.0&quot;, label=&quot;high&quot;}</labeltable>
+<change>Flux of flow</change>
+</component></content>
+
+<content start="16" end="17">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>580.0</value>
+<minimum>100.0</minimum>
+<maximum>1100.0</maximum>
+<nstep>50</nstep>
+<title>Mass of the wheel</title>
+<width>300</width>
+<height>70</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;100.0&quot;, label=&quot;Light&quot;}{value=&quot;1100.0&quot;, label=&quot;Heavy&quot;}</labeltable>
+<change>Element Nt: Mass</change>
+</component></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Seeing the Debye Radius</page_title>
+<text>Seeing the Debye Radius
+
+By Eric Rosenbaum, Massachusetts Institute of Technology
+
+ 
+
+ 
+
+A charged particle exerts a force on nearby charged particles.  Particles further away are &quot;screened&quot; by the ones in between, and don&apos;t feel the force. The debye radius is the distance within which a particle feels the force.  Outside the radius, they are unaffected.
+
+In this model, you can set the charge on a blue particle, surrounded by other charged particles.  
+
+Can you see the size of the debye radius changing as you change the charge?</text>
+<section start="0" end="534">
+<paragraph start="0" end="24">
+<LeftIndent>20.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="0" end="23">
+<bold>true</bold><size>15</size></content>
+
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="25">
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="82">
+<Alignment>1</Alignment>
+<content start="25" end="81">
+<italic>true</italic></content>
+
+<content start="81" end="82">
+</content>
+
+</paragraph>
+<paragraph start="82" end="83">
+<content start="82" end="83">
+</content>
+
+</paragraph>
+<paragraph start="83" end="85">
+<LeftIndent>20.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="83" end="84">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>debyesphere$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="84" end="85">
+</content>
+
+</paragraph>
+<paragraph start="85" end="86">
+<LeftIndent>20.0</LeftIndent>
+<content start="85" end="86">
+</content>
+
+</paragraph>
+<paragraph start="86" end="88">
+<LeftIndent>20.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="86" end="87">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>3.0</value>
+<minimum>-3.0</minimum>
+<maximum>3.0</maximum>
+<nstep>50</nstep>
+<title>Charge on blue particle</title>
+<tooltip>Charge on blue particle</tooltip>
+<width>200</width>
+<height>60</height>
+<opaque>false</opaque>
+<disabled_at_script>true</disabled_at_script>
+<tick>true</tick>
+<labeltable>{value=&quot;-3.0&quot;, label=&quot;-3&quot;}{value=&quot;0.96&quot;, label=&quot;1&quot;}{value=&quot;-2.04&quot;, label=&quot;-2&quot;}{value=&quot;2.04&quot;, label=&quot;2&quot;}{value=&quot;-0.96&quot;, label=&quot;-1&quot;}{value=&quot;3.0&quot;, label=&quot;3&quot;}{value=&quot;0.0&quot;, label=&quot;0&quot;}</labeltable>
+<script>select element 2;
+charge %val;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="87" end="88">
+</content>
+
+</paragraph>
+<paragraph start="88" end="89">
+<LeftIndent>20.0</LeftIndent>
+<content start="88" end="89">
+</content>
+
+</paragraph>
+<paragraph start="89" end="357">
+<LeftIndent>20.0</LeftIndent>
+<content start="89" end="357">
+</content>
+
+</paragraph>
+<paragraph start="357" end="358">
+<LeftIndent>20.0</LeftIndent>
+<content start="357" end="358">
+</content>
+
+</paragraph>
+<paragraph start="358" end="457">
+<LeftIndent>20.0</LeftIndent>
+<content start="358" end="457">
+</content>
+
+</paragraph>
+<paragraph start="457" end="458">
+<LeftIndent>20.0</LeftIndent>
+<content start="457" end="458">
+</content>
+
+</paragraph>
+<paragraph start="458" end="534">
+<LeftIndent>20.0</LeftIndent>
+<content start="458" end="533">
+</content>
+
+</paragraph>
+</section>
+</document>

@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 5,
+    "viewPortHeight": 2.5,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": true,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -42,7 +47,8 @@
         "frame": "rounded rectangle",
         "hostType": "Atom",
         "hostIndex": 0,
-        "backgroundColor": "rgb(255,255,255)"
+        "backgroundColor": "rgb(255,255,255)",
+        "anchor": "upper-left"
       },
       {
         "text": "Ich bin eine Ws atom.",
@@ -52,7 +58,8 @@
         "frame": "rounded rectangle",
         "hostType": "Atom",
         "hostIndex": 2,
-        "backgroundColor": "rgb(0,0,255)"
+        "backgroundColor": "rgb(0,0,255)",
+        "anchor": "upper-left"
       },
       {
         "text": "Soy un átomo de Pl.",
@@ -62,7 +69,8 @@
         "frame": "rounded rectangle",
         "hostType": "Atom",
         "hostIndex": 1,
-        "backgroundColor": "rgb(0,255,0)"
+        "backgroundColor": "rgb(0,255,0)",
+        "anchor": "upper-left"
       },
       {
         "text": "Je suis un Ck atom.",
@@ -72,14 +80,16 @@
         "frame": "rounded rectangle",
         "hostType": "Atom",
         "hostIndex": 3,
-        "backgroundColor": "rgb(255,128,255)"
+        "backgroundColor": "rgb(255,128,255)",
+        "anchor": "upper-left"
       },
       {
-        "text": "These abstract elements in MW are given names similar to conventional names of elements to reinforce the fact that they are not atoms but elements (types of atoms).  Atoms that are the same element have the same physical and chemical properties.",
+        "text": "These abstract elements in MW are\ngiven names similar to conventional\nnames of elements to reinforce the\nfact that they are not atoms but \nelements (types of atoms).\nAtoms that are the same element have\nthe same physical and chemical\nproperties.",
         "x": 2.41,
         "y": 1.92,
         "layer": 2,
-        "color": "rgb(128,128,128)"
+        "color": "rgb(128,128,128)",
+        "anchor": "upper-left"
       },
       {
         "text": "Nt",
@@ -87,7 +97,8 @@
         "y": 1.635,
         "layer": 1,
         "hostType": "Atom",
-        "hostIndex": 0
+        "hostIndex": 0,
+        "anchor": "upper-left"
       },
       {
         "text": "Pl",
@@ -95,7 +106,8 @@
         "y": 1.165,
         "layer": 1,
         "hostType": "Atom",
-        "hostIndex": 1
+        "hostIndex": 1,
+        "anchor": "upper-left"
       },
       {
         "text": "Ws",
@@ -103,7 +115,8 @@
         "y": 0.745,
         "layer": 1,
         "hostType": "Atom",
-        "hostIndex": 2
+        "hostIndex": 2,
+        "anchor": "upper-left"
       },
       {
         "text": "Ck",
@@ -111,7 +124,8 @@
         "y": 0.335,
         "layer": 1,
         "hostType": "Atom",
-        "hostIndex": 3
+        "hostIndex": 3,
+        "anchor": "upper-left"
       },
       {
         "text": "Introducing MW's four abstract elements",
@@ -119,7 +133,8 @@
         "y": 2.38,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(128,128,128)"
+        "backgroundColor": "rgb(128,128,128)",
+        "anchor": "upper-left"
       },
       {
         "text": "文字框的應用",
@@ -127,7 +142,8 @@
         "y": 0.33,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,192,192)"
+        "backgroundColor": "rgb(255,192,192)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

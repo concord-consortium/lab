@@ -19,8 +19,13 @@
   "viscosity": 0.25,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 3.5,
+    "viewPortHeight": 2,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "rgba(225,239,222,255)",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": true,
     "useThreeLetterCode": true,
@@ -35,11 +40,12 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "You will pull apart pairs of polar and non-polar molecules to see the different strengths of attraction.   Choose a pair of molecules from the menu below.",
+        "text": "You will pull apart pairs of polar and \nnon-polar molecules to see the different \nstrengths of attraction.\nChoose a pair of molecules\nfrom the menu below.",
         "x": 0.24,
         "y": 1.73,
         "layer": 1,
-        "color": "rgb(153,0,0)"
+        "color": "rgb(153,0,0)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

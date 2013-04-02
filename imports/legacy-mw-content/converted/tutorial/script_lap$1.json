@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 3.9,
+    "viewPortHeight": 2.5,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": true,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -35,20 +40,22 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "Pressure gauge on the left face: Measuring pressure by counting impulses of molecules onto the surface.",
+        "text": "Pressure gauge on\nthe left face:\nMeasuring pressure\nby counting impulses\nof molecules onto\nthe surface.",
         "x": 2.6,
         "y": 1.06,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(0,255,0)"
+        "backgroundColor": "rgb(0,255,0)",
+        "anchor": "upper-left"
       },
       {
-        "text": "A strongly interacting system.",
+        "text": "A strongly \ninteracting\nsystem.",
         "x": 2.64,
         "y": 2.28,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,192,0)"
+        "backgroundColor": "rgb(255,192,0)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,
@@ -942,10 +949,10 @@
     "vy": [
       0
     ],
-    "externalFx": [
+    "externalAx": [
       0
     ],
-    "externalFy": [
+    "externalAy": [
       0
     ],
     "friction": [

@@ -20,8 +20,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 5,
+    "viewPortHeight": 2.5,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "rgba(226,245,255,255)",
     "showClock": false,
+    "markColor": "#ff0033",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -53,28 +58,31 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "membrane with many aquapores, allowing water through easily",
+        "text": "membrane with many\naquapores, allowing\nwater through easily",
         "x": 0.32,
         "y": 2.36,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(233,232,232)"
+        "backgroundColor": "rgb(233,232,232)",
+        "anchor": "upper-left"
       },
       {
-        "text": "set the OUTSIDE salt concentration",
+        "text": "set the OUTSIDE\nsalt concentration",
         "x": 0.46,
         "y": 0.62,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(220,236,218)"
+        "backgroundColor": "rgb(220,236,218)",
+        "anchor": "upper-left"
       },
       {
-        "text": "set the INSIDE salt concentration",
+        "text": "set the INSIDE\nsalt concentration",
         "x": 3.35,
         "y": 0.64,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(220,236,218)"
+        "backgroundColor": "rgb(220,236,218)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,
@@ -152,10 +160,10 @@
     "vy": [
       0
     ],
-    "externalFx": [
+    "externalAx": [
       0
     ],
-    "externalFy": [
+    "externalAy": [
       0
     ],
     "friction": [

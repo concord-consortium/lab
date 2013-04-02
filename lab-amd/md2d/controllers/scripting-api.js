@@ -1,4 +1,4 @@
-/*global define model */
+/*global define, model */
 
 define(function (require) {
 
@@ -15,7 +15,6 @@ define(function (require) {
 
     @param: api
   */
-
   return function MD2DScriptingAPI (api) {
 
     var dnaEditDialog = new DNAEditDialog(),
@@ -49,12 +48,12 @@ define(function (require) {
       },
 
       addAtom: function addAtom(props, options) {
-        if (options && options.supressRepaint) {
-          // Translate supressRepaint option to
+        if (options && options.suppressRepaint) {
+          // Translate suppressRepaint option to
           // option understable by modeler.
           // supresRepaint is a conveniance option for
           // Scripting API users.
-          options.supressEvent = true;
+          options.suppressEvent = true;
         }
         return model.addAtom(props, options);
       },
@@ -63,13 +62,13 @@ define(function (require) {
         Removes atom 'i'.
       */
       removeAtom: function removeAtom(i, options) {
-        if (options && options.supressRepaint) {
-          // Translate supressRepaint option to
+        if (options && options.suppressRepaint) {
+          // Translate suppressRepaint option to
           // option understable by modeler.
           // supresRepaint is a conveniance option for
           // Scripting API users.
-          options.supressEvent = true;
-          delete options.supressRepaint;
+          options.suppressEvent = true;
+          delete options.suppressRepaint;
         }
         try {
           model.removeAtom(i, options);
@@ -133,33 +132,88 @@ define(function (require) {
       },
 
       /**
-        Returns array of atom indices.
-        within(1,1,0.5) returns all atoms within 0.5 nm of position (1nm,1nm) within the model.
-        within(1,1,0.2,0.3) returns all atoms within a rectangle of width 0.2nm by height 0.3nm,
-          with the upper-left corner specified by the postion (1nm,1nm).
-      **/
-      atomsWithin: function(x,y,p1,p2) {
-        var atomsWithin = [];
-        var numAtoms = model.get_num_atoms();
-        var props, dist, inX, inY;
-        var n = 0;
+       * Returns array of atom indices, optionally specifying an element of interest.
+       * atomsWithin(1, 1, 0.5) returns all atoms within 0.5 nm of position (1nm, 1nm) within the model.
+       * atomsWithin(1, 1, 0.2, 0.3) returns all atoms within a rectangle of width 0.2nm by height 0.3nm,
+       * with the bottom-left corner specified by the postion (1nm, 1nm).
+       * @param  {number} x       X coordinate of the bottom-left rectangle corner
+       *                          or circle center (when h is not provided).
+       * @param  {number} y       Y coordinate of the bottom-left rectangle corner
+       *                          or circle center (when h is not provided).
+       * @param  {number} w       Width of the rectangle
+       *                          or radius of the circle (when h is not provided).
+       * @param  {number} h       Height of the rectangle.
+       * @param  {number} element Optional ID of the desired element type.
+       * @return {Array}          Array of atoms indices within a given area.
+       */
+      atomsWithin: function(x, y, w, h, element) {
+        var result = [],
+            props, dist, inX, inY, i, len;
 
-        for (var i = 0; i < numAtoms; i++) {
+        for (i = 0, len = model.get_num_atoms(); i < len; i++) {
           props = model.getAtomProperties(i);
-          if (typeof p2 === 'undefined') {
-            dist = Math.sqrt(Math.pow(x-props.x,2) + Math.pow(y-props.y,2));
-            if (dist <= p1) {
-              atomsWithin[n++] = i;
+          if (typeof element !== 'undefined' && props.element !== element) continue;
+          if (typeof h === 'undefined') {
+            dist = Math.sqrt(Math.pow(x - props.x, 2) + Math.pow(y - props.y, 2));
+            if (dist <= w) {
+              result.push(i);
             }
           } else {
-            inX = ((props.x >= x) && (props.x <= (x+p1)));
-            inY = ((props.y <= y) && (props.y >= (y-p2)));
+            inX = ((props.x >= x) && (props.x <= (x + w)));
+            inY = ((props.y >= y) && (props.y <= (y + h)));
             if (inX && inY) {
-              atomsWithin[n++] = i;
+              result.push(i);
             }
           }
         }
-        return (n === 0 ? -1 : atomsWithin);
+        return result;
+      },
+
+      /**
+       * Returns an array of atom indices within triangular area,
+       * optionally specifying an element ID of interest.
+       *
+       * @param  {number} ax      X coordinate of 1st triangle vertex.
+       * @param  {number} ay      Y coordinate of 1st triangle vertex.
+       * @param  {number} bx      X coordinate of 2nd triangle vertex.
+       * @param  {number} by      Y coordinate of 2nd triangle vertex.
+       * @param  {number} cx      X coordinate of 3rd triangle vertex.
+       * @param  {number} cy      Y coordinate of 3rd triangle vertex.
+       * @param  {number} element Optional ID of the desired element type.
+       * @return {Array}          Array of atoms indices within a given area.
+       */
+      atomsWithinTriangle: function(ax, ay, bx, by, cx, cy, element) {
+        var result = [],
+            props, i, len;
+
+        function isInTriangle(px, py) {
+          // See: http://www.blackpawn.com/texts/pointinpoly/default.html
+          var v0 = [cx - ax, cy - ay],
+              v1 = [bx - ax, by - ay],
+              v2 = [px - ax, py - ay],
+
+              dot00 = (v0[0] * v0[0]) + (v0[1] * v0[1]),
+              dot01 = (v0[0] * v1[0]) + (v0[1] * v1[1]),
+              dot02 = (v0[0] * v2[0]) + (v0[1] * v2[1]),
+              dot11 = (v1[0] * v1[0]) + (v1[1] * v1[1]),
+              dot12 = (v1[0] * v2[0]) + (v1[1] * v2[1]),
+
+              invDenom = 1 / (dot00 * dot11 - dot01 * dot01),
+
+              u = (dot11 * dot02 - dot01 * dot12) * invDenom,
+              v = (dot00 * dot12 - dot01 * dot02) * invDenom;
+
+          return ((u >= 0) && (v >= 0) && (u + v < 1));
+        }
+
+        for (i = 0, len = model.get_num_atoms(); i < len; i++) {
+          props = model.getAtomProperties(i);
+          if (typeof element !== 'undefined' && props.element !== element) continue;
+          if (isInTriangle(props.x, props.y)) {
+            result.push(i);
+          }
+        }
+        return result;
       },
 
       /**
@@ -167,22 +221,22 @@ define(function (require) {
         Unmarks all atoms, then marks the requested atom indices.
         Repaints the screen to make the marks visible.
       */
-      markAtoms: function markAtoms() {
+      markAtoms: function markAtoms(indices) {
         var i,
             len;
 
         if (arguments.length === 0) return;
 
-        // allow passing an array instead of a list of atom indices
-        if (api.isArray(arguments[0])) {
-          return markAtoms.apply(null, arguments[0]);
+        // allow passing a list of arguments instead of an array of atom indices
+        if (!api.isArray(arguments[0])) {
+          indices = arguments;
         }
 
         api.unmarkAllAtoms();
 
         // mark the requested atoms
-        for (i = 0, len = arguments.length; i < len; i++) {
-          model.setAtomProperties(arguments[i], {marked: 1});
+        for (i = 0, len = indices.length; i < len; i++) {
+          model.setAtomProperties(indices[i], {marked: 1});
         }
 
         api.repaintIfReady();
@@ -283,7 +337,7 @@ define(function (require) {
 
       /**
         Sets individual obstacle properties using human-readable hash.
-        e.g. setObstacleProperties(0, {x: 1, y: 0.5, externalFx: 0.00001})
+        e.g. setObstacleProperties(0, {x: 1, y: 0.5, externalAx: 0.00001})
       */
       setObstacleProperties: function setObstacleProperties(i, props) {
         model.setObstacleProperties(i, props);
@@ -292,7 +346,7 @@ define(function (require) {
 
       /**
         Returns obstacle properties as a human-readable hash.
-        e.g. getObstacleProperties(0) --> {x: 1, y: 0.5, externalFx: 0.00001, ... }
+        e.g. getObstacleProperties(0) --> {x: 1, y: 0.5, externalAx: 0.00001, ... }
       */
       getObstacleProperties: function getObstacleProperties(i) {
         return model.getObstacleProperties(i);
@@ -438,7 +492,7 @@ define(function (require) {
       },
 
       repaintIfReady: function(options) {
-        if (!(inBatch || options && options.supressRepaint)) {
+        if (!(inBatch || options && options.suppressRepaint)) {
           api.repaint();
         }
       },

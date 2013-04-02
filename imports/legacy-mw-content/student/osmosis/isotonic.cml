@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>No osmotic pressure for isotonic solutions</page_title>
+<text>No osmotic pressure for isotonic solutions
+
+Isotonic solutions are solutions that contain the same concentraction of solutes. There is no osmotic pressure on a semipermeable membrane separating two isotonic solutions. The following model demonstrates this.
+
+Green particle=solute; blue particle=solvent; white particle=membrane
+ 
+  
+
+Tech note: Because the </text>
+<section start="0" end="358">
+<paragraph start="0" end="43">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="42">
+<size>14</size><bold>true</bold></content>
+
+<content start="42" end="43">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="43" end="44">
+<LeftIndent>8.0</LeftIndent>
+<content start="43" end="44">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="44" end="257">
+<LeftIndent>8.0</LeftIndent>
+<content start="44" end="257">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="257" end="258">
+<LeftIndent>8.0</LeftIndent>
+<content start="257" end="258">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="258" end="328">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="258" end="327">
+<bold>true</bold><size>11</size></content>
+
+<content start="327" end="328">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="328" end="330">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="328" end="329">
+<size>11</size><component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>isotonic$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="329" end="330">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="330" end="333">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="330" end="331">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show average positions of the membrane particles</title>
+<tooltip>Show average positions of the membrane particles</tooltip>
+<disabled_at_script>true</disabled_at_script>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select element 0;
+avpos on;
+select element none;</script>
+<script2>select element 0;
+avpos off;
+select element none;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="331" end="332">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Mark solvent molecules in the left compartment</title>
+<tooltip>Mark solvent moleucles in the left compartment</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>show selectionhalo off;
+select element 2 within (0, 0, &quot;0.5*%width&quot;, %height);
+mark;
+delay 0.5;
+select element none;
+show selectionhalo on;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="332" end="333">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="333" end="334">
+<LeftIndent>8.0</LeftIndent>
+<content start="333" end="334">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="334" end="358">
+<LeftIndent>8.0</LeftIndent>
+<content start="334" end="357">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

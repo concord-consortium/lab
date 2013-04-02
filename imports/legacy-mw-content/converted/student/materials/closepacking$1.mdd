@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_03" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.mw3d.ModelState"> 
+  <void property="cameraPosition"> 
+   <string>0.0 0.0 0.0</string> 
+  </void> 
+  <void property="rotation"> 
+   <string>-453 891 7 139.2 89</string> 
+  </void> 
+  <void property="showGlassSimulationBox"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="timeStep"> 
+   <float>2.0</float> 
+  </void> 
+ </object> 
+</java> 

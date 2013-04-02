@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>3D Demo: A Rotating Benzene in a Potential Trap</page_title>
+<text>3D Demo: A Rotating Benzene in a Potential Trap
+
+ 
+ 
+
+If the system enters into such a mode, the benzene molecule can still be trapped even though the temperature has reached the level of the previous simulation.</text>
+<section start="0" end="213">
+<paragraph start="0" end="48">
+<Alignment>1</Alignment>
+<content start="0" end="47">
+<size>15</size><bold>true</bold></content>
+
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="51">
+<Alignment>1</Alignment>
+<content start="49" end="50">
+<component><class>org.concord.modeler.PageMd3d</class><resource>benzenetrap2$0.mdd</resource><coordinate>benzenetrap2$0.xyz</coordinate><width>500</width><height>400</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="53">
+<Alignment>1</Alignment>
+<content start="51" end="52">
+<component><class>org.concord.modeler.PageComboBox</class>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<action>Molecular display style</action>
+</component></content>
+
+<content start="52" end="53">
+</content>
+
+</paragraph>
+<paragraph start="53" end="54">
+<content start="53" end="54">
+</content>
+
+</paragraph>
+<paragraph start="54" end="213">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="54" end="212">
+</content>
+
+</paragraph>
+</section>
+</document>

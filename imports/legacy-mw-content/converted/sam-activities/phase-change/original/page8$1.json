@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 5,
+    "viewPortHeight": 1.7,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": true,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -40,7 +45,8 @@
         "y": 0.32,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,192,255)"
+        "backgroundColor": "rgb(255,192,255)",
+        "anchor": "upper-left"
       },
       {
         "text": "Cover",
@@ -50,7 +56,8 @@
         "frame": "rounded rectangle",
         "hostType": "RectangularObstacle",
         "hostIndex": 0,
-        "backgroundColor": "rgb(128,128,192)"
+        "backgroundColor": "rgb(128,128,192)",
+        "anchor": "upper-left"
       },
       {
         "text": "Gravity",
@@ -58,7 +65,8 @@
         "y": 0.7,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(128,192,128)"
+        "backgroundColor": "rgb(128,192,128)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,
@@ -1104,10 +1112,10 @@
     "vy": [
       0
     ],
-    "externalFx": [
+    "externalAx": [
       0
     ],
-    "externalFy": [
+    "externalAy": [
       0
     ],
     "friction": [

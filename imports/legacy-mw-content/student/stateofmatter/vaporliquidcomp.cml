@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Comparing the behaviors of gas and liquid in a box</page_title>
+<text>Comparing the behaviors of gas and liquid in a box
+
+  
+  </text>
+<section start="0" end="58">
+<paragraph start="0" end="51">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="0" end="50">
+<size>15</size><bold>true</bold></content>
+
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="52">
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="55">
+<Alignment>1</Alignment>
+<content start="52" end="53">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>300.0</width>
+<height>500.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;verdana&quot;&gt;
+    &lt;b&gt;About the model:&lt;/b&gt; The box contains some water molecules and there is 
+    a gravitational field that always points downward. Investigate how the 
+    molecules move when you rotate the box.&lt;br&gt;&lt;br&gt;&lt;b&gt;Instruction:&lt;/b&gt;&lt;br&gt;1. 
+    Press the &amp;quot;Run&amp;quot; button.&lt;br&gt;2. Drag the mouse inside the model&apos;s 
+    window to rotate the box.&lt;br&gt;3. After every rotation, let the model run 
+    for a while and observe the behavior of the molecules.&lt;br&gt;4. Pull the 
+    &amp;quot;Temperature&amp;quot; slider to increase the temperature of the system, and repeat 
+    2 and 3.&lt;br&gt;&lt;br&gt;The simulation shows that in the liquid state, the water 
+    molecules will always fill the bottom of the box, regardless of how you 
+    rotate it, whereas in the gaseous state, they can be found everywhere. 
+    This is what you observe in every day life.
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="53" end="54">
+<component><class>org.concord.modeler.PageMd3d</class><resource>vaporliquidcomp$0.mdd</resource><coordinate>vaporliquidcomp$0.xyz</coordinate><width>500</width><height>500</height><border>Raised Bevel</border>
+<recorderless>true</recorderless>
+</component></content>
+
+<content start="54" end="55">
+</content>
+
+</paragraph>
+<paragraph start="55" end="58">
+<Alignment>1</Alignment>
+<content start="55" end="56">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>300.0</width>
+<height>20.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-131628</bgcolor>
+</component></content>
+
+<content start="56" end="57">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<value>0.0</value>
+<minimum>0.0</minimum>
+<maximum>100.0</maximum>
+<nstep>50</nstep>
+<title>Temperature</title>
+<width>500</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;100.0&quot;, label=&quot;High&quot;}{value=&quot;0.0&quot;, label=&quot;Low&quot;}</labeltable>
+<script>set heatbath 50+%val*5;</script>
+<change>Execute MW script</change>
+</component></content>
+
+</paragraph>
+</section>
+</document>

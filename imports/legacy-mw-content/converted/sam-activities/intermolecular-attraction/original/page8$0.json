@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 3.5,
+    "viewPortHeight": 3,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "rgba(223,239,206,255)",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": true,
     "useThreeLetterCode": true,
@@ -51,14 +56,16 @@
         "frame": "rounded rectangle",
         "hostType": "Atom",
         "hostIndex": 10,
-        "backgroundColor": "rgb(255,255,255)"
+        "backgroundColor": "rgb(255,255,255)",
+        "anchor": "upper-left"
       },
       {
-        "text": "Above is an antigen. Select an antibody shape from the images to the right, and modify it with the charge tools above, so that it will form the  best attraction to the antigen.",
+        "text": "Above is an antigen. Select an antibody \nshape from the images to the right, and \nmodify it with the charge tools above,\nso that it will form the  best attraction to \nthe antigen.",
         "x": 0.21,
         "y": 1.48,
         "layer": 1,
-        "color": "rgb(153,0,0)"
+        "color": "rgb(153,0,0)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

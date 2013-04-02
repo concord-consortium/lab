@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 4,
+    "viewPortHeight": 2.5,
+    "viewPortX": 0,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": true,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -35,12 +40,13 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "Click once to show/hide the current average position of the center of mass of the selected particle.",
+        "text": "Click once to show/hide\nthe current average position\nof the center of mass of\nthe selected particle.",
         "x": 0.12,
         "y": 2.27,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,255,128)"
+        "backgroundColor": "rgb(255,255,128)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,

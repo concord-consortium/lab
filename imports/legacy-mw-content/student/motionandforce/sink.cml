@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Heavier molecules sink to the bottom in a gravitational field </page_title>
+<text>Heavier Molecules Sink to the Bottom in a Gravitational Field
+
+  
+ (bigger particles are lighter)
+
+ 
+Note: The regular gravity on the Earth is not a significant effect at atomic scale. Gravitational effect on atoms is so weak that it only shows up at macroscopic scale, with billions and billions of atoms adding up their weak contributions. In our model with so few atoms, we use an unrealistically strong gravitational field to amplify the effect.
+ </text>
+<section start="0" end="452">
+<paragraph start="0" end="62">
+<LeftIndent>6.0</LeftIndent>
+<SpaceAbove>3.0</SpaceAbove>
+<content start="0" end="61">
+<size>15</size><bold>true</bold></content>
+
+<content start="61" end="62">
+<size>18</size><family>Microsoft Sans Serif</family><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="62" end="63">
+<content start="62" end="63">
+</content>
+
+</paragraph>
+<paragraph start="63" end="66">
+<Alignment>1</Alignment>
+<content start="63" end="64">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>sink$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="64" end="65">
+</content>
+
+<content start="65" end="66">
+<family>Book Antiqua</family><italic>true</italic></content>
+
+</paragraph>
+<paragraph start="66" end="98">
+<LeftIndent>50.0</LeftIndent>
+<RightIndent>50.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="66" end="67">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Gravitational Field</title>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Gravitational Field</action>
+</component></content>
+
+<content start="67" end="98">
+</content>
+
+</paragraph>
+<paragraph start="98" end="99">
+<LeftIndent>50.0</LeftIndent>
+<RightIndent>50.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="98" end="99">
+</content>
+
+</paragraph>
+<paragraph start="99" end="101">
+<SpaceBelow>2.0</SpaceBelow>
+<Alignment>1</Alignment>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="99" end="100">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.9</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="100" end="101">
+</content>
+
+</paragraph>
+<paragraph start="101" end="450">
+<LeftIndent>100.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="101" end="105">
+<bold>true</bold><size>10</size></content>
+
+<content start="105" end="449">
+<size>10</size></content>
+
+<content start="449" end="450">
+</content>
+
+</paragraph>
+<paragraph start="450" end="452">
+<LeftIndent>6.0</LeftIndent>
+<SpaceBelow>2.0</SpaceBelow>
+<Alignment>1</Alignment>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="450" end="451">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.9</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+</paragraph>
+</section>
+</document>

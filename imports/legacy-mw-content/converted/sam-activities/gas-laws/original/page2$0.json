@@ -19,8 +19,13 @@
   "viscosity": 1,
   "timeStepsPerTick": 50,
   "viewOptions": {
+    "viewPortWidth": 4,
+    "viewPortHeight": 2.5,
+    "viewPortX": 0.5,
+    "viewPortY": 0,
     "backgroundColor": "#eeeeee",
     "showClock": false,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -40,7 +45,8 @@
         "y": 2.43,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(192,255,192)"
+        "backgroundColor": "rgb(192,255,192)",
+        "anchor": "upper-left"
       },
       {
         "text": "Outside balloon",
@@ -48,15 +54,17 @@
         "y": 2.43,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(192,192,255)"
+        "backgroundColor": "rgb(192,192,255)",
+        "anchor": "upper-left"
       },
       {
-        "text": "Balloon skin",
+        "text": "Balloon\nskin",
         "x": 2.124397430419922,
         "y": 1.44,
         "layer": 1,
         "hostType": "RectangularObstacle",
-        "hostIndex": 0
+        "hostIndex": 0,
+        "anchor": "upper-left"
       },
       {
         "text": "Counter",
@@ -64,7 +72,8 @@
         "y": 0.3,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(128,192,255)"
+        "backgroundColor": "rgb(128,192,255)",
+        "anchor": "upper-left"
       }
     ],
     "xlabel": false,
@@ -790,10 +799,10 @@
     "vy": [
       0
     ],
-    "externalFx": [
+    "externalAx": [
       0
     ],
-    "externalFy": [
+    "externalAy": [
       0
     ],
     "friction": [
