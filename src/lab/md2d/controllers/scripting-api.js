@@ -15,7 +15,6 @@ define(function (require) {
 
     @param: api
   */
-
   return function MD2DScriptingAPI (api) {
 
     var dnaEditDialog = new DNAEditDialog(),
@@ -148,28 +147,60 @@ define(function (require) {
        * @return {Array}          Array of atoms indices withing given area.
        */
       atomsWithin: function(x, y, w, h, element) {
-        var atomsWithin = [],
-            numAtoms = model.get_num_atoms(),
-            n = 0,
-            props, dist, inX, inY;
+        var result = [],
+            props, dist, inX, inY, i, len;
 
-        for (var i = 0; i < numAtoms; i++) {
+        for (i = 0, len = model.get_num_atoms(); i < len; i++) {
           props = model.getAtomProperties(i);
           if (typeof element !== 'undefined' && props.element !== element) continue;
           if (typeof h === 'undefined') {
             dist = Math.sqrt(Math.pow(x - props.x, 2) + Math.pow(y - props.y, 2));
             if (dist <= w) {
-              atomsWithin[n++] = i;
+              result.push(i);
             }
           } else {
             inX = ((props.x >= x) && (props.x <= (x + w)));
             inY = ((props.y >= y) && (props.y <= (y + h)));
             if (inX && inY) {
-              atomsWithin[n++] = i;
+              result.push(i);
             }
           }
         }
-        return atomsWithin;
+        return result;
+      },
+
+      atomsWithinTriangle: function(ax, ay, bx, by, cx, cy, element) {
+        var result = [],
+            props, i, len;
+
+        function isInTriangle(px, py) {
+          // See: http://www.blackpawn.com/texts/pointinpoly/default.html
+          var v0 = [cx - ax, cy - ay],
+              v1 = [bx - ax, by - ay],
+              v2 = [px - ax, py - ay],
+
+              dot00 = (v0[0] * v0[0]) + (v0[1] * v0[1]),
+              dot01 = (v0[0] * v1[0]) + (v0[1] * v1[1]),
+              dot02 = (v0[0] * v2[0]) + (v0[1] * v2[1]),
+              dot11 = (v1[0] * v1[0]) + (v1[1] * v1[1]),
+              dot12 = (v1[0] * v2[0]) + (v1[1] * v2[1]),
+
+              invDenom = 1 / (dot00 * dot11 - dot01 * dot01),
+
+              u = (dot11 * dot02 - dot01 * dot12) * invDenom,
+              v = (dot00 * dot12 - dot01 * dot02) * invDenom;
+
+          return ((u >= 0) && (v >= 0) && (u + v < 1));
+        }
+
+        for (i = 0, len = model.get_num_atoms(); i < len; i++) {
+          props = model.getAtomProperties(i);
+          if (typeof element !== 'undefined' && props.element !== element) continue;
+          if (isInTriangle(props.x, props.y)) {
+            result.push(i);
+          }
+        }
+        return result;
       },
 
       /**
