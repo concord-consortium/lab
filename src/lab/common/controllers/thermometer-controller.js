@@ -2,11 +2,10 @@
 
 define(function (require) {
 
-  var Thermometer  = require('cs!common/components/thermometer'),
-      mustache     = require('mustache'),
-      thermoterTpl = require('text!common/controllers/thermometer.tpl'),
-      metadata     = require('common/controllers/interactive-metadata'),
-      validator    = require('common/validator');
+  var mustache       = require('mustache'),
+      thermometerTpl = require('text!common/controllers/thermometer.tpl'),
+      metadata       = require('common/controllers/interactive-metadata'),
+      validator      = require('common/validator');
       require('common/jquery-plugins');
 
   /**
@@ -21,19 +20,24 @@ define(function (require) {
   */
   return function ThermometerController(component, scriptingAPI, interactivesController) {
     var units,
-        offset,
-        scale,
         digits,
+        // Returns scaled value using provided 'scale' and 'offset' component properties.
+        scaleFunc,
+        // Returns value between 0% and 100% using provided 'min' and 'max' component properties.
+        normalize,
 
         labelIsReading,
         fitWidth,
-        $thermometer, $bottomLabel, $elem, $labelsContainer,
+        $elem,
+        $thermometer,
+        $thermometerFill,
+        $bottomLabel,
+        $labelsContainer,
 
-        thermometerComponent,
         controller,
 
         updateLabel = function (temperature) {
-          temperature = scale * temperature + offset;
+          temperature = scaleFunc(temperature);
           $bottomLabel.text(temperature.toFixed(digits) + " " + units);
         },
 
@@ -41,7 +45,7 @@ define(function (require) {
         // Make sure that this function is only called when model is loaded.
         updateThermometer = function () {
           var t = model.get('targetTemperature');
-          thermometerComponent.add_value(t);
+          $thermometerFill.css("height", normalize(scaleFunc(t)));
           if (labelIsReading) updateLabel(t);
         };
 
@@ -49,8 +53,10 @@ define(function (require) {
     // Initialization.
     //
     function initialize() {
-      var reading, labelText, maxLength, longestLabelIdx, view,
-          labels, max, min, i, len;
+      var reading, offset, scale,
+          view, labelText, labels,
+          longestLabelIdx, maxLength,
+          max, min, i, len;
 
       component = validator.validateCompleteness(metadata.thermometer, component);
       reading = component.reading;
@@ -58,6 +64,16 @@ define(function (require) {
       offset = reading.offset;
       scale  = reading.scale;
       digits = reading.digits;
+      min = component.min;
+      max = component.max;
+
+      scaleFunc = function (val) {
+        return scale * val + offset;
+      };
+
+      normalize = function (val) {
+        return ((val - min) / (max - min) * 100) + "%";
+      };
 
       labelIsReading = component.labelIsReading;
       labelText = labelIsReading ? "" : "Thermometer";
@@ -69,14 +85,12 @@ define(function (require) {
       };
       // Calculate tick labels positions.
       labels = component.labels;
-      min = component.min;
-      max = component.max;
       maxLength = -Infinity;
       view.labels = [];
       for (i = 0, len = labels.length; i < len; i++) {
         view.labels.push({
           label: labels[i].label,
-          position: (labels[i].value * scale + offset - min) / (max - min) * 100
+          position: normalize(scaleFunc(labels[i].value))
         });
         if (labels[i].label.length > maxLength) {
           maxLength = labels[i].label.length;
@@ -84,18 +98,23 @@ define(function (require) {
         }
       }
       // Render view.
-      $elem = $(mustache.render(thermoterTpl, view));
+      $elem = $(mustache.render(thermometerTpl, view));
       // Save useful references.
       $thermometer = $elem.find(".thermometer");
+      $thermometerFill = $elem.find(".thermometer-fill");
       $bottomLabel = $elem.find(".label");
       $labelsContainer = $elem.find(".labels-container");
 
-
+      // Calculate size of the "labels container" div.
+      // It's used to ensure that wrapping DIV ($elem) has correct width
+      // so layout system can work fine. We have to explicitly set its
+      // width, as absolutely positioned elements (labels) are excluded
+      // from the layout workflow.
       maxLength = $elem.measure(function() {
-        return this.width() / parseFloat(this.css("font-size"));
+        // Calculate width of the longest label in ems (!).
+        return (this.width() / parseFloat(this.css("font-size"))) + "em";
       }, ".value-label:eq(" + longestLabelIdx + ")", interactivesController.interactiveContainer);
-
-      $labelsContainer.css("width", maxLength + "em");
+      $labelsContainer.css("width", maxLength);
 
       // Support custom dimensions. Implementation may seem unclear,
       // but the goal is to provide most obvious behavior for authors.
@@ -114,8 +133,6 @@ define(function (require) {
         $elem.css("width", component.width);
         fitWidth = true;
       }
-
-      thermometerComponent = new Thermometer($thermometer, null, min, max);
     }
 
     // Public API.
@@ -126,7 +143,6 @@ define(function (require) {
         model.addPropertiesListener('targetTemperature', function() {
           updateThermometer();
         });
-        thermometerComponent.resize();
         updateThermometer();
       },
 
@@ -135,19 +151,14 @@ define(function (require) {
         return $elem;
       },
 
-      getView: function () {
-        return thermometerComponent;
-      },
-
       resize: function () {
         var thermometerHeight = $elem.height() - $bottomLabel.height();
         $thermometer.height(thermometerHeight);
         $labelsContainer.height(thermometerHeight);
-
         if (fitWidth) {
-          // When user set width in % what means that the most outer container
-          // width is adjusted and thermometer tries to use maximum available
-          // space.
+          // When user sets width in %, it means that the most outer container
+          // width is equal to this value and thermometer shape should try to
+          // use maximum available space.
           $thermometer.width($elem.width() - $labelsContainer.width());
         }
       },
