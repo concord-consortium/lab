@@ -1,27 +1,10 @@
 /*global require, define, $, model */
 
-$.fn.measure = function(fn, selector, parent) {
-  var el, selection, result;
-  el = $(this).clone(false);
-  el.css({
-    visibility: 'hidden',
-    position: 'absolute'
-  });
-  el.appendTo(parent);
-  if (selector) {
-    selection = el.find(selector);
-  } else {
-    selection = el;
-  }
-  result = fn.apply(selection);
-  el.remove();
-  return result;
-};
-
 define(function () {
 
   var metadata  = require('common/controllers/interactive-metadata'),
       validator = require('common/validator');
+      require('common/jquery-plugins');
 
   return function PulldownController(component, scriptingAPI, interactivesController) {
         // Public API.
