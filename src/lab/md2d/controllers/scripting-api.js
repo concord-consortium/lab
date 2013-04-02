@@ -132,7 +132,7 @@ define(function (require) {
       },
 
       /**
-       * Returns array of atom indices, optionally specifying an element_type of interest.
+       * Returns array of atom indices, optionally specifying an element of interest.
        * atomsWithin(1, 1, 0.5) returns all atoms within 0.5 nm of position (1nm, 1nm) within the model.
        * atomsWithin(1, 1, 0.2, 0.3) returns all atoms within a rectangle of width 0.2nm by height 0.3nm,
        * with the bottom-left corner specified by the postion (1nm, 1nm).
@@ -144,7 +144,7 @@ define(function (require) {
        *                          or radius of the circle (when h is not provided).
        * @param  {number} h       Height of the rectangle.
        * @param  {number} element Optional ID of the desired element type.
-       * @return {Array}          Array of atoms indices withing given area.
+       * @return {Array}          Array of atoms indices within a given area.
        */
       atomsWithin: function(x, y, w, h, element) {
         var result = [],
@@ -169,6 +169,19 @@ define(function (require) {
         return result;
       },
 
+      /**
+       * Returns an array of atom indices within triangular area,
+       * optionally specifying an element ID of interest.
+       *
+       * @param  {number} ax      X coordinate of 1st triangle vertex.
+       * @param  {number} ay      Y coordinate of 1st triangle vertex.
+       * @param  {number} bx      X coordinate of 2nd triangle vertex.
+       * @param  {number} by      Y coordinate of 2nd triangle vertex.
+       * @param  {number} cx      X coordinate of 3rd triangle vertex.
+       * @param  {number} cy      Y coordinate of 3rd triangle vertex.
+       * @param  {number} element Optional ID of the desired element type.
+       * @return {Array}          Array of atoms indices within a given area.
+       */
       atomsWithinTriangle: function(ax, ay, bx, by, cx, cy, element) {
         var result = [],
             props, i, len;
