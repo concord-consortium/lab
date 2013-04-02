@@ -301,6 +301,11 @@ define(function() {
         defaultValue: ""
       },
       labels: {
+        // Label is specified by the following object:
+        // {
+        //   "value": [value, e.g. 100],
+        //   "label": [label, e.g. "High"]
+        // }
         defaultValue: []
       },
       width: {
@@ -478,6 +483,14 @@ define(function() {
           scale: 1,
           digits: 0
         }
+      },
+      labels: {
+        // Label is specified by the following object:
+        // {
+        //   "value": [value, e.g. 100],
+        //   "label": [label, e.g. "High"]
+        // }
+        defaultValue: []
       }
     },
 

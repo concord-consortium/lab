@@ -1,10 +1,13 @@
-/*global define $ model */
+/*global define, $, model */
 
 define(function (require) {
 
-  var Thermometer = require('cs!common/components/thermometer'),
-      metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator');
+  var Thermometer  = require('cs!common/components/thermometer'),
+      mustache     = require('mustache'),
+      thermoterTpl = require('text!common/controllers/thermometer.tpl'),
+      metadata     = require('common/controllers/interactive-metadata'),
+      validator    = require('common/validator');
+      require('common/jquery-plugins');
 
   /**
     An 'interactive thermometer' object, that wraps a base Thermometer with a label for use
@@ -16,24 +19,22 @@ define(function (require) {
      getViewContainer:     DOM element containing the Thermometer div and the label div.
      getView:              Returns base Thermometer object, with no label.
   */
-  return function ThermometerController(component) {
-    var reading = component.reading,
-        units,
+  return function ThermometerController(component, scriptingAPI, interactivesController) {
+    var units,
         offset,
         scale,
         digits,
 
         labelIsReading,
-        labelText,
-
-        $thermometer, $label, $elem,
+        fitWidth,
+        $thermometer, $bottomLabel, $elem, $labelsContainer,
 
         thermometerComponent,
         controller,
 
         updateLabel = function (temperature) {
           temperature = scale * temperature + offset;
-          $label.text(temperature.toFixed(digits) + " " + units);
+          $bottomLabel.text(temperature.toFixed(digits) + " " + units);
         },
 
         // Updates thermometer using model property. Used in modelLoadedCallback.
@@ -47,41 +48,75 @@ define(function (require) {
     //
     // Initialization.
     //
-    component = validator.validateCompleteness(metadata.thermometer, component);
-    reading = component.reading;
-    units = reading.units;
-    offset = reading.offset;
-    scale  = reading.scale;
-    digits = reading.digits;
+    function initialize() {
+      var reading, labelText, maxLength, longestLabelIdx, view,
+          labels, max, min, i, len;
 
-    labelIsReading = !!component.labelIsReading;
-    labelText = labelIsReading ? "" : "Thermometer";
+      component = validator.validateCompleteness(metadata.thermometer, component);
+      reading = component.reading;
+      units = reading.units;
+      offset = reading.offset;
+      scale  = reading.scale;
+      digits = reading.digits;
 
-    $thermometer = $('<div>').attr('id', component.id);
-    $label = $('<p class="label">').text(labelText);
-    $elem = $('<div class="interactive-thermometer">')
-      .append($thermometer)
-      .append($label);
-    // Each interactive component has to have class "component".
-    $elem.addClass("component");
+      labelIsReading = component.labelIsReading;
+      labelText = labelIsReading ? "" : "Thermometer";
 
-    // Support custom dimensions. Implementation may seem unclear,
-    // but the goal is to provide most obvious behavior for authors.
-    // We can simply set height of the most outer container.
-    // Thermometer will adjusts itself appropriately.
-    $elem.css("height", component.height);
-    // Width is more tricky.
-    if (!/%$/.test(component.width)) {
-      // When it's ems or px, its enough to set thermometer width.
-      $thermometer.css("width", component.width);
-    } else {
-      // Whet it's defined in %, set width of the most outer container
-      // to that value and thermometer width to 100%.
-      $elem.css("width", component.width);
-      $thermometer.css("width", "100%");
+      // Calculate view.
+      view = {
+        id: component.id,
+        labelText: labelIsReading ? "" : "Thermometer"
+      };
+      // Calculate tick labels positions.
+      labels = component.labels;
+      min = component.min;
+      max = component.max;
+      maxLength = -Infinity;
+      view.labels = [];
+      for (i = 0, len = labels.length; i < len; i++) {
+        view.labels.push({
+          label: labels[i].label,
+          position: (labels[i].value * scale + offset - min) / (max - min) * 100
+        });
+        if (labels[i].label.length > maxLength) {
+          maxLength = labels[i].label.length;
+          longestLabelIdx = i;
+        }
+      }
+      // Render view.
+      $elem = $(mustache.render(thermoterTpl, view));
+      // Save useful references.
+      $thermometer = $elem.find(".thermometer");
+      $bottomLabel = $elem.find(".label");
+      $labelsContainer = $elem.find(".labels-container");
+
+
+      maxLength = $elem.measure(function() {
+        return this.width() / parseFloat(this.css("font-size"));
+      }, ".value-label:eq(" + longestLabelIdx + ")", interactivesController.interactiveContainer);
+
+      $labelsContainer.css("width", maxLength + "em");
+
+      // Support custom dimensions. Implementation may seem unclear,
+      // but the goal is to provide most obvious behavior for authors.
+      // We can simply set height of the most outer container.
+      // Thermometer will adjusts itself appropriately.
+      $elem.css("height", component.height);
+      // Width is more tricky.
+      fitWidth = false;
+      if (!/%$/.test(component.width)) {
+        // When it's ems or px, its enough to set thermometer width.
+        $thermometer.css("width", component.width);
+      } else {
+        // Whet it's defined in %, set width of the most outer container
+        // to that value and thermometer should use all available space
+        // (100% or 100% - labels width).
+        $elem.css("width", component.width);
+        fitWidth = true;
+      }
+
+      thermometerComponent = new Thermometer($thermometer, null, min, max);
     }
-
-    thermometerComponent = new Thermometer($thermometer, null, component.min, component.max);
 
     // Public API.
     controller = {
@@ -105,7 +140,16 @@ define(function (require) {
       },
 
       resize: function () {
-        $thermometer.height($elem.height() - $label.height());
+        var thermometerHeight = $elem.height() - $bottomLabel.height();
+        $thermometer.height(thermometerHeight);
+        $labelsContainer.height(thermometerHeight);
+
+        if (fitWidth) {
+          // When user set width in % what means that the most outer container
+          // width is adjusted and thermometer tries to use maximum available
+          // space.
+          $thermometer.width($elem.width() - $labelsContainer.width());
+        }
       },
 
       // Returns serialized component definition.
@@ -116,6 +160,9 @@ define(function (require) {
         return component;
       }
     };
+
+    initialize();
+
     // Return Public API object.
     return controller;
   };

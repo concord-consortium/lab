@@ -247,10 +247,23 @@ button.component
     line-height: 1.3em
 
 .interactive-thermometer
+  // Important! Prevents labels container from wrapping to next line.
+  white-space: nowrap
   .label
+    // Main label under the thermometer.
     margin: 0
     text-align: center
     font-size: 1em
+  .value-label
+    // Label on the right side, used to describe ticks.
+    position: absolute
+    white-space: nowrap
+    margin-bottom: -0.75em
+  .labels-container
+    position: relative
+  .thermometer-main-container, .labels-container
+    display: inline-block
+    vertical-align: top
   .thermometer
     display: block
     margin: auto
