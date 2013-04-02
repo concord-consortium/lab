@@ -84,7 +84,7 @@ define(function (require) {
    * @param {Object} interactive Interactive JSON definition.
    */
   ShareDialog.prototype.update = function(interactive) {
-    this.set("title", "Credits: " + interactive.title);
+    this.set("title", "Share: " + interactive.title);
   };
 
   return ShareDialog;
