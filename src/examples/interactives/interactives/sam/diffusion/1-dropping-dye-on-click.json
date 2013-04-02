@@ -1,6 +1,6 @@
 {
   "title": "Basic Diffusion on click",
-  "publicationStatus": "draft",
+  "publicationStatus": "public",
   "subtitle": "Watch a drop of dye spreading out in water.",
   "about": [
     "Click in the model to add a drop of dye.  Watch how the molecules move through the water.",
@@ -24,7 +24,8 @@
         "  });",
         "}",
         "onClick('plot', onClickHandler);",
-        "onClick('atom', onClickHandler);"
+        "onClick('atom', onClickHandler);",
+        "start();"
       ]
     }
   ],
