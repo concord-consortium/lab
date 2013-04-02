@@ -26,6 +26,15 @@ define(function (require) {
         return typeof obj === 'object' && obj.slice === Array.prototype.slice;
       }
 
+      /** return a number randomly chosen between 0..max */
+      function randomFloat(max) {
+        if (max) {
+          return Math.random() * max;
+        } else {
+          return Math.random();
+        }
+      }
+
       /** return an integer randomly chosen from the set of integers 0..n-1 */
       function randomInteger(n) {
         return Math.floor(Math.random() * n);
@@ -57,6 +66,7 @@ define(function (require) {
         isInteger: isInteger,
         isArray: isArray,
         randomInteger: randomInteger,
+        randomFloat: randomFloat,
         swapElementsOfArray: swapElementsOfArray,
         choose: choose,
 
