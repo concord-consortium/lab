@@ -1,6 +1,6 @@
 {
   "title": "Basic Diffusion",
-  "publicationStatus": "draft",
+  "publicationStatus": "public",
   "subtitle": "Watch a drop of dye spreading out in water.",
   "about": [
     "Add a drop of dye to the model.  Watch how the molecules move through the water.",
@@ -15,7 +15,8 @@
         "imageMapping": {
           "waterDyeKey.png": "waterDyeKey.svg"
         }
-      }
+      },
+      "onLoad": "start();"
     }
   ],
   "parameters": [
@@ -55,7 +56,18 @@
       "text": "Add Drop of Dye",
       "action": [
         "batch(function() {",
-          "var atomsToMark = atomsWithin(0, get('height') - 1, 1, 1);",
+          "var x, y, atomsToMark;",
+          "switch(randomInteger(4)) {",
+          "  case 0:",
+          "  x = 0.5; y = 0.5; break;",
+          "  case 1:",
+          "  x = 3.2; y = 0.5; break;",
+          "  case 2:",
+          "  x = 0.5; y = 2.0; break;",
+          "  case 3:",
+          "  x = 3.2; y = 2.0; break;",
+          "}",
+          "atomsToMark = atomsWithin(x, y, 0.5);",
           "markAtoms(atomsToMark);",
         "});",
         "start();"
