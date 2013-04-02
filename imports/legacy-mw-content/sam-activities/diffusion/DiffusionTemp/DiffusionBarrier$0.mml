@@ -47,7 +47,7 @@
    <double>0.0010000000474974513</double> 
   </void> 
   <void property="mass"> 
-   <double>2.5</double> 
+   <double>8.333333333333334</double> 
   </void> 
   <void property="sigma"> 
    <double>14.0</double> 
@@ -356,7 +356,7 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1364867344000</long> 
+     <long>1364909699000</long> 
     </object> 
    </void> 
    <void method="put"> 
@@ -365,7 +365,7 @@
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>62496</long> 
+    <long>62471</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
@@ -388,7 +388,10 @@
   </void> 
   <void property="elementColors"> 
    <void index="0"> 
-    <int>-65536</int> 
+    <int>-16737895</int> 
+   </void> 
+   <void index="2"> 
+    <int>-16776961</int> 
    </void> 
   </void> 
   <void property="energizer"> 
