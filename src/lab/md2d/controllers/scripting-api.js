@@ -221,22 +221,22 @@ define(function (require) {
         Unmarks all atoms, then marks the requested atom indices.
         Repaints the screen to make the marks visible.
       */
-      markAtoms: function markAtoms() {
+      markAtoms: function markAtoms(indices) {
         var i,
             len;
 
         if (arguments.length === 0) return;
 
-        // allow passing an array instead of a list of atom indices
-        if (api.isArray(arguments[0])) {
-          return markAtoms.apply(null, arguments[0]);
+        // allow passing a list of arguments instead of an array of atom indices
+        if (!api.isArray(arguments[0])) {
+          indices = arguments;
         }
 
         api.unmarkAllAtoms();
 
         // mark the requested atoms
-        for (i = 0, len = arguments.length; i < len; i++) {
-          model.setAtomProperties(arguments[i], {marked: 1});
+        for (i = 0, len = indices.length; i < len; i++) {
+          model.setAtomProperties(indices[i], {marked: 1});
         }
 
         api.repaintIfReady();
