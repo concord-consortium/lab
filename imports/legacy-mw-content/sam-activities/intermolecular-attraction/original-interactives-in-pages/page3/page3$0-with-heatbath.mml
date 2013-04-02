@@ -334,9 +334,9 @@
       <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
        <void property="color"> 
         <object class="java.awt.Color"> 
-         <int>249</int> 
-         <int>238</int> 
-         <int>193</int> 
+         <int>153</int> 
+         <int>153</int> 
+         <int>153</int> 
          <int>255</int> 
         </object> 
        </void> 
@@ -440,24 +440,6 @@
    </object> 
   </void> 
   <void property="images"> 
-   <array class="org.concord.mw2d.models.ImageComponent$Delegate" length="1"> 
-    <void index="0"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>Barrier.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="x"> 
-       <double>244.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>-10.0</double> 
-      </void> 
-     </object> 
-    </void> 
-   </array> 
   </void> 
   <void property="monochromatic"> 
    <boolean>false</boolean> 
