@@ -133,34 +133,43 @@ define(function (require) {
       },
 
       /**
-        Returns array of atom indices, optionally specifying an element_type of interest
-        within(1,1,0.5) returns all atoms within 0.5 nm of position (1nm,1nm) within the model.
-        within(1,1,0.2,0.3) returns all atoms within a rectangle of width 0.2nm by height 0.3nm,
-          with the upper-left corner specified by the postion (1nm,1nm).
-      **/
-      atomsWithin: function(x,y,p1,p2,element_type) {
-        var atomsWithin = [];
-        var numAtoms = model.get_num_atoms();
-        var props, dist, inX, inY;
-        var n = 0;
+       * Returns array of atom indices, optionally specifying an element_type of interest.
+       * atomsWithin(1, 1, 0.5) returns all atoms within 0.5 nm of position (1nm, 1nm) within the model.
+       * atomsWithin(1, 1, 0.2, 0.3) returns all atoms within a rectangle of width 0.2nm by height 0.3nm,
+       * with the bottom-left corner specified by the postion (1nm, 1nm).
+       * @param  {number} x       X coordinate of the bottom-left rectangle corner
+       *                          or circle center (when h is not provided).
+       * @param  {number} y       Y coordinate of the bottom-left rectangle corner
+       *                          or circle center (when h is not provided).
+       * @param  {number} w       Width of the rectangle
+       *                          or radius of the circle (when h is not provided).
+       * @param  {number} h       Height of the rectangle.
+       * @param  {number} element Optional ID of the desired element type.
+       * @return {Array}          Array of atoms indices withing given area.
+       */
+      atomsWithin: function(x, y, w, h, element) {
+        var atomsWithin = [],
+            numAtoms = model.get_num_atoms(),
+            n = 0,
+            props, dist, inX, inY;
 
         for (var i = 0; i < numAtoms; i++) {
           props = model.getAtomProperties(i);
-          if (typeof element_type !== 'undefined' && props.element !== element_type) continue;
-          if (typeof p2 === 'undefined') {
-            dist = Math.sqrt(Math.pow(x-props.x,2) + Math.pow(y-props.y,2));
-            if (dist <= p1) {
+          if (typeof element !== 'undefined' && props.element !== element) continue;
+          if (typeof h === 'undefined') {
+            dist = Math.sqrt(Math.pow(x - props.x, 2) + Math.pow(y - props.y, 2));
+            if (dist <= w) {
               atomsWithin[n++] = i;
             }
           } else {
-            inX = ((props.x >= x) && (props.x <= (x+p1)));
-            inY = ((props.y <= y) && (props.y >= (y-p2)));
+            inX = ((props.x >= x) && (props.x <= (x + w)));
+            inY = ((props.y >= y) && (props.y <= (y + h)));
             if (inX && inY) {
               atomsWithin[n++] = i;
             }
           }
         }
-        return (n === 0 ? -1 : atomsWithin);
+        return atomsWithin;
       },
 
       /**
