@@ -8,7 +8,7 @@
       "id": "model1",
       "url": "/imports/legacy-mw-content/converted/sam-activities/diffusion/semipermeable/semipermeable$0.json",
       "viewOptions": {
-        "controlButtons": "play"
+        "controlButtons": "play_reset"
       },
       "modelOptions": {
         "unitsScheme": "mks"
@@ -19,6 +19,11 @@
   ],
   "parameters": [
     {
+      "name": "tracedAtom",
+      "initialValue": -99,
+      "onChange": ""
+    },
+    {
       "name": "poreSize",
       "initialValue": 0.2,
       "onChange": [
@@ -27,6 +32,19 @@
         "setObstacleProperties(0,{height: barrierHeight, y: 2*(barrierHeight + value)});",
         "setObstacleProperties(1,{height: barrierHeight, y: barrierHeight + value});",
         "setObstacleProperties(2,{height: barrierHeight, y: 0});"
+      ]
+    },
+    {
+      "name": "tracingAtom",
+      "initialValue": false,
+      "onChange" : [
+        "if (!value) {",
+        "  untraceAtom();",
+        "} else {",
+        "  var idx = randomAtoms(1);",
+        "  traceAtom(idx);",
+        "  set('tracedAtom',idx);",
+        "}"
       ]
     }
   ],
@@ -39,10 +57,16 @@
       "steps": 50,
       "title": "Pore Size",
       "property": "poreSize"
+    },
+    {
+      "type": "checkbox",
+      "id": "trace-atom",
+      "text": "Trace Atom",
+      "property": "tracingAtom"
     }
   ],
   "layout": {
-    "bottom": [  ],
+    "bottom": [ "barrier-height", "trace-atom" ],
     "right": [  ]
   }
 }

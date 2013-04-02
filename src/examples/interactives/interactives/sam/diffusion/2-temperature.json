@@ -87,6 +87,19 @@
         "var targets = [100, 250, 500, 1500, 2500];",
         "set('targetTemperature', targets[value]);"
       ]
+    },
+    {
+      "name": "tracingAtom",
+      "initialValue": false,
+      "onChange" : [
+        "if (!value) {",
+        "  untraceAtom();",
+        "} else {",
+        "  var idx = randomInteger(18);",
+        "  traceAtom(idx);",
+        "  set('tracedAtom',idx);",
+        "}"
+      ]
     }
   ],
   "components": [
@@ -103,12 +116,10 @@
       ]
     },
     {
-      "type": "button",
-      "id": "trace-gas-element",
+      "type": "checkbox",
+      "id": "trace-atom",
       "text": "Trace Atom",
-      "action" : [
-        "traceAtom(randomInteger(18));"
-      ]
+      "property": "tracingAtom"
     },
     {
       "type": "button",
@@ -159,7 +170,7 @@
     "bottom": [
       ["temperature-slider","experiment-time"],
       ["remove-obstacle","reset-barrier"],
-      ["trace-gas-element"]
+      ["trace-atom"]
     ],
     "right": [
       "thermometer"
