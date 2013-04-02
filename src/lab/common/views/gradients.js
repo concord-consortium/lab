@@ -21,16 +21,22 @@ define(function () {
         // Store gradients in 'defs' element.
         defs = container.append("defs");
       }
-      // Remove old gradient definition.
-      defs.select("#" + id).remove();
-      // Create a new gradient.
-      gradient = defs.append("radialGradient")
-        .attr("id", id)
-        .attr("cx", "50%")
-        .attr("cy", "47%")
-        .attr("r", "53%")
-        .attr("fx", "35%")
-        .attr("fy", "30%");
+
+      gradient = defs.select("#" + id);
+
+      if (gradient.empty()) {
+        // Create a new gradient.
+        gradient = defs.append("radialGradient")
+          .attr("id", id)
+          .attr("cx", "50%")
+          .attr("cy", "47%")
+          .attr("r", "53%")
+          .attr("fx", "35%")
+          .attr("fy", "30%");
+      } else {
+        gradient.selectAll("stop").remove()
+      }
+
       gradient.append("stop")
         .attr("stop-color", lightColor)
         .attr("offset", "0%");
