@@ -40,3 +40,15 @@ svg.graph
     &:focus
       outline: $focus-outline-color solid 0.2em
 
+// Bar Graph styles
+.bar-graph
+  .hidden
+    display: none
+  .triangle
+    stroke: #555
+    // Use value in px, as whole triangle is scaled
+    // using scale() transform based on the current font size.
+    // Using ems would cause additional, unwanted scaling.
+    stroke-width: 2px
+    fill: #eee
+

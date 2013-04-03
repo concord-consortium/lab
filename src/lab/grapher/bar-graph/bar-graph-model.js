@@ -8,6 +8,10 @@ define(function (require) {
         defaults: {
           // Current value displayed by bar graph.
           value:     0,
+          // Second value displayed by bar graph (using small triangle).
+          // It can be used to show averaged or previous value.
+          // null means that it shouldn't be displayed at all.
+          secondValue: null,
           // Min value displayed.
           minValue:  0,
           // Max value displayed.
