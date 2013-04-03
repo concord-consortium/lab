@@ -72,9 +72,11 @@ define(function () {
             remainingHeight -= $label.outerHeight(true);
           }
           $container.css("height", remainingHeight);
+          $slider.css("top", 0.5 * remainingHeight);
           // Handle also requires dynamic styling.
           emSize = parseFloat($sliderHandle.css("font-size"));
           $sliderHandle.css("height", remainingHeight + emSize * 0.4);
+          $sliderHandle.css("top", -0.5 * remainingHeight - emSize * 0.4);
         }
       },
 
