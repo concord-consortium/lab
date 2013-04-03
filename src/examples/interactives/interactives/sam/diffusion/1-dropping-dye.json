@@ -67,7 +67,7 @@
           "  case 3:",
           "  x = 3.2; y = 2.0; break;",
           "}",
-          "atomsToMark = atomsWithin(x, y, 0.5);",
+          "atomsToMark = atomsWithinCircle(x, y, 0.5);",
           "markAtoms(atomsToMark);",
         "});",
         "start();"

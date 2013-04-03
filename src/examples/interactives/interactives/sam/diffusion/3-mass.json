@@ -33,7 +33,7 @@
         "start();",
         "set({ timeStep: 0.00015, timeStepsPerTick: 75, modelSampleRate: 'default' });",
         "onPropertyChange('time', function(t) {",
-        "  var atoms               = atomsWithin(6.75, 0, 0.25, 1.96, get('gasElementType'));",
+        "  var atoms               = atomsWithinRect(6.75, 0, 0.25, 1.96, get('gasElementType'));",
         "  var nNewAtomsInTarget   = 0;",
         "  var nAtomsInTargetTotal = get('nAtomsInTargetTotal')",
         "  for(var i = 0; i < atoms.length; i++) {",

@@ -25,7 +25,7 @@
         },
         {
           "text": "enabled",
-          "action": "onSelect(function (x, y, w, h) { markAtoms(atomsWithin(x, y, w, h)); });"
+          "action": "onSelect(function (x, y, w, h) { markAtoms(atomsWithinRect(x, y, w, h)); });"
         }
       ]
     }

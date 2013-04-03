@@ -19,7 +19,7 @@
       "onLoad": [
         "function onClickHandler(x, y) {",
         "  batch(function() {",
-        "    var atomsToMark = atomsWithin(x, y, 0.5);",
+        "    var atomsToMark = atomsWithinCircle(x, y, 0.5);",
         "    markAtoms(atomsToMark);",
         "  });",
         "}",
