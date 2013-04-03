@@ -46,11 +46,11 @@
       "labels": [
         {
           "value": 1e-9,
-          "label": "1e-7"
+          "label": "1e-9"
         },
         {
           "value": 1e-7,
-          "label": "1e-6"
+          "label": "1e-7"
         }
       ],
       "steps": 1000,
