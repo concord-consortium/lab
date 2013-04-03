@@ -41,8 +41,8 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
 
       it "should return atoms within triangular area", ->
         should.exist script.atomsWithinTriangle
-        script.addAtom x: 5, y: 5
-        # Various test cases:
+        script.addAtom x: 5, y: 5, element: 0
+        # Various test cases (checking geometric calculations).
         script.atomsWithinTriangle(0, 0, 5, 10, 10, 0).should.eql [0]
         script.atomsWithinTriangle(0, 0, 4.99, 10, 4.99, 0).should.eql []
         script.atomsWithinTriangle(0, 0, 5.01, 10, 5.01, 0).should.eql [0]
@@ -52,3 +52,9 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
         script.atomsWithinTriangle(0, 4.99, 10, 4.99, 5, 0).should.eql []
         script.atomsWithinTriangle(0, 5.01, 10, 5.01, 5, 10).should.eql []
         script.atomsWithinTriangle(0, 4.99, 10, 4.99, 5, 10).should.eql [0]
+        # Select only atoms with element 0.
+        script.atomsWithinTriangle(0, 0, 5, 10, 10, 0, 0).should.eql [0]
+        # Select only atoms with element 1, 2, 3.
+        script.atomsWithinTriangle(0, 0, 5, 10, 10, 0, 1).should.eql []
+        script.atomsWithinTriangle(0, 0, 5, 10, 10, 0, 2).should.eql []
+        script.atomsWithinTriangle(0, 0, 5, 10, 10, 0, 3).should.eql []
