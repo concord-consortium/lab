@@ -26,6 +26,15 @@
       ]
     }
   ],
+  "filteredOutputs": [
+    {
+      "name": "atom0KeAVG",
+      "unitType": "energy",
+      "type": "RunningAverage",
+      "property": "atom0Ke",
+      "period": 2500
+    }
+  ],
   "components": [
     {
       "type": "barGraph",
@@ -36,7 +45,8 @@
         "barColor": "#F42",
         "title": "Kinetic Energy of Particle (eV)"
       },
-      "property": "atom0Ke"
+      "property": "atom0Ke",
+      "secondProperty": "atom0KeAVG"
     }
   ],
   "layout": {
