@@ -18,14 +18,14 @@
       },
       "onLoad": [
         "function onClickHandler(x, y) {",
+        "  start();",
         "  batch(function() {",
         "    var atomsToMark = atomsWithinCircle(x, y, 0.5);",
         "    markAtoms(atomsToMark);",
         "  });",
         "}",
         "onClick('plot', onClickHandler);",
-        "onClick('atom', onClickHandler);",
-        "start();"
+        "onClick('atom', onClickHandler);"
       ]
     }
   ],
