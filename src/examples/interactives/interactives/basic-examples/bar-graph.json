@@ -30,9 +30,7 @@
     {
       "name": "atom0KeAVG",
       "unitType": "energy",
-      "type": "RunningAverage",
-      "property": "atom0Ke",
-      "period": 2500
+      "property": "atom0Ke"
     }
   ],
   "components": [
