@@ -1624,16 +1624,6 @@ define(function (require) {
       // Subscribe for model events.
       model.addPropertiesListener(["temperatureControl"], drawSymbolImages);
 
-      // Redraw container each time when some visual-related property is changed.
-      model.addPropertiesListener([
-        "keShading", "chargeShading", "showChargeSymbols", "useThreeLetterCode",
-        "showVDWLines", "VDWLinesCutoff",
-        "showVelocityVectors", "showForceVectors",
-        "showAtomTrace", "atomTraceId", "aminoAcidColorScheme",
-        "showClock", "backgroundColor", "markColor"],
-          repaint);
-
-
       function redrawClickableObjects (redrawOperation) {
         return function () {
           redrawOperation();
@@ -1642,6 +1632,15 @@ define(function (require) {
           modelView.updateClickHandlers();
         };
       }
+
+      // Redraw container each time when some visual-related property is changed.
+      model.addPropertiesListener([
+        "keShading", "chargeShading", "showChargeSymbols", "useThreeLetterCode",
+        "showVDWLines", "VDWLinesCutoff",
+        "showVelocityVectors", "showForceVectors",
+        "showAtomTrace", "atomTraceId", "aminoAcidColorScheme",
+        "showClock", "backgroundColor", "markColor"],
+          redrawClickableObjects(repaint));
 
       model.on('addAtom', redrawClickableObjects(repaint));
       model.on('removeAtom', redrawClickableObjects(repaint));
