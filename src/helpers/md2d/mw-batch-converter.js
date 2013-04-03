@@ -4,7 +4,7 @@
 For the moment, to run these scripts
   $ cd lab
   $ node
-  > require('./src/mw-helpers/mw-batch-converter.js')
+  > require('./src/helpers/md2d/mw-batch-converter.js')
   > convertMMLFolder()
   > createCmlJsonIndex(outputHtmlFile)
 **/
