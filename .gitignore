@@ -25,3 +25,4 @@ server/config/settings.yml
 config/littlechef
 src/experiments/netlogo-visual/models/data-export-modular.nls
 src/experiments/netlogo-is-exporter/models/data-export-modular.nls
+tarballs
