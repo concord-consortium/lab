@@ -200,7 +200,7 @@ define(function() {
       },
       onClick: {
         // Script executed on user click, optional.
-      },
+      }
     },
 
     div: {
@@ -577,6 +577,10 @@ define(function() {
         // using small triangle. E.g.
         // can be used to present
         // averaged value.
+        conflictsWith: ["displayAverage"]
+      },
+      displayAverage: {
+        conflictsWith: ["secondProperty"]
       },
       width: {
         defaultValue: "100%"

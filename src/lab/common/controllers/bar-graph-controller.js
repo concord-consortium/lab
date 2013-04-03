@@ -71,9 +71,9 @@ define(function (require) {
 
         update = function () {
           barGraphModel.set({value: model.get(property)});
-          if (secondProperty) {
-            barGraphModel.set({secondValue: model.get(secondProperty)});
-          }
+        },
+        updateSecondProperty = function () {
+          barGraphModel.set({secondValue: model.get(secondProperty)});
         };
 
     //
@@ -96,8 +96,16 @@ define(function (require) {
     controller = {
       // This callback should be trigger when model is loaded.
       modelLoadedCallback: function () {
-        if (property) {
-          model.addPropertiesListener([property], update);
+        model.addPropertiesListener([property], update);
+        if (component.displayAverage) {
+          // This option is for authors convenience. It causes that filtered
+          // output is automatically defined (it uses basic property as an
+          // input). Author doesn't have to define it manually.
+          secondProperty = property + "-bargraph-" + component.id + "-average";
+          model.defineFilteredOutput(secondProperty, {}, property, "RunningAverage", 2500);
+        }
+        if (secondProperty) {
+          model.addPropertiesListener([secondProperty], updateSecondProperty);
         }
         // Initial render...
         barGraphView.render();
