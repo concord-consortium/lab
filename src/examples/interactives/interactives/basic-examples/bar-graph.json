@@ -28,15 +28,31 @@
   ],
   "filteredOutputs": [
     {
-      "name": "atom0KeAVG",
+      "name": "atom0KeCustomAVG",
       "unitType": "energy",
-      "property": "atom0Ke"
+      "property": "atom0Ke",
+      "period": 7000
     }
   ],
   "components": [
     {
       "type": "barGraph",
-      "id": "bar-graph",
+      "id": "bar-graph-1",
+      "width": "3em",
+      "options": {
+        "minValue": 0,
+        "maxValue": 1,
+        "displayLabels": false,
+        "ticks": 0,
+        "barColor": "#F42"
+      },
+      "property": "atom0Ke",
+      "displayAverage": true
+    },
+    {
+      "type": "barGraph",
+      "id": "bar-graph-2",
+      "width": "6em",
       "options": {
         "minValue": 0,
         "maxValue": 1,
@@ -44,13 +60,14 @@
         "title": "Kinetic Energy of Particle (eV)"
       },
       "property": "atom0Ke",
-      "secondProperty": "atom0KeAVG"
+      "secondProperty": "atom0KeCustomAVG"
     }
   ],
   "layout": {
     "right": [
-      "bar-graph"
+      "bar-graph-1",
+      "bar-graph-2"
     ]
   },
-  "template": "narrow-right"
+  "template": "simple"
 }
