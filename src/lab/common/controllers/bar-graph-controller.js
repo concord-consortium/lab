@@ -66,9 +66,14 @@ define(function (require) {
         barGraphView,
         // First data channel.
         property,
+        // Second data channel.
+        secondProperty,
 
         update = function () {
           barGraphModel.set({value: model.get(property)});
+          if (secondProperty) {
+            barGraphModel.set({secondValue: model.get(secondProperty)});
+          }
         };
 
     //
@@ -86,6 +91,7 @@ define(function (require) {
     // Each interactive component has to have class "component".
     barGraphView.$el.addClass("component");
     property = component.property;
+    secondProperty = component.secondProperty;
 
     controller = {
       // This callback should be trigger when model is loaded.

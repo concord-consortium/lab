@@ -573,6 +573,12 @@ define(function() {
       property: {
         required: true
       },
+      secondProperty: {
+        // Additional value displayed
+        // using small triangle. E.g.
+        // can be used to present
+        // averaged value.
+      },
       width: {
         defaultValue: "100%"
       },
