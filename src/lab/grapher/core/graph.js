@@ -40,8 +40,16 @@ define(function (require) {
         axisFontSizeInPixels,
         xlabelFontSizeInPixels,
         ylabelFontSizeInPixels,
+
+        xlabelMetrics,
+        yLabelMetrics,
         xAxisNumberWidth,
+        xAxisNumberHeight,
         yAxisNumberWidth,
+        xAxisLabelHorizontalPadding,
+        xAxisLabelVerticalPadding,
+        yAxisLabelPadding,
+
         strokeWidth,
         sizeType = {
           category: "medium",
@@ -77,8 +85,8 @@ define(function (require) {
           yTickCount:      10,
           xscaleExponent:  0.5,
           yscaleExponent:  0.5,
-          xFormatter:      ".2s",
-          yFormatter:      ".2s",
+          xFormatter:      "2s",
+          yFormatter:      "2s",
           axisShift:       10,
           xmax:            10,
           xmin:            0,
@@ -173,6 +181,14 @@ define(function (require) {
       calculateSizeType();
     }
 
+    function longestNumber(array, formatter) {
+      var longest;
+      longest = array.reduce(function(number1, number2) {
+        return formatter(number1).length > formatter(number2).length ? number1 : number2;
+      }, 0);
+      return formatter(longest);
+    }
+
     // Update the x-scale.
     function updateXScale() {
       xScale.domain([options.xmin, options.xmax])
@@ -220,11 +236,25 @@ define(function (require) {
         ylabelFontSizeInPixels = parseFloat($("svg.graph text.ylabel").css("font-size"));
       }
 
-      xAxisNumberWidth = Math.max(axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.xFormatter, options.xmax)*1.5,
-                                  axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.xFormatter, options.xmin)*1.5);
+      if (xScale === undefined) {
+        xlabelMetrics = [fontSizeInPixels, fontSizeInPixels];
+        ylabelMetrics = [fontSizeInPixels*2, fontSizeInPixels];
+      } else {
+        xlabelMetrics = axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, 
+          longestNumber(xScale.ticks(options.xTickCount), fx));
 
-      yAxisNumberWidth = Math.max(axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.yFormatter, options.ymax)*1.5,
-                                  axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.yFormatter, options.ymin)*1.5);
+        ylabelMetrics = axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels,
+          longestNumber(yScale.ticks(options.yTickCount), fy));
+      }
+
+      xAxisNumberWidth  = xlabelMetrics[0];
+      xAxisNumberHeight = xlabelMetrics[1];
+      yAxisNumberWidth = ylabelMetrics[0];
+
+      xAxisLabelHorizontalPadding = xAxisNumberWidth * 0.5;
+      xAxisLabelVerticalPadding = xAxisNumberHeight * 2.2;
+
+      yAxisLabelPadding = yAxisNumberWidth * 1.2;
 
       switch(sizeType.value) {
         case 0:         // tiny
@@ -248,7 +278,7 @@ define(function (require) {
         case 2:         // medium
         padding = {
          "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
-         "right":  Math.max(fontSizeInPixels, xAxisNumberWidth*0.5),
+         "right":  xAxisLabelHorizontalPadding,
          "bottom": axisFontSizeInPixels*1.25,
          "left":   yAxisNumberWidth
         };
@@ -257,18 +287,18 @@ define(function (require) {
         case 3:         // large
         padding = {
          "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
-         "right":  Math.max(fontSizeInPixels, xAxisNumberWidth*0.5),
-         "bottom": options.xlabel ? (xlabelFontSizeInPixels + axisFontSizeInPixels)*1.25 : axisFontSizeInPixels*1.25,
-         "left":   options.ylabel ? yAxisNumberWidth + axisFontSizeInPixels*1.2 : yAxisNumberWidth
+         "right":  xAxisLabelHorizontalPadding,
+         "bottom": options.xlabel ? xAxisLabelVerticalPadding : axisFontSizeInPixels*1.25,
+         "left":   options.ylabel ? yAxisLabelPadding + axisFontSizeInPixels*1.2 : yAxisNumberWidth
         };
         break;
 
         default:         // extralarge
         padding = {
          "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
-         "right":  Math.max(fontSizeInPixels, xAxisNumberWidth*0.5),
-         "bottom": options.xlabel ? (xlabelFontSizeInPixels + axisFontSizeInPixels)*1.25 : axisFontSizeInPixels*1.25,
-         "left":   options.ylabel ? yAxisNumberWidth + axisFontSizeInPixels*1.2 : yAxisNumberWidth
+         "right":  xAxisLabelHorizontalPadding,
+         "bottom": options.xlabel ? xAxisLabelVerticalPadding : axisFontSizeInPixels*1.25,
+         "left":   options.ylabel ? yAxisLabelPadding + axisFontSizeInPixels*1.2 : yAxisNumberWidth
         };
         break;
       }
@@ -498,7 +528,7 @@ define(function (require) {
             // .attr("tabindex", tabindex || 0);
 
         vis = svg.append("g")
-              .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+            .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
 
         plot = vis.append("rect")
           .attr("class", "plot")
@@ -564,7 +594,7 @@ define(function (require) {
               .text(options.xlabel)
               .attr("x", size.width/2)
               .attr("y", size.height)
-              .attr("dy", axisFontSizeInPixels*2 + "px")
+              .attr("dy", xAxisLabelVerticalPadding-xAxisNumberHeight/3 + "px")
               .style("text-anchor","middle");
         }
 
@@ -575,7 +605,7 @@ define(function (require) {
               .attr("class", "ylabel")
               .text( options.ylabel)
               .style("text-anchor","middle")
-              .attr("transform","translate(" + -yAxisNumberWidth + " " + size.height/2+") rotate(-90)");
+              .attr("transform","translate(" + -yAxisLabelPadding + " " + size.height/2+") rotate(-90)");
         }
 
         d3.select(node)
@@ -600,7 +630,8 @@ define(function (require) {
 
         vis
           .attr("width",  cx)
-          .attr("height", cy);
+          .attr("height", cy)
+          .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
 
         plot
           .attr("width", size.width)
@@ -632,12 +663,12 @@ define(function (require) {
           xlabel
               .attr("x", size.width/2)
               .attr("y", size.height)
-              .attr("dy", axisFontSizeInPixels*2 + "px");
+              .attr("dy", xAxisLabelVerticalPadding-xAxisNumberHeight/3 + "px");
         }
 
         if (options.ylabel && sizeType.value > 1) {
           ylabel
-              .attr("transform","translate(" + -yAxisNumberWidth + " " + size.height/2+") rotate(-90)");
+              .attr("transform","translate(" + -yAxisLabelPadding + " " + size.height/2+") rotate(-90)");
         }
 
         notification
