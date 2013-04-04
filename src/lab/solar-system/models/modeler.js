@@ -1171,6 +1171,11 @@ define(function(require) {
       propCopy.viewOptions = serialize(metadata.viewOptions, properties);
       propCopy.bodies = serialize(metadata.body, bodies, engine.getNumberOfBodies());
 
+      // Remove bodyTraceId when body tracing is disabled.
+      if (propCopy.viewOptions.showBodyTrace === false) {
+        delete propCopy.viewOptions.bodyTraceId;
+      }
+
       removebodiesArrayIfDefault("marked", metadata.body.marked.defaultValue);
       removebodiesArrayIfDefault("visible", metadata.body.visible.defaultValue);
 

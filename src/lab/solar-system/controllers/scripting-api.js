@@ -103,6 +103,17 @@ define(function (require) {
         api.repaint();
       },
 
+      traceBody: function traceBody(i) {
+        if (i === null) return;
+
+        model.set({bodyTraceId: i});
+        model.set({showBodyTrace: true});
+      },
+
+      untraceBody: function untraceBody() {
+        model.set({showBodyTrace: false});
+      },
+
       /**
         Sets individual planet properties using human-readable hash.
         e.g. setBodyProperties(5, {x: 1, y: 0.5, charge: 1})

@@ -91,8 +91,11 @@ define(function() {
       showBodyTrace: {
         defaultValue: false
       },
-      planetTraceId: {
+      bodyTraceId: {
         defaultValue: 0
+      },
+      bodyTraceColor: {
+        defaultValue: "#ee8833"
       },
       images: {
         defaultValue: []
@@ -158,7 +161,6 @@ define(function() {
         defaultValue: 1
       },
       radius: {
-        defaultValue: 1
       },
       pinned: {
         defaultValue: false

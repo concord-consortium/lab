@@ -6,13 +6,13 @@
 // ------------------------------------------------------------
 define(function (require) {
   // Dependencies.
-  var console               = require('common/console'),
+  var labConfig             = require('lab.config'),
+      console               = require('common/console'),
       wrapSVGText           = require('cs!common/layout/wrap-svg-text'),
       gradients             = require('common/views/gradients');
 
   return function SolarSystemView(modelView, model) {
-  // return function SolarSystemView(model, containers, m2px, m2pxInv, mSize2px) {
-        // Public API object to be returned.
+    // Public API object to be returned.
     var api = {},
 
         modelWidth,
@@ -63,10 +63,25 @@ define(function (require) {
         fontSizeInPixels,
         textBoxFontSizeInPixels,
 
+        imageProp,
+        imageMapping,
+        modelImagePath,
+        imageSizes = [],
+        textBoxes,
+        imagePath,
+
+        drawBodyTrace,
+        bodyTraceId,
+        bodyTraceColor,
+        bodyTrace,
+        bodyTracePath,
+        bodyTraceMaxLength = 35500,
+        traceBodyStrokeWidth,
+
         // for model clock
         showClock,
         timeLabel,
-        modelTimeFormatter = d3.format("5.0f"),
+        modelTimeFormatter = d3.format("5.1f"),
         timePrefix = "",
         timeSuffix = "";
 
@@ -173,6 +188,18 @@ define(function (require) {
       });
     }
 
+    function setupBodyTrace() {
+      mainContainer.selectAll("path.bodyTrace").remove();
+      bodyTracePath = "";
+
+      drawBodyTrace = model.get("showBodyTrace");
+      bodyTraceId = model.get("bodyTraceId");
+      if (drawBodyTrace) {
+        bodyTrace = mainContainer.selectAll("path.bodyTrace").data([modelResults[bodyTraceId]]);
+        bodyTraceEnter();
+      }
+    }
+
     /**
       Call this wherever a d3 selection is being used to add circles for astromonicalBodys
     */
@@ -233,6 +260,46 @@ define(function (require) {
           renderBodyTooltip(i);
         }
       }
+    }
+
+    function updateBodyTrace() {
+      bodyTrace.attr({
+        "d": getBodyTracePath
+      });
+    }
+
+    function bodyTraceEnter() {
+      bodyTrace.enter().append("path")
+        .attr({
+          "class": "bodyTrace",
+          "d": getBodyTracePath,
+          "stroke-width": traceBodyStrokeWidth,
+          "stroke": bodyTraceColor,
+          "fill": "none"
+        });
+    }
+
+    function getBodyTracePath(d) {
+      // until we implement buffered array model output properties,
+      // we just keep the path history in the path string
+      var dx = Math.floor(model2px(d.x) * 100) / 100,
+          dy = Math.floor(model2pxInv(d.y) * 100) / 100,
+          lIndex, sIndex;
+      if (!bodyTracePath) {
+        bodyTracePath = "M"+dx+","+dy+"L";
+        return "M "+dx+","+dy;
+      } else {
+        bodyTracePath += dx+","+dy + " ";
+      }
+
+      // fake buffered array functionality by knocking out the first
+      // element of the string when we get too big
+      if (bodyTracePath.length > bodyTraceMaxLength) {
+        lIndex = bodyTracePath.indexOf("L");
+        sIndex = bodyTracePath.indexOf(" ");
+        bodyTracePath = "M" + bodyTracePath.slice(lIndex+1, sIndex) + "L" + bodyTracePath.slice(sIndex+1);
+      }
+      return bodyTracePath;
     }
 
     function renderBodyTooltip(i) {
@@ -297,6 +364,21 @@ define(function (require) {
     // *** Main Renderer functions ***
     //
 
+    function setupRendererOptions() {
+      imageProp = model.get("images");
+      imageMapping = model.get("imageMapping");
+      modelImagePath = model.get('imagePath');
+      if (modelImagePath) {
+        imagePath = labConfig.actualRoot + modelImagePath;
+      }
+      else if (model.url) {
+        imagePath = labConfig.actualRoot + model.url.slice(0, model.url.lastIndexOf("/") + 1);
+      }
+
+      bodyTraceColor = model.get("bodyTraceColor");
+
+    }
+
     //
     // SolarSystem Renderer: init
     //
@@ -317,11 +399,14 @@ define(function (require) {
 
       fontSizeInPixels = modelView.getFontSizeInPixels();
       textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
+      traceBodyStrokeWidth = fontSizeInPixels/12;
 
       modelResults  = model.get_results();
       modelWidth    = model.get('width');
       modelHeight   = model.get('height');
       aspectRatio   = modelWidth / modelHeight;
+
+      setupRendererOptions();
 
       modelMinX = model.get('minX');
       modelMinY = model.get('minY');
@@ -338,6 +423,12 @@ define(function (require) {
           modelView.updateClickHandlers();
         };
       }
+
+      // Redraw container each time when some visual-related property is changed.
+      model.addPropertiesListener([
+        "showBodyTrace", "bodyTraceId",
+        "showClock", "backgroundColor", "markColor"],
+          redrawClickableObjects(repaint));
 
       // Redraw container each time when some visual-related property is changed.
       model.on('addBody', redrawClickableObjects(repaint));
@@ -373,6 +464,7 @@ define(function (require) {
       textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
 
       setupDynamicGradients();
+      setupBodyTrace();
       setupClock();
       setupColorsOfBodies();
       setupBodies();
@@ -393,6 +485,10 @@ define(function (require) {
       }
 
       astromonicalBodyUpdate();
+
+      if (drawBodyTrace) {
+        updateBodyTrace();
+      }
 
       console.timeEnd('view update');
     }
