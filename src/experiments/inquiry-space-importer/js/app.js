@@ -421,6 +421,7 @@ ISImporter.appController = new ISImporter.Object({
   currentAppletReady: false,
   started: false,
   selecting: false,
+  filledMetadata: [],
 
   // could split interface controller from generic app container--but not yet.
   $body: null,
@@ -522,6 +523,27 @@ ISImporter.appController = new ISImporter.Object({
 
     this.$realtimeDisplayValue = $('#realtime-display .realtime-value');
     this.$realtimeDisplayUnits = $('#realtime-display .realtime-units');
+
+    var updateExportAvailability = function() {
+      var el = this,
+         val = $(el).val();
+      if (typeof(val) !== "undefined" && val != null && val !== "") {
+        if (self.filledMetadata.indexOf(el) == -1) {
+          self.filledMetadata.push(el);
+        }
+      } else {
+        var idx = self.filledMetadata.indexOf(el);
+        if (idx != -1) {
+          self.filledMetadata.splice(idx,1);
+        }
+      }
+      if (self.filledMetadata.length > 0) {
+        self.enable(self.$exportButton);
+      } else {
+        self.disable(self.$exportButton);
+      }
+    };
+    $('.metadata-label, .metadata-value').on('keyup', updateExportAvailability);
   },
 
   disableControlButtons: function() {
