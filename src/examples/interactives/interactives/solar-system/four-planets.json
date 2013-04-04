@@ -55,28 +55,33 @@
       "property": "verticalWrapping"
     },
     {
-      "type": "text",
-      "id": "axes-label",
-      "text": "Axes",
-      "style": "header"
-    },
-    {
-      "type": "checkbox",
-      "id": "show-gridlines",
-      "text": "Grid Lines",
-      "property": "gridLines"
-    },
-    {
-      "type": "checkbox",
-      "id": "show-xunits",
-      "text": "X units",
-      "property": "xunits"
-    },
-    {
-      "type": "checkbox",
-      "id": "show-yunits",
-      "text": "Y units",
-      "property": "yunits"
+      "type": "radio",
+      "id": "trace-buttons",
+      "orientation": "vertical",
+      "label": "Trace Planet",
+      "options": [
+        {
+          "text": "Off",
+          "action": "untraceBody();",
+          "selected": true
+        },
+        {
+          "text": "1",
+          "action": "traceBody(1);"
+        },
+        {
+          "text": "2",
+          "action": "traceBody(2);"
+        },
+        {
+          "text": "3",
+          "action": "traceBody(3);"
+        },
+        {
+          "text": "4",
+          "action": "traceBody(4);"
+        }
+      ]
     }
   ],
   "layout": {
@@ -86,10 +91,7 @@
       [ "wrapping-label" ],
       [ "horizontal-wrapping" ],
       [ "vertical-wrapping" ],
-      [ "axes-label" ],
-      [ "show-gridlines" ],
-      [ "show-xunits" ],
-      [ "show-yunits" ]
+      [ "trace-buttons" ]
     ],
     "bottom": [
     ]
