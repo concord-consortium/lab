@@ -249,12 +249,13 @@ define(function (require, exports, module) {
         // Half of the update of v(t + dt) and p(t + dt) using a. During a single integration loop,
         // call once when a = a(t) and once when a = a(t+dt).
         halfUpdateVelocity = function() {
-          var i;
+          var i, m;
           for (i = 0; i < N; i++) {
+            m = mass[i];
             vx[i] += 0.5 * ax[i] * dt;
-            px[i] = vx[i];
+            px[i] = m * vx[i];
             vy[i] += 0.5 * ay[i] * dt;
-            py[i] = vy[i];
+            py[i] = m * vy[i];
           }
         },
 
