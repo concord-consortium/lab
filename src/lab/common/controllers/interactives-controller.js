@@ -191,6 +191,7 @@ define(function (require) {
                     "x": 0.0,
                     "y": 1.0,
                     "width": 2.5,
+                    "height": 0.25,
                     "fontScale": 1.4,
                     "layer": 1,
                     "frame": "rectangle",
@@ -201,8 +202,9 @@ define(function (require) {
                   {
                     "text": modelDefinition.url,
                     "x": 0.0,
-                    "y": 0.9,
+                    "y": 0.8,
                     "width": 2.5,
+                    "height": 0.25,
                     "fontScale": 0.9,
                     "layer": 1,
                     "frame": "rectangle",
