@@ -224,7 +224,6 @@ define(function (require, exports, module) {
 
 
         updateGravitationalAccelerations = function() {
-
           var i, j, dx, dy, rSq, gfx, gfy;
 
           i = -1; while (++i < N) {
@@ -458,7 +457,7 @@ define(function (require, exports, module) {
         if (duration === undefined)  duration = 100;
 
         // The length of an integration timestep, in fs.
-        if (_dt === undefined) _dt = 1;
+        if (_dt === undefined) _dt = 0.1;
 
         dt = _dt;        // dt is a closure variable that helpers need access to
         dt_sq = dt * dt; // the squared time step is also needed by some helpers.

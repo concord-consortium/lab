@@ -41,7 +41,7 @@ define(function() {
         defaultValue: "default"
       },
       timeStep: {
-        defaultValue: 1
+        defaultValue: 0.1
       },
       timeStepsPerTick: {
         defaultValue: 50
