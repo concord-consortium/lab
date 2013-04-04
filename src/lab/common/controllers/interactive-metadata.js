@@ -577,9 +577,14 @@ define(function() {
         // using small triangle. E.g.
         // can be used to present
         // averaged value.
-        conflictsWith: ["displayAverage"]
+        conflictsWith: ["averagePeriod"]
       },
-      displayAverage: {
+      averagePeriod: {
+        // Setting this property to some numeric value
+        // enables displaying of the averaged property.
+        // It's a shortcut which can be used instead
+        // of a custom filtered output bound
+        // to the "secondProperty".
         conflictsWith: ["secondProperty"]
       },
       width: {
