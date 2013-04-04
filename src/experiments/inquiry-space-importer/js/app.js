@@ -644,6 +644,7 @@ ISImporter.appController = new ISImporter.Object({
     if (this.taring) this.endTare();
     this.$sensorSelector.val("select-sensor");
     this.disable(this.$sensorDisconnect);
+    $('.metadata-label, .metadata-value').attr("disabled","disabled");
   },
 
   // events
@@ -734,6 +735,7 @@ ISImporter.appController = new ISImporter.Object({
 
     // we'll skip explicit state management... for now.
     this.disableControlButtons();
+    $('.metadata-label, .metadata-value').attr("disabled","disabled");
 
     if (this.sensor.tareable) {
       this.disable(this.$tareButton);
@@ -780,6 +782,7 @@ ISImporter.appController = new ISImporter.Object({
     this.currentAppletReady = true;
     this.enable(this.$startButton);
     if (this.sensor.tareable) this.enable(this.$tareButton);
+    $('.metadata-label, .metadata-value').removeAttr("disabled");
     // Read the current sensor value and inject it into the display
     // TODO Poll and update this every second while we're not collecting and not errored out
     var _this = this;
