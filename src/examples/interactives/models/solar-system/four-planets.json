@@ -28,7 +28,7 @@
     "gridLines": true,
     "enableKeyboardHandlers": true
   },
-  "planets": {
+  "bodies": {
     "x": [
         0,
         0,

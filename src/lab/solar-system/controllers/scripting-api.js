@@ -14,15 +14,16 @@ define(function (require) {
     @param: api
   */
 
+
   return function SolarSystemScriptingAPI (api) {
 
     return {
-      /* Returns number of planets in the system. */
-      getNumberOfPlanets: function getNumberOfPlanets() {
-        return model.get_num_planets();
+      /* Returns number of bodies in the system. */
+      getNumberOfBodies: function getNumberOfBodies() {
+        return model.get_num_bodies();
       },
 
-      addPlanet: function addPlanet(props, options) {
+      addBody: function addBody(props, options) {
         if (options && options.supressRepaint) {
           // Translate supressRepaint option to
           // option understable by modeler.
@@ -30,13 +31,13 @@ define(function (require) {
           // Scripting API users.
           options.supressEvent = true;
         }
-        return model.addPlanet(props, options);
+        return model.addBody(props, options);
       },
 
       /*
         Removes planet 'i'.
       */
-      removePlanet: function removePlanet(i, options) {
+      removeBody: function removeBody(i, options) {
         if (options && options.supressRepaint) {
           // Translate supressRepaint option to
           // option understable by modeler.
@@ -46,36 +47,36 @@ define(function (require) {
           delete options.supressRepaint;
         }
         try {
-          model.removePlanet(i, options);
+          model.removeBody(i, options);
         } catch (e) {
           if (!options || !options.silent)
             throw e;
         }
       },
 
-      addRandomPlanet: function addRandomPlanet() {
-        return model.addRandomPlanet.apply(model, arguments);
+      addRandomBody: function addRandomBody() {
+        return model.addRandomBody.apply(model, arguments);
       },
 
-      /** returns a list of integers corresponding to planets in the system */
-      randomPlanets: function randomPlanets(n) {
-        var numPlanets = model.get_num_planets();
+      /** returns a list of integers corresponding to bodies in the system */
+      randomBodies: function randomBodies(n) {
+        var numBodies = model.get_num_bodies();
 
-        if (n === null) n = 1 + api.randomInteger(numPlanets-1);
+        if (n === null) n = 1 + api.randomInteger(numBodies-1);
 
-        if (!api.isInteger(n)) throw new Error("randomPlanets: number of planets requested, " + n + ", is not an integer.");
-        if (n < 0) throw new Error("randomPlanets: number of planets requested, " + n + ", was less be greater than zero.");
+        if (!api.isInteger(n)) throw new Error("randomBodies: number of bodies requested, " + n + ", is not an integer.");
+        if (n < 0) throw new Error("randomBodies: number of bodies requested, " + n + ", was less be greater than zero.");
 
-        if (n > numPlanets) n = numPlanets;
-        return api.choose(n, numPlanets);
+        if (n > numBodies) n = numBodies;
+        return api.choose(n, numBodies);
       },
 
       /**
         Accepts planet indices as arguments, or an array containing planet indices.
-        Unmarks all planets, then marks the requested planet indices.
+        Unmarks all bodies, then marks the requested planet indices.
         Repaints the screen to make the marks visible.
       */
-      markPlanets: function markPlanets() {
+      markBodies: function markBodies() {
         var i,
             len;
 
@@ -83,31 +84,31 @@ define(function (require) {
 
         // allow passing an array instead of a list of planet indices
         if (api.isArray(arguments[0])) {
-          return markPlanets.apply(null, arguments[0]);
+          return markBodies.apply(null, arguments[0]);
         }
 
-        api.unmarkAllPlanets();
+        api.unmarkAllBodies();
 
-        // mark the requested planets
+        // mark the requested bodies
         for (i = 0, len = arguments.length; i < len; i++) {
-          model.setPlanetProperties(arguments[i], {marked: 1});
+          model.setBodyProperties(arguments[i], {marked: 1});
         }
         api.repaint();
       },
 
-      unmarkAllPlanets: function unmarkAllPlanets() {
-        for (var i = 0, len = model.get_num_planets(); i < len; i++) {
-          model.setPlanetProperties(i, {marked: 0});
+      unmarkAllBodies: function unmarkAllBodies() {
+        for (var i = 0, len = model.get_num_bodies(); i < len; i++) {
+          model.setBodyProperties(i, {marked: 0});
         }
         api.repaint();
       },
 
       /**
         Sets individual planet properties using human-readable hash.
-        e.g. setPlanetProperties(5, {x: 1, y: 0.5, charge: 1})
+        e.g. setBodyProperties(5, {x: 1, y: 0.5, charge: 1})
       */
-      setPlanetProperties: function setPlanetProperties(i, props, checkLocation, moveMolecule, options) {
-        model.setPlanetProperties(i, props, checkLocation, moveMolecule);
+      setBodyProperties: function setBodyProperties(i, props, checkLocation, moveMolecule, options) {
+        model.setBodyProperties(i, props, checkLocation, moveMolecule);
         if (!(options && options.supressRepaint)) {
           api.repaint();
         }
@@ -115,10 +116,10 @@ define(function (require) {
 
       /**
         Returns planet properties as a human-readable hash.
-        e.g. getPlanetProperties(5) --> {x: 1, y: 0.5, charge: 1, ... }
+        e.g. getBodyProperties(5) --> {x: 1, y: 0.5, charge: 1, ... }
       */
-      getPlanetProperties: function getPlanetProperties(i) {
-        return model.getPlanetProperties(i);
+      getBodyProperties: function getBodyProperties(i) {
+        return model.getBodyProperties(i);
       },
 
       addTextBox: function(props) {

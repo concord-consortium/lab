@@ -14,7 +14,7 @@
       {
         "imageUri": "star.png",
         "imageHostIndex": 0,
-        "imageHostType": "Planet",
+        "imageHostType": "Body",
         "imageLayer": 3,
         "imageX": 1.745,
         "imageY": 1.86
@@ -28,7 +28,7 @@
     "gridLines": true,
     "enableKeyboardHandlers": true
   },
-  "planets": {
+  "bodies": {
     "x": [
         0,
        20

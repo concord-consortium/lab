@@ -1,11 +1,11 @@
 {
   "title": "Testing: two planets",
   "publicationStatus": "draft",
-  "subtitle": "Planet on left is 200x mass of planet on right; both have an initial X velocity of zero.",
+  "subtitle": "Body on left is 200x mass of body on right; both have an initial X velocity of zero.",
   "about": "",
   "models": [
     {
-      "id": "two-planets",
+      "id": "two-bodies",
       "type": "solar-system",
       "url": "models/solar-system/two-planets.json",
       "viewOptions": {
@@ -15,25 +15,25 @@
   ],
   "outputs": [
     {
-      "name":  "numPlanets",
-      "label": "Planets",
+      "name":  "numBodies",
+      "label": "Bodies",
       "units": "count",
       "value": [
-          "return getNumberOfPlanets();"
+          "return getNumberOfBodies();"
       ]
     }
   ],
   "components": [
     {
       "type": "button",
-      "id": "add-random-planet",
-      "text": "Add random planet",
-      "action": "addRandomPlanet()"
+      "id": "add-random-body",
+      "text": "Add random body",
+      "action": "addRandomBody()"
     },
     {
       "type": "numericOutput",
-      "id": "current-planets",
-      "property": "numPlanets",
+      "id": "current-bodies",
+      "property": "numBodies",
       "displayValue": "return format('f')(value)"
     },
     {
@@ -81,8 +81,8 @@
   ],
   "layout": {
     "right": [
-      [ "add-random-planet" ],
-      [ "current-planets" ],
+      [ "add-random-body" ],
+      [ "current-bodies" ],
       [ "wrapping-label" ],
       [ "horizontal-wrapping" ],
       [ "vertical-wrapping" ],

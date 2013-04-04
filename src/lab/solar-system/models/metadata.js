@@ -88,7 +88,7 @@ define(function() {
       markColor: {
         defaultValue: "#f8b500"
       },
-      showPlanetTrace: {
+      showBodyTrace: {
         defaultValue: false
       },
       planetTraceId: {
@@ -121,7 +121,7 @@ define(function() {
       planetNumbers: {
         defaultValue: false
       },
-      enablePlanetTooltips: {
+      enableBodyTooltips: {
         defaultValue: false
       },
       enableKeyboardHandlers: {
@@ -132,7 +132,7 @@ define(function() {
       }
     },
 
-    planet: {
+    body: {
       // Required properties:
       x: {
         required: true
@@ -157,6 +157,9 @@ define(function() {
       mass: {
         defaultValue: 1
       },
+      radius: {
+        defaultValue: 1
+      },
       pinned: {
         defaultValue: false
       },
@@ -167,10 +170,6 @@ define(function() {
         defaultValue: 0
       },
       // Read-only values, can be set only by engine:
-      radius: {
-        readOnly: true,
-        serialize: false
-      },
       px: {
         readOnly: true,
         serialize: false

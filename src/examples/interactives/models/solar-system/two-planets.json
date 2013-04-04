@@ -1,9 +1,9 @@
 {
   "type": "solar-system",
-  "minX": -40,
-  "minY": -30,
-  "maxX":  40,
-  "maxY":  30,
+  "minX": -20,
+  "minY": -15,
+  "maxX":  20,
+  "maxY":  15,
   "horizontalWrapping": false,
   "verticalWrapping": false,
   "gravitationalField": 6.67e-8,
@@ -14,7 +14,7 @@
       {
         "imageUri": "star.png",
         "imageHostIndex": 0,
-        "imageHostType": "Planet",
+        "imageHostType": "Body",
         "imageLayer": 3,
         "imageX": 1.745,
         "imageY": 1.86
@@ -28,10 +28,10 @@
     "gridLines": true,
     "enableKeyboardHandlers": true
   },
-  "planets": {
+  "bodies": {
     "x": [
-      -20,
-       20
+      -10,
+       10
     ],
     "y": [
         0,
@@ -42,11 +42,11 @@
       0
     ],
     "vy": [
-      0.0001,
-     -0.0001
+      0.000,
+     -0.000
     ],
     "mass": [
-      200,
+      2000,
       1
     ],
     "pinned": [

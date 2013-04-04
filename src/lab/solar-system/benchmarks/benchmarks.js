@@ -17,10 +17,10 @@ define(function (require) {
         }
       },
       {
-        name: "planets",
+        name: "bodies",
         numeric: true,
         run: function(done) {
-          done(model.get_num_planets());
+          done(model.get_num_bodies());
         }
       },
       {
