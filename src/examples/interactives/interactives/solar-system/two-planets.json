@@ -1,7 +1,7 @@
 {
   "title": "Testing: two planets",
   "publicationStatus": "draft",
-  "subtitle": "Planet on left is 100x mass of planet on right; both have an initial velocity of zero.",
+  "subtitle": "Planet on left is 200x mass of planet on right; both have an initial X velocity of zero.",
   "about": "",
   "models": [
     {
