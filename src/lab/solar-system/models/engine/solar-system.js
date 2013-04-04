@@ -41,16 +41,16 @@ define(function (require, exports, module) {
         // ####################################################################
         //                      Body Properties
 
-        // Individual property arrays for the bodies, indexed by planet number
+        // Individual property arrays for the bodies, indexed by body number
         radius, x, y, vx, vy, px, py, ax, ay, mass, speed,
 
-        // An object that contains references to the above planet-property arrays
+        // An object that contains references to the above body-property arrays
         bodies,
 
         // The number of bodies in the system.
         N = 0,
 
-        // booleans indicating whether the planet world wraps
+        // booleans indicating whether the body world wraps
         horizontalWrapping,
         verticalWrapping,
 
@@ -341,8 +341,6 @@ define(function (require, exports, module) {
       setBodyProperties: function (i, props) {
         var key, idx, rest, j;
 
-        props.radius = 1;
-
         // Set all properties from props hash.
         for (key in props) {
           if (props.hasOwnProperty(key)) {
@@ -355,12 +353,12 @@ define(function (require, exports, module) {
       },
 
       /**
-        The canonical method for adding an planet to the collections of bodies.
+        The canonical method for adding an body to the collections of bodies.
 
         If there isn't enough room in the 'bodies' array, it (somewhat inefficiently)
         extends the length of the typed arrays by ten to have room for more bodies.
 
-        @returns the index of the new planet
+        @returns the index of the new body
       */
       addBody: function(props) {
         if (N + 1 > bodies.x.length) {
@@ -368,13 +366,13 @@ define(function (require, exports, module) {
           assignShortcutReferences.bodies();
         }
 
-        // Set acceleration of new planet to zero.
+        // Set acceleration of new body to zero.
         props.ax = props.ay = 0;
 
         // Increase number of bodies.
         N++;
 
-        // Set provided properties of new planet.
+        // Set provided properties of new body.
         engine.setBodyProperties(N - 1, props);
 
       },
@@ -389,7 +387,7 @@ define(function (require, exports, module) {
 
         // Shift bodies properties and zero last element.
         // It can be optimized by just replacing the last
-        // planet with planet 'i', however this approach
+        // body with body 'i', however this approach
         // preserves more expectable bodies indexing.
         for (i = idx; i < N; i++) {
           for (prop in bodies) {
@@ -411,8 +409,7 @@ define(function (require, exports, module) {
 
       setupBodiesRandomly: function(options) {
 
-        var // if a temperature is not explicitly requested, we just need any nonzero number
-
+        var
             nrows = Math.floor(Math.sqrt(N)),
             ncols = Math.ceil(N/nrows),
 
@@ -435,12 +432,22 @@ define(function (require, exports, module) {
             props = {
               x:       c * colSpacing,
               y:       r * rowSpacing,
+              mass:    Math.random() * 5,
               vx:      vMagnitude * Math.cos(vDirection),
               vy:      vMagnitude * Math.sin(vDirection)
             };
+            props.radius = radiusFromMass(props.mass);
             engine.setBodyProperties(i, props);
           }
         }
+      },
+
+      radiusFromMass: function(m) {
+        var density = 1,
+            volume = m*density,
+            r;
+        r = Math.pow(volume/(4/3*Math.PI), 1/3);
+        return r
       },
 
       // Velocity Verlet integration scheme.
@@ -479,7 +486,7 @@ define(function (require, exports, module) {
           halfUpdateVelocity();
 
           // Clearing the acceleration here from pinned bodies will cause the acceleration
-          // to be zero for both halfUpdateVelocity methods and updateBodyPosition, freezing the planet.
+          // to be zero for both halfUpdateVelocity methods and updateBodyPosition, freezing the body.
           pinBodies();
 
           // Update r(t + dt) using v(t + 0.5 * dt).

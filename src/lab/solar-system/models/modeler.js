@@ -612,6 +612,9 @@ define(function(require) {
               planetProps[prop] = config[prop][i];
             }
           }
+          if (!planetProps.radius) {
+            planetProps.radius = engine.radiusFromMass(config.mass[i]);
+          }
           model.addBody(planetProps, options);
         }
       } else {
@@ -646,35 +649,36 @@ define(function(require) {
     };
 
     /**
-      Attempts to add an 0-velocity planet to a random location. Returns false if after 10 tries it
-      can't find a location. (Intended to be exposed as a script API method.)
-
-      Optionally allows specifying the element (default is to randomly select from all editableElements) and
-      charge (default is neutral).
+      Attempts to add a body to a random location.
     */
     model.addRandomBody = function() {
       var width = model.get('width'),
           height = model.get('height'),
           minX = model.get('minX'),
           minY = model.get('minY'),
-          radius = 1,
-          x, y,
-          vx, vy,
-          loc;
+          props = {},
+          radius,
+          mass;
 
-      x = minX + Math.random() * width - 2*radius;
-      y = minY + Math.random() * height - 2*radius;
-      vx = (Math.random() - 0.5) / 100;
-      vy = (Math.random() - 0.5) / 100;
-      model.addBody({ x: x, y: x, vx: vx, vy: vy });
+      mass = Math.random() * 10;
+      radius = engine.radiusFromMass(mass);
+      props = {
+        x:       minX + Math.random() * width - 2*radius,
+        y:       minY + Math.random() * height - 2*radius,
+        vx:      (Math.random() - 0.5) / 100,
+        vy:      (Math.random() - 0.5) / 100,
+        mass:    mass,
+        radius:  radius
+      };
+      model.addBody(props);
       return false;
     },
 
     /**
-      Adds a new planet defined by properties.
+      Adds a new body defined by properties.
       Intended to be exposed as a script API method also.
 
-      Adjusts (x,y) if needed so that the whole planet is within the walls of the container.
+      Adjusts (x,y) if needed so that the whole body is within the walls of the container.
 
       Returns false and does not add the planet if the potential energy change of adding an *uncharged*
       planet of the specified element to the specified location would be positive (i.e, if the planet
@@ -688,15 +692,14 @@ define(function(require) {
       var minX = model.get('minX'),
           minY = model.get('minY'),
           maxX = model.get('maxX'),
-          maxY = model.get('maxY'),
-          radius = 1;
+          maxY = model.get('maxY');
 
       options = options || {};
 
       // Validate properties, provide default values.
       props = validator.validateCompleteness(metadata.body, props);
 
-      // As a convenience to script authors, bump the planet within bounds
+      // As a convenience to script authors, bump the body within bounds
       // radius = engine.getRadiusOfElement(props.element);
       // if (props.x < (minX + radius)) props.x = minX + radius;
       // if (props.x > (maxX - radius)) props.x = maxX - radius;
@@ -791,7 +794,7 @@ define(function(require) {
     model.removeTextBox = function(i) {
       var text = properties.textBoxes;
       if (i >=0 && i < text.length) {
-        properties.textBoxes = text.slice(0,i).concat(text.slice(i+1))
+        properties.textBoxes = text.slice(0,i).concat(text.slice(i+1));
         dispatch.textBoxesChanged();
       } else {
         throw new Error("Text box \"" + i + "\" does not exist, so it cannot be removed.");
