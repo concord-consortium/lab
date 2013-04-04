@@ -352,8 +352,8 @@ ISImporter.GraphController = defineClass({
       ymax        : this.yMax,
       xTickCount  : 6,
       yTickCount  : 7,
-      xFormatter  : ".1s",
-      yFormatter  : ".2s",
+      xFormatter  : "2s",
+      yFormatter  : "2s",
       points      : [],
       circleRadius: false,
       dataChange  : false
