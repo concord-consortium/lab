@@ -47,6 +47,44 @@ define(function (require) {
         return model.getNumberOfAngularBonds();
       },
 
+      /* Send a track page context event to Google Analytics */
+      trackPageContext: function trackPageContext(category, action, label) {
+        var pageContext,
+            googleAnalytics = _gaq;
+
+        if (typeof googleAnalytics === 'undefined'){
+          console.error("Google Analytics not defined, Can not send the Track Page Context event");
+          return;
+        }
+        if (!category) {
+          category = "Interactive";
+        }
+        if (!action) {
+          action = "Page Context";
+        }
+        if (!label) {
+          label = JSON.stringify({ pageContext: document.referrer, interactive: document.location.href });
+        }
+        console.log("Sending a track page context event to Google Analytics");
+        googleAnalytics.push(['_trackEvent', category, action, label]);
+      },
+
+      /* Send a tracking event to Google Analytics */
+      trackEvent: function trackEvent(category, action, label) {
+        var googleAnalytics = _gaq;
+
+        if (typeof googleAnalytics === 'undefined'){
+          console.error("Google Analytics not defined, Can not send trackEvent");
+          return;
+        }
+        if (!category) {
+          category = "Interactive";
+        }
+        console.log("Sending a track page event Google Analytics (category:action:label):");
+        console.log("(" + category + ":"  + action + ":" + label + ")");
+        googleAnalytics.push(['_trackEvent', category, action, label]);
+      },
+
       addAtom: function addAtom(props, options) {
         if (options && options.suppressRepaint) {
           // Translate suppressRepaint option to
@@ -132,21 +170,43 @@ define(function (require) {
       },
 
       /**
-       * Returns array of atom indices, optionally specifying an element of interest.
-       * atomsWithin(1, 1, 0.5) returns all atoms within 0.5 nm of position (1nm, 1nm) within the model.
-       * atomsWithin(1, 1, 0.2, 0.3) returns all atoms within a rectangle of width 0.2nm by height 0.3nm,
-       * with the bottom-left corner specified by the postion (1nm, 1nm).
-       * @param  {number} x       X coordinate of the bottom-left rectangle corner
-       *                          or circle center (when h is not provided).
-       * @param  {number} y       Y coordinate of the bottom-left rectangle corner
-       *                          or circle center (when h is not provided).
-       * @param  {number} w       Width of the rectangle
-       *                          or radius of the circle (when h is not provided).
+       * Returns array of atom indices within circular area,
+       * optionally specifying an element of interest.
+       * e.g. atomsWithinCircle(1, 1, 0.5) returns all atoms within 0.5 nm of position (1nm, 1nm).
+       * @param  {number} x       X coordinate of the circle center.
+       * @param  {number} y       Y coordinate of the circle center.
+       * @param  {number} w       Radius of the circle.
+       * @param  {number} element Optional ID of the desired element type.
+       * @return {Array}          Array of atoms indices within a given area.
+       */
+      atomsWithinCircle: function(x, y, r, element) {
+        var result = [],
+            props, dist, i, len;
+
+        for (i = 0, len = model.get_num_atoms(); i < len; i++) {
+          props = model.getAtomProperties(i);
+          if (typeof element !== 'undefined' && props.element !== element) continue;
+          dist = Math.sqrt(Math.pow(x - props.x, 2) + Math.pow(y - props.y, 2));
+          if (dist <= r) {
+            result.push(i);
+          }
+        }
+        return result;
+      },
+
+      /**
+       * Returns array of atom indices within rectangular area,
+       * optionally specifying an element of interest.
+       * e.g. atomsWithinRect(1, 1, 0.2, 0.3) returns all atoms within a rectangle of width 0.2nm
+       * by height 0.3nm, with the bottom-left corner specified by the postion (1nm, 1nm).
+       * @param  {number} x       X coordinate of the bottom-left rectangle corner.
+       * @param  {number} y       Y coordinate of the bottom-left rectangle corner.
+       * @param  {number} w       Width of the rectangle.
        * @param  {number} h       Height of the rectangle.
        * @param  {number} element Optional ID of the desired element type.
        * @return {Array}          Array of atoms indices within a given area.
        */
-      atomsWithin: function(x, y, w, h, element) {
+      atomsWithinRect: function(x, y, w, h, element) {
         var result = [],
             props, dist, inX, inY, i, len;
 

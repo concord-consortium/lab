@@ -37,16 +37,7 @@
     "showVelocityVectors": false,
     "showForceVectors": false,
     "showAtomTrace": false,
-    "images": [
-      {
-        "imageUri": "Barrier.png",
-        "imageHostIndex": 0,
-        "imageHostType": "",
-        "imageLayer": 1,
-        "imageX": 2.44,
-        "imageY": 2.2
-      }
-    ],
+    "images": [],
     "imageMapping": {},
     "textBoxes": [],
     "xlabel": false,
@@ -659,9 +650,9 @@
     ],
     "color": [
       [
-        249,
-        238,
-        193
+        153,
+        153,
+        153
       ]
     ],
     "visible": [

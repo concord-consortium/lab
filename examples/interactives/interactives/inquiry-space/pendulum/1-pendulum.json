@@ -1,8 +1,12 @@
 {
   "title": "Pendulum",
   "publicationStatus": "public",
-  "subtitle": "",
-  "about": "",
+  "subtitle": "Experiment with periodic motion using a pendulum.",
+  "about": [
+    "Observe the periodic motion of the pendulum angle using the embedded graph.",
+    "The parameters of the pendulum system can be controlled using the sliders below model.",
+    "How do the frequency and amplitude of the motion respond to different combinations of the parameters?"
+  ],
   "fontScale": 0.8,
   "models": [
     {

@@ -131,12 +131,11 @@ define(function() {
       },
       type: {
         // For now, only "RunningAverage" is supported.
-        required: true
+        defaultValue: "RunningAverage"
       },
       period: {
-        // Smoothing time period in ps.
-        // e.g. 2500
-        required: true
+        // Smoothing time period in fs.
+        defaultValue: 2500
       },
       // Optional description.
       label: {},
@@ -201,7 +200,7 @@ define(function() {
       },
       onClick: {
         // Script executed on user click, optional.
-      },
+      }
     },
 
     div: {
@@ -572,6 +571,16 @@ define(function() {
       },
       property: {
         required: true
+      },
+      secondProperty: {
+        // Additional value displayed
+        // using small triangle. E.g.
+        // can be used to present
+        // averaged value.
+        conflictsWith: ["displayAverage"]
+      },
+      displayAverage: {
+        conflictsWith: ["secondProperty"]
       },
       width: {
         defaultValue: "100%"

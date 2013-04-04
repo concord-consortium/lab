@@ -696,8 +696,12 @@
       "title": "Pendulum",
       "path": "interactives/inquiry-space/pendulum/1-pendulum.json",
       "groupKey": "inquiry-space/pendulum",
-      "subtitle": "",
-      "about": "",
+      "subtitle": "Experiment with periodic motion using a pendulum.",
+      "about": [
+        "Observe the periodic motion of the pendulum angle using the embedded graph.",
+        "The parameters of the pendulum system can be controlled using the sliders below model.",
+        "How do the frequency and amplitude of the motion respond to different combinations of the parameters?"
+      ],
       "publicationStatus": "public"
     },
     {
@@ -1190,6 +1194,14 @@
         "Change specific amino acids in a protein by right-clicking on them."
       ],
       "publicationStatus": "public"
+    },
+    {
+      "title": "Testing: Four planets",
+      "path": "interactives/solar-system/four-planets.json",
+      "groupKey": "solar-system",
+      "subtitle": "First test of the Solar System model-type.",
+      "about": "",
+      "publicationStatus": "draft"
     },
     {
       "title": "ff1",
@@ -5283,6 +5295,11 @@
       "path": "benchmarks",
       "name": "Performance Benchmarks",
       "category": "Benchmarks"
+    },
+    {
+      "path": "solar-system",
+      "name": "Solar System Interactives",
+      "category": "Tests"
     }
   ]
 }

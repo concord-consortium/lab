@@ -49,12 +49,11 @@
        inkscape:collect="always"
        xlink:href="#linearGradient3819"
        id="linearGradient3825"
-       x1="252.61189"
-       y1="1.6642551"
-       x2="253.61832"
-       y2="209.49037"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(-245.56694,-1.1610404)" />
+       x1="0"
+       y1="0"
+       x2="0"
+       y2="230"
+       gradientUnits="userSpaceOnUse"/>
   </defs>
   <sodipodi:namedview
      pagecolor="#ffffff"

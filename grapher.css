@@ -32,3 +32,10 @@ svg.graph text.axis {
   font-size: 0.8em; }
   svg.graph text.axis:focus {
     outline: #76d2b8 solid 0.2em; }
+
+.bar-graph .hidden {
+  display: none; }
+.bar-graph .triangle {
+  stroke: #555555;
+  stroke-width: 2px;
+  fill: #eeeeee; }

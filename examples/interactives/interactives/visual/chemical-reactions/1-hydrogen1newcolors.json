@@ -40,7 +40,7 @@
       "text": "Spark",
       "action": [
         "var atoms, index, atom1, atom2, rbonds, atom1props, atom2props;",
-        "atoms = atomsWithin(0.5, 0.5, 2, 2)",
+        "atoms = atomsWithinRect(0.5, 0.5, 2, 2)",
         "if (atoms.length === 0) return;",
         "atoms = atoms.filter(function(i) { return getAtomProperties(i).element === 1; });",
         "index = randomInteger(atoms.length);",

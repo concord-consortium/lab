@@ -1,0 +1,132 @@
+{
+  "title": "Testing: Four planets",
+  "publicationStatus": "draft",
+  "subtitle": "First test of the Solar System model-type.",
+  "about": "",
+  "models": [
+    {
+      "id": "four-planets",
+      "type": "pta",
+      "url": "models/solar-system/four-planets.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name":  "numPlanets",
+      "label": "Planets",
+      "units": "count",
+      "value": [
+          "return getNumberOfPlanets();"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "add-random-planet",
+      "text": "Add random planet",
+      "action": "addRandomPlanet()"
+    },
+    {
+      "type": "numericOutput",
+      "id": "current-planets",
+      "property": "numPlanets",
+      "displayValue": "return format('f')(value)"
+    },
+    {
+      "type": "slider",
+      "id": "gravity-slider",
+      "min": 1e-9,
+      "max": 1e-7,
+      "width": "24em",
+      "displayValue": "return format('1.1e')(value)",
+      "labels": [
+        {
+          "value": 1e-9,
+          "label": "1e-9"
+        },
+        {
+          "value": 1e-7,
+          "label": "1e-7"
+        }
+      ],
+      "steps": 1000,
+      "title": "Gravity",
+      "property": "gravitationalField"
+    },
+    {
+      "type": "text",
+      "id": "wrapping-label",
+      "text": "Model wrapping",
+      "style": "header"
+    },
+    {
+      "type": "checkbox",
+      "id": "horizontal-wrapping",
+      "text": "Horizontal",
+      "property": "horizontalWrapping"
+    },
+    {
+      "type": "checkbox",
+      "id": "vertical-wrapping",
+      "text": "Vertical",
+      "property": "verticalWrapping"
+    },
+    {
+      "type": "text",
+      "id": "axes-label",
+      "text": "Axes",
+      "style": "header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-gridlines",
+      "text": "Grid Lines",
+      "property": "gridLines"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-xunits",
+      "text": "X units",
+      "property": "xunits"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-yunits",
+      "text": "Y units",
+      "property": "yunits"
+    }
+  ],
+  "layout": {
+    "right": [
+      [ "add-random-planet" ],
+      [ "current-planets" ],
+      [ "wrapping-label" ],
+      [ "horizontal-wrapping" ],
+      [ "vertical-wrapping" ],
+      [ "axes-label" ],
+      [ "show-gridlines" ],
+      [ "show-xunits" ],
+      [ "show-yunits" ]
+    ],
+    "bottom": [
+      "gravity-slider"
+    ]
+  },
+  "template": [
+    {
+      "id": "right",
+      "top": "2em",
+      "left": "model.right",
+      "align": "left"
+    },
+    {
+      "id": "bottom",
+      "left": "model.left",
+      "top": "model.bottom"
+    }
+  ]
+}

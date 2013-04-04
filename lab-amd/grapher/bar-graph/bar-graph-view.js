@@ -63,9 +63,11 @@ define(function (require) {
           // Avoid recreation of SVG elements while rendering.
           this.vis = d3.select(this.el).append("svg");
           this.fill = this.vis.append("rect");
-          this.bar = this.vis.append("rect");
           this.title = this.vis.append("text");
           this.axisContainer = this.vis.append("g");
+          this.bar = this.vis.append("rect");
+          this.trianglePos = this.vis.append("g");
+          this.traingle = this.trianglePos.append("polygon");
 
           this.yScale = d3.scale.linear();
           this.heightScale = d3.scale.linear();
@@ -207,43 +209,63 @@ define(function (require) {
               "fill": options.barColor
             });
 
-          // Finally, update bar.
-          this.updateBar();
+          this.traingle
+            .classed("triangle", true)
+            .attr({
+              "points": "-15,-7 -15,7 0,0",
+              "transform": "translate(" + (options.width - paddingRight) + ") scale(" + scale(1) + ")"
+            });
+
+          // Finally, update values display.
+          this.update();
         },
 
         // Updates only bar height.
-        updateBar: function () {
-          var value = this.model.get("value");
+        update: function () {
+          var value       = this.model.get("value"),
+              secondValue = this.model.get("secondValue");
+
           this.bar
             .attr("height", this.heightScale(value))
             .attr("y", this.yScale(value));
+
+          if (typeof secondValue !== 'undefined' && secondValue !== null) {
+            this.traingle.classed("hidden", false);
+            this.trianglePos.attr("transform", "translate(0," + this.yScale(secondValue) + ")");
+          } else {
+            this.traingle.classed("hidden", true);
+          }
         },
 
         // This function should be called whenever model attribute is changed.
         modelChanged: function () {
           var changedAttributes = this.model.changedAttributes(),
-              changedAttrsCount = 0,
-              name;
+              count = 0,
+              valChanged, secValChanged, name;
 
-          // There are two possible cases.
-          // Only "value" has changed, so update only bar height.
-          // Other attributes have changed, so redraw whole bar graph.
+          // There are two possible cases:
+          // - Only "value" or "secondValue" have changed, so update only values
+          //   displays.
+          // - Other attributes have changed, so redraw whole bar graph.
 
           // Case 1. Check how many attributes have been changed.
           for (name in changedAttributes) {
             if (changedAttributes.hasOwnProperty(name)) {
-              changedAttrsCount++;
-              if (changedAttrsCount > 1) {
-                // If 2 or more, redraw whole bar graph.
+              count++;
+              if (count > 2) {
+                // If 3 or more, redraw whole bar graph.
                 this.render();
                 return;
               }
             }
           }
 
-          // Case 2. Only one attribute has changed, check if it's "value".
-          if (changedAttributes.value !== undefined) {
-            this.updateBar();
+          valChanged = typeof changedAttributes.value !== 'undefined';
+          secValChanged = typeof changedAttributes.secondValue !== 'undefined';
+          // Case 2. 1 or 2 attributes have changed, check if they are "value" and "secondValue".
+          if ((count === 1 && (valChanged || secValChanged)) ||
+              (count === 2 && (valChanged && secValChanged))) {
+            this.update();
           } else {
             this.render();
           }

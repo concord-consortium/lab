@@ -66,9 +66,14 @@ define(function (require) {
         barGraphView,
         // First data channel.
         property,
+        // Second data channel.
+        secondProperty,
 
         update = function () {
           barGraphModel.set({value: model.get(property)});
+        },
+        updateSecondProperty = function () {
+          barGraphModel.set({secondValue: model.get(secondProperty)});
         };
 
     //
@@ -86,12 +91,21 @@ define(function (require) {
     // Each interactive component has to have class "component".
     barGraphView.$el.addClass("component");
     property = component.property;
+    secondProperty = component.secondProperty;
 
     controller = {
       // This callback should be trigger when model is loaded.
       modelLoadedCallback: function () {
-        if (property) {
-          model.addPropertiesListener([property], update);
+        model.addPropertiesListener([property], update);
+        if (component.displayAverage) {
+          // This option is for authors convenience. It causes that filtered
+          // output is automatically defined (it uses basic property as an
+          // input). Author doesn't have to define it manually.
+          secondProperty = property + "-bargraph-" + component.id + "-average";
+          model.defineFilteredOutput(secondProperty, {}, property, "RunningAverage", 2500);
+        }
+        if (secondProperty) {
+          model.addPropertiesListener([secondProperty], updateSecondProperty);
         }
         // Initial render...
         barGraphView.render();

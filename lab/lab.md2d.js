@@ -992,12 +992,11 @@ define('common/controllers/interactive-metadata',[],function() {
       },
       type: {
         // For now, only "RunningAverage" is supported.
-        required: true
+        defaultValue: "RunningAverage"
       },
       period: {
-        // Smoothing time period in ps.
-        // e.g. 2500
-        required: true
+        // Smoothing time period in fs.
+        defaultValue: 2500
       },
       // Optional description.
       label: {},
@@ -1062,7 +1061,7 @@ define('common/controllers/interactive-metadata',[],function() {
       },
       onClick: {
         // Script executed on user click, optional.
-      },
+      }
     },
 
     div: {
@@ -1433,6 +1432,16 @@ define('common/controllers/interactive-metadata',[],function() {
       },
       property: {
         required: true
+      },
+      secondProperty: {
+        // Additional value displayed
+        // using small triangle. E.g.
+        // can be used to present
+        // averaged value.
+        conflictsWith: ["displayAverage"]
+      },
+      displayAverage: {
+        conflictsWith: ["secondProperty"]
       },
       width: {
         defaultValue: "100%"
@@ -4420,6 +4429,10 @@ define('grapher/bar-graph/bar-graph-model',['require','backbone'],function (requ
         defaults: {
           // Current value displayed by bar graph.
           value:     0,
+          // Second value displayed by bar graph (using small triangle).
+          // It can be used to show averaged or previous value.
+          // null means that it shouldn't be displayed at all.
+          secondValue: null,
           // Min value displayed.
           minValue:  0,
           // Max value displayed.
@@ -4523,9 +4536,11 @@ define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (requi
           // Avoid recreation of SVG elements while rendering.
           this.vis = d3.select(this.el).append("svg");
           this.fill = this.vis.append("rect");
-          this.bar = this.vis.append("rect");
           this.title = this.vis.append("text");
           this.axisContainer = this.vis.append("g");
+          this.bar = this.vis.append("rect");
+          this.trianglePos = this.vis.append("g");
+          this.traingle = this.trianglePos.append("polygon");
 
           this.yScale = d3.scale.linear();
           this.heightScale = d3.scale.linear();
@@ -4667,43 +4682,63 @@ define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (requi
               "fill": options.barColor
             });
 
-          // Finally, update bar.
-          this.updateBar();
+          this.traingle
+            .classed("triangle", true)
+            .attr({
+              "points": "-15,-7 -15,7 0,0",
+              "transform": "translate(" + (options.width - paddingRight) + ") scale(" + scale(1) + ")"
+            });
+
+          // Finally, update values display.
+          this.update();
         },
 
         // Updates only bar height.
-        updateBar: function () {
-          var value = this.model.get("value");
+        update: function () {
+          var value       = this.model.get("value"),
+              secondValue = this.model.get("secondValue");
+
           this.bar
             .attr("height", this.heightScale(value))
             .attr("y", this.yScale(value));
+
+          if (typeof secondValue !== 'undefined' && secondValue !== null) {
+            this.traingle.classed("hidden", false);
+            this.trianglePos.attr("transform", "translate(0," + this.yScale(secondValue) + ")");
+          } else {
+            this.traingle.classed("hidden", true);
+          }
         },
 
         // This function should be called whenever model attribute is changed.
         modelChanged: function () {
           var changedAttributes = this.model.changedAttributes(),
-              changedAttrsCount = 0,
-              name;
+              count = 0,
+              valChanged, secValChanged, name;
 
-          // There are two possible cases.
-          // Only "value" has changed, so update only bar height.
-          // Other attributes have changed, so redraw whole bar graph.
+          // There are two possible cases:
+          // - Only "value" or "secondValue" have changed, so update only values
+          //   displays.
+          // - Other attributes have changed, so redraw whole bar graph.
 
           // Case 1. Check how many attributes have been changed.
           for (name in changedAttributes) {
             if (changedAttributes.hasOwnProperty(name)) {
-              changedAttrsCount++;
-              if (changedAttrsCount > 1) {
-                // If 2 or more, redraw whole bar graph.
+              count++;
+              if (count > 2) {
+                // If 3 or more, redraw whole bar graph.
                 this.render();
                 return;
               }
             }
           }
 
-          // Case 2. Only one attribute has changed, check if it's "value".
-          if (changedAttributes.value !== undefined) {
-            this.updateBar();
+          valChanged = typeof changedAttributes.value !== 'undefined';
+          secValChanged = typeof changedAttributes.secondValue !== 'undefined';
+          // Case 2. 1 or 2 attributes have changed, check if they are "value" and "secondValue".
+          if ((count === 1 && (valChanged || secValChanged)) ||
+              (count === 2 && (valChanged && secValChanged))) {
+            this.update();
           } else {
             this.render();
           }
@@ -4781,9 +4816,14 @@ define('common/controllers/bar-graph-controller',['require','grapher/bar-graph/b
         barGraphView,
         // First data channel.
         property,
+        // Second data channel.
+        secondProperty,
 
         update = function () {
           barGraphModel.set({value: model.get(property)});
+        },
+        updateSecondProperty = function () {
+          barGraphModel.set({secondValue: model.get(secondProperty)});
         };
 
     //
@@ -4801,12 +4841,21 @@ define('common/controllers/bar-graph-controller',['require','grapher/bar-graph/b
     // Each interactive component has to have class "component".
     barGraphView.$el.addClass("component");
     property = component.property;
+    secondProperty = component.secondProperty;
 
     controller = {
       // This callback should be trigger when model is loaded.
       modelLoadedCallback: function () {
-        if (property) {
-          model.addPropertiesListener([property], update);
+        model.addPropertiesListener([property], update);
+        if (component.displayAverage) {
+          // This option is for authors convenience. It causes that filtered
+          // output is automatically defined (it uses basic property as an
+          // input). Author doesn't have to define it manually.
+          secondProperty = property + "-bargraph-" + component.id + "-average";
+          model.defineFilteredOutput(secondProperty, {}, property, "RunningAverage", 2500);
+        }
+        if (secondProperty) {
+          model.addPropertiesListener([secondProperty], updateSecondProperty);
         }
         // Initial render...
         barGraphView.render();
@@ -10247,9 +10296,11 @@ define('common/controllers/slider-controller',['common/controllers/interactive-m
             remainingHeight -= $label.outerHeight(true);
           }
           $container.css("height", remainingHeight);
+          $slider.css("top", 0.5 * remainingHeight);
           // Handle also requires dynamic styling.
           emSize = parseFloat($sliderHandle.css("font-size"));
           $sliderHandle.css("height", remainingHeight + emSize * 0.4);
+          $sliderHandle.css("top", -0.5 * remainingHeight - emSize * 0.4);
         }
       },
 
@@ -27079,16 +27130,6 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       // Subscribe for model events.
       model.addPropertiesListener(["temperatureControl"], drawSymbolImages);
 
-      // Redraw container each time when some visual-related property is changed.
-      model.addPropertiesListener([
-        "keShading", "chargeShading", "showChargeSymbols", "useThreeLetterCode",
-        "showVDWLines", "VDWLinesCutoff",
-        "showVelocityVectors", "showForceVectors",
-        "showAtomTrace", "atomTraceId", "aminoAcidColorScheme",
-        "showClock", "backgroundColor", "markColor"],
-          repaint);
-
-
       function redrawClickableObjects (redrawOperation) {
         return function () {
           redrawOperation();
@@ -27097,6 +27138,15 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
           modelView.updateClickHandlers();
         };
       }
+
+      // Redraw container each time when some visual-related property is changed.
+      model.addPropertiesListener([
+        "keShading", "chargeShading", "showChargeSymbols", "useThreeLetterCode",
+        "showVDWLines", "VDWLinesCutoff",
+        "showVelocityVectors", "showForceVectors",
+        "showAtomTrace", "atomTraceId", "aminoAcidColorScheme",
+        "showClock", "backgroundColor", "markColor"],
+          redrawClickableObjects(repaint));
 
       model.on('addAtom', redrawClickableObjects(repaint));
       model.on('removeAtom', redrawClickableObjects(repaint));
@@ -27362,6 +27412,44 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
         return model.getNumberOfAngularBonds();
       },
 
+      /* Send a track page context event to Google Analytics */
+      trackPageContext: function trackPageContext(category, action, label) {
+        var pageContext,
+            googleAnalytics = _gaq;
+
+        if (typeof googleAnalytics === 'undefined'){
+          console.error("Google Analytics not defined, Can not send the Track Page Context event");
+          return;
+        }
+        if (!category) {
+          category = "Interactive";
+        }
+        if (!action) {
+          action = "Page Context";
+        }
+        if (!label) {
+          label = JSON.stringify({ pageContext: document.referrer, interactive: document.location.href });
+        }
+        console.log("Sending a track page context event to Google Analytics");
+        googleAnalytics.push(['_trackEvent', category, action, label]);
+      },
+
+      /* Send a tracking event to Google Analytics */
+      trackEvent: function trackEvent(category, action, label) {
+        var googleAnalytics = _gaq;
+
+        if (typeof googleAnalytics === 'undefined'){
+          console.error("Google Analytics not defined, Can not send trackEvent");
+          return;
+        }
+        if (!category) {
+          category = "Interactive";
+        }
+        console.log("Sending a track page event Google Analytics (category:action:label):");
+        console.log("(" + category + ":"  + action + ":" + label + ")");
+        googleAnalytics.push(['_trackEvent', category, action, label]);
+      },
+
       addAtom: function addAtom(props, options) {
         if (options && options.suppressRepaint) {
           // Translate suppressRepaint option to
@@ -27447,21 +27535,43 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
       },
 
       /**
-       * Returns array of atom indices, optionally specifying an element of interest.
-       * atomsWithin(1, 1, 0.5) returns all atoms within 0.5 nm of position (1nm, 1nm) within the model.
-       * atomsWithin(1, 1, 0.2, 0.3) returns all atoms within a rectangle of width 0.2nm by height 0.3nm,
-       * with the bottom-left corner specified by the postion (1nm, 1nm).
-       * @param  {number} x       X coordinate of the bottom-left rectangle corner
-       *                          or circle center (when h is not provided).
-       * @param  {number} y       Y coordinate of the bottom-left rectangle corner
-       *                          or circle center (when h is not provided).
-       * @param  {number} w       Width of the rectangle
-       *                          or radius of the circle (when h is not provided).
+       * Returns array of atom indices within circular area,
+       * optionally specifying an element of interest.
+       * e.g. atomsWithinCircle(1, 1, 0.5) returns all atoms within 0.5 nm of position (1nm, 1nm).
+       * @param  {number} x       X coordinate of the circle center.
+       * @param  {number} y       Y coordinate of the circle center.
+       * @param  {number} w       Radius of the circle.
+       * @param  {number} element Optional ID of the desired element type.
+       * @return {Array}          Array of atoms indices within a given area.
+       */
+      atomsWithinCircle: function(x, y, r, element) {
+        var result = [],
+            props, dist, i, len;
+
+        for (i = 0, len = model.get_num_atoms(); i < len; i++) {
+          props = model.getAtomProperties(i);
+          if (typeof element !== 'undefined' && props.element !== element) continue;
+          dist = Math.sqrt(Math.pow(x - props.x, 2) + Math.pow(y - props.y, 2));
+          if (dist <= r) {
+            result.push(i);
+          }
+        }
+        return result;
+      },
+
+      /**
+       * Returns array of atom indices within rectangular area,
+       * optionally specifying an element of interest.
+       * e.g. atomsWithinRect(1, 1, 0.2, 0.3) returns all atoms within a rectangle of width 0.2nm
+       * by height 0.3nm, with the bottom-left corner specified by the postion (1nm, 1nm).
+       * @param  {number} x       X coordinate of the bottom-left rectangle corner.
+       * @param  {number} y       Y coordinate of the bottom-left rectangle corner.
+       * @param  {number} w       Width of the rectangle.
        * @param  {number} h       Height of the rectangle.
        * @param  {number} element Optional ID of the desired element type.
        * @return {Array}          Array of atoms indices within a given area.
        */
-      atomsWithin: function(x, y, w, h, element) {
+      atomsWithinRect: function(x, y, w, h, element) {
         var result = [],
             props, dist, inX, inY, i, len;
 
@@ -27969,9 +28079,3501 @@ define('md2d/controllers/controller',['require','common/controllers/model-contro
   };
 });
 
+/*global define: true */
+/*jslint eqnull: true, boss: true, loopfunc: true*/
+
+define('solar-system/models/engine/solar-system',['require','exports','module','arrays','common/array-types','common/console','common/models/engines/clone-restore-wrapper'],function (require, exports, module) {
+
+  var arrays               = require('arrays'),
+      arrayTypes           = require('common/array-types'),
+      console              = require('common/console'),
+      CloneRestoreWrapper  = require('common/models/engines/clone-restore-wrapper');
+
+  exports.createEngine = function() {
+
+    var // the object to be returned
+        engine,
+
+        // If a numeric value include gravitational field in force calculations,
+        // otherwise value should be false
+        gravitationalField = false,
+
+        // Whether system dimensions have been set. This is only allowed to happen once.
+        sizeHasBeenInitialized = false,
+
+        // System dimensions as [x, y]. Default value can be changed until turles are created.
+        size = [50, 50],
+
+        // System dimensions as minX, minYm, maxX, maxY. Default value can be changed until turles are created.
+        minX = -25,
+        minY = -25,
+        maxX =  25,
+        maxY =  25,
+
+        // The current model time in ticks.
+        time = 0,
+
+        // The current integration time step
+        dt,
+
+        // Square of integration time step.
+        dt_sq,
+
+        // ####################################################################
+        //                      Planet Properties
+
+        // Individual property arrays for the planets, indexed by planet number
+        radius, x, y, vx, vy, px, py, ax, ay, mass, speed,
+
+        // An object that contains references to the above planet-property arrays
+        planets,
+
+        // The number of planets in the system.
+        N = 0,
+
+        // booleans indicating whether the planet world wraps
+        horizontalWrapping,
+        verticalWrapping,
+
+        // Initializes basic data structures.
+        initialize = function () {
+          createPlanetsArray(0);
+        },
+
+        /**
+          Extend all arrays in arrayContainer to `newLength`. Here, arrayContainer is expected to be `planets`
+          `elements`, `radialBonds`, etc. arrayContainer might be an array or an object.
+          TODO: this is just interim solution, in the future only objects will be expected.
+        */
+        extendArrays = function(arrayContainer, newLength) {
+          var i, len;
+          if (Array.isArray(arrayContainer)) {
+            // Array of arrays.
+            for (i = 0, len = arrayContainer.length; i < len; i++) {
+              if (arrays.isArray(arrayContainer[i]))
+                arrayContainer[i] = arrays.extend(arrayContainer[i], newLength);
+            }
+          } else {
+            // Object with arrays defined as properties.
+            for (i in arrayContainer) {
+              if(arrayContainer.hasOwnProperty(i)) {
+                if (arrays.isArray(arrayContainer[i]))
+                  arrayContainer[i] = arrays.extend(arrayContainer[i], newLength);
+              }
+            }
+          }
+        },
+
+        /**
+          Set up "shortcut" references, e.g., x = planets.x
+        */
+        assignShortcutReferences = {
+
+          planets: function() {
+            radius         = planets.radius;
+            x              = planets.x;
+            y              = planets.y;
+            vx             = planets.vx;
+            vy             = planets.vy;
+            px             = planets.px;
+            py             = planets.py;
+            ax             = planets.ax;
+            ay             = planets.ay;
+            mass           = planets.mass;
+            speed          = planets.speed;
+            pinned         = planets.pinned;
+          }
+
+        },
+
+
+        createPlanetsArray = function(num) {
+          planets  = engine.planets  = {};
+
+          // TODO. DRY this up by letting the property list say what type each array is
+          planets.radius         = arrays.create(num, 0, arrayTypes.float);
+          planets.x              = arrays.create(num, 0, arrayTypes.float);
+          planets.y              = arrays.create(num, 0, arrayTypes.float);
+          planets.vx             = arrays.create(num, 0, arrayTypes.float);
+          planets.vy             = arrays.create(num, 0, arrayTypes.float);
+          planets.px             = arrays.create(num, 0, arrayTypes.float);
+          planets.py             = arrays.create(num, 0, arrayTypes.float);
+          planets.ax             = arrays.create(num, 0, arrayTypes.float);
+          planets.ay             = arrays.create(num, 0, arrayTypes.float);
+          planets.mass           = arrays.create(num, 0, arrayTypes.floatType);
+          planets.speed          = arrays.create(num, 0, arrayTypes.float);
+          planets.pinned         = arrays.create(num, 0, arrayTypes.uint8);
+
+          // For the sake of clarity, manage all planets properties in one
+          // place (engine). In the future, think about separation of engine
+          // properties and view-oriented properties like these:
+          planets.marked         = arrays.create(num, 0, arrayTypes.uint8);
+          planets.visible        = arrays.create(num, 0, arrayTypes.uint8);
+
+          assignShortcutReferences.planets();
+        },
+
+        // Constrain Planet i to the area between the walls by simulating perfectly elastic collisions with the walls.
+        // Note this may change the linear and angular momentum.
+        bouncePlanetOffWalls = function(i) {
+          var r = radius[i],
+              leftwall = minX + r,
+              bottomwall = minY + r,
+              rightwall = maxX - r,
+              topwall = maxY - r,
+              width = size[0],
+              height = size[1];
+
+          if (horizontalWrapping) {
+            // wrap around vertical walls
+            if (x[i] + radius[i] < leftwall) {
+              x[i] += width;
+            } else if (x[i] - radius[i] > rightwall) {
+              x[i] -= width;
+            }
+          } else {
+            // Bounce off vertical walls.
+            if (x[i] < leftwall) {
+              while (x[i] < leftwall - width) {
+                x[i] += width;
+              }
+              x[i]  = leftwall + (leftwall - x[i]);
+              vx[i] *= -1;
+              px[i] *= -1;
+            } else if (x[i] > rightwall) {
+              while (x[i] > rightwall + width) {
+                x[i] -= width;
+              }
+              x[i]  = rightwall - (x[i] - rightwall);
+              vx[i] *= -1;
+              px[i] *= -1;
+            }
+          }
+
+          if (verticalWrapping) {
+            // wrap around horizontal walls
+            if (y[i] + radius[i] < bottomwall) {
+              y[i] += height;
+            } else if (y[i] - radius[i] > topwall) {
+              y[i] -= height;
+            }
+          } else {
+            // Bounce off horizontal walls
+            if (y[i] < bottomwall) {
+              while (y[i] < bottomwall - height) {
+                y[i] += height;
+              }
+              y[i]  = bottomwall + (bottomwall - y[i]);
+              vy[i] *= -1;
+              py[i] *= -1;
+            } else if (y[i] > topwall) {
+              while (y[i] > topwall + height) {
+                y[i] -= height;
+              }
+              y[i]  = topwall - (y[i] - topwall);
+              vy[i] *= -1;
+              py[i] *= -1;
+            }
+          }
+        },
+
+        // Accumulate acceleration into a(t + dt) from all possible interactions, fields
+        // and forces connected with planets.
+        updatePlanetsAccelerations = function () {
+          var i, inverseMass;
+
+          if (N === 0) return;
+
+          // Zero out a(t) for accumulation of forces into a(t + dt).
+          for (i = 0; i < N; i++) {
+            ax[i] = ay[i] = 0;
+          }
+
+          // // Convert ax, ay from forces to accelerations!
+          // for (i = 0; i < N; i++) {
+          //   inverseMass = 1/mass[i];
+          //   ax[i] *= inverseMass;
+          //   ay[i] *= inverseMass;
+          // }
+
+          // ######################################
+          // ax and ay are FORCES below this point
+          // ######################################
+          updateGravitationalAccelerations();
+
+        },
+
+
+        updateGravitationalAccelerations = function() {
+
+          var i, j, dx, dy, rSq, gfx, gfy;
+
+          i = -1; while (++i < N) {
+            m1 = mass[i];
+            j = i; while (++j < N) {
+              dx = x[j] - x[i];
+              dy = y[j] - y[i];
+              rSq = dx * dx + dy * dy;
+              l = Math.sqrt(rSq);
+              m2 = mass[j];
+              gf = gravitationalField * m1 * m2 / rSq;
+              gfx = dx / l * gf;
+              gfy = dy / l * gf;
+              ax[i] += gfx;
+              ay[i] += gfy;
+              ax[j] -= gfx;
+              ay[j] -= gfy;
+            }
+          }
+        },
+
+        // Half of the update of v(t + dt) and p(t + dt) using a. During a single integration loop,
+        // call once when a = a(t) and once when a = a(t+dt).
+        halfUpdateVelocity = function() {
+          var i;
+          for (i = 0; i < N; i++) {
+            vx[i] += 0.5 * ax[i] * dt;
+            px[i] = vx[i];
+            vy[i] += 0.5 * ay[i] * dt;
+            py[i] = vy[i];
+          }
+        },
+
+        // Calculate r(t + dt, i) from v(t + 0.5 * dt).
+        updatePlanetsPosition = function() {
+          var width100  = size[0] * 100,
+              height100 = size[1] * 100,
+              xPrev, yPrev, i;
+
+          for (i = 0; i < N; i++) {
+            xPrev = x[i];
+            yPrev = y[i];
+
+            x[i] += vx[i] * dt;
+            y[i] += vy[i] * dt;
+
+            // Bounce off walls.
+            bouncePlanetOffWalls(i);
+          }
+        },
+
+        // Removes velocity and acceleration from pinned Planets.
+        pinPlanets = function() {
+          var i;
+
+          for (i = 0; i < N; i++) {
+            if (pinned[i]) {
+              vx[i] = vy[i] = ax[i] = ay[i] = 0;
+            }
+          }
+        },
+
+        // Update speed using velocities.
+        updatePlanetsSpeed = function() {
+          var i;
+
+          for (i = 0; i < N; i++) {
+            speed[i] = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
+          }
+        };
+
+        // ####################################################################
+        // ####################################################################
+
+    engine = {
+
+      // Our timekeeping is really a convenience for users of this lib, so let them reset time at will
+      setTime: function(t) {
+        time = t;
+      },
+
+      setDimensions: function(v) {
+        if (sizeHasBeenInitialized) {
+          throw new Error("The SolarSystem model's size has already been set, and cannot be reset.");
+        }
+        minX = v[0];
+        minY = v[1];
+        maxX = v[2];
+        maxY = v[3];
+        size = [maxX - minX, maxY - minY];
+        sizeHasBeenInitialized = true;
+      },
+
+      getDimensions: function() {
+        return [minX, maxX, minY, maxY];
+      },
+
+      setHorizontalWrapping: function(v) {
+        horizontalWrapping = !!v;
+      },
+
+      setVerticalWrapping: function(v) {
+        verticalWrapping = !!v;
+      },
+
+      setGravitationalField: function(gf) {
+        if (typeof gf === "number" && gf !== 0) {
+          gravitationalField = gf;
+        } else {
+          gravitationalField = false;
+        }
+      },
+
+      setPlanetProperties: function (i, props) {
+        var key, idx, rest, j;
+
+        props.radius = 1;
+
+        // Set all properties from props hash.
+        for (key in props) {
+          if (props.hasOwnProperty(key)) {
+            planets[key][i] = props[key];
+          }
+        }
+
+        // Update properties which depend on other properties.
+        speed[i] = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
+      },
+
+      /**
+        The canonical method for adding an planet to the collections of planets.
+
+        If there isn't enough room in the 'planets' array, it (somewhat inefficiently)
+        extends the length of the typed arrays by ten to have room for more planets.
+
+        @returns the index of the new planet
+      */
+      addPlanet: function(props) {
+        if (N + 1 > planets.x.length) {
+          extendArrays(planets, N + 10);
+          assignShortcutReferences.planets();
+        }
+
+        // Set acceleration of new planet to zero.
+        props.ax = props.ay = 0;
+
+        // Increase number of planets.
+        N++;
+
+        // Set provided properties of new planet.
+        engine.setPlanetProperties(N - 1, props);
+
+      },
+
+      removePlanet: function(idx) {
+        var i, len, prop,
+            l, list, lists;
+
+        if (idx >= N) {
+          throw new Error("Planet " + idx + " doesn't exist, so it can't be removed.");
+        }
+
+        // Shift planets properties and zero last element.
+        // It can be optimized by just replacing the last
+        // planet with planet 'i', however this approach
+        // preserves more expectable planets indexing.
+        for (i = idx; i < N; i++) {
+          for (prop in planets) {
+            if (planets.hasOwnProperty(prop)) {
+              if (i === N - 1)
+                planets[prop][i] = 0;
+              else
+                planets[prop][i] = planets[prop][i + 1];
+            }
+          }
+        }
+
+        // Update number of planets!
+        N--;
+
+        // Update accelerations of planets.
+        updateParticlesAccelerations();
+      },
+
+      setupPlanetsRandomly: function(options) {
+
+        var // if a temperature is not explicitly requested, we just need any nonzero number
+
+            nrows = Math.floor(Math.sqrt(N)),
+            ncols = Math.ceil(N/nrows),
+
+            i, r, c, rowSpacing, colSpacing,
+            vMagnitude, vDirection, props;
+
+        colSpacing = size[0] / (1 + ncols);
+        rowSpacing = size[1] / (1 + nrows);
+
+        // Arrange planets in a lattice.
+        i = -1;
+
+        for (r = 1; r <= nrows; r++) {
+          for (c = 1; c <= ncols; c++) {
+            i++;
+            if (i === N) break;
+            vMagnitude = math.normal(1, 1/4);
+            vDirection = 2 * Math.random() * Math.PI;
+
+            props = {
+              x:       c * colSpacing,
+              y:       r * rowSpacing,
+              vx:      vMagnitude * Math.cos(vDirection),
+              vy:      vMagnitude * Math.sin(vDirection)
+            };
+            engine.setPlanetProperties(i, props);
+          }
+        }
+      },
+
+      // Velocity Verlet integration scheme.
+      // See: http://en.wikipedia.org/wiki/Verlet_integration#Velocity_Verlet
+      // The current implementation is:
+      // 1. Calculate: v(t + 0.5 * dt) = v(t) + 0.5 * a(t) * dt
+      // 2. Calculate: r(t + dt) = r(t) + v(t + 0.5 * dt) * dt
+      // 3. Derive a(t + dt) from the interaction potential using r(t + dt)
+      // 4. Calculate: v(t + dt) = v(t + 0.5 * dt) + 0.5 * a(t + dt) * dt
+      integrate: function(duration, _dt) {
+        var steps, iloop, tStart = time;
+
+        // How much time to integrate over, in fs.
+        if (duration === undefined)  duration = 100;
+
+        // The length of an integration timestep, in fs.
+        if (_dt === undefined) _dt = 1;
+
+        dt = _dt;        // dt is a closure variable that helpers need access to
+        dt_sq = dt * dt; // the squared time step is also needed by some helpers.
+
+        // Calculate accelerations a(t), where t = 0.
+        // Later this is not necessary, as a(t + dt) from
+        // previous step is used as a(t) in the current step.
+        if (time === 0) {
+          updatePlanetsAccelerations();
+        }
+
+        // Number of steps.
+        steps = Math.floor(duration / dt);
+
+        for (iloop = 1; iloop <= steps; iloop++) {
+          time = tStart + iloop * dt;
+
+          // Calculate v(t + 0.5 * dt) using v(t) and a(t).
+          halfUpdateVelocity();
+
+          // Clearing the acceleration here from pinned planets will cause the acceleration
+          // to be zero for both halfUpdateVelocity methods and updatePlanetPosition, freezing the planet.
+          pinPlanets();
+
+          // Update r(t + dt) using v(t + 0.5 * dt).
+          updatePlanetsPosition();
+
+          // Accumulate accelerations into a(t + dt) from all possible interactions, fields
+          // and forces connected with atoms.
+          updatePlanetsAccelerations();
+
+          // Calculate v(t + dt) using v(t + 0.5 * dt) and a(t + dt).
+          halfUpdateVelocity();
+
+          // Now that we have velocity v(t + dt), update speed.
+          updatePlanetsSpeed();
+
+        } // end of integration loop
+
+      },
+
+
+      getNumberOfPlanets: function() {
+        return N;
+      },
+
+      /**
+        Compute the model state and store into the passed-in 'state' object.
+        (Avoids GC hit of throwaway object creation.)
+      */
+      // TODO: [refactoring] divide this function into smaller chunks?
+      computeOutputState: function(state) {
+        var i, j,
+            i1, i2, i3,
+            el1, el2,
+            dx, dy,
+            dxij, dyij, dxkj, dykj,
+            cosTheta, theta,
+            r_sq, rij, rkj,
+            k, dr, angleDiff,
+            gravPEInMWUnits,
+            // Total kinetic energy, in MW units.
+            KEinMWUnits,
+            // Potential energy, in eV.
+            PE;
+
+        // State to be read by the rest of the system:
+        state.time           = time;
+      },
+
+      // ######################################################################
+      //                State definition of the engine
+
+      // Return array of objects defining state of the engine.
+      // Each object in this list should implement following interface:
+      // * .clone()        - returning complete state of that object.
+      // * .restore(state) - restoring state of the object, using 'state'
+      //                     as input (returned by clone()).
+      getState: function() {
+        return [
+          // Use wrapper providing clone-restore interface to save the hashes-of-arrays
+          // that represent model state.
+          new CloneRestoreWrapper(planets),
+
+          // Save time value.
+          // Create one-line wrapper to provide required interface.
+          {
+            clone: function () {
+              return time;
+            },
+            restore: function(state) {
+              engine.setTime(state);
+            }
+          }
+        ];
+      }
+    };
+
+    // Initialization
+    initialize();
+
+    // Finally, return Public API.
+    return engine;
+  };
+});
+
+/*global define: false */
+
+define('solar-system/models/metadata',[],function() {
+
+  return {
+    mainProperties: {
+      type: {
+        defaultValue: "solar-system",
+        immutable: true
+      },
+      imagePath: {
+        defaultValue: "",
+        immutable: true
+      },
+      minX: {
+        defaultValue: -25,
+        immutable: true
+      },
+      maxX: {
+        defaultValue: 25,
+        immutable: true
+      },
+      minY: {
+        defaultValue: -25,
+        immutable: true
+      },
+      maxY: {
+        defaultValue: 25,
+        immutable: true
+      },
+      width: {
+        defaultValue: 50
+      },
+      height: {
+        defaultValue: 50
+      },
+      unitsScheme: {
+        defaultValue: "solar-system"
+      },
+      modelSampleRate: {
+        defaultValue: "default"
+      },
+      timeStep: {
+        defaultValue: 1
+      },
+      timeStepsPerTick: {
+        defaultValue: 50
+      },
+      gravitationalField: {
+        defaultValue: false,
+        unitType: "acceleration"
+      },
+      horizontalWrapping: {
+        defaultValue: false
+      },
+      verticalWrapping: {
+        defaultValue: false
+      },
+    },
+
+    viewOptions: {
+      viewPortWidth: {
+        defaultValue: 50,
+        unitType: "length",
+        immutable: true
+      },
+      viewPortHeight: {
+        defaultValue: 50,
+        unitType: "length",
+        immutable: true
+      },
+      viewPortX: {
+        defaultValue: 0,
+        unitType: "length",
+        immutable: true
+      },
+      viewPortY: {
+        defaultValue: 0,
+        unitType: "length",
+        immutable: true
+      },
+      backgroundColor: {
+        defaultValue: "#eeeeee"
+      },
+      showClock: {
+        defaultValue: true
+      },
+      markColor: {
+        defaultValue: "#f8b500"
+      },
+      showPlanetTrace: {
+        defaultValue: false
+      },
+      planetTraceId: {
+        defaultValue: 0
+      },
+      images: {
+        defaultValue: []
+      },
+      imageMapping: {
+        defaultValue: {}
+      },
+      textBoxes: {
+        defaultValue: []
+      },
+      fitToParent: {
+        defaultValue: false
+      },
+      xunits: {
+        defaultValue: false
+      },
+      yunits: {
+        defaultValue: false
+      },
+      controlButtons: {
+        defaultValue: "play"
+      },
+      gridLines: {
+        defaultValue: false
+      },
+      planetNumbers: {
+        defaultValue: false
+      },
+      enablePlanetTooltips: {
+        defaultValue: false
+      },
+      enableKeyboardHandlers: {
+        defaultValue: true
+      },
+      planetTraceColor: {
+        defaultValue: "#6913c5"
+      }
+    },
+
+    planet: {
+      // Required properties:
+      x: {
+        required: true
+      },
+      y: {
+        required: true
+      },
+      vx: {
+        defaultValue: 0
+      },
+      vy: {
+        defaultValue: 0
+      },
+      ax: {
+        defaultValue: 0,
+        serialize: false
+      },
+      ay: {
+        defaultValue: 0,
+        serialize: false
+      },
+      mass: {
+        defaultValue: 1
+      },
+      pinned: {
+        defaultValue: false
+      },
+      visible: {
+        defaultValue: 1
+      },
+      marked: {
+        defaultValue: 0
+      },
+      // Read-only values, can be set only by engine:
+      radius: {
+        readOnly: true,
+        serialize: false
+      },
+      px: {
+        readOnly: true,
+        serialize: false
+      },
+      py: {
+        readOnly: true,
+        serialize: false
+      },
+      speed: {
+        readOnly: true,
+        serialize: false
+      }
+    },
+
+    textBox: {
+      text: {
+        defaultValue: ""
+      },
+      x: {
+        defaultValue: 0,
+        unitType: "length"
+      },
+      y: {
+        defaultValue: 0,
+        unitType: "length"
+      },
+      anchor: {
+        defaultValue: "lower-left"
+      },
+      layer: {
+        defaultValue: 1
+      },
+      width: {},
+      height: {},
+      frame: {},
+      color: {},
+      backgroundColor: {
+        defaultValue: "white"
+      },
+      strokeWidthEms: {
+        defaultValue: 0.03
+      },
+      strokeOpacity: {
+        defaultValue: 1.0
+      },
+      rotate: {
+        defaultValue: 0
+      },
+      fontScale: {
+        defaultValue: 1
+      },
+      hostType: {},
+      hostIndex: {},
+      textAlign: {}
+    }
+  };
+});
+
+/*global define: true */
+/** Provides a few simple helper functions for converting related unit types.
+
+    This sub-module doesn't do unit conversion between compound unit types (e.g., knowing that kg*m/s^2 = N)
+    only simple scaling between units measuring the same type of quantity.
+*/
+
+// Prefer the "per" formulation to the "in" formulation.
+//
+// If KILOGRAMS_PER_AMU is 1.660540e-27 we know the math is:
+// "1 amu * 1.660540e-27 kg/amu = 1.660540e-27 kg"
+// (Whereas the "in" forumulation might be slighty more error prone:
+// given 1 amu and 6.022e-26 kg in an amu, how do you get kg again?)
+
+// These you might have to look up...
+
+// Module can be used both in Node.js environment and in Web browser
+// using RequireJS. RequireJS Optimizer will strip out this if statement.
+
+
+define('common/models/engines/constants/units',['require','exports','module'],function (require, exports, module) {
+
+  var KILOGRAMS_PER_DALTON  = 1.660540e-27,
+      COULOMBS_PER_ELEMENTARY_CHARGE = 1.602177e-19,
+
+      // 1 eV = 1 e * 1 V = (COULOMBS_PER_ELEMENTARY_CHARGE) C * 1 J/C
+      JOULES_PER_EV = COULOMBS_PER_ELEMENTARY_CHARGE,
+
+      // though these are equally important!
+      SECONDS_PER_FEMTOSECOND = 1e-15,
+      METERS_PER_NANOMETER    = 1e-9,
+      ANGSTROMS_PER_NANOMETER = 10,
+      GRAMS_PER_KILOGRAM      = 1000,
+
+      types = {
+        TIME: "time",
+        LENGTH: "length",
+        MASS: "mass",
+        ENERGY: "energy",
+        ENTROPY: "entropy",
+        CHARGE: "charge",
+        INVERSE_QUANTITY: "inverse quantity",
+
+        FARADS_PER_METER: "farads per meter",
+        METERS_PER_FARAD: "meters per farad",
+
+        FORCE: "force",
+        VELOCITY: "velocity",
+
+        // unused as of yet
+        AREA: "area",
+        PRESSURE: "pressure"
+      },
+
+    unit,
+    ratio,
+    convert;
+
+  /**
+    In each of these units, the reference type we actually use has value 1, and conversion
+    ratios for the others are listed.
+  */
+  exports.unit = unit = {
+
+    FEMTOSECOND: { name: "femtosecond", value: 1,                       type: types.TIME },
+    SECOND:      { name: "second",      value: SECONDS_PER_FEMTOSECOND, type: types.TIME },
+
+    NANOMETER:   { name: "nanometer", value: 1,                           type: types.LENGTH },
+    ANGSTROM:    { name: "Angstrom",  value: 1 * ANGSTROMS_PER_NANOMETER, type: types.LENGTH },
+    METER:       { name: "meter",     value: 1 * METERS_PER_NANOMETER,    type: types.LENGTH },
+
+    DALTON:   { name: "Dalton",   value: 1,                                             type: types.MASS },
+    GRAM:     { name: "gram",     value: 1 * KILOGRAMS_PER_DALTON * GRAMS_PER_KILOGRAM, type: types.MASS },
+    KILOGRAM: { name: "kilogram", value: 1 * KILOGRAMS_PER_DALTON,                      type: types.MASS },
+
+    MW_ENERGY_UNIT: {
+      name: "MW Energy Unit (Dalton * nm^2 / fs^2)",
+      value: 1,
+      type: types.ENERGY
+    },
+
+    JOULE: {
+      name: "Joule",
+      value: KILOGRAMS_PER_DALTON *
+             METERS_PER_NANOMETER * METERS_PER_NANOMETER *
+             (1/SECONDS_PER_FEMTOSECOND) * (1/SECONDS_PER_FEMTOSECOND),
+      type: types.ENERGY
+    },
+
+    EV: {
+      name: "electron volt",
+      value: KILOGRAMS_PER_DALTON *
+              METERS_PER_NANOMETER * METERS_PER_NANOMETER *
+              (1/SECONDS_PER_FEMTOSECOND) * (1/SECONDS_PER_FEMTOSECOND) *
+              (1/JOULES_PER_EV),
+      type: types.ENERGY
+    },
+
+    EV_PER_KELVIN:     { name: "electron volts per Kelvin", value: 1,                 type: types.ENTROPY },
+    JOULES_PER_KELVIN: { name: "Joules per Kelvin",         value: 1 * JOULES_PER_EV, type: types.ENTROPY },
+
+    ELEMENTARY_CHARGE: { name: "elementary charge", value: 1,                             type: types.CHARGE },
+    COULOMB:           { name: "Coulomb",           value: COULOMBS_PER_ELEMENTARY_CHARGE, type: types.CHARGE },
+
+    INVERSE_MOLE: { name: "inverse moles", value: 1, type: types.INVERSE_QUANTITY },
+
+    FARADS_PER_METER: { name: "Farads per meter", value: 1, type: types.FARADS_PER_METER },
+
+    METERS_PER_FARAD: { name: "meters per Farad", value: 1, type: types.METERS_PER_FARAD },
+
+    MW_FORCE_UNIT: {
+      name: "MW force units (Dalton * nm / fs^2)",
+      value: 1,
+      type: types.FORCE
+    },
+
+    NEWTON: {
+      name: "Newton",
+      value: 1 * KILOGRAMS_PER_DALTON * METERS_PER_NANOMETER * (1/SECONDS_PER_FEMTOSECOND) * (1/SECONDS_PER_FEMTOSECOND),
+      type: types.FORCE
+    },
+
+    EV_PER_NM: {
+      name: "electron volts per nanometer",
+      value: 1 * KILOGRAMS_PER_DALTON * METERS_PER_NANOMETER * METERS_PER_NANOMETER *
+             (1/SECONDS_PER_FEMTOSECOND) * (1/SECONDS_PER_FEMTOSECOND) *
+             (1/JOULES_PER_EV),
+      type: types.FORCE
+    },
+
+    MW_VELOCITY_UNIT: {
+      name: "MW velocity units (nm / fs)",
+      value: 1,
+      type: types.VELOCITY
+    },
+
+    METERS_PER_SECOND: {
+      name: "meters per second",
+      value: 1 * METERS_PER_NANOMETER * (1 / SECONDS_PER_FEMTOSECOND),
+      type: types.VELOCITY
+    }
+
+  };
+
+
+  /** Provide ratios for conversion of one unit to an equivalent unit type.
+
+     Usage: ratio(units.GRAM, { per: units.KILOGRAM }) === 1000
+            ratio(units.GRAM, { as: units.KILOGRAM }) === 0.001
+  */
+  exports.ratio = ratio = function(from, to) {
+    var checkCompatibility = function(fromUnit, toUnit) {
+      if (fromUnit.type !== toUnit.type) {
+        throw new Error("Attempt to convert incompatible type '" + fromUnit.name + "'' to '" + toUnit.name + "'");
+      }
+    };
+
+    if (to.per) {
+      checkCompatibility(from, to.per);
+      return from.value / to.per.value;
+    } else if (to.as) {
+      checkCompatibility(from, to.as);
+      return to.as.value / from.value;
+    } else {
+      throw new Error("units.ratio() received arguments it couldn't understand.");
+    }
+  };
+
+  /** Scale 'val' to a different unit of the same type.
+
+    Usage: convert(1, { from: unit.KILOGRAM, to: unit.GRAM }) === 1000
+  */
+  exports.convert = convert = function(val, fromTo) {
+    var from = fromTo && fromTo.from,
+        to   = fromTo && fromTo.to;
+
+    if (!from) {
+      throw new Error("units.convert() did not receive a \"from\" argument");
+    }
+    if (!to) {
+      throw new Error("units.convert() did not receive a \"to\" argument");
+    }
+
+    return val * ratio(to, { per: from });
+  };
+});
+
+/*global define d3 */
+/*jshint eqnull:true boss:true */
+
+define('solar-system/models/property-description',['require','underscore'],function(require) {
+
+  var _ = require('underscore');
+
+  function isUndefined(val) {
+    return typeof val === 'undefined';
+  }
+
+  function PropertyDescription(unitDefinition, descriptionHash) {
+    var u;
+
+    this._descriptionHash = descriptionHash;
+    this._label = descriptionHash.label || "";
+
+    if (descriptionHash.unitType) {
+      if ( !(u = unitDefinition.units[descriptionHash.unitType]) ) {
+        throw new Error("PropertyDescription: couldn't find unitType " + descriptionHash.unitType + " in the supplied units definition.");
+      }
+      this._unitType         = descriptionHash.unitType;
+      this._unitName         = u.name;
+      this._unitPluralName   = u.pluralName;
+      this._unitAbbreviation = u.abbreviation;
+    }
+
+    // allow overriding the unit properties, or specifying custom ones for which there is no
+    // current unit definition.
+    if (descriptionHash.unitName) this._unitName = descriptionHash.unitName;
+    if (descriptionHash.unitPluralName) this._unitPluralName = descriptionHash.unitPluralName;
+    if (descriptionHash.unitAbbreviation) this._unitAbbreviation = descriptionHash.unitAbbreviation;
+
+    this.setFormat(descriptionHash.format || 'g');
+  }
+
+  PropertyDescription.prototype.getHash = function() {
+    return _.extend(
+      _.reject({
+          unitName:         this.getUnitName(),
+          unitPluralName:   this.getUnitPluralName(),
+          unitAbbreviation: this.getUnitAbbreviation()
+        }, isUndefined),
+      this._descriptionHash);
+  };
+
+  PropertyDescription.prototype.getLabel = function() {
+    return this._label;
+  };
+
+  PropertyDescription.prototype.getUnitType = function() {
+    return this._unitType;
+  };
+
+  PropertyDescription.prototype.getUnitName = function() {
+    return this._unitName;
+  };
+
+  PropertyDescription.prototype.getUnitPluralName = function() {
+    return this._unitPluralName;
+  };
+
+  PropertyDescription.prototype.getUnitAbbreviation = function() {
+    return this._unitAbbreviation;
+  };
+
+  PropertyDescription.prototype.setFormat = function(s) {
+    this._formatter = d3.format(s);
+  };
+
+  PropertyDescription.prototype.format = function(val, opts) {
+    opts = opts || {};
+
+    var formatter,
+        formattedVal,
+        plural,
+        abbreviated = true;
+
+    if (opts.format) {
+      if (opts.format === this._lastFormat) {
+        formatter = this._lastFormatter;
+      } else {
+        formatter = d3.format(opts.format);
+        this._lastFormat = opts.format;
+        this._lastFormatter = formatter;
+      }
+    } else {
+      formatter = this._formatter;
+    }
+
+    formattedVal = formatter(val);
+
+    if (opts && opts.abbreviated != null) abbreviated = opts.abbreviated;
+
+    if (abbreviated) {
+      return formattedVal + " " + this._unitAbbreviation;
+    }
+
+    plural = parseFloat(formattedVal) !== 1;
+    return formattedVal + " " + (plural ? this._unitPluralName : this._unitName);
+  };
+
+  return PropertyDescription;
+});
+
+/*global define: false */
+
+// Definitions of the default MD2D units. Every model property exposed by md2d/models/modeler.js is
+// in one of the unit types below.
+
+// This particular set of definitions is for reference and for generating the correct labels on
+// output properties; it's not used for computation. Unit conversions that need to happen during
+// calculations in the MD2D engine itself are "baked in" using a common engines constants and
+// units module 'common/models/engines/constants/index.js')
+
+// Additionally, since we don't yet offer user-facing methods which do unit conversions (e.g.,
+// allowing a property setter to accept an argument containing a value and a unit) there is no
+// need for quantitative information in this definition.
+
+define('solar-system/models/unit-definitions/solar-system',[],function() {
+  return {
+    name: "solar-system",
+    translated: false,
+    units: {
+
+      length: {
+        name: "nanometer",
+        pluralName: "nanometers",
+        abbreviation: "nm"
+      },
+
+      // Internally, we've referred to "Dalton" but amu is probably more common. Dalton is
+      // officially more correct but it still seems mostly to be used for protein masses, etc.
+      mass: {
+        name: "atomic mass unit",
+        pluralName: "atomic mass units",
+        abbreviation: "amu"
+      },
+
+      time: {
+        name: "femtosecond",
+        pluralName: "femtoseconds",
+        abbreviation: "fs",
+        displayValue: {
+          unitsPerBaseUnit: 1e-3,
+          pluralName: "picoseconds",
+          name: "picosecond",
+          abbreviation: "ps"
+        }
+      },
+
+      // For unclear reasons, Classic MW scales the damping coefficient of obstacles linearly with
+      // the obstacle's mass, so the acceleration due to friction is a constant times the velocity:
+      //   a(friction) = -cv
+      // For compatibility, MD2D does the same.
+      // The units of the constant c (called "obstacle friction") are therefore 1 / time.
+      inverseTime: {
+        name: "1/femtosecond",
+        pluralName: "1/femtoseconds",
+        abbreviation: "1/fs"
+      },
+
+      velocity: {
+        name: "nanometer per femtosecond",
+        pluralName: "nanometers per second",
+        abbreviation: "nm/s"
+      },
+
+      acceleration: {
+        name: "nanometer per femtosecond squared",
+        pluralName: "nanometers per femtosecond squared",
+        abbreviation: "nm/fs²"
+      },
+
+      momentum: {
+        name: "amu nanometer per femtosecond",
+        pluralName: "amu nanometers per femtosecond",
+        abbreviation: "amu⋅nm/fs"
+      },
+
+      // Forces haven't typically been exposed to Classic MW users in a quantitative way, and indeed
+      // they aren't yet exposed in Next Gen MW, so MD2D doesn't try to translate the
+      // (computationally convenient) amu nm/fs² to "user friendly" units. That said, Classic MW
+      // could be said to use eV/nm implicitly, since spring constants are in eV/nm².
+      force: {
+        name: "amu nanometer per femtosecond squared",
+        pluralName: "amu nanometers per femtosecond squared",
+        abbreviation: "amu⋅nm/fs²"
+      },
+
+      energy: {
+        name: "electron volt",
+        pluralName: "electron volts",
+        abbreviation: "eV"
+      },
+
+      // aka spring constant (= eV/nm per nm)
+      stiffness: {
+        name: "electron volt per nanometer squared",
+        pluralName: "electron volts per nanometer squared",
+        abbreviation: "eV/nm²"
+      },
+
+      temperature: {
+        // Not "degrees Kelvin", just "Kelvin".
+        name: "Kelvin",
+        // Not "Kelvins", just "Kelvin".
+        pluralName: "Kelvin",
+        abbreviation: "K"
+      },
+
+      pressure: {
+        name: "bar",
+        // e.g., "50 bar"
+        pluralName: "bar",
+        abbreviation: "bar"
+      },
+
+      angle: {
+        name: "radian",
+        pluralName: "radians",
+        abbreviation: "rad"
+      }
+    }
+  };
+});
+
+/*global define: false */
+
+// Definitions of the MKS units used for macroscopic models. We simulate macroscopic models by
+// declaring that some value in (microscopic) MD2D units actually represents one macroscopic-scale
+// unit of the same type, e.g., we choose 1 nm (a value of 1 in any MD2D property that has unitType
+// "length") to represent 1 m.
+//
+// Such microscopic:macroscopic ratios as 1nm:1m can only be freely chosen for three unit types:
+// length, mass, and time. The remaining unit ratios are computed by the UnitsTranslation module.
+// See http://lab.dev.concord.org/doc/models/md2d/macroscopic-units/ for an overview of the
+// calculations.
+//
+// In order to compute these ratios, the UnitsTranslation requires two pieces of
+// data about each unit:
+//
+// (1) for mass, length, and time only, the "representationInSolarSystemUnits" property, which tells
+//     how many MD2D units of the same type represent 1 macroscopic unit.
+// (2) for each unit type, the "valueInSIUnits" property, which tells the value of that unit in
+//     SI units. This is required, for example, if we wanted to have a unit system that represented
+//     acceleration in g (multiples of Earth gravity.) We can automatically translate from the MD2D
+//     system of units (nm/fs²) to SI/MKS, but without further information relating the value of 1g
+//     to units of m/s² we cannot translate MD2D units to g.
+//
+// Additionally, angle, pressure, and temperature are not included below. That is because angle
+// units require no translation, and temperature, while nominally applicable to macroscale models,
+// is computed from kinetic energy in a way that is not really applicable to, e.g., a macroscopic
+// mass-spring model. Moreover pressure units in Classic MW are somewhat fake, and we don't really
+// anticipate trying to compute the pressure exerted by a box of bouncing macroscopic balls.
+
+define('solar-system/models/unit-definitions/mks',[],function() {
+  return {
+    name: "mks",
+    translated: true,
+    units: {
+
+      length: {
+        name: "meter",
+        pluralName: "meters",
+        abbreviation: "m",
+        representationInSolarSystemUnits: 1,
+        valueInSIUnits: 1
+      },
+
+      mass: {
+        name: "kilogram",
+        pluralName: "kilograms",
+        abbreviation: "kg",
+        representationInSolarSystemUnits: 1,
+        valueInSIUnits: 1
+      },
+
+      time: {
+        name: "second",
+        pluralName: "seconds",
+        abbreviation: "s",
+        representationInSolarSystemUnits: 1e4,
+        valueInSIUnits: 1
+      },
+
+      inverseTime: {
+        name: "1/second",
+        pluralName: "1/seconds",
+        abbreviation: "1/s",
+        valueInSIUnits: 1
+      },
+
+      velocity: {
+        name: "meter per second",
+        pluralName: "meters per second",
+        abbreviation: "m/s",
+        valueInSIUnits: 1
+      },
+
+      acceleration: {
+        name: "meter per second squared",
+        pluralName: "meters per second squared",
+        abbreviation: "m/s²",
+        valueInSIUnits: 1
+      },
+
+      force: {
+        name: "Newton",
+        pluralName: "Newtons",
+        abbreviation: "N",
+        valueInSIUnits: 1
+      },
+
+      energy: {
+        name: "Joule",
+        pluralName: "Joules",
+        abbreviation: "J",
+        valueInSIUnits: 1
+      },
+
+      dampingCoefficient: {
+        name: "Newton second per meter",
+        pluralName: "Newton seconds per meter",
+        abbreviation: "N⋅s/m",
+        valueInSIUnits: 1
+      },
+
+      // aka spring constant
+      stiffness: {
+        name: "Newton per meter",
+        pluralName: "Newtons per meter",
+        abbreviation: "N/m",
+        valueInSIUnits: 1
+      },
+
+      // aka torsional spring constant
+      rotationalStiffness: {
+        name: "Newton-meter per radian",
+        pluralName: "Newton-meters per radian",
+        abbreviation: "N⋅m/rad",
+        valueInSIUnits: 1
+      },
+
+      charge: {
+        name: "Coulomb",
+        pluralName: "Coulombs",
+        abbreviation: "C",
+        valueInSIUnits: 1
+      }
+    }
+  };
+});
+
+/*global define*/
+
+define('solar-system/models/unit-definitions/index',['require','solar-system/models/unit-definitions/solar-system','solar-system/models/unit-definitions/mks','underscore'],function(require) {
+  var defs = {
+        solarSystem: require('solar-system/models/unit-definitions/solar-system'),
+        mks: require('solar-system/models/unit-definitions/mks')
+      },
+      _ = require('underscore');
+
+  return {
+    get: function(name) {
+      var ret;
+      if (name === 'solar-system') return defs.solarSystem;
+
+      // For any unit type not in defs[name].units (e.g., temperature does not need to be redefined
+      // in MKS), fall back to the SolarSystem unit definition.
+      ret = _.extend({}, defs[name]);
+      ret.units = _.extend({}, defs.solarSystem.units, defs[name].units);
+      return ret;
+    }
+  };
+});
+
+/*global define: true */
+/*jslint loopfunc: true */
+
+/** A list of physical constants. To access any given constant, require() this module
+    and call the 'as' method of the desired constant to get the constant in the desired unit.
+
+    This module also provides a few helper functions for unit conversion.
+
+    Usage:
+      var constants = require('./constants'),
+
+          ATOMIC_MASS_IN_GRAMS = constants.ATOMIC_MASS.as(constants.unit.GRAM),
+
+          GRAMS_PER_KILOGRAM = constants.ratio(constants.unit.GRAM, { per: constants.unit.KILOGRAM }),
+
+          // this works for illustration purposes, although the preferred method would be to pass
+          // constants.unit.KILOGRAM to the 'as' method:
+
+          ATOMIC_MASS_IN_KILOGRAMS = constants.convert(ATOMIC_MASS_IN_GRAMS, {
+            from: constants.unit.GRAM,
+            to:   constants.unit.KILOGRAM
+          });
+*/
+
+// Module can be used both in Node.js environment and in Web browser
+// using RequireJS. RequireJS Optimizer will strip out this if statement.
+
+
+define('common/models/engines/constants/index',['require','exports','module','./units'],function (require, exports, module) {
+
+  var units = require('./units'),
+      unit  = units.unit,
+      ratio = units.ratio,
+      convert = units.convert,
+
+      constants = {
+
+        ELEMENTARY_CHARGE: {
+          value: 1,
+          unit: unit.ELEMENTARY_CHARGE
+        },
+
+        ATOMIC_MASS: {
+          value: 1,
+          unit: unit.DALTON
+        },
+
+        BOLTZMANN_CONSTANT: {
+          value: 1.380658e-23,
+          unit: unit.JOULES_PER_KELVIN
+        },
+
+        AVAGADRO_CONSTANT: {
+          // N_A is numerically equal to Dalton per gram
+          value: ratio( unit.DALTON, { per: unit.GRAM }),
+          unit: unit.INVERSE_MOLE
+        },
+
+        PERMITTIVITY_OF_FREE_SPACE: {
+          value: 8.854187e-12,
+          unit: unit.FARADS_PER_METER
+        }
+      },
+
+      constantName, constant;
+
+
+  // Derived units
+  constants.COULOMB_CONSTANT = {
+    value: 1 / (4 * Math.PI * constants.PERMITTIVITY_OF_FREE_SPACE.value),
+    unit: unit.METERS_PER_FARAD
+  };
+
+  // Exports
+
+  exports.unit = unit;
+  exports.ratio = ratio;
+  exports.convert = convert;
+
+  // Require explicitness about units by publishing constants as a set of objects with only an 'as' property,
+  // which will return the constant in the specified unit.
+
+  for (constantName in constants) {
+    if (constants.hasOwnProperty(constantName)) {
+      constant = constants[constantName];
+
+      exports[constantName] = (function(constant) {
+        return {
+          as: function(toUnit) {
+            return units.convert(constant.value, { from: constant.unit, to: toUnit });
+          }
+        };
+      }(constant));
+    }
+  }
+});
+
+/*global define*/
+/*jshint eqnull: true*/
+
+define('solar-system/models/units-translation',['require','underscore','common/models/engines/constants/index'],function(require) {
+
+  var _ = require('underscore'),
+      constants = require('common/models/engines/constants/index'),
+      baseUnitTypes = ['length', 'mass', 'time'];
+
+  return function UnitsTranslation(unitsDefinition) {
+
+    var // multiply SolarSystem-units value by this to get the value in SI units
+        siFactor = {},
+
+        // multiply SolarSystem-units value by this to get the value in translated (macroscopic) units
+        factor = {},
+
+        force;
+
+        _.each(baseUnitTypes, function (unitType) {
+          var u = unitsDefinition.units[unitType];
+          siFactor[unitType] = u.valueInSIUnits / u.representationInSolarSystemUnits;
+        });
+
+        siFactor.inverseTime = 1 / siFactor.time;
+        siFactor.velocity = siFactor.length / siFactor.time;
+        siFactor.acceleration = siFactor.velocity / siFactor.time;
+        siFactor.force = siFactor.mass * siFactor.acceleration;
+
+        // The factor should first convert an MD2D value, which is in *eV*, to amu nm/fs^2:
+        siFactor.energy = constants.ratio(constants.unit.MW_ENERGY_UNIT, { per: constants.unit.EV });
+        // Then it should convert amu/fs^2 to N and nm to m, yielding Joules:
+        siFactor.energy *= siFactor.force * siFactor.length;
+
+        siFactor.dampingCoefficient = siFactor.force / siFactor.velocity;
+        // stiffness is eV/nm^2; convert eV -> J and 1/nm^2 -> 1/m^2 (yielding N/m)
+        siFactor.stiffness = siFactor.energy / siFactor.length / siFactor.length;
+        // rotational stiffness is in eV/rad; convert eV -> N⋅m -- no need to convert radians
+        siFactor.rotationalStiffness = siFactor.energy / siFactor.length;
+
+       // Force between charge +1 and -1, 1 distance unit apart, with dielectric constant 1
+       // force = coulomb.force(1, -1, 1, 1);
+       force = 1;
+       // See disdcussion at http://lab.dev.concord.org/doc/models/md2d/macroscopic-units/
+       siFactor.charge = Math.sqrt(force * siFactor.force * siFactor.length * siFactor.length / COULOMB_CONSTANT);
+
+      _.each(_.keys(siFactor), function(unitType) {
+        factor[unitType] = siFactor[unitType] / unitsDefinition.units[unitType].valueInSIUnits;
+      });
+
+      return {
+        translateToSolarSystemUnits: function(translatedUnitsValue, unitType) {
+          if (factor[unitType] == null) {
+            return translatedUnitsValue;
+          }
+          return translatedUnitsValue / factor[unitType];
+        },
+
+        translateFromSolarSystemUnits: function(md2dUnitsValue, unitType) {
+          if (factor[unitType] == null) {
+            return solar-systemUnitsValue;
+          }
+          return solar-systemUnitsValue * factor[unitType];
+        }
+      };
+   };
+});
+
+/*global define: false, d3: false, $: false */
+/*jslint onevar: true devel:true eqnull: true boss: true */
+
+define('solar-system/models/modeler',['require','arrays','common/console','solar-system/models/engine/solar-system','solar-system/models/metadata','common/models/tick-history','common/serialize','common/validator','common/models/engines/constants/units','solar-system/models/property-description','solar-system/models/unit-definitions/index','solar-system/models/units-translation','underscore'],function(require) {
+  // Dependencies.
+  var arrays               = require('arrays'),
+      console              = require('common/console'),
+      solarSystem          = require('solar-system/models/engine/solar-system'),
+      metadata             = require('solar-system/models/metadata'),
+      TickHistory          = require('common/models/tick-history'),
+      serialize            = require('common/serialize'),
+      validator            = require('common/validator'),
+      units                = require('common/models/engines/constants/units'),
+      PropertyDescription  = require('solar-system/models/property-description'),
+      unitDefinitions      = require('solar-system/models/unit-definitions/index'),
+      UnitsTranslation     = require('solar-system/models/units-translation'),
+      _ = require('underscore');
+
+  return function Model(initialProperties) {
+
+    // all models created with this constructor will be of type: "solar-system"
+    this.constructor.type = "solar-system";
+
+    var model = {},
+        dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack",
+            "seek", "addPlanet", "removePlanet", "invalidation", "textBoxesChanged"),
+        defaultMaxTickHistory = 1000,
+        stopped = true,
+        restart = false,
+        newStep = false,
+
+        lastSampleTime,
+        sampleTimes = [],
+
+        modelOutputState,
+        tickHistory,
+
+        // SolarSystem engine.
+        engine,
+
+        // ######################### Main Data Structures #####################
+        // They are initialized at the end of this function. These data strucutres
+        // are mainly managed by the engine.
+
+        // A hash of arrays consisting of arrays of planet property values
+        planets,
+
+        // ####################################################################
+
+        // A two dimensional array consisting of planet index numbers and planet
+        // property values - in effect transposed from the planet property arrays.
+        results,
+
+        listeners = {},
+
+        properties = {
+          /**
+            These functions are optional setters that will be called *instead* of simply setting
+            a value when 'model.set({property: value})' is called, and are currently needed if you
+            want to pass a value through to the engine.  The function names are automatically
+            determined from the property name. If you define one of these custom functions, you
+            must remember to also set the property explicitly (if appropriate) as this won't be
+            done automatically
+          */
+
+          set_timeStep: function(ts) {
+            this.timeStep = ts;
+          },
+
+          set_horizontalWrapping: function(hw) {
+            this.horizontalWrapping = hw;
+            if (engine) {
+              engine.setHorizontalWrapping(hw);
+            }
+          },
+
+          set_verticalWrapping: function(vw) {
+            this.verticalWrapping = vw;
+            if (engine) {
+              engine.setVerticalWrapping(vw);
+            }
+          },
+
+          set_gravitationalField: function(gf) {
+            this.gravitationalField = gf;
+            if (engine) {
+              engine.setGravitationalField(gf);
+            }
+          }
+
+        },
+
+        // The list of all 'output' properties (which change once per tick).
+        outputNames = [],
+
+        // Information about the description and calculating function for 'output' properties.
+        outputsByName = {},
+
+        // The subset of outputName list, containing list of outputs which are filtered
+        // by one of the built-in filters (like running average filter).
+        filteredOutputNames = [],
+
+        // Function adding new sample for filtered outputs. Other properties of filtered output
+        // are stored in outputsByName object, as filtered output is just extension of normal output.
+        filteredOutputsByName = {},
+
+        // Whewther to suppress caching of output properties. Should only be needed between
+        // invalidatingChangePreHook and invalidatingChangePostHook
+        suppressOutputPropertyCaching = false,
+
+        // The currently-defined parameters.
+        parametersByName = {},
+
+        // Unit types for all the properties that can be accessed using model.set/model.get
+        mainPropertyUnitTypes,
+
+        // The set of units currently in effect. (Determined by the 'unitsScheme' property of the
+        // model; default value is 'md2d')
+        unitsDefinition,
+
+        // Object that translates between 'native' md2d units and the units defined
+        // by unitsDefinition.
+        unitsTranslation;
+
+    function notifyPropertyListeners(listeners) {
+      listeners = _.uniq(listeners);
+      for (var i=0, ii=listeners.length; i<ii; i++){
+        listeners[i]();
+      }
+    }
+
+    function notifyPropertyListenersOfEvents(events) {
+      var evt,
+          evts,
+          waitingToBeNotified = [],
+          i, ii;
+
+      if (typeof events === "string") {
+        evts = [events];
+      } else {
+        evts = events;
+      }
+      for (i=0, ii=evts.length; i<ii; i++){
+        evt = evts[i];
+        if (listeners[evt]) {
+          waitingToBeNotified = waitingToBeNotified.concat(listeners[evt]);
+        }
+      }
+      if (listeners["all"]){      // listeners that want to be notified on any change
+        waitingToBeNotified = waitingToBeNotified.concat(listeners["all"]);
+      }
+      notifyPropertyListeners(waitingToBeNotified);
+    }
+
+    /**
+      Restores a set of "input" properties, notifying their listeners of only those properties which
+      changed, and only after the whole set of properties has been updated.
+    */
+    function restoreProperties(savedProperties) {
+      var property,
+          changedProperties = [],
+          savedValue;
+
+      for (property in savedProperties) {
+        if (savedProperties.hasOwnProperty(property)) {
+          // skip read-only properties
+          if (outputsByName[property]) {
+            throw new Error("Attempt to restore output property \"" + property + "\".");
+          }
+          savedValue = savedProperties[property];
+          if (properties[property] !== savedValue) {
+            if (properties["set_"+property]) {
+              properties["set_"+property](savedValue);
+            } else {
+              properties[property] = savedValue;
+            }
+            changedProperties.push(property);
+          }
+        }
+      }
+      notifyPropertyListenersOfEvents(changedProperties);
+    }
+
+    /**
+      Restores a list of parameter values, notifying their listeners after the whole list is
+      updated, and without triggering setters. Sets parameters not in the passed-in list to
+      undefined.
+    */
+    function restoreParameters(savedParameters) {
+      var parameterName,
+          observersToNotify = [];
+
+      for (parameterName in savedParameters) {
+        if (savedParameters.hasOwnProperty(parameterName)) {
+          // restore the property value if it was different or not defined in the current time step
+          if (properties[parameterName] !== savedParameters[parameterName] || !parametersByName[parameterName].isDefined) {
+            properties[parameterName] = savedParameters[parameterName];
+            parametersByName[parameterName].isDefined = true;
+            observersToNotify.push(parameterName);
+          }
+        }
+      }
+
+      // remove parameter values that aren't defined at this point in history
+      for (parameterName in parametersByName) {
+        if (parametersByName.hasOwnProperty(parameterName) && !savedParameters.hasOwnProperty(parameterName)) {
+          parametersByName[parameterName].isDefined = false;
+          properties[parameterName] = undefined;
+        }
+      }
+
+      notifyPropertyListenersOfEvents(observersToNotify);
+    }
+
+    function tick(elapsedTime, dontDispatchTickEvent) {
+      var timeStep = model.get('timeStep'),
+          t, sampleTime;
+
+      // timeStepsPerTick is defined as the model integration time period
+      console.time('integration');
+      engine.integrate(model.get('timeStepsPerTick') * timeStep, timeStep);
+      console.timeEnd('integration');
+      console.time('reading model state');
+      updateAllOutputProperties();
+      console.timeEnd('reading model state');
+
+      console.time('tick history push');
+      tickHistory.push();
+      console.timeEnd('tick history push');
+
+      newStep = true;
+
+      if (!dontDispatchTickEvent) {
+        dispatch.tick();
+      }
+
+      return stopped;
+    }
+
+    function set_properties(hash) {
+      var property, propsChanged = [];
+      for (property in hash) {
+        if (hash.hasOwnProperty(property) && hash[property] !== undefined && hash[property] !== null) {
+          // skip read-only properties
+          if (outputsByName[property]) {
+            throw new Error("Attempt to set read-only output property \"" + property + "\".");
+          }
+          // look for set method first, otherwise just set the property
+          if (properties["set_"+property]) {
+            properties["set_"+property](hash[property]);
+          // why was the property not set if the default value property is false ??
+          // } else if (properties[property]) {
+          } else {
+            properties[property] = hash[property];
+          }
+          propsChanged.push(property);
+        }
+      }
+      notifyPropertyListenersOfEvents(propsChanged);
+    }
+
+    // Returns the "raw" (untranslated) version of property 'name'. Used to provide privileged
+    // access to internal representation of properties to, e.g., TickHistory.
+    function getRawPropertyValue(name) {
+      return properties[name];
+    }
+
+    // Returns a copy of 'obj' with value replaced by fn(key, value) for every (key, value) pair.
+    // (Underscore doesn't do this: https://github.com/documentcloud/underscore/issues/220)
+    function mapValues(obj, fn) {
+      obj = _.extend({}, obj);
+      for (var k in obj) {
+        if (obj.hasOwnProperty(k)) obj[k] = fn(k, obj[k]);
+      }
+      return obj;
+    }
+
+    /**
+      Call this method after moving to a different model time (e.g., after stepping the model
+      forward or back, seeking to a different time, or on model initialization) to update all output
+      properties and notify their listeners. This method is more efficient for that case than
+      updateOutputPropertiesAfterChange because it can assume that all output properties are
+      invalidated by the model step. It therefore does not need to calculate any output property
+      values; it allows them to be evaluated lazily instead. Property values are calculated when and
+      if listeners request them. This method also guarantees that all properties have their updated
+      value when they are requested by any listener.
+
+      Technically, this method first updates the 'results' array and macrostate variables, then
+      invalidates any  cached output-property values, and finally notifies all output-property
+      listeners.
+
+      Note that this method and updateOutputPropertiesAfterChange are the only methods which can
+      flush the cached value of an output property. Therefore, be sure to not to make changes
+      which would invalidate a cached value without also calling one of these two methods.
+    */
+    function updateAllOutputProperties() {
+      var i, j, l;
+
+      readModelState();
+
+      // invalidate all cached values before notifying any listeners
+      for (i = 0; i < outputNames.length; i++) {
+        outputsByName[outputNames[i]].hasCachedValue = false;
+      }
+
+      // Update all filtered outputs.
+      // Note that this have to be performed after invalidation of all outputs
+      // (as filtered output can filter another output), but before notifying
+      // listeners (as we want to provide current, valid value).
+      for (i = 0; i < filteredOutputNames.length; i++) {
+        filteredOutputsByName[filteredOutputNames[i]].addSample();
+      }
+
+      for (i = 0; i < outputNames.length; i++) {
+        if (l = listeners[outputNames[i]]) {
+          for (j = 0; j < l.length; j++) {
+            l[j]();
+          }
+        }
+      }
+    }
+
+    /**
+      ALWAYS CALL THIS FUNCTION before any change to model state outside a model step
+      (i.e., outside a tick, seek, stepForward, stepBack)
+
+      Note:  Changes to view-only property changes that cannot change model physics might reasonably
+      by considered non-invalidating changes that don't require calling this hook.
+    */
+    function invalidatingChangePreHook() {
+      storeOutputPropertiesBeforeChange();
+    }
+
+    /**
+      ALWAYS CALL THIS FUNCTION after any change to model state outside a model step.
+    */
+    function invalidatingChangePostHook() {
+      updateOutputPropertiesAfterChange();
+      if (tickHistory) tickHistory.invalidateFollowingState();
+      dispatch.invalidation();
+    }
+
+    /**
+      Call this method *before* changing any "universe" property or model property (including any
+      property of a model object such as the position of an planet) to save the output-property
+      values before the change. This is required to enabled updateOutputPropertiesAfterChange to be
+      able to detect property value changes.
+
+      After the change is made, call updateOutputPropertiesAfterChange to notify listeners.
+    */
+    function storeOutputPropertiesBeforeChange() {
+      var i, outputName, output, l;
+
+      for (i = 0; i < outputNames.length; i++) {
+        outputName = outputNames[i];
+        if ((l = listeners[outputName]) && l.length > 0) {
+          output = outputsByName[outputName];
+          // Can't save previous value in output.cachedValue because, before we check it, the
+          // cachedValue may be overwritten with an updated value as a side effect of the
+          // calculation of the updated value of some other property
+          output.previousValue = output.hasCachedValue ? output.cachedValue : output.calculate();
+        }
+      }
+    }
+
+    /**
+      Before changing any "universe" property or model property (including any
+      property of a model object such as the position of an planet), call the method
+      storeOutputPropertiesBeforeChange; after changing the property, call this method  to detect
+      changed output-property values and to notify listeners of the output properties which have
+      changed. (However, don't call either method after a model tick or step;
+      updateAllOutputProperties is more efficient for that case.)
+    */
+    function updateOutputPropertiesAfterChange() {
+      var i, j, output, outputName, l, listenersToNotify = [];
+
+      readModelState();
+
+      // Mark _all_ cached values invalid ... we're not going to be checking the values of the
+      // unobserved properties, so we have to assume their value changed.
+      for (i = 0; i < outputNames.length; i++) {
+        output = outputsByName[outputNames[i]];
+        output.hasCachedValue = false;
+      }
+
+      // Update all filtered outputs.
+      // Note that this have to be performed after invalidation of all outputs
+      // (as filtered output can filter another output).
+      for (i = 0; i < filteredOutputNames.length; i++) {
+        filteredOutputsByName[filteredOutputNames[i]].addSample();
+      }
+
+      // Keep a list of output properties that are being observed and which changed ... and
+      // cache the updated values while we're at it
+      for (i = 0; i < outputNames.length; i++) {
+        outputName = outputNames[i];
+        output = outputsByName[outputName];
+
+        if ((l = listeners[outputName]) && l.length > 0) {
+          // Though we invalidated all cached values above, nevertheless some outputs may have been
+          // computed & cached during a previous pass through this loop, as a side effect of the
+          // calculation of some other property. Therefore we can respect hasCachedValue here.
+          if (!output.hasCachedValue) {
+            output.cachedValue = output.calculate();
+            output.hasCachedValue = true;
+          }
+
+          if (output.cachedValue !== output.previousValue) {
+            for (j = 0; j < l.length; j++) {
+              listenersToNotify.push(l[j]);
+            }
+          }
+        }
+        // Now that we're done with it, allow previousValue to be GC'd. (Of course, since we're
+        // using an equality test to check for changes, it doesn't make sense to let outputs be
+        // objects or arrays, yet)
+        output.previousValue = null;
+      }
+
+      // Finally, now that all the changed properties have been cached, notify listeners
+      for (i = 0; i < listenersToNotify.length; i++) {
+        listenersToNotify[i]();
+      }
+    }
+
+    /**
+      This method is called to refresh the results array and macrostate variables (KE, PE,
+      temperature) whenever an engine integration occurs or the model state is otherwise changed.
+
+      Normally, you should call the methods updateOutputPropertiesAfterChange or
+      updateAllOutputProperties rather than calling this method. Calling this method directly does
+      not cause output-property listeners to be notified, and calling it prematurely will confuse
+      the detection of changed properties.
+    */
+    function readModelState() {
+      var i, prop, n, amino;
+
+      engine.computeOutputState(modelOutputState);
+
+      extendResultsArray();
+
+      // Transpose 'planets' object into 'results' for easier consumption by view code
+      for (i = 0, n = model.get_num_planets(); i < n; i++) {
+        for (prop in planets) {
+          if (planets.hasOwnProperty(prop)) {
+            results[i][prop] = planets[prop][i];
+          }
+        }
+      }
+    }
+
+    /**
+      Ensure that the 'results' array of arrays is defined and contains one typed array per planet
+      for containing the planet properties.
+    */
+    function extendResultsArray() {
+      var i, len;
+
+      if (!results) results = [];
+
+      for (i = results.length, len = model.get_num_planets(); i < len; i++) {
+        if (!results[i]) {
+          results[i] = {
+            idx: i
+          };
+        }
+      }
+    }
+
+    // ------------------------------------------------------------
+    //
+    // Public functions
+    //
+    // ------------------------------------------------------------
+
+    /**
+      Current seek position
+    */
+    model.stepCounter = function() {
+      return tickHistory.get("counter");
+    };
+
+    /**
+      Current position of first value in tick history, normally this will be 0.
+      This will be greater than 0 if maximum size of tick history has been exceeded.
+    */
+    model.stepStartCounter = function() {
+      return tickHistory.get("startCounter");
+    };
+
+    /** Total number of ticks that have been run & are stored, regardless of seek
+        position
+    */
+    model.steps = function() {
+      return tickHistory.get("length");
+    };
+
+    model.isNewStep = function() {
+      return newStep;
+    };
+
+    model.seek = function(location) {
+      if (!arguments.length) { location = 0; }
+      stopped = true;
+      newStep = false;
+      tickHistory.seekExtract(location);
+      updateAllOutputProperties();
+      dispatch.seek();
+      return tickHistory.get("counter");
+    };
+
+    model.stepBack = function(num) {
+      if (!arguments.length) { num = 1; }
+      var i, index;
+      stopped = true;
+      newStep = false;
+      i=-1; while(++i < num) {
+        index = tickHistory.get("index");
+        if (index > 0) {
+          tickHistory.decrementExtract();
+          updateAllOutputProperties();
+          dispatch.stepBack();
+        }
+      }
+      return tickHistory.get("counter");
+    };
+
+    model.stepForward = function(num) {
+      if (!arguments.length) { num = 1; }
+      var i, index, size;
+      stopped = true;
+      i=-1; while(++i < num) {
+        index = tickHistory.get("index");
+        size = tickHistory.get("length");
+        if (index < size-1) {
+          tickHistory.incrementExtract();
+          updateAllOutputProperties();
+          dispatch.stepForward();
+        } else {
+          tick();
+        }
+      }
+      return tickHistory.get("counter");
+    };
+
+    /**
+      Initialize width and height from minX, minYm, maxX, maxY
+    */
+    model.initializeDimensions = function () {
+      model.set({ width: model.get('maxX') - model.get('minX') });
+      model.set({ height: model.get('maxY') - model.get('minY') });
+    };
+
+    /**
+      Creates a new solarSystem engine and leaves it in 'engine'.
+    */
+    model.initializeEngine = function () {
+      engine = solarSystem.createEngine();
+
+      engine.setDimensions([model.get('minX'), model.get('minY'), model.get('maxX'), model.get('maxY')]);
+      engine.setHorizontalWrapping(model.get('horizontalWrapping'));
+      engine.setVerticalWrapping(model.get('verticalWrapping'));
+      engine.setGravitationalField(model.get('gravitationalField'));
+
+      window.state = modelOutputState = {};
+
+      // Copy reference to basic properties.
+      planets = engine.planets;
+    };
+
+    /**
+      Creates a new set of planets.
+
+      @config: either the number of planets (for a random setup) or
+               a hash specifying the x,y,vx,vy properties of the planets
+      When random setup is used, the option 'relax' determines whether the model is requested to
+      relax to a steady-state temperature (and in effect gets thermalized). If false, the planets are
+      left in whatever grid the engine's initialization leaves them in.
+    */
+    model.createPlanets = function(config) {
+          // Options for addPlanet method.
+      var options = {
+            // Do not check the position of planet, assume that it's valid.
+            supressCheck: true,
+            // Deserialization process, invalidating change hooks will be called manually.
+            deserialization: true
+          },
+          i, num, prop, planetProps;
+
+      // Call the hook manually, as addPlanet won't do it due to
+      // deserialization option set to true.
+      invalidatingChangePreHook();
+
+      if (typeof config === 'number') {
+        num = config;
+      } else if (config.num != null) {
+        num = config.num;
+      } else if (config.x) {
+        num = config.x.length;
+      }
+
+      // TODO: this branching based on x, y isn't very clear.
+      if (config.x && config.y) {
+        // config is hash of arrays (as specified in JSON model).
+        // So, for each index, create object containing properties of
+        // planet 'i'. Later, use these properties to add planet
+        // using basic addPlanet method.
+        for (i = 0; i < num; i++) {
+          planetProps = {};
+          for (prop in config) {
+            if (config.hasOwnProperty(prop)) {
+              planetProps[prop] = config[prop][i];
+            }
+          }
+          model.addPlanet(planetProps, options);
+        }
+      } else {
+        for (i = 0; i < num; i++) {
+          // Provide only required values.
+          planetProps = {x: 0, y: 0};
+          model.addPlanet(planetProps, options);
+        }
+        // This function rearrange all planets randomly.
+        engine.setupPlanetsRandomly();
+      }
+
+      // Call the hook manually, as addPlanet won't do it due to
+      // deserialization option set to true.
+      invalidatingChangePostHook();
+
+      // Listeners should consider resetting the planets a 'reset' event
+      dispatch.reset();
+
+      // return model, for chaining (if used)
+      return model;
+    };
+
+    model.reset = function() {
+      model.resetTime();
+      tickHistory.restoreInitialState();
+      dispatch.reset();
+    };
+
+    model.resetTime = function() {
+      engine.setTime(0);
+    };
+
+    /**
+      Attempts to add an 0-velocity planet to a random location. Returns false if after 10 tries it
+      can't find a location. (Intended to be exposed as a script API method.)
+
+      Optionally allows specifying the element (default is to randomly select from all editableElements) and
+      charge (default is neutral).
+    */
+    model.addRandomPlanet = function() {
+      var width = model.get('width'),
+          height = model.get('height'),
+          minX = model.get('minX'),
+          minY = model.get('minY'),
+          radius = 1,
+          x, y,
+          vx, vy,
+          loc;
+
+      x = minX + Math.random() * width - 2*radius;
+      y = minY + Math.random() * height - 2*radius;
+      vx = (Math.random() - 0.5) / 100;
+      vy = (Math.random() - 0.5) / 100;
+      model.addPlanet({ x: x, y: x, vx: vx, vy: vy });
+      return false;
+    },
+
+    /**
+      Adds a new planet defined by properties.
+      Intended to be exposed as a script API method also.
+
+      Adjusts (x,y) if needed so that the whole planet is within the walls of the container.
+
+      Returns false and does not add the planet if the potential energy change of adding an *uncharged*
+      planet of the specified element to the specified location would be positive (i.e, if the planet
+      intrudes into the repulsive region of another planet.)
+
+      Otherwise, returns true.
+
+      silent = true disables this check.
+    */
+    model.addPlanet = function(props, options) {
+      var minX = model.get('minX'),
+          minY = model.get('minY'),
+          maxX = model.get('maxX'),
+          maxY = model.get('maxY'),
+          radius = 1;
+
+      options = options || {};
+
+      // Validate properties, provide default values.
+      props = validator.validateCompleteness(metadata.planet, props);
+
+      // As a convenience to script authors, bump the planet within bounds
+      // radius = engine.getRadiusOfElement(props.element);
+      // if (props.x < (minX + radius)) props.x = minX + radius;
+      // if (props.x > (maxX - radius)) props.x = maxX - radius;
+      // if (props.y < (minY + radius)) props.y = minY + radius;
+      // if (props.y > (maxY - radius)) props.y = maxY - radius;
+
+      // When planets are being deserialized, the deserializing function
+      // should handle change hooks due to performance reasons.
+      if (!options.deserialization)
+        invalidatingChangePreHook();
+      engine.addPlanet(props);
+      if (!options.deserialization)
+        invalidatingChangePostHook();
+
+      if (!options.supressEvent) {
+        dispatch.addPlanet();
+      }
+
+      return true;
+    },
+
+    model.removePlanet = function(i, options) {
+
+      options = options || {};
+
+      invalidatingChangePreHook();
+      engine.removePlanet(i);
+      // Enforce modeler to recalculate results array.
+      results.length = 0;
+      invalidatingChangePostHook();
+
+      if (!options.supressEvent) {
+        // Notify listeners that planets is removed.
+        dispatch.removeplanet();
+      }
+    },
+
+    /**
+        A generic method to set properties on a single existing planet.
+
+        Example: setplanetProperties(3, {x: 5, y: 8, px: 0.5, charge: -1})
+
+        This can optionally check the new location of the planet to see if it would
+        overlap with another another planet (i.e. if it would increase the PE).
+
+        This can also optionally apply the same dx, dy to any planets in the same
+        molecule (if x and y are being changed), and check the location of all
+        the bonded planets together.
+      */
+    model.setPlanetProperties = function(i, props, checkLocation, moveMolecule) {
+      var dx, dy,
+          new_x, new_y,
+          j, jj;
+
+      // Validate properties.
+      props = validator.validate(metadata.planet, props);
+
+
+      if (checkLocation) {
+        var x  = typeof props.x === "number" ? props.x : planets.x[i],
+            y  = typeof props.y === "number" ? props.y : planets.y[i];
+
+        if (!engine.canPlaceplanet(el, x, y, i)) {
+          return false;
+        }
+      }
+
+      invalidatingChangePreHook();
+      engine.setPlanetProperties(i, props);
+      invalidatingChangePostHook();
+      return true;
+    };
+
+    model.getPlanetProperties = function(i) {
+      var planetMetaData = metadata.planet,
+          props = {},
+          propName;
+      for (propName in planetMetaData) {
+        if (planetMetaData.hasOwnProperty(propName)) {
+          props[propName] = planets[propName][i];
+        }
+      }
+      return props;
+    };
+
+    model.addTextBox = function(props) {
+      props = validator.validateCompleteness(metadata.textBox, props);
+      properties.textBoxes.push(props);
+      dispatch.textBoxesChanged();
+    };
+
+    model.removeTextBox = function(i) {
+      var text = properties.textBoxes;
+      if (i >=0 && i < text.length) {
+        properties.textBoxes = text.slice(0,i).concat(text.slice(i+1))
+        dispatch.textBoxesChanged();
+      } else {
+        throw new Error("Text box \"" + i + "\" does not exist, so it cannot be removed.");
+      }
+    };
+
+    model.setTextBoxProperties = function(i, props) {
+      var textBox = properties.textBoxes[i];
+      if (textBox) {
+        props = validator.validate(metadata.textBox, props);
+        for (prop in props) {
+          textBox[prop] = props[prop];
+        }
+        dispatch.textBoxesChanged();
+      } else {
+        throw new Error("Text box \"" + i + "\" does not exist, so it cannot have properties set.");
+      }
+    };
+
+    model.is_stopped = function() {
+      return stopped;
+    };
+
+    model.get_planets = function() {
+      return planets;
+    };
+
+    model.get_results = function() {
+      return results;
+    };
+
+    model.get_num_planets = function() {
+      return engine.getNumberOfPlanets();
+    };
+
+    model.on = function(type, listener) {
+      dispatch.on(type, listener);
+      return model;
+    };
+
+    model.tickInPlace = function() {
+      dispatch.tick();
+      return model;
+    };
+
+    model.tick = function(num, opts) {
+      if (!arguments.length) num = 1;
+
+      var dontDispatchTickEvent = opts && opts.dontDispatchTickEvent || false,
+          i = -1;
+
+      while(++i < num) {
+        tick(null, dontDispatchTickEvent);
+      }
+      return model;
+    };
+
+    model.start = function() {
+      return model.resume();
+    };
+
+    /**
+      Restart the model (call model.resume()) after the next tick completes.
+
+      This is useful for changing the modelSampleRate interactively.
+    */
+    model.restart = function() {
+      restart = true;
+    };
+
+    model.resume = function() {
+
+      console.time('gap between frames');
+      model.timer(function timerTick(elapsedTime) {
+        console.timeEnd('gap between frames');
+        // Cancel the timer and refuse to to step the model, if the model is stopped.
+        // This is necessary because there is no direct way to cancel a d3 timer.
+        // See: https://github.com/mbostock/d3/wiki/Transitions#wiki-d3_timer)
+        if (stopped) return true;
+
+        if (restart) {
+          setTimeout(model.resume, 0);
+          return true;
+        }
+
+        tick(elapsedTime, false);
+
+        console.time('gap between frames');
+        return false;
+      });
+
+      restart = false;
+      if (stopped) {
+        stopped = false;
+        dispatch.play();
+      }
+
+      return model;
+    };
+
+    /**
+      Repeatedly calls `f` at an interval defined by the modelSampleRate property, until f returns
+      true. (This is the same signature as d3.timer.)
+
+      If modelSampleRate === 'default', try to run at the "requestAnimationFrame rate"
+      (i.e., using d3.timer(), after running f, also request to run f at the next animation frame)
+
+      If modelSampleRate !== 'default', instead uses setInterval to schedule regular calls of f with
+      period (1000 / sampleRate) ms, corresponding to sampleRate calls/s
+    */
+    model.timer = function(f) {
+      var intervalID,
+          sampleRate = model.get("modelSampleRate");
+
+      if (sampleRate === 'default') {
+        // use requestAnimationFrame via d3.timer
+        d3.timer(f);
+      } else {
+        // set an interval to run the model more slowly.
+        intervalID = window.setInterval(function() {
+          if ( f() ) {
+            window.clearInterval(intervalID);
+          }
+        }, 1000/sampleRate);
+      }
+    };
+
+    model.stop = function() {
+      stopped = true;
+      dispatch.stop();
+      return model;
+    };
+
+    model.set = function(hash) {
+      // Perform validation in case of setting main properties or
+      // model view properties. Attempts to set immutable or read-only
+      // properties will be caught.
+      validator.validate(metadata.mainProperties, hash);
+      validator.validate(metadata.viewOptions, hash);
+
+      if (engine) invalidatingChangePreHook();
+      set_properties(hash);
+      if (engine) invalidatingChangePostHook();
+    };
+
+    model.get = function(property) {
+      var output;
+
+      if (properties.hasOwnProperty(property)) return properties[property];
+
+      if (output = outputsByName[property]) {
+        if (output.hasCachedValue) return output.cachedValue;
+        output.hasCachedValue = true;
+        output.cachedValue = output.calculate();
+        return output.cachedValue;
+      }
+    };
+
+    /**
+      Add a listener callback that will be notified when any of the properties in the passed-in
+      array of properties is changed. (The argument `properties` can also be a string, if only a
+      single name needs to be passed.) This is a simple way for views to update themselves in
+      response to property changes.
+
+      Observe all properties with `addPropertiesListener('all', callback);`
+    */
+    model.addPropertiesListener = function(properties, callback) {
+      var i;
+
+      function addListener(prop) {
+        if (!listeners[prop]) listeners[prop] = [];
+        listeners[prop].push(callback);
+      }
+
+      if (typeof properties === 'string') {
+        addListener(properties);
+      } else {
+        for (i = 0; i < properties.length; i++) {
+          addListener(properties[i]);
+        }
+      }
+    };
+
+
+    /**
+      Add an "output" property to the model. Output properties are expected to change at every
+      model tick, and may also be changed indirectly, outside of a model tick, by a change to the
+      model parameters or to the configuration of atoms and other objects in the model.
+
+      `name` should be the name of the parameter. The property value will be accessed by
+      `model.get(<name>);`
+
+      `description` should be a hash of metadata about the property. Right now, these metadata are not
+      used. However, example metadata include the label and units name to be used when graphing
+      this property.
+
+      `calculate` should be a no-arg function which should calculate the property value.
+    */
+    model.defineOutput = function(name, descriptionHash, calculate) {
+      outputNames.push(name);
+
+      mainPropertyUnitTypes[name] = {
+        unitType: descriptionHash.unitType
+      };
+
+      outputsByName[name] = {
+        description: new PropertyDescription(unitsDefinition, descriptionHash),
+        calculate: calculate,
+        hasCachedValue: false,
+        // Used to keep track of whether this property changed as a side effect of some other change
+        // null here is just a placeholder
+        previousValue: null
+      };
+    };
+
+    /**
+      Add an "filtered output" property to the model. This is special kind of output property, which
+      is filtered by one of the built-in filters based on time (like running average). Note that filtered
+      outputs do not specify calculate function - instead, they specify property which should filtered.
+      It can be another output, model parameter or custom parameter.
+
+      Filtered output properties are extension of typical output properties. They share all features of
+      output properties, so they are expected to change at every model tick, and may also be changed indirectly,
+      outside of a model tick, by a change to the model parameters or to the configuration of atoms and other
+      objects in the model.
+
+      `name` should be the name of the parameter. The property value will be accessed by
+      `model.get(<name>);`
+
+      `description` should be a hash of metadata about the property. Right now, these metadata are not
+      used. However, example metadata include the label and units name to be used when graphing
+      this property.
+
+      `property` should be name of the basic property which should be filtered.
+
+      `type` should be type of filter, defined as string. For now only "RunningAverage" is supported.
+
+      `period` should be number defining length of time period used for calculating filtered value. It should
+      be specified in femtoseconds.
+
+    */
+    model.defineFilteredOutput = function(name, description, property, type, period) {
+      // Filter object.
+      var filter, initialValue;
+
+      if (type === "RunningAverage") {
+        filter = new RunningAverageFilter(period);
+      } else {
+        throw new Error("FilteredOutput: unknown filter type " + type + ".");
+      }
+
+      initialValue = model.get(property);
+      if (initialValue === undefined || isNaN(Number(initialValue))) {
+        throw new Error("FilteredOutput: property is not a valid numeric value or it is undefined.");
+      }
+
+      // Add initial sample.
+      filter.addSample(model.get('time'), initialValue);
+
+      filteredOutputNames.push(name);
+      // filteredOutputsByName stores properties which are unique for filtered output.
+      // Other properties like description or calculate function are stored in outputsByName hash.
+      filteredOutputsByName[name] = {
+        addSample: function () {
+          filter.addSample(model.get('time'), model.get(property));
+        }
+      };
+
+      // Create simple adapter implementing TickHistoryCompatible Interface
+      // and register it in tick history.
+      tickHistory.registerExternalObject({
+        push: function () {
+          // Push is empty, as we store samples during each tick anyway.
+        },
+        extract: function (idx) {
+          filter.setCurrentStep(idx);
+        },
+        invalidate: function (idx) {
+          filter.invalidate(idx);
+        },
+        setHistoryLength: function (length) {
+          filter.setMaxBufferLength(length);
+        }
+      });
+
+      // Extend description to contain information about filter.
+      description.property = property;
+      description.type = type;
+      description.period = period;
+
+      // Filtered output is still an output.
+      // Reuse existing, well tested logic for caching, observing etc.
+      model.defineOutput(name, description, function () {
+        return filter.calculate();
+      });
+    };
+
+    /**
+      Define a property of the model to be treated as a custom parameter. Custom parameters are
+      (generally, user-defined) read/write properties that trigger a setter action when set, and
+      whose values are automatically persisted in the tick history.
+
+      Because custom parameters are not intended to be interpreted by the engine, but instead simply
+      *represent* states of the model that are otherwise fully specified by the engine state and
+      other properties of the model, and because the setter function might not limit itself to a
+      purely functional mapping from parameter value to model properties, but might perform any
+      arbitrary stateful change, (stopping the model, etc.), the setter is NOT called when custom
+      parameters are updated by the tick history.
+    */
+    model.defineParameter = function(name, descriptionHash, setter) {
+      parametersByName[name] = {
+        description: new PropertyDescription(unitsDefinition, descriptionHash),
+        setter: setter,
+        isDefined: false
+      };
+
+      // Regardless of the type of unit represented by the parameter, do NOT automatically convert
+      // it to MD2D units in the set method. That is because the set method on the parameter will
+      // also call 'setter', and any native model properties set by 'setter' will be translated.
+      // If the parameter value were also translated in the set method, translations would happen
+      // twice!
+      mainPropertyUnitTypes[name] = {
+        unitType: "untranslated"
+      };
+
+      properties['set_'+name] = function(value) {
+        properties[name] = value;
+        parametersByName[name].isDefined = true;
+        // setter is optional.
+        if (parametersByName[name].setter) {
+          // set a useful 'this' binding in the setter:
+          parametersByName[name].setter.call(model, value);
+        }
+      };
+    };
+
+    /**
+      Return a unitDefinition in the current unitScheme for a quantity
+      such as 'length', 'mass', etc.
+    */
+    model.getUnitDefinition = function(name) {
+      return unitsDefinition.units[name];
+    };
+
+    /**
+      Retrieve (a copy of) the hash describing property 'name', if one exists. This hash can store
+      an arbitrary set of key-value pairs, but is expected to have 'label' and 'units' properties
+      describing, respectively, the property's human-readable label and the short name of the units
+      in which the property is enumerated.
+
+      Right now, only output properties and custom parameters have a description hash.
+    */
+    model.getPropertyDescription = function(name) {
+      var property = outputsByName[name] || parametersByName[name];
+      if (property) {
+        return _.extend({}, property.description);
+      }
+    };
+
+    // FIXME: Broken!! Includes property setter methods, does not include radialBonds, etc.
+    model.serialize = function() {
+      var propCopy = {},
+          ljProps, i, len,
+
+          removeplanetsArrayIfDefault = function(name, defaultVal) {
+            if (propCopy.planets[name].every(function(i) {
+              return i === defaultVal;
+            })) {
+              delete propCopy.planets[name];
+            }
+          };
+
+      propCopy = serialize(metadata.mainProperties, properties);
+      propCopy.viewOptions = serialize(metadata.viewOptions, properties);
+      propCopy.planets = serialize(metadata.planet, planets, engine.getNumberOfPlanets());
+
+      removeplanetsArrayIfDefault("marked", metadata.planet.marked.defaultValue);
+      removeplanetsArrayIfDefault("visible", metadata.planet.visible.defaultValue);
+
+      return propCopy;
+    };
+
+    // ------------------------------
+    // finish setting up the model
+    // ------------------------------
+
+    // Set the regular, main properties.
+    // Note that validation process will return hash without all properties which are
+    // not defined in meta model as mainProperties (like planets, viewOptions etc).
+    set_properties(validator.validateCompleteness(metadata.mainProperties, initialProperties));
+
+    // Set the model view options.
+    set_properties(validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {}));
+
+    // initialze width and height from minX, minYm, maxX, maxY
+    model.initializeDimensions();
+
+    // Setup engine object.
+    model.initializeEngine();
+
+    // Finally, if provided, set up the model objects (planets).
+    // However if these are not provided, client code can create planets, etc piecemeal.
+
+    if (initialProperties.planets) {
+      model.createPlanets(initialProperties.planets);
+    }
+
+    // Initialize tick history.
+    tickHistory = new TickHistory({
+      input: [
+        "showClock",
+        "timeStepsPerTick",
+        "timeStep",
+        "gravitationalField"
+      ],
+      getRawPropertyValue: getRawPropertyValue,
+      restoreProperties: restoreProperties,
+      parameters: parametersByName,
+      restoreParameters: restoreParameters,
+      state: engine.getState()
+    }, model, defaultMaxTickHistory);
+
+    newStep = true;
+
+    // Set up units scheme.
+    unitsDefinition = unitDefinitions.get(model.get('unitsScheme'));
+
+    // If we're not using MD2D units, we need a translation (which, for each unit type, allows some
+    // number of "native" MD2D units to stand for 1 translated unit, e.g., 1 nm represents 1m, with
+    // the relationships between these ratios set up so that the calculations reamin physically
+    // consistent.
+    if (model.get('unitsScheme') !== 'solar-system') {
+      unitsTranslation = new UnitsTranslation(unitsDefinition);
+    }
+
+    // set up types of all properties before any third-party calls to set/get
+    mainPropertyUnitTypes = {};
+    _.each(metadata.mainProperties, function(value, key) {
+      if (value.unitType) {
+        mainPropertyUnitTypes[key] = {
+          unitType: value.unitType
+        };
+      }
+    });
+
+    // Define some default output properties.
+    model.defineOutput('time', {
+      label: "Time",
+      units: "fs"
+    }, function() {
+      return modelOutputState.time;
+    });
+
+    updateAllOutputProperties();
+
+    return model;
+  };
+});
+
+/*global $ alert ACTUAL_ROOT model_player define: false, d3: false */
+// ------------------------------------------------------------
+//
+//   SolarSystem View Renderer
+//
+// ------------------------------------------------------------
+define('solar-system/views/renderer',['require','common/console','cs!common/layout/wrap-svg-text','cs!common/layout/wrap-svg-text','common/views/gradients'],function (require) {
+  // Dependencies.
+  var console               = require('common/console'),
+      wrapSVGText           = require('cs!common/layout/wrap-svg-text'),
+      wrapSVGText           = require('cs!common/layout/wrap-svg-text'),
+      gradients             = require('common/views/gradients');
+
+  return function SolarSystemView(modelView, model) {
+  // return function SolarSystemView(model, containers, m2px, m2pxInv, mSize2px) {
+        // Public API object to be returned.
+    var api = {},
+
+        mainContainer,
+
+        modelWidth,
+        modelHeight,
+        modelMinX2,
+        modelMinY2,
+        modelMaxX2,
+        modelMaxY2,
+        aspectRatio,
+
+        // Basic scaling functions for position, it transforms model units to "pixels".
+        // Use it for positions of objects rendered inside the view.
+        model2px,
+
+        // Inverted scaling function for position transforming model units to "pixels".
+        // Use it for Y coordinates, as Y axis in model coordinate system increases
+        // from bottom to top, while but SVG has increases from top to bottom
+        model2pxInv,
+
+        // Basic scaling function for size, it transforms model units to "pixels".
+        // Use it for dimensions of objects rendered inside the view.
+        modelSize2px,
+
+        // The model function get_results() returns a 2 dimensional array
+        // of particle indices and properties that is updated every model tick.
+        // This array is not garbage-collected so the view can be assured that
+        // the latest results will be in this array when the view is executing
+        modelResults,
+
+        // "Containers" - SVG g elements used to position layers of the final visualization.
+        mainContainer,
+        radialBondsContainer,
+        VDWLinesContainer,
+        imageContainerBelow,
+        imageContainerTop,
+        textContainerBelow,
+        textContainerTop,
+
+        // Array which defines a gradient assigned to a given tlanet.
+        gradientNameForPlanet = [],
+
+        tlanetTooltipOn,
+
+        tlanet,
+        label, labelEnter,
+        tlanetDiv, tlanetDivPre,
+
+        fontSizeInPixels,
+        textBoxFontSizeInPixels,
+
+        // for model clock
+        showClock,
+        timeLabel,
+        modelTimeFormatter = d3.format("5.0f"),
+        timePrefix = "",
+        timeSuffix = "";
+
+    function modelTimeLabel() {
+      return timePrefix + modelTimeFormatter(model.get('time')/100) + timeSuffix;
+    }
+
+    /**
+     * Setups set of gradient which can be changed by the user.
+     * They should be recreated during each reset / repaint operation.
+     * @private
+     */
+    function setupDynamicGradients() {
+      var i, color, lightColor, medColor, darkColor;
+
+      // "Marked" particle gradient.
+      medColor   = model.get("markColor");
+      // Mark color defined in JSON defines medium color of a gradient.
+      color      = d3.rgb(medColor);
+      lightColor = color.brighter(1).toString();
+      darkColor  = color.darker(1).toString();
+      gradients.createRadialGradient("mark-grad", lightColor, medColor, darkColor, mainContainer);
+      gradients.createRadialGradient("neutral-grad", "#FFFFFF", "#f2f2f2", "#A4A4A4", mainContainer);
+    }
+
+    // Returns gradient appropriate for a given tlanet.
+    // d - tlanet data.
+    function getPlanetGradient(d) {
+      if (d.marked) {
+        return "url(#mark-grad)";
+      } else {
+        return "url(#neutral-grad)";
+      }
+    }
+
+    function updatePlanetRadius() {
+      mainContainer.selectAll("circle").data(modelResults).attr("r",  function(d) { return modelSize2px(d.radius); });
+    }
+
+    function setupColorsOfPlanets() {
+      var i, len;
+
+      gradientNameForPlanet.length = modelResults.length;
+      for (i = 0, len = modelResults.length; i < len; i++)
+        gradientNameForPlanet[i] = getPlanetGradient(modelResults[i]);
+    }
+
+    function setupPlanets() {
+
+      mainContainer.selectAll("circle").remove();
+      mainContainer.selectAll("g.label").remove();
+
+      tlanet = mainContainer.selectAll("circle").data(modelResults);
+
+      tlanetEnter();
+
+      label = mainContainer.selectAll("g.label")
+          .data(modelResults);
+
+      labelEnter = label.enter().append("g")
+          .attr("class", "label")
+          .attr("transform", function(d) {
+            return "translate(" + model2px(d.x) + "," + model2pxInv(d.y) + ")";
+          });
+
+      labelEnter.each(function (d) {
+        var selection = d3.select(this),
+            txtValue, txtSelection;
+        // Append appropriate label. For now:
+        // If 'tlanetNumbers' option is enabled, use indices.
+        // If not and there is available 'label'/'symbol' property, use one of them
+        if (model.get("tlanetNumbers")) {
+          selection.append("text")
+            .text(d.idx)
+            .style("font-size", modelSize2px(1.4 * d.radius) + "px");
+        }
+        // Set common attributes for labels (+ shadows).
+        txtSelection = selection.selectAll("text");
+        // Check if node exists and if so, set appropriate attributes.
+        if (txtSelection.node()) {
+          txtSelection
+            .attr("pointer-events", "none")
+            .style({
+              "font-weight": "bold",
+              "opacity": 0.7
+            });
+          txtSelection
+            .attr({
+              // Center labels, use real width and height.
+              // Note that this attrs should be set *after* all previous styling options.
+              // .node() will return first node in selection. It's OK - both texts
+              // (label and its shadow) have the same dimension.
+              "x": -txtSelection.node().getComputedTextLength() / 2,
+              "y": "0.31em"//bBox.height / 4
+            });
+        }
+        // Set common attributes for shadows.
+        selection.select("text.shadow")
+          .style({
+            "stroke": "#fff",
+            "stroke-width": 0.15 * modelSize2px(d.radius),
+            "stroke-opacity": 0.7
+          });
+      });
+    }
+
+    /**
+      Call this wherever a d3 selection is being used to add circles for tlanets
+    */
+
+    function tlanetEnter() {
+      tlanet.enter().append("circle")
+          .attr({
+            "r":  function(d) {
+              return modelSize2px(d.radius); },
+            "cx": function(d) {
+              return model2px(d.x); },
+            "cy": function(d) {
+              return model2pxInv(d.y); }
+          })
+          .style({
+            "fill-opacity": function(d) { return d.visible; },
+            "fill": function (d, i) { return gradientNameForPlanet[i]; }
+          })
+          .on("mousedown", tlanetMouseDown)
+          .on("mouseover", tlanetMouseOver)
+          .on("mouseout", tlanetMouseOut);
+    }
+
+    function tlanetUpdate() {
+      tlanet.attr({
+        "r":  function(d) {
+          return modelSize2px(d.radius); },
+        "cx": function(d) {
+          return model2px(d.x); },
+        "cy": function(d) {
+          return model2pxInv(d.y); }
+      });
+
+      if (tlanetTooltipOn === 0 || tlanetTooltipOn > 0) {
+        renderPlanetTooltip(tlanetTooltipOn);
+      }
+    }
+
+    function tlanetMouseOver(d, i) {
+      if (model.get("enablePlanetTooltips")) {
+        renderPlanetTooltip(i);
+      }
+    }
+
+    function tlanetMouseDown(d, i) {
+      containers.node.focus();
+      if (model.get("enablePlanetTooltips")) {
+        if (tlanetTooltipOn !== false) {
+          tlanetDiv.style("opacity", 1e-6);
+          tlanetDiv.style("display", "none");
+          tlanetTooltipOn = false;
+        } else {
+          if (d3.event.shiftKey) {
+            tlanetTooltipOn = i;
+          } else {
+            tlanetTooltipOn = false;
+          }
+          renderPlanetTooltip(i);
+        }
+      }
+    }
+
+    function renderPlanetTooltip(i) {
+      tlanetDiv
+            .style("opacity", 1.0)
+            .style("display", "inline")
+            .style("background", "rgba(100%, 100%, 100%, 0.7)")
+            .style("left", model2px(modelResults[i].x) + 60 + "px")
+            .style("top",  model2pxInv(modelResults[i].y) + 30 + "px")
+            .style("zIndex", 100)
+            .transition().duration(250);
+
+      tlanetDivPre.text(
+          "tlanet: " + i + "\n" +
+          "time: " + modelTimeLabel() + "\n" +
+          "speed: " + d3.format("+6.3e")(modelResults[i].speed) + "\n" +
+          "vx:    " + d3.format("+6.3e")(modelResults[i].vx)    + "\n" +
+          "vy:    " + d3.format("+6.3e")(modelResults[i].vy)    + "\n" +
+          "ax:    " + d3.format("+6.3e")(modelResults[i].ax)    + "\n" +
+          "ay:    " + d3.format("+6.3e")(modelResults[i].ay)    + "\n"
+        );
+    }
+
+    function tlanetMouseOut() {
+      if (!tlanetTooltipOn && tlanetTooltipOn !== 0) {
+        tlanetDiv.style("opacity", 1e-6).style("zIndex" -1);
+      }
+    }
+
+    function setupTooTips() {
+      if ( tlanetDiv === undefined) {
+        tlanetDiv = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 1e-6);
+        tlanetDivPre = tlanetDiv.append("pre");
+      }
+    }
+
+    function setupClock() {
+      var clockColor = d3.lab(model.get("backgroundColor"));
+      // This ensures that color will be visible on background.
+      // Decide between white and black usingL value of background color in LAB space.
+      clockColor.l = clockColor.l > 50 ? 0 : 100;
+      clockColor.a = clockColor.b = 0;
+      // Add model time display.
+      mainContainer.selectAll('.modelTimeLabel').remove();
+      // Update clock status.
+      showClock = model.get("showClock");
+      if (showClock) {
+        timeLabel = mainContainer.append("text")
+          .attr("class", "modelTimeLabel")
+          .text(modelTimeLabel())
+          // Set text position to (0nm, 0nm) (model domain) and add small, constant offset in px.
+          .attr("x", model2px(modelMinX) + 3)
+          .attr("y", model2pxInv(modelMinY) - 3)
+          .attr("text-anchor", "start")
+          .attr("fill", clockColor.rgb());
+      }
+    }
+
+    //
+    // *** Main Renderer functions ***
+    //
+
+    //
+    // SolarSystem Renderer: init
+    //
+    // Called when Renderer is created.
+    //
+    function init() {
+      // Assign shortcuts, as these variables / functions shouldn't
+      // change.
+      mainContainer        = modelView.containers.mainContainer,
+      imageContainerBelow  = modelView.containers.imageContainerBelow,
+      imageContainerTop    = modelView.containers.imageContainerTop,
+      textContainerBelow   = modelView.containers.textContainerBelow,
+      textContainerTop     = modelView.containers.textContainerTop,
+
+      model2px = modelView.model2px;
+      model2pxInv = modelView.model2pxInv;
+      modelSize2px = modelView.modelSize2px;
+
+      fontSizeInPixels = modelView.getFontSizeInPixels();
+      textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
+
+      modelResults  = model.get_results();
+      modelWidth    = model.get('width');
+      modelHeight   = model.get('height');
+      aspectRatio   = modelWidth / modelHeight;
+
+      modelMinX = model.get('minX');
+      modelMinY = model.get('minY');
+      modelMaxX = model.get('maxX');
+      modelMaxY = model.get('maxY');
+
+      setupTooTips();
+
+      function redrawClickableObjects (redrawOperation) {
+        return function () {
+          redrawOperation();
+          // All objects where repainted (probably removed and added again), so
+          // it's necessary to apply click handlers again.
+          modelView.updateClickHandlers();
+        };
+      }
+
+      // Redraw container each time when some visual-related property is changed.
+      model.on('addPlanet', redrawClickableObjects(repaint));
+      model.on('removePlanet', redrawClickableObjects(repaint));
+    }
+
+    //
+    // SolarSystem Renderer: reset
+    //
+    // Call when model is reset or reloaded.
+    //
+    function reset(newModel) {
+      model = newModel;
+      init();
+    }
+
+    //
+    // SolarSystem Renderer: repaint
+    //
+    // Call when container being rendered into changes size, in that case
+    // pass in new D3 scales for model2px transformations.
+    //
+    // Also call when the number of objects changes such that the container
+    // must be setup again.
+    //
+    function repaint(m2px, m2pxInv, mSize2px) {
+      if (arguments.length) {
+        model2px = m2px;
+        model2pxInv = m2pxInv;
+        modelSize2px = mSize2px;
+      }
+      fontSizeInPixels = modelView.getFontSizeInPixels();
+      textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
+
+      setupDynamicGradients();
+      setupClock();
+      setupColorsOfPlanets();
+      setupPlanets();
+    }
+
+    //
+    // SolarSystem Renderer: update
+    //
+    // Call to update visualization when model result state changes.
+    // Normally called on every model tick.
+    //
+    function update() {
+      console.time('view update');
+
+      // update model time display
+      if (showClock) {
+        timeLabel.text(modelTimeLabel());
+      }
+
+      tlanetUpdate();
+
+      console.timeEnd('view update');
+    }
+
+
+    //
+    // Public API to instantiated Renderer
+    //
+    api = {
+      // Expose private methods.
+      update: update,
+      repaint: repaint,
+      reset: reset,
+      model2px: modelView.model2px,
+      model2pxInv: modelView.model2pxInv,
+      modelSize2px: modelView.modelSize2px
+    };
+
+    // Initialization.
+    init();
+
+    return api;
+  };
+});
+
+/*global $ define: false */
+// ------------------------------------------------------------
+//
+//   SolarSystem View Container
+//
+// ------------------------------------------------------------
+define('solar-system/views/view',['require','common/console','common/views/model-view','solar-system/views/renderer'],function (require) {
+  // Dependencies.
+  var console               = require('common/console'),
+      ModelView             = require("common/views/model-view"),
+      Renderer              = require("solar-system/views/renderer");
+
+  return function (modelUrl, model) {
+    return new ModelView(modelUrl, model, Renderer);
+  }
+
+});
+
+/*global define model */
+
+define('solar-system/controllers/scripting-api',['require'],function (require) {
+
+  /**
+    Define the model-specific SolarSystem scripting API used by 'action' scripts on interactive elements.
+
+    The universal Interactive scripting API is extended with the properties of the
+    object below which will be exposed to the interactive's 'action' scripts as if
+    they were local vars. All other names (including all globals, but excluding
+    Javascript builtins) will be unavailable in the script context; and scripts
+    are run in strict mode so they don't accidentally expose or read globals.
+
+    @param: api
+  */
+
+  return function SolarSystemScriptingAPI (api) {
+
+    return {
+      /* Returns number of planets in the system. */
+      getNumberOfPlanets: function getNumberOfPlanets() {
+        return model.get_num_planets();
+      },
+
+      addPlanet: function addPlanet(props, options) {
+        if (options && options.supressRepaint) {
+          // Translate supressRepaint option to
+          // option understable by modeler.
+          // supresRepaint is a conveniance option for
+          // Scripting API users.
+          options.supressEvent = true;
+        }
+        return model.addPlanet(props, options);
+      },
+
+      /*
+        Removes planet 'i'.
+      */
+      removePlanet: function removePlanet(i, options) {
+        if (options && options.supressRepaint) {
+          // Translate supressRepaint option to
+          // option understable by modeler.
+          // supresRepaint is a conveniance option for
+          // Scripting API users.
+          options.supressEvent = true;
+          delete options.supressRepaint;
+        }
+        try {
+          model.removePlanet(i, options);
+        } catch (e) {
+          if (!options || !options.silent)
+            throw e;
+        }
+      },
+
+      addRandomPlanet: function addRandomPlanet() {
+        return model.addRandomPlanet.apply(model, arguments);
+      },
+
+      /** returns a list of integers corresponding to planets in the system */
+      randomPlanets: function randomPlanets(n) {
+        var numPlanets = model.get_num_planets();
+
+        if (n === null) n = 1 + api.randomInteger(numPlanets-1);
+
+        if (!api.isInteger(n)) throw new Error("randomPlanets: number of planets requested, " + n + ", is not an integer.");
+        if (n < 0) throw new Error("randomPlanets: number of planets requested, " + n + ", was less be greater than zero.");
+
+        if (n > numPlanets) n = numPlanets;
+        return api.choose(n, numPlanets);
+      },
+
+      /**
+        Accepts planet indices as arguments, or an array containing planet indices.
+        Unmarks all planets, then marks the requested planet indices.
+        Repaints the screen to make the marks visible.
+      */
+      markPlanets: function markPlanets() {
+        var i,
+            len;
+
+        if (arguments.length === 0) return;
+
+        // allow passing an array instead of a list of planet indices
+        if (api.isArray(arguments[0])) {
+          return markPlanets.apply(null, arguments[0]);
+        }
+
+        api.unmarkAllPlanets();
+
+        // mark the requested planets
+        for (i = 0, len = arguments.length; i < len; i++) {
+          model.setPlanetProperties(arguments[i], {marked: 1});
+        }
+        api.repaint();
+      },
+
+      unmarkAllPlanets: function unmarkAllPlanets() {
+        for (var i = 0, len = model.get_num_planets(); i < len; i++) {
+          model.setPlanetProperties(i, {marked: 0});
+        }
+        api.repaint();
+      },
+
+      /**
+        Sets individual planet properties using human-readable hash.
+        e.g. setPlanetProperties(5, {x: 1, y: 0.5, charge: 1})
+      */
+      setPlanetProperties: function setPlanetProperties(i, props, checkLocation, moveMolecule, options) {
+        model.setPlanetProperties(i, props, checkLocation, moveMolecule);
+        if (!(options && options.supressRepaint)) {
+          api.repaint();
+        }
+      },
+
+      /**
+        Returns planet properties as a human-readable hash.
+        e.g. getPlanetProperties(5) --> {x: 1, y: 0.5, charge: 1, ... }
+      */
+      getPlanetProperties: function getPlanetProperties(i) {
+        return model.getPlanetProperties(i);
+      },
+
+      addTextBox: function(props) {
+        model.addTextBox(props);
+      },
+
+      removeTextBox: function(i) {
+        model.removeTextBox(i);
+      },
+
+      setTextBoxProperties: function(i, props) {
+        model.setTextBoxProperties(i, props);
+      }
+
+    };
+
+  };
+});
+
+/*global define model */
+
+define('solar-system/benchmarks/benchmarks',['require'],function (require) {
+
+  return function Benchmarks(controller) {
+
+    var benchmarks = [
+      {
+        name: "commit",
+        numeric: false,
+        run: function(done) {
+          var link = "<a href='"+Lab.version.repo.commit.url+"' class='opens-in-new-window' target='_blank'>"+Lab.version.repo.commit.short_sha+"</a>";
+          if (Lab.version.repo.dirty) {
+            link += " <i>dirty</i>";
+          }
+          done(link);
+        }
+      },
+      {
+        name: "planets",
+        numeric: true,
+        run: function(done) {
+          done(model.get_num_planets());
+        }
+      },
+      {
+        name: "just graphics (steps/s)",
+        numeric: true,
+        formatter: d3.format("5.1f"),
+        run: function(done) {
+          var elapsed, start, i;
+
+          model.stop();
+          start = +Date.now();
+          i = -1;
+          while (i++ < 100) {
+            controller.modelContainer.update();
+          }
+          elapsed = Date.now() - start;
+          done(100/elapsed*1000);
+        }
+      },
+      {
+        name: "model (steps/s)",
+        numeric: true,
+        formatter: d3.format("5.1f"),
+        run: function(done) {
+          var elapsed, start, i;
+
+          model.stop();
+          start = +Date.now();
+          i = -1;
+          while (i++ < 100) {
+            // advance model 1 tick, but don't paint the display
+            model.tick(1, { dontDispatchTickEvent: true });
+          }
+          elapsed = Date.now() - start;
+          done(100/elapsed*1000);
+        }
+      },
+      {
+        name: "model+graphics (steps/s)",
+        numeric: true,
+        formatter: d3.format("5.1f"),
+        run: function(done) {
+          var start, elapsed, i;
+
+          model.stop();
+          start = +Date.now();
+          i = -1;
+          while (i++ < 100) {
+            model.tick();
+          }
+          elapsed = Date.now() - start;
+          done(100/elapsed*1000);
+        }
+      },
+      {
+        name: "fps",
+        numeric: true,
+        formatter: d3.format("5.1f"),
+        run: function(done) {
+          // warmup
+          model.start();
+          setTimeout(function() {
+            model.stop();
+            var start = model.get('time');
+            setTimeout(function() {
+              // actual fps calculation
+              model.start();
+              setTimeout(function() {
+                model.stop();
+                var elapsedModelTime = model.get('time') - start;
+                done( elapsedModelTime / (model.get('timeStepsPerTick') * model.get('timeStep')) / 2 );
+              }, 2000);
+            }, 100);
+          }, 1000);
+        }
+      },
+      {
+        name: "interactive",
+        numeric: false,
+        run: function(done) {
+          done(window.location.pathname + window.location.hash);
+        }
+      }
+    ];
+
+    return benchmarks;
+
+  }
+
+});
+
+/*global
+  define
+*/
+/*jslint onevar: true*/
+define('solar-system/controllers/controller',['require','common/controllers/model-controller','solar-system/models/modeler','solar-system/views/view','solar-system/controllers/scripting-api','solar-system/benchmarks/benchmarks'],function (require) {
+  // Dependencies.
+  var ModelController   = require("common/controllers/model-controller"),
+      Model             = require('solar-system/models/modeler'),
+      ModelContainer    = require('solar-system/views/view'),
+      ScriptingAPI      = require('solar-system/controllers/scripting-api'),
+      Benchmarks        = require('solar-system/benchmarks/benchmarks');
+
+  return function (modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, interactiveController) {
+    return new ModelController(modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, interactiveController,
+                                     Model, ModelContainer, ScriptingAPI, Benchmarks);
+  }
+});
+
 /*global define, model, $, setTimeout, document, window */
 
-define('common/controllers/interactives-controller',['require','lab.config','arrays','common/alert','common/controllers/interactive-metadata','common/validator','common/controllers/bar-graph-controller','common/controllers/graph-controller','common/controllers/export-controller','common/controllers/scripting-api','common/controllers/button-controller','common/controllers/checkbox-controller','common/controllers/text-controller','common/controllers/image-controller','common/controllers/radio-controller','common/controllers/slider-controller','common/controllers/pulldown-controller','common/controllers/numeric-output-controller','common/controllers/parent-message-api','common/controllers/thermometer-controller','common/controllers/div-controller','common/controllers/setup-banner','common/controllers/about-dialog','common/controllers/share-dialog','common/controllers/credits-dialog','common/layout/semantic-layout','common/layout/templates','md2d/controllers/controller'],function (require) {
+define('common/controllers/interactives-controller',['require','lab.config','arrays','common/alert','common/controllers/interactive-metadata','common/validator','common/controllers/bar-graph-controller','common/controllers/graph-controller','common/controllers/export-controller','common/controllers/scripting-api','common/controllers/button-controller','common/controllers/checkbox-controller','common/controllers/text-controller','common/controllers/image-controller','common/controllers/radio-controller','common/controllers/slider-controller','common/controllers/pulldown-controller','common/controllers/numeric-output-controller','common/controllers/parent-message-api','common/controllers/thermometer-controller','common/controllers/div-controller','common/controllers/setup-banner','common/controllers/about-dialog','common/controllers/share-dialog','common/controllers/credits-dialog','common/layout/semantic-layout','common/layout/templates','md2d/controllers/controller','solar-system/controllers/controller'],function (require) {
   // Dependencies.
   var labConfig               = require('lab.config'),
       arrays                  = require('arrays'),
@@ -28003,6 +31605,8 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
       templates               = require('common/layout/templates'),
 
       MD2DModelController     = require('md2d/controllers/controller'),
+      SolarSystemModelController = require('solar-system/controllers/controller'),
+
       // Set of available components.
       // - Key defines 'type', which is used in the interactive JSON.
       // - Value is a constructor function of the given component.
@@ -28216,6 +31820,9 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
         switch(modelType) {
           case "md2d":
           modelController = new MD2DModelController(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions, controller);
+          break;
+          case "solar-system":
+          modelController = new SolarSystemModelController(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions, controller);
           break;
         }
         // Extending universal Interactive scriptingAPI with model-specific scripting API
