@@ -1,13 +1,13 @@
 {
-  "title": "Testing: Four planets",
+  "title": "Testing: one planet",
   "publicationStatus": "draft",
-  "subtitle": "First test of the Solar System model-type.",
+  "subtitle": "Body at center is 200,000x mass of orbiting planet.",
   "about": "",
   "models": [
     {
-      "id": "four-planets",
-      "type": "pta",
-      "url": "models/solar-system/four-planets.json",
+      "id": "two-planets",
+      "type": "solar-system",
+      "url": "models/solar-system/one-planet.json",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       }

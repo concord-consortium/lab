@@ -1,13 +1,13 @@
 {
-  "title": "Testing: Four planets",
+  "title": "Testing: two planets",
   "publicationStatus": "draft",
-  "subtitle": "First test of the Solar System model-type.",
+  "subtitle": "Planet on left is 100x mass of planet on right; both have an initial velocity of zero.",
   "about": "",
   "models": [
     {
-      "id": "four-planets",
-      "type": "pta",
-      "url": "models/solar-system/four-planets.json",
+      "id": "two-planets",
+      "type": "solar-system",
+      "url": "models/solar-system/two-planets.json",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       }
