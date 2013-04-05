@@ -25,9 +25,13 @@ define(function (require) {
     /** @private */
     this._modelStopped = true;
     /** @private */
+    this._timeUnits = "";
+    /** @private */
     this._$reset = $('<button><i class="icon-step-backward"></i></button>').appendTo(this.$element);
     /** @private */
     this._$playPause = $('<button class="play-pause"><i class="icon-play"></i><i class="icon-pause"></i></button>').appendTo(this.$element);
+    /** @private */
+    this._$timeDisplay = $('<span class="time-display">').appendTo(this._$playPause);
 
     this._$reset.after('<div class="spacer">');
 
@@ -77,6 +81,15 @@ define(function (require) {
   };
 
   /**
+   * Updates time display.
+   * @private
+   */
+  PlaybackController.prototype._timeChanged = function () {
+    var time = model.get("displayTime").toFixed(1);
+    this._$timeDisplay.text(time + " " + this._timeUnits);
+  };
+
+  /**
    * Implements optional callback supported by Interactive Controller.
    */
   PlaybackController.prototype.modelLoadedCallback = function () {
@@ -85,6 +98,11 @@ define(function (require) {
     model.on('play.' + this.component.id, $.proxy(this._simulationStateChanged, this));
     model.on('stop.' + this.component.id, $.proxy(this._simulationStateChanged, this));
     this._simulationStateChanged();
+
+    // Update time units and set time.
+    this._timeUnits = model.getPropertyDescription("displayTime").getUnitAbbreviation();
+    model.addPropertiesListener(["displayTime"], $.proxy(this._timeChanged, this));
+    this._timeChanged();
   };
 
   return PlaybackController;
