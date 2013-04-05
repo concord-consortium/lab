@@ -61,7 +61,7 @@
     {
       "type": "checkbox",
       "id": "trace-atom",
-      "text": "Trace Atom",
+      "text": "Trace Molecule",
       "property": "tracingAtom"
     }
   ],
