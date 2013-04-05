@@ -770,6 +770,16 @@ define(function (require) {
             break;
         }
       },
+
+      /**
+       * Gets interactive property from interactive JSON definition.
+       * @param  {string} name Property name.
+       * @return {*}      Property value.
+       */
+      get: function (name) {
+        return interactive[name];
+      },
+
       /**
         Serializes interactive, returns object ready to be stringified.
         e.g. JSON.stringify(interactiveController.serialize());
