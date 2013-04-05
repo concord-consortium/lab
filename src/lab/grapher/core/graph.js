@@ -31,7 +31,7 @@ define(function (require) {
         xScale, yScale, line,
         shiftingX = false,
         cubicEase = d3.ease('cubic'),
-        ds,
+        domainShift,
         circleCursorStyle,
         fontSizeInPixels,
         halfFontSizeInPixels,
@@ -1068,9 +1068,15 @@ define(function (require) {
         if (!isNaN(downx)) {
           d3.select('body').style("cursor", "col-resize");
           plot.style("cursor", "col-resize");
-          xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
-          persistScaleChangesToOptions();
-          redraw();
+          if (shiftingX) {
+            xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
+            persistScaleChangesToOptions();
+            redraw();
+          } else {
+            xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
+            persistScaleChangesToOptions();
+            redraw()
+          }
           d3.event.stopPropagation();
         }
 
@@ -1124,31 +1130,29 @@ define(function (require) {
             shiftPoint = xextent * 0.95,
             currentExtent;
 
-         setCurrentSample(samplePoint);
-         currentExtent = currentSample * sample;
-         if (shiftingX) {
-           shiftingX = ds();
-            if (shiftingX) {
+        setCurrentSample(samplePoint);
+        currentExtent = currentSample * sample;
+        if (shiftingX) {
+          shiftingX = domainShift();
+          if (shiftingX) {
+            cancelAxisRescale();
             redraw();
           } else {
             update(currentSample);
           }
         } else {
           if (currentExtent > domain[0] + shiftPoint) {
-            ds = shiftXDomainRealTime(shiftPoint*0.9, options.axisShift);
-            shiftingX = ds();
+            domainShift = shiftXDomainRealTime(shiftPoint*0.9, options.axisShift);
+            shiftingX = domainShift();
             redraw();
-          } else if ( currentExtent < domain[1] - shiftPoint &&
-                      currentSample < points.length &&
-                      xAxisStart > 0) {
-            ds = shiftXDomainRealTime(shiftPoint*0.9, options.axisShift, -1);
-            shiftingX = ds();
+          } else if ( currentExtent < domain[1] - shiftPoint && currentSample < points.length && xAxisStart > 0) {
+            domainShift = shiftXDomainRealTime(shiftPoint*0.9, options.axisShift, -1);
+            shiftingX = domainShift();
             redraw();
           } else if (currentExtent < domain[0]) {
-            ds = shiftXDomainRealTime(shiftPoint*0.1, 1, -1);
-            shiftingX = ds();
+            domainShift = shiftXDomainRealTime(shiftPoint*0.1, 1, -1);
+            shiftingX = domainShift();
             redraw();
-
           } else {
             update(currentSample);
           }
@@ -1177,6 +1181,15 @@ define(function (require) {
         };
       }
 
+      function cancelAxisRescale() {
+        if (!isNaN(downx)) {
+          downx = NaN;
+        }
+        if (!isNaN(downy)) {
+          downy = NaN;
+        }
+      }
+
       function updateOrRescaleRegular() {
         var i,
             domain = xScale.domain(),
@@ -1184,7 +1197,7 @@ define(function (require) {
             shiftPoint = xextent * 0.8;
 
         if (shiftingX) {
-          shiftingX = ds();
+          shiftingX = domainShift();
           if (shiftingX) {
             redraw();
           } else {
@@ -1192,8 +1205,8 @@ define(function (require) {
           }
         } else {
           if (points[points.length-1][0] > domain[0] + shiftPoint) {
-            ds = shiftXDomainRegular(shiftPoint*0.75, options.axisShift);
-            shiftingX = ds();
+            domainShift = shiftXDomainRegular(shiftPoint*0.75, options.axisShift);
+            shiftingX = domainShift();
             redraw();
           } else {
             update();
@@ -1597,7 +1610,7 @@ define(function (require) {
            // domain = xScale.domain(),
             // xextent = domain[1] - domain[0],
             //shift = xextent * 0.8,
-            // ds,
+            // domainShift,
         if (newdata instanceof Array && newdata.length > 0) {
           if (newdata[0] instanceof Array) {
             for(i = 0; i < newdata.length; i++) {
