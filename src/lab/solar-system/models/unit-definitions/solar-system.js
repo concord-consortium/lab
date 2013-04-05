@@ -19,28 +19,28 @@ define(function() {
     units: {
 
       length: {
-        name: "meter",
-        pluralName: "meters",
-        abbreviation: "m"
+        name: "Astronomical Unit",
+        pluralName: "Astronomical Units",
+        symbol: "AU"
       },
 
       // Internally, we've referred to "Dalton" but amu is probably more common. Dalton is
       // officially more correct but it still seems mostly to be used for protein masses, etc.
       mass: {
-        name: "kilogram",
-        pluralName: "kilograms",
-        abbreviation: "kg"
+        name: "Earth Mass",
+        pluralName: "Earth Masses",
+        symbol: "M"
       },
 
       time: {
-        name: "second",
-        pluralName: "seconds",
-        abbreviation: "s",
+        name: "day",
+        pluralName: "days",
+        symbol: "D",
         displayValue: {
           unitsPerBaseUnit: 1,
-          pluralName: "seconds",
-          name: "second",
-          abbreviation: "s"
+          name: "day",
+          pluralName: "days",
+          symbol: "D"
         }
       },
 
@@ -50,27 +50,27 @@ define(function() {
       // For compatibility, MD2D does the same.
       // The units of the constant c (called "obstacle friction") are therefore 1 / time.
       inverseTime: {
-        name: "1/second",
-        pluralName: "1/seconds",
-        abbreviation: "1/s"
+        name: "1/day",
+        pluralName: "1/days",
+        symbol: "1/D"
       },
 
       velocity: {
-        name: "meter per second",
-        pluralName: "meters per second",
-        abbreviation: "m/s"
+        name: "Astronomical Unit per day",
+        pluralName: "Astronomical Units per day",
+        symbol: "AU/D"
       },
 
       acceleration: {
-        name: "meter per second squared",
-        pluralName: "meters per second squared",
-        abbreviation: "m/fs²"
+        name: "Astronomical Unit per day squared",
+        pluralName: "Astronomical Units per day squared",
+        symbol: "AU/D²"
       },
 
       momentum: {
-        name: "kg meter per second",
-        pluralName: "kg meters per second",
-        abbreviation: "kg⋅m/s"
+        name: "Earth Mass Astronomical Unit per day",
+        pluralName: "Earth Mass Astronomical Units per day",
+        symbol: "M⋅AU/D"
       },
 
       // Forces haven't typically been exposed to Classic MW users in a quantitative way, and indeed
@@ -78,22 +78,15 @@ define(function() {
       // (computationally convenient) amu nm/fs² to "user friendly" units. That said, Classic MW
       // could be said to use eV/nm implicitly, since spring constants are in eV/nm².
       force: {
-        name: "kg ometer per second squared",
-        pluralName: "kg meters per second squared",
-        abbreviation: "kg⋅nm/s²"
+        name: "Earth Mass Astronomical Unit per day squared",
+        pluralName: "Earth Mass Astronomical Units per day squared",
+        symbol: "M⋅AU/D²"
       },
 
       energy: {
         name: "joules",
         pluralName: "joules",
-        abbreviation: "J"
-      },
-
-      // aka spring constant (= eV/nm per nm)
-      stiffness: {
-        name: "joule per meter squared",
-        pluralName: "joule per meter squared",
-        abbreviation: "J/nm²"
+        symbol: "J"
       },
 
       temperature: {
@@ -101,20 +94,13 @@ define(function() {
         name: "Kelvin",
         // Not "Kelvins", just "Kelvin".
         pluralName: "Kelvin",
-        abbreviation: "K"
-      },
-
-      pressure: {
-        name: "bar",
-        // e.g., "50 bar"
-        pluralName: "bar",
-        abbreviation: "bar"
+        symbol: "K"
       },
 
       angle: {
         name: "radian",
         pluralName: "radians",
-        abbreviation: "rad"
+        symbol: "rad"
       }
     }
   };
