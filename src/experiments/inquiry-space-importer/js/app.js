@@ -537,7 +537,7 @@ ISImporter.appController = new ISImporter.Object({
           self.filledMetadata.splice(idx,1);
         }
       }
-      if (self.filledMetadata.length > 0) {
+      if (self.filledMetadata.length > 0 || self.dataset.getLength() > 0) {
         self.enable(self.$exportButton);
       } else {
         self.disable(self.$exportButton);
@@ -639,6 +639,7 @@ ISImporter.appController = new ISImporter.Object({
     this.disable(this.$startButton);
     this.disable(this.$stopButton);
     this.disable(this.$resetButton);
+    this.disable(this.$exportButton);
     this.hide(this.$tareButton);
     this.hide(this.$realtimeDisplay);
     if (this.taring) this.endTare();
@@ -864,7 +865,9 @@ ISImporter.appController = new ISImporter.Object({
     this.enable(this.$tareButton);
     this.disable(this.$resetButton);
     this.disable(this.$selectButton);
-    this.disable(this.$exportButton);
+    if (this.filledMetadata.length === 0) {
+      this.disable(this.$exportButton);
+    }
     ISImporter.graphController.resetGraph();
   },
 
@@ -944,8 +947,12 @@ ISImporter.appController = new ISImporter.Object({
 
     ISImporter.graphController.stopSelection();
     this.hide(this.$cancelButton);
-    this.enable(this.$resetButton);
-    this.enable(this.$selectButton);
+    if (this.$startButton.hasClass('disabled') && this.$stopButton.hasClass('disabled')) {
+      this.enable(this.$resetButton);
+      this.enable(this.$selectButton);
+    } else {
+      this.disable(this.$exportButton);
+    }
   },
 
   logAction: function(action) {
