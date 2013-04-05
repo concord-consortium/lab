@@ -1,16 +1,10 @@
 {
   "title": "Protein Folding",
   "publicationStatus": "public",
-  "subtitle": "Explore simple protein folding.",
+  "subtitle": "How do peptides fold into stable conformations?",
   "fontScale": 0.6,
   "about": [
-    "Discover how the properties of amino acids in a protein interact with their",
-    "environment to cause proteins to fold in a particular way.",
-    "",
-    "Generate different proteins, select the solvent type, and change the color",
-    "scheme for amino acids using the buttons below the model.",
-    "",
-    "Change specific amino acids in a protein by right-clicking on them."
+    "Explore the role of hydrophobic and hydrophilic interactions in protein folding. Generate a random peptide string and watch how it folds in an aqueous environment. Change the solvent to see what happens if the peptide is in an oily environment or a vacuum instead of an aqueous environment."
   ],
   "models": [
     {

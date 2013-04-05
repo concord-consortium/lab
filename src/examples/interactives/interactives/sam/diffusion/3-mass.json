@@ -1,8 +1,8 @@
 {
-  "title": "Diffusion Temperature and Mass",
+  "title": "Diffusion & Molecular Mass",
   "publicationStatus": "public",
-  "subtitle": "How do temperature and mass affect the rate of diffusion?",
-  "about": "Click remove barrier to begin measuring how long it takes for the molecules to diffuse across the container.",
+  "subtitle": "How does molecular mass affect the rate of diffusion?",
+  "about": "Explore the role of molecular mass on the rate of diffusion. Select the mass of the molecules behind the barrier. Remove the barrier, and measure the amount of time it takes the molecules to reach the gas sensor. When the gas sensor has detected three molecules, it will stop the experiment. Compare the diffusion rates of the lightest, heavier and heaviest molecules. Trace an individual molecule to see the path it takes.",
   "models": [
     {
       "id": "model1",

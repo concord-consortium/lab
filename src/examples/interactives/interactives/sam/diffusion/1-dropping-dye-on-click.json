@@ -1,10 +1,10 @@
 {
-  "title": "Basic Diffusion on click",
+  "title": "Diffusion of a Drop",
   "publicationStatus": "public",
-  "subtitle": "Watch a drop of dye spreading out in water.",
+  "subtitle": "Add a drop of dye anywhere in the container, and watch it diffuse through the water.",
   "about": [
     "Click in the model to add a drop of dye.  Watch how the molecules move through the water.",
-    "Trace a random individual molecule to see how it moves through the liquid."
+    "Trace an individual molecule to see how it moves through the liquid."
   ],
   "models": [
     {

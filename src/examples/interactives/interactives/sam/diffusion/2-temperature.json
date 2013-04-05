@@ -1,8 +1,8 @@
 {
-  "title": "Diffusion Temperature",
+  "title": "Diffusion & Temperature",
   "publicationStatus": "public",
   "subtitle": "How does temperature affect the rate of diffusion?",
-  "about": "Click remove barrier to begin measuring how long it takes for the blue molecules to diffuse across the container.",
+  "about": "Explore the role of temperature on the rate of diffusion. Set the temperature, then remove the barrier, and measure the amount of time it takes the blue molecules to reach the gas sensor. When the gas sensor has detected three blue molecules, it will stop the experiment. Compare the diffusion rates at low, medium and high temperatures. Trace an individual molecule to see the path it takes.",
   "models": [
     {
       "id": "model1",
