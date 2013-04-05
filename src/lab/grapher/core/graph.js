@@ -1066,7 +1066,8 @@ define(function (require) {
         }
 
         if (!isNaN(downx)) {
-          d3.select('body').style("cursor", "row-resize");
+          d3.select('body').style("cursor", "col-resize");
+          plot.style("cursor", "col-resize");
           xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
           persistScaleChangesToOptions();
           redraw();
@@ -1074,7 +1075,8 @@ define(function (require) {
         }
 
         if (!isNaN(downy)) {
-          d3.select('body').style("cursor", "col-resize");
+          d3.select('body').style("cursor", "row-resize");
+          plot.style("cursor", "row-resize");
           yScale.domain(axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
           persistScaleChangesToOptions();
           redraw();
