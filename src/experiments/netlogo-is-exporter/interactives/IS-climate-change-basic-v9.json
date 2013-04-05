@@ -1,0 +1,18 @@
+{
+  "model": {
+    "modelType": "netlogo-applet",
+    "url": "models/IS-climate-change-basic-v9.nlogo",
+    "viewOptions": {
+      "dimensions": {
+        "width": 880,
+        "height": 480
+      },
+      "appletDimensions": {
+        "width": 856,
+        "height": 436
+      }
+    }
+  },
+  "components": [
+  ]
+}
