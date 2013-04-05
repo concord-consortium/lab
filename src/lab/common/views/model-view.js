@@ -21,7 +21,6 @@ define(function (require) {
         vis1, vis, plot,
         cx, cy,
         padding, size, modelSize,
-        playbackXPos, playbackYPos,
 
         // Basic scaling functions for positio, it transforms model units to "pixels".
         // Use it for positions of objects rendered inside the view.
@@ -97,10 +96,6 @@ define(function (require) {
         padding.bottom += (fontSizeInPixels * 0.8);
         padding.left +=   (fontSizeInPixels * 0.8);
       }
-
-      if (model.get("controlButtons") && !useExternalPlaybackContainer) {
-        padding.bottom += (fontSizeInPixels * 2.5);
-      }
     }
 
     function scale() {
@@ -144,27 +139,6 @@ define(function (require) {
 
       offsetTop  = node.offsetTop + padding.top;
       offsetLeft = node.offsetLeft + padding.left;
-
-      if (!useExternalPlaybackContainer) {
-        switch (model.get("controlButtons")) {
-          case "play":
-            playbackXPos = padding.left + (size.width - (75 * emsize))/2;
-            break;
-          case "play_reset":
-            playbackXPos = padding.left + (size.width - (140 * emsize))/2;
-            break;
-          case "play_reset_step":
-            playbackXPos = padding.left + (size.width - (230 * emsize))/2;
-            break;
-          default:
-            playbackXPos = padding.left + (size.width - (230 * emsize))/2;
-        }
-
-        playbackYPos = cy - 42 * emsize;
-      } else {
-        playbackXPos = 0;
-        playbackYPos = fontSizeInPixels/6;
-      }
 
       // Basic model2px scaling function for position.
       model2px = d3.scale.linear()
