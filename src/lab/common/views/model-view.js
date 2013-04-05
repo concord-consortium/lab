@@ -46,10 +46,6 @@ define(function (require) {
         textContainerTop,
         brushContainer,
 
-        // we can ask the view to render the playback controls to some other container
-        useExternalPlaybackContainer = false,
-        playbackContainer,
-
         clickHandler,
         // d3.svg.brush object used to implement select action. It should be
         // updated each time model2px and model2pxInv functions are changed!
@@ -344,8 +340,6 @@ define(function (require) {
           imageContainerTop:    imageContainerTop,
           textContainerTop:     textContainerTop
         };
-
-        playbackContainer = vis1;
       } else {
         // TODO: ?? what g, why is it here?
         vis.selectAll("g.x").remove();
@@ -446,10 +440,6 @@ define(function (require) {
         width = width - padding.left - padding.right;
         height = width / aspectRatio;
         return height + padding.top  + padding.bottom;
-      },
-      setPlaybackContainer: function(svgPlaybackContainer) {
-        useExternalPlaybackContainer = true;
-        playbackContainer = svgPlaybackContainer;
       },
       repaint: function() {
         repaint();
