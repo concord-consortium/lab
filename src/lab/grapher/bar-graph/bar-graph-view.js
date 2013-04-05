@@ -2,7 +2,7 @@
 
 define(function (require) {
   // Dependencies.
-  var Backbone = require('backbone'),
+  var Backbone  = require('backbone'),
 
       VIEW = {
         padding: {
@@ -62,6 +62,7 @@ define(function (require) {
           // Create all SVG elements ONLY in this function.
           // Avoid recreation of SVG elements while rendering.
           this.vis = d3.select(this.el).append("svg");
+          this.defs = this.vis.append("defs");
           this.fill = this.vis.append("rect");
           this.title = this.vis.append("text");
           this.axisContainer = this.vis.append("g");
@@ -193,20 +194,26 @@ define(function (require) {
               "width": (options.width - paddingLeft - paddingRight),
               "height": this.heightScale(options.maxValue),
               "x": paddingLeft,
-              "y": this.yScale(options.maxValue)
+              "y": this.yScale(options.maxValue),
+              "rx": "0.5em",
+              "ry": "0.5em"
             })
             .style({
-              "fill": options.fillColor
+              "fill": this._getFillGradient(options.fillColor),
+              "stroke": "#ddd",
+              "stroke-width": "1px"
             });
 
           // Setup the main bar.
           this.bar
             .attr({
               "width": (options.width - paddingLeft - paddingRight),
-              "x": paddingLeft
+              "x": paddingLeft,
+              "rx": "0.5em",
+              "ry": "0.5em"
             })
             .style({
-              "fill": options.barColor
+              "fill": this._getBarGradient(options.barColor)
             });
 
           this.traingle
@@ -269,6 +276,65 @@ define(function (require) {
           } else {
             this.render();
           }
+        },
+
+        _getBarGradient: function (color) {
+          var id = "bar-gradient",
+              gradient = this.defs.select("#" + id);
+
+          color = d3.rgb(color);
+
+          if (gradient.empty()) {
+            // Create a new gradient.
+            gradient = this.defs.append("linearGradient")
+              .attr("id", id)
+              .attr("x1", "0%")
+              .attr("y1", "0%")
+              .attr("x2", "0%")
+              .attr("y2", "100%");
+          } else {
+            gradient.selectAll("stop").remove();
+          }
+
+          gradient.append("stop")
+            .attr("stop-color", color.brighter(2).toString())
+            .attr("offset", "0%");
+          gradient.append("stop")
+            .attr("stop-color", color.toString())
+            .attr("offset", "100%");
+
+          return "url(#" + id + ")";
+        },
+
+        _getFillGradient: function (color) {
+          var id = "fill-gradient",
+              gradient = this.defs.select("#" + id);
+
+          if (gradient.empty()) {
+            // Create a new gradient.
+            gradient = this.defs.append("linearGradient")
+              .attr("id", id)
+              .attr("x1", "0%")
+              .attr("y1", "0%")
+              .attr("x2", "0%")
+              .attr("y2", "100%");
+          } else {
+            gradient.selectAll("stop").remove();
+          }
+
+          gradient.append("stop")
+            .attr("stop-color", color)
+            .attr("offset", "0%");
+          gradient.append("stop")
+            .attr("stop-color", color)
+            .attr("stop-opacity", 0.5)
+            .attr("offset", "15%");
+          gradient.append("stop")
+            .attr("stop-color", color)
+            .attr("stop-opacity", 0.4)
+            .attr("offset", "100%");
+
+          return "url(#" + id + ")";
         }
       });
 

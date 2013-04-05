@@ -25,7 +25,7 @@ define(function (require) {
           // Graph title.
           title:     "",
           // Color of the main bar.
-          barColor:  "green",
+          barColor:  "#e23c34",
           // Color of the area behind the bar.
           fillColor: "white",
           // Color of axis, labels, title.

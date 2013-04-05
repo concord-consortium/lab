@@ -614,9 +614,9 @@ define(function() {
           // Graph title.
           title:     "",
           // Color of the main bar.
-          barColor:  "green",
+          barColor:  "#e23c34",
           // Color of the area behind the bar.
-          fillColor: "white",
+          fillColor: "#fff",
           // Color of axis, labels, title.
           textColor: "#555",
           // Number of ticks displayed on the axis.
