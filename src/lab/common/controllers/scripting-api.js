@@ -251,6 +251,9 @@ define(function (require) {
             model.tick();
           },
 
+          isStopped: function isStopped() {
+            return model.is_stopped();
+          },
 
           getTime: function getTime() {
             return model.get('time');
