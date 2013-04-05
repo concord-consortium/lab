@@ -319,6 +319,16 @@ button.component
     &:active
       @include linear-gradient(#e6e6e6, #fff, $fallback: #fff)
 
+  .play-pause
+    // Style play / pause button, choose appropriate icon.
+    .icon-pause
+      display: none
+    &.playing
+      .icon-pause
+        display: inline
+      .icon-play
+        display: none
+
   i
     // Icons styling.
     color: #939598

@@ -1,4 +1,4 @@
-/*global define, $ */
+/*global define, $, model */
 
 define(function (require) {
 
@@ -12,9 +12,8 @@ define(function (require) {
    * @extends InteractiveComponent
    * @param {Object} component Component JSON definition.
    * @param {ScriptingAPI} scriptingAPI
-   * @param {InteractiveController} controller
    */
-  function PlaybackController(component, scriptingAPI, controller) {
+  function PlaybackController(component, scriptingAPI) {
     var stepping;
     // Call super constructor.
     InteractiveComponent.call(this, "playback", component, scriptingAPI);
@@ -23,24 +22,36 @@ define(function (require) {
 
     this.$element.addClass("interactive-playback");
 
+    /** @private */
+    this._modelStopped = true;
+    /** @private */
     this._$reset = $('<button><i class="icon-step-backward"></i></button>').appendTo(this.$element);
-    this.$element.append('<div class="spacer">');
-    this._$play = $('<button><i class="icon-play"></i></button>').appendTo(this.$element);
+    /** @private */
+    this._$playPause = $('<button class="play-pause"><i class="icon-play"></i><i class="icon-pause"></i></button>').appendTo(this.$element);
+
+    this._$reset.after('<div class="spacer">');
 
     if (stepping) {
+      /** @private */
       this._$stepBackward = $('<button><i class="icon-backward"></i></button>').insertBefore(this._$reset);
+      /** @private */
+      this._$stepForward = $('<button><i class="icon-forward"></i></button>').insertAfter(this._$playPause);
+
       this._$reset.before('<div class="spacer">');
-      this._$stepForward = $('<button><i class="icon-forward"></i></button>').insertAfter(this._$play);
-      this._$play.after('<div class="spacer">');
+      this._$playPause.after('<div class="spacer">');
     }
 
-    // Bind callbacks.
+    // Bind click handlers.
     this._$reset.on("click", function () {
       scriptingAPI.api.reset();
     });
-    this._$play.on("click", function () {
-      scriptingAPI.api.start();
-    });
+    this._$playPause.on("click", $.proxy(function () {
+      if (this._modelStopped) {
+        scriptingAPI.api.start();
+      } else {
+        scriptingAPI.api.stop();
+      }
+    }, this));
     if (stepping) {
       this._$stepBackward.on("click", function () {
         scriptingAPI.api.stepBack();
@@ -53,9 +64,26 @@ define(function (require) {
   inherit(PlaybackController, InteractiveComponent);
 
   /**
+   * Updates play / pause button.
+   * @private
+   */
+  PlaybackController.prototype._simulationStateChanged = function () {
+    this._modelStopped = model.is_stopped();
+    if (this._modelStopped) {
+      this._$playPause.removeClass("playing");
+    } else {
+      this._$playPause.addClass("playing");
+    }
+  };
+
+  /**
    * Implements optional callback supported by Interactive Controller.
    */
-  PlaybackController.prototype.modelLoadedCallback = function() {
+  PlaybackController.prototype.modelLoadedCallback = function () {
+    // Update play / pause button.
+    model.on('play.playback-controller', $.proxy(this._simulationStateChanged, this));
+    model.on('stop.playback-controller', $.proxy(this._simulationStateChanged, this));
+    this._simulationStateChanged();
   };
 
   return PlaybackController;
