@@ -305,17 +305,19 @@ button.component
     border: none
     @include linear-gradient(#fbfbfb, #BCBEC0, $fallback: #BCBEC0)
 
-    &:first-child
-      border-bottom-left-radius: 0.7em
-    &:last-child
-      border-bottom-right-radius: 0.7em
-
     &:hover
       @include linear-gradient(#fff, #e6e6e6, $fallback: #e6e6e6)
       cursor: pointer
 
     &:active
       @include linear-gradient(#e6e6e6, #fff, $fallback: #bbb)
+
+  .hidden
+    display: none !important
+  .first
+    border-bottom-left-radius: 0.7em
+  .last
+    border-bottom-right-radius: 0.7em
 
   .play-pause
     min-width: 2.7em

@@ -14,11 +14,8 @@ define(function (require) {
    * @param {ScriptingAPI} scriptingAPI
    */
   function PlaybackController(component, scriptingAPI) {
-    var stepping;
     // Call super constructor.
     InteractiveComponent.call(this, "playback", component, scriptingAPI);
-
-    stepping = this.component.stepping;
 
     this.$element.addClass("interactive-playback");
 
@@ -27,23 +24,20 @@ define(function (require) {
     /** @private */
     this._timeUnits = "";
     /** @private */
-    this._$reset = $('<button><i class="icon-step-backward"></i></button>').appendTo(this.$element);
+    this._$reset = $('<button class="reset"><i class="icon-step-backward"></i></button>').appendTo(this.$element);
     /** @private */
     this._$playPause = $('<button class="play-pause"><i class="icon-play"></i><i class="icon-pause"></i></button>').appendTo(this.$element);
     /** @private */
     this._$timeDisplay = $('<span class="time-display">').appendTo(this._$playPause);
 
-    this._$reset.after('<div class="spacer">');
+    /** @private */
+    this._$stepBackward = $('<button class="step"><i class="icon-backward"></i></button>').insertBefore(this._$reset);
+    /** @private */
+    this._$stepForward = $('<button class="step"><i class="icon-forward"></i></button>').insertAfter(this._$playPause);
 
-    if (stepping) {
-      /** @private */
-      this._$stepBackward = $('<button><i class="icon-backward"></i></button>').insertBefore(this._$reset);
-      /** @private */
-      this._$stepForward = $('<button><i class="icon-forward"></i></button>').insertAfter(this._$playPause);
-
-      this._$reset.before('<div class="spacer">');
-      this._$playPause.after('<div class="spacer">');
-    }
+    this._$reset.after('<div class="spacer reset">');
+    this._$stepBackward.after('<div class="spacer step">');
+    this._$stepForward.before('<div class="spacer step">');
 
     // Bind click handlers.
     this._$reset.on("click", function () {
@@ -56,14 +50,12 @@ define(function (require) {
         scriptingAPI.api.stop();
       }
     }, this));
-    if (stepping) {
-      this._$stepBackward.on("click", function () {
-        scriptingAPI.api.stepBack();
-      });
-      this._$stepForward.on("click", function () {
-        scriptingAPI.api.stepForward();
-      });
-    }
+    this._$stepBackward.on("click", function () {
+      scriptingAPI.api.stepBack();
+    });
+    this._$stepForward.on("click", function () {
+      scriptingAPI.api.stepForward();
+    });
   }
   inherit(PlaybackController, InteractiveComponent);
 
@@ -90,6 +82,32 @@ define(function (require) {
   };
 
   /**
+   * Updates playback controller mode ("play", "play_reset" or "play_reset_step").
+   * @private
+   */
+  PlaybackController.prototype._displayModeChanged = function () {
+    var mode = model.get("controlButtons"),
+        $buttons;
+    if (!mode) { // mode === "" || mode === null || mode === false
+      this.$element.find(".step, .reset, .play-pause").addClass("hidden");
+    } else if (mode === "play") {
+      this.$element.find(".step, .reset").addClass("hidden");
+      this.$element.find(".play-pause").removeClass("hidden");
+    } else if (mode === "play_reset") {
+      this.$element.find(".step").addClass("hidden");
+      this.$element.find(".play-pause, .reset").removeClass("hidden");
+    } else if (mode === "play_reset_step") {
+      this.$element.find(".step, .reset, .play-pause").removeClass("hidden");
+    }
+    $buttons = this.$element.find("button");
+    $buttons.removeClass("first");
+    $buttons.removeClass("last");
+    $buttons = $buttons.not(".hidden");
+    $buttons.first().addClass("first");
+    $buttons.last().addClass("last");
+  };
+
+  /**
    * Implements optional callback supported by Interactive Controller.
    */
   PlaybackController.prototype.modelLoadedCallback = function () {
@@ -98,11 +116,13 @@ define(function (require) {
     model.on('play.' + this.component.id, $.proxy(this._simulationStateChanged, this));
     model.on('stop.' + this.component.id, $.proxy(this._simulationStateChanged, this));
     this._simulationStateChanged();
-
     // Update time units and set time.
     this._timeUnits = model.getPropertyDescription("displayTime").getUnitAbbreviation();
     model.addPropertiesListener(["displayTime"], $.proxy(this._timeChanged, this));
     this._timeChanged();
+    // Update display mode (=> buttons are hidden or visible).
+    model.addPropertiesListener(["controlButtons"], $.proxy(this._displayModeChanged, this));
+    this._displayModeChanged();
   };
 
   return PlaybackController;
