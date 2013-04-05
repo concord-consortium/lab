@@ -509,15 +509,6 @@ define(function (require) {
       }
     }
 
-    function setupInteractivePlaybackController() {
-      var wrapper, svgContainer;
-
-      if (wrapper = document.getElementById("interactive-playback-container")) {
-        svgContainer = d3.select(wrapper).append("svg");
-        modelController.setPlaybackContainer(svgContainer);
-      }
-    }
-
     // Public API.
     layout = {
       /**
@@ -581,12 +572,6 @@ define(function (require) {
         });
         $modelContainer.appendTo($interactiveContainer);
         $containerByID.model = $modelContainer;
-
-        // For now we have only one model, we we assume we always want to set up a
-        // interactive-wide controller. When we have more than one model, we can
-        // easily check for that and not set this up, which will make every model
-        // use their own playback controllers.
-        setupInteractivePlaybackController();
       },
 
       /**
