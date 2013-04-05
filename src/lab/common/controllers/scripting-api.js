@@ -295,12 +295,13 @@ define(function (require) {
 
           /* Send a tracking event to Google Analytics */
           trackEvent: function trackEvent(category, action, label) {
-            var googleAnalytics = _gaq;
+            var googleAnalytics;
 
-            if (typeof googleAnalytics === 'undefined'){
+            if (typeof _gaq === 'undefined'){
               // console.error("Google Analytics not defined, Can not send trackEvent");
               return;
             }
+            googleAnalytics = _gaq;
             if (!category) {
               category = "Interactive";
             }
