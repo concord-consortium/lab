@@ -158,6 +158,18 @@ define(function() {
     /**
       Interactive components:
     */
+    playback: {
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
+      stepping: {
+        defaultValue: true
+      }
+    },
+
     text: {
       id: {
         required: true

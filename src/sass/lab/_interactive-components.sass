@@ -288,3 +288,46 @@ button.component
       bottom: 0
       background: #e16a3e
       border-radius: 0.75em 0.75em 0em 0em
+
+.interactive-playback
+  font-size: 1em
+  border-bottom-left-radius: 0.7em
+  border-bottom-right-radius: 0.7em
+  box-shadow: 0px 1px 3px rgba(0,0,0,0.4)
+  height: 2em
+  button
+    vertical-align: middle
+    font-family: $fontface, Verdana, Geneva, sans-serif
+    font-size: 1em
+    height: 100%
+    width: 2.7em
+    margin: 0
+    @include linear-gradient(#F1F2F2, #BCBEC0, $fallback: #eee)
+
+    border: none
+    border-top: 1px solid #fff
+
+    &:first-child
+      border-bottom-left-radius: 0.7em
+    &:last-child
+      border-bottom-right-radius: 0.7em
+
+    &:hover
+      @include linear-gradient(#fff, #e6e6e6, $fallback: #e6e6e6)
+      cursor: pointer
+
+    &:active
+      @include linear-gradient(#e6e6e6, #fff, $fallback: #fff)
+
+  i
+    // Icons styling.
+    color: #939598
+    font-size: 1em
+
+  .spacer
+    vertical-align: middle
+    display: inline-block
+    height: 100%
+    width: 2px
+    @include linear-gradient(#fefefe, #aaacaf, $fallback: #e6e6e6)
+

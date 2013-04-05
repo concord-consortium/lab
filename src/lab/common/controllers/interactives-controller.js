@@ -21,6 +21,7 @@ define(function (require) {
       NumericOutputController = require('common/controllers/numeric-output-controller'),
       ParentMessageAPI        = require('common/controllers/parent-message-api'),
       ThermometerController   = require('common/controllers/thermometer-controller'),
+      PlaybackController      = require('common/controllers/playback-controller'),
       DivController           = require('common/controllers/div-controller'),
 
       // Helper function which just provides banner definition.
@@ -74,7 +75,8 @@ define(function (require) {
         'graph':         GraphController,
         'slider':        SliderController,
         'numericOutput': NumericOutputController,
-        'div':           DivController
+        'div':           DivController,
+        'playback':      PlaybackController
       };
 
   return function interactivesController(interactive, viewSelector) {
