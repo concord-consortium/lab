@@ -316,7 +316,7 @@ define(function (require) {
     }
 
     function setupLayout() {
-      var template, layout, components, fontScale, banner, resizeAfterFullscreen;
+      var template, layout, comp, components, fontScale, banner, resizeAfterFullscreen;
 
       if (typeof interactive.template === "string") {
         template = templates[interactive.template];
@@ -332,7 +332,19 @@ define(function (require) {
       // Banner hash containing components, layout containers and layout deinition
       // (components location). Keep it in a separate structure, because we do not
       // expect these objects to be serialized!
-      banner = setupBanner(interactive, creditsDialog, aboutDialog, shareDialog);
+      banner = setupBanner(scriptingAPI, interactive, creditsDialog, aboutDialog, shareDialog);
+      // Register callbacks of banner components.
+      components = banner.components;
+      for (comp in components) {
+        if (components.hasOwnProperty(comp)) {
+          comp = components[comp];
+          if (comp.modelLoadedCallback) {
+            // $.proxy ensures that callback will be always executed
+            // in the context of correct object ('this' binding).
+            componentCallbacks.push($.proxy(comp.modelLoadedCallback, comp));
+          }
+        }
+      }
       // Note that all of these operations create a new object.
       // So interactive definition specified by the author won't be affected.
       // This is important for serialization correctness.

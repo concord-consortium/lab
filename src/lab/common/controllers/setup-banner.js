@@ -2,10 +2,12 @@
 
 define(function () {
 
-  var labConfig       = require('lab.config'),
-      TextController  = require('common/controllers/text-controller'),
-      ImageController = require('common/controllers/image-controller'),
-      DivController   = require('common/controllers/div-controller'),
+  var labConfig          = require('lab.config'),
+      TextController     = require('common/controllers/text-controller'),
+      ImageController    = require('common/controllers/image-controller'),
+      DivController      = require('common/controllers/div-controller'),
+      PlaybackController = require('common/controllers/playback-controller'),
+
       topBarHeight    = 1.5,
       topBarFontScale = topBarHeight*0.65,
       topBarVerticalPadding = topBarHeight/10;
@@ -17,12 +19,13 @@ define(function () {
    *  - layout definition (components location).
    * All these things are used to build the interactive banner.
    *
+   * @param {ScriptingAPI} scriptingAPI Initialized ScriptingAPI object.
    * @param {Object} interactive Interactive JSON definition.
    * @param {CreditsDialog} creditsDialog
    * @param {AboutDialog} aboutDialog
    * @param {ShareDialog} shareDialog
    */
-  return function setupBanner(interactive, creditsDialog, aboutDialog, shareDialog) {
+  return function setupBanner(scriptingAPI, interactive, creditsDialog, aboutDialog, shareDialog) {
     var components = {},
         template = [],
         layout = {},
@@ -59,9 +62,11 @@ define(function () {
         Controller = ImageController;
       } else if (element.type === "div") {
         Controller = DivController;
+      } else if (element.type === "playback") {
+        Controller = PlaybackController;
       }
 
-      components[element.id] = new Controller(element);
+      components[element.id] = new Controller(element, scriptingAPI);
       template.push(container);
       layout[container.id] = [element.id];
     }
@@ -200,14 +205,19 @@ define(function () {
       });
     }
 
-    template.push({
-      "id": "interactive-playback-container",
-      "bottom": "container.height",
-      "left": "container.width/2 - interactive-playback-container.width/2",
-      "width": "12em",
-      "height": "banner-bottom-left.height",
-      "belowOthers": true
-    });
+      createElementInContainer(
+      {
+        "type": "playback",
+        "id": "playback"
+      },
+      {
+        "id": "interactive-playback-container",
+        "bottom": "container.height",
+        "left": "container.width/2 - interactive-playback-container.width/2",
+        "width": "12em",
+        "height": "banner-bottom-left.height",
+        "belowOthers": true
+      });
 
     return {
       components: components,

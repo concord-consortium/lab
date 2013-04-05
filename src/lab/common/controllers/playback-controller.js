@@ -81,8 +81,9 @@ define(function (require) {
    */
   PlaybackController.prototype.modelLoadedCallback = function () {
     // Update play / pause button.
-    model.on('play.playback-controller', $.proxy(this._simulationStateChanged, this));
-    model.on('stop.playback-controller', $.proxy(this._simulationStateChanged, this));
+    // Use event namespace to let multiple playbacks work fine with one model.
+    model.on('play.' + this.component.id, $.proxy(this._simulationStateChanged, this));
+    model.on('stop.' + this.component.id, $.proxy(this._simulationStateChanged, this));
     this._simulationStateChanged();
   };
 
