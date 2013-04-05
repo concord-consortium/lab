@@ -224,6 +224,7 @@ define(function (require) {
 
           start: function start() {
             model.start();
+            this.trackEvent('Interactive', "Start", "Starting interactive: " + interactivesController.get('title') );
           },
 
           stop: function stop() {
@@ -290,6 +291,22 @@ define(function (require) {
             if (!dgExport)
               throw new Error("No exports have been specified.");
             dgExport.exportData();
+          },
+
+          /* Send a tracking event to Google Analytics */
+          trackEvent: function trackEvent(category, action, label) {
+            var googleAnalytics = _gaq;
+
+            if (typeof googleAnalytics === 'undefined'){
+              // console.error("Google Analytics not defined, Can not send trackEvent");
+              return;
+            }
+            if (!category) {
+              category = "Interactive";
+            }
+            // console.log("Sending a track page event Google Analytics (category:action:label):");
+            // console.log("(" + category + ":"  + action + ":" + label + ")");
+            googleAnalytics.push(['_trackEvent', category, action, label]);
           },
 
           Math: Math,

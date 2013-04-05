@@ -47,44 +47,6 @@ define(function (require) {
         return model.getNumberOfAngularBonds();
       },
 
-      /* Send a track page context event to Google Analytics */
-      trackPageContext: function trackPageContext(category, action, label) {
-        var pageContext,
-            googleAnalytics = _gaq;
-
-        if (typeof googleAnalytics === 'undefined'){
-          console.error("Google Analytics not defined, Can not send the Track Page Context event");
-          return;
-        }
-        if (!category) {
-          category = "Interactive";
-        }
-        if (!action) {
-          action = "Page Context";
-        }
-        if (!label) {
-          label = JSON.stringify({ pageContext: document.referrer, interactive: document.location.href });
-        }
-        console.log("Sending a track page context event to Google Analytics");
-        googleAnalytics.push(['_trackEvent', category, action, label]);
-      },
-
-      /* Send a tracking event to Google Analytics */
-      trackEvent: function trackEvent(category, action, label) {
-        var googleAnalytics = _gaq;
-
-        if (typeof googleAnalytics === 'undefined'){
-          console.error("Google Analytics not defined, Can not send trackEvent");
-          return;
-        }
-        if (!category) {
-          category = "Interactive";
-        }
-        console.log("Sending a track page event Google Analytics (category:action:label):");
-        console.log("(" + category + ":"  + action + ":" + label + ")");
-        googleAnalytics.push(['_trackEvent', category, action, label]);
-      },
-
       addAtom: function addAtom(props, options) {
         if (options && options.suppressRepaint) {
           // Translate suppressRepaint option to
