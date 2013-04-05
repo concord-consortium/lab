@@ -19,28 +19,28 @@ define(function() {
     units: {
 
       length: {
-        name: "nanometer",
-        pluralName: "nanometers",
-        abbreviation: "nm"
+        name: "meter",
+        pluralName: "meters",
+        abbreviation: "m"
       },
 
       // Internally, we've referred to "Dalton" but amu is probably more common. Dalton is
       // officially more correct but it still seems mostly to be used for protein masses, etc.
       mass: {
-        name: "atomic mass unit",
-        pluralName: "atomic mass units",
-        abbreviation: "amu"
+        name: "kilogram",
+        pluralName: "kilograms",
+        abbreviation: "kg"
       },
 
       time: {
-        name: "femtosecond",
-        pluralName: "femtoseconds",
-        abbreviation: "fs",
+        name: "second",
+        pluralName: "seconds",
+        abbreviation: "s",
         displayValue: {
-          unitsPerBaseUnit: 1e-3,
-          pluralName: "picoseconds",
-          name: "picosecond",
-          abbreviation: "ps"
+          unitsPerBaseUnit: 1,
+          pluralName: "seconds",
+          name: "second",
+          abbreviation: "s"
         }
       },
 
@@ -50,27 +50,27 @@ define(function() {
       // For compatibility, MD2D does the same.
       // The units of the constant c (called "obstacle friction") are therefore 1 / time.
       inverseTime: {
-        name: "1/femtosecond",
-        pluralName: "1/femtoseconds",
-        abbreviation: "1/fs"
+        name: "1/second",
+        pluralName: "1/seconds",
+        abbreviation: "1/s"
       },
 
       velocity: {
-        name: "nanometer per femtosecond",
-        pluralName: "nanometers per second",
-        abbreviation: "nm/s"
+        name: "meter per second",
+        pluralName: "meters per second",
+        abbreviation: "m/s"
       },
 
       acceleration: {
-        name: "nanometer per femtosecond squared",
-        pluralName: "nanometers per femtosecond squared",
-        abbreviation: "nm/fs²"
+        name: "meter per second squared",
+        pluralName: "meters per second squared",
+        abbreviation: "m/fs²"
       },
 
       momentum: {
-        name: "amu nanometer per femtosecond",
-        pluralName: "amu nanometers per femtosecond",
-        abbreviation: "amu⋅nm/fs"
+        name: "kg meter per second",
+        pluralName: "kg meters per second",
+        abbreviation: "kg⋅m/s"
       },
 
       // Forces haven't typically been exposed to Classic MW users in a quantitative way, and indeed
@@ -78,22 +78,22 @@ define(function() {
       // (computationally convenient) amu nm/fs² to "user friendly" units. That said, Classic MW
       // could be said to use eV/nm implicitly, since spring constants are in eV/nm².
       force: {
-        name: "amu nanometer per femtosecond squared",
-        pluralName: "amu nanometers per femtosecond squared",
-        abbreviation: "amu⋅nm/fs²"
+        name: "kg ometer per second squared",
+        pluralName: "kg meters per second squared",
+        abbreviation: "kg⋅nm/s²"
       },
 
       energy: {
-        name: "electron volt",
-        pluralName: "electron volts",
-        abbreviation: "eV"
+        name: "joules",
+        pluralName: "joules",
+        abbreviation: "J"
       },
 
       // aka spring constant (= eV/nm per nm)
       stiffness: {
-        name: "electron volt per nanometer squared",
-        pluralName: "electron volts per nanometer squared",
-        abbreviation: "eV/nm²"
+        name: "joule per meter squared",
+        pluralName: "joule per meter squared",
+        abbreviation: "J/nm²"
       },
 
       temperature: {
