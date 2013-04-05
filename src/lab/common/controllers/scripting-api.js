@@ -233,6 +233,18 @@ define(function (require) {
           interactivesController.modelController.reload();
         },
 
+        stepForward: function stepForward() {
+          model.stepForward();
+          if (!model.isNewStep()) {
+            interactivesController.modelController.modelContainer.update();
+          }
+        },
+
+        stepBack: function stepBack() {
+          model.stepBack();
+          interactivesController.modelController.modelContainer.update();
+        },
+
         tick: function tick() {
           model.tick();
         },
