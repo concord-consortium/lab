@@ -86,7 +86,7 @@ define(function (require) {
         timeSuffix = "";
 
     function modelTimeLabel() {
-      return timePrefix + modelTimeFormatter(model.get('time')/100) + timeSuffix;
+      return timePrefix + modelTimeFormatter(model.get('time')) + timeSuffix;
     }
 
     /**
