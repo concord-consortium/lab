@@ -51,7 +51,7 @@ define(function (require) {
         if  ((axis1 >= 0) && (axis2 > axis1)) {                 // example: (20, 10, [0, 40]) => [0, 80]
           origin = axis1;
           originExtent = dragstart-origin;
-          maxDragIn = originExtent * 0.2 + origin;
+          maxDragIn = originExtent * 0.4 + origin;
           if (currentdrag > maxDragIn) {
             change = originExtent / (currentdrag-origin);
             extent = axis2 - origin;
@@ -60,7 +60,7 @@ define(function (require) {
         } else if ((axis1 < 0) && (axis2 > 0)) {                // example: (20, 10, [-40, 40])       => [-80, 80]
           origin = 0;                                           //          (-0.4, -0.2, [-1.0, 0.4]) => [-1.0, 0.4]
           originExtent = dragstart-origin;
-          maxDragIn = originExtent * 0.2 + origin;
+          maxDragIn = originExtent * 0.4 + origin;
           if ((dragstart >= 0 && currentdrag > maxDragIn) || (dragstart  < 0  && currentdrag < maxDragIn)) {
             change = originExtent / (currentdrag-origin);
             newdomain = [axis1 * change, axis2 * change];
@@ -68,7 +68,7 @@ define(function (require) {
         } else if ((axis1 < 0) && (axis2 < 0)) {                // example: (-60, -50, [-80, -40]) => [-120, -40]
           origin = axis2;
           originExtent = dragstart-origin;
-          maxDragIn = originExtent * 0.2 + origin;
+          maxDragIn = originExtent * 0.4 + origin;
           if (currentdrag < maxDragIn) {
             change = originExtent / (currentdrag-origin);
             extent = axis1 - origin;

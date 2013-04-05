@@ -46,9 +46,19 @@ define(function (require) {
         xAxisNumberWidth,
         xAxisNumberHeight,
         yAxisNumberWidth,
+        yAxisNumberHeight,
         xAxisLabelHorizontalPadding,
-        xAxisLabelVerticalPadding,
-        yAxisLabelPadding,
+
+        xAxisVerticalPadding,
+        xAxisDraggableHeight,
+        xAxisLabelBaseline,
+
+        yAxisHorizontalPadding,
+        yAxisDraggableWidth,
+        yAxisLabelBaseline,
+
+        xAxisDraggable,
+        yAxisDraggable,
 
         strokeWidth,
         sizeType = {
@@ -181,10 +191,11 @@ define(function (require) {
       calculateSizeType();
     }
 
-    function longestNumber(array, formatter) {
+    function longestNumber(array, formatter, precision) {
       var longest;
+      precision = precision || 5;
       longest = array.reduce(function(number1, number2) {
-        return formatter(number1).length > formatter(number2).length ? number1 : number2;
+        return formatter(+number1.toPrecision(precision)).length > formatter(+number2.toPrecision(precision)).length ? number1 : number2;
       }, 0);
       return formatter(longest);
     }
@@ -249,12 +260,17 @@ define(function (require) {
 
       xAxisNumberWidth  = xlabelMetrics[0];
       xAxisNumberHeight = xlabelMetrics[1];
-      yAxisNumberWidth = ylabelMetrics[0];
+      yAxisNumberWidth  = ylabelMetrics[0];
+      yAxisNumberHeight = ylabelMetrics[0];
 
       xAxisLabelHorizontalPadding = xAxisNumberWidth * 0.5;
-      xAxisLabelVerticalPadding = xAxisNumberHeight * 2.2;
+      xAxisDraggableHeight = xAxisNumberHeight * 1.1;
+      xAxisVerticalPadding = xAxisDraggableHeight + xAxisNumberHeight*1.3;
+      xAxisLabelBaseline = xAxisVerticalPadding-xAxisNumberHeight/3;
 
-      yAxisLabelPadding = yAxisNumberWidth * 1.2;
+      yAxisDraggableWidth    = yAxisNumberWidth + xAxisNumberHeight/4;
+      yAxisHorizontalPadding = yAxisDraggableWidth + yAxisNumberHeight;
+      yAxisLabelBaseline     = -(yAxisDraggableWidth+yAxisNumberHeight/4);
 
       switch(sizeType.value) {
         case 0:         // tiny
@@ -288,8 +304,8 @@ define(function (require) {
         padding = {
          "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
          "right":  xAxisLabelHorizontalPadding,
-         "bottom": options.xlabel ? xAxisLabelVerticalPadding : axisFontSizeInPixels*1.25,
-         "left":   options.ylabel ? yAxisLabelPadding + axisFontSizeInPixels*1.2 : yAxisNumberWidth
+         "bottom": options.xlabel ? xAxisVerticalPadding : axisFontSizeInPixels*1.25,
+         "left":   options.ylabel ? yAxisHorizontalPadding : yAxisNumberWidth
         };
         break;
 
@@ -297,8 +313,8 @@ define(function (require) {
         padding = {
          "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
          "right":  xAxisLabelHorizontalPadding,
-         "bottom": options.xlabel ? xAxisLabelVerticalPadding : axisFontSizeInPixels*1.25,
-         "left":   options.ylabel ? yAxisLabelPadding + axisFontSizeInPixels*1.2 : yAxisNumberWidth
+         "bottom": options.xlabel ? xAxisVerticalPadding : axisFontSizeInPixels*1.25,
+         "left":   options.ylabel ? yAxisHorizontalPadding : yAxisNumberWidth
         };
         break;
       }
@@ -566,6 +582,30 @@ define(function (require) {
                 .attr("d", line(points));
         }
 
+        yAxisDraggable = svg.append("rect")
+          .attr("class", "draggable-axis")
+          .attr("x", padding.left-yAxisDraggableWidth)
+          .attr("y", padding.top)
+          .attr("rx", yAxisNumberHeight/6)
+          .attr("width", yAxisDraggableWidth)
+          .attr("height", size.height)
+          .attr("pointer-events", "all")
+          .style("cursor", "row-resize")
+          .on("mousedown", yAxisDrag)
+          .on("touchstart", yAxisDrag);
+
+        xAxisDraggable = svg.append("rect")
+          .attr("class", "draggable-axis")
+          .attr("x", padding.left)
+          .attr("y", size.height+padding.top)
+          .attr("rx", yAxisNumberHeight/6)
+          .attr("width", size.width)
+          .attr("height", xAxisDraggableHeight)
+          .attr("pointer-events", "all")
+          .style("cursor", "col-resize")
+          .on("mousedown", xAxisDrag)
+          .on("touchstart", xAxisDrag);
+
         marker = viewbox.append("path").attr("class", "marker");
         // path without attributes cause SVG parse problem in IE9
         //     .attr("d", []);
@@ -594,7 +634,7 @@ define(function (require) {
               .text(options.xlabel)
               .attr("x", size.width/2)
               .attr("y", size.height)
-              .attr("dy", xAxisLabelVerticalPadding-xAxisNumberHeight/3 + "px")
+              .attr("dy", xAxisLabelBaseline + "px")
               .style("text-anchor","middle");
         }
 
@@ -605,7 +645,7 @@ define(function (require) {
               .attr("class", "ylabel")
               .text( options.ylabel)
               .style("text-anchor","middle")
-              .attr("transform","translate(" + -yAxisLabelPadding + " " + size.height/2+") rotate(-90)");
+              .attr("transform","translate(" + yAxisLabelBaseline + " " + size.height/2+") rotate(-90)");
         }
 
         d3.select(node)
@@ -653,6 +693,18 @@ define(function (require) {
             .attr("height", size.height)
             .attr("viewBox", "0 0 "+size.width+" "+size.height);
 
+        yAxisDraggable
+          .attr("x", padding.left-yAxisDraggableWidth)
+          .attr("y", padding.top-yAxisNumberHeight/2)
+          .attr("width", yAxisDraggableWidth)
+          .attr("height", size.height+yAxisNumberHeight);
+
+        xAxisDraggable
+          .attr("x", padding.left)
+          .attr("y", size.height+padding.top)
+          .attr("width", size.width)
+          .attr("height", xAxisDraggableHeight);
+
         if (options.title && sizeType.value > 1) {
           title
               .attr("x", size.width/2)
@@ -663,12 +715,12 @@ define(function (require) {
           xlabel
               .attr("x", size.width/2)
               .attr("y", size.height)
-              .attr("dy", xAxisLabelVerticalPadding-xAxisNumberHeight/3 + "px");
+              .attr("dy", xAxisLabelBaseline + "px");
         }
 
         if (options.ylabel && sizeType.value > 1) {
           ylabel
-              .attr("transform","translate(" + -yAxisLabelPadding + " " + size.height/2+") rotate(-90)");
+              .attr("transform","translate(" + yAxisLabelBaseline + " " + size.height/2+") rotate(-90)");
         }
 
         notification
@@ -733,12 +785,9 @@ define(function (require) {
               .attr("y", size.height)
               .attr("dy", axisFontSizeInPixels + "px")
               .attr("text-anchor", "middle")
-              .style("cursor", "ew-resize")
               .text(fx)
               .on("mouseover", function() { d3.select(this).style("font-weight", "bold");})
-              .on("mouseout",  function() { d3.select(this).style("font-weight", "normal");})
-              .on("mousedown.drag",  xaxisDrag)
-              .on("touchstart.drag", xaxisDrag);
+              .on("mouseout",  function() { d3.select(this).style("font-weight", "normal");});
         }
 
         gx.exit().remove();
@@ -778,9 +827,7 @@ define(function (require) {
               .style("cursor", "ns-resize")
               .text(fy)
               .on("mouseover", function() { d3.select(this).style("font-weight", "bold");})
-              .on("mouseout",  function() { d3.select(this).style("font-weight", "normal");})
-              .on("mousedown.drag",  yaxisDrag)
-              .on("touchstart.drag", yaxisDrag);
+              .on("mouseout",  function() { d3.select(this).style("font-weight", "normal");});
         }
 
         gy.exit().remove();
@@ -933,6 +980,7 @@ define(function (require) {
         d3.event.preventDefault();
         plot.style("cursor", "move");
         if (d3.event.altKey) {
+          plot.style("cursor", "nesw-resize");
           var p = d3.mouse(vis.node());
           downx = xScale.invert(p[0]);
           downy = yScale.invert(p[1]);
@@ -946,6 +994,7 @@ define(function (require) {
         d3.event.preventDefault();
         d3.select('body').style("cursor", "move");
         if (d3.event.altKey) {
+          plot.style("cursor", "nesw-resize");
           if (d3.event.shiftKey && options.addData) {
             p = d3.mouse(vis.node());
             var newpoint = [];
@@ -974,14 +1023,14 @@ define(function (require) {
         return false;
       }
 
-      function xaxisDrag() {
+      function xAxisDrag() {
         document.onselectstart = falseFunction;
         d3.event.preventDefault();
         var p = d3.mouse(vis.node());
         downx = xScale.invert(p[0]);
       }
 
-      function yaxisDrag() {
+      function yAxisDrag() {
         d3.event.preventDefault();
         document.onselectstart = falseFunction;
         var p = d3.mouse(vis.node());
@@ -1017,7 +1066,7 @@ define(function (require) {
         }
 
         if (!isNaN(downx)) {
-          d3.select('body').style("cursor", "ew-resize");
+          d3.select('body').style("cursor", "row-resize");
           xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
           persistScaleChangesToOptions();
           redraw();
@@ -1025,7 +1074,7 @@ define(function (require) {
         }
 
         if (!isNaN(downy)) {
-          d3.select('body').style("cursor", "ns-resize");
+          d3.select('body').style("cursor", "col-resize");
           yScale.domain(axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
           persistScaleChangesToOptions();
           redraw();
@@ -1034,7 +1083,7 @@ define(function (require) {
       }
 
       function mouseup() {
-        d3.select('body').style("cursor", "auto");
+        plot.style("cursor", "auto");
         document.onselectstart = function() { return true; };
         if (!isNaN(downx)) {
           redraw();
@@ -1881,7 +1930,7 @@ define(function (require) {
         canvas.offsetTop = cplot.top;
         canvas.style.left = cplot.left + 'px';
         canvas.style.top = cplot.top + 'px';
-        canvas.style.border = 'solid 1px red';
+        // canvas.style.border = 'solid 1px red';
         canvas.style.pointerEvents = "none";
         if (canvas.className.search("overlay") < 0) {
            canvas.className += " overlay";
