@@ -939,6 +939,7 @@ ISImporter.appController = new ISImporter.Object({
       if (label) {
         metadata.push({ label: label, value: this.getMetadataValue(i) });
       }
+      this.clearMetadata(i);
     }
 
     ISImporter.DGExporter.exportData(this.sensor.title, data, metadata);
@@ -1020,6 +1021,20 @@ ISImporter.appController = new ISImporter.Object({
     var val = $('#metadata-' + fieldNum + ' .metadata-value').val();
     if (isNumeric(val)) return parseFloat(val);
     return val;
+  },
+
+  clearMetadata: function(fieldNum) {
+    this._clearMetadata(fieldNum, "label");
+    this._clearMetadata(fieldNum, "value");
+  },
+
+  _clearMetadata: function(fieldNum, type) {
+    var md = $('#metadata-' + fieldNum + ' .metadata-' + type);
+    md.val('');
+    var idx = this.filledMetadata.indexOf(md[0]);
+    if (idx != -1) {
+      this.filledMetadata.splice(idx,1);
+    }
   },
 
   getFrequency: function() {}
