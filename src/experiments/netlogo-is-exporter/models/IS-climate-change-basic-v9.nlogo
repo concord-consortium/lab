@@ -91,7 +91,7 @@ to show-start-screen
     setxy 20 0 
     set label-color white
     set size .1
-    set label "'Collect data' lets you make a careful 100-year run."]
+    set label "'Collect data' lets you make a careful run."]
   create-dots 1 [
     setxy 20 -.1 * max-pycor 
     set label-color white
@@ -101,7 +101,12 @@ to show-start-screen
     setxy 20 -.2 * max-pycor 
     set label-color white
     set size .1
-    set label "When you collect data that you like, you can export it to Data Games."]
+    set label "Set the 'Run-Duration' to the number of years that you want your run to last."]
+   create-dots 1 [
+    setxy 20 -.3 * max-pycor 
+    set label-color white
+    set size .1
+    set label "When you reach the end of your run, you can export it to Data Games."]
   
   
     
@@ -124,6 +129,7 @@ to on/off    ; this is the main execution loop--a 'forever' loop
     initialize-variables]   
   act-on-changes       ; checks for user actions and takes appropriate actions
   if running? [
+    if year = 2000 [set-plot-x-range 2000 (2000 + run-duration)]
     ask clouds [ fd .03 * (0.1 + (3 + cloud-num) / 10) ]  ; move clouds along
     run-sunshine    ;; moves the sunrays
     run-heat        ;; moves heat dots
@@ -133,11 +139,7 @@ to on/off    ; this is the main execution loop--a 'forever' loop
     if go-slow? [wait .1]
     if watch-slow? [wait .01    ; slow down while the user is watching the subject
       if subject = nobody [set watch-slow? false]]
-    if year >= 2020 [
-      set DG-data-ready? true ]
-    set year year + time-step
-
-    if year >= 2099.9 and locked? [
+    if year >= (1999.9 + run-duration) and locked? [
       set running? false
       set DG-data-ready? true
       output-print DG-output
@@ -231,6 +233,7 @@ to initialize
 end
 
 to initialize-variables         ; these are initialized only once, when the program starts
+  set run-duration 100
   set pick-mode "Mess around"
   set locked? false
   set sun-brightness 100
@@ -570,10 +573,10 @@ NIL
 HORIZONTAL
 
 PLOT
-560
-88
-830
-381
+561
+101
+831
+382
 Global Temperature
 NIL
 NIL
@@ -611,9 +614,9 @@ Go-slow?
 -1000
 
 MONITOR
-753
+772
 11
-810
+829
 56
 Year
 Year
@@ -697,10 +700,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-733
-55
-829
-89
+732
+68
+828
+102
 Clear Data
 Clear-data
 NIL
@@ -714,9 +717,9 @@ NIL
 1
 
 CHOOSER
-575
+559
 11
-692
+676
 56
 Pick-Mode
 Pick-Mode
@@ -724,10 +727,10 @@ Pick-Mode
 1
 
 BUTTON
-560
-56
-648
-89
+559
+69
+647
+102
 Run Model
 Run-model
 NIL
@@ -741,10 +744,10 @@ NIL
 1
 
 BUTTON
-647
-56
-734
-89
+646
+69
+733
+102
 Stop Model
 Stop-model
 NIL
@@ -756,6 +759,17 @@ NIL
 NIL
 NIL
 1
+
+INPUTBOX
+676
+11
+771
+71
+Run-Duration
+50
+1
+0
+Number
 
 @#$#@#$#@
 ## WHAT IS IT?
