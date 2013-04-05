@@ -1,4 +1,4 @@
-/*global $, model_player, define: false, d3: false */
+/*global $, define: false, d3: false */
 // ------------------------------------------------------------
 //
 //   PTA View Container
@@ -7,10 +7,7 @@
 define(function (require) {
   // Dependencies.
   var labConfig             = require('lab.config'),
-      console               = require('common/console'),
-      PlayResetComponentSVG = require('cs!common/components/play_reset_svg'),
-      PlayOnlyComponentSVG  = require('cs!common/components/play_only_svg'),
-      PlaybackComponentSVG  = require('cs!common/components/playback_svg');
+      console               = require('common/console');
 
   return function ModelView(modelUrl, model, Renderer, getNextTabIndex) {
         // Public API object to be returned.
@@ -22,7 +19,6 @@ define(function (require) {
         fontSizeInPixels,
         imagePath,
         vis1, vis, plot,
-        playbackComponent,
         cx, cy,
         padding, size, modelSize,
         playbackXPos, playbackYPos,
@@ -54,8 +50,6 @@ define(function (require) {
         // we can ask the view to render the playback controls to some other container
         useExternalPlaybackContainer = false,
         playbackContainer,
-
-        preexistingControls,
 
         clickHandler,
         // d3.svg.brush object used to implement select action. It should be
@@ -405,24 +399,6 @@ define(function (require) {
       redraw();
     }
 
-    function setupPlaybackControls() {
-      if (preexistingControls) preexistingControls.remove();
-      switch (model.get("controlButtons")) {
-        case "play":
-          playbackComponent = new PlayOnlyComponentSVG(playbackContainer, model_player, playbackXPos, playbackYPos, emsize);
-          break;
-        case "play_reset":
-          playbackComponent = new PlayResetComponentSVG(playbackContainer, model_player, playbackXPos, playbackYPos, emsize);
-          break;
-        case "play_reset_step":
-          playbackComponent = new PlaybackComponentSVG(playbackContainer, model_player, playbackXPos, playbackYPos, emsize);
-          break;
-        default:
-          playbackComponent = null;
-      }
-      preexistingControls = playbackContainer.select('.model-controller');
-    }
-
     function removeClickHandlers() {
       var selector;
       for (selector in clickHandler) {
@@ -457,7 +433,6 @@ define(function (require) {
       model.addPropertiesListener(["gridLines", "xunits", "yunits", "xlabel", "ylabel" ],
         function() {
           renderContainer();
-          setupPlaybackControls();
           repaint();
         }
       );
@@ -484,7 +459,6 @@ define(function (require) {
       getFontSizeInPixels: getFontSizeInPixels,
       resize: function() {
         renderContainer();
-        setupPlaybackControls();
         repaint();
       },
       getHeightForWidth: function (width) {
@@ -511,7 +485,6 @@ define(function (require) {
         api.setSelectHandler(null);
         processOptions(newModelUrl, newModel);
         renderContainer();
-        setupPlaybackControls();
         init();
         repaint();
       },
@@ -652,7 +625,6 @@ define(function (require) {
 
     processOptions();
     renderContainer();
-    setupPlaybackControls();
     init();
 
     // Extend Public withExport initialized object to initialized objects
