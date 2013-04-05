@@ -31,8 +31,11 @@ globals [
   watch-slow?
   ; globals used to export data to DataGames
   data-pairs       ; saved annual year-temperature data
+
   DG-output        ; the output string that DG needs
   DG-data-ready?   ; logical that says whether there are valid data ready to be exported
+  DG-exported?         ; logical that stores whether the current data have been exported
+
   count-heat
   starting-up?
   run-data
@@ -52,6 +55,10 @@ to startup
   clear-all                 ; clear everything
   show-start-screen         ; the start screen asks the user to turn on the on/off button
   set starting-up? true
+  
+  set DG-output ""
+  set DG-data-ready? false
+
 end 
 
 to show-start-screen
@@ -126,9 +133,14 @@ to on/off    ; this is the main execution loop--a 'forever' loop
     if go-slow? [wait .1]
     if watch-slow? [wait .01    ; slow down while the user is watching the subject
       if subject = nobody [set watch-slow? false]]
+    if year >= 2020 [
+      set DG-data-ready? true ]
+    set year year + time-step
+
     if year >= 2099.9 and locked? [
       set running? false
-      export-data
+      set DG-data-ready? true
+      output-print DG-output
       process-run-end]
     set year year + time-step
     tick ]
@@ -199,7 +211,7 @@ to initialize
   set temperature 14
   set smooth-temperature temperature
   set v-smooth-temp temperature
-  set steps-per-year 200
+  set steps-per-year 100
   set time-step 1 / steps-per-year
   set alpha time-step / 10  ; the 1/alpha is the number of steps in a decade
   set beta 1 - alpha
@@ -341,7 +353,6 @@ to report-temperatures
   update-plots  ; give time for the transients to settle down
   if (ticks mod steps-per-year = 0) [         ; at the beginning of each year
     set data-pairs lput list round year precision smooth-temperature 2 data-pairs ]   ; generate data pairs for export to DG
-  if not running? and (pick-mode = "Collect data") [set DG-data-ready? true]     ; permit export after a run if in data collect mode. 
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -438,6 +449,7 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to export-data  ; puts data into Jason data format and tells DG that it is available
+   set DG-exported? false
   let x-name "Year" let y-name "Temperature (C)"
   let preamble preamble-maker   ; first make a preamble that is a list of lists of name, value pairs
   let output "{\n" ; the first lines of Jason data are an open curley bracket, cr and quote
@@ -463,6 +475,8 @@ to export-data  ; puts data into Jason data format and tells DG that it is avail
     set data-pairs butfirst data-pairs ]
   set output word output "    ]\n   }\n  }\n ]\n}"
   set DG-output output
+  set dg-data-ready? false
+  set DG-exported? true
 end
 
 to-report preamble-maker; generates a list of lists of name, value pairs. 
