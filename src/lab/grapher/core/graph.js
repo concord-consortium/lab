@@ -1785,7 +1785,7 @@ define(function (require) {
 
       function showCanvas() {
         vis.select("path.line").remove();
-        gcanvas.style.zIndex = 1;
+        gcanvas.style.zIndex = 2;
       }
 
       function hideCanvas() {
