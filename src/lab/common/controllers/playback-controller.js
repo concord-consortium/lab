@@ -78,7 +78,7 @@ define(function (require) {
    */
   PlaybackController.prototype._timeChanged = function () {
     var time = model.get("displayTime").toFixed(1);
-    this._$timeDisplay.text(time + " " + this._timeUnits);
+    this._$timeDisplay.html(time + " " + this._timeUnits);
   };
 
   /**
