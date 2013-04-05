@@ -21,7 +21,7 @@ define(function() {
       length: {
         name: "nanometer",
         pluralName: "nanometers",
-        abbreviation: "nm"
+        symbol: "nm"
       },
 
       // Internally, we've referred to "Dalton" but amu is probably more common. Dalton is
@@ -29,18 +29,18 @@ define(function() {
       mass: {
         name: "atomic mass unit",
         pluralName: "atomic mass units",
-        abbreviation: "amu"
+        symbol: "amu"
       },
 
       time: {
         name: "femtosecond",
         pluralName: "femtoseconds",
-        abbreviation: "fs",
+        symbol: "fs",
         displayValue: {
           unitsPerBaseUnit: 1e-3,
           pluralName: "picoseconds",
           name: "picosecond",
-          abbreviation: "ps"
+          symbol: "ps"
         }
       },
 
@@ -52,25 +52,25 @@ define(function() {
       inverseTime: {
         name: "1/femtosecond",
         pluralName: "1/femtoseconds",
-        abbreviation: "1/fs"
+        symbol: "1/fs"
       },
 
       velocity: {
         name: "nanometer per femtosecond",
         pluralName: "nanometers per second",
-        abbreviation: "nm/s"
+        symbol: "nm/s"
       },
 
       acceleration: {
         name: "nanometer per femtosecond squared",
         pluralName: "nanometers per femtosecond squared",
-        abbreviation: "nm/fs²"
+        symbol: "nm/fs²"
       },
 
       momentum: {
         name: "amu nanometer per femtosecond",
         pluralName: "amu nanometers per femtosecond",
-        abbreviation: "amu⋅nm/fs"
+        symbol: "amu⋅nm/fs"
       },
 
       // Forces haven't typically been exposed to Classic MW users in a quantitative way, and indeed
@@ -80,13 +80,13 @@ define(function() {
       force: {
         name: "amu nanometer per femtosecond squared",
         pluralName: "amu nanometers per femtosecond squared",
-        abbreviation: "amu⋅nm/fs²"
+        symbol: "amu⋅nm/fs²"
       },
 
       energy: {
         name: "electron volt",
         pluralName: "electron volts",
-        abbreviation: "eV"
+        symbol: "eV"
       },
 
       // force / velocity = mass / time; given the composite force unit we use, this is much simpler
@@ -94,14 +94,14 @@ define(function() {
       dampingCoefficient: {
         name: "amu per femtosecond",
         pluralName: "amu per femtoseconds",
-        abbreviation: "amu/fs"
+        symbol: "amu/fs"
       },
 
       // aka spring constant (= eV/nm per nm)
       stiffness: {
         name: "electron volt per nanometer squared",
         pluralName: "electron volts per nanometer squared",
-        abbreviation: "eV/nm²"
+        symbol: "eV/nm²"
       },
 
       // aka torsional spring constant.
@@ -111,13 +111,13 @@ define(function() {
       rotationalStiffness: {
         name: "electron volt per radian",
         pluralName: "electron volts per radian",
-        abbreviation: "eV/rad"
+        symbol: "eV/rad"
       },
 
       charge: {
         name: "elementary charge",
         pluralName: "elementary charges",
-        abbreviation: "e"
+        symbol: "e"
       },
 
       temperature: {
@@ -125,20 +125,20 @@ define(function() {
         name: "Kelvin",
         // Not "Kelvins", just "Kelvin".
         pluralName: "Kelvin",
-        abbreviation: "K"
+        symbol: "K"
       },
 
       pressure: {
         name: "bar",
         // e.g., "50 bar"
         pluralName: "bar",
-        abbreviation: "bar"
+        symbol: "bar"
       },
 
       angle: {
         name: "radian",
         pluralName: "radians",
-        abbreviation: "rad"
+        symbol: "rad"
       }
     }
   };

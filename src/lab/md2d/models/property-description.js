@@ -22,7 +22,7 @@ define(function(require) {
       this._unitType         = descriptionHash.unitType;
       this._unitName         = u.name;
       this._unitPluralName   = u.pluralName;
-      this._unitAbbreviation = u.abbreviation;
+      this._unitAbbreviation = u.symbol;
     }
 
     // allow overriding the unit properties, or specifying custom ones for which there is no

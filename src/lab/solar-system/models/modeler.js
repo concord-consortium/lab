@@ -1261,7 +1261,7 @@ define(function(require) {
       label: "Model time per tick",
       unitName:         unitsDefinition.units.time.name,
       unitPluralName:   unitsDefinition.units.time.pluralName,
-      unitAbbreviation: unitsDefinition.units.time.abbreviation,
+      unitAbbreviation: unitsDefinition.units.time.symbol,
       format: 'f'
     }, function() {
       return model.get('timeStep') * model.get('timeStepsPerTick');
@@ -1284,7 +1284,7 @@ define(function(require) {
         label: "Time",
         unitName:         displayTimeUnits.name,
         unitPluralName:   displayTimeUnits.pluralName,
-        unitAbbreviation: displayTimeUnits.abbreviation,
+        unitAbbreviation: displayTimeUnits.symbol,
         format: '.3f'
       }, function() {
         return model.get('time') * displayTimeUnits.unitsPerBaseUnit;
@@ -1294,7 +1294,7 @@ define(function(require) {
         label: "Model time per tick",
         unitName:         displayTimeUnits.name,
         unitPluralName:   displayTimeUnits.pluralName,
-        unitAbbreviation: displayTimeUnits.abbreviation,
+        unitAbbreviation: displayTimeUnits.symbol,
         format: '.3f'
       }, function() {
         return model.get('timePerTick') * displayTimeUnits.unitsPerBaseUnit;

@@ -36,7 +36,7 @@ define(function() {
       length: {
         name: "meter",
         pluralName: "meters",
-        abbreviation: "m",
+        symbol: "m",
         representationInMD2DUnits: 1,
         valueInSIUnits: 1
       },
@@ -44,7 +44,7 @@ define(function() {
       mass: {
         name: "kilogram",
         pluralName: "kilograms",
-        abbreviation: "kg",
+        symbol: "kg",
         representationInMD2DUnits: 1,
         valueInSIUnits: 1
       },
@@ -52,7 +52,7 @@ define(function() {
       time: {
         name: "second",
         pluralName: "seconds",
-        abbreviation: "s",
+        symbol: "s",
         representationInMD2DUnits: 1e4,
         valueInSIUnits: 1
       },
@@ -60,42 +60,42 @@ define(function() {
       inverseTime: {
         name: "1/second",
         pluralName: "1/seconds",
-        abbreviation: "1/s",
+        symbol: "1/s",
         valueInSIUnits: 1
       },
 
       velocity: {
         name: "meter per second",
         pluralName: "meters per second",
-        abbreviation: "m/s",
+        symbol: "m/s",
         valueInSIUnits: 1
       },
 
       acceleration: {
         name: "meter per second squared",
         pluralName: "meters per second squared",
-        abbreviation: "m/s²",
+        symbol: "m/s²",
         valueInSIUnits: 1
       },
 
       force: {
         name: "Newton",
         pluralName: "Newtons",
-        abbreviation: "N",
+        symbol: "N",
         valueInSIUnits: 1
       },
 
       energy: {
         name: "Joule",
         pluralName: "Joules",
-        abbreviation: "J",
+        symbol: "J",
         valueInSIUnits: 1
       },
 
       dampingCoefficient: {
         name: "Newton second per meter",
         pluralName: "Newton seconds per meter",
-        abbreviation: "N⋅s/m",
+        symbol: "N⋅s/m",
         valueInSIUnits: 1
       },
 
@@ -103,7 +103,7 @@ define(function() {
       stiffness: {
         name: "Newton per meter",
         pluralName: "Newtons per meter",
-        abbreviation: "N/m",
+        symbol: "N/m",
         valueInSIUnits: 1
       },
 
@@ -111,14 +111,14 @@ define(function() {
       rotationalStiffness: {
         name: "Newton-meter per radian",
         pluralName: "Newton-meters per radian",
-        abbreviation: "N⋅m/rad",
+        symbol: "N⋅m/rad",
         valueInSIUnits: 1
       },
 
       charge: {
         name: "Coulomb",
         pluralName: "Coulombs",
-        abbreviation: "C",
+        symbol: "C",
         valueInSIUnits: 1
       }
     }
