@@ -266,8 +266,7 @@ define(function (require) {
 
     // ------------------------------------------------------------
     //
-    // Handle keyboard shortcuts for model operation ...
-    // events routed through model_player object.
+    // Handle keyboard shortcuts for model operation.
     //
     // ------------------------------------------------------------
 
@@ -278,35 +277,33 @@ define(function (require) {
           switch(keycode) {
             case 13:                 // return
             event.preventDefault();
-            if (!model_player.isPlaying()) {
-              model_player.play();
-            }
+            scriptingAPI.api.start();
             break;
 
             case 32:                 // space
             event.preventDefault();
-            if (model_player.isPlaying()) {
-              model_player.stop();
+            if (!scriptingAPI.api.isStopped()) {
+              scriptingAPI.api.stop();
             } else {
-              model_player.play();
+              scriptingAPI.api.start();
             }
             break;
 
             case 37:                 // left-arrow
             event.preventDefault();
-            if (model_player.isPlaying()) {
-              model_player.stop();
+            if (!scriptingAPI.api.isStopped()) {
+              scriptingAPI.api.stop();
             } else {
-              model_player.back();
+              scriptingAPI.api.stepBack();
             }
             break;
 
             case 39:                 // right-arrow
             event.preventDefault();
-            if (model_player.isPlaying()) {
-              model_player.stop();
+            if (!scriptingAPI.api.isStopped()) {
+              scriptingAPI.api.stop();
             } else {
-              model_player.forward();
+              scriptingAPI.api.stepForward();
             }
             break;
           }
