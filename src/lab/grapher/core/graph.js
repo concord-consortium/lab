@@ -1083,6 +1083,7 @@ define(function (require) {
       }
 
       function mouseup() {
+        d3.select('body').style("cursor", "auto");
         plot.style("cursor", "auto");
         document.onselectstart = function() { return true; };
         if (!isNaN(downx)) {
