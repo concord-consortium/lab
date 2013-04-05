@@ -1,7 +1,7 @@
 {
   "title": "Metal Forces",
   "publicationStatus": "public",
-  "subtitle": "Explore how the molecular structure of metal affects it's mechanical properties.",
+  "subtitle": "Explore how the molecular structure of metal affects its mechanical properties.",
   "about": [
     "This model shows a metal lattice, such as aluminum or iron. In this model you can use a",
     "downward force to bend a small metal beam. Use different amounts of force to bend the",

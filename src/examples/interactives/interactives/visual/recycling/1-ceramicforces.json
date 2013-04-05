@@ -1,7 +1,7 @@
 {
   "title": "Ceramic Forces",
   "publicationStatus": "public",
-  "subtitle": "Explore how the molecular structure of ceramic affects it's mechanical properties.",
+  "subtitle": "Explore how the molecular structure of ceramic affects its mechanical properties.",
   "about": [
     "This model shows a ceramic (such as pottery or brick), an ionic lattice. In this",
     "model you can use a downward force to bend a small ceramic beam. Use different",

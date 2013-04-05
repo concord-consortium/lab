@@ -1,7 +1,7 @@
 {
   "title": "Tire Forces",
   "publicationStatus": "public",
-  "subtitle": "Explore how the molecular structure of tire rubber affects it's mechanical properties.",
+  "subtitle": "Explore how the molecular structure of tire rubber affects its mechanical properties.",
   "about": [
     "Tire rubber is a polymer, composed of many long molecular chains. In this model you can",
     "use a downward force to bend a small beam of tire rubber. Use different amounts of force",
