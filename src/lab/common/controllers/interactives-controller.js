@@ -308,7 +308,7 @@ define(function (require) {
             break;
           }
         });
-        $interactiveContainer.focus();
+        // $interactiveContainer.focus();
       }
     }
 
