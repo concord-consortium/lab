@@ -1132,16 +1132,14 @@ AUTHORING = false;
       if (_model) {
         timeStepsPerTick = _model.get('timeStepsPerTick');
         timeStep    = _model.get('timeStep');
-        return _model.get("timeStepsPerTick") * _model.get("timeStep")/1000;
+        return _model.get("timeStepsPerTick") * _model.get("timeStep")/100;
       }
       else {
         timeStepsPerTick = 60;
         timeStep = 10;
       }
-      return timeStepsPerTick * timeStep / 1000;
+      return timeStepsPerTick * timeStep / 10000;
     }
-
-
 
     function addMessageHook(name, func, props) {
       var privateName = name + '.modelEnergyGraph';
@@ -1171,9 +1169,8 @@ AUTHORING = false;
       addMessageHook('play', function() {
         if (modelEnergyGraph.number_of_points() && modelStepCounter() < modelEnergyGraph.number_of_points()) {
           resetModelEnergyData(modelStepCounter());
-          modelEnergyGraph.new_data(modelEnergyData);
+          modelEnergyGraph.newRealTimeData(modelEnergyData);
         }
-        modelEnergyGraph.show_canvas();
       });
 
       addMessageHook('reset', function() {
@@ -1218,19 +1215,21 @@ AUTHORING = false;
     }).change();
 
     function updateModelEnergyGraph(props) {
-      modelEnergyGraph.add_points(updateModelEnergyData(props));
+      modelEnergyGraph.addPoints(updateModelEnergyData(props));
     }
 
     function renderModelEnergyGraph() {
       var options = {
             title:     "Energy of the System (KE:red, PE:green, TE:blue)",
             xlabel:    "Model Time (ps)",
-            xmin:      0,
-            xmax:     50,
+            xmin:       0,
+            xmax:      50,
             sample:    modelSampleSizeInPs(),
             ylabel:    "eV",
-            ymin:      -5.0,
-            ymax:      5.0
+            ymin:     -25.0,
+            ymax:      25.0,
+            fontScaleRelativeToParent: false,
+            realTime:  true
           };
 
       $.extend(options, interactive.models[0].energyGraphOptions || []);
