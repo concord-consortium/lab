@@ -35,9 +35,50 @@ ISImporter.SensorApplet = defineClass({
     if (this.getState() !== 'not appended') {
       throw new Error("Can't call append() when sensor applet has left 'not appended' state");
     }
-    this._appendHTML( this.getHTML() );
+    this._appendTestAppletHTML();
+  },
+
+  _appendTestAppletHTML: function() {
+    $('#main .left').append( this.getTestAppletHTML() );
+    this.testAppletInstance = $('#'+this.appletId + "-test-applet")[0];
     this._state = 'appended';
-    this._waitForAppletReady();
+    this._waitForTestAppletReady();
+  },
+
+  _waitForTestAppletReady: function() {
+    var self = this,
+        attempts = 0,
+        timer;
+
+    timer = window.setInterval(function() {
+      attempts++;
+      if (self.testTestAppletReady()) {
+        window.clearInterval( timer );
+        attempts = 0;
+        self._appendHTML( self.getHTML() );
+        self._waitForAppletReady();
+      } else {
+        if (attempts > 10) {
+          // failed to load the applet
+          window.clearInterval( timer );
+          $('#dialog-confirm').dialog({
+            resizable: false,
+            height: 300,
+            width: 400,
+            modal: true,
+            buttons: {
+              "OK": function() {
+                $(this).dialog("close");
+                window.setTimeout(function() { self._waitForTestAppletReady(); }, 100);
+              },
+              "Cancel": function() {
+                $(this).dialog("close");
+              }
+            }
+          });
+        }
+      }
+    }, this.testAppletReadyInterval);
   },
 
   _waitForAppletReady: function() {
@@ -50,12 +91,15 @@ ISImporter.SensorApplet = defineClass({
       if (self.testAppletReady()) {
         window.clearInterval( timer );
         attempts = 0;
+        $('#'+self.appletId + "-test-applet").remove();
         if (self.getState() === 'appended') self._state = 'applet ready';
         self.emit('appletReady');
       } else {
         if (attempts > 10) {
-          // failed to load the applet
+          // failed to load the applet, but we know applets are working...
           window.clearInterval( timer );
+          $('#dialog-confirm-content').text("The sensor applet is unexpectedly slow to load. Click OK to wait longer, or Cancel to stop trying.");
+          $('#dialog-confirm').attr('title', "Sensor applet problem!");
           $('#dialog-confirm').dialog({
             resizable: false,
             height: 300,
@@ -131,6 +175,14 @@ ISImporter.SensorApplet = defineClass({
     throw new Error("Override this method!");
   },
 
+  testTestAppletReady: function() {
+    try {
+      return this.testAppletInstance.areYouLoaded();
+    } catch(e) {
+      return false;
+    }
+  },
+
   _startSensor: function() {
     throw new Error("Override this method!");
   },
@@ -203,6 +255,22 @@ ISImporter.VernierSensorApplet = extendClass(ISImporter.SensorApplet, {
        'codebase="', this.getCodebase(document.location.pathname), '" ',
        'width="1px" ',
        'height="1px" ',
+       'MAYSCRIPT="true" ',
+     '>',
+        '<param name="MAYSCRIPT" value="true" />',
+      '</applet>'
+    ].join('');
+  },
+
+  getTestAppletHTML: function() {
+    return [
+     '<applet ',
+       'id="',       this.appletId,         '-test-applet" ',
+       'class="applet test-sensor-applet" ',
+       'code="org.concord.sensor.applet.DetectionApplet" ',
+       'codebase="', this.getCodebase(document.location.pathname), '" ',
+       'width="150px" ',
+       'height="150px" ',
        'MAYSCRIPT="true" ',
      '>',
         '<param name="MAYSCRIPT" value="true" />',

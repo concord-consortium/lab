@@ -158,6 +158,18 @@ define(function() {
     /**
       Interactive components:
     */
+    playback: {
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
+      stepping: {
+        defaultValue: true
+      }
+    },
+
     text: {
       id: {
         required: true
@@ -577,9 +589,14 @@ define(function() {
         // using small triangle. E.g.
         // can be used to present
         // averaged value.
-        conflictsWith: ["displayAverage"]
+        conflictsWith: ["averagePeriod"]
       },
-      displayAverage: {
+      averagePeriod: {
+        // Setting this property to some numeric value
+        // enables displaying of the averaged property.
+        // It's a shortcut which can be used instead
+        // of a custom filtered output bound
+        // to the "secondProperty".
         conflictsWith: ["secondProperty"]
       },
       width: {
@@ -597,9 +614,9 @@ define(function() {
           // Graph title.
           title:     "",
           // Color of the main bar.
-          barColor:  "green",
+          barColor:  "#e23c34",
           // Color of the area behind the bar.
-          fillColor: "white",
+          fillColor: "#fff",
           // Color of axis, labels, title.
           textColor: "#555",
           // Number of ticks displayed on the axis.

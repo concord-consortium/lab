@@ -1,0 +1,322 @@
+{
+  "title": "Diffusion Across a Permeable Membrane",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "Oxygen and Carbon Dioxide can both easily cross this gas permeable membrane. Change the starting concentrations of the gases on either side and observe how long it takes for the gases to diffuse across the membrane.",
+  "fontScale": 0.6,
+  "models": [
+    {
+      "id": "model1",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/diffusion/page2/page2mw5$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "imageMapping": {
+          "membraneNoPores.png": "membrane.svg",
+          "oxygenCO2Key.png": "oxygenCO2Key.svg"
+        }
+      },
+      "onLoad": [
+        "onPropertyChange('time', function(t) {",
+        "  var w = get('width'), h = get('height');",
+        "  var nLeftO2   = atomsWithinRect(0,   0, w/2, h, 0).length;",
+        "  var nLeftCO2  = atomsWithinRect(0,   0, w/2, h, 1).length;",
+        "  var nRightO2  = atomsWithinRect(w/2, 0, w/2, h, 0).length;",
+        "  var nRightCO2 = atomsWithinRect(w/2, 0, w/2, h, 1).length;",
+        "  set('leftConcentrationCO2', nLeftCO2/(nLeftCO2+nRightCO2));",
+        "  set('leftConcentrationO2',  nLeftO2/(nLeftO2+nRightO2));",
+        "  set('rightConcentrationCO2',nRightCO2/(nLeftCO2+nRightCO2));",
+        "  set('rightConcentrationO2', nRightO2/(nLeftO2+nRightO2));",
+        "});"
+      ]
+    }
+  ],
+  "parameters": [
+    { "name": "initialLeftCO2",
+      "initialValue": 0,
+      "onChange": [
+        "var x,y,w,h,nAtomsAdded;",
+        "w = get('width');",
+        "h = get('height');",
+        "nAtomsAdded = 0;",
+        "while (nAtomsAdded < value) {",
+        "  x = randomFloat(w/2);",
+        "  y = randomFloat(h);",
+        "  if (addAtom({x: x, y: y, element: 1})) nAtomsAdded++;",
+        "}"
+      ]
+    },
+    { "name": "initialLeftO2",
+      "initialValue": 0,
+      "onChange": [
+        "var x,y,w,h,nAtomsAdded;",
+        "w = get('width');",
+        "h = get('height');",
+        "nAtomsAdded = 0;",
+        "while (nAtomsAdded < value) {",
+        "  x = randomFloat(w/2);",
+        "  y = randomFloat(h);",
+        "  if (addAtom({x: x, y: y, element: 0})) nAtomsAdded++;",
+        "}"
+      ]
+    },
+    { "name": "initialRightCO2",
+      "initialValue": 0,
+      "onChange": [
+        "var x,y,w,h,nAtomsAdded;",
+        "w = get('width');",
+        "h = get('height');",
+        "nAtomsAdded = 0;",
+        "while (nAtomsAdded < value) {",
+        "  x = randomFloat(w/2);",
+        "  y = randomFloat(h);",
+        "  if (addAtom({x: w/2+x, y: y, element: 1})) nAtomsAdded++;",
+        "}"
+      ]
+    },
+    { "name": "initialRightO2",
+      "initialValue": 0,
+      "onChange": [
+        "var x,y,w,h,nAtomsAdded;",
+        "w = get('width');",
+        "h = get('height');",
+        "nAtomsAdded = 0;",
+        "while (nAtomsAdded < value) {",
+        "  x = randomFloat(w/2);",
+        "  y = randomFloat(h);",
+        "  if (addAtom({x: w/2+x, y: y, element: 0})) nAtomsAdded++;",
+        "}"
+      ]
+    },
+    { "name": "leftConcentrationCO2", "initialValue": 0 },
+    { "name": "leftConcentrationO2", "initialValue": 0 },
+    { "name": "rightConcentrationCO2", "initialValue": 0 },
+    { "name": "rightConcentrationO2", "initialValue": 0 }
+  ],
+  "components": [
+    { "type": "text", "id": "inside-label", "text": "Conc.", "width": "6em" },
+    { "type": "text", "id": "outside-label", "text": "Conc.", "width": "6em" },
+    { "type": "text", "id": "inside-co2-label", "text": "CO2", "width": "3em" },
+    { "type": "text", "id": "inside-o2-label", "text": "O2", "width": "3em" },
+    { "type": "text", "id": "outside-co2-label", "text": "CO2", "width": "3em" },
+    { "type": "text", "id": "outside-o2-label", "text": "O2", "width": "3em" },
+    { "type": "text", "id": "inside-above-label", "text": "Inside Cell" },
+    { "type": "text", "id": "outside-above-label", "text": "Outside Cell" },    
+    {
+      "type": "barGraph",
+      "id": "left-concentration-CO2",
+      "width": "3em",
+      "fontScale": 0.5,
+      "options": {
+        "minValue": 0,
+        "maxValue": 1,
+        "displayLabels": false,
+        "barColor": "rgb(143,113,178)",
+        "fillColor": "rgb(225,243,253)",
+        "title": ""
+      },
+      "property": "leftConcentrationCO2"
+    },
+    {
+      "type": "barGraph",
+      "id": "left-concentration-O2",
+      "width": "3em",
+      "options": {
+        "minValue": 0,
+        "maxValue": 1,
+        "displayLabels": false,
+        "barColor": "rgb(242,234,27)",
+        "fillColor": "rgb(225,243,253)",
+        "title": ""
+      },
+      "property": "leftConcentrationO2"
+    },
+    {
+      "type": "barGraph",
+      "id": "right-concentration-CO2",
+      "width": "3em",
+      "options": {
+        "minValue": 0,
+        "maxValue": 1,
+        "displayLabels": false,
+        "barColor": "rgb(143,113,178)",
+        "fillColor": "rgb(243,222,223)",
+        "title": ""
+      },
+      "property": "rightConcentrationCO2"
+    },
+    {
+      "type": "barGraph",
+      "id": "right-concentration-O2",
+      "width": "3em",
+      "options": {
+        "minValue": 0,
+        "maxValue": 1,
+        "displayLabels": false,
+        "barColor": "rgb(242,234,27)",
+        "fillColor": "rgb(243,222,223)",
+        "title": ""
+      },
+      "property": "rightConcentrationO2"
+    },
+    {
+      "type": "pulldown",
+      "id": "select-left-concentration-co2",
+      "property": "initialLeftCO2",
+      "label": "CO2",
+      "labelOn": "top",
+      "options": [
+        { "text": "None", "value": 0 },
+        {
+          "text": "Low",
+          "value": 5
+        },
+        {
+          "text": "Medium",
+          "value": 20
+        },
+        {
+          "text": "High",
+          "value": 35
+        }
+      ]
+    },
+    {
+      "type": "pulldown",
+      "id": "select-left-concentration-o2",
+      "property": "initialLeftO2",
+      "label": "O2",
+      "labelOn": "top",
+      "options": [
+        { "text": "None", "value": 0 },
+        {
+          "text": "Low",
+          "value": 5
+        },
+        {
+          "text": "Medium",
+          "value": 20
+        },
+        {
+          "text": "High",
+          "value": 35
+        }
+      ]
+    },
+    {
+      "type": "pulldown",
+      "id": "select-right-concentration-co2",
+      "property": "initialRightCO2",
+      "label": "CO2",
+      "labelOn": "top",
+      "options": [
+        { "text": "None", "value": 0 },
+        {
+          "text": "Low",
+          "value": 5
+        },
+        {
+          "text": "Medium",
+          "value": 20
+        },
+        {
+          "text": "High",
+          "value": 35
+        }
+      ]
+    },
+    {
+      "type": "pulldown",
+      "id": "select-right-concentration-o2",
+      "property": "initialRightO2",
+      "label": "O2",
+      "labelOn": "top",
+      "options": [
+        { "text": "None", "value": 0 },
+        {
+          "text": "Low",
+          "value": 5
+        },
+        {
+          "text": "Medium",
+          "value": 20
+        },
+        {
+          "text": "High",
+          "value": 35
+        }
+      ]
+    }    
+  ],
+  "layout": {
+    "left":  [ 
+      ["outside-label"],
+      ["outside-o2-label","outside-co2-label"],
+      ["left-concentration-O2", "left-concentration-CO2"]
+    ],
+    "right": [ 
+      ["inside-label"],
+      ["inside-o2-label","inside-co2-label"],
+      ["right-concentration-O2", "right-concentration-CO2"] 
+    ],
+    "bottom-left":  [ 
+      [ "select-left-concentration-o2" ],
+      [ "select-left-concentration-co2" ]
+    ],
+    "bottom-right": [ 
+      [ "select-right-concentration-o2" ],
+      [ "select-right-concentration-co2" ]
+    ],
+    "above-left": [
+      "outside-above-label"
+    ],
+    "above-right": [
+      "inside-above-label"
+    ]
+  },
+  "template": [
+    {
+      "id": "bottom-left",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width/2",
+      "align": "left"
+    },
+    {
+      "id": "bottom-right",
+      "top": "model.bottom",
+      "right": "model.right",
+      "width": "model.width/2",
+      "align": "right"
+    },
+    {
+      "id": "above-left",
+      "left": "model.left",
+      "bottom": "model.top",
+      "width": "model.width/2",
+      "height": "4em",
+      "align": "left"
+    },
+    {
+      "id": "above-right",
+      "right": "model.right",
+      "bottom": "model.top",
+      "width": "model.width/2",
+      "height": "4em",
+      "align": "right"
+    },
+    {
+      "id": "right",
+      "left": "model.right",
+      "top": "above-right.top",
+      "height": "model.height",
+      "align": "center"
+    },
+    {
+      "id": "left",
+      "right": "model.left",
+      "top": "above-left.top",
+      "height": "model.height",
+      "align": "center"
+    }
+  ]
+}

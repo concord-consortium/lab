@@ -41,7 +41,7 @@ define(function() {
         defaultValue: "default"
       },
       timeStep: {
-        defaultValue: 1
+        defaultValue: 0.1
       },
       timeStepsPerTick: {
         defaultValue: 50
@@ -88,11 +88,14 @@ define(function() {
       markColor: {
         defaultValue: "#f8b500"
       },
-      showPlanetTrace: {
+      showBodyTrace: {
         defaultValue: false
       },
-      planetTraceId: {
+      bodyTraceId: {
         defaultValue: 0
+      },
+      bodyTraceColor: {
+        defaultValue: "#ee8833"
       },
       images: {
         defaultValue: []
@@ -121,7 +124,7 @@ define(function() {
       planetNumbers: {
         defaultValue: false
       },
-      enablePlanetTooltips: {
+      enableBodyTooltips: {
         defaultValue: false
       },
       enableKeyboardHandlers: {
@@ -132,7 +135,7 @@ define(function() {
       }
     },
 
-    planet: {
+    body: {
       // Required properties:
       x: {
         required: true
@@ -157,6 +160,8 @@ define(function() {
       mass: {
         defaultValue: 1
       },
+      radius: {
+      },
       pinned: {
         defaultValue: false
       },
@@ -167,10 +172,6 @@ define(function() {
         defaultValue: 0
       },
       // Read-only values, can be set only by engine:
-      radius: {
-        readOnly: true,
-        serialize: false
-      },
       px: {
         readOnly: true,
         serialize: false

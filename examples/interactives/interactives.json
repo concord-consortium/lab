@@ -696,11 +696,13 @@
       "title": "Pendulum",
       "path": "interactives/inquiry-space/pendulum/1-pendulum.json",
       "groupKey": "inquiry-space/pendulum",
-      "subtitle": "Experiment with periodic motion using a pendulum.",
+      "subtitle": "Explore some factors that affect the period of a pendulum.",
       "about": [
-        "Observe the periodic motion of the pendulum angle using the embedded graph.",
-        "The parameters of the pendulum system can be controlled using the sliders below model.",
-        "How do the frequency and amplitude of the motion respond to different combinations of the parameters?"
+        "Press the play button. Watch the graph to see how the angle of the pendulum changes as it",
+        "swings back and forth. Use the graph to determine the period of the pendulum. Adjust the",
+        "scale by dragging the numbers on the axes. Change each variable – gravity, rod length,",
+        "starting angle and mass – and observe how each one affects the period. Can you explain why?",
+        "Try the damping slider. Does damping change the period?"
       ],
       "publicationStatus": "public"
     },
@@ -708,16 +710,32 @@
       "title": "Spring and Mass",
       "path": "interactives/inquiry-space/pendulum/2-spring.json",
       "groupKey": "inquiry-space/pendulum",
-      "subtitle": "",
-      "about": "",
+      "subtitle": "Explore some factors that affect the period of a spring.",
+      "about": [
+        "Press the play button. Watch the graph to see how the height of the mass changes as",
+        "it moves up and down. Use the graph to determine the period of the mass-spring system.",
+        "Adjust the scale by dragging the numbers on the axes. Change each variable – gravity,",
+        "spring constant, starting distance and mass – and observe how each one affects the period.",
+        "Can you explain why? Is this different from the relationships for a pendulum? Try the",
+        "damping slider. Does damping change the period?"
+      ],
       "publicationStatus": "public"
     },
     {
       "title": "Pendulum and Spring",
       "path": "interactives/inquiry-space/pendulum/3-springy-pendulum.json",
       "groupKey": "inquiry-space/pendulum",
-      "subtitle": "",
-      "about": "",
+      "subtitle": "Explore the motion of a pendulum on a spring.",
+      "about": [
+        "Press the play button. Watch the graphs to see the motion of the spring pendulum.",
+        "Can you distinguish the pattern of spring motion (up and down) from the pattern",
+        "of pendulum motion (back and forth)? How are the two related? Is there a regular",
+        "pattern to the motion? Compare the periods of the two graphs. How many different",
+        "patterns can you produce by changing the variables – gravity, rod length, mass and",
+        "spring constant? Under what conditions does the energy switch between back and forth",
+        "and up and down? Does the initial starting angle affect the patterns when all the",
+        "other variables are unchanged?"
+      ],
       "publicationStatus": "public"
     },
     {
@@ -807,13 +825,13 @@
       "publicationStatus": "draft"
     },
     {
-      "title": "Basic Diffusion on click",
+      "title": "Diffusion of a Drop",
       "path": "interactives/sam/diffusion/1-dropping-dye-on-click.json",
       "groupKey": "sam/diffusion",
-      "subtitle": "Watch a drop of dye spreading out in water.",
+      "subtitle": "Add a drop of dye anywhere in the container, and watch it diffuse through the water.",
       "about": [
         "Click in the model to add a drop of dye.  Watch how the molecules move through the water.",
-        "Trace a random individual molecule to see how it moves through the liquid."
+        "Trace an individual molecule to see how it moves through the liquid."
       ],
       "publicationStatus": "public"
     },
@@ -829,28 +847,36 @@
       "publicationStatus": "draft"
     },
     {
-      "title": "Diffusion Temperature",
+      "title": "Diffusion & Temperature",
       "path": "interactives/sam/diffusion/2-temperature.json",
       "groupKey": "sam/diffusion",
       "subtitle": "How does temperature affect the rate of diffusion?",
-      "about": "Click remove barrier to begin measuring how long it takes for the blue molecules to diffuse across the container.",
+      "about": "Explore the role of temperature on the rate of diffusion. Set the temperature, then remove the barrier, and measure the amount of time it takes the blue molecules to reach the gas sensor. When the gas sensor has detected three blue molecules, it will stop the experiment. Compare the diffusion rates at low, medium and high temperatures. Trace an individual molecule to see the path it takes.",
       "publicationStatus": "public"
     },
     {
-      "title": "Diffusion Temperature and Mass",
+      "title": "Diffusion & Molecular Mass",
       "path": "interactives/sam/diffusion/3-mass.json",
       "groupKey": "sam/diffusion",
-      "subtitle": "How do temperature and mass affect the rate of diffusion?",
-      "about": "Click remove barrier to begin measuring how long it takes for the molecules to diffuse across the container.",
+      "subtitle": "How does molecular mass affect the rate of diffusion?",
+      "about": "Explore the role of molecular mass on the rate of diffusion. Select the mass of the molecules behind the barrier. Remove the barrier, and measure the amount of time it takes the molecules to reach the gas sensor. When the gas sensor has detected three molecules, it will stop the experiment. Compare the diffusion rates of the lightest, heavier and heaviest molecules. Trace an individual molecule to see the path it takes.",
       "publicationStatus": "public"
     },
     {
       "title": "Diffusion Across a Semipermeable Membrane",
       "path": "interactives/sam/diffusion/4-semipermeable.json",
       "groupKey": "sam/diffusion",
-      "subtitle": "How does membrane pore size affect the diffusion of different molecules?",
-      "about": "",
+      "subtitle": "How does pore size affect the diffusion of different molecules?",
+      "about": "Biological membranes are selectively permeable; some molecules can cross while others cannot. One way to affect this is through pore size. Change the pore size with the slider to change the permeability of the membrane to the different types of molecules. Trace an individual molecule to see the path it takes.",
       "publicationStatus": "public"
+    },
+    {
+      "title": "Diffusion Across a Permeable Membrane",
+      "path": "interactives/sam/diffusion/5-permeable-membrane.json",
+      "groupKey": "sam/diffusion",
+      "subtitle": "",
+      "about": "Oxygen and Carbon Dioxide can both easily cross this gas permeable membrane. Change the starting concentrations of the gases on either side and observe how long it takes for the gases to diffuse across the membrane.",
+      "publicationStatus": "draft"
     },
     {
       "title": "Empty",
@@ -1183,23 +1209,33 @@
       "title": "Protein Folding",
       "path": "interactives/samples/5-amino-acids.json",
       "groupKey": "samples",
-      "subtitle": "Explore simple protein folding.",
+      "subtitle": "How do peptides fold into stable conformations?",
       "about": [
-        "Discover how the properties of amino acids in a protein interact with their",
-        "environment to cause proteins to fold in a particular way.",
-        "",
-        "Generate different proteins, select the solvent type, and change the color",
-        "scheme for amino acids using the buttons below the model.",
-        "",
-        "Change specific amino acids in a protein by right-clicking on them."
+        "Explore the role of hydrophobic and hydrophilic interactions in protein folding. Generate a random peptide string and watch how it folds in an aqueous environment. Change the solvent to see what happens if the peptide is in an oily environment or a vacuum instead of an aqueous environment."
       ],
       "publicationStatus": "public"
     },
     {
-      "title": "Testing: Four planets",
+      "title": "Testing: four planets",
       "path": "interactives/solar-system/four-planets.json",
       "groupKey": "solar-system",
       "subtitle": "First test of the Solar System model-type.",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Testing: one planet",
+      "path": "interactives/solar-system/one-planet.json",
+      "groupKey": "solar-system",
+      "subtitle": "Body at center is 200,000x mass of orbiting body.",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Testing: two planets",
+      "path": "interactives/solar-system/two-planets.json",
+      "groupKey": "solar-system",
+      "subtitle": "Body on left is 200x mass of body on right; both have an initial X velocity of zero.",
       "about": "",
       "publicationStatus": "draft"
     },
@@ -5111,32 +5147,64 @@
       "title": "Ceramic Forces",
       "path": "interactives/visual/recycling/1-ceramicforces.json",
       "groupKey": "visual/recycling",
-      "subtitle": "",
-      "about": "",
+      "subtitle": "Explore how the molecular structure of ceramic affects its mechanical properties.",
+      "about": [
+        "This model shows a ceramic (such as pottery or brick), an ionic lattice. In this",
+        "model you can use a downward force to bend a small ceramic beam. Use different",
+        "amounts of force to bend the beam. What happens to the beam when you use a small",
+        "force or a large force? What happens when you release the force?",
+        "",
+        "Compare the structure and behavior of this beam to the metal beam. How do their",
+        "behaviors differ and why?"
+      ],
       "publicationStatus": "public"
     },
     {
       "title": "Metal Forces",
       "path": "interactives/visual/recycling/2-metalforces.json",
       "groupKey": "visual/recycling",
-      "subtitle": "",
-      "about": "",
+      "subtitle": "Explore how the molecular structure of metal affects its mechanical properties.",
+      "about": [
+        "This model shows a metal lattice, such as aluminum or iron. In this model you can use a",
+        "downward force to bend a small metal beam. Use different amounts of force to bend the",
+        "beam. What happens to the beam when you use a small force or a large force? What happens",
+        "when you release the force?",
+        "",
+        "Compare the structure and behavior of this beam to the ceramic beam. How do their",
+        "behaviors differ and why?"
+      ],
       "publicationStatus": "public"
     },
     {
       "title": "Plastic Forces",
       "path": "interactives/visual/recycling/3-plasticforces.json",
       "groupKey": "visual/recycling",
-      "subtitle": "",
-      "about": "",
+      "subtitle": "Explore how the molecular structure of plastic affects its mechanical properties.",
+      "about": [
+        "Plastics are polymers, composed of many long molecular chains. In this model you can use a",
+        "downward force to bend a small beam of plastic. Use different amounts of force to bend the",
+        "beam. What happens to the beam when you use a small force or a large force? What happens",
+        "when you release the force?",
+        "",
+        "Compare the structure and behavior of this beam of plastic to the beam of tire rubber.",
+        "How do their behaviors differ and why?"
+      ],
       "publicationStatus": "public"
     },
     {
       "title": "Tire Forces",
       "path": "interactives/visual/recycling/4-tireforces.json",
       "groupKey": "visual/recycling",
-      "subtitle": "",
-      "about": "",
+      "subtitle": "Explore how the molecular structure of tire rubber affects its mechanical properties.",
+      "about": [
+        "Tire rubber is a polymer, composed of many long molecular chains. In this model you can",
+        "use a downward force to bend a small beam of tire rubber. Use different amounts of force",
+        "to bend the beam. What happens to the beam when you use a small force or a large force?",
+        "What happens when you release the force?",
+        "",
+        "Compare the structure and behavior of this beam of tire rubber to the beam of plastic.",
+        "How do their behaviors differ and why?"
+      ],
       "publicationStatus": "public"
     }
   ],

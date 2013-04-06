@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 12.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 51448)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_svg "http://www.w3.org/2000/svg">
+	<!ENTITY ns_xlink "http://www.w3.org/1999/xlink">
+]>
+<svg  version="1.1" id="svg" xmlns="&ns_svg;" xmlns:xlink="&ns_xlink;" width="191" height="25.111" viewBox="0 0 191 25.111"
+	 overflow="visible" enable-background="new 0 0 191 25.111" xml:space="preserve">
+<path fill="#FFFFFF" stroke="#000000" d="M190.5,12.611c0,6.627-5.373,12-12,12h-166c-6.627,0-12-5.373-12-12V12.5
+	c0-6.627,5.373-12,12-12h166c6.627,0,12,5.373,12,12V12.611z"/>
+<text transform="matrix(1 0 0 1 23.4995 16.6069)" font-family="'Lato-Regular'" font-size="12">oxygen</text>
+<text transform="matrix(1 0 0 1 97.833 16.6104)" font-family="'Lato-Regular'" font-size="12">carbon dioxide</text>
+<circle fill="#F2EA1B" stroke="#000000" cx="13.167" cy="12.556" r="5.667"/>
+<circle fill="#8F71B2" stroke="#000000" cx="85.833" cy="12.556" r="5.667"/>
+</svg>

@@ -1,8 +1,16 @@
 {
   "title": "Plastic Forces",
   "publicationStatus": "public",
-  "subtitle": "",
-  "about": "",
+  "subtitle": "Explore how the molecular structure of plastic affects its mechanical properties.",
+  "about": [
+    "Plastics are polymers, composed of many long molecular chains. In this model you can use a",
+    "downward force to bend a small beam of plastic. Use different amounts of force to bend the",
+    "beam. What happens to the beam when you use a small force or a large force? What happens",
+    "when you release the force?",
+    "",
+    "Compare the structure and behavior of this beam of plastic to the beam of tire rubber.",
+    "How do their behaviors differ and why?"
+  ],
   "models": [
     {
       "id": "plasticforcesimple$0",

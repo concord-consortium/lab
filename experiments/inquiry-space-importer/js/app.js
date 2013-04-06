@@ -352,8 +352,8 @@ ISImporter.GraphController = defineClass({
       ymax        : this.yMax,
       xTickCount  : 6,
       yTickCount  : 7,
-      xFormatter  : ".1s",
-      yFormatter  : ".2s",
+      xFormatter  : "2s",
+      yFormatter  : "2s",
       points      : [],
       circleRadius: false,
       dataChange  : false
@@ -421,6 +421,7 @@ ISImporter.appController = new ISImporter.Object({
   currentAppletReady: false,
   started: false,
   selecting: false,
+  filledMetadata: [],
 
   // could split interface controller from generic app container--but not yet.
   $body: null,
@@ -522,6 +523,27 @@ ISImporter.appController = new ISImporter.Object({
 
     this.$realtimeDisplayValue = $('#realtime-display .realtime-value');
     this.$realtimeDisplayUnits = $('#realtime-display .realtime-units');
+
+    var updateExportAvailability = function() {
+      var el = this,
+         val = $(el).val();
+      if (typeof(val) !== "undefined" && val != null && val !== "") {
+        if (self.filledMetadata.indexOf(el) == -1) {
+          self.filledMetadata.push(el);
+        }
+      } else {
+        var idx = self.filledMetadata.indexOf(el);
+        if (idx != -1) {
+          self.filledMetadata.splice(idx,1);
+        }
+      }
+      if (self.filledMetadata.length > 0 || self.dataset.getLength() > 0) {
+        self.enable(self.$exportButton);
+      } else {
+        self.disable(self.$exportButton);
+      }
+    };
+    $('.metadata-label, .metadata-value').on('keyup', updateExportAvailability);
   },
 
   disableControlButtons: function() {
@@ -617,11 +639,13 @@ ISImporter.appController = new ISImporter.Object({
     this.disable(this.$startButton);
     this.disable(this.$stopButton);
     this.disable(this.$resetButton);
+    this.disable(this.$exportButton);
     this.hide(this.$tareButton);
     this.hide(this.$realtimeDisplay);
     if (this.taring) this.endTare();
     this.$sensorSelector.val("select-sensor");
     this.disable(this.$sensorDisconnect);
+    $('.metadata-label, .metadata-value').attr("disabled","disabled");
   },
 
   // events
@@ -712,6 +736,7 @@ ISImporter.appController = new ISImporter.Object({
 
     // we'll skip explicit state management... for now.
     this.disableControlButtons();
+    $('.metadata-label, .metadata-value').attr("disabled","disabled");
 
     if (this.sensor.tareable) {
       this.disable(this.$tareButton);
@@ -758,6 +783,7 @@ ISImporter.appController = new ISImporter.Object({
     this.currentAppletReady = true;
     this.enable(this.$startButton);
     if (this.sensor.tareable) this.enable(this.$tareButton);
+    $('.metadata-label, .metadata-value').removeAttr("disabled");
     // Read the current sensor value and inject it into the display
     // TODO Poll and update this every second while we're not collecting and not errored out
     var _this = this;
@@ -839,7 +865,9 @@ ISImporter.appController = new ISImporter.Object({
     this.enable(this.$tareButton);
     this.disable(this.$resetButton);
     this.disable(this.$selectButton);
-    this.disable(this.$exportButton);
+    if (this.filledMetadata.length === 0) {
+      this.disable(this.$exportButton);
+    }
     ISImporter.graphController.resetGraph();
   },
 
@@ -911,6 +939,7 @@ ISImporter.appController = new ISImporter.Object({
       if (label) {
         metadata.push({ label: label, value: this.getMetadataValue(i) });
       }
+      this.clearMetadata(i);
     }
 
     ISImporter.DGExporter.exportData(this.sensor.title, data, metadata);
@@ -919,8 +948,12 @@ ISImporter.appController = new ISImporter.Object({
 
     ISImporter.graphController.stopSelection();
     this.hide(this.$cancelButton);
-    this.enable(this.$resetButton);
-    this.enable(this.$selectButton);
+    if (this.$startButton.hasClass('disabled') && this.$stopButton.hasClass('disabled')) {
+      this.enable(this.$resetButton);
+      this.enable(this.$selectButton);
+    } else {
+      this.disable(this.$exportButton);
+    }
   },
 
   logAction: function(action) {
@@ -988,6 +1021,20 @@ ISImporter.appController = new ISImporter.Object({
     var val = $('#metadata-' + fieldNum + ' .metadata-value').val();
     if (isNumeric(val)) return parseFloat(val);
     return val;
+  },
+
+  clearMetadata: function(fieldNum) {
+    this._clearMetadata(fieldNum, "label");
+    this._clearMetadata(fieldNum, "value");
+  },
+
+  _clearMetadata: function(fieldNum, type) {
+    var md = $('#metadata-' + fieldNum + ' .metadata-' + type);
+    md.val('');
+    var idx = this.filledMetadata.indexOf(md[0]);
+    if (idx != -1) {
+      this.filledMetadata.splice(idx,1);
+    }
   },
 
   getFrequency: function() {}

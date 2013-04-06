@@ -94,8 +94,20 @@ AUTHORING = false;
     return ($selectInteractive.length === 0);
   }
 
+  function isNotEmbeddablePage() {
+    return !isEmbeddablePage();
+  }
+
   function isStaticPage() {
     return !(document.location.pathname.match(/^\/interactives.*/));
+  }
+
+  function isFullPage(){
+    return (isNotEmbeddablePage() && !$("#render-in-iframe").is(':checked'));
+  }
+
+  function isFullIFramePage() {
+    return (isNotEmbeddablePage() && $("#render-in-iframe").is(':checked'));
   }
 
   if (!isEmbeddablePage()) {
@@ -117,7 +129,7 @@ AUTHORING = false;
   }
 
   if (!document.location.hash) {
-    if ($selectInteractive.length > 0 && $selectInteractive.val()) {
+    if (!isEmbeddablePage() && $selectInteractive.val()) {
       selectInteractiveHandler();
     } else {
       interactivesPromise.done(function(){
@@ -136,17 +148,15 @@ AUTHORING = false;
   if (hash) {
     interactiveUrl = hash.substr(1, hash.length);
 
-    // Use the presense of selectInteractive as a proxy indicating that the
-    // rest of the elements on the non-iframe-embeddable version of the page
-    // are present and should be setup.
-    if ($selectInteractive.length) {
-      AUTHORING = true;
-      applicationCallbacks = [setupFullPage];
-    } else {
-      // else we are being embedded ...
+    if (isEmbeddablePage()) {
+      // if we are being embedded in special authoring mode ...
+      // created as a Khan CS demo
       if ($editor.length) {
         applicationCallbacks = [setupEmbeddableAuthorPage];
       }
+    } else {
+      AUTHORING = true;
+      applicationCallbacks = [setupFullPage];
     }
 
     $.get(interactiveUrl).done(function(results) {
@@ -247,27 +257,12 @@ AUTHORING = false;
     windowLoaded.resolve();
   });
 
-  function onFullPage(){
-    return ($selectInteractive.length > 0 && !$("#render-in-iframe").is(':checked'));
-  }
-
-  function onFullIFramePage() {
-    return ($selectInteractive.length > 0 && $("#render-in-iframe").is(':checked'));
-  }
-
   $.when(interactiveDefinitionLoaded, windowLoaded).done(function() {
 
     restoreOptionsFromCookie();
 
-    if (onFullPage()) {
+    if (isFullPage()) {
       selectInteractiveSizeHandler();
-    }
-
-    if(!onFullIFramePage()) {
-      controller = controllers.interactivesController(interactive, '#interactive-container');
-      if (_.isArray(applicationCallbacks) && applicationCallbacks.length > 0) {
-        controller.on("modelLoaded", applicationCallbacks);
-      }
     }
 
     origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
@@ -275,9 +270,20 @@ AUTHORING = false;
     origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
     embeddableUrl = origin + embeddablePath + hash;
 
-    if(onFullIFramePage()) {
+    if(isFullIFramePage()) {
+      // If we are on a Full Interactive Browser page with render in iframe
+      // enabled then *don't* create an instance of the Interatactive
+      // Just setup the rest of the page and embed the Interatcive in an iframe
       applicationCallbacks[0]();
+    } else {
+      // On all the other versions of this page we need to create an
+      // instance of the Interactive now.
+      controller = controllers.interactivesController(interactive, '#interactive-container');
+      if (_.isArray(applicationCallbacks) && applicationCallbacks.length > 0) {
+        controller.on("modelLoaded", applicationCallbacks);
+      }
     }
+
   });
 
   $(window).bind('hashchange', function() {
@@ -307,7 +313,7 @@ AUTHORING = false;
         dim = dimensions[selection];
 
     saveOptionsToCookie();
-    if (onFullPage()) {
+    if (isFullPage()) {
       $content.width(dim.width).height(dim.height);
       // Window size is not change, so we have to call "resize()"
       // method manually.
@@ -524,11 +530,15 @@ AUTHORING = false;
     setupExtras();
   }
 
+  //
+  // Extras
+  //
   function setupExtras() {
-    //
-    // Extras
-    //
-    if(onFullPage()) {
+    var $iframeWrapper,
+        $iframe;
+
+    if(isFullPage()) {
+      // Interactive Browser with Interactive embedding in DOM (not in iframe)
       // set keyboard focus on MD2D view
       // FIXME: generalize when multiple model types implemented
       controller.modelController.modelContainer.setFocus();
@@ -549,6 +559,7 @@ AUTHORING = false;
         resize: controller.resize
       });
     } else {
+      // Interactive Browser with Interactive embedding in iframe
       setupEnergyGraph();
       $("#content-banner").hide();
       // $("#model-energy-graph").hide();
@@ -557,10 +568,6 @@ AUTHORING = false;
       setupCodeEditor();
       setupModelCodeEditor();
       setupBenchmarks();
-      // send this message to Interactive in iframe
-      // controller.modelController.moleculeContainer.setFocus();
-      var $iframeWrapper,
-          $iframe;
 
       $iframeWrapper = $('<div id="iframe-wrapper" class="ui-widget-content ' + $selectInteractiveSize.val() + '"></div>');
       $iframe = $('<iframe id="iframe-interactive" width="100%" height="100%" frameborder="no" scrolling="no" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" src="' + embeddableUrl + '"></iframe>');
@@ -620,10 +627,13 @@ AUTHORING = false;
       post({
         type: 'hello'
       });
-      // tell the interactive to focus
-      post({
-        type: 'setFocus'
-      });
+      // On a Interactive Browser page with an iframe send the
+      // focus to the Interactive.
+      if (isFullIFramePage()) {
+        post({
+          type: 'setFocus'
+        });
+      }
     });
 
     var receiveMessage = function (message) {
@@ -676,7 +686,7 @@ AUTHORING = false;
         interactive = _.omit(interactiveRemote, interactiveRemoteKeys);
 
 
-        if(onFullPage()) {
+        if(isFullPage()) {
           controller.loadInteractive(interactive, '#interactive-container');
         } else {
           iframePhone.post({ type:'loadInteractive', data:interactive  });
@@ -719,7 +729,7 @@ AUTHORING = false;
         modelRemote = results;
         md2dModel = _.omit(modelRemote, modelRemoteKeys);
 
-        if(onFullPage()) {
+        if(isFullPage()) {
             controller.loadModel(modelRemote.id, md2dModel);
         } else {
           iframePhone.post({ type:'loadModel', data: { modelId: modelRemote.id, modelObject: md2dModel } });
@@ -931,7 +941,7 @@ AUTHORING = false;
           alert("Interactive JSON syntax error: " + e.message);
           throw new Error("Interactive JSON syntax error: " + e.message);
         }
-        if(onFullPage()) {
+        if(isFullPage()) {
           controller.loadInteractive(interactive, '#interactive-container');
         } else {
           iframePhone.post({ type:'loadInteractive', data:interactive  });
@@ -946,7 +956,7 @@ AUTHORING = false;
 
       $updateJsonFromInteractiveButton.on('click', function() {
         var interactiveState;
-        if(onFullPage()) {
+        if(isFullPage()) {
           interactiveState = controller.serialize();
           editor.setValue(JSON.stringify(interactiveState, null, indent));
         } else {
@@ -1000,7 +1010,7 @@ AUTHORING = false;
             alert("Model JSON syntax error: " + e.message);
             throw new Error("Model JSON syntax error: " + e.message);
           }
-          if(onFullPage()) {
+          if(isFullPage()) {
             controller.loadModel(interactive.models[0].id, md2dModel);
           } else {
             iframePhone.post({ type:'loadModel', data: { modelId: interactive.models[0].id, modelObject: md2dModel } });
@@ -1013,7 +1023,7 @@ AUTHORING = false;
 
         $updateJsonFromModelButton.on('click', function() {
           var modelState;
-          if(onFullPage()) {
+          if(isFullPage()) {
             modelState = controller.getModelController().state();
             modelEditor.setValue(JSON.stringify(modelState, null, indent));
           } else {
@@ -1064,7 +1074,7 @@ AUTHORING = false;
       var modelController,
           benchmarksTable = document.getElementById("model-benchmark-results");
 
-      if(onFullPage()) {
+      if(isFullPage()) {
         modelController = controller.getModelController();
         benchmark.run(modelController.benchmarks,
           benchmarksTable,
@@ -1122,16 +1132,14 @@ AUTHORING = false;
       if (_model) {
         timeStepsPerTick = _model.get('timeStepsPerTick');
         timeStep    = _model.get('timeStep');
-        return _model.get("timeStepsPerTick") * _model.get("timeStep")/1000;
+        return _model.get("timeStepsPerTick") * _model.get("timeStep")/100;
       }
       else {
         timeStepsPerTick = 60;
         timeStep = 10;
       }
-      return timeStepsPerTick * timeStep / 1000;
+      return timeStepsPerTick * timeStep / 10000;
     }
-
-
 
     function addMessageHook(name, func, props) {
       var privateName = name + '.modelEnergyGraph';
@@ -1161,9 +1169,8 @@ AUTHORING = false;
       addMessageHook('play', function() {
         if (modelEnergyGraph.number_of_points() && modelStepCounter() < modelEnergyGraph.number_of_points()) {
           resetModelEnergyData(modelStepCounter());
-          modelEnergyGraph.new_data(modelEnergyData);
+          modelEnergyGraph.newRealTimeData(modelEnergyData);
         }
-        modelEnergyGraph.show_canvas();
       });
 
       addMessageHook('reset', function() {
@@ -1208,19 +1215,21 @@ AUTHORING = false;
     }).change();
 
     function updateModelEnergyGraph(props) {
-      modelEnergyGraph.add_points(updateModelEnergyData(props));
+      modelEnergyGraph.addPoints(updateModelEnergyData(props));
     }
 
     function renderModelEnergyGraph() {
       var options = {
             title:     "Energy of the System (KE:red, PE:green, TE:blue)",
             xlabel:    "Model Time (ps)",
-            xmin:      0,
-            xmax:     50,
+            xmin:       0,
+            xmax:      50,
             sample:    modelSampleSizeInPs(),
             ylabel:    "eV",
-            ymin:      -5.0,
-            ymax:      5.0
+            ymin:     -25.0,
+            ymax:      25.0,
+            fontScaleRelativeToParent: false,
+            realTime:  true
           };
 
       $.extend(options, interactive.models[0].energyGraphOptions || []);

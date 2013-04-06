@@ -31,7 +31,7 @@
       "name": "atom0KeCustomAVG",
       "unitType": "energy",
       "property": "atom0Ke",
-      "period": 7000
+      "period": 10000
     }
   ],
   "components": [
@@ -47,7 +47,7 @@
         "barColor": "#F42"
       },
       "property": "atom0Ke",
-      "displayAverage": true
+      "averagePeriod": 2500
     },
     {
       "type": "barGraph",

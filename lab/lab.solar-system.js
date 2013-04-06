@@ -1019,6 +1019,18 @@ define('common/controllers/interactive-metadata',[],function() {
     /**
       Interactive components:
     */
+    playback: {
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
+      stepping: {
+        defaultValue: true
+      }
+    },
+
     text: {
       id: {
         required: true
@@ -1438,9 +1450,14 @@ define('common/controllers/interactive-metadata',[],function() {
         // using small triangle. E.g.
         // can be used to present
         // averaged value.
-        conflictsWith: ["displayAverage"]
+        conflictsWith: ["averagePeriod"]
       },
-      displayAverage: {
+      averagePeriod: {
+        // Setting this property to some numeric value
+        // enables displaying of the averaged property.
+        // It's a shortcut which can be used instead
+        // of a custom filtered output bound
+        // to the "secondProperty".
         conflictsWith: ["secondProperty"]
       },
       width: {
@@ -1458,9 +1475,9 @@ define('common/controllers/interactive-metadata',[],function() {
           // Graph title.
           title:     "",
           // Color of the main bar.
-          barColor:  "green",
+          barColor:  "#e23c34",
           // Color of the area behind the bar.
-          fillColor: "white",
+          fillColor: "#fff",
           // Color of axis, labels, title.
           textColor: "#555",
           // Number of ticks displayed on the axis.
@@ -4446,7 +4463,7 @@ define('grapher/bar-graph/bar-graph-model',['require','backbone'],function (requ
           // Graph title.
           title:     "",
           // Color of the main bar.
-          barColor:  "green",
+          barColor:  "#e23c34",
           // Color of the area behind the bar.
           fillColor: "white",
           // Color of axis, labels, title.
@@ -4475,7 +4492,7 @@ define('grapher/bar-graph/bar-graph-model',['require','backbone'],function (requ
 
 define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (require) {
   // Dependencies.
-  var Backbone = require('backbone'),
+  var Backbone  = require('backbone'),
 
       VIEW = {
         padding: {
@@ -4535,6 +4552,7 @@ define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (requi
           // Create all SVG elements ONLY in this function.
           // Avoid recreation of SVG elements while rendering.
           this.vis = d3.select(this.el).append("svg");
+          this.defs = this.vis.append("defs");
           this.fill = this.vis.append("rect");
           this.title = this.vis.append("text");
           this.axisContainer = this.vis.append("g");
@@ -4666,20 +4684,26 @@ define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (requi
               "width": (options.width - paddingLeft - paddingRight),
               "height": this.heightScale(options.maxValue),
               "x": paddingLeft,
-              "y": this.yScale(options.maxValue)
+              "y": this.yScale(options.maxValue),
+              "rx": "0.5em",
+              "ry": "0.5em"
             })
             .style({
-              "fill": options.fillColor
+              "fill": this._getFillGradient(options.fillColor),
+              "stroke": "#ddd",
+              "stroke-width": "1px"
             });
 
           // Setup the main bar.
           this.bar
             .attr({
               "width": (options.width - paddingLeft - paddingRight),
-              "x": paddingLeft
+              "x": paddingLeft,
+              "rx": "0.5em",
+              "ry": "0.5em"
             })
             .style({
-              "fill": options.barColor
+              "fill": this._getBarGradient(options.barColor)
             });
 
           this.traingle
@@ -4742,6 +4766,65 @@ define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (requi
           } else {
             this.render();
           }
+        },
+
+        _getBarGradient: function (color) {
+          var id = "bar-gradient",
+              gradient = this.defs.select("#" + id);
+
+          color = d3.rgb(color);
+
+          if (gradient.empty()) {
+            // Create a new gradient.
+            gradient = this.defs.append("linearGradient")
+              .attr("id", id)
+              .attr("x1", "0%")
+              .attr("y1", "0%")
+              .attr("x2", "0%")
+              .attr("y2", "100%");
+          } else {
+            gradient.selectAll("stop").remove();
+          }
+
+          gradient.append("stop")
+            .attr("stop-color", color.brighter(2).toString())
+            .attr("offset", "0%");
+          gradient.append("stop")
+            .attr("stop-color", color.toString())
+            .attr("offset", "100%");
+
+          return "url(#" + id + ")";
+        },
+
+        _getFillGradient: function (color) {
+          var id = "fill-gradient",
+              gradient = this.defs.select("#" + id);
+
+          if (gradient.empty()) {
+            // Create a new gradient.
+            gradient = this.defs.append("linearGradient")
+              .attr("id", id)
+              .attr("x1", "0%")
+              .attr("y1", "0%")
+              .attr("x2", "0%")
+              .attr("y2", "100%");
+          } else {
+            gradient.selectAll("stop").remove();
+          }
+
+          gradient.append("stop")
+            .attr("stop-color", color)
+            .attr("offset", "0%");
+          gradient.append("stop")
+            .attr("stop-color", color)
+            .attr("stop-opacity", 0.5)
+            .attr("offset", "15%");
+          gradient.append("stop")
+            .attr("stop-color", color)
+            .attr("stop-opacity", 0.4)
+            .attr("offset", "100%");
+
+          return "url(#" + id + ")";
         }
       });
 
@@ -4847,12 +4930,12 @@ define('common/controllers/bar-graph-controller',['require','grapher/bar-graph/b
       // This callback should be trigger when model is loaded.
       modelLoadedCallback: function () {
         model.addPropertiesListener([property], update);
-        if (component.displayAverage) {
+        if (typeof component.averagePeriod !== 'undefined' && component.averagePeriod !== null) {
           // This option is for authors convenience. It causes that filtered
           // output is automatically defined (it uses basic property as an
           // input). Author doesn't have to define it manually.
           secondProperty = property + "-bargraph-" + component.id + "-average";
-          model.defineFilteredOutput(secondProperty, {}, property, "RunningAverage", 2500);
+          model.defineFilteredOutput(secondProperty, {}, property, "RunningAverage", component.averagePeriod);
         }
         if (secondProperty) {
           model.addPropertiesListener([secondProperty], updateSecondProperty);
@@ -4900,10 +4983,12 @@ define('common/controllers/bar-graph-controller',['require','grapher/bar-graph/b
 
 define('grapher/core/axis',['require'],function (require) {
   return {
-    numberWidthUsingFormatter: function (elem, cx, cy, fontSizeInPixels, formatter, number) {
+    numberWidthUsingFormatter: function (elem, cx, cy, fontSizeInPixels, numberStr) {
       var testSVG,
           testText,
+          bbox,
           width,
+          height,
           node;
 
       testSVG = elem.append("svg")
@@ -4917,20 +5002,23 @@ define('grapher/core/axis',['require'],function (require) {
           .attr("x", -fontSizeInPixels/4 + "px")
           .attr("dy", ".35em")
           .attr("text-anchor", "end")
-          .text(d3.format(formatter)(number));
+          .text(numberStr);
 
       node = testText.node();
 
       // This code is sometimes called by tests that use d3's jsdom-based mock SVG DOm, which
       // doesn't implement getBBox.
       if (node.getBBox) {
-        width = testText.node().getBBox().width;
+        bbox = testText.node().getBBox();
+        width = bbox.width;
+        height = bbox.height;
       } else {
         width = 0;
+        height = 0;
       }
 
       testSVG.remove();
-      return width;
+      return [width, height];
     },
     axisProcessDrag: function(dragstart, currentdrag, domain) {
       var originExtent, maxDragIn,
@@ -4943,7 +5031,7 @@ define('grapher/core/axis',['require'],function (require) {
         if  ((axis1 >= 0) && (axis2 > axis1)) {                 // example: (20, 10, [0, 40]) => [0, 80]
           origin = axis1;
           originExtent = dragstart-origin;
-          maxDragIn = originExtent * 0.2 + origin;
+          maxDragIn = originExtent * 0.4 + origin;
           if (currentdrag > maxDragIn) {
             change = originExtent / (currentdrag-origin);
             extent = axis2 - origin;
@@ -4952,7 +5040,7 @@ define('grapher/core/axis',['require'],function (require) {
         } else if ((axis1 < 0) && (axis2 > 0)) {                // example: (20, 10, [-40, 40])       => [-80, 80]
           origin = 0;                                           //          (-0.4, -0.2, [-1.0, 0.4]) => [-1.0, 0.4]
           originExtent = dragstart-origin;
-          maxDragIn = originExtent * 0.2 + origin;
+          maxDragIn = originExtent * 0.4 + origin;
           if ((dragstart >= 0 && currentdrag > maxDragIn) || (dragstart  < 0  && currentdrag < maxDragIn)) {
             change = originExtent / (currentdrag-origin);
             newdomain = [axis1 * change, axis2 * change];
@@ -4960,7 +5048,7 @@ define('grapher/core/axis',['require'],function (require) {
         } else if ((axis1 < 0) && (axis2 < 0)) {                // example: (-60, -50, [-80, -40]) => [-120, -40]
           origin = axis2;
           originExtent = dragstart-origin;
-          maxDragIn = originExtent * 0.2 + origin;
+          maxDragIn = originExtent * 0.4 + origin;
           if (currentdrag < maxDragIn) {
             change = originExtent / (currentdrag-origin);
             extent = axis1 - origin;
@@ -5006,7 +5094,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         xScale, yScale, line,
         shiftingX = false,
         cubicEase = d3.ease('cubic'),
-        ds,
+        domainShift,
         circleCursorStyle,
         fontSizeInPixels,
         halfFontSizeInPixels,
@@ -5015,8 +5103,26 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         axisFontSizeInPixels,
         xlabelFontSizeInPixels,
         ylabelFontSizeInPixels,
+
+        xlabelMetrics,
+        yLabelMetrics,
         xAxisNumberWidth,
+        xAxisNumberHeight,
         yAxisNumberWidth,
+        yAxisNumberHeight,
+        xAxisLabelHorizontalPadding,
+
+        xAxisVerticalPadding,
+        xAxisDraggableHeight,
+        xAxisLabelBaseline,
+
+        yAxisHorizontalPadding,
+        yAxisDraggableWidth,
+        yAxisLabelBaseline,
+
+        xAxisDraggable,
+        yAxisDraggable,
+
         strokeWidth,
         sizeType = {
           category: "medium",
@@ -5052,8 +5158,8 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           yTickCount:      10,
           xscaleExponent:  0.5,
           yscaleExponent:  0.5,
-          xFormatter:      ".2s",
-          yFormatter:      ".2s",
+          xFormatter:      "2s",
+          yFormatter:      "2s",
           axisShift:       10,
           xmax:            10,
           xmin:            0,
@@ -5148,6 +5254,15 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       calculateSizeType();
     }
 
+    function longestNumber(array, formatter, precision) {
+      var longest;
+      precision = precision || 5;
+      longest = array.reduce(function(number1, number2) {
+        return formatter(+number1.toPrecision(precision)).length > formatter(+number2.toPrecision(precision)).length ? number1 : number2;
+      }, 0);
+      return formatter(longest);
+    }
+
     // Update the x-scale.
     function updateXScale() {
       xScale.domain([options.xmin, options.xmax])
@@ -5195,11 +5310,30 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         ylabelFontSizeInPixels = parseFloat($("svg.graph text.ylabel").css("font-size"));
       }
 
-      xAxisNumberWidth = Math.max(axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.xFormatter, options.xmax)*1.5,
-                                  axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.xFormatter, options.xmin)*1.5);
+      if (xScale === undefined) {
+        xlabelMetrics = [fontSizeInPixels, fontSizeInPixels];
+        ylabelMetrics = [fontSizeInPixels*2, fontSizeInPixels];
+      } else {
+        xlabelMetrics = axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, 
+          longestNumber(xScale.ticks(options.xTickCount), fx));
 
-      yAxisNumberWidth = Math.max(axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.yFormatter, options.ymax)*1.5,
-                                  axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.yFormatter, options.ymin)*1.5);
+        ylabelMetrics = axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels,
+          longestNumber(yScale.ticks(options.yTickCount), fy));
+      }
+
+      xAxisNumberWidth  = xlabelMetrics[0];
+      xAxisNumberHeight = xlabelMetrics[1];
+      yAxisNumberWidth  = ylabelMetrics[0];
+      yAxisNumberHeight = ylabelMetrics[0];
+
+      xAxisLabelHorizontalPadding = xAxisNumberWidth * 0.5;
+      xAxisDraggableHeight = xAxisNumberHeight * 1.1;
+      xAxisVerticalPadding = xAxisDraggableHeight + xAxisNumberHeight*1.3;
+      xAxisLabelBaseline = xAxisVerticalPadding-xAxisNumberHeight/3;
+
+      yAxisDraggableWidth    = yAxisNumberWidth + xAxisNumberHeight/4;
+      yAxisHorizontalPadding = yAxisDraggableWidth + yAxisNumberHeight;
+      yAxisLabelBaseline     = -(yAxisDraggableWidth+yAxisNumberHeight/4);
 
       switch(sizeType.value) {
         case 0:         // tiny
@@ -5223,7 +5357,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         case 2:         // medium
         padding = {
          "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
-         "right":  Math.max(fontSizeInPixels, xAxisNumberWidth*0.5),
+         "right":  xAxisLabelHorizontalPadding,
          "bottom": axisFontSizeInPixels*1.25,
          "left":   yAxisNumberWidth
         };
@@ -5232,18 +5366,18 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         case 3:         // large
         padding = {
          "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
-         "right":  Math.max(fontSizeInPixels, xAxisNumberWidth*0.5),
-         "bottom": options.xlabel ? (xlabelFontSizeInPixels + axisFontSizeInPixels)*1.25 : axisFontSizeInPixels*1.25,
-         "left":   options.ylabel ? yAxisNumberWidth + axisFontSizeInPixels*1.2 : yAxisNumberWidth
+         "right":  xAxisLabelHorizontalPadding,
+         "bottom": options.xlabel ? xAxisVerticalPadding : axisFontSizeInPixels*1.25,
+         "left":   options.ylabel ? yAxisHorizontalPadding : yAxisNumberWidth
         };
         break;
 
         default:         // extralarge
         padding = {
          "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
-         "right":  Math.max(fontSizeInPixels, xAxisNumberWidth*0.5),
-         "bottom": options.xlabel ? (xlabelFontSizeInPixels + axisFontSizeInPixels)*1.25 : axisFontSizeInPixels*1.25,
-         "left":   options.ylabel ? yAxisNumberWidth + axisFontSizeInPixels*1.2 : yAxisNumberWidth
+         "right":  xAxisLabelHorizontalPadding,
+         "bottom": options.xlabel ? xAxisVerticalPadding : axisFontSizeInPixels*1.25,
+         "left":   options.ylabel ? yAxisHorizontalPadding : yAxisNumberWidth
         };
         break;
       }
@@ -5473,7 +5607,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
             // .attr("tabindex", tabindex || 0);
 
         vis = svg.append("g")
-              .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+            .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
 
         plot = vis.append("rect")
           .attr("class", "plot")
@@ -5511,6 +5645,30 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
                 .attr("d", line(points));
         }
 
+        yAxisDraggable = svg.append("rect")
+          .attr("class", "draggable-axis")
+          .attr("x", padding.left-yAxisDraggableWidth)
+          .attr("y", padding.top)
+          .attr("rx", yAxisNumberHeight/6)
+          .attr("width", yAxisDraggableWidth)
+          .attr("height", size.height)
+          .attr("pointer-events", "all")
+          .style("cursor", "row-resize")
+          .on("mousedown", yAxisDrag)
+          .on("touchstart", yAxisDrag);
+
+        xAxisDraggable = svg.append("rect")
+          .attr("class", "draggable-axis")
+          .attr("x", padding.left)
+          .attr("y", size.height+padding.top)
+          .attr("rx", yAxisNumberHeight/6)
+          .attr("width", size.width)
+          .attr("height", xAxisDraggableHeight)
+          .attr("pointer-events", "all")
+          .style("cursor", "col-resize")
+          .on("mousedown", xAxisDrag)
+          .on("touchstart", xAxisDrag);
+
         marker = viewbox.append("path").attr("class", "marker");
         // path without attributes cause SVG parse problem in IE9
         //     .attr("d", []);
@@ -5539,7 +5697,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
               .text(options.xlabel)
               .attr("x", size.width/2)
               .attr("y", size.height)
-              .attr("dy", axisFontSizeInPixels*2 + "px")
+              .attr("dy", xAxisLabelBaseline + "px")
               .style("text-anchor","middle");
         }
 
@@ -5550,7 +5708,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
               .attr("class", "ylabel")
               .text( options.ylabel)
               .style("text-anchor","middle")
-              .attr("transform","translate(" + -yAxisNumberWidth + " " + size.height/2+") rotate(-90)");
+              .attr("transform","translate(" + yAxisLabelBaseline + " " + size.height/2+") rotate(-90)");
         }
 
         d3.select(node)
@@ -5575,7 +5733,8 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
 
         vis
           .attr("width",  cx)
-          .attr("height", cy);
+          .attr("height", cy)
+          .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
 
         plot
           .attr("width", size.width)
@@ -5597,6 +5756,18 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
             .attr("height", size.height)
             .attr("viewBox", "0 0 "+size.width+" "+size.height);
 
+        yAxisDraggable
+          .attr("x", padding.left-yAxisDraggableWidth)
+          .attr("y", padding.top-yAxisNumberHeight/2)
+          .attr("width", yAxisDraggableWidth)
+          .attr("height", size.height+yAxisNumberHeight);
+
+        xAxisDraggable
+          .attr("x", padding.left)
+          .attr("y", size.height+padding.top)
+          .attr("width", size.width)
+          .attr("height", xAxisDraggableHeight);
+
         if (options.title && sizeType.value > 1) {
           title
               .attr("x", size.width/2)
@@ -5607,12 +5778,12 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           xlabel
               .attr("x", size.width/2)
               .attr("y", size.height)
-              .attr("dy", axisFontSizeInPixels*2 + "px");
+              .attr("dy", xAxisLabelBaseline + "px");
         }
 
         if (options.ylabel && sizeType.value > 1) {
           ylabel
-              .attr("transform","translate(" + -yAxisNumberWidth + " " + size.height/2+") rotate(-90)");
+              .attr("transform","translate(" + yAxisLabelBaseline + " " + size.height/2+") rotate(-90)");
         }
 
         notification
@@ -5677,12 +5848,9 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
               .attr("y", size.height)
               .attr("dy", axisFontSizeInPixels + "px")
               .attr("text-anchor", "middle")
-              .style("cursor", "ew-resize")
               .text(fx)
               .on("mouseover", function() { d3.select(this).style("font-weight", "bold");})
-              .on("mouseout",  function() { d3.select(this).style("font-weight", "normal");})
-              .on("mousedown.drag",  xaxisDrag)
-              .on("touchstart.drag", xaxisDrag);
+              .on("mouseout",  function() { d3.select(this).style("font-weight", "normal");});
         }
 
         gx.exit().remove();
@@ -5722,9 +5890,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
               .style("cursor", "ns-resize")
               .text(fy)
               .on("mouseover", function() { d3.select(this).style("font-weight", "bold");})
-              .on("mouseout",  function() { d3.select(this).style("font-weight", "normal");})
-              .on("mousedown.drag",  yaxisDrag)
-              .on("touchstart.drag", yaxisDrag);
+              .on("mouseout",  function() { d3.select(this).style("font-weight", "normal");});
         }
 
         gy.exit().remove();
@@ -5877,6 +6043,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         d3.event.preventDefault();
         plot.style("cursor", "move");
         if (d3.event.altKey) {
+          plot.style("cursor", "nesw-resize");
           var p = d3.mouse(vis.node());
           downx = xScale.invert(p[0]);
           downy = yScale.invert(p[1]);
@@ -5890,6 +6057,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         d3.event.preventDefault();
         d3.select('body').style("cursor", "move");
         if (d3.event.altKey) {
+          plot.style("cursor", "nesw-resize");
           if (d3.event.shiftKey && options.addData) {
             p = d3.mouse(vis.node());
             var newpoint = [];
@@ -5918,14 +6086,14 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         return false;
       }
 
-      function xaxisDrag() {
+      function xAxisDrag() {
         document.onselectstart = falseFunction;
         d3.event.preventDefault();
         var p = d3.mouse(vis.node());
         downx = xScale.invert(p[0]);
       }
 
-      function yaxisDrag() {
+      function yAxisDrag() {
         d3.event.preventDefault();
         document.onselectstart = falseFunction;
         var p = d3.mouse(vis.node());
@@ -5961,15 +6129,23 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         }
 
         if (!isNaN(downx)) {
-          d3.select('body').style("cursor", "ew-resize");
-          xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
-          persistScaleChangesToOptions();
-          redraw();
+          d3.select('body').style("cursor", "col-resize");
+          plot.style("cursor", "col-resize");
+          if (shiftingX) {
+            xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
+            persistScaleChangesToOptions();
+            redraw();
+          } else {
+            xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
+            persistScaleChangesToOptions();
+            redraw()
+          }
           d3.event.stopPropagation();
         }
 
         if (!isNaN(downy)) {
-          d3.select('body').style("cursor", "ns-resize");
+          d3.select('body').style("cursor", "row-resize");
+          plot.style("cursor", "row-resize");
           yScale.domain(axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
           persistScaleChangesToOptions();
           redraw();
@@ -5979,6 +6155,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
 
       function mouseup() {
         d3.select('body').style("cursor", "auto");
+        plot.style("cursor", "auto");
         document.onselectstart = function() { return true; };
         if (!isNaN(downx)) {
           redraw();
@@ -6016,31 +6193,29 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
             shiftPoint = xextent * 0.95,
             currentExtent;
 
-         setCurrentSample(samplePoint);
-         currentExtent = currentSample * sample;
-         if (shiftingX) {
-           shiftingX = ds();
-            if (shiftingX) {
+        setCurrentSample(samplePoint);
+        currentExtent = currentSample * sample;
+        if (shiftingX) {
+          shiftingX = domainShift();
+          if (shiftingX) {
+            cancelAxisRescale();
             redraw();
           } else {
             update(currentSample);
           }
         } else {
           if (currentExtent > domain[0] + shiftPoint) {
-            ds = shiftXDomainRealTime(shiftPoint*0.9, options.axisShift);
-            shiftingX = ds();
+            domainShift = shiftXDomainRealTime(shiftPoint*0.9, options.axisShift);
+            shiftingX = domainShift();
             redraw();
-          } else if ( currentExtent < domain[1] - shiftPoint &&
-                      currentSample < points.length &&
-                      xAxisStart > 0) {
-            ds = shiftXDomainRealTime(shiftPoint*0.9, options.axisShift, -1);
-            shiftingX = ds();
+          } else if ( currentExtent < domain[1] - shiftPoint && currentSample < points.length && xAxisStart > 0) {
+            domainShift = shiftXDomainRealTime(shiftPoint*0.9, options.axisShift, -1);
+            shiftingX = domainShift();
             redraw();
           } else if (currentExtent < domain[0]) {
-            ds = shiftXDomainRealTime(shiftPoint*0.1, 1, -1);
-            shiftingX = ds();
+            domainShift = shiftXDomainRealTime(shiftPoint*0.1, 1, -1);
+            shiftingX = domainShift();
             redraw();
-
           } else {
             update(currentSample);
           }
@@ -6069,6 +6244,15 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         };
       }
 
+      function cancelAxisRescale() {
+        if (!isNaN(downx)) {
+          downx = NaN;
+        }
+        if (!isNaN(downy)) {
+          downy = NaN;
+        }
+      }
+
       function updateOrRescaleRegular() {
         var i,
             domain = xScale.domain(),
@@ -6076,7 +6260,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
             shiftPoint = xextent * 0.8;
 
         if (shiftingX) {
-          shiftingX = ds();
+          shiftingX = domainShift();
           if (shiftingX) {
             redraw();
           } else {
@@ -6084,8 +6268,8 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           }
         } else {
           if (points[points.length-1][0] > domain[0] + shiftPoint) {
-            ds = shiftXDomainRegular(shiftPoint*0.75, options.axisShift);
-            shiftingX = ds();
+            domainShift = shiftXDomainRegular(shiftPoint*0.75, options.axisShift);
+            shiftingX = domainShift();
             redraw();
           } else {
             update();
@@ -6489,7 +6673,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
            // domain = xScale.domain(),
             // xextent = domain[1] - domain[0],
             //shift = xextent * 0.8,
-            // ds,
+            // domainShift,
         if (newdata instanceof Array && newdata.length > 0) {
           if (newdata[0] instanceof Array) {
             for(i = 0; i < newdata.length; i++) {
@@ -6825,7 +7009,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         canvas.offsetTop = cplot.top;
         canvas.style.left = cplot.left + 'px';
         canvas.style.top = cplot.top + 'px';
-        canvas.style.border = 'solid 1px red';
+        // canvas.style.border = 'solid 1px red';
         canvas.style.pointerEvents = "none";
         if (canvas.className.search("overlay") < 0) {
            canvas.className += " overlay";
@@ -7552,307 +7736,340 @@ define('common/controllers/scripting-api',['require','common/alert'],function (r
   // script context; and scripts are run in strict mode so they don't
   // accidentally expose or read globals.
   //
-  return function ScriptingAPI (interactivesController, modelScriptingAPI) {
-
-    var scriptingAPI = (function() {
-
-      function isInteger(n) {
-        // Exploits the facts that (1) NaN !== NaN, and (2) parseInt(Infinity, 10) is NaN
-        return typeof n === "number" && (parseFloat(n) === parseInt(n, 10));
-      }
-
-      function isArray(obj) {
-        return typeof obj === 'object' && obj.slice === Array.prototype.slice;
-      }
-
-      /** return a number randomly chosen between 0..max */
-      function randomFloat(max) {
-        if (max) {
-          return Math.random() * max;
-        } else {
-          return Math.random();
-        }
-      }
-
-      /** return an integer randomly chosen from the set of integers 0..n-1 */
-      function randomInteger(n) {
-        return Math.floor(Math.random() * n);
-      }
-
-      function swapElementsOfArray(array, i, j) {
-        var tmp = array[i];
-        array[i] = array[j];
-        array[j] = tmp;
-      }
-
-      /** Return an array of n randomly chosen members of the set of integers 0..N-1 */
-      function choose(n, N) {
-        var values = [],
-            i;
-
-        for (i = 0; i < N; i++) { values[i] = i; }
-
-        for (i = 0; i < n; i++) {
-          swapElementsOfArray(values, i, i + randomInteger(N-i));
-        }
-        values.length = n;
-
-        return values;
-      }
-
-      return {
-
-        isInteger: isInteger,
-        isArray: isArray,
-        randomInteger: randomInteger,
-        randomFloat: randomFloat,
-        swapElementsOfArray: swapElementsOfArray,
-        choose: choose,
-
-        deg2rad: Math.PI/180,
-        rad2deg: 180/Math.PI,
-
-        format: d3.format,
-
-        get: function get() {
-          return model.get.apply(model, arguments);
-        },
-
-        set: function set() {
-          return model.set.apply(model, arguments);
-        },
-
-        loadModel: function loadModel(modelId, cb) {
-          model.stop();
-
-          interactivesController.loadModel(modelId);
-
-          if (typeof cb === 'function') {
-            interactivesController.pushOnLoadScript(cb);
-          }
-        },
-
-        /**
-          Observe property `propertyName` on the model, and perform `action` when it changes.
-          Pass property value to action.
-        */
-        onPropertyChange: function onPropertyChange(propertyName, action) {
-          model.addPropertiesListener([propertyName], function() {
-            action( model.get(propertyName) );
-          });
-        },
-
-        /**
-         * Performs a user-defined script at any given time.
-         *
-         * callAt(t, ...) guarantees that script will be executed, but not necessarily
-         * at exactly chosen time (as this can be impossible due to simulation settings).
-         * User scripts cannot interrupt the model "tick", the most inner integration loop.
-         * e.g. callAt(23, ...) in MD2D model context will be executed at time 50,
-         * if timeStepsPerTick = 50 and timeStep = 1.
-         *
-         * callAt action will only occur the first time the model reaches the specified time,
-         * but not after the model is scrubbed forward and backward (using tick history).
-         *
-         * @param  {number} time     Time defined in model native time unit (e.g. fs for MD2D).
-         * @param  {function} action Function containing user-defined script.
-         */
-        callAt: function callAt(time, action) {
-          var actionTimeout = {
-            time: time,
-            action: action,
-            check: function() {
-              if (model.get("time") >= this.time) {
-                this.action();
-                // Optimization - when function was once executed, replace
-                // check with empty function.
-                // removePropertiesListener() method could be useful, but it
-                // isn't available yet.
-                this.check = function () {};
-              }
-            }
-          };
-          model.addPropertiesListener("time", function () {
-            actionTimeout.check();
-          });
-        },
-
-        /**
-         * Performs a user-defined script repeatedly, with a fixed time delay
-         * between each call.
-         *
-         * callEvery(t, ...) guarantees that script will be executed *correct number of times*,
-         * but not necessarily at exactly chosen intervals (as this can be impossible due to
-         * simulation settings). User scripts cannot interrupt the model "tick", the most
-         * inner integration loop.
-         * e.g. callEvery(23, ...) in MD2D model context will be executed *twice* at time 50,
-         * if timeStepsPerTick = 50 and timeStep = 1.
-         *
-         * callEvery action for time N * interval (for any integer N >= 1) will only be called
-         * the first time the model time exceeds N * interval time. After the model is scrubbed
-         * forward and backward using (using tick history), action *won't* be called again.
-         *
-         * @param {number}   interval Interval on how often to execute the script,
-         *                            defined in model native time unit (e.g. fs for MD2D).
-         * @param {function} action   Function containing user-defined script.
-         */
-        callEvery: function callEvery(interval, action) {
-          var actionInterval = {
-            lastCall: 0,
-            interval: interval,
-            action: action,
-            execute: function() {
-              var time = model.get("time");
-              while (time - this.lastCall >= this.interval) {
-                this.action();
-                this.lastCall += this.interval;
-              }
-            }
-          };
-          model.addPropertiesListener("time", function () {
-            actionInterval.execute();
-          });
-        },
-
-        /**
-         * Sets a custom click handler for objects of a given type.
-         * Basic type which is always supported is "plot". It is empty
-         * area of a model. Various models can support different clickable
-         * types. Please see the model documentation to check what
-         * other object types are supported.
-         *
-         * Behind the scenes this functions uses class selector. So you can
-         * also inspect SVG image and check what is class of interesting
-         * object and try to use it.
-         *
-         * MD2D specific notes:
-         * Supported types: "plot", "atom", "obstacle", "image", "textBox".
-         * TODO: move it to MD2D related docs in the future.
-         *
-         * @param {string}   type    Name of the type of clickable objects.
-         * @param {Function} handler Custom click handler. It will be called
-         *                           when object is clicked with (x, y, d, i) arguments:
-         *                             x - x coordinate in model units,
-         *                             y - y coordinate in model units,
-         *                             d - data associated with a given object (can be undefined!),
-         *                             i - ID of clicked object (usually its value makes sense if d is defined).
-         */
-        onClick: function onClick(type, handler) {
-          // Append '.' to make API simpler.
-          // So authors can just specify onClick("atom", ...) instead of class selectors.
-          interactivesController.getModelController().modelContainer.setClickHandler("." + type, handler);
-        },
-
-        /**
-         * Sets custom select handler. It enables select action and lets author provide custom handler
-         * which is executed when select action is finished. The area of selection is passed to handler
-         * as arguments. It is defined by rectangle - its lower left corner coordinates, width and height.
-         *
-         * @param {Function} handler Custom select handler. It will be called
-         *                           when select action is finished with (x, y, w, h) arguments:
-         *                             x - x coordinate of lower left selection corner (in model units),
-         *                             y - y coordinate of lower left selection corner (in model units),
-         *                             width  - width of selection rectangle (in model units),
-         *                             height - height of selection rectangle (in model units).
-         */
-        onSelect: function onSelect(handler) {
-          interactivesController.getModelController().modelContainer.setSelectHandler(handler);
-        },
-
-        start: function start() {
-          model.start();
-        },
-
-        stop: function stop() {
-          model.stop();
-        },
-
-        reset: function reset() {
-          model.stop();
-          interactivesController.modelController.reload();
-        },
-
-        tick: function tick() {
-          model.tick();
-        },
-
-
-        getTime: function getTime() {
-          return model.get('time');
-        },
-
-        /**
-         * Returns number of frames per second.
-         * @return {number} frames per second.
-         */
-        getFPS: function getFPS() {
-          return model.getFPS();
-        },
-
-        /**
-         * Returns "simulation progress rate".
-         * It indicates how much of simulation time is calculated for
-         * one second of real time.
-         * @return {number} simulation progress rate.
-         */
-        getSimulationProgressRate: function getSimulationProgressRate() {
-          return model.getSimulationProgressRate();
-        },
-
-        startPerformanceTuning: function startPerformanceTuning() {
-          model.performanceOptimizer.enable();
-        },
-
-        repaint: function repaint() {
-          interactivesController.getModelController().repaint();
-        },
-
-        exportData: function exportData() {
-          var dgExport = interactivesController.getDGExportController();
-          if (!dgExport)
-            throw new Error("No exports have been specified.");
-          dgExport.exportData();
-        },
-
-        Math: Math,
-
-        // Rrevent us from overwriting window.undefined.
-        "undefined": undefined,
-
-        // Rudimentary debugging functionality. Use Lab alert helper function.
-        alert: alert,
-
-        console: window.console !== null ? window.console : {
-          log: function() {},
-          error: function() {},
-          warn: function() {},
-          dir: function() {}
-        }
-      };
-
-    }());
+  return function ScriptingAPI (interactivesController) {
 
     var controller = {
+
+      api: (function() {
+
+        function isInteger(n) {
+          // Exploits the facts that (1) NaN !== NaN, and (2) parseInt(Infinity, 10) is NaN
+          return typeof n === "number" && (parseFloat(n) === parseInt(n, 10));
+        }
+
+        function isArray(obj) {
+          return typeof obj === 'object' && obj.slice === Array.prototype.slice;
+        }
+
+        /** return a number randomly chosen between 0..max */
+        function randomFloat(max) {
+          if (max) {
+            return Math.random() * max;
+          } else {
+            return Math.random();
+          }
+        }
+
+        /** return an integer randomly chosen from the set of integers 0..n-1 */
+        function randomInteger(n) {
+          return Math.floor(Math.random() * n);
+        }
+
+        function swapElementsOfArray(array, i, j) {
+          var tmp = array[i];
+          array[i] = array[j];
+          array[j] = tmp;
+        }
+
+        /** Return an array of n randomly chosen members of the set of integers 0..N-1 */
+        function choose(n, N) {
+          var values = [],
+              i;
+
+          for (i = 0; i < N; i++) { values[i] = i; }
+
+          for (i = 0; i < n; i++) {
+            swapElementsOfArray(values, i, i + randomInteger(N-i));
+          }
+          values.length = n;
+
+          return values;
+        }
+
+        return {
+
+          isInteger: isInteger,
+          isArray: isArray,
+          randomInteger: randomInteger,
+          randomFloat: randomFloat,
+          swapElementsOfArray: swapElementsOfArray,
+          choose: choose,
+
+          deg2rad: Math.PI/180,
+          rad2deg: 180/Math.PI,
+
+          format: d3.format,
+
+          get: function get() {
+            return model.get.apply(model, arguments);
+          },
+
+          set: function set() {
+            return model.set.apply(model, arguments);
+          },
+
+          loadModel: function loadModel(modelId, cb) {
+            model.stop();
+
+            interactivesController.loadModel(modelId);
+
+            if (typeof cb === 'function') {
+              interactivesController.pushOnLoadScript(cb);
+            }
+          },
+
+          /**
+            Observe property `propertyName` on the model, and perform `action` when it changes.
+            Pass property value to action.
+          */
+          onPropertyChange: function onPropertyChange(propertyName, action) {
+            model.addPropertiesListener([propertyName], function() {
+              action( model.get(propertyName) );
+            });
+          },
+
+          /**
+           * Performs a user-defined script at any given time.
+           *
+           * callAt(t, ...) guarantees that script will be executed, but not necessarily
+           * at exactly chosen time (as this can be impossible due to simulation settings).
+           * User scripts cannot interrupt the model "tick", the most inner integration loop.
+           * e.g. callAt(23, ...) in MD2D model context will be executed at time 50,
+           * if timeStepsPerTick = 50 and timeStep = 1.
+           *
+           * callAt action will only occur the first time the model reaches the specified time,
+           * but not after the model is scrubbed forward and backward (using tick history).
+           *
+           * @param  {number} time     Time defined in model native time unit (e.g. fs for MD2D).
+           * @param  {function} action Function containing user-defined script.
+           */
+          callAt: function callAt(time, action) {
+            var actionTimeout = {
+              time: time,
+              action: action,
+              check: function() {
+                if (model.get("time") >= this.time) {
+                  this.action();
+                  // Optimization - when function was once executed, replace
+                  // check with empty function.
+                  // removePropertiesListener() method could be useful, but it
+                  // isn't available yet.
+                  this.check = function () {};
+                }
+              }
+            };
+            model.addPropertiesListener("time", function () {
+              actionTimeout.check();
+            });
+          },
+
+          /**
+           * Performs a user-defined script repeatedly, with a fixed time delay
+           * between each call.
+           *
+           * callEvery(t, ...) guarantees that script will be executed *correct number of times*,
+           * but not necessarily at exactly chosen intervals (as this can be impossible due to
+           * simulation settings). User scripts cannot interrupt the model "tick", the most
+           * inner integration loop.
+           * e.g. callEvery(23, ...) in MD2D model context will be executed *twice* at time 50,
+           * if timeStepsPerTick = 50 and timeStep = 1.
+           *
+           * callEvery action for time N * interval (for any integer N >= 1) will only be called
+           * the first time the model time exceeds N * interval time. After the model is scrubbed
+           * forward and backward using (using tick history), action *won't* be called again.
+           *
+           * @param {number}   interval Interval on how often to execute the script,
+           *                            defined in model native time unit (e.g. fs for MD2D).
+           * @param {function} action   Function containing user-defined script.
+           */
+          callEvery: function callEvery(interval, action) {
+            var actionInterval = {
+              lastCall: 0,
+              interval: interval,
+              action: action,
+              execute: function() {
+                var time = model.get("time");
+                while (time - this.lastCall >= this.interval) {
+                  this.action();
+                  this.lastCall += this.interval;
+                }
+              }
+            };
+            model.addPropertiesListener("time", function () {
+              actionInterval.execute();
+            });
+          },
+
+          /**
+           * Sets a custom click handler for objects of a given type.
+           * Basic type which is always supported is "plot". It is empty
+           * area of a model. Various models can support different clickable
+           * types. Please see the model documentation to check what
+           * other object types are supported.
+           *
+           * Behind the scenes this functions uses class selector. So you can
+           * also inspect SVG image and check what is class of interesting
+           * object and try to use it.
+           *
+           * MD2D specific notes:
+           * Supported types: "plot", "atom", "obstacle", "image", "textBox".
+           * TODO: move it to MD2D related docs in the future.
+           *
+           * @param {string}   type    Name of the type of clickable objects.
+           * @param {Function} handler Custom click handler. It will be called
+           *                           when object is clicked with (x, y, d, i) arguments:
+           *                             x - x coordinate in model units,
+           *                             y - y coordinate in model units,
+           *                             d - data associated with a given object (can be undefined!),
+           *                             i - ID of clicked object (usually its value makes sense if d is defined).
+           */
+          onClick: function onClick(type, handler) {
+            // Append '.' to make API simpler.
+            // So authors can just specify onClick("atom", ...) instead of class selectors.
+            interactivesController.getModelController().modelContainer.setClickHandler("." + type, handler);
+          },
+
+          /**
+           * Sets custom select handler. It enables select action and lets author provide custom handler
+           * which is executed when select action is finished. The area of selection is passed to handler
+           * as arguments. It is defined by rectangle - its lower left corner coordinates, width and height.
+           *
+           * @param {Function} handler Custom select handler. It will be called
+           *                           when select action is finished with (x, y, w, h) arguments:
+           *                             x - x coordinate of lower left selection corner (in model units),
+           *                             y - y coordinate of lower left selection corner (in model units),
+           *                             width  - width of selection rectangle (in model units),
+           *                             height - height of selection rectangle (in model units).
+           */
+          onSelect: function onSelect(handler) {
+            interactivesController.getModelController().modelContainer.setSelectHandler(handler);
+          },
+
+          start: function start() {
+            model.start();
+            this.trackEvent('Interactive', "Start", "Starting interactive: " + interactivesController.get('title') );
+          },
+
+          stop: function stop() {
+            model.stop();
+          },
+
+          reset: function reset() {
+            model.stop();
+            interactivesController.modelController.reload();
+          },
+
+          stepForward: function stepForward() {
+            model.stepForward();
+            if (!model.isNewStep()) {
+              interactivesController.modelController.modelContainer.update();
+            }
+          },
+
+          stepBack: function stepBack() {
+            model.stepBack();
+            interactivesController.modelController.modelContainer.update();
+          },
+
+          tick: function tick() {
+            model.tick();
+          },
+
+          isStopped: function isStopped() {
+            return model.is_stopped();
+          },
+
+          getTime: function getTime() {
+            return model.get('time');
+          },
+
+          /**
+           * Returns number of frames per second.
+           * @return {number} frames per second.
+           */
+          getFPS: function getFPS() {
+            return model.getFPS();
+          },
+
+          /**
+           * Returns "simulation progress rate".
+           * It indicates how much of simulation time is calculated for
+           * one second of real time.
+           * @return {number} simulation progress rate.
+           */
+          getSimulationProgressRate: function getSimulationProgressRate() {
+            return model.getSimulationProgressRate();
+          },
+
+          startPerformanceTuning: function startPerformanceTuning() {
+            model.performanceOptimizer.enable();
+          },
+
+          repaint: function repaint() {
+            interactivesController.getModelController().repaint();
+          },
+
+          exportData: function exportData() {
+            var dgExport = interactivesController.getDGExportController();
+            if (!dgExport)
+              throw new Error("No exports have been specified.");
+            dgExport.exportData();
+          },
+
+          /* Send a tracking event to Google Analytics */
+          trackEvent: function trackEvent(category, action, label) {
+            var googleAnalytics;
+
+            if (typeof _gaq === 'undefined'){
+              // console.error("Google Analytics not defined, Can not send trackEvent");
+              return;
+            }
+            googleAnalytics = _gaq;
+            if (!category) {
+              category = "Interactive";
+            }
+            // console.log("Sending a track page event Google Analytics (category:action:label):");
+            // console.log("(" + category + ":"  + action + ":" + label + ")");
+            googleAnalytics.push(['_trackEvent', category, action, label]);
+          },
+
+          Math: Math,
+
+          // Rrevent us from overwriting window.undefined.
+          "undefined": undefined,
+
+          // Rudimentary debugging functionality. Use Lab alert helper function.
+          alert: alert,
+
+          console: window.console !== null ? window.console : {
+            log: function() {},
+            error: function() {},
+            warn: function() {},
+            dir: function() {}
+          }
+        };
+      }()),
+
       /**
         Freeze Scripting API
         Make the scripting API immutable once defined
       */
       freeze: function () {
-        Object.freeze(scriptingAPI);
+        Object.freeze(this.api);
       },
 
       /**
         Extend Scripting API
       */
       extend: function (ModelScriptingAPI) {
-        $.extend(scriptingAPI, new ModelScriptingAPI(scriptingAPI));
+        $.extend(this.api, new ModelScriptingAPI(this.api));
       },
 
       /**
         Allow console users to try script actions
       */
       exposeScriptingAPI: function () {
-        window.script = $.extend({}, scriptingAPI);
+        window.script = $.extend({}, this.api);
         window.script.run = function(source, args) {
           var prop,
               argNames = [],
@@ -7935,7 +8152,7 @@ define('common/controllers/scripting-api',['require','common/alert'],function (r
 
         try {
           scriptFunctionMaker = new Function('shadowedGlobals', 'scriptingAPI', 'scriptSource', scriptFunctionMakerSource);
-          scriptFunction = scriptFunctionMaker(shadowedGlobals, scriptingAPI, scriptSource);
+          scriptFunction = scriptFunctionMaker(shadowedGlobals, this.api, scriptSource);
         } catch (e) {
           alert("Error compiling script: \"" + e.toString() + "\"\nScript:\n\n" + scriptSource);
           return function() {
@@ -12062,6 +12279,136 @@ define('common/controllers/thermometer-controller',['require','mustache','text!c
   };
 });
 
+/*global define, $, model */
+
+define('common/controllers/playback-controller',['require','common/inherit','common/controllers/interactive-component'],function (require) {
+
+  var inherit              = require('common/inherit'),
+      InteractiveComponent = require('common/controllers/interactive-component');
+
+  /**
+   * Playback controller.
+   *
+   * @constructor
+   * @extends InteractiveComponent
+   * @param {Object} component Component JSON definition.
+   * @param {ScriptingAPI} scriptingAPI
+   */
+  function PlaybackController(component, scriptingAPI) {
+    // Call super constructor.
+    InteractiveComponent.call(this, "playback", component, scriptingAPI);
+
+    this.$element.addClass("interactive-playback");
+
+    /** @private */
+    this._modelStopped = true;
+    /** @private */
+    this._timeUnits = "";
+    /** @private */
+    this._$reset = $('<button class="reset"><i class="icon-step-backward"></i></button>').appendTo(this.$element);
+    /** @private */
+    this._$playPause = $('<button class="play-pause"><i class="icon-play"></i><i class="icon-pause"></i></button>').appendTo(this.$element);
+    /** @private */
+    this._$timeDisplay = $('<span class="time-display">').appendTo(this._$playPause);
+
+    /** @private */
+    this._$stepBackward = $('<button class="step"><i class="icon-backward"></i></button>').insertBefore(this._$reset);
+    /** @private */
+    this._$stepForward = $('<button class="step"><i class="icon-forward"></i></button>').insertAfter(this._$playPause);
+
+    this._$reset.after('<div class="spacer reset">');
+    this._$stepBackward.after('<div class="spacer step">');
+    this._$stepForward.before('<div class="spacer step">');
+
+    // Bind click handlers.
+    this._$reset.on("click", function () {
+      scriptingAPI.api.reset();
+    });
+    this._$playPause.on("click", $.proxy(function () {
+      if (this._modelStopped) {
+        scriptingAPI.api.start();
+      } else {
+        scriptingAPI.api.stop();
+      }
+    }, this));
+    this._$stepBackward.on("click", function () {
+      scriptingAPI.api.stepBack();
+    });
+    this._$stepForward.on("click", function () {
+      scriptingAPI.api.stepForward();
+    });
+  }
+  inherit(PlaybackController, InteractiveComponent);
+
+  /**
+   * Updates play / pause button.
+   * @private
+   */
+  PlaybackController.prototype._simulationStateChanged = function () {
+    this._modelStopped = model.is_stopped();
+    if (this._modelStopped) {
+      this._$playPause.removeClass("playing");
+    } else {
+      this._$playPause.addClass("playing");
+    }
+  };
+
+  /**
+   * Updates time display.
+   * @private
+   */
+  PlaybackController.prototype._timeChanged = function () {
+    var time = model.get("displayTime").toFixed(1);
+    this._$timeDisplay.html(time + " " + this._timeUnits);
+  };
+
+  /**
+   * Updates playback controller mode ("play", "play_reset" or "play_reset_step").
+   * @private
+   */
+  PlaybackController.prototype._displayModeChanged = function () {
+    var mode = model.get("controlButtons"),
+        $buttons;
+    if (!mode) { // mode === "" || mode === null || mode === false
+      this.$element.find(".step, .reset, .play-pause").addClass("hidden");
+    } else if (mode === "play") {
+      this.$element.find(".step, .reset").addClass("hidden");
+      this.$element.find(".play-pause").removeClass("hidden");
+    } else if (mode === "play_reset") {
+      this.$element.find(".step").addClass("hidden");
+      this.$element.find(".play-pause, .reset").removeClass("hidden");
+    } else if (mode === "play_reset_step") {
+      this.$element.find(".step, .reset, .play-pause").removeClass("hidden");
+    }
+    $buttons = this.$element.find("button");
+    $buttons.removeClass("first");
+    $buttons.removeClass("last");
+    $buttons = $buttons.not(".hidden");
+    $buttons.first().addClass("first");
+    $buttons.last().addClass("last");
+  };
+
+  /**
+   * Implements optional callback supported by Interactive Controller.
+   */
+  PlaybackController.prototype.modelLoadedCallback = function () {
+    // Update play / pause button.
+    // Use event namespace to let multiple playbacks work fine with one model.
+    model.on('play.' + this.component.id, $.proxy(this._simulationStateChanged, this));
+    model.on('stop.' + this.component.id, $.proxy(this._simulationStateChanged, this));
+    this._simulationStateChanged();
+    // Update time units and set time.
+    this._timeUnits = model.getPropertyDescription("displayTime").getUnitAbbreviation();
+    model.addPropertiesListener(["displayTime"], $.proxy(this._timeChanged, this));
+    this._timeChanged();
+    // Update display mode (=> buttons are hidden or visible).
+    model.addPropertiesListener(["controlButtons"], $.proxy(this._displayModeChanged, this));
+    this._displayModeChanged();
+  };
+
+  return PlaybackController;
+});
+
 /*global define */
 
 define('common/controllers/div-controller',['require','common/inherit','common/controllers/interactive-component'],function (require) {
@@ -12089,12 +12436,14 @@ define('common/controllers/div-controller',['require','common/inherit','common/c
 
 /*global define, $ */
 
-define('common/controllers/setup-banner',['lab.config','common/controllers/text-controller','common/controllers/image-controller','common/controllers/div-controller'],function () {
+define('common/controllers/setup-banner',['lab.config','common/controllers/text-controller','common/controllers/image-controller','common/controllers/div-controller','common/controllers/playback-controller'],function () {
 
-  var labConfig       = require('lab.config'),
-      TextController  = require('common/controllers/text-controller'),
-      ImageController = require('common/controllers/image-controller'),
-      DivController   = require('common/controllers/div-controller'),
+  var labConfig          = require('lab.config'),
+      TextController     = require('common/controllers/text-controller'),
+      ImageController    = require('common/controllers/image-controller'),
+      DivController      = require('common/controllers/div-controller'),
+      PlaybackController = require('common/controllers/playback-controller'),
+
       topBarHeight    = 1.5,
       topBarFontScale = topBarHeight*0.65,
       topBarVerticalPadding = topBarHeight/10;
@@ -12106,12 +12455,13 @@ define('common/controllers/setup-banner',['lab.config','common/controllers/text-
    *  - layout definition (components location).
    * All these things are used to build the interactive banner.
    *
+   * @param {ScriptingAPI} scriptingAPI Initialized ScriptingAPI object.
    * @param {Object} interactive Interactive JSON definition.
    * @param {CreditsDialog} creditsDialog
    * @param {AboutDialog} aboutDialog
    * @param {ShareDialog} shareDialog
    */
-  return function setupBanner(interactive, creditsDialog, aboutDialog, shareDialog) {
+  return function setupBanner(scriptingAPI, interactive, creditsDialog, aboutDialog, shareDialog) {
     var components = {},
         template = [],
         layout = {},
@@ -12148,9 +12498,11 @@ define('common/controllers/setup-banner',['lab.config','common/controllers/text-
         Controller = ImageController;
       } else if (element.type === "div") {
         Controller = DivController;
+      } else if (element.type === "playback") {
+        Controller = PlaybackController;
       }
 
-      components[element.id] = new Controller(element);
+      components[element.id] = new Controller(element, scriptingAPI);
       template.push(container);
       layout[container.id] = [element.id];
     }
@@ -12289,14 +12641,18 @@ define('common/controllers/setup-banner',['lab.config','common/controllers/text-
       });
     }
 
-    template.push({
-      "id": "interactive-playback-container",
-      "bottom": "container.height",
-      "left": "container.width/2 - interactive-playback-container.width/2",
-      "width": "12em",
-      "height": "banner-bottom-left.height",
-      "belowOthers": true
-    });
+      createElementInContainer(
+      {
+        "type": "playback",
+        "id": "playback"
+      },
+      {
+        "id": "interactive-playback-container",
+        "bottom": "container.height",
+        "left": "container.width/2 - interactive-playback-container.width/2",
+        "height": "banner-bottom-left.height",
+        "belowOthers": true
+      });
 
     return {
       components: components,
@@ -13137,15 +13493,6 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
       }
     }
 
-    function setupInteractivePlaybackController() {
-      var wrapper, svgContainer;
-
-      if (wrapper = document.getElementById("interactive-playback-container")) {
-        svgContainer = d3.select(wrapper).append("svg");
-        modelController.setPlaybackContainer(svgContainer);
-      }
-    }
-
     // Public API.
     layout = {
       /**
@@ -13209,12 +13556,6 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
         });
         $modelContainer.appendTo($interactiveContainer);
         $containerByID.model = $modelContainer;
-
-        // For now we have only one model, we we assume we always want to set up a
-        // interactive-wide controller. When we have more than one model, we can
-        // easily check for that and not set this up, which will make every model
-        // use their own playback controllers.
-        setupInteractivePlaybackController();
       },
 
       /**
@@ -13346,61 +13687,11 @@ define('common/layout/templates',[],function () {
   };
 });
 
-define('cs',{load: function(id){throw new Error("Dynamic load not allowed: " + id);}});
-(function() {
+/*global define, DEVELOPMENT, $, d3, alert, model: true */
 
-  define('cs!common/components/model_player',['require'],function(require) {
-    var ModelPlayer;
-    return ModelPlayer = (function() {
-
-      function ModelPlayer(model) {
-        this.model = model;
-      }
-
-      ModelPlayer.prototype.play = function() {
-        return this.model.resume();
-      };
-
-      ModelPlayer.prototype.stop = function() {
-        return this.model.stop();
-      };
-
-      ModelPlayer.prototype.forward = function() {
-        this.stop();
-        return this.model.stepForward();
-      };
-
-      ModelPlayer.prototype.back = function() {
-        this.stop();
-        return this.model.stepBack();
-      };
-
-      ModelPlayer.prototype.seek = function(float_index) {
-        this.stop();
-        return this.model.seek(float_index);
-      };
-
-      ModelPlayer.prototype.reset = function() {
-        return this.model.reset();
-      };
-
-      ModelPlayer.prototype.isPlaying = function() {
-        return !this.model.is_stopped();
-      };
-
-      return ModelPlayer;
-
-    })();
-  });
-
-}).call(this);
-
-/*global define, DEVELOPMENT, $, d3, alert, model: true, model_player: true */
-
-define('common/controllers/model-controller',['require','arrays','cs!common/components/model_player'],function (require) {
+define('common/controllers/model-controller',['require','arrays'],function (require) {
   // Dependencies.
-  var arrays            = require('arrays'),
-      ModelPlayer       = require('cs!common/components/model_player');
+  var arrays            = require('arrays');
 
   return function modelController(modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, interactivesController,
                                   Model, ModelContainer, ScriptingAPI, Benchmarks) {
@@ -13411,37 +13702,7 @@ define('common/controllers/model-controller',['require','arrays','cs!common/comp
 
         // Options after processing performed by processOptions().
         modelOptions,
-        viewOptions,
-
-        // We pass this object to the "ModelPlayer" to intercept messages for the model
-        // instead of allowing the ModelPlayer to talk to the model directly.
-        // This allows us, for example, to reload the model instead of trying to call a 'reset' event
-        // on models which don't know how to reset themselves.
-
-        modelProxy = {
-          resume: function() {
-            model.resume();
-          },
-
-          stop: function() {
-            model.stop();
-          },
-
-          reset: function() {
-            model.stop();
-            // if the model has a reset function then call it so anything the application
-            // sets up outside the interactive itself that is listening for a model.reset
-            // event gets notified. Example the Energy Graph Extra Item.
-            if (model.reset) {
-              model.reset();
-            }
-            reload(controller.modelUrl, modelConfig);
-          },
-
-          is_stopped: function() {
-            return model.is_stopped();
-          }
-        };
+        viewOptions;
 
       // ------------------------------------------------------------
       //
@@ -13531,22 +13792,9 @@ define('common/controllers/model-controller',['require','arrays','cs!common/comp
 
         // ------------------------------------------------------------
         //
-        // Create player and container view for model
+        // Create container view for model
         //
         // ------------------------------------------------------------
-
-        model_player = new ModelPlayer(modelProxy, false);
-        model_player.forward = function() {
-          model.stepForward();
-          if (!model.isNewStep()) {
-            controller.modelContainer.update();
-          }
-        };
-        model_player.back = function() {
-          model.stepBack();
-          controller.modelContainer.update();
-        };
-
         controller.modelContainer = new ModelContainer(controller.modelUrl, model, interactivesController.getNextTabIndex);
       }
 
@@ -13604,13 +13852,9 @@ define('common/controllers/model-controller',['require','arrays','cs!common/comp
         return controller.modelContainer.getHeightForWidth(width);
       };
 
-      controller.setPlaybackContainer = function (svgPlaybackContainer) {
-        return controller.modelContainer.setPlaybackContainer(svgPlaybackContainer);
-      }
-
       controller.enableKeyboardHandlers = function () {
         return model.get("enableKeyboardHandlers");
-      }
+      };
 
       controller.reload = reload;
       controller.repaint = repaint;
@@ -13995,6 +14239,7 @@ define('md2d/models/engine/constants/index',['require','exports','module','./uni
   }
 });
 
+define('cs',{load: function(id){throw new Error("Dynamic load not allowed: " + id);}});
 /*global define: false */
 define('md2d/models/aminoacids-props',[],function() {
   return [
@@ -23463,403 +23708,16 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
   };
 });
 
-(function() {
-
-  define('cs!common/components/model_controller_component',['require','common/console'],function(require) {
-    var ModelControllerComponent, console;
-    console = require('common/console');
-    return ModelControllerComponent = (function() {
-
-      function ModelControllerComponent(svg_element, playable, xpos, ypos, scale) {
-        var _this = this;
-        this.svg_element = svg_element;
-        this.playable = playable != null ? playable : null;
-        this.width = 200;
-        this.height = 34;
-        this.xpos = xpos;
-        this.ypos = ypos;
-        this.scale = scale || 1;
-        this.unit_width = this.width / 9;
-        this.vertical_padding = (this.height - this.unit_width) / 2;
-        this.stroke_width = this.unit_width / 10;
-        this.init_view();
-        this.setup_buttons();
-        if (this.playable.isPlaying()) {
-          this.hide(this.play);
-        } else {
-          this.hide(this.stop);
-        }
-        model.on('play', function() {
-          return _this.update_ui();
-        });
-        model.on('stop', function() {
-          return _this.update_ui();
-        });
-      }
-
-      ModelControllerComponent.prototype.offset = function(offset) {
-        return offset * (this.unit_width * 2) + this.unit_width;
-      };
-
-      ModelControllerComponent.prototype.setup_buttons = function() {};
-
-      ModelControllerComponent.prototype.make_button = function(_arg) {
-        var action, art, art2, button_bg, button_group, button_highlight, offset, point, point_set, points, points_string, type, x, y, _i, _j, _len, _len1,
-          _this = this;
-        action = _arg.action, offset = _arg.offset, type = _arg.type, point_set = _arg.point_set;
-        if (type == null) {
-          type = "svg:polyline";
-        }
-        if (point_set == null) {
-          point_set = this.icon_shapes[action];
-        }
-        offset = this.offset(offset);
-        button_group = this.group.append('svg:g');
-        button_group.attr("class", "component playbacksvgbutton").attr('x', offset).attr('y', this.vertical_padding).attr('width', this.unit_width).attr('height', this.unit_width * 2).attr('style', 'fill: #cccccc');
-        button_bg = button_group.append('rect');
-        button_bg.attr('class', 'bg').attr('x', offset).attr('y', this.vertical_padding / 3).attr('width', this.unit_width * 2).attr('height', this.unit_width * 1.5).attr('rx', '0');
-        for (_i = 0, _len = point_set.length; _i < _len; _i++) {
-          points = point_set[_i];
-          art = button_group.append(type);
-          art.attr('class', "" + action + " button-art");
-          points_string = "";
-          for (_j = 0, _len1 = points.length; _j < _len1; _j++) {
-            point = points[_j];
-            x = offset + 10 + point['x'] * this.unit_width;
-            y = this.vertical_padding / .75 + point['y'] * this.unit_width;
-            points_string = points_string + (" " + x + "," + y);
-            art.attr('points', points_string);
-          }
-          if (action === 'stop') {
-            art2 = button_group.append('rect');
-            art2.attr('class', 'pause-center').attr('x', x + this.unit_width / 3).attr('y', this.vertical_padding / .75 - 1).attr('width', this.unit_width / 3).attr('height', this.unit_width + 2);
-          }
-        }
-        button_highlight = button_group.append('rect');
-        button_highlight.attr('class', 'highlight').attr('x', offset + 1).attr('y', this.vertical_padding / 1.85).attr('width', this.unit_width * 2 - 2).attr('height', this.unit_width / 1.4).attr('rx', '0');
-        button_group.on('click', function() {
-          return _this.action(action);
-        });
-        return button_group;
-      };
-
-      ModelControllerComponent.prototype.action = function(action) {
-        console.log("running " + action + " ");
-        if (this.playable) {
-          switch (action) {
-            case 'play':
-              this.playable.play();
-              break;
-            case 'stop':
-              this.playable.stop();
-              break;
-            case 'forward':
-              this.playable.forward();
-              break;
-            case 'back':
-              this.playable.back();
-              break;
-            case 'seek':
-              this.playable.seek(1);
-              break;
-            case 'reset':
-              this.playable.reset();
-              break;
-            default:
-              console.log("cant find action for " + action);
-          }
-        } else {
-          console.log("no @playable defined");
-        }
-        return this.update_ui();
-      };
-
-      ModelControllerComponent.prototype.init_view = function() {
-        this.svg = this.svg_element.append("svg:svg").attr("class", "component model-controller playbacksvg").attr("x", this.xpos).attr("y", this.ypos);
-        return this.group = this.svg.append("g").attr("transform", "scale(" + this.scale + "," + this.scale + ")").attr("width", this.width).attr("height", this.height);
-      };
-
-      ModelControllerComponent.prototype.position = function(xpos, ypos, scale) {
-        this.xpos = xpos;
-        this.ypos = ypos;
-        this.scale = scale || 1;
-        this.svg.attr("x", this.xpos).attr("y", this.ypos);
-        return this.group.attr("transform", "scale(" + this.scale + "," + this.scale + ")").attr("width", this.width).attr("height", this.height);
-      };
-
-      ModelControllerComponent.prototype.update_ui = function() {
-        if (this.playable) {
-          if (this.playable.isPlaying()) {
-            this.hide(this.play);
-            return this.show(this.stop);
-          } else {
-            this.hide(this.stop);
-            return this.show(this.play);
-          }
-        }
-      };
-
-      ModelControllerComponent.prototype.hide = function(thing) {
-        return thing.style('visibility', 'hidden');
-      };
-
-      ModelControllerComponent.prototype.show = function(thing) {
-        return thing.style('visibility', 'visible');
-      };
-
-      ModelControllerComponent.prototype.icon_shapes = {
-        play: [
-          [
-            {
-              x: 0,
-              y: 0
-            }, {
-              x: 1,
-              y: 0.5
-            }, {
-              x: 0,
-              y: 1
-            }
-          ]
-        ],
-        stop: [
-          [
-            {
-              x: 0,
-              y: 0
-            }, {
-              x: 1,
-              y: 0
-            }, {
-              x: 1,
-              y: 1
-            }, {
-              x: 0,
-              y: 1
-            }, {
-              x: 0,
-              y: 0
-            }
-          ]
-        ],
-        reset: [
-          [
-            {
-              x: 1,
-              y: 0
-            }, {
-              x: 0.3,
-              y: 0.5
-            }, {
-              x: 1,
-              y: 1
-            }
-          ], [
-            {
-              x: 0,
-              y: 0
-            }, {
-              x: 0.3,
-              y: 0
-            }, {
-              x: 0.3,
-              y: 1
-            }, {
-              x: 0,
-              y: 1
-            }, {
-              x: 0,
-              y: 0
-            }
-          ]
-        ],
-        back: [
-          [
-            {
-              x: 0.5,
-              y: 0
-            }, {
-              x: 0,
-              y: 0.5
-            }, {
-              x: 0.5,
-              y: 1
-            }
-          ], [
-            {
-              x: 1,
-              y: 0
-            }, {
-              x: 0.5,
-              y: 0.5
-            }, {
-              x: 1,
-              y: 1
-            }
-          ]
-        ],
-        forward: [
-          [
-            {
-              x: 0.5,
-              y: 0
-            }, {
-              x: 1,
-              y: 0.5
-            }, {
-              x: 0.5,
-              y: 1
-            }
-          ], [
-            {
-              x: 0,
-              y: 0
-            }, {
-              x: 0.5,
-              y: 0.5
-            }, {
-              x: 0,
-              y: 1
-            }
-          ]
-        ]
-      };
-
-      return ModelControllerComponent;
-
-    })();
-  });
-
-}).call(this);
-
-(function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-  define('cs!common/components/play_reset_svg',['require','cs!common/components/model_controller_component'],function(require) {
-    var ModelControllerComponent, PlayResetComponentSVG;
-    ModelControllerComponent = require('cs!common/components/model_controller_component');
-    return PlayResetComponentSVG = (function(_super) {
-
-      __extends(PlayResetComponentSVG, _super);
-
-      function PlayResetComponentSVG() {
-        return PlayResetComponentSVG.__super__.constructor.apply(this, arguments);
-      }
-
-      PlayResetComponentSVG.prototype.setup_buttons = function() {
-        this.reset = this.make_button({
-          action: 'reset',
-          offset: 0
-        });
-        this.play = this.make_button({
-          action: 'play',
-          offset: 1
-        });
-        return this.stop = this.make_button({
-          action: 'stop',
-          offset: 1
-        });
-      };
-
-      return PlayResetComponentSVG;
-
-    })(ModelControllerComponent);
-  });
-
-}).call(this);
-
-(function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-  define('cs!common/components/play_only_svg',['require','cs!common/components/model_controller_component'],function(require) {
-    var ModelControllerComponent, PlayOnlyComponentSVG;
-    ModelControllerComponent = require('cs!common/components/model_controller_component');
-    return PlayOnlyComponentSVG = (function(_super) {
-
-      __extends(PlayOnlyComponentSVG, _super);
-
-      function PlayOnlyComponentSVG() {
-        return PlayOnlyComponentSVG.__super__.constructor.apply(this, arguments);
-      }
-
-      PlayOnlyComponentSVG.prototype.setup_buttons = function() {
-        this.play = this.make_button({
-          action: 'play',
-          offset: 0
-        });
-        return this.stop = this.make_button({
-          action: 'stop',
-          offset: 0
-        });
-      };
-
-      return PlayOnlyComponentSVG;
-
-    })(ModelControllerComponent);
-  });
-
-}).call(this);
-
-(function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-  define('cs!common/components/playback_svg',['require','cs!common/components/model_controller_component'],function(require) {
-    var ModelControllerComponent, PlaybackComponentSVG;
-    ModelControllerComponent = require('cs!common/components/model_controller_component');
-    return PlaybackComponentSVG = (function(_super) {
-
-      __extends(PlaybackComponentSVG, _super);
-
-      function PlaybackComponentSVG() {
-        return PlaybackComponentSVG.__super__.constructor.apply(this, arguments);
-      }
-
-      PlaybackComponentSVG.prototype.setup_buttons = function() {
-        this.reset = this.make_button({
-          action: 'reset',
-          offset: 0
-        });
-        this.back = this.make_button({
-          action: 'back',
-          offset: 1
-        });
-        this.play = this.make_button({
-          action: 'play',
-          offset: 2
-        });
-        this.stop = this.make_button({
-          action: 'stop',
-          offset: 2
-        });
-        return this.forward = this.make_button({
-          action: 'forward',
-          offset: 3
-        });
-      };
-
-      return PlaybackComponentSVG;
-
-    })(ModelControllerComponent);
-  });
-
-}).call(this);
-
-/*global $, model_player, define: false, d3: false */
+/*global $, define: false, d3: false */
 // ------------------------------------------------------------
 //
 //   PTA View Container
 //
 // ------------------------------------------------------------
-define('common/views/model-view',['require','lab.config','common/console','cs!common/components/play_reset_svg','cs!common/components/play_only_svg','cs!common/components/playback_svg'],function (require) {
+define('common/views/model-view',['require','lab.config','common/console'],function (require) {
   // Dependencies.
   var labConfig             = require('lab.config'),
-      console               = require('common/console'),
-      PlayResetComponentSVG = require('cs!common/components/play_reset_svg'),
-      PlayOnlyComponentSVG  = require('cs!common/components/play_only_svg'),
-      PlaybackComponentSVG  = require('cs!common/components/playback_svg');
+      console               = require('common/console');
 
   return function ModelView(modelUrl, model, Renderer, getNextTabIndex) {
         // Public API object to be returned.
@@ -23871,10 +23729,8 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
         fontSizeInPixels,
         imagePath,
         vis1, vis, plot,
-        playbackComponent,
         cx, cy,
         padding, size, modelSize,
-        playbackXPos, playbackYPos,
 
         // Basic scaling functions for positio, it transforms model units to "pixels".
         // Use it for positions of objects rendered inside the view.
@@ -23899,12 +23755,6 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
         textContainerBelow,
         textContainerTop,
         brushContainer,
-
-        // we can ask the view to render the playback controls to some other container
-        useExternalPlaybackContainer = false,
-        playbackContainer,
-
-        preexistingControls,
 
         clickHandler,
         // d3.svg.brush object used to implement select action. It should be
@@ -23952,10 +23802,6 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
         padding.bottom += (fontSizeInPixels * 0.8);
         padding.left +=   (fontSizeInPixels * 0.8);
       }
-
-      if (model.get("controlButtons") && !useExternalPlaybackContainer) {
-        padding.bottom += (fontSizeInPixels * 2.5);
-      }
     }
 
     function scale() {
@@ -23999,27 +23845,6 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
 
       offsetTop  = node.offsetTop + padding.top;
       offsetLeft = node.offsetLeft + padding.left;
-
-      if (!useExternalPlaybackContainer) {
-        switch (model.get("controlButtons")) {
-          case "play":
-            playbackXPos = padding.left + (size.width - (75 * emsize))/2;
-            break;
-          case "play_reset":
-            playbackXPos = padding.left + (size.width - (140 * emsize))/2;
-            break;
-          case "play_reset_step":
-            playbackXPos = padding.left + (size.width - (230 * emsize))/2;
-            break;
-          default:
-            playbackXPos = padding.left + (size.width - (230 * emsize))/2;
-        }
-
-        playbackYPos = cy - 42 * emsize;
-      } else {
-        playbackXPos = 0;
-        playbackYPos = fontSizeInPixels/6;
-      }
 
       // Basic model2px scaling function for position.
       model2px = d3.scale.linear()
@@ -24225,8 +24050,6 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
           imageContainerTop:    imageContainerTop,
           textContainerTop:     textContainerTop
         };
-
-        playbackContainer = vis1;
       } else {
         // TODO: ?? what g, why is it here?
         vis.selectAll("g.x").remove();
@@ -24252,24 +24075,6 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
         });
 
       redraw();
-    }
-
-    function setupPlaybackControls() {
-      if (preexistingControls) preexistingControls.remove();
-      switch (model.get("controlButtons")) {
-        case "play":
-          playbackComponent = new PlayOnlyComponentSVG(playbackContainer, model_player, playbackXPos, playbackYPos, emsize);
-          break;
-        case "play_reset":
-          playbackComponent = new PlayResetComponentSVG(playbackContainer, model_player, playbackXPos, playbackYPos, emsize);
-          break;
-        case "play_reset_step":
-          playbackComponent = new PlaybackComponentSVG(playbackContainer, model_player, playbackXPos, playbackYPos, emsize);
-          break;
-        default:
-          playbackComponent = null;
-      }
-      preexistingControls = playbackContainer.select('.model-controller');
     }
 
     function removeClickHandlers() {
@@ -24306,7 +24111,6 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
       model.addPropertiesListener(["gridLines", "xunits", "yunits", "xlabel", "ylabel" ],
         function() {
           renderContainer();
-          setupPlaybackControls();
           repaint();
         }
       );
@@ -24333,7 +24137,6 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
       getFontSizeInPixels: getFontSizeInPixels,
       resize: function() {
         renderContainer();
-        setupPlaybackControls();
         repaint();
       },
       getHeightForWidth: function (width) {
@@ -24348,10 +24151,6 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
         height = width / aspectRatio;
         return height + padding.top  + padding.bottom;
       },
-      setPlaybackContainer: function(svgPlaybackContainer) {
-        useExternalPlaybackContainer = true;
-        playbackContainer = svgPlaybackContainer;
-      },
       repaint: function() {
         repaint();
       },
@@ -24360,7 +24159,6 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
         api.setSelectHandler(null);
         processOptions(newModelUrl, newModel);
         renderContainer();
-        setupPlaybackControls();
         init();
         repaint();
       },
@@ -24501,7 +24299,6 @@ define('common/views/model-view',['require','lab.config','common/console','cs!co
 
     processOptions();
     renderContainer();
-    setupPlaybackControls();
     init();
 
     // Extend Public withExport initialized object to initialized objects
@@ -27412,44 +27209,6 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
         return model.getNumberOfAngularBonds();
       },
 
-      /* Send a track page context event to Google Analytics */
-      trackPageContext: function trackPageContext(category, action, label) {
-        var pageContext,
-            googleAnalytics = _gaq;
-
-        if (typeof googleAnalytics === 'undefined'){
-          console.error("Google Analytics not defined, Can not send the Track Page Context event");
-          return;
-        }
-        if (!category) {
-          category = "Interactive";
-        }
-        if (!action) {
-          action = "Page Context";
-        }
-        if (!label) {
-          label = JSON.stringify({ pageContext: document.referrer, interactive: document.location.href });
-        }
-        console.log("Sending a track page context event to Google Analytics");
-        googleAnalytics.push(['_trackEvent', category, action, label]);
-      },
-
-      /* Send a tracking event to Google Analytics */
-      trackEvent: function trackEvent(category, action, label) {
-        var googleAnalytics = _gaq;
-
-        if (typeof googleAnalytics === 'undefined'){
-          console.error("Google Analytics not defined, Can not send trackEvent");
-          return;
-        }
-        if (!category) {
-          category = "Interactive";
-        }
-        console.log("Sending a track page event Google Analytics (category:action:label):");
-        console.log("(" + category + ":"  + action + ":" + label + ")");
-        googleAnalytics.push(['_trackEvent', category, action, label]);
-      },
-
       addAtom: function addAtom(props, options) {
         if (options && options.suppressRepaint) {
           // Translate suppressRepaint option to
@@ -28120,28 +27879,28 @@ define('solar-system/models/engine/solar-system',['require','exports','module','
         dt_sq,
 
         // ####################################################################
-        //                      Planet Properties
+        //                      Body Properties
 
-        // Individual property arrays for the planets, indexed by planet number
+        // Individual property arrays for the bodies, indexed by body number
         radius, x, y, vx, vy, px, py, ax, ay, mass, speed,
 
-        // An object that contains references to the above planet-property arrays
-        planets,
+        // An object that contains references to the above body-property arrays
+        bodies,
 
-        // The number of planets in the system.
+        // The number of bodies in the system.
         N = 0,
 
-        // booleans indicating whether the planet world wraps
+        // booleans indicating whether the body world wraps
         horizontalWrapping,
         verticalWrapping,
 
         // Initializes basic data structures.
         initialize = function () {
-          createPlanetsArray(0);
+          createBodiesArray(0);
         },
 
         /**
-          Extend all arrays in arrayContainer to `newLength`. Here, arrayContainer is expected to be `planets`
+          Extend all arrays in arrayContainer to `newLength`. Here, arrayContainer is expected to be `bodies`
           `elements`, `radialBonds`, etc. arrayContainer might be an array or an object.
           TODO: this is just interim solution, in the future only objects will be expected.
         */
@@ -28165,57 +27924,57 @@ define('solar-system/models/engine/solar-system',['require','exports','module','
         },
 
         /**
-          Set up "shortcut" references, e.g., x = planets.x
+          Set up "shortcut" references, e.g., x = bodies.x
         */
         assignShortcutReferences = {
 
-          planets: function() {
-            radius         = planets.radius;
-            x              = planets.x;
-            y              = planets.y;
-            vx             = planets.vx;
-            vy             = planets.vy;
-            px             = planets.px;
-            py             = planets.py;
-            ax             = planets.ax;
-            ay             = planets.ay;
-            mass           = planets.mass;
-            speed          = planets.speed;
-            pinned         = planets.pinned;
+          bodies: function() {
+            radius         = bodies.radius;
+            x              = bodies.x;
+            y              = bodies.y;
+            vx             = bodies.vx;
+            vy             = bodies.vy;
+            px             = bodies.px;
+            py             = bodies.py;
+            ax             = bodies.ax;
+            ay             = bodies.ay;
+            mass           = bodies.mass;
+            speed          = bodies.speed;
+            pinned         = bodies.pinned;
           }
 
         },
 
 
-        createPlanetsArray = function(num) {
-          planets  = engine.planets  = {};
+        createBodiesArray = function(num) {
+          bodies  = engine.bodies  = {};
 
           // TODO. DRY this up by letting the property list say what type each array is
-          planets.radius         = arrays.create(num, 0, arrayTypes.float);
-          planets.x              = arrays.create(num, 0, arrayTypes.float);
-          planets.y              = arrays.create(num, 0, arrayTypes.float);
-          planets.vx             = arrays.create(num, 0, arrayTypes.float);
-          planets.vy             = arrays.create(num, 0, arrayTypes.float);
-          planets.px             = arrays.create(num, 0, arrayTypes.float);
-          planets.py             = arrays.create(num, 0, arrayTypes.float);
-          planets.ax             = arrays.create(num, 0, arrayTypes.float);
-          planets.ay             = arrays.create(num, 0, arrayTypes.float);
-          planets.mass           = arrays.create(num, 0, arrayTypes.floatType);
-          planets.speed          = arrays.create(num, 0, arrayTypes.float);
-          planets.pinned         = arrays.create(num, 0, arrayTypes.uint8);
+          bodies.radius         = arrays.create(num, 0, arrayTypes.float);
+          bodies.x              = arrays.create(num, 0, arrayTypes.float);
+          bodies.y              = arrays.create(num, 0, arrayTypes.float);
+          bodies.vx             = arrays.create(num, 0, arrayTypes.float);
+          bodies.vy             = arrays.create(num, 0, arrayTypes.float);
+          bodies.px             = arrays.create(num, 0, arrayTypes.float);
+          bodies.py             = arrays.create(num, 0, arrayTypes.float);
+          bodies.ax             = arrays.create(num, 0, arrayTypes.float);
+          bodies.ay             = arrays.create(num, 0, arrayTypes.float);
+          bodies.mass           = arrays.create(num, 0, arrayTypes.floatType);
+          bodies.speed          = arrays.create(num, 0, arrayTypes.float);
+          bodies.pinned         = arrays.create(num, 0, arrayTypes.uint8);
 
-          // For the sake of clarity, manage all planets properties in one
+          // For the sake of clarity, manage all bodies properties in one
           // place (engine). In the future, think about separation of engine
           // properties and view-oriented properties like these:
-          planets.marked         = arrays.create(num, 0, arrayTypes.uint8);
-          planets.visible        = arrays.create(num, 0, arrayTypes.uint8);
+          bodies.marked         = arrays.create(num, 0, arrayTypes.uint8);
+          bodies.visible        = arrays.create(num, 0, arrayTypes.uint8);
 
-          assignShortcutReferences.planets();
+          assignShortcutReferences.bodies();
         },
 
-        // Constrain Planet i to the area between the walls by simulating perfectly elastic collisions with the walls.
+        // Constrain Body i to the area between the walls by simulating perfectly elastic collisions with the walls.
         // Note this may change the linear and angular momentum.
-        bouncePlanetOffWalls = function(i) {
+        bounceBodyOffWalls = function(i) {
           var r = radius[i],
               leftwall = minX + r,
               bottomwall = minY + r,
@@ -28278,8 +28037,8 @@ define('solar-system/models/engine/solar-system',['require','exports','module','
         },
 
         // Accumulate acceleration into a(t + dt) from all possible interactions, fields
-        // and forces connected with planets.
-        updatePlanetsAccelerations = function () {
+        // and forces connected with bodies.
+        updateBodiesAccelerations = function () {
           var i, inverseMass;
 
           if (N === 0) return;
@@ -28305,7 +28064,6 @@ define('solar-system/models/engine/solar-system',['require','exports','module','
 
 
         updateGravitationalAccelerations = function() {
-
           var i, j, dx, dy, rSq, gfx, gfy;
 
           i = -1; while (++i < N) {
@@ -28330,17 +28088,18 @@ define('solar-system/models/engine/solar-system',['require','exports','module','
         // Half of the update of v(t + dt) and p(t + dt) using a. During a single integration loop,
         // call once when a = a(t) and once when a = a(t+dt).
         halfUpdateVelocity = function() {
-          var i;
+          var i, m;
           for (i = 0; i < N; i++) {
+            m = mass[i];
             vx[i] += 0.5 * ax[i] * dt;
-            px[i] = vx[i];
+            px[i] = m * vx[i];
             vy[i] += 0.5 * ay[i] * dt;
-            py[i] = vy[i];
+            py[i] = m * vy[i];
           }
         },
 
         // Calculate r(t + dt, i) from v(t + 0.5 * dt).
-        updatePlanetsPosition = function() {
+        updateBodiesPosition = function() {
           var width100  = size[0] * 100,
               height100 = size[1] * 100,
               xPrev, yPrev, i;
@@ -28353,12 +28112,12 @@ define('solar-system/models/engine/solar-system',['require','exports','module','
             y[i] += vy[i] * dt;
 
             // Bounce off walls.
-            bouncePlanetOffWalls(i);
+            bounceBodyOffWalls(i);
           }
         },
 
-        // Removes velocity and acceleration from pinned Planets.
-        pinPlanets = function() {
+        // Removes velocity and acceleration from pinned Bodies.
+        pinBodies = function() {
           var i;
 
           for (i = 0; i < N; i++) {
@@ -28369,7 +28128,7 @@ define('solar-system/models/engine/solar-system',['require','exports','module','
         },
 
         // Update speed using velocities.
-        updatePlanetsSpeed = function() {
+        updateBodiesSpeed = function() {
           var i;
 
           for (i = 0; i < N; i++) {
@@ -28419,15 +28178,13 @@ define('solar-system/models/engine/solar-system',['require','exports','module','
         }
       },
 
-      setPlanetProperties: function (i, props) {
+      setBodyProperties: function (i, props) {
         var key, idx, rest, j;
-
-        props.radius = 1;
 
         // Set all properties from props hash.
         for (key in props) {
           if (props.hasOwnProperty(key)) {
-            planets[key][i] = props[key];
+            bodies[key][i] = props[key];
           }
         }
 
@@ -28436,64 +28193,63 @@ define('solar-system/models/engine/solar-system',['require','exports','module','
       },
 
       /**
-        The canonical method for adding an planet to the collections of planets.
+        The canonical method for adding an body to the collections of bodies.
 
-        If there isn't enough room in the 'planets' array, it (somewhat inefficiently)
-        extends the length of the typed arrays by ten to have room for more planets.
+        If there isn't enough room in the 'bodies' array, it (somewhat inefficiently)
+        extends the length of the typed arrays by ten to have room for more bodies.
 
-        @returns the index of the new planet
+        @returns the index of the new body
       */
-      addPlanet: function(props) {
-        if (N + 1 > planets.x.length) {
-          extendArrays(planets, N + 10);
-          assignShortcutReferences.planets();
+      addBody: function(props) {
+        if (N + 1 > bodies.x.length) {
+          extendArrays(bodies, N + 10);
+          assignShortcutReferences.bodies();
         }
 
-        // Set acceleration of new planet to zero.
+        // Set acceleration of new body to zero.
         props.ax = props.ay = 0;
 
-        // Increase number of planets.
+        // Increase number of bodies.
         N++;
 
-        // Set provided properties of new planet.
-        engine.setPlanetProperties(N - 1, props);
+        // Set provided properties of new body.
+        engine.setBodyProperties(N - 1, props);
 
       },
 
-      removePlanet: function(idx) {
+      removeBody: function(idx) {
         var i, len, prop,
             l, list, lists;
 
         if (idx >= N) {
-          throw new Error("Planet " + idx + " doesn't exist, so it can't be removed.");
+          throw new Error("Body " + idx + " doesn't exist, so it can't be removed.");
         }
 
-        // Shift planets properties and zero last element.
+        // Shift bodies properties and zero last element.
         // It can be optimized by just replacing the last
-        // planet with planet 'i', however this approach
-        // preserves more expectable planets indexing.
+        // body with body 'i', however this approach
+        // preserves more expectable bodies indexing.
         for (i = idx; i < N; i++) {
-          for (prop in planets) {
-            if (planets.hasOwnProperty(prop)) {
+          for (prop in bodies) {
+            if (bodies.hasOwnProperty(prop)) {
               if (i === N - 1)
-                planets[prop][i] = 0;
+                bodies[prop][i] = 0;
               else
-                planets[prop][i] = planets[prop][i + 1];
+                bodies[prop][i] = bodies[prop][i + 1];
             }
           }
         }
 
-        // Update number of planets!
+        // Update number of bodies!
         N--;
 
-        // Update accelerations of planets.
+        // Update accelerations of bodies.
         updateParticlesAccelerations();
       },
 
-      setupPlanetsRandomly: function(options) {
+      setupBodiesRandomly: function(options) {
 
-        var // if a temperature is not explicitly requested, we just need any nonzero number
-
+        var
             nrows = Math.floor(Math.sqrt(N)),
             ncols = Math.ceil(N/nrows),
 
@@ -28503,7 +28259,7 @@ define('solar-system/models/engine/solar-system',['require','exports','module','
         colSpacing = size[0] / (1 + ncols);
         rowSpacing = size[1] / (1 + nrows);
 
-        // Arrange planets in a lattice.
+        // Arrange bodies in a lattice.
         i = -1;
 
         for (r = 1; r <= nrows; r++) {
@@ -28516,12 +28272,22 @@ define('solar-system/models/engine/solar-system',['require','exports','module','
             props = {
               x:       c * colSpacing,
               y:       r * rowSpacing,
+              mass:    Math.random() * 5,
               vx:      vMagnitude * Math.cos(vDirection),
               vy:      vMagnitude * Math.sin(vDirection)
             };
-            engine.setPlanetProperties(i, props);
+            props.radius = radiusFromMass(props.mass);
+            engine.setBodyProperties(i, props);
           }
         }
+      },
+
+      radiusFromMass: function(m) {
+        var density = 1,
+            volume = m*density,
+            r;
+        r = Math.pow(volume/(4/3*Math.PI), 1/3);
+        return r
       },
 
       // Velocity Verlet integration scheme.
@@ -28538,7 +28304,7 @@ define('solar-system/models/engine/solar-system',['require','exports','module','
         if (duration === undefined)  duration = 100;
 
         // The length of an integration timestep, in fs.
-        if (_dt === undefined) _dt = 1;
+        if (_dt === undefined) _dt = 0.1;
 
         dt = _dt;        // dt is a closure variable that helpers need access to
         dt_sq = dt * dt; // the squared time step is also needed by some helpers.
@@ -28547,7 +28313,7 @@ define('solar-system/models/engine/solar-system',['require','exports','module','
         // Later this is not necessary, as a(t + dt) from
         // previous step is used as a(t) in the current step.
         if (time === 0) {
-          updatePlanetsAccelerations();
+          updateBodiesAccelerations();
         }
 
         // Number of steps.
@@ -28559,29 +28325,29 @@ define('solar-system/models/engine/solar-system',['require','exports','module','
           // Calculate v(t + 0.5 * dt) using v(t) and a(t).
           halfUpdateVelocity();
 
-          // Clearing the acceleration here from pinned planets will cause the acceleration
-          // to be zero for both halfUpdateVelocity methods and updatePlanetPosition, freezing the planet.
-          pinPlanets();
+          // Clearing the acceleration here from pinned bodies will cause the acceleration
+          // to be zero for both halfUpdateVelocity methods and updateBodyPosition, freezing the body.
+          pinBodies();
 
           // Update r(t + dt) using v(t + 0.5 * dt).
-          updatePlanetsPosition();
+          updateBodiesPosition();
 
           // Accumulate accelerations into a(t + dt) from all possible interactions, fields
           // and forces connected with atoms.
-          updatePlanetsAccelerations();
+          updateBodiesAccelerations();
 
           // Calculate v(t + dt) using v(t + 0.5 * dt) and a(t + dt).
           halfUpdateVelocity();
 
           // Now that we have velocity v(t + dt), update speed.
-          updatePlanetsSpeed();
+          updateBodiesSpeed();
 
         } // end of integration loop
 
       },
 
 
-      getNumberOfPlanets: function() {
+      getNumberOfBodies: function() {
         return N;
       },
 
@@ -28621,7 +28387,7 @@ define('solar-system/models/engine/solar-system',['require','exports','module','
         return [
           // Use wrapper providing clone-restore interface to save the hashes-of-arrays
           // that represent model state.
-          new CloneRestoreWrapper(planets),
+          new CloneRestoreWrapper(bodies),
 
           // Save time value.
           // Create one-line wrapper to provide required interface.
@@ -28688,7 +28454,7 @@ define('solar-system/models/metadata',[],function() {
         defaultValue: "default"
       },
       timeStep: {
-        defaultValue: 1
+        defaultValue: 0.1
       },
       timeStepsPerTick: {
         defaultValue: 50
@@ -28735,11 +28501,14 @@ define('solar-system/models/metadata',[],function() {
       markColor: {
         defaultValue: "#f8b500"
       },
-      showPlanetTrace: {
+      showBodyTrace: {
         defaultValue: false
       },
-      planetTraceId: {
+      bodyTraceId: {
         defaultValue: 0
+      },
+      bodyTraceColor: {
+        defaultValue: "#ee8833"
       },
       images: {
         defaultValue: []
@@ -28768,7 +28537,7 @@ define('solar-system/models/metadata',[],function() {
       planetNumbers: {
         defaultValue: false
       },
-      enablePlanetTooltips: {
+      enableBodyTooltips: {
         defaultValue: false
       },
       enableKeyboardHandlers: {
@@ -28779,7 +28548,7 @@ define('solar-system/models/metadata',[],function() {
       }
     },
 
-    planet: {
+    body: {
       // Required properties:
       x: {
         required: true
@@ -28804,6 +28573,8 @@ define('solar-system/models/metadata',[],function() {
       mass: {
         defaultValue: 1
       },
+      radius: {
+      },
       pinned: {
         defaultValue: false
       },
@@ -28814,10 +28585,6 @@ define('solar-system/models/metadata',[],function() {
         defaultValue: 0
       },
       // Read-only values, can be set only by engine:
-      radius: {
-        readOnly: true,
-        serialize: false
-      },
       px: {
         readOnly: true,
         serialize: false
@@ -29189,28 +28956,28 @@ define('solar-system/models/unit-definitions/solar-system',[],function() {
     units: {
 
       length: {
-        name: "nanometer",
-        pluralName: "nanometers",
-        abbreviation: "nm"
+        name: "meter",
+        pluralName: "meters",
+        abbreviation: "m"
       },
 
       // Internally, we've referred to "Dalton" but amu is probably more common. Dalton is
       // officially more correct but it still seems mostly to be used for protein masses, etc.
       mass: {
-        name: "atomic mass unit",
-        pluralName: "atomic mass units",
-        abbreviation: "amu"
+        name: "kilogram",
+        pluralName: "kilograms",
+        abbreviation: "kg"
       },
 
       time: {
-        name: "femtosecond",
-        pluralName: "femtoseconds",
-        abbreviation: "fs",
+        name: "second",
+        pluralName: "seconds",
+        abbreviation: "s",
         displayValue: {
-          unitsPerBaseUnit: 1e-3,
-          pluralName: "picoseconds",
-          name: "picosecond",
-          abbreviation: "ps"
+          unitsPerBaseUnit: 1,
+          pluralName: "seconds",
+          name: "second",
+          abbreviation: "s"
         }
       },
 
@@ -29220,27 +28987,27 @@ define('solar-system/models/unit-definitions/solar-system',[],function() {
       // For compatibility, MD2D does the same.
       // The units of the constant c (called "obstacle friction") are therefore 1 / time.
       inverseTime: {
-        name: "1/femtosecond",
-        pluralName: "1/femtoseconds",
-        abbreviation: "1/fs"
+        name: "1/second",
+        pluralName: "1/seconds",
+        abbreviation: "1/s"
       },
 
       velocity: {
-        name: "nanometer per femtosecond",
-        pluralName: "nanometers per second",
-        abbreviation: "nm/s"
+        name: "meter per second",
+        pluralName: "meters per second",
+        abbreviation: "m/s"
       },
 
       acceleration: {
-        name: "nanometer per femtosecond squared",
-        pluralName: "nanometers per femtosecond squared",
-        abbreviation: "nm/fs²"
+        name: "meter per second squared",
+        pluralName: "meters per second squared",
+        abbreviation: "m/fs²"
       },
 
       momentum: {
-        name: "amu nanometer per femtosecond",
-        pluralName: "amu nanometers per femtosecond",
-        abbreviation: "amu⋅nm/fs"
+        name: "kg meter per second",
+        pluralName: "kg meters per second",
+        abbreviation: "kg⋅m/s"
       },
 
       // Forces haven't typically been exposed to Classic MW users in a quantitative way, and indeed
@@ -29248,22 +29015,22 @@ define('solar-system/models/unit-definitions/solar-system',[],function() {
       // (computationally convenient) amu nm/fs² to "user friendly" units. That said, Classic MW
       // could be said to use eV/nm implicitly, since spring constants are in eV/nm².
       force: {
-        name: "amu nanometer per femtosecond squared",
-        pluralName: "amu nanometers per femtosecond squared",
-        abbreviation: "amu⋅nm/fs²"
+        name: "kg ometer per second squared",
+        pluralName: "kg meters per second squared",
+        abbreviation: "kg⋅nm/s²"
       },
 
       energy: {
-        name: "electron volt",
-        pluralName: "electron volts",
-        abbreviation: "eV"
+        name: "joules",
+        pluralName: "joules",
+        abbreviation: "J"
       },
 
       // aka spring constant (= eV/nm per nm)
       stiffness: {
-        name: "electron volt per nanometer squared",
-        pluralName: "electron volts per nanometer squared",
-        abbreviation: "eV/nm²"
+        name: "joule per meter squared",
+        pluralName: "joule per meter squared",
+        abbreviation: "J/nm²"
       },
 
       temperature: {
@@ -29630,7 +29397,7 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
 
     var model = {},
         dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack",
-            "seek", "addPlanet", "removePlanet", "invalidation", "textBoxesChanged"),
+            "seek", "addBody", "removeBody", "invalidation", "textBoxesChanged"),
         defaultMaxTickHistory = 1000,
         stopped = true,
         restart = false,
@@ -29650,7 +29417,7 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
         // are mainly managed by the engine.
 
         // A hash of arrays consisting of arrays of planet property values
-        planets,
+        bodies,
 
         // ####################################################################
 
@@ -30046,11 +29813,11 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
 
       extendResultsArray();
 
-      // Transpose 'planets' object into 'results' for easier consumption by view code
-      for (i = 0, n = model.get_num_planets(); i < n; i++) {
-        for (prop in planets) {
-          if (planets.hasOwnProperty(prop)) {
-            results[i][prop] = planets[prop][i];
+      // Transpose 'bodies' object into 'results' for easier consumption by view code
+      for (i = 0, n = model.get_num_bodies(); i < n; i++) {
+        for (prop in bodies) {
+          if (bodies.hasOwnProperty(prop)) {
+            results[i][prop] = bodies[prop][i];
           }
         }
       }
@@ -30065,7 +29832,7 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
 
       if (!results) results = [];
 
-      for (i = results.length, len = model.get_num_planets(); i < len; i++) {
+      for (i = results.length, len = model.get_num_bodies(); i < len; i++) {
         if (!results[i]) {
           results[i] = {
             idx: i
@@ -30172,20 +29939,20 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
       window.state = modelOutputState = {};
 
       // Copy reference to basic properties.
-      planets = engine.planets;
+      bodies = engine.bodies;
     };
 
     /**
-      Creates a new set of planets.
+      Creates a new set of bodies.
 
-      @config: either the number of planets (for a random setup) or
-               a hash specifying the x,y,vx,vy properties of the planets
+      @config: either the number of bodies (for a random setup) or
+               a hash specifying the x,y,vx,vy properties of the bodies
       When random setup is used, the option 'relax' determines whether the model is requested to
-      relax to a steady-state temperature (and in effect gets thermalized). If false, the planets are
+      relax to a steady-state temperature (and in effect gets thermalized). If false, the bodies are
       left in whatever grid the engine's initialization leaves them in.
     */
-    model.createPlanets = function(config) {
-          // Options for addPlanet method.
+    model.createBodies = function(config) {
+          // Options for addBody method.
       var options = {
             // Do not check the position of planet, assume that it's valid.
             supressCheck: true,
@@ -30194,7 +29961,7 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
           },
           i, num, prop, planetProps;
 
-      // Call the hook manually, as addPlanet won't do it due to
+      // Call the hook manually, as addBody won't do it due to
       // deserialization option set to true.
       invalidatingChangePreHook();
 
@@ -30211,7 +29978,7 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
         // config is hash of arrays (as specified in JSON model).
         // So, for each index, create object containing properties of
         // planet 'i'. Later, use these properties to add planet
-        // using basic addPlanet method.
+        // using basic addBody method.
         for (i = 0; i < num; i++) {
           planetProps = {};
           for (prop in config) {
@@ -30219,23 +29986,26 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
               planetProps[prop] = config[prop][i];
             }
           }
-          model.addPlanet(planetProps, options);
+          if (!planetProps.radius) {
+            planetProps.radius = engine.radiusFromMass(config.mass[i]);
+          }
+          model.addBody(planetProps, options);
         }
       } else {
         for (i = 0; i < num; i++) {
           // Provide only required values.
           planetProps = {x: 0, y: 0};
-          model.addPlanet(planetProps, options);
+          model.addBody(planetProps, options);
         }
-        // This function rearrange all planets randomly.
-        engine.setupPlanetsRandomly();
+        // This function rearrange all bodies randomly.
+        engine.setupBodiesRandomly();
       }
 
-      // Call the hook manually, as addPlanet won't do it due to
+      // Call the hook manually, as addBody won't do it due to
       // deserialization option set to true.
       invalidatingChangePostHook();
 
-      // Listeners should consider resetting the planets a 'reset' event
+      // Listeners should consider resetting the bodies a 'reset' event
       dispatch.reset();
 
       // return model, for chaining (if used)
@@ -30253,35 +30023,36 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
     };
 
     /**
-      Attempts to add an 0-velocity planet to a random location. Returns false if after 10 tries it
-      can't find a location. (Intended to be exposed as a script API method.)
-
-      Optionally allows specifying the element (default is to randomly select from all editableElements) and
-      charge (default is neutral).
+      Attempts to add a body to a random location.
     */
-    model.addRandomPlanet = function() {
+    model.addRandomBody = function() {
       var width = model.get('width'),
           height = model.get('height'),
           minX = model.get('minX'),
           minY = model.get('minY'),
-          radius = 1,
-          x, y,
-          vx, vy,
-          loc;
+          props = {},
+          radius,
+          mass;
 
-      x = minX + Math.random() * width - 2*radius;
-      y = minY + Math.random() * height - 2*radius;
-      vx = (Math.random() - 0.5) / 100;
-      vy = (Math.random() - 0.5) / 100;
-      model.addPlanet({ x: x, y: x, vx: vx, vy: vy });
+      mass = Math.random() * 10;
+      radius = engine.radiusFromMass(mass);
+      props = {
+        x:       minX + Math.random() * width - 2*radius,
+        y:       minY + Math.random() * height - 2*radius,
+        vx:      (Math.random() - 0.5) / 100,
+        vy:      (Math.random() - 0.5) / 100,
+        mass:    mass,
+        radius:  radius
+      };
+      model.addBody(props);
       return false;
     },
 
     /**
-      Adds a new planet defined by properties.
+      Adds a new body defined by properties.
       Intended to be exposed as a script API method also.
 
-      Adjusts (x,y) if needed so that the whole planet is within the walls of the container.
+      Adjusts (x,y) if needed so that the whole body is within the walls of the container.
 
       Returns false and does not add the planet if the potential energy change of adding an *uncharged*
       planet of the specified element to the specified location would be positive (i.e, if the planet
@@ -30291,52 +30062,51 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
 
       silent = true disables this check.
     */
-    model.addPlanet = function(props, options) {
+    model.addBody = function(props, options) {
       var minX = model.get('minX'),
           minY = model.get('minY'),
           maxX = model.get('maxX'),
-          maxY = model.get('maxY'),
-          radius = 1;
+          maxY = model.get('maxY');
 
       options = options || {};
 
       // Validate properties, provide default values.
-      props = validator.validateCompleteness(metadata.planet, props);
+      props = validator.validateCompleteness(metadata.body, props);
 
-      // As a convenience to script authors, bump the planet within bounds
+      // As a convenience to script authors, bump the body within bounds
       // radius = engine.getRadiusOfElement(props.element);
       // if (props.x < (minX + radius)) props.x = minX + radius;
       // if (props.x > (maxX - radius)) props.x = maxX - radius;
       // if (props.y < (minY + radius)) props.y = minY + radius;
       // if (props.y > (maxY - radius)) props.y = maxY - radius;
 
-      // When planets are being deserialized, the deserializing function
+      // When bodies are being deserialized, the deserializing function
       // should handle change hooks due to performance reasons.
       if (!options.deserialization)
         invalidatingChangePreHook();
-      engine.addPlanet(props);
+      engine.addBody(props);
       if (!options.deserialization)
         invalidatingChangePostHook();
 
       if (!options.supressEvent) {
-        dispatch.addPlanet();
+        dispatch.addBody();
       }
 
       return true;
     },
 
-    model.removePlanet = function(i, options) {
+    model.removeBody = function(i, options) {
 
       options = options || {};
 
       invalidatingChangePreHook();
-      engine.removePlanet(i);
+      engine.removeBody(i);
       // Enforce modeler to recalculate results array.
       results.length = 0;
       invalidatingChangePostHook();
 
       if (!options.supressEvent) {
-        // Notify listeners that planets is removed.
+        // Notify listeners that bodies is removed.
         dispatch.removeplanet();
       }
     },
@@ -30349,22 +30119,22 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
         This can optionally check the new location of the planet to see if it would
         overlap with another another planet (i.e. if it would increase the PE).
 
-        This can also optionally apply the same dx, dy to any planets in the same
+        This can also optionally apply the same dx, dy to any bodies in the same
         molecule (if x and y are being changed), and check the location of all
-        the bonded planets together.
+        the bonded bodies together.
       */
-    model.setPlanetProperties = function(i, props, checkLocation, moveMolecule) {
+    model.setBodyProperties = function(i, props, checkLocation, moveMolecule) {
       var dx, dy,
           new_x, new_y,
           j, jj;
 
       // Validate properties.
-      props = validator.validate(metadata.planet, props);
+      props = validator.validate(metadata.body, props);
 
 
       if (checkLocation) {
-        var x  = typeof props.x === "number" ? props.x : planets.x[i],
-            y  = typeof props.y === "number" ? props.y : planets.y[i];
+        var x  = typeof props.x === "number" ? props.x : bodies.x[i],
+            y  = typeof props.y === "number" ? props.y : bodies.y[i];
 
         if (!engine.canPlaceplanet(el, x, y, i)) {
           return false;
@@ -30372,18 +30142,18 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
       }
 
       invalidatingChangePreHook();
-      engine.setPlanetProperties(i, props);
+      engine.setBodyProperties(i, props);
       invalidatingChangePostHook();
       return true;
     };
 
-    model.getPlanetProperties = function(i) {
-      var planetMetaData = metadata.planet,
+    model.getBodyProperties = function(i) {
+      var planetMetaData = metadata.body,
           props = {},
           propName;
       for (propName in planetMetaData) {
         if (planetMetaData.hasOwnProperty(propName)) {
-          props[propName] = planets[propName][i];
+          props[propName] = bodies[propName][i];
         }
       }
       return props;
@@ -30398,7 +30168,7 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
     model.removeTextBox = function(i) {
       var text = properties.textBoxes;
       if (i >=0 && i < text.length) {
-        properties.textBoxes = text.slice(0,i).concat(text.slice(i+1))
+        properties.textBoxes = text.slice(0,i).concat(text.slice(i+1));
         dispatch.textBoxesChanged();
       } else {
         throw new Error("Text box \"" + i + "\" does not exist, so it cannot be removed.");
@@ -30422,16 +30192,16 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
       return stopped;
     };
 
-    model.get_planets = function() {
-      return planets;
+    model.get_bodies = function() {
+      return bodies;
     };
 
     model.get_results = function() {
       return results;
     };
 
-    model.get_num_planets = function() {
-      return engine.getNumberOfPlanets();
+    model.get_num_bodies = function() {
+      return engine.getNumberOfBodies();
     };
 
     model.on = function(type, listener) {
@@ -30763,20 +30533,25 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
       var propCopy = {},
           ljProps, i, len,
 
-          removeplanetsArrayIfDefault = function(name, defaultVal) {
-            if (propCopy.planets[name].every(function(i) {
+          removebodiesArrayIfDefault = function(name, defaultVal) {
+            if (propCopy.bodies[name].every(function(i) {
               return i === defaultVal;
             })) {
-              delete propCopy.planets[name];
+              delete propCopy.bodies[name];
             }
           };
 
       propCopy = serialize(metadata.mainProperties, properties);
       propCopy.viewOptions = serialize(metadata.viewOptions, properties);
-      propCopy.planets = serialize(metadata.planet, planets, engine.getNumberOfPlanets());
+      propCopy.bodies = serialize(metadata.body, bodies, engine.getNumberOfBodies());
 
-      removeplanetsArrayIfDefault("marked", metadata.planet.marked.defaultValue);
-      removeplanetsArrayIfDefault("visible", metadata.planet.visible.defaultValue);
+      // Remove bodyTraceId when body tracing is disabled.
+      if (propCopy.viewOptions.showBodyTrace === false) {
+        delete propCopy.viewOptions.bodyTraceId;
+      }
+
+      removebodiesArrayIfDefault("marked", metadata.body.marked.defaultValue);
+      removebodiesArrayIfDefault("visible", metadata.body.visible.defaultValue);
 
       return propCopy;
     };
@@ -30787,7 +30562,7 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
 
     // Set the regular, main properties.
     // Note that validation process will return hash without all properties which are
-    // not defined in meta model as mainProperties (like planets, viewOptions etc).
+    // not defined in meta model as mainProperties (like bodies, viewOptions etc).
     set_properties(validator.validateCompleteness(metadata.mainProperties, initialProperties));
 
     // Set the model view options.
@@ -30799,11 +30574,11 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
     // Setup engine object.
     model.initializeEngine();
 
-    // Finally, if provided, set up the model objects (planets).
-    // However if these are not provided, client code can create planets, etc piecemeal.
+    // Finally, if provided, set up the model objects (bodies).
+    // However if these are not provided, client code can create bodies, etc piecemeal.
 
-    if (initialProperties.planets) {
-      model.createPlanets(initialProperties.planets);
+    if (initialProperties.bodies) {
+      model.createBodies(initialProperties.bodies);
     }
 
     // Initialize tick history.
@@ -30847,10 +30622,58 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
     // Define some default output properties.
     model.defineOutput('time', {
       label: "Time",
-      units: "fs"
+      unitType: 'time',
+      format: 'f'
     }, function() {
       return modelOutputState.time;
     });
+
+    // Confusing detail for review: setting 'unitType' here will cause the return value of the
+    // output function to be translated to macroscopic units, however, the function takes
+    // macroscopic units as input. Therefore we must not set 'unitType'.
+    model.defineOutput('timePerTick', {
+      label: "Model time per tick",
+      unitName:         unitsDefinition.units.time.name,
+      unitPluralName:   unitsDefinition.units.time.pluralName,
+      unitAbbreviation: unitsDefinition.units.time.abbreviation,
+      format: 'f'
+    }, function() {
+      return model.get('timeStep') * model.get('timeStepsPerTick');
+    });
+
+    (function() {
+      var displayTimeUnits;
+
+      // Allow units definition to declare a "Display time"; specifically, let MD2D units definition
+      // define a "displayValue" section in the time unit that returns ps instead of fs.
+
+      if (unitsDefinition.units.time.displayValue) {
+        displayTimeUnits = unitsDefinition.units.time.displayValue;
+      } else {
+        displayTimeUnits = _.extend({}, unitsDefinition.units.time);
+        displayTimeUnits.unitsPerBaseUnit = 1;
+      }
+
+      model.defineOutput('displayTime', {
+        label: "Time",
+        unitName:         displayTimeUnits.name,
+        unitPluralName:   displayTimeUnits.pluralName,
+        unitAbbreviation: displayTimeUnits.abbreviation,
+        format: '.3f'
+      }, function() {
+        return model.get('time') * displayTimeUnits.unitsPerBaseUnit;
+      });
+
+      model.defineOutput('displayTimePerTick', {
+        label: "Model time per tick",
+        unitName:         displayTimeUnits.name,
+        unitPluralName:   displayTimeUnits.pluralName,
+        unitAbbreviation: displayTimeUnits.abbreviation,
+        format: '.3f'
+      }, function() {
+        return model.get('timePerTick') * displayTimeUnits.unitsPerBaseUnit;
+      });
+    }());
 
     updateAllOutputProperties();
 
@@ -30864,19 +30687,16 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
 //   SolarSystem View Renderer
 //
 // ------------------------------------------------------------
-define('solar-system/views/renderer',['require','common/console','cs!common/layout/wrap-svg-text','cs!common/layout/wrap-svg-text','common/views/gradients'],function (require) {
+define('solar-system/views/renderer',['require','lab.config','common/console','cs!common/layout/wrap-svg-text','common/views/gradients'],function (require) {
   // Dependencies.
-  var console               = require('common/console'),
-      wrapSVGText           = require('cs!common/layout/wrap-svg-text'),
+  var labConfig             = require('lab.config'),
+      console               = require('common/console'),
       wrapSVGText           = require('cs!common/layout/wrap-svg-text'),
       gradients             = require('common/views/gradients');
 
   return function SolarSystemView(modelView, model) {
-  // return function SolarSystemView(model, containers, m2px, m2pxInv, mSize2px) {
-        // Public API object to be returned.
+    // Public API object to be returned.
     var api = {},
-
-        mainContainer,
 
         modelWidth,
         modelHeight,
@@ -30914,27 +30734,42 @@ define('solar-system/views/renderer',['require','common/console','cs!common/layo
         textContainerBelow,
         textContainerTop,
 
-        // Array which defines a gradient assigned to a given tlanet.
-        gradientNameForPlanet = [],
+        // Array which defines a gradient assigned to a given astromonicalBody.
+        gradientNameForBody = [],
 
-        tlanetTooltipOn,
+        astromonicalBodyTooltipOn,
 
-        tlanet,
+        astromonicalBody,
         label, labelEnter,
-        tlanetDiv, tlanetDivPre,
+        astromonicalBodyDiv, astromonicalBodyDivPre,
 
         fontSizeInPixels,
         textBoxFontSizeInPixels,
 
+        imageProp,
+        imageMapping,
+        modelImagePath,
+        imageSizes = [],
+        textBoxes,
+        imagePath,
+
+        drawBodyTrace,
+        bodyTraceId,
+        bodyTraceColor,
+        bodyTrace,
+        bodyTracePath,
+        bodyTraceMaxLength = 35500,
+        traceBodyStrokeWidth,
+
         // for model clock
         showClock,
         timeLabel,
-        modelTimeFormatter = d3.format("5.0f"),
+        modelTimeFormatter = d3.format("5.1f"),
         timePrefix = "",
         timeSuffix = "";
 
     function modelTimeLabel() {
-      return timePrefix + modelTimeFormatter(model.get('time')/100) + timeSuffix;
+      return timePrefix + modelTimeFormatter(model.get('time')) + timeSuffix;
     }
 
     /**
@@ -30955,9 +30790,9 @@ define('solar-system/views/renderer',['require','common/console','cs!common/layo
       gradients.createRadialGradient("neutral-grad", "#FFFFFF", "#f2f2f2", "#A4A4A4", mainContainer);
     }
 
-    // Returns gradient appropriate for a given tlanet.
-    // d - tlanet data.
-    function getPlanetGradient(d) {
+    // Returns gradient appropriate for a given astromonicalBody.
+    // d - astromonicalBody data.
+    function getBodyGradient(d) {
       if (d.marked) {
         return "url(#mark-grad)";
       } else {
@@ -30965,26 +30800,26 @@ define('solar-system/views/renderer',['require','common/console','cs!common/layo
       }
     }
 
-    function updatePlanetRadius() {
+    function updateBodyRadius() {
       mainContainer.selectAll("circle").data(modelResults).attr("r",  function(d) { return modelSize2px(d.radius); });
     }
 
-    function setupColorsOfPlanets() {
+    function setupColorsOfBodies() {
       var i, len;
 
-      gradientNameForPlanet.length = modelResults.length;
+      gradientNameForBody.length = modelResults.length;
       for (i = 0, len = modelResults.length; i < len; i++)
-        gradientNameForPlanet[i] = getPlanetGradient(modelResults[i]);
+        gradientNameForBody[i] = getBodyGradient(modelResults[i]);
     }
 
-    function setupPlanets() {
+    function setupBodies() {
 
       mainContainer.selectAll("circle").remove();
       mainContainer.selectAll("g.label").remove();
 
-      tlanet = mainContainer.selectAll("circle").data(modelResults);
+      astromonicalBody = mainContainer.selectAll("circle").data(modelResults);
 
-      tlanetEnter();
+      astromonicalBodyEnter();
 
       label = mainContainer.selectAll("g.label")
           .data(modelResults);
@@ -30999,9 +30834,9 @@ define('solar-system/views/renderer',['require','common/console','cs!common/layo
         var selection = d3.select(this),
             txtValue, txtSelection;
         // Append appropriate label. For now:
-        // If 'tlanetNumbers' option is enabled, use indices.
+        // If 'astromonicalBodyNumbers' option is enabled, use indices.
         // If not and there is available 'label'/'symbol' property, use one of them
-        if (model.get("tlanetNumbers")) {
+        if (model.get("astromonicalBodyNumbers")) {
           selection.append("text")
             .text(d.idx)
             .style("font-size", modelSize2px(1.4 * d.radius) + "px");
@@ -31036,12 +30871,24 @@ define('solar-system/views/renderer',['require','common/console','cs!common/layo
       });
     }
 
+    function setupBodyTrace() {
+      mainContainer.selectAll("path.bodyTrace").remove();
+      bodyTracePath = "";
+
+      drawBodyTrace = model.get("showBodyTrace");
+      bodyTraceId = model.get("bodyTraceId");
+      if (drawBodyTrace) {
+        bodyTrace = mainContainer.selectAll("path.bodyTrace").data([modelResults[bodyTraceId]]);
+        bodyTraceEnter();
+      }
+    }
+
     /**
-      Call this wherever a d3 selection is being used to add circles for tlanets
+      Call this wherever a d3 selection is being used to add circles for astromonicalBodys
     */
 
-    function tlanetEnter() {
-      tlanet.enter().append("circle")
+    function astromonicalBodyEnter() {
+      astromonicalBody.enter().append("circle")
           .attr({
             "r":  function(d) {
               return modelSize2px(d.radius); },
@@ -31052,15 +30899,15 @@ define('solar-system/views/renderer',['require','common/console','cs!common/layo
           })
           .style({
             "fill-opacity": function(d) { return d.visible; },
-            "fill": function (d, i) { return gradientNameForPlanet[i]; }
+            "fill": function (d, i) { return gradientNameForBody[i]; }
           })
-          .on("mousedown", tlanetMouseDown)
-          .on("mouseover", tlanetMouseOver)
-          .on("mouseout", tlanetMouseOut);
+          .on("mousedown", astromonicalBodyMouseDown)
+          .on("mouseover", astromonicalBodyMouseOver)
+          .on("mouseout", astromonicalBodyMouseOut);
     }
 
-    function tlanetUpdate() {
-      tlanet.attr({
+    function astromonicalBodyUpdate() {
+      astromonicalBody.attr({
         "r":  function(d) {
           return modelSize2px(d.radius); },
         "cx": function(d) {
@@ -31069,37 +30916,77 @@ define('solar-system/views/renderer',['require','common/console','cs!common/layo
           return model2pxInv(d.y); }
       });
 
-      if (tlanetTooltipOn === 0 || tlanetTooltipOn > 0) {
-        renderPlanetTooltip(tlanetTooltipOn);
+      if (astromonicalBodyTooltipOn === 0 || astromonicalBodyTooltipOn > 0) {
+        renderBodyTooltip(astromonicalBodyTooltipOn);
       }
     }
 
-    function tlanetMouseOver(d, i) {
-      if (model.get("enablePlanetTooltips")) {
-        renderPlanetTooltip(i);
+    function astromonicalBodyMouseOver(d, i) {
+      if (model.get("enableBodyTooltips")) {
+        renderBodyTooltip(i);
       }
     }
 
-    function tlanetMouseDown(d, i) {
+    function astromonicalBodyMouseDown(d, i) {
       containers.node.focus();
-      if (model.get("enablePlanetTooltips")) {
-        if (tlanetTooltipOn !== false) {
-          tlanetDiv.style("opacity", 1e-6);
-          tlanetDiv.style("display", "none");
-          tlanetTooltipOn = false;
+      if (model.get("enableBodyTooltips")) {
+        if (astromonicalBodyTooltipOn !== false) {
+          astromonicalBodyDiv.style("opacity", 1e-6);
+          astromonicalBodyDiv.style("display", "none");
+          astromonicalBodyTooltipOn = false;
         } else {
           if (d3.event.shiftKey) {
-            tlanetTooltipOn = i;
+            astromonicalBodyTooltipOn = i;
           } else {
-            tlanetTooltipOn = false;
+            astromonicalBodyTooltipOn = false;
           }
-          renderPlanetTooltip(i);
+          renderBodyTooltip(i);
         }
       }
     }
 
-    function renderPlanetTooltip(i) {
-      tlanetDiv
+    function updateBodyTrace() {
+      bodyTrace.attr({
+        "d": getBodyTracePath
+      });
+    }
+
+    function bodyTraceEnter() {
+      bodyTrace.enter().append("path")
+        .attr({
+          "class": "bodyTrace",
+          "d": getBodyTracePath,
+          "stroke-width": traceBodyStrokeWidth,
+          "stroke": bodyTraceColor,
+          "fill": "none"
+        });
+    }
+
+    function getBodyTracePath(d) {
+      // until we implement buffered array model output properties,
+      // we just keep the path history in the path string
+      var dx = Math.floor(model2px(d.x) * 100) / 100,
+          dy = Math.floor(model2pxInv(d.y) * 100) / 100,
+          lIndex, sIndex;
+      if (!bodyTracePath) {
+        bodyTracePath = "M"+dx+","+dy+"L";
+        return "M "+dx+","+dy;
+      } else {
+        bodyTracePath += dx+","+dy + " ";
+      }
+
+      // fake buffered array functionality by knocking out the first
+      // element of the string when we get too big
+      if (bodyTracePath.length > bodyTraceMaxLength) {
+        lIndex = bodyTracePath.indexOf("L");
+        sIndex = bodyTracePath.indexOf(" ");
+        bodyTracePath = "M" + bodyTracePath.slice(lIndex+1, sIndex) + "L" + bodyTracePath.slice(sIndex+1);
+      }
+      return bodyTracePath;
+    }
+
+    function renderBodyTooltip(i) {
+      astromonicalBodyDiv
             .style("opacity", 1.0)
             .style("display", "inline")
             .style("background", "rgba(100%, 100%, 100%, 0.7)")
@@ -31108,8 +30995,8 @@ define('solar-system/views/renderer',['require','common/console','cs!common/layo
             .style("zIndex", 100)
             .transition().duration(250);
 
-      tlanetDivPre.text(
-          "tlanet: " + i + "\n" +
+      astromonicalBodyDivPre.text(
+          "astromonicalBody: " + i + "\n" +
           "time: " + modelTimeLabel() + "\n" +
           "speed: " + d3.format("+6.3e")(modelResults[i].speed) + "\n" +
           "vx:    " + d3.format("+6.3e")(modelResults[i].vx)    + "\n" +
@@ -31119,18 +31006,18 @@ define('solar-system/views/renderer',['require','common/console','cs!common/layo
         );
     }
 
-    function tlanetMouseOut() {
-      if (!tlanetTooltipOn && tlanetTooltipOn !== 0) {
-        tlanetDiv.style("opacity", 1e-6).style("zIndex" -1);
+    function astromonicalBodyMouseOut() {
+      if (!astromonicalBodyTooltipOn && astromonicalBodyTooltipOn !== 0) {
+        astromonicalBodyDiv.style("opacity", 1e-6).style("zIndex" -1);
       }
     }
 
     function setupTooTips() {
-      if ( tlanetDiv === undefined) {
-        tlanetDiv = d3.select("body").append("div")
+      if ( astromonicalBodyDiv === undefined) {
+        astromonicalBodyDiv = d3.select("body").append("div")
             .attr("class", "tooltip")
             .style("opacity", 1e-6);
-        tlanetDivPre = tlanetDiv.append("pre");
+        astromonicalBodyDivPre = astromonicalBodyDiv.append("pre");
       }
     }
 
@@ -31160,6 +31047,21 @@ define('solar-system/views/renderer',['require','common/console','cs!common/layo
     // *** Main Renderer functions ***
     //
 
+    function setupRendererOptions() {
+      imageProp = model.get("images");
+      imageMapping = model.get("imageMapping");
+      modelImagePath = model.get('imagePath');
+      if (modelImagePath) {
+        imagePath = labConfig.actualRoot + modelImagePath;
+      }
+      else if (model.url) {
+        imagePath = labConfig.actualRoot + model.url.slice(0, model.url.lastIndexOf("/") + 1);
+      }
+
+      bodyTraceColor = model.get("bodyTraceColor");
+
+    }
+
     //
     // SolarSystem Renderer: init
     //
@@ -31180,11 +31082,14 @@ define('solar-system/views/renderer',['require','common/console','cs!common/layo
 
       fontSizeInPixels = modelView.getFontSizeInPixels();
       textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
+      traceBodyStrokeWidth = fontSizeInPixels/12;
 
       modelResults  = model.get_results();
       modelWidth    = model.get('width');
       modelHeight   = model.get('height');
       aspectRatio   = modelWidth / modelHeight;
+
+      setupRendererOptions();
 
       modelMinX = model.get('minX');
       modelMinY = model.get('minY');
@@ -31203,8 +31108,14 @@ define('solar-system/views/renderer',['require','common/console','cs!common/layo
       }
 
       // Redraw container each time when some visual-related property is changed.
-      model.on('addPlanet', redrawClickableObjects(repaint));
-      model.on('removePlanet', redrawClickableObjects(repaint));
+      model.addPropertiesListener([
+        "showBodyTrace", "bodyTraceId",
+        "showClock", "backgroundColor", "markColor"],
+          redrawClickableObjects(repaint));
+
+      // Redraw container each time when some visual-related property is changed.
+      model.on('addBody', redrawClickableObjects(repaint));
+      model.on('removeBody', redrawClickableObjects(repaint));
     }
 
     //
@@ -31236,9 +31147,10 @@ define('solar-system/views/renderer',['require','common/console','cs!common/layo
       textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
 
       setupDynamicGradients();
+      setupBodyTrace();
       setupClock();
-      setupColorsOfPlanets();
-      setupPlanets();
+      setupColorsOfBodies();
+      setupBodies();
     }
 
     //
@@ -31255,7 +31167,11 @@ define('solar-system/views/renderer',['require','common/console','cs!common/layo
         timeLabel.text(modelTimeLabel());
       }
 
-      tlanetUpdate();
+      astromonicalBodyUpdate();
+
+      if (drawBodyTrace) {
+        updateBodyTrace();
+      }
 
       console.timeEnd('view update');
     }
@@ -31315,15 +31231,16 @@ define('solar-system/controllers/scripting-api',['require'],function (require) {
     @param: api
   */
 
+
   return function SolarSystemScriptingAPI (api) {
 
     return {
-      /* Returns number of planets in the system. */
-      getNumberOfPlanets: function getNumberOfPlanets() {
-        return model.get_num_planets();
+      /* Returns number of bodies in the system. */
+      getNumberOfBodies: function getNumberOfBodies() {
+        return model.get_num_bodies();
       },
 
-      addPlanet: function addPlanet(props, options) {
+      addBody: function addBody(props, options) {
         if (options && options.supressRepaint) {
           // Translate supressRepaint option to
           // option understable by modeler.
@@ -31331,13 +31248,13 @@ define('solar-system/controllers/scripting-api',['require'],function (require) {
           // Scripting API users.
           options.supressEvent = true;
         }
-        return model.addPlanet(props, options);
+        return model.addBody(props, options);
       },
 
       /*
         Removes planet 'i'.
       */
-      removePlanet: function removePlanet(i, options) {
+      removeBody: function removeBody(i, options) {
         if (options && options.supressRepaint) {
           // Translate supressRepaint option to
           // option understable by modeler.
@@ -31347,36 +31264,36 @@ define('solar-system/controllers/scripting-api',['require'],function (require) {
           delete options.supressRepaint;
         }
         try {
-          model.removePlanet(i, options);
+          model.removeBody(i, options);
         } catch (e) {
           if (!options || !options.silent)
             throw e;
         }
       },
 
-      addRandomPlanet: function addRandomPlanet() {
-        return model.addRandomPlanet.apply(model, arguments);
+      addRandomBody: function addRandomBody() {
+        return model.addRandomBody.apply(model, arguments);
       },
 
-      /** returns a list of integers corresponding to planets in the system */
-      randomPlanets: function randomPlanets(n) {
-        var numPlanets = model.get_num_planets();
+      /** returns a list of integers corresponding to bodies in the system */
+      randomBodies: function randomBodies(n) {
+        var numBodies = model.get_num_bodies();
 
-        if (n === null) n = 1 + api.randomInteger(numPlanets-1);
+        if (n === null) n = 1 + api.randomInteger(numBodies-1);
 
-        if (!api.isInteger(n)) throw new Error("randomPlanets: number of planets requested, " + n + ", is not an integer.");
-        if (n < 0) throw new Error("randomPlanets: number of planets requested, " + n + ", was less be greater than zero.");
+        if (!api.isInteger(n)) throw new Error("randomBodies: number of bodies requested, " + n + ", is not an integer.");
+        if (n < 0) throw new Error("randomBodies: number of bodies requested, " + n + ", was less be greater than zero.");
 
-        if (n > numPlanets) n = numPlanets;
-        return api.choose(n, numPlanets);
+        if (n > numBodies) n = numBodies;
+        return api.choose(n, numBodies);
       },
 
       /**
         Accepts planet indices as arguments, or an array containing planet indices.
-        Unmarks all planets, then marks the requested planet indices.
+        Unmarks all bodies, then marks the requested planet indices.
         Repaints the screen to make the marks visible.
       */
-      markPlanets: function markPlanets() {
+      markBodies: function markBodies() {
         var i,
             len;
 
@@ -31384,31 +31301,42 @@ define('solar-system/controllers/scripting-api',['require'],function (require) {
 
         // allow passing an array instead of a list of planet indices
         if (api.isArray(arguments[0])) {
-          return markPlanets.apply(null, arguments[0]);
+          return markBodies.apply(null, arguments[0]);
         }
 
-        api.unmarkAllPlanets();
+        api.unmarkAllBodies();
 
-        // mark the requested planets
+        // mark the requested bodies
         for (i = 0, len = arguments.length; i < len; i++) {
-          model.setPlanetProperties(arguments[i], {marked: 1});
+          model.setBodyProperties(arguments[i], {marked: 1});
         }
         api.repaint();
       },
 
-      unmarkAllPlanets: function unmarkAllPlanets() {
-        for (var i = 0, len = model.get_num_planets(); i < len; i++) {
-          model.setPlanetProperties(i, {marked: 0});
+      unmarkAllBodies: function unmarkAllBodies() {
+        for (var i = 0, len = model.get_num_bodies(); i < len; i++) {
+          model.setBodyProperties(i, {marked: 0});
         }
         api.repaint();
+      },
+
+      traceBody: function traceBody(i) {
+        if (i === null) return;
+
+        model.set({bodyTraceId: i});
+        model.set({showBodyTrace: true});
+      },
+
+      untraceBody: function untraceBody() {
+        model.set({showBodyTrace: false});
       },
 
       /**
         Sets individual planet properties using human-readable hash.
-        e.g. setPlanetProperties(5, {x: 1, y: 0.5, charge: 1})
+        e.g. setBodyProperties(5, {x: 1, y: 0.5, charge: 1})
       */
-      setPlanetProperties: function setPlanetProperties(i, props, checkLocation, moveMolecule, options) {
-        model.setPlanetProperties(i, props, checkLocation, moveMolecule);
+      setBodyProperties: function setBodyProperties(i, props, checkLocation, moveMolecule, options) {
+        model.setBodyProperties(i, props, checkLocation, moveMolecule);
         if (!(options && options.supressRepaint)) {
           api.repaint();
         }
@@ -31416,10 +31344,10 @@ define('solar-system/controllers/scripting-api',['require'],function (require) {
 
       /**
         Returns planet properties as a human-readable hash.
-        e.g. getPlanetProperties(5) --> {x: 1, y: 0.5, charge: 1, ... }
+        e.g. getBodyProperties(5) --> {x: 1, y: 0.5, charge: 1, ... }
       */
-      getPlanetProperties: function getPlanetProperties(i) {
-        return model.getPlanetProperties(i);
+      getBodyProperties: function getBodyProperties(i) {
+        return model.getBodyProperties(i);
       },
 
       addTextBox: function(props) {
@@ -31458,10 +31386,10 @@ define('solar-system/benchmarks/benchmarks',['require'],function (require) {
         }
       },
       {
-        name: "planets",
+        name: "bodies",
         numeric: true,
         run: function(done) {
-          done(model.get_num_planets());
+          done(model.get_num_bodies());
         }
       },
       {
@@ -31573,7 +31501,7 @@ define('solar-system/controllers/controller',['require','common/controllers/mode
 
 /*global define, model, $, setTimeout, document, window */
 
-define('common/controllers/interactives-controller',['require','lab.config','arrays','common/alert','common/controllers/interactive-metadata','common/validator','common/controllers/bar-graph-controller','common/controllers/graph-controller','common/controllers/export-controller','common/controllers/scripting-api','common/controllers/button-controller','common/controllers/checkbox-controller','common/controllers/text-controller','common/controllers/image-controller','common/controllers/radio-controller','common/controllers/slider-controller','common/controllers/pulldown-controller','common/controllers/numeric-output-controller','common/controllers/parent-message-api','common/controllers/thermometer-controller','common/controllers/div-controller','common/controllers/setup-banner','common/controllers/about-dialog','common/controllers/share-dialog','common/controllers/credits-dialog','common/layout/semantic-layout','common/layout/templates','md2d/controllers/controller','solar-system/controllers/controller'],function (require) {
+define('common/controllers/interactives-controller',['require','lab.config','arrays','common/alert','common/controllers/interactive-metadata','common/validator','common/controllers/bar-graph-controller','common/controllers/graph-controller','common/controllers/export-controller','common/controllers/scripting-api','common/controllers/button-controller','common/controllers/checkbox-controller','common/controllers/text-controller','common/controllers/image-controller','common/controllers/radio-controller','common/controllers/slider-controller','common/controllers/pulldown-controller','common/controllers/numeric-output-controller','common/controllers/parent-message-api','common/controllers/thermometer-controller','common/controllers/playback-controller','common/controllers/div-controller','common/controllers/setup-banner','common/controllers/about-dialog','common/controllers/share-dialog','common/controllers/credits-dialog','common/layout/semantic-layout','common/layout/templates','md2d/controllers/controller','solar-system/controllers/controller'],function (require) {
   // Dependencies.
   var labConfig               = require('lab.config'),
       arrays                  = require('arrays'),
@@ -31594,6 +31522,7 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
       NumericOutputController = require('common/controllers/numeric-output-controller'),
       ParentMessageAPI        = require('common/controllers/parent-message-api'),
       ThermometerController   = require('common/controllers/thermometer-controller'),
+      PlaybackController      = require('common/controllers/playback-controller'),
       DivController           = require('common/controllers/div-controller'),
 
       // Helper function which just provides banner definition.
@@ -31647,7 +31576,8 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
         'graph':         GraphController,
         'slider':        SliderController,
         'numericOutput': NumericOutputController,
-        'div':           DivController
+        'div':           DivController,
+        'playback':      PlaybackController
       };
 
   return function interactivesController(interactive, viewSelector) {
@@ -31764,6 +31694,7 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
                     "x": 0.0,
                     "y": 1.0,
                     "width": 2.5,
+                    "height": 0.25,
                     "fontScale": 1.4,
                     "layer": 1,
                     "frame": "rectangle",
@@ -31774,8 +31705,9 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
                   {
                     "text": modelDefinition.url,
                     "x": 0.0,
-                    "y": 0.9,
+                    "y": 0.8,
                     "width": 2.5,
+                    "height": 0.25,
                     "fontScale": 0.9,
                     "layer": 1,
                     "frame": "rectangle",
@@ -31835,8 +31767,7 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
 
     // ------------------------------------------------------------
     //
-    // Handle keyboard shortcuts for model operation ...
-    // events routed through model_player object.
+    // Handle keyboard shortcuts for model operation.
     //
     // ------------------------------------------------------------
 
@@ -31847,45 +31778,43 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
           switch(keycode) {
             case 13:                 // return
             event.preventDefault();
-            if (!model_player.isPlaying()) {
-              model_player.play();
-            }
+            scriptingAPI.api.start();
             break;
 
             case 32:                 // space
             event.preventDefault();
-            if (model_player.isPlaying()) {
-              model_player.stop();
+            if (!scriptingAPI.api.isStopped()) {
+              scriptingAPI.api.stop();
             } else {
-              model_player.play();
+              scriptingAPI.api.start();
             }
             break;
 
             case 37:                 // left-arrow
             event.preventDefault();
-            if (model_player.isPlaying()) {
-              model_player.stop();
+            if (!scriptingAPI.api.isStopped()) {
+              scriptingAPI.api.stop();
             } else {
-              model_player.back();
+              scriptingAPI.api.stepBack();
             }
             break;
 
             case 39:                 // right-arrow
             event.preventDefault();
-            if (model_player.isPlaying()) {
-              model_player.stop();
+            if (!scriptingAPI.api.isStopped()) {
+              scriptingAPI.api.stop();
             } else {
-              model_player.forward();
+              scriptingAPI.api.stepForward();
             }
             break;
           }
         });
-        $interactiveContainer.focus();
+        // $interactiveContainer.focus();
       }
     }
 
     function setupLayout() {
-      var template, layout, components, fontScale, banner, resizeAfterFullscreen;
+      var template, layout, comp, components, fontScale, banner, resizeAfterFullscreen;
 
       if (typeof interactive.template === "string") {
         template = templates[interactive.template];
@@ -31901,7 +31830,19 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
       // Banner hash containing components, layout containers and layout deinition
       // (components location). Keep it in a separate structure, because we do not
       // expect these objects to be serialized!
-      banner = setupBanner(interactive, creditsDialog, aboutDialog, shareDialog);
+      banner = setupBanner(scriptingAPI, interactive, creditsDialog, aboutDialog, shareDialog);
+      // Register callbacks of banner components.
+      components = banner.components;
+      for (comp in components) {
+        if (components.hasOwnProperty(comp)) {
+          comp = components[comp];
+          if (comp.modelLoadedCallback) {
+            // $.proxy ensures that callback will be always executed
+            // in the context of correct object ('this' binding).
+            componentCallbacks.push($.proxy(comp.modelLoadedCallback, comp));
+          }
+        }
+      }
       // Note that all of these operations create a new object.
       // So interactive definition specified by the author won't be affected.
       // This is important for serialization correctness.
@@ -32330,6 +32271,16 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
             break;
         }
       },
+
+      /**
+       * Gets interactive property from interactive JSON definition.
+       * @param  {string} name Property name.
+       * @return {*}      Property value.
+       */
+      get: function (name) {
+        return interactive[name];
+      },
+
       /**
         Serializes interactive, returns object ready to be stringified.
         e.g. JSON.stringify(interactiveController.serialize());

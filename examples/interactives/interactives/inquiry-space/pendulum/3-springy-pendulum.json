@@ -1,8 +1,17 @@
 {
   "title": "Pendulum and Spring",
   "publicationStatus": "public",
-  "subtitle": "",
-  "about": "",
+  "subtitle": "Explore the motion of a pendulum on a spring.",
+  "about": [
+    "Press the play button. Watch the graphs to see the motion of the spring pendulum.",
+    "Can you distinguish the pattern of spring motion (up and down) from the pattern",
+    "of pendulum motion (back and forth)? How are the two related? Is there a regular",
+    "pattern to the motion? Compare the periods of the two graphs. How many different",
+    "patterns can you produce by changing the variables – gravity, rod length, mass and",
+    "spring constant? Under what conditions does the energy switch between back and forth",
+    "and up and down? Does the initial starting angle affect the patterns when all the",
+    "other variables are unchanged?"
+  ],
   "fontScale": 0.8,
   "models": [
     {
@@ -312,8 +321,8 @@
       "xmax": 10,
       "yTickCount": 4,
       "xTickCount": 5,
-      "xFormatter": ".2s",
-      "yFormatter": ".2s",
+      "xFormatter": "2s",
+      "yFormatter": "2s",
       "properties": [
         "currentDisplacement"
       ]

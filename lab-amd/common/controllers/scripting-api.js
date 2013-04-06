@@ -13,307 +13,340 @@ define(function (require) {
   // script context; and scripts are run in strict mode so they don't
   // accidentally expose or read globals.
   //
-  return function ScriptingAPI (interactivesController, modelScriptingAPI) {
-
-    var scriptingAPI = (function() {
-
-      function isInteger(n) {
-        // Exploits the facts that (1) NaN !== NaN, and (2) parseInt(Infinity, 10) is NaN
-        return typeof n === "number" && (parseFloat(n) === parseInt(n, 10));
-      }
-
-      function isArray(obj) {
-        return typeof obj === 'object' && obj.slice === Array.prototype.slice;
-      }
-
-      /** return a number randomly chosen between 0..max */
-      function randomFloat(max) {
-        if (max) {
-          return Math.random() * max;
-        } else {
-          return Math.random();
-        }
-      }
-
-      /** return an integer randomly chosen from the set of integers 0..n-1 */
-      function randomInteger(n) {
-        return Math.floor(Math.random() * n);
-      }
-
-      function swapElementsOfArray(array, i, j) {
-        var tmp = array[i];
-        array[i] = array[j];
-        array[j] = tmp;
-      }
-
-      /** Return an array of n randomly chosen members of the set of integers 0..N-1 */
-      function choose(n, N) {
-        var values = [],
-            i;
-
-        for (i = 0; i < N; i++) { values[i] = i; }
-
-        for (i = 0; i < n; i++) {
-          swapElementsOfArray(values, i, i + randomInteger(N-i));
-        }
-        values.length = n;
-
-        return values;
-      }
-
-      return {
-
-        isInteger: isInteger,
-        isArray: isArray,
-        randomInteger: randomInteger,
-        randomFloat: randomFloat,
-        swapElementsOfArray: swapElementsOfArray,
-        choose: choose,
-
-        deg2rad: Math.PI/180,
-        rad2deg: 180/Math.PI,
-
-        format: d3.format,
-
-        get: function get() {
-          return model.get.apply(model, arguments);
-        },
-
-        set: function set() {
-          return model.set.apply(model, arguments);
-        },
-
-        loadModel: function loadModel(modelId, cb) {
-          model.stop();
-
-          interactivesController.loadModel(modelId);
-
-          if (typeof cb === 'function') {
-            interactivesController.pushOnLoadScript(cb);
-          }
-        },
-
-        /**
-          Observe property `propertyName` on the model, and perform `action` when it changes.
-          Pass property value to action.
-        */
-        onPropertyChange: function onPropertyChange(propertyName, action) {
-          model.addPropertiesListener([propertyName], function() {
-            action( model.get(propertyName) );
-          });
-        },
-
-        /**
-         * Performs a user-defined script at any given time.
-         *
-         * callAt(t, ...) guarantees that script will be executed, but not necessarily
-         * at exactly chosen time (as this can be impossible due to simulation settings).
-         * User scripts cannot interrupt the model "tick", the most inner integration loop.
-         * e.g. callAt(23, ...) in MD2D model context will be executed at time 50,
-         * if timeStepsPerTick = 50 and timeStep = 1.
-         *
-         * callAt action will only occur the first time the model reaches the specified time,
-         * but not after the model is scrubbed forward and backward (using tick history).
-         *
-         * @param  {number} time     Time defined in model native time unit (e.g. fs for MD2D).
-         * @param  {function} action Function containing user-defined script.
-         */
-        callAt: function callAt(time, action) {
-          var actionTimeout = {
-            time: time,
-            action: action,
-            check: function() {
-              if (model.get("time") >= this.time) {
-                this.action();
-                // Optimization - when function was once executed, replace
-                // check with empty function.
-                // removePropertiesListener() method could be useful, but it
-                // isn't available yet.
-                this.check = function () {};
-              }
-            }
-          };
-          model.addPropertiesListener("time", function () {
-            actionTimeout.check();
-          });
-        },
-
-        /**
-         * Performs a user-defined script repeatedly, with a fixed time delay
-         * between each call.
-         *
-         * callEvery(t, ...) guarantees that script will be executed *correct number of times*,
-         * but not necessarily at exactly chosen intervals (as this can be impossible due to
-         * simulation settings). User scripts cannot interrupt the model "tick", the most
-         * inner integration loop.
-         * e.g. callEvery(23, ...) in MD2D model context will be executed *twice* at time 50,
-         * if timeStepsPerTick = 50 and timeStep = 1.
-         *
-         * callEvery action for time N * interval (for any integer N >= 1) will only be called
-         * the first time the model time exceeds N * interval time. After the model is scrubbed
-         * forward and backward using (using tick history), action *won't* be called again.
-         *
-         * @param {number}   interval Interval on how often to execute the script,
-         *                            defined in model native time unit (e.g. fs for MD2D).
-         * @param {function} action   Function containing user-defined script.
-         */
-        callEvery: function callEvery(interval, action) {
-          var actionInterval = {
-            lastCall: 0,
-            interval: interval,
-            action: action,
-            execute: function() {
-              var time = model.get("time");
-              while (time - this.lastCall >= this.interval) {
-                this.action();
-                this.lastCall += this.interval;
-              }
-            }
-          };
-          model.addPropertiesListener("time", function () {
-            actionInterval.execute();
-          });
-        },
-
-        /**
-         * Sets a custom click handler for objects of a given type.
-         * Basic type which is always supported is "plot". It is empty
-         * area of a model. Various models can support different clickable
-         * types. Please see the model documentation to check what
-         * other object types are supported.
-         *
-         * Behind the scenes this functions uses class selector. So you can
-         * also inspect SVG image and check what is class of interesting
-         * object and try to use it.
-         *
-         * MD2D specific notes:
-         * Supported types: "plot", "atom", "obstacle", "image", "textBox".
-         * TODO: move it to MD2D related docs in the future.
-         *
-         * @param {string}   type    Name of the type of clickable objects.
-         * @param {Function} handler Custom click handler. It will be called
-         *                           when object is clicked with (x, y, d, i) arguments:
-         *                             x - x coordinate in model units,
-         *                             y - y coordinate in model units,
-         *                             d - data associated with a given object (can be undefined!),
-         *                             i - ID of clicked object (usually its value makes sense if d is defined).
-         */
-        onClick: function onClick(type, handler) {
-          // Append '.' to make API simpler.
-          // So authors can just specify onClick("atom", ...) instead of class selectors.
-          interactivesController.getModelController().modelContainer.setClickHandler("." + type, handler);
-        },
-
-        /**
-         * Sets custom select handler. It enables select action and lets author provide custom handler
-         * which is executed when select action is finished. The area of selection is passed to handler
-         * as arguments. It is defined by rectangle - its lower left corner coordinates, width and height.
-         *
-         * @param {Function} handler Custom select handler. It will be called
-         *                           when select action is finished with (x, y, w, h) arguments:
-         *                             x - x coordinate of lower left selection corner (in model units),
-         *                             y - y coordinate of lower left selection corner (in model units),
-         *                             width  - width of selection rectangle (in model units),
-         *                             height - height of selection rectangle (in model units).
-         */
-        onSelect: function onSelect(handler) {
-          interactivesController.getModelController().modelContainer.setSelectHandler(handler);
-        },
-
-        start: function start() {
-          model.start();
-        },
-
-        stop: function stop() {
-          model.stop();
-        },
-
-        reset: function reset() {
-          model.stop();
-          interactivesController.modelController.reload();
-        },
-
-        tick: function tick() {
-          model.tick();
-        },
-
-
-        getTime: function getTime() {
-          return model.get('time');
-        },
-
-        /**
-         * Returns number of frames per second.
-         * @return {number} frames per second.
-         */
-        getFPS: function getFPS() {
-          return model.getFPS();
-        },
-
-        /**
-         * Returns "simulation progress rate".
-         * It indicates how much of simulation time is calculated for
-         * one second of real time.
-         * @return {number} simulation progress rate.
-         */
-        getSimulationProgressRate: function getSimulationProgressRate() {
-          return model.getSimulationProgressRate();
-        },
-
-        startPerformanceTuning: function startPerformanceTuning() {
-          model.performanceOptimizer.enable();
-        },
-
-        repaint: function repaint() {
-          interactivesController.getModelController().repaint();
-        },
-
-        exportData: function exportData() {
-          var dgExport = interactivesController.getDGExportController();
-          if (!dgExport)
-            throw new Error("No exports have been specified.");
-          dgExport.exportData();
-        },
-
-        Math: Math,
-
-        // Rrevent us from overwriting window.undefined.
-        "undefined": undefined,
-
-        // Rudimentary debugging functionality. Use Lab alert helper function.
-        alert: alert,
-
-        console: window.console !== null ? window.console : {
-          log: function() {},
-          error: function() {},
-          warn: function() {},
-          dir: function() {}
-        }
-      };
-
-    }());
+  return function ScriptingAPI (interactivesController) {
 
     var controller = {
+
+      api: (function() {
+
+        function isInteger(n) {
+          // Exploits the facts that (1) NaN !== NaN, and (2) parseInt(Infinity, 10) is NaN
+          return typeof n === "number" && (parseFloat(n) === parseInt(n, 10));
+        }
+
+        function isArray(obj) {
+          return typeof obj === 'object' && obj.slice === Array.prototype.slice;
+        }
+
+        /** return a number randomly chosen between 0..max */
+        function randomFloat(max) {
+          if (max) {
+            return Math.random() * max;
+          } else {
+            return Math.random();
+          }
+        }
+
+        /** return an integer randomly chosen from the set of integers 0..n-1 */
+        function randomInteger(n) {
+          return Math.floor(Math.random() * n);
+        }
+
+        function swapElementsOfArray(array, i, j) {
+          var tmp = array[i];
+          array[i] = array[j];
+          array[j] = tmp;
+        }
+
+        /** Return an array of n randomly chosen members of the set of integers 0..N-1 */
+        function choose(n, N) {
+          var values = [],
+              i;
+
+          for (i = 0; i < N; i++) { values[i] = i; }
+
+          for (i = 0; i < n; i++) {
+            swapElementsOfArray(values, i, i + randomInteger(N-i));
+          }
+          values.length = n;
+
+          return values;
+        }
+
+        return {
+
+          isInteger: isInteger,
+          isArray: isArray,
+          randomInteger: randomInteger,
+          randomFloat: randomFloat,
+          swapElementsOfArray: swapElementsOfArray,
+          choose: choose,
+
+          deg2rad: Math.PI/180,
+          rad2deg: 180/Math.PI,
+
+          format: d3.format,
+
+          get: function get() {
+            return model.get.apply(model, arguments);
+          },
+
+          set: function set() {
+            return model.set.apply(model, arguments);
+          },
+
+          loadModel: function loadModel(modelId, cb) {
+            model.stop();
+
+            interactivesController.loadModel(modelId);
+
+            if (typeof cb === 'function') {
+              interactivesController.pushOnLoadScript(cb);
+            }
+          },
+
+          /**
+            Observe property `propertyName` on the model, and perform `action` when it changes.
+            Pass property value to action.
+          */
+          onPropertyChange: function onPropertyChange(propertyName, action) {
+            model.addPropertiesListener([propertyName], function() {
+              action( model.get(propertyName) );
+            });
+          },
+
+          /**
+           * Performs a user-defined script at any given time.
+           *
+           * callAt(t, ...) guarantees that script will be executed, but not necessarily
+           * at exactly chosen time (as this can be impossible due to simulation settings).
+           * User scripts cannot interrupt the model "tick", the most inner integration loop.
+           * e.g. callAt(23, ...) in MD2D model context will be executed at time 50,
+           * if timeStepsPerTick = 50 and timeStep = 1.
+           *
+           * callAt action will only occur the first time the model reaches the specified time,
+           * but not after the model is scrubbed forward and backward (using tick history).
+           *
+           * @param  {number} time     Time defined in model native time unit (e.g. fs for MD2D).
+           * @param  {function} action Function containing user-defined script.
+           */
+          callAt: function callAt(time, action) {
+            var actionTimeout = {
+              time: time,
+              action: action,
+              check: function() {
+                if (model.get("time") >= this.time) {
+                  this.action();
+                  // Optimization - when function was once executed, replace
+                  // check with empty function.
+                  // removePropertiesListener() method could be useful, but it
+                  // isn't available yet.
+                  this.check = function () {};
+                }
+              }
+            };
+            model.addPropertiesListener("time", function () {
+              actionTimeout.check();
+            });
+          },
+
+          /**
+           * Performs a user-defined script repeatedly, with a fixed time delay
+           * between each call.
+           *
+           * callEvery(t, ...) guarantees that script will be executed *correct number of times*,
+           * but not necessarily at exactly chosen intervals (as this can be impossible due to
+           * simulation settings). User scripts cannot interrupt the model "tick", the most
+           * inner integration loop.
+           * e.g. callEvery(23, ...) in MD2D model context will be executed *twice* at time 50,
+           * if timeStepsPerTick = 50 and timeStep = 1.
+           *
+           * callEvery action for time N * interval (for any integer N >= 1) will only be called
+           * the first time the model time exceeds N * interval time. After the model is scrubbed
+           * forward and backward using (using tick history), action *won't* be called again.
+           *
+           * @param {number}   interval Interval on how often to execute the script,
+           *                            defined in model native time unit (e.g. fs for MD2D).
+           * @param {function} action   Function containing user-defined script.
+           */
+          callEvery: function callEvery(interval, action) {
+            var actionInterval = {
+              lastCall: 0,
+              interval: interval,
+              action: action,
+              execute: function() {
+                var time = model.get("time");
+                while (time - this.lastCall >= this.interval) {
+                  this.action();
+                  this.lastCall += this.interval;
+                }
+              }
+            };
+            model.addPropertiesListener("time", function () {
+              actionInterval.execute();
+            });
+          },
+
+          /**
+           * Sets a custom click handler for objects of a given type.
+           * Basic type which is always supported is "plot". It is empty
+           * area of a model. Various models can support different clickable
+           * types. Please see the model documentation to check what
+           * other object types are supported.
+           *
+           * Behind the scenes this functions uses class selector. So you can
+           * also inspect SVG image and check what is class of interesting
+           * object and try to use it.
+           *
+           * MD2D specific notes:
+           * Supported types: "plot", "atom", "obstacle", "image", "textBox".
+           * TODO: move it to MD2D related docs in the future.
+           *
+           * @param {string}   type    Name of the type of clickable objects.
+           * @param {Function} handler Custom click handler. It will be called
+           *                           when object is clicked with (x, y, d, i) arguments:
+           *                             x - x coordinate in model units,
+           *                             y - y coordinate in model units,
+           *                             d - data associated with a given object (can be undefined!),
+           *                             i - ID of clicked object (usually its value makes sense if d is defined).
+           */
+          onClick: function onClick(type, handler) {
+            // Append '.' to make API simpler.
+            // So authors can just specify onClick("atom", ...) instead of class selectors.
+            interactivesController.getModelController().modelContainer.setClickHandler("." + type, handler);
+          },
+
+          /**
+           * Sets custom select handler. It enables select action and lets author provide custom handler
+           * which is executed when select action is finished. The area of selection is passed to handler
+           * as arguments. It is defined by rectangle - its lower left corner coordinates, width and height.
+           *
+           * @param {Function} handler Custom select handler. It will be called
+           *                           when select action is finished with (x, y, w, h) arguments:
+           *                             x - x coordinate of lower left selection corner (in model units),
+           *                             y - y coordinate of lower left selection corner (in model units),
+           *                             width  - width of selection rectangle (in model units),
+           *                             height - height of selection rectangle (in model units).
+           */
+          onSelect: function onSelect(handler) {
+            interactivesController.getModelController().modelContainer.setSelectHandler(handler);
+          },
+
+          start: function start() {
+            model.start();
+            this.trackEvent('Interactive', "Start", "Starting interactive: " + interactivesController.get('title') );
+          },
+
+          stop: function stop() {
+            model.stop();
+          },
+
+          reset: function reset() {
+            model.stop();
+            interactivesController.modelController.reload();
+          },
+
+          stepForward: function stepForward() {
+            model.stepForward();
+            if (!model.isNewStep()) {
+              interactivesController.modelController.modelContainer.update();
+            }
+          },
+
+          stepBack: function stepBack() {
+            model.stepBack();
+            interactivesController.modelController.modelContainer.update();
+          },
+
+          tick: function tick() {
+            model.tick();
+          },
+
+          isStopped: function isStopped() {
+            return model.is_stopped();
+          },
+
+          getTime: function getTime() {
+            return model.get('time');
+          },
+
+          /**
+           * Returns number of frames per second.
+           * @return {number} frames per second.
+           */
+          getFPS: function getFPS() {
+            return model.getFPS();
+          },
+
+          /**
+           * Returns "simulation progress rate".
+           * It indicates how much of simulation time is calculated for
+           * one second of real time.
+           * @return {number} simulation progress rate.
+           */
+          getSimulationProgressRate: function getSimulationProgressRate() {
+            return model.getSimulationProgressRate();
+          },
+
+          startPerformanceTuning: function startPerformanceTuning() {
+            model.performanceOptimizer.enable();
+          },
+
+          repaint: function repaint() {
+            interactivesController.getModelController().repaint();
+          },
+
+          exportData: function exportData() {
+            var dgExport = interactivesController.getDGExportController();
+            if (!dgExport)
+              throw new Error("No exports have been specified.");
+            dgExport.exportData();
+          },
+
+          /* Send a tracking event to Google Analytics */
+          trackEvent: function trackEvent(category, action, label) {
+            var googleAnalytics;
+
+            if (typeof _gaq === 'undefined'){
+              // console.error("Google Analytics not defined, Can not send trackEvent");
+              return;
+            }
+            googleAnalytics = _gaq;
+            if (!category) {
+              category = "Interactive";
+            }
+            // console.log("Sending a track page event Google Analytics (category:action:label):");
+            // console.log("(" + category + ":"  + action + ":" + label + ")");
+            googleAnalytics.push(['_trackEvent', category, action, label]);
+          },
+
+          Math: Math,
+
+          // Rrevent us from overwriting window.undefined.
+          "undefined": undefined,
+
+          // Rudimentary debugging functionality. Use Lab alert helper function.
+          alert: alert,
+
+          console: window.console !== null ? window.console : {
+            log: function() {},
+            error: function() {},
+            warn: function() {},
+            dir: function() {}
+          }
+        };
+      }()),
+
       /**
         Freeze Scripting API
         Make the scripting API immutable once defined
       */
       freeze: function () {
-        Object.freeze(scriptingAPI);
+        Object.freeze(this.api);
       },
 
       /**
         Extend Scripting API
       */
       extend: function (ModelScriptingAPI) {
-        $.extend(scriptingAPI, new ModelScriptingAPI(scriptingAPI));
+        $.extend(this.api, new ModelScriptingAPI(this.api));
       },
 
       /**
         Allow console users to try script actions
       */
       exposeScriptingAPI: function () {
-        window.script = $.extend({}, scriptingAPI);
+        window.script = $.extend({}, this.api);
         window.script.run = function(source, args) {
           var prop,
               argNames = [],
@@ -396,7 +429,7 @@ define(function (require) {
 
         try {
           scriptFunctionMaker = new Function('shadowedGlobals', 'scriptingAPI', 'scriptSource', scriptFunctionMakerSource);
-          scriptFunction = scriptFunctionMaker(shadowedGlobals, scriptingAPI, scriptSource);
+          scriptFunction = scriptFunctionMaker(shadowedGlobals, this.api, scriptSource);
         } catch (e) {
           alert("Error compiling script: \"" + e.toString() + "\"\nScript:\n\n" + scriptSource);
           return function() {

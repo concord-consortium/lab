@@ -85,6 +85,17 @@ applet {
   z-index: -1;
 }
 
+applet.test-sensor-applet {
+  z-index: 101;
+  position: absolute;
+  left: 100px;
+  top: 100px;
+}
+
+.ui-dialog.ui-front {
+  z-index: 102;
+}
+
 /* custom button styles generated using http://css-tricks.com/examples/ButtonMaker/
    and tweaked slightly to deal with cascade problems from above CSS */
 

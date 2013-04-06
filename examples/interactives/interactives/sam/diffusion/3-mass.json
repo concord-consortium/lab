@@ -1,8 +1,8 @@
 {
-  "title": "Diffusion Temperature and Mass",
+  "title": "Diffusion & Molecular Mass",
   "publicationStatus": "public",
-  "subtitle": "How do temperature and mass affect the rate of diffusion?",
-  "about": "Click remove barrier to begin measuring how long it takes for the molecules to diffuse across the container.",
+  "subtitle": "How does molecular mass affect the rate of diffusion?",
+  "about": "Explore the role of molecular mass on the rate of diffusion. Select the mass of the molecules behind the barrier. Remove the barrier, and measure the amount of time it takes the molecules to reach the gas sensor. When the gas sensor has detected three molecules, it will stop the experiment. Compare the diffusion rates of the lightest, heavier and heaviest molecules. Trace an individual molecule to see the path it takes.",
   "models": [
     {
       "id": "model1",
@@ -30,7 +30,6 @@
       "onLoad": [
         "set('targetTemperature',500);",
         "set('gasElementType',2);",
-        "start();",
         "set({ timeStep: 0.00015, timeStepsPerTick: 75, modelSampleRate: 'default' });",
         "onPropertyChange('time', function(t) {",
         "  var atoms               = atomsWithinRect(6.75, 0, 0.25, 1.96, get('gasElementType'));",
@@ -137,7 +136,7 @@
     {
       "type": "checkbox",
       "id": "trace-atom",
-      "text": "Trace Atom",
+      "text": "Trace Molecule",
       "property": "tracingAtom"
     },
     {
@@ -145,7 +144,9 @@
       "id": "remove-obstacle",
       "text": "Remove Barrier",
       "action" : [
-        "if (getNumberOfObstacles() > 0) { ",
+        "if (isStopped()) {",
+        "  alert('Press play before removing the barrier');",
+        "} else if (getNumberOfObstacles() > 0) { ",
         "  removeObstacle(0); ",
         "  set('timeBarrierRemoved', get('time'));",
         "  set('experimentRunning', true)",

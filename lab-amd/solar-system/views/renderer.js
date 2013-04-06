@@ -6,17 +6,14 @@
 // ------------------------------------------------------------
 define(function (require) {
   // Dependencies.
-  var console               = require('common/console'),
-      wrapSVGText           = require('cs!common/layout/wrap-svg-text'),
+  var labConfig             = require('lab.config'),
+      console               = require('common/console'),
       wrapSVGText           = require('cs!common/layout/wrap-svg-text'),
       gradients             = require('common/views/gradients');
 
   return function SolarSystemView(modelView, model) {
-  // return function SolarSystemView(model, containers, m2px, m2pxInv, mSize2px) {
-        // Public API object to be returned.
+    // Public API object to be returned.
     var api = {},
-
-        mainContainer,
 
         modelWidth,
         modelHeight,
@@ -54,27 +51,42 @@ define(function (require) {
         textContainerBelow,
         textContainerTop,
 
-        // Array which defines a gradient assigned to a given tlanet.
-        gradientNameForPlanet = [],
+        // Array which defines a gradient assigned to a given astromonicalBody.
+        gradientNameForBody = [],
 
-        tlanetTooltipOn,
+        astromonicalBodyTooltipOn,
 
-        tlanet,
+        astromonicalBody,
         label, labelEnter,
-        tlanetDiv, tlanetDivPre,
+        astromonicalBodyDiv, astromonicalBodyDivPre,
 
         fontSizeInPixels,
         textBoxFontSizeInPixels,
 
+        imageProp,
+        imageMapping,
+        modelImagePath,
+        imageSizes = [],
+        textBoxes,
+        imagePath,
+
+        drawBodyTrace,
+        bodyTraceId,
+        bodyTraceColor,
+        bodyTrace,
+        bodyTracePath,
+        bodyTraceMaxLength = 35500,
+        traceBodyStrokeWidth,
+
         // for model clock
         showClock,
         timeLabel,
-        modelTimeFormatter = d3.format("5.0f"),
+        modelTimeFormatter = d3.format("5.1f"),
         timePrefix = "",
         timeSuffix = "";
 
     function modelTimeLabel() {
-      return timePrefix + modelTimeFormatter(model.get('time')/100) + timeSuffix;
+      return timePrefix + modelTimeFormatter(model.get('time')) + timeSuffix;
     }
 
     /**
@@ -95,9 +107,9 @@ define(function (require) {
       gradients.createRadialGradient("neutral-grad", "#FFFFFF", "#f2f2f2", "#A4A4A4", mainContainer);
     }
 
-    // Returns gradient appropriate for a given tlanet.
-    // d - tlanet data.
-    function getPlanetGradient(d) {
+    // Returns gradient appropriate for a given astromonicalBody.
+    // d - astromonicalBody data.
+    function getBodyGradient(d) {
       if (d.marked) {
         return "url(#mark-grad)";
       } else {
@@ -105,26 +117,26 @@ define(function (require) {
       }
     }
 
-    function updatePlanetRadius() {
+    function updateBodyRadius() {
       mainContainer.selectAll("circle").data(modelResults).attr("r",  function(d) { return modelSize2px(d.radius); });
     }
 
-    function setupColorsOfPlanets() {
+    function setupColorsOfBodies() {
       var i, len;
 
-      gradientNameForPlanet.length = modelResults.length;
+      gradientNameForBody.length = modelResults.length;
       for (i = 0, len = modelResults.length; i < len; i++)
-        gradientNameForPlanet[i] = getPlanetGradient(modelResults[i]);
+        gradientNameForBody[i] = getBodyGradient(modelResults[i]);
     }
 
-    function setupPlanets() {
+    function setupBodies() {
 
       mainContainer.selectAll("circle").remove();
       mainContainer.selectAll("g.label").remove();
 
-      tlanet = mainContainer.selectAll("circle").data(modelResults);
+      astromonicalBody = mainContainer.selectAll("circle").data(modelResults);
 
-      tlanetEnter();
+      astromonicalBodyEnter();
 
       label = mainContainer.selectAll("g.label")
           .data(modelResults);
@@ -139,9 +151,9 @@ define(function (require) {
         var selection = d3.select(this),
             txtValue, txtSelection;
         // Append appropriate label. For now:
-        // If 'tlanetNumbers' option is enabled, use indices.
+        // If 'astromonicalBodyNumbers' option is enabled, use indices.
         // If not and there is available 'label'/'symbol' property, use one of them
-        if (model.get("tlanetNumbers")) {
+        if (model.get("astromonicalBodyNumbers")) {
           selection.append("text")
             .text(d.idx)
             .style("font-size", modelSize2px(1.4 * d.radius) + "px");
@@ -176,12 +188,24 @@ define(function (require) {
       });
     }
 
+    function setupBodyTrace() {
+      mainContainer.selectAll("path.bodyTrace").remove();
+      bodyTracePath = "";
+
+      drawBodyTrace = model.get("showBodyTrace");
+      bodyTraceId = model.get("bodyTraceId");
+      if (drawBodyTrace) {
+        bodyTrace = mainContainer.selectAll("path.bodyTrace").data([modelResults[bodyTraceId]]);
+        bodyTraceEnter();
+      }
+    }
+
     /**
-      Call this wherever a d3 selection is being used to add circles for tlanets
+      Call this wherever a d3 selection is being used to add circles for astromonicalBodys
     */
 
-    function tlanetEnter() {
-      tlanet.enter().append("circle")
+    function astromonicalBodyEnter() {
+      astromonicalBody.enter().append("circle")
           .attr({
             "r":  function(d) {
               return modelSize2px(d.radius); },
@@ -192,15 +216,15 @@ define(function (require) {
           })
           .style({
             "fill-opacity": function(d) { return d.visible; },
-            "fill": function (d, i) { return gradientNameForPlanet[i]; }
+            "fill": function (d, i) { return gradientNameForBody[i]; }
           })
-          .on("mousedown", tlanetMouseDown)
-          .on("mouseover", tlanetMouseOver)
-          .on("mouseout", tlanetMouseOut);
+          .on("mousedown", astromonicalBodyMouseDown)
+          .on("mouseover", astromonicalBodyMouseOver)
+          .on("mouseout", astromonicalBodyMouseOut);
     }
 
-    function tlanetUpdate() {
-      tlanet.attr({
+    function astromonicalBodyUpdate() {
+      astromonicalBody.attr({
         "r":  function(d) {
           return modelSize2px(d.radius); },
         "cx": function(d) {
@@ -209,37 +233,77 @@ define(function (require) {
           return model2pxInv(d.y); }
       });
 
-      if (tlanetTooltipOn === 0 || tlanetTooltipOn > 0) {
-        renderPlanetTooltip(tlanetTooltipOn);
+      if (astromonicalBodyTooltipOn === 0 || astromonicalBodyTooltipOn > 0) {
+        renderBodyTooltip(astromonicalBodyTooltipOn);
       }
     }
 
-    function tlanetMouseOver(d, i) {
-      if (model.get("enablePlanetTooltips")) {
-        renderPlanetTooltip(i);
+    function astromonicalBodyMouseOver(d, i) {
+      if (model.get("enableBodyTooltips")) {
+        renderBodyTooltip(i);
       }
     }
 
-    function tlanetMouseDown(d, i) {
+    function astromonicalBodyMouseDown(d, i) {
       containers.node.focus();
-      if (model.get("enablePlanetTooltips")) {
-        if (tlanetTooltipOn !== false) {
-          tlanetDiv.style("opacity", 1e-6);
-          tlanetDiv.style("display", "none");
-          tlanetTooltipOn = false;
+      if (model.get("enableBodyTooltips")) {
+        if (astromonicalBodyTooltipOn !== false) {
+          astromonicalBodyDiv.style("opacity", 1e-6);
+          astromonicalBodyDiv.style("display", "none");
+          astromonicalBodyTooltipOn = false;
         } else {
           if (d3.event.shiftKey) {
-            tlanetTooltipOn = i;
+            astromonicalBodyTooltipOn = i;
           } else {
-            tlanetTooltipOn = false;
+            astromonicalBodyTooltipOn = false;
           }
-          renderPlanetTooltip(i);
+          renderBodyTooltip(i);
         }
       }
     }
 
-    function renderPlanetTooltip(i) {
-      tlanetDiv
+    function updateBodyTrace() {
+      bodyTrace.attr({
+        "d": getBodyTracePath
+      });
+    }
+
+    function bodyTraceEnter() {
+      bodyTrace.enter().append("path")
+        .attr({
+          "class": "bodyTrace",
+          "d": getBodyTracePath,
+          "stroke-width": traceBodyStrokeWidth,
+          "stroke": bodyTraceColor,
+          "fill": "none"
+        });
+    }
+
+    function getBodyTracePath(d) {
+      // until we implement buffered array model output properties,
+      // we just keep the path history in the path string
+      var dx = Math.floor(model2px(d.x) * 100) / 100,
+          dy = Math.floor(model2pxInv(d.y) * 100) / 100,
+          lIndex, sIndex;
+      if (!bodyTracePath) {
+        bodyTracePath = "M"+dx+","+dy+"L";
+        return "M "+dx+","+dy;
+      } else {
+        bodyTracePath += dx+","+dy + " ";
+      }
+
+      // fake buffered array functionality by knocking out the first
+      // element of the string when we get too big
+      if (bodyTracePath.length > bodyTraceMaxLength) {
+        lIndex = bodyTracePath.indexOf("L");
+        sIndex = bodyTracePath.indexOf(" ");
+        bodyTracePath = "M" + bodyTracePath.slice(lIndex+1, sIndex) + "L" + bodyTracePath.slice(sIndex+1);
+      }
+      return bodyTracePath;
+    }
+
+    function renderBodyTooltip(i) {
+      astromonicalBodyDiv
             .style("opacity", 1.0)
             .style("display", "inline")
             .style("background", "rgba(100%, 100%, 100%, 0.7)")
@@ -248,8 +312,8 @@ define(function (require) {
             .style("zIndex", 100)
             .transition().duration(250);
 
-      tlanetDivPre.text(
-          "tlanet: " + i + "\n" +
+      astromonicalBodyDivPre.text(
+          "astromonicalBody: " + i + "\n" +
           "time: " + modelTimeLabel() + "\n" +
           "speed: " + d3.format("+6.3e")(modelResults[i].speed) + "\n" +
           "vx:    " + d3.format("+6.3e")(modelResults[i].vx)    + "\n" +
@@ -259,18 +323,18 @@ define(function (require) {
         );
     }
 
-    function tlanetMouseOut() {
-      if (!tlanetTooltipOn && tlanetTooltipOn !== 0) {
-        tlanetDiv.style("opacity", 1e-6).style("zIndex" -1);
+    function astromonicalBodyMouseOut() {
+      if (!astromonicalBodyTooltipOn && astromonicalBodyTooltipOn !== 0) {
+        astromonicalBodyDiv.style("opacity", 1e-6).style("zIndex" -1);
       }
     }
 
     function setupTooTips() {
-      if ( tlanetDiv === undefined) {
-        tlanetDiv = d3.select("body").append("div")
+      if ( astromonicalBodyDiv === undefined) {
+        astromonicalBodyDiv = d3.select("body").append("div")
             .attr("class", "tooltip")
             .style("opacity", 1e-6);
-        tlanetDivPre = tlanetDiv.append("pre");
+        astromonicalBodyDivPre = astromonicalBodyDiv.append("pre");
       }
     }
 
@@ -300,6 +364,21 @@ define(function (require) {
     // *** Main Renderer functions ***
     //
 
+    function setupRendererOptions() {
+      imageProp = model.get("images");
+      imageMapping = model.get("imageMapping");
+      modelImagePath = model.get('imagePath');
+      if (modelImagePath) {
+        imagePath = labConfig.actualRoot + modelImagePath;
+      }
+      else if (model.url) {
+        imagePath = labConfig.actualRoot + model.url.slice(0, model.url.lastIndexOf("/") + 1);
+      }
+
+      bodyTraceColor = model.get("bodyTraceColor");
+
+    }
+
     //
     // SolarSystem Renderer: init
     //
@@ -320,11 +399,14 @@ define(function (require) {
 
       fontSizeInPixels = modelView.getFontSizeInPixels();
       textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
+      traceBodyStrokeWidth = fontSizeInPixels/12;
 
       modelResults  = model.get_results();
       modelWidth    = model.get('width');
       modelHeight   = model.get('height');
       aspectRatio   = modelWidth / modelHeight;
+
+      setupRendererOptions();
 
       modelMinX = model.get('minX');
       modelMinY = model.get('minY');
@@ -343,8 +425,14 @@ define(function (require) {
       }
 
       // Redraw container each time when some visual-related property is changed.
-      model.on('addPlanet', redrawClickableObjects(repaint));
-      model.on('removePlanet', redrawClickableObjects(repaint));
+      model.addPropertiesListener([
+        "showBodyTrace", "bodyTraceId",
+        "showClock", "backgroundColor", "markColor"],
+          redrawClickableObjects(repaint));
+
+      // Redraw container each time when some visual-related property is changed.
+      model.on('addBody', redrawClickableObjects(repaint));
+      model.on('removeBody', redrawClickableObjects(repaint));
     }
 
     //
@@ -376,9 +464,10 @@ define(function (require) {
       textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
 
       setupDynamicGradients();
+      setupBodyTrace();
       setupClock();
-      setupColorsOfPlanets();
-      setupPlanets();
+      setupColorsOfBodies();
+      setupBodies();
     }
 
     //
@@ -395,7 +484,11 @@ define(function (require) {
         timeLabel.text(modelTimeLabel());
       }
 
-      tlanetUpdate();
+      astromonicalBodyUpdate();
+
+      if (drawBodyTrace) {
+        updateBodyTrace();
+      }
 
       console.timeEnd('view update');
     }

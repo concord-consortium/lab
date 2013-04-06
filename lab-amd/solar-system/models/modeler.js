@@ -23,7 +23,7 @@ define(function(require) {
 
     var model = {},
         dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack",
-            "seek", "addPlanet", "removePlanet", "invalidation", "textBoxesChanged"),
+            "seek", "addBody", "removeBody", "invalidation", "textBoxesChanged"),
         defaultMaxTickHistory = 1000,
         stopped = true,
         restart = false,
@@ -43,7 +43,7 @@ define(function(require) {
         // are mainly managed by the engine.
 
         // A hash of arrays consisting of arrays of planet property values
-        planets,
+        bodies,
 
         // ####################################################################
 
@@ -439,11 +439,11 @@ define(function(require) {
 
       extendResultsArray();
 
-      // Transpose 'planets' object into 'results' for easier consumption by view code
-      for (i = 0, n = model.get_num_planets(); i < n; i++) {
-        for (prop in planets) {
-          if (planets.hasOwnProperty(prop)) {
-            results[i][prop] = planets[prop][i];
+      // Transpose 'bodies' object into 'results' for easier consumption by view code
+      for (i = 0, n = model.get_num_bodies(); i < n; i++) {
+        for (prop in bodies) {
+          if (bodies.hasOwnProperty(prop)) {
+            results[i][prop] = bodies[prop][i];
           }
         }
       }
@@ -458,7 +458,7 @@ define(function(require) {
 
       if (!results) results = [];
 
-      for (i = results.length, len = model.get_num_planets(); i < len; i++) {
+      for (i = results.length, len = model.get_num_bodies(); i < len; i++) {
         if (!results[i]) {
           results[i] = {
             idx: i
@@ -565,20 +565,20 @@ define(function(require) {
       window.state = modelOutputState = {};
 
       // Copy reference to basic properties.
-      planets = engine.planets;
+      bodies = engine.bodies;
     };
 
     /**
-      Creates a new set of planets.
+      Creates a new set of bodies.
 
-      @config: either the number of planets (for a random setup) or
-               a hash specifying the x,y,vx,vy properties of the planets
+      @config: either the number of bodies (for a random setup) or
+               a hash specifying the x,y,vx,vy properties of the bodies
       When random setup is used, the option 'relax' determines whether the model is requested to
-      relax to a steady-state temperature (and in effect gets thermalized). If false, the planets are
+      relax to a steady-state temperature (and in effect gets thermalized). If false, the bodies are
       left in whatever grid the engine's initialization leaves them in.
     */
-    model.createPlanets = function(config) {
-          // Options for addPlanet method.
+    model.createBodies = function(config) {
+          // Options for addBody method.
       var options = {
             // Do not check the position of planet, assume that it's valid.
             supressCheck: true,
@@ -587,7 +587,7 @@ define(function(require) {
           },
           i, num, prop, planetProps;
 
-      // Call the hook manually, as addPlanet won't do it due to
+      // Call the hook manually, as addBody won't do it due to
       // deserialization option set to true.
       invalidatingChangePreHook();
 
@@ -604,7 +604,7 @@ define(function(require) {
         // config is hash of arrays (as specified in JSON model).
         // So, for each index, create object containing properties of
         // planet 'i'. Later, use these properties to add planet
-        // using basic addPlanet method.
+        // using basic addBody method.
         for (i = 0; i < num; i++) {
           planetProps = {};
           for (prop in config) {
@@ -612,23 +612,26 @@ define(function(require) {
               planetProps[prop] = config[prop][i];
             }
           }
-          model.addPlanet(planetProps, options);
+          if (!planetProps.radius) {
+            planetProps.radius = engine.radiusFromMass(config.mass[i]);
+          }
+          model.addBody(planetProps, options);
         }
       } else {
         for (i = 0; i < num; i++) {
           // Provide only required values.
           planetProps = {x: 0, y: 0};
-          model.addPlanet(planetProps, options);
+          model.addBody(planetProps, options);
         }
-        // This function rearrange all planets randomly.
-        engine.setupPlanetsRandomly();
+        // This function rearrange all bodies randomly.
+        engine.setupBodiesRandomly();
       }
 
-      // Call the hook manually, as addPlanet won't do it due to
+      // Call the hook manually, as addBody won't do it due to
       // deserialization option set to true.
       invalidatingChangePostHook();
 
-      // Listeners should consider resetting the planets a 'reset' event
+      // Listeners should consider resetting the bodies a 'reset' event
       dispatch.reset();
 
       // return model, for chaining (if used)
@@ -646,35 +649,36 @@ define(function(require) {
     };
 
     /**
-      Attempts to add an 0-velocity planet to a random location. Returns false if after 10 tries it
-      can't find a location. (Intended to be exposed as a script API method.)
-
-      Optionally allows specifying the element (default is to randomly select from all editableElements) and
-      charge (default is neutral).
+      Attempts to add a body to a random location.
     */
-    model.addRandomPlanet = function() {
+    model.addRandomBody = function() {
       var width = model.get('width'),
           height = model.get('height'),
           minX = model.get('minX'),
           minY = model.get('minY'),
-          radius = 1,
-          x, y,
-          vx, vy,
-          loc;
+          props = {},
+          radius,
+          mass;
 
-      x = minX + Math.random() * width - 2*radius;
-      y = minY + Math.random() * height - 2*radius;
-      vx = (Math.random() - 0.5) / 100;
-      vy = (Math.random() - 0.5) / 100;
-      model.addPlanet({ x: x, y: x, vx: vx, vy: vy });
+      mass = Math.random() * 10;
+      radius = engine.radiusFromMass(mass);
+      props = {
+        x:       minX + Math.random() * width - 2*radius,
+        y:       minY + Math.random() * height - 2*radius,
+        vx:      (Math.random() - 0.5) / 100,
+        vy:      (Math.random() - 0.5) / 100,
+        mass:    mass,
+        radius:  radius
+      };
+      model.addBody(props);
       return false;
     },
 
     /**
-      Adds a new planet defined by properties.
+      Adds a new body defined by properties.
       Intended to be exposed as a script API method also.
 
-      Adjusts (x,y) if needed so that the whole planet is within the walls of the container.
+      Adjusts (x,y) if needed so that the whole body is within the walls of the container.
 
       Returns false and does not add the planet if the potential energy change of adding an *uncharged*
       planet of the specified element to the specified location would be positive (i.e, if the planet
@@ -684,52 +688,51 @@ define(function(require) {
 
       silent = true disables this check.
     */
-    model.addPlanet = function(props, options) {
+    model.addBody = function(props, options) {
       var minX = model.get('minX'),
           minY = model.get('minY'),
           maxX = model.get('maxX'),
-          maxY = model.get('maxY'),
-          radius = 1;
+          maxY = model.get('maxY');
 
       options = options || {};
 
       // Validate properties, provide default values.
-      props = validator.validateCompleteness(metadata.planet, props);
+      props = validator.validateCompleteness(metadata.body, props);
 
-      // As a convenience to script authors, bump the planet within bounds
+      // As a convenience to script authors, bump the body within bounds
       // radius = engine.getRadiusOfElement(props.element);
       // if (props.x < (minX + radius)) props.x = minX + radius;
       // if (props.x > (maxX - radius)) props.x = maxX - radius;
       // if (props.y < (minY + radius)) props.y = minY + radius;
       // if (props.y > (maxY - radius)) props.y = maxY - radius;
 
-      // When planets are being deserialized, the deserializing function
+      // When bodies are being deserialized, the deserializing function
       // should handle change hooks due to performance reasons.
       if (!options.deserialization)
         invalidatingChangePreHook();
-      engine.addPlanet(props);
+      engine.addBody(props);
       if (!options.deserialization)
         invalidatingChangePostHook();
 
       if (!options.supressEvent) {
-        dispatch.addPlanet();
+        dispatch.addBody();
       }
 
       return true;
     },
 
-    model.removePlanet = function(i, options) {
+    model.removeBody = function(i, options) {
 
       options = options || {};
 
       invalidatingChangePreHook();
-      engine.removePlanet(i);
+      engine.removeBody(i);
       // Enforce modeler to recalculate results array.
       results.length = 0;
       invalidatingChangePostHook();
 
       if (!options.supressEvent) {
-        // Notify listeners that planets is removed.
+        // Notify listeners that bodies is removed.
         dispatch.removeplanet();
       }
     },
@@ -742,22 +745,22 @@ define(function(require) {
         This can optionally check the new location of the planet to see if it would
         overlap with another another planet (i.e. if it would increase the PE).
 
-        This can also optionally apply the same dx, dy to any planets in the same
+        This can also optionally apply the same dx, dy to any bodies in the same
         molecule (if x and y are being changed), and check the location of all
-        the bonded planets together.
+        the bonded bodies together.
       */
-    model.setPlanetProperties = function(i, props, checkLocation, moveMolecule) {
+    model.setBodyProperties = function(i, props, checkLocation, moveMolecule) {
       var dx, dy,
           new_x, new_y,
           j, jj;
 
       // Validate properties.
-      props = validator.validate(metadata.planet, props);
+      props = validator.validate(metadata.body, props);
 
 
       if (checkLocation) {
-        var x  = typeof props.x === "number" ? props.x : planets.x[i],
-            y  = typeof props.y === "number" ? props.y : planets.y[i];
+        var x  = typeof props.x === "number" ? props.x : bodies.x[i],
+            y  = typeof props.y === "number" ? props.y : bodies.y[i];
 
         if (!engine.canPlaceplanet(el, x, y, i)) {
           return false;
@@ -765,18 +768,18 @@ define(function(require) {
       }
 
       invalidatingChangePreHook();
-      engine.setPlanetProperties(i, props);
+      engine.setBodyProperties(i, props);
       invalidatingChangePostHook();
       return true;
     };
 
-    model.getPlanetProperties = function(i) {
-      var planetMetaData = metadata.planet,
+    model.getBodyProperties = function(i) {
+      var planetMetaData = metadata.body,
           props = {},
           propName;
       for (propName in planetMetaData) {
         if (planetMetaData.hasOwnProperty(propName)) {
-          props[propName] = planets[propName][i];
+          props[propName] = bodies[propName][i];
         }
       }
       return props;
@@ -791,7 +794,7 @@ define(function(require) {
     model.removeTextBox = function(i) {
       var text = properties.textBoxes;
       if (i >=0 && i < text.length) {
-        properties.textBoxes = text.slice(0,i).concat(text.slice(i+1))
+        properties.textBoxes = text.slice(0,i).concat(text.slice(i+1));
         dispatch.textBoxesChanged();
       } else {
         throw new Error("Text box \"" + i + "\" does not exist, so it cannot be removed.");
@@ -815,16 +818,16 @@ define(function(require) {
       return stopped;
     };
 
-    model.get_planets = function() {
-      return planets;
+    model.get_bodies = function() {
+      return bodies;
     };
 
     model.get_results = function() {
       return results;
     };
 
-    model.get_num_planets = function() {
-      return engine.getNumberOfPlanets();
+    model.get_num_bodies = function() {
+      return engine.getNumberOfBodies();
     };
 
     model.on = function(type, listener) {
@@ -1156,20 +1159,25 @@ define(function(require) {
       var propCopy = {},
           ljProps, i, len,
 
-          removeplanetsArrayIfDefault = function(name, defaultVal) {
-            if (propCopy.planets[name].every(function(i) {
+          removebodiesArrayIfDefault = function(name, defaultVal) {
+            if (propCopy.bodies[name].every(function(i) {
               return i === defaultVal;
             })) {
-              delete propCopy.planets[name];
+              delete propCopy.bodies[name];
             }
           };
 
       propCopy = serialize(metadata.mainProperties, properties);
       propCopy.viewOptions = serialize(metadata.viewOptions, properties);
-      propCopy.planets = serialize(metadata.planet, planets, engine.getNumberOfPlanets());
+      propCopy.bodies = serialize(metadata.body, bodies, engine.getNumberOfBodies());
 
-      removeplanetsArrayIfDefault("marked", metadata.planet.marked.defaultValue);
-      removeplanetsArrayIfDefault("visible", metadata.planet.visible.defaultValue);
+      // Remove bodyTraceId when body tracing is disabled.
+      if (propCopy.viewOptions.showBodyTrace === false) {
+        delete propCopy.viewOptions.bodyTraceId;
+      }
+
+      removebodiesArrayIfDefault("marked", metadata.body.marked.defaultValue);
+      removebodiesArrayIfDefault("visible", metadata.body.visible.defaultValue);
 
       return propCopy;
     };
@@ -1180,7 +1188,7 @@ define(function(require) {
 
     // Set the regular, main properties.
     // Note that validation process will return hash without all properties which are
-    // not defined in meta model as mainProperties (like planets, viewOptions etc).
+    // not defined in meta model as mainProperties (like bodies, viewOptions etc).
     set_properties(validator.validateCompleteness(metadata.mainProperties, initialProperties));
 
     // Set the model view options.
@@ -1192,11 +1200,11 @@ define(function(require) {
     // Setup engine object.
     model.initializeEngine();
 
-    // Finally, if provided, set up the model objects (planets).
-    // However if these are not provided, client code can create planets, etc piecemeal.
+    // Finally, if provided, set up the model objects (bodies).
+    // However if these are not provided, client code can create bodies, etc piecemeal.
 
-    if (initialProperties.planets) {
-      model.createPlanets(initialProperties.planets);
+    if (initialProperties.bodies) {
+      model.createBodies(initialProperties.bodies);
     }
 
     // Initialize tick history.
@@ -1240,10 +1248,58 @@ define(function(require) {
     // Define some default output properties.
     model.defineOutput('time', {
       label: "Time",
-      units: "fs"
+      unitType: 'time',
+      format: 'f'
     }, function() {
       return modelOutputState.time;
     });
+
+    // Confusing detail for review: setting 'unitType' here will cause the return value of the
+    // output function to be translated to macroscopic units, however, the function takes
+    // macroscopic units as input. Therefore we must not set 'unitType'.
+    model.defineOutput('timePerTick', {
+      label: "Model time per tick",
+      unitName:         unitsDefinition.units.time.name,
+      unitPluralName:   unitsDefinition.units.time.pluralName,
+      unitAbbreviation: unitsDefinition.units.time.abbreviation,
+      format: 'f'
+    }, function() {
+      return model.get('timeStep') * model.get('timeStepsPerTick');
+    });
+
+    (function() {
+      var displayTimeUnits;
+
+      // Allow units definition to declare a "Display time"; specifically, let MD2D units definition
+      // define a "displayValue" section in the time unit that returns ps instead of fs.
+
+      if (unitsDefinition.units.time.displayValue) {
+        displayTimeUnits = unitsDefinition.units.time.displayValue;
+      } else {
+        displayTimeUnits = _.extend({}, unitsDefinition.units.time);
+        displayTimeUnits.unitsPerBaseUnit = 1;
+      }
+
+      model.defineOutput('displayTime', {
+        label: "Time",
+        unitName:         displayTimeUnits.name,
+        unitPluralName:   displayTimeUnits.pluralName,
+        unitAbbreviation: displayTimeUnits.abbreviation,
+        format: '.3f'
+      }, function() {
+        return model.get('time') * displayTimeUnits.unitsPerBaseUnit;
+      });
+
+      model.defineOutput('displayTimePerTick', {
+        label: "Model time per tick",
+        unitName:         displayTimeUnits.name,
+        unitPluralName:   displayTimeUnits.pluralName,
+        unitAbbreviation: displayTimeUnits.abbreviation,
+        format: '.3f'
+      }, function() {
+        return model.get('timePerTick') * displayTimeUnits.unitsPerBaseUnit;
+      });
+    }());
 
     updateAllOutputProperties();
 

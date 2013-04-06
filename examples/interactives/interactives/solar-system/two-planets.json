@@ -1,0 +1,111 @@
+{
+  "title": "Testing: two planets",
+  "publicationStatus": "draft",
+  "subtitle": "Body on left is 200x mass of body on right; both have an initial X velocity of zero.",
+  "about": "",
+  "models": [
+    {
+      "id": "two-bodies",
+      "type": "solar-system",
+      "url": "models/solar-system/two-planets.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name":  "numBodies",
+      "label": "Bodies",
+      "units": "count",
+      "value": [
+          "return getNumberOfBodies();"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "add-random-body",
+      "text": "Add random body",
+      "action": "addRandomBody()"
+    },
+    {
+      "type": "numericOutput",
+      "id": "current-bodies",
+      "property": "numBodies",
+      "displayValue": "return format('f')(value)"
+    },
+    {
+      "type": "text",
+      "id": "wrapping-label",
+      "text": "Model wrapping",
+      "style": "header"
+    },
+    {
+      "type": "checkbox",
+      "id": "horizontal-wrapping",
+      "text": "Horizontal",
+      "property": "horizontalWrapping"
+    },
+    {
+      "type": "checkbox",
+      "id": "vertical-wrapping",
+      "text": "Vertical",
+      "property": "verticalWrapping"
+    },
+    {
+      "type": "text",
+      "id": "axes-label",
+      "text": "Axes",
+      "style": "header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-gridlines",
+      "text": "Grid Lines",
+      "property": "gridLines"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-xunits",
+      "text": "X units",
+      "property": "xunits"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-yunits",
+      "text": "Y units",
+      "property": "yunits"
+    }
+  ],
+  "layout": {
+    "right": [
+      [ "add-random-body" ],
+      [ "current-bodies" ],
+      [ "wrapping-label" ],
+      [ "horizontal-wrapping" ],
+      [ "vertical-wrapping" ],
+      [ "axes-label" ],
+      [ "show-gridlines" ],
+      [ "show-xunits" ],
+      [ "show-yunits" ]
+    ],
+    "bottom": [
+    ]
+  },
+  "template": [
+    {
+      "id": "right",
+      "top": "1em",
+      "left": "model.right",
+      "padding-left": "0.5em",
+      "align": "left"
+    },
+    {
+      "id": "bottom",
+      "left": "model.left",
+      "top": "model.bottom"
+    }
+  ]
+}

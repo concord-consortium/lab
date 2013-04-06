@@ -21,6 +21,7 @@ define(function (require) {
       NumericOutputController = require('common/controllers/numeric-output-controller'),
       ParentMessageAPI        = require('common/controllers/parent-message-api'),
       ThermometerController   = require('common/controllers/thermometer-controller'),
+      PlaybackController      = require('common/controllers/playback-controller'),
       DivController           = require('common/controllers/div-controller'),
 
       // Helper function which just provides banner definition.
@@ -74,7 +75,8 @@ define(function (require) {
         'graph':         GraphController,
         'slider':        SliderController,
         'numericOutput': NumericOutputController,
-        'div':           DivController
+        'div':           DivController,
+        'playback':      PlaybackController
       };
 
   return function interactivesController(interactive, viewSelector) {
@@ -191,6 +193,7 @@ define(function (require) {
                     "x": 0.0,
                     "y": 1.0,
                     "width": 2.5,
+                    "height": 0.25,
                     "fontScale": 1.4,
                     "layer": 1,
                     "frame": "rectangle",
@@ -201,8 +204,9 @@ define(function (require) {
                   {
                     "text": modelDefinition.url,
                     "x": 0.0,
-                    "y": 0.9,
+                    "y": 0.8,
                     "width": 2.5,
+                    "height": 0.25,
                     "fontScale": 0.9,
                     "layer": 1,
                     "frame": "rectangle",
@@ -262,8 +266,7 @@ define(function (require) {
 
     // ------------------------------------------------------------
     //
-    // Handle keyboard shortcuts for model operation ...
-    // events routed through model_player object.
+    // Handle keyboard shortcuts for model operation.
     //
     // ------------------------------------------------------------
 
@@ -274,45 +277,43 @@ define(function (require) {
           switch(keycode) {
             case 13:                 // return
             event.preventDefault();
-            if (!model_player.isPlaying()) {
-              model_player.play();
-            }
+            scriptingAPI.api.start();
             break;
 
             case 32:                 // space
             event.preventDefault();
-            if (model_player.isPlaying()) {
-              model_player.stop();
+            if (!scriptingAPI.api.isStopped()) {
+              scriptingAPI.api.stop();
             } else {
-              model_player.play();
+              scriptingAPI.api.start();
             }
             break;
 
             case 37:                 // left-arrow
             event.preventDefault();
-            if (model_player.isPlaying()) {
-              model_player.stop();
+            if (!scriptingAPI.api.isStopped()) {
+              scriptingAPI.api.stop();
             } else {
-              model_player.back();
+              scriptingAPI.api.stepBack();
             }
             break;
 
             case 39:                 // right-arrow
             event.preventDefault();
-            if (model_player.isPlaying()) {
-              model_player.stop();
+            if (!scriptingAPI.api.isStopped()) {
+              scriptingAPI.api.stop();
             } else {
-              model_player.forward();
+              scriptingAPI.api.stepForward();
             }
             break;
           }
         });
-        $interactiveContainer.focus();
+        // $interactiveContainer.focus();
       }
     }
 
     function setupLayout() {
-      var template, layout, components, fontScale, banner, resizeAfterFullscreen;
+      var template, layout, comp, components, fontScale, banner, resizeAfterFullscreen;
 
       if (typeof interactive.template === "string") {
         template = templates[interactive.template];
@@ -328,7 +329,19 @@ define(function (require) {
       // Banner hash containing components, layout containers and layout deinition
       // (components location). Keep it in a separate structure, because we do not
       // expect these objects to be serialized!
-      banner = setupBanner(interactive, creditsDialog, aboutDialog, shareDialog);
+      banner = setupBanner(scriptingAPI, interactive, creditsDialog, aboutDialog, shareDialog);
+      // Register callbacks of banner components.
+      components = banner.components;
+      for (comp in components) {
+        if (components.hasOwnProperty(comp)) {
+          comp = components[comp];
+          if (comp.modelLoadedCallback) {
+            // $.proxy ensures that callback will be always executed
+            // in the context of correct object ('this' binding).
+            componentCallbacks.push($.proxy(comp.modelLoadedCallback, comp));
+          }
+        }
+      }
       // Note that all of these operations create a new object.
       // So interactive definition specified by the author won't be affected.
       // This is important for serialization correctness.
@@ -757,6 +770,16 @@ define(function (require) {
             break;
         }
       },
+
+      /**
+       * Gets interactive property from interactive JSON definition.
+       * @param  {string} name Property name.
+       * @return {*}      Property value.
+       */
+      get: function (name) {
+        return interactive[name];
+      },
+
       /**
         Serializes interactive, returns object ready to be stringified.
         e.g. JSON.stringify(interactiveController.serialize());

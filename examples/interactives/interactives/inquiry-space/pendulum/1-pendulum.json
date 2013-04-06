@@ -1,11 +1,13 @@
 {
   "title": "Pendulum",
   "publicationStatus": "public",
-  "subtitle": "Experiment with periodic motion using a pendulum.",
+  "subtitle": "Explore some factors that affect the period of a pendulum.",
   "about": [
-    "Observe the periodic motion of the pendulum angle using the embedded graph.",
-    "The parameters of the pendulum system can be controlled using the sliders below model.",
-    "How do the frequency and amplitude of the motion respond to different combinations of the parameters?"
+    "Press the play button. Watch the graph to see how the angle of the pendulum changes as it",
+    "swings back and forth. Use the graph to determine the period of the pendulum. Adjust the",
+    "scale by dragging the numbers on the axes. Change each variable – gravity, rod length,",
+    "starting angle and mass – and observe how each one affects the period. Can you explain why?",
+    "Try the damping slider. Does damping change the period?"
   ],
   "fontScale": 0.8,
   "models": [
@@ -218,8 +220,8 @@
       "ymax": 100,
       "xmax": 10,
       "xTickCount": 5,
-      "xFormatter": ".2s",
-      "yFormatter": ".2s",
+      "xFormatter": "2s",
+      "yFormatter": "2s",
       "properties": [
         "currentAngle"
       ]

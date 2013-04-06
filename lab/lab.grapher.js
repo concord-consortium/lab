@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "04035757a1bfe64309e23f202c05b93041870592",
-        "short_sha":      "04035757",
-        "url":            "https://github.com/concord-consortium/lab/commit/04035757",
+        "sha":           "d623c37886b37b4f7d1b90c6412d233418b8a039",
+        "short_sha":      "d623c378",
+        "url":            "https://github.com/concord-consortium/lab/commit/d623c378",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-04-03 18:58:57 -0400",
-        "short_message": "fix gravity-slider values",
-        "message":       "fix gravity-slider values"
+        "date":          "2013-04-06 04:00:33 -0400",
+        "short_message": "Revert &quot;canvas zIndex needs to be 2 so realtime graphs show the data lines&quot;",
+        "message":       "Revert &quot;canvas zIndex needs to be 2 so realtime graphs show the data lines&quot;\n\nThis reverts commit c9c7c678ad126c181b685cb0012c853e0859a041.\n\nThe canvas has to be under the SVG plot rect so the plot rect\ncan catch pointer-events in IE9 and IE10.\n\nThe plot rect needs to be transparent to be able to see the\nplotted lines in the Canvas element."
       },
       "dirty": false
     }
@@ -476,10 +476,12 @@ define('lab.config',['require','common/actual-root'],function (require) {
 
 define('grapher/core/axis',['require'],function (require) {
   return {
-    numberWidthUsingFormatter: function (elem, cx, cy, fontSizeInPixels, formatter, number) {
+    numberWidthUsingFormatter: function (elem, cx, cy, fontSizeInPixels, numberStr) {
       var testSVG,
           testText,
+          bbox,
           width,
+          height,
           node;
 
       testSVG = elem.append("svg")
@@ -493,20 +495,23 @@ define('grapher/core/axis',['require'],function (require) {
           .attr("x", -fontSizeInPixels/4 + "px")
           .attr("dy", ".35em")
           .attr("text-anchor", "end")
-          .text(d3.format(formatter)(number));
+          .text(numberStr);
 
       node = testText.node();
 
       // This code is sometimes called by tests that use d3's jsdom-based mock SVG DOm, which
       // doesn't implement getBBox.
       if (node.getBBox) {
-        width = testText.node().getBBox().width;
+        bbox = testText.node().getBBox();
+        width = bbox.width;
+        height = bbox.height;
       } else {
         width = 0;
+        height = 0;
       }
 
       testSVG.remove();
-      return width;
+      return [width, height];
     },
     axisProcessDrag: function(dragstart, currentdrag, domain) {
       var originExtent, maxDragIn,
@@ -519,7 +524,7 @@ define('grapher/core/axis',['require'],function (require) {
         if  ((axis1 >= 0) && (axis2 > axis1)) {                 // example: (20, 10, [0, 40]) => [0, 80]
           origin = axis1;
           originExtent = dragstart-origin;
-          maxDragIn = originExtent * 0.2 + origin;
+          maxDragIn = originExtent * 0.4 + origin;
           if (currentdrag > maxDragIn) {
             change = originExtent / (currentdrag-origin);
             extent = axis2 - origin;
@@ -528,7 +533,7 @@ define('grapher/core/axis',['require'],function (require) {
         } else if ((axis1 < 0) && (axis2 > 0)) {                // example: (20, 10, [-40, 40])       => [-80, 80]
           origin = 0;                                           //          (-0.4, -0.2, [-1.0, 0.4]) => [-1.0, 0.4]
           originExtent = dragstart-origin;
-          maxDragIn = originExtent * 0.2 + origin;
+          maxDragIn = originExtent * 0.4 + origin;
           if ((dragstart >= 0 && currentdrag > maxDragIn) || (dragstart  < 0  && currentdrag < maxDragIn)) {
             change = originExtent / (currentdrag-origin);
             newdomain = [axis1 * change, axis2 * change];
@@ -536,7 +541,7 @@ define('grapher/core/axis',['require'],function (require) {
         } else if ((axis1 < 0) && (axis2 < 0)) {                // example: (-60, -50, [-80, -40]) => [-120, -40]
           origin = axis2;
           originExtent = dragstart-origin;
-          maxDragIn = originExtent * 0.2 + origin;
+          maxDragIn = originExtent * 0.4 + origin;
           if (currentdrag < maxDragIn) {
             change = originExtent / (currentdrag-origin);
             extent = axis1 - origin;
@@ -582,7 +587,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         xScale, yScale, line,
         shiftingX = false,
         cubicEase = d3.ease('cubic'),
-        ds,
+        domainShift,
         circleCursorStyle,
         fontSizeInPixels,
         halfFontSizeInPixels,
@@ -591,8 +596,26 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         axisFontSizeInPixels,
         xlabelFontSizeInPixels,
         ylabelFontSizeInPixels,
+
+        xlabelMetrics,
+        yLabelMetrics,
         xAxisNumberWidth,
+        xAxisNumberHeight,
         yAxisNumberWidth,
+        yAxisNumberHeight,
+        xAxisLabelHorizontalPadding,
+
+        xAxisVerticalPadding,
+        xAxisDraggableHeight,
+        xAxisLabelBaseline,
+
+        yAxisHorizontalPadding,
+        yAxisDraggableWidth,
+        yAxisLabelBaseline,
+
+        xAxisDraggable,
+        yAxisDraggable,
+
         strokeWidth,
         sizeType = {
           category: "medium",
@@ -628,8 +651,8 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           yTickCount:      10,
           xscaleExponent:  0.5,
           yscaleExponent:  0.5,
-          xFormatter:      ".2s",
-          yFormatter:      ".2s",
+          xFormatter:      "2s",
+          yFormatter:      "2s",
           axisShift:       10,
           xmax:            10,
           xmin:            0,
@@ -724,6 +747,15 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       calculateSizeType();
     }
 
+    function longestNumber(array, formatter, precision) {
+      var longest;
+      precision = precision || 5;
+      longest = array.reduce(function(number1, number2) {
+        return formatter(+number1.toPrecision(precision)).length > formatter(+number2.toPrecision(precision)).length ? number1 : number2;
+      }, 0);
+      return formatter(longest);
+    }
+
     // Update the x-scale.
     function updateXScale() {
       xScale.domain([options.xmin, options.xmax])
@@ -771,11 +803,30 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         ylabelFontSizeInPixels = parseFloat($("svg.graph text.ylabel").css("font-size"));
       }
 
-      xAxisNumberWidth = Math.max(axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.xFormatter, options.xmax)*1.5,
-                                  axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.xFormatter, options.xmin)*1.5);
+      if (xScale === undefined) {
+        xlabelMetrics = [fontSizeInPixels, fontSizeInPixels];
+        ylabelMetrics = [fontSizeInPixels*2, fontSizeInPixels];
+      } else {
+        xlabelMetrics = axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, 
+          longestNumber(xScale.ticks(options.xTickCount), fx));
 
-      yAxisNumberWidth = Math.max(axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.yFormatter, options.ymax)*1.5,
-                                  axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.yFormatter, options.ymin)*1.5);
+        ylabelMetrics = axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels,
+          longestNumber(yScale.ticks(options.yTickCount), fy));
+      }
+
+      xAxisNumberWidth  = xlabelMetrics[0];
+      xAxisNumberHeight = xlabelMetrics[1];
+      yAxisNumberWidth  = ylabelMetrics[0];
+      yAxisNumberHeight = ylabelMetrics[0];
+
+      xAxisLabelHorizontalPadding = xAxisNumberWidth * 0.5;
+      xAxisDraggableHeight = xAxisNumberHeight * 1.1;
+      xAxisVerticalPadding = xAxisDraggableHeight + xAxisNumberHeight*1.3;
+      xAxisLabelBaseline = xAxisVerticalPadding-xAxisNumberHeight/3;
+
+      yAxisDraggableWidth    = yAxisNumberWidth + xAxisNumberHeight/4;
+      yAxisHorizontalPadding = yAxisDraggableWidth + yAxisNumberHeight;
+      yAxisLabelBaseline     = -(yAxisDraggableWidth+yAxisNumberHeight/4);
 
       switch(sizeType.value) {
         case 0:         // tiny
@@ -799,7 +850,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         case 2:         // medium
         padding = {
          "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
-         "right":  Math.max(fontSizeInPixels, xAxisNumberWidth*0.5),
+         "right":  xAxisLabelHorizontalPadding,
          "bottom": axisFontSizeInPixels*1.25,
          "left":   yAxisNumberWidth
         };
@@ -808,18 +859,18 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         case 3:         // large
         padding = {
          "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
-         "right":  Math.max(fontSizeInPixels, xAxisNumberWidth*0.5),
-         "bottom": options.xlabel ? (xlabelFontSizeInPixels + axisFontSizeInPixels)*1.25 : axisFontSizeInPixels*1.25,
-         "left":   options.ylabel ? yAxisNumberWidth + axisFontSizeInPixels*1.2 : yAxisNumberWidth
+         "right":  xAxisLabelHorizontalPadding,
+         "bottom": options.xlabel ? xAxisVerticalPadding : axisFontSizeInPixels*1.25,
+         "left":   options.ylabel ? yAxisHorizontalPadding : yAxisNumberWidth
         };
         break;
 
         default:         // extralarge
         padding = {
          "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
-         "right":  Math.max(fontSizeInPixels, xAxisNumberWidth*0.5),
-         "bottom": options.xlabel ? (xlabelFontSizeInPixels + axisFontSizeInPixels)*1.25 : axisFontSizeInPixels*1.25,
-         "left":   options.ylabel ? yAxisNumberWidth + axisFontSizeInPixels*1.2 : yAxisNumberWidth
+         "right":  xAxisLabelHorizontalPadding,
+         "bottom": options.xlabel ? xAxisVerticalPadding : axisFontSizeInPixels*1.25,
+         "left":   options.ylabel ? yAxisHorizontalPadding : yAxisNumberWidth
         };
         break;
       }
@@ -1049,7 +1100,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
             // .attr("tabindex", tabindex || 0);
 
         vis = svg.append("g")
-              .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+            .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
 
         plot = vis.append("rect")
           .attr("class", "plot")
@@ -1087,6 +1138,30 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
                 .attr("d", line(points));
         }
 
+        yAxisDraggable = svg.append("rect")
+          .attr("class", "draggable-axis")
+          .attr("x", padding.left-yAxisDraggableWidth)
+          .attr("y", padding.top)
+          .attr("rx", yAxisNumberHeight/6)
+          .attr("width", yAxisDraggableWidth)
+          .attr("height", size.height)
+          .attr("pointer-events", "all")
+          .style("cursor", "row-resize")
+          .on("mousedown", yAxisDrag)
+          .on("touchstart", yAxisDrag);
+
+        xAxisDraggable = svg.append("rect")
+          .attr("class", "draggable-axis")
+          .attr("x", padding.left)
+          .attr("y", size.height+padding.top)
+          .attr("rx", yAxisNumberHeight/6)
+          .attr("width", size.width)
+          .attr("height", xAxisDraggableHeight)
+          .attr("pointer-events", "all")
+          .style("cursor", "col-resize")
+          .on("mousedown", xAxisDrag)
+          .on("touchstart", xAxisDrag);
+
         marker = viewbox.append("path").attr("class", "marker");
         // path without attributes cause SVG parse problem in IE9
         //     .attr("d", []);
@@ -1115,7 +1190,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
               .text(options.xlabel)
               .attr("x", size.width/2)
               .attr("y", size.height)
-              .attr("dy", axisFontSizeInPixels*2 + "px")
+              .attr("dy", xAxisLabelBaseline + "px")
               .style("text-anchor","middle");
         }
 
@@ -1126,7 +1201,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
               .attr("class", "ylabel")
               .text( options.ylabel)
               .style("text-anchor","middle")
-              .attr("transform","translate(" + -yAxisNumberWidth + " " + size.height/2+") rotate(-90)");
+              .attr("transform","translate(" + yAxisLabelBaseline + " " + size.height/2+") rotate(-90)");
         }
 
         d3.select(node)
@@ -1151,7 +1226,8 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
 
         vis
           .attr("width",  cx)
-          .attr("height", cy);
+          .attr("height", cy)
+          .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
 
         plot
           .attr("width", size.width)
@@ -1173,6 +1249,18 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
             .attr("height", size.height)
             .attr("viewBox", "0 0 "+size.width+" "+size.height);
 
+        yAxisDraggable
+          .attr("x", padding.left-yAxisDraggableWidth)
+          .attr("y", padding.top-yAxisNumberHeight/2)
+          .attr("width", yAxisDraggableWidth)
+          .attr("height", size.height+yAxisNumberHeight);
+
+        xAxisDraggable
+          .attr("x", padding.left)
+          .attr("y", size.height+padding.top)
+          .attr("width", size.width)
+          .attr("height", xAxisDraggableHeight);
+
         if (options.title && sizeType.value > 1) {
           title
               .attr("x", size.width/2)
@@ -1183,12 +1271,12 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           xlabel
               .attr("x", size.width/2)
               .attr("y", size.height)
-              .attr("dy", axisFontSizeInPixels*2 + "px");
+              .attr("dy", xAxisLabelBaseline + "px");
         }
 
         if (options.ylabel && sizeType.value > 1) {
           ylabel
-              .attr("transform","translate(" + -yAxisNumberWidth + " " + size.height/2+") rotate(-90)");
+              .attr("transform","translate(" + yAxisLabelBaseline + " " + size.height/2+") rotate(-90)");
         }
 
         notification
@@ -1253,12 +1341,9 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
               .attr("y", size.height)
               .attr("dy", axisFontSizeInPixels + "px")
               .attr("text-anchor", "middle")
-              .style("cursor", "ew-resize")
               .text(fx)
               .on("mouseover", function() { d3.select(this).style("font-weight", "bold");})
-              .on("mouseout",  function() { d3.select(this).style("font-weight", "normal");})
-              .on("mousedown.drag",  xaxisDrag)
-              .on("touchstart.drag", xaxisDrag);
+              .on("mouseout",  function() { d3.select(this).style("font-weight", "normal");});
         }
 
         gx.exit().remove();
@@ -1298,9 +1383,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
               .style("cursor", "ns-resize")
               .text(fy)
               .on("mouseover", function() { d3.select(this).style("font-weight", "bold");})
-              .on("mouseout",  function() { d3.select(this).style("font-weight", "normal");})
-              .on("mousedown.drag",  yaxisDrag)
-              .on("touchstart.drag", yaxisDrag);
+              .on("mouseout",  function() { d3.select(this).style("font-weight", "normal");});
         }
 
         gy.exit().remove();
@@ -1453,6 +1536,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         d3.event.preventDefault();
         plot.style("cursor", "move");
         if (d3.event.altKey) {
+          plot.style("cursor", "nesw-resize");
           var p = d3.mouse(vis.node());
           downx = xScale.invert(p[0]);
           downy = yScale.invert(p[1]);
@@ -1466,6 +1550,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         d3.event.preventDefault();
         d3.select('body').style("cursor", "move");
         if (d3.event.altKey) {
+          plot.style("cursor", "nesw-resize");
           if (d3.event.shiftKey && options.addData) {
             p = d3.mouse(vis.node());
             var newpoint = [];
@@ -1494,14 +1579,14 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         return false;
       }
 
-      function xaxisDrag() {
+      function xAxisDrag() {
         document.onselectstart = falseFunction;
         d3.event.preventDefault();
         var p = d3.mouse(vis.node());
         downx = xScale.invert(p[0]);
       }
 
-      function yaxisDrag() {
+      function yAxisDrag() {
         d3.event.preventDefault();
         document.onselectstart = falseFunction;
         var p = d3.mouse(vis.node());
@@ -1537,15 +1622,23 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         }
 
         if (!isNaN(downx)) {
-          d3.select('body').style("cursor", "ew-resize");
-          xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
-          persistScaleChangesToOptions();
-          redraw();
+          d3.select('body').style("cursor", "col-resize");
+          plot.style("cursor", "col-resize");
+          if (shiftingX) {
+            xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
+            persistScaleChangesToOptions();
+            redraw();
+          } else {
+            xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
+            persistScaleChangesToOptions();
+            redraw()
+          }
           d3.event.stopPropagation();
         }
 
         if (!isNaN(downy)) {
-          d3.select('body').style("cursor", "ns-resize");
+          d3.select('body').style("cursor", "row-resize");
+          plot.style("cursor", "row-resize");
           yScale.domain(axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
           persistScaleChangesToOptions();
           redraw();
@@ -1555,6 +1648,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
 
       function mouseup() {
         d3.select('body').style("cursor", "auto");
+        plot.style("cursor", "auto");
         document.onselectstart = function() { return true; };
         if (!isNaN(downx)) {
           redraw();
@@ -1592,31 +1686,29 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
             shiftPoint = xextent * 0.95,
             currentExtent;
 
-         setCurrentSample(samplePoint);
-         currentExtent = currentSample * sample;
-         if (shiftingX) {
-           shiftingX = ds();
-            if (shiftingX) {
+        setCurrentSample(samplePoint);
+        currentExtent = currentSample * sample;
+        if (shiftingX) {
+          shiftingX = domainShift();
+          if (shiftingX) {
+            cancelAxisRescale();
             redraw();
           } else {
             update(currentSample);
           }
         } else {
           if (currentExtent > domain[0] + shiftPoint) {
-            ds = shiftXDomainRealTime(shiftPoint*0.9, options.axisShift);
-            shiftingX = ds();
+            domainShift = shiftXDomainRealTime(shiftPoint*0.9, options.axisShift);
+            shiftingX = domainShift();
             redraw();
-          } else if ( currentExtent < domain[1] - shiftPoint &&
-                      currentSample < points.length &&
-                      xAxisStart > 0) {
-            ds = shiftXDomainRealTime(shiftPoint*0.9, options.axisShift, -1);
-            shiftingX = ds();
+          } else if ( currentExtent < domain[1] - shiftPoint && currentSample < points.length && xAxisStart > 0) {
+            domainShift = shiftXDomainRealTime(shiftPoint*0.9, options.axisShift, -1);
+            shiftingX = domainShift();
             redraw();
           } else if (currentExtent < domain[0]) {
-            ds = shiftXDomainRealTime(shiftPoint*0.1, 1, -1);
-            shiftingX = ds();
+            domainShift = shiftXDomainRealTime(shiftPoint*0.1, 1, -1);
+            shiftingX = domainShift();
             redraw();
-
           } else {
             update(currentSample);
           }
@@ -1645,6 +1737,15 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         };
       }
 
+      function cancelAxisRescale() {
+        if (!isNaN(downx)) {
+          downx = NaN;
+        }
+        if (!isNaN(downy)) {
+          downy = NaN;
+        }
+      }
+
       function updateOrRescaleRegular() {
         var i,
             domain = xScale.domain(),
@@ -1652,7 +1753,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
             shiftPoint = xextent * 0.8;
 
         if (shiftingX) {
-          shiftingX = ds();
+          shiftingX = domainShift();
           if (shiftingX) {
             redraw();
           } else {
@@ -1660,8 +1761,8 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           }
         } else {
           if (points[points.length-1][0] > domain[0] + shiftPoint) {
-            ds = shiftXDomainRegular(shiftPoint*0.75, options.axisShift);
-            shiftingX = ds();
+            domainShift = shiftXDomainRegular(shiftPoint*0.75, options.axisShift);
+            shiftingX = domainShift();
             redraw();
           } else {
             update();
@@ -2065,7 +2166,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
            // domain = xScale.domain(),
             // xextent = domain[1] - domain[0],
             //shift = xextent * 0.8,
-            // ds,
+            // domainShift,
         if (newdata instanceof Array && newdata.length > 0) {
           if (newdata[0] instanceof Array) {
             for(i = 0; i < newdata.length; i++) {
@@ -2401,7 +2502,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         canvas.offsetTop = cplot.top;
         canvas.style.left = cplot.left + 'px';
         canvas.style.top = cplot.top + 'px';
-        canvas.style.border = 'solid 1px red';
+        // canvas.style.border = 'solid 1px red';
         canvas.style.pointerEvents = "none";
         if (canvas.className.search("overlay") < 0) {
            canvas.className += " overlay";
@@ -5356,7 +5457,7 @@ define('grapher/bar-graph/bar-graph-model',['require','backbone'],function (requ
           // Graph title.
           title:     "",
           // Color of the main bar.
-          barColor:  "green",
+          barColor:  "#e23c34",
           // Color of the area behind the bar.
           fillColor: "white",
           // Color of axis, labels, title.
@@ -5385,7 +5486,7 @@ define('grapher/bar-graph/bar-graph-model',['require','backbone'],function (requ
 
 define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (require) {
   // Dependencies.
-  var Backbone = require('backbone'),
+  var Backbone  = require('backbone'),
 
       VIEW = {
         padding: {
@@ -5445,6 +5546,7 @@ define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (requi
           // Create all SVG elements ONLY in this function.
           // Avoid recreation of SVG elements while rendering.
           this.vis = d3.select(this.el).append("svg");
+          this.defs = this.vis.append("defs");
           this.fill = this.vis.append("rect");
           this.title = this.vis.append("text");
           this.axisContainer = this.vis.append("g");
@@ -5576,20 +5678,26 @@ define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (requi
               "width": (options.width - paddingLeft - paddingRight),
               "height": this.heightScale(options.maxValue),
               "x": paddingLeft,
-              "y": this.yScale(options.maxValue)
+              "y": this.yScale(options.maxValue),
+              "rx": "0.5em",
+              "ry": "0.5em"
             })
             .style({
-              "fill": options.fillColor
+              "fill": this._getFillGradient(options.fillColor),
+              "stroke": "#ddd",
+              "stroke-width": "1px"
             });
 
           // Setup the main bar.
           this.bar
             .attr({
               "width": (options.width - paddingLeft - paddingRight),
-              "x": paddingLeft
+              "x": paddingLeft,
+              "rx": "0.5em",
+              "ry": "0.5em"
             })
             .style({
-              "fill": options.barColor
+              "fill": this._getBarGradient(options.barColor)
             });
 
           this.traingle
@@ -5652,6 +5760,65 @@ define('grapher/bar-graph/bar-graph-view',['require','backbone'],function (requi
           } else {
             this.render();
           }
+        },
+
+        _getBarGradient: function (color) {
+          var id = "bar-gradient",
+              gradient = this.defs.select("#" + id);
+
+          color = d3.rgb(color);
+
+          if (gradient.empty()) {
+            // Create a new gradient.
+            gradient = this.defs.append("linearGradient")
+              .attr("id", id)
+              .attr("x1", "0%")
+              .attr("y1", "0%")
+              .attr("x2", "0%")
+              .attr("y2", "100%");
+          } else {
+            gradient.selectAll("stop").remove();
+          }
+
+          gradient.append("stop")
+            .attr("stop-color", color.brighter(2).toString())
+            .attr("offset", "0%");
+          gradient.append("stop")
+            .attr("stop-color", color.toString())
+            .attr("offset", "100%");
+
+          return "url(#" + id + ")";
+        },
+
+        _getFillGradient: function (color) {
+          var id = "fill-gradient",
+              gradient = this.defs.select("#" + id);
+
+          if (gradient.empty()) {
+            // Create a new gradient.
+            gradient = this.defs.append("linearGradient")
+              .attr("id", id)
+              .attr("x1", "0%")
+              .attr("y1", "0%")
+              .attr("x2", "0%")
+              .attr("y2", "100%");
+          } else {
+            gradient.selectAll("stop").remove();
+          }
+
+          gradient.append("stop")
+            .attr("stop-color", color)
+            .attr("offset", "0%");
+          gradient.append("stop")
+            .attr("stop-color", color)
+            .attr("stop-opacity", 0.5)
+            .attr("offset", "15%");
+          gradient.append("stop")
+            .attr("stop-color", color)
+            .attr("stop-opacity", 0.4)
+            .attr("offset", "100%");
+
+          return "url(#" + id + ")";
         }
       });
 

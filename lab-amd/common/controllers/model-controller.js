@@ -1,9 +1,8 @@
-/*global define, DEVELOPMENT, $, d3, alert, model: true, model_player: true */
+/*global define, DEVELOPMENT, $, d3, alert, model: true */
 
 define(function (require) {
   // Dependencies.
-  var arrays            = require('arrays'),
-      ModelPlayer       = require('cs!common/components/model_player');
+  var arrays            = require('arrays');
 
   return function modelController(modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, interactivesController,
                                   Model, ModelContainer, ScriptingAPI, Benchmarks) {
@@ -14,37 +13,7 @@ define(function (require) {
 
         // Options after processing performed by processOptions().
         modelOptions,
-        viewOptions,
-
-        // We pass this object to the "ModelPlayer" to intercept messages for the model
-        // instead of allowing the ModelPlayer to talk to the model directly.
-        // This allows us, for example, to reload the model instead of trying to call a 'reset' event
-        // on models which don't know how to reset themselves.
-
-        modelProxy = {
-          resume: function() {
-            model.resume();
-          },
-
-          stop: function() {
-            model.stop();
-          },
-
-          reset: function() {
-            model.stop();
-            // if the model has a reset function then call it so anything the application
-            // sets up outside the interactive itself that is listening for a model.reset
-            // event gets notified. Example the Energy Graph Extra Item.
-            if (model.reset) {
-              model.reset();
-            }
-            reload(controller.modelUrl, modelConfig);
-          },
-
-          is_stopped: function() {
-            return model.is_stopped();
-          }
-        };
+        viewOptions;
 
       // ------------------------------------------------------------
       //
@@ -134,22 +103,9 @@ define(function (require) {
 
         // ------------------------------------------------------------
         //
-        // Create player and container view for model
+        // Create container view for model
         //
         // ------------------------------------------------------------
-
-        model_player = new ModelPlayer(modelProxy, false);
-        model_player.forward = function() {
-          model.stepForward();
-          if (!model.isNewStep()) {
-            controller.modelContainer.update();
-          }
-        };
-        model_player.back = function() {
-          model.stepBack();
-          controller.modelContainer.update();
-        };
-
         controller.modelContainer = new ModelContainer(controller.modelUrl, model, interactivesController.getNextTabIndex);
       }
 
@@ -207,13 +163,9 @@ define(function (require) {
         return controller.modelContainer.getHeightForWidth(width);
       };
 
-      controller.setPlaybackContainer = function (svgPlaybackContainer) {
-        return controller.modelContainer.setPlaybackContainer(svgPlaybackContainer);
-      }
-
       controller.enableKeyboardHandlers = function () {
         return model.get("enableKeyboardHandlers");
-      }
+      };
 
       controller.reload = reload;
       controller.repaint = repaint;

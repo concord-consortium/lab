@@ -1,8 +1,15 @@
 {
   "title": "Spring and Mass",
   "publicationStatus": "public",
-  "subtitle": "",
-  "about": "",
+  "subtitle": "Explore some factors that affect the period of a spring.",
+  "about": [
+    "Press the play button. Watch the graph to see how the height of the mass changes as",
+    "it moves up and down. Use the graph to determine the period of the mass-spring system.",
+    "Adjust the scale by dragging the numbers on the axes. Change each variable – gravity,",
+    "spring constant, starting distance and mass – and observe how each one affects the period.",
+    "Can you explain why? Is this different from the relationships for a pendulum? Try the",
+    "damping slider. Does damping change the period?"
+  ],
   "fontScale": 0.8,
   "models": [
     {
@@ -227,8 +234,8 @@
       "xmax": 10,
       "yFormatter": "1.1f",
       "xTickCount": 5,
-      "xFormatter": ".2s",
-      "yFormatter": ".2s",
+      "xFormatter": "2s",
+      "yFormatter": "2s",
       "properties": [
         "currentDisplacement"
       ]

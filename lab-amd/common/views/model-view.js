@@ -1,4 +1,4 @@
-/*global $, model_player, define: false, d3: false */
+/*global $, define: false, d3: false */
 // ------------------------------------------------------------
 //
 //   PTA View Container
@@ -7,10 +7,7 @@
 define(function (require) {
   // Dependencies.
   var labConfig             = require('lab.config'),
-      console               = require('common/console'),
-      PlayResetComponentSVG = require('cs!common/components/play_reset_svg'),
-      PlayOnlyComponentSVG  = require('cs!common/components/play_only_svg'),
-      PlaybackComponentSVG  = require('cs!common/components/playback_svg');
+      console               = require('common/console');
 
   return function ModelView(modelUrl, model, Renderer, getNextTabIndex) {
         // Public API object to be returned.
@@ -22,10 +19,8 @@ define(function (require) {
         fontSizeInPixels,
         imagePath,
         vis1, vis, plot,
-        playbackComponent,
         cx, cy,
         padding, size, modelSize,
-        playbackXPos, playbackYPos,
 
         // Basic scaling functions for positio, it transforms model units to "pixels".
         // Use it for positions of objects rendered inside the view.
@@ -50,12 +45,6 @@ define(function (require) {
         textContainerBelow,
         textContainerTop,
         brushContainer,
-
-        // we can ask the view to render the playback controls to some other container
-        useExternalPlaybackContainer = false,
-        playbackContainer,
-
-        preexistingControls,
 
         clickHandler,
         // d3.svg.brush object used to implement select action. It should be
@@ -103,10 +92,6 @@ define(function (require) {
         padding.bottom += (fontSizeInPixels * 0.8);
         padding.left +=   (fontSizeInPixels * 0.8);
       }
-
-      if (model.get("controlButtons") && !useExternalPlaybackContainer) {
-        padding.bottom += (fontSizeInPixels * 2.5);
-      }
     }
 
     function scale() {
@@ -150,27 +135,6 @@ define(function (require) {
 
       offsetTop  = node.offsetTop + padding.top;
       offsetLeft = node.offsetLeft + padding.left;
-
-      if (!useExternalPlaybackContainer) {
-        switch (model.get("controlButtons")) {
-          case "play":
-            playbackXPos = padding.left + (size.width - (75 * emsize))/2;
-            break;
-          case "play_reset":
-            playbackXPos = padding.left + (size.width - (140 * emsize))/2;
-            break;
-          case "play_reset_step":
-            playbackXPos = padding.left + (size.width - (230 * emsize))/2;
-            break;
-          default:
-            playbackXPos = padding.left + (size.width - (230 * emsize))/2;
-        }
-
-        playbackYPos = cy - 42 * emsize;
-      } else {
-        playbackXPos = 0;
-        playbackYPos = fontSizeInPixels/6;
-      }
 
       // Basic model2px scaling function for position.
       model2px = d3.scale.linear()
@@ -376,8 +340,6 @@ define(function (require) {
           imageContainerTop:    imageContainerTop,
           textContainerTop:     textContainerTop
         };
-
-        playbackContainer = vis1;
       } else {
         // TODO: ?? what g, why is it here?
         vis.selectAll("g.x").remove();
@@ -403,24 +365,6 @@ define(function (require) {
         });
 
       redraw();
-    }
-
-    function setupPlaybackControls() {
-      if (preexistingControls) preexistingControls.remove();
-      switch (model.get("controlButtons")) {
-        case "play":
-          playbackComponent = new PlayOnlyComponentSVG(playbackContainer, model_player, playbackXPos, playbackYPos, emsize);
-          break;
-        case "play_reset":
-          playbackComponent = new PlayResetComponentSVG(playbackContainer, model_player, playbackXPos, playbackYPos, emsize);
-          break;
-        case "play_reset_step":
-          playbackComponent = new PlaybackComponentSVG(playbackContainer, model_player, playbackXPos, playbackYPos, emsize);
-          break;
-        default:
-          playbackComponent = null;
-      }
-      preexistingControls = playbackContainer.select('.model-controller');
     }
 
     function removeClickHandlers() {
@@ -457,7 +401,6 @@ define(function (require) {
       model.addPropertiesListener(["gridLines", "xunits", "yunits", "xlabel", "ylabel" ],
         function() {
           renderContainer();
-          setupPlaybackControls();
           repaint();
         }
       );
@@ -484,7 +427,6 @@ define(function (require) {
       getFontSizeInPixels: getFontSizeInPixels,
       resize: function() {
         renderContainer();
-        setupPlaybackControls();
         repaint();
       },
       getHeightForWidth: function (width) {
@@ -499,10 +441,6 @@ define(function (require) {
         height = width / aspectRatio;
         return height + padding.top  + padding.bottom;
       },
-      setPlaybackContainer: function(svgPlaybackContainer) {
-        useExternalPlaybackContainer = true;
-        playbackContainer = svgPlaybackContainer;
-      },
       repaint: function() {
         repaint();
       },
@@ -511,7 +449,6 @@ define(function (require) {
         api.setSelectHandler(null);
         processOptions(newModelUrl, newModel);
         renderContainer();
-        setupPlaybackControls();
         init();
         repaint();
       },
@@ -652,7 +589,6 @@ define(function (require) {
 
     processOptions();
     renderContainer();
-    setupPlaybackControls();
     init();
 
     // Extend Public withExport initialized object to initialized objects

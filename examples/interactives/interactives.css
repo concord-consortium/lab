@@ -175,7 +175,6 @@ code {
       opacity: 1; }
   .graph canvas.overlay {
     position: absolute;
-    border: solid 1px red;
     background: rgba(0, 255, 0, 0.05); }
 
 svg.graph:focus {
@@ -190,6 +189,10 @@ svg.graph text.axis {
   font-size: 0.8em; }
   svg.graph text.axis:focus {
     outline: #76d2b8 solid 0.2em; }
+svg.graph rect.draggable-axis {
+  fill: rgba(255, 255, 255, 0); }
+  svg.graph rect.draggable-axis:hover {
+    fill: rgba(196, 196, 196, 0.2); }
 
 .bar-graph .hidden {
   display: none; }
@@ -463,6 +466,89 @@ button.component {
       bottom: 0;
       background: #e16a3e;
       border-radius: 0.75em 0.75em 0em 0em; }
+
+.interactive-playback {
+  font-size: 1em;
+  border-bottom-left-radius: 0.7em;
+  border-bottom-right-radius: 0.7em;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.4);
+  height: 2em; }
+  .interactive-playback button {
+    vertical-align: middle;
+    font-family: 'Lato', Verdana, Geneva, sans-serif;
+    font-size: 1em;
+    height: 100%;
+    width: 2.7em;
+    margin: 0;
+    border: none;
+    background-color: #bcbec0;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fbfbfb), color-stop(100%, #bcbec0));
+    background-image: -webkit-linear-gradient(top, #fbfbfb, #bcbec0);
+    background-image: -moz-linear-gradient(top, #fbfbfb, #bcbec0);
+    background-image: -ms-linear-gradient(top, #fbfbfb, #bcbec0);
+    background-image: -o-linear-gradient(top, #fbfbfb, #bcbec0);
+    background-image: linear-gradient(top, #fbfbfb, #bcbec0); }
+    .interactive-playback button:hover {
+      background-color: #e6e6e6;
+      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #e6e6e6));
+      background-image: -webkit-linear-gradient(top, white, #e6e6e6);
+      background-image: -moz-linear-gradient(top, white, #e6e6e6);
+      background-image: -ms-linear-gradient(top, white, #e6e6e6);
+      background-image: -o-linear-gradient(top, white, #e6e6e6);
+      background-image: linear-gradient(top, white, #e6e6e6);
+      cursor: pointer; }
+    .interactive-playback button:active {
+      background-color: #bbbbbb;
+      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e6e6e6), color-stop(100%, white));
+      background-image: -webkit-linear-gradient(top, #e6e6e6, white);
+      background-image: -moz-linear-gradient(top, #e6e6e6, white);
+      background-image: -ms-linear-gradient(top, #e6e6e6, white);
+      background-image: -o-linear-gradient(top, #e6e6e6, white);
+      background-image: linear-gradient(top, #e6e6e6, white); }
+  .interactive-playback .hidden {
+    display: none !important; }
+  .interactive-playback .first {
+    border-bottom-left-radius: 0.7em; }
+  .interactive-playback .last {
+    border-bottom-right-radius: 0.7em; }
+  .interactive-playback .play-pause {
+    min-width: 2.7em;
+    width: 5.8em;
+    white-space: nowrap;
+    text-align: right; }
+    .interactive-playback .play-pause .icon-pause {
+      display: none; }
+    .interactive-playback .play-pause.playing .icon-pause {
+      display: inline; }
+    .interactive-playback .play-pause.playing .icon-play {
+      display: none; }
+    .interactive-playback .play-pause .time-display {
+      display: inline-block;
+      width: 5em;
+      color: #939598;
+      background: #e6e7e8;
+      font-weight: bold;
+      border: 1px solid #bbbbbb;
+      border-bottom-color: #cccccc;
+      padding: 0.2em;
+      margin-left: 0.7em;
+      border-radius: 0.5em;
+      font-size: 0.7em; }
+  .interactive-playback i {
+    color: #939598;
+    font-size: 0.9em; }
+  .interactive-playback .spacer {
+    vertical-align: middle;
+    display: inline-block;
+    height: 100%;
+    width: 2px;
+    background-color: #e6e6e6;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fefefe), color-stop(100%, #aaacaf));
+    background-image: -webkit-linear-gradient(top, #fefefe, #aaacaf);
+    background-image: -moz-linear-gradient(top, #fefefe, #aaacaf);
+    background-image: -ms-linear-gradient(top, #fefefe, #aaacaf);
+    background-image: -o-linear-gradient(top, #fefefe, #aaacaf);
+    background-image: linear-gradient(top, #fefefe, #aaacaf); }
 
 * {
   -webkit-box-sizing: border-box;
@@ -2115,9 +2201,9 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
   vertical-align: bottom;
   position: relative;
   width: 90%;
-  height: 32em;
+  height: 480px;
   background: #f9eec1;
   border-radius: 0.5em;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-  margin: 0em 1em;
+  margin: 1em 2em;
   padding: 0em 0em; }

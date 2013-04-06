@@ -31,7 +31,7 @@ define(function (require) {
         xScale, yScale, line,
         shiftingX = false,
         cubicEase = d3.ease('cubic'),
-        ds,
+        domainShift,
         circleCursorStyle,
         fontSizeInPixels,
         halfFontSizeInPixels,
@@ -40,8 +40,26 @@ define(function (require) {
         axisFontSizeInPixels,
         xlabelFontSizeInPixels,
         ylabelFontSizeInPixels,
+
+        xlabelMetrics,
+        yLabelMetrics,
         xAxisNumberWidth,
+        xAxisNumberHeight,
         yAxisNumberWidth,
+        yAxisNumberHeight,
+        xAxisLabelHorizontalPadding,
+
+        xAxisVerticalPadding,
+        xAxisDraggableHeight,
+        xAxisLabelBaseline,
+
+        yAxisHorizontalPadding,
+        yAxisDraggableWidth,
+        yAxisLabelBaseline,
+
+        xAxisDraggable,
+        yAxisDraggable,
+
         strokeWidth,
         sizeType = {
           category: "medium",
@@ -77,8 +95,8 @@ define(function (require) {
           yTickCount:      10,
           xscaleExponent:  0.5,
           yscaleExponent:  0.5,
-          xFormatter:      ".2s",
-          yFormatter:      ".2s",
+          xFormatter:      "2s",
+          yFormatter:      "2s",
           axisShift:       10,
           xmax:            10,
           xmin:            0,
@@ -173,6 +191,15 @@ define(function (require) {
       calculateSizeType();
     }
 
+    function longestNumber(array, formatter, precision) {
+      var longest;
+      precision = precision || 5;
+      longest = array.reduce(function(number1, number2) {
+        return formatter(+number1.toPrecision(precision)).length > formatter(+number2.toPrecision(precision)).length ? number1 : number2;
+      }, 0);
+      return formatter(longest);
+    }
+
     // Update the x-scale.
     function updateXScale() {
       xScale.domain([options.xmin, options.xmax])
@@ -220,11 +247,30 @@ define(function (require) {
         ylabelFontSizeInPixels = parseFloat($("svg.graph text.ylabel").css("font-size"));
       }
 
-      xAxisNumberWidth = Math.max(axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.xFormatter, options.xmax)*1.5,
-                                  axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.xFormatter, options.xmin)*1.5);
+      if (xScale === undefined) {
+        xlabelMetrics = [fontSizeInPixels, fontSizeInPixels];
+        ylabelMetrics = [fontSizeInPixels*2, fontSizeInPixels];
+      } else {
+        xlabelMetrics = axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, 
+          longestNumber(xScale.ticks(options.xTickCount), fx));
 
-      yAxisNumberWidth = Math.max(axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.yFormatter, options.ymax)*1.5,
-                                  axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, options.yFormatter, options.ymin)*1.5);
+        ylabelMetrics = axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels,
+          longestNumber(yScale.ticks(options.yTickCount), fy));
+      }
+
+      xAxisNumberWidth  = xlabelMetrics[0];
+      xAxisNumberHeight = xlabelMetrics[1];
+      yAxisNumberWidth  = ylabelMetrics[0];
+      yAxisNumberHeight = ylabelMetrics[0];
+
+      xAxisLabelHorizontalPadding = xAxisNumberWidth * 0.5;
+      xAxisDraggableHeight = xAxisNumberHeight * 1.1;
+      xAxisVerticalPadding = xAxisDraggableHeight + xAxisNumberHeight*1.3;
+      xAxisLabelBaseline = xAxisVerticalPadding-xAxisNumberHeight/3;
+
+      yAxisDraggableWidth    = yAxisNumberWidth + xAxisNumberHeight/4;
+      yAxisHorizontalPadding = yAxisDraggableWidth + yAxisNumberHeight;
+      yAxisLabelBaseline     = -(yAxisDraggableWidth+yAxisNumberHeight/4);
 
       switch(sizeType.value) {
         case 0:         // tiny
@@ -248,7 +294,7 @@ define(function (require) {
         case 2:         // medium
         padding = {
          "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
-         "right":  Math.max(fontSizeInPixels, xAxisNumberWidth*0.5),
+         "right":  xAxisLabelHorizontalPadding,
          "bottom": axisFontSizeInPixels*1.25,
          "left":   yAxisNumberWidth
         };
@@ -257,18 +303,18 @@ define(function (require) {
         case 3:         // large
         padding = {
          "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
-         "right":  Math.max(fontSizeInPixels, xAxisNumberWidth*0.5),
-         "bottom": options.xlabel ? (xlabelFontSizeInPixels + axisFontSizeInPixels)*1.25 : axisFontSizeInPixels*1.25,
-         "left":   options.ylabel ? yAxisNumberWidth + axisFontSizeInPixels*1.2 : yAxisNumberWidth
+         "right":  xAxisLabelHorizontalPadding,
+         "bottom": options.xlabel ? xAxisVerticalPadding : axisFontSizeInPixels*1.25,
+         "left":   options.ylabel ? yAxisHorizontalPadding : yAxisNumberWidth
         };
         break;
 
         default:         // extralarge
         padding = {
          "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
-         "right":  Math.max(fontSizeInPixels, xAxisNumberWidth*0.5),
-         "bottom": options.xlabel ? (xlabelFontSizeInPixels + axisFontSizeInPixels)*1.25 : axisFontSizeInPixels*1.25,
-         "left":   options.ylabel ? yAxisNumberWidth + axisFontSizeInPixels*1.2 : yAxisNumberWidth
+         "right":  xAxisLabelHorizontalPadding,
+         "bottom": options.xlabel ? xAxisVerticalPadding : axisFontSizeInPixels*1.25,
+         "left":   options.ylabel ? yAxisHorizontalPadding : yAxisNumberWidth
         };
         break;
       }
@@ -498,7 +544,7 @@ define(function (require) {
             // .attr("tabindex", tabindex || 0);
 
         vis = svg.append("g")
-              .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+            .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
 
         plot = vis.append("rect")
           .attr("class", "plot")
@@ -536,6 +582,30 @@ define(function (require) {
                 .attr("d", line(points));
         }
 
+        yAxisDraggable = svg.append("rect")
+          .attr("class", "draggable-axis")
+          .attr("x", padding.left-yAxisDraggableWidth)
+          .attr("y", padding.top)
+          .attr("rx", yAxisNumberHeight/6)
+          .attr("width", yAxisDraggableWidth)
+          .attr("height", size.height)
+          .attr("pointer-events", "all")
+          .style("cursor", "row-resize")
+          .on("mousedown", yAxisDrag)
+          .on("touchstart", yAxisDrag);
+
+        xAxisDraggable = svg.append("rect")
+          .attr("class", "draggable-axis")
+          .attr("x", padding.left)
+          .attr("y", size.height+padding.top)
+          .attr("rx", yAxisNumberHeight/6)
+          .attr("width", size.width)
+          .attr("height", xAxisDraggableHeight)
+          .attr("pointer-events", "all")
+          .style("cursor", "col-resize")
+          .on("mousedown", xAxisDrag)
+          .on("touchstart", xAxisDrag);
+
         marker = viewbox.append("path").attr("class", "marker");
         // path without attributes cause SVG parse problem in IE9
         //     .attr("d", []);
@@ -564,7 +634,7 @@ define(function (require) {
               .text(options.xlabel)
               .attr("x", size.width/2)
               .attr("y", size.height)
-              .attr("dy", axisFontSizeInPixels*2 + "px")
+              .attr("dy", xAxisLabelBaseline + "px")
               .style("text-anchor","middle");
         }
 
@@ -575,7 +645,7 @@ define(function (require) {
               .attr("class", "ylabel")
               .text( options.ylabel)
               .style("text-anchor","middle")
-              .attr("transform","translate(" + -yAxisNumberWidth + " " + size.height/2+") rotate(-90)");
+              .attr("transform","translate(" + yAxisLabelBaseline + " " + size.height/2+") rotate(-90)");
         }
 
         d3.select(node)
@@ -600,7 +670,8 @@ define(function (require) {
 
         vis
           .attr("width",  cx)
-          .attr("height", cy);
+          .attr("height", cy)
+          .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
 
         plot
           .attr("width", size.width)
@@ -622,6 +693,18 @@ define(function (require) {
             .attr("height", size.height)
             .attr("viewBox", "0 0 "+size.width+" "+size.height);
 
+        yAxisDraggable
+          .attr("x", padding.left-yAxisDraggableWidth)
+          .attr("y", padding.top-yAxisNumberHeight/2)
+          .attr("width", yAxisDraggableWidth)
+          .attr("height", size.height+yAxisNumberHeight);
+
+        xAxisDraggable
+          .attr("x", padding.left)
+          .attr("y", size.height+padding.top)
+          .attr("width", size.width)
+          .attr("height", xAxisDraggableHeight);
+
         if (options.title && sizeType.value > 1) {
           title
               .attr("x", size.width/2)
@@ -632,12 +715,12 @@ define(function (require) {
           xlabel
               .attr("x", size.width/2)
               .attr("y", size.height)
-              .attr("dy", axisFontSizeInPixels*2 + "px");
+              .attr("dy", xAxisLabelBaseline + "px");
         }
 
         if (options.ylabel && sizeType.value > 1) {
           ylabel
-              .attr("transform","translate(" + -yAxisNumberWidth + " " + size.height/2+") rotate(-90)");
+              .attr("transform","translate(" + yAxisLabelBaseline + " " + size.height/2+") rotate(-90)");
         }
 
         notification
@@ -702,12 +785,9 @@ define(function (require) {
               .attr("y", size.height)
               .attr("dy", axisFontSizeInPixels + "px")
               .attr("text-anchor", "middle")
-              .style("cursor", "ew-resize")
               .text(fx)
               .on("mouseover", function() { d3.select(this).style("font-weight", "bold");})
-              .on("mouseout",  function() { d3.select(this).style("font-weight", "normal");})
-              .on("mousedown.drag",  xaxisDrag)
-              .on("touchstart.drag", xaxisDrag);
+              .on("mouseout",  function() { d3.select(this).style("font-weight", "normal");});
         }
 
         gx.exit().remove();
@@ -747,9 +827,7 @@ define(function (require) {
               .style("cursor", "ns-resize")
               .text(fy)
               .on("mouseover", function() { d3.select(this).style("font-weight", "bold");})
-              .on("mouseout",  function() { d3.select(this).style("font-weight", "normal");})
-              .on("mousedown.drag",  yaxisDrag)
-              .on("touchstart.drag", yaxisDrag);
+              .on("mouseout",  function() { d3.select(this).style("font-weight", "normal");});
         }
 
         gy.exit().remove();
@@ -902,6 +980,7 @@ define(function (require) {
         d3.event.preventDefault();
         plot.style("cursor", "move");
         if (d3.event.altKey) {
+          plot.style("cursor", "nesw-resize");
           var p = d3.mouse(vis.node());
           downx = xScale.invert(p[0]);
           downy = yScale.invert(p[1]);
@@ -915,6 +994,7 @@ define(function (require) {
         d3.event.preventDefault();
         d3.select('body').style("cursor", "move");
         if (d3.event.altKey) {
+          plot.style("cursor", "nesw-resize");
           if (d3.event.shiftKey && options.addData) {
             p = d3.mouse(vis.node());
             var newpoint = [];
@@ -943,14 +1023,14 @@ define(function (require) {
         return false;
       }
 
-      function xaxisDrag() {
+      function xAxisDrag() {
         document.onselectstart = falseFunction;
         d3.event.preventDefault();
         var p = d3.mouse(vis.node());
         downx = xScale.invert(p[0]);
       }
 
-      function yaxisDrag() {
+      function yAxisDrag() {
         d3.event.preventDefault();
         document.onselectstart = falseFunction;
         var p = d3.mouse(vis.node());
@@ -986,15 +1066,23 @@ define(function (require) {
         }
 
         if (!isNaN(downx)) {
-          d3.select('body').style("cursor", "ew-resize");
-          xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
-          persistScaleChangesToOptions();
-          redraw();
+          d3.select('body').style("cursor", "col-resize");
+          plot.style("cursor", "col-resize");
+          if (shiftingX) {
+            xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
+            persistScaleChangesToOptions();
+            redraw();
+          } else {
+            xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
+            persistScaleChangesToOptions();
+            redraw()
+          }
           d3.event.stopPropagation();
         }
 
         if (!isNaN(downy)) {
-          d3.select('body').style("cursor", "ns-resize");
+          d3.select('body').style("cursor", "row-resize");
+          plot.style("cursor", "row-resize");
           yScale.domain(axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
           persistScaleChangesToOptions();
           redraw();
@@ -1004,6 +1092,7 @@ define(function (require) {
 
       function mouseup() {
         d3.select('body').style("cursor", "auto");
+        plot.style("cursor", "auto");
         document.onselectstart = function() { return true; };
         if (!isNaN(downx)) {
           redraw();
@@ -1041,31 +1130,29 @@ define(function (require) {
             shiftPoint = xextent * 0.95,
             currentExtent;
 
-         setCurrentSample(samplePoint);
-         currentExtent = currentSample * sample;
-         if (shiftingX) {
-           shiftingX = ds();
-            if (shiftingX) {
+        setCurrentSample(samplePoint);
+        currentExtent = currentSample * sample;
+        if (shiftingX) {
+          shiftingX = domainShift();
+          if (shiftingX) {
+            cancelAxisRescale();
             redraw();
           } else {
             update(currentSample);
           }
         } else {
           if (currentExtent > domain[0] + shiftPoint) {
-            ds = shiftXDomainRealTime(shiftPoint*0.9, options.axisShift);
-            shiftingX = ds();
+            domainShift = shiftXDomainRealTime(shiftPoint*0.9, options.axisShift);
+            shiftingX = domainShift();
             redraw();
-          } else if ( currentExtent < domain[1] - shiftPoint &&
-                      currentSample < points.length &&
-                      xAxisStart > 0) {
-            ds = shiftXDomainRealTime(shiftPoint*0.9, options.axisShift, -1);
-            shiftingX = ds();
+          } else if ( currentExtent < domain[1] - shiftPoint && currentSample < points.length && xAxisStart > 0) {
+            domainShift = shiftXDomainRealTime(shiftPoint*0.9, options.axisShift, -1);
+            shiftingX = domainShift();
             redraw();
           } else if (currentExtent < domain[0]) {
-            ds = shiftXDomainRealTime(shiftPoint*0.1, 1, -1);
-            shiftingX = ds();
+            domainShift = shiftXDomainRealTime(shiftPoint*0.1, 1, -1);
+            shiftingX = domainShift();
             redraw();
-
           } else {
             update(currentSample);
           }
@@ -1094,6 +1181,15 @@ define(function (require) {
         };
       }
 
+      function cancelAxisRescale() {
+        if (!isNaN(downx)) {
+          downx = NaN;
+        }
+        if (!isNaN(downy)) {
+          downy = NaN;
+        }
+      }
+
       function updateOrRescaleRegular() {
         var i,
             domain = xScale.domain(),
@@ -1101,7 +1197,7 @@ define(function (require) {
             shiftPoint = xextent * 0.8;
 
         if (shiftingX) {
-          shiftingX = ds();
+          shiftingX = domainShift();
           if (shiftingX) {
             redraw();
           } else {
@@ -1109,8 +1205,8 @@ define(function (require) {
           }
         } else {
           if (points[points.length-1][0] > domain[0] + shiftPoint) {
-            ds = shiftXDomainRegular(shiftPoint*0.75, options.axisShift);
-            shiftingX = ds();
+            domainShift = shiftXDomainRegular(shiftPoint*0.75, options.axisShift);
+            shiftingX = domainShift();
             redraw();
           } else {
             update();
@@ -1514,7 +1610,7 @@ define(function (require) {
            // domain = xScale.domain(),
             // xextent = domain[1] - domain[0],
             //shift = xextent * 0.8,
-            // ds,
+            // domainShift,
         if (newdata instanceof Array && newdata.length > 0) {
           if (newdata[0] instanceof Array) {
             for(i = 0; i < newdata.length; i++) {
@@ -1850,7 +1946,7 @@ define(function (require) {
         canvas.offsetTop = cplot.top;
         canvas.style.left = cplot.left + 'px';
         canvas.style.top = cplot.top + 'px';
-        canvas.style.border = 'solid 1px red';
+        // canvas.style.border = 'solid 1px red';
         canvas.style.pointerEvents = "none";
         if (canvas.className.search("overlay") < 0) {
            canvas.className += " overlay";

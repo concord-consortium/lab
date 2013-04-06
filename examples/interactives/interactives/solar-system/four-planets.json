@@ -1,11 +1,11 @@
 {
-  "title": "Testing: Four planets",
+  "title": "Testing: four planets",
   "publicationStatus": "draft",
   "subtitle": "First test of the Solar System model-type.",
   "about": "",
   "models": [
     {
-      "id": "four-planets",
+      "id": "four-bodies",
       "type": "pta",
       "url": "models/solar-system/four-planets.json",
       "viewOptions": {
@@ -15,47 +15,26 @@
   ],
   "outputs": [
     {
-      "name":  "numPlanets",
-      "label": "Planets",
+      "name":  "numBodies",
+      "label": "Bodies",
       "units": "count",
       "value": [
-          "return getNumberOfPlanets();"
+          "return getNumberOfBodies();"
       ]
     }
   ],
   "components": [
     {
       "type": "button",
-      "id": "add-random-planet",
-      "text": "Add random planet",
-      "action": "addRandomPlanet()"
+      "id": "add-random-body",
+      "text": "Add random body",
+      "action": "addRandomBody()"
     },
     {
       "type": "numericOutput",
-      "id": "current-planets",
-      "property": "numPlanets",
+      "id": "current-bodies",
+      "property": "numBodies",
       "displayValue": "return format('f')(value)"
-    },
-    {
-      "type": "slider",
-      "id": "gravity-slider",
-      "min": 1e-9,
-      "max": 1e-7,
-      "width": "24em",
-      "displayValue": "return format('1.1e')(value)",
-      "labels": [
-        {
-          "value": 1e-9,
-          "label": "1e-9"
-        },
-        {
-          "value": 1e-7,
-          "label": "1e-7"
-        }
-      ],
-      "steps": 1000,
-      "title": "Gravity",
-      "property": "gravitationalField"
     },
     {
       "type": "text",
@@ -76,51 +55,53 @@
       "property": "verticalWrapping"
     },
     {
-      "type": "text",
-      "id": "axes-label",
-      "text": "Axes",
-      "style": "header"
-    },
-    {
-      "type": "checkbox",
-      "id": "show-gridlines",
-      "text": "Grid Lines",
-      "property": "gridLines"
-    },
-    {
-      "type": "checkbox",
-      "id": "show-xunits",
-      "text": "X units",
-      "property": "xunits"
-    },
-    {
-      "type": "checkbox",
-      "id": "show-yunits",
-      "text": "Y units",
-      "property": "yunits"
+      "type": "radio",
+      "id": "trace-buttons",
+      "orientation": "vertical",
+      "label": "Trace Planet",
+      "options": [
+        {
+          "text": "Off",
+          "action": "untraceBody();",
+          "selected": true
+        },
+        {
+          "text": "1",
+          "action": "traceBody(1);"
+        },
+        {
+          "text": "2",
+          "action": "traceBody(2);"
+        },
+        {
+          "text": "3",
+          "action": "traceBody(3);"
+        },
+        {
+          "text": "4",
+          "action": "traceBody(4);"
+        }
+      ]
     }
   ],
   "layout": {
     "right": [
-      [ "add-random-planet" ],
-      [ "current-planets" ],
+      [ "add-random-body" ],
+      [ "current-bodies" ],
       [ "wrapping-label" ],
       [ "horizontal-wrapping" ],
       [ "vertical-wrapping" ],
-      [ "axes-label" ],
-      [ "show-gridlines" ],
-      [ "show-xunits" ],
-      [ "show-yunits" ]
+      [ "trace-buttons" ]
     ],
     "bottom": [
-      "gravity-slider"
     ]
   },
   "template": [
     {
       "id": "right",
-      "top": "2em",
+      "top": "1em",
       "left": "model.right",
+      "padding-left": "0.5em",
       "align": "left"
     },
     {
