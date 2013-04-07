@@ -102,8 +102,8 @@
     #extras-bottom
       #extras-bottom-banner Extras
 
-      %ul#sortable-extras
-        %li#editor.extras-item
+      %ul#sortable-extras.sortable
+        %li#editor.extras-item.ui-state-default
           .extras-item-banner
             %input#show-editor{:type => "checkbox", :checked => false}
             %label{:for => "show-editor"} Interactive Editor
@@ -124,7 +124,7 @@
               %button.right#autoformat-interactive-json-button AutoFormat
             %textarea#interactive-text-area
 
-        %li#model-editor.extras-item
+        %li#model-editor.extras-item.ui-state-default
           .extras-item-banner
             %input#show-model-editor{:type => "checkbox", :checked => false}
             %label{:for => "show-model-editor"} Model Editor
@@ -138,14 +138,14 @@
               %button.right#autoformat-model-json-button AutoFormat
             %textarea#model-text-area
 
-        %li#model-energy-graph.extras-item
+        %li#model-energy-graph.extras-item.ui-state-default
           .extras-item-banner
             %input#show-model-energy-graph{:type => "checkbox", :checked => false}
             %label{:for => "show-model-energy-graph"} Energy Graph
           #model-energy-graph-content.extras-item-content
             #model-energy-graph-chart.ke-chart.graph
 
-        %li#model-datatable.extras-item
+        %li#model-datatable.extras-item.ui-state-default
           .extras-item-banner
             %input#show-model-datatable{:type => "checkbox", :checked => false}
             %label{:for => "show-model-datatable"} Atoms Datatable
@@ -156,7 +156,7 @@
                 %thead
                 %tbody
 
-        %li#benchmark.extras-item
+        %li#benchmark.extras-item.ui-state-default
           .extras-item-banner
             %input#show-benchmarks{:type => "checkbox", :checked => false}
             %label{:for => "show-benchmarks"} Benchmarks

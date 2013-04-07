@@ -582,6 +582,12 @@ AUTHORING = false;
 
       $iframeWrapper.resizable({ helper: "ui-resizable-helper" });
     }
+    $(".sortable").sortable({
+      axis: "y",
+      containment: "parent",
+      cursor: "row-resize"
+    });
+    $(".extras-item").disableSelection();
     if(!isStaticPage()) {
       setupCopySaveInteractive();
     }
