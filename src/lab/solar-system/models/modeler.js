@@ -1301,6 +1301,22 @@ define(function(require) {
       });
     }());
 
+    model.defineOutput('tickCounter', {
+      label: "Tick Counter",
+      unitType: '',
+      format: '4g'
+    }, function() {
+      return tickHistory.get("counter");
+    });
+
+    model.defineOutput('newStep', {
+      label: "New Step",
+      unitType: '',
+      format: ''
+    }, function() {
+      return newStep;
+    });
+
     updateAllOutputProperties();
 
     return model;
