@@ -56,6 +56,7 @@ AUTHORING = false;
 
       $showModelEnergyGraph = $("#show-model-energy-graph"),
       $modelEnergyGraphContent = $("#model-energy-graph-content"),
+      energyGraphSamplePeriod,
       modelEnergyGraph,
       modelEnergyData = [],
 
@@ -549,66 +550,76 @@ AUTHORING = false;
       setupBenchmarks();
       // pass in the model
       setupEnergyGraph(model);
-
       setupAtomDataTable();
-      $("#content-banner").show();
       $("#extras-bottom").show();
       $selectInteractiveSize.removeAttr('disabled');
       $content.resizable({
         helper: "ui-resizable-helper",
         resize: controller.resize
       });
+      $(".extras-item").disableSelection();
     } else {
       // Interactive Browser with Interactive embedding in iframe
-      setupEnergyGraph();
-      $("#content-banner").hide();
-      // $("#model-energy-graph").hide();
-      $("#model-datatable").hide();
-      $content.css("border", "none");
-      setupCodeEditor();
-      setupModelCodeEditor();
-      setupBenchmarks();
 
+      // data table not working in iframe embedding mode yet
+      $("#model-datatable").hide();
+
+      // setup iframe
       $iframeWrapper = $('<div id="iframe-wrapper" class="ui-widget-content ' + $selectInteractiveSize.val() + '"></div>');
       $iframe = $('<iframe id="iframe-interactive" width="100%" height="100%" frameborder="no" scrolling="no" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" src="' + embeddableUrl + '"></iframe>');
-
       $content.append($iframeWrapper);
       $("#responsive-content").hide();
       selectInteractiveSizeHandler();
       $selectInteractiveSize.removeAttr('disabled');
-
       $iframeWrapper.append($iframe);
-      iframePhone = setupIframeListenerFor($iframe[0]);
-
       $iframeWrapper.resizable({ helper: "ui-resizable-helper" });
+      $content.css("border", "none");
+
+      // initiate communication with Interactive in iframe and setup callback
+      iframePhone = setupIframeListenerFor($iframe[0], function() {
+        setupCodeEditor();
+        setupModelCodeEditor();
+        setupBenchmarks();
+        setupEnergyGraph(null, function() {
+          $(".extras-item").disableSelection();
+        });
+      });
     }
+    // All the extra items are sortable
     $(".sortable").sortable({
       axis: "y",
       containment: "parent",
       cursor: "row-resize"
     });
-    $(".extras-item").disableSelection();
     if(!isStaticPage()) {
       setupCopySaveInteractive();
     }
   }
 
-  function setupIframeListenerFor(iframe) {
+  function setupIframeListenerFor(iframe, callback) {
     var iframeOrigin = iframe.src.match(/(.*?\/\/.*?)\//)[1],
         selfOrigin   = window.location.href.match(/(.*?\/\/.*?)\//)[1],
         iframePhone  = {},
+        postMessageQueue = [],
         post = function(message) {
-          message.origin = selfOrigin;
-          // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
-          //     https://github.com/Modernizr/Modernizr/issues/388
-          //     http://jsfiddle.net/ryanseddon/uZTgD/2/
-          if (Lab.structuredClone.supported()) {
-            iframe.contentWindow.postMessage(message, iframeOrigin);
+          if (iframePhone.connected) {
+            // if we are laready connected ... send the message
+            message.origin = selfOrigin;
+            // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
+            //     https://github.com/Modernizr/Modernizr/issues/388
+            //     http://jsfiddle.net/ryanseddon/uZTgD/2/
+            if (Lab.structuredClone.supported()) {
+              iframe.contentWindow.postMessage(message, iframeOrigin);
+            } else {
+              iframe.contentWindow.postMessage(JSON.stringify(message), iframeOrigin);
+            }
           } else {
-            iframe.contentWindow.postMessage(JSON.stringify(message), iframeOrigin);
+            // else queue up the messages to send after connection complete.
+            postMessageQueue.push(message);
           }
         };
 
+    iframePhone.connected = false;
     iframePhone.handlers = {};
 
     iframePhone.addListener = function(messageName,func) {
@@ -630,15 +641,27 @@ AUTHORING = false;
 
     // when we receive 'hello':
     iframePhone.addListener('hello', function() {
-      post({
-        type: 'hello'
-      });
+      // push the first couple of mnessages into the beginning
+      // of the postMessageQueue stack.
       // On a Interactive Browser page with an iframe send the
       // focus to the Interactive.
       if (isFullIFramePage()) {
-        post({
-          type: 'setFocus'
+        postMessageQueue.unshift({
+            type: 'setFocus'
         });
+      }
+      // this will be the first message sent in response to the 'hello'
+      // from the embedded application.
+      postMessageQueue.unshift({
+        type: 'hello'
+      });
+      iframePhone.connected = true;
+      // Now send any messages that have been queued up ...
+      while (message = postMessageQueue.shift()) {
+        iframePhone.post(message);
+      }
+      if (callback && typeof callback === "function") {
+        callback();
       }
     });
 
@@ -1051,6 +1074,7 @@ AUTHORING = false;
     });
   }
 
+  // general format helper for both editors
   function autoFormatEditorContent(ed) {
     var cursorStart = ed.getCursor("start"),
         cursorEnd = ed.getCursor("end"),
@@ -1099,15 +1123,11 @@ AUTHORING = false;
 
   //
   // Energy Graph
-  // Pass in a model object..
-  function setupEnergyGraph(_model) {
-    if (!modelEnergyGraph) {
-      // if (_model) {
-      renderModelEnergyGraph();
-      // }
-    }
-
-
+  // If an Interactive is instanced on this page pass in the model object,
+  // otherwize we'll assume the Interactive is embedded in an iframe.
+  function setupEnergyGraph(_model, callback) {
+    
+    // private functions
     function modelStepCounter() {
       if (_model) {
         return _model.stepCounter();
@@ -1172,30 +1192,29 @@ AUTHORING = false;
         updateModelEnergyGraph(props);
       }, ['kineticEnergy','potentialEnergy']);
 
-      addMessageHook('play', function() {
-        if (modelEnergyGraph.number_of_points() && modelStepCounter() < modelEnergyGraph.number_of_points()) {
-          resetModelEnergyData(modelStepCounter());
+      addMessageHook('play', function(props) {
+        if (modelEnergyGraph.numberOfPoints() && props.tickCounter < modelEnergyGraph.numberOfPoints()) {
+          resetModelEnergyData(props.tickCounter);
           modelEnergyGraph.newRealTimeData(modelEnergyData);
         }
-      });
+      }, ['tickCounter']);
 
-      addMessageHook('reset', function() {
+      addMessageHook('reset', function(props) {
         renderModelEnergyGraph();
-      });
+      }, ['displayTimePerTick']);
 
-      addMessageHook('stepForward', function() {
-        if (modelIsNewStep()) {
+      addMessageHook('stepForward', function(props) {
+        if (props.newStep) {
           updateModelEnergyGraph();
         } else {
-          modelEnergyGraph.updateOrRescale(modelStepCounter());
-          modelEnergyGraph.showMarker(modelStepCounter());
+          modelEnergyGraph.updateOrRescale(props.tickCounter);
         }
-      });
+      }, ['tickCounter', 'newStep']);
 
-      addMessageHook('stepBack', function() {
-        modelEnergyGraph.updateOrRescale(modelStepCounter());
-        modelEnergyGraph.showMarker(modelStepCounter());
-      });
+      addMessageHook('stepBack', function(props) {
+        modelEnergyGraph.updateOrRescale(props.tickCounter);
+      }, ['tickCounter']);
+
       // addMessageHook('seek', function() {});
     }
 
@@ -1209,17 +1228,6 @@ AUTHORING = false;
       removeMessageHook('stepBack');
     }
 
-    $showModelEnergyGraph.change(function() {
-      if (this.checked) {
-        addEventListeners();
-        $modelEnergyGraphContent.show(100);
-
-      } else {
-        removeListeners();
-        $modelEnergyGraphContent.hide(100);
-      }
-    }).change();
-
     function updateModelEnergyGraph(props) {
       modelEnergyGraph.addPoints(updateModelEnergyData(props));
     }
@@ -1230,7 +1238,7 @@ AUTHORING = false;
             xlabel:    "Model Time (ps)",
             xmin:       0,
             xmax:      50,
-            sample:    modelSampleSizeInPs(),
+            sample:    energyGraphSamplePeriod,
             ylabel:    "eV",
             ymin:     -25.0,
             ymax:      25.0,
@@ -1244,8 +1252,7 @@ AUTHORING = false;
       removeListeners();
       if (modelEnergyGraph) {
         modelEnergyGraph.reset('#model-energy-graph-chart', options);
-      }
-      else {
+      } else {
         modelEnergyGraph = Lab.grapher.Graph('#model-energy-graph-chart', options);
       }
       addEventListeners();
@@ -1264,20 +1271,62 @@ AUTHORING = false;
     }
 
     // Reset the resetModelEnergyData arrays to a specific length by passing in an index value,
-    // or empty the resetModelEnergyData arrays an initialize the first sample.
+    // or empty the resetModelEnergyData arrays and initialize the first sample.
     function resetModelEnergyData(index) {
-      var modelsteps = modelStepCounter(),
-          i,
+      var i,
           len;
 
-      if (index) {
+      if (index && modelEnergyData[0].length > index) {
         for (i = 0, len = modelEnergyData.length; i < len; i++) {
-          modelEnergyData[i].length = modelsteps;
+          modelEnergyData[i].length = index;
         }
         return index;
       } else {
         modelEnergyData = [[0],[0],[0]];
         return 0;
+      }
+    }
+    
+    // Sets up show/hide listener
+    function setupShowHideLHandler() {
+      // Setup expansion/visibility listener
+      $showModelEnergyGraph.change(function() {
+        if (this.checked) {
+          addEventListeners();
+          $modelEnergyGraphContent.show(100);
+        } else {
+          removeListeners();
+          $modelEnergyGraphContent.hide(100);
+        }
+      }).change();
+    }
+
+    // Intitialization
+    energyGraphSamplePeriod = 1;
+    if (_model) {
+      energyGraphSamplePeriod = model.get('displayTimePerTick');
+      renderModelEnergyGraph();
+      if (callback && typeof callback === "function") {
+        callback();
+      }
+      setupShowHideLHandler();
+    } else if (iframePhone) {
+      iframePhone.addListener('propertyValue', function(displayTimePerTick) {
+        energyGraphSamplePeriod = displayTimePerTick;
+        renderModelEnergyGraph();
+        if (callback && typeof callback === "function") {
+          callback();
+        }
+        setupShowHideLHandler();
+      });
+      iframePhone.post({
+        'type': 'get',
+        'propertyName': 'displayTimePerTick'
+      });
+    } else {
+      renderModelEnergyGraph();
+      if (callback && typeof callback === "function") {
+        callback();
       }
     }
   }
@@ -1287,176 +1336,187 @@ AUTHORING = false;
   // Atom Data Table
   //
   function setupAtomDataTable() {
+    
+    // private functions
+    function renderModelDatatable(reset) {
+      var i,
+          nodes = model.get_atoms(),
+          atoms = [],
+          $thead =  $('#model-datatable-results>thead'),
+          $tbody =  $('#model-datatable-results>tbody'),
+          titlerows = $modelDatatableResults.find(".title"),
+          datarows = $modelDatatableResults.find(".data"),
+          timeFormatter = d3.format("5.0f"),
+          timePrefix = "",
+          timeSuffix = " (fs)",
+          column_titles = ['x', 'y', 'vx', 'vy', 'ax', 'ay', 'px', 'py', 'speed', 'charge', 'radius', 'friction', 'visible', 'element', 'mass'],
+          i_formatter = d3.format(" 2d"),
+          charge_formatter = d3.format(" 1.1f"),
+          f2_formatter = d3.format(" 1.2f"),
+          f_formatter = d3.format(" 3.3f  "),
+          e_formatter = d3.format(" 3.3e  "),
+          formatters = [f_formatter, f_formatter, e_formatter,
+                        e_formatter, e_formatter, e_formatter,
+                        e_formatter, e_formatter, e_formatter,
+                        charge_formatter, f2_formatter, f2_formatter, i_formatter, i_formatter, i_formatter];
+
+      atoms.length = nodes.x.length;
+      reset = reset || false;
+
+      function add_row($el, kind, rownum) {
+        var $row = $("<tr>");
+        kind = kind || "data";
+        $row.addClass(kind);
+        if (typeof rownum === "number") {
+          $row.attr("id", "row_" + rownum);
+        }
+        $el.append($row);
+        return $row;
+      }
+
+      function add_data($row, content) {
+        var $el = $("<td>");
+        $el.text(content);
+        $row.append($el);
+      }
+
+      function add_molecule_data(index) {
+        var i,
+            value,
+            textValue,
+            column,
+            $row = $tbody.find(".data#row_" + index),
+            $cells = $row.find('td');
+
+        if ($cells.length > 0) {
+          $cells[0].textContent = index;
+          for(i = 0; i < column_titles.length; i++) {
+            column = column_titles[i];
+            value = nodes[column][index];
+            textValue = formatters[i](value);
+            $cells[i+1].textContent = textValue;
+          }
+        } else {
+          add_data($row, index);
+          for(i = 0; i < column_titles.length; i++) {
+            column = column_titles[i];
+            value = nodes[column][index];
+            textValue = formatters[i](value);
+            add_data($row, textValue);
+          }
+        }
+      }
+
+      function columnSort(e) {
+        var $heading = $(this),
+            ascending = "asc",
+            descending = "desc",
+            sortOrder;
+
+        sortOrder = ascending;
+        if ($heading.hasClass(ascending)) {
+          $heading.removeClass(ascending);
+          $heading.addClass(descending);
+          sortOrder = descending;
+        } else if ($heading.hasClass(descending)) {
+          $heading.removeClass(descending);
+          $heading.addClass(ascending);
+          sortOrder = ascending;
+        } else {
+          $heading.addClass(descending);
+          sortOrder = descending;
+        }
+        $heading.siblings().removeClass("sorted");
+        $tbody.find("tr").tsort('td:eq('+$heading.index()+')',
+          {
+            sortFunction:function(a, b) {
+              var anum = Math.abs(parseFloat(a.s)),
+                  bnum = Math.abs(parseFloat(b.s));
+              if (sortOrder === ascending) {
+                return anum === bnum ? 0 : (anum > bnum ? 1 : -1);
+              } else {
+                return anum === bnum ? 0 : (anum < bnum ? 1 : -1);
+              }
+            }
+          }
+        );
+        $heading.addClass("sorted");
+        e.preventDefault();
+      }
+
+      function add_column_headings($title_row, titles) {
+        var i,
+            $el;
+
+        $el = $("<th>");
+        $el.text("atom");
+        $title_row.append($el);
+        $el.click(columnSort);
+        i = -1; while (++i < titles.length) {
+          $el = $("<th>");
+          $el.text(titles[i]);
+          $title_row.append($el);
+          $el.click(columnSort);
+        }
+      }
+
+      function add_data_rows(n) {
+        var i = -1, j = datarows.length;
+        while (++i < n) {
+          if (i >= j) {
+            add_row($tbody, 'data', i);
+          }
+        }
+        while (--j >= i) {
+          $tbody.remove(datarows[i]);
+        }
+        return $tbody.find(".data");
+      }
+
+      $modelDatatableStats.text(timePrefix + timeFormatter(model.get('time')) + timeSuffix);
+
+      if (titlerows.length === 0) {
+        var $title_row = add_row($thead, "title");
+        add_column_headings($title_row, column_titles);
+        datarows = add_data_rows(atoms.length);
+      }
+      if (reset) {
+        datarows = add_data_rows(model.get_num_atoms());
+      }
+      i = -1; while (++i < atoms.length) {
+        add_molecule_data(i);
+      }
+    }
+    
+    function addEventListeners() {
+      model.on("tick.dataTable", renderModelDatatable);
+      model.on('play.dataTable', renderModelDatatable);
+      model.on('reset.dataTable', renderModelDatatable);
+      model.on('seek.dataTable', renderModelDatatable);
+      model.on('stepForward.dataTable', renderModelDatatable);
+      model.on('stepBack.dataTable', renderModelDatatable);
+    }
+    
+    function removeEventListeners() {
+      model.on(null);
+      model.on(null);
+      model.on(null);
+      model.on(null);
+      model.on(null);
+      model.on(null);
+    }
+
+    // Initialization
     $showModelDatatable.change(function() {
       if (this.checked) {
-        model.on("tick.dataTable", renderModelDatatable);
-        model.on('play.dataTable', renderModelDatatable);
-        model.on('reset.dataTable', renderModelDatatable);
-        model.on('seek.dataTable', renderModelDatatable);
-        model.on('stepForward.dataTable', renderModelDatatable);
-        model.on('stepBack.dataTable', renderModelDatatable);
-        renderModelDatatable();
+        addEventListeners();
         $modelDatatableContent.show(100);
+        renderModelDatatable();
       } else {
-        model.on("tick.dataTable");
-        model.on('play.dataTable');
-        model.on('reset.dataTable');
-        model.on('seek.dataTable');
-        model.on('stepForward.dataTable');
-        model.on('stepBack.dataTable');
+        removeListeners();
         $modelDatatableContent.hide(100);
       }
     }).change();
-  }
-
-  function renderModelDatatable(reset) {
-    var i,
-        nodes = model.get_atoms(),
-        atoms = [],
-        $thead =  $('#model-datatable-results>thead'),
-        $tbody =  $('#model-datatable-results>tbody'),
-        titlerows = $modelDatatableResults.find(".title"),
-        datarows = $modelDatatableResults.find(".data"),
-        timeFormatter = d3.format("5.0f"),
-        timePrefix = "",
-        timeSuffix = " (fs)",
-        column_titles = ['x', 'y', 'vx', 'vy', 'ax', 'ay', 'px', 'py', 'speed', 'charge', 'radius', 'friction', 'visible', 'element', 'mass'],
-        i_formatter = d3.format(" 2d"),
-        charge_formatter = d3.format(" 1.1f"),
-        f2_formatter = d3.format(" 1.2f"),
-        f_formatter = d3.format(" 3.3f  "),
-        e_formatter = d3.format(" 3.3e  "),
-        formatters = [f_formatter, f_formatter, e_formatter,
-                      e_formatter, e_formatter, e_formatter,
-                      e_formatter, e_formatter, e_formatter,
-                      charge_formatter, f2_formatter, f2_formatter, i_formatter, i_formatter, i_formatter];
-
-    atoms.length = nodes.x.length;
-    reset = reset || false;
-
-    function add_row($el, kind, rownum) {
-      var $row = $("<tr>");
-      kind = kind || "data";
-      $row.addClass(kind);
-      if (typeof rownum === "number") {
-        $row.attr("id", "row_" + rownum);
-      }
-      $el.append($row);
-      return $row;
-    }
-
-    function add_data($row, content) {
-      var $el = $("<td>");
-      $el.text(content);
-      $row.append($el);
-    }
-
-    function add_molecule_data(index) {
-      var i,
-          value,
-          textValue,
-          column,
-          $row = $tbody.find(".data#row_" + index),
-          $cells = $row.find('td');
-
-      if ($cells.length > 0) {
-        $cells[0].textContent = index;
-        for(i = 0; i < column_titles.length; i++) {
-          column = column_titles[i];
-          value = nodes[column][index];
-          textValue = formatters[i](value);
-          $cells[i+1].textContent = textValue;
-        }
-      } else {
-        add_data($row, index);
-        for(i = 0; i < column_titles.length; i++) {
-          column = column_titles[i];
-          value = nodes[column][index];
-          textValue = formatters[i](value);
-          add_data($row, textValue);
-        }
-      }
-    }
-
-    function columnSort(e) {
-      var $heading = $(this),
-          ascending = "asc",
-          descending = "desc",
-          sortOrder;
-
-      sortOrder = ascending;
-      if ($heading.hasClass(ascending)) {
-        $heading.removeClass(ascending);
-        $heading.addClass(descending);
-        sortOrder = descending;
-      } else if ($heading.hasClass(descending)) {
-        $heading.removeClass(descending);
-        $heading.addClass(ascending);
-        sortOrder = ascending;
-      } else {
-        $heading.addClass(descending);
-        sortOrder = descending;
-      }
-      $heading.siblings().removeClass("sorted");
-      $tbody.find("tr").tsort('td:eq('+$heading.index()+')',
-        {
-          sortFunction:function(a, b) {
-            var anum = Math.abs(parseFloat(a.s)),
-                bnum = Math.abs(parseFloat(b.s));
-            if (sortOrder === ascending) {
-              return anum === bnum ? 0 : (anum > bnum ? 1 : -1);
-            } else {
-              return anum === bnum ? 0 : (anum < bnum ? 1 : -1);
-            }
-          }
-        }
-      );
-      $heading.addClass("sorted");
-      e.preventDefault();
-    }
-
-    function add_column_headings($title_row, titles) {
-      var i,
-          $el;
-
-      $el = $("<th>");
-      $el.text("atom");
-      $title_row.append($el);
-      $el.click(columnSort);
-      i = -1; while (++i < titles.length) {
-        $el = $("<th>");
-        $el.text(titles[i]);
-        $title_row.append($el);
-        $el.click(columnSort);
-      }
-    }
-
-    function add_data_rows(n) {
-      var i = -1, j = datarows.length;
-      while (++i < n) {
-        if (i >= j) {
-          add_row($tbody, 'data', i);
-        }
-      }
-      while (--j >= i) {
-        $tbody.remove(datarows[i]);
-      }
-      return $tbody.find(".data");
-    }
-
-    $modelDatatableStats.text(timePrefix + timeFormatter(model.get('time')) + timeSuffix);
-
-    if (titlerows.length === 0) {
-      var $title_row = add_row($thead, "title");
-      add_column_headings($title_row, column_titles);
-      datarows = add_data_rows(atoms.length);
-    }
-    if (reset) {
-      datarows = add_data_rows(model.get_num_atoms());
-    }
-    i = -1; while (++i < atoms.length) {
-      add_molecule_data(i);
-    }
   }
 
 }());

@@ -333,7 +333,7 @@ ISImporter.GraphController = defineClass({
     this.initGraph();
 
     this.dataListener = function(d) {
-      self.graph.add_data(d);
+      self.graph.addOneXYDataPair(d);
     };
 
     this.dataResetListener = function() {
@@ -390,18 +390,18 @@ ISImporter.GraphController = defineClass({
       this.dataset.select([]);
     }
 
-    this.graph.selection_domain(this.dataset.getSelectionDomain());
-    this.graph.selection_listener(function(domain) {
+    this.graph.selectionDomain(this.dataset.getSelectionDomain());
+    this.graph.selectionListener(function(domain) {
       self.dataset.select(domain);
     });
-    this.graph.selection_visible(true);
+    this.graph.selectionVisible(true);
   },
 
   stopSelection: function() {
-    // first, make sure to turn off the listener so selection_domain(null) doesn't
+    // first, make sure to turn off the listener so selectionDomain(null) doesn't
     // change the dataset selection
-    this.graph.selection_listener(null);
-    this.graph.selection_domain(null).selection_visible(false);
+    this.graph.selectionListener(null);
+    this.graph.selectionDomain(null).selectionVisible(false);
   },
 
   getSelectionDataset: function() {}

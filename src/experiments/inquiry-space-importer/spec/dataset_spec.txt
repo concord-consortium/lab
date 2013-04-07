@@ -78,7 +78,7 @@ gut check:
 
    dataset.on('data', function(d) {
      // d is an [x,y] pair
-     graph.add_data(d);
+     graph.addOneXYDataPair(d);
    });
 
    dataset.setXIncrement(0.1);
@@ -86,7 +86,7 @@ gut check:
 
  * is the part to be implemented now sufficient to export data from the graph after the selection changes?
 
-   graph.selection_listener(function(domain) {
+   graph.selectionListener(function(domain) {
      dataset.select(domain);
    });
 
@@ -98,14 +98,14 @@ gut check:
 
  * will this be sufficient to allow a graph to be streamed with 'selection'?
 
-   graph1.selection_listener(function(domain) {
+   graph1.selectionListener(function(domain) {
      dataset.select(domain);
    });
 
    selection = dataset.getSelectionDataset()
 
    selection.on('data', function(d) {
-     graph2.add_data(d);
+     graph2.addOneXYDataPair(d);
    });
 
    selection.on('dataReset', function(d) {

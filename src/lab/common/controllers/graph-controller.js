@@ -154,10 +154,9 @@ define(function (require) {
         resetData();
       });
       model.on('play.'+namespace, function() {
-        if (grapher.number_of_points() && model.stepCounter() < grapher.number_of_points()) {
+        if (grapher.numberOfPoints() && model.stepCounter() < grapher.numberOfPoints()) {
           removeDataAfterStepPointer();
         }
-        grapher.showCanvas();
       });
       model.on('invalidation.'+namespace, removeDataAfterStepPointer);
 
@@ -234,8 +233,8 @@ define(function (require) {
             // Get current domains settings, e.g. after dragging performed by the user.
             // TODO: this should be reflected somehow in the grapher model,
             // not grabbed directly from the view as now. Waiting for refactoring.
-            xDomain = grapher.getXDomain(),
-            yDomain = grapher.getYDomain(),
+            xDomain = grapher.xDomain(),
+            yDomain = grapher.yDomain(),
             startX  = component.xmin;
 
         result.ymin = yDomain[0];
