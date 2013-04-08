@@ -33,7 +33,7 @@ define(function (require) {
     this._$timeDisplay = $('<span class="time-display">').appendTo(this._$playPause);
 
     /** @private */
-    this._$stepBackward = $('<button class="step"><i class="icon-backward"></i></button>').insertBefore(this._$reset);
+    this._$stepBackward = $('<button class="step"><i class="icon-backward"></i></button>').insertBefore(this._$playPause);
     /** @private */
     this._$stepForward = $('<button class="step"><i class="icon-forward"></i></button>').insertAfter(this._$playPause);
 
