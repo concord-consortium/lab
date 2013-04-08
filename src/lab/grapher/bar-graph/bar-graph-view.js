@@ -67,12 +67,16 @@ define(function (require) {
           this.title = this.vis.append("text");
           this.axisContainer = this.vis.append("g");
           this.bar = this.vis.append("rect");
+          this.gridContainer = this.vis.append("g");
           this.trianglePos = this.vis.append("g");
           this.traingle = this.trianglePos.append("polygon");
 
           this.yScale = d3.scale.linear();
           this.heightScale = d3.scale.linear();
           this.yAxis = d3.svg.axis();
+
+          this.scale = null;
+          this.barWidth = null;
 
           // Register callbacks!
           this.model.on("change", this.modelChanged, this);
@@ -98,6 +102,8 @@ define(function (require) {
               // padding. Later it is modified by appending of title,
               // axis, labels and all necessary elements.
               paddingRight  = scale(VIEW.padding.right);
+
+          this.scale = scale;
 
           // Setup SVG element.
           this.vis
@@ -205,9 +211,10 @@ define(function (require) {
             });
 
           // Setup the main bar.
+          this.barWidth = options.width - paddingLeft - paddingRight;
           this.bar
             .attr({
-              "width": (options.width - paddingLeft - paddingRight),
+              "width": this.barWidth,
               "x": paddingLeft,
               "rx": "0.5em",
               "ry": "0.5em"
@@ -223,6 +230,8 @@ define(function (require) {
               "transform": "translate(" + (options.width - paddingRight) + ") scale(" + scale(1) + ")"
             });
 
+          this._setupGrid();
+
           // Finally, update values display.
           this.update();
         },
@@ -230,11 +239,17 @@ define(function (require) {
         // Updates only bar height.
         update: function () {
           var value       = this.model.get("value"),
-              secondValue = this.model.get("secondValue");
+              secondValue = this.model.get("secondValue"),
+              gridThreshold = value * 0.95;
 
           this.bar
             .attr("height", this.heightScale(value))
             .attr("y", this.yScale(value));
+
+          this.grid
+            .style("opacity", function (d) {
+              return d < gridThreshold ? 0.7 : 0;
+            });
 
           if (typeof secondValue !== 'undefined' && secondValue !== null) {
             this.traingle.classed("hidden", false);
@@ -335,6 +350,27 @@ define(function (require) {
             .attr("offset", "100%");
 
           return "url(#" + id + ")";
+        },
+
+        _setupGrid: function () {
+          var gridLines = this.yScale.ticks(this.model.get("gridLines")),
+              scale = this.scale,
+              yScale = this.yScale,
+              width = this.barWidth;
+
+          // Remove first and last tick, as we don't want to draw it as grid line.
+          gridLines.pop(); gridLines.shift();
+          this.grid = this.gridContainer.selectAll(".grid-line").data(gridLines, String),
+
+          this.grid.enter().append("path").attr("class", "grid-line");
+          this.grid.exit().remove();
+          this.grid.attr({
+            "d": function (d) {
+              return "M 0 " + Math.round(yScale(d)) + " H " + width;
+            },
+            "stroke-width": Math.round(scale(1)),
+            "stroke": "#fff"
+          });
         }
       });
 

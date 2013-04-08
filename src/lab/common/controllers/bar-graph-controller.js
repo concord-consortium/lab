@@ -29,6 +29,9 @@ define(function (require) {
         // This value is *only* a suggestion. The most clean
         // and human-readable values are used.
         ticks:      'ticks',
+        // Number of grid lines displayed on the bar.
+        // This value is *only* a suggestion, it's similar to 'ticks'.
+        gridLines:  'gridLines',
         // Number of subdivisions between major ticks.
         tickSubdivide: 'tickSubdivide',
         // Enables or disables displaying of numerical labels.
