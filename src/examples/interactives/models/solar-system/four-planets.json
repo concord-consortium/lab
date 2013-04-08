@@ -1,9 +1,9 @@
 {
   "type": "solar-system",
-  "minX": -30,
-  "minY": -30,
-  "maxX":  30,
-  "maxY":  30,
+  "minX": -40,
+  "minY": -40,
+  "maxX":  40,
+  "maxY":  40,
   "horizontalWrapping": false,
   "verticalWrapping": false,
   "gravitationalField": 6.67e-8,
@@ -32,22 +32,22 @@
     "x": [
         0,
         0,
-       12,
+       13,
         0,
-      -24
+      -36
     ],
     "y": [
         0,
         7,
         0,
-      -16,
+      -22,
         0
     ],
     "vx": [
       0,
       0.035,
       0.000,
-     -0.038,
+     -0.017,
       0.000
     ],
     "vy": [
@@ -58,21 +58,14 @@
       0.012
     ],
     "mass": [
-      50000,
-      3,
+      100000,
+      4,
       2,
       10,
       1
     ],
     "radius": [
       2.0
-    ],
-    "pinned": [
-      1,
-      0,
-      0,
-      0,
-      0
     ]
   }
 }

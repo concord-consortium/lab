@@ -10,7 +10,9 @@
       "url": "models/solar-system/four-planets.json",
       "viewOptions": {
         "controlButtons": "play_reset_step"
-      }
+      },
+      "onLoad": [
+      ]
     }
   ],
   "outputs": [
