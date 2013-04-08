@@ -939,7 +939,7 @@ ISImporter.appController = new ISImporter.Object({
       if (label) {
         metadata.push({ label: label, value: this.getMetadataValue(i) });
       }
-      this.clearMetadata(i);
+      this._clearMetadata(i, "value");
     }
 
     ISImporter.DGExporter.exportData(this.sensor.title, data, metadata);
