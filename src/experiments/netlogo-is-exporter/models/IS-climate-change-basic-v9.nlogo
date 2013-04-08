@@ -14,8 +14,10 @@ breed [ IR ]
 breed [ heat ]
 breed [ CO2 ]
 breed [dots dot]
+breed [messages message]
 
 clouds-own [ cloud-num ]
+
 globals [ 
   sky-top 
   earth-top 
@@ -48,6 +50,7 @@ globals [
   old-cloud-amount
   old-CO2-level
   locked? 
+  mess1 mess2 mess3 mess4
   ]
 
 to startup
@@ -129,7 +132,16 @@ to on/off    ; this is the main execution loop--a 'forever' loop
     initialize-variables]   
   act-on-changes       ; checks for user actions and takes appropriate actions
   if running? [
-    if year = 2000 [set-plot-x-range 2000 (2000 + run-duration)]
+    if year = 2000 [
+      set-plot-x-range 2000 (2000 + run-duration)
+      auto-plot-on
+      ask messages [ht]
+      if locked? [ask message mess1 [st]]]
+    every .5 [
+      if not locked? [
+        ifelse remainder year 40 < 20 ; alternate between the following messages every 20 years
+          [ask messages [ht] ask message mess3 [st]]
+          [ask messages [ht] ask message mess4 [st]]]]
     ask clouds [ fd .03 * (0.1 + (3 + cloud-num) / 10) ]  ; move clouds along
     run-sunshine    ;; moves the sunrays
     run-heat        ;; moves heat dots
@@ -142,6 +154,7 @@ to on/off    ; this is the main execution loop--a 'forever' loop
     if year >= (1999.9 + run-duration) and locked? [
       set running? false
       set DG-data-ready? true
+      ask messages [ht] ask message mess2 [st]
       output-print DG-output
       process-run-end]
     set year year + time-step
@@ -182,7 +195,7 @@ to act-on-changes   ; detects changes in the sliders and selector
     ifelse locked?
       [set albedo old-albedo ]
       [ask patches [update-albedo]
-        set old-albedo albedo]]
+    set old-albedo albedo]]
 
   if old-CO2-level != CO2-level [
     ifelse locked? 
@@ -190,8 +203,8 @@ to act-on-changes   ; detects changes in the sliders and selector
       [let dif CO2-level - old-CO2-level
         ifelse dif > 0 
           [add-CO2 dif]
-          [remove-CO2 (abs dif)
-            set old-CO2-level CO2-level]]]
+          [remove-CO2 (abs dif)]
+        set old-CO2-level CO2-level]]
     
   if old-cloud-amount != cloud-amount [
     ifelse locked? 
@@ -209,6 +222,21 @@ to initialize
   ask heat [die]
   initialize-heat 500       ; start with 500 heat agents  
   set-clouds 5      ; start with 10 clouds
+  create-messages 1 [
+    set label "Collecting data: sliders Locked"
+    set mess1 who ]
+  create-messages 1 [
+    set label "Ready for export to DataGames"
+    set mess2 who ]
+  create-messages 1 [
+    set label "Messing around: sliders unlocked"
+    set mess3 who ]
+  create-messages 1 [
+    set label "Messing around: data export disabled"
+    set mess4 who ]
+  ask messages [
+    ht set size .1
+    setxy .94 * max-pxcor .94 * max-pycor]
   
   set temperature 14
   set smooth-temperature temperature
@@ -496,6 +524,7 @@ end
 
 
 
+
     
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -724,7 +753,7 @@ CHOOSER
 Pick-Mode
 Pick-Mode
 "Mess around" "Collect data"
-1
+0
 
 BUTTON
 559
@@ -766,7 +795,7 @@ INPUTBOX
 771
 71
 Run-Duration
-50
+100
 1
 0
 Number
