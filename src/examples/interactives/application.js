@@ -639,6 +639,14 @@ AUTHORING = false;
       });
     };
 
+    iframePhone.removeDispatchListener = function(messageName) {
+      iframePhone.post({
+        'type': 'removeListenerForDispatchEvent',
+        'eventName': messageName
+      });
+      iframePhone.removeListener(messageName);
+    };
+
     // when we receive 'hello':
     iframePhone.addListener('hello', function() {
       // push the first couple of mnessages into the beginning
@@ -1125,8 +1133,9 @@ AUTHORING = false;
   // Energy Graph
   // If an Interactive is instanced on this page pass in the model object,
   // otherwize we'll assume the Interactive is embedded in an iframe.
+  //
   function setupEnergyGraph(_model, callback) {
-    
+
     // private functions
     function modelStepCounter() {
       if (_model) {
@@ -1169,25 +1178,25 @@ AUTHORING = false;
 
     function addMessageHook(name, func, props) {
       var privateName = name + '.modelEnergyGraph';
-      if(_model) {
+      if (_model) {
         _model.on(privateName, func); // for now
       }
-      if(iframePhone) {
+      if (iframePhone) {
         iframePhone.addDispatchListener(privateName,func, props);
       }
     }
 
     function removeMessageHook(name) {
       var privateName = name + '.modelEnergyGraph';
-      if(_model) {
+      if (_model) {
         _model.on(privateName); // for now
       }
-      if(iframePhone) {
-        iframePhone.removeListener(privateName);
+      if (iframePhone) {
+        iframePhone.removeDispatchListener(privateName);
       }
     }
 
-    function addEventListeners() {
+    function addIframeEventListeners() {
       addMessageHook("tick", function(props) {
         updateModelEnergyGraph(props);
       }, ['kineticEnergy','potentialEnergy']);
@@ -1218,7 +1227,7 @@ AUTHORING = false;
       // addMessageHook('seek', function() {});
     }
 
-    function removeListeners() {
+    function removeIframeEventListeners() {
       // remove listeners
       removeMessageHook("tick");
       removeMessageHook('play');
@@ -1226,6 +1235,14 @@ AUTHORING = false;
       // removeMessageHook('seek');
       removeMessageHook('stepForward');
       removeMessageHook('stepBack');
+    }
+
+    function addEventListeners() {
+      addIframeEventListeners();
+    }
+
+    function removeEventListeners() {
+      removeIframeEventListeners();
     }
 
     function updateModelEnergyGraph(props) {
@@ -1249,7 +1266,7 @@ AUTHORING = false;
       $.extend(options, interactive.models[0].energyGraphOptions || []);
       resetModelEnergyData();
       options.dataset = modelEnergyData;
-      removeListeners();
+      removeEventListeners();
       if (modelEnergyGraph) {
         modelEnergyGraph.reset('#model-energy-graph-chart', options);
       } else {
@@ -1286,7 +1303,7 @@ AUTHORING = false;
         return 0;
       }
     }
-    
+
     // Sets up show/hide listener
     function setupShowHideLHandler() {
       // Setup expansion/visibility listener
@@ -1295,7 +1312,7 @@ AUTHORING = false;
           addEventListeners();
           $modelEnergyGraphContent.show(100);
         } else {
-          removeListeners();
+          removeEventListeners();
           $modelEnergyGraphContent.hide(100);
         }
       }).change();
@@ -1331,12 +1348,11 @@ AUTHORING = false;
     }
   }
 
-
   //
   // Atom Data Table
   //
   function setupAtomDataTable() {
-    
+
     // private functions
     function renderModelDatatable(reset) {
       var i,
@@ -1487,7 +1503,7 @@ AUTHORING = false;
         add_molecule_data(i);
       }
     }
-    
+
     function addEventListeners() {
       model.on("tick.dataTable", renderModelDatatable);
       model.on('play.dataTable', renderModelDatatable);
@@ -1496,7 +1512,7 @@ AUTHORING = false;
       model.on('stepForward.dataTable', renderModelDatatable);
       model.on('stepBack.dataTable', renderModelDatatable);
     }
-    
+
     function removeEventListeners() {
       model.on(null);
       model.on(null);

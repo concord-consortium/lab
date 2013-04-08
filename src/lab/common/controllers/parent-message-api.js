@@ -96,6 +96,17 @@ define(function(require) {
       });
     });
 
+    // Remove an existing Listener for events in the model
+    parentMessageController.addListener('removeListenerForDispatchEvent', function(message) {
+      var eventName    = message.eventName,
+          properties   = message.properties,
+          values       = {},
+          i            = 0,
+          propertyName = null;
+
+      model.on(eventName);
+    });
+
     // on message 'get' propertyName: return a 'propertyValue' message
     parentMessageController.addListener('get', function(message) {
       sendPropertyValue(message.propertyName);
