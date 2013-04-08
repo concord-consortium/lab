@@ -208,16 +208,6 @@ define(function (require, exports, module) {
             ax[i] = ay[i] = 0;
           }
 
-          // // Convert ax, ay from forces to accelerations!
-          // for (i = 0; i < N; i++) {
-          //   inverseMass = 1/mass[i];
-          //   ax[i] *= inverseMass;
-          //   ay[i] *= inverseMass;
-          // }
-
-          // ######################################
-          // ax and ay are FORCES below this point
-          // ######################################
           updateGravitationalAccelerations();
 
         },
@@ -237,10 +227,10 @@ define(function (require, exports, module) {
               gf = gravitationalField * m1 * m2 / rSq;
               gfx = dx / l * gf;
               gfy = dy / l * gf;
-              ax[i] += gfx;
-              ay[i] += gfy;
-              ax[j] -= gfx;
-              ay[j] -= gfy;
+              ax[i] += gfx / m1;
+              ay[i] += gfy / m1;
+              ax[j] -= gfx / m2;
+              ay[j] -= gfy / m2;
             }
           }
         },
