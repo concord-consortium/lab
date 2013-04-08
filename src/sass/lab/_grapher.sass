@@ -45,8 +45,9 @@ svg.graph
 
 // Bar Graph styles
 .bar-graph
-  min-width: 50px
-  min-height: 50px
+  padding: 0 0.4em
+  border-radius: 0.6em
+  @include linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0), $fallback: rgba(0, 0, 0, 0.05))
   .hidden
     display: none
   .triangle
@@ -57,3 +58,6 @@ svg.graph
     stroke-width: 1px
     fill: #eee
 
+  .tick text
+    font-size: 0.7em
+    fill: #555

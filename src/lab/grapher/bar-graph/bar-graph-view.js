@@ -98,17 +98,18 @@ define(function (require) {
 
           this.scale = scale;
 
+          this.$el.outerHeight(options.height);
+          this.svgHeight = this.$el.innerHeight();
+
           // Setup SVG element.
           this.vis
             .attr({
               "width":  600,
-              "height": options.height
+              "height": this.svgHeight
             })
             .style({
               "font-size": "1em"
             });
-
-          this.svgHeight = $(this.vis.node()).height();
 
           // Setup Y scale.
           this.yScale
@@ -121,43 +122,41 @@ define(function (require) {
             .range([0, this.svgHeight - paddingTop - paddingBottom]);
 
           // Render elements from left to right.
-          // Setup Y axis.
-          this.yAxis
-            .scale(this.yScale)
-            .tickSize(0, 0, 0)
-            .orient("right");
 
-          if (typeof options.ticks === "number") {
-            // Just normal tics.
+          this.axisContainer.selectAll("*").remove();
+            if (options.ticks > 0 && options.displayLabels) {
+            // Setup Y axis.
             this.yAxis
-              .ticks(options.ticks)
-              .tickFormat(d3.format(options.labelFormat));
-          } else {
-            // Array with value - label pairs.
-            setupValueLabelPairs(this.yAxis, options.ticks);
+              .scale(this.yScale)
+              .tickPadding(0)
+              .tickSize(0, 0, 0)
+              .orient("right");
+
+            if (typeof options.ticks === "number") {
+              // Just normal tics.
+              this.yAxis
+                .ticks(options.ticks)
+                .tickFormat(d3.format(options.labelFormat));
+            } else {
+              // Array with value - label pairs.
+              setupValueLabelPairs(this.yAxis, options.ticks);
+            }
+
+            // Create and append Y axis.
+            this.axisContainer
+              .call(this.yAxis);
+
+            // Style Y axis labels.
+            this.axisContainer.selectAll("text")
+              .style({
+                "fill": options.textColor,
+                "stroke": "none",
+                "font-size": "0.7em"
+            });
+
+            // Note that this *have* to be done after all styling to get correct width of bounding box!
+            offset += getRealWidth(this.axisContainer) + scale(7);
           }
-
-          // Create and append Y axis.
-          this.axisContainer
-            .call(this.yAxis);
-
-          // Style Y axis labels.
-          this.axisContainer.selectAll("text")
-            .style({
-              "fill": options.textColor,
-              "stroke": "none",
-              // Workaround for hiding numeric labels. D3 doesn't provide any convenient function
-              // for that. Returning empty string as tickFormat causes that bounding box width is
-              // calculated incorrectly.
-              "font-size": options.displayLabels ? "0.8em" : 0
-          });
-
-          // Remove axis completely if ticks are equal to 0.
-          if (options.ticks === 0)
-            this.axisContainer.selectAll("*").remove();
-
-          // Note that this *have* to be done after all styling to get correct width of bounding box!
-          offset += getRealWidth(this.axisContainer) + scale(7);
 
           // Setup background of the bar.
           this.fill
@@ -170,9 +169,7 @@ define(function (require) {
               "ry": "0.5em"
             })
             .style({
-              "fill": this._getFillGradient(options.fillColor),
-              "stroke": "#ddd",
-              "stroke-width": "1px"
+              "fill": this._getFillGradient(options.fillColor)
             });
 
           // Setup the main bar.
@@ -201,7 +198,7 @@ define(function (require) {
           offset += this.barWidth;
 
           // Setup title.
-          if (options.title !== undefined) {
+          if (options.title) {
             this.title
               .text(options.title)
               .style({
@@ -215,10 +212,7 @@ define(function (require) {
             this.title
               .attr("transform", "translate(" + offset + ", " + this.svgHeight / 2 + ") rotate(90)");
 
-            // Rotate title and translate it into right place.
-            // We do we use height for calculating right margin?
-            // Text will be rotated 90*, so current height is expected width.
-            offset += getRealHeight(this.title);
+            offset += parseFloat($(this.title.node()).css("font-size"));
           }
 
           this.vis.attr("width", (offset / fontSize) + "em");
