@@ -91,8 +91,6 @@ define(function (require) {
         fontSizeInPixels,
         textBoxFontSizeInPixels,
 
-        // for model clock
-        timeLabel,
         modelTimeFormatter = d3.format("5.1f"),
         timePrefix = "",
         timeSuffix = " (" + model.getPropertyDescription('displayTime').getUnitAbbreviation() + ")",
@@ -129,7 +127,6 @@ define(function (require) {
         atomTraceColor,
         atomTrace,
         atomTracePath,
-        showClock,
 
         VELOCITY_STR = "velocity",
         FORCE_STR    = "force",
@@ -1491,43 +1488,6 @@ define(function (require) {
       }
     }
 
-    function setupClock() {
-      var bg = parseColor(model.get("backgroundColor")),
-          // Calculate luminance in YIQ color space.
-          luminance = (bg.r * 299 + bg.g * 587 + bg.b * 114) / 1000,
-          // This ensures that color will be visible on background.
-          // This simple algorithm is described here:
-          // http://www.w3.org/TR/AERT#color-contrast
-          clockColor = luminance >= 128 ? 'black' : 'white';
-
-      function parseColor(color) {
-        // d3.rgb is handy, however it cannor parse RGBA colors, which are sometimes
-        // used in Next Gen MW (e.g. during MML->JSON conversion).
-        // Use it regexp to parse rgba if it's necessary.
-        var rgba = color.match(/rgba\(([0-9]+),([0-9]+),([0-9]+),([0-9]+)\)/i);
-        if (rgba !== null) {
-          return d3.rgb(rgba[1], rgba[2], rgba[3]);
-        } else {
-          return d3.rgb(color);
-        }
-      }
-
-      // Add model time display.
-      mainContainer.selectAll('.modelTimeLabel').remove();
-      // Update clock status.
-      showClock = model.get("showClock");
-      if (showClock) {
-        timeLabel = mainContainer.append("text")
-          .attr("class", "modelTimeLabel")
-          .text(modelTimeLabel())
-          // Set text position to (0nm, 0nm) (model domain) and add small, constant offset in px.
-          .attr("x", model2px(0) + fontSizeInPixels/3)
-          .attr("y", model2pxInv(0) - fontSizeInPixels/3)
-          .attr("text-anchor", "start")
-          .attr("fill", clockColor);
-      }
-    }
-
     function setupFirefoxWarning() {
       var $firefoxWarningPane,
           pos,
@@ -1639,7 +1599,7 @@ define(function (require) {
         "showVDWLines", "VDWLinesCutoff",
         "showVelocityVectors", "showForceVectors",
         "showAtomTrace", "atomTraceId", "aminoAcidColorScheme",
-        "showClock", "backgroundColor", "markColor"],
+        "backgroundColor", "markColor"],
           redrawClickableObjects(repaint));
 
       model.on('addAtom', redrawClickableObjects(repaint));
@@ -1691,7 +1651,6 @@ define(function (require) {
       drawSymbolImages();
       drawImageAttachment();
       drawTextBoxes();
-      setupClock();
       setupToolTips();
       setupFirefoxWarning();
     }
@@ -1721,11 +1680,6 @@ define(function (require) {
 
       if (radialBondResults) {
         updateRadialBonds();
-      }
-
-      // update model time display
-      if (showClock) {
-        timeLabel.text(modelTimeLabel());
       }
 
       updateParticles();
