@@ -22,6 +22,8 @@ define(function (require) {
     /** @private */
     this._modelStopped = true;
     /** @private */
+    this._showClock = true;
+    /** @private */
     this._timeUnits = "";
     /** @private */
     this._$reset = $('<button class="reset"><i class="icon-step-backward"></i></button>').appendTo(this.$element);
@@ -73,10 +75,28 @@ define(function (require) {
   };
 
   /**
+   * Enables or disables time display.
+   * @private
+   */
+  PlaybackController.prototype._showClockChanged = function () {
+    this._showClock = model.get("showClock");
+    if (this._showClock) {
+      this._$playPause.addClass("with-clock");
+      // Update clock immediately.
+      this._timeChanged();
+    } else {
+      this._$playPause.removeClass("with-clock");
+    }
+  };
+
+  /**
    * Updates time display.
    * @private
    */
   PlaybackController.prototype._timeChanged = function () {
+    if (!this._showClock) {
+      return;
+    }
     var time = model.get("displayTime").toFixed(1);
     this._$timeDisplay.html(time + " " + this._timeUnits);
   };
@@ -118,8 +138,9 @@ define(function (require) {
     this._simulationStateChanged();
     // Update time units and set time.
     this._timeUnits = model.getPropertyDescription("displayTime").getUnitAbbreviation();
+    model.addPropertiesListener(["showClock"], $.proxy(this._showClockChanged, this));
     model.addPropertiesListener(["displayTime"], $.proxy(this._timeChanged, this));
-    this._timeChanged();
+    this._showClockChanged();
     // Update display mode (=> buttons are hidden or visible).
     model.addPropertiesListener(["controlButtons"], $.proxy(this._displayModeChanged, this));
     this._displayModeChanged();

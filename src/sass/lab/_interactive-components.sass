@@ -321,9 +321,6 @@ button.component
 
   .play-pause
     min-width: 2.7em
-    width: 5.8em
-    white-space: nowrap
-    text-align: right
     // Style play / pause button, choose appropriate icon.
     .icon-pause
       display: none
@@ -333,18 +330,25 @@ button.component
       .icon-play
         display: none
 
+    // Style clock display.
     .time-display
-      display: inline-block
-      width: 5em
-      color: #939598
-      background: #e6e7e8
-      font-weight: bold
-      border: 1px solid #bbb
-      border-bottom-color: #ccc
-      padding: 0.2em
-      margin-left: 0.7em
-      border-radius: 0.5em
-      font-size: 0.7em
+      display: none
+    &.with-clock
+      width: 5.8em
+      text-align: right
+      white-space: nowrap
+      .time-display
+        display: inline-block
+        width: 5em
+        color: #939598
+        background: #e6e7e8
+        font-weight: bold
+        border: 1px solid #bbb
+        border-bottom-color: #ccc
+        padding: 0.2em
+        margin-left: 0.7em
+        border-radius: 0.5em
+        font-size: 0.7em
 
   i
     // Icons.
