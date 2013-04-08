@@ -189,8 +189,8 @@ define(function (require) {
           this.traingle
             .classed("triangle", true)
             .attr({
-              "points": "-15,-7 -15,7 -1,0",
-              "transform": "translate(" + (offset + this.barWidth) + ") scale(" + scale(1) + ")"
+              "points": "15,-7 15,7 1,0",
+              "transform": "translate(" + offset + ") scale(" + scale(1) + ")"
             });
 
           this._setupGrid(offset);
