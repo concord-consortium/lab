@@ -84,11 +84,6 @@ define(function (require) {
     component = validator.validateCompleteness(metadata.barGraph, component);
     barGraphModel = new BarGraphModel(filterOptions(component.options));
     barGraphView  = new BarGraphView({model: barGraphModel, id: component.id});
-    // Apply custom width and height settings.
-    barGraphView.$el.css({
-      width: component.width,
-      height: component.height
-    });
     // Each interactive component has to have class "component".
     barGraphView.$el.addClass("component");
     property = component.property;
@@ -108,6 +103,14 @@ define(function (require) {
         if (secondProperty) {
           model.addPropertiesListener([secondProperty], updateSecondProperty);
         }
+        // Apply custom width and height settings.
+        // Do it in modelLoadedCallback, as during its execution,
+        // the view container is already added to the document and
+        // calculations of the size work correctly.
+        barGraphModel.set({
+          width: component.width,
+          height: component.height
+        });
         // Initial render...
         barGraphView.render();
         // and update.
@@ -125,10 +128,7 @@ define(function (require) {
         // are specified in % or em, they will probably change each time
         // the interactive container is changed). It's important to do that,
         // as various visual elements can be adjusted (font size, padding etc.).
-        barGraphModel.set({
-          width: barGraphView.$el.width(),
-          height: barGraphView.$el.height()
-        });
+        barGraphView.render();
       },
 
       // Returns serialized component definition.

@@ -1,4 +1,4 @@
-/*global define, d3 */
+/*global define, d3, $ */
 
 define(function (require) {
   // Dependencies.
@@ -6,10 +6,8 @@ define(function (require) {
 
       VIEW = {
         padding: {
-          left:   0,
-          top:    8,
-          right:  0,
-          bottom: 8
+          top:    7,
+          bottom: 7
         }
       },
 
@@ -63,13 +61,13 @@ define(function (require) {
           // Avoid recreation of SVG elements while rendering.
           this.vis = d3.select(this.el).append("svg");
           this.defs = this.vis.append("defs");
-          this.fill = this.vis.append("rect");
-          this.title = this.vis.append("text");
           this.axisContainer = this.vis.append("g");
+          this.fill = this.vis.append("rect");
           this.bar = this.vis.append("rect");
           this.gridContainer = this.vis.append("g");
           this.trianglePos = this.vis.append("g");
           this.traingle = this.trianglePos.append("polygon");
+          this.title = this.vis.append("text");
 
           this.yScale = d3.scale.linear();
           this.heightScale = d3.scale.linear();
@@ -90,59 +88,39 @@ define(function (require) {
               // property2 = model.get("property2");
               // etc.
           var options    = this.model.toJSON(),
+              fontSize   = parseFloat(this.$el.css("font-size")),
               // Scale function.
-              scale      = getScaleFunc(parseFloat(this.$el.css("font-size"))),
+              scale      = getScaleFunc(fontSize),
               // Basic padding (scaled).
-              paddingLeft   = scale(VIEW.padding.left),
               paddingTop    = scale(VIEW.padding.top),
               paddingBottom = scale(VIEW.padding.bottom),
-              // Note that right padding is especially important
-              // in this function, as we are constructing bar graph
-              // from right to left side. This variable holds current
-              // padding. Later it is modified by appending of title,
-              // axis, labels and all necessary elements.
-              paddingRight  = scale(VIEW.padding.right);
+              offset = 0;
 
           this.scale = scale;
 
           // Setup SVG element.
           this.vis
             .attr({
-              "width":  options.width,
+              "width":  600,
               "height": options.height
             })
             .style({
               "font-size": "1em"
             });
 
+          this.svgHeight = $(this.vis.node()).height();
+
           // Setup Y scale.
           this.yScale
             .domain([options.minValue, options.maxValue])
-            .range([options.height - paddingTop, paddingBottom]);
+            .range([this.svgHeight - paddingTop, paddingBottom]);
 
           // Setup scale used to translation of the bar height.
           this.heightScale
             .domain([options.minValue, options.maxValue])
-            .range([0, options.height - paddingTop - paddingBottom]);
+            .range([0, this.svgHeight - paddingTop - paddingBottom]);
 
-          // Setup title.
-          if (options.title !== undefined) {
-            this.title
-              .text(options.title)
-              .style({
-                "font-size": "1em",
-                "text-anchor": "middle",
-                "fill": options.textColor
-              });
-
-            // Rotate title and translate it into right place.
-            // We do we use height for calculating right margin?
-            // Text will be rotated 90*, so current height is expected width.
-            paddingRight += getRealHeight(this.title);
-            this.title
-              .attr("transform", "translate(" + (options.width - paddingRight) + ", " + options.height / 2 + ") rotate(90)");
-          }
-
+          // Render elements from left to right.
           // Setup Y axis.
           this.yAxis
             .scale(this.yScale)
@@ -178,19 +156,15 @@ define(function (require) {
           if (options.ticks === 0)
             this.axisContainer.selectAll("*").remove();
 
-          // Translate axis into right place, add narrow empty space.
           // Note that this *have* to be done after all styling to get correct width of bounding box!
-          paddingRight += getRealWidth(this.axisContainer) + scale(7);
-          this.axisContainer
-            .attr("transform", "translate(" + (options.width - paddingRight) + ", 0)");
+          offset += getRealWidth(this.axisContainer) + scale(7);
 
           // Setup background of the bar.
-          paddingRight += scale(5);
           this.fill
             .attr({
-              "width": (options.width - paddingLeft - paddingRight),
+              "width": options.width,
               "height": this.heightScale(options.maxValue),
-              "x": paddingLeft,
+              "x": offset,
               "y": this.yScale(options.maxValue),
               "rx": "0.5em",
               "ry": "0.5em"
@@ -202,11 +176,10 @@ define(function (require) {
             });
 
           // Setup the main bar.
-          this.barWidth = options.width - paddingLeft - paddingRight;
           this.bar
             .attr({
-              "width": this.barWidth,
-              "x": paddingLeft,
+              "width": options.width,
+              "x": offset,
               "rx": "0.5em",
               "ry": "0.5em"
             })
@@ -214,14 +187,41 @@ define(function (require) {
               "fill": this._getBarGradient(options.barColor)
             });
 
+          this.barWidth = getRealWidth(this.fill);
+
           this.traingle
             .classed("triangle", true)
             .attr({
-              "points": "-15,-7 -15,7 0,0",
-              "transform": "translate(" + (options.width - paddingRight) + ") scale(" + scale(1) + ")"
+              "points": "-15,-7 -15,7 -1,0",
+              "transform": "translate(" + (offset + this.barWidth) + ") scale(" + scale(1) + ")"
             });
 
-          this._setupGrid();
+          this._setupGrid(offset);
+
+          offset += this.barWidth;
+
+          // Setup title.
+          if (options.title !== undefined) {
+            this.title
+              .text(options.title)
+              .style({
+                "font-size": "1em",
+                "text-anchor": "middle",
+                "fill": options.textColor
+              });
+
+            offset += scale(7);
+
+            this.title
+              .attr("transform", "translate(" + offset + ", " + this.svgHeight / 2 + ") rotate(90)");
+
+            // Rotate title and translate it into right place.
+            // We do we use height for calculating right margin?
+            // Text will be rotated 90*, so current height is expected width.
+            offset += getRealHeight(this.title);
+          }
+
+          this.vis.attr("width", (offset / fontSize) + "em");
 
           // Finally, update values display.
           this.update();
@@ -343,7 +343,7 @@ define(function (require) {
           return "url(#" + id + ")";
         },
 
-        _setupGrid: function () {
+        _setupGrid: function (offset) {
           var gridLines = this.yScale.ticks(this.model.get("gridLines")),
               scale = this.scale,
               yScale = this.yScale,
@@ -357,7 +357,7 @@ define(function (require) {
           this.grid.exit().remove();
           this.grid.attr({
             "d": function (d) {
-              return "M 0 " + Math.round(yScale(d)) + " H " + width;
+              return "M " + offset + " " + Math.round(yScale(d)) + " h " + width;
             },
             "stroke-width": Math.round(scale(1)),
             "stroke": "#fff"

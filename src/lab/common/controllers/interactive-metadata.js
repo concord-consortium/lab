@@ -600,7 +600,7 @@ define(function() {
         conflictsWith: ["secondProperty"]
       },
       width: {
-        defaultValue: "100%"
+        defaultValue: "2em"
       },
       height: {
         defaultValue: "100%"

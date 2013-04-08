@@ -17,10 +17,10 @@ define(function (require) {
           // Max value displayed.
           maxValue:  10,
 
-          // Dimensions of the bar graph
-          // (including axis and labels).
-          width:     150,
-          height:    500,
+          // Dimensions of the bar graph (bar itself, labels, titles etc. are
+          // NOT included).
+          width:     "2em",
+          height:    "20em",
 
           // Graph title.
           title:     "",
