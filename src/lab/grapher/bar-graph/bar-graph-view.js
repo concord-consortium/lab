@@ -146,8 +146,7 @@ define(function (require) {
           // Setup Y axis.
           this.yAxis
             .scale(this.yScale)
-            .tickSubdivide(options.tickSubdivide)
-            .tickSize(scale(8), scale(5), scale(8))
+            .tickSize(0, 0, 0)
             .orient("right");
 
           if (typeof options.ticks === "number") {
@@ -163,14 +162,6 @@ define(function (require) {
           // Create and append Y axis.
           this.axisContainer
             .call(this.yAxis);
-
-          // Style Y axis.
-          this.axisContainer
-            .style({
-              "stroke": options.textColor,
-              "stroke-width": scale(2),
-              "fill": "none"
-            });
 
           // Style Y axis labels.
           this.axisContainer.selectAll("text")

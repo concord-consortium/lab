@@ -36,8 +36,6 @@ define(function (require) {
           ticks:          10,
           // Number of grid lines displayed on the bar.
           gridLines:      10,
-          // Number of subdivisions between major ticks.
-          tickSubdivide: 1,
           // Enables or disables displaying of numerical labels.
           displayLabels: true,
           // Format of labels.
