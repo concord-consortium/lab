@@ -135,9 +135,7 @@
       "right": "model.left",
       "height": "model.height",
       "padding-right": "1em",
-      "padding-left": "0.5em",
       "align": "right",
-      "width": "model.width / 4",
       "min-width": "6em"
     },
     {
@@ -147,7 +145,6 @@
       "height": "model.height",
       "padding-left": "1em",
       "padding-right": "0.5em",
-      "width": "model.width / 4",
       "min-width": "6em"
     },
     {

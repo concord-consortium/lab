@@ -100,12 +100,12 @@
     { "type": "text", "id": "outside-co2-label", "text": "CO2", "width": "3em" },
     { "type": "text", "id": "outside-o2-label", "text": "O2", "width": "3em" },
     { "type": "text", "id": "inside-above-label", "text": "Inside Cell" },
-    { "type": "text", "id": "outside-above-label", "text": "Outside Cell" },    
+    { "type": "text", "id": "outside-above-label", "text": "Outside Cell" },
     {
       "type": "barGraph",
       "id": "left-concentration-CO2",
-      "width": "3em",
       "fontScale": 0.5,
+      "height": "30em",
       "options": {
         "minValue": 0,
         "maxValue": 1,
@@ -119,7 +119,7 @@
     {
       "type": "barGraph",
       "id": "left-concentration-O2",
-      "width": "3em",
+      "height": "30em",
       "options": {
         "minValue": 0,
         "maxValue": 1,
@@ -133,7 +133,7 @@
     {
       "type": "barGraph",
       "id": "right-concentration-CO2",
-      "width": "3em",
+      "height": "30em",
       "options": {
         "minValue": 0,
         "maxValue": 1,
@@ -147,7 +147,7 @@
     {
       "type": "barGraph",
       "id": "right-concentration-O2",
-      "width": "3em",
+      "height": "30em",
       "options": {
         "minValue": 0,
         "maxValue": 1,
@@ -245,24 +245,24 @@
           "value": 35
         }
       ]
-    }    
+    }
   ],
   "layout": {
-    "left":  [ 
+    "left":  [
       ["outside-label"],
       ["outside-o2-label","outside-co2-label"],
       ["left-concentration-O2", "left-concentration-CO2"]
     ],
-    "right": [ 
+    "right": [
       ["inside-label"],
       ["inside-o2-label","inside-co2-label"],
-      ["right-concentration-O2", "right-concentration-CO2"] 
+      ["right-concentration-O2", "right-concentration-CO2"]
     ],
-    "bottom-left":  [ 
+    "bottom-left":  [
       [ "select-left-concentration-o2" ],
       [ "select-left-concentration-co2" ]
     ],
-    "bottom-right": [ 
+    "bottom-right": [
       [ "select-right-concentration-o2" ],
       [ "select-right-concentration-co2" ]
     ],

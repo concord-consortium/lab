@@ -52,7 +52,7 @@
     {
       "type": "graph",
       "id": "graph2",
-      "title": "Graph (15em x 10em)",
+      "title": "Graph (5em x 10em)",
       "width": "15em",
       "height": "10em",
       "xmin": 0,
@@ -66,26 +66,28 @@
     {
       "type": "barGraph",
       "id": "bar-graph",
-      "width": "8em",
+      "width": "2em",
       "height": "70%",
       "options": {
         "minValue": 0,
         "maxValue": 5000,
         "barColor": "#F42",
-        "title": "Bar Graph (8em x 70%)"
+        "title": "Bar Graph (2em x 70%)"
       },
       "property": "targetTemperature"
     },
     {
       "type": "barGraph",
       "id": "bar-graph-2",
-      "width": "8em",
-      "height": "10em",
+      "width": "4em",
+      "height": "9em",
       "options": {
         "minValue": 0,
         "maxValue": 5000,
         "barColor": "#F42",
-        "title": "Bar Graph (8em x 10em)"
+        "ticks": 5,
+        "gridLines": 5,
+        "title": "(4em x 9em)"
       },
       "property": "targetTemperature"
     },

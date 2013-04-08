@@ -13,7 +13,7 @@
       "viewOptions": {
         "controlButtons": "play_reset_step"
       },
-      "onLoad": "markAtoms(4);"
+      "onLoad": "markAtoms([4]);"
     }
   ],
   "outputs": [
@@ -38,13 +38,11 @@
     {
       "type": "barGraph",
       "id": "bar-graph-1",
-      "width": "3em",
       "options": {
         "minValue": 0,
         "maxValue": 1,
         "displayLabels": false,
-        "ticks": 0,
-        "barColor": "#F42"
+        "ticks": 0
       },
       "property": "atom0Ke",
       "averagePeriod": 2500
@@ -52,11 +50,9 @@
     {
       "type": "barGraph",
       "id": "bar-graph-2",
-      "width": "6em",
       "options": {
         "minValue": 0,
         "maxValue": 1,
-        "barColor": "#F42",
         "title": "Kinetic Energy of Particle (eV)"
       },
       "property": "atom0Ke",
