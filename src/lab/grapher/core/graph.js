@@ -1874,7 +1874,7 @@ define(function (require) {
       }
       setCurrentSample(points.length-1);
     }
-    
+
     //
     // Public API to instantiated Graph
     //
@@ -2036,11 +2036,12 @@ define(function (require) {
       // Adding a single X,Y data pair
       addOneXYDataPair:     addOneXYDataPair,
 
-      // 
+      //
       numberOfPoints:       numberOfPoints,
-      
+
       data: function(_) {
         if (!arguments.length) return points;
+        var domain = xScale.domain();
         options.points = points = _;
         if (points.length > domain[1]) {
           domain[0] += shift;
