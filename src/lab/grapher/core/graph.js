@@ -2069,6 +2069,6 @@ define(function (require) {
     }
 
     return api;
-    
+
   };
 });

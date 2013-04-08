@@ -1176,43 +1176,41 @@ AUTHORING = false;
       return timeStepsPerTick * timeStep / 10000;
     }
 
-    function addMessageHook(name, func, props) {
+    function addEventHook(name, func, props) {
       var privateName = name + '.modelEnergyGraph';
       if (_model) {
         _model.on(privateName, func); // for now
-      }
-      if (iframePhone) {
+      } else if (iframePhone) {
         iframePhone.addDispatchListener(privateName,func, props);
       }
     }
 
-    function removeMessageHook(name) {
+    function removeEventHook(name) {
       var privateName = name + '.modelEnergyGraph';
       if (_model) {
         _model.on(privateName); // for now
-      }
-      if (iframePhone) {
+      } else if (iframePhone) {
         iframePhone.removeDispatchListener(privateName);
       }
     }
 
     function addIframeEventListeners() {
-      addMessageHook("tick", function(props) {
+      addEventHook("tick", function(props) {
         updateModelEnergyGraph(props);
       }, ['kineticEnergy','potentialEnergy']);
 
-      addMessageHook('play', function(props) {
+      addEventHook('play', function(props) {
         if (modelEnergyGraph.numberOfPoints() && props.tickCounter < modelEnergyGraph.numberOfPoints()) {
           resetModelEnergyData(props.tickCounter);
           modelEnergyGraph.newRealTimeData(modelEnergyData);
         }
       }, ['tickCounter']);
 
-      addMessageHook('reset', function(props) {
+      addEventHook('reset', function(props) {
         renderModelEnergyGraph();
       }, ['displayTimePerTick']);
 
-      addMessageHook('stepForward', function(props) {
+      addEventHook('stepForward', function(props) {
         if (props.newStep) {
           updateModelEnergyGraph();
         } else {
@@ -1220,29 +1218,55 @@ AUTHORING = false;
         }
       }, ['tickCounter', 'newStep']);
 
-      addMessageHook('stepBack', function(props) {
+      addEventHook('stepBack', function(props) {
         modelEnergyGraph.updateOrRescale(props.tickCounter);
       }, ['tickCounter']);
-
-      // addMessageHook('seek', function() {});
     }
 
-    function removeIframeEventListeners() {
-      // remove listeners
-      removeMessageHook("tick");
-      removeMessageHook('play');
-      removeMessageHook('reset');
-      // removeMessageHook('seek');
-      removeMessageHook('stepForward');
-      removeMessageHook('stepBack');
+    function addRegularEventListeners() {
+      addEventHook("tick", function() {
+        updateModelEnergyGraph();
+      });
+
+      addEventHook('play', function() {
+        if (modelEnergyGraph.numberOfPoints() && _model.stepCounter() < modelEnergyGraph.numberOfPoints()) {
+          resetModelEnergyData(model.stepCounter());
+          modelEnergyGraph.newRealTimeData(modelEnergyData);
+        }
+      });
+
+      addEventHook('reset', function() {
+        renderModelEnergyGraph();
+      });
+
+      addEventHook('stepForward', function(props) {
+        if (_model.isNewStep()) {
+          updateModelEnergyGraph();
+        } else {
+          modelEnergyGraph.updateOrRescale(_model.stepCounter());
+        }
+      });
+
+      addEventHook('stepBack', function(props) {
+        modelEnergyGraph.updateOrRescale(_model.stepCounter());
+      });
     }
 
     function addEventListeners() {
-      addIframeEventListeners();
+      if (_model) {
+        addRegularEventListeners();
+      } else {
+        addIframeEventListeners();
+      }
     }
 
     function removeEventListeners() {
-      removeIframeEventListeners();
+      // remove listeners
+      removeEventHook("tick");
+      removeEventHook('play');
+      removeEventHook('reset');
+      removeEventHook('stepForward');
+      removeEventHook('stepBack');
     }
 
     function updateModelEnergyGraph(props) {
@@ -1514,12 +1538,12 @@ AUTHORING = false;
     }
 
     function removeEventListeners() {
-      model.on(null);
-      model.on(null);
-      model.on(null);
-      model.on(null);
-      model.on(null);
-      model.on(null);
+      model.on("tick.dataTable");
+      model.on('play.dataTable');
+      model.on('reset.dataTable');
+      model.on('seek.dataTable');
+      model.on('stepForward.dataTable');
+      model.on('stepBack.dataTable');
     }
 
     // Initialization
@@ -1529,7 +1553,7 @@ AUTHORING = false;
         $modelDatatableContent.show(100);
         renderModelDatatable();
       } else {
-        removeListeners();
+        removeEventListeners();
         $modelDatatableContent.hide(100);
       }
     }).change();
