@@ -295,13 +295,16 @@ button.component
   border-bottom-right-radius: 0.7em
   box-shadow: 0px 1px 1px rgba(0,0,0,0.4)
   height: 2em
-  button
+  a
+    display: inline-block
     vertical-align: middle
     font-family: $fontface, Verdana, Geneva, sans-serif
     font-size: 1em
     height: 100%
+    padding-top: 0.4em
     width: 2.7em
     margin: 0
+    text-align: center
     border: none
     @include linear-gradient(#fbfbfb, #BCBEC0, $fallback: #BCBEC0)
 
@@ -326,7 +329,7 @@ button.component
       display: none
     &.playing
       .icon-pause
-        display: inline
+        display: inline-block
       .icon-play
         display: none
 
@@ -335,10 +338,11 @@ button.component
       display: none
     &.with-clock
       width: 5.8em
-      text-align: right
       white-space: nowrap
       .time-display
         display: inline-block
+        font-size: 0.7em
+        text-align: right
         width: 5em
         color: #939598
         background: #e6e7e8
@@ -348,7 +352,6 @@ button.component
         padding: 0.2em
         margin-left: 0.7em
         border-radius: 0.5em
-        font-size: 0.7em
 
   i
     // Icons.
