@@ -1,0 +1,105 @@
+{
+  "title": "States of Matter",
+  "publicationStatus": "draft",
+  "subtitle": "Explore Coulomb and Intermolecular Attractions",
+  "about": [
+    "What kinds of patterns tend to form? How does changing the Van der Waals",
+    "attraction affect the melting and boiling point of the substance?"
+  ],
+  "models": [
+    {
+      "id": "100-atoms-charged",
+      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/100-atoms$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "onLoad": ""
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "epsilon-slider",
+      "min": 0.075,
+      "max": 0.300,
+      "initialValue": 0.14,
+      "labels": [
+        {
+          "value": 0.075,
+          "label": "weak"
+        },
+        {
+          "value": 0.1875,
+          "label": "medium"
+        },
+        {
+          "value": 0.300,
+          "label": "strong"
+        }
+      ],
+      "steps": 2,
+      "title": "Van der Waals Attraction",
+      "action": "setElementProperties(2, { epsilon: -value });"
+    },
+    {
+      "type": "slider",
+      "id": "temperature-slider",
+      "min": 10,
+      "max": 5000,
+      "initialValue": 650,
+      "displayValue": "",
+      "labels": [
+        {
+          "value": 650,
+          "label": "0 C"
+        },
+        {
+          "value": 2566,
+          "label": "100 C"
+        },
+        {
+          "value": 4482,
+          "label": "200 C"
+        }
+      ],
+      "steps": 499,
+      "title": "Temperature",
+      "action": "set({ targetTemperature: value });"
+    },
+    {
+      "type": "thermometer",
+      "id": "thermometer",
+      "min": -70,
+      "max": 500,
+      "labelIsReading": true,
+      "reading": {
+        "units": "C",
+        "offset": -65,
+        "scale": 0.1,
+        "digits": 0
+      },
+      "labels": [
+        {
+          "value": 650,
+          "label": "0 C"
+        },
+        {
+          "value": 2566,
+          "label": "100 C"
+        },
+        {
+          "value": 4482,
+          "label": "200 C"
+        }
+      ]
+    }
+  ],
+  "layout": {
+    "right": [
+      "thermometer"
+    ],
+    "bottom": [
+      ["epsilon-slider", "temperature-slider"]
+    ]
+  }
+}
