@@ -2,8 +2,7 @@
 
 define(function(require) {
   var defs = {
-        solarSystem: require('solar-system/models/unit-definitions/solar-system'),
-        mks: require('solar-system/models/unit-definitions/mks')
+        solarSystem: require('solar-system/models/unit-definitions/solar-system')
       },
       _ = require('underscore');
 

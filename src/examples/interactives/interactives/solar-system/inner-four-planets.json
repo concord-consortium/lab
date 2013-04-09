@@ -1,25 +1,17 @@
 {
-  "title": "Testing: two planets",
+  "title": "Testing: inner four planets",
   "publicationStatus": "draft",
-  "subtitle": "Body on left is 20,000x mass of body on right; small body has tiny initial velocity up.",
+  "subtitle": "Mercury, Venus, Earth and Mars.",
   "about": "",
   "models": [
     {
-      "id": "two-bodies",
-      "type": "solar-system",
-      "url": "models/solar-system/two-planets.json",
+      "id": "four-bodies",
+      "type": "pta",
+      "url": "models/solar-system/inner-four-planets.json",
       "viewOptions": {
         "controlButtons": "play_reset_step"
-      }
-    }
-  ],
-  "outputs": [
-    {
-      "name":  "numBodies",
-      "label": "Bodies",
-      "units": "count",
-      "value": [
-          "return getNumberOfBodies();"
+      },
+      "onLoad": [
       ]
     }
   ],
@@ -55,11 +47,19 @@
         },
         {
           "text": "1",
-          "action": "traceBody(0);"
+          "action": "traceBody(1);"
         },
         {
           "text": "2",
-          "action": "traceBody(1);"
+          "action": "traceBody(2);"
+        },
+        {
+          "text": "3",
+          "action": "traceBody(3);"
+        },
+        {
+          "text": "4",
+          "action": "traceBody(4);"
         }
       ]
     }

@@ -10,10 +10,9 @@ define(function(require) {
       TickHistory          = require('common/models/tick-history'),
       serialize            = require('common/serialize'),
       validator            = require('common/validator'),
-      units                = require('common/models/engines/constants/units'),
+      units                = require('solar-system/models/engine/constants/units'),
       PropertyDescription  = require('solar-system/models/property-description'),
       unitDefinitions      = require('solar-system/models/unit-definitions/index'),
-      UnitsTranslation     = require('solar-system/models/units-translation'),
       _ = require('underscore');
 
   return function Model(initialProperties) {
@@ -81,10 +80,10 @@ define(function(require) {
             }
           },
 
-          set_gravitationalField: function(gf) {
-            this.gravitationalField = gf;
+          set_gravitationalConstant: function(gc) {
+            this.gravitationalConstant = gc;
             if (engine) {
-              engine.setGravitationalField(gf);
+              engine.setGravitationalConstant(gc);
             }
           }
 
@@ -116,11 +115,7 @@ define(function(require) {
 
         // The set of units currently in effect. (Determined by the 'unitsScheme' property of the
         // model; default value is 'md2d')
-        unitsDefinition,
-
-        // Object that translates between 'native' md2d units and the units defined
-        // by unitsDefinition.
-        unitsTranslation;
+        unitsDefinition;
 
     function notifyPropertyListeners(listeners) {
       listeners = _.uniq(listeners);
@@ -560,7 +555,6 @@ define(function(require) {
       engine.setDimensions([model.get('minX'), model.get('minY'), model.get('maxX'), model.get('maxY')]);
       engine.setHorizontalWrapping(model.get('horizontalWrapping'));
       engine.setVerticalWrapping(model.get('verticalWrapping'));
-      engine.setGravitationalField(model.get('gravitationalField'));
 
       window.state = modelOutputState = {};
 
@@ -1213,7 +1207,7 @@ define(function(require) {
         "showClock",
         "timeStepsPerTick",
         "timeStep",
-        "gravitationalField"
+        "gravitationalConstant"
       ],
       getRawPropertyValue: getRawPropertyValue,
       restoreProperties: restoreProperties,
@@ -1226,14 +1220,6 @@ define(function(require) {
 
     // Set up units scheme.
     unitsDefinition = unitDefinitions.get(model.get('unitsScheme'));
-
-    // If we're not using MD2D units, we need a translation (which, for each unit type, allows some
-    // number of "native" MD2D units to stand for 1 translated unit, e.g., 1 nm represents 1m, with
-    // the relationships between these ratios set up so that the calculations reamin physically
-    // consistent.
-    if (model.get('unitsScheme') !== 'solar-system') {
-      unitsTranslation = new UnitsTranslation(unitsDefinition);
-    }
 
     // set up types of all properties before any third-party calls to set/get
     mainPropertyUnitTypes = {};

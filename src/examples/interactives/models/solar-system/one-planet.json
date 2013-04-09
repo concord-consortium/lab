@@ -1,12 +1,11 @@
 {
   "type": "solar-system",
-  "minX": -35,
-  "minY": -25,
-  "maxX": 35,
-  "maxY": 25,
+  "minX": -2,
+  "minY": -2,
+  "maxX":  2,
+  "maxY":  2,
   "horizontalWrapping": false,
   "verticalWrapping": false,
-  "gravitationalField": 6.67e-8,
   "viewOptions": {
     "backgroundColor": "rgba(0,0,0,255)",
     "showClock": true,
@@ -31,7 +30,7 @@
   "bodies": {
     "x": [
         0,
-       20
+      1.0
     ],
     "y": [
         0,
@@ -43,15 +42,14 @@
     ],
     "vy": [
       0,
-     -0.025
+      0.0172
     ],
     "mass": [
-      200000,
+      332946,
       1
     ],
     "radius": [
-      2,
-      1
+      0.1
     ]
   }
 }
