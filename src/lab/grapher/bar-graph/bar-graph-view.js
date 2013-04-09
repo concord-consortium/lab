@@ -94,6 +94,8 @@ define(function (require) {
           // Setup SVG element.
           this.vis
             .attr({
+              // Use some random width. At the end of rendering, it will be
+              // updated to a valid value in ems (based on the graph content).
               "width":  600,
               "height": this.svgHeight
             });
@@ -140,7 +142,7 @@ define(function (require) {
           // Setup background of the bar.
           this.fill
             .attr({
-              "width": options.width,
+              "width": options.barWidth,
               "height": this.heightScale(options.maxValue),
               "x": offset,
               "y": this.yScale(options.maxValue),
@@ -154,7 +156,7 @@ define(function (require) {
           // Setup the main bar.
           this.bar
             .attr({
-              "width": options.width,
+              "width": options.barWidth,
               "x": offset,
               "rx": "0.5em",
               "ry": "0.5em"

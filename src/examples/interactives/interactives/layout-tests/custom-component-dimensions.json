@@ -66,7 +66,7 @@
     {
       "type": "barGraph",
       "id": "bar-graph",
-      "width": "2em",
+      "barWidth": "2em",
       "height": "70%",
       "options": {
         "minValue": 0,
@@ -79,7 +79,7 @@
     {
       "type": "barGraph",
       "id": "bar-graph-2",
-      "width": "4em",
+      "barWidth": "4em",
       "height": "9em",
       "options": {
         "minValue": 0,

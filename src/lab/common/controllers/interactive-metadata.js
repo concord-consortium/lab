@@ -599,10 +599,14 @@ define(function() {
         // to the "secondProperty".
         conflictsWith: ["secondProperty"]
       },
-      width: {
+      barWidth: {
+        // Widht of the bar graph, WITHOUT
+        // labels, title and padding.
         defaultValue: "2em"
       },
       height: {
+        // Height of the bar graph container,
+        // including small padding.
         defaultValue: "100%"
       },
       options: {

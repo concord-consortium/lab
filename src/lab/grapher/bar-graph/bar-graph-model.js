@@ -17,9 +17,11 @@ define(function (require) {
           // Max value displayed.
           maxValue:  10,
 
-          // Dimensions of the bar graph (bar itself, labels, titles etc. are
+          // Width of the bar graph (bar itself, labels, titles etc. are
           // NOT included).
-          width:     "2em",
+          barWidth:     "2em",
+
+          // Height of the bar graph container (bar itself + small padding).
           height:    "20em",
 
           // Graph title.

@@ -106,7 +106,7 @@ define(function (require) {
         // the view container is already added to the document and
         // calculations of the size work correctly.
         barGraphModel.set({
-          width: component.width,
+          barWidth: component.barWidth,
           height: component.height
         });
         // Initial render...
@@ -122,10 +122,7 @@ define(function (require) {
 
       // Method required by layout module.
       resize: function () {
-        // Inform model about possible new dimensions (when $el dimensions
-        // are specified in % or em, they will probably change each time
-        // the interactive container is changed). It's important to do that,
-        // as various visual elements can be adjusted (font size, padding etc.).
+        // Just render bar graph again.
         barGraphView.render();
       },
 
