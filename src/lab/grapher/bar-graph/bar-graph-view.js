@@ -102,12 +102,12 @@ define(function (require) {
 
           // Setup Y scale.
           this.yScale
-            .domain([options.minValue, options.maxValue])
+            .domain([options.min, options.max])
             .range([this.svgHeight - paddingTop, paddingBottom]);
 
           // Setup scale used to translation of the bar height.
           this.heightScale
-            .domain([options.minValue, options.maxValue])
+            .domain([options.min, options.max])
             .range([0, this.svgHeight - paddingTop - paddingBottom]);
 
           // Render elements from left to right.
@@ -144,9 +144,9 @@ define(function (require) {
           this.fill
             .attr({
               "width": options.barWidth,
-              "height": this.heightScale(options.maxValue),
+              "height": this.heightScale(options.max),
               "x": offset,
-              "y": this.yScale(options.maxValue),
+              "y": this.yScale(options.max),
               "rx": "0.5em",
               "ry": "0.5em"
             })

@@ -591,6 +591,52 @@ define(function() {
         // averaged value.
         conflictsWith: ["averagePeriod"]
       },
+      min: {
+        // Min value displayed.
+        defaultValue: 0
+      },
+      max: {
+        // Max value displayed.
+        defaultValue: 10
+      },
+      title: {
+        // Graph title.
+        defaultValue: ""
+      },
+      ticks: {
+        // Number of labels displayed on the left side of the graph.
+        // This value is *only* a suggestion. The most clean
+        // and human-readable values are used.
+        // You can also specify value-label pairs, e.g.:
+        // [
+        //   {
+        //     "value": 0,
+        //     "label": "low"
+        //   },
+        //   {
+        //     "value": 10,
+        //     "label": "high"
+        //   }
+        // ]
+        defaultValue: 10
+      },
+      gridLines: {
+        // Number of grid lines displayed on the bar.
+        // This value is *only* a suggestion, it's similar to 'ticks'.
+        defaultValue: 10
+      },
+      displayLabels: {
+        // Enables or disables displaying of numerical labels.
+        defaultValue: true
+      },
+      labelFormat: {
+        // Format of labels.
+        // See the specification of this format:
+        // https://github.com/mbostock/d3/wiki/Formatting#wiki-d3_format
+        // or:
+        // http://docs.python.org/release/3.1.3/library/string.html#formatspec
+        defaultValue: "0.1f"
+      },
       averagePeriod: {
         // Setting this property to some numeric value
         // enables displaying of the averaged property.
@@ -609,35 +655,13 @@ define(function() {
         // including small padding.
         defaultValue: "100%"
       },
-      options: {
-        defaultValue: {
-          // Min value displayed.
-          minValue:  0,
-          // Max value displayed.
-          maxValue:  10,
-          // Graph title.
-          title:     "",
-          // Color of the main bar.
-          barColor:  "#e23c34",
-          // Color of the area behind the bar.
-          fillColor: "#fff",
-          // Color of axis, labels, title.
-          textColor: "#555",
-          // Number of ticks displayed on the axis.
-          // This value is *only* a suggestion. The most clean
-          // and human-readable values are used.
-          ticks:          10,
-          // Number of subdivisions between major ticks.
-          tickSubdivide: 1,
-          // Enables or disables displaying of numerical labels.
-          displayLabels: true,
-          // Format of labels.
-          // See the specification of this format:
-          // https://github.com/mbostock/d3/wiki/Formatting#wiki-d3_format
-          // or:
-          // http://docs.python.org/release/3.1.3/library/string.html#formatspec
-          labelFormat: "0.1f"
-        }
+      barColor: {
+        // Color of the main bar.
+        defaultValue:  "#e23c34"
+      },
+      fillColor: {
+        // Color of the area behind the bar.
+        defaultValue: "#fff"
       }
     }
   };

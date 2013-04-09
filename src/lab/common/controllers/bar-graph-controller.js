@@ -14,9 +14,9 @@ define(function (require) {
       // internal implementation detail (the bar graph options format).
       barGraphOptionForComponentSpecProperty = {
         // Min value displayed.
-        minValue:  'minValue',
+        min:  'min',
         // Max value displayed.
-        maxValue:  'maxValue',
+        max:  'max',
         // Graph title.
         title:     'title',
         // Color of the main bar.
@@ -80,7 +80,7 @@ define(function (require) {
     //
     // Validate component definition, use validated copy of the properties.
     component = validator.validateCompleteness(metadata.barGraph, component);
-    barGraphModel = new BarGraphModel(filterOptions(component.options));
+    barGraphModel = new BarGraphModel(filterOptions(component));
     barGraphView  = new BarGraphView({model: barGraphModel, id: component.id});
     // Each interactive component has to have class "component".
     barGraphView.$el.addClass("component");
@@ -129,8 +129,6 @@ define(function (require) {
       // Returns serialized component definition.
       serialize: function () {
         var result = $.extend(true, {}, component);
-        // Update options.
-        result.options = filterOptions(barGraphModel.toJSON());
         // Return updated definition.
         return result;
       }

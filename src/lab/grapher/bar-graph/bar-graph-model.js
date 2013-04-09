@@ -13,9 +13,9 @@ define(function (require) {
           // null means that it shouldn't be displayed at all.
           secondValue: null,
           // Min value displayed.
-          minValue:  0,
+          min:  0,
           // Max value displayed.
-          maxValue:  10,
+          max:  10,
 
           // Width of the bar graph (bar itself, labels, titles etc. are
           // NOT included).
