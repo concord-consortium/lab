@@ -30,7 +30,8 @@ ISImporter.fixed = function(d, n) {
 // Returns true if the argument is a string that represents a valid, finite number (or is a valid, finite number)
 function isNumeric(val) {
   // see http://stackoverflow.com/questions/18082/validate-numbers-in-javascript-isnumeric/1830844#1830844
-  return !isNaN(parseFloat(val)) && isFinite(val);
+  // AU 2013-04-09: modified so that strings with numbers and trailing characters still get interpreted as numbers
+  return !isNaN(parseFloat(val)) && isFinite(parseFloat(val));
 }
 
 // Hmm.
