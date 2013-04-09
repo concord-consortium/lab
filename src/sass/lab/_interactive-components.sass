@@ -301,7 +301,7 @@ button.component
     font-family: $fontface, Verdana, Geneva, sans-serif
     font-size: 1em
     height: 100%
-    padding-top: 0.4em
+    padding-top: 0.35em
     width: 2.7em
     margin: 0
     text-align: center
@@ -335,28 +335,30 @@ button.component
 
     // Style clock display.
     .time-display
+      font-size: 0.85em
       display: none
     &.with-clock
-      width: 5.8em
+      width: 6.4em
       white-space: nowrap
       .time-display
         display: inline-block
-        font-size: 0.7em
         text-align: right
+        vertical-align: middle
         width: 5em
         color: #939598
         background: #e6e7e8
         font-weight: bold
         border: 1px solid #bbb
         border-bottom-color: #ccc
-        padding: 0.2em
-        margin-left: 0.7em
+        padding: 0.1em 0.2em 0.1em 0
+        margin-left: 0.4em
         border-radius: 0.5em
 
   i
     // Icons.
     color: #939598
-    font-size: 0.9em
+    font-size: 1em
+    vertical-align: middle
 
   .spacer
     vertical-align: middle
