@@ -68,12 +68,10 @@
       "id": "bar-graph",
       "barWidth": "2em",
       "height": "70%",
-      "options": {
-        "minValue": 0,
-        "maxValue": 5000,
-        "barColor": "#F42",
-        "title": "Bar Graph (2em x 70%)"
-      },
+      "min": 0,
+      "max": 5000,
+      "barColor": "#F42",
+      "title": "Bar Graph (2em x 70%)",
       "property": "targetTemperature"
     },
     {
@@ -81,14 +79,12 @@
       "id": "bar-graph-2",
       "barWidth": "4em",
       "height": "9em",
-      "options": {
-        "minValue": 0,
-        "maxValue": 5000,
-        "barColor": "#F42",
-        "ticks": 5,
-        "gridLines": 5,
-        "title": "(4em x 9em)"
-      },
+      "min": 0,
+      "max": 5000,
+      "barColor": "#F42",
+      "ticks": 5,
+      "gridLines": 5,
+      "title": "(4em x 9em)",
       "property": "targetTemperature"
     },
     {
