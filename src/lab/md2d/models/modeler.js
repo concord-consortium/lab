@@ -864,7 +864,9 @@ define(function(require) {
 
     model.seek = function(location) {
       if (!arguments.length) { location = 0; }
-      stopped = true;
+      if (!model.is_stopped()) {
+        model.stop();
+      }
       newStep = false;
       runAndDispatchObjectNumberChanges(function() {
         tickHistory.seekExtract(location);
@@ -876,7 +878,9 @@ define(function(require) {
 
     model.stepBack = function(num) {
       if (!arguments.length) { num = 1; }
-      stopped = true;
+      if (!model.is_stopped()) {
+        model.stop();
+      }
       newStep = false;
       runAndDispatchObjectNumberChanges(function() {
         var i, index;
@@ -894,7 +898,9 @@ define(function(require) {
 
     model.stepForward = function(num) {
       if (!arguments.length) { num = 1; }
-      stopped = true;
+      if (!model.is_stopped()) {
+        model.stop();
+      }
       runAndDispatchObjectNumberChanges(function() {
         var i, index, size;
         i=-1; while(++i < num) {
