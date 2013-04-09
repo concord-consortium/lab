@@ -28,8 +28,6 @@ define(function (require) {
           barColor:  "#e23c34",
           // Color of the area behind the bar.
           fillColor: "white",
-          // Color of axis, labels, title.
-          textColor: "#555",
           // Number of ticks displayed on the axis.
           // This value is *only* a suggestion. The most clean
           // and human-readable values are used.

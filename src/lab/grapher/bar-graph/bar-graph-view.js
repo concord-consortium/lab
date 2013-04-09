@@ -4,21 +4,9 @@ define(function (require) {
   // Dependencies.
   var Backbone  = require('backbone'),
 
-      VIEW = {
-        padding: {
-          top:    7,
-          bottom: 7
-        }
-      },
-
       // Get real width SVG of element using bounding box.
       getRealWidth = function (d3selection) {
         return d3selection.node().getBBox().width;
-      },
-
-      // Get real height SVG of element using bounding box.
-      getRealHeight = function (d3selection) {
-        return d3selection.node().getBBox().height;
       },
 
       // Bar graph scales itself according to the font size.
@@ -67,7 +55,7 @@ define(function (require) {
           this.gridContainer = this.vis.append("g");
           this.trianglePos = this.vis.append("g");
           this.traingle = this.trianglePos.append("polygon");
-          this.title = this.vis.append("text");
+          this.title = this.vis.append("text").attr("class", "title");
 
           this.yScale = d3.scale.linear();
           this.heightScale = d3.scale.linear();
@@ -91,24 +79,23 @@ define(function (require) {
               fontSize   = parseFloat(this.$el.css("font-size")),
               // Scale function.
               scale      = getScaleFunc(fontSize),
+              renderLabels  = options.displayLabels && (options.ticks > 0 || options.ticks.length > 0),
               // Basic padding (scaled).
-              paddingTop    = scale(VIEW.padding.top),
-              paddingBottom = scale(VIEW.padding.bottom),
+              paddingTop    = renderLabels ? scale(8) : scale(3),
+              paddingBottom = renderLabels ? scale(8) : scale(3),
+
               offset = 0;
 
           this.scale = scale;
 
           this.$el.outerHeight(options.height);
-          this.svgHeight = this.$el.innerHeight();
+          this.svgHeight = this.$el.height();
 
           // Setup SVG element.
           this.vis
             .attr({
               "width":  600,
               "height": this.svgHeight
-            })
-            .style({
-              "font-size": "1em"
             });
 
           // Setup Y scale.
@@ -124,7 +111,7 @@ define(function (require) {
           // Render elements from left to right.
 
           this.axisContainer.selectAll("*").remove();
-            if (options.ticks > 0 && options.displayLabels) {
+          if (renderLabels) {
             // Setup Y axis.
             this.yAxis
               .scale(this.yScale)
@@ -146,16 +133,8 @@ define(function (require) {
             this.axisContainer
               .call(this.yAxis);
 
-            // Style Y axis labels.
-            this.axisContainer.selectAll("text")
-              .style({
-                "fill": options.textColor,
-                "stroke": "none",
-                "font-size": "0.7em"
-            });
-
             // Note that this *have* to be done after all styling to get correct width of bounding box!
-            offset += getRealWidth(this.axisContainer) + scale(7);
+            offset += getRealWidth(this.axisContainer) + scale(3);
           }
 
           // Setup background of the bar.
@@ -199,18 +178,10 @@ define(function (require) {
 
           // Setup title.
           if (options.title) {
-            this.title
-              .text(options.title)
-              .style({
-                "font-size": "1em",
-                "text-anchor": "middle",
-                "fill": options.textColor
-              });
+            offset += scale(10);
 
-            offset += scale(7);
-
-            this.title
-              .attr("transform", "translate(" + offset + ", " + this.svgHeight / 2 + ") rotate(90)");
+            this.title.text(options.title);
+            this.title.attr("transform", "translate(" + offset + ", " + this.svgHeight / 2 + ") rotate(90)");
 
             offset += parseFloat($(this.title.node()).css("font-size"));
           }
