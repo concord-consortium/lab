@@ -117,6 +117,7 @@ define(function (require) {
             // Setup Y axis.
             this.yAxis
               .scale(this.yScale)
+              .tickValues(null)
               .tickPadding(0)
               .tickSize(0, 0, 0)
               .orient("right");
