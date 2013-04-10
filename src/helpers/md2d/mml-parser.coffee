@@ -390,6 +390,7 @@ parseMML = (mmlString) ->
           imageHostIndex: imageHostIndex,
           imageHostType: imageHostType
           imageLayer: imageLayer
+          imageLayerPosition: imageLayerPosition
           imageX: imageX
           imageY: imageY
         },
@@ -409,10 +410,11 @@ parseMML = (mmlString) ->
         imageHostType = $image.find("[property=hostType] string").text()
         imageHostType = imageHostType.slice(imageHostType.lastIndexOf(".")+1)
         imageLayer = parseInt $image.find("[property=layer] int").text()
+        imageLayerPosition = parseInt $image.find("[property=layerPosition] byte").text()
         imageX = parseFloat $image.find("[property=x] double").text()
         imageY = parseFloat $image.find("[property=y] double").text()
         [imageX, imageY] = toNextgenCoordinates imageX, imageY
-        images.push {imageUri: imageUri, imageHostIndex: imageHostIndex, imageHostType: imageHostType, imageLayer: imageLayer, imageX: imageX, imageY: imageY }
+        images.push {imageUri: imageUri, imageHostIndex: imageHostIndex, imageHostType: imageHostType, imageLayer: imageLayer, imageLayerPosition: imageLayerPosition, imageX: imageX, imageY: imageY }
 
     ###
       Text boxes. TODO: factor out pattern common to MML parsing of images and text boxes
