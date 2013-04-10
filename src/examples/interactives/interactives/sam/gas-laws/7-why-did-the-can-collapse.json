@@ -89,13 +89,13 @@
     {
       "type": "text",
       "id": "purple-label",
-      "text": "Purple Atoms",
+      "text": "Purple Molecules",
       "width": "6em"
     },
     {
       "type": "text",
       "id": "yellow-label",
-      "text": "Yellow Atoms",
+      "text": "Yellow Molecules",
       "width": "6em"
     },
     {
