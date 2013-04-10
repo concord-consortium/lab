@@ -1,0 +1,102 @@
+{
+  "title": "Earth in orbit",
+  "publicationStatus": "draft",
+  "subtitle": "Simple model of the Sun and Earth.",
+  "about": "",
+  "models": [
+    {
+      "id": "earth",
+      "type": "solar-system",
+      "url": "models/solar-system/earth.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name":  "earthOrbitalDistance",
+      "label": "Orbital Distance",
+      "units": "length",
+      "value": [
+          "var e = getBodyProperties(1);",
+          "return Math.sqrt(e.x * e.x + e.y * e.y)"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "numericOutput",
+      "id": "earth-distance-output",
+      "property": "earthOrbitalDistance",
+      "displayValue": "return format('1.4r')(value)"
+    },
+    {
+      "type": "checkbox",
+      "id": "trace-button",
+      "text": "Trace Earth",
+      "initialValue": false,
+      "onClick": [
+        "if (value) {",
+        "  traceBody(1);",
+        "} else {",
+        "  untraceBody();",
+        "}"
+      ]
+    },
+    {
+      "type": "graph",
+      "id": "orbit-distance-graph",
+      "title": "Earth's Orbital Distance",
+      "xlabel": "Day",
+      "ylabel": "Distance (AU)",
+      "ymin": 0.9,
+      "ymax": 1.1,
+      "xmax": 750,
+      "yTickCount": 5,
+      "xTickCount": 5,
+      "xFormatter": "3r",
+      "yFormatter": "3r",
+      "properties": [
+        "earthOrbitalDistance"
+      ]
+    }
+  ],
+  "layout": {
+    "right-upper": [
+      "trace-button",
+      "earth-distance-output"
+    ],
+    "right-lower": [
+      "orbit-distance-graph"
+    ]
+  },
+  "template": [
+    {
+      "id": "right-upper",
+      "top": "model.top",
+      "left": "model.right",
+      "height": "model.height * 0.2",
+      "padding-left": "1em",
+      "padding-right": "0.5em",
+      "padding-bottom": "0.5em",
+      "width": "model.width * 1.0",
+      "min-width": "model.width * 0.8"
+    },
+    {
+      "id": "right-lower",
+      "left": "model.right",
+      "top": "right-upper.bottom",
+      "height": "model.height * 0.8",
+      "padding-left": "1em",
+      "padding-right": "0.5em",
+      "width": "model.width * 1.0",
+      "min-width": "model.width * 0.8"
+    },
+    {
+      "id": "bottom",
+      "left": "model.left",
+      "top": "model.bottom"
+    }
+  ]
+}
