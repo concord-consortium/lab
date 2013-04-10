@@ -110,12 +110,14 @@ define(function (require) {
           // Setup Y scale.
           this.yScale
             .domain([options.min, options.max])
-            .range([this.svgHeight - paddingTop, paddingBottom]);
+            .range([this.svgHeight - paddingTop, paddingBottom])
+            .clamp(true);
 
           // Setup scale used to translation of the bar height.
           this.heightScale
             .domain([options.min, options.max])
-            .range([0, this.svgHeight - paddingTop - paddingBottom]);
+            .range([0, this.svgHeight - paddingTop - paddingBottom])
+            .clamp(true);
 
           // Render elements from left to right.
 
