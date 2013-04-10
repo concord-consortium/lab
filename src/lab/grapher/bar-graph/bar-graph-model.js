@@ -30,14 +30,24 @@ define(function (require) {
           barColor:  "#e23c34",
           // Color of the area behind the bar.
           fillColor: "white",
-          // Number of ticks displayed on the axis.
+          // Number of labels displayed on the left side of the graph.
           // This value is *only* a suggestion. The most clean
           // and human-readable values are used.
-          ticks:          10,
+          // You can also specify value-label pairs, e.g.:
+          // [
+          //   {
+          //     "value": 0,
+          //     "label": "low"
+          //   },
+          //   {
+          //     "value": 10,
+          //     "label": "high"
+          //   }
+          // ]
+          // Use 0 or null to disable labels completely.
+          labels:          10,
           // Number of grid lines displayed on the bar.
           gridLines:      10,
-          // Enables or disables displaying of numerical labels.
-          displayLabels: true,
           // Format of labels.
           // See the specification of this format:
           // https://github.com/mbostock/d3/wiki/Formatting#wiki-d3_format

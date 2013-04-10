@@ -79,7 +79,7 @@ define(function (require) {
               fontSize   = parseFloat(this.$el.css("font-size")),
               // Scale function.
               scale      = getScaleFunc(fontSize),
-              renderLabels  = options.displayLabels && (options.ticks > 0 || options.ticks.length > 0),
+              renderLabels  = options.labels > 0 || options.labels.length > 0,
               // Basic padding (scaled).
               paddingTop    = renderLabels ? scale(8) : scale(3),
               paddingBottom = renderLabels ? scale(8) : scale(3),
@@ -122,14 +122,14 @@ define(function (require) {
               .tickSize(0, 0, 0)
               .orient("right");
 
-            if (typeof options.ticks === "number") {
+            if (typeof options.labels === "number") {
               // Just normal tics.
               this.yAxis
-                .ticks(options.ticks)
+                .ticks(options.labels)
                 .tickFormat(d3.format(options.labelFormat));
             } else {
               // Array with value - label pairs.
-              setupValueLabelPairs(this.yAxis, options.ticks);
+              setupValueLabelPairs(this.yAxis, options.labels);
             }
 
             // Create and append Y axis.

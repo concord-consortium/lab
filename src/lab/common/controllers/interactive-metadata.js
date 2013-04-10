@@ -603,7 +603,7 @@ define(function() {
         // Graph title.
         defaultValue: ""
       },
-      ticks: {
+      labels: {
         // Number of labels displayed on the left side of the graph.
         // This value is *only* a suggestion. The most clean
         // and human-readable values are used.
@@ -618,16 +618,13 @@ define(function() {
         //     "label": "high"
         //   }
         // ]
+        // Use 0 or null to disable labels completely.
         defaultValue: 10
       },
       gridLines: {
         // Number of grid lines displayed on the bar.
         // This value is *only* a suggestion, it's similar to 'ticks'.
         defaultValue: 10
-      },
-      displayLabels: {
-        // Enables or disables displaying of numerical labels.
-        defaultValue: true
       },
       labelFormat: {
         // Format of labels.

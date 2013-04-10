@@ -40,8 +40,7 @@
       "id": "bar-graph-1",
       "min": 0,
       "max": 1,
-      "displayLabels": false,
-      "ticks": 0,
+      "labels": 0,
       "property": "atom0Ke",
       "averagePeriod": 2500
     },

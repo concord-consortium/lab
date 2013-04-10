@@ -82,7 +82,7 @@
       "min": 0,
       "max": 5000,
       "barColor": "#F42",
-      "ticks": 5,
+      "labels": 5,
       "gridLines": 5,
       "title": "(4em x 9em)",
       "property": "targetTemperature"

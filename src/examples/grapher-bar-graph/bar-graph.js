@@ -16,19 +16,19 @@ $(function () {
           "maxValue": 7e+5,
           "barColor": "orange",
           "title": "Scientific notation",
-          "ticks": 7,
+          "labels": 7,
           "labelFormat": "0.2e"
         },
         "small-size": {
           "value": 8,
           "width": "1.5em",
           "height": "10em",
-          "ticks": 5,
+          "labels": 5,
           "title": "Small size"
         },
         "value-label pairs": {
           "value": 5,
-          "ticks": [
+          "labels": [
             {
               "value": 0,
               "label": "low"
