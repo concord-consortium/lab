@@ -373,12 +373,22 @@ define(function (require) {
     }
 
     function longestNumber(array, formatter, precision) {
-      var longest;
+      var longest = 0,
+          index = 0,
+          str,
+          len,
+          i;
       precision = precision || 5;
-      longest = array.reduce(function(number1, number2) {
-        return formatter(+number1.toPrecision(precision)).length > formatter(+number2.toPrecision(precision)).length ? number1 : number2;
-      }, 0);
-      return formatter(longest);
+      for (i = 0; i < array.length; i++) {
+        str = formatter(array[i].toPrecision(precision));
+        str = str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+        len = str.length;
+        if (len > longest) {
+          longest = len;
+          index = i;
+        }
+      }
+      return formatter(array[index]);
     }
 
     // Update the x-scale.
