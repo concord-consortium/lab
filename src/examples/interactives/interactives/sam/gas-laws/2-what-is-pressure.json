@@ -6,11 +6,10 @@
     "Gases have no definite shape or volume. When they are constrained to a container,",
     "we can measure the pressure they exert on the container walls.",
     "",
-    "The model shows the inside (yellow atoms) and outside (pink atoms) of a balloon.",
-    "The green barrier represents the wall of the balloon.",
+    "The model shows the inside (yellow atoms) and outside (green atoms) of a balloon.",
+    "The teal barrier represents the wall of the balloon.",
     "",
-    "Add atoms to the balloon (the number of atoms in the balloon is shown on the slider).",
-    "What happens to the balloon wall when atoms are added?"
+    "Add atoms to the balloon. Watch what happens."
   ],
   "models": [
     {
