@@ -31,13 +31,13 @@
       "onChange":[
         "switch(value) {",
         "  case 1:",
-        "  setBodyProperties(1, { x: 1.014323809329035E+00, y: -1.744524342744261E-05, vx: -1.189895102119632E-07, vy: -1.691965746118235E-02});",
+        "  setBodyProperties(1, { x: 1.014323809329035E+00, y: -1.744524342744261E-05, vx: -1.189895102119632E-07, vy: 1.691965746118235E-02});",
         "  break;",
         "  case 2:",
-        "  setBodyProperties(1, { x: 1.0, y: 0.0, vx: 0.0, vy: -0.0172 });",
+        "  setBodyProperties(1, { x: 1.0, y: 0.0, vx: 0.0, vy: 0.0172 });",
         "  break;",
         "  case 3:",
-        "  setBodyProperties(1, { x: 1.75, y: 0.0, vx: 0.0, vy: -0.009 });",
+        "  setBodyProperties(1, { x: 1.75, y: 0.0, vx: 0.0, vy: 0.009 });",
         "  break;",
         "}"
       ],
