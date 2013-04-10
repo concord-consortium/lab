@@ -312,7 +312,7 @@ define(function (require) {
 
           Math: Math,
 
-          // Rrevent us from overwriting window.undefined.
+          // Prevent us from overwriting window.undefined.
           "undefined": undefined,
 
           // Rudimentary debugging functionality. Use Lab alert helper function.
