@@ -1,8 +1,8 @@
 {
-  "title": "Diffusion Across a Semipermeable Membranes",
+  "title": "Diffusion Across Semipermeable Membranes",
   "publicationStatus": "public",
   "subtitle": "How does pore size affect the diffusion of different molecules?",
-  "about": "Biological membranes are selectively permeable; some molecules can cross while others cannot. One way to affect this is through pore size. Change the pore size with the slider to change the permeability of the membrane to the different types of molecules. Trace an individual molecule to see the path it takes.",
+  "about": "Biological membranes are selectively permeable; some molecules can cross while others cannot. One way to affect this is through pore size. Change the pore size with the slider to change the permeability of the membranes to the different types of molecules. Trace an individual molecule to see the path it takes.",
   "models": [
     {
       "id": "model1",
