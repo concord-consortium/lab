@@ -63,6 +63,23 @@ define(function (require) {
           return values;
         }
 
+        /* Send a tracking event to Google Analytics */
+        function trackEvent(category, action, label) {
+          var googleAnalytics;
+
+          if (typeof _gaq === 'undefined'){
+            // console.error("Google Analytics not defined, Can not send trackEvent");
+            return;
+          }
+          googleAnalytics = _gaq;
+          if (!category) {
+            category = "Interactive";
+          }
+          // console.log("Sending a track page event Google Analytics (category:action:label):");
+          // console.log("(" + category + ":"  + action + ":" + label + ")");
+          googleAnalytics.push(['_trackEvent', category, action, label]);
+        }
+
         return {
 
           isInteger: isInteger,
@@ -75,7 +92,11 @@ define(function (require) {
           deg2rad: Math.PI/180,
           rad2deg: 180/Math.PI,
 
+          trackEvent: trackEvent,
+
           format: d3.format,
+
+
 
           get: function get() {
             return model.get.apply(model, arguments);
@@ -224,7 +245,7 @@ define(function (require) {
 
           start: function start() {
             model.start();
-            this.trackEvent('Interactive', "Start", "Starting interactive: " + interactivesController.get('title') );
+            trackEvent('Interactive', "Start", "Starting interactive: " + interactivesController.get('title') );
           },
 
           stop: function stop() {
@@ -291,23 +312,6 @@ define(function (require) {
             if (!dgExport)
               throw new Error("No exports have been specified.");
             dgExport.exportData();
-          },
-
-          /* Send a tracking event to Google Analytics */
-          trackEvent: function trackEvent(category, action, label) {
-            var googleAnalytics;
-
-            if (typeof _gaq === 'undefined'){
-              // console.error("Google Analytics not defined, Can not send trackEvent");
-              return;
-            }
-            googleAnalytics = _gaq;
-            if (!category) {
-              category = "Interactive";
-            }
-            // console.log("Sending a track page event Google Analytics (category:action:label):");
-            // console.log("(" + category + ":"  + action + ":" + label + ")");
-            googleAnalytics.push(['_trackEvent', category, action, label]);
           },
 
           Math: Math,
