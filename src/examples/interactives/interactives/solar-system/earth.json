@@ -10,13 +10,16 @@
       "url": "models/solar-system/earth.json",
       "viewOptions": {
         "controlButtons": "play_reset_step"
-      }
+      },
+      "onLoad": [
+        "traceBody(1);"
+      ]
     }
   ],
   "outputs": [
     {
       "name":  "earthOrbitalDistance",
-      "label": "Orbital Distance",
+      "label": "Current orbital distance",
       "units": "length",
       "value": [
           "var e = getBodyProperties(1);",
@@ -53,21 +56,9 @@
       "displayValue": "return format('1.3r')(value)"
     },
     {
-      "type": "checkbox",
-      "id": "trace-button",
-      "text": "Trace Earth",
-      "initialValue": false,
-      "onClick": [
-        "if (value) {",
-        "  traceBody(1);",
-        "} else {",
-        "  untraceBody();",
-        "}"
-      ]
-    },
-    {
       "type": "radio",
       "id": "orbit-shape-buttons",
+      "label": "Select orbit",
       "orientation": "horizontal",
       "property": "orbitShape",
       "options": [
@@ -88,12 +79,12 @@
     {
       "type": "graph",
       "id": "orbit-distance-graph",
-      "title": "Earth's Orbital Distance",
+      "title": "Orbital Distance",
       "xlabel": "Day",
       "ylabel": "Distance (AU)",
       "ymin": 0.0,
       "ymax": 2.0,
-      "xmax": 750,
+      "xmax": 1200,
       "yTickCount": 5,
       "xTickCount": 5,
       "xFormatter": "3r",
@@ -105,12 +96,13 @@
   ],
   "layout": {
     "right-upper": [
-      [ "trace-button" ],
-      [ "earth-distance-output" ],
-      [ "orbit-shape-buttons" ]
+      "orbit-shape-buttons"
+    ],
+    "right-middle": [
+      "orbit-distance-graph"
     ],
     "right-lower": [
-      "orbit-distance-graph"
+      "earth-distance-output"
     ]
   },
   "template": [
@@ -118,19 +110,29 @@
       "id": "right-upper",
       "top": "model.top",
       "left": "model.right",
-      "height": "model.height * 0.3",
-      "padding-left": "1em",
+      "height": "model.height * 0.15",
+      "padding-left": "3em",
       "padding-right": "0.5em",
       "padding-bottom": "0.5em",
       "width": "model.width * 1.0",
       "min-width": "model.width * 0.8"
     },
     {
-      "id": "right-lower",
+      "id": "right-middle",
       "left": "model.right",
       "top": "right-upper.bottom",
       "height": "model.height * 0.7",
       "padding-left": "1em",
+      "padding-right": "0.5em",
+      "width": "model.width * 1.0",
+      "min-width": "model.width * 0.8"
+    },
+    {
+      "id": "right-lower",
+      "left": "model.right",
+      "top": "right-middle.bottom",
+      "height": "model.height * 0.1",
+      "padding-left": "3em",
       "padding-right": "0.5em",
       "width": "model.width * 1.0",
       "min-width": "model.width * 0.8"
