@@ -1,10 +1,11 @@
 {
   "type": "solar-system",
+  "timeStep": 0.041666666666666664,
+  "timeStepsPerTick": 240,
   "minX": -2,
   "minY": -2,
   "maxX":  2,
   "maxY":  2,
-  "timeStepsPerTick": 200,
   "horizontalWrapping": false,
   "verticalWrapping": false,
   "gravitationalField": 6.67e-8,
