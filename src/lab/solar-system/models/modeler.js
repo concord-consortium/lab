@@ -922,7 +922,16 @@ define(function(require) {
       return model;
     };
 
-    model.set = function(hash) {
+    model.set = function(key, val) {
+      var hash;
+      if (arguments.length === 1) {
+        // Hash of options provided.
+        hash = key;
+      } else {
+        // Key - value pair provied.
+        hash = {};
+        hash[key] = val;
+      }
       // Perform validation in case of setting main properties or
       // model view properties. Attempts to set immutable or read-only
       // properties will be caught.
