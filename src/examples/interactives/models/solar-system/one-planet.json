@@ -1,5 +1,7 @@
 {
   "type": "solar-system",
+  "timeStep": 0.041666666666666664,
+  "timeStepsPerTick": 24,
   "minX": -2,
   "minY": -2,
   "maxX":  2,
