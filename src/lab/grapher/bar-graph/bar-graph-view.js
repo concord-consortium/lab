@@ -127,7 +127,7 @@ define(function (require) {
               .tickValues(null)
               .tickPadding(0)
               .tickSize(0, 0, 0)
-              .orient("right");
+              .orient("left");
 
             if (typeof options.labels === "number") {
               // Just normal tics.
@@ -142,8 +142,11 @@ define(function (require) {
             // Create and append Y axis.
             this.axisContainer.call(this.yAxis);
 
-            // Note that this *have* to be done after all styling to get correct width of bounding box!
-            offset += getRealWidth(this.axisContainer) + scale(3);
+            offset += getRealWidth(this.axisContainer);
+
+            this.axisContainer.attr("transform", "translate(" + offset + ")");
+
+            offset += scale(5);
           }
 
           // Setup background of the bar.
