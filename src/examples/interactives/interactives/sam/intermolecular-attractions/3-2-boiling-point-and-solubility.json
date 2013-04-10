@@ -34,6 +34,7 @@
       "id": "thermometer",
       "property": "temperature",
       "units": true,
+      "labelFormat": "3r",
       "min": 0,
       "max": 700
     }
