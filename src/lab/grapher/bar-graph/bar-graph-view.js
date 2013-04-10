@@ -77,7 +77,6 @@ define(function (require) {
           this.heightScale = d3.scale.linear();
           this.yAxis = d3.svg.axis();
 
-          this.scale = null;
           this.barWidth = null;
 
           // Register callbacks!
@@ -102,8 +101,7 @@ define(function (require) {
 
               offset = 0;
 
-          this.scale = scale;
-
+          // Set height of the most outer container.
           this.$el.outerHeight(options.height);
           this.svgHeight = this.$el.height();
 
@@ -218,17 +216,11 @@ define(function (require) {
         // Updates only bar height.
         update: function () {
           var value       = this.model.get("value"),
-              secondValue = this.model.get("secondValue"),
-              gridThreshold = value * 0.95;
+              secondValue = this.model.get("secondValue");
 
           this.bar
             .attr("height", this.heightScale(value))
             .attr("y", this.yScale(value));
-
-          this.grid
-            .style("opacity", function (d) {
-              return d < gridThreshold ? 0.7 : 0;
-            });
 
           if (typeof secondValue !== 'undefined' && secondValue !== null) {
             this.traingle.classed("hidden", false);
@@ -333,7 +325,6 @@ define(function (require) {
 
         _setupGrid: function (offset) {
           var gridLines = this.yScale.ticks(this.model.get("gridLines")),
-              scale = this.scale,
               yScale = this.yScale,
               width = this.barWidth;
 
@@ -343,12 +334,8 @@ define(function (require) {
 
           this.grid.enter().append("path").attr("class", "grid-line");
           this.grid.exit().remove();
-          this.grid.attr({
-            "d": function (d) {
-              return "M " + offset + " " + Math.round(yScale(d)) + " h " + width;
-            },
-            "stroke-width": Math.round(scale(1)),
-            "stroke": "#fff"
+          this.grid.attr("d", function (d) {
+            return "M " + offset + " " + Math.round(yScale(d)) + " h " + width;
           });
         }
       });
