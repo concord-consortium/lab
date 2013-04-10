@@ -87,7 +87,8 @@
         "    break;",
         "  }",
         "  break;",
-        "}"
+        "}",
+        "stop();"
       ],
       "initialValue": 1
     },
