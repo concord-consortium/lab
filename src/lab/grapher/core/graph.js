@@ -380,7 +380,7 @@ define(function (require) {
           i;
       precision = precision || 5;
       for (i = 0; i < array.length; i++) {
-        str = formatter(array[i].toPrecision(precision));
+        str = formatter(+array[i].toPrecision(precision));
         str = str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
         len = str.length;
         if (len > longest) {
