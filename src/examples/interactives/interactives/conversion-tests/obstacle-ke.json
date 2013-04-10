@@ -34,8 +34,11 @@
       "property": "targetTemperature"
     },
     {
-      "type": "thermometer",
+      "type": "barGraph",
       "id": "thermometer",
+      "property": "temperature",
+      "title": "Thermometer",
+      "labels": 0,
       "min": 0,
       "max": 80000
     }

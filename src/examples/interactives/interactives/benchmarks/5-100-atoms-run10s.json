@@ -93,17 +93,12 @@
       "action": "set({ targetTemperature: value });"
     },
     {
-      "type": "thermometer",
+      "type": "barGraph",
       "id": "thermometer",
+      "property": "temperature",
+      "units": true,
       "min": 0,
-      "max": 5000,
-      "labelIsReading": true,
-      "reading": {
-        "units": "K",
-        "offset": 0,
-        "scale": 1,
-        "digits": 0
-      }
+      "max": 5000
     }
   ],
   "layout": {

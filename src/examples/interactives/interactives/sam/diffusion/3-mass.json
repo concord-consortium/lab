@@ -185,11 +185,13 @@
       "property": "selectedTemperature"
     },
     {
-      "type": "thermometer",
+      "type": "barGraph",
       "id": "thermometer",
+      "property": "temperature",
+      "title": "Thermometer",
+      "labels": 0,
       "min": 0,
-      "max": 3000,
-      "width": "1.5em"
+      "max": 2500
     },
     {
       "type": "numericOutput",

@@ -67,17 +67,11 @@
       "action": "set({ targetTemperature: value });"
     },
     {
-      "type": "thermometer",
+      "type": "barGraph",
       "id": "thermometer",
-      "min": -70,
-      "max": 500,
-      "labelIsReading": true,
-      "reading": {
-        "units": "C",
-        "offset": -65,
-        "scale": 0.1,
-        "digits": 0
-      },
+      "property": "targetTemperature",
+      "min": 0,
+      "max": 4500,
       "labels": [
         {
           "value": 650,

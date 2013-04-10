@@ -51,17 +51,13 @@
       "action": "adjustTemperature(1.1); limitHighTemperature(25000);"
     },
     {
-      "type": "thermometer",
+      "type": "barGraph",
       "id": "thermometer",
+      "property": "temperature",
+      "title": "Thermometer",
+      "labels": 0,
       "min": 0,
-      "max": 25000,
-      "labelIsReading": false,
-      "reading": {
-        "units": "K",
-        "offset": 200,
-        "scale": 0.1,
-        "digits": 0
-      }
+      "max": 25000
     }
   ],
   "layout": {
