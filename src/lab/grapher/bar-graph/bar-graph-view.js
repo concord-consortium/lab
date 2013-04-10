@@ -4,6 +4,12 @@ define(function (require) {
   // Dependencies.
   var Backbone  = require('backbone'),
 
+      uid = 0,
+      // Returns unique ID used by the bar graph view.
+      getUID = function () {
+        return uid++;
+      },
+
       // Get real width SVG of element using bounding box.
       getRealWidth = function (d3selection) {
         return d3selection.node().getBBox().width;
@@ -52,6 +58,9 @@ define(function (require) {
         className: "bar-graph",
 
         initialize: function () {
+          // Unique ID. Required to generate unique
+          // gradient names.
+          this.uid = getUID();
           // Create all SVG elements ONLY in this function.
           // Avoid recreation of SVG elements while rendering.
           this.vis = d3.select(this.el).append("svg");
@@ -161,7 +170,7 @@ define(function (require) {
               "rx": "0.5em",
               "ry": "0.5em"
             })
-            .style({
+            .attr({
               "fill": this._getFillGradient(options.fillColor)
             });
 
@@ -264,7 +273,7 @@ define(function (require) {
         },
 
         _getBarGradient: function (color) {
-          var id = "bar-gradient",
+          var id = "bar-gradient-" + this.uid,
               gradient = this.defs.select("#" + id);
 
           color = d3.rgb(color);
@@ -292,7 +301,7 @@ define(function (require) {
         },
 
         _getFillGradient: function (color) {
-          var id = "fill-gradient",
+          var id = "fill-gradient-" + this.uid,
               gradient = this.defs.select("#" + id);
 
           if (gradient.empty()) {
