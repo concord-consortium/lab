@@ -715,12 +715,12 @@ define(function (require) {
 
     function drawImageAttachment() {
       var img = [],
-          img_height,
-          img_width,
-          coords,
           imglayer,
           container,
-          i;
+          i,
+          positionOrder,
+          positionOrderTop = [],
+          positionOrderBelow = [];
 
       imageContainerTop.selectAll("image").remove();
       imageContainerBelow.selectAll("image").remove();
@@ -733,30 +733,30 @@ define(function (require) {
         img[i].src = getImagePath(imageProp[i]) + (needCachebusting ? "?"+Math.random() : "");
         img[i].onload = (function(i) {
           return function() {
-            imageContainerTop.selectAll("image.image_attach"+i).remove();
-            imageContainerBelow.selectAll("image.image_attach"+i).remove();
-
-            // Cache the image width and height.
+            imglayer = imageProp[i].imageLayer;
+            positionOrder = imglayer === 1 ? positionOrderTop : positionOrderBelow;
+            positionOrder.push({
+              i: i, 
+              zOrder: (!!imageProp[i].imageLayerPosition) ? imageProp[i].imageLayerPosition : 0
+            });
+            positionOrder.sort(function(a,b){return d3.ascending(a["zOrder"],b["zOrder"])});
             // In Classic MW model size is defined in 0.1A.
             // Model unit (0.1A) - pixel ratio is always 1. The same applies
             // to images. We can assume that their pixel dimensions are
             // in 0.1A also. So convert them to nm (* 0.01).
             imageSizes[i] = [0.01 * img[i].width, 0.01 * img[i].height];
-            img_width = modelSize2px(imageSizes[i][0]);
-            img_height = modelSize2px(imageSizes[i][1]);
-
-            coords = getImageCoords(i);
-
-            imglayer = imageProp[i].imageLayer;
             container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
-            container.append("image")
-              .attr("x", coords[0])
-              .attr("y", coords[1])
-              .attr("class", "image_attach"+i+" draggable")
-              .attr("xlink:href", img[i].src)
-              .attr("width", img_width)
-              .attr("height", img_height)
-              .attr("pointer-events", "none");
+            container.selectAll("image").remove();
+            container.selectAll("image")
+              .data(positionOrder, function(d){ return d["i"] })
+              .enter().append("image")
+                .attr("x", function(d){ return getImageCoords(d["i"])[0] } )
+                .attr("y", function(d){ return getImageCoords(d["i"])[1] } )
+                .attr("class", function(d){ return "image_attach" + d["i"] + " draggable"})
+                .attr("xlink:href", function(d){ return img[d["i"]].src})
+                .attr("width", function(d){return modelSize2px( imageSizes[d["i"]][0] )})
+                .attr("height", function(d){return modelSize2px( imageSizes[d["i"]][1] )})
+                .attr("pointer-events", "none");
           };
         })(i);
       }
