@@ -619,7 +619,13 @@ define(function() {
         //   }
         // ]
         // Use 0 or null to disable labels completely.
-        defaultValue: 10
+        defaultValue: 5
+      },
+      units: {
+        // Units displayed next to labels. Set it to 'true' to use units
+        // automatically retrieved from property description. Set it to any
+        // string to use custom unit symbol.
+        defaultValue: false
       },
       gridLines: {
         // Number of grid lines displayed on the bar.

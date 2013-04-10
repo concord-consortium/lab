@@ -46,6 +46,8 @@ define(function (require) {
           // ]
           // Use 0 or null to disable labels completely.
           labels:          10,
+          // Units symbol displayed next to labels.
+          units: "",
           // Number of grid lines displayed on the bar.
           gridLines:      10,
           // Format of labels.

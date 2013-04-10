@@ -47,7 +47,11 @@ define(function (require) {
         // https://github.com/mbostock/d3/wiki/Formatting#wiki-d3_format
         // or:
         // http://docs.python.org/release/3.1.3/library/string.html#formatspec
-        labelFormat: 'labelFormat'
+        labelFormat: 'labelFormat',
+        // Units displayed next to labels. Set it to 'true' to use units
+        // automatically retrieved from property description. Set it to any
+        // string to use custom unit symbol.
+        units: 'units'
       },
 
       // Limit options only to these supported.
@@ -100,6 +104,9 @@ define(function (require) {
     controller = {
       // This callback should be trigger when model is loaded.
       modelLoadedCallback: function () {
+        var units = "";
+
+        // Register properties listeners.
         model.addPropertiesListener([property], update);
         if (typeof component.averagePeriod !== 'undefined' && component.averagePeriod !== null) {
           // This option is for authors convenience. It causes that filtered
@@ -111,13 +118,23 @@ define(function (require) {
         if (secondProperty) {
           model.addPropertiesListener([secondProperty], updateSecondProperty);
         }
+        // Retrieve and set units if they are enabled.
+        if (component.units === true) {
+          // Units automatically retrieved from property description.
+          units = model.getPropertyDescription(property).getUnitAbbreviation();
+        } else if (component.units) {
+          // Units defined in JSON definition explicitly.
+          units = component.units;
+        }
         // Apply custom width and height settings.
         // Do it in modelLoadedCallback, as during its execution,
         // the view container is already added to the document and
         // calculations of the size work correctly.
+        // Also, pass calculated unit type.
         barGraphModel.set({
           barWidth: component.barWidth,
-          height: component.height
+          height: component.height,
+          units: units
         });
         // Initial render...
         barGraphView.render();

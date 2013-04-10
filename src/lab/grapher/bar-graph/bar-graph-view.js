@@ -38,6 +38,13 @@ define(function (require) {
           });
       },
 
+      getFormatFunc = function (formatString, unitsString) {
+        var format = d3.format(formatString);
+        return function (value) {
+          return format(value) + " " + unitsString;
+        };
+      },
+
       BarGraphView = Backbone.View.extend({
         // Container is a DIV.
         tagName: "div",
@@ -126,15 +133,14 @@ define(function (require) {
               // Just normal tics.
               this.yAxis
                 .ticks(options.labels)
-                .tickFormat(d3.format(options.labelFormat));
+                .tickFormat(getFormatFunc(options.labelFormat, options.units));
             } else {
               // Array with value - label pairs.
               setupValueLabelPairs(this.yAxis, options.labels);
             }
 
             // Create and append Y axis.
-            this.axisContainer
-              .call(this.yAxis);
+            this.axisContainer.call(this.yAxis);
 
             // Note that this *have* to be done after all styling to get correct width of bounding box!
             offset += getRealWidth(this.axisContainer) + scale(3);
