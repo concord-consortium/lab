@@ -24,12 +24,33 @@
       ]
     }
   ],
+  "parameters": [
+    {
+      "name": "orbitShape",
+      "label": "Orbit Shape",
+      "onChange":[
+        "switch(value) {",
+        "  case 1:",
+        "  setBodyProperties(1, { x: 1.014323809329035E+00, y: -1.744524342744261E-05, vx: -1.189895102119632E-07, vy: -1.691965746118235E-02});",
+        "  break;",
+        "  case 2:",
+        "  setBodyProperties(1, { x: 1.0, y: 0.0, vx: 0.0, vy: -0.0172 });",
+        "  break;",
+        "  case 3:",
+        "  setBodyProperties(1, { x: 1.75, y: 0.0, vx: 0.0, vy: -0.009 });",
+        "  break;",
+        "}"
+      ],
+      "initialValue": 1
+    }
+  ],
   "components": [
     {
       "type": "numericOutput",
       "id": "earth-distance-output",
       "property": "earthOrbitalDistance",
-      "displayValue": "return format('1.4r')(value)"
+      "width": "16em",
+      "displayValue": "return format('1.3r')(value)"
     },
     {
       "type": "checkbox",
@@ -45,13 +66,33 @@
       ]
     },
     {
+      "type": "radio",
+      "id": "orbit-shape-buttons",
+      "orientation": "horizontal",
+      "property": "orbitShape",
+      "options": [
+        {
+          "text": "Earth",
+          "value": 1
+        },
+        {
+          "text": "Circular",
+          "value": 2
+        },
+        {
+          "text": "Oblique",
+          "value": 3
+        }
+      ]
+    },
+    {
       "type": "graph",
       "id": "orbit-distance-graph",
       "title": "Earth's Orbital Distance",
       "xlabel": "Day",
       "ylabel": "Distance (AU)",
-      "ymin": 0.9,
-      "ymax": 1.1,
+      "ymin": 0.0,
+      "ymax": 2.0,
       "xmax": 750,
       "yTickCount": 5,
       "xTickCount": 5,
@@ -64,8 +105,9 @@
   ],
   "layout": {
     "right-upper": [
-      "trace-button",
-      "earth-distance-output"
+      [ "trace-button" ],
+      [ "earth-distance-output" ],
+      [ "orbit-shape-buttons" ]
     ],
     "right-lower": [
       "orbit-distance-graph"
@@ -76,7 +118,7 @@
       "id": "right-upper",
       "top": "model.top",
       "left": "model.right",
-      "height": "model.height * 0.2",
+      "height": "model.height * 0.3",
       "padding-left": "1em",
       "padding-right": "0.5em",
       "padding-bottom": "0.5em",
@@ -87,7 +129,7 @@
       "id": "right-lower",
       "left": "model.right",
       "top": "right-upper.bottom",
-      "height": "model.height * 0.8",
+      "height": "model.height * 0.7",
       "padding-left": "1em",
       "padding-right": "0.5em",
       "width": "model.width * 1.0",
