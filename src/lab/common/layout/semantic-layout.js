@@ -116,40 +116,6 @@ define(function (require) {
       $("#responsive-content").css("font-size", font + "em");
     }
 
-    // Calculate width for containers which doesn't explicitly specify its width.
-    // In such case, width is determined by the content, no reflow will be allowed.
-    function setMinDimensions() {
-      var maxMinWidth, $container, i, len;
-
-      function setRowMinWidth() {
-        var minWidth = 0;
-        // $(this) refers to one row.
-        $(this).children().each(function () {
-          // $(this) refers to element in row.
-          minWidth += $(this).outerWidth(true);
-        });
-        $(this).css("min-width", Math.ceil(minWidth));
-        if (minWidth > maxMinWidth) {
-          maxMinWidth = minWidth;
-        }
-      }
-
-      for (i = 0, len = containerSpecList.length; i < len; i++) {
-        $container = $containerByID[containerSpecList[i].id];
-        if (containerSpecList[i].width === undefined) {
-          // Set min-width only for containers, which DO NOT specify
-          // "width" explicitly in their definitions.
-          maxMinWidth = -Infinity;
-          $container.css("min-width", 0);
-          $container.children().each(setRowMinWidth);
-          $container.css("min-width", maxMinWidth);
-        }
-        if (containerSpecList[i]["min-width"] !== undefined) {
-          $container.css("min-width", containerSpecList[i]["min-width"]);
-        }
-      }
-    }
-
     function setupBackground() {
       var colors = layoutConfig.containerColors,
           id, i, len;
@@ -180,6 +146,13 @@ define(function (require) {
           "z-index": "1"
         });
 
+        if (container.width === undefined) {
+          // Disable wrapping of elements in a container, which
+          // doesn't define explicit width. It's required to calculate
+          // layout correctly.
+          $containerByID[id].css("white-space", "nowrap");
+        }
+
         for (prop in container) {
           if (!container.hasOwnProperty(prop)) continue;
           // Add any padding-* properties directly to the container's style.
@@ -189,6 +162,9 @@ define(function (require) {
           // Support also "align" property.
           else if (prop === "align") {
             $containerByID[id].css("text-align", container[prop]);
+          }
+          else if (prop === "min-width") {
+            $containerByID[id].css("min-width", container[prop]);
           }
           else if (prop === "fontScale") {
             $containerByID[id].css("font-size", container[prop] + "em");
@@ -477,7 +453,6 @@ define(function (require) {
 
       // Set font size to ensure that "fontScale" and "canonicalFontSize" are taken into account.
       setFontSize();
-      setMinDimensions();
 
       positionContainers();
       while (--redraws > 0 && !resizeModelContainer()) {
@@ -599,19 +574,14 @@ define(function (require) {
         // 0. Set font size of the interactive-container based on its size.
         setFontSize();
 
-        // 1. Calculate dimensions of containers which don't specify explicitly define it.
-        //    It's necessary to do it each time, as when size of the container is changed,
-        //    also size of the components can be changed (e.g. due to new font size).
-        setMinDimensions();
-
-        // 2. Calculate optimal layout.
+        // 1. Calculate optimal layout.
         positionContainers();
         while (--redraws > 0 && !resizeModelContainer()) {
           positionContainers();
         }
         console.log('[layout] update: ' + (layoutConfig.iterationsLimit - redraws) + ' iterations');
 
-        // 3. Notify components that their containers have new sizes.
+        // 2. Notify components that their containers have new sizes.
         modelController.resize();
         for (id in componentByID) {
           if (componentByID.hasOwnProperty(id) && componentByID[id].resize !== undefined) {
@@ -619,7 +589,7 @@ define(function (require) {
           }
         }
 
-        // 4. Set / remove colors of containers depending on the value of Lab.config.authoring
+        // 3. Set / remove colors of containers depending on the value of Lab.config.authoring
         setupBackground();
 
         console.timeEnd('[layout] update');
