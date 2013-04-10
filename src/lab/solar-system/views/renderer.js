@@ -234,7 +234,7 @@ define(function (require) {
     }
 
     function astromonicalBodyMouseDown(d, i) {
-      containers.node.focus();
+      modelView.node.focus();
       if (model.get("enableBodyTooltips")) {
         if (astromonicalBodyTooltipOn !== false) {
           astromonicalBodyDiv.style("opacity", 1e-6);
