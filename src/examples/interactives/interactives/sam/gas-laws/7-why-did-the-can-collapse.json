@@ -246,6 +246,7 @@
       "top": "3em",
       "right": "model.left",
       "align": "center",
+      "width": "7em",
       "fontScale": 0.8
     },
     {
@@ -253,6 +254,7 @@
       "top": "3em",
       "left": "model.right",
       "align": "center",
+      "width": "7em",
       "fontScale": 0.8
     },
     {
