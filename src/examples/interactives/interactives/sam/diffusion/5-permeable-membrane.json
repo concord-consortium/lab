@@ -16,7 +16,7 @@
         }
       },
       "onLoad": [
-        "onPropertyChange('time', function(t) {",
+        "callEvery(get('timeStep')*get('timeStepsPerTick'), function(t) {",
         "  var w = get('width'), h = get('height');",
         "  var nLeftO2   = atomsWithinRect(0,   0, w/2, h, 0).length;",
         "  var nLeftCO2  = atomsWithinRect(0,   0, w/2, h, 1).length;",
@@ -93,61 +93,51 @@
     { "name": "rightConcentrationO2", "initialValue": 0 }
   ],
   "components": [
-    { "type": "text", "id": "inside-label", "text": "Conc.", "width": "6em" },
-    { "type": "text", "id": "outside-label", "text": "Conc.", "width": "6em" },
-    { "type": "text", "id": "inside-co2-label", "text": "CO2", "width": "3em" },
-    { "type": "text", "id": "inside-o2-label", "text": "O2", "width": "3em" },
-    { "type": "text", "id": "outside-co2-label", "text": "CO2", "width": "3em" },
-    { "type": "text", "id": "outside-o2-label", "text": "O2", "width": "3em" },
     { "type": "text", "id": "inside-above-label", "text": "Inside Cell" },
     { "type": "text", "id": "outside-above-label", "text": "Outside Cell" },
     {
       "type": "barGraph",
       "id": "left-concentration-CO2",
       "fontScale": 0.5,
-      "height": "15em",
       "min": 0,
       "max": 1,
       "labels": 0,
       "barColor": "rgb(143,113,178)",
       "fillColor": "rgb(225,243,253)",
-      "title": "",
+      "title": "CO2",
       "property": "leftConcentrationCO2"
     },
     {
       "type": "barGraph",
       "id": "left-concentration-O2",
-      "height": "15em",
       "min": 0,
       "max": 1,
       "labels": 0,
       "barColor": "rgb(242,234,27)",
       "fillColor": "rgb(225,243,253)",
-      "title": "",
+      "title": "O2",
       "property": "leftConcentrationO2"
     },
     {
       "type": "barGraph",
       "id": "right-concentration-CO2",
-      "height": "15em",
       "min": 0,
       "max": 1,
       "labels": 0,
       "barColor": "rgb(143,113,178)",
       "fillColor": "rgb(243,222,223)",
-      "title": "",
+      "title": "CO2",
       "property": "rightConcentrationCO2"
     },
     {
       "type": "barGraph",
       "id": "right-concentration-O2",
-      "height": "15em",
       "min": 0,
       "max": 1,
       "labels": 0,
       "barColor": "rgb(242,234,27)",
       "fillColor": "rgb(243,222,223)",
-      "title": "",
+      "title": "O2",
       "property": "rightConcentrationO2"
     },
     {
@@ -240,15 +230,11 @@
     }
   ],
   "layout": {
-    "left":  [
-      ["outside-label"],
-      ["outside-o2-label","outside-co2-label"],
-      ["left-concentration-O2", "left-concentration-CO2"]
+    "left": [
+      "left-concentration-O2", "left-concentration-CO2"
     ],
     "right": [
-      ["inside-label"],
-      ["inside-o2-label","inside-co2-label"],
-      ["right-concentration-O2", "right-concentration-CO2"]
+      "right-concentration-O2", "right-concentration-CO2"
     ],
     "bottom-left":  [
       [ "select-left-concentration-o2" ],
@@ -285,7 +271,7 @@
       "left": "model.left",
       "bottom": "model.top",
       "width": "model.width/2",
-      "height": "4em",
+      "height": "2em",
       "align": "left"
     },
     {
@@ -293,20 +279,20 @@
       "right": "model.right",
       "bottom": "model.top",
       "width": "model.width/2",
-      "height": "4em",
+      "height": "2em",
       "align": "right"
     },
     {
       "id": "right",
       "left": "model.right",
-      "top": "above-right.top",
+      "top": "model.top",
       "height": "model.height",
       "align": "center"
     },
     {
       "id": "left",
       "right": "model.left",
-      "top": "above-left.top",
+      "top": "model.top",
       "height": "model.height",
       "align": "center"
     }

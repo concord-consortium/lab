@@ -486,7 +486,7 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1365197717000</long> 
+     <long>1365615734000</long> 
     </object> 
    </void> 
    <void method="put"> 
@@ -607,10 +607,29 @@ store 2 %countCOR;</string>
     <void index="0"> 
      <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
       <void property="URI"> 
+       <string>insideOutsideBkg.png</string> 
+      </void> 
+      <void property="layer"> 
+       <int>2</int> 
+      </void> 
+      <void property="x"> 
+       <double>1.0</double> 
+      </void> 
+      <void property="y"> 
+       <double>1.0</double> 
+      </void> 
+     </object> 
+    </void> 
+    <void index="1"> 
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
+      <void property="URI"> 
        <string>membraneNoPores.png</string> 
       </void> 
       <void property="layer"> 
        <int>1</int> 
+      </void> 
+      <void property="layerPosition"> 
+       <byte>1</byte> 
       </void> 
       <void property="x"> 
        <double>225.0</double> 
@@ -620,7 +639,7 @@ store 2 %countCOR;</string>
       </void> 
      </object> 
     </void> 
-    <void index="1"> 
+    <void index="2"> 
      <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
       <void property="URI"> 
        <string>oxygenCO2Key.png</string> 
@@ -629,32 +648,13 @@ store 2 %countCOR;</string>
        <int>1</int> 
       </void> 
       <void property="layerPosition"> 
-       <byte>1</byte> 
+       <byte>2</byte> 
       </void> 
       <void property="x"> 
        <double>159.0</double> 
       </void> 
       <void property="y"> 
        <double>215.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="2"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>insideOutsideBkg.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>2</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>2</byte> 
-      </void> 
-      <void property="x"> 
-       <double>1.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>1.0</double> 
       </void> 
      </object> 
     </void> 
