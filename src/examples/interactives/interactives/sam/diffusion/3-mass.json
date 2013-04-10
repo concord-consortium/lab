@@ -116,19 +116,19 @@
       "type": "pulldown",
       "id": "mass-pulldown",
       "property": "gasElementType",
-      "label": "Element Type",
+      "label": "Molecular Mass",
       "labelOn": "top",
       "options": [
         {
-          "text": "Lightest",
+          "text": "Low",
           "value": 0
         },
         {
-          "text": "Heavier",
+          "text": "Medium",
           "value": 2
         },
         {
-          "text": "Heaviest",
+          "text": "High",
           "value": 3
         }
       ]
