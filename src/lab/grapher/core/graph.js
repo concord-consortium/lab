@@ -7,7 +7,6 @@ define(function (require) {
         autoscale: "Show all data (autoscale)"
       };
 
-
   return function Graph(idOrElement, options, message, tabindex) {
     var api = {},   // Public API object to be returned.
         elem,
@@ -83,36 +82,87 @@ define(function (require) {
         sample,
 
         default_options = {
+          // Enables the button layer with: AutoScale ...
           showButtons:    true,
+
+          // Responsive Layout provides pregressive removal of
+          // graph elements when size gets smaller
           responsiveLayout: false,
+
+          // Font sizes for graphs are normally specified using ems.
+          // When fontScaleRelativeToParent is true
           fontScaleRelativeToParent: true,
+
+          // When the realTime is true data are expected to consist of
+          // an array (or arrays) of samples.
+          // In this case the sample setting should indicate the constant
+          // time interval between sample points
           realTime:       false,
+          sample:          1,
+
+          // title can be a string or an array of strings, if an
+          // array of strings each element is on a separate line.
           title:          "graph",
+
+          // The labels for the axes, these are separate from the numeric labels.
           xlabel:         "x-axis",
           ylabel:         "y-axis",
-          xscale:         'linear',
-          yscale:         'linear',
-          xTickCount:      10,
-          yTickCount:      10,
-          xscaleExponent:  0.5,
-          yscaleExponent:  0.5,
-          xFormatter:      "2s",
-          yFormatter:      "2s",
-          axisShift:       10,
+
+          // Initial extent of the X and Y axes.
           xmax:            10,
           xmin:            0,
           ymax:            10,
           ymin:            0,
+
+          // Approximate values for how many gridlines should appear on the axes.
+          xTickCount:      10,
+          yTickCount:      10,
+
+          // The formatter used to convert numbers into strings.
+          // see: https://github.com/mbostock/d3/wiki/Formatting#wiki-d3_format
+          xFormatter:      "2s",
+          yFormatter:      "2s",
+
+          // Scale type: options are:
+          //   linear: https://github.com/mbostock/d3/wiki/Quantitative-Scales#wiki-linear
+          //   log:    https://github.com/mbostock/d3/wiki/Quantitative-Scales#wiki-log
+          //   pow:    https://github.com/mbostock/d3/wiki/Quantitative-Scales#wiki-pow
+          xscale:         'linear',
+          yscale:         'linear',
+          // Used when scale type is set to "pow"
+          xscaleExponent:  0.5,
+          yscaleExponent:  0.5,
+
+          // How many samples over which a shift should take place when
+          // the data being plotted gets close to the edge of the X axis.
+          axisShift:       10,
+
           dataset:         [0],
-          selectablePoints: false,
-          circleRadius:    10.0,
-          strokeWidth:      2.0,
-          dataChange:      true,
-          addData:         true,
           points:          false,
+
+          // selectablePoints: false,
+
+          // if not false should indicate a radius size for circles to
+          // drawn around data points
+          circleRadius:    10.0,
+
+          // width of the line used for plotting
+          strokeWidth:      2.0,
+
+          // Enables vales of data points to be changes by selecting
+          // and draging.
+          dataChange:      true,
+
+          // Enables adding of data to a graph by option/alt clicking in the graph.
+          addData:         true,
+
+          // If not false should be a string which is rendered in background of graph.
           notification:    false,
-          sample:          1,
+
+          // if true lines are rendered in the realTime graph
           lines:           true,
+
+          // if true vertical bars are rendered in the realTime graph
           bars:            false
         },
 
