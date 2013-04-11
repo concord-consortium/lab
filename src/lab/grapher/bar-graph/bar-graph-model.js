@@ -28,6 +28,8 @@ define(function (require) {
           // of strings, e.g.:
           // ["Title", "Subtitle"]
           title: "",
+          // Accepted values are "right", "top" and "bottom".
+          titleOn: "right",
           // Color of the main bar.
           barColor:  "#e23c34",
           // Color of the area behind the bar.

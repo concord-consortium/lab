@@ -603,6 +603,11 @@ define(function() {
         // Graph title.
         defaultValue: ""
       },
+      titleOn: {
+        // Title position, accepted values are:
+        // "right", "top", "bottom"
+        defaultValue: "right"
+      },
       labels: {
         // Number of labels displayed on the left side of the graph.
         // This value is *only* a suggestion. The most clean

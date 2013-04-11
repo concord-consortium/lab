@@ -14,11 +14,13 @@ define(function (require) {
       // internal implementation detail (the bar graph options format).
       barGraphOptionForComponentSpecProperty = {
         // Min value displayed.
-        min:  'min',
+        min: 'min',
         // Max value displayed.
-        max:  'max',
+        max: 'max',
         // Graph title.
-        title:     'title',
+        title: 'title',
+        // Title position.
+        titleOn: 'titleOn',
         // Color of the main bar.
         barColor:  'barColor',
         // Color of the area behind the bar.
