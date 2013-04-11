@@ -1,7 +1,8 @@
 /*global define, d3, $ */
 
 define(function (require) {
-  // Dependencies.
+  //  Dependencies.
+      require('common/jquery-plugins');
   var Backbone  = require('backbone'),
 
       uid = 0,
@@ -201,7 +202,7 @@ define(function (require) {
           if (options.title) {
             offset += scale(10);
 
-            this.title.text(options.title);
+            this.title.text(this._processTitle(options.title));
             this.title.attr("transform", "translate(" + offset + ", " + this.svgHeight / 2 + ") rotate(90)");
 
             offset += parseFloat($(this.title.node()).css("font-size"));
@@ -337,6 +338,16 @@ define(function (require) {
           this.grid.attr("d", function (d) {
             return "M " + offset + " " + Math.round(yScale(d)) + " h " + width;
           });
+        },
+
+        _processTitle: function (title) {
+          var $title = $('<span class="title">' + title + '</span>').appendTo(this.$el),
+              truncatedText;
+
+          $title.truncate(this.svgHeight);
+          truncatedText = $title.text();
+          $title.remove();
+          return truncatedText;
         }
       });
 
