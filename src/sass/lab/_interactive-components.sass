@@ -35,6 +35,10 @@
 .component
   display: inline-block
   vertical-align: middle
+  // Important! Layout algorithm sometimes uses 'nowrap' value for containers
+  // to prevent unwanted component wrapping. Ensure that inside component,
+  // the default value is used.
+  white-space: normal
   margin: 0
   padding: 0
   -webkit-user-select: none
