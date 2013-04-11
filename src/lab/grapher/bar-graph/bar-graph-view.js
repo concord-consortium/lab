@@ -205,6 +205,14 @@ define(function (require) {
           // That ensures that the SVG will work well with semantic layout.
           this.vis.attr("width", (offset / fontSize) + "em");
 
+          // work-around bug on iPad2 where container is not expanding in width
+          // when SVG element rendered inside it
+          // see: Bar graph rendering issues on iPad
+          // https://www.pivotaltracker.com/story/show/47854951
+          // This means while we are duplicating the current padding styles set
+          // in _grapher.sass changes in desired style must be duplicated here.
+          this.$el.css("min-width", (offset / fontSize + 0.8) + "em");
+
           // Finally, update displayed values.
           this.update();
         },
