@@ -223,7 +223,7 @@ function selectDataHandler() {
       ymin:   -1.6,
       realTime: true,
       sample: sample,
-      circleRadius: false,
+      circleRadius: 3,
       strokeWidth: 5,
       dataChange: false,
       addData: false,

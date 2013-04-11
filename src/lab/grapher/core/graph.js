@@ -277,7 +277,7 @@ define(function (require) {
         xlabelMetrics = [fontSizeInPixels, fontSizeInPixels];
         ylabelMetrics = [fontSizeInPixels*2, fontSizeInPixels];
       } else {
-        xlabelMetrics = axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, 
+        xlabelMetrics = axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels,
           longestNumber(xScale.ticks(options.xTickCount), fx));
 
         ylabelMetrics = axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels,
@@ -849,29 +849,30 @@ define(function (require) {
       setCurrentSample(samplePoint);
       updateCanvas(currentSample);
 
-      // old code saved for reference:
+      var circle = vis.select("svg").selectAll("circle").data(points);
 
-      // if (graph.selectablePoints) {
-      //   var circle = vis.selectAll("circle")
-      //       .data(points, function(d) { return d; });
+      if (options.circleRadius && sizeType.value > 1) {
+        if (!(options.circleRadius <= 4 && sizeType.value < 3)) {
+          circle.enter().append("circle")
+              .attr("class", function(d) { return d === selected ? "selected" : null; })
+              .attr("cx",    function(d) { return xScale(d.x); })
+              .attr("cy",    function(d) { return yScale(d.y); })
+              .attr("r", options.circleRadius)
+              .style("stroke-width", strokeWidth)
+              .style("cursor", circleCursorStyle)
+              .on("mousedown.drag",  dataPointDrag)
+              .on("touchstart.drag", dataPointDrag);
 
-      //   circle.enter().append("circle")
-      //       .attr("class", function(d) { return d === selected ? "selected" : null; })
-      //       .attr("cx",    function(d) { return x(d.x); })
-      //       .attr("cy",    function(d) { return y(d.y); })
-      //       .attr("r", 1.0)
-      //       .on("mousedown", function(d) {
-      //         selected = dragged = d;
-      //         update();
-      //       });
+          circle
+              .attr("class", function(d) { return d === selected ? "selected" : null; })
+              .attr("cx",    function(d) { return xScale(d.x); })
+              .attr("cy",    function(d) { return yScale(d.y); })
+              .attr("r", options.circleRadius)
+              .style("stroke-width", strokeWidth);
+        }
+      }
 
-      //   circle
-      //       .attr("class", function(d) { return d === selected ? "selected" : null; })
-      //       .attr("cx",    function(d) { return x(d.x); })
-      //       .attr("cy",    function(d) { return y(d.y); });
-
-      //   circle.exit().remove();
-      // }
+      circle.exit().remove();
 
       if (d3.event && d3.event.keyCode) {
         d3.event.preventDefault();
