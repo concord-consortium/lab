@@ -343,7 +343,8 @@ define(function (require) {
               // or array of strings.
           var title = this.model.get("title"),
               self  = this,
-              isArray, lines, titleSelection;
+              isArray, lines,
+              titleG, gEnter;
 
           if (title) {
             offset += this.scale(10);
@@ -351,15 +352,20 @@ define(function (require) {
             isArray = $.isArray(title);
             lines = isArray ? title.length : 1;
 
-            titleSelection = this.titleContainer.selectAll(".title").data(isArray ? title : [title]);
+            titleG = this.titleContainer.selectAll(".title").data(isArray ? title : [title]);
 
-            titleSelection.enter().append("text").attr("class", "title");
-            titleSelection.exit().remove();
-            titleSelection.text(function (d) {
-              return self._processTitle(d);
-            });
-            titleSelection.attr("dy", function (d, i) {
-              return -(lines - i -1) + "em";
+            titleG.exit().remove();
+
+            gEnter = titleG.enter().append("g").attr("class", "title");
+            gEnter.append("title");
+            gEnter.append("text");
+
+            titleG.each(function (d, i) {
+              var g = d3.select(this);
+              g.select("title").text(d);
+              g.select("text")
+                .text(self._processTitle(d))
+                .attr("dy", -(lines - i -1) + "em");
             });
 
             // Transform whole container.
@@ -367,7 +373,7 @@ define(function (require) {
               "translate(" + offset + ", " + this.svgHeight / 2 + ") rotate(90)");
 
             // Update offset.
-            offset += parseFloat($(titleSelection.node()).css("font-size")) * lines;
+            offset += parseFloat($(titleG.node()).css("font-size")) * lines;
           }
 
           return offset;
