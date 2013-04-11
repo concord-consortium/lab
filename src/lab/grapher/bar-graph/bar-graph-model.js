@@ -13,19 +13,21 @@ define(function (require) {
           // null means that it shouldn't be displayed at all.
           secondValue: null,
           // Min value displayed.
-          min:  0,
+          min: 0,
           // Max value displayed.
-          max:  10,
+          max: 10,
 
           // Width of the bar graph (bar itself, labels, titles etc. are
           // NOT included).
-          barWidth:     "2em",
+          barWidth: "2em",
 
           // Height of the bar graph container (bar itself + small padding).
-          height:    "20em",
+          height: "20em",
 
-          // Graph title.
-          title:     "",
+          // Graph title. You can also specify multiline title using array
+          // of strings, e.g.:
+          // ["Title", "Subtitle"]
+          title: "",
           // Color of the main bar.
           barColor:  "#e23c34",
           // Color of the area behind the bar.

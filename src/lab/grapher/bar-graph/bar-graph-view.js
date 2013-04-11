@@ -62,8 +62,8 @@ define(function (require) {
           // Unique ID. Required to generate unique
           // gradient names.
           this.uid = getUID();
-          // Create all SVG elements ONLY in this function.
-          // Avoid recreation of SVG elements while rendering.
+          // Create some SVG elements, which are constant and doesn't need to
+          // be recreated each time during rendering.
           this.vis = d3.select(this.el).append("svg");
           this.defs = this.vis.append("defs");
           this.axisContainer = this.vis.append("g");
@@ -72,12 +72,13 @@ define(function (require) {
           this.gridContainer = this.vis.append("g");
           this.trianglePos = this.vis.append("g");
           this.traingle = this.trianglePos.append("polygon");
-          this.title = this.vis.append("text").attr("class", "title");
+          this.titleContainer = this.vis.append("g");
 
           this.yScale = d3.scale.linear();
           this.heightScale = d3.scale.linear();
           this.yAxis = d3.svg.axis();
 
+          this.scale = null;
           this.barWidth = null;
 
           // Register callbacks!
@@ -91,14 +92,14 @@ define(function (require) {
               // property1 = model.get("property1");
               // property2 = model.get("property2");
               // etc.
-          var options    = this.model.toJSON(),
-              fontSize   = parseFloat(this.$el.css("font-size")),
+          var options            = this.model.toJSON(),
+              fontSize           = parseFloat(this.$el.css("font-size")),
               // Scale function.
-              scale      = getScaleFunc(fontSize),
-              renderLabels  = options.labels > 0 || options.labels.length > 0,
+              scale = this.scale = getScaleFunc(fontSize),
+              renderLabels       = options.labels > 0 || options.labels.length > 0,
               // Basic padding (scaled).
-              paddingTop    = renderLabels ? scale(8) : scale(3),
-              paddingBottom = renderLabels ? scale(8) : scale(3),
+              paddingTop         = renderLabels ? scale(8) : scale(3),
+              paddingBottom      = renderLabels ? scale(8) : scale(3),
 
               offset = 0;
 
@@ -198,19 +199,13 @@ define(function (require) {
 
           offset += this.barWidth;
 
-          // Setup title.
-          if (options.title) {
-            offset += scale(10);
+          offset = this._setupTitle(offset);
 
-            this.title.text(this._processTitle(options.title));
-            this.title.attr("transform", "translate(" + offset + ", " + this.svgHeight / 2 + ") rotate(90)");
-
-            offset += parseFloat($(this.title.node()).css("font-size"));
-          }
-
+          // Convert final width in px into value in ems.
+          // That ensures that the SVG will work well with semantic layout.
           this.vis.attr("width", (offset / fontSize) + "em");
 
-          // Finally, update values display.
+          // Finally, update displayed values.
           this.update();
         },
 
@@ -338,6 +333,44 @@ define(function (require) {
           this.grid.attr("d", function (d) {
             return "M " + offset + " " + Math.round(yScale(d)) + " h " + width;
           });
+
+          return offset;
+        },
+
+        // Setup title.
+        _setupTitle: function (offset) {
+              // "title" option is expected to be string
+              // or array of strings.
+          var title = this.model.get("title"),
+              self  = this,
+              isArray, lines, titleSelection;
+
+          if (title) {
+            offset += this.scale(10);
+
+            isArray = $.isArray(title);
+            lines = isArray ? title.length : 1;
+
+            titleSelection = this.titleContainer.selectAll(".title").data(isArray ? title : [title]);
+
+            titleSelection.enter().append("text").attr("class", "title");
+            titleSelection.exit().remove();
+            titleSelection.text(function (d) {
+              return self._processTitle(d);
+            });
+            titleSelection.attr("dy", function (d, i) {
+              return -(lines - i -1) + "em";
+            });
+
+            // Transform whole container.
+            this.titleContainer.attr("transform",
+              "translate(" + offset + ", " + this.svgHeight / 2 + ") rotate(90)");
+
+            // Update offset.
+            offset += parseFloat($(titleSelection.node()).css("font-size")) * lines;
+          }
+
+          return offset;
         },
 
         _processTitle: function (title) {
