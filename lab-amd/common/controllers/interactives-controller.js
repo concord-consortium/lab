@@ -271,8 +271,11 @@ define(function (require) {
     // ------------------------------------------------------------
 
     function setupModelPlayerKeyboardHandler() {
+      // Deregister previous keydown handlers. Use namespaces so the code
+      // will not inadvertently remove event handlers attached by other code.
+      $interactiveContainer.off('keydown.interactiveController');
       if (modelController && modelController.enableKeyboardHandlers()) {
-        $interactiveContainer.keydown(function(event) {
+        $interactiveContainer.on('keydown.interactiveController', function(event) {
           var keycode = event.keycode || event.which;
           switch(keycode) {
             case 13:                 // return

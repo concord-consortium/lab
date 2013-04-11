@@ -1,0 +1,57 @@
+{
+  "type": "solar-system",
+  "timeStep": 0.041666666666666664,
+  "timeStepsPerTick": 24,
+  "minX": -2.0,
+  "minY": -2.0,
+  "maxX":  2.0,
+  "maxY":  2.0,
+  "horizontalWrapping": false,
+  "verticalWrapping": false,
+  "viewOptions": {
+    "backgroundColor": "rgba(0,0,0,255)",
+    "showClock": true,
+    "images": [
+      {
+        "imageUri": "star.png",
+        "imageHostIndex": 0,
+        "imageHostType": "Body",
+        "imageLayer": 3,
+        "imageX": 1.745,
+        "imageY": 1.86
+      }
+    ],
+    "imageMapping": {},
+    "textBoxes": [],
+    "xunits": true,
+    "yunits": true,
+    "controlButtons": "play",
+    "gridLines": true,
+    "enableKeyboardHandlers": true
+  },
+  "bodies": {
+    "x": [
+        0,
+        1.014323809329035E+00
+    ],
+    "y": [
+        0,
+       -1.744524342744261E-05
+    ],
+    "vx": [
+      0,
+      -1.189895102119632E-07
+    ],
+    "vy": [
+      0,
+      1.691965746118235E-02
+    ],
+    "mass": [
+      332946,
+      1
+    ],
+    "radius": [
+      0.1
+    ]
+  }
+}

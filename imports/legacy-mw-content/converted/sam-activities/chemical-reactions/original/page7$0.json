@@ -50,6 +50,7 @@
         "imageHostIndex": 0,
         "imageHostType": "",
         "imageLayer": 1,
+        "imageLayerPosition": 2,
         "imageX": 0.09,
         "imageY": 0.33
       }

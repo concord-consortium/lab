@@ -7,36 +7,36 @@ TODO
 
   add selection functionality to grapher
 
-    0. selection_domain([x1, x2])
+    0. selectionDomain([x1, x2])
       [] is empty set, no selection?
       null is everything
       allow Infinity, -Infinity?
 
-    1. selection_visible(true)
+    1. selectionVisible(true)
       presumably the default behavior will be to have user selection enabled
 
-    2. selection_domain()
+    2. selectionDomain()
       get the selection domain once changed
 
-    3. selection_listener(function)
+    3. selectionListener(function)
       get callbacks with selection, or clear the listener if null
 
-    4. selection_listener()
+    4. selectionListener()
       find out the listener
 
-    5. selection_enabled(false)
+    5. selectionEnabled(false)
       the key is to figure out how to turn it off while it's still visible
 
-    6. selection_visible(false)
+    6. selectionVisible(false)
       remember to also disable user selection
 
-       selection_visible()
+       selectionVisible()
          get value
 
-    7. selection_enabled(true)
+    7. selectionEnabled(true)
       key here is to turn it back on after it's bbeen disabled
 
-    8. selection_enabled()
+    8. selectionEnabled()
         get value
 
 
@@ -99,11 +99,11 @@ functionality to graft onto grapher
 
   getter/setters:
 
-  selection_domain([x1, x2])
-  selection_listener(callback)
+  selectionDomain([x1, x2])
+  selectionListener(callback)
     callback signature = function([x1, x2])
-  selection_enabled(boolean)
-  selection_visible(boolean)
+  selectionEnabled(boolean)
+  selectionVisible(boolean)
 
   what the graph should do:
 

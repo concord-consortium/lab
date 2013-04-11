@@ -4,14 +4,14 @@ define(function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "d623c37886b37b4f7d1b90c6412d233418b8a039",
-        "short_sha":      "d623c378",
-        "url":            "https://github.com/concord-consortium/lab/commit/d623c378",
+        "sha":           "fc3bf0816fc408ca1f6ee1681e71a18d929aa6f2",
+        "short_sha":      "fc3bf081",
+        "url":            "https://github.com/concord-consortium/lab/commit/fc3bf081",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-04-06 04:00:33 -0400",
-        "short_message": "Revert &quot;canvas zIndex needs to be 2 so realtime graphs show the data lines&quot;",
-        "message":       "Revert &quot;canvas zIndex needs to be 2 so realtime graphs show the data lines&quot;\n\nThis reverts commit c9c7c678ad126c181b685cb0012c853e0859a041.\n\nThe canvas has to be under the SVG plot rect so the plot rect\ncan catch pointer-events in IE9 and IE10.\n\nThe plot rect needs to be transparent to be able to see the\nplotted lines in the Canvas element."
+        "date":          "2013-04-11 10:14:23 -0400",
+        "short_message": "bar-graph: work around ipad2 container-width bug",
+        "message":       "bar-graph: work around ipad2 container-width bug\n\n[#47854951]"
       },
       "dirty": false
     }

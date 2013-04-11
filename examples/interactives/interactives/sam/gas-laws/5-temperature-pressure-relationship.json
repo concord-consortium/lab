@@ -66,11 +66,9 @@
     {
       "type": "barGraph",
       "id": "bar-graph",
-      "options": {
-        "minValue": 0,
-        "maxValue": 0.8,
-        "title": "Pressure (Bar)"
-      },
+      "min": 0,
+      "max": 0.8,
+      "title": "Pressure (Bar)",
       "property": "pressureProbeFiltered"
     }
   ],

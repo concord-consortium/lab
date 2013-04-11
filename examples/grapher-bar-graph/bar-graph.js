@@ -14,24 +14,21 @@ $(function () {
           "value": 5e+5,
           "minValue": 0,
           "maxValue": 7e+5,
-          "width": 200,
-          "height": 500,
           "barColor": "orange",
-          "fillColor": "gold",
           "title": "Scientific notation",
-          "ticks": 7,
-          "tickSubdivide": 5,
+          "labels": 7,
           "labelFormat": "0.2e"
         },
         "small-size": {
           "value": 8,
-          "width": 75,
-          "height": 150,
+          "width": "1.5em",
+          "height": "10em",
+          "labels": 5,
           "title": "Small size"
         },
         "value-label pairs": {
           "value": 5,
-          "ticks": [
+          "labels": [
             {
               "value": 0,
               "label": "low"

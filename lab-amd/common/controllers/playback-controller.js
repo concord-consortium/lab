@@ -22,18 +22,20 @@ define(function (require) {
     /** @private */
     this._modelStopped = true;
     /** @private */
+    this._showClock = true;
+    /** @private */
     this._timeUnits = "";
     /** @private */
-    this._$reset = $('<button class="reset"><i class="icon-step-backward"></i></button>').appendTo(this.$element);
+    this._$reset = $('<a class="reset"><i class="icon-step-backward"></i></a>').appendTo(this.$element);
     /** @private */
-    this._$playPause = $('<button class="play-pause"><i class="icon-play"></i><i class="icon-pause"></i></button>').appendTo(this.$element);
+    this._$playPause = $('<a class="play-pause"><i class="icon-play"></i><i class="icon-pause"></i></a>').appendTo(this.$element);
     /** @private */
     this._$timeDisplay = $('<span class="time-display">').appendTo(this._$playPause);
 
     /** @private */
-    this._$stepBackward = $('<button class="step"><i class="icon-backward"></i></button>').insertBefore(this._$reset);
+    this._$stepBackward = $('<a class="step"><i class="icon-backward"></i></a>').insertBefore(this._$playPause);
     /** @private */
-    this._$stepForward = $('<button class="step"><i class="icon-forward"></i></button>').insertAfter(this._$playPause);
+    this._$stepForward = $('<a class="step"><i class="icon-forward"></i></a>').insertAfter(this._$playPause);
 
     this._$reset.after('<div class="spacer reset">');
     this._$stepBackward.after('<div class="spacer step">');
@@ -73,10 +75,28 @@ define(function (require) {
   };
 
   /**
+   * Enables or disables time display.
+   * @private
+   */
+  PlaybackController.prototype._showClockChanged = function () {
+    this._showClock = model.get("showClock");
+    if (this._showClock) {
+      this._$playPause.addClass("with-clock");
+      // Update clock immediately.
+      this._timeChanged();
+    } else {
+      this._$playPause.removeClass("with-clock");
+    }
+  };
+
+  /**
    * Updates time display.
    * @private
    */
   PlaybackController.prototype._timeChanged = function () {
+    if (!this._showClock) {
+      return;
+    }
     var time = model.get("displayTime").toFixed(1);
     this._$timeDisplay.html(time + " " + this._timeUnits);
   };
@@ -99,7 +119,7 @@ define(function (require) {
     } else if (mode === "play_reset_step") {
       this.$element.find(".step, .reset, .play-pause").removeClass("hidden");
     }
-    $buttons = this.$element.find("button");
+    $buttons = this.$element.find("a");
     $buttons.removeClass("first");
     $buttons.removeClass("last");
     $buttons = $buttons.not(".hidden");
@@ -118,8 +138,9 @@ define(function (require) {
     this._simulationStateChanged();
     // Update time units and set time.
     this._timeUnits = model.getPropertyDescription("displayTime").getUnitAbbreviation();
+    model.addPropertiesListener(["showClock"], $.proxy(this._showClockChanged, this));
     model.addPropertiesListener(["displayTime"], $.proxy(this._timeChanged, this));
-    this._timeChanged();
+    this._showClockChanged();
     // Update display mode (=> buttons are hidden or visible).
     model.addPropertiesListener(["controlButtons"], $.proxy(this._displayModeChanged, this));
     this._displayModeChanged();

@@ -51,6 +51,7 @@
         "imageHostIndex": 0,
         "imageHostType": "RectangularObstacle",
         "imageLayer": 1,
+        "imageLayerPosition": 1,
         "imageX": 2.13,
         "imageY": 2.67
       },
@@ -59,6 +60,7 @@
         "imageHostIndex": 0,
         "imageHostType": "",
         "imageLayer": 1,
+        "imageLayerPosition": 5,
         "imageX": 2.95,
         "imageY": 2.44
       }

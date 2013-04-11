@@ -1,26 +1,19 @@
-/*global define, d3 */
+/*global define, d3, $ */
 
 define(function (require) {
-  // Dependencies.
+  //  Dependencies.
+      require('common/jquery-plugins');
   var Backbone  = require('backbone'),
 
-      VIEW = {
-        padding: {
-          left:   0,
-          top:    8,
-          right:  0,
-          bottom: 8
-        }
+      uid = 0,
+      // Returns unique ID used by the bar graph view.
+      getUID = function () {
+        return uid++;
       },
 
       // Get real width SVG of element using bounding box.
       getRealWidth = function (d3selection) {
         return d3selection.node().getBBox().width;
-      },
-
-      // Get real height SVG of element using bounding box.
-      getRealHeight = function (d3selection) {
-        return d3selection.node().getBBox().height;
       },
 
       // Bar graph scales itself according to the font size.
@@ -52,6 +45,13 @@ define(function (require) {
           });
       },
 
+      getFormatFunc = function (formatString, unitsString) {
+        var format = d3.format(formatString);
+        return function (value) {
+          return format(value) + " " + unitsString;
+        };
+      },
+
       BarGraphView = Backbone.View.extend({
         // Container is a DIV.
         tagName: "div",
@@ -59,20 +59,27 @@ define(function (require) {
         className: "bar-graph",
 
         initialize: function () {
-          // Create all SVG elements ONLY in this function.
-          // Avoid recreation of SVG elements while rendering.
+          // Unique ID. Required to generate unique
+          // gradient names.
+          this.uid = getUID();
+          // Create some SVG elements, which are constant and doesn't need to
+          // be recreated each time during rendering.
           this.vis = d3.select(this.el).append("svg");
           this.defs = this.vis.append("defs");
-          this.fill = this.vis.append("rect");
-          this.title = this.vis.append("text");
           this.axisContainer = this.vis.append("g");
+          this.fill = this.vis.append("rect");
           this.bar = this.vis.append("rect");
+          this.gridContainer = this.vis.append("g");
           this.trianglePos = this.vis.append("g");
           this.traingle = this.trianglePos.append("polygon");
+          this.titleContainer = this.vis.append("g");
 
           this.yScale = d3.scale.linear();
           this.heightScale = d3.scale.linear();
           this.yAxis = d3.svg.axis();
+
+          this.scale = null;
+          this.barWidth = null;
 
           // Register callbacks!
           this.model.on("change", this.modelChanged, this);
@@ -85,130 +92,93 @@ define(function (require) {
               // property1 = model.get("property1");
               // property2 = model.get("property2");
               // etc.
-          var options    = this.model.toJSON(),
+          var options            = this.model.toJSON(),
+              fontSize           = parseFloat(this.$el.css("font-size")),
               // Scale function.
-              scale      = getScaleFunc(parseFloat(this.$el.css("font-size"))),
+              scale = this.scale = getScaleFunc(fontSize),
+              renderLabels       = options.labels > 0 || options.labels.length > 0,
               // Basic padding (scaled).
-              paddingLeft   = scale(VIEW.padding.left),
-              paddingTop    = scale(VIEW.padding.top),
-              paddingBottom = scale(VIEW.padding.bottom),
-              // Note that right padding is especially important
-              // in this function, as we are constructing bar graph
-              // from right to left side. This variable holds current
-              // padding. Later it is modified by appending of title,
-              // axis, labels and all necessary elements.
-              paddingRight  = scale(VIEW.padding.right);
+              paddingTop         = renderLabels ? scale(8) : scale(3),
+              paddingBottom      = renderLabels ? scale(8) : scale(3),
+
+              offset = 0;
+
+          // Set height of the most outer container.
+          this.$el.outerHeight(options.height);
+          this.svgHeight = this.$el.height();
 
           // Setup SVG element.
           this.vis
             .attr({
-              "width":  options.width,
-              "height": options.height
-            })
-            .style({
-              "font-size": "1em"
+              // Use some random width. At the end of rendering, it will be
+              // updated to a valid value in ems (based on the graph content).
+              "width":  600,
+              "height": this.svgHeight
             });
 
           // Setup Y scale.
           this.yScale
-            .domain([options.minValue, options.maxValue])
-            .range([options.height - paddingTop, paddingBottom]);
+            .domain([options.min, options.max])
+            .range([this.svgHeight - paddingTop, paddingBottom])
+            .clamp(true);
 
           // Setup scale used to translation of the bar height.
           this.heightScale
-            .domain([options.minValue, options.maxValue])
-            .range([0, options.height - paddingTop - paddingBottom]);
+            .domain([options.min, options.max])
+            .range([0, this.svgHeight - paddingTop - paddingBottom])
+            .clamp(true);
 
-          // Setup title.
-          if (options.title !== undefined) {
-            this.title
-              .text(options.title)
-              .style({
-                "font-size": "1em",
-                "text-anchor": "middle",
-                "fill": options.textColor
-              });
+          // Render elements from left to right.
 
-            // Rotate title and translate it into right place.
-            // We do we use height for calculating right margin?
-            // Text will be rotated 90*, so current height is expected width.
-            paddingRight += getRealHeight(this.title);
-            this.title
-              .attr("transform", "translate(" + (options.width - paddingRight) + ", " + options.height / 2 + ") rotate(90)");
-          }
-
-          // Setup Y axis.
-          this.yAxis
-            .scale(this.yScale)
-            .tickSubdivide(options.tickSubdivide)
-            .tickSize(scale(8), scale(5), scale(8))
-            .orient("right");
-
-          if (typeof options.ticks === "number") {
-            // Just normal tics.
+          this.axisContainer.selectAll("*").remove();
+          if (renderLabels) {
+            // Setup Y axis.
             this.yAxis
-              .ticks(options.ticks)
-              .tickFormat(d3.format(options.labelFormat));
-          } else {
-            // Array with value - label pairs.
-            setupValueLabelPairs(this.yAxis, options.ticks);
+              .scale(this.yScale)
+              .tickValues(null)
+              .tickPadding(0)
+              .tickSize(0, 0, 0)
+              .orient("left");
+
+            if (typeof options.labels === "number") {
+              // Just normal tics.
+              this.yAxis
+                .ticks(options.labels)
+                .tickFormat(getFormatFunc(options.labelFormat, options.units));
+            } else {
+              // Array with value - label pairs.
+              setupValueLabelPairs(this.yAxis, options.labels);
+            }
+
+            // Create and append Y axis.
+            this.axisContainer.call(this.yAxis);
+
+            offset += getRealWidth(this.axisContainer);
+
+            this.axisContainer.attr("transform", "translate(" + offset + ")");
+
+            offset += scale(5);
           }
-
-          // Create and append Y axis.
-          this.axisContainer
-            .call(this.yAxis);
-
-          // Style Y axis.
-          this.axisContainer
-            .style({
-              "stroke": options.textColor,
-              "stroke-width": scale(2),
-              "fill": "none"
-            });
-
-          // Style Y axis labels.
-          this.axisContainer.selectAll("text")
-            .style({
-              "fill": options.textColor,
-              "stroke": "none",
-              // Workaround for hiding numeric labels. D3 doesn't provide any convenient function
-              // for that. Returning empty string as tickFormat causes that bounding box width is
-              // calculated incorrectly.
-              "font-size": options.displayLabels ? "0.8em" : 0
-          });
-
-          // Remove axis completely if ticks are equal to 0.
-          if (options.ticks === 0)
-            this.axisContainer.selectAll("*").remove();
-
-          // Translate axis into right place, add narrow empty space.
-          // Note that this *have* to be done after all styling to get correct width of bounding box!
-          paddingRight += getRealWidth(this.axisContainer) + scale(7);
-          this.axisContainer
-            .attr("transform", "translate(" + (options.width - paddingRight) + ", 0)");
 
           // Setup background of the bar.
-          paddingRight += scale(5);
           this.fill
             .attr({
-              "width": (options.width - paddingLeft - paddingRight),
-              "height": this.heightScale(options.maxValue),
-              "x": paddingLeft,
-              "y": this.yScale(options.maxValue),
+              "width": options.barWidth,
+              "height": this.heightScale(options.max),
+              "x": offset,
+              "y": this.yScale(options.max),
               "rx": "0.5em",
               "ry": "0.5em"
             })
-            .style({
-              "fill": this._getFillGradient(options.fillColor),
-              "stroke": "#ddd",
-              "stroke-width": "1px"
+            .attr({
+              "fill": this._getFillGradient(options.fillColor)
             });
 
           // Setup the main bar.
           this.bar
             .attr({
-              "width": (options.width - paddingLeft - paddingRight),
-              "x": paddingLeft,
+              "width": options.barWidth,
+              "x": offset,
               "rx": "0.5em",
               "ry": "0.5em"
             })
@@ -216,14 +186,34 @@ define(function (require) {
               "fill": this._getBarGradient(options.barColor)
             });
 
+          this.barWidth = getRealWidth(this.fill);
+
           this.traingle
             .classed("triangle", true)
             .attr({
-              "points": "-15,-7 -15,7 0,0",
-              "transform": "translate(" + (options.width - paddingRight) + ") scale(" + scale(1) + ")"
+              "points": "15,-7 15,7 1,0",
+              "transform": "translate(" + offset + ") scale(" + scale(1) + ")"
             });
 
-          // Finally, update values display.
+          this._setupGrid(offset);
+
+          offset += this.barWidth;
+
+          offset = this._setupTitle(offset);
+
+          // Convert final width in px into value in ems.
+          // That ensures that the SVG will work well with semantic layout.
+          this.vis.attr("width", (offset / fontSize) + "em");
+
+          // work-around bug on iPad2 where container is not expanding in width
+          // when SVG element rendered inside it
+          // see: Bar graph rendering issues on iPad
+          // https://www.pivotaltracker.com/story/show/47854951
+          // This means while we are duplicating the current padding styles set
+          // in _grapher.sass changes in desired style must be duplicated here.
+          this.$el.css("min-width", (offset / fontSize + 0.8) + "em");
+
+          // Finally, update displayed values.
           this.update();
         },
 
@@ -279,7 +269,7 @@ define(function (require) {
         },
 
         _getBarGradient: function (color) {
-          var id = "bar-gradient",
+          var id = "bar-gradient-" + this.uid,
               gradient = this.defs.select("#" + id);
 
           color = d3.rgb(color);
@@ -307,7 +297,7 @@ define(function (require) {
         },
 
         _getFillGradient: function (color) {
-          var id = "fill-gradient",
+          var id = "fill-gradient-" + this.uid,
               gradient = this.defs.select("#" + id);
 
           if (gradient.empty()) {
@@ -335,6 +325,76 @@ define(function (require) {
             .attr("offset", "100%");
 
           return "url(#" + id + ")";
+        },
+
+        _setupGrid: function (offset) {
+          var gridLines = this.yScale.ticks(this.model.get("gridLines")),
+              yScale = this.yScale,
+              width = this.barWidth;
+
+          // Remove first and last tick, as we don't want to draw it as grid line.
+          gridLines.pop(); gridLines.shift();
+          this.grid = this.gridContainer.selectAll(".grid-line").data(gridLines, String),
+
+          this.grid.enter().append("path").attr("class", "grid-line");
+          this.grid.exit().remove();
+          this.grid.attr("d", function (d) {
+            return "M " + offset + " " + Math.round(yScale(d)) + " h " + width;
+          });
+
+          return offset;
+        },
+
+        // Setup title.
+        _setupTitle: function (offset) {
+              // "title" option is expected to be string
+              // or array of strings.
+          var title = this.model.get("title"),
+              self  = this,
+              isArray, lines,
+              titleG, gEnter;
+
+          if (title) {
+            offset += this.scale(10);
+
+            isArray = $.isArray(title);
+            lines = isArray ? title.length : 1;
+
+            titleG = this.titleContainer.selectAll(".title").data(isArray ? title : [title]);
+
+            titleG.exit().remove();
+
+            gEnter = titleG.enter().append("g").attr("class", "title");
+            gEnter.append("title");
+            gEnter.append("text");
+
+            titleG.each(function (d, i) {
+              var g = d3.select(this);
+              g.select("title").text(d);
+              g.select("text")
+                .text(self._processTitle(d))
+                .attr("dy", -(lines - i -1) + "em");
+            });
+
+            // Transform whole container.
+            this.titleContainer.attr("transform",
+              "translate(" + offset + ", " + this.svgHeight / 2 + ") rotate(90)");
+
+            // Update offset.
+            offset += parseFloat($(titleG.node()).css("font-size")) * lines;
+          }
+
+          return offset;
+        },
+
+        _processTitle: function (title) {
+          var $title = $('<span class="title">' + title + '</span>').appendTo(this.$el),
+              truncatedText;
+
+          $title.truncate(this.svgHeight);
+          truncatedText = $title.text();
+          $title.remove();
+          return truncatedText;
         }
       });
 

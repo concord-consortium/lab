@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "model1",
-      "url": "/imports/legacy-mw-content/converted/sam-activities/diffusion/DiffusionTemp/DiffusionBarrier$0.json",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/diffusion/DiffusionTemp/DiffusionMass.json",
       "viewOptions": {
         "controlButtons": "play",
         "textBoxes" : [
@@ -116,19 +116,19 @@
       "type": "pulldown",
       "id": "mass-pulldown",
       "property": "gasElementType",
-      "label": "Element Type",
+      "label": "Molecular Mass",
       "labelOn": "top",
       "options": [
         {
-          "text": "Lightest",
+          "text": "Low",
           "value": 0
         },
         {
-          "text": "Heavier",
+          "text": "Medium",
           "value": 2
         },
         {
-          "text": "Heaviest",
+          "text": "High",
           "value": 3
         }
       ]
@@ -185,11 +185,13 @@
       "property": "selectedTemperature"
     },
     {
-      "type": "thermometer",
+      "type": "barGraph",
       "id": "thermometer",
+      "property": "temperature",
+      "title": "Thermometer",
+      "labels": 0,
       "min": 0,
-      "max": 3000,
-      "width": "1.5em"
+      "max": 2500
     },
     {
       "type": "numericOutput",

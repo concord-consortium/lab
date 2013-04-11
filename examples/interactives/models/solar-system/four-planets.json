@@ -1,12 +1,13 @@
 {
   "type": "solar-system",
-  "minX": -30,
-  "minY": -30,
-  "maxX":  30,
-  "maxY":  30,
+  "timeStep": 0.041666666666666664,
+  "timeStepsPerTick": 24,
+  "minX": -2,
+  "minY": -2,
+  "maxX":  2,
+  "maxY":  2,
   "horizontalWrapping": false,
   "verticalWrapping": false,
-  "gravitationalField": 6.67e-8,
   "viewOptions": {
     "backgroundColor": "rgba(0,0,0,255)",
     "showClock": true,
@@ -31,48 +32,42 @@
   "bodies": {
     "x": [
         0,
-        0,
-       12,
-        0,
-      -24
+      0.4,
+      0.7,
+      1.0,
+      1.5
     ],
     "y": [
         0,
-        7,
         0,
-      -16,
+        0,
+        0,
         0
     ],
     "vx": [
       0,
-      0.035,
-      0.000,
-     -0.038,
-      0.000
-    ],
-    "vy": [
-      0,
-      0.000,
-     -0.025,
-      0.000,
-      0.012
-    ],
-    "mass": [
-      50000,
-      3,
-      2,
-      10,
-      1
-    ],
-    "radius": [
-      2.0
-    ],
-    "pinned": [
-      1,
       0,
       0,
       0,
       0
+    ],
+    "vy": [
+      0,
+      0.0276,
+      0.0202,
+      0.0172,
+      0.0139
+    ],
+    "mass": [
+      332946,
+      0.055,
+      0.815,
+      1,
+      0.533
+    ],
+    "radius": [
+      0.1
     ]
+
   }
 }

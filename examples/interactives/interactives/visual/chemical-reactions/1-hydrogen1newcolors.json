@@ -71,13 +71,10 @@
     {
       "type": "barGraph",
       "id": "bar-graph",
-      "width": "8em",
-      "options": {
-        "minValue": 0,
-        "maxValue": 150,
-        "barColor": "#F42",
-        "title": "Temperature"
-      },
+      "min": 0,
+      "max": 150,
+      "barColor": "#F42",
+      "title": "Temperature",
       "property": "filteredSimplifiedTemperature"
     },
     {

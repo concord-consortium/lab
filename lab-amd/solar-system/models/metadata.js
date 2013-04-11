@@ -46,10 +46,6 @@ define(function() {
       timeStepsPerTick: {
         defaultValue: 50
       },
-      gravitationalField: {
-        defaultValue: false,
-        unitType: "acceleration"
-      },
       horizontalWrapping: {
         defaultValue: false
       },

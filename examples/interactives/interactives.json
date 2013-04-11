@@ -758,7 +758,7 @@
       "title": "Custom Component Dimensions",
       "path": "interactives/layout-tests/custom-component-dimensions.json",
       "groupKey": "layout-tests",
-      "subtitle": "Graph, Bar Graph, Thermometer, Slider, Button and Text can have custom dimensions specified using 'width' and 'height' properties (all CSS values are accepted).",
+      "subtitle": "Graph, Bar Graph, Slider, Button and Text can have custom dimensions specified using 'width' and 'height' properties (all CSS values are accepted).",
       "about": "",
       "publicationStatus": "public"
     },
@@ -863,6 +863,14 @@
       "publicationStatus": "public"
     },
     {
+      "title": "Diffusion Across Semipermeable Membranes",
+      "path": "interactives/sam/diffusion/4-2-semipermeable-two-barrier.json",
+      "groupKey": "sam/diffusion",
+      "subtitle": "How does pore size affect the diffusion of different molecules?",
+      "about": "Biological membranes are selectively permeable; some molecules can cross while others cannot. One way to affect this is through pore size. Change the pore size with the slider to change the permeability of the membranes to the different types of molecules. Trace an individual molecule to see the path it takes.",
+      "publicationStatus": "public"
+    },
+    {
       "title": "Diffusion Across a Semipermeable Membrane",
       "path": "interactives/sam/diffusion/4-semipermeable.json",
       "groupKey": "sam/diffusion",
@@ -895,11 +903,10 @@
         "Gases have no definite shape or volume. When they are constrained to a container,",
         "we can measure the pressure they exert on the container walls.",
         "",
-        "The model shows the inside (yellow atoms) and outside (pink atoms) of a balloon.",
-        "The green barrier represents the wall of the balloon.",
+        "The model shows the inside (yellow atoms) and outside (green atoms) of a balloon.",
+        "The teal barrier represents the wall of the balloon.",
         "",
-        "Add atoms to the balloon (the number of atoms in the balloon is shown on the slider).",
-        "What happens to the balloon wall when atoms are added?"
+        "Add atoms to the balloon. Watch what happens."
       ],
       "publicationStatus": "public"
     },
@@ -1056,6 +1063,17 @@
         "of the model. How does the pattern of hydrogen bonding explain the lattice that makes up ice crystals?"
       ],
       "publicationStatus": "public"
+    },
+    {
+      "title": "States of Matter",
+      "path": "interactives/sam/intermolecular-attractions/7-states-of-matter.json",
+      "groupKey": "sam/intermolecular-attractions",
+      "subtitle": "Explore Coulomb and Intermolecular Attractions",
+      "about": [
+        "What kinds of patterns tend to form? How does changing the Van der Waals",
+        "attraction affect the melting and boiling point of the substance?"
+      ],
+      "publicationStatus": "draft"
     },
     {
       "title": "Your Immune System",
@@ -1216,6 +1234,14 @@
       "publicationStatus": "public"
     },
     {
+      "title": "Earth in orbit",
+      "path": "interactives/solar-system/earth.json",
+      "groupKey": "solar-system",
+      "subtitle": "Simple model of the Sun and Earth.",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "Testing: four planets",
       "path": "interactives/solar-system/four-planets.json",
       "groupKey": "solar-system",
@@ -1224,10 +1250,18 @@
       "publicationStatus": "draft"
     },
     {
+      "title": "Testing: inner four planets",
+      "path": "interactives/solar-system/inner-four-planets.json",
+      "groupKey": "solar-system",
+      "subtitle": "Mercury, Venus, Earth and Mars.",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "Testing: one planet",
       "path": "interactives/solar-system/one-planet.json",
       "groupKey": "solar-system",
-      "subtitle": "Body at center is 200,000x mass of orbiting body.",
+      "subtitle": "Body at center is 332,946x mass of orbiting body.",
       "about": "",
       "publicationStatus": "draft"
     },
@@ -1235,7 +1269,7 @@
       "title": "Testing: two planets",
       "path": "interactives/solar-system/two-planets.json",
       "groupKey": "solar-system",
-      "subtitle": "Body on left is 200x mass of body on right; both have an initial X velocity of zero.",
+      "subtitle": "Body on left is 20,000x mass of body on right; small body has tiny initial velocity up.",
       "about": "",
       "publicationStatus": "draft"
     },

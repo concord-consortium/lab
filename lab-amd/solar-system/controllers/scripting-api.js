@@ -118,8 +118,8 @@ define(function (require) {
         Sets individual planet properties using human-readable hash.
         e.g. setBodyProperties(5, {x: 1, y: 0.5, charge: 1})
       */
-      setBodyProperties: function setBodyProperties(i, props, checkLocation, moveMolecule, options) {
-        model.setBodyProperties(i, props, checkLocation, moveMolecule);
+      setBodyProperties: function setBodyProperties(i, props, checkLocation, moveBody, options) {
+        model.setBodyProperties(i, props, checkLocation, moveBody);
         if (!(options && options.supressRepaint)) {
           api.repaint();
         }

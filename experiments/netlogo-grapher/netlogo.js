@@ -197,7 +197,7 @@ netlogo.AppletGrapher.prototype.nlDataPoller = function() {
         newDatum = [graph.dataArray.length, self.nl_obj_observer.getVariable(graph.graphVariables[0])];
       }
       graph.dataArray.push(newDatum);
-      graph.graph.add_data([newDatum]);
+      graph.graph.addOneXYDataPair([newDatum]);
     }
   }
 };

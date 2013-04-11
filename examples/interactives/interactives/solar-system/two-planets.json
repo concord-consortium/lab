@@ -1,7 +1,7 @@
 {
   "title": "Testing: two planets",
   "publicationStatus": "draft",
-  "subtitle": "Body on left is 200x mass of body on right; both have an initial X velocity of zero.",
+  "subtitle": "Body on left is 20,000x mass of body on right; small body has tiny initial velocity up.",
   "about": "",
   "models": [
     {
@@ -25,18 +25,6 @@
   ],
   "components": [
     {
-      "type": "button",
-      "id": "add-random-body",
-      "text": "Add random body",
-      "action": "addRandomBody()"
-    },
-    {
-      "type": "numericOutput",
-      "id": "current-bodies",
-      "property": "numBodies",
-      "displayValue": "return format('f')(value)"
-    },
-    {
       "type": "text",
       "id": "wrapping-label",
       "text": "Model wrapping",
@@ -55,41 +43,33 @@
       "property": "verticalWrapping"
     },
     {
-      "type": "text",
-      "id": "axes-label",
-      "text": "Axes",
-      "style": "header"
-    },
-    {
-      "type": "checkbox",
-      "id": "show-gridlines",
-      "text": "Grid Lines",
-      "property": "gridLines"
-    },
-    {
-      "type": "checkbox",
-      "id": "show-xunits",
-      "text": "X units",
-      "property": "xunits"
-    },
-    {
-      "type": "checkbox",
-      "id": "show-yunits",
-      "text": "Y units",
-      "property": "yunits"
+      "type": "radio",
+      "id": "trace-buttons",
+      "orientation": "vertical",
+      "label": "Trace Planet",
+      "options": [
+        {
+          "text": "Off",
+          "action": "untraceBody();",
+          "selected": true
+        },
+        {
+          "text": "1",
+          "action": "traceBody(0);"
+        },
+        {
+          "text": "2",
+          "action": "traceBody(1);"
+        }
+      ]
     }
   ],
   "layout": {
     "right": [
-      [ "add-random-body" ],
-      [ "current-bodies" ],
       [ "wrapping-label" ],
       [ "horizontal-wrapping" ],
       [ "vertical-wrapping" ],
-      [ "axes-label" ],
-      [ "show-gridlines" ],
-      [ "show-xunits" ],
-      [ "show-yunits" ]
+      [ "trace-buttons" ]
     ],
     "bottom": [
     ]

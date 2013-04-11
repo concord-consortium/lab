@@ -11,7 +11,7 @@ define(function(require) {
       parentMessageController.post({
         type: 'propertyValue',
         name:  propertyName,
-        value: model.get(propertyName)
+        values: model.get(propertyName)
       });
     }
 
@@ -56,20 +56,20 @@ define(function(require) {
       }
     });
 
-     // on message 'loadModel' call controller.loadModel
-      parentMessageController.addListener('runBenchmarks', function() {
-        var modelController;
-        if (controller && controller.getModelController) {
-          modelController = controller.getModelController();
-          benchmark.bench(modelController.benchmarks, function(results) {
-            console.log(results);
-            parentMessageController.post({
-              'type':   'returnBenchmarks',
-              'values': { 'results': results, 'benchmarks': modelController.benchmarks }
-            }, function() {}, function() {});
-          });
-        }
-      });
+    // on message 'runBenchmarks' call controller.runBenchmarks
+    parentMessageController.addListener('runBenchmarks', function() {
+      var modelController;
+      if (controller && controller.getModelController) {
+        modelController = controller.getModelController();
+        benchmark.bench(modelController.benchmarks, function(results) {
+          console.log(results);
+          parentMessageController.post({
+            'type':   'returnBenchmarks',
+            'values': { 'results': results, 'benchmarks': modelController.benchmarks }
+          }, function() {}, function() {});
+        });
+      }
+    });
 
     // Listen for events in the model, and notify using message.post
     // uses D3 disaptch on model to trigger events
@@ -94,6 +94,17 @@ define(function(require) {
           'values': values
         });
       });
+    });
+
+    // Remove an existing Listener for events in the model
+    parentMessageController.addListener('removeListenerForDispatchEvent', function(message) {
+      var eventName    = message.eventName,
+          properties   = message.properties,
+          values       = {},
+          i            = 0,
+          propertyName = null;
+
+      model.on(eventName);
     });
 
     // on message 'get' propertyName: return a 'propertyValue' message

@@ -26,12 +26,10 @@
     {
       "type": "barGraph",
       "id": "bar-graph",
-      "options": {
-        "minValue": 0,
-        "maxValue": 1,
-        "barColor": "#F42",
-        "title": "Kinetic Energy of Particle (eV)"
-      },
+      "min": 0,
+      "max": 1,
+      "barColor": "#F42",
+      "title": "Kinetic Energy of Particle (eV)",
       "property": "atom0Ke"
     },
     {

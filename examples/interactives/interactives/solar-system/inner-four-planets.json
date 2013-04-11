@@ -1,0 +1,91 @@
+{
+  "title": "Testing: inner four planets",
+  "publicationStatus": "draft",
+  "subtitle": "Mercury, Venus, Earth and Mars.",
+  "about": "",
+  "models": [
+    {
+      "id": "four-bodies",
+      "type": "pta",
+      "url": "models/solar-system/inner-four-planets.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": [
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "text",
+      "id": "wrapping-label",
+      "text": "Model wrapping",
+      "style": "header"
+    },
+    {
+      "type": "checkbox",
+      "id": "horizontal-wrapping",
+      "text": "Horizontal",
+      "property": "horizontalWrapping"
+    },
+    {
+      "type": "checkbox",
+      "id": "vertical-wrapping",
+      "text": "Vertical",
+      "property": "verticalWrapping"
+    },
+    {
+      "type": "radio",
+      "id": "trace-buttons",
+      "orientation": "vertical",
+      "label": "Trace Planet",
+      "options": [
+        {
+          "text": "Off",
+          "action": "untraceBody();",
+          "selected": true
+        },
+        {
+          "text": "1",
+          "action": "traceBody(1);"
+        },
+        {
+          "text": "2",
+          "action": "traceBody(2);"
+        },
+        {
+          "text": "3",
+          "action": "traceBody(3);"
+        },
+        {
+          "text": "4",
+          "action": "traceBody(4);"
+        }
+      ]
+    }
+  ],
+  "layout": {
+    "right": [
+      [ "wrapping-label" ],
+      [ "horizontal-wrapping" ],
+      [ "vertical-wrapping" ],
+      [ "trace-buttons" ]
+    ],
+    "bottom": [
+    ]
+  },
+  "template": [
+    {
+      "id": "right",
+      "top": "1em",
+      "left": "model.right",
+      "padding-left": "0.5em",
+      "align": "left"
+    },
+    {
+      "id": "bottom",
+      "left": "model.left",
+      "top": "model.bottom"
+    }
+  ]
+}

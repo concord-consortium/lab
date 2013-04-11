@@ -76,18 +76,7 @@ define(function (require) {
         bodyTrace,
         bodyTracePath,
         bodyTraceMaxLength = 35500,
-        traceBodyStrokeWidth,
-
-        // for model clock
-        showClock,
-        timeLabel,
-        modelTimeFormatter = d3.format("5.1f"),
-        timePrefix = "",
-        timeSuffix = "";
-
-    function modelTimeLabel() {
-      return timePrefix + modelTimeFormatter(model.get('time')) + timeSuffix;
-    }
+        traceBodyStrokeWidth;
 
     /**
      * Setups set of gradient which can be changed by the user.
@@ -245,7 +234,7 @@ define(function (require) {
     }
 
     function astromonicalBodyMouseDown(d, i) {
-      containers.node.focus();
+      modelView.node.focus();
       if (model.get("enableBodyTooltips")) {
         if (astromonicalBodyTooltipOn !== false) {
           astromonicalBodyDiv.style("opacity", 1e-6);
@@ -338,28 +327,6 @@ define(function (require) {
       }
     }
 
-    function setupClock() {
-      var clockColor = d3.lab(model.get("backgroundColor"));
-      // This ensures that color will be visible on background.
-      // Decide between white and black usingL value of background color in LAB space.
-      clockColor.l = clockColor.l > 50 ? 0 : 100;
-      clockColor.a = clockColor.b = 0;
-      // Add model time display.
-      mainContainer.selectAll('.modelTimeLabel').remove();
-      // Update clock status.
-      showClock = model.get("showClock");
-      if (showClock) {
-        timeLabel = mainContainer.append("text")
-          .attr("class", "modelTimeLabel")
-          .text(modelTimeLabel())
-          // Set text position to (0nm, 0nm) (model domain) and add small, constant offset in px.
-          .attr("x", model2px(modelMinX) + 3)
-          .attr("y", model2pxInv(modelMinY) - 3)
-          .attr("text-anchor", "start")
-          .attr("fill", clockColor.rgb());
-      }
-    }
-
     //
     // *** Main Renderer functions ***
     //
@@ -427,7 +394,7 @@ define(function (require) {
       // Redraw container each time when some visual-related property is changed.
       model.addPropertiesListener([
         "showBodyTrace", "bodyTraceId",
-        "showClock", "backgroundColor", "markColor"],
+        "backgroundColor", "markColor"],
           redrawClickableObjects(repaint));
 
       // Redraw container each time when some visual-related property is changed.
@@ -465,7 +432,6 @@ define(function (require) {
 
       setupDynamicGradients();
       setupBodyTrace();
-      setupClock();
       setupColorsOfBodies();
       setupBodies();
     }
@@ -478,11 +444,6 @@ define(function (require) {
     //
     function update() {
       console.time('view update');
-
-      // update model time display
-      if (showClock) {
-        timeLabel.text(modelTimeLabel());
-      }
 
       astromonicalBodyUpdate();
 

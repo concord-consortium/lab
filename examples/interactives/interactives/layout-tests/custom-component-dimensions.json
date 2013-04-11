@@ -1,7 +1,7 @@
 {
   "title": "Custom Component Dimensions",
   "publicationStatus": "public",
-  "subtitle": "Graph, Bar Graph, Thermometer, Slider, Button and Text can have custom dimensions specified using 'width' and 'height' properties (all CSS values are accepted).",
+  "subtitle": "Graph, Bar Graph, Slider, Button and Text can have custom dimensions specified using 'width' and 'height' properties (all CSS values are accepted).",
   "about": "",
   "fontScale": 0.7,
   "models": [
@@ -52,7 +52,7 @@
     {
       "type": "graph",
       "id": "graph2",
-      "title": "Graph (15em x 10em)",
+      "title": "Graph (5em x 10em)",
       "width": "15em",
       "height": "10em",
       "xmin": 0,
@@ -66,37 +66,26 @@
     {
       "type": "barGraph",
       "id": "bar-graph",
-      "width": "8em",
+      "barWidth": "2em",
       "height": "70%",
-      "options": {
-        "minValue": 0,
-        "maxValue": 5000,
-        "barColor": "#F42",
-        "title": "Bar Graph (8em x 70%)"
-      },
+      "min": 0,
+      "max": 5000,
+      "barColor": "#F42",
+      "title": "Bar Graph (2em x 70%)",
       "property": "targetTemperature"
     },
     {
       "type": "barGraph",
       "id": "bar-graph-2",
-      "width": "8em",
-      "height": "10em",
-      "options": {
-        "minValue": 0,
-        "maxValue": 5000,
-        "barColor": "#F42",
-        "title": "Bar Graph (8em x 10em)"
-      },
-      "property": "targetTemperature"
-    },
-    {
-      "type": "thermometer",
-      "id": "thermometer",
+      "barWidth": "4em",
+      "height": "9em",
       "min": 0,
       "max": 5000,
-      "labelIsReading": false,
-      "width": "6em",
-      "height": "6em"
+      "barColor": "#F42",
+      "labels": 5,
+      "gridLines": 5,
+      "title": "(4em x 9em)",
+      "property": "targetTemperature"
     },
     {
       "type": "button",
@@ -140,7 +129,6 @@
     "bottom": [
       "graph2",
       "button-big",
-      "thermometer",
       "bar-graph-2"
     ]
   },

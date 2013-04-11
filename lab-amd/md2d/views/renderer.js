@@ -91,8 +91,6 @@ define(function (require) {
         fontSizeInPixels,
         textBoxFontSizeInPixels,
 
-        // for model clock
-        timeLabel,
         modelTimeFormatter = d3.format("5.1f"),
         timePrefix = "",
         timeSuffix = " (" + model.getPropertyDescription('displayTime').getUnitAbbreviation() + ")",
@@ -129,7 +127,6 @@ define(function (require) {
         atomTraceColor,
         atomTrace,
         atomTracePath,
-        showClock,
 
         VELOCITY_STR = "velocity",
         FORCE_STR    = "force",
@@ -718,12 +715,12 @@ define(function (require) {
 
     function drawImageAttachment() {
       var img = [],
-          img_height,
-          img_width,
-          coords,
           imglayer,
           container,
-          i;
+          i,
+          positionOrder,
+          positionOrderTop = [],
+          positionOrderBelow = [];
 
       imageContainerTop.selectAll("image").remove();
       imageContainerBelow.selectAll("image").remove();
@@ -736,30 +733,30 @@ define(function (require) {
         img[i].src = getImagePath(imageProp[i]) + (needCachebusting ? "?"+Math.random() : "");
         img[i].onload = (function(i) {
           return function() {
-            imageContainerTop.selectAll("image.image_attach"+i).remove();
-            imageContainerBelow.selectAll("image.image_attach"+i).remove();
-
-            // Cache the image width and height.
+            imglayer = imageProp[i].imageLayer;
+            positionOrder = imglayer === 1 ? positionOrderTop : positionOrderBelow;
+            positionOrder.push({
+              i: i, 
+              zOrder: (!!imageProp[i].imageLayerPosition) ? imageProp[i].imageLayerPosition : 0
+            });
+            positionOrder.sort(function(a,b){return d3.ascending(a["zOrder"],b["zOrder"])});
             // In Classic MW model size is defined in 0.1A.
             // Model unit (0.1A) - pixel ratio is always 1. The same applies
             // to images. We can assume that their pixel dimensions are
             // in 0.1A also. So convert them to nm (* 0.01).
             imageSizes[i] = [0.01 * img[i].width, 0.01 * img[i].height];
-            img_width = modelSize2px(imageSizes[i][0]);
-            img_height = modelSize2px(imageSizes[i][1]);
-
-            coords = getImageCoords(i);
-
-            imglayer = imageProp[i].imageLayer;
             container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
-            container.append("image")
-              .attr("x", coords[0])
-              .attr("y", coords[1])
-              .attr("class", "image_attach"+i+" draggable")
-              .attr("xlink:href", img[i].src)
-              .attr("width", img_width)
-              .attr("height", img_height)
-              .attr("pointer-events", "none");
+            container.selectAll("image").remove();
+            container.selectAll("image")
+              .data(positionOrder, function(d){ return d["i"] })
+              .enter().append("image")
+                .attr("x", function(d){ return getImageCoords(d["i"])[0] } )
+                .attr("y", function(d){ return getImageCoords(d["i"])[1] } )
+                .attr("class", function(d){ return "image_attach" + d["i"] + " draggable"})
+                .attr("xlink:href", function(d){ return img[d["i"]].src})
+                .attr("width", function(d){return modelSize2px( imageSizes[d["i"]][0] )})
+                .attr("height", function(d){return modelSize2px( imageSizes[d["i"]][1] )})
+                .attr("pointer-events", "none");
           };
         })(i);
       }
@@ -1491,43 +1488,6 @@ define(function (require) {
       }
     }
 
-    function setupClock() {
-      var bg = parseColor(model.get("backgroundColor")),
-          // Calculate luminance in YIQ color space.
-          luminance = (bg.r * 299 + bg.g * 587 + bg.b * 114) / 1000,
-          // This ensures that color will be visible on background.
-          // This simple algorithm is described here:
-          // http://www.w3.org/TR/AERT#color-contrast
-          clockColor = luminance >= 128 ? 'black' : 'white';
-
-      function parseColor(color) {
-        // d3.rgb is handy, however it cannor parse RGBA colors, which are sometimes
-        // used in Next Gen MW (e.g. during MML->JSON conversion).
-        // Use it regexp to parse rgba if it's necessary.
-        var rgba = color.match(/rgba\(([0-9]+),([0-9]+),([0-9]+),([0-9]+)\)/i);
-        if (rgba !== null) {
-          return d3.rgb(rgba[1], rgba[2], rgba[3]);
-        } else {
-          return d3.rgb(color);
-        }
-      }
-
-      // Add model time display.
-      mainContainer.selectAll('.modelTimeLabel').remove();
-      // Update clock status.
-      showClock = model.get("showClock");
-      if (showClock) {
-        timeLabel = mainContainer.append("text")
-          .attr("class", "modelTimeLabel")
-          .text(modelTimeLabel())
-          // Set text position to (0nm, 0nm) (model domain) and add small, constant offset in px.
-          .attr("x", model2px(0) + fontSizeInPixels/3)
-          .attr("y", model2pxInv(0) - fontSizeInPixels/3)
-          .attr("text-anchor", "start")
-          .attr("fill", clockColor);
-      }
-    }
-
     function setupFirefoxWarning() {
       var $firefoxWarningPane,
           pos,
@@ -1639,7 +1599,7 @@ define(function (require) {
         "showVDWLines", "VDWLinesCutoff",
         "showVelocityVectors", "showForceVectors",
         "showAtomTrace", "atomTraceId", "aminoAcidColorScheme",
-        "showClock", "backgroundColor", "markColor"],
+        "backgroundColor", "markColor"],
           redrawClickableObjects(repaint));
 
       model.on('addAtom', redrawClickableObjects(repaint));
@@ -1691,7 +1651,6 @@ define(function (require) {
       drawSymbolImages();
       drawImageAttachment();
       drawTextBoxes();
-      setupClock();
       setupToolTips();
       setupFirefoxWarning();
     }
@@ -1721,11 +1680,6 @@ define(function (require) {
 
       if (radialBondResults) {
         updateRadialBonds();
-      }
-
-      // update model time display
-      if (showClock) {
-        timeLabel.text(modelTimeLabel());
       }
 
       updateParticles();

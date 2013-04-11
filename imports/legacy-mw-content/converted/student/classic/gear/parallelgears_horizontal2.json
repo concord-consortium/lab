@@ -50,6 +50,7 @@
         "imageHostIndex": 34,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 1,
         "imageX": 1.83500142890046,
         "imageY": 2.025005288086576
       },
@@ -58,6 +59,7 @@
         "imageHostIndex": 65,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 2,
         "imageX": 2.9150014289004598,
         "imageY": 2.065005288086576
       }

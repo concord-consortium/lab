@@ -50,6 +50,7 @@
         "imageHostIndex": 0,
         "imageHostType": "RectangularObstacle",
         "imageLayer": 1,
+        "imageLayerPosition": 1,
         "imageX": 2.14,
         "imageY": 2.665
       }

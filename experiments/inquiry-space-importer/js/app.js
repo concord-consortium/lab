@@ -30,7 +30,8 @@ ISImporter.fixed = function(d, n) {
 // Returns true if the argument is a string that represents a valid, finite number (or is a valid, finite number)
 function isNumeric(val) {
   // see http://stackoverflow.com/questions/18082/validate-numbers-in-javascript-isnumeric/1830844#1830844
-  return !isNaN(parseFloat(val)) && isFinite(val);
+  // AU 2013-04-09: modified so that strings with numbers and trailing characters still get interpreted as numbers
+  return !isNaN(parseFloat(val)) && isFinite(parseFloat(val));
 }
 
 // Hmm.
@@ -333,7 +334,7 @@ ISImporter.GraphController = defineClass({
     this.initGraph();
 
     this.dataListener = function(d) {
-      self.graph.add_data(d);
+      self.graph.addOneXYDataPair(d);
     };
 
     this.dataResetListener = function() {
@@ -390,18 +391,18 @@ ISImporter.GraphController = defineClass({
       this.dataset.select([]);
     }
 
-    this.graph.selection_domain(this.dataset.getSelectionDomain());
-    this.graph.selection_listener(function(domain) {
+    this.graph.selectionDomain(this.dataset.getSelectionDomain());
+    this.graph.selectionListener(function(domain) {
       self.dataset.select(domain);
     });
-    this.graph.selection_visible(true);
+    this.graph.selectionVisible(true);
   },
 
   stopSelection: function() {
-    // first, make sure to turn off the listener so selection_domain(null) doesn't
+    // first, make sure to turn off the listener so selectionDomain(null) doesn't
     // change the dataset selection
-    this.graph.selection_listener(null);
-    this.graph.selection_domain(null).selection_visible(false);
+    this.graph.selectionListener(null);
+    this.graph.selectionDomain(null).selectionVisible(false);
   },
 
   getSelectionDataset: function() {}
@@ -939,7 +940,7 @@ ISImporter.appController = new ISImporter.Object({
       if (label) {
         metadata.push({ label: label, value: this.getMetadataValue(i) });
       }
-      this.clearMetadata(i);
+      this._clearMetadata(i, "value");
     }
 
     ISImporter.DGExporter.exportData(this.sensor.title, data, metadata);

@@ -155,51 +155,6 @@ code {
 .playbacksvgbutton:active .pause-center {
   fill: #a5a5a5; }
 
-.graph {
-  position: relative;
-  background: rgba(255, 255, 255, 0); }
-  .graph:focus {
-    outline: #76d2b8 solid 0.2em; }
-  .graph div.background {
-    position: absolute;
-    background: #efefef; }
-  .graph div.button-layer {
-    position: absolute;
-    text-align: right; }
-    .graph div.button-layer a {
-      opacity: 0.3;
-      color: black;
-      font-size: 120%; }
-    .graph div.button-layer a:hover {
-      opacity: 1; }
-  .graph canvas.overlay {
-    position: absolute;
-    background: rgba(0, 255, 0, 0.05); }
-
-svg.graph:focus {
-  outline: #76d2b8 solid 0.2em; }
-svg.graph text.title {
-  font-size: 0.9em; }
-svg.graph text.ylabel {
-  font-size: 0.8em; }
-svg.graph text.xlabel {
-  font-size: 0.8em; }
-svg.graph text.axis {
-  font-size: 0.8em; }
-  svg.graph text.axis:focus {
-    outline: #76d2b8 solid 0.2em; }
-svg.graph rect.draggable-axis {
-  fill: rgba(255, 255, 255, 0); }
-  svg.graph rect.draggable-axis:hover {
-    fill: rgba(196, 196, 196, 0.2); }
-
-.bar-graph .hidden {
-  display: none; }
-.bar-graph .triangle {
-  stroke: #555555;
-  stroke-width: 2px;
-  fill: #eeeeee; }
-
 .markdown-typography * {
   margin: 0.2em 0 !important; }
 .markdown-typography img {
@@ -223,6 +178,7 @@ svg.graph rect.draggable-axis {
 .component {
   display: inline-block;
   vertical-align: middle;
+  white-space: normal;
   margin: 0;
   padding: 0;
   -webkit-user-select: none;
@@ -472,13 +428,16 @@ button.component {
   border-bottom-right-radius: 0.7em;
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.4);
   height: 2em; }
-  .interactive-playback button {
+  .interactive-playback a {
+    display: inline-block;
     vertical-align: middle;
     font-family: 'Lato', Verdana, Geneva, sans-serif;
     font-size: 1em;
     height: 100%;
+    padding-top: 0.35em;
     width: 2.7em;
     margin: 0;
+    text-align: center;
     border: none;
     background-color: #bcbec0;
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fbfbfb), color-stop(100%, #bcbec0));
@@ -487,7 +446,7 @@ button.component {
     background-image: -ms-linear-gradient(top, #fbfbfb, #bcbec0);
     background-image: -o-linear-gradient(top, #fbfbfb, #bcbec0);
     background-image: linear-gradient(top, #fbfbfb, #bcbec0); }
-    .interactive-playback button:hover {
+    .interactive-playback a:hover {
       background-color: #e6e6e6;
       background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #e6e6e6));
       background-image: -webkit-linear-gradient(top, white, #e6e6e6);
@@ -496,7 +455,7 @@ button.component {
       background-image: -o-linear-gradient(top, white, #e6e6e6);
       background-image: linear-gradient(top, white, #e6e6e6);
       cursor: pointer; }
-    .interactive-playback button:active {
+    .interactive-playback a:active {
       background-color: #bbbbbb;
       background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e6e6e6), color-stop(100%, white));
       background-image: -webkit-linear-gradient(top, #e6e6e6, white);
@@ -511,31 +470,36 @@ button.component {
   .interactive-playback .last {
     border-bottom-right-radius: 0.7em; }
   .interactive-playback .play-pause {
-    min-width: 2.7em;
-    width: 5.8em;
-    white-space: nowrap;
-    text-align: right; }
+    min-width: 2.7em; }
     .interactive-playback .play-pause .icon-pause {
       display: none; }
     .interactive-playback .play-pause.playing .icon-pause {
-      display: inline; }
+      display: inline-block; }
     .interactive-playback .play-pause.playing .icon-play {
       display: none; }
     .interactive-playback .play-pause .time-display {
-      display: inline-block;
-      width: 5em;
-      color: #939598;
-      background: #e6e7e8;
-      font-weight: bold;
-      border: 1px solid #bbbbbb;
-      border-bottom-color: #cccccc;
-      padding: 0.2em;
-      margin-left: 0.7em;
-      border-radius: 0.5em;
-      font-size: 0.7em; }
+      font-size: 0.85em;
+      display: none; }
+    .interactive-playback .play-pause.with-clock {
+      width: 6.4em;
+      white-space: nowrap; }
+      .interactive-playback .play-pause.with-clock .time-display {
+        display: inline-block;
+        text-align: right;
+        vertical-align: middle;
+        width: 5em;
+        color: #939598;
+        background: #e6e7e8;
+        font-weight: bold;
+        border: 1px solid #bbbbbb;
+        border-bottom-color: #cccccc;
+        padding: 0.1em 0.2em 0.1em 0;
+        margin-left: 0.4em;
+        border-radius: 0.5em; }
   .interactive-playback i {
     color: #939598;
-    font-size: 0.9em; }
+    font-size: 1em;
+    vertical-align: middle; }
   .interactive-playback .spacer {
     vertical-align: middle;
     display: inline-block;
@@ -548,6 +512,73 @@ button.component {
     background-image: -ms-linear-gradient(top, #fefefe, #aaacaf);
     background-image: -o-linear-gradient(top, #fefefe, #aaacaf);
     background-image: linear-gradient(top, #fefefe, #aaacaf); }
+
+.graph {
+  position: relative;
+  background: rgba(255, 255, 255, 0); }
+  .graph:focus {
+    outline: #76d2b8 solid 0.2em; }
+  .graph div.background {
+    position: absolute;
+    background: #efefef; }
+  .graph div.button-layer {
+    position: absolute;
+    text-align: right; }
+    .graph div.button-layer a {
+      opacity: 0.3;
+      color: black;
+      font-size: 120%; }
+    .graph div.button-layer a:hover {
+      opacity: 1; }
+  .graph canvas.overlay {
+    position: absolute;
+    background: rgba(0, 255, 0, 0.05); }
+
+svg.graph:focus {
+  outline: #76d2b8 solid 0.2em; }
+svg.graph text.title {
+  font-size: 0.9em; }
+svg.graph text.ylabel {
+  font-size: 0.8em; }
+svg.graph text.xlabel {
+  font-size: 0.8em; }
+svg.graph text.axis {
+  font-size: 0.8em; }
+  svg.graph text.axis:focus {
+    outline: #76d2b8 solid 0.2em; }
+svg.graph rect.draggable-axis {
+  fill: rgba(255, 255, 255, 0); }
+  svg.graph rect.draggable-axis:hover {
+    fill: rgba(196, 196, 196, 0.2); }
+
+.bar-graph {
+  padding: 0.2em 0.4em;
+  border-radius: 0.6em;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.05);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0.08)), color-stop(100%, rgba(0, 0, 0, 0)));
+  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0));
+  background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0));
+  background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0));
+  background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0));
+  background-image: linear-gradient(top, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0)); }
+  .bar-graph text {
+    fill: #555555; }
+  .bar-graph .hidden {
+    display: none; }
+  .bar-graph .triangle {
+    stroke: #555555;
+    stroke-width: 1px;
+    fill: #eeeeee; }
+  .bar-graph .grid-line {
+    stroke: white;
+    stroke-width: 1px;
+    opacity: 0.8; }
+  .bar-graph .tick text {
+    font-size: 0.8em; }
+  .bar-graph .title {
+    font-size: 1em;
+    text-anchor: middle; }
 
 * {
   -webkit-box-sizing: border-box;

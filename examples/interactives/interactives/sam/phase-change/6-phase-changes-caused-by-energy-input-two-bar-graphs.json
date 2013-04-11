@@ -96,21 +96,17 @@
     {
       "type": "barGraph",
       "id": "bar-graph",
-      "options": {
-        "minValue": 0,
-        "maxValue": 5,
-        "title": "Avg. Kinetic Energy of Large Atoms"
-      },
+      "min": 0,
+      "max": 5,
+      "title": "Avg. Kinetic Energy of Large Atoms",
       "property": "largeAtomKE"
     },
     {
       "type": "barGraph",
       "id": "bar-graph2",
-      "options": {
-        "minValue": 0,
-        "maxValue": 5,
-        "title": "Avg. Kinetic Energy of Small Atoms"
-      },
+      "min": 0,
+      "max": 5,
+      "title": "Avg. Kinetic Energy of Small Atoms",
       "property": "smallAtomKE"
     }
   ],
@@ -135,9 +131,7 @@
       "right": "model.left",
       "height": "model.height",
       "padding-right": "1em",
-      "padding-left": "0.5em",
       "align": "right",
-      "width": "model.width / 4",
       "min-width": "6em"
     },
     {
@@ -147,7 +141,6 @@
       "height": "model.height",
       "padding-left": "1em",
       "padding-right": "0.5em",
-      "width": "model.width / 4",
       "min-width": "6em"
     },
     {

@@ -864,7 +864,9 @@ define(function(require) {
 
     model.seek = function(location) {
       if (!arguments.length) { location = 0; }
-      stopped = true;
+      if (!model.is_stopped()) {
+        model.stop();
+      }
       newStep = false;
       runAndDispatchObjectNumberChanges(function() {
         tickHistory.seekExtract(location);
@@ -876,7 +878,9 @@ define(function(require) {
 
     model.stepBack = function(num) {
       if (!arguments.length) { num = 1; }
-      stopped = true;
+      if (!model.is_stopped()) {
+        model.stop();
+      }
       newStep = false;
       runAndDispatchObjectNumberChanges(function() {
         var i, index;
@@ -894,7 +898,9 @@ define(function(require) {
 
     model.stepForward = function(num) {
       if (!arguments.length) { num = 1; }
-      stopped = true;
+      if (!model.is_stopped()) {
+        model.stop();
+      }
       runAndDispatchObjectNumberChanges(function() {
         var i, index, size;
         i=-1; while(++i < num) {
@@ -2597,7 +2603,7 @@ define(function(require) {
       label: "Model time per tick",
       unitName:         unitsDefinition.units.time.name,
       unitPluralName:   unitsDefinition.units.time.pluralName,
-      unitAbbreviation: unitsDefinition.units.time.abbreviation,
+      unitAbbreviation: unitsDefinition.units.time.symbol,
       format: 'f'
     }, function() {
       return model.get('timeStep') * model.get('timeStepsPerTick');
@@ -2620,7 +2626,7 @@ define(function(require) {
         label: "Time",
         unitName:         displayTimeUnits.name,
         unitPluralName:   displayTimeUnits.pluralName,
-        unitAbbreviation: displayTimeUnits.abbreviation,
+        unitAbbreviation: displayTimeUnits.symbol,
         format: '.3f'
       }, function() {
         return model.get('time') * displayTimeUnits.unitsPerBaseUnit;
@@ -2630,12 +2636,28 @@ define(function(require) {
         label: "Model time per tick",
         unitName:         displayTimeUnits.name,
         unitPluralName:   displayTimeUnits.pluralName,
-        unitAbbreviation: displayTimeUnits.abbreviation,
+        unitAbbreviation: displayTimeUnits.symbol,
         format: '.3f'
       }, function() {
         return model.get('timePerTick') * displayTimeUnits.unitsPerBaseUnit;
       });
     }());
+
+    model.defineOutput('tickCounter', {
+      label: "Tick Counter",
+      unitType: '',
+      format: '4g'
+    }, function() {
+      return tickHistory.get("counter");
+    });
+
+    model.defineOutput('newStep', {
+      label: "New Step",
+      unitType: '',
+      format: ''
+    }, function() {
+      return newStep;
+    });
 
     model.defineOutput('kineticEnergy', {
       label: "Kinetic Energy",

@@ -8,7 +8,7 @@
       "id": "model1",
       "url": "/imports/legacy-mw-content/converted/sam-activities/diffusion/DiffusionTemp/DiffusionBarrier$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset",
+        "controlButtons": "play",
         "textBoxes" : [
           {
             "text": "Gas Sensor",
@@ -154,11 +154,13 @@
       "property": "selectedTemperature"
     },
     {
-      "type": "thermometer",
+      "type": "barGraph",
       "id": "thermometer",
+      "property": "temperature",
+      "title": "Thermometer",
+      "labels": 0,
       "min": 0,
-      "max": 3000,
-      "width": "1.5em"
+      "max": 2500
     },
     {
       "type": "numericOutput",

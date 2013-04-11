@@ -50,6 +50,7 @@
         "imageHostIndex": 36,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 1,
         "imageX": 0.43126173476533963,
         "imageY": 1.6743385492056035
       },
@@ -58,6 +59,7 @@
         "imageHostIndex": 39,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 2,
         "imageX": 2.198398770121628,
         "imageY": 1.4778264711442222
       },
@@ -66,6 +68,7 @@
         "imageHostIndex": 40,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 3,
         "imageX": 0.6058352028207095,
         "imageY": 1.3419658792350373
       },
@@ -74,6 +77,7 @@
         "imageHostIndex": 42,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 4,
         "imageX": 1.6243312428237606,
         "imageY": 1.5743846383877573
       },
@@ -82,6 +86,7 @@
         "imageHostIndex": 43,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 5,
         "imageX": 1.2072104303260232,
         "imageY": 0.9874612705054778
       },
@@ -90,6 +95,7 @@
         "imageHostIndex": 0,
         "imageHostType": "",
         "imageLayer": 1,
+        "imageLayerPosition": 6,
         "imageX": 2.34,
         "imageY": 2.59
       },
@@ -98,6 +104,7 @@
         "imageHostIndex": 0,
         "imageHostType": "",
         "imageLayer": 2,
+        "imageLayerPosition": 7,
         "imageX": 2.32,
         "imageY": 2.17
       },
@@ -106,6 +113,7 @@
         "imageHostIndex": 0,
         "imageHostType": "",
         "imageLayer": 1,
+        "imageLayerPosition": 8,
         "imageX": 2.32,
         "imageY": 1.43
       },
@@ -114,6 +122,7 @@
         "imageHostIndex": 0,
         "imageHostType": "",
         "imageLayer": 2,
+        "imageLayerPosition": 9,
         "imageX": 2.32,
         "imageY": 1.02
       },
@@ -122,6 +131,7 @@
         "imageHostIndex": 0,
         "imageHostType": "",
         "imageLayer": 1,
+        "imageLayerPosition": 10,
         "imageX": 2.41,
         "imageY": 0.27
       }

@@ -3,10 +3,14 @@
 
 define(function (require, exports, module) {
 
-  var arrays               = require('arrays'),
-      arrayTypes           = require('common/array-types'),
-      console              = require('common/console'),
-      CloneRestoreWrapper  = require('common/models/engines/clone-restore-wrapper');
+  var arrays                 = require('arrays'),
+      arrayTypes             = require('common/array-types'),
+      constants              = require('./constants/index'),
+      unit                   = constants.unit,
+      console                = require('common/console'),
+      CloneRestoreWrapper    = require('common/models/engines/clone-restore-wrapper'),
+
+      GRAVITATIONAL_CONSTANT = constants.GRAVITATIONAL_CONSTANT.as(constants.unit.ASTRONOMICAL_GC);
 
   exports.createEngine = function() {
 
@@ -15,7 +19,7 @@ define(function (require, exports, module) {
 
         // If a numeric value include gravitational field in force calculations,
         // otherwise value should be false
-        gravitationalField = false,
+        gravitationalConstant = GRAVITATIONAL_CONSTANT,
 
         // Whether system dimensions have been set. This is only allowed to happen once.
         sizeHasBeenInitialized = false,
@@ -208,23 +212,13 @@ define(function (require, exports, module) {
             ax[i] = ay[i] = 0;
           }
 
-          // // Convert ax, ay from forces to accelerations!
-          // for (i = 0; i < N; i++) {
-          //   inverseMass = 1/mass[i];
-          //   ax[i] *= inverseMass;
-          //   ay[i] *= inverseMass;
-          // }
-
-          // ######################################
-          // ax and ay are FORCES below this point
-          // ######################################
           updateGravitationalAccelerations();
 
         },
 
 
         updateGravitationalAccelerations = function() {
-          var i, j, dx, dy, rSq, gfx, gfy;
+          var i, j, dx, dy, rSq, gf, gfx, gfy;
 
           i = -1; while (++i < N) {
             m1 = mass[i];
@@ -234,13 +228,13 @@ define(function (require, exports, module) {
               rSq = dx * dx + dy * dy;
               l = Math.sqrt(rSq);
               m2 = mass[j];
-              gf = gravitationalField * m1 * m2 / rSq;
+              gf = gravitationalConstant * m1 * m2 / rSq;
               gfx = dx / l * gf;
               gfy = dy / l * gf;
-              ax[i] += gfx;
-              ay[i] += gfy;
-              ax[j] -= gfx;
-              ay[j] -= gfy;
+              ax[i] += gfx / m1;
+              ay[i] += gfy / m1;
+              ax[j] -= gfx / m2;
+              ay[j] -= gfy / m2;
             }
           }
         },
@@ -330,11 +324,11 @@ define(function (require, exports, module) {
         verticalWrapping = !!v;
       },
 
-      setGravitationalField: function(gf) {
-        if (typeof gf === "number" && gf !== 0) {
-          gravitationalField = gf;
+      setGravitationalConstant: function(gc) {
+        if (typeof gc === "number" && gc !== 0) {
+          gravitationalConstant = gc;
         } else {
-          gravitationalField = false;
+          gravitationalConstant = GRAVITATIONAL_CONSTANT;
         }
       },
 
@@ -443,8 +437,8 @@ define(function (require, exports, module) {
       },
 
       radiusFromMass: function(m) {
-        var density = 1,
-            volume = m*density,
+        var density = 1000,
+            volume = m/density,
             r;
         r = Math.pow(volume/(4/3*Math.PI), 1/3);
         return r

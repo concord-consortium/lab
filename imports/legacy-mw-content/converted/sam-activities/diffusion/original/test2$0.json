@@ -51,6 +51,7 @@
         "imageHostIndex": 0,
         "imageHostType": "",
         "imageLayer": 1,
+        "imageLayerPosition": 1,
         "imageX": 1.72,
         "imageY": 2.17
       },
@@ -59,6 +60,7 @@
         "imageHostIndex": 0,
         "imageHostType": "",
         "imageLayer": 1,
+        "imageLayerPosition": 2,
         "imageX": 1.72,
         "imageY": 2.17
       },
@@ -67,6 +69,7 @@
         "imageHostIndex": 0,
         "imageHostType": "",
         "imageLayer": 1,
+        "imageLayerPosition": 3,
         "imageX": 1.72,
         "imageY": 2.17
       },
@@ -75,6 +78,7 @@
         "imageHostIndex": 0,
         "imageHostType": "",
         "imageLayer": 1,
+        "imageLayerPosition": 4,
         "imageX": 1.72,
         "imageY": 2.17
       },
@@ -83,6 +87,7 @@
         "imageHostIndex": 0,
         "imageHostType": "",
         "imageLayer": 1,
+        "imageLayerPosition": 5,
         "imageX": 1.72,
         "imageY": 2.17
       },
@@ -91,6 +96,7 @@
         "imageHostIndex": 7,
         "imageHostType": "RadialBond",
         "imageLayer": 1,
+        "imageLayerPosition": 6,
         "imageX": 4.52852362410029,
         "imageY": 2.010354392324966
       },
@@ -99,6 +105,7 @@
         "imageHostIndex": 0,
         "imageHostType": "RadialBond",
         "imageLayer": 1,
+        "imageLayerPosition": 7,
         "imageX": 4.249012021694607,
         "imageY": 1.5086503036602068
       },
@@ -107,6 +114,7 @@
         "imageHostIndex": 6,
         "imageHostType": "RadialBond",
         "imageLayer": 1,
+        "imageLayerPosition": 8,
         "imageX": 3.0687299899673213,
         "imageY": 0.9206335114545419
       },
@@ -115,6 +123,7 @@
         "imageHostIndex": 4,
         "imageHostType": "RadialBond",
         "imageLayer": 1,
+        "imageLayerPosition": 9,
         "imageX": 2.815013706557739,
         "imageY": 1.2720553710887033
       },
@@ -123,6 +132,7 @@
         "imageHostIndex": 3,
         "imageHostType": "RadialBond",
         "imageLayer": 1,
+        "imageLayerPosition": 10,
         "imageX": 4.5205352151836795,
         "imageY": 3.2059848332343814
       },
@@ -131,6 +141,7 @@
         "imageHostIndex": 5,
         "imageHostType": "RadialBond",
         "imageLayer": 1,
+        "imageLayerPosition": 11,
         "imageX": 3.9382367373514113,
         "imageY": 2.875560974157524
       },
@@ -139,6 +150,7 @@
         "imageHostIndex": 2,
         "imageHostType": "RadialBond",
         "imageLayer": 1,
+        "imageLayerPosition": 12,
         "imageX": 3.4266432707091714,
         "imageY": 0.8605057949587569
       },
@@ -147,6 +159,7 @@
         "imageHostIndex": 1,
         "imageHostType": "RadialBond",
         "imageLayer": 1,
+        "imageLayerPosition": 13,
         "imageX": 3.0371996178377345,
         "imageY": 1.3220830387084874
       },
@@ -155,6 +168,7 @@
         "imageHostIndex": 13,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 14,
         "imageX": 4.222729827874576,
         "imageY": 0.8212624636914285
       },
@@ -163,6 +177,7 @@
         "imageHostIndex": 17,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 15,
         "imageX": 2.5096984047539945,
         "imageY": 1.8351119525006052
       },
@@ -171,6 +186,7 @@
         "imageHostIndex": 12,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 16,
         "imageX": 2.640573808077076,
         "imageY": 2.9146739133381487
       },
@@ -179,6 +195,7 @@
         "imageHostIndex": 23,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 17,
         "imageX": 3.275427081031204,
         "imageY": 2.0876706936876372
       },
@@ -187,6 +204,7 @@
         "imageHostIndex": 25,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 18,
         "imageX": 2.392091415394516,
         "imageY": 0.5451076876109436
       },
@@ -195,6 +213,7 @@
         "imageHostIndex": 15,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 19,
         "imageX": 2.9243303606284514,
         "imageY": 0.24433615859442853
       },
@@ -203,6 +222,7 @@
         "imageHostIndex": 24,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 20,
         "imageX": 3.115656978432065,
         "imageY": 2.700065675019185
       },
@@ -211,6 +231,7 @@
         "imageHostIndex": 26,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 21,
         "imageX": 3.4204517603074556,
         "imageY": 3.1452081532284586
       },
@@ -219,6 +240,7 @@
         "imageHostIndex": 20,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 22,
         "imageX": 4.3037767385974215,
         "imageY": 3.2156458060266133
       },
@@ -227,6 +249,7 @@
         "imageHostIndex": 19,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 23,
         "imageX": 4.671494015763497,
         "imageY": 1.1615565381154225
       },
@@ -235,6 +258,7 @@
         "imageHostIndex": 27,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 24,
         "imageX": 2.6544954737908237,
         "imageY": 3.09650296267417
       },
@@ -243,6 +267,7 @@
         "imageHostIndex": 16,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 25,
         "imageX": 4.459284247763602,
         "imageY": 0.8985112116094786
       },
@@ -251,6 +276,7 @@
         "imageHostIndex": 18,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 26,
         "imageX": 2.6593894475449087,
         "imageY": 1.6543820464066856
       },
@@ -259,6 +285,7 @@
         "imageHostIndex": 22,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 27,
         "imageX": 2.8807738938638736,
         "imageY": 0.5277573351726557
       },
@@ -267,6 +294,7 @@
         "imageHostIndex": 14,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 28,
         "imageX": 4.725653899657114,
         "imageY": 2.6455803556105
       },
@@ -275,6 +303,7 @@
         "imageHostIndex": 21,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 29,
         "imageX": 4.332419223494926,
         "imageY": 2.51308926218119
       },
@@ -283,6 +312,7 @@
         "imageHostIndex": 8,
         "imageHostType": "RadialBond",
         "imageLayer": 1,
+        "imageLayerPosition": 30,
         "imageX": 3.7386476182394466,
         "imageY": 2.178619070051856
       },
@@ -291,6 +321,7 @@
         "imageHostIndex": 9,
         "imageHostType": "RadialBond",
         "imageLayer": 1,
+        "imageLayerPosition": 31,
         "imageX": 2.315889644171692,
         "imageY": 1.0807688661072568
       },
@@ -299,6 +330,7 @@
         "imageHostIndex": 10,
         "imageHostType": "RadialBond",
         "imageLayer": 1,
+        "imageLayerPosition": 32,
         "imageX": 3.22741020649305,
         "imageY": 2.621405842909852
       },
@@ -307,6 +339,7 @@
         "imageHostIndex": 50,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 33,
         "imageX": 3.208150642507772,
         "imageY": 1.5903102964218008
       },
@@ -315,6 +348,7 @@
         "imageHostIndex": 53,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 34,
         "imageX": 3.6864337215260377,
         "imageY": 3.153922930411972
       },
@@ -323,6 +357,7 @@
         "imageHostIndex": 51,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 35,
         "imageX": 2.996062765052721,
         "imageY": 1.5760775871374915
       },
@@ -331,6 +366,7 @@
         "imageHostIndex": 56,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 36,
         "imageX": 3.6122590306847973,
         "imageY": 1.333483852605606
       },
@@ -339,6 +375,7 @@
         "imageHostIndex": 52,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 37,
         "imageX": 4.428174402167756,
         "imageY": 2.088127835797985
       },
@@ -347,6 +384,7 @@
         "imageHostIndex": 55,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 38,
         "imageX": 2.636250776079391,
         "imageY": 0.4568747719738076
       },
@@ -355,6 +393,7 @@
         "imageHostIndex": 60,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 39,
         "imageX": 3.6013203557024487,
         "imageY": 2.1606395569423724
       },
@@ -363,6 +402,7 @@
         "imageHostIndex": 58,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 40,
         "imageX": 4.055661365505818,
         "imageY": 0.9780832015178436
       },
@@ -371,6 +411,7 @@
         "imageHostIndex": 57,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 41,
         "imageX": 4.76108460006619,
         "imageY": 0.829837538277938
       },
@@ -379,6 +420,7 @@
         "imageHostIndex": 59,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 42,
         "imageX": 3.8264917403272416,
         "imageY": 0.41891980750930485
       },
@@ -387,6 +429,7 @@
         "imageHostIndex": 54,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 43,
         "imageX": 2.7299292978855614,
         "imageY": 0.3084494221701351
       },
@@ -395,6 +438,7 @@
         "imageHostIndex": 73,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 44,
         "imageX": 0.22949947186331512,
         "imageY": 1.5771033146051605
       },
@@ -403,6 +447,7 @@
         "imageHostIndex": 74,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 45,
         "imageX": 1.6899430338741857,
         "imageY": 0.8479151558120183
       },
@@ -411,6 +456,7 @@
         "imageHostIndex": 61,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 46,
         "imageX": 1.1410892768646759,
         "imageY": 1.0677353851877036
       },
@@ -419,6 +465,7 @@
         "imageHostIndex": 75,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 47,
         "imageX": 1.2928931256510368,
         "imageY": 0.9203901883840092
       },
@@ -427,6 +474,7 @@
         "imageHostIndex": 62,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 48,
         "imageX": 1.5120361289119664,
         "imageY": 0.23774205959460631
       },
@@ -435,6 +483,7 @@
         "imageHostIndex": 72,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 49,
         "imageX": 0.13927589806020893,
         "imageY": 0.9385045007091943
       },
@@ -443,6 +492,7 @@
         "imageHostIndex": 63,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 50,
         "imageX": 0.839425138309062,
         "imageY": 2.3334692778716413
       },
@@ -451,6 +501,7 @@
         "imageHostIndex": 64,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 51,
         "imageX": 1.2350657707337707,
         "imageY": 3.15527101591139
       },
@@ -459,6 +510,7 @@
         "imageHostIndex": 76,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 52,
         "imageX": 0.7720039273451527,
         "imageY": 3.1059080729750947
       },
@@ -467,6 +519,7 @@
         "imageHostIndex": 65,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 53,
         "imageX": 0.9419504363770181,
         "imageY": 2.9385888252870074
       },
@@ -475,6 +528,7 @@
         "imageHostIndex": 66,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 54,
         "imageX": 1.6526740077332047,
         "imageY": 2.832675478962061
       },
@@ -483,6 +537,7 @@
         "imageHostIndex": 71,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 55,
         "imageX": 0.43816103840118364,
         "imageY": 2.443683212693349
       },
@@ -491,6 +546,7 @@
         "imageHostIndex": 70,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 56,
         "imageX": 0.5971990603973016,
         "imageY": 1.6504666499194003
       },
@@ -499,6 +555,7 @@
         "imageHostIndex": 67,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 57,
         "imageX": 1.6772300658755899,
         "imageY": 1.050565205256507
       },
@@ -507,6 +564,7 @@
         "imageHostIndex": 68,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 58,
         "imageX": 0.4436612494528013,
         "imageY": 1.8579772114588515
       },
@@ -515,6 +573,7 @@
         "imageHostIndex": 69,
         "imageHostType": "Atom",
         "imageLayer": 1,
+        "imageLayerPosition": 59,
         "imageX": 1.5109429659376077,
         "imageY": 1.52178269766945
       }

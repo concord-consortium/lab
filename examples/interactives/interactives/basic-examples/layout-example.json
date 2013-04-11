@@ -50,8 +50,11 @@
       "action": "reset();"
     },
     {
-      "type": "thermometer",
+      "type": "barGraph",
       "id": "thermometer",
+      "property": "temperature",
+      "title": "Thermometer",
+      "labels": 0,
       "min": 200,
       "max": 4000
     }

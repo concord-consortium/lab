@@ -10,10 +10,9 @@ define(function(require) {
       TickHistory          = require('common/models/tick-history'),
       serialize            = require('common/serialize'),
       validator            = require('common/validator'),
-      units                = require('common/models/engines/constants/units'),
+      units                = require('solar-system/models/engine/constants/units'),
       PropertyDescription  = require('solar-system/models/property-description'),
       unitDefinitions      = require('solar-system/models/unit-definitions/index'),
-      UnitsTranslation     = require('solar-system/models/units-translation'),
       _ = require('underscore');
 
   return function Model(initialProperties) {
@@ -81,10 +80,10 @@ define(function(require) {
             }
           },
 
-          set_gravitationalField: function(gf) {
-            this.gravitationalField = gf;
+          set_gravitationalConstant: function(gc) {
+            this.gravitationalConstant = gc;
             if (engine) {
-              engine.setGravitationalField(gf);
+              engine.setGravitationalConstant(gc);
             }
           }
 
@@ -116,11 +115,7 @@ define(function(require) {
 
         // The set of units currently in effect. (Determined by the 'unitsScheme' property of the
         // model; default value is 'md2d')
-        unitsDefinition,
-
-        // Object that translates between 'native' md2d units and the units defined
-        // by unitsDefinition.
-        unitsTranslation;
+        unitsDefinition;
 
     function notifyPropertyListeners(listeners) {
       listeners = _.uniq(listeners);
@@ -341,6 +336,40 @@ define(function(require) {
     }
 
     /**
+      Executes the closure 'extract' which extracts from the tick history, then dispatches
+      addAtom/removeAtom, etc, events as needed.
+
+      This prevents unneessary creation and removal of atoms.
+    */
+    var runAndDispatchObjectNumberChanges = (function() {
+      var objects = [{
+        getNum: 'getNumberOfBodies',
+        addEvent: 'addBody',
+        removeEvent: 'removeBody'
+      }];
+
+      return function (extract) {
+        var i, o, newNum;
+        for (i = 0; i < objects.length; i++) {
+          o = objects[i];
+          o.num = engine[o.getNum]();
+        }
+
+        extract();
+
+        for (i = 0; i < objects.length; i++) {
+          o = objects[i];
+          newNum = engine[o.getNum]();
+          if (newNum > o.num) {
+            dispatch[o.addEvent]();
+          } else if (newNum < o.num) {
+            dispatch[o.removeEvent]();
+          }
+        }
+      };
+    })();
+
+    /**
       Call this method *before* changing any "universe" property or model property (including any
       property of a model object such as the position of an planet) to save the output-property
       values before the change. This is required to enabled updateOutputPropertiesAfterChange to be
@@ -437,7 +466,7 @@ define(function(require) {
 
       engine.computeOutputState(modelOutputState);
 
-      extendResultsArray();
+      resizeResultsArray();
 
       // Transpose 'bodies' object into 'results' for easier consumption by view code
       for (i = 0, n = model.get_num_bodies(); i < n; i++) {
@@ -450,21 +479,36 @@ define(function(require) {
     }
 
     /**
-      Ensure that the 'results' array of arrays is defined and contains one typed array per planet
-      for containing the planet properties.
+      Ensure that the 'results' array of arrays is defined and contains one typed array per atom
+      for containing the atom properties.
     */
-    function extendResultsArray() {
-      var i, len;
+    function resizeResultsArray() {
+      var isAminoAcid = function () {
+            return aminoacidsHelper.isAminoAcid(this.element);
+          },
+          i, len;
+
+      // TODO: refactor whole approach to creation of objects from flat arrays.
+      // Think about more general way of detecting and representing amino acids.
+      // However it would be reasonable to perform such refactoring later, when all requirements
+      // related to proteins engine are clearer.
 
       if (!results) results = [];
 
       for (i = results.length, len = model.get_num_bodies(); i < len; i++) {
         if (!results[i]) {
           results[i] = {
-            idx: i
+            idx: i,
+            // Provide convenience function for view, do not force it to ask
+            // model / engine directly. In the future, atom objects should be
+            // represented by a separate class.
+            isAminoAcid: isAminoAcid
           };
         }
       }
+
+      // Also make sure to truncate the results array if it got shorter (i.e., atoms were removed)
+      results.length = len;
     }
 
     // ------------------------------------------------------------
@@ -501,45 +545,57 @@ define(function(require) {
 
     model.seek = function(location) {
       if (!arguments.length) { location = 0; }
-      stopped = true;
+      if (!model.is_stopped()) {
+        model.stop();
+      }
       newStep = false;
-      tickHistory.seekExtract(location);
-      updateAllOutputProperties();
-      dispatch.seek();
+      runAndDispatchObjectNumberChanges(function() {
+        tickHistory.seekExtract(location);
+        updateAllOutputProperties();
+        dispatch.seek();
+      });
       return tickHistory.get("counter");
     };
 
     model.stepBack = function(num) {
       if (!arguments.length) { num = 1; }
-      var i, index;
-      stopped = true;
-      newStep = false;
-      i=-1; while(++i < num) {
-        index = tickHistory.get("index");
-        if (index > 0) {
-          tickHistory.decrementExtract();
-          updateAllOutputProperties();
-          dispatch.stepBack();
-        }
+      if (!model.is_stopped()) {
+        model.stop();
       }
+      newStep = false;
+      runAndDispatchObjectNumberChanges(function() {
+        var i, index;
+        i=-1; while(++i < num) {
+          index = tickHistory.get("index");
+          if (index > 0) {
+            tickHistory.decrementExtract();
+            updateAllOutputProperties();
+            dispatch.stepBack();
+          }
+        }
+      });
       return tickHistory.get("counter");
     };
 
     model.stepForward = function(num) {
       if (!arguments.length) { num = 1; }
-      var i, index, size;
-      stopped = true;
-      i=-1; while(++i < num) {
-        index = tickHistory.get("index");
-        size = tickHistory.get("length");
-        if (index < size-1) {
-          tickHistory.incrementExtract();
-          updateAllOutputProperties();
-          dispatch.stepForward();
-        } else {
-          tick();
-        }
+      if (!model.is_stopped()) {
+        model.stop();
       }
+      runAndDispatchObjectNumberChanges(function() {
+        var i, index, size;
+        i=-1; while(++i < num) {
+          index = tickHistory.get("index");
+          size = tickHistory.get("length");
+          if (index < size-1) {
+            tickHistory.incrementExtract();
+            updateAllOutputProperties();
+            dispatch.stepForward();
+          } else {
+            tick();
+          }
+        }
+      });
       return tickHistory.get("counter");
     };
 
@@ -560,7 +616,6 @@ define(function(require) {
       engine.setDimensions([model.get('minX'), model.get('minY'), model.get('maxX'), model.get('maxY')]);
       engine.setHorizontalWrapping(model.get('horizontalWrapping'));
       engine.setVerticalWrapping(model.get('verticalWrapping'));
-      engine.setGravitationalField(model.get('gravitationalField'));
 
       window.state = modelOutputState = {};
 
@@ -928,7 +983,16 @@ define(function(require) {
       return model;
     };
 
-    model.set = function(hash) {
+    model.set = function(key, val) {
+      var hash;
+      if (arguments.length === 1) {
+        // Hash of options provided.
+        hash = key;
+      } else {
+        // Key - value pair provied.
+        hash = {};
+        hash[key] = val;
+      }
       // Perform validation in case of setting main properties or
       // model view properties. Attempts to set immutable or read-only
       // properties will be caught.
@@ -1191,6 +1255,22 @@ define(function(require) {
     // not defined in meta model as mainProperties (like bodies, viewOptions etc).
     set_properties(validator.validateCompleteness(metadata.mainProperties, initialProperties));
 
+    (function () {
+      if (!initialProperties.viewOptions || !initialProperties.viewOptions.textBoxes) {
+        return;
+      }
+      // Temporal workaround to provide text boxes validation.
+      // Note that text boxes are handled completely different from other objects
+      // like atoms or obstacles. There is much of inconsistency and probably
+      // it should be refactored anyway.
+      var textBoxes = initialProperties.viewOptions.textBoxes,
+          i, len;
+
+      for (i = 0, len = textBoxes.length; i < len; i++) {
+        textBoxes[i] = validator.validateCompleteness(metadata.textBox, textBoxes[i]);
+      }
+    }());
+
     // Set the model view options.
     set_properties(validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {}));
 
@@ -1213,7 +1293,7 @@ define(function(require) {
         "showClock",
         "timeStepsPerTick",
         "timeStep",
-        "gravitationalField"
+        "gravitationalConstant"
       ],
       getRawPropertyValue: getRawPropertyValue,
       restoreProperties: restoreProperties,
@@ -1226,14 +1306,6 @@ define(function(require) {
 
     // Set up units scheme.
     unitsDefinition = unitDefinitions.get(model.get('unitsScheme'));
-
-    // If we're not using MD2D units, we need a translation (which, for each unit type, allows some
-    // number of "native" MD2D units to stand for 1 translated unit, e.g., 1 nm represents 1m, with
-    // the relationships between these ratios set up so that the calculations reamin physically
-    // consistent.
-    if (model.get('unitsScheme') !== 'solar-system') {
-      unitsTranslation = new UnitsTranslation(unitsDefinition);
-    }
 
     // set up types of all properties before any third-party calls to set/get
     mainPropertyUnitTypes = {};
@@ -1261,7 +1333,7 @@ define(function(require) {
       label: "Model time per tick",
       unitName:         unitsDefinition.units.time.name,
       unitPluralName:   unitsDefinition.units.time.pluralName,
-      unitAbbreviation: unitsDefinition.units.time.abbreviation,
+      unitAbbreviation: unitsDefinition.units.time.symbol,
       format: 'f'
     }, function() {
       return model.get('timeStep') * model.get('timeStepsPerTick');
@@ -1284,7 +1356,7 @@ define(function(require) {
         label: "Time",
         unitName:         displayTimeUnits.name,
         unitPluralName:   displayTimeUnits.pluralName,
-        unitAbbreviation: displayTimeUnits.abbreviation,
+        unitAbbreviation: displayTimeUnits.symbol,
         format: '.3f'
       }, function() {
         return model.get('time') * displayTimeUnits.unitsPerBaseUnit;
@@ -1294,12 +1366,28 @@ define(function(require) {
         label: "Model time per tick",
         unitName:         displayTimeUnits.name,
         unitPluralName:   displayTimeUnits.pluralName,
-        unitAbbreviation: displayTimeUnits.abbreviation,
+        unitAbbreviation: displayTimeUnits.symbol,
         format: '.3f'
       }, function() {
         return model.get('timePerTick') * displayTimeUnits.unitsPerBaseUnit;
       });
     }());
+
+    model.defineOutput('tickCounter', {
+      label: "Tick Counter",
+      unitType: '',
+      format: '4g'
+    }, function() {
+      return tickHistory.get("counter");
+    });
+
+    model.defineOutput('newStep', {
+      label: "New Step",
+      unitType: '',
+      format: ''
+    }, function() {
+      return newStep;
+    });
 
     updateAllOutputProperties();
 
