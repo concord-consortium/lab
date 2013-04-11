@@ -63,16 +63,11 @@ describe Parsers::Models::Md2d do
 
       subject.uri_helper.path.should == "#{Rails.root}/public//imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json"
     end
-    it "#generate_local_ref_id" do
-      subject.generate_local_ref_id.should == 'one-atom'
-    end
 
     it "#parse" do
       model = subject.parse
       model.from_import.should be_true
       model.url.should == 'models/md2d/one-atom.json'
-      model.local_ref_id.should == 'one-atom'
-      model.id.should == 'models_md2d_one-atom'
       model.viewOptions['controlButtons'].should == "play_reset"
       model.width.should == 0.5
       model.height.should == 0.5

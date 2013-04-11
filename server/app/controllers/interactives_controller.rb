@@ -85,6 +85,7 @@ class InteractivesController < ApplicationController
 
   def create_interactive_model
     interactive_model = InteractiveModel.new(:viewOptions => params[:interactive][:models].first[:viewOptions],
+                                             :local_ref_id => params[:interactive][:models].first[:id],
                                              :parameters => params[:interactive][:parameters],
                                              :outputs => params[:interactive][:outputs],
                                              :filteredOutputs => params[:interactive][:filteredOutputs])
@@ -99,7 +100,6 @@ class InteractivesController < ApplicationController
     old_model = Models::Md2d.find(model_id)
     old_model.clone! do |m|
       m.from_import = false
-      m.local_ref_id = m.id
       m.name = nil
       m.url = m.id
     end

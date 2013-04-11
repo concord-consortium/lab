@@ -17,17 +17,9 @@ module Parsers
           # read model json file and merge into data_hash
           self.update_from_uri!
         end
-        self.generate_local_ref_id
         self.generate_couch_doc_id(url)
         self.generate_image_path(url)
         update_db
-      end
-
-      def generate_local_ref_id
-        # TODO: Its possible that the ID field has something we want
-        # when importing, the 'id' is often a non-unique id.
-        # this short id is for local references in interactives
-        self.data_hash['local_ref_id'] = self.data_hash.delete('id')
       end
 
       # NOTE: The imagePath is only set on import for now. We

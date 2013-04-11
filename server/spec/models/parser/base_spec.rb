@@ -22,7 +22,7 @@ describe Parsers::Base do
       subject.update_data!({'foo' => 'bar'}).parse.should == {"from_import" => true, 'foo' => 'bar'}
     end
 
-    it "#update_data!(nil) should raise an exception" do
+    it "#update_data!([]) should raise an exception" do
       expect do
         subject.update_data!([]).parse.should == {"from_import" => true}
       end.to raise_error(ArgumentError)
@@ -49,7 +49,7 @@ describe Parsers::Base do
     end
   end
 
-  context ".new('simplest_list_of_interactives.json', {...}) with a second argument" do
+  describe ".new('simplest_list_of_interactives.json', {...}) with a second argument" do
     subject { Parsers::Base.new(sample_file_path('simplest_list.json'), { "interactives"=>[{"title"=>"Some Title"}]}) }
 
     it "#update_from_uri! the constructor data hash arg does NOT overwrite the json file contents" do
@@ -63,7 +63,7 @@ describe Parsers::Base do
       base_parser.parse.should == {"from_import"=>true, "interactives"=>[{"title"=>"Testing: Only One Atom", "path"=>"interactives/basic-examples/one-atom.json", "groupKey"=>"basic-examples", "subtitle"=>"The MD2D model works with just a single atom also.", "about"=>"", "publicationStatus"=>"public"}], "groups"=>[{"path"=>"basic-examples", "name"=>"Basic Interactive Examples", "category"=>"Examples"}]}
     end
 
-    it "#update_from_uri! the constructor data hash arg does NOT add key/values" do
+    it "#update_from_uri! the constructor data hash arg does NOT add key/values to groups" do
       base_parser =  Parsers::Base.new(sample_file_path('simplest_list.json'), { "groups"=>[{"another_path"=>"NOTBASIC-EXAMPLES", "another_name"=>"NOT BASIC INTERACTIVE EXAMPLES", "another_category"=>"NOT EXAMPLES"}]})
       base_parser.update_from_uri!
       base_parser.parse.should == {"from_import"=>true, "interactives"=>[{"title"=>"Testing: Only One Atom", "path"=>"interactives/basic-examples/one-atom.json", "groupKey"=>"basic-examples", "subtitle"=>"The MD2D model works with just a single atom also.", "about"=>"", "publicationStatus"=>"public"}], "groups"=>[{"path"=>"basic-examples", "name"=>"Basic Interactive Examples", "category"=>"Examples"}]}
@@ -74,6 +74,7 @@ describe Parsers::Base do
   context ".new('simplest_list_of_interactives.json')" do
     subject { Parsers::Base.new(sample_file_path('simplest_list.json')) }
     it "#update_from_uri!" do
+      # read json contained in the file 'simplest_list.json'
       subject.update_from_uri!
       subject.parse.should == {"from_import"=>true, "interactives"=>[{"title"=>"Testing: Only One Atom", "path"=>"interactives/basic-examples/one-atom.json", "groupKey"=>"basic-examples", "subtitle"=>"The MD2D model works with just a single atom also.", "about"=>"", "publicationStatus"=>"public"}], "groups"=>[{"path"=>"basic-examples", "name"=>"Basic Interactive Examples", "category"=>"Examples"}]}
     end
@@ -123,7 +124,7 @@ describe Parsers::Base do
         expect do
           subject.update_from_uri!
         end.to_not raise_error
-      end.should =~ /WARNING: Could not find/
+      end.should =~ /WARNING: Could not read/
     end
   end
 
