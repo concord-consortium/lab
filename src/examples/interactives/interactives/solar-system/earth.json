@@ -183,7 +183,7 @@
     {
       "type": "radio",
       "id": "select-month",
-      "label": "Select month",
+      "label": "Select starting month",
       "orientation": "horizontal",
       "property": "month",
       "options": [
@@ -208,7 +208,7 @@
     {
       "type": "graph",
       "id": "orbit-distance-graph",
-      "title": "Orbital Distance",
+      "title": "Orbital distance of Earth from Sun",
       "xlabel": "Day",
       "ylabel": "Distance (AU)",
       "ymin": 0.0,
@@ -248,7 +248,7 @@
       "top": "model.top",
       "left": "model.right",
       "height": "model.height * 0.25",
-      "padding-left": "3em",
+      "padding-left": "1em",
       "padding-right": "0.5em",
       "padding-bottom": "0.5em",
       "width": "model.width * 1.0",
@@ -258,8 +258,10 @@
       "id": "right-middle",
       "left": "model.right",
       "top": "right-upper.bottom",
-      "height": "model.height * 0.65",
-      "padding-left": "0.5em",
+      "height": "model.height * 0.6",
+      "padding-top": "1.0em",
+      "padding-bottom": "0.5em",
+      "padding-left": "0em",
       "padding-right": "0.5em",
       "width": "model.width * 1.0",
       "min-width": "model.width * 0.8"
@@ -268,8 +270,9 @@
       "id": "right-lower",
       "left": "model.right",
       "top": "right-middle.bottom",
-      "bottom": "model.bottom",
-      "padding-left": "3em",
+      "height": "2em",
+      "padding-top": "0.5em",
+      "padding-left": "1em",
       "padding-right": "0.5em",
       "width": "model.width * 1.0",
       "min-width": "model.width * 0.8"
