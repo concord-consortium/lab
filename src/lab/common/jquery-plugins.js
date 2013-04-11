@@ -63,7 +63,11 @@ define(function () {
         $span.text(newText);
         width = $span.width();
       }
-      // Update original text.
+
+      // Save original text content in title attribute,
+      // so tooltip can be displayed.
+      $el.attr("title", $el.text());
+      // Update original element.
       $el.text(newText);
     }
     // Cleanup!
