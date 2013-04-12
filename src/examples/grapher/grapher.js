@@ -224,6 +224,7 @@ function selectDataHandler() {
       realTime: true,
       sample: sample,
       circleRadius: 3,
+      circlesVisibleOnlyOnHover: true,
       strokeWidth: 5,
       dataChange: false,
       addData: false,

@@ -74,6 +74,7 @@ define(function (require) {
         downy = NaN,
         dragged = null,
         selected = null,
+        selectable = [],
         titles = [],
 
         points, pointArray,
@@ -145,6 +146,9 @@ define(function (require) {
           // if not false should indicate a radius size for circles to
           // drawn around data points
           circleRadius:    10.0,
+
+          // only show circles when hovering near them with the mouse
+          circlesVisibleOnlyOnHover: false,
 
           // width of the line used for plotting
           strokeWidth:      2.0,
@@ -554,6 +558,7 @@ define(function (require) {
         .attr("height", size.height)
         .attr("pointer-events", "all")
         .attr("fill", "rgba(255,255,255,0)")
+        .on("mousemove", plotMousemove)
         .on("mousedown", plotDrag)
         .on("touchstart", plotDrag);
 
@@ -835,6 +840,20 @@ define(function (require) {
     // Draw the data
     //
     // ------------------------------------------------------------
+    function circleClasses(d) {
+      cs = [];
+      if (d === selected) {
+        cs.push("selected");
+      }
+      if (!options.circlesVisibleOnlyOnHover || selectable.indexOf(d) !== -1) {
+        cs.push("selectable");
+      }
+      if (cs.length === 0) {
+        return null;
+      } else {
+        return cs.join(" ");
+      }
+    }
 
     function update(samplePoint) {
       setCurrentSample(samplePoint);
@@ -854,7 +873,7 @@ define(function (require) {
       if (options.circleRadius && sizeType.value > 1) {
         if (!(options.circleRadius <= 4 && sizeType.value < 3)) {
           circle.enter().append("circle")
-              .attr("class", function(d) { return d === selected ? "selected" : null; })
+              .attr("class", circleClasses)
               .attr("cx",    function(d) { return xScale(d.x); })
               .attr("cy",    function(d) { return yScale(d.y); })
               .attr("r", options.circleRadius)
@@ -864,7 +883,7 @@ define(function (require) {
               .on("touchstart.drag", dataPointDrag);
 
           circle
-              .attr("class", function(d) { return d === selected ? "selected" : null; })
+              .attr("class", circleClasses)
               .attr("cx",    function(d) { return xScale(d.x); })
               .attr("cy",    function(d) { return yScale(d.y); })
               .attr("r", options.circleRadius)
@@ -899,7 +918,7 @@ define(function (require) {
       if (options.circleRadius && sizeType.value > 1) {
         if (!(options.circleRadius <= 4 && sizeType.value < 3)) {
           circle.enter().append("circle")
-              .attr("class", function(d) { return d === selected ? "selected" : null; })
+              .attr("class", circleClasses)
               .attr("cx",    function(d) { return xScale(d[0]); })
               .attr("cy",    function(d) { return yScale(d[1]); })
               .attr("r", options.circleRadius * (1 + sizeType.value) / 4)
@@ -909,7 +928,7 @@ define(function (require) {
               .on("touchstart.drag", dataPointDrag);
 
           circle
-              .attr("class", function(d) { return d === selected ? "selected" : null; })
+              .attr("class", circleClasses)
               .attr("cx",    function(d) { return xScale(d[0]); })
               .attr("cy",    function(d) { return yScale(d[1]); })
               .attr("r", options.circleRadius * (1 + sizeType.value) / 4)
@@ -963,6 +982,49 @@ define(function (require) {
     //     d3.event.stopPropagation();
     //   }
     // }
+
+    function plotMousemove() {
+      if (options.circlesVisibleOnlyOnHover) {
+        var mousePoint = d3.mouse(vis.node()),
+            translatedMousePointX = xScale.invert(Math.max(0, Math.min(size.width, mousePoint[0]))),
+            p = findClosestPointByX(translatedMousePointX);
+        if (p !== null) {
+          selectable = [];
+          selectable.push(p);
+          update();
+        }
+      }
+    }
+
+    function findClosestPointByX(x) {
+      // binary search through points.
+      // This assumes points is sorted ascending by x value, which for realTime graphs is true.
+      if (points.length === 0) { return null; }
+      var min = 0,
+          max = points.length - 1,
+          mid, diff, p1, p2, p3;
+      while (min < max) {
+        mid = Math.floor((min + max)/2.0);
+        if (points[mid].x < x) {
+          min = mid + 1;
+        } else {
+          max = mid;
+        }
+      }
+
+      // figure out which point is actually closest.
+      // we have to compare 3 points, to account for floating point rounding errors.
+      p1 = points[mid - 1];
+      p2 = points[mid];
+      p3 = points[mid + 1];
+      if (typeof(p1) === "object" && Math.abs(p1.x - x) <= Math.abs(p2.x - x)) {
+        return p1;
+      } else if (typeof(p3) !== "object" || Math.abs(p2.x - x) <= Math.abs(p3.x - x)) {
+        return p2;
+      } else {
+        return p3;
+      }
+    }
 
     function plotDrag() {
       if (options.realTime) {

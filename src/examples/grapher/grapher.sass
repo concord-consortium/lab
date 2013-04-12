@@ -32,6 +32,8 @@ circle
   fill: white
   fill-opacity: 0.2
   cursor: move
+  &:not(.selectable):not(.selected)
+    visibility: hidden
   &.selected
     fill: #ff7f0e
     stroke: #ff7f0e
