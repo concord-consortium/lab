@@ -91,6 +91,19 @@ AUTHORING = false;
       modelRemoteKeys = ['id', 'from_import', 'location'],
       modelButtonHandlersAdded = false;
 
+  function sendGAPageview(){
+    // send the pageview to GA
+    if (typeof _gaq === 'undefined'){
+      return;
+    }
+    // make an array out of the URL's hashtag string, splitting the string at every ampersand
+    var my_hashtag_array = location.hash.split('&');
+
+    // grab the first value of the array (assuming that's the value that indicates which interactive is being viewed)
+    var my_hashtag = my_hashtag_array[0];
+    _gaq.push(['_trackPageview', location.pathname + my_hashtag]);
+  }
+
   function isEmbeddablePage() {
     return ($selectInteractive.length === 0);
   }
@@ -168,6 +181,7 @@ AUTHORING = false;
       if (interactive.title) {
         document.title = interactive.title;
       }
+      sendGAPageview();
 
       interactiveDefinitionLoaded.resolve();
     })
