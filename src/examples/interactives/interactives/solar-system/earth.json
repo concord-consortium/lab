@@ -247,40 +247,21 @@
       "id": "right-upper",
       "top": "model.top",
       "left": "model.right",
-      "height": "model.height * 0.25",
-      "padding-left": "1em",
-      "padding-right": "0.5em",
-      "padding-bottom": "0.5em",
-      "width": "model.width * 1.0",
-      "min-width": "model.width * 0.8"
+      "width": "model.width"
+    },
+    {
+      "id": "right-lower",
+      "left": "model.right",
+      "padding-top": "0.5em",
+      "bottom": "interactive.height",
+      "width": "model.width"
     },
     {
       "id": "right-middle",
       "left": "model.right",
       "top": "right-upper.bottom",
-      "height": "model.height * 0.6",
-      "padding-top": "1.0em",
-      "padding-bottom": "0.5em",
-      "padding-left": "0em",
-      "padding-right": "0.5em",
-      "width": "model.width * 1.0",
-      "min-width": "model.width * 0.8"
-    },
-    {
-      "id": "right-lower",
-      "left": "model.right",
-      "top": "right-middle.bottom",
-      "height": "2em",
-      "padding-top": "0.5em",
-      "padding-left": "1em",
-      "padding-right": "0.5em",
-      "width": "model.width * 1.0",
-      "min-width": "model.width * 0.8"
-    },
-    {
-      "id": "bottom",
-      "left": "model.left",
-      "top": "model.bottom"
+      "bottom": "right-lower.top",
+      "width": "model.width"
     }
   ]
 }
