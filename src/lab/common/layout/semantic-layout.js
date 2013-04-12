@@ -320,7 +320,7 @@ define(function (require) {
           }
         }
         if (container.belowOthers) {
-          height = getDimensionOfContainer($container, "height");
+          height = getDimensionOfContainer($container, "height") + padding;
           if (height > bottomBarWidth) {
             bottomBarWidth = height;
           }
@@ -430,11 +430,11 @@ define(function (require) {
         case "container.width":
           return availableWidth;
         case "container.height":
-          return availableHeight + padding;
+          return availableHeight;
         case "interactive.width":
-          return availableWidth - padding;
+          return availableWidth - leftBoundary;
         case "interactive.height":
-          return availableHeight - (padding*2) - bottomBarWidth;
+          return availableHeight - topBoundary - bottomBarWidth;
         default:
           dim = dim.split(".");
           return getDimensionOfContainer($containerByID[dim[0]], dim[1]);
@@ -452,7 +452,7 @@ define(function (require) {
 
       reset();
       availableWidth = canonicalInteractiveWidth;
-      availableHeight = canonicalInteractiveHeight - bottomBarWidth - padding;
+      availableHeight = canonicalInteractiveHeight;
       modelWidth = availableWidth;
 
       // Set basic interactive dimensions to default values to ensure that default font will be used.
@@ -576,7 +576,7 @@ define(function (require) {
 
         reset();
         availableWidth  = $interactiveContainer.width();
-        availableHeight = $interactiveContainer.height() - bottomBarWidth - padding;
+        availableHeight = $interactiveContainer.height();
         modelWidth = availableWidth; // optimization
 
         // 0. Set font size of the interactive-container based on its size.
