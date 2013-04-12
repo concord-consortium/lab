@@ -225,6 +225,7 @@ function selectDataHandler() {
       sample: sample,
       circleRadius: 3,
       circlesVisibleOnlyOnHover: true,
+      extraCirclesVisibleOnHover: 1,
       strokeWidth: 5,
       dataChange: false,
       addData: false,

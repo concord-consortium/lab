@@ -150,6 +150,9 @@ define(function (require) {
           // only show circles when hovering near them with the mouse
           circlesVisibleOnlyOnHover: false,
 
+          // number of circles to show on each side of the central point
+          extraCirclesVisibleOnHover: 2,
+
           // width of the line used for plotting
           strokeWidth:      2.0,
 
@@ -987,10 +990,16 @@ define(function (require) {
       if (options.circlesVisibleOnlyOnHover) {
         var mousePoint = d3.mouse(vis.node()),
             translatedMousePointX = xScale.invert(Math.max(0, Math.min(size.width, mousePoint[0]))),
-            p = findClosestPointByX(translatedMousePointX);
+            p = findClosestPointByX(translatedMousePointX),
+            idx, pMin, pMax;
         if (p !== null) {
-          selectable = [];
-          selectable.push(p);
+          // highlight the central point, and also points to the left and right
+          idx = points.indexOf(p);
+          pMin = idx - (options.extraCirclesVisibleOnHover);
+          pMax = idx + (options.extraCirclesVisibleOnHover + 1);
+          if (pMin < 0) { pMin = 0; }
+          if (pMax > points.length - 1) { pMax = points.length; }
+          selectable = points.slice(pMin, pMax);
           update();
         }
       }
