@@ -292,13 +292,21 @@ define(function (require) {
         }
         if (container.right) {
           right = parseDimension(container.right);
-          left = right - $container.outerWidth();
-          $container.css("left", left);
+          if (container.left) {
+            $container.css("width", right - left);
+          } else {
+            left = right - $container.outerWidth();
+            $container.css("left", left);
+          }
         }
         if (container.bottom) {
           bottom = parseDimension(container.bottom);
-          top = bottom - $container.outerHeight();
-          $container.css("top", top);
+          if (container.top) {
+            $container.css("height", top - bottom);
+          } else {
+            top = bottom - $container.outerHeight();
+            $container.css("top", top);
+          }
         }
 
         // Containers with "aboveOthers" property should be treated in a special
