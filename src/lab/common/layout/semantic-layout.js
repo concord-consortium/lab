@@ -302,7 +302,7 @@ define(function (require) {
         if (container.bottom) {
           bottom = parseDimension(container.bottom);
           if (container.top) {
-            $container.css("height", top - bottom);
+            $container.css("height", bottom - top);
           } else {
             top = bottom - $container.outerHeight();
             $container.css("top", top);
