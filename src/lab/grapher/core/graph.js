@@ -1409,6 +1409,7 @@ define(function (require) {
     */
     function autoscale() {
       var i,
+          j,
           len,
           point,
           x,
@@ -1422,15 +1423,18 @@ define(function (require) {
 
       if (points.length < 2) return;
 
-      for (i = 0, len = points.length; i < len; i++){
-        point = points[i];
-        x = point.length ? point[0] : point[0];
-        y = point.length ? point[1] : point[1];
+      for (i = 0; i < pointArray.length; i++) {
+        points = pointArray[i];
+        for (j = 0, len = points.length; j < len; j++){
+          point = points[j];
+          x = point[0];
+          y = point[1];
 
-        if (x < xmin) xmin = x;
-        if (x > xmax) xmax = x;
-        if (y < ymin) ymin = y;
-        if (y > ymax) ymax = y;
+          if (x < xmin) xmin = x;
+          if (x > xmax) xmax = x;
+          if (y < ymin) ymin = y;
+          if (y > ymax) ymax = y;
+        }
       }
 
       // Like Math.pow but returns a value with the same sign as x: pow(-1, 0.5) -> -1
