@@ -146,11 +146,15 @@ clean-jnlp:
 	rm -rf server/public/jnlp
 
 node_modules: node_modules/d3 \
+	node_modules/jsdom \
 	node_modules/arrays
 	npm install
 
 node_modules/d3:
 	npm install src/vendor/d3
+
+node_modules/jsdom:
+	npm install test/vendor/jsdom
 
 node_modules/arrays:
 	npm install src/modules/arrays

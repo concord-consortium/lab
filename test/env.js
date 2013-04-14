@@ -1,10 +1,13 @@
 /*global screen: true, $: true, jQuery: true, Sizzle: true*/
 
-var fs = require('fs');
+var fs = require('fs'),
+    jsdom = require("jsdom"),
+    html = fs.readFileSync('test/layout.html');
 
 process.env.TZ = "America/New_York";
 
-document = require("jsdom").jsdom(fs.readFileSync('test/layout.html'));
+document = jsdom.jsdom(html, jsdom.level('2', 'html'));
+
 window = document.createWindow();
 navigator = window.navigator;
 screen = window.screen;
