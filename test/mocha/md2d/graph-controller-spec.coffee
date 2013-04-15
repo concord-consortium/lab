@@ -1,3 +1,4 @@
+assert  = require 'assert'
 helpers = require '../../helpers'
 helpers.setupBrowserEnvironment()
 # simple-model is useful because it has properties that are guaranteed to change every tick
@@ -9,8 +10,8 @@ helpers.withIsolatedRequireJS (requirejs) ->
     Graph: ->
       addPoints:       sinon.spy()
       resetPoints:     sinon.spy()
-      updateOrRescale:  sinon.spy()
-      reset:            sinon.spy()
+      updateOrRescale: sinon.spy()
+      reset:           sinon.spy()
 
   requirejs.define 'grapher/core/graph', [], ->
     # Just a function that calls through to mock.Graph, while allowing mock.Graph to
@@ -83,7 +84,8 @@ helpers.withIsolatedRequireJS (requirejs) ->
           mock.Graph.restore()
 
         it "should call the Graph constructor", ->
-          controlleaddPoints        mock.Graph.callCount.should.equal 1
+          controller.modelLoadedCallback()
+          mock.Graph.callCount.should.equal 1
 
         it "should pass the DIV DOM element to the Graph constructor", ->
           controller.modelLoadedCallback()
@@ -121,7 +123,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
           describe "the array passed to resetPoints", ->
             it "should contain 2 arrays, each with the initial value of one of component.properties", ->
               newData = grapher.resetPoints.getCall(0).args[0]
-              newData.should.eql [[0, model.get('potentialEnergy')], [0, model.get('kineticEnergy')]]
+              newData.should.eql [ [ [0, model.get('potentialEnergy')] ], [[0, model.get('kineticEnergy')] ] ]
 
           it "should pass option.sampleInterval = viewRefreshRate * timeStep (/ 1000)", ->
             options = mock.Graph.getCall(0).args[1]
@@ -142,7 +144,9 @@ helpers.withIsolatedRequireJS (requirejs) ->
           describe "the argument to addPoints", ->
             it "should be an array with the new value of each of component.properties", ->
               dataPoint = grapher.addPoints.getCall(0).args[0]
-              dataPoint.should.eql [ [0, model.get('potentialEnergy')], [0, model.get('kineticEnergy')]]
+              pePoint = [model.get('time'), model.get('potentialEnergy')]
+              kePoint = [model.get('time'), model.get('kineticEnergy')]
+              dataPoint.should.eql [ pePoint , kePoint  ]
 
         describe "after 2 model ticks", ->
           beforeEach ->
@@ -213,20 +217,31 @@ helpers.withIsolatedRequireJS (requirejs) ->
             describe "the array passed to resetPoints", ->
               it "should contain 2 arrays, each with the initial value of one of component.properties", ->
                 newData = grapher.resetPoints.getCall(0).args[0]
-                newData.should.eql [ [model.get('potentialEnergy')], [model.get('kineticEnergy')]]
+                newData.should.eql [ [ [0, model.get('potentialEnergy')] ], [ [0, model.get('kineticEnergy')] ] ]
 
         describe "an invalidating property change, after 2 model ticks and a stepBack", ->
           expectedData = null
           beforeEach ->
-            expectedData = []
-            expectedData.push [model.get('potentialEnergy'), model.get('kineticEnergy')]
+            model.reset()
+            expectedData = [[],[]]
+            pePoint0 = [model.get('time'), model.get('potentialEnergy')]
+            kePoint0 = [model.get('time'), model.get('kineticEnergy')]
+            expectedData[0].push pePoint0
+            expectedData[1].push kePoint0
+
             model.tick()
-            expectedData.push [model.get('potentialEnergy'), model.get('kineticEnergy')]
+            pePoint1 = [model.get('time'), model.get('potentialEnergy')]
+            kePoint1 = [model.get('time'), model.get('kineticEnergy')]
+            expectedData[0].push pePoint1
+            expectedData[1].push kePoint1
+
             model.tick()
             model.stepBack()
+
             grapher.addPoints.reset()
             grapher.resetPoints.reset()
             grapher.reset.reset()
+
             # This should invalidate the third data point (corresponding to stepCounter == 2)
             model.set gravitationalField: 1
 
@@ -246,13 +261,13 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
             describe "the first element of each array", ->
               it "should be the original values of each of the properties", ->
-                newData[0][0].should.equal expectedData[0][0]
-                newData[1][0].should.equal expectedData[0][1]
+                newData[0][0].should.eql expectedData[0][0]
+                newData[1][0].should.eql expectedData[1][0]
 
             describe "the second element of each array", ->
               it "should be the post-first-tick values of each of the properties", ->
-                newData[0][1].should.equal expectedData[1][0]
-                newData[1][1].should.equal expectedData[1][1]
+                newData[0][1].should.eql expectedData[0][1]
+                newData[1][1].should.eql expectedData[1][1]
 
             describe "the third element of each array", ->
               it "should not exist", ->
