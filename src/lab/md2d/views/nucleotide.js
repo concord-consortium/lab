@@ -6,7 +6,7 @@ define(function (require) {
 
       SCALE = 0.007,
       W = {
-        "BACKB": 48.05,
+        "BACKB": 48,
         "A": 28.151,
         "C": 21.2,
         "G": 21.2,
@@ -42,7 +42,7 @@ define(function (require) {
       "y": 0,
       "width": ms2px(W.BACKB),
       "height": ms2px(H.BACKB),
-      "preserveAspectRatio": "xMidYMid",
+      "preserveAspectRatio": "none",
       "xlink:href": labConfig.actualRoot + "../../resources/transcription/Backbone_DNA.svg"
     });
     this._nucleo = this._g.append("image").attr({
@@ -50,19 +50,20 @@ define(function (require) {
       "y": ms2px(H.BACKB),
       "width": ms2px(W[type]),
       "height": ms2px(H[type]),
-      "preserveAspectRatio": "xMidYMid",
+      "preserveAspectRatio": "none",
       "xlink:href": labConfig.actualRoot + "../../resources/transcription/Nucleotide" + type + "_Direction" + direction + "_noBonds.svg"
     });
 
     if (direction === 1) {
-      this._g.attr("transform", "translate(" + 0.95 * ms2px(W.BACKB) * index + ")");
+      this._g.attr("transform", "translate(" + ms2px(Nucleotide.WIDTH) * index + ")");
     } else if (direction === 2) {
-      this._g.attr("transform", "translate(" + 0.95 * ms2px(W.BACKB) * index + ") scale(1,-1)");
+      this._g.attr("transform", "translate(" + ms2px(Nucleotide.WIDTH) * index + ") scale(1,-1)");
     }
   }
 
   // Width of the nucleotide is width of the DNA backbone.
-  Nucleotide.WIDTH  = W.BACKB;
+  // * 0.99 to ensure that DNA backbone doesn't contain any visual breaks.
+  Nucleotide.WIDTH  = W.BACKB * 0.99;
   // Height of the nucleotide is height of the DNA backbone + A nucleotide (tallest one).
   Nucleotide.HEIGHT = H.BACKB + H.A;
 
