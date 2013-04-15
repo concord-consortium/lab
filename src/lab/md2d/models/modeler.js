@@ -2474,6 +2474,19 @@ define(function(require) {
     // Friction parameter temporarily applied to the live-dragged atom.
     model.LIVE_DRAG_FRICTION = 10;
 
+    // Ensure that model, which includes DNA (and probably DNA animation) has
+    // correct, constant dimensions. This is very significant, as if model
+    // dimensions are too big or too small, DNA elements can be unreadable. It
+    // also ensures that aspect ratio of the model is reasonable for
+    // animation.
+    // TODO: move this to better place.
+    if (initialProperties.geneticProperties &&
+        initialProperties.geneticProperties.DNA.length > 0) {
+      // Overwrite width and height options.
+      initialProperties.width = 5;
+      initialProperties.height = 3;
+    }
+
     // Set the regular, main properties.
     // Note that validation process will return hash without all properties which are
     // not defined in meta model as mainProperties (like atoms, obstacles, viewOptions etc).
