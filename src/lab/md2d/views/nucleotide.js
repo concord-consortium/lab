@@ -36,7 +36,16 @@ define(function (require) {
 
   function Nucleotide(parent, ms2px, type, direction, index) {
     this._ms2px = ms2px;
+    this._type = type;
     this._g = parent.append("g").attr("class", "nucleotide");
+    this._bonds = this._g.append("path").attr({
+      "x": 0,
+      "y": 0,
+      "d": this._bondsPath()
+    }).style({
+      "stroke-width": ms2px(0.01),
+      "stroke": "#fff"
+    });
     this._backbone = this._g.append("image").attr({
       "x": 0,
       "y": 0,
@@ -61,11 +70,34 @@ define(function (require) {
     }
   }
 
+  /**
+   * Returns path defining bonds of nucleotide.
+   * Note that values used to draw it are strictly connected
+   * with current Nucleotide width, which is equal to 48!
+   * @private
+   * @return {string} SVG path description.
+   */
+  Nucleotide.prototype._bondsPath = function() {
+    var yStart = this._ms2px(SCALE * 20),
+        yEnd = this._ms2px(Nucleotide.HEIGHT);
+
+    if (this._type === "C" || this._type === "G") {
+      return "M" + this._ms2px(SCALE * 18) + " " + yStart + " L " + this._ms2px(SCALE * 18) + " " + yEnd +
+             "M" + this._ms2px(SCALE * 24) + " " + yStart + " L " + this._ms2px(SCALE * 24) + " " + yEnd +
+             "M" + this._ms2px(SCALE * 30) + " " + yStart + " L " + this._ms2px(SCALE * 30) + " " + yEnd;
+    } else {
+      return "M" + this._ms2px(SCALE * 20) + " " + yStart + " L " + this._ms2px(SCALE * 20) + " " + yEnd +
+             "M" + this._ms2px(SCALE * 28) + " " + yStart + " L " + this._ms2px(SCALE * 28) + " " + yEnd;
+    }
+  };
+
   // Width of the nucleotide is width of the DNA backbone.
   // * 0.99 to ensure that DNA backbone doesn't contain any visual breaks.
   Nucleotide.WIDTH  = W.BACKB * 0.99;
   // Height of the nucleotide is height of the DNA backbone + A nucleotide (tallest one).
-  Nucleotide.HEIGHT = H.BACKB + H.A;
+  // * 0.95 because it simply... looks better. This value is used to determine distance
+  // between two strands of DNA and this multiplier causes that they are closer to each other.
+  Nucleotide.HEIGHT = H.BACKB + H.A * 0.95;
 
   return Nucleotide;
 });
