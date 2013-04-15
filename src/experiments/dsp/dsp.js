@@ -69,7 +69,9 @@ selectSize.onchange = selectSizeHandler;
 graphOptions = {
   "sinWave": {
     title:  "Sin Wave",
-    realTime: true,
+    dataType: 'samples',
+    dataSamples: sinDataSet,
+    sampleInterval: 1/sampleRate,
     fontScaleRelativeToParent: false,
     xlabel: "Time",
     ylabel: "Amplitude",
@@ -78,15 +80,15 @@ graphOptions = {
     ymax:   1.5,
     ymin:   -1.5,
     xTickCount: 5,
-    circleRadius: false,
+    markAllDataPoints: false,
     dataChange: false,
-    addData: false,
-    dataset: sinDataSet,
-    sample: 1/sampleRate
+    addData: false
   },
   "triangleWave": {
     title:  "Triangle Wave",
-    realTime: true,
+    dataType: 'samples',
+    dataSamples: triangleDataSet,
+    sampleInterval: 1/sampleRate,
     fontScaleRelativeToParent: false,
     xlabel: "Time",
     ylabel: "Amplitude",
@@ -95,15 +97,15 @@ graphOptions = {
     ymax:   1.5,
     ymin:   -1.5,
     xTickCount: 5,
-    circleRadius: false,
+    markAllDataPoints: false,
     dataChange: false,
     addData: false,
-    dataset: triangleDataSet,
-    sample: 1/sampleRate
   },
   "sawtoothWave": {
     title:  "Sawtooth Wave",
-    realTime: true,
+    dataType: 'samples',
+    dataSamples: sawtoothDataSet,
+    sampleInterval: 1/sampleRate,
     fontScaleRelativeToParent: false,
     xlabel: "Time",
     ylabel: "Amplitude",
@@ -112,15 +114,15 @@ graphOptions = {
     ymax:   1.5,
     ymin:   -1.5,
     xTickCount: 5,
-    circleRadius: false,
+    markAllDataPoints: false,
     dataChange: false,
-    addData: false,
-    dataset: sawtoothDataSet,
-    sample: 1/sampleRate
+    addData: false
   },
   "squareWave": {
     title:  "Square Wave",
-    realTime: true,
+    dataType: 'samples',
+    dataSamples: squareDataSet,
+    sampleInterval: 1/sampleRate,
     fontScaleRelativeToParent: false,
     xlabel: "Time",
     ylabel: "Amplitude",
@@ -129,15 +131,15 @@ graphOptions = {
     ymax:   1.5,
     ymin:   -1.5,
     xTickCount: 5,
-    circleRadius: false,
+    markAllDataPoints: false,
     dataChange: false,
-    addData: false,
-    dataset: squareDataSet,
-    sample: 1/sampleRate
+    addData: false
   },
   "fft": {
     title:  "FFT: Frequency Domain Spectra",
-    realTime: true,
+    dataType: 'samples',
+    dataSamples: [],
+    sampleInterval: sampleRate/bufferSize,
     fontScaleRelativeToParent: false,
     xlabel: "Frequency",
     ylabel: "Amplitude",
@@ -148,11 +150,9 @@ graphOptions = {
     ymax:   2,
     ymin:   0,
     yTickCount: 5,
-    circleRadius: false,
+    markAllDataPoints: false,
     dataChange: false,
     addData: false,
-    dataset: [],
-    sample: sampleRate/bufferSize,
     lines: false,
     bars: true
   }
@@ -169,28 +169,28 @@ function selectDataHandler() {
     case "sin-wave":
     graphOptions.sinWave.responsiveLayout = responsiveLayout.checked;
     graph1.reset('#chart1', graphOptions.sinWave);
-    graphOptions.fft.dataset = sinSpectrum;
+    graphOptions.fft.dataSamples = sinSpectrum;
     graph2.reset('#chart2', graphOptions.fft);
     break;
 
     case "triangle-wave":
     graphOptions.triangleWave.responsiveLayout = responsiveLayout.checked;
     graph1.reset('#chart1', graphOptions.triangleWave);
-    graphOptions.fft.dataset = triangleSpectrum;
+    graphOptions.fft.dataSamples = triangleSpectrum;
     graph2.reset('#chart2', graphOptions.fft);
     break;
 
     case "sawtooth-wave":
     graphOptions.sawtoothWave.responsiveLayout = responsiveLayout.checked;
     graph1.reset('#chart1', graphOptions.sawtoothWave);
-    graphOptions.fft.dataset = sawtoothSpectrum;
+    graphOptions.fft.dataSamples = sawtoothSpectrum;
     graph2.reset('#chart2', graphOptions.fft);
     break;
 
     case "square-wave":
     graphOptions.squareWave.responsiveLayout = responsiveLayout.checked;
     graph1.reset('#chart1', graphOptions.squareWave);
-    graphOptions.fft.dataset = squareSpectrum;
+    graphOptions.fft.dataSamples = squareSpectrum;
     graph2.reset('#chart2', graphOptions.fft);
     break;
 

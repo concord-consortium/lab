@@ -63,12 +63,12 @@
             yTickCount: 8,
             realTime: true,
             points: [],
-            circleRadius: false,
+            markAllDataPoints: false,
             dataChange: false
       },
       graph1 = new Lab.grapher.Graph("#chart1", blankGraphOptions, "Select a Sensor Type"),
       graph2 = new Lab.grapher.Graph("#chart2", blankGraphOptions, "Select a Sensor Type"),
-      sample = 0.1,
+      sampleInterval = 0.1,
       sensorCfgs = [],
       labquestAppletString = ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
                                '     width="1" height="1" MAYSCRIPT="true"',
@@ -99,7 +99,7 @@
       },
       startApplet = function() {
         $('#applet-container')[0].innerHTML = labquestAppletString;
-        var sample = 10,
+        var sampleInterval = 10,
         sensorSetup = {
           "deviceType": "labquest",
           "sensors": []
@@ -108,22 +108,22 @@
         for (i = 0; i < sensorCfgs.length; i++) {
           curCfg = sensorCfgs[i];
           sensorSetup.sensors.push(curCfg.sensor.sensors[0]);
-          if (curCfg.graphOptions.sample < sample) {
-            sample = curCfg.graphOptions.sample;
-            console.log("cfg '"  + curCfg.sensorType + "' had a smaller sample of: " + sample);
+          if (curCfg.graphOptions.sampleInterval < sampleInterval) {
+            sampleInterval = curCfg.graphOptions.sampleInterval;
+            console.log("cfg '"  + curCfg.sensorType + "' had a smaller sampleInterval of: " + sampleInterval);
           }
         }
-        if (sample !== 10) {
-          console.log("resetting sample to: " + sample);
+        if (sampleInterval !== 10) {
+          console.log("resetting sampleInterval to: " + sampleInterval);
           // reset all the graphs
           for (i = 0; i < sensorCfgs.length; i++) {
             curCfg = sensorCfgs[i];
             graphOpts = $.extend(true, {}, curCfg.graphOptions)
-            graphOpts.sample = sample;
+            graphOpts.sampleInterval = sampleInterval;
             curCfg.graph.reset(curCfg.graphId, graphOpts, curCfg.sensorType);
           }
         }
-        applet_grapher = new sensor.AppletGrapher($('#sensor-applet')[0], $('#controls')[0], [graph1,graph2], sensorSetup, sample, "applet_grapher.JsListener()", appletReadyCallback);
+        applet_grapher = new sensor.AppletGrapher($('#sensor-applet')[0], $('#controls')[0], [graph1,graph2], sensorSetup, sampleInterval, "applet_grapher.JsListener()", appletReadyCallback);
 
       },
       sensorHandler1 = function() {

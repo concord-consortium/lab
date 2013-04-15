@@ -19,7 +19,7 @@ document.location.hash = hash;
 selectData.value = interactive_url;
 
 function selectSizeHandler() {
-  switch(selectSize.value) {
+  switch (selectSize.value) {
     case "large":
     graph.resize(1280, 666);
     break;
@@ -41,6 +41,7 @@ function selectSizeHandler() {
     break;
   }
 }
+
 selectSize.onchange = selectSizeHandler;
 
 function selectDataHandler() {
@@ -54,9 +55,15 @@ function selectDataHandler() {
   switch(selectData.value) {
     case "fake":
     graph.reset('#chart', {
-      points: "fake",
+      title:  "Fake Data",
+
       responsiveLayout: responsiveLayout.checked,
-      fontScaleRelativeToParent: false
+      fontScaleRelativeToParent: false,
+      dataType: 'fake',
+
+      markAllDataPoints: true,
+      dataChange: true,
+      addData: true
     });
     break;
 
@@ -70,22 +77,27 @@ function selectDataHandler() {
       xmin:   0,
       ymax:   20,
       ymin:   8,
-      circleRadius: 6.0,
-      dataChange: true,
-      addData: true,
-      points: [
+
+      responsiveLayout: responsiveLayout.checked,
+      fontScaleRelativeToParent: false,
+      dataType: 'points',
+      dataPoints: [
         [0, 10], [2, 10],
         [2, 12], [4, 12],
         [4, 14], [6, 14],
         [6, 16], [8, 16],
         [8, 18], [10, 18]
-      ]
+      ],
+
+      markAllDataPoints: true,
+      dataChange: true,
+      addData: true
     });
     break;
 
     case "earth-surface-temperature":
-    d3.json("data/surface-temperature-data.json", function(data) {
-      var surface_temperatures = data.global_temperatures.temperature_anomolies.map(function(e) {
+    d3.json("data/surface-temperature-data.json", function (data) {
+      var surfaceTemperatures = data.global_temperatures.temperature_anomolies.map(function (e) {
           return [e[0], e[1] + data.global_temperatures.global_surface_temperature_1961_1990];
         });
       graph.reset('#chart', {
@@ -100,9 +112,14 @@ function selectDataHandler() {
         ymin:   13,
         xFormatter: ".3r",
         yFormatter: ".1f",
-        circleRadius: false,
-        dataChange: false,
-        points: surface_temperatures
+
+        responsiveLayout: responsiveLayout.checked,
+        fontScaleRelativeToParent: false,
+        dataType: 'points',
+        dataPoints: surfaceTemperatures,
+
+        markAllDataPoints: false,
+        dataChange: false
       });
     });
     break;
@@ -112,16 +129,20 @@ function selectDataHandler() {
       var worldPopulation = data.worldPopulation.data;
       graph.reset('#chart', {
         title:  "World Population, Historical and Projected: 10,000 BCE to 2050",
-        responsiveLayout: responsiveLayout.checked,
         xlabel: "Year",
         ylabel: "Population (Millions)",
         xmax:   2500,
         xmin:   -10000,
         ymax:   20000,
         ymin:   0,
-        circleRadius: false,
-        dataChange: false,
-        points: worldPopulation
+
+        responsiveLayout: responsiveLayout.checked,
+        fontScaleRelativeToParent: false,
+        dataType: 'points',
+        dataPoints: worldPopulation,
+
+        markAllDataPoints: false,
+        dataChange: false
       });
     });
     break;
@@ -138,11 +159,15 @@ function selectDataHandler() {
         ymax:   20000,
         ymin:   0.1,
         xFormatter: ".3r",
-        yFormatter: ".3s",
         yscale: "log",
-        circleRadius: false,
-        dataChange: false,
-        points: worldPopulation
+
+        responsiveLayout: responsiveLayout.checked,
+        fontScaleRelativeToParent: false,
+        dataType: 'points',
+        dataPoints: worldPopulation,
+
+        markAllDataPoints: false,
+        dataChange: false
       });
     });
     break;
@@ -151,7 +176,7 @@ function selectDataHandler() {
     d3.text("data/cm-random-walk.csv", "text/csv", function(text) {
       var data = d3.csv.parseRows(text);
       data.length = 5000;
-      var random_walk = data.map(function(e) { return [e[1], e[2]]; });
+      var randomWalk = data.map(function(e) { return [e[1], e[2]]; });
       graph.reset('#chart', {
         title:  [
                   "Constrained random walk of center of mass of Lab molecular simulation",
@@ -159,14 +184,19 @@ function selectDataHandler() {
                 ],
         xlabel: "x-location of center of mass",
         ylabel: "y-location of center of mas",
+
+        responsiveLayout: responsiveLayout.checked,
+        fontScaleRelativeToParent: false,
+        dataType: 'points',
+        dataPoints: randomWalk,
+
         xmax:   50,
         xmin:   -50,
         ymax:   50,
         ymin:   -50,
-        circleRadius: false,
+        markAllDataPoints: false,
         strokeWidth: 1,
         dataChange: false,
-        points: random_walk
       });
     });
     break;
@@ -181,11 +211,16 @@ function selectDataHandler() {
       xmin:   0,
       ymax:   2,
       ymin:   -2,
-      circleRadius: false,
+
+      responsiveLayout: responsiveLayout.checked,
+      fontScaleRelativeToParent: false,
+      dataType: 'points',
+      dataPoints: [],
+
+      markAllDataPoints: false,
       strokeWidth: 1,
       dataChange: false,
       addData: false,
-      points: []
     });
     stopStreaming = false;
     var twopi = Math.PI * 2,
@@ -205,14 +240,45 @@ function selectDataHandler() {
       if (stopStreaming) { return true; }
       value1 = Math.sin(twopifreq1 * time) * amplitude1;
       value2 = Math.sin(twopifreq2 * time) * amplitude2;
-      graph.addOneXYDataPair([time, value1 + value2]);
+      graph.addPoint([time, value1 + value2]);
       return time > maxtime * 2 || stopStreaming;
     });
     break;
 
+    case "earth-surface-temperature-samples":
+    d3.json("data/surface-temperature-data.json", function(data) {
+      var surfaceTemperatures = data.global_temperatures.temperature_anomolies.map(function(e) {
+          return e[1] + data.global_temperatures.global_surface_temperature_1961_1990;
+        });
+      graph.reset('#chart', {
+        title:  "Earth's Surface Temperature: years 500-2009",
+        xlabel: "Year",
+        ylabel: "Degrees C",
+        xmax:   2100,
+        xmin:   400,
+        ymax:   15,
+        ymin:   13,
+        xFormatter: ".3r",
+        yFormatter: ".1f",
+
+        responsiveLayout: responsiveLayout.checked,
+        fontScaleRelativeToParent: false,
+
+        dataType: 'samples',
+        dataSamples: surfaceTemperatures,
+        sampleInterval: 1,
+        dataSampleStart: 500,
+
+        markAllDataPoints: false,
+        dataChange: false
+      });
+    });
+    break;
+
+
     case "realtime-markers":
     var maxtime = 10,
-        sample = 0.05;
+        sampleInterval = 0.05;
     graph.reset('#chart', {
       title:  "Sin Waves",
       xlabel: "Time",
@@ -221,15 +287,22 @@ function selectDataHandler() {
       xmin:   0,
       ymax:   1.6,
       ymin:   -1.6,
-      realTime: true,
-      sample: sample,
-      circleRadius: 3,
-      circlesVisibleOnlyOnHover: true,
+
+      responsiveLayout: responsiveLayout.checked,
+      fontScaleRelativeToParent: false,
+
+      dataType: 'samples',
+      dataSamples: [],
+      sampleInterval: sampleInterval,
+      dataSampleStart: 0,
+
+      markAllDataPoints: true,
+      markNearbyDataPoints: true,
       extraCirclesVisibleOnHover: 1,
+
       strokeWidth: 5,
       dataChange: false,
-      addData: false,
-      points: []
+      addData: false
     });
     stopStreaming = false;
     var twopi = Math.PI * 2,
@@ -245,12 +318,12 @@ function selectDataHandler() {
 
     var timerId = setInterval(function() {
       count++;
-      time = count * sample;
+      time = count * sampleInterval;
       if (time > maxtime || stopStreaming) { clearInterval(timerId); }
       value1 = Math.sin(twopifreq1 * time) * amplitude1;
       value2 = Math.sin(twopifreq2 * time) * amplitude2;
-      graph.addPoints([value1 + value2]);
-    }, 1000*sample);
+      graph.addSamples([value1 + value2]);
+    }, 1000*sampleInterval);
     break;
   }
 }

@@ -11,7 +11,7 @@ define(function (require) {
       // internal implementation detail (the grapher options format).
       grapherOptionForComponentSpecProperty = {
         title: 'title',
-        realTime: 'realTime',
+        dataPoints: 'dataPoints',
         fontScaleRelativeToParent: 'fontScaleRelativeToParent',
         xlabel: 'xlabel',
         xmin: 'xmin',
@@ -30,7 +30,6 @@ define(function (require) {
       },
 
   graphControllerCount = 0;
-
 
   return function graphController(component, scriptingAPI, interactivesController) {
     var // HTML element containing view
@@ -51,14 +50,15 @@ define(function (require) {
     }
 
     /**
-      Returns an array containing the current value of each model property specified in
-      component.properties.
+      Returns an array containing two-element arrays each containing the current model
+      time and the current value of each model property specified in component.properties.
     */
     function getDataPoint() {
-      var ret = [], i, len;
+      var ret = [], i, len,
+          time = model.get('time');
 
       for (i = 0, len = properties.length; i < len; i++) {
-        ret.push(model.get(properties[i]));
+        ret.push([time, model.get(properties[i])]);
       }
       return ret;
     }
@@ -70,7 +70,7 @@ define(function (require) {
       var cProp,
           gOption,
           options = {
-            sample: getSamplePeriod()
+            sampleInterval: getSamplePeriod()
           };
 
       // update grapher options from component spec & defaults
@@ -93,7 +93,7 @@ define(function (require) {
       for (i = 0; i < dataPoint.length; i++) {
         data[i] = [dataPoint[i]];
       }
-      grapher.newRealTimeData(data);
+      grapher.resetPoints(data);
     }
 
     /**
@@ -123,7 +123,7 @@ define(function (require) {
         // Account for initial data, which corresponds to stepCounter == 0
         data[i].length = model.stepCounter() + 1;
       }
-      grapher.truncateRealTimeData(data);
+      grapher.resetPoints(data);
     }
 
     /**
@@ -132,7 +132,6 @@ define(function (require) {
     */
     function redrawCurrentStepPointer() {
       grapher.updateOrRescale(model.stepCounter());
-      grapher.showMarker(model.stepCounter());
     }
 
     /**

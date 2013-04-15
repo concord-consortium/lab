@@ -7,12 +7,10 @@ helpers.withIsolatedRequireJS (requirejs) ->
   # mock the Graph, which depends on Canvas and SVG internals that don't work in jsdom
   mock =
     Graph: ->
-      newRealTimeData:   sinon.spy()
-      truncateRealTimeData: sinon.spy()
-      addPoints:         sinon.spy()
-      updateOrRescale:   sinon.spy()
-      showMarker:        sinon.spy()
-      reset:             sinon.spy()
+      addPoints:       sinon.spy()
+      resetPoints:     sinon.spy()
+      updateOrRescale:  sinon.spy()
+      reset:            sinon.spy()
 
   requirejs.define 'grapher/core/graph', [], ->
     # Just a function that calls through to mock.Graph, while allowing mock.Graph to
@@ -85,8 +83,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
           mock.Graph.restore()
 
         it "should call the Graph constructor", ->
-          controller.modelLoadedCallback()
-          mock.Graph.callCount.should.equal 1
+          controlleaddPoints        mock.Graph.callCount.should.equal 1
 
         it "should pass the DIV DOM element to the Graph constructor", ->
           controller.modelLoadedCallback()
@@ -114,30 +111,30 @@ helpers.withIsolatedRequireJS (requirejs) ->
           mock.Graph.restore()
 
         describe "when the grapher is initialized", ->
-          it "should call grapher.newRealTimeData", ->
-            grapher.newRealTimeData.callCount.should.equal 1
+          it "should call grapher.resetPoints", ->
+            grapher.resetPoints.callCount.should.equal 1
 
-          it "should pass an array of length 2 to newRealTimeData", ->
-            newData = grapher.newRealTimeData.getCall(0).args[0]
+          it "should pass an array of length 2 to resetPoints", ->
+            newData = grapher.resetPoints.getCall(0).args[0]
             newData.should.have.length 2
 
-          describe "the array passed to newRealTimeData", ->
+          describe "the array passed to resetPoints", ->
             it "should contain 2 arrays, each with the initial value of one of component.properties", ->
-              newData = grapher.newRealTimeData.getCall(0).args[0]
-              newData.should.eql [[model.get('potentialEnergy')], [model.get('kineticEnergy')]]
+              newData = grapher.resetPoints.getCall(0).args[0]
+              newData.should.eql [[0, model.get('potentialEnergy')], [0, model.get('kineticEnergy')]]
 
-          it "should pass option.sample = viewRefreshRate * timeStep (/ 1000)", ->
+          it "should pass option.sampleInterval = viewRefreshRate * timeStep (/ 1000)", ->
             options = mock.Graph.getCall(0).args[1]
-            options.should.have.property 'sample', model.get('timeStepsPerTick') * model.get('timeStep') / 1000
+            options.should.have.property 'sampleInterval', model.get('timeStepsPerTick') * model.get('timeStep') / 1000
 
         describe "after 1 model tick", ->
           beforeEach ->
             grapher.addPoints.reset()
-            grapher.newRealTimeData.reset()
+            grapher.resetPoints.reset()
             model.tick()
 
-          it "should not call grapher.newRealTimeData", ->
-            grapher.newRealTimeData.callCount.should.equal 0
+          it "should not call grapher.resetPoints", ->
+            grapher.resetPoints.callCount.should.equal 0
 
           it "should call grapher.addPoints", ->
             grapher.addPoints.callCount.should.equal 1
@@ -145,7 +142,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
           describe "the argument to addPoints", ->
             it "should be an array with the new value of each of component.properties", ->
               dataPoint = grapher.addPoints.getCall(0).args[0]
-              dataPoint.should.eql [model.get('potentialEnergy'), model.get('kineticEnergy')]
+              dataPoint.should.eql [ [0, model.get('potentialEnergy')], [0, model.get('kineticEnergy')]]
 
         describe "after 2 model ticks", ->
           beforeEach ->
@@ -155,61 +152,46 @@ helpers.withIsolatedRequireJS (requirejs) ->
           describe "followed by a stepBack", ->
             beforeEach ->
               grapher.updateOrRescale.reset()
-              grapher.showMarker.reset()
-              grapher.newRealTimeData.reset()
+              grapher.addPoints.reset()
               model.stepBack()
 
             it "should call grapher.updateOrRescale(1)", ->
               grapher.updateOrRescale.callCount.should.equal 1
               grapher.updateOrRescale.getCall(0).args.should.eql [1]
 
-            it "should call grapher.showMarker(1)", ->
-              grapher.showMarker.callCount.should.equal 1
-              grapher.showMarker.getCall(0).args.should.eql [1]
-
-            it "should not call grapher.newRealTimeData", ->
-              grapher.newRealTimeData.callCount.should.equal 0
+            it "should not call grapher.resetPoints", ->
+              grapher.addPoints.callCount.should.equal 0
 
             describe "followed by a stepForward", ->
               beforeEach ->
                 grapher.updateOrRescale.reset()
-                grapher.showMarker.reset()
-                grapher.newRealTimeData.reset()
+                grapher.addPoints.reset()
                 model.stepForward()
 
               it "should call grapher.updateOrRescale(2)", ->
                 grapher.updateOrRescale.callCount.should.equal 1
                 grapher.updateOrRescale.getCall(0).args.should.eql [2]
 
-              it "should call grapher.showMarker(2)", ->
-                grapher.showMarker.callCount.should.equal 1
-                grapher.showMarker.getCall(0).args.should.eql [2]
-
-              it "should not call grapher.newRealTimeData", ->
-                grapher.newRealTimeData.callCount.should.equal 0
+              it "should not call grapher.resetPoints", ->
+                grapher.addPoints.callCount.should.equal 0
 
           describe "followed by seek(1)", ->
             beforeEach ->
               grapher.updateOrRescale.reset()
-              grapher.showMarker.reset()
-              grapher.newRealTimeData.reset()
+              grapher.addPoints.reset()
               model.seek 1
 
             it "should call grapher.updateOrRescale(1)", ->
               grapher.updateOrRescale.callCount.should.equal 1
               grapher.updateOrRescale.getCall(0).args.should.eql [1]
 
-            it "should call grapher.showMarker(1)", ->
-              grapher.showMarker.callCount.should.equal 1
-              grapher.showMarker.getCall(0).args.should.eql [1]
-
-            it "should not call grapher.newRealTimeData", ->
-              grapher.newRealTimeData.callCount.should.equal 0
+            it "should not call grapher.resetPoints", ->
+              grapher.addPoints.callCount.should.equal 0
 
           describe "followed by a model reset", ->
             beforeEach ->
               grapher.reset.reset()
-              grapher.newRealTimeData.reset()
+              grapher.addPoints.reset()
               model.reset()
 
             it "should call grapher.reset", ->
@@ -220,18 +202,18 @@ helpers.withIsolatedRequireJS (requirejs) ->
               options = grapher.reset.getCall(0).args[1]
               options.should.be.a 'object'
 
-            it "should pass option.sample = viewRefreshRate * timeStep (/ 1000)", ->
+            it "should pass option.sampleInterval = viewRefreshRate * timeStep (/ 1000)", ->
               options = grapher.reset.getCall(0).args[1]
-              options.should.have.property 'sample', model.get('timeStepsPerTick') * model.get('timeStep') / 1000
+              options.should.have.property 'sampleInterval', model.get('timeStepsPerTick') * model.get('timeStep') / 1000
 
-            it "should pass 1 array of length 2 to newRealTimeData", ->
-              newData = grapher.newRealTimeData.getCall(0).args[0]
+            it "should pass 1 array of length 2 to resetPoints", ->
+              newData = grapher.resetPoints.getCall(0).args[0]
               newData.should.have.length 2
 
-            describe "the array passed to newRealTimeData", ->
+            describe "the array passed to resetPoints", ->
               it "should contain 2 arrays, each with the initial value of one of component.properties", ->
-                newData = grapher.newRealTimeData.getCall(0).args[0]
-                newData.should.eql [[model.get('potentialEnergy')], [model.get('kineticEnergy')]]
+                newData = grapher.resetPoints.getCall(0).args[0]
+                newData.should.eql [ [model.get('potentialEnergy')], [model.get('kineticEnergy')]]
 
         describe "an invalidating property change, after 2 model ticks and a stepBack", ->
           expectedData = null
@@ -243,21 +225,21 @@ helpers.withIsolatedRequireJS (requirejs) ->
             model.tick()
             model.stepBack()
             grapher.addPoints.reset()
-            grapher.newRealTimeData.reset()
-            grapher.truncateRealTimeData.reset()
+            grapher.resetPoints.reset()
+            grapher.reset.reset()
             # This should invalidate the third data point (corresponding to stepCounter == 2)
             model.set gravitationalField: 1
 
           it "should not call grapher.addPoints", ->
             grapher.addPoints.callCount.should.equal 0
 
-          it "should call grapher.truncateRealTimeData", ->
-            grapher.truncateRealTimeData.callCount.should.equal 1
+          it "should call grapher.resetPoints", ->
+            grapher.resetPoints.callCount.should.equal 1
 
-          describe "the array passed to truncateRealTimeData", ->
+          describe "the array passed to resetPoints", ->
             newData = null
             beforeEach ->
-              newData = grapher.truncateRealTimeData.getCall(0).args[0]
+              newData = grapher.resetPoints.getCall(0).args[0]
 
             it "should contain 2 arrays", ->
               newData.should.have.length 2
@@ -277,25 +259,25 @@ helpers.withIsolatedRequireJS (requirejs) ->
                 newData[0].should.have.length 2
                 newData[1].should.have.length 2
 
-        describe "handling of sample size changes", ->
+        describe "handling of sampleInterval size changes", ->
           beforeEach ->
             grapher.reset.reset()
 
           grapherShouldReset = ->
             grapher.reset.callCount.should.equal 1
-          sampleShouldBeCorrect = ->
+          sampleIntervalShouldBeCorrect = ->
             options = grapher.reset.getCall(0).args[1]
-            options.sample.should.equal model.get('timeStepsPerTick') * model.get('timeStep') / 1000
+            options.sampleInterval.should.equal model.get('timeStepsPerTick') * model.get('timeStep') / 1000
 
-          it "should reset the graph and sample size after timeStepsPerTick is changed", ->
+          it "should reset the graph and sampleInterval size after timeStepsPerTick is changed", ->
             model.set timeStepsPerTick: 2 * model.get 'timeStepsPerTick'
             grapherShouldReset()
-            sampleShouldBeCorrect()
+            sampleIntervalShouldBeCorrect()
 
-          it "should reset the graph and sample size after timeStep is changed", ->
+          it "should reset the graph and sampleInterval size after timeStep is changed", ->
             model.set timeStep: 2 * model.get 'timeStep'
             grapherShouldReset()
-            sampleShouldBeCorrect()
+            sampleIntervalShouldBeCorrect()
 
     describe "handling of graph configuration options in component spec", ->
       grapherOptionsForComponentSpec = (componentSpec) ->

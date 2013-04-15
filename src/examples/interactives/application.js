@@ -1216,7 +1216,7 @@ AUTHORING = false;
       addEventHook('play', function(props) {
         if (modelEnergyGraph.numberOfPoints() && props.tickCounter < modelEnergyGraph.numberOfPoints()) {
           resetModelEnergyData(props.tickCounter);
-          modelEnergyGraph.newRealTimeData(modelEnergyData);
+          modelEnergyGraph.resetSamples(modelEnergyData);
         }
       }, ['tickCounter']);
 
@@ -1245,7 +1245,7 @@ AUTHORING = false;
       addEventHook('play', function() {
         if (modelEnergyGraph.numberOfPoints() && _model.stepCounter() < modelEnergyGraph.numberOfPoints()) {
           resetModelEnergyData(model.stepCounter());
-          modelEnergyGraph.newRealTimeData(modelEnergyData);
+          modelEnergyGraph.resetSamples(modelEnergyData);
         }
       });
 
@@ -1284,7 +1284,7 @@ AUTHORING = false;
     }
 
     function updateModelEnergyGraph(props) {
-      modelEnergyGraph.addPoints(updateModelEnergyData(props));
+      modelEnergyGraph.addSamples(updateModelEnergyData(props));
     }
 
     function renderModelEnergyGraph() {
@@ -1293,7 +1293,7 @@ AUTHORING = false;
             xlabel:    "Model Time (ps)",
             xmin:       0,
             xmax:      50,
-            sample:    energyGraphSamplePeriod,
+            sampleInterval:    energyGraphSamplePeriod,
             ylabel:    "eV",
             ymin:     -25.0,
             ymax:      25.0,
@@ -1303,7 +1303,7 @@ AUTHORING = false;
 
       $.extend(options, interactive.models[0].energyGraphOptions || []);
       resetModelEnergyData();
-      options.dataset = modelEnergyData;
+      options.dataSamples = modelEnergyData;
       removeEventListeners();
       if (modelEnergyGraph) {
         modelEnergyGraph.reset('#model-energy-graph-chart', options);

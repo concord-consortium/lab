@@ -512,8 +512,8 @@ define(function() {
       type: {
         required: true
       },
-      realTime: {
-        defaultValue: true
+      dataPoints: {
+        defaultValue: []
       },
       fontScaleRelativeToParent: {
         defaultValue: true

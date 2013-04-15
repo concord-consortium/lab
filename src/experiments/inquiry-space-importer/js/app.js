@@ -334,7 +334,7 @@ ISImporter.GraphController = defineClass({
     this.initGraph();
 
     this.dataListener = function(d) {
-      self.graph.addOneXYDataPair(d);
+      self.graph.addPoint(d);
     };
 
     this.dataResetListener = function() {
@@ -356,7 +356,7 @@ ISImporter.GraphController = defineClass({
       xFormatter  : "2s",
       yFormatter  : "2s",
       points      : [],
-      circleRadius: false,
+      markAllDataPoints: false,
       dataChange  : false
     }, "Select a sensor type");
 

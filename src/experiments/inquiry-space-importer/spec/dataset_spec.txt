@@ -78,7 +78,7 @@ gut check:
 
    dataset.on('data', function(d) {
      // d is an [x,y] pair
-     graph.addOneXYDataPair(d);
+     graph.addPoint(d);
    });
 
    dataset.setXIncrement(0.1);
@@ -105,7 +105,7 @@ gut check:
    selection = dataset.getSelectionDataset()
 
    selection.on('data', function(d) {
-     graph2.addOneXYDataPair(d);
+     graph2.addPoint(d);
    });
 
    selection.on('dataReset', function(d) {
