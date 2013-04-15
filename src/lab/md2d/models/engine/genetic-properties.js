@@ -17,7 +17,7 @@ define(function (require) {
         data,
         remainingAAs,
 
-        dispatch = d3.dispatch("change"),
+        dispatch = d3.dispatch("change", "separateDNA"),
 
         calculateComplementarySequence = function () {
           // A-T (A-U)
@@ -165,6 +165,8 @@ define(function (require) {
       // Transcribes mRNA from DNA.
       // Result is saved in the mRNA property.
       transcribeDNA: function() {
+        dispatch.separateDNA();
+
         changePreHook();
         // A-U
         // G-C
@@ -183,7 +185,6 @@ define(function (require) {
         data.mRNA = mRNA.toUpperCase();
 
         changePostHook();
-        dispatch.change();
       },
 
       // Translates mRNA into amino acids chain.

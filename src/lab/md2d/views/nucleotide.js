@@ -4,7 +4,7 @@ define(function (require) {
   // Dependencies.
   var labConfig = require('lab.config'),
 
-      SCALE = 0.007,
+      SCALE = 0.0057,
       W = {
         "BACKB": 48,
         "A": 28.151,
@@ -69,6 +69,10 @@ define(function (require) {
       this._g.attr("transform", "translate(" + ms2px(Nucleotide.WIDTH) * index + ") scale(1,-1)");
     }
   }
+
+  Nucleotide.prototype.hideBonds = function() {
+    this._bonds.transition().style("opacity", 0);
+  };
 
   /**
    * Returns path defining bonds of nucleotide.
