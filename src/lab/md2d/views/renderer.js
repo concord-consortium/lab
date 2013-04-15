@@ -736,7 +736,7 @@ define(function (require) {
             imglayer = imageProp[i].imageLayer;
             positionOrder = imglayer === 1 ? positionOrderTop : positionOrderBelow;
             positionOrder.push({
-              i: i, 
+              i: i,
               zOrder: (!!imageProp[i].imageLayerPosition) ? imageProp[i].imageLayerPosition : 0
             });
             positionOrder.sort(function(a,b){return d3.ascending(a["zOrder"],b["zOrder"])});
@@ -1645,7 +1645,7 @@ define(function (require) {
       setupColorsOfParticles();
       setupRadialBonds();
       setupParticles();
-      geneticRenderer.setup();
+      geneticRenderer.render();
       setupVectors();
       setupAtomTrace();
       drawSymbolImages();

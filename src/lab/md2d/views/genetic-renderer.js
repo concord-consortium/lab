@@ -1,105 +1,51 @@
-/*global define: false */
+/*global define, $ */
 
 define(function (require) {
 
-  return function GeneticRenderer(container, parentView, model) {
-    var api,
-        model2px,
-        model2pxInv,
-        modelSize2px,
+  var Nucleotide = require('md2d/views/nucleotide');
 
-        init = function() {
-          // Save shortcuts.
-          model2px = parentView.model2px;
-          model2pxInv = parentView.model2pxInv;
-          modelSize2px = parentView.modelSize2px;
-          // Redraw DNA / mRNA on every genetic properties change.
-          model.getGeneticProperties().on("change", api.setup);
-        },
+  function GeneticRenderer(container, parentView, model) {
+    this.container = container;
+    this.parent = parentView;
+    this.model = model;
+    this.model2px = parentView.model2px;
+    this.model2pxInv = parentView.model2pxInv;
+    this.modelSize2px = parentView.modelSize2px;
 
-        renderText = function(container, txt, fontSize, dx, dy, markerPos) {
-          var x = 0,
-              xAttr = "",
-              textElement,
-              i, len;
+    this._g = null;
+    // Redraw DNA / mRNA on every genetic properties change.
+    this.model.getGeneticProperties().on("change", $.proxy(this.render, this));
+  }
 
-          // Necessary for example in Firefox.
-          fontSize += "px";
 
-          for (i = 0, len = txt.length; i < len; i++) {
-            xAttr += x + "px ";
-            x += dx;
-          }
+  GeneticRenderer.prototype.render = function () {
+    var props = this.model.getGeneticProperties().get();
 
-          if (markerPos === undefined || markerPos === "end") {
-            markerPos = txt.length / 3;
-          }
-          markerPos *= 3;
+    if (props === undefined) {
+      return;
+    }
 
-          // Text shadow.
-          container.append("text")
-            .text(txt)
-            .attr({
-              "class": "shadow",
-              "x": xAttr,
-              "dy": dy
-            })
-            .style({
-                "stroke-width": modelSize2px(0.01),
-                "font-size": fontSize
-            });
+    this.container.selectAll("g.genetics").remove();
+    this._g = this.container.append("g").attr("class", "genetics");
 
-          // Final text.
-          textElement = container.append("text")
-            .attr({
-              "class": "front",
-              "x": xAttr,
-              "dy": dy
-            })
-            .style("font-size", fontSize);
-
-          textElement.append("tspan")
-            .text(txt.substring(0, markerPos));
-          textElement.append("tspan")
-            .attr("class", "marked-mrna")
-            .text(txt.substring(markerPos, markerPos + 3));
-          textElement.append("tspan")
-            .text(txt.substring(markerPos + 3));
-        };
-
-    api = {
-      setup: function () {
-        var props = model.getGeneticProperties().get(),
-            dnaGElement, fontSize, dx;
-
-        if (props === undefined) {
-          return;
-        }
-
-        container.selectAll("g.dna").remove();
-
-        dnaGElement = container.append("g").attr({
-          "class": "dna",
-          // (0nm, 0nm) + small, constant offset in px.
-          "transform": "translate(" + model2px(props.x) + "," + model2pxInv(props.y) + ")"
-        });
-
-        fontSize = modelSize2px(props.height);
-        dx = modelSize2px(props.width);
-
-        // DNA code on sense strand.
-        renderText(dnaGElement, props.DNA, fontSize, dx, -fontSize);
-        // DNA complementary sequence.
-        renderText(dnaGElement, props.DNAComplement, fontSize, dx, 0);
-        // mRNA (if available).
-        if (props.mRNA !== undefined) {
-          renderText(dnaGElement, props.mRNA, fontSize, dx, -2.5 * fontSize, props.translationStep);
-        }
-      }
-    };
-
-    init();
-
-    return api;
+    this._renderDNA(props.DNA, props.DNAComplement);
   };
+
+  GeneticRenderer.prototype._renderDNA = function (dna, dnaComplement) {
+    var dnaG     = this._g.append("g").attr("class", "dna"),
+        dnaCompG = this._g.append("g").attr("class", "dna-comp"),
+        i, len;
+
+    for (i = 0, len = dna.length; i < len; i++) {
+      new Nucleotide(dnaG, this.modelSize2px, dna[i], 2, i);
+    }
+    dnaG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("height") / 2 - Nucleotide.HEIGHT) + ")");
+
+    for (i = 0, len = dnaComplement.length; i < len; i++) {
+      new Nucleotide(dnaCompG, this.modelSize2px, dnaComplement[i], 1, i);
+    }
+    dnaCompG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("height") / 2 + Nucleotide.HEIGHT) + ")");
+  };
+
+  return GeneticRenderer;
 });
