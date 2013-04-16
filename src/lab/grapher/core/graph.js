@@ -269,8 +269,8 @@ define(function (require) {
 
           // The formatter used to convert numbers into strings.
           // see: https://github.com/mbostock/d3/wiki/Formatting#wiki-d3_format
-          xFormatter:      ".2s",
-          yFormatter:      ".2s",
+          xFormatter:      ".3s",
+          yFormatter:      ".3r",
 
           // Scale type: options are:
           //   linear: https://github.com/mbostock/d3/wiki/Quantitative-Scales#wiki-linear
@@ -1736,22 +1736,26 @@ define(function (require) {
           gctx.moveTo(px, py);
           dx = points[index][0];
           index++;
+          // plot all ... or until one point past xAxisEnd
+          // or until we reach currentSample
           for (; index < samplePoint; index++) {
             dx = points[index][0];
-            if (dx >= xAxisEnd) { break; }
             px = xScale(dx);
             py = yScale(points[index][1]);
             gctx.lineTo(px, py);
+            if (dx >= xAxisEnd) { break; }
           }
           gctx.stroke();
+          // now plot in a desaturated style all the rest of the points
+          // ... or until one point past xAxisEnd
           if (index < pointsLength && dx < xAxisEnd) {
             setStrokeColor(i, true);
             for (;index < pointsLength; index++) {
               dx = points[index][0];
-              if (dx >= xAxisEnd) { break; }
               px = xScale(dx);
               py = yScale(points[index][1]);
               gctx.lineTo(px, py);
+              if (dx >= xAxisEnd) { break; }
             }
             gctx.stroke();
           }
