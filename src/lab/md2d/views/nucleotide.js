@@ -39,8 +39,10 @@ define(function (require) {
   function Nucleotide(parent, ms2px, type, direction, index, mRNA) {
     this._ms2px = ms2px;
     this._type = type;
-    this._g = parent.append("g").attr("class", "nucleotide");
+    this._wrapper = parent.append("g").attr("class", "nucleotide");
+    this._g = this._wrapper.append("g");
     this._bonds = this._g.append("path").attr({
+      "class": "bonds",
       "x": 0,
       "y": 0,
       "d": this._bondsPath()

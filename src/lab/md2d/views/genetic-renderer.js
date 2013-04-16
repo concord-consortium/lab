@@ -19,6 +19,7 @@ define(function (require) {
     this._dna = [];
     this._dnaComp = [];
     this._mrna = [];
+    this._currentTrans = null;
     // Redraw DNA / mRNA on every genetic properties change.
     this.model.getGeneticProperties().on("change", $.proxy(this.render, this));
     this.model.getGeneticProperties().on("separateDNA", $.proxy(this.separateDNA, this));
@@ -36,16 +37,20 @@ define(function (require) {
     this.container.selectAll("g.genetics").remove();
     this._g = this.container.append("g").attr("class", "genetics");
 
+    this._currentTrans = {};
+
     this._renderDNA(props.DNA, props.DNAComplement, props.mRNA);
   };
 
   GeneticRenderer.prototype.separateDNA = function (suppressAnimation) {
-    var d = suppressAnimation ? 0 : 1500,
+    // When animation is disabled (e.g. during initial rendering), main group element
+    // is used as a root instead of d3 transition object.
+    var selection = suppressAnimation ? this._g : this._nextTrans().duration(1500),
         i, len;
 
-    this._dnaG.transition().duration(d).attr("transform",
+    selection.select(".dna").attr("transform",
       "translate(0, " + this.model2pxInv(this.model.get("height") / 2 + 2.5 * Nucleotide.HEIGHT) + ")");
-    this._dnaCompG.transition().duration(d).attr("transform",
+    selection.select(".dna-comp").attr("transform",
       "translate(0, " + this.model2pxInv(this.model.get("height") / 2 - 2.5 * Nucleotide.HEIGHT) + ")");
 
     for (i = 0, len = this._dna.length; i < len; i++) {
@@ -58,10 +63,27 @@ define(function (require) {
     var props  = this.model.getGeneticProperties().get(),
         index  = props.mRNA.length - 1, // last element
         type   = props.mRNA[index],
-        nucleo = new Nucleotide(this._mrnaG, this.modelSize2px, type, 1, index, true);
+        trans  = this._nextTrans().duration(300);
 
-    nucleo.hideBonds(true);
-    this._dna.push(nucleo);
+    this._mrna.push(new Nucleotide(this._mrnaG, this.modelSize2px, type, 1, index, true));
+    this._mrna[index].hideBonds(true);
+
+    this._mrnaG.select(".nucleotide:last-child")
+        .attr("transform", "translate(" + this.modelSize2px(0.2) + ", " + this.modelSize2px(-0.5) + ")")
+        .style("opacity", 0);
+
+    trans
+      .select(".mrna .nucleotide:last-child")
+        .attr("transform", "translate(0, 0)")
+        .style("opacity", 1)
+      .select(".bonds")
+        .duration(500)
+        .style("opacity", 1);
+
+    trans
+      .select(".dna-comp .nucleotide:nth-child(" + (index + 1) + ") .bonds")
+        .duration(500)
+        .style("opacity", 1);
   };
 
   GeneticRenderer.prototype._renderDNA = function (dna, dnaComplement, mRNA) {
@@ -88,10 +110,39 @@ define(function (require) {
       this.separateDNA(true);
       for (i = 0, len = mRNA.length; i < len; i++) {
         this._mrna.push(new Nucleotide(this._mrnaG, this.modelSize2px, mRNA[i], 1, i, true));
-        this._mrna[i].hideBonds(true);
+        this._dnaComp[i].showBonds(true);
       }
     }
     this._mrnaG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("height") / 2 - 0.5 * Nucleotide.HEIGHT) + ")");
+  };
+
+  /**
+   * Returns a new chained transition.
+   * This transition will be executed when previous one ends.
+   * Name of the animation chain can be specified, so multiple,
+   * independent chains can be created. When name is omitted,
+   * the default chain will be used.
+   *
+   * @private
+   * @param  {string} name  name of the animations chain (optional).
+   * @return {d3 transtion} d3 transtion object.
+   */
+  GeneticRenderer.prototype._nextTrans = function (name) {
+    if (typeof name === "undefined") {
+      name = "__default__";
+    }
+    // TODO: this first check is a workaround.
+    // Ideal scenario would be to call always:
+    // this._currentTrans[name] = this._currentTrans[name].transition();
+    // but it seems to fail when transition has already ended.
+    if (this._currentTrans[name] && this._currentTrans[name].node().__transition__) {
+      // Some transition is currently in progress, chain a new transition.
+      this._currentTrans[name] = this._currentTrans[name].transition();
+    } else {
+      // All transition ended, just create a new one.
+      this._currentTrans[name] = this._g.transition();
+    }
+    return this._currentTrans[name];
   };
 
   return GeneticRenderer;
