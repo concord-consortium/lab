@@ -1,4 +1,4 @@
-/*global define, $ */
+/*global define, $, d3 */
 
 define(function (require) {
 
@@ -37,7 +37,7 @@ define(function (require) {
     this.container.selectAll("g.genetics").remove();
     this._g = this.container.append("g").attr("class", "genetics");
 
-    this._currentTrans = {};
+    this._currentTrans = null;
 
     this._renderDNA(props.DNA, props.DNAComplement, props.mRNA);
   };
@@ -77,13 +77,24 @@ define(function (require) {
         .attr("transform", "translate(0, 0)")
         .style("opacity", 1)
       .select(".bonds")
-        .duration(500)
+        .ease("linear")
         .style("opacity", 1);
 
     trans
       .select(".dna-comp .nucleotide:nth-child(" + (index + 1) + ") .bonds")
-        .duration(500)
+        .ease("linear")
         .style("opacity", 1);
+
+    this._scrollContainer();
+  };
+
+  GeneticRenderer.prototype._scrollContainer = function (suppressAnimation) {
+    var shift = Math.min(this._mrna.length, this._dna.length - 4);
+
+    if (shift > 10) {
+      (suppressAnimation ? this._g : this._currentTrans.select(".genetics").ease("linear"))
+        .attr("transform", "translate(" + this.modelSize2px(-(shift - 10) * Nucleotide.WIDTH) + ")");
+    }
   };
 
   GeneticRenderer.prototype._renderDNA = function (dna, dnaComplement, mRNA) {
@@ -114,35 +125,30 @@ define(function (require) {
       }
     }
     this._mrnaG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("height") / 2 - 0.5 * Nucleotide.HEIGHT) + ")");
+
+    this._scrollContainer(true);
   };
 
   /**
    * Returns a new chained transition.
    * This transition will be executed when previous one ends.
-   * Name of the animation chain can be specified, so multiple,
-   * independent chains can be created. When name is omitted,
-   * the default chain will be used.
    *
    * @private
-   * @param  {string} name  name of the animations chain (optional).
    * @return {d3 transtion} d3 transtion object.
    */
-  GeneticRenderer.prototype._nextTrans = function (name) {
-    if (typeof name === "undefined") {
-      name = "__default__";
-    }
+  GeneticRenderer.prototype._nextTrans = function () {
     // TODO: this first check is a workaround.
     // Ideal scenario would be to call always:
     // this._currentTrans[name] = this._currentTrans[name].transition();
     // but it seems to fail when transition has already ended.
-    if (this._currentTrans[name] && this._currentTrans[name].node().__transition__) {
+    if (this._currentTrans && this._currentTrans.node().__transition__) {
       // Some transition is currently in progress, chain a new transition.
-      this._currentTrans[name] = this._currentTrans[name].transition();
+      this._currentTrans = this._currentTrans.transition();
     } else {
-      // All transition ended, just create a new one.
-      this._currentTrans[name] = this._g.transition();
+      // All transitions ended, just create a new one.
+      this._currentTrans = d3.transition();
     }
-    return this._currentTrans[name];
+    return this._currentTrans;
   };
 
   return GeneticRenderer;

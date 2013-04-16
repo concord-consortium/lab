@@ -84,6 +84,16 @@ define(function (require) {
     selection.style("opacity", 0);
   };
 
+  Nucleotide.prototype.showBonds = function(suppressAnimation) {
+    var selection;
+    if (!suppressAnimation) {
+      selection = this._bonds.transition();
+    } else {
+      selection = this._bonds;
+    }
+    selection.style("opacity", 1);
+  };
+
   /**
    * Returns path defining bonds of nucleotide.
    * Note that values used to draw it are strictly connected
