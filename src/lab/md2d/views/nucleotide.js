@@ -10,14 +10,16 @@ define(function (require) {
         "A": 28.151,
         "C": 21.2,
         "G": 21.2,
-        "T": 28.651
+        "T": 28.651,
+        "U": 28.651
       },
       H = {
         "BACKB": 14,
         "A": 31.15,
         "C": 25.3,
         "G": 30.3,
-        "T": 25.007
+        "T": 25.007,
+        "U": 25.007
       };
 
   (function () {
@@ -34,7 +36,7 @@ define(function (require) {
     }
   }());
 
-  function Nucleotide(parent, ms2px, type, direction, index) {
+  function Nucleotide(parent, ms2px, type, direction, index, mRNA) {
     this._ms2px = ms2px;
     this._type = type;
     this._g = parent.append("g").attr("class", "nucleotide");
@@ -52,7 +54,7 @@ define(function (require) {
       "width": ms2px(W.BACKB),
       "height": ms2px(H.BACKB),
       "preserveAspectRatio": "none",
-      "xlink:href": labConfig.actualRoot + "../../resources/transcription/Backbone_DNA.svg"
+      "xlink:href": labConfig.actualRoot + "../../resources/transcription/Backbone_" + (mRNA ? "RNA" : "DNA") + ".svg"
     });
     this._nucleo = this._g.append("image").attr({
       "x": ms2px(W.BACKB) / 2 - ms2px(W[type]) / 2,
@@ -70,8 +72,14 @@ define(function (require) {
     }
   }
 
-  Nucleotide.prototype.hideBonds = function() {
-    this._bonds.transition().style("opacity", 0);
+  Nucleotide.prototype.hideBonds = function(animate) {
+    var selection;
+    if (animate) {
+      selection = this._bonds.transition();
+    } else {
+      selection = this._bonds;
+    }
+    selection.style("opacity", 0);
   };
 
   /**
