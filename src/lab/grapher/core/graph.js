@@ -1340,7 +1340,7 @@ define(function (require) {
     }
 
     function xAxisDrag() {
-      node().focus();
+      node.focus();
       document.onselectstart = falseFunction;
       d3.event.preventDefault();
       var p = d3.mouse(vis.node());
@@ -1348,7 +1348,7 @@ define(function (require) {
     }
 
     function yAxisDrag() {
-      node().focus();
+      node.focus();
       d3.event.preventDefault();
       document.onselectstart = falseFunction;
       var p = d3.mouse(vis.node());
@@ -1356,7 +1356,7 @@ define(function (require) {
     }
 
     function dataPointDrag(d) {
-      node().focus();
+      node.focus();
       d3.event.preventDefault();
       document.onselectstart = falseFunction;
       if (selected === d) {
