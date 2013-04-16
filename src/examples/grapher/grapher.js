@@ -7,36 +7,50 @@
 // ------------------------------------------------------------
 
 var graph,
-    stopStreaming = false,
     selectSize = document.getElementById('select-size'),
     selectData = document.getElementById('select-data'),
     responsiveLayout = document.getElementById('responsive-layout'),
     DEFAULT_GRAPH = "earth-surface-temperature",
     hash = document.location.hash || "#" + DEFAULT_GRAPH,
-    interactive_url = hash.substr(1, hash.length);
+    interactive_url = hash.substr(1, hash.length),
+
+    // used in the streaming examples
+    timerId,
+    maxtime,
+    twopi = Math.PI * 2,
+    frequency1,
+    amplitude1,
+    frequency2,
+    amplitude2,
+    twopifreq2,
+    time,
+    count,
+    value1,
+    value2,
+    stopStreaming = false;
 
 document.location.hash = hash;
 selectData.value = interactive_url;
 
 function selectSizeHandler() {
   switch (selectSize.value) {
-    case "large":
+  case "large":
     graph.resize(1280, 666);
     break;
 
-    case "medium":
+  case "medium":
     graph.resize(960, 500);
     break;
 
-    case "small":
+  case "small":
     graph.resize(480, 250);
     break;
 
-    case "tiny":
+  case "tiny":
     graph.resize(240, 125);
     break;
 
-    case "icon":
+  case "icon":
     graph.resize(120, 62);
     break;
   }
@@ -53,7 +67,7 @@ function selectDataHandler() {
     graph = Lab.grapher.Graph('#chart');
   }
   switch(selectData.value) {
-    case "fake":
+  case "fake":
     graph.reset('#chart', {
       title:  "Fake Data",
 
@@ -67,10 +81,9 @@ function selectDataHandler() {
     });
     break;
 
-    case "stair-steps":
+  case "stair-steps":
     graph.reset('#chart', {
       title:  "Stair-Step Data",
-      responsiveLayout: responsiveLayout.checked,
       xlabel: "Distance",
       ylabel: "Height",
       xmax:   14,
@@ -95,14 +108,12 @@ function selectDataHandler() {
     });
     break;
 
-    case "earth-surface-temperature":
+  case "earth-surface-temperature":
     d3.json("data/surface-temperature-data.json", function (data) {
       var surfaceTemperatures = data.global_temperatures.temperature_anomolies.map(function (e) {
           return [e[0], e[1] + data.global_temperatures.global_surface_temperature_1961_1990];
         });
       graph.reset('#chart', {
-        responsiveLayout: responsiveLayout.checked,
-        fontScaleRelativeToParent: false,
         title:  "Earth's Surface Temperature: years 500-2009",
         xlabel: "Year",
         ylabel: "Degrees C",
@@ -124,7 +135,7 @@ function selectDataHandler() {
     });
     break;
 
-    case "world-population":
+  case "world-population":
     d3.json("data/world-population.json", function(data) {
       var worldPopulation = data.worldPopulation.data;
       graph.reset('#chart', {
@@ -147,7 +158,7 @@ function selectDataHandler() {
     });
     break;
 
-    case "world-population-semi-log":
+  case "world-population-semi-log":
     d3.json("data/world-population.json", function(data) {
       var worldPopulation = data.worldPopulation.data;
       graph.reset('#chart', {
@@ -172,16 +183,16 @@ function selectDataHandler() {
     });
     break;
 
-    case "md2d-center-of-mass":
+  case "md2d-center-of-mass":
     d3.text("data/cm-random-walk.csv", "text/csv", function(text) {
       var data = d3.csv.parseRows(text);
       data.length = 5000;
       var randomWalk = data.map(function(e) { return [e[1], e[2]]; });
       graph.reset('#chart', {
         title:  [
-                  "Constrained random walk of center of mass of Lab molecular simulation",
-                  "(L-J forces only; 50 atoms; no thermostat; initial temperature = \"5\")"
-                ],
+          "Constrained random walk of center of mass of Lab molecular simulation",
+          "(L-J forces only; 50 atoms; no thermostat; initial temperature = \"5\")"
+        ],
         xlabel: "x-location of center of mass",
         ylabel: "y-location of center of mas",
 
@@ -196,13 +207,13 @@ function selectDataHandler() {
         ymin:   -50,
         markAllDataPoints: false,
         strokeWidth: 1,
-        dataChange: false,
+        dataChange: false
       });
     });
     break;
 
-    case "streaming":
-    var maxtime = 20;
+  case "streaming":
+    maxtime = 20;
     graph.reset('#chart', {
       title:  "Sin Waves",
       xlabel: "Time",
@@ -220,19 +231,18 @@ function selectDataHandler() {
       markAllDataPoints: false,
       strokeWidth: 1,
       dataChange: false,
-      addData: false,
+      addData: false
     });
+
     stopStreaming = false;
-    var twopi = Math.PI * 2,
-        frequency1 = 0.5,
-        amplitude1 = 1,
-        twopifreq1 = twopi * frequency1,
-        frequency2 = Math.PI,
-        amplitude2 = 0.2,
-        twopifreq2 = twopi * frequency2,
-        time = 0,
-        lastSample = 0,
-        value1, value2;
+    frequency1 = 0.5;
+    amplitude1 = 1;
+    twopifreq1 = twopi * frequency1;
+    frequency2 = Math.PI;
+    amplitude2 = 0.2;
+    twopifreq2 = twopi * frequency2;
+    time = 0,
+    lastSample = 0;
 
     d3.timer(function(elapsed) {
       time = (time + (elapsed - lastSample) / 1000);
@@ -245,7 +255,7 @@ function selectDataHandler() {
     });
     break;
 
-    case "earth-surface-temperature-samples":
+  case "earth-surface-temperature-samples":
     d3.json("data/surface-temperature-data.json", function(data) {
       var surfaceTemperatures = data.global_temperatures.temperature_anomolies.map(function(e) {
           return e[1] + data.global_temperatures.global_surface_temperature_1961_1990;
@@ -276,9 +286,9 @@ function selectDataHandler() {
     break;
 
 
-    case "realtime-markers":
-    var maxtime = 10,
-        sampleInterval = 0.05;
+  case "realtime-markers":
+    maxtime = 10;
+    sampleInterval = 0.05;
     graph.reset('#chart', {
       title:  "Sin Waves",
       xlabel: "Time",
@@ -304,19 +314,18 @@ function selectDataHandler() {
       dataChange: false,
       addData: false
     });
-    stopStreaming = false;
-    var twopi = Math.PI * 2,
-        frequency1 = 0.102,
-        amplitude1 = 1,
-        twopifreq1 = twopi * frequency1,
-        frequency2 = 0.5,
-        amplitude2 = 0.5,
-        twopifreq2 = twopi * frequency2,
-        time = 0,
-        count = 0,
-        value1, value2;
 
-    var timerId = setInterval(function() {
+    stopStreaming = false;
+    frequency1 = 0.102;
+    amplitude1 = 1;
+    twopifreq1 = twopi * frequency1;
+    frequency2 = 0.5;
+    amplitude2 = 0.5;
+    twopifreq2 = twopi * frequency2;
+    time = 0;
+    count = 0;
+
+    timerId = setInterval(function() {
       count++;
       time = count * sampleInterval;
       if (time > maxtime || stopStreaming) { clearInterval(timerId); }
