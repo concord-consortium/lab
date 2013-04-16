@@ -430,6 +430,20 @@ define(function (require) {
       },
 
       /**
+       * Separates two strands of DNA.
+       */
+      separateDNA: function separateDNA() {
+        model.getGeneticProperties().separateDNA();
+      },
+
+      /**
+       * Performs single step of DNA->mRNA transcription process.
+       */
+      transcribeStep: function transcribeStep() {
+        model.getGeneticProperties().transcribeStep();
+      },
+
+      /**
         Triggers transcription of mRNA from DNA.
         Result should be rendered. It is also stored in genetic properties.
 

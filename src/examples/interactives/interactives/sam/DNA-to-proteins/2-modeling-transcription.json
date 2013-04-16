@@ -30,13 +30,13 @@
       "type": "button",
       "id": "transcribe",
       "text": "Transcribe",
-      "action": "transcribe();"
+      "action": "transcribeStep();"
     },
     {
       "type": "button",
       "id": "separate",
       "text": "Separate the strands of DNA",
-      "action": ""
+      "action": "separateDNA();"
     },
     {
       "type": "button",
