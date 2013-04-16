@@ -823,7 +823,7 @@ define(function (require) {
         .attr("pointer-events", "all")
         .style("cursor", "col-resize")
         .on("mousedown", xAxisDrag)
-        .on("touchstart", xAxisDrag)
+        .on("touchstart", xAxisDrag);
 
       xAxisDraggableTooltip = xAxisDraggable.append("title");
 
@@ -847,7 +847,7 @@ define(function (require) {
         title.enter().append("text")
             .attr("class", "title")
             .text(function(d) { return d; })
-            .attr("x", function(d) { return size.width/2 - Math.min(size.width, getComputedTextLength(this))/2 })
+            .attr("x", function(d) { return size.width/2 - Math.min(size.width, getComputedTextLength(this))/2; })
             .attr("dy", function(d, i) { return -i * titleFontSizeInPixels - halfFontSizeInPixels + "px"; });
         titleTooltip = title.append("title")
             .text("");
@@ -938,11 +938,11 @@ define(function (require) {
           .attr("width", size.width)
           .attr("height", xAxisDraggableHeight);
 
-      adjustAxisDraggableFill()
+      adjustAxisDraggableFill();
 
       if (options.title && sizeType.value > 0) {
         title
-            .attr("x", function(d) { return size.width/2 - Math.min(size.width, getComputedTextLength(this))/2 })
+            .attr("x", function(d) { return size.width/2 - Math.min(size.width, getComputedTextLength(this))/2; })
             .attr("dy", function(d, i) { return -i * titleFontSizeInPixels - halfFontSizeInPixels + "px"; });
         titleTooltip
             .text("");
@@ -1345,18 +1345,49 @@ define(function (require) {
       svg.node().focus();
       d3.event.preventDefault();
       document.onselectstart = falseFunction;
-      selected = draggedPoint = d;
+      if (selected === d) {
+        selected = draggedPoint = null;
+      } else {
+        selected = draggedPoint = d;
+      }
       update();
     }
 
     function mousemove() {
-      var p = d3.mouse(vis.node());
+      var p = d3.mouse(vis.node()),
+          index,
+          px,
+          x,
+          nextPoint,
+          prevPoint,
+          minusHalf,
+          plusHalf;
+
       // t = d3.event.changedTouches;
 
       document.onselectstart = function() { return true; };
       d3.event.preventDefault();
-      if (draggedPoint && options.dataChange) {
-        draggedPoint[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
+      if (draggedPoint) {
+        if (options.dataChange) {
+          draggedPoint[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
+        } else {
+          index = points.indexOf(draggedPoint);
+          if (index && index < (points.length-1)) {
+            px = xScale.invert(p[0]);
+            x = draggedPoint[0];
+            nextPoint = points[index+1];
+            prevPoint = points[index-1];
+            minusHalf = x - (x - prevPoint[0])/2;
+            plusHalf =  x + (nextPoint[0] - x)/2;
+            if (px < minusHalf) {
+              draggedPoint = prevPoint;
+              selected = draggedPoint;
+            } else if (px > plusHalf) {
+              draggedPoint = nextPoint;
+              selected = draggedPoint;
+            }
+          }
+        }
         persistScaleChangesToOptions();
         update();
       }
@@ -1855,7 +1886,7 @@ define(function (require) {
 
     // Add an array of points then update the graph.
     function addPoints(datapoints) {
-      addDataPoints(datapoints)
+      addDataPoints(datapoints);
       setCurrentSample(points.length);
       updateOrRescale();
     }
@@ -1904,17 +1935,18 @@ define(function (require) {
     // Add an array of points by processing an array of samples (Y values)
     // synthesizing the X value from sampleInterval interval and number of points.
     function addDataSamples(datasamples) {
-      var start;
+      var start,
+          i;
       if (Object.prototype.toString.call(datasamples[0]) === "[object Array]") {
-        for (var i = 0; i < datasamples.length; i++) {
+        for (i = 0; i < datasamples.length; i++) {
           points = pointArray[i];
           start = points.length * sampleInterval;
-          points.push.apply(points, indexedData(datasamples, sampleInterval, start))
+          points.push.apply(points, indexedData(datasamples, sampleInterval, start));
           pointArray[i] = points;
         }
         points = pointArray[0];
       } else {
-        for (var i = 0; i < datasamples.length; i++) {
+        for (i = 0; i < datasamples.length; i++) {
           if (!pointArray[i]) { pointArray.push([]); }
           start = pointArray[i].length * sampleInterval;
           pointArray[i].push([start, datasamples[i]]);
@@ -2237,7 +2269,7 @@ define(function (require) {
       // by specifying options.sampleInterval when creating the graph.
       addSamples:      addSamples,
       addSample:       addSample,
-      resetSamples: resetSamples,
+      resetSamples: resetSamples
 
     };
 
