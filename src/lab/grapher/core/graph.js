@@ -1945,9 +1945,10 @@ define(function (require) {
           i;
       if (Object.prototype.toString.call(datasamples[0]) === "[object Array]") {
         for (i = 0; i < datasamples.length; i++) {
+          if (!pointArray[i]) { pointArray.push([]); }
           points = pointArray[i];
           start = points.length * sampleInterval;
-          points.push.apply(points, indexedData(datasamples, sampleInterval, start));
+          points.push.apply(points, indexedData(datasamples[i], sampleInterval, start));
           pointArray[i] = points;
         }
         points = pointArray[0];
