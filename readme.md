@@ -132,18 +132,17 @@ If Bundler is not installed install it now into the global gemset for ruby-1.9.3
 [nodejs](http://nodejs.org/) and [npm](http://npmjs.org/), the Node Package Manager are additional
 development dependencies.
 
-[npm](http://npmjs.org/), the Node Package Manager has been included as part of [nodejs](http://nodejs.org/)
-since version 0.8.7.
+[npm](http://npmjs.org/), the Node Package Manager is included as part of [nodejs](http://nodejs.org/)
 
-Install the latest stable version of node (currently v0.8.12) with installers available here: [http://nodejs.org/#download](http://nodejs.org/#download)
+Install the latest stable version of node (currently v0.10.4) with installers available here: [http://nodejs.org/#download](http://nodejs.org/#download)
 
 Currently development is being done with these versions of node and npm:
 
     $ node -v
-    v0.8.12
+    v0.10.4
 
     $ npm -v
-    1.1.63
+    1.2.18
 
 #### CouchDB
 
