@@ -72,9 +72,9 @@ define(function (require) {
     }
   }
 
-  Nucleotide.prototype.hideBonds = function(animate) {
+  Nucleotide.prototype.hideBonds = function(suppressAnimation) {
     var selection;
-    if (animate) {
+    if (!suppressAnimation) {
       selection = this._bonds.transition();
     } else {
       selection = this._bonds;

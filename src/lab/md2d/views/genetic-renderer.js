@@ -36,20 +36,21 @@ define(function (require) {
     this.container.selectAll("g.genetics").remove();
     this._g = this.container.append("g").attr("class", "genetics");
 
-    this._renderDNA(props.DNA, props.DNAComplement);
+    this._renderDNA(props.DNA, props.DNAComplement, props.mRNA);
   };
 
-  GeneticRenderer.prototype.separateDNA = function () {
-    var i, len;
+  GeneticRenderer.prototype.separateDNA = function (suppressAnimation) {
+    var d = suppressAnimation ? 0 : 1500,
+        i, len;
 
-    this._dnaG.transition().duration(1500).attr("transform",
+    this._dnaG.transition().duration(d).attr("transform",
       "translate(0, " + this.model2pxInv(this.model.get("height") / 2 + 2.5 * Nucleotide.HEIGHT) + ")");
-    this._dnaCompG.transition().duration(1500).attr("transform",
+    this._dnaCompG.transition().duration(d).attr("transform",
       "translate(0, " + this.model2pxInv(this.model.get("height") / 2 - 2.5 * Nucleotide.HEIGHT) + ")");
 
     for (i = 0, len = this._dna.length; i < len; i++) {
-      this._dna[i].hideBonds(true);
-      this._dnaComp[i].hideBonds(true);
+      this._dna[i].hideBonds(suppressAnimation);
+      this._dnaComp[i].hideBonds(suppressAnimation);
     }
   };
 
@@ -59,11 +60,11 @@ define(function (require) {
         type   = props.mRNA[index],
         nucleo = new Nucleotide(this._mrnaG, this.modelSize2px, type, 1, index, true);
 
-    nucleo.hideBonds();
+    nucleo.hideBonds(true);
     this._dna.push(nucleo);
   };
 
-  GeneticRenderer.prototype._renderDNA = function (dna, dnaComplement) {
+  GeneticRenderer.prototype._renderDNA = function (dna, dnaComplement, mRNA) {
     var i, len;
 
     this._dnaG     = this._g.append("g").attr("class", "dna"),
@@ -83,6 +84,13 @@ define(function (require) {
     }
     this._dnaCompG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("height") / 2 - Nucleotide.HEIGHT) + ")");
 
+    if (typeof mRNA !== "undefined") {
+      this.separateDNA(true);
+      for (i = 0, len = mRNA.length; i < len; i++) {
+        this._mrna.push(new Nucleotide(this._mrnaG, this.modelSize2px, mRNA[i], 1, i, true));
+        this._mrna[i].hideBonds(true);
+      }
+    }
     this._mrnaG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("height") / 2 - 0.5 * Nucleotide.HEIGHT) + ")");
   };
 
