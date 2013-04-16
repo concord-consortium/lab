@@ -306,7 +306,7 @@ function selectDataHandler() {
       sampleInterval: sampleInterval,
       dataSampleStart: 0,
 
-      markAllDataPoints: true,
+      markAllDataPoints: false,
       markNearbyDataPoints: true,
       extraCirclesVisibleOnHover: 1,
 

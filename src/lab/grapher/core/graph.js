@@ -1189,9 +1189,6 @@ define(function (require) {
       if (d === selected) {
         cs.push("selected");
       }
-      if (!options.markNearbyDataPoints || selectable.indexOf(d) !== -1) {
-        cs.push("selectable");
-      }
       if (cs.length === 0) {
         return null;
       } else {
@@ -1208,10 +1205,19 @@ define(function (require) {
     }
 
     function updateMarkers() {
-      var marker;
+      var marker,
+          markedPoints = null;
       if (options.markAllDataPoints && sizeType.value > 1) {
+        markedPoints = points;
+      } else if (options.markNearbyDataPoints && sizeType.value > 1) {
+        markedPoints = selectable.slice(0);
+        if (selected !== null && markedPoints.indexOf(selected) == -1) {
+          markedPoints.push(selected);
+        }
+      }
+      if (markedPoints !== null) {
         updateMarkerRadius();
-        marker = vis.select("svg").selectAll("circle").data(points);
+        marker = vis.select("svg").selectAll("circle").data(markedPoints);
         marker.enter().append("circle")
             .attr("class", circleClasses)
             .attr("cx",    function(d) { return xScale(d[0]); })
