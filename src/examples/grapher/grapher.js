@@ -334,6 +334,55 @@ function selectDataHandler() {
       graph.addSamples([value1 + value2]);
     }, 1000*sampleInterval);
     break;
+
+  case "multiline-realtime-markers":
+    maxtime = 10;
+    sampleInterval = 0.05;
+    graph.reset('#chart', {
+      title:  "Sin Waves",
+      xlabel: "Time",
+      ylabel: "Amplitude",
+      xmax:   maxtime+0.6,
+      xmin:   0,
+      ymax:   1.6,
+      ymin:   -1.6,
+
+      responsiveLayout: responsiveLayout.checked,
+      fontScaleRelativeToParent: false,
+
+      dataType: 'samples',
+      dataSamples: [],
+      sampleInterval: sampleInterval,
+      dataSampleStart: 0,
+
+      markAllDataPoints: false,
+      markNearbyDataPoints: true,
+      extraCirclesVisibleOnHover: 1,
+
+      strokeWidth: 5,
+      dataChange: false,
+      addData: false
+    });
+
+    stopStreaming = false;
+    frequency1 = 0.102;
+    amplitude1 = 1;
+    twopifreq1 = twopi * frequency1;
+    frequency2 = 0.5;
+    amplitude2 = 0.5;
+    twopifreq2 = twopi * frequency2;
+    time = 0;
+    count = 0;
+
+    timerId = setInterval(function() {
+      count++;
+      time = count * sampleInterval;
+      if (time > maxtime || stopStreaming) { clearInterval(timerId); }
+      value1 = Math.sin(twopifreq1 * time) * amplitude1;
+      value2 = Math.sin(twopifreq2 * time) * amplitude2;
+      graph.addSamples([[(value1 + value2)], [0-(value1+value2)]]);
+    }, 1000*sampleInterval);
+    break;
   }
 }
 

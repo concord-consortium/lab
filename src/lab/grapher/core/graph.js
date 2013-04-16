@@ -1252,24 +1252,32 @@ define(function (require) {
       if (options.markNearbyDataPoints) {
         var mousePoint = d3.mouse(vis.node()),
             translatedMousePointX = xScale.invert(Math.max(0, Math.min(size.width, mousePoint[0]))),
-            p = findClosestPointByX(translatedMousePointX),
+            p,
             idx, pMin, pMax;
-        if (p !== null) {
-          // highlight the central point, and also points to the left and right
-          idx = points.indexOf(p);
-          pMin = idx - (options.extraCirclesVisibleOnHover);
-          pMax = idx + (options.extraCirclesVisibleOnHover + 1);
-          if (pMin < 0) { pMin = 0; }
-          if (pMax > points.length - 1) { pMax = points.length; }
-          selectable = points.slice(pMin, pMax);
-          update();
+        // highlight the central point, and also points to the left and right
+        // TODO Handle multiple data sets/lines
+        selectable = [];
+        for (i = 0; i < pointArray.length; i++) {
+          points = pointArray[i];
+          p = findClosestPointByX(translatedMousePointX, i);
+          if (p !== null) {
+            idx = points.indexOf(p);
+            pMin = idx - (options.extraCirclesVisibleOnHover);
+            pMax = idx + (options.extraCirclesVisibleOnHover + 1);
+            if (pMin < 0) { pMin = 0; }
+            if (pMax > points.length - 1) { pMax = points.length; }
+            selectable = selectable.concat(points.slice(pMin, pMax));
+          }
         }
+        update();
       }
     }
 
-    function findClosestPointByX(x) {
+    function findClosestPointByX(x, line) {
+      if (typeof(line) == "undefined" || line === null) { line = 0; }
       // binary search through points.
       // This assumes points is sorted ascending by x value, which for realTime graphs is true.
+      points = pointArray[line];
       if (points.length === 0) { return null; }
       var min = 0,
           max = points.length - 1,
