@@ -15,9 +15,8 @@ define(function (require) {
         changePreHook,
         changePostHook,
         data,
-        remainingAAs,
 
-        dispatch = d3.dispatch("change", "separateDNA"),
+        dispatch = d3.dispatch("change", "separateDNA", "transcribeStep"),
 
         calculateComplementarySequence = function () {
           // A-T (A-U)
@@ -35,6 +34,19 @@ define(function (require) {
             .replace(/C/g, "g");
 
           data.DNAComplement = compSeq.toUpperCase();
+        },
+
+        mRNACode = function (index) {
+          if (index >= data.DNAComplement.length) {
+            // No more DNA to transcribe, return null.
+            return null;
+          }
+          switch (data.DNAComplement[index]) {
+            case "A": return "U";
+            case "G": return "C";
+            case "T": return "A";
+            case "C": return "G";
+          }
         },
 
         customValidate = function (props) {
@@ -162,11 +174,18 @@ define(function (require) {
         dispatch.on(type, listener);
       },
 
+      separateDNA: function () {
+        if (typeof data.mRNA === "undefined") {
+          changePreHook();
+          data.mRNA = "";
+          changePostHook();
+          dispatch.separateDNA();
+        }
+      },
+
       // Transcribes mRNA from DNA.
       // Result is saved in the mRNA property.
       transcribeDNA: function() {
-        dispatch.separateDNA();
-
         changePreHook();
         // A-U
         // G-C
@@ -181,10 +200,28 @@ define(function (require) {
           .replace(/G/g, "c")
           .replace(/T/g, "a")
           .replace(/C/g, "g");
-
         data.mRNA = mRNA.toUpperCase();
 
         changePostHook();
+        dispatch.change();
+      },
+
+      transcribeStep: function () {
+        var newCode;
+        if (typeof data.mRNA === 'undefined') {
+          api.separateDNA();
+          return;
+        }
+
+        newCode = mRNACode(data.mRNA.length);
+
+        // Check if new code is different from null.
+        if (newCode) {
+          changePreHook();
+          data.mRNA += newCode;
+          changePostHook();
+          dispatch.transcribeStep();
+        }
       },
 
       // Translates mRNA into amino acids chain.
