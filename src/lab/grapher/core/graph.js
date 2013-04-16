@@ -1226,12 +1226,16 @@ define(function (require) {
             .style("stroke-width", markerStrokeWidth)
             .style("cursor", markerCursorStyle)
             .on("mousedown.drag",  dataPointDrag)
-            .on("touchstart.drag", dataPointDrag);
+            .on("touchstart.drag", dataPointDrag)
+            .append("title")
+            .text(function(d) { return "( " + fx(d[0]) + ", " + fy(d[1]) + " )"; });
 
         marker
             .attr("class", circleClasses)
             .attr("cx",    function(d) { return xScale(d[0]); })
-            .attr("cy",    function(d) { return yScale(d[1]); });
+            .attr("cy",    function(d) { return yScale(d[1]); })
+            .select("title")
+            .text(function(d) { return "( " + fx(d[0]) + ", " + fy(d[1]) + " )"; });
 
         marker.exit().remove();
       }
