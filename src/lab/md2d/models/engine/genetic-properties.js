@@ -36,6 +36,11 @@ define(function (require) {
           data.DNAComplement = compSeq.toUpperCase();
         },
 
+        mRNAComplete = function () {
+          // mRNA should be defined and its length should be equal to DNA length.
+          return data.mRNA && data.mRNA.length === data.DNA.length;
+        },
+
         mRNACode = function (index) {
           if (index >= data.DNAComplement.length) {
             // No more DNA to transcribe, return null.
@@ -174,6 +179,9 @@ define(function (require) {
         dispatch.on(type, listener);
       },
 
+      /**
+       * Triggers separation of the DNA strands.
+       */
       separateDNA: function () {
         if (typeof data.mRNA === "undefined") {
           changePreHook();
@@ -183,29 +191,18 @@ define(function (require) {
         }
       },
 
-      // Transcribes mRNA from DNA.
-      // Result is saved in the mRNA property.
-      transcribeDNA: function() {
-        changePreHook();
-        // A-U
-        // G-C
-        // T-A
-        // C-G
-
-        // Use lower case during conversion to
-        // avoid situation when you change G->C,
-        // and later C->G again.
-        var mRNA = data.DNAComplement
-          .replace(/A/g, "u")
-          .replace(/G/g, "c")
-          .replace(/T/g, "a")
-          .replace(/C/g, "g");
-        data.mRNA = mRNA.toUpperCase();
-
-        changePostHook();
-        dispatch.change();
+      /**
+       * Triggers *complete* transcription of the DNA.
+       */
+      transcribe: function() {
+        while (!mRNAComplete()) {
+          api.transcribeStep();
+        }
       },
 
+      /**
+       * Triggers only one step of DNA transcription.
+       */
       transcribeStep: function () {
         var newCode;
         if (typeof data.mRNA === 'undefined') {
@@ -229,9 +226,9 @@ define(function (require) {
         var result = [],
             mRNA, abbr, i, len;
 
-        // Make sure that mRNA is available.
-        if (data.mRNA === undefined) {
-          api.transcribeDNA();
+        // Make sure that complete mRNA is available.
+        if (!mRNAComplete()) {
+          api.transcribe();
         }
         mRNA = data.mRNA;
 
