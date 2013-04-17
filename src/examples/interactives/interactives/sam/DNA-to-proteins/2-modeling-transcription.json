@@ -30,6 +30,12 @@
       "type": "button",
       "id": "transcribe",
       "text": "Transcribe",
+      "action": "transcribe();"
+    },
+    {
+      "type": "button",
+      "id": "transcribe-step",
+      "text": "Transcribe step by step",
       "action": "transcribeStep();"
     },
     {
@@ -71,9 +77,9 @@
   ],
   "layout": {
     "bottom": [
-      ["edit-dna"],
-      ["separate", "reset"],
-      ["transcribe", "transcribeA", "transcribeU", "transcribeG", "transcribeC"]
+      ["edit-dna", "reset", "transcribe"],
+      ["separate", "transcribe-step"],
+      ["transcribeA", "transcribeU", "transcribeG", "transcribeC"]
     ]
   }
 }

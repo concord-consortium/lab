@@ -437,20 +437,20 @@ define(function (require) {
       },
 
       /**
-       * Performs single step of DNA->mRNA transcription process.
+       * Performs single step of DNA to mRNA transcription process.
        */
       transcribeStep: function transcribeStep() {
         model.getGeneticProperties().transcribeStep();
       },
 
       /**
-        Triggers transcription of mRNA from DNA.
-        Result should be rendered. It is also stored in genetic properties.
-
-        e.g. getGeneticProperties() --> {DNA: "ATCG", DNAComplement: "TAGC", mRNA: "AUCG", ...}
-      */
+       * Triggers complete DNA to mRNA transcription.
+       *
+       * Complete mRNA will be available in genetic properties.
+       * e.g. getGeneticProperties() --> {DNA: "ATCG", DNAComplement: "TAGC", mRNA: "AUCG", ...}
+       */
       transcribe: function transcribeDNA() {
-        model.getGeneticProperties().transcribeDNA();
+        model.getGeneticProperties().transcribe();
       },
 
       /**
