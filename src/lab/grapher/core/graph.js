@@ -1293,12 +1293,14 @@ define(function (require) {
 
       // figure out which point is actually closest.
       // we have to compare 3 points, to account for floating point rounding errors.
+      // if the mouse moves off the left edge of the graph, p1 may not exist.
+      // if the mouse moves off the right edge of the graph, p3 may not exist.
       p1 = points[mid - 1];
       p2 = points[mid];
       p3 = points[mid + 1];
-      if (Math.abs(p1[0] - x) <= Math.abs(p2[0] - x)) {
+      if (typeof(p1) !== "undefined" && Math.abs(p1[0] - x) <= Math.abs(p2[0] - x)) {
         return p1;
-      } else if (Math.abs(p2[0] - x) <= Math.abs(p3[0] - x)) {
+      } else if (typeof(p3) === "undefined" || Math.abs(p2[0] - x) <= Math.abs(p3[0] - x)) {
         return p2;
       } else {
         return p3;
