@@ -2,7 +2,8 @@
 
 define(function (require) {
 
-  var Nucleotide = require('md2d/views/nucleotide');
+  var labConfig = require('lab.config'),
+      Nucleotide = require('md2d/views/nucleotide');
 
   function GeneticRenderer(container, parentView, model) {
     this.container = container;
@@ -40,6 +41,7 @@ define(function (require) {
     this._currentTrans = null;
 
     this._renderDNA(props.DNA, props.DNAComplement, props.mRNA);
+    this._renderBackground();
   };
 
   GeneticRenderer.prototype.separateDNA = function (suppressAnimation) {
@@ -127,6 +129,24 @@ define(function (require) {
     this._mrnaG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("height") / 2 - 0.5 * Nucleotide.HEIGHT) + ")");
 
     this._scrollContainer(true);
+  };
+
+  GeneticRenderer.prototype._renderBackground = function () {
+    var gradient = this._g.append("defs").append("linearGradient")
+      .attr("id", "transcription-bg")
+      .attr("x1", "0%")
+      .attr("y1", "0%")
+      .attr("x2", "0%")
+      .attr("y2", "100%");
+
+    gradient.append("stop")
+      .attr("stop-color", "#C8DD69")
+      .attr("offset", "0%");
+    gradient.append("stop")
+      .attr("stop-color", "#778B3D")
+      .attr("offset", "100%");
+
+    d3.select(".plot").style("fill", "url(#transcription-bg)");
   };
 
   /**
