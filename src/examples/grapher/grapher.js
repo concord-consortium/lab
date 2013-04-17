@@ -309,6 +309,7 @@ function selectDataHandler() {
       markAllDataPoints: false,
       markNearbyDataPoints: true,
       extraCirclesVisibleOnHover: 1,
+      showRulersOnSelection: true,
 
       strokeWidth: 5,
       dataChange: false,
@@ -358,6 +359,7 @@ function selectDataHandler() {
       markAllDataPoints: false,
       markNearbyDataPoints: true,
       extraCirclesVisibleOnHover: 1,
+      showRulersOnSelection: true,
 
       strokeWidth: 5,
       dataChange: false,

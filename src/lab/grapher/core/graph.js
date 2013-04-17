@@ -36,6 +36,8 @@ define(function (require) {
         title,
         xlabel,
         ylabel,
+        selectedRulerX,
+        selectedRulerY,
 
         // Strings used as tooltips when labels are visible but are truncated because
         // they are too big to be rendered into the space the graph allocates
@@ -298,6 +300,9 @@ define(function (require) {
 
           // number of circles to show on each side of the central point
           extraCirclesVisibleOnHover: 2,
+
+          // true to show dashed horizontal and vertical rulers when a circle is selected
+          showRulersOnSelection: false,
 
           // width of the line used for plotting
           strokeWidth:      2.0,
@@ -799,6 +804,24 @@ define(function (require) {
         .attr("height", size.height)
         .attr("viewBox", "0 0 "+size.width+" "+size.height);
 
+      selectedRulerX = viewbox.append("line")
+        .attr("stroke", gridStroke)
+        .attr("stroke-dasharray", "2,2")
+        .attr("y1", 0)
+        .attr("y2", size.height)
+        .attr("x1", function(d) { return selected === null ? 0 : selected[0]; } )
+        .attr("x2", function(d) { return selected === null ? 0 : selected[0]; } )
+        .attr("class", "ruler hidden");
+
+      selectedRulerY = viewbox.append("line")
+        .attr("stroke", gridStroke)
+        .attr("stroke-dasharray", "2,2")
+        .attr("x1", 0)
+        .attr("x2", size.width)
+        .attr("y1", function(d) { return selected === null ? 0 : selected[1]; } )
+        .attr("y2", function(d) { return selected === null ? 0 : selected[1]; } )
+        .attr("class", "ruler hidden");
+
       yAxisDraggable = svg.append("rect")
         .attr("class", "draggable-axis")
         .attr("x", padding.left-yAxisDraggableWidth)
@@ -1238,6 +1261,29 @@ define(function (require) {
             .text(function(d) { return "( " + fx(d[0]) + ", " + fy(d[1]) + " )"; });
 
         marker.exit().remove();
+      }
+
+      updateRulers();
+    }
+
+    function updateRulers() {
+      if (options.showRulersOnSelection && selected !== null) {
+        selectedRulerX
+          .attr("y1", 0)
+          .attr("y2", size.height)
+          .attr("x1", function(d) { return selected === null ? 0 : xScale(selected[0]); } )
+          .attr("x2", function(d) { return selected === null ? 0 : xScale(selected[0]); } )
+          .attr("class", function(d) { return "ruler" + (selected === null ? " hidden" : ""); } );
+
+        selectedRulerY
+          .attr("x1", 0)
+          .attr("x2", size.width)
+          .attr("y1", function(d) { return selected === null ? 0 : yScale(selected[1]); } )
+          .attr("y2", function(d) { return selected === null ? 0 : yScale(selected[1]); } )
+          .attr("class", function(d) { return "ruler" + (selected === null ? " hidden" : ""); } );
+      } else {
+        selectedRulerX.attr("class", "ruler hidden");
+        selectedRulerY.attr("class", "ruler hidden");
       }
     }
 
