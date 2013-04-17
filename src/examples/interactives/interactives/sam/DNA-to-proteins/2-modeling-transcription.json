@@ -54,32 +54,31 @@
       "type": "button",
       "id": "transcribeA",
       "text": "A",
-      "action": ""
+      "action": "transcribeStep('A');"
     },
     {
       "type": "button",
       "id": "transcribeC",
       "text": "C",
-      "action": ""
+      "action": "transcribeStep('C');"
     },
     {
       "type": "button",
       "id": "transcribeG",
       "text": "G",
-      "action": ""
+      "action": "transcribeStep('G');"
     },
     {
       "type": "button",
       "id": "transcribeU",
       "text": "U",
-      "action": ""
+      "action": "transcribeStep('U');"
     }
   ],
   "layout": {
     "bottom": [
-      ["edit-dna", "reset", "transcribe"],
-      ["separate", "transcribe-step"],
-      ["transcribeA", "transcribeU", "transcribeG", "transcribeC"]
+      ["edit-dna", "reset", "transcribe", "transcribe-step"],
+      ["separate", "transcribeA", "transcribeU", "transcribeG", "transcribeC"]
     ]
   }
 }
