@@ -7,20 +7,26 @@ Model             = requirejs 'md2d/models/modeler'
 describe "GeneticProperties", ->
   describe "[basic tests of the class]", ->
     # Mock the change hooks.
-    changeHooks =
+    hooks =
       pre: ->
       post: ->
       changeListener: ->
+      separateListener: ->
+      transcribeStepListener: ->
 
     beforeEach ->
-      sinon.spy changeHooks, "pre"
-      sinon.spy changeHooks, "post"
-      sinon.spy changeHooks, "changeListener"
+      sinon.spy hooks, "pre"
+      sinon.spy hooks, "post"
+      sinon.spy hooks, "changeListener"
+      sinon.spy hooks, "separateListener"
+      sinon.spy hooks, "transcribeStepListener"
 
     afterEach ->
-      changeHooks.pre.restore()
-      changeHooks.post.restore()
-      changeHooks.changeListener.restore()
+      hooks.pre.restore()
+      hooks.post.restore()
+      hooks.changeListener.restore()
+      hooks.separateListener.restore()
+      hooks.transcribeStepListener.restore()
 
     describe "GeneticProperties constructor", ->
       it "should exist", ->
@@ -36,12 +42,12 @@ describe "GeneticProperties", ->
       before ->
         geneticProperties = new GeneticProperties
 
-      it "should have a registerChangeHooks, add, set, get, on, transcribeDNA methods", ->
+      it "should have a registerChangeHooks, add, set, get, on, transcribe methods", ->
         geneticProperties.should.have.property "registerChangeHooks"
         geneticProperties.should.have.property "set"
         geneticProperties.should.have.property "get"
         geneticProperties.should.have.property "on"
-        geneticProperties.should.have.property "transcribeDNA"
+        geneticProperties.should.have.property "transcribe"
 
       it "should return undefined when genetic properties are not specified", ->
         should.not.exist geneticProperties.get()
@@ -53,23 +59,26 @@ describe "GeneticProperties", ->
       describe "with registered change hooks", ->
 
         beforeEach ->
-          geneticProperties.registerChangeHooks changeHooks.pre, changeHooks.post
-          geneticProperties.on "change", changeHooks.changeListener
+          geneticProperties.registerChangeHooks hooks.pre, hooks.post
+          geneticProperties.on "change", hooks.changeListener
+          geneticProperties.on "separateDNA", hooks.separateListener
+          geneticProperties.on "transcribeStep", hooks.transcribeStepListener
 
         it "should allow to set genetic properties and call appropriate hooks", ->
           geneticProperties.set {DNA: "ATGC", x: 1, y: 2, height: 3, width: 3}
-          changeHooks.pre.callCount.should.eql 1
-          changeHooks.post.callCount.should.eql 1
-          changeHooks.changeListener.callCount.should.eql 1
+          hooks.pre.callCount.should.eql 1
+          hooks.post.callCount.should.eql 1
+          hooks.changeListener.callCount.should.eql 1
 
         it "should allow to get existing genetic properties", ->
           geneticProperties.get().should.eql {DNA: "ATGC", DNAComplement: "TACG", x: 1, y: 2, height: 3, width: 3}
 
         it "should transcribe mRNA from DNA and call appropriate hooks", ->
-          geneticProperties.transcribeDNA()
-          changeHooks.pre.callCount.should.eql 1
-          changeHooks.post.callCount.should.eql 1
-          changeHooks.changeListener.callCount.should.eql 1
+          geneticProperties.transcribe()
+          hooks.pre.callCount.should.eql 5
+          hooks.post.callCount.should.eql 5
+          hooks.separateListener.callCount.should.eql 1
+          hooks.transcribeStepListener.callCount.should.eql 4
 
           geneticProperties.get().should.eql {DNA: "ATGC", DNAComplement: "TACG", mRNA: "AUGC", x: 1, y: 2, height: 3, width: 3}
 
@@ -116,9 +125,9 @@ describe "GeneticProperties", ->
 
         it "should allow to modify existing genetic properties and call appropriate hooks", ->
           geneticProperties.set {DNA: "ATGCT", x: 0, y: 1}
-          changeHooks.pre.callCount.should.eql 1
-          changeHooks.post.callCount.should.eql 1
-          changeHooks.changeListener.callCount.should.eql 1
+          hooks.pre.callCount.should.eql 1
+          hooks.post.callCount.should.eql 1
+          hooks.changeListener.callCount.should.eql 1
 
           # Note that as DNA was changed, DNAComplement was recalculated and mRNA was deleted.
           geneticProperties.get().should.eql {DNA: "ATGCT", DNAComplement: "TACGA", x: 0, y: 1, height: 3, width: 3}
@@ -127,16 +136,16 @@ describe "GeneticProperties", ->
           data = {DNA: "CGTA", x: 5, y: 6, height: 7, width: 8}
 
           geneticProperties.deserialize data
-          changeHooks.pre.callCount.should.eql 1
-          changeHooks.post.callCount.should.eql 1
-          changeHooks.changeListener.callCount.should.eql 1
+          hooks.pre.callCount.should.eql 1
+          hooks.post.callCount.should.eql 1
+          hooks.changeListener.callCount.should.eql 1
 
           geneticProperties.get().should.eql {DNA: "CGTA", DNAComplement: "GCAT", x: 5, y: 6, height: 7, width: 8}
 
         it "should allow to serialize genetic properties", ->
           # Note that we do not want DNAComplement in serialized form, it's redundant.
           geneticProperties.serialize().should.eql {DNA: "CGTA", x: 5, y: 6, height: 7, width: 8}
-          geneticProperties.transcribeDNA()
+          geneticProperties.transcribe()
           geneticProperties.serialize().should.eql {DNA: "CGTA", mRNA: "CGUA", x: 5, y: 6, height: 7, width: 8}
           geneticProperties.translateStepByStep()
           geneticProperties.serialize().should.eql {DNA: "CGTA", mRNA: "CGUA", translationStep: 0, x: 5, y: 6, height: 7, width: 8}
