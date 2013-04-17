@@ -361,7 +361,7 @@ ISImporter.GraphController = defineClass({
 
       markAllDataPoints: false,
       markNearbyDataPoints: true,
-      extraCirclesVisibleOnHover: 1,
+      extraCirclesVisibleOnHover: 0,
       showRulersOnSelection: true,
       dataChange  : false
     }, "Select a sensor type");
