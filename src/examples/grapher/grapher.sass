@@ -14,30 +14,36 @@ $focus-outline-color: rgba(#2EC0EC, 0.2)
   border-radius: 0.5em
 
 svg.graph
+  &:focus
+    outline: $focus-outline-color solid 0.2em
   text.title
-    font-size: 1.1em
+    font-size: 0.9em
   text.ylabel
-    font-size: 1.0em
+    font-size: 0.8em
   text.xlabel
-    font-size: 1.0em
+    font-size: 0.8em
   text.axis
-    font-size: 1.0em
-
-circle, .line
-  fill: none
-  stroke: steelblue
-  stroke-width: 2px
-
-circle
-  fill: white
-  fill-opacity: 0.2
-  cursor: move
-  &.selected
-    fill: #ff7f0e
-    stroke: #ff7f0e
-  &:hover
-    fill: #ff7f0e
-    stroke: #707f0e
-  &.selected:hover
-    fill: #ff7f0e
-    stroke: #ff7f0e
+    font-size: 0.8em
+    &:focus
+      outline: $focus-outline-color solid 0.2em
+  rect.draggable-axis
+    fill: rgba(255,255,255,0.0)
+    &:hover
+      fill: rgba(196,196,196,0.2)
+  .ruler
+    &.hidden
+      visibility: hidden
+  circle
+    fill: none
+    fill-opacity: 0.2
+    stroke: steelblue
+    cursor: move
+    &.selected
+      fill: #ff7f0e
+      stroke: #ff7f0e
+    &:hover
+      fill: #ff7f0e
+      stroke: #707f0e
+    &.selected:hover
+      fill: #ff7f0e
+      stroke: #ff7f0e

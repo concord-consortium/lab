@@ -45,6 +45,21 @@ svg.graph
   .ruler
     &.hidden
       visibility: hidden
+  circle
+    fill: none
+    fill-opacity: 0.2
+    stroke: steelblue
+    cursor: move
+    &.selected
+      fill: #ff7f0e
+      stroke: #ff7f0e
+    &:hover
+      fill: #ff7f0e
+      stroke: #707f0e
+    &.selected:hover
+      fill: #ff7f0e
+      stroke: #ff7f0e
+
 
 // Bar Graph styles
 .bar-graph
