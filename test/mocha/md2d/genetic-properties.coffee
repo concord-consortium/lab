@@ -73,10 +73,21 @@ describe "GeneticProperties", ->
         it "should allow to get existing genetic properties", ->
           geneticProperties.get().should.eql {DNA: "ATGC", DNAComplement: "TACG", x: 1, y: 2, height: 3, width: 3}
 
+        it "should perform single step of DNA to mRNA transcription", ->
+          geneticProperties.separateDNA()
+          geneticProperties.get().mRNA.should.eql "" # DNA separated, mRNA prepared for transcription
+          geneticProperties.transcribeStep()
+          geneticProperties.get().mRNA.should.eql "A"
+          geneticProperties.transcribeStep("A")        # Wrong, "U" is expected!
+          geneticProperties.get().mRNA.should.eql "A"  # Nothing happens, mRNA is still the same.
+          geneticProperties.transcribeStep("U")        # This time expected nucleotide is correct,
+          geneticProperties.get().mRNA.should.eql "AU" # so it's added to mRNA.
+
         it "should transcribe mRNA from DNA and call appropriate hooks", ->
+          geneticProperties.set {DNA: "ATGC"}
           geneticProperties.transcribe()
-          hooks.pre.callCount.should.eql 5
-          hooks.post.callCount.should.eql 5
+          hooks.pre.callCount.should.eql 6  # 1x set + 1x separate + 4x transcription
+          hooks.post.callCount.should.eql 6 # 1x set + 1x separate + 4x transcription
           hooks.separateListener.callCount.should.eql 1
           hooks.transcribeStepListener.callCount.should.eql 4
 
