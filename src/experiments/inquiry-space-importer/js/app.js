@@ -338,7 +338,7 @@ ISImporter.GraphController = defineClass({
     };
 
     this.dataResetListener = function() {
-      self.graph.data(self.dataset.getDataPoints());
+      self.graph.resetPoints(self.dataset.getDataPoints());
     };
   },
 
@@ -355,8 +355,14 @@ ISImporter.GraphController = defineClass({
       yTickCount  : 7,
       xFormatter  : "2s",
       yFormatter  : "2s",
-      points      : [],
+
+      dataType: 'points',
+      dataPoints: [],
+
       markAllDataPoints: false,
+      markNearbyDataPoints: true,
+      extraCirclesVisibleOnHover: 1,
+      showRulersOnSelection: true,
       dataChange  : false
     }, "Select a sensor type");
 
