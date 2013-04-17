@@ -296,6 +296,7 @@ define(function (require) {
           .attr({
             'xmlns': 'http://www.w3.org/2000/svg',
             'xmlns:xmlns:xlink': 'http://www.w3.org/1999/xlink', // hack: doubling xmlns: so it doesn't disappear once in the DOM
+            overflow: 'hidden',
             width: cx,
             height: cy
           })
