@@ -387,6 +387,10 @@ define(function (require) {
         resetDataSamples(options.dataSamples, sampleInterval, dataSampleStart);
         break;
       }
+
+      selectable = [];
+      selected = null;
+
       setCurrentSample(points.length);
     }
 
@@ -918,6 +922,8 @@ define(function (require) {
           .attr("y", size.height/2)
           .style("text-anchor","middle");
 
+      updateMarkers();
+      updateRulers();
     }
 
     //
@@ -1003,6 +1009,8 @@ define(function (require) {
       vis.selectAll("g.x").remove();
       vis.selectAll("g.y").remove();
 
+      updateMarkers();
+      updateRulers();
       resizeCanvas();
     }
 
