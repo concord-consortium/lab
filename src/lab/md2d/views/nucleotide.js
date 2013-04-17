@@ -116,8 +116,8 @@ define(function (require) {
   };
 
   // Width of the nucleotide is width of the DNA backbone.
-  // * 0.99 to ensure that DNA backbone doesn't contain any visual breaks.
-  Nucleotide.WIDTH  = W.BACKB * 0.99;
+  // * 0.98 to ensure that DNA backbone doesn't contain any visual discontinuities.
+  Nucleotide.WIDTH  = W.BACKB * 0.98;
   // Height of the nucleotide is height of the DNA backbone + A nucleotide (tallest one).
   // * 0.95 because it simply... looks better. This value is used to determine distance
   // between two strands of DNA and this multiplier causes that they are closer to each other.
