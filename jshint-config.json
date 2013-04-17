@@ -26,6 +26,7 @@
   "undef": true,
   "sub": true,
   "strict": false,
+  "trailing": true,
   "white": false,
   "unused": true
 }
