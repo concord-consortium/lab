@@ -437,10 +437,21 @@ define(function (require) {
       },
 
       /**
-       * Performs single step of DNA to mRNA transcription process.
+       * Triggers only one step of DNA transcription.
+       * This method also accepts optional parameter - expected nucleotide.
+       * When it's available, transcription step will be performed only
+       * when passed nucleotide code matches nucleotide, which should
+       * be actually joined to mRNA in this transcription step. When
+       * expected nucleotide code is wrong, this method does nothing.
+       *
+       * e.g.
+       * transcribeStep("A") will perform transcription step only
+       * if "A" nucleotide should be added to mRNA in this step.
+       *
+       * @param  {string} expectedNucleotide code of the expected nucleotide ("U", "C", "A" or "G").
        */
-      transcribeStep: function transcribeStep() {
-        model.getGeneticProperties().transcribeStep();
+      transcribeStep: function transcribeStep(expectedNucleotide) {
+        model.getGeneticProperties().transcribeStep(expectedNucleotide);
       },
 
       /**
