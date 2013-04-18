@@ -430,6 +430,14 @@ define(function (require) {
       },
 
       /**
+       * Plays DNA intro, which shows broader context of the DNA transcription and
+       * translation.
+       */
+      playDNAIntro: function () {
+        model.getGeneticProperties().playIntro();
+      },
+
+      /**
        * Separates two strands of DNA.
        */
       separateDNA: function separateDNA() {
