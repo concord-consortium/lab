@@ -125,7 +125,7 @@ define(function (require) {
       .style("opacity", 5)
       .attr("transform", "scale(1.56)");
 
-    t = t.transition().ease("linear").duration(2000);
+    t = this._nextTrans().ease("linear").duration(2000);
     t.select(".dna1")
       .style("opacity", 0)
       .attr("transform", "scale(3.12)");
@@ -133,7 +133,7 @@ define(function (require) {
       .style("opacity", 1)
       .attr("transform", "scale(2)");
 
-    t = t.transition().ease("linear").duration(2000);
+    t = this._nextTrans().ease("linear").duration(2000);
     t.select(".dna2")
       .style("opacity", 0)
       .attr("transform", "scale(3.8)");
@@ -141,11 +141,11 @@ define(function (require) {
       .style("opacity", 1)
       .attr("transform", "scale(0.4)");
 
-    t = t.transition().ease("quad-out").duration(4000);
+    t = this._nextTrans().ease("quad-out").duration(4000);
     t.select(".dna3")
       .attr("transform", "scale(0.6)");
 
-    t = t.transition().ease("cubic-in-out").duration(2000);
+    t = this._nextTrans().ease("cubic-in-out").duration(2000);
     t.select(".dna-intro")
       .style("opacity", 0)
       .remove();
