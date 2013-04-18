@@ -3,7 +3,35 @@
 define(function (require) {
 
   var labConfig = require('lab.config'),
-      Nucleotide = require('md2d/views/nucleotide');
+      Nucleotide = require('md2d/views/nucleotide'),
+
+      SCALE = 0.007,
+      W = {
+        "CELLS": 720,
+        "DNA1": 661,
+        "DNA2": 720,
+        "DNA3": 337.4
+      },
+      H = {
+        "CELLS": 500,
+        "DNA1": 550,
+        "DNA2": 414.263,
+        "DNA3": 89.824
+      };
+
+  (function () {
+    var name;
+    for (name in W) {
+      if (W.hasOwnProperty(name)) {
+        W[name] *= SCALE;
+      }
+    }
+    for (name in H) {
+      if (H.hasOwnProperty(name)) {
+        H[name] *= SCALE;
+      }
+    }
+  }());
 
   function GeneticRenderer(container, parentView, model) {
     this.container = container;
@@ -25,8 +53,114 @@ define(function (require) {
     this.model.getGeneticProperties().on("change", $.proxy(this.render, this));
     this.model.getGeneticProperties().on("separateDNA", $.proxy(this.separateDNA, this));
     this.model.getGeneticProperties().on("transcribeStep", $.proxy(this.transcribeStep, this));
+    this.model.getGeneticProperties().on("playIntro", $.proxy(this.playIntro, this));
   }
 
+  GeneticRenderer.prototype.playIntro = function () {
+    var ms2px = this.modelSize2px,
+        cx = this.modelSize2px(W.CELLS * 0.567),
+        cy = this.modelSize2px(H.CELLS * 0.445),
+        dna3units = 14,
+        introG, dna3, t;
+
+    this._g.selectAll(".dna-intro").remove();
+    introG = this._g.append("g").attr({
+      "class": "dna-intro",
+      "transform": "translate(" + cx + " " + cy + ")"
+    });
+
+    introG.append("image").attr({
+      "class": "cells",
+      "x": -cx,
+      "y": -cy,
+      "width": this.modelSize2px(W.CELLS),
+      "height": this.modelSize2px(H.CELLS),
+      "preserveAspectRatio": "none",
+      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/Cells.svg"
+    });
+
+    introG.append("image").attr({
+      "class": "dna1",
+      "x": this.modelSize2px(W.DNA1 * -0.5),
+      "y": this.modelSize2px(H.DNA1 * -0.5),
+      "width": this.modelSize2px(W.DNA1),
+      "height": this.modelSize2px(H.DNA1),
+      "transform": "scale(0.13)",
+      "preserveAspectRatio": "none",
+      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/DNA_InsideNucleus_1.svg"
+    }).style("opacity", 0);
+
+    introG.append("image").attr({
+      "class": "dna2",
+      "x": this.modelSize2px(W.DNA2 * -0.5),
+      "y": this.modelSize2px(H.DNA2 * -0.404),
+      "width": this.modelSize2px(W.DNA2),
+      "height": this.modelSize2px(H.DNA2),
+      "preserveAspectRatio": "none",
+      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/DNA_InsideNucleus_2.svg"
+    }).style("opacity", 0);
+
+    dna3 = introG.append("g").attr({
+      "class": "dna3",
+      "transform": "scale(0.2)"
+    }).style("opacity", 0);
+
+    dna3.selectAll("dna3-unit").data(new Array(dna3units)).enter().append("image").attr({
+      "class": "dna3-unit",
+      "x": function (d, i) { return (i - dna3units * 0.5) * ms2px(W.DNA3) * 0.98; },
+      "y": this.modelSize2px(H.DNA3 * -0.5),
+      "width": this.modelSize2px(W.DNA3),
+      "height": this.modelSize2px(H.DNA3),
+      // "transform": "scale(0.13)",
+      "preserveAspectRatio": "none",
+      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/DoubleHelix_Unit.svg"
+    });
+
+    t = this._nextTrans().ease("cubic").duration(5000);
+    t.select(".cells")
+      .attr("transform", "scale(12)");
+    t.select(".dna1")
+      // Of course max value for opacity is 1. However value bigger than 1
+      // affects transition progress and in this case it's helpful.
+      .style("opacity", 5)
+      .attr("transform", "scale(1.56)");
+
+    t = t.transition().ease("linear").duration(2000);
+    t.select(".dna1")
+      .style("opacity", 0)
+      .attr("transform", "scale(3.12)");
+    t.select(".dna2")
+      .style("opacity", 1)
+      .attr("transform", "scale(2)");
+
+    t = t.transition().ease("linear").duration(2000);
+    t.select(".dna2")
+      .style("opacity", 0)
+      .attr("transform", "scale(3.8)");
+    t.select(".dna3")
+      .style("opacity", 1)
+      .attr("transform", "scale(0.4)");
+
+    t = t.transition().ease("quad-out").duration(4000);
+    t.select(".dna3")
+      .attr("transform", "scale(0.6)");
+
+    t = t.transition().ease("cubic-in-out").duration(2000);
+    t.select(".dna-intro")
+      .style("opacity", 0)
+      .remove();
+
+    /*
+    // Circle (cx, cy) point. Useful for debugging and fitting objects in a right place.
+    introG.append("circle").attr({
+      "class": "ctr",
+      "cx": 0,
+      "cy": 0,
+      "r": 10,
+      "fill": "red"
+    });
+    */
+  };
 
   GeneticRenderer.prototype.render = function () {
     var props = this.model.getGeneticProperties().get();
