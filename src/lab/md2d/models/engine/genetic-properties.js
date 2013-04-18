@@ -16,7 +16,7 @@ define(function (require) {
         changePostHook,
         data,
 
-        dispatch = d3.dispatch("change", "separateDNA", "transcribeStep"),
+        dispatch = d3.dispatch("change", "separateDNA", "transcribeStep", "playIntro"),
 
         calculateComplementarySequence = function () {
           // A-T (A-U)
@@ -177,6 +177,14 @@ define(function (require) {
 
       on: function(type, listener) {
         dispatch.on(type, listener);
+      },
+
+      /**
+       * Plays intro, which shows broader context of the DNA transcription and
+       * translation.
+       */
+      playIntro: function () {
+        dispatch.playIntro();
       },
 
       /**
