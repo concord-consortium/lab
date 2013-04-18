@@ -1,0 +1,36 @@
+{
+  "title": "Testing: Only One Atom",
+  "publicationStatus": "public",
+  "subtitle": "The MD2D model works with just a single atom also.",
+  "about": "",
+  "models": [
+    {
+      "id": "one-atom",
+      "type": "md2d",
+      "url": "models/md2d/one-atom.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "enableAtomTooltips": true
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "numericOutput",
+      "id": "current-obstacles",
+      "property": "temperature",
+      "displayValue": "return format('f')(value)"
+    },
+    {
+      "type": "button",
+      "id": "kick-atom",
+      "text": "Kick Atom",
+      "action": [
+        "var atom = getAtomProperties(0);",
+        "atom.vx += (Math.random()*2-1)*1e-4;",
+        "atom.vy += (Math.random()*2-1)*1e-4;",
+        "setAtomProperties(0, { vx: atom.vx, vy: atom.vy });"
+      ]
+    }
+  ]
+}
