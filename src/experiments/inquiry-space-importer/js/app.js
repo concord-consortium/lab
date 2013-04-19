@@ -646,7 +646,6 @@ ISImporter.appController = new ISImporter.Object({
     this.disable(this.$startButton);
     this.disable(this.$stopButton);
     this.disable(this.$resetButton);
-    this.disable(this.$exportButton);
     this.hide(this.$tareButton);
     this.hide(this.$realtimeDisplay);
     if (this.taring) this.endTare();
