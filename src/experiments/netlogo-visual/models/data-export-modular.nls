@@ -309,7 +309,9 @@ end
 
 to-report data-export:run-series-array [indent label-name elements comma]
   let q "\""
-  report (word (data-export:indent-string indent) q label-name q ": [" (reduce [ ( word ?1 ", " ?2 ) ] map data-export:jsonify-item elements) "]" comma "\n")
+  ifelse empty? elements
+  [ report "" ]
+  [ report (word (data-export:indent-string indent) q label-name q ": [" (reduce [ ( word ?1 ", " ?2 ) ] map data-export:jsonify-item elements) "]" comma "\n") ]
 end
 
 to-report data-export:run-series-item [indent label-name element comma]
@@ -323,16 +325,17 @@ to-report data-export:section [ indent name keys categorical-keys dataset epilog
   let jsonstr ""
   let key-pairs [ ]
   set jsonstr data-export:json-line jsonstr indent ( list name ) ": [\n"
-  foreach but-last dataset [
-    ifelse (item 1 ?) = "categorical" and not empty? categorical-keys
-    [ set key-pairs data-export:create-keypairs categorical-keys ? ]
-    [ set key-pairs data-export:create-keypairs keys ? ]
-    set jsonstr ( word jsonstr indent2 data-export:json-object key-pairs ",\n") ]
-  let last-data last dataset
-  ifelse (item 1 last-data) = "categorical" and not empty? categorical-keys
-  [ set key-pairs data-export:create-keypairs categorical-keys last-data ]
-  [ set key-pairs data-export:create-keypairs keys last-data ]
-  set jsonstr ( word jsonstr indent2 data-export:json-object key-pairs "\n")
+  if not empty? dataset [
+    foreach but-last dataset [
+      ifelse (item 1 ?) = "categorical" and not empty? categorical-keys
+      [ set key-pairs data-export:create-keypairs categorical-keys ? ]
+      [ set key-pairs data-export:create-keypairs keys ? ]
+      set jsonstr ( word jsonstr indent2 data-export:json-object key-pairs ",\n") ]
+    let last-data last dataset
+    ifelse (item 1 last-data) = "categorical" and not empty? categorical-keys
+    [ set key-pairs data-export:create-keypairs categorical-keys last-data ]
+    [ set key-pairs data-export:create-keypairs keys last-data ]
+    set jsonstr ( word jsonstr indent2 data-export:json-object key-pairs "\n") ]
   set jsonstr ( word jsonstr indent1 "]" epilog)
   report jsonstr
 end
@@ -522,7 +525,7 @@ end
 ;;;
 ;;; Now show data-export:model-data which contains the JSON data available for export:
 ;;;
-;;;   show data-export:model-data
+;;;   print data-export:model-data
 ;;;
 ;;; After making changes test to see if the JSON data represent a valid JavaScript object.
 ;;;
