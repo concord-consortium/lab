@@ -253,7 +253,10 @@ define(function (require) {
     // While adding a new mRNA segment, choose a random starting point along a
     // circle with a certain radius that extends beyond the top DNA strand.
     // Use parametric circle equation: x = r cos(t), y = r sin(t)
-    t = Math.random() * 2 * Math.PI;
+    // Limit range of the "t" parameter to: [0.25 * PI, 0.75 * PI) and [1.25 * PI, 1.75 * PI),
+    // so new mRNA segments will come only from the top or bottom side of the container.
+    t = Math.random() >= 0.5 ? Math.PI * 0.25 : Math.PI * 1.25;
+    t += Math.random() * Math.PI * 0.5;
     r = Nucleotide.HEIGHT * 6;
     this._mrnaG.select(".nucleotide:last-child")
         .attr("transform", "translate(" + this.modelSize2px(r * Math.cos(t)) + ", " + this.modelSize2px(r * Math.sin(t)) + ")")
