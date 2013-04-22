@@ -360,7 +360,7 @@ ISImporter.GraphController = defineClass({
       dataPoints: [],
 
       markAllDataPoints: false,
-      markNearbyDataPoints: true,
+      markNearbyDataPoints: false,
       extraCirclesVisibleOnHover: 0,
       showRulersOnSelection: true,
       dataChange  : false
