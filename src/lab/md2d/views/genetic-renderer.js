@@ -58,6 +58,7 @@ define(function (require) {
     this.model.getGeneticProperties().on("separateDNA", $.proxy(this.separateDNA, this));
     this.model.getGeneticProperties().on("transcribeStep", $.proxy(this.transcribeStep, this));
     this.model.getGeneticProperties().on("playIntro", $.proxy(this.playIntro, this));
+    this.model.getGeneticProperties().on("prepareForTranslation", $.proxy(this.prepareForTranslation, this));
   }
 
   GeneticRenderer.prototype.playIntro = function () {
@@ -210,6 +211,51 @@ define(function (require) {
     */
   };
 
+  GeneticRenderer.prototype.prepareForTranslation = function () {
+    var mWidth  = this.modelSize2px(this.model.get("width")),
+        mHeight = this.modelSize2px(this.model.get("height")),
+        originalBg = this.model.get("backgroundColor");
+
+    this._g.insert("image", ".dna-view").attr({
+      "class": "polymerase-under",
+      "x": this.modelSize2px(W.POLY_UNDER * -0.5),
+      "y": this.modelSize2px(H.POLY_UNDER * -0.5),
+      "width": this.modelSize2px(W.POLY_UNDER),
+      "height": this.modelSize2px(H.POLY_UNDER),
+      "preserveAspectRatio": "none",
+      "transform": "translate(" + mWidth * 0.5 + ", " + mHeight * 0.5 + ") scale(2.5)",
+      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/Polymerase_Under.svg"
+    }).style("opacity", 0);
+
+    this._g.append("image").attr({
+      "class": "polymerase-over",
+      "x": this.modelSize2px(W.POLY_OVER * -0.5),
+      "y": this.modelSize2px(H.POLY_OVER * -0.5),
+      "width": this.modelSize2px(W.POLY_OVER),
+      "height": this.modelSize2px(H.POLY_OVER),
+      "preserveAspectRatio": "none",
+      "transform": "translate(" + mWidth * 0.5 + ", " + mHeight * 0.5 + ") scale(2.5)",
+      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/Polymerase_Over.svg"
+    }).style("opacity", 0);
+
+    this._nextTrans().ease("cubic-in-out").duration(1500)
+      .select(".dna-view")
+        .attr("transform", "translate(" + this.modelSize2px(2 * Nucleotide.WIDTH) + ")");
+
+    this._nextTrans().ease("cubic-in-out").duration(700)
+      .selectAll(".polymerase-under, .polymerase-over")
+        .style("opacity", 1);
+
+    // Restore original background.
+    this._currentTrans.each("end", function () {
+      d3.select(".plot").style("fill", originalBg);
+    });
+
+    this._nextTrans().ease("cubic-in-out").duration(1500)
+      .selectAll(".polymerase-under, .polymerase-over")
+        .attr("transform", "translate(0, " + mHeight * 0.5 + ") scale(2.5) translate(" + this.modelSize2px(W.POLY_UNDER * -0.5) + ")");
+  };
+
   GeneticRenderer.prototype.render = function () {
     var props = this.model.getGeneticProperties().get();
 
@@ -262,21 +308,20 @@ define(function (require) {
     t += Math.random() * Math.PI * 0.5;
     r = Nucleotide.HEIGHT * 6;
     this._mrnaG.select(".nucleotide:last-child")
-        .attr("transform", "translate(" + this.modelSize2px(r * Math.cos(t)) + ", " + this.modelSize2px(r * Math.sin(t)) + ")")
-        .style("opacity", 0);
+      .attr("transform", "translate(" + this.modelSize2px(r * Math.cos(t)) + ", " + this.modelSize2px(r * Math.sin(t)) + ")")
+      .style("opacity", 0);
 
-    trans
-      .select(".mrna .nucleotide:last-child")
-        .attr("transform", "translate(0, 0)")
-        .style("opacity", 1)
-      .select(".bonds")
-        .ease("linear")
-        .style("opacity", 1);
+    trans.select(".mrna .nucleotide:last-child")
+      .attr("transform", "translate(0, 0)")
+      .style("opacity", 1)
+        // Subselection of bonds.
+        .select(".bonds")
+          .ease("linear")
+          .style("opacity", 1);
 
-    trans
-      .select(".dna-comp .nucleotide:nth-child(" + (index + 1) + ") .bonds")
-        .ease("linear")
-        .style("opacity", 1);
+    trans.select(".dna-comp .nucleotide:nth-child(" + (index + 1) + ") .bonds")
+      .ease("linear")
+      .style("opacity", 1);
 
     this._scrollContainer();
   };
@@ -285,17 +330,18 @@ define(function (require) {
     var shift = Math.min(this._mrna.length, this._dna.length - 4);
 
     if (shift > 10) {
-      (suppressAnimation ? this._g : this._currentTrans.select(".genetics").ease("linear"))
+      (suppressAnimation ? this._g.select(".dna-view") : this._currentTrans.select(".dna-view").ease("linear"))
         .attr("transform", "translate(" + this.modelSize2px(-(shift - 10) * Nucleotide.WIDTH) + ")");
     }
   };
 
   GeneticRenderer.prototype._renderDNA = function (dna, dnaComplement, mRNA) {
-    var i, len;
+    var dnaView =  this._g.append("g").attr("class", "dna-view"),
+        i, len;
 
-    this._dnaG     = this._g.append("g").attr("class", "dna"),
-    this._dnaCompG = this._g.append("g").attr("class", "dna-comp"),
-    this._mrnaG    = this._g.append("g").attr("class", "mrna"),
+    this._dnaG     = dnaView.append("g").attr("class", "dna"),
+    this._dnaCompG = dnaView.append("g").attr("class", "dna-comp"),
+    this._mrnaG    = dnaView.append("g").attr("class", "mrna"),
     this._dna      = [];
     this._dnaComp  = [];
     this._mrna     = [];
