@@ -3,6 +3,7 @@
   "publicationStatus": "draft",
   "subtitle": "",
   "about": "",
+  "fontScale": 0.7,
   "models": [
     {
       "id": "page3$0",
@@ -13,7 +14,8 @@
       },
       "modelOptions": {
         "geneticProperties": {
-          "DNA": "ATGCCAGGCGGCGAGAGCTTGCTAATTGGCTTATAG"
+          "DNA": "ATGCCAGGCGGCGAGAGCTTGCTAATTGGCTTATAG",
+          "mRNA": "AUGCCAGGCGGCGAGAGCUUGCUAAUUGGCUUAUAG"
         }
       }
     }
@@ -27,27 +29,14 @@
     },
     {
       "type": "button",
-      "id": "translate",
-      "text": "Translate",
-      "action": "translate();"
-    },
-    {
-      "type": "button",
-      "id": "animate-translation",
-      "text": "Animate translation",
-      "action": "animateTranslation();"
-    },
-    {
-      "type": "button",
       "id": "translate-step",
       "text": "Translate step by step",
-      "action": "translateStepByStep();"
+      "action": "translateStep();"
     }
   ],
   "layout": {
     "bottom": [
-      ["transcribe", "translate"],
-      ["animate-translation", "translate-step"]
+      "transcribe", "translate-step"
     ]
   }
 }
