@@ -153,6 +153,9 @@ define(function (require) {
       .style("opacity", 5)
       .attr("transform", "scale(1.56)");
 
+    t.select(".dna-intro").ease("cubic-in-out")
+      .attr("transform", "translate(" + mWidth * 0.5 + " " + mHeight * 0.5 + ")");
+
     t = this._nextTrans().ease("linear").duration(2000);
     t.select(".dna1")
       .style("opacity", 0)
