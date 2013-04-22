@@ -10,13 +10,17 @@ define(function (require) {
         "CELLS": 720,
         "DNA1": 661,
         "DNA2": 720,
-        "DNA3": 337.4
+        "DNA3": 337.4,
+        "POLY_UNDER": 426.15,
+        "POLY_OVER": 402.525
       },
       H = {
         "CELLS": 500,
         "DNA1": 550,
         "DNA2": 414.263,
-        "DNA3": 89.824
+        "DNA3": 89.824,
+        "POLY_UNDER": 368.6,
+        "POLY_OVER": 368.6
       };
 
   (function () {
@@ -60,6 +64,8 @@ define(function (require) {
     var ms2px = this.modelSize2px,
         cx = this.modelSize2px(W.CELLS * 0.567),
         cy = this.modelSize2px(H.CELLS * 0.445),
+        mWidth  = this.modelSize2px(this.model.get("width")),
+        mHeight = this.modelSize2px(this.model.get("height")),
         dna3units = 14,
         introG, dna3, t;
 
@@ -100,6 +106,17 @@ define(function (require) {
       "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/DNA_InsideNucleus_2.svg"
     }).style("opacity", 0);
 
+    introG.append("image").attr({
+      "class": "polymerase-under",
+      "x": this.modelSize2px(W.POLY_UNDER * -0.5),
+      "y": this.modelSize2px(H.POLY_UNDER * -0.5),
+      "width": this.modelSize2px(W.POLY_UNDER),
+      "height": this.modelSize2px(H.POLY_UNDER),
+      "preserveAspectRatio": "none",
+      "transform": "translate(" + mWidth * -0.65 + ", " + mHeight * -0.5 + ") scale(0.2)",
+      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/Polymerase_Under.svg"
+    }).style("opacity", 1);
+
     dna3 = introG.append("g").attr({
       "class": "dna3",
       "transform": "scale(0.2)"
@@ -115,6 +132,17 @@ define(function (require) {
       "preserveAspectRatio": "none",
       "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/DoubleHelix_Unit.svg"
     });
+
+    introG.append("image").attr({
+      "class": "polymerase-over",
+      "x": this.modelSize2px(W.POLY_OVER * -0.5),
+      "y": this.modelSize2px(H.POLY_OVER * -0.5),
+      "width": this.modelSize2px(W.POLY_OVER),
+      "height": this.modelSize2px(H.POLY_OVER),
+      "preserveAspectRatio": "none",
+      "transform": "scale(0.8)",
+      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/Polymerase_Over.svg"
+    }).style("opacity", 0);
 
     t = this._nextTrans().ease("cubic").duration(5000);
     t.select(".cells")
@@ -141,11 +169,28 @@ define(function (require) {
       .style("opacity", 1)
       .attr("transform", "scale(0.4)");
 
-    t = this._nextTrans().ease("quad-out").duration(4000);
+    t = this._nextTrans().ease("quad-out").duration(3500);
     t.select(".dna3")
       .attr("transform", "scale(0.6)");
 
-    t = this._nextTrans().ease("cubic-in-out").duration(2000);
+    t = this._nextTrans().ease("quad-out").duration(3000);
+    t.select(".polymerase-under")
+      .attr("transform", "translate(0, 0) scale(0.8)");
+
+    t = this._nextTrans().ease("cubic-in-out").duration(1000);
+    t.select(".polymerase-under")
+      .attr("transform", "scale(1)");
+    t.select(".polymerase-over")
+      .attr("transform", "scale(1)")
+      .style("opacity", 1);
+
+    t = this._nextTrans().duration(2000);
+    t.selectAll(".polymerase-under, .polymerase-over")
+      .attr("transform", "scale(2)");
+    t.selectAll(".dna3")
+      .attr("transform", "scale(1.2)");
+
+    t = this._nextTrans().duration(700);
     t.select(".dna-intro")
       .style("opacity", 0)
       .remove();
