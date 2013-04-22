@@ -244,13 +244,19 @@ define(function (require) {
     var props  = this.model.getGeneticProperties().get(),
         index  = props.mRNA.length - 1, // last element
         type   = props.mRNA[index],
-        trans  = this._nextTrans().duration(300);
+        trans  = this._nextTrans().duration(500),
+        t, r;
 
     this._mrna.push(new Nucleotide(this._mrnaG, this.modelSize2px, type, 1, index, true));
     this._mrna[index].hideBonds(true);
 
+    // While adding a new mRNA segment, choose a random starting point along a
+    // circle with a certain radius that extends beyond the top DNA strand.
+    // Use parametric circle equation: x = r cos(t), y = r sin(t)
+    t = Math.random() * 2 * Math.PI;
+    r = Nucleotide.HEIGHT * 6;
     this._mrnaG.select(".nucleotide:last-child")
-        .attr("transform", "translate(" + this.modelSize2px(0.2) + ", " + this.modelSize2px(-0.5) + ")")
+        .attr("transform", "translate(" + this.modelSize2px(r * Math.cos(t)) + ", " + this.modelSize2px(r * Math.sin(t)) + ")")
         .style("opacity", 0);
 
     trans
