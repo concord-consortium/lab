@@ -16,7 +16,7 @@ define(function (require) {
         changePostHook,
         data,
 
-        dispatch = d3.dispatch("change", "separateDNA", "transcribeStep", "playIntro"),
+        dispatch = d3.dispatch("change", "playIntro", "separateDNA", "transcribeStep", "prepareForTranslation"),
 
         calculateComplementarySequence = function () {
           // A-T (A-U)
@@ -242,6 +242,19 @@ define(function (require) {
           data.mRNA += newCode;
           changePostHook();
           dispatch.transcribeStep();
+        }
+      },
+
+      translateStep: function () {
+        if (typeof data.translationStep === "undefined") {
+          // Make sure that complete mRNA is available.
+          api.transcribe();
+
+          changePreHook();
+          data.translationStep = "ready";
+          changePostHook();
+
+          dispatch.prepareForTranslation();
         }
       },
 
