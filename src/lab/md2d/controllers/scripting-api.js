@@ -473,6 +473,13 @@ define(function (require) {
       },
 
       /**
+       * Triggers only one step of DNA translation.
+       */
+      translateStep: function translateStep() {
+        model.getGeneticProperties().translateStep();
+      },
+
+      /**
         Triggers translation of mRNA to protein.
       */
       translate: function translate() {
