@@ -38,7 +38,7 @@ define(function (require) {
 
   function Nucleotide(parent, ms2px, type, direction, index, mRNA) {
     this._ms2px = ms2px;
-    this._type = type;
+    this.type = type;
     this._wrapper = parent.append("g").attr("class", "nucleotide");
     this._g = this._wrapper.append("g");
     this._bonds = this._g.append("path").attr({
@@ -59,6 +59,7 @@ define(function (require) {
       "xlink:href": labConfig.actualRoot + "../../resources/transcription/Backbone_" + (mRNA ? "RNA" : "DNA") + ".svg"
     });
     this._nucleo = this._g.append("image").attr({
+      "class": "nucleotide-img",
       "x": ms2px(W.BACKB) / 2 - ms2px(W[type]) / 2,
       "y": ms2px(H.BACKB),
       "width": ms2px(W[type]),
@@ -105,7 +106,7 @@ define(function (require) {
     var yStart = this._ms2px(SCALE * 20),
         yEnd = this._ms2px(Nucleotide.HEIGHT);
 
-    if (this._type === "C" || this._type === "G") {
+    if (this.type === "C" || this.type === "G") {
       return "M" + this._ms2px(SCALE * 18) + " " + yStart + " L " + this._ms2px(SCALE * 18) + " " + yEnd +
              "M" + this._ms2px(SCALE * 24) + " " + yStart + " L " + this._ms2px(SCALE * 24) + " " + yEnd +
              "M" + this._ms2px(SCALE * 30) + " " + yStart + " L " + this._ms2px(SCALE * 30) + " " + yEnd;

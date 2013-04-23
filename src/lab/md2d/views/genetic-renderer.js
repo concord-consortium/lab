@@ -12,7 +12,8 @@ define(function (require) {
         "DNA2": 720,
         "DNA3": 337.4,
         "POLY_UNDER": 426.15,
-        "POLY_OVER": 402.525
+        "POLY_OVER": 402.525,
+        "NUCLEUS": 729.45
       },
       H = {
         "CELLS": 500,
@@ -20,7 +21,8 @@ define(function (require) {
         "DNA2": 414.263,
         "DNA3": 89.824,
         "POLY_UNDER": 368.6,
-        "POLY_OVER": 368.6
+        "POLY_OVER": 368.6,
+        "NUCLEUS": 543.199
       };
 
   (function () {
@@ -213,9 +215,22 @@ define(function (require) {
   };
 
   GeneticRenderer.prototype.prepareForTranslation = function () {
-    var mWidth  = this.modelSize2px(this.model.get("width")),
-        mHeight = this.modelSize2px(this.model.get("height")),
-        originalBg = this.model.get("backgroundColor");
+    var cx  = this.model2px(this.model.get("width") * 0.5),
+        cy = this.model2pxInv(this.model.get("height") * 0.5),
+        originalBg = this.model.get("backgroundColor"),
+        ms2px = this.modelSize2px,
+        t;
+
+    this._g.insert("image", ".dna-view").attr({
+      "class": "nucleus",
+      "x": this.modelSize2px(W.NUCLEUS * -0.5),
+      "y": this.modelSize2px(H.NUCLEUS * -0.5),
+      "width": this.modelSize2px(W.NUCLEUS),
+      "height": this.modelSize2px(H.NUCLEUS),
+      "preserveAspectRatio": "none",
+      "transform": "translate(" + cx + ", " + cy + ")",
+      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/BG_Nucleus.svg"
+    }).style("opacity", 0);
 
     this._g.insert("image", ".dna-view").attr({
       "class": "polymerase-under",
@@ -224,7 +239,7 @@ define(function (require) {
       "width": this.modelSize2px(W.POLY_UNDER),
       "height": this.modelSize2px(H.POLY_UNDER),
       "preserveAspectRatio": "none",
-      "transform": "translate(" + mWidth * 0.5 + ", " + mHeight * 0.5 + ") scale(2.5)",
+      "transform": "translate(" + cx + ", " + cy + ") scale(2.5)",
       "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/Polymerase_Under.svg"
     }).style("opacity", 0);
 
@@ -235,26 +250,83 @@ define(function (require) {
       "width": this.modelSize2px(W.POLY_OVER),
       "height": this.modelSize2px(H.POLY_OVER),
       "preserveAspectRatio": "none",
-      "transform": "translate(" + mWidth * 0.5 + ", " + mHeight * 0.5 + ") scale(2.5)",
+      "transform": "translate(" + cx + ", " + cy + ") scale(2.5)",
       "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/Polymerase_Over.svg"
     }).style("opacity", 0);
 
     this._nextTrans().ease("cubic-in-out").duration(1500)
       .select(".dna-view")
-        .attr("transform", "translate(" + this.modelSize2px(2 * Nucleotide.WIDTH) + ")");
+        .attr("transform", "translate(" + this.model2px(2 * Nucleotide.WIDTH) + ")");
 
     this._nextTrans().ease("cubic-in-out").duration(700)
       .selectAll(".polymerase-under, .polymerase-over")
         .style("opacity", 1);
 
-    // Restore original background.
+    // Show nucleus and restore original background.
     this._currentTrans.each("end", function () {
+      d3.select(".genetics .nucleus").style("opacity", 1);
       d3.select(".plot").style("fill", originalBg);
     });
 
     this._nextTrans().ease("cubic-in-out").duration(1500)
       .selectAll(".polymerase-under, .polymerase-over")
-        .attr("transform", "translate(0, " + mHeight * 0.5 + ") scale(2.5) translate(" + this.modelSize2px(W.POLY_UNDER * -0.5) + ")");
+        .attr("transform", "translate(0, " + cy + ") scale(2.5) translate(" + this.modelSize2px(W.POLY_UNDER * -0.5) + ")");
+
+    t = this._nextTrans().ease("cubic").duration(1000);
+    t.select(".nucleus")
+      .attr("transform", "translate(" + cx + ", " + this.model2pxInv(0) + ")");
+    t.select(".dna")
+      .attr("transform", "translate(0, " + this.model2pxInv(4 * Nucleotide.HEIGHT) + ")");
+    t.select(".dna-comp")
+      .attr("transform", "translate(0, " + this.model2pxInv(2 * Nucleotide.HEIGHT) + ")");
+    t.selectAll(".dna .bonds, .dna .bonds")
+      .style("opacity", 1);
+    t.selectAll(".mrna .bonds").duration(300)
+      .style("opacity", 0);
+
+    t = this._nextTrans().ease("cubic-out").duration(1000);
+    t.select(".nucleus")
+      .attr("transform", "translate(" + cx + ", " + this.model2pxInv(H.NUCLEUS * -0.5) + ")");
+    t.select(".dna")
+      .attr("transform", "translate(0, " + this.model2pxInv(-1 * Nucleotide.HEIGHT) + ")");
+    t.select(".dna-comp")
+      .attr("transform", "translate(0, " + this.model2pxInv(-3 * Nucleotide.HEIGHT) + ")");
+    t.select(".mrna")
+      .attr("transform", "translate(0, " + this.model2pxInv(2 * Nucleotide.HEIGHT) + ")");
+
+    this._g.selectAll(".mrna .nucleotide g").data(this._mrna);
+    // Hacky way to change direction of the nucleotides. If we transform
+    // directly from scale(1, 1) to scale(1, -1), resulting transition looks
+    // strange (involves rotation etc.). So, first change scale to value very
+    // close to 0, than swap sign and finally change it to -1. Everything
+    // should look as expected.
+    t = this._nextTrans().ease("cubic-out").duration(250);
+    t.selectAll(".mrna .nucleotide g")
+      .attr("transform", function (d, i) {
+        return "translate(" + ms2px(Nucleotide.WIDTH) * i + ") scale(1, 1e-10)";
+      });
+    t.select(".mrna")
+      .attr("transform", "translate(0, " + this.model2pxInv(1.5 * Nucleotide.HEIGHT) + ")");
+    t = this._nextTrans().ease("cubic-out").duration(1);
+    t.selectAll(".mrna .nucleotide g")
+      .attr("transform", function (d, i) {
+        return "translate(" + ms2px(Nucleotide.WIDTH) * i + ") scale(1, -1e-10)";
+      });
+    // Replace images with rotated versions.
+    t.each("end", function () {
+      d3.selectAll(".mrna .nucleotide g").each(function (d) {
+        d3.select(this).select(".nucleotide-img")
+          .attr("xlink:href", labConfig.actualRoot + "../../resources/transcription/Nucleotide" + d.type + "_Direction2_noBonds.svg");
+      });
+    });
+    t = this._nextTrans().ease("cubic-out").duration(250);
+    this._g.selectAll(".mrna .nucleotide g").data(this._mrna);
+    t.selectAll(".mrna .nucleotide g")
+      .attr("transform", function (d, i) {
+        return "translate(" + ms2px(Nucleotide.WIDTH) * i + ") scale(1, -1)";
+      });
+    t.select(".mrna")
+      .attr("transform", "translate(0, " + this.model2pxInv(Nucleotide.HEIGHT) + ")");
   };
 
   GeneticRenderer.prototype.render = function () {
