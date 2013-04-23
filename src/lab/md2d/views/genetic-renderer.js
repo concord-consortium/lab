@@ -147,12 +147,13 @@ define(function (require) {
 
     t = this._nextTrans().ease("cubic").duration(5000);
     t.select(".cells")
-      .attr("transform", "scale(12)");
+      .attr("transform", "scale(12)");  // 1.0  * 12
     t.select(".dna1")
+      .attr("transform", "scale(1.56)") // 0.13 * 12
       // Of course max value for opacity is 1. However value bigger than 1
       // affects transition progress and in this case it's helpful.
-      .style("opacity", 5)
-      .attr("transform", "scale(1.56)");
+      .style("opacity", 5);
+
 
     t.select(".dna-intro").ease("cubic-in-out")
       .attr("transform", "translate(" + mWidth * 0.5 + " " + mHeight * 0.5 + ")");
@@ -160,10 +161,10 @@ define(function (require) {
     t = this._nextTrans().ease("linear").duration(2000);
     t.select(".dna1")
       .style("opacity", 0)
-      .attr("transform", "scale(3.12)");
+      .attr("transform", "scale(3.12)"); // 1.56 * 2
     t.select(".dna2")
       .style("opacity", 1)
-      .attr("transform", "scale(2)");
+      .attr("transform", "scale(2)");    // 1.0  * 2
 
     t = this._nextTrans().ease("linear").duration(2000);
     t.select(".dna2")
@@ -190,9 +191,9 @@ define(function (require) {
 
     t = this._nextTrans().duration(2000);
     t.selectAll(".polymerase-under, .polymerase-over")
-      .attr("transform", "scale(2)");
+      .attr("transform", "scale(2.5)");  // 1.0 * 2.5
     t.selectAll(".dna3")
-      .attr("transform", "scale(1.2)");
+      .attr("transform", "scale(1.5)");  // 0.6 * 2.5
 
     t = this._nextTrans().duration(700);
     t.select(".dna-intro")
