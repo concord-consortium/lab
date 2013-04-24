@@ -287,27 +287,9 @@ define(function (require) {
     });
 
     // Ribosome under-over.
-    this._g.insert("image", ".dna-view").attr({
-      "class": "ribosome-under",
-      "x": this.modelSize2px(W.RIBO_UNDER * -0.5),
-      "y": this.modelSize2px(H.RIBO_UNDER * -0.5),
-      "width": this.modelSize2px(W.RIBO_UNDER),
-      "height": this.modelSize2px(H.RIBO_UNDER),
-      "preserveAspectRatio": "none",
-      "transform": "translate(" + this.model2px(Nucleotide.WIDTH * 3) + ", " + this.model2pxInv(3.7 * Nucleotide.HEIGHT) + ")",
-      "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_under.svg"
-    }).style("opacity", 0);
-
-    this._g.append("image").attr({
-      "class": "ribosome-over",
-      "x": this.modelSize2px(W.RIBO_OVER * -0.5),
-      "y": this.modelSize2px(H.RIBO_OVER * -0.5),
-      "width": this.modelSize2px(W.RIBO_OVER),
-      "height": this.modelSize2px(H.RIBO_OVER),
-      "preserveAspectRatio": "none",
-      "transform": "translate(" + this.model2px(Nucleotide.WIDTH * 3) + ", " + this.model2pxInv(3.7 * Nucleotide.HEIGHT) + ")",
-      "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_over.svg"
-    }).style("opacity", 0);
+    this._appendRibosome();
+    // Hide ribosome at the beginning.
+    this._g.selectAll(".ribosome-under, .ribosome-over").style("opacity", 0);
 
     this._nextTrans().ease("cubic-in-out").duration(1500)
       .select(".dna-view")
@@ -513,9 +495,11 @@ define(function (require) {
         this._mrna.push(new Nucleotide(this._mrnaG, this.modelSize2px, mRNA[i], 2, i, true));
         this._mrna[i].hideBonds(true);
       }
-      this._mrnaG.attr("transform", "translate(0, " + this.model2pxInv(Nucleotide.HEIGHT) + ")");
+      this._mrnaG.attr("transform", "translate(0, " + this.model2pxInv(1.5 * Nucleotide.HEIGHT) + ")");
       this._cleanupDNA();
       dnaView.attr("transform", "translate(" + this.model2px(2 * Nucleotide.WIDTH) + ")");
+
+      this._appendRibosome();
     }
   };
 
@@ -550,6 +534,30 @@ define(function (require) {
     this._dnaComp  = [];
     this._dnaG.remove();
     this._dnaCompG.remove();
+  };
+
+  GeneticRenderer.prototype._appendRibosome = function () {
+    this._g.insert("image", ".dna-view").attr({
+      "class": "ribosome-under",
+      "x": this.modelSize2px(W.RIBO_UNDER * -0.5),
+      "y": this.modelSize2px(H.RIBO_UNDER * -0.5),
+      "width": this.modelSize2px(W.RIBO_UNDER),
+      "height": this.modelSize2px(H.RIBO_UNDER),
+      "preserveAspectRatio": "none",
+      "transform": "translate(" + this.model2px(Nucleotide.WIDTH * 3) + ", " + this.model2pxInv(3.7 * Nucleotide.HEIGHT) + ")",
+      "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_under.svg"
+    });
+
+    this._g.append("image").attr({
+      "class": "ribosome-over",
+      "x": this.modelSize2px(W.RIBO_OVER * -0.5),
+      "y": this.modelSize2px(H.RIBO_OVER * -0.5),
+      "width": this.modelSize2px(W.RIBO_OVER),
+      "height": this.modelSize2px(H.RIBO_OVER),
+      "preserveAspectRatio": "none",
+      "transform": "translate(" + this.model2px(Nucleotide.WIDTH * 3) + ", " + this.model2pxInv(3.7 * Nucleotide.HEIGHT) + ")",
+      "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_over.svg"
+    });
   };
 
   GeneticRenderer.prototype.genProps = function () {
