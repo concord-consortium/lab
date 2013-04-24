@@ -4,7 +4,7 @@ define(function (require) {
   // Dependencies.
   var labConfig = require('lab.config'),
 
-      SCALE = 0.0057,
+      SCALE = 0.007,
       W = {
         "BACKB": 52,
         "A": 28.151,

@@ -14,10 +14,10 @@ define(function (require) {
         "POLY_UNDER": 426.15,
         "POLY_OVER": 402.525,
         "NUCLEUS": 729.45,
-        "RIBO_TOP": 550.7 * 0.8,
-        "RIBO_BOTTOM": 509.031 * 0.8,
-        "RIBO_UNDER": 550.55 * 0.8,
-        "RIBO_OVER": 550.7 * 0.8
+        "RIBO_TOP": 550.7,
+        "RIBO_BOTTOM": 509.031,
+        "RIBO_UNDER": 550.55,
+        "RIBO_OVER": 550.7
       },
       H = {
         "CELLS": 500,
@@ -27,10 +27,10 @@ define(function (require) {
         "POLY_UNDER": 368.6,
         "POLY_OVER": 368.6,
         "NUCLEUS": 543.199,
-        "RIBO_TOP": 250 * 0.8,
-        "RIBO_BOTTOM": 147.15 * 0.8,
-        "RIBO_UNDER": 311.6 * 0.8,
-        "RIBO_OVER": 311.6 * 0.8
+        "RIBO_TOP": 250,
+        "RIBO_BOTTOM": 147.15,
+        "RIBO_UNDER": 311.6,
+        "RIBO_OVER": 311.6
       };
 
   (function () {
