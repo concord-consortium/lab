@@ -3,7 +3,7 @@
   "publicationStatus": "draft",
   "subtitle": "",
   "about": "Oxygen and Carbon Dioxide can both easily cross this gas permeable membrane. Change the starting concentrations of the gases on either side and observe how long it takes for the gases to diffuse across the membrane.",
-  "fontScale": 0.6,
+  "fontScale": 1,
   "models": [
     {
       "id": "model1",
@@ -34,57 +34,197 @@
     { "name": "initialLeftCO2",
       "initialValue": 0,
       "onChange": [
-        "var x,y,w,h,nAtomsAdded;",
+        "var x,y,vx,vy,w,h,i,nAtomsToAdd;",
+        "stop();",
+        "batch(function(){",
+        "  for (i = getNumberOfAtoms(); i > 0; i--) {",
+        "    removeAtom(0);",
+        "  }",
+        "});",
         "w = get('width');",
         "h = get('height');",
-        "nAtomsAdded = 0;",
-        "while (nAtomsAdded < value) {",
-        "  x = randomFloat(w/2);",
-        "  y = randomFloat(h);",
-        "  if (addAtom({x: x, y: y, element: 1})) nAtomsAdded++;",
-        "}"
+        "batch(function(){",
+        "  nAtomsToAdd = get('initialLeftO2');",
+        "  while (nAtomsToAdd > 0) {",
+        "    x = randomFloat(w/2);",
+        "    y = randomFloat(h);",
+        "    vx = randomFloat(0.02)-0.01;",
+        "    vy = randomFloat(0.02)-0.01;",
+        "   if (addAtom({x: x, y: y, vx: vx, vy: vy, element: 0})) nAtomsToAdd--;",
+        "  }",
+        "  nAtomsToAdd = get('initialLeftCO2');",
+        "  while (nAtomsToAdd > 0) {",
+        "    x = randomFloat(w/2);",
+        "    y = randomFloat(h);",
+        "    vx = randomFloat(0.02)-0.01;",
+        "    vy = randomFloat(0.02)-0.01;",
+        "   if (addAtom({x: x, y: y, vx: vx, vy: vy, element: 1})) nAtomsToAdd--;",
+        "  }",
+        "  nAtomsToAdd = get('initialRightO2');",
+        "  while (nAtomsToAdd > 0) {",
+        "    x = randomFloat(w/2);",
+        "    y = randomFloat(h);",
+        "    vx = randomFloat(0.02)-0.01;",
+        "    vy = randomFloat(0.02)-0.01;",
+        "   if (addAtom({x: w/2+x, y: y, vx: vx, vy: vy, element: 0})) nAtomsToAdd--;",
+        "  }",
+        "  nAtomsToAdd = get('initialRightCO2');",
+        "  while (nAtomsToAdd > 0) {",
+        "    x = randomFloat(w/2);",
+        "    y = randomFloat(h);",
+        "    vx = randomFloat(0.02)-0.01;",
+        "    vy = randomFloat(0.02)-0.01;",
+        "   if (addAtom({x: w/2+x, y: y, vx: vx, vy: vy, element: 1})) nAtomsToAdd--;",
+        "  }",
+        "});",
+        "set('targetTemperature',500);"
       ]
     },
     { "name": "initialLeftO2",
       "initialValue": 0,
       "onChange": [
-        "var x,y,w,h,nAtomsAdded;",
+        "var x,y,vx,vy,w,h,i,nAtomsToAdd;",
+        "stop();",
+        "batch(function(){",
+        "  for (i = getNumberOfAtoms(); i > 0; i--) {",
+        "    removeAtom(0);",
+        "  }",
+        "});",
         "w = get('width');",
         "h = get('height');",
-        "nAtomsAdded = 0;",
-        "while (nAtomsAdded < value) {",
-        "  x = randomFloat(w/2);",
-        "  y = randomFloat(h);",
-        "  if (addAtom({x: x, y: y, element: 0})) nAtomsAdded++;",
-        "}"
+        "batch(function(){",
+        "  nAtomsToAdd = get('initialLeftO2');",
+        "  while (nAtomsToAdd > 0) {",
+        "    x = randomFloat(w/2);",
+        "    y = randomFloat(h);",
+        "    vx = randomFloat(0.02)-0.01;",
+        "    vy = randomFloat(0.02)-0.01;",
+        "   if (addAtom({x: x, y: y, vx: vx, vy: vy, element: 0})) nAtomsToAdd--;",
+        "  }",
+        "  nAtomsToAdd = get('initialLeftCO2');",
+        "  while (nAtomsToAdd > 0) {",
+        "    x = randomFloat(w/2);",
+        "    y = randomFloat(h);",
+        "    vx = randomFloat(0.02)-0.01;",
+        "    vy = randomFloat(0.02)-0.01;",
+        "   if (addAtom({x: x, y: y, vx: vx, vy: vy, element: 1})) nAtomsToAdd--;",
+        "  }",
+        "  nAtomsToAdd = get('initialRightO2');",
+        "  while (nAtomsToAdd > 0) {",
+        "    x = randomFloat(w/2);",
+        "    y = randomFloat(h);",
+        "    vx = randomFloat(0.02)-0.01;",
+        "    vy = randomFloat(0.02)-0.01;",
+        "   if (addAtom({x: w/2+x, y: y, vx: vx, vy: vy, element: 0})) nAtomsToAdd--;",
+        "  }",
+        "  nAtomsToAdd = get('initialRightCO2');",
+        "  while (nAtomsToAdd > 0) {",
+        "    x = randomFloat(w/2);",
+        "    y = randomFloat(h);",
+        "    vx = randomFloat(0.02)-0.01;",
+        "    vy = randomFloat(0.02)-0.01;",
+        "   if (addAtom({x: w/2+x, y: y, vx: vx, vy: vy, element: 1})) nAtomsToAdd--;",
+        "  }",
+        "});",
+        "set('targetTemperature',500);"
       ]
     },
     { "name": "initialRightCO2",
       "initialValue": 0,
       "onChange": [
-        "var x,y,w,h,nAtomsAdded;",
+        "var x,y,vx,vy,w,h,i,nAtomsToAdd;",
+        "stop();",
+        "batch(function(){",
+        "  for (i = getNumberOfAtoms(); i > 0; i--) {",
+        "    removeAtom(0);",
+        "  }",
+        "});",
         "w = get('width');",
         "h = get('height');",
-        "nAtomsAdded = 0;",
-        "while (nAtomsAdded < value) {",
-        "  x = randomFloat(w/2);",
-        "  y = randomFloat(h);",
-        "  if (addAtom({x: w/2+x, y: y, element: 1})) nAtomsAdded++;",
-        "}"
+        "batch(function(){",
+        "  nAtomsToAdd = get('initialLeftO2');",
+        "  while (nAtomsToAdd > 0) {",
+        "    x = randomFloat(w/2);",
+        "    y = randomFloat(h);",
+        "    vx = randomFloat(0.02)-0.01;",
+        "    vy = randomFloat(0.02)-0.01;",
+        "   if (addAtom({x: x, y: y, vx: vx, vy: vy, element: 0})) nAtomsToAdd--;",
+        "  }",
+        "  nAtomsToAdd = get('initialLeftCO2');",
+        "  while (nAtomsToAdd > 0) {",
+        "    x = randomFloat(w/2);",
+        "    y = randomFloat(h);",
+        "    vx = randomFloat(0.02)-0.01;",
+        "    vy = randomFloat(0.02)-0.01;",
+        "   if (addAtom({x: x, y: y, vx: vx, vy: vy, element: 1})) nAtomsToAdd--;",
+        "  }",
+        "  nAtomsToAdd = get('initialRightO2');",
+        "  while (nAtomsToAdd > 0) {",
+        "    x = randomFloat(w/2);",
+        "    y = randomFloat(h);",
+        "    vx = randomFloat(0.02)-0.01;",
+        "    vy = randomFloat(0.02)-0.01;",
+        "   if (addAtom({x: w/2+x, y: y, vx: vx, vy: vy, element: 0})) nAtomsToAdd--;",
+        "  }",
+        "  nAtomsToAdd = get('initialRightCO2');",
+        "  while (nAtomsToAdd > 0) {",
+        "    x = randomFloat(w/2);",
+        "    y = randomFloat(h);",
+        "    vx = randomFloat(0.02)-0.01;",
+        "    vy = randomFloat(0.02)-0.01;",
+        "   if (addAtom({x: w/2+x, y: y, vx: vx, vy: vy, element: 1})) nAtomsToAdd--;",
+        "  }",
+        "});",
+        "set('targetTemperature',500);"
       ]
     },
     { "name": "initialRightO2",
       "initialValue": 0,
       "onChange": [
-        "var x,y,w,h,nAtomsAdded;",
+        "var x,y,vx,vy,w,h,i,nAtomsToAdd;",
+        "stop();",
+        "batch(function(){",
+        "  for (i = getNumberOfAtoms(); i > 0; i--) {",
+        "    removeAtom(0);",
+        "  }",
+        "});",
         "w = get('width');",
         "h = get('height');",
-        "nAtomsAdded = 0;",
-        "while (nAtomsAdded < value) {",
-        "  x = randomFloat(w/2);",
-        "  y = randomFloat(h);",
-        "  if (addAtom({x: w/2+x, y: y, element: 0})) nAtomsAdded++;",
-        "}"
+        "batch(function(){",
+        "  nAtomsToAdd = get('initialLeftO2');",
+        "  while (nAtomsToAdd > 0) {",
+        "    x = randomFloat(w/2);",
+        "    y = randomFloat(h);",
+        "    vx = randomFloat(0.02)-0.01;",
+        "    vy = randomFloat(0.02)-0.01;",
+        "   if (addAtom({x: x, y: y, vx: vx, vy: vy, element: 0})) nAtomsToAdd--;",
+        "  }",
+        "  nAtomsToAdd = get('initialLeftCO2');",
+        "  while (nAtomsToAdd > 0) {",
+        "    x = randomFloat(w/2);",
+        "    y = randomFloat(h);",
+        "    vx = randomFloat(0.02)-0.01;",
+        "    vy = randomFloat(0.02)-0.01;",
+        "   if (addAtom({x: x, y: y, vx: vx, vy: vy, element: 1})) nAtomsToAdd--;",
+        "  }",
+        "  nAtomsToAdd = get('initialRightO2');",
+        "  while (nAtomsToAdd > 0) {",
+        "    x = randomFloat(w/2);",
+        "    y = randomFloat(h);",
+        "    vx = randomFloat(0.02)-0.01;",
+        "    vy = randomFloat(0.02)-0.01;",
+        "   if (addAtom({x: w/2+x, y: y, vx: vx, vy: vy, element: 0})) nAtomsToAdd--;",
+        "  }",
+        "  nAtomsToAdd = get('initialRightCO2');",
+        "  while (nAtomsToAdd > 0) {",
+        "    x = randomFloat(w/2);",
+        "    y = randomFloat(h);",
+        "    vx = randomFloat(0.02)-0.01;",
+        "    vy = randomFloat(0.02)-0.01;",
+        "   if (addAtom({x: w/2+x, y: y, vx: vx, vy: vy, element: 1})) nAtomsToAdd--;",
+        "  }",
+        "});",
+        "set('targetTemperature',500);"
       ]
     },
     { "name": "leftConcentrationCO2", "initialValue": 0 },
@@ -145,20 +285,16 @@
       "id": "select-left-concentration-co2",
       "property": "initialLeftCO2",
       "label": "CO2",
-      "labelOn": "top",
+      "labelOn": "left",
       "options": [
         { "text": "None", "value": 0 },
         {
           "text": "Low",
-          "value": 5
-        },
-        {
-          "text": "Medium",
-          "value": 20
+          "value": 10
         },
         {
           "text": "High",
-          "value": 35
+          "value": 50
         }
       ]
     },
@@ -167,20 +303,16 @@
       "id": "select-left-concentration-o2",
       "property": "initialLeftO2",
       "label": "O2",
-      "labelOn": "top",
+      "labelOn": "left",
       "options": [
         { "text": "None", "value": 0 },
         {
           "text": "Low",
-          "value": 5
-        },
-        {
-          "text": "Medium",
-          "value": 20
+          "value": 10
         },
         {
           "text": "High",
-          "value": 35
+          "value": 50
         }
       ]
     },
@@ -189,20 +321,16 @@
       "id": "select-right-concentration-co2",
       "property": "initialRightCO2",
       "label": "CO2",
-      "labelOn": "top",
+      "labelOn": "left",
       "options": [
         { "text": "None", "value": 0 },
         {
           "text": "Low",
-          "value": 5
-        },
-        {
-          "text": "Medium",
-          "value": 20
+          "value": 10
         },
         {
           "text": "High",
-          "value": 35
+          "value": 50
         }
       ]
     },
@@ -211,20 +339,16 @@
       "id": "select-right-concentration-o2",
       "property": "initialRightO2",
       "label": "O2",
-      "labelOn": "top",
+      "labelOn": "left",
       "options": [
         { "text": "None", "value": 0 },
         {
           "text": "Low",
-          "value": 5
-        },
-        {
-          "text": "Medium",
-          "value": 20
+          "value": 10
         },
         {
           "text": "High",
-          "value": 35
+          "value": 50
         }
       ]
     }
