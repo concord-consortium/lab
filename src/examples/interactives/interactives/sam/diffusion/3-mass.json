@@ -54,7 +54,8 @@
       "onChange": [
         "for (var i = 0; i < 17; i++) {",
         "  setAtomProperties(i, {element: value});",
-        "}"
+        "}",
+        "set('targetTemperature',500);"
       ]
     },
     {
@@ -187,7 +188,7 @@
     {
       "type": "barGraph",
       "id": "thermometer",
-      "property": "temperature",
+      "property": "targetTemperature",
       "title": "Thermometer",
       "labels": 0,
       "min": 0,
