@@ -340,28 +340,28 @@ define(function (require) {
     function createSymbolImages() {
       var xMargin = "1%";
       // only add these images if they don't already exist
-      if (mainContainer.select("#heat-bath").empty()) {
+      if (textContainerTop.select("#heat-bath").empty()) {
         // Heat bath key image.
-        mainContainer.append("image")
+        textContainerTop.append("image")
             .attr({
               "id": "heat-bath",
               "x": xMargin,
-              "width": "3%",
-              "height": "3%",
+              "width": "5%",
+              "height": "5%",
               "preserveAspectRatio": "xMinYMin",
-              "xlink:href": "../../resources/heatbath.gif"
+              "xlink:href": "../../resources/upstatement/heatbath.svg"
             });
       }
-      if (mainContainer.select("#ke-gradient").empty()) {
+      if (textContainerTop.select("#ke-gradient").empty()) {
         // Kinetic Energy Shading gradient image.
-        mainContainer.append("image")
+        textContainerTop.append("image")
             .attr({
               "id": "ke-gradient",
-              "x": xMargin,
-              "width": "12%",
-              "height": "12%",
+              "x": xMargin/2,
+              "width": "5%",
+              "height": "20%",
               "preserveAspectRatio": "xMinYMin",
-              "xlink:href": "../../resources/ke-gradient.png"
+              "xlink:href": "../../resources/upstatement/ke-gradient.svg"
             });
       }
     }
@@ -380,7 +380,7 @@ define(function (require) {
         // Heat bath symbol.
         if (heatBath) {
             yPos += yMargin;
-            imageSelect = mainContainer.select("#heat-bath")
+            imageSelect = textContainerTop.select("#heat-bath")
               .attr("y", yPos + "%")
               .style("display", "");
 
@@ -389,18 +389,18 @@ define(function (require) {
             imageHeight = Number(imageHeight.substring(0, imageHeight.length - 1));
             yPos += imageHeight;
         } else {
-            mainContainer.select("#heat-bath").style("display","none");
+            textContainerTop.select("#heat-bath").style("display","none");
         }
 
         // Kinetic Energy shading gradient.
         // Put it under heat bath symbol.
         if (keShadingMode) {
             yPos += yMargin;
-            mainContainer.select("#ke-gradient")
+            textContainerTop.select("#ke-gradient")
               .attr("y", yPos + "%")
               .style("display", "");
         } else {
-            mainContainer.select("#ke-gradient").style("display", "none");
+            textContainerTop.select("#ke-gradient").style("display", "none");
         }
     }
 
@@ -1648,10 +1648,10 @@ define(function (require) {
       geneticRenderer.render();
       setupVectors();
       setupAtomTrace();
-      drawSymbolImages();
       drawImageAttachment();
       drawTextBoxes();
       setupToolTips();
+      drawSymbolImages();
       setupFirefoxWarning();
     }
 
