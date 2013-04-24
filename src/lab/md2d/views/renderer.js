@@ -133,6 +133,9 @@ define(function (require) {
 
         browser = benchmark.what_browser(),
 
+        // pre-calculations
+        halfPi = Math.PI/2,
+
         // this is a hack put in place to temporarily deal with an image-size
         // caching bug in Chrome Canary
         needCachebusting = browser.browser == "Chrome" && browser.version >= "26",
@@ -765,26 +768,65 @@ define(function (require) {
     }
 
     function getTextBoxCoords(d) {
-      var x, y, textX, textY, frameX, frameY,
+      var x, y, hostX, hostY, textX, textY, frameX, frameY, calloutX, calloutY,
           pixelScale = textBoxFontSizeInPixels * d.fontScale;
+
+      x = d.x;
+      y = d.y;
+
       if (d.hostType) {
         if (d.hostType === "Atom") {
-          x = modelResults[d.hostIndex].x;
-          y = modelResults[d.hostIndex].y;
+          hostX = modelResults[d.hostIndex].x;
+          hostY = modelResults[d.hostIndex].y;
         } else {
-          x = obstacles.x[d.hostIndex] + (obstacles.width[d.hostIndex] / 2);
-          y = obstacles.y[d.hostIndex] + (obstacles.height[d.hostIndex] / 2);
+          hostX = obstacles.x[d.hostIndex] + (obstacles.width[d.hostIndex] / 2);
+          hostY = obstacles.y[d.hostIndex] + (obstacles.height[d.hostIndex] / 2);
         }
-      } else {
-        x = d.x;
-        y = d.y;
       }
+
+      if (d.hostType && !d.calloutPoint) {
+        x = hostX;
+        y = hostY;
+      }
+
+      if (d.calloutPoint) {
+        if (!d.hostType) {
+          calloutX = d.calloutPoint[0];
+          calloutY = d.calloutPoint[1];
+        } else {
+          calloutX = hostX;
+          calloutY = hostY;
+        }
+      }
+
       frameX = model2px(x);
       frameY = model2pxInv(y);
 
       textX = frameX + pixelScale*0.75;
       textY = frameY + pixelScale*1.2;
-      return [textX, textY, frameX, frameY];
+
+      calloutX = model2px(calloutX);
+      calloutY = model2pxInv(calloutY);
+
+      return [textX, textY, frameX, frameY, calloutX, calloutY];
+    }
+
+    function getCalloutPath(location, frame, fullWidth, fullHeight, fontSize) {
+      var calloutLocation = [
+            parseFloat(location[0]),
+            parseFloat(location[1])
+          ],
+          center = [
+            parseFloat(frame.getAttribute("x")) + (fullWidth / 2),
+            parseFloat(frame.getAttribute("y")) + (fullHeight / 2)
+          ],
+          angle = halfPi - Math.atan((calloutLocation[0] - center[0]) / (calloutLocation[1] - center[1])),
+          baseSize = Math.min(fontSize, fullHeight/2),
+
+          dcx = Math.sin(angle) * baseSize,
+          dcy = Math.cos(angle) * baseSize;
+
+      return (center[0]+dcx) + ", " + (center[1]-dcy) + " " + (center[0]-dcx) + ", " + (center[1]+dcy) + " " + calloutLocation;
     }
 
     function updateTextBoxes() {
@@ -817,10 +859,36 @@ define(function (require) {
               return getTextBoxCoords(d)[1];
             }
           });
+
+        layer.selectAll("g.textBoxWrapper polygon")
+          .data(layerTextBoxes.filter( function(d) { return d.calloutPoint; } ))
+          .attr({
+            "callout-location-data": function(d) {
+              var pos = getTextBoxCoords(d);
+              return pos[4] + ", " + pos[5];
+            }
+          });
       };
 
       updateText(1);
       updateText(2);
+
+      // update callouts
+      $(".textBox").each( function() {
+        var $parentNode = $(this.parentNode),
+            callout     = $parentNode.find("polygon"),
+            frame       = $parentNode.find("rect")[0],
+            fontSize, width, height, calloutLocation;
+
+        if (!frame || callout.length === 0) return;
+
+        fontSize  = parseFloat(this.getAttributeNS(null, "font-size"));
+        width  = frame.getAttribute("width");
+        height = frame.getAttribute("height");
+        calloutLocation = callout.attr("callout-location-data").split(", ");
+
+        callout.attr("points", getCalloutPath(calloutLocation, frame, width, height, fontSize) );
+      });
     }
 
     function drawTextBoxes() {
@@ -846,10 +914,27 @@ define(function (require) {
         text = selection.enter().append("svg:g")
           .attr("class", "textBoxWrapper");
 
+        text.filter(function (d) { return d.calloutPoint; })
+          .append("polygon")
+          .attr({
+            "points": "0,0 0,0 0,0",
+            "style": function(d) {
+              var backgroundColor = d.backgroundColor,
+                  strokeWidth = d.strokeWidthEms * fontSizeInPixels,
+                  strokeOpacity = d.strokeOpacity;
+              return "fill:"+backgroundColor+";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:"+(strokeWidth*2)+";stroke-opacity:"+strokeOpacity;
+            },
+            "callout-location-data": function(d) {
+              var pos = getTextBoxCoords(d);
+              return pos[4] + ", " + pos[5];
+            }
+          });
+
         text.filter(function (d) { return d.frame; })
           .append("rect")
           .attr({
             "class": function(d, i) { return "textBoxFrame text-"+i; },
+            "id": function(d, i) { return "text-"+i; },
             "transform": function(d) {
               var rotate = d.rotate,
                   pos = getTextBoxCoords(d);
@@ -867,6 +952,16 @@ define(function (require) {
             "ry": function(d) { return d.frame === "rounded rectangle" ? textBoxFontSizeInPixels/2 : 0; },
             "x":  function(d) { return getTextBoxCoords(d)[2]; },
             "y":  function(d) { return getTextBoxCoords(d)[3]; }
+          });
+
+        text.filter(function (d) { return d.calloutPoint; })
+          .append("polygon")
+          .attr({
+            "points": "0,0 0,0 0,0",
+            "style": function(d) {
+              var backgroundColor = d.backgroundColor;
+              return "fill:"+backgroundColor+";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:0;";
+            }
           });
 
         text.append("text")
@@ -912,7 +1007,7 @@ define(function (require) {
       appendTextBoxes(1);
       appendTextBoxes(2);
 
-      // wrap text
+      // wrap text, set callouts
       $(".textBox").each( function() {
         var text      = this.getAttributeNS(null, "text-data"),
             x         = this.getAttributeNS(null, "x-data"),
@@ -922,8 +1017,10 @@ define(function (require) {
             transform = this.getAttributeNS(null, "transform"),
             hasHost   = this.getAttributeNS(null, "has-host"),
             textAlign = this.getAttributeNS(null, "text-anchor"),
+            $parentNode = $(this.parentNode),
             horizontalPadding, verticalPadding,
-            result, frame, dy, tx, ty;
+            result, fullWidth, fullHeight, frame, dy, tx, ty,
+            callout, calloutLocation;
 
         dy = fontSize*1.2;
         horizontalPadding = +fontSize*1.5;
@@ -947,14 +1044,23 @@ define(function (require) {
 
         result = wrapSVGText(text, this, width, x, dy);
 
-        if (this.parentNode.childElementCount > 1) {
-          frame = this.parentNode.childNodes[0];
-          frame.setAttributeNS(null, "width", result.width + horizontalPadding);
+        if ($parentNode.find("rect").length > 0) {
+          frame = $parentNode.find("rect")[0];
+          fullWidth = result.width + horizontalPadding;
+          frame.setAttributeNS(null, "width", fullWidth);
           if (height > 0) {
-            frame.setAttributeNS(null, "height", height);
+            fullHeight = height;
           } else {
-            frame.setAttributeNS(null, "height", (result.lines * dy) + verticalPadding);
+            fullHeight = (result.lines * dy) + verticalPadding;
           }
+          frame.setAttributeNS(null, "height", fullHeight);
+        }
+
+        // if we have a callout
+        callout = $parentNode.find("polygon");
+        if (frame && callout.length > 0) {
+          calloutLocation = callout.attr("callout-location-data").split(", ");
+          callout.attr("points", getCalloutPath(calloutLocation, frame, fullWidth, fullHeight, fontSize) );
         }
 
         // center all hosted labels simply by tweaking the g.transform
@@ -968,10 +1074,10 @@ define(function (require) {
           transform = transform + " translate("+tx+","+ty+")";
           $(this).attr("transform", transform);
         }
-        if (hasHost === "true") {
+        if (hasHost === "true" && callout.length === 0) {
           tx = result.width / -2 - horizontalPadding/2;
           ty = result.lines * dy / -2 - verticalPadding/2;
-          $(this.parentNode).attr("transform", "translate("+tx+","+ty+")");
+          $parentNode.attr("transform", "translate("+tx+","+ty+")");
         }
       });
     }
