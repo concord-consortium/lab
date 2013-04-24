@@ -349,7 +349,8 @@ define(function (require) {
               "width": "5%",
               "height": "5%",
               "preserveAspectRatio": "xMinYMin",
-              "xlink:href": "../../resources/upstatement/heatbath.svg"
+              "xlink:href": "../../resources/upstatement/heatbath.svg",
+              "class": "opaque-on-hover"
             });
       }
       if (textContainerTop.select("#ke-gradient").empty()) {
@@ -357,11 +358,12 @@ define(function (require) {
         textContainerTop.append("image")
             .attr({
               "id": "ke-gradient",
-              "x": xMargin/2,
+              "x": "0.5%",
               "width": "5%",
               "height": "20%",
               "preserveAspectRatio": "xMinYMin",
-              "xlink:href": "../../resources/upstatement/ke-gradient.svg"
+              "xlink:href": "../../resources/upstatement/ke-gradient.svg",
+              "class": "opaque-on-hover"
             });
       }
     }
