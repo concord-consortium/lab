@@ -1,7 +1,7 @@
 {
   "predef": [],
 
-  "es5" : false,
+  "es5" : true,
   "browser" : true,
 
   "boss" : false,
