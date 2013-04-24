@@ -47,7 +47,7 @@ class Interactive < BaseDataObject
 
   def update_interactive_models(models)
     models.all? do |im|
-      interactive_model = interactive_models.find(im[:id]).first
+      interactive_model = interactive_models.find{ |i| i.local_ref_id == im['id']}
       interactive_model.update_from_params(im)
     end
   end

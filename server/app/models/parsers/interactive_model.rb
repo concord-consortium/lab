@@ -8,8 +8,13 @@ module Parsers
     end
 
     def parse(meta_data_hash={})
+      self.generate_local_ref_id
       self.add_model
       ::InteractiveModel.create_or_update(self.data_hash)
+    end
+
+    def generate_local_ref_id
+      self.data_hash['local_ref_id'] = self.data_hash.delete('id')
     end
 
     def add_model

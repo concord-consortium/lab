@@ -1,5 +1,6 @@
 class InteractiveModel < BaseDataObject
 
+  property :local_ref_id,    String
   property :onLoad,          Object
   property :viewOptions,     Object
   property :parameters,      Object
@@ -18,6 +19,7 @@ class InteractiveModel < BaseDataObject
     view :by_id
     view :by_interactive_id
     view :by_md2d_id
+    view :by_local_ref_id
   end
 
   def update_from_params(model_params)
