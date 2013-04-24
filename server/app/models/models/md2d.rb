@@ -5,7 +5,6 @@ module Models
 
     property :name,                 String
     property :url,                  String
-    property :local_ref_id,         String
     property :imagePath,            String
     property :unitsScheme,          String
 
