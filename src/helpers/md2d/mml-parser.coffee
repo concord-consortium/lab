@@ -434,7 +434,6 @@ parseMML = (mmlString) ->
         textHostIndex = 0
       textHostType = $textBoxNode.find("[property=hostType] string").text()
       textHostType = textHostType.slice(textHostType.lastIndexOf(".")+1)
-      borderType = parseInt($textBoxNode.find("[property=borderType] int").text()) || 0
       colorDef  = $textBoxNode.find "[property=foregroundColor]>.java-awt-Color>int"
       if colorDef and colorDef.length > 0
         fontColor    = "rgb("
@@ -447,16 +446,23 @@ parseMML = (mmlString) ->
         backgroundTextColor   += parseInt(cheerio(backgroundColorDef[0]).text()) + ","
         backgroundTextColor   += parseInt(cheerio(backgroundColorDef[1]).text()) + ","
         backgroundTextColor   += parseInt(cheerio(backgroundColorDef[2]).text()) + ")"
+      borderType = parseInt($textBoxNode.find("[property=borderType] int").text()) || 0
       frame = switch borderType
         when 0 then ""
         when 1 then "rectangle"
         when 2 then "rounded rectangle"
+      callout = parseBoolean($textBoxNode.find("[property=callOut] boolean").text()) || false
+      calloutPointDef = $textBoxNode.find "[property=callOutPoint] .java-awt-Point>int"
+      if callout and calloutPointDef and calloutPointDef.length > 1
+        calloutPoint = (parseInt(cheerio(el).text()) for el in calloutPointDef)
 
       [x, y] = toNextgenCoordinates $x, $y
 
       textBox = { text, x, y, layer }
       textBox.frame = frame if frame
       textBox.color = fontColor if fontColor
+      if calloutPoint
+        textBox.calloutPoint = toNextgenCoordinates calloutPoint[0], calloutPoint[1]
       if textHostType
         textBox.hostType = textHostType
         textBox.hostIndex = textHostIndex

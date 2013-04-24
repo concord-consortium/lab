@@ -552,6 +552,7 @@ define(function() {
       height: {},
       frame: {},
       color: {},
+      calloutPoint: {},
       backgroundColor: {
         defaultValue: "white"
       },

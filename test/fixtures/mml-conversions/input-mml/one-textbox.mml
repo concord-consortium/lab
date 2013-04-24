@@ -448,6 +448,15 @@ non-polar molecules to see the different
       <void property="y">
        <double>27.0</double>
       </void>
+      <void property="callOut">
+       <boolean>true</boolean>
+      </void>
+      <void property="callOutPoint">
+       <object class="java.awt.Point">
+        <int>24.0</int>
+        <int>27.0</int>
+       </object>
+      </void>
      </object>
     </void>
    </array>
