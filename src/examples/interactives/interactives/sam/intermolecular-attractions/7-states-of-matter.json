@@ -13,27 +13,29 @@
       "viewOptions": {
         "controlButtons": "play_reset"
       },
-      "onLoad": ""
+      "onLoad": [
+        "setElementProperties(2, {epsilon: -0.275});"
+      ]
     }
   ],
   "components": [
     {
       "type": "slider",
       "id": "epsilon-slider",
-      "min": 0.075,
-      "max": 0.300,
-      "initialValue": 0.14,
+      "min": 0.05,
+      "max": 0.500,
+      "initialValue": 0.275,
       "labels": [
         {
-          "value": 0.075,
+          "value": 0.05,
           "label": "weak"
         },
         {
-          "value": 0.1875,
+          "value": 0.275,
           "label": "medium"
         },
         {
-          "value": 0.300,
+          "value": 0.500,
           "label": "strong"
         }
       ],
@@ -44,7 +46,7 @@
     {
       "type": "slider",
       "id": "temperature-slider",
-      "min": 10,
+      "min": 400,
       "max": 5000,
       "initialValue": 650,
       "displayValue": "",
