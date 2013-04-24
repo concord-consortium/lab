@@ -6,7 +6,7 @@ define(function (require) {
 
       SCALE = 0.0057,
       W = {
-        "BACKB": 48,
+        "BACKB": 52,
         "A": 28.151,
         "C": 21.2,
         "G": 21.2,
@@ -107,18 +107,22 @@ define(function (require) {
         yEnd = this._ms2px(Nucleotide.HEIGHT);
 
     if (this.type === "C" || this.type === "G") {
-      return "M" + this._ms2px(SCALE * 18) + " " + yStart + " L " + this._ms2px(SCALE * 18) + " " + yEnd +
-             "M" + this._ms2px(SCALE * 24) + " " + yStart + " L " + this._ms2px(SCALE * 24) + " " + yEnd +
-             "M" + this._ms2px(SCALE * 30) + " " + yStart + " L " + this._ms2px(SCALE * 30) + " " + yEnd;
-    } else {
       return "M" + this._ms2px(SCALE * 20) + " " + yStart + " L " + this._ms2px(SCALE * 20) + " " + yEnd +
-             "M" + this._ms2px(SCALE * 28) + " " + yStart + " L " + this._ms2px(SCALE * 28) + " " + yEnd;
+             "M" + this._ms2px(SCALE * 26) + " " + yStart + " L " + this._ms2px(SCALE * 26) + " " + yEnd +
+             "M" + this._ms2px(SCALE * 32) + " " + yStart + " L " + this._ms2px(SCALE * 32) + " " + yEnd;
+    } else {
+      return "M" + this._ms2px(SCALE * 22) + " " + yStart + " L " + this._ms2px(SCALE * 22) + " " + yEnd +
+             "M" + this._ms2px(SCALE * 30) + " " + yStart + " L " + this._ms2px(SCALE * 30) + " " + yEnd;
     }
   };
 
   // Width of the nucleotide is width of the DNA backbone.
-  // * 0.98 to ensure that DNA backbone doesn't contain any visual discontinuities.
-  Nucleotide.WIDTH  = W.BACKB * 0.98;
+  // * 0.92 to ensure that DNA backbone doesn't contain any visual discontinuities.
+  // There are two bugs connected with it. First is in Chrome, where preserveAspectRatio
+  // is ignored for images, the second one is in Safari, which has problems with correct
+  // width of the images. Please see:
+  // https://www.pivotaltracker.com/story/show/48453261
+  Nucleotide.WIDTH  = W.BACKB * 0.92;
   // Height of the nucleotide is height of the DNA backbone + A nucleotide (tallest one).
   // * 0.95 because it simply... looks better. This value is used to determine distance
   // between two strands of DNA and this multiplier causes that they are closer to each other.
