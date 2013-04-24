@@ -3,7 +3,7 @@
   "publicationStatus": "draft",
   "subtitle": "",
   "about": "",
-  "fontScale": 0.7,
+  "fontScale": 0.8,
   "models": [
     {
       "id": "page3$0",
@@ -23,12 +23,6 @@
   "components": [
     {
       "type": "button",
-      "id": "transcribe",
-      "text": "Transcribe",
-      "action": "transcribe();"
-    },
-    {
-      "type": "button",
       "id": "translate-step",
       "text": "Translate step by step",
       "action": "translateStep();"
@@ -36,7 +30,7 @@
   ],
   "layout": {
     "bottom": [
-      "transcribe", "translate-step"
+      "translate-step"
     ]
   }
 }
