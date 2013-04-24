@@ -13,7 +13,11 @@ define(function (require) {
         "DNA3": 337.4,
         "POLY_UNDER": 426.15,
         "POLY_OVER": 402.525,
-        "NUCLEUS": 729.45
+        "NUCLEUS": 729.45,
+        "RIBO_TOP": 550.7 * 0.8,
+        "RIBO_BOTTOM": 509.031 * 0.8,
+        "RIBO_UNDER": 550.55 * 0.8,
+        "RIBO_OVER": 550.7 * 0.8
       },
       H = {
         "CELLS": 500,
@@ -22,7 +26,11 @@ define(function (require) {
         "DNA3": 89.824,
         "POLY_UNDER": 368.6,
         "POLY_OVER": 368.6,
-        "NUCLEUS": 543.199
+        "NUCLEUS": 543.199,
+        "RIBO_TOP": 250 * 0.8,
+        "RIBO_BOTTOM": 147.15 * 0.8,
+        "RIBO_UNDER": 311.6 * 0.8,
+        "RIBO_OVER": 311.6 * 0.8
       };
 
   (function () {
@@ -220,6 +228,7 @@ define(function (require) {
         ms2px = this.modelSize2px,
         t;
 
+    // Nucleus.
     this._g.insert("image", ".dna-view").attr({
       "class": "nucleus",
       "x": this.modelSize2px(W.NUCLEUS * -0.5),
@@ -231,6 +240,7 @@ define(function (require) {
       "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/BG_Nucleus.svg"
     }).style("opacity", 0);
 
+    // Polymerase.
     this._g.insert("image", ".dna-view").attr({
       "class": "polymerase-under",
       "x": this.modelSize2px(W.POLY_UNDER * -0.5),
@@ -251,6 +261,52 @@ define(function (require) {
       "preserveAspectRatio": "none",
       "transform": "translate(" + cx + ", " + cy + ") scale(2.5)",
       "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/Polymerase_Over.svg"
+    }).style("opacity", 0);
+
+    // Ribosome top-bottom.
+    this._g.append("image").attr({
+      "class": "ribosome-bottom",
+      "x": this.modelSize2px(W.RIBO_BOTTOM * -0.5),
+      "y": this.modelSize2px(H.RIBO_BOTTOM * -0.5),
+      "width": this.modelSize2px(W.RIBO_BOTTOM),
+      "height": this.modelSize2px(H.RIBO_BOTTOM),
+      "preserveAspectRatio": "none",
+      "transform": "translate(" + this.model2px(W.RIBO_TOP * -0.5) + ", " + cy + ")",
+      "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_bottom1.svg"
+    });
+
+    this._g.append("image").attr({
+      "class": "ribosome-top",
+      "x": this.modelSize2px(W.RIBO_TOP * -0.5),
+      "y": this.modelSize2px(H.RIBO_TOP * -0.5),
+      "width": this.modelSize2px(W.RIBO_TOP),
+      "height": this.modelSize2px(H.RIBO_TOP),
+      "preserveAspectRatio": "none",
+      "transform": "translate(" + this.model2px(W.RIBO_TOP * -0.5) + ", " + this.model2pxInv(this.model.get("height")) + ")",
+      "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_top1.svg"
+    });
+
+    // Ribosome under-over.
+    this._g.insert("image", ".dna-view").attr({
+      "class": "ribosome-under",
+      "x": this.modelSize2px(W.RIBO_UNDER * -0.5),
+      "y": this.modelSize2px(H.RIBO_UNDER * -0.5),
+      "width": this.modelSize2px(W.RIBO_UNDER),
+      "height": this.modelSize2px(H.RIBO_UNDER),
+      "preserveAspectRatio": "none",
+      "transform": "translate(" + this.model2px(Nucleotide.WIDTH * 3) + ", " + this.model2pxInv(3.7 * Nucleotide.HEIGHT) + ")",
+      "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_under.svg"
+    }).style("opacity", 0);
+
+    this._g.append("image").attr({
+      "class": "ribosome-over",
+      "x": this.modelSize2px(W.RIBO_OVER * -0.5),
+      "y": this.modelSize2px(H.RIBO_OVER * -0.5),
+      "width": this.modelSize2px(W.RIBO_OVER),
+      "height": this.modelSize2px(H.RIBO_OVER),
+      "preserveAspectRatio": "none",
+      "transform": "translate(" + this.model2px(Nucleotide.WIDTH * 3) + ", " + this.model2pxInv(3.7 * Nucleotide.HEIGHT) + ")",
+      "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_over.svg"
     }).style("opacity", 0);
 
     this._nextTrans().ease("cubic-in-out").duration(1500)
@@ -291,7 +347,7 @@ define(function (require) {
     t.select(".dna-comp")
       .attr("transform", "translate(0, " + this.model2pxInv(-3 * Nucleotide.HEIGHT) + ")");
     t.select(".mrna")
-      .attr("transform", "translate(0, " + this.model2pxInv(2 * Nucleotide.HEIGHT) + ")");
+      .attr("transform", "translate(0, " + this.model2pxInv(2.5 * Nucleotide.HEIGHT) + ")");
 
     this._g.selectAll(".mrna .nucleotide g").data(this._mrna);
     // Hacky way to change direction of the nucleotides. If we transform
@@ -305,7 +361,7 @@ define(function (require) {
         return "translate(" + ms2px(Nucleotide.WIDTH) * i + ") scale(1, 1e-10)";
       });
     t.select(".mrna")
-      .attr("transform", "translate(0, " + this.model2pxInv(1.5 * Nucleotide.HEIGHT) + ")");
+      .attr("transform", "translate(0, " + this.model2pxInv(2 * Nucleotide.HEIGHT) + ")");
     t = this._nextTrans().ease("cubic-out").duration(1);
     t.selectAll(".mrna .nucleotide g")
       .attr("transform", function (d, i) {
@@ -325,7 +381,20 @@ define(function (require) {
         return "translate(" + ms2px(Nucleotide.WIDTH) * i + ") scale(1, -1)";
       });
     t.select(".mrna")
-      .attr("transform", "translate(0, " + this.model2pxInv(Nucleotide.HEIGHT) + ")");
+      .attr("transform", "translate(0, " + this.model2pxInv(1.5 * Nucleotide.HEIGHT) + ")");
+
+    // Ribosome fade in.
+    t = this._nextTrans().ease("cubic-in-out").duration(1500);
+    t.select(".ribosome-top")
+      .attr("transform", "translate(" + this.model2px(Nucleotide.WIDTH * 3) + ", " + this.model2pxInv(4.52 * Nucleotide.HEIGHT) + ")");
+    t.select(".ribosome-bottom")
+      .attr("transform", "translate(" + this.model2px(Nucleotide.WIDTH * 2.95) + ", " + this.model2pxInv(1.75 * Nucleotide.HEIGHT) + ")");
+
+    t = this._nextTrans().ease("cubic-in-out").duration(500);
+    t.selectAll(".ribosome-top, .ribosome-bottom")
+      .style("opacity", 0);
+    t.selectAll(".ribosome-under, .ribosome-over")
+      .style("opacity", 1);
   };
 
   GeneticRenderer.prototype.render = function () {
