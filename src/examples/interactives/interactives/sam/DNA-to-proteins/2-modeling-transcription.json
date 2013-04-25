@@ -13,9 +13,7 @@
         "enableKeyboardHandlers": false
       },
       "modelOptions": {
-        "geneticProperties": {
-          "DNA": "ATGTTGACTCTAACTCGCATCCGCACTGTG"
-        }
+        "DNA": "ATGTTGACTCTAACTCGCATCCGCACTGTG"
       }
     }
   ],

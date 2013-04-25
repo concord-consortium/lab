@@ -13,10 +13,8 @@
         "enableKeyboardHandlers": false
       },
       "modelOptions": {
-        "geneticProperties": {
-          "DNA": "ATGCCAGGCGGCGAGAGCTTGCTAATTGGCTTATAG",
-          "mRNA": "AUGCCAGGCGGCGAGAGCUUGCUAAUUGGCUUAUAG"
-        }
+        "DNA": "ATGCCAGGCGGCGAGAGCTTGCTAATTGGCTTATAG",
+        "geneticEngineState": "transcription-end"
       }
     }
   ],
