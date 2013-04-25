@@ -415,6 +415,9 @@ endif;</string>
   <void property="universe"> 
    <object class="org.concord.mw2d.models.Universe"/> 
   </void> 
+  <void property="showClock"> 
+   <boolean>false</boolean> 
+  </void> 
  </object> 
  <object class="org.concord.mw2d.AtomisticView$State"> 
   <void property="VDWLinesRatio"> 
