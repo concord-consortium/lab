@@ -12,12 +12,9 @@
   "models": [
     {
       "id": "page3$0",
-      "url": "/imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page3/page3$0.json",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page3/page3noScale$0.json",
       "viewOptions": {
         "controlButtons": "play_reset",
-        "imageMapping": {
-          "ruler.png": "ruler.svg"
-        },
         "textBoxes": [
           {
             "text": "A wall with a pressure gauge.",
@@ -42,7 +39,7 @@
       "label": "area",
       "initialValue": 3,
       "onChange": [
-        "var newX = value / 2,",
+        "var newX = value / get('height'),",
         "    maxX = 0,",
         "    scaleFactor;",
         "for(var i = 0; i < getNumberOfAtoms(); i++) {",
@@ -86,18 +83,18 @@
       "type": "button",
       "id": "increase-volume",
       "text": "Volume &#8593;",
-      "action": "if (get('volume') < 6.0) { set({ volume: get('volume') * 1.1 }) };"
+      "action": "if (get('volume') < 7.0) { set({ volume: get('volume') * 1.1 }) };"
     },
     {
       "type": "button",
       "id": "decrease-volume",
       "text": "Volume &#8595;",
-      "action": "if (get('volume') > 0.75) { set({ volume: get('volume') * (1/1.1) }) };"
+      "action": "if (get('volume') > 0.87) { set({ volume: get('volume') * (1/1.1) }) };"
     },
     {
       "type": "numericOutput",
       "id": "current-volume",
-      "label": "Volume of Gas",
+      "label": "Area of Gas",
       "property": "volume",
       "displayValue": "return format('1.2f')(value)"
     },

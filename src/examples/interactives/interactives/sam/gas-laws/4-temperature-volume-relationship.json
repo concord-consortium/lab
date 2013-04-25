@@ -10,12 +10,9 @@
   "models": [
     {
       "id": "page4$0",
-      "url": "/imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page4/page4$0.json",
+      "url": "/imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page4/page4noScale$0.json",
       "viewOptions": {
         "controlButtons": "play_reset",
-        "imageMapping": {
-          "ruler.png": "ruler.svg"
-        },
         "textBoxes": [
           {
             "text": "A piston with constant pressure on it.",
@@ -39,7 +36,7 @@
       "unitAbbreviation": "nm²",
       "label": "area",
       "value": [
-        "return getObstacleProperties(0).x * 2;"
+        "return getObstacleProperties(0).x * get('height');"
       ]
     }
   ],
@@ -66,7 +63,7 @@
     {
       "type": "numericOutput",
       "id": "current-volume",
-      "label": "Volume of Gas",
+      "label": "Area of Gas",
       "property": "volume",
       "displayValue": "return format('1.2f')(value)"
     }
