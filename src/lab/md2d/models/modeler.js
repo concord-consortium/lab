@@ -14,6 +14,7 @@ define(function(require) {
       validator            = require('common/validator'),
       aminoacids           = require('md2d/models/aminoacids-props'),
       aminoacidsHelper     = require('cs!md2d/models/aminoacids-helper'),
+      GeneticEngine        = require('md2d/models/engine/genetic-engine'),
       units                = require('md2d/models/engine/constants/units'),
       PropertyDescription  = require('md2d/models/property-description'),
       unitDefinitions      = require('md2d/models/unit-definitions/index'),
@@ -48,6 +49,9 @@ define(function(require) {
 
         // Molecular Dynamics engine.
         engine,
+
+        // Genetic engine.
+        geneticEngine,
 
         // An array of elements object.
         editableElements,
@@ -955,7 +959,6 @@ define(function(require) {
       // Register invalidating change hooks.
       // pairwiseLJProperties object allows to change state which defines state of the whole simulation.
       engine.pairwiseLJProperties.registerChangeHooks(invalidatingChangePreHook, invalidatingChangePostHook);
-      engine.geneticProperties.registerChangeHooks(invalidatingChangePreHook, invalidatingChangePostHook);
 
       window.state = modelOutputState = {};
 
@@ -1854,8 +1857,8 @@ define(function(require) {
       return engine.pairwiseLJProperties;
     };
 
-    model.getGeneticProperties = function() {
-      return engine.geneticProperties;
+    model.geneticEngine = function() {
+      return geneticEngine;
     };
 
     model.get_vdw_pairs = function() {
@@ -2430,10 +2433,6 @@ define(function(require) {
         propCopy.restraints = serialize(metadata.restraint, restraints, engine.getNumberOfRestraints());
       }
 
-      if (engine.geneticProperties.get() !== undefined) {
-        propCopy.geneticProperties = engine.geneticProperties.serialize();
-      }
-
       // FIXME: for now Amino Acid elements are *not* editable and should not be serialized
       // -- only copy first five elements
       propCopy.elements = serialize(metadata.element, elements, 5);
@@ -2474,14 +2473,13 @@ define(function(require) {
     // Friction parameter temporarily applied to the live-dragged atom.
     model.LIVE_DRAG_FRICTION = 10;
 
-    // Ensure that model, which includes DNA (and probably DNA animation) has
+    // Ensure that model, which includes DNA (=> so DNA animation too) has
     // correct, constant dimensions. This is very significant, as if model
     // dimensions are too big or too small, DNA elements can be unreadable. It
     // also ensures that aspect ratio of the model is reasonable for
     // animation.
     // TODO: move this to better place.
-    if (initialProperties.geneticProperties &&
-        initialProperties.geneticProperties.DNA.length > 0) {
+    if (initialProperties.DNA) {
       // Overwrite width and height options.
       initialProperties.width = 5;
       initialProperties.height = 3;
@@ -2513,8 +2511,10 @@ define(function(require) {
     // initialize minX, minYm, maxX, maxY from model width and height
     model.initializeDimensions();
 
-    // Setup engine object.
+    // Setup MD2D engine object.
     model.initializeEngine();
+    // Setup genetic engine.
+    geneticEngine = new GeneticEngine(model);
 
     // Finally, if provided, set up the model objects (elements, atoms, bonds, obstacles and the rest).
     // However if these are not provided, client code can create atoms, etc piecemeal.
@@ -2549,8 +2549,6 @@ define(function(require) {
     // above. However, this is the first step to delegate some functionality from modeler to smaller classes.
     if (initialProperties.pairwiseLJProperties)
       engine.pairwiseLJProperties.deserialize(initialProperties.pairwiseLJProperties);
-    if (initialProperties.geneticProperties)
-      engine.geneticProperties.deserialize(initialProperties.geneticProperties);
 
     // Initialize tick history.
     tickHistory = new TickHistory({

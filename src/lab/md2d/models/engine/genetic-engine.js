@@ -2,20 +2,20 @@
 
 define(function (require) {
 
-  var validator        = require('common/validator'),
-      serialize        = require('common/serialize'),
-      metadata         = require('md2d/models/metadata'),
-      aminoacidsHelper = require('cs!md2d/models/aminoacids-helper'),
+  var ValidationError  = require('common/validator').ValidationError,
 
-      ValidationError = validator.ValidationError;
+      state = {
+        "undefined": 0,
+        "intro": 1,
+        "dna": 2,
+        "transcription": 3,
+        "transcription-end": 4,
+        "translation": 5
+      };
 
 
-  return function GeneticProperties() {
+  return function GeneticProperties(model) {
     var api,
-        changePreHook,
-        changePostHook,
-        data,
-
         dispatch = d3.dispatch("change", "playIntro", "separateDNA", "transcribeStep", "prepareForTranslation"),
 
         calculateComplementarySequence = function () {
@@ -27,26 +27,42 @@ define(function (require) {
           // Use lower case during conversion to
           // avoid situation when you change A->T,
           // and later T->A again.
-          var compSeq = data.DNA
+          var compSeq = model.get("DNA")
             .replace(/A/g, "t")
             .replace(/G/g, "c")
             .replace(/T/g, "a")
             .replace(/C/g, "g");
 
-          data.DNAComplement = compSeq.toUpperCase();
+          model.set("DNAComplement", compSeq.toUpperCase());
+        },
+
+        calculatemRNA = function () {
+          var mRNA, newCode;
+
+          mRNA = model.get("mRNA");
+          newCode = mRNACode(mRNA.length);
+
+          while(newCode) {
+            mRNA += newCode;
+            newCode = mRNACode(mRNA.length);
+          }
+
+          model.set("mRNA", mRNA);
         },
 
         mRNAComplete = function () {
+          var mRNA = model.get("mRNA");
           // mRNA should be defined and its length should be equal to DNA length.
-          return data.mRNA && data.mRNA.length === data.DNA.length;
+          return mRNA && mRNA.length === model.get("DNA").length;
         },
 
         mRNACode = function (index) {
-          if (index >= data.DNAComplement.length) {
+          var DNAComplement = model.get("DNAComplement");
+          if (index >= DNAComplement.length) {
             // No more DNA to transcribe, return null.
             return null;
           }
-          switch (data.DNAComplement[index]) {
+          switch (DNAComplement[index]) {
             case "A": return "U";
             case "G": return "C";
             case "T": return "A";
@@ -54,123 +70,68 @@ define(function (require) {
           }
         },
 
-        customValidate = function (props) {
-          if (props.DNA) {
-            // Allow user to use both lower and upper case.
-            props.DNA = props.DNA.toUpperCase();
-
-            if (props.DNA.search(/[^AGTC]/) !== -1) {
-              // Character other than A, G, T or C is found.
-              throw new ValidationError("DNA", "DNA code on sense strand can be defined using only A, G, T or C characters.");
-            }
-          }
-          return props;
+        stateEq = function (name) {
+          return model.get("geneticEngineState") === name;
         },
 
-        create = function (props) {
-          changePreHook();
+        setState = function (name) {
+          model.set("geneticEngineState", name);
+        },
 
-          // Note that validator always returns a copy of the input object, so we can use it safely.
-          props = validator.validateCompleteness(metadata.geneticProperties, props);
-          props = customValidate(props);
-
-          // Note that validator always returns a copy of the input object, so we can use it safely.
-          data = props;
+        stateUpdated = function () {
           calculateComplementarySequence();
 
-          changePostHook();
-          dispatch.change();
+          if (api.stateAfter("transcription")) {
+            // So, the first state which triggers it is "transcription-end".
+            calculatemRNA();
+          }
         },
 
-        update = function (props) {
-          var key;
+        validateDNA = function (DNA) {
+          // Allow user to use both lower and upper case.
+          DNA = DNA.toUpperCase();
 
-          changePreHook();
-
-          // Validate and update properties.
-          props = validator.validate(metadata.geneticProperties, props);
-          props = customValidate(props);
-
-          for (key in props) {
-            if (props.hasOwnProperty(key)) {
-              data[key] = props[key];
-            }
+          if (DNA.search(/[^AGTC]/) !== -1) {
+            // Character other than A, G, T or C is found.
+            throw new ValidationError("DNA", "DNA code on sense strand can be defined using only A, G, T or C characters.");
           }
+        },
 
-          if (props.DNA) {
-            // New DNA code specified, update related properties.
-            // 1. DNA complementary sequence.
-            calculateComplementarySequence();
-            // 2. mRNA is no longer valid. Do not recalculate it automatically
-            //    (transribeDNA method should be used).
-            delete data.mRNA;
-            // 3. Any translation in progress should be reseted.
-            delete data.translationStep;
-          }
+        DNAUpdated = function () {
+          validateDNA(model.get("DNA"));
+          // New DNA code specified, DNAUpdated related properties.
+          // 1. DNA complementary sequence.
+          calculateComplementarySequence();
+          // 2. mRNA is no longer valid. Do not recalculate it automatically
+          //    (transribe method should be used).
+          model.set("mRNA", "");
+          // 3. Reset to the initial state.
+          model.set("geneticEngineState", "dna");
 
-          changePostHook();
           dispatch.change();
         };
 
     // Public API.
     api = {
-      registerChangeHooks: function (newChangePreHook, newChangePostHook) {
-        changePreHook = newChangePreHook;
-        changePostHook = newChangePostHook;
-      },
-
-      // Sets (updates) genetic properties.
-      set: function (props) {
-        if (data === undefined) {
-          // Use other method of validation, ensure that the data hash is complete.
-          create(props);
-        } else {
-          // Just update existing genetic properties.
-          update(props);
-        }
-      },
-
-      // Returns genetic properties.
-      get: function () {
-        return data;
-      },
-
-      // Deserializes genetic properties.
-      deserialize: function (props) {
-        create(props);
-      },
-
-      // Serializes genetic properties.
-      serialize: function () {
-        return data ? serialize(metadata.geneticProperties, data) : undefined;
-      },
-
       // Convenient method for validation. It doesn't throw an exception,
       // instead a special object with validation status is returned. It can
       // be especially useful for UI classes to avoid try-catch sequences with
       // "set". The returned status object always has a "valid" property,
       // which contains result of the validation. When validation fails, also
-      // "errors" hash is provided which keeps error for property causing
-      // problems.
+      // "error" message is provided.
       // e.g. {
       //   valid: false,
-      //   errors: {
-      //     DNA: "DNA code on sense strand can be defined using only A, G, T or C characters."
-      //   }
+      //   error: "DNA code on sense strand can be defined using only A, G, T or C characters."
       // }
-      validate: function (props) {
+      validate: function (DNA) {
         var status = {
           valid: true
         };
         try {
-          // Validation based on metamodel definition.
-          props = validator.validate(metadata.geneticProperties, props);
-          // Custom validation.
-          customValidate(props);
+          validateDNA(DNA);
         } catch (e) {
           status.valid = false;
-          status.errors = {};
-          status.errors[e.prop] = e.message;
+          status.error = e.message;
         }
         return status;
       },
@@ -191,10 +152,8 @@ define(function (require) {
        * Triggers separation of the DNA strands.
        */
       separateDNA: function () {
-        if (typeof data.mRNA === "undefined") {
-          changePreHook();
-          data.mRNA = "";
-          changePostHook();
+        if (stateEq("dna")) {
+          setState("transcription");
           dispatch.separateDNA();
         }
       },
@@ -223,13 +182,14 @@ define(function (require) {
        * @param  {string} expectedNucleotide code of the expected nucleotide ("U", "C", "A" or "G").
        */
       transcribeStep: function (expectedNucleotide) {
-        var newCode;
-        if (typeof data.mRNA === 'undefined') {
+        var mRNA = model.get("mRNA"),
+            newCode;
+        if (stateEq("dna")) {
           api.separateDNA();
           return;
         }
 
-        newCode = mRNACode(data.mRNA.length);
+        newCode = mRNACode(mRNA.length);
 
         if (expectedNucleotide && expectedNucleotide.toUpperCase() !== newCode) {
           // Expected nucleotide is wrong, so simply do nothing.
@@ -238,27 +198,32 @@ define(function (require) {
 
         // Check if new code is different from null.
         if (newCode) {
-          changePreHook();
-          data.mRNA += newCode;
-          changePostHook();
+          mRNA += newCode;
+          model.set("mRNA", mRNA);
           dispatch.transcribeStep();
         }
       },
 
       translateStep: function () {
-        if (typeof data.translationStep === "undefined") {
+        if (api.stateBefore("translation")) {
           // Make sure that complete mRNA is available.
           api.transcribe();
-
-          changePreHook();
-          data.translationStep = "ready";
-          changePostHook();
-
+          setState("translation");
           dispatch.prepareForTranslation();
         }
       },
 
-      // Translates mRNA into amino acids chain.
+      stateBefore: function (name) {
+        return state[model.get("geneticEngineState")] < state[name];
+      },
+
+      stateAfter: function (name) {
+        return state[model.get("geneticEngineState")] > state[name];
+      }
+
+      /*
+      Depreciated.
+      Translates mRNA into amino acids chain.
       translate: function() {
         var result = [],
             mRNA, abbr, i, len;
@@ -267,7 +232,7 @@ define(function (require) {
         if (!mRNAComplete()) {
           api.transcribe();
         }
-        mRNA = data.mRNA;
+        mRNA = model.get("mRNA");
 
         for (i = 0, len = mRNA.length; i + 3 <= len; i += 3) {
           abbr = aminoacidsHelper.codonToAbbr(mRNA.substr(i, 3));
@@ -278,12 +243,11 @@ define(function (require) {
         }
 
         return result;
-      },
+      }
 
+      Depreciated.
       translateStepByStep: function() {
         var aaSequence, aaAbbr;
-
-        changePreHook();
 
         aaSequence = api.translate();
         if (data.translationStep === undefined) {
@@ -295,12 +259,15 @@ define(function (require) {
         if (aaAbbr === undefined) {
           data.translationStep = "end";
         }
-        changePostHook();
-        dispatch.change();
 
         return aaAbbr;
       }
+      */
     };
+
+    model.addPropertiesListener(["DNA"], DNAUpdated);
+    model.addPropertiesListener(["geneticEngineState"], stateUpdated);
+    stateUpdated();
 
     return api;
   };

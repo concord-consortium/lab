@@ -27,7 +27,7 @@ define(function () {
             width: "35em",
             buttons: {
               "Apply": function () {
-                model.getGeneticProperties().set({
+                model.set({
                   DNA: $dnaTextInput.val()
                 });
                 $(this).dialog("close");
@@ -38,14 +38,10 @@ define(function () {
           // Dynamic validation on input.
           $submitButton = $(".dna-edit-dialog button:contains('Apply')");
           $dnaTextInput.on("input", function () {
-            var props = {
-                  DNA: $dnaTextInput.val()
-                },
-                status;
-            status = model.getGeneticProperties().validate(props);
+            var status = model.geneticEngine().validate($dnaTextInput.val());
             if (status.valid === false) {
               $submitButton.button("disable");
-              $errorMsg.text(status.errors["DNA"]);
+              $errorMsg.text(status.error);
             } else {
               $submitButton.button("enable");
               $errorMsg.text("");
@@ -59,7 +55,7 @@ define(function () {
         $errorMsg.text("");
         $submitButton.removeAttr("disabled");
         // Set current value of DNA code.
-        $dnaTextInput.val(model.getGeneticProperties().get().DNA);
+        $dnaTextInput.val(model.get("DNA"));
         $dialogDiv.dialog("open");
       }
     };

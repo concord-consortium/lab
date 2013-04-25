@@ -102,6 +102,20 @@ define(function() {
       },
       timeStepsPerTick: {
         defaultValue: 50
+      },
+      geneticEngineState: {
+        defaultValue: "dna"
+      },
+      DNA: {
+        defaultValue: ""
+      },
+      DNAComplement: {
+        defaultValue: "",
+        serialize: false
+      },
+      mRNA: {
+        defaultValue: "",
+        serialize: false
       }
     },
 
@@ -492,41 +506,6 @@ define(function() {
       y0: {
         defaultValue: 0,
         unitType: "length"
-      }
-    },
-
-    geneticProperties: {
-      DNA: {
-        defaultValue: ""
-      },
-      DNAComplement: {
-        readOnly: true,
-        serialize: false
-      },
-      mRNA: {
-        // Immutable directly via set method.
-        // Use provided API to generate mRNA.
-        immutable: true
-      },
-      translationStep: {
-        // When this property is undefined, it means that the translation
-        // hasn't been yet started. Note that when translation is finished,
-        // translationStep will be equal to "end".
-        // Immutable directly via set method.
-        // Use provided API to translate step by step.
-        immutable: true
-      },
-      x: {
-        defaultValue: 0.01
-      },
-      y: {
-        defaultValue: 0.01
-      },
-      height: {
-        defaultValue: 0.12
-      },
-      width: {
-        defaultValue: 0.08
       }
     },
 

@@ -64,11 +64,11 @@ define(function (require) {
     this._mrna = [];
     this._currentTrans = null;
     // Redraw DNA / mRNA on every genetic properties change.
-    this.model.getGeneticProperties().on("change", $.proxy(this.render, this));
-    this.model.getGeneticProperties().on("separateDNA", $.proxy(this.separateDNA, this));
-    this.model.getGeneticProperties().on("transcribeStep", $.proxy(this.transcribeStep, this));
-    this.model.getGeneticProperties().on("playIntro", $.proxy(this.playIntro, this));
-    this.model.getGeneticProperties().on("prepareForTranslation", $.proxy(this.prepareForTranslation, this));
+    this.model.geneticEngine().on("change", $.proxy(this.render, this));
+    this.model.geneticEngine().on("separateDNA", $.proxy(this.separateDNA, this));
+    this.model.geneticEngine().on("transcribeStep", $.proxy(this.transcribeStep, this));
+    this.model.geneticEngine().on("playIntro", $.proxy(this.playIntro, this));
+    this.model.geneticEngine().on("prepareForTranslation", $.proxy(this.prepareForTranslation, this));
   }
 
   GeneticRenderer.prototype.playIntro = function () {
@@ -380,9 +380,12 @@ define(function (require) {
   };
 
   GeneticRenderer.prototype.render = function () {
-    var props = this.model.getGeneticProperties().get();
+    var DNA = this.model.get("DNA"),
+        DNAComplement = this.model.get("DNAComplement"),
+        mRNA  = this.model.get("mRNA"),
+        state = this.model.get("geneticEngineState");
 
-    if (props === undefined) {
+    if (DNA === undefined) {
       return;
     }
 
@@ -392,7 +395,7 @@ define(function (require) {
     this._currentTrans = null;
 
     this._renderBackground();
-    this._renderDNA(props.DNA, props.DNAComplement, props.mRNA, props.translationStep);
+    this._renderDNA(DNA, DNAComplement, mRNA, state);
   };
 
   GeneticRenderer.prototype.separateDNA = function (suppressAnimation) {
@@ -413,9 +416,9 @@ define(function (require) {
   };
 
   GeneticRenderer.prototype.transcribeStep = function () {
-    var props  = this.model.getGeneticProperties().get(),
-        index  = props.mRNA.length - 1, // last element
-        type   = props.mRNA[index],
+    var mRNA  = this.model.get("mRNA"),
+        index  = mRNA.length - 1, // last element
+        type   = mRNA[index],
         trans  = this._nextTrans().duration(500),
         t, r;
 
@@ -458,7 +461,7 @@ define(function (require) {
     }
   };
 
-  GeneticRenderer.prototype._renderDNA = function (dna, dnaComplement, mRNA, translationStep) {
+  GeneticRenderer.prototype._renderDNA = function (dna, dnaComplement, mRNA, state) {
     var dnaView =  this._g.append("g").attr("class", "dna-view"),
         i, len;
 
@@ -481,7 +484,7 @@ define(function (require) {
 
     this._mrnaG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("height") / 2 - 0.5 * Nucleotide.HEIGHT) + ")");
 
-    if (typeof mRNA !== "undefined" && typeof translationStep === "undefined") {
+    if (state === "transcription" || state === "transcription-end") {
       this.separateDNA(true);
       for (i = 0, len = mRNA.length; i < len; i++) {
         this._mrna.push(new Nucleotide(this._mrnaG, this.modelSize2px, mRNA[i], 1, i, true));
@@ -490,7 +493,7 @@ define(function (require) {
       this._scrollContainer(true);
     }
 
-    if (typeof translationStep !== "undefined") {
+    if (state === "translation") {
       for (i = 0, len = mRNA.length; i < len; i++) {
         this._mrna.push(new Nucleotide(this._mrnaG, this.modelSize2px, mRNA[i], 2, i, true));
         this._mrna[i].hideBonds(true);
@@ -506,7 +509,7 @@ define(function (require) {
   GeneticRenderer.prototype._renderBackground = function () {
     var gradient;
 
-    if (typeof this.genProps().translationStep === "undefined") {
+    if (this.model.geneticEngine().stateBefore("translation")) {
       // Transcription.
       gradient = this._g.append("defs").append("linearGradient")
         .attr("id", "transcription-bg")
@@ -558,10 +561,6 @@ define(function (require) {
       "transform": "translate(" + this.model2px(Nucleotide.WIDTH * 3) + ", " + this.model2pxInv(3.7 * Nucleotide.HEIGHT) + ")",
       "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_over.svg"
     });
-  };
-
-  GeneticRenderer.prototype.genProps = function () {
-    return this.model.getGeneticProperties().get();
   };
 
   /**

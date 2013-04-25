@@ -13,7 +13,6 @@ define(function (require, exports, module) {
       coulomb              = require('./potentials/index').coulomb,
       lennardJones         = require('./potentials/index').lennardJones,
       PairwiseLJProperties = require('cs!./pairwise-lj-properties'),
-      GeneticProperties    = require('./genetic-properties'),
       CloneRestoreWrapper  = require('common/models/engines/clone-restore-wrapper'),
       CellList             = require('./cell-list'),
       NeighborList         = require('./neighbor-list'),
@@ -304,9 +303,6 @@ define(function (require, exports, module) {
         N_obstacles = 0,
 
         // ####################################################################
-        geneticProperties,
-
-        // ####################################################################
         //                      Misc Properties
         // Hash of arrays containing VdW pairs
         vdwPairs,
@@ -399,9 +395,6 @@ define(function (require, exports, module) {
 
           // Custom pairwise properties.
           pairwiseLJProperties = new PairwiseLJProperties(engine);
-
-          // Genetic properties (like DNA, mRNA etc.).
-          geneticProperties = new GeneticProperties();
 
           radialBondMatrix = [];
           //  Initialize radialBondResults[] array consisting of hashes of radial bond
@@ -3605,7 +3598,6 @@ define(function (require, exports, module) {
     // To ensure that client code always has access to these public properties,
     // they should be initialized  only once during the engine lifetime (in the initialize method).
     engine.pairwiseLJProperties = pairwiseLJProperties;
-    engine.geneticProperties = geneticProperties;
 
     // Finally, return Public API.
     return engine;
