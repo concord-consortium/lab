@@ -477,9 +477,7 @@ define(function (require) {
       .attr("transform", "translate(0, " + this.model2pxInv(4 * Nucleotide.HEIGHT) + ")");
     t.select(".dna-comp")
       .attr("transform", "translate(0, " + this.model2pxInv(2 * Nucleotide.HEIGHT) + ")");
-    t.selectAll(".dna .bonds, .dna .bonds")
-      .style("opacity", 1);
-    t.selectAll(".mrna .bonds").duration(300)
+    t.selectAll(".mrna .bonds, .dna-comp .bonds").duration(250)
       .style("opacity", 0);
 
     t = this._nextTrans().ease("cubic-out").duration(1000);
@@ -583,12 +581,10 @@ define(function (require) {
       .attr("transform", "translate(0, 0)")
       .style("opacity", 1)
         // Subselection of bonds.
-        .select(".bonds")
-          .ease("linear")
+        .select(".bonds").ease("cubic")
           .style("opacity", 1);
 
-    trans.select(".dna-comp .nucleotide:nth-child(" + (index + 1) + ") .bonds")
-      .ease("linear")
+    trans.select(".dna-comp .nucleotide:nth-child(" + (index + 1) + ") .bonds").ease("cubic")
       .style("opacity", 1);
 
     this._scrollContainer();
