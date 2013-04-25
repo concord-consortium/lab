@@ -65,10 +65,7 @@ define(function (require) {
     this._currentTrans = null;
     // Redraw DNA / mRNA on every genetic properties change.
     this.model.geneticEngine().on("change", $.proxy(this.render, this));
-    this.model.geneticEngine().on("separateDNA", $.proxy(this.separateDNA, this));
-    this.model.geneticEngine().on("transcribeStep", $.proxy(this.transcribeStep, this));
-    this.model.geneticEngine().on("playIntro", $.proxy(this.playIntro, this));
-    this.model.geneticEngine().on("prepareForTranslation", $.proxy(this.prepareForTranslation, this));
+    this.model.geneticEngine().on("transition", $.proxy(this.transition, this));
   }
 
   GeneticRenderer.prototype.playIntro = function () {
@@ -396,6 +393,24 @@ define(function (require) {
 
     this._renderBackground();
     this._renderDNA(DNA, DNAComplement, mRNA, state);
+  };
+
+  GeneticRenderer.prototype.transition = function () {
+    var mRNA  = this.model.get("mRNA"),
+        state = this.model.get("geneticEngineState");
+
+    if (state === "dna") {
+      this.playIntro();
+    }
+    else if (state === "transcription" && mRNA.length === 0) {
+      this.separateDNA();
+    }
+    else if (state === "transcription") {
+      this.transcribeStep();
+    }
+    else if (state === "translation") {
+      this.prepareForTranslation();
+    }
   };
 
   GeneticRenderer.prototype.separateDNA = function (suppressAnimation) {

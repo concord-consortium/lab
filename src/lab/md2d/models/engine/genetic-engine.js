@@ -16,7 +16,10 @@ define(function (require) {
 
   return function GeneticProperties(model) {
     var api,
-        dispatch = d3.dispatch("change", "playIntro", "separateDNA", "transcribeStep", "prepareForTranslation"),
+        // Never change value of this variable outside
+        // the transitionToState() function!
+        stateTransition = false,
+        dispatch = d3.dispatch("change", "transition"),
 
         calculateComplementarySequence = function () {
           // A-T (A-U)
@@ -70,23 +73,6 @@ define(function (require) {
           }
         },
 
-        stateEq = function (name) {
-          return model.get("geneticEngineState") === name;
-        },
-
-        setState = function (name) {
-          model.set("geneticEngineState", name);
-        },
-
-        stateUpdated = function () {
-          calculateComplementarySequence();
-
-          if (api.stateAfter("transcription")) {
-            // So, the first state which triggers it is "transcription-end".
-            calculatemRNA();
-          }
-        },
-
         validateDNA = function (DNA) {
           // Allow user to use both lower and upper case.
           DNA = DNA.toUpperCase();
@@ -97,18 +83,43 @@ define(function (require) {
           }
         },
 
-        DNAUpdated = function () {
+        updateGeneticProperties = function () {
           validateDNA(model.get("DNA"));
-          // New DNA code specified, DNAUpdated related properties.
-          // 1. DNA complementary sequence.
           calculateComplementarySequence();
-          // 2. mRNA is no longer valid. Do not recalculate it automatically
-          //    (transribe method should be used).
-          model.set("mRNA", "");
-          // 3. Reset to the initial state.
-          model.set("geneticEngineState", "dna");
 
-          dispatch.change();
+          if (api.stateBefore("transcription")) {
+            model.set("mRNA", "");
+          }
+          if (api.stateAfter("transcription")) {
+            // So, the first state which triggers it is "transcription-end".
+            calculatemRNA();
+          }
+        },
+
+        stateEq = function (name) {
+          return model.get("geneticEngineState") === name;
+        },
+
+        transitionToState = function (name) {
+          stateTransition = true;
+          model.set("geneticEngineState", name);
+          stateTransition = false;
+        },
+
+        stateUpdated = function () {
+          updateGeneticProperties();
+
+          if (stateTransition) {
+            dispatch.transition();
+          } else {
+            dispatch.change();
+          }
+        },
+
+        DNAUpdated = function () {
+          // Reset to the initial state. All genetic properties will be
+          // recalculated and the "change" event will be dispatched.
+          model.set("geneticEngineState", "dna");
         };
 
     // Public API.
@@ -145,7 +156,7 @@ define(function (require) {
        * translation.
        */
       playIntro: function () {
-        dispatch.playIntro();
+        transitionToState("dna");
       },
 
       /**
@@ -153,8 +164,7 @@ define(function (require) {
        */
       separateDNA: function () {
         if (stateEq("dna")) {
-          setState("transcription");
-          dispatch.separateDNA();
+          transitionToState("transcription");
         }
       },
 
@@ -184,6 +194,7 @@ define(function (require) {
       transcribeStep: function (expectedNucleotide) {
         var mRNA = model.get("mRNA"),
             newCode;
+
         if (stateEq("dna")) {
           api.separateDNA();
           return;
@@ -200,17 +211,18 @@ define(function (require) {
         if (newCode) {
           mRNA += newCode;
           model.set("mRNA", mRNA);
-          dispatch.transcribeStep();
+          transitionToState("transcription");
+        } else {
+          transitionToState("transcription-end");
         }
       },
 
       translateStep: function () {
-        if (api.stateBefore("translation")) {
+        if (api.stateBefore("transcription-end")) {
           // Make sure that complete mRNA is available.
           api.transcribe();
-          setState("translation");
-          dispatch.prepareForTranslation();
         }
+        transitionToState("translation");
       },
 
       stateBefore: function (name) {
@@ -267,7 +279,7 @@ define(function (require) {
 
     model.addPropertiesListener(["DNA"], DNAUpdated);
     model.addPropertiesListener(["geneticEngineState"], stateUpdated);
-    stateUpdated();
+    updateGeneticProperties();
 
     return api;
   };
