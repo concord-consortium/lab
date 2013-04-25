@@ -110,11 +110,9 @@ define(function() {
         defaultValue: ""
       },
       DNAComplement: {
-        defaultValue: "",
         serialize: false
       },
       mRNA: {
-        defaultValue: "",
         serialize: false
       }
     },

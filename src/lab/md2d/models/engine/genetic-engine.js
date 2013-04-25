@@ -42,7 +42,7 @@ define(function (require) {
         calculatemRNA = function () {
           var mRNA, newCode;
 
-          mRNA = model.get("mRNA");
+          mRNA = model.get("mRNA") || "";
           newCode = mRNACode(mRNA.length);
 
           while(newCode) {

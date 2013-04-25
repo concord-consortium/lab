@@ -18,6 +18,8 @@
   "additionalSolventForceMult": 4,
   "additionalSolventForceThreshold": 10,
   "polarAAEpsilon": -2,
+  "geneticEngineState": "dna",
+  "DNA": "",
   "viewOptions": {
     "viewPortWidth": 5,
     "viewPortHeight": 3,
