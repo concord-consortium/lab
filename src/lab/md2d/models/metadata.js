@@ -42,28 +42,34 @@ define(function() {
         defaultValue: "md2d"
       },
       lennardJonesForces: {
-        defaultValue: true
+        defaultValue: true,
+        storeInTickHistory: true
       },
       coulombForces: {
-        defaultValue: true
+        defaultValue: true,
+        storeInTickHistory: true
       },
       temperatureControl: {
-        defaultValue: false
+        defaultValue: false,
+        storeInTickHistory: true
       },
       targetTemperature: {
         defaultValue: 300,
-        unitType: "temperature"
+        unitType: "temperature",
+        storeInTickHistory: true
       },
       modelSampleRate: {
         defaultValue: "default"
       },
       gravitationalField: {
         defaultValue: false,
-        unitType: "acceleration"
+        unitType: "acceleration",
+        storeInTickHistory: true
       },
       timeStep: {
         defaultValue: 1,
-        unitType: "time"
+        unitType: "time",
+        storeInTickHistory: true
       },
       dielectricConstant: {
         defaultValue: 1
@@ -98,10 +104,12 @@ define(function() {
         defaultValue: -2
       },
       viscosity: {
-        defaultValue: 1
+        defaultValue: 1,
+        storeInTickHistory: true
       },
       timeStepsPerTick: {
-        defaultValue: 50
+        defaultValue: 50,
+        storeInTickHistory: true
       },
       geneticEngineState: {
         defaultValue: "dna"
@@ -142,16 +150,19 @@ define(function() {
         defaultValue: "#eeeeee"
       },
       showClock: {
-        defaultValue: true
+        defaultValue: true,
+        storeInTickHistory: true
       },
       markColor: {
         defaultValue: "#f8b500"
       },
       keShading: {
-        defaultValue: false
+        defaultValue: false,
+        storeInTickHistory: true
       },
       chargeShading: {
-        defaultValue: false
+        defaultValue: false,
+        storeInTickHistory: true
       },
       useThreeLetterCode: {
         defaultValue: true
@@ -163,16 +174,19 @@ define(function() {
         defaultValue: true
       },
       showVDWLines: {
-        defaultValue: false
+        defaultValue: false,
+        storeInTickHistory: true
       },
       VDWLinesCutoff: {
         defaultValue: "medium"
       },
       showVelocityVectors: {
-        defaultValue: false
+        defaultValue: false,
+        storeInTickHistory: true
       },
       showForceVectors: {
-        defaultValue: false
+        defaultValue: false,
+        storeInTickHistory: true
       },
       showAtomTrace: {
         defaultValue: false
