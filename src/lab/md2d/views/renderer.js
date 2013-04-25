@@ -354,7 +354,9 @@ define(function (require) {
               "preserveAspectRatio": "xMinYMin",
               "xlink:href": "../../resources/upstatement/heatbath.svg",
               "class": "opaque-on-hover"
-            });
+            })
+            .append("title")
+            .text("Heatbath active");
       }
       if (textContainerTop.select("#ke-gradient").empty()) {
         // Kinetic Energy Shading gradient image.
@@ -367,7 +369,9 @@ define(function (require) {
               "preserveAspectRatio": "xMinYMin",
               "xlink:href": "../../resources/upstatement/ke-gradient.svg",
               "class": "opaque-on-hover"
-            });
+            })
+            .append("title")
+            .text("Kinetic energy gradient");
       }
     }
 
