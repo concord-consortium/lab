@@ -336,12 +336,13 @@ define(function (require) {
 
     // Create key images which can be shown in the
     // upper left corner in different situations.
-    // IMPORTANT: use percentage values whenever possible,
-    // especially for *height* attribute!
-    // It will allow to properly calculate images
+    // IMPORTANT: The height attribute must be set,
+    // it will allow to properly calculate images
     // placement in drawSymbolImages() function.
     function createSymbolImages() {
-      var xMargin = "1%";
+      var xMargin = "1%",
+          fSize = Math.max(fontSizeInPixels, 12);
+
       // only add these images if they don't already exist
       if (textContainerTop.select("#heat-bath").empty()) {
         // Heat bath key image.
@@ -349,8 +350,8 @@ define(function (require) {
             .attr({
               "id": "heat-bath",
               "x": xMargin,
-              "width": "5%",
-              "height": "5%",
+              "width": fSize*2,
+              "height": fSize*2,
               "preserveAspectRatio": "xMinYMin",
               "xlink:href": "../../resources/upstatement/heatbath.svg",
               "class": "opaque-on-hover"
@@ -363,9 +364,9 @@ define(function (require) {
         textContainerTop.append("image")
             .attr({
               "id": "ke-gradient",
-              "x": "0.5%",
-              "width": "5%",
-              "height": "20%",
+              "x": "0",
+              "width": fSize*2.2,
+              "height": fSize*6,
               "preserveAspectRatio": "xMinYMin",
               "xlink:href": "../../resources/upstatement/ke-gradient.svg",
               "class": "opaque-on-hover"
@@ -382,20 +383,22 @@ define(function (require) {
         var heatBath = model.get('temperatureControl'),
             imageSelect, imageHeight,
             // Variables used for calculating proper y positions.
-            // The unit for these values is percentage points!
             yPos = 0,
-            yMargin = 1;
+            yMargin = 1,
+            fSize = Math.max(fontSizeInPixels, 12);
 
         // Heat bath symbol.
         if (heatBath) {
             yPos += yMargin;
             imageSelect = textContainerTop.select("#heat-bath")
-              .attr("y", yPos + "%")
+              .attr({
+                "y": yPos,
+                "width": fSize*2,
+                "height": fSize*2,
+              })
               .style("display", "");
 
-            imageHeight = imageSelect.attr("height");
-            // Truncate % symbol and convert to Number.
-            imageHeight = Number(imageHeight.substring(0, imageHeight.length - 1));
+            imageHeight = parseInt(imageSelect.attr("height"));
             yPos += imageHeight;
         } else {
             textContainerTop.select("#heat-bath").style("display","none");
@@ -406,7 +409,11 @@ define(function (require) {
         if (keShadingMode) {
             yPos += yMargin;
             textContainerTop.select("#ke-gradient")
-              .attr("y", yPos + "%")
+              .attr({
+                "y": yPos,
+                "width": fSize*2.2,
+                "height": fSize*6,
+              })
               .style("display", "");
         } else {
             textContainerTop.select("#ke-gradient").style("display", "none");
