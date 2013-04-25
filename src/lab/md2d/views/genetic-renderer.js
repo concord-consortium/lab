@@ -92,6 +92,10 @@ define(function (require) {
   GeneticRenderer.prototype.render = function () {
     var state = this.model.get("geneticEngineState");
 
+    if (!this.model.get("DNA")) { // "", undefined or null
+      return;
+    }
+
     // Cleanup.
     this.container.selectAll("g.genetics").remove();
     this._currentTrans = null;
