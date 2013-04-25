@@ -50,6 +50,15 @@ define(function (require) {
       "stroke-width": ms2px(0.01),
       "stroke": "#fff"
     });
+    this._nucleo = this._g.append("image").attr({
+      "class": "nucleotide-img",
+      "x": ms2px(W.BACKB) / 2 - ms2px(W[type]) / 2,
+      "y": ms2px(H.BACKB) * 0.9,
+      "width": ms2px(W[type]),
+      "height": ms2px(H[type]),
+      "preserveAspectRatio": "none",
+      "xlink:href": labConfig.actualRoot + "../../resources/transcription/Nucleotide" + type + "_Direction" + direction + "_noBonds.svg"
+    });
     this._backbone = this._g.append("image").attr({
       "x": 0,
       "y": 0,
@@ -57,15 +66,6 @@ define(function (require) {
       "height": ms2px(H.BACKB),
       "preserveAspectRatio": "none",
       "xlink:href": labConfig.actualRoot + "../../resources/transcription/Backbone_" + (mRNA ? "RNA" : "DNA") + ".svg"
-    });
-    this._nucleo = this._g.append("image").attr({
-      "class": "nucleotide-img",
-      "x": ms2px(W.BACKB) / 2 - ms2px(W[type]) / 2,
-      "y": ms2px(H.BACKB),
-      "width": ms2px(W[type]),
-      "height": ms2px(H[type]),
-      "preserveAspectRatio": "none",
-      "xlink:href": labConfig.actualRoot + "../../resources/transcription/Nucleotide" + type + "_Direction" + direction + "_noBonds.svg"
     });
 
     if (direction === 1) {
@@ -124,9 +124,9 @@ define(function (require) {
   // https://www.pivotaltracker.com/story/show/48453261
   Nucleotide.WIDTH  = W.BACKB * 0.92;
   // Height of the nucleotide is height of the DNA backbone + A nucleotide (tallest one).
-  // * 0.95 because it simply... looks better. This value is used to determine distance
+  // * 0.9 because it simply... looks better. This value is used to determine distance
   // between two strands of DNA and this multiplier causes that they are closer to each other.
-  Nucleotide.HEIGHT = H.BACKB + H.A * 0.95;
+  Nucleotide.HEIGHT = H.BACKB + H.A * 0.9;
 
   return Nucleotide;
 });
