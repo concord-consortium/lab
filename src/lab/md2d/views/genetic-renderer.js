@@ -56,6 +56,7 @@ define(function (require) {
     this.modelSize2px = parentView.modelSize2px;
 
     this._g = null;
+    this._dnaView = null;
     this._dnaG = null;
     this._dnaCompG = null;
     this._mrnaG = null;
@@ -63,10 +64,173 @@ define(function (require) {
     this._dnaComp = [];
     this._mrna = [];
     this._currentTrans = null;
-    // Redraw DNA / mRNA on every genetic properties change.
+
+    // Redraw DNA / mRNA when genetic engine state is changed.
     this.model.geneticEngine().on("change", $.proxy(this.render, this));
-    this.model.geneticEngine().on("transition", $.proxy(this.transition, this));
+    // Play animation when there is a "transition" event.
+    this.model.geneticEngine().on("transition", $.proxy(this.stateTransition, this));
   }
+
+  GeneticRenderer.prototype.stateTransition = function () {
+    var state = this.model.get("geneticEngineState"),
+        mRNA  = this.model.get("mRNA");
+
+    if (state === "dna") {
+      this.playIntro();
+    }
+    else if (state === "transcription" && mRNA.length === 0) {
+      this.separateDNA();
+    }
+    else if (state === "transcription") {
+      this.transcribeStep();
+    }
+    else if (state === "translation") {
+      this.prepareForTranslation();
+    }
+  };
+
+  GeneticRenderer.prototype.render = function () {
+    var state = this.model.get("geneticEngineState");
+
+    // Cleanup.
+    this.container.selectAll("g.genetics").remove();
+    this._currentTrans = null;
+    this._dna      = [];
+    this._dnaComp  = [];
+    this._mrna     = [];
+    // Create a new container.
+    this._g       = this.container.append("g").attr("class", "genetics");
+    this._dnaView = this._g.append("g").attr("class", "dna-view");
+    this._mrnaG   = this._dnaView.append("g").attr("class", "mrna");
+
+
+    this._renderBackground();
+
+    if (state === "dna") {
+      this._renderDNA();
+    }
+    if (state === "transcription" || state === "transcription-end") {
+      this._renderTranscription();
+    }
+    if (state === "translation") {
+      this._renderTranslation();
+    }
+  };
+
+  GeneticRenderer.prototype._renderDNA = function () {
+    var dna           = this.model.get("DNA"),
+        dnaComplement = this.model.get("DNAComplement"),
+        i, len;
+
+    this._dnaG     = this._dnaView.append("g").attr("class", "dna");
+    this._dnaCompG = this._dnaView.append("g").attr("class", "dna-comp");
+
+    for (i = 0, len = dna.length; i < len; i++) {
+      this._dna.push(new Nucleotide(this._dnaG, this.modelSize2px, dna[i], 1, i));
+    }
+    this._dnaG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("height") / 2 + Nucleotide.HEIGHT) + ")");
+
+    for (i = 0, len = dnaComplement.length; i < len; i++) {
+      this._dnaComp.push(new Nucleotide(this._dnaCompG, this.modelSize2px, dnaComplement[i], 2, i));
+    }
+    this._dnaCompG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("height") / 2 - Nucleotide.HEIGHT) + ")");
+
+    // Prepare container for mRNA.
+    this._mrnaG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("height") / 2 - 0.5 * Nucleotide.HEIGHT) + ")");
+  };
+
+  GeneticRenderer.prototype._renderTranscription = function () {
+    var mRNA = this.model.get("mRNA"),
+        i, len;
+
+    this._renderDNA();
+
+    this.separateDNA(true);
+    for (i = 0, len = mRNA.length; i < len; i++) {
+      this._mrna.push(new Nucleotide(this._mrnaG, this.modelSize2px, mRNA[i], 1, i, true));
+      this._dnaComp[i].showBonds(true);
+    }
+    this._scrollContainer(true);
+  };
+
+  GeneticRenderer.prototype._renderTranslation = function () {
+    var mRNA = this.model.get("mRNA"),
+        i, len;
+
+    for (i = 0, len = mRNA.length; i < len; i++) {
+      this._mrna.push(new Nucleotide(this._mrnaG, this.modelSize2px, mRNA[i], 2, i, true));
+      this._mrna[i].hideBonds(true);
+    }
+    this._mrnaG.attr("transform", "translate(0, " + this.model2pxInv(1.5 * Nucleotide.HEIGHT) + ")");
+    this._dnaView.attr("transform", "translate(" + this.model2px(2 * Nucleotide.WIDTH) + ")");
+    this._appendRibosome();
+  };
+
+  GeneticRenderer.prototype._scrollContainer = function (suppressAnimation) {
+    var shift = Math.min(this._mrna.length, this._dna.length - 4);
+
+    if (shift > 8) {
+      (suppressAnimation ? this._g.select(".dna-view") : this._currentTrans.select(".dna-view").ease("linear"))
+        .attr("transform", "translate(" + this.model2px(-(shift - 8) * Nucleotide.WIDTH) + ")");
+    }
+  };
+
+  GeneticRenderer.prototype._appendRibosome = function () {
+    this._g.insert("image", ".dna-view").attr({
+      "class": "ribosome-under",
+      "x": this.modelSize2px(W.RIBO_UNDER * -0.5),
+      "y": this.modelSize2px(H.RIBO_UNDER * -0.5),
+      "width": this.modelSize2px(W.RIBO_UNDER),
+      "height": this.modelSize2px(H.RIBO_UNDER),
+      "preserveAspectRatio": "none",
+      "transform": "translate(" + this.model2px(Nucleotide.WIDTH * 3) + ", " + this.model2pxInv(3.7 * Nucleotide.HEIGHT) + ")",
+      "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_under.svg"
+    });
+
+    this._g.append("image").attr({
+      "class": "ribosome-over",
+      "x": this.modelSize2px(W.RIBO_OVER * -0.5),
+      "y": this.modelSize2px(H.RIBO_OVER * -0.5),
+      "width": this.modelSize2px(W.RIBO_OVER),
+      "height": this.modelSize2px(H.RIBO_OVER),
+      "preserveAspectRatio": "none",
+      "transform": "translate(" + this.model2px(Nucleotide.WIDTH * 3) + ", " + this.model2pxInv(3.7 * Nucleotide.HEIGHT) + ")",
+      "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_over.svg"
+    });
+  };
+
+  GeneticRenderer.prototype._renderBackground = function () {
+    var gradient;
+
+    if (this.model.geneticEngine().stateBefore("translation")) {
+      // Transcription.
+      gradient = this._g.append("defs").append("linearGradient")
+        .attr("id", "transcription-bg")
+        .attr("x1", "0%")
+        .attr("y1", "0%")
+        .attr("x2", "0%")
+        .attr("y2", "100%");
+
+      gradient.append("stop")
+        .attr("stop-color", "#C8DD69")
+        .attr("offset", "0%");
+      gradient.append("stop")
+        .attr("stop-color", "#778B3D")
+        .attr("offset", "100%");
+
+      d3.select(".plot").style("fill", "url(#transcription-bg)");
+    } else {
+      // Translation.
+      d3.select(".plot").style("fill", "#B8EBF0");
+    }
+  };
+
+  GeneticRenderer.prototype._cleanupDNA = function () {
+    this._dna      = [];
+    this._dnaComp  = [];
+    this._dnaG.remove();
+    this._dnaCompG.remove();
+  };
 
   GeneticRenderer.prototype.playIntro = function () {
     var ms2px = this.modelSize2px,
@@ -376,43 +540,6 @@ define(function (require) {
       .style("opacity", 1);
   };
 
-  GeneticRenderer.prototype.render = function () {
-    var DNA = this.model.get("DNA"),
-        DNAComplement = this.model.get("DNAComplement"),
-        mRNA  = this.model.get("mRNA"),
-        state = this.model.get("geneticEngineState");
-
-    if (DNA === undefined) {
-      return;
-    }
-
-    this.container.selectAll("g.genetics").remove();
-    this._g = this.container.append("g").attr("class", "genetics");
-
-    this._currentTrans = null;
-
-    this._renderBackground();
-    this._renderDNA(DNA, DNAComplement, mRNA, state);
-  };
-
-  GeneticRenderer.prototype.transition = function () {
-    var mRNA  = this.model.get("mRNA"),
-        state = this.model.get("geneticEngineState");
-
-    if (state === "dna") {
-      this.playIntro();
-    }
-    else if (state === "transcription" && mRNA.length === 0) {
-      this.separateDNA();
-    }
-    else if (state === "transcription") {
-      this.transcribeStep();
-    }
-    else if (state === "translation") {
-      this.prepareForTranslation();
-    }
-  };
-
   GeneticRenderer.prototype.separateDNA = function (suppressAnimation) {
     // When animation is disabled (e.g. during initial rendering), main group element
     // is used as a root instead of d3 transition object.
@@ -465,117 +592,6 @@ define(function (require) {
       .style("opacity", 1);
 
     this._scrollContainer();
-  };
-
-  GeneticRenderer.prototype._scrollContainer = function (suppressAnimation) {
-    var shift = Math.min(this._mrna.length, this._dna.length - 4);
-
-    if (shift > 10) {
-      (suppressAnimation ? this._g.select(".dna-view") : this._currentTrans.select(".dna-view").ease("linear"))
-        .attr("transform", "translate(" + this.modelSize2px(-(shift - 10) * Nucleotide.WIDTH) + ")");
-    }
-  };
-
-  GeneticRenderer.prototype._renderDNA = function (dna, dnaComplement, mRNA, state) {
-    var dnaView =  this._g.append("g").attr("class", "dna-view"),
-        i, len;
-
-    this._dnaG     = dnaView.append("g").attr("class", "dna"),
-    this._dnaCompG = dnaView.append("g").attr("class", "dna-comp"),
-    this._mrnaG    = dnaView.append("g").attr("class", "mrna"),
-    this._dna      = [];
-    this._dnaComp  = [];
-    this._mrna     = [];
-
-    for (i = 0, len = dna.length; i < len; i++) {
-      this._dna.push(new Nucleotide(this._dnaG, this.modelSize2px, dna[i], 1, i));
-    }
-    this._dnaG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("height") / 2 + Nucleotide.HEIGHT) + ")");
-
-    for (i = 0, len = dnaComplement.length; i < len; i++) {
-      this._dnaComp.push(new Nucleotide(this._dnaCompG, this.modelSize2px, dnaComplement[i], 2, i));
-    }
-    this._dnaCompG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("height") / 2 - Nucleotide.HEIGHT) + ")");
-
-    this._mrnaG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("height") / 2 - 0.5 * Nucleotide.HEIGHT) + ")");
-
-    if (state === "transcription" || state === "transcription-end") {
-      this.separateDNA(true);
-      for (i = 0, len = mRNA.length; i < len; i++) {
-        this._mrna.push(new Nucleotide(this._mrnaG, this.modelSize2px, mRNA[i], 1, i, true));
-        this._dnaComp[i].showBonds(true);
-      }
-      this._scrollContainer(true);
-    }
-
-    if (state === "translation") {
-      for (i = 0, len = mRNA.length; i < len; i++) {
-        this._mrna.push(new Nucleotide(this._mrnaG, this.modelSize2px, mRNA[i], 2, i, true));
-        this._mrna[i].hideBonds(true);
-      }
-      this._mrnaG.attr("transform", "translate(0, " + this.model2pxInv(1.5 * Nucleotide.HEIGHT) + ")");
-      this._cleanupDNA();
-      dnaView.attr("transform", "translate(" + this.model2px(2 * Nucleotide.WIDTH) + ")");
-
-      this._appendRibosome();
-    }
-  };
-
-  GeneticRenderer.prototype._renderBackground = function () {
-    var gradient;
-
-    if (this.model.geneticEngine().stateBefore("translation")) {
-      // Transcription.
-      gradient = this._g.append("defs").append("linearGradient")
-        .attr("id", "transcription-bg")
-        .attr("x1", "0%")
-        .attr("y1", "0%")
-        .attr("x2", "0%")
-        .attr("y2", "100%");
-
-      gradient.append("stop")
-        .attr("stop-color", "#C8DD69")
-        .attr("offset", "0%");
-      gradient.append("stop")
-        .attr("stop-color", "#778B3D")
-        .attr("offset", "100%");
-
-      d3.select(".plot").style("fill", "url(#transcription-bg)");
-    } else {
-      // Translation.
-      d3.select(".plot").style("fill", "#B8EBF0");
-    }
-  };
-
-  GeneticRenderer.prototype._cleanupDNA = function () {
-    this._dna      = [];
-    this._dnaComp  = [];
-    this._dnaG.remove();
-    this._dnaCompG.remove();
-  };
-
-  GeneticRenderer.prototype._appendRibosome = function () {
-    this._g.insert("image", ".dna-view").attr({
-      "class": "ribosome-under",
-      "x": this.modelSize2px(W.RIBO_UNDER * -0.5),
-      "y": this.modelSize2px(H.RIBO_UNDER * -0.5),
-      "width": this.modelSize2px(W.RIBO_UNDER),
-      "height": this.modelSize2px(H.RIBO_UNDER),
-      "preserveAspectRatio": "none",
-      "transform": "translate(" + this.model2px(Nucleotide.WIDTH * 3) + ", " + this.model2pxInv(3.7 * Nucleotide.HEIGHT) + ")",
-      "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_under.svg"
-    });
-
-    this._g.append("image").attr({
-      "class": "ribosome-over",
-      "x": this.modelSize2px(W.RIBO_OVER * -0.5),
-      "y": this.modelSize2px(H.RIBO_OVER * -0.5),
-      "width": this.modelSize2px(W.RIBO_OVER),
-      "height": this.modelSize2px(H.RIBO_OVER),
-      "preserveAspectRatio": "none",
-      "transform": "translate(" + this.model2px(Nucleotide.WIDTH * 3) + ", " + this.model2pxInv(3.7 * Nucleotide.HEIGHT) + ")",
-      "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_over.svg"
-    });
   };
 
   /**
