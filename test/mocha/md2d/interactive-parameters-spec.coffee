@@ -2,6 +2,30 @@ helpers = require '../../helpers'
 helpers.setupBrowserEnvironment()
 simpleModel = helpers.getModel 'simple-model.json'
 
+# These will be set as side effects of assignments to parameter1 and parameter2
+baseParameters = [
+  {
+    name: 'parameterValue',
+    onChange: ';',
+    initialValue: ''
+  },
+  {
+    name: 'parameterUsedAndValue',
+    onChange: ';',
+    initialValue: ''
+  },
+  {
+    name: 'parameter1SetterCalled',
+    onChange: ';',
+    initialValue: ''
+  },
+  {
+    name: 'parameter2SetterCalled',
+    onChange: ';',
+    initialValue: ''
+  }
+]
+
 helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
   interactivesController = requirejs 'common/controllers/interactives-controller'
 
@@ -45,26 +69,26 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
 
 
       it "lets you define a custom parameter at the toplevel of the interactive definition", ->
-        interactive.parameters = [parameter1]
+        interactive.parameters = baseParameters.slice().concat(parameter1)
         helpers.withModel simpleModel, ->
           controller = interactivesController interactive, 'body'
         model.set customParameter: 1
         model.get('parameterUsedAndValue').should.equal 'parameter1: 1'
 
       it "respects the 'unitType' key of the parameter definition", ->
-        interactive.parameters = [parameter1]
+        interactive.parameters = baseParameters.slice().concat(parameter1)
         helpers.withModel simpleModel, ->
           controller = interactivesController interactive, 'body'
         model.getPropertyDescription('customParameter').getHash().should.have.property 'unitType', 'length'
 
       it "respects the 'label' key of the parameter definition", ->
-        interactive.parameters = [parameter1]
+        interactive.parameters = baseParameters.slice().concat(parameter1)
         helpers.withModel simpleModel, ->
           controller = interactivesController interactive, 'body'
         model.getPropertyDescription('customParameter').getHash().should.have.property 'label', 'customLabel'
 
       it "lets you define a custom parameter in the models section of the interactive definition", ->
-        interactive.models[0].parameters = [parameter1]
+        interactive.models[0].parameters = baseParameters.slice().concat(parameter1)
         helpers.withModel simpleModel, ->
           controller = interactivesController interactive, 'body'
         model.set customParameter: 1
@@ -72,13 +96,13 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
 
       describe "when the parameter specifies an initial value", ->
         beforeEach ->
-          interactive.parameters = [
+          interactive.parameters = baseParameters.concat([
             {
               "name":  "parameterWithInitialValue",
               "onChange": "set({ parameterValue: value });",
               "initialValue": 1.2
             }
-          ]
+          ])
           helpers.withModel simpleModel, ->
             controller = interactivesController interactive, 'body'
 
@@ -90,12 +114,12 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
 
       describe "overriding of custom parameter defined in interactive", ->
         beforeEach ->
-          interactive.parameters = [parameter1]
+          interactive.parameters = baseParameters.slice().concat(parameter1)
 
         describe "when there is just one model", ->
           beforeEach ->
             interactive.models.length = 1
-            interactive.models[0].parameters = [parameter2]
+            interactive.models[0].parameters = baseParameters.slice().concat(parameter2)
             helpers.withModel simpleModel, ->
               controller = interactivesController interactive, 'body'
 
@@ -109,7 +133,7 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
         describe "when there are two models in the model section", ->
           describe "and the default model has no model-specific custom parameter", ->
             beforeEach ->
-              interactive.models[1].parameters = [parameter2]
+              interactive.models[1].parameters = baseParameters.slice().concat(parameter2)
               helpers.withModel simpleModel, ->
                 controller = interactivesController interactive, 'body'
 
@@ -121,7 +145,7 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
               model.get('parameterUsedAndValue').should.equal 'parameter1: initial value 1'
 
             it "never calls the overridden parameter's setter with an initial value", ->
-              should.not.exist model.get('parameter2SetterCalled')
+              model.get('parameter2SetterCalled').should.equal ''
               model.get('parameter1SetterCalled').should.be.true
 
             describe "and loadModel is used to load a model with a model-specific custom parameter", ->
@@ -138,7 +162,7 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
 
           describe "and the default model has a model-specific custom parameter", ->
             beforeEach ->
-              interactive.models[0].parameters = [parameter2]
+              interactive.models[0].parameters = baseParameters.slice().concat(parameter2)
               helpers.withModel simpleModel, ->
                 controller = interactivesController interactive, 'body'
 
@@ -150,7 +174,7 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
               model.get('parameterUsedAndValue').should.equal 'parameter2: initial value 2'
 
             it "never calls the overridden parameter's setter with an initial value", ->
-              should.not.exist model.get('parameter1SetterCalled')
+              model.get('parameter1SetterCalled').should.equal ''
               model.get('parameter2SetterCalled').should.be.true
 
             describe "and loadModel is used to load a model without a model-specific custom parameter", ->
