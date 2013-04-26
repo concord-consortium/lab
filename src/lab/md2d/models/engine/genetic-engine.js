@@ -222,11 +222,17 @@ define(function (require) {
       },
 
       translateStep: function () {
+        var state;
         if (api.stateBefore("transcription-end")) {
           // Make sure that complete mRNA is available.
           api.transcribe();
         }
-        transitionToState("translation:0");
+        state = api.state();
+        if (state.name === "transcription-end") {
+          transitionToState("translation:0");
+        } else if (state.name === "translation") {
+          transitionToState("translation:" + (state.step + 1));
+        }
       },
 
       state: function () {
