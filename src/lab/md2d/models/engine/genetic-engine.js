@@ -172,7 +172,7 @@ define(function (require) {
        * Triggers *complete* transcription of the DNA.
        */
       transcribe: function() {
-        while (!mRNAComplete()) {
+        while (api.stateBefore("transcription-end")) {
           api.transcribeStep();
         }
       },
@@ -193,6 +193,7 @@ define(function (require) {
        */
       transcribeStep: function (expectedNucleotide) {
         var mRNA = model.get("mRNA"),
+            DNA = model.get("DNA"),
             newCode;
 
         if (stateEq("dna")) {
@@ -211,9 +212,12 @@ define(function (require) {
         if (newCode) {
           mRNA += newCode;
           model.set("mRNA", mRNA);
-          transitionToState("transcription");
-        } else {
-          transitionToState("transcription-end");
+          if (mRNA.length < DNA.length) {
+            // TODO: should be "transcription:" + mRNA.length
+            transitionToState("transcription");
+          } else {
+            transitionToState("transcription-end");
+          }
         }
       },
 
@@ -222,15 +226,54 @@ define(function (require) {
           // Make sure that complete mRNA is available.
           api.transcribe();
         }
-        transitionToState("translation");
+        transitionToState("translation:0");
+      },
+
+      state: function () {
+        return api.parseState(model.get("geneticEngineState"));
       },
 
       stateBefore: function (name) {
-        return state[model.get("geneticEngineState")] < state[name];
+        var current = api.state(),
+            cmp     = api.parseState(name);
+
+        if (current.name === cmp.name) {
+          return current.step < cmp.step;
+        }
+        return state[current.name] < state[cmp.name];
       },
 
       stateAfter: function (name) {
-        return state[model.get("geneticEngineState")] > state[name];
+        var current = api.state(),
+            cmp     = api.parseState(name);
+
+        if (current.name === cmp.name) {
+          return current.step > cmp.step;
+        }
+        return state[current.name] > state[cmp.name];
+      },
+
+      parseState: function (state) {
+        // State can contain ":" and info about step.
+        // e.g. translation:0, translation:1 etc.
+        state = state.split(":");
+        return {
+          name: state[0],
+          step: Number(state[1]) // can be NaN when step is undefined.
+        };
+      },
+
+      codon: function (index) {
+        return model.get("mRNA").substr(3 * index, 3);
+      },
+
+      codonComplement: function (index) {
+        return api.codon(index)
+            .replace(/A/g, "u")
+            .replace(/G/g, "c")
+            .replace(/U/g, "a")
+            .replace(/C/g, "g")
+            .toUpperCase();
       }
 
       /*

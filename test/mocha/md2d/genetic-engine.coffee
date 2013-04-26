@@ -71,6 +71,38 @@ describe "GeneticEngine", ->
 
         model.get("mRNA").should.eql "AUGC"
 
+      it "should provide state() helper methods", ->
+        state = geneticEngine.state()
+        state.name.should.eql "transcription-end"
+        isNaN(state.step).should.be.true
+
+        model.set "geneticEngineState", "translation:15"
+        state = geneticEngine.state()
+        state.name.should.eql "translation"
+        state.step.should.eql 15
+
+      it "should provide stateBefore() and stateAfter() helper methods", ->
+        model.set "geneticEngineState", "intro"
+        geneticEngine.stateBefore("dna").should.be.true
+        geneticEngine.stateAfter("dna").should.be.false
+
+        model.set "geneticEngineState", "transcription"
+        geneticEngine.stateBefore("dna").should.be.false
+        geneticEngine.stateAfter("dna").should.be.true
+        geneticEngine.stateBefore("translation").should.be.true
+        geneticEngine.stateAfter("translation").should.be.false
+        geneticEngine.stateBefore("translation:15").should.be.true
+        geneticEngine.stateAfter("translation:15").should.be.false
+
+        model.set "geneticEngineState", "translation:15"
+        geneticEngine.stateBefore("translation:14").should.be.false
+        geneticEngine.stateAfter("translation:14").should.be.true
+        geneticEngine.stateBefore("translation:15").should.be.false
+        geneticEngine.stateAfter("translation:15").should.be.false
+        geneticEngine.stateBefore("translation:16").should.be.true
+        geneticEngine.stateAfter("translation:16").should.be.false
+
+
       it "should translate mRNA to amino acids sequence correctly", ->
         ###
         # This is pretty complex, so test a least some examples.
