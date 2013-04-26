@@ -216,7 +216,7 @@ define(function (require) {
       "width": this.modelSize2px(W.RIBO_UNDER),
       "height": this.modelSize2px(H.RIBO_UNDER),
       "preserveAspectRatio": "none",
-      "transform": "translate(" + this.model2px(Nucleotide.WIDTH) + ")",
+      "transform": "translate(" + this.model2px(2 * Nucleotide.WIDTH) + ")",
       "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_under.svg"
     });
 
@@ -227,16 +227,17 @@ define(function (require) {
       "width": this.modelSize2px(W.RIBO_OVER),
       "height": this.modelSize2px(H.RIBO_OVER),
       "preserveAspectRatio": "none",
-      "transform": "translate(" + this.model2px(Nucleotide.WIDTH) + ")",
+      "transform": "translate(" + this.model2px(2 * Nucleotide.WIDTH) + ")",
       "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_over.svg"
     });
   };
 
   GeneticRenderer.prototype._appendTRNA = function (index) {
         // The most outer container can be used to set easily position offset.
-        // While the inner g element provides translation for "ideal" tRNA position
-        // close to the mRNA.
-    var trna = this._trnaG.append("g").attr("class", "trna").append("g"),
+        // While the inner g elements provides translation for "ideal" tRNA position
+        // close to the mRNA and optional rotation.
+    var trnaPosG = this._trnaG.append("g").attr("class", "trna").append("g"),
+        trna = trnaPosG.append("g").attr("class", "rot"),
         type = this.model.geneticEngine().codonComplement(index),
         nucleo = trna.selectAll("g.nucleotide").data(type.split("")),
         nucleoG = nucleo.enter().append("g").attr("class", "nucleotide"),
@@ -295,7 +296,7 @@ define(function (require) {
       "xlink:href": labConfig.actualRoot + "../../resources/translation/tRNA_base.svg"
     });
 
-    trna.attr("transform", "translate(" + m2px(index * codonWidth) + ", " + m2pxInv(2.5 * Nucleotide.HEIGHT) + ")");
+    trnaPosG.attr("transform", "translate(" + m2px(index * codonWidth) + ", " + m2pxInv(2.5 * Nucleotide.HEIGHT) + ")");
   };
 
   GeneticRenderer.prototype._renderBackground = function () {
@@ -626,9 +627,9 @@ define(function (require) {
     // Ribosome fade in.
     t = this._nextTrans().ease("cubic-in-out").duration(1500);
     t.select(".ribosome-top")
-      .attr("transform", "translate(" + this.model2px(Nucleotide.WIDTH * 3) + ", " + this.model2pxInv(4.52 * Nucleotide.HEIGHT) + ")");
+      .attr("transform", "translate(" + this.model2px(Nucleotide.WIDTH * 4) + ", " + this.model2pxInv(4.52 * Nucleotide.HEIGHT) + ")");
     t.select(".ribosome-bottom")
-      .attr("transform", "translate(" + this.model2px(Nucleotide.WIDTH * 2.95) + ", " + this.model2pxInv(1.75 * Nucleotide.HEIGHT) + ")");
+      .attr("transform", "translate(" + this.model2px(Nucleotide.WIDTH * 3.95) + ", " + this.model2pxInv(1.75 * Nucleotide.HEIGHT) + ")");
 
     t = this._nextTrans().ease("cubic-in-out").duration(500);
     t.selectAll(".ribosome-top, .ribosome-bottom")
@@ -643,13 +644,28 @@ define(function (require) {
 
     this._appendTRNA(codonIdx);
     this._trnaG.select(".trna:last-child")
-      .attr("transform", "translate(" + this.modelSize2px(Nucleotide.HEIGHT * 5) + ", " + this.modelSize2px(Nucleotide.HEIGHT * -5) + ")")
-      .style("opacity", 0);
+      .attr("transform", "translate(" + this.modelSize2px(Nucleotide.HEIGHT * 5) + ", " + this.modelSize2px(Nucleotide.HEIGHT * -6) + ")")
+      .style("opacity", 0)
+        .select(".rot")
+          .attr("transform", "rotate(30)");
 
     t = this._nextTrans().duration(1500);
     t.select(".trna-cont .trna:last-child")
       .attr("transform", "translate(0, 0)")
-      .style("opacity", 5); // 5 causes that tRNA is visible earlier.
+      .style("opacity", 5) // 5 causes that tRNA is visible earlier.
+        // Rotation g element subselection.
+        .select(".rot")
+          .attr("transform", "")
+          // Bonds subselection.
+          .selectAll(".bonds").ease("cubic")
+            .style("opacity", 1);
+
+    t.selectAll(".mrna .nucleotide:nth-child(" + (3 * codonIdx + 1) + ") .bonds, " +
+                ".mrna .nucleotide:nth-child(" + (3 * codonIdx + 2) + ") .bonds, " +
+                ".mrna .nucleotide:nth-child(" + (3 * codonIdx + 3) + ") .bonds")
+      .ease("cubic")
+      .style("opacity", 1);
+
   };
 
   GeneticRenderer.prototype.separateDNA = function (suppressAnimation) {
