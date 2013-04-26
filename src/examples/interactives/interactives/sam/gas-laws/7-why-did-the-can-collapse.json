@@ -73,7 +73,7 @@
     {
       "type": "checkbox",
       "id": "show-velocity",
-      "text": "Show Velocity",
+      "text": "Show velocity vectors",
       "property": "showVelocityVectors"
     },
     {
@@ -89,13 +89,13 @@
     {
       "type": "text",
       "id": "purple-label",
-      "text": "Purple Molecules",
+      "text": "Purple molecules",
       "width": "6em"
     },
     {
       "type": "text",
       "id": "yellow-label",
-      "text": "Yellow Molecules",
+      "text": "Yellow molecules",
       "width": "6em"
     },
     {

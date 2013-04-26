@@ -45,7 +45,7 @@
     {
       "type": "button",
       "id": "trace",
-      "text": "Trace Random Molecule",
+      "text": "Trace a random molecule",
       "action": [
         "var opt = {suppressRepaint: true};",
         "var atomID = randomAtoms(1);",

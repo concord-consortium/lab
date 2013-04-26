@@ -11,7 +11,7 @@
         "controlButtons": "play_reset",
         "textBoxes": [
           {
-            "text": "Pressure Gauge >>",
+            "text": "Pressure gauge →",
             "x": 2.15,
             "y": 2.27,
             "width": 1.05,
@@ -27,7 +27,7 @@
     {
       "name": "pressureProbeInstantaneous",
       "unitType": "pressure",
-      "label": "Pressure Gauge",
+      "label": "Pressure gauge",
       "value": [
         "return getObstacleProperties(0).westProbeValue;"
       ]
@@ -37,7 +37,7 @@
     {
       "name": "pressureProbeFiltered",
       "unitType": "pressure",
-      "label": "Pressure Gauge",
+      "label": "Pressure gauge",
       "property": "pressureProbeInstantaneous",
       "type": "RunningAverage",
       "period": 2500

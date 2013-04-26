@@ -16,7 +16,7 @@
   "outputs": [
     {
       "name": "largeAtomKE",
-      "label": "Kinetic Energy of Large Atoms",
+      "label": "Kinetic energy of large atoms",
       "unitType": "energy",
       "value": [
         "var largeKE = 0;",
@@ -37,7 +37,7 @@
     {
       "type": "checkbox",
       "id": "ke-shading",
-      "text": "KE Shading",
+      "text": "KE shading",
       "property": "keShading"
     },
     {

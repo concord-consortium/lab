@@ -66,13 +66,13 @@
     {
       "name": "currentDisplacement",
       "unitType": "length",
-      "label": "Distance From Equilibrium",
+      "label": "Distance from equilibrium",
       "value": "return get('equilibriumLength') - (getAtomProperties(0).y - getAtomProperties(1).y);"
     },
     {
       "name": "equilibriumLength",
       "unitType": "length",
-      "label": "Equilibrium Spring Length",
+      "label": "Equilibrium spring length",
       "value": "return getRadialBondProperties(0).length + ((get('ballMass')/1000) * get('gravitationalField') / get('springConstant'));"
     }
   ],
@@ -86,35 +86,35 @@
     },
     {
       "name": "rodLength",
-      "label": "Rod Length",
+      "label": "Rod length",
       "unitAbbreviation": "cm",
       "onChange": "var len = value/100, a0 = getAtomProperties(0), a1 = getAtomProperties(1), angle = Math.atan((a1.x-a0.x)/(a0.y-a1.y)); setRadialBondProperties(0, { length: len }); setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});",
       "initialValue": 100
     },
     {
       "name": "startingAngle",
-      "label": "Starting Angle",
+      "label": "Starting angle",
       "unitAbbreviation": "°",
       "onChange": "var a0 = getAtomProperties(0), angle = value*deg2rad, len = getRadialBondProperties(0).length; setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});",
       "initialValue": 45
     },
     {
       "name": "ballMass",
-      "label": "Ball Mass",
+      "label": "Ball mass",
       "unitAbbreviation": "g",
       "onChange": "setElementProperties(3, { mass: value/1000 });",
       "initialValue": 250
     },
     {
       "name": "springConstant",
-      "label": "Spring Constant",
+      "label": "Spring constant",
       "unitType": "stiffness",
       "onChange": "setRadialBondProperties(0, { strength: value });",
       "initialValue": 6.7
     },
     {
       "name": "startingDisplacement",
-      "label": "Starting Distance From Equilibrium",
+      "label": "Starting distance from equilibrium",
       "unitType": "length",
       "onChange": [
         "var newLength = get('equilibriumLength') - value;",
@@ -172,7 +172,7 @@
         }
       ],
       "steps": 45,
-      "title": "Starting Angle (&deg;)",
+      "title": "Starting angle (&deg;)",
       "property": "startingAngle"
     },
     {
@@ -192,7 +192,7 @@
         }
       ],
       "steps": 19,
-      "title": "Rod Length (cm)",
+      "title": "Rod length (cm)",
       "property": "rodLength"
     },
     {
@@ -212,7 +212,7 @@
         }
       ],
       "steps": 39,
-      "title": "Mass of the Ball (g)",
+      "title": "Mass of the ball (g)",
       "property": "ballMass"
     },
     {
@@ -232,7 +232,7 @@
         }
       ],
       "steps": 290,
-      "title": "Spring Constant (N/m)",
+      "title": "Spring constant (N/m)",
       "property": "springConstant"
     },
     {
@@ -258,15 +258,15 @@
     {
       "type": "checkbox",
       "id": "ke-shading",
-      "text": "KE Shading",
-      "textOn": "left",
+      "text": "KE shading",
+      "textOn": "right",
       "property": "keShading"
     },
     {
       "type": "checkbox",
       "id": "velocity-vectors",
-      "text": "Velocity Vectors",
-      "textOn": "left",
+      "text": "Show velocity vectors",
+      "textOn": "right",
       "property": "showVelocityVectors"
     },
     {
@@ -315,7 +315,7 @@
       "id": "distanceFromEquilibriumGraph",
       "title": false,
       "xlabel": false,
-      "ylabel": "Equilibrium Dist. (m)",
+      "ylabel": "Equilibrium dist. (m)",
       "ymin": -0.6,
       "ymax": 0.6,
       "xmax": 10,

@@ -25,11 +25,11 @@
       "labels": [
         {
           "value": 0.01,
-          "label": "weak"
+          "label": "Weak"
         },
         {
           "value": 0.16,
-          "label": "strong"
+          "label": "Strong"
         }
       ],
       "steps": 50,

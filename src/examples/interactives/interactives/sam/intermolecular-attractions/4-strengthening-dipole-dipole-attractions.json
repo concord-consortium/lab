@@ -43,7 +43,7 @@
         "enableKeyboardHandlers": false,
         "textBoxes": [
           {
-            "text": "Low Polarity Molecules",
+            "text": "Low polarity molecules",
             "x": 1.48,
             "y": 1.87,
             "layer": 1,
@@ -61,7 +61,7 @@
         "enableKeyboardHandlers": false,
         "textBoxes": [
           {
-            "text": "Medium Polarity Molecules",
+            "text": "Medium polarity molecules",
             "x": 1.45,
             "y": 1.87,
             "layer": 1,
@@ -79,7 +79,7 @@
         "enableKeyboardHandlers": false,
         "textBoxes": [
           {
-            "text": "High Polarity Molecules",
+            "text": "High polarity molecules",
             "x": 1.48,
             "y": 1.87,
             "layer": 1,
@@ -100,15 +100,15 @@
           "loadModel": "instructions"
         },
         {
-          "text": "low polarity",
+          "text": "Low polarity",
           "action": "loadModel('leastPolarPull', start);"
         },
         {
-          "text": "medium polarity",
+          "text": "Medium polarity",
           "action": "loadModel('medPolarPull', start);"
         },
         {
-          "text": "high polarity",
+          "text": "High polarity",
           "action": "loadModel('mostPolarPull', start);"
         }
       ]
@@ -116,7 +116,7 @@
     {
       "type": "button",
       "id": "reset",
-      "text": "reset",
+      "text": "Reset",
       "action": "reset();"
     }
   ]

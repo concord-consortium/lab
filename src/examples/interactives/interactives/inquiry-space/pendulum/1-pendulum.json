@@ -66,21 +66,21 @@
     },
     {
       "name": "rodLength",
-      "label": "Rod Length",
+      "label": "Rod length",
       "unitAbbreviation": "cm",
       "onChange": "var len = value/100, a0 = getAtomProperties(0), a1 = getAtomProperties(1), angle = Math.atan((a1.x-a0.x)/(a0.y-a1.y)); setRadialBondProperties(0, { length: len }); setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});",
       "initialValue": 100
     },
     {
       "name": "startingAngle",
-      "label": "Starting Angle",
+      "label": "Starting angle",
       "unitAbbreviation": "°",
       "onChange": "var a0 = getAtomProperties(0), angle = value*deg2rad, len = getRadialBondProperties(0).length; setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});",
       "initialValue": 45
     },
     {
       "name": "ballMass",
-      "label": "Ball Mass",
+      "label": "Ball mass",
       "unitAbbreviation": "g",
       "onChange": "setElementProperties(3, { mass: value/1000 });",
       "initialValue": 250
@@ -135,7 +135,7 @@
         }
       ],
       "steps": 19,
-      "title": "Rod Length (cm)",
+      "title": "Rod length (cm)",
       "property": "rodLength"
     },
     {
@@ -155,7 +155,7 @@
         }
       ],
       "steps": 45,
-      "title": "Starting Angle (&deg;)",
+      "title": "Starting angle (&deg;)",
       "property": "startingAngle"
     },
     {
@@ -175,7 +175,7 @@
         }
       ],
       "steps": 39,
-      "title": "Mass of the Ball (g)",
+      "title": "Mass of the ball (g)",
       "property": "ballMass"
     },
     {
@@ -201,7 +201,7 @@
     {
       "type": "checkbox",
       "id": "velocity-vectors",
-      "text": "Show Velocity Vector?",
+      "text": "Show velocity vector",
       "property": "showVelocityVectors"
     },
     {
@@ -213,7 +213,7 @@
     {
       "type": "graph",
       "id": "propertiesGraph",
-      "title": "Pendulum Angle (°)",
+      "title": "Pendulum Angle",
       "xlabel": "Time  (s)",
       "ylabel": "Angle (°)",
       "ymin": -100,

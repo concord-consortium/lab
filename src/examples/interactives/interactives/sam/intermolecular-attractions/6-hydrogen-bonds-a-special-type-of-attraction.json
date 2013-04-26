@@ -35,7 +35,7 @@
     {
       "type": "checkbox",
       "id": "slow_motion2",
-      "text": "Slow Motion",
+      "text": "Slow motion",
       "onClick": "if (value) { set({timeStep: 0.1}) } else { set({timeStep: 1})};"
     },
     {

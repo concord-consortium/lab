@@ -287,7 +287,10 @@
       "label": "CO2",
       "labelOn": "left",
       "options": [
-        { "text": "None", "value": 0 },
+        { 
+          "text": "None",
+          "value": 0 
+        },
         {
           "text": "Low",
           "value": 10
@@ -305,7 +308,10 @@
       "label": "O2",
       "labelOn": "left",
       "options": [
-        { "text": "None", "value": 0 },
+        {
+          "text": "None",
+          "value": 0
+        },
         {
           "text": "Low",
           "value": 10
@@ -323,7 +329,10 @@
       "label": "CO2",
       "labelOn": "left",
       "options": [
-        { "text": "None", "value": 0 },
+        {
+          "text": "None",
+          "value": 0 
+        },
         {
           "text": "Low",
           "value": 10
@@ -341,7 +350,9 @@
       "label": "O2",
       "labelOn": "left",
       "options": [
-        { "text": "None", "value": 0 },
+        { 
+          "text": "None",
+          "value": 0 },
         {
           "text": "Low",
           "value": 10

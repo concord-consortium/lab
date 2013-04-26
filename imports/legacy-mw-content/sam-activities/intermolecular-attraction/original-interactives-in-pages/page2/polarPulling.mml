@@ -457,7 +457,7 @@
       </void> 
       <void property="text"> 
        <string>       Polar molecules:
-Dipole-Dipole Attraction</string> 
+dipole-dipole attraction</string> 
       </void> 
       <void property="x"> 
        <double>77.0</double> 

@@ -47,7 +47,7 @@
         },
         "textBoxes": [
           {
-            "text": "Non-polar molecules: London Dispersion Attraction",
+            "text": "Non-polar molecules: London dispersion attraction",
             "x": 0.3,
             "y": 1.7,
             "layer": 1,
@@ -68,7 +68,7 @@
         },
         "textBoxes": [
           {
-            "text": "Polar molecules: Dipole-Dipole Attraction",
+            "text": "Polar molecules: dipole-dipole attraction",
             "x": 0.59,
             "y": 1.7,
             "layer": 1,
@@ -89,7 +89,7 @@
         },
         "textBoxes": [
           {
-            "text": "Non-polar and polar molecules: Induced Dipole Attraction",
+            "text": "Non-polar and polar molecules: induced dipole attraction",
             "x": 0.90,
             "y": 1.7,
             "width": 2,
@@ -127,7 +127,7 @@
     {
       "type": "button",
       "id": "reset",
-      "text": "reset",
+      "text": "Reset",
       "action": "reset();"
     }
   ]

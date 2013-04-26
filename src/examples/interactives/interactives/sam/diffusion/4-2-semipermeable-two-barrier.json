@@ -59,13 +59,13 @@
       "min": 0,
       "max": 1,
       "steps": 50,
-      "title": "Pore Size",
+      "title": "Pore size",
       "property": "poreSize"
     },
     {
       "type": "checkbox",
       "id": "trace-atom",
-      "text": "Trace Molecule",
+      "text": "Trace a molecule",
       "property": "tracingAtom"
     }
   ],

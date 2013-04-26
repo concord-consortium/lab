@@ -1,7 +1,7 @@
 {
   "title": "Factors Affecting London Dispersion Attractions",
   "publicationStatus": "public",
-  "subtitle": "Explore how differences in molecular size and shape affect the strength of London Dispersion attractions.",
+  "subtitle": "Explore how differences in molecular size and shape affect the strength of London dispersion attractions.",
   "about": [
     "Some non-polar molecules have stronger attractions than others. Choose a pair of",
     "molecules from the drop-down menu and \"pull\" on the star to separate the molecules.",
@@ -43,7 +43,7 @@
         "enableKeyboardHandlers": false,
         "textBoxes": [
           {
-            "text": "Small Straight Molecules",
+            "text": "Small straight molecules",
             "x": 1.36,
             "y": 1.85,
             "layer": 1,
@@ -61,7 +61,7 @@
         "enableKeyboardHandlers": false,
         "textBoxes": [
           {
-            "text": "Large Straight Molecules",
+            "text": "Large straight molecules",
             "x": 1.35,
             "y": 1.85,
             "layer": 1,
@@ -79,7 +79,7 @@
         "enableKeyboardHandlers": false,
         "textBoxes": [
           {
-            "text": "Large Straight and Bent Molecules",
+            "text": "Large straight and bent molecules",
             "x": 1.08,
             "y": 1.85,
             "layer": 1,
@@ -97,7 +97,7 @@
         "enableKeyboardHandlers": false,
         "textBoxes": [
           {
-            "text": "Large Straight and Round Molecules",
+            "text": "Large straight and round molecules",
             "x": 1.01,
             "y": 1.85,
             "layer": 1,
@@ -115,7 +115,7 @@
         "enableKeyboardHandlers": false,
         "textBoxes": [
           {
-            "text": "Large Curved and Round Molecules",
+            "text": "Large curved and round molecules",
             "x": 1.05,
             "y": 1.85,
             "layer": 1,
@@ -136,23 +136,23 @@
           "loadModel": "instructions"
         },
         {
-          "text": "small molecules",
+          "text": "Small molecules",
           "action": "loadModel('npSmallStraight', start);"
         },
         {
-          "text": "large straight molecules",
+          "text": "Large straight molecules",
           "action": "loadModel('npLargeStraight', start);"
         },
         {
-          "text": "large straight and bent",
+          "text": "Large straight and bent",
           "action": "loadModel('npStraightJagged', start);"
         },
         {
-          "text": "large straight and circular",
+          "text": "Large straight and circular",
           "action": "loadModel('npStraightRound', start);"
         },
         {
-          "text": "large curved and circular",
+          "text": "Large curved and circular",
           "action": "loadModel('npCurvedRound', start);"
         }
       ]
@@ -160,7 +160,7 @@
     {
       "type": "button",
       "id": "reset",
-      "text": "reset",
+      "text": "Reset",
       "action": "reset();"
     }
   ]

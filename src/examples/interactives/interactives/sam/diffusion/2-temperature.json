@@ -11,7 +11,7 @@
         "controlButtons": "play",
         "textBoxes" : [
           {
-            "text": "Gas Sensor",
+            "text": "Gas sensor",
             "x": 6.8,
             "y": 0.2,
             "rotate": -90,
@@ -74,7 +74,7 @@
     },
     {
       "name": "experimentTime",
-      "label": "Experiment Time",
+      "label": "Experiment time",
       "unitType": "time",
       "initialValue": 0,
       "onChange": ""
@@ -105,7 +105,7 @@
     {
       "type": "button",
       "id": "remove-obstacle",
-      "text": "Remove Barrier",
+      "text": "Remove barrier",
       "action" : [
         "if (isStopped()) {",
         "  alert('Press play before removing the barrier');",
@@ -119,13 +119,13 @@
     {
       "type": "checkbox",
       "id": "trace-atom",
-      "text": "Trace Molecule",
+      "text": "Trace a molecule",
       "property": "tracingAtom"
     },
     {
       "type": "button",
       "id": "reset-barrier",
-      "text": "Reset Experiment",
+      "text": "Reset experiment",
       "action" : [
         "reset();"
       ]

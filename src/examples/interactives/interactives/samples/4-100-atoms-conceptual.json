@@ -1,7 +1,7 @@
 {
   "title": "Charged and Neutral Atoms (conceptual version)",
   "publicationStatus": "sample",
-  "subtitle": "Explore Coulomb and Intermolecular Attractions",
+  "subtitle": "Explore Coulomb and intermolecular attractions.",
   "about": [
     "There are two kinds of attractive forces shown in this model: Coulomb forces (the attraction between ions)",
     "and Van der Waals forces (an additional attractive force between all atoms).",
@@ -52,15 +52,15 @@
       "labels": [
         {
           "value": 0.075,
-          "label": "weak"
+          "label": "Weak"
         },
         {
           "value": 0.300,
-          "label": "strong"
+          "label": "Strong"
         }
       ],
       "steps": 199,
-      "title": "Van der Waals Attraction",
+      "title": "Van der Waals attraction",
       "action": "setElementProperties(2, { epsilon: -value });"
     },
     {
@@ -73,15 +73,15 @@
       "labels": [
         {
           "value": 10,
-          "label": "low"
+          "label": "Low"
         },
         {
           "value": 2500,
-          "label": "medium"
+          "label": "Medium"
         },
         {
           "value": 5000,
-          "label": "high"
+          "label": "High"
         }
       ],
       "steps": 499,

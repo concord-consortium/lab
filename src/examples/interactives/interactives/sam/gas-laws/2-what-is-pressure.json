@@ -64,7 +64,7 @@
   "outputs": [
     {
       "name": "atomInside",
-      "label": "Atoms Inside Balloon",
+      "label": "Atoms inside balloon",
       "value": [
         "var atomNum = 0;",
         "var obsX = getObstacleProperties(0).x;",
@@ -81,13 +81,13 @@
     {
       "type": "checkbox",
       "id": "show-velocity",
-      "text": "Show Velocity",
+      "text": "Show velocity",
       "property": "showVelocityVectors"
     },
     {
       "type": "button",
       "id": "add-atom",
-      "text": "Add an Atom to the Balloon",
+      "text": "Add an atom to the balloon",
       "action": [
         "var elemNum = 3;",
         "var obsX = getObstacleProperties(0).x;",
@@ -107,7 +107,7 @@
     {
       "type": "button",
       "id": "remove-atom",
-      "text": "Remove an Atom From the Balloon",
+      "text": "Remove an atom from the balloon",
       "action": [
         "var atomNum = getNumberOfAtoms();",
         "var obsx = getObstacleProperties(0).x;",

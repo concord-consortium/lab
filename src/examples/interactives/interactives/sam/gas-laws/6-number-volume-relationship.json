@@ -137,7 +137,7 @@
     {
       "type": "numericOutput",
       "id": "current-volume",
-      "label": "Area of Gas",
+      "label": "Area of gas",
       "units": "nm²",
       "property": "volume",
       "displayValue": "return format('1.2f')(value)"
