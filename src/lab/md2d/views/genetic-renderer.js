@@ -132,10 +132,10 @@ define(function (require) {
     if (state.name === "dna") {
       this._renderDNA();
     }
-    if (state.name === "transcription" || state.name === "transcription-end") {
+    else if (state.name === "transcription" || state.name === "transcription-end") {
       this._renderTranscription();
     }
-    if (state.name === "translation") {
+    else if (state.name === "translation") {
       this._renderTranslation();
     }
   };
@@ -198,7 +198,7 @@ define(function (require) {
         selection = suppressAnimation ? this._g.select(".dna-view") : this._currentTrans.select(".dna-view").ease("linear"),
         shift;
 
-    if (state.name === "transcription") {
+    if (state.name === "transcription" || state.name === "transcription-end") {
       shift = Math.min(this._mrna.length, this._dna.length - 4) - 8;
       if (shift > 0) {
        selection.attr("transform", "translate(" + this.model2px(-shift * Nucleotide.WIDTH) + ")");
@@ -682,7 +682,7 @@ define(function (require) {
 
     if (step > 2) {
       // Remove the first tRNA.
-      t = this._nextTrans().duration(1500);
+      t = this._nextTrans().duration(1000);
       t.select(".trna-cont .trna:nth-child(" + (step - 2) + ")") // step - 3 + 1
         .attr("transform", "translate(" + this.modelSize2px(Nucleotide.HEIGHT * -5) + ", " + this.modelSize2px(Nucleotide.HEIGHT * -4) + ")")
         .style("opacity", 0)

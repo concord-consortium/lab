@@ -3,6 +3,7 @@
 define(function (require) {
 
   var ValidationError  = require('common/validator').ValidationError,
+      aminoacidsHelper     = require('cs!md2d/models/aminoacids-helper'),
 
       state = {
         "undefined": 0,
@@ -222,7 +223,7 @@ define(function (require) {
       },
 
       translateStep: function () {
-        var state;
+        var state, abbr;
         if (api.stateBefore("transcription-end")) {
           // Make sure that complete mRNA is available.
           api.transcribe();
@@ -231,7 +232,12 @@ define(function (require) {
         if (state.name === "transcription-end") {
           transitionToState("translation:0");
         } else if (state.name === "translation") {
-          transitionToState("translation:" + (state.step + 1));
+          abbr = aminoacidsHelper.codonToAbbr(api.codon(state.step));
+          if (abbr !== "STOP") {
+            transitionToState("translation:" + (state.step + 1));
+          } else {
+            transitionToState("translation-end");
+          }
         }
       },
 
