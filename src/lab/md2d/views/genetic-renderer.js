@@ -679,6 +679,25 @@ define(function (require) {
 
     this._moveRibosome();
     this._scrollContainer();
+
+    if (step > 2) {
+      // Remove the first tRNA.
+      t = this._nextTrans().duration(1500);
+      t.select(".trna-cont .trna:nth-child(" + (step - 2) + ")") // step - 3 + 1
+        .attr("transform", "translate(" + this.modelSize2px(Nucleotide.HEIGHT * -5) + ", " + this.modelSize2px(Nucleotide.HEIGHT * -4) + ")")
+        .style("opacity", 0)
+          .select(".rot")
+            .attr("transform", "rotate(-30)")
+              .selectAll(".bonds").duration(200)
+                .style("opacity", 0);
+
+      // Hide mRNA bonds.
+      t.selectAll(".mrna .nucleotide:nth-child(" + (3 * (step - 3) + 1) + ") .bonds, " +
+                  ".mrna .nucleotide:nth-child(" + (3 * (step - 3) + 2) + ") .bonds, " +
+                  ".mrna .nucleotide:nth-child(" + (3 * (step - 3) + 3) + ") .bonds")
+        .duration(200)
+        .style("opacity", 0);
+    }
   };
 
   GeneticRenderer.prototype.separateDNA = function (suppressAnimation) {
