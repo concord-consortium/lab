@@ -141,13 +141,7 @@ define(function (require) {
   };
 
   GeneticRenderer.prototype._state = function () {
-    // State can contain ":" and info about step.
-    // e.g. translation:0, translation:1 etc.
-    var state = this.model.get("geneticEngineState").split(":");
-    return {
-      name: state[0],
-      step: Number(state[1]) // can be NaN when step is undefined.
-    };
+    return this.model.geneticEngine().state();
   };
 
   GeneticRenderer.prototype._renderDNA = function () {
@@ -200,11 +194,20 @@ define(function (require) {
   };
 
   GeneticRenderer.prototype._scrollContainer = function (suppressAnimation) {
-    var shift = Math.min(this._mrna.length, this._dna.length - 4);
+    var state = this._state(),
+        selection = suppressAnimation ? this._g.select(".dna-view") : this._currentTrans.select(".dna-view").ease("linear"),
+        shift;
 
-    if (shift > 8) {
-      (suppressAnimation ? this._g.select(".dna-view") : this._currentTrans.select(".dna-view").ease("linear"))
-        .attr("transform", "translate(" + this.model2px(-(shift - 8) * Nucleotide.WIDTH) + ")");
+    if (state.name === "transcription") {
+      shift = Math.min(this._mrna.length, this._dna.length - 4) - 8;
+      if (shift > 0) {
+       selection.attr("transform", "translate(" + this.model2px(-shift * Nucleotide.WIDTH) + ")");
+      }
+    } else if (state.name === "translation") {
+      shift = state.step - 3;
+      if (shift > 0) {
+       selection.attr("transform", "translate(" + this.model2px(-(3 * shift - 2) * Nucleotide.WIDTH) + ")");
+      }
     }
   };
 
@@ -230,6 +233,14 @@ define(function (require) {
       "transform": "translate(" + this.model2px(2 * Nucleotide.WIDTH) + ")",
       "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_over.svg"
     });
+  };
+
+  GeneticRenderer.prototype._moveRibosome = function () {
+    var shift = this._state().step - 2;
+    if (shift > 0) {
+      this._currentTrans.selectAll(".ribosome-under, .ribosome-over")
+        .attr("transform", "translate(" + this.model2px((2 + shift * 3) * Nucleotide.WIDTH) + ")");
+    }
   };
 
   GeneticRenderer.prototype._appendTRNA = function (index) {
@@ -666,6 +677,8 @@ define(function (require) {
       .ease("cubic")
       .style("opacity", 1);
 
+    this._moveRibosome();
+    this._scrollContainer();
   };
 
   GeneticRenderer.prototype.separateDNA = function (suppressAnimation) {
