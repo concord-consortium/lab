@@ -149,13 +149,11 @@ define(function(require) {
 
       descriptor = {
         type: type,
-        writable: ! metadataForType[key].readOnly,
+        writable: validator.propertyIsWritable(metadataForType[key]),
         set: setter,
         includeInHistoryState: !!metadataForType[key].storeInTickHistory,
         validate: function(value) {
-          var hashToValidate = {};
-          hashToValidate[key] = value;
-          validator.validate(metadataForType, hashToValidate, false);
+          return validator.validateSingleProperty(metadataForType[key], key, value, false);
         }
       };
 
