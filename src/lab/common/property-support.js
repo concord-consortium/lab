@@ -197,10 +197,6 @@ define(function() {
         throw new Error("Attempt to set read-only property " + key);
       }
 
-      if (info.descriptor.validator) {
-        info.descriptor.validator(value);
-      }
-
       if (info.descriptor.get && !cachingIsEnabled) {
         info.hasCachedValue = false;
       } else {
