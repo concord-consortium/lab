@@ -1,4 +1,5 @@
 /*global define: false, d3: false */
+/*jshint eqnull: true */
 
 define(function(require) {
   // Dependencies.
@@ -1586,7 +1587,7 @@ define(function(require) {
       adjusting the friction of the dragged atom.
     */
     model.liveDragStart = function(atomIndex, x, y) {
-      if (liveDragSpringForceIndex !== null) return;    // don't add a second liveDrag force
+      if (liveDragSpringForceIndex != null) return;    // don't add a second liveDrag force
 
       if (x == null) x = atoms.x[atomIndex];
       if (y == null) y = atoms.y[atomIndex];
