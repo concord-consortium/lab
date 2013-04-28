@@ -1,6 +1,226 @@
 /*global define: false */
+/**
 
+  This module provides support which Lab model types can use to implement observable properties that
+  have custom getters, setters, and validation. It is specialized for the needs of interactive,
+  computationally intensive simulations which want to enable UI bindings to simulation-state
+  variables that evolve in time and change at potentially every clock tick.
+
+  For example, if the model object using PropertySupport is 'model':
+
+    > model.addObserver('kineticEnergy', function() { console.log(model.properties.kineticEnergy); })
+    > model.start()
+    3.10225948103683
+    3.102259509874652
+    3.1022595094558194
+    ...
+    > model.addObserver('property', function() { console.log('property changed!'); })
+    > model.properties.property = 1
+    property changed!
+    > model.properties.property
+    1
+
+  Or, using the "legacy" interface:
+
+    > model.addObserver('kineticEnergy', function() { console.log(model.get('kineticEnergy'); })
+    > model.start()
+    3.10225948103683
+    3.102259509874652
+    3.1022595094558194
+    ...
+    > model.addObserver('property', function() { console.log('property changed!'); })
+    > model.set('property', 1)
+    property changed!
+    > model.get('property')
+    1
+
+  The design of this module differs in several ways than the property support implemented by general
+  web MVC frameworks such as Backbone, Ember, and Angular.
+
+  First, we assume that the properties module is used to enable UI binding and state saving for a
+  simulation engine which has its own internal data structures and which executes many iterations of
+  its inner loop between each screen refresh. As a result, we must assume that any computed property
+  can change between "clock ticks" and that most computed properties are not simple functions of
+  the value of other properties. Therefore we provide mechanisms that must be explicitly invoked by
+  the model to synchronize the engine's internal state to the exposed property values when the
+  engine considers it appropriate to do so.
+
+  Second, we assume that the most properties are numbers that represent physical quantities that
+  either parameterize the simulation or are computed by it.
+
+  Third, we assume that, the simulation may need to save and restore the values of a subset of
+  properties outside the usual setter/getter cycle. Specifically, we allow the simulation to define
+  two subsets of properties: one that represents the entire set of properties required to restore
+  the state of the model, for use when saving the model to storage; and a smaller subset of
+  properties that represent the time-varying state of the model, for use when rewinding or fast-
+  forwarding the model while it retains the remainder of its state in memory.
+
+*/
 define(function() {
+
+  // If at all possible, avoid adding dependencies to this module.
+
+  // These are the properties that can be passed as the 'descriptor' argument to defineProperty.
+  var descriptorProperties = {
+
+    /**
+      A getter function that will be executed whenever the value of this property is read.
+
+      Use this, for example, to make a property reflect internal state of the simulation.
+
+      The property will be considered a "computed property" if and only if it has a getter. The
+      return value of the getter is considered the "raw" property value and will be passed through
+      the afterGetTransform, if one is defined, to generate the final value of the property.
+
+      The (untransformed) raw getter value will be cached unless the enableCaching property of the
+      propertySupport object is false. The cache can be cleared by calling the
+      deleteComputedPropertyCachedValues method of the propertySupport object. The caching normally
+      occurs lazily, but paired calls to the storeComputedProperties and
+      notifyAllChangedComputedProperties methods of the propertySupport object cause all properties
+      with getters to be computed and then recomputed, triggering notification of the observers of
+      properties whose value changed between the calls.
+
+      Optional.
+    */
+    get: {
+      defaultValue: undefined,
+      type: 'function'
+    },
+
+    /**
+      A setter function that will be executed when the value of this property is assigned.
+
+      Use this, for example, to modify simulation state when the property is changed.
+
+      The value received by this function is a "raw" value. That is, if the value of this property
+      is set "normally", then the value is first passed through the beforeSetTransform, if one is
+      defined, and the transformed value is passed to this function. (If that sounds backwards,
+      consider "raw" values to be of the type operated on by the simulation engine; transformed
+      values are what are visible in the user interface.)
+
+      The set function is called whenever a normal assignment is made to the property, but it may or
+      may not be called when the property value is set "behind the scenes" by the setRawValues
+      method. It will be called if and onlyh if this property key is present in the hash sent to
+      setRawValues *and* the invokeSetterAfterBulkRestore descriptor value for this property is
+      true.
+
+      This is useful for distinguishing between properties whose setters must manipulate private
+      state variables when they are called, and properties whose setter action operates entirely
+      by setting publicly visible
+    */
+    set: {
+      defaultValue: undefined,
+      type: 'function'
+    },
+
+    /**
+      A function that will be called with the new, "raw" value of this property whenever the
+      property is assigned to.
+
+      If the value is invalid, the validate function should throw an exception. The validate
+      function is *not* called when the property value is set via setRawValues.
+    */
+    validate: {
+      defaultValue: undefined,
+      type: 'function'
+    },
+
+    /**
+      A function that is called with the return value of the get method whenever this property value
+      is read. The value returned by this function is returned as the value of the property.
+
+      If the transform is not defined, no transform is applied and the value of the property is
+      simply the value returned by the get method.
+
+      The expected use of this transform (and the associated beforeSetTransform) is to allow the
+      same simulation engine to appear to operate at different length scales. Currently, the MD2D
+      engine uses afterGetTransforms to convert values that are nominally in microscopic units (nm,
+      for example) to values in a macroscopic unit system (m).
+    */
+    afterGetTransform: {
+      defaultValue: undefined,
+      type: 'function'
+    },
+
+    /**
+      A function that is called to transform the property value to a "raw" value which is passed to
+      the set function whenever this property is assigned to.
+
+      If the transform is not defined, no transform is applied and the value that is assigned to the
+      property is the value that is passed to the set method.
+    */
+    beforeSetTransform: {
+      defaultValue: undefined,
+      type: 'function'
+    },
+
+    /**
+      If true, the property is considered read-only (and, practically speaking, must have a getter).
+
+      Attempts to assign to the property will throw an error whether the property is directly
+      assigned to or a value for the property is passed to the setRawValues method of the
+      propertySupport object.
+
+      Note that the native 'writable' property of ES5 Object descriptors does not apply to accessor
+      properties (those with setters and getters, such as we construct in this module).
+    */
+    writable: {
+      defaultValue: true,
+      type: 'boolean'
+    },
+
+    /**
+      If true, then the raw value of this property will be included in historyStateRawValues hash.
+    */
+    includeInHistoryState: {
+      defaultValue: false,
+      type: 'boolean'
+    },
+
+    /**
+      If true, and this property's descriptor also includes a set function, then the set function
+      will be called when the value of this property is updated via the setRawValues method of the
+      PropertySupport object.
+
+      If false, setRawValues will update the property without calling the set method.
+
+      It is useful to set this to false for properties whose setter action operates entirely by
+      directly or indirectly manipulating other properties. When setRawValues is used to restore the
+      value of those properties during navigation of simulation history, it would be undesirable to
+      repeat the setter action as it is entirely accounted for by the value of the other properties.
+    */
+    invokeSetterAfterBulkRestore: {
+      defaultValue: true,
+      type: 'boolean'
+    },
+
+    /**
+      A string that represents the user-defined categorization of this property.
+
+      When the propertySupport object is initialized, it can be passed a list of strings
+      containing the different property types the engine wishes to use to categorize its properties.
+
+      PRopertySupport mixes into its target object a method called propertiesOfType which can be
+      used to filter the set of properties by category
+
+      (For example, MD2D defines "mainProperties", "viewOptions", "parameters", and "outputs")
+    */
+    type: {
+      defaultValue: undefined,
+      type: 'propertyType'
+    },
+
+    /**
+      An arbitrary object that will be returned when this property's key is passed to the
+      getPropertyDescription method of the target object.
+
+      Use this (possibly combined with enumeration and categorization of properties) to expose the
+      list of properties to client code for use by e.g,. a UI builder or live scripting help.
+    */
+    description: {
+      defaultValue: undefined
+    }
+  };
 
   function validateIsType(type, propertyKey, value) {
     // This is sufficient for functions and strings, which is all we test for.
@@ -17,57 +237,13 @@ define(function() {
     return ret;
   }
 
-  var descriptorProperties = {
-    get: {
-      defaultValue: undefined,
-      type: 'function'
-    },
+  // Constructs a propertySupport object for use by client code. Client code (e.g., models) can maintain a
+  // private reference to the propertySupport objectg and delegate property handling to it, and they
+  // can optionally call the mixInto method of the propertySupport method to mix in a useful set of
+  // public-facing methods and properties.
 
-    set: {
-      defaultValue: undefined,
-      type: 'function'
-    },
-
-    validate: {
-      defaultValue: undefined,
-      type: 'function'
-    },
-
-    afterGetTransform: {
-      defaultValue: undefined,
-      type: 'function'
-    },
-
-    beforeSetTransform: {
-      defaultValue: undefined,
-      type: 'function'
-    },
-
-    writable: {
-      defaultValue: true,
-      type: 'boolean'
-    },
-
-    includeInHistoryState: {
-      defaultValue: false,
-      type: 'boolean'
-    },
-
-    invokeSetterAfterBulkRestore: {
-      defaultValue: true,
-      type: 'boolean'
-    },
-
-    type: {
-      defaultValue: undefined,
-      type: 'propertyType'
-    },
-
-    description: {
-      defaultValue: undefined
-    }
-  };
-
+  // Accepts an args object with an optional 'types' arg, which should be a list of strings that
+  // represent user-defined categories of properties.
   return function PropertySupport(args) {
 
     var propertyTypes = args && args.types && copy(args.types) || [],
@@ -80,18 +256,21 @@ define(function() {
         changedPropertyKeys = [],
         notificationsAreBatched = false;
 
+    // all properties with a getter
     function computedPropertyKeys() {
       return Object.keys(propertyInformation).filter(function(key) {
         return propertyInformation[key].descriptor.get !== undefined;
       });
     }
 
+    // observed properties with a getter
     function observedComputedPropertyKeys() {
       return computedPropertyKeys().filter(function(key) {
         return propertyInformation[key].observers.length > 0;
       });
     }
 
+    // all properties for which includeInHistoryState is true
     function historyStatePropertyKeys() {
       return Object.keys(propertyInformation).filter(function(key) {
         return propertyInformation[key].descriptor.includeInHistoryState;
@@ -138,6 +317,7 @@ define(function() {
       return ret;
     }
 
+    // Given a list of callbacks, invoke each one in order, but skip repeats.
     function notifyCallbacksOnce(callbacks) {
       var called = [];
       callbacks.forEach(function(callback) {
@@ -149,6 +329,9 @@ define(function() {
       });
     }
 
+    // Execute closure after setting a flag which causes the notify function to queue a list of
+    // notified properties, rather than notifying their observers immediately. After the closure
+    // finishes, notify the observers, making sure to call each callback at most once.
     function withBatchedNotifications(closure) {
       var callbacks = [];
 
@@ -165,6 +348,9 @@ define(function() {
       notifyCallbacksOnce(callbacks);
     }
 
+    // Notify observers of the passed-in property immediately if notifications are not batched
+    // (see withBatchedNotifications), or else queue the passed-in property key for later
+    // notification
     function notify(key) {
       if (notificationsAreBatched) {
         changedPropertyKeys.push(key);
@@ -173,6 +359,8 @@ define(function() {
       }
     }
 
+    // Private implementation of the getter for the property specified by 'key'. Handles caching
+    // concerns, but not afterGetTransform, etc.
     function get(key) {
       var info = propertyInformation[key];
 
@@ -190,6 +378,9 @@ define(function() {
       return info.descriptor.get();
     }
 
+    // Private implementation of the setter for the property specified by 'key'. Handles caching
+    // and the writable check (which, remember, is always applied) but does not handle observer
+    // notification, validation, or the beforeSetTransform.
     function set(key, value) {
       var info = propertyInformation[key];
 
@@ -212,12 +403,21 @@ define(function() {
       }
     }
 
+    // This is the meat. Adds an enumerable property to the properties object returned by the
+    // propertySupport object, with custom getters and setters that implement the behavior supported
+    // by this module.
     function constructProperty(object, key) {
       var info = propertyInformation[key];
 
       Object.defineProperty(object, key, {
         enumerable:   true,
         configurable: false,
+
+        // This is the publicly-accessible getter for the property. This is invoked whenever the
+        // property is read via code such as `var value = model.properties[key]`, or when the `get`
+        // method mixed into the target is called (this might look like `model.get(key)`). It is
+        // not invoked when a 'raw values' hash is constructed by the historyStateRawValues or
+        // rawValues property accessors.
         get: function() {
           var value = get(key);
           if (info.descriptor.afterGetTransform) {
@@ -225,6 +425,12 @@ define(function() {
           }
           return value;
         },
+
+        // This is the publicly-accessible setter for the property. It is invoked whenever the
+        // property is assigned to via code such as `model.properties[key] = value;`, or when the
+        // `set` method mixed into the target is called (this might look like `model.set(key,
+        // value)`). It is never invoked when the setRawValues method of the propertySupport object
+        // is called.
         set: function(value) {
           if (info.descriptor.beforeSetTransform) {
             value = info.descriptor.beforeSetTransform(value);
@@ -242,6 +448,10 @@ define(function() {
       });
     }
 
+    // Private support for the `properties` and `propertiesOfType` accessor and method of the
+    // propertySupport object. Returns the cached properties object if one exists, or constructs a
+    // new one. Note that adding a property to the list of properties invalidates the cached object,
+    // forcing construction of a new one when it is requested.
     function getPropertiesObject(type) {
       var object = type ? cachedPropertiesObjects.byType[type] : cachedPropertiesObjects.all;
 
@@ -263,9 +473,34 @@ define(function() {
       return object;
     }
 
+    // The public methods and properties of the propertySupport object
     return {
+
+      /**
+        Mixes a useful set of methods and properties into the target object. Lab models are expected
+        to provide themselves as the target, i.e., mix these methods/properties into themselves.
+      */
       mixInto: function(target) {
 
+        /**
+          The 'properties' property mixed into 'target' is a frozen Object whose enumerable
+          properties are all the properties defined by calls to the defineProperty method of the
+          propertySupport object. Creating this object is the main feature of the PropertySupport
+          module.
+
+          Reading the value of a computed property of the 'properties' object causes that value to
+          be cached, unless the `enableCaching` property of the propertySupport object is false. The
+          cached value is returned on subsequent reads, unless `enableCaching` is set to false,
+          `deleteComputedPropertyCachedValues` is called, or `notifyAllChangedComputedProperties` is
+          called (the latter recomputes the property and caches the new value).
+
+          Assigning to a property of the 'properties' object always triggers the observers of that
+          property, if any.
+
+          Because the 'properties' object is frozen, if `defineProperty` is subsequently called, the
+          value of the 'properties' property will be updated to a new object containing the updated
+          set of properties.
+        */
         Object.defineProperty(target, 'properties', {
           configurable: false,
           enumerable: true,
@@ -274,10 +509,26 @@ define(function() {
           }
         });
 
+        /**
+          The 'propertiesOfType' method mixed in to 'target' returns a frozen Object whose
+          enumerable properties are all the properties defined by calls to the defineProperty
+          method with the value 'type' as the type descriptor option.
+
+          These properties behave the same as properties of the 'properties' object.
+        */
         target.propertiesOfType = function(type) {
           return getPropertiesObject(type);
         };
 
+        /**
+          The 'set' method mixed into 'target' sets the value of one or more properties.
+
+          Calling `target.set(key, value)` is equivalent to `target.properties[key] = value`
+
+          However, if the first argument is a hash of properties, then the hash is treated as a
+          set of key-value pairs to be assigned. In that case, observer notification is delayed
+          until after all property values in the hash have been assigned.
+        */
         target.set = function(key, value) {
           var hash;
           if (typeof key === 'string') {
@@ -292,10 +543,41 @@ define(function() {
           }
         };
 
+        /**
+          The 'get' method mixed into target reads the value of one property.
+
+          Calling `target.get(key)` is equivalent to accessing `target.properties[key]`
+        */
         target.get = function(key) {
           return target.properties[key];
         };
 
+        /**
+          The 'addObserver' method mixed into 'target' adds 'callback' to the end of the list of
+          property observers of the property specified by 'key'. Note that adding a callback more
+          than once to the observer list for a given property has no effect.
+
+          Whenever the property 'key' is assigned to, the callback will be called. As noted above,
+          sometimes property assignment is batched (e.g., by passing a hash to`target.set`). When
+          this is the case, 'callback' is guaranteed to be called only once after the batched
+          assignment, regardless of how many keys it is registered for. (Of course, if one of those
+          observers then assigns to a property observed by 'callback', a second call will occur.)
+
+          If 'key' represents a computed property, then observer notification is supported but
+          happends according to a different cycle. Specifically, notification of the observer will
+          happen if the value of the property changes between paired calls to
+          `storeComputedProperties` and `notifyAllChangedComputedProperties`, or whenever
+          `notifyAllComputedProperties` is called (regardless of the current or previous value of
+          the property). As with batched property assignment, each callback is guaranteed to be
+          called directly by `notifyAllComputedProperties` or `notifyAllChangedComputedProperties`
+          at most once per invocation.
+
+          Notification is never triggered by simply accessing the property, regardless of whether or
+          not the access causes the property to be recalcuated
+
+          Note that there are only 2 arguments accepted by addObserver; it does not support
+          'this'-binding to a target object.
+        */
         target.addObserver = function(key, callback) {
           var observers = propertyInformation[key].observers;
           if (observers.indexOf(callback) < 0) {
@@ -303,6 +585,10 @@ define(function() {
           }
         };
 
+        /**
+          The 'removeObserver' method mixed into 'target' removes 'callback' from the list of
+          callbacks registered for the propery specified by key.
+        */
         target.removeObserver = function(key, callback) {
           var observers = propertyInformation[key].observers,
               index = observers.indexOf(callback);
@@ -312,14 +598,30 @@ define(function() {
           }
         };
 
+        /**
+          The 'getPropertyDescription' method mixed into 'target' simply returns the object passed
+          in as the 'description' property of the descriptor passed to `defineProperty` when the
+          property named 'key' was defined.
+        */
         target.getPropertyDescription = function(key) {
           return propertyInformation[key].descriptor.description;
         };
 
+        /**
+          The 'getPropertyType' method mixed into 'target' simply returns the 'type' value passed
+          in as the 'type' property of the descriptor passed to 'defineProperty'when the property
+          named 'key' was defined.
+        */
         target.getPropertyType = function(key) {
           return propertyInformation[key].descriptor.type;
         };
       },
+
+      /**
+        The defineProperty method allows the client object to define a new property named 'key'. The
+        'descriptor' property should be a hash containing property descriptors; see the comments on
+        the descriptorProperties constant, above.
+      */
 
       defineProperty: function(key, descriptor) {
         descriptor = validateDescriptor(descriptor);
@@ -335,6 +637,14 @@ define(function() {
         invalidateCachedPropertiesObjects(descriptor.type);
       },
 
+      /**
+        The 'deleteComputedPropertyCachedValues' method removes the cached value of all computed
+        properties (i.e., all properties with getters.)
+
+        The next access of the property (either caused directly by code that explicitly accesses the
+        property, or indirectly by `notifyAllChangedComputedProperties`, which retrieves the current
+        value of all observed computed properties) will cause a recomputation of the property.
+      */
       deleteComputedPropertyCachedValues: function() {
         computedPropertyKeys().forEach(function(key) {
           propertyInformation[key].hasCachedValue = false;
@@ -342,12 +652,37 @@ define(function() {
         });
       },
 
+      /**
+        The 'storeComputedProperties' method retrieves the current value of all computed properties,
+        respecting any previously-cached value, and stores it in a secondary cache for subsequent
+        comparison to an updated value, by `notifyAllChangedComputedProperties`.
+
+        Normally, one would call this method prior to updating the simulation clock, and then call
+        `deleteComputedPropertyCachedValues` and notifyAllChangedComputedProperties` after updating
+        the simulation clock.
+      */
       storeComputedProperties: function() {
         observedComputedPropertyKeys().forEach(function(key) {
           propertyInformation[key].previousValue = get(key);
         });
       },
 
+      /**
+        Retrieves the current value of all computed properties, respecting any cached value it
+        finds, and compares them to the previous values of the properties stored by
+        `storeComputedProperties`
+
+        Notifies the observers of any properties whose values differ from the previous value. Note
+        that observers are called strictly after all computed property values are calculated, and
+        each observer callback is guaranteed to be called directly by this method only once per
+        invocation.
+
+        (However, it would be possible for any given callback to be called again as a side effect of
+        previous observers.)
+
+        Note that, because this method observes the cache, you probably want to call
+        `deleteComputedPropertyCachedValues` after calling `storeComputedProperties`,
+      */
       notifyAllChangedComputedProperties: function() {
         withBatchedNotifications(function() {
           observedComputedPropertyKeys().forEach(function(key) {
@@ -359,6 +694,12 @@ define(function() {
         });
       },
 
+      /**
+        Blanket-notifies the observers of all computed properties. As described above, each observer
+        callback will only be called directly by this method only once per invocation, but the side
+        effects of some observer callbacks may result in subsequent calls to any given observer
+        callback.
+      */
       notifyAllComputedProperties: function() {
         withBatchedNotifications(function() {
           observedComputedPropertyKeys().forEach(function(key) {
@@ -367,13 +708,28 @@ define(function() {
         });
       },
 
+      /**
+        The 'properties' object is the main object containing the properties defined using this
+        module. This is the same object that is mixed into the mixin target, and it is described
+        above in detail.
+      */
       get properties() {
         return getPropertiesObject();
       },
 
-      propertiesHavingType: function(type) {
+      /**
+        The 'propertiesOfType' method behaves the same as the `propertiesOfType` method mixed into
+        the mixin target, and it is describd above.
+      */
+      propertiesOfType: function(type) {
         return getPropertiesObject(type);
       },
+
+      /**
+        The enableCaching property indicates whether computed property values should be cached.
+        When multiple cycles of property changes are triggered by a single change to the simulation
+        state, you may want to turn off property caching until all cycles complete.
+      */
 
       get enableCaching() {
         return cachingIsEnabled;
@@ -383,6 +739,13 @@ define(function() {
         cachingIsEnabled = !!value;
       },
 
+      /**
+        The 'historyStateRawValues' property is a hash of key-value pairs of those properties which
+        have the `includeInHistoryState` descriptor property set to true.
+
+        The underlying values are 'raw' values, i.e., those which have been passed through the
+        beforeSetTransform.
+      */
       get historyStateRawValues() {
         var ret = {};
         historyStatePropertyKeys().forEach(function(key) {
@@ -391,6 +754,12 @@ define(function() {
         return ret;
       },
 
+      /**
+        The 'rawValues' property is a hash of key-value pairs of all properties.
+
+        The underlying values are 'raw' values, i.e., those which have been passed through the
+        beforeSetTransform.
+      */
       get rawValues() {
         var ret = {};
         Object.keys(propertyInformation).forEach(function(key) {
@@ -399,6 +768,22 @@ define(function() {
         return ret;
       },
 
+      /**
+        The 'setRawValues' method accepts a hash of key-value pairs of some properties.
+
+        Unlike the argument accepted by the 'set' method mixed into the mixin target, the values are
+        expected to be 'raw' values, i.e., those which have already passed through the
+        beforeSetTransform.
+
+        Furthermore, notification of observers is only triggered for those properties whose value
+        changed. This is because setRawValues is expected to be used as a system interface for
+        restoring past states of the simulation, e.g., rewinding a simulation, and it would be
+        undesirable to notify every observer, every time a history state was revisited.
+
+        Additionally, for each property in the passed-in hash, the 'internal' setter is called if
+        and only if that property has its `invokeSetterAfterBulkRestore` descriptor property set
+        to true.
+      */
       setRawValues: function(values) {
         withBatchedNotifications(function() {
           Object.keys(values).forEach(function(key) {
