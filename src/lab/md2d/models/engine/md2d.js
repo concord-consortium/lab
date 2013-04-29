@@ -16,6 +16,7 @@ define(function (require, exports, module) {
       CloneRestoreWrapper  = require('common/models/engines/clone-restore-wrapper'),
       CellList             = require('./cell-list'),
       NeighborList         = require('./neighbor-list'),
+      PluginController     = require('./plugins/plugin-controller'),
 
       // from A. Rahman "Correlations in the Motion of Atoms in Liquid Argon", Physical Review 136 pp. A405–A411 (1964)
       ARGON_LJ_EPSILON_IN_EV = -120 * constants.BOLTZMANN_CONSTANT.as(unit.EV_PER_KELVIN),
@@ -90,6 +91,8 @@ define(function (require, exports, module) {
 
         // Whether system dimensions have been set. This is only allowed to happen once.
         sizeHasBeenInitialized = false,
+
+        pluginController = new PluginController(),
 
         // Whether to simulate Coulomb forces between particles.
         useCoulombInteraction = false,
@@ -667,7 +670,7 @@ define(function (require, exports, module) {
           elements.epsilon = arrays.create(num, 0, arrayTypes.floatType);
           elements.sigma   = arrays.create(num, 0, arrayTypes.floatType);
           elements.radius  = arrays.create(num, 0, arrayTypes.floatType);
-          elements.color   = arrays.create(num, 0, arrayTypes.Int32Array);
+          elements.color   = arrays.create(num, 0, arrayTypes.int32Type);
 
           assignShortcutReferences.elements();
         },
@@ -1925,6 +1928,21 @@ define(function (require, exports, module) {
         // ####################################################################
 
     engine = {
+
+      // Adds a new plugin. Plugin will be initialized with the object arrys, so that
+      // it can add to them as necessary, and will then be registered in the controller,
+      // allowing it to respond to functions passed to the controller from arbitrary
+      // points in the md2d code.
+      addPlugin: function(plugin) {
+        if (plugin.initialize) {
+          // plugins can update the data arrays as needed so we pass in the arrays.
+          // we do this as an object, so we can add new arrays as needed by the plugins
+          // without needing to update all existing plugins
+          plugin.initialize({atoms: atoms, elements: elements});
+        }
+
+        pluginController.registerPlugin(plugin);
+      },
 
       useCoulombInteraction: function(v) {
         useCoulombInteraction = !!v;
