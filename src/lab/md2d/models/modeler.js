@@ -2088,6 +2088,18 @@ define(function(require) {
     // Process initialProperties before setting properties on the model
     // ------------------------------
 
+    // Ensure that model, which includes DNA (=> so DNA animation too) has
+    // correct, constant dimensions. This is very significant, as if model
+    // dimensions are too big or too small, DNA elements can be unreadable. It
+    // also ensures that aspect ratio of the model is reasonable for
+    // animation.
+    // TODO: move this to better place.
+    if (initialProperties.DNA) {
+      // Overwrite width and height options.
+      initialProperties.width = 5;
+      initialProperties.height = 3;
+    }
+
     (function () {
       if (!initialProperties.viewOptions || !initialProperties.viewOptions.textBoxes) {
         return;
@@ -2119,18 +2131,6 @@ define(function(require) {
     // consistent.
     if (mainProperties.unitsScheme !== 'md2d') {
       unitsTranslation = new UnitsTranslation(unitsDefinition);
-    }
-
-    // Ensure that model, which includes DNA (=> so DNA animation too) has
-    // correct, constant dimensions. This is very significant, as if model
-    // dimensions are too big or too small, DNA elements can be unreadable. It
-    // also ensures that aspect ratio of the model is reasonable for
-    // animation.
-    // TODO: move this to better place.
-    if (initialProperties.DNA) {
-      // Overwrite width and height options.
-      initialProperties.width = 5;
-      initialProperties.height = 3;
     }
 
     // ------------------------------
