@@ -491,8 +491,7 @@ define(function() {
           Reading the value of a computed property of the 'properties' object causes that value to
           be cached, unless the `enableCaching` property of the propertySupport object is false. The
           cached value is returned on subsequent reads, unless `enableCaching` is set to false,
-          `deleteComputedPropertyCachedValues` is called, or `notifyAllChangedComputedProperties` is
-          called (the latter recomputes the property and caches the new value).
+          or `deleteComputedPropertyCachedValues` is called.
 
           Assigning to a property of the 'properties' object always triggers the observers of that
           property, if any.
