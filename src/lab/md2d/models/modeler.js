@@ -782,14 +782,19 @@ define(function(require) {
 
     /**
       Initialize minX, minYm, maxX, maxY from width and height
-      MD2D assumes that minX and minY = 0
+      when these options are undefined.
     */
     model.initializeDimensions = function () {
+      var minX = model.get("minX"),
+          minY = model.get("minY"),
+          maxX = model.get("maxX"),
+          maxY = model.get("maxY");
+
       model.set({
-        minX: 0,
-        maxX: model.get('width'),
-        minY: 0,
-        maxY: model.get('height')
+        minX: minX != null ? minX : 0,
+        maxX: maxX != null ? maxX : model.get("width"),
+        minY: minY != null ? minY : 0,
+        maxY: maxY != null ? maxY : model.get("height")
       });
     };
 
@@ -2255,7 +2260,8 @@ define(function(require) {
     });
     propertySupport.setRawValues(viewOptions);
 
-    // initialize minX, minYm, maxX, maxY from model width and height
+    // Initialize minX, minYm, maxX, maxY from model width and height
+    // if they are undefined.
     model.initializeDimensions();
 
     // Setup MD2D engine object.

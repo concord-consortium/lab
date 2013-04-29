@@ -13,19 +13,15 @@ define(function() {
         immutable: true
       },
       minX: {
-        defaultValue: 0,
         serialize: false
       },
       maxX: {
-        defaultValue: 10,
         serialize: false
       },
       minY: {
-        defaultValue: 0,
         serialize: false
       },
       maxY: {
-        defaultValue: 10,
         serialize: false
       },
       width: {

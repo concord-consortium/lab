@@ -101,7 +101,7 @@ define(function (require) {
           modelMinY = model.get('minY'),
           modelMaxX = model.get('maxX'),
           modelMaxY = model.get('maxY'),
-          aspectRatio = modelWidth / modelHeight,
+          aspectRatio = (modelMaxX - modelMinX) / (modelMaxY - modelMinY),
           width, height;
 
       updatePadding();
@@ -436,9 +436,11 @@ define(function (require) {
         repaint();
       },
       getHeightForWidth: function (width) {
-        var modelWidth = model.get('width'),
-            modelHeight = model.get('height'),
-            aspectRatio = modelWidth / modelHeight,
+        var modelMinX = model.get('minX'),
+            modelMinY = model.get('minY'),
+            modelMaxX = model.get('maxX'),
+            modelMaxY = model.get('maxY'),
+            aspectRatio = (modelMaxX - modelMinX) / (modelMaxY - modelMinY),
             height;
 
         updatePadding();
