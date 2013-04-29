@@ -2507,9 +2507,21 @@ define(function (require, exports, module) {
         springForceY[i] = y;
       },
 
-      removeSpringForce: function(i) {
-        if (i >= N_springForces) return;
+      removeSpringForce: function(idx) {
+        var i, j;
+
+        if (idx >= N_springForces) {
+          throw new Error("Spring force " + idx + " doesn't exist, so it can't be removed.");
+        }
+
         N_springForces--;
+
+        // Shift spring forces properties.
+        for (i = idx; i < N_springForces; i++) {
+          for (j = 0; j < 4; j++) {
+            springForces[j][i] = springForces[j][i + 1];
+          }
+        }
       },
 
       springForceAtomIndex: function(i) {
