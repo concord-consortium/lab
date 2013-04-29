@@ -253,27 +253,22 @@ define(function() {
           byType: {}
         },
         cachingIsEnabled = true,
-        changedPropertyKeys = [],
-        notificationsAreBatched = false;
+        notificationsAreBatched = false,
 
-    // all properties with a getter
-    function computedPropertyKeys() {
-      return Object.keys(propertyInformation).filter(function(key) {
-        return propertyInformation[key].descriptor.get !== undefined;
-      });
-    }
+        // all properties that were notified while notifications were batched
+        changedPropertyKeys = [],
+
+        // all properties with a getter
+        computedPropertyKeys = [],
+
+        // all properties for which includeInHistoryState is true
+        historyStatePropertyKeys = [];
+
 
     // observed properties with a getter
     function observedComputedPropertyKeys() {
-      return computedPropertyKeys().filter(function(key) {
+      return computedPropertyKeys.filter(function(key) {
         return propertyInformation[key].observers.length > 0;
-      });
-    }
-
-    // all properties for which includeInHistoryState is true
-    function historyStatePropertyKeys() {
-      return Object.keys(propertyInformation).filter(function(key) {
-        return propertyInformation[key].descriptor.includeInHistoryState;
       });
     }
 
@@ -633,6 +628,13 @@ define(function() {
           previousValue: undefined
         };
 
+        if (descriptor.get) {
+          computedPropertyKeys.push(key);
+        }
+        if (descriptor.includeInHistoryState) {
+          historyStatePropertyKeys.push(key);
+        }
+
         invalidateCachedPropertiesObjects(descriptor.type);
       },
 
@@ -645,7 +647,7 @@ define(function() {
         value of all observed computed properties) will cause a recomputation of the property.
       */
       deleteComputedPropertyCachedValues: function() {
-        computedPropertyKeys().forEach(function(key) {
+        computedPropertyKeys.forEach(function(key) {
           propertyInformation[key].hasCachedValue = false;
           propertyInformation[key].cachedValue = undefined;
         });
@@ -747,7 +749,7 @@ define(function() {
       */
       get historyStateRawValues() {
         var ret = {};
-        historyStatePropertyKeys().forEach(function(key) {
+        historyStatePropertyKeys.forEach(function(key) {
           ret[key] = get(key);
         });
         return ret;
