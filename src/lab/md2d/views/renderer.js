@@ -56,6 +56,7 @@ define(function (require) {
 
         // "Containers" - SVG g elements used to position layers of the final visualization.
         mainContainer,
+        geneticsContainer,
         radialBondsContainer,
         VDWLinesContainer,
         imageContainerBelow,
@@ -1629,7 +1630,7 @@ define(function (require) {
       amniacidContextMenu.register(model, api, '[class~="amino-acid"]');
 
       // Initialize renderers.
-      geneticRenderer = new GeneticRenderer(mainContainer, api, model);
+      geneticRenderer = new GeneticRenderer(geneticsContainer, api, model);
     }
 
     //
@@ -1645,6 +1646,7 @@ define(function (require) {
       // Assign shortcuts, as these variables / functions shouldn't
       // change.
       mainContainer        = modelView.containers.mainContainer,
+      geneticsContainer    = modelView.containers.geneticsContainer,
       radialBondsContainer = modelView.containers.radialBondsContainer,
       VDWLinesContainer    = modelView.containers.VDWLinesContainer,
       imageContainerBelow  = modelView.containers.imageContainerBelow,
@@ -1755,6 +1757,17 @@ define(function (require) {
           return "translate(" + model2px(obstacles.x[i]) + " " + model2pxInv(obstacles.y[i] + obstacles.height[i]) + ")";
         });
       }
+
+      // Pass data from objects animated by view code to the model. Note that
+      // it's very experimental, hacky and will be changed in the future.
+      // TODO: cleanup, provide more generic solution.
+      d3.selectAll(".animated-drag").each(function (d) {
+        var el = d3.select(this),
+            x = el.attr("x") || el.attr("cx"),
+            y = el.attr("y") || el.attr("cy");
+
+        model.updateSpringForce(d.springIdx, x, y);
+      });
 
       if (drawVdwLines) {
         updateVdwPairs();

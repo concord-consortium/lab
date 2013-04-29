@@ -38,6 +38,7 @@ define(function (require) {
         // "Containers" - SVG g elements used to position layers of the final visualization.
         mainContainer,
         gridContainer,
+        geneticsContainer,
         radialBondsContainer,
         VDWLinesContainer,
         imageContainerBelow,
@@ -317,9 +318,13 @@ define(function (require) {
             .on("mousedown", mousedown);
         }
 
-        // Create and arrange "layers" of the final image (g elements).
-        // Note that order of their creation is significant.
+        // Create and arrange "layers" of the final image (g elements). Note
+        // that order of their creation is significant.
+        // TODO: containers should be initialized by renderers. It's weird
+        // that top-level view defines containers for elements that it's
+        // unaware of.
         gridContainer        = vis.append("g").attr("class", "grid-container");
+        geneticsContainer    = vis.append("g").attr("class", "genetics-container");
         imageContainerBelow  = vis.append("g").attr("class", "image-container-below");
         textContainerBelow   = vis.append("g").attr("class", "text-container-below");
         radialBondsContainer = vis.append("g").attr("class", "radial-bonds-container");
@@ -333,6 +338,7 @@ define(function (require) {
         // which is used only internally.
         api.containers = {
           gridContainer:        gridContainer,
+          geneticsContainer:    geneticsContainer,
           imageContainerBelow:  imageContainerBelow,
           textContainerBelow:   textContainerBelow,
           radialBondsContainer: radialBondsContainer,
