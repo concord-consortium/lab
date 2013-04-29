@@ -3,7 +3,7 @@
 define(function (require) {
 
   var ValidationError  = require('common/validator').ValidationError,
-      aminoacidsHelper     = require('cs!md2d/models/aminoacids-helper'),
+      aminoacidsHelper = require('cs!md2d/models/aminoacids-helper'),
 
       state = {
         "undefined": 0,
@@ -224,6 +224,10 @@ define(function (require) {
 
       translateStep: function () {
         var state, abbr;
+
+        // Ensure that the simulation is started.
+        model.start();
+
         if (api.stateBefore("transcription-end")) {
           // Make sure that complete mRNA is available.
           api.transcribe();
@@ -286,6 +290,27 @@ define(function (require) {
             .replace(/U/g, "a")
             .replace(/C/g, "g")
             .toUpperCase();
+      },
+
+      addAminoAcid: function (codonIdx, x, y) {
+        var abbr = aminoacidsHelper.codonToAbbr(api.codon(codonIdx)),
+            elID = aminoacidsHelper.abbrToElement(abbr);
+
+        model.addAtom({x: x, y: y, element: elID, visible: true});
+        model.addSpringForce(codonIdx, x, y, 10000);
+      },
+
+      connectAminoAcids: function (codonIdx) {
+        if (codonIdx < 1) return;
+
+        var r1 = model.getAtomProperties(codonIdx - 1).radius,
+            r2 = model.getAtomProperties(codonIdx).radius,
+            // Length of bond is based on the radii of AAs.
+            bondLen = (r1 + r2) * 1.25;
+
+        // 10000 is a typical strength for bonds between AAs.
+        model.addRadialBond({atom1: codonIdx, atom2: codonIdx - 1, length: bondLen, strength: 10000});
+        model.removeSpringForce(0);
       }
 
       /*
