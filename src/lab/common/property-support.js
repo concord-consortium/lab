@@ -92,6 +92,10 @@ define(function() {
 
       Use this, for example, to modify simulation state when the property is changed.
 
+      Note that this function is not required to store the value in any way; a corresponding getter
+      does not need to be defined, although one could be. This setter is normally executed just to
+      make sure the correct side effects occur when a property assignment is made.
+
       The value received by this function is a "raw" value. That is, if the value of this property
       is set "normally", then the value is first passed through the beforeSetTransform, if one is
       defined, and the transformed value is passed to this function. (If that sounds backwards,
