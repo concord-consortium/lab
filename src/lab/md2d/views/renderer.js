@@ -1108,6 +1108,8 @@ define(function (require) {
       var showChargeSymbols = model.get("showChargeSymbols"),
           useThreeLetterCode = model.get("useThreeLetterCode");
 
+      setupColorsOfParticles();
+
       mainContainer.selectAll("circle").remove();
       mainContainer.selectAll("g.label").remove();
 
@@ -1356,11 +1358,6 @@ define(function (require) {
       if (drawVdwLines) {
         updateVdwPairs();
       }
-      // When Kinetic Energy Shading is enabled, update style of atoms
-      // during each frame.
-      if (keShadingMode) {
-        setupColorsOfParticles();
-      }
       if (radialBondResults) {
         updateRadialBonds();
       }
@@ -1392,7 +1389,10 @@ define(function (require) {
       });
 
       if (keShadingMode) {
-        // Update particles color. Array of colors should be already updated.
+        // When Kinetic Energy Shading is enabled, update style of atoms
+        // during each frame.
+        setupColorsOfParticles();
+        // Update particles "fill" attribute. Array of colors is already updated.
         particle.attr("fill", function (d, i) { return gradientNameForParticle[i]; });
       }
 
@@ -1721,7 +1721,7 @@ define(function (require) {
         "backgroundColor", "markColor"],
           redrawClickableObjects(repaint));
 
-      model.on('addAtom', redrawClickableObjects(repaint));
+      model.on('addAtom', redrawClickableObjects(setupParticles));
       model.on('removeAtom', redrawClickableObjects(repaint));
       model.on('addRadialBond', redrawClickableObjects(setupRadialBonds));
       model.on('removeRadialBond', redrawClickableObjects(setupRadialBonds));
@@ -1761,9 +1761,10 @@ define(function (require) {
       setupDynamicGradients();
       setupObstacles();
       setupVdwPairs();
-      setupColorsOfParticles();
-      setupRadialBonds();
       setupParticles();
+      // Always setup radial bonds *after* particles to use correct atoms
+      // color table.
+      setupRadialBonds();
       geneticRenderer.render();
       setupVectors();
       setupAtomTrace();
@@ -1791,18 +1792,15 @@ define(function (require) {
       if (drawVdwLines) {
         updateVdwPairs();
       }
-      // When Kinetic Energy Shading is enabled, update style of atoms
-      // during each frame.
-      if (keShadingMode) {
-        setupColorsOfParticles();
-      }
-
-      if (radialBondResults) {
-        updateRadialBonds();
-      }
 
       updateParticles();
 
+      if (radialBondResults) {
+        // Always update radial bonds *after* particles, as particles can
+        // change their color and radial bonds should reflect that too (=> use
+        // updated colors array).
+        updateRadialBonds();
+      }
       if (drawVelocityVectors) {
         updateVectors(velVector, getVelVectorPath, getVelVectorWidth);
       }
