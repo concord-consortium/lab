@@ -1347,39 +1347,6 @@ define(function (require) {
       }
     }
 
-    function updateDrawablePositions() {
-      console.time('view update');
-      if (obstacles) {
-        obstacle.attr("transform", function (d, i) {
-          return "translate(" + model2px(obstacles.x[i]) + " " + model2pxInv(obstacles.y[i] + obstacles.height[i]) + ")";
-        });
-      }
-
-      if (drawVdwLines) {
-        updateVdwPairs();
-      }
-      if (radialBondResults) {
-        updateRadialBonds();
-      }
-      updateParticles();
-      if (drawVelocityVectors) {
-        updateVectors(velVector, getVelVectorPath, getVelVectorWidth);
-      }
-      if (drawForceVectors) {
-        updateVectors(forceVector, getForceVectorPath, getForceVectorWidth);
-      }
-      if (drawAtomTrace) {
-        updateAtomTrace();
-      }
-      if(imageProp && imageProp.length !== 0) {
-        updateImageAttachment();
-      }
-      if (textBoxes && textBoxes.length > 0) {
-        updateTextBoxes();
-      }
-      console.timeEnd('view update');
-    }
-
     // TODO: this function name seems to be inappropriate to
     // its content.
     function updateParticles() {
@@ -1558,7 +1525,7 @@ define(function (require) {
       if (model.is_stopped()) {
         drag = dragBoundingBox(dragX, dragY, model.getMoleculeBoundingBox(i));
         setAtomPosition(i, drag.x, drag.y, false, true);
-        updateDrawablePositions();
+        update();
       }
       else if ( d.draggable ) {
         drag = dragPoint(dragX, dragY);
@@ -1588,7 +1555,7 @@ define(function (require) {
           alert("You can't drop the atom there");     // should be changed to a nice Lab alert box
           setAtomPosition(i, dragOrigin[0], dragOrigin[1], false, true);
         }
-        updateDrawablePositions();
+        update();
       }
       else if (d.draggable) {
         // here we just assume we are removing the one and only spring force.
