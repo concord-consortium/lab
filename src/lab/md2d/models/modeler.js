@@ -22,7 +22,10 @@ define(function(require) {
       unitDefinitions      = require('md2d/models/unit-definitions/index'),
       UnitsTranslation     = require('md2d/models/units-translation'),
       PerformanceOptimizer = require('md2d/models/performance-optimizer'),
-      _ = require('underscore');
+      _ = require('underscore'),
+
+      // plugins
+      QuantumDynamics      = require('md2d/models/engine/plugins/quantum-dynamics');
 
   return function Model(initialProperties) {
 
@@ -804,6 +807,10 @@ define(function(require) {
     */
     model.initializeEngine = function () {
       engine = md2d.createEngine();
+
+      if (model.get('useQuantumDynamics')) {
+        engine.addPlugin(new QuantumDynamics(initialProperties));
+      }
 
       engine.setDimensions([model.get('minX'), model.get('minY'), model.get('maxX'), model.get('maxY')]);
       engine.useLennardJonesInteraction(model.get('lennardJonesForces'));
