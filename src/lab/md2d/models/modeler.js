@@ -319,10 +319,10 @@ define(function(require) {
       if (suppressInvalidatingChangeHooks) return;
       invalidatingChangeHookNestingLevel--;
 
-      if (invalidatingChangeHookNestingLevel === 0) {
-        propertySupport.enableCaching = true;
+      if (invalidatingChangeHookNestingLevel > 0) {
+        return;
       }
-
+      propertySupport.enableCaching = true;
       readModelState();
 
       // Update all filtered outputs.
