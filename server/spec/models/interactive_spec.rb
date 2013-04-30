@@ -24,7 +24,7 @@ describe Interactive do
     orig = Interactive.create(:title => "title 1", :group => samples_group, :path => "/interactives/interactives_samples_title_1")
     duplicate = Interactive.create(:title => "title 1", :group => samples_group, :path => "/interactives/interactives_samples_title_1")
     duplicate.should_not be_valid
-    duplicate.errors.messages[:title].should == ["has already been taken in this group"]
+    duplicate.errors.messages[:title].should == ["title: 'title 1' has already been taken in this group"]
   end
 
   it "should allow duplicate titles in different groups" do
