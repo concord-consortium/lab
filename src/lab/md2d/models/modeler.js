@@ -124,10 +124,6 @@ define(function(require) {
         // by unitsDefinition.
         unitsTranslation,
 
-        // Set method mixed in to model by propertySupport; model.set needs to be augmented with
-        // physics-based invalidation concerns.
-        baseSet,
-
         // The initial "main" propeties, validated and filtered from the initialProperties array
         mainProperties,
 
@@ -154,7 +150,9 @@ define(function(require) {
         includeInHistoryState: !!metadataForType[key].storeInTickHistory,
         validate: function(value) {
           return validator.validateSingleProperty(metadataForType[key], key, value, false);
-        }
+        },
+        beforeSetCallback: invalidatingChangePreHook,
+        afterSetCallback: invalidatingChangePostHook
       };
 
       unitType = metadataForType[key] && metadataForType[key].unitType;
@@ -323,7 +321,7 @@ define(function(require) {
         return;
       }
       propertySupport.enableCaching = true;
-      readModelState();
+      if (engine) readModelState();
 
       // Update all filtered outputs.
       // Note that this have to be performed after invalidation of all outputs
@@ -502,14 +500,6 @@ define(function(require) {
     // Adds model.properties, model.set, model.get, model.addObserver, model.removeObserver...
     propertySupport.mixInto(model);
 
-    baseSet = model.set;
-
-    model.set = function(key, value) {
-      if (engine) invalidatingChangePreHook();
-      baseSet(key, value);
-      if (engine) invalidatingChangePostHook();
-    };
-
     /**
       Add a listener callback that will be notified when any of the properties in the passed-in
       array of properties is changed. (The argument `properties` can also be a string, if only a
@@ -651,7 +641,9 @@ define(function(require) {
             type: 'parameter',
             includeInHistoryState: true,
             invokeSetterAfterBulkRestore: false,
-            description: new PropertyDescription(unitsDefinition, descriptionHash)
+            description: new PropertyDescription(unitsDefinition, descriptionHash),
+            beforeSetCallback: invalidatingChangePreHook,
+            afterSetCallback: invalidatingChangePostHook
           };
 
       // In practice, some parameters are meant only to be observed, and have no setter
