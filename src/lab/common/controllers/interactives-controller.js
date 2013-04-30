@@ -34,6 +34,7 @@ define(function (require) {
 
       MD2DModelController     = require('md2d/controllers/controller'),
       SolarSystemModelController = require('solar-system/controllers/controller'),
+      SignalGeneratorModelController = require('signal-generator/controller'),
 
       // Set of available components.
       // - Key defines 'type', which is used in the interactive JSON.
@@ -254,6 +255,9 @@ define(function (require) {
           break;
           case "solar-system":
           modelController = new SolarSystemModelController(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions, controller);
+          break;
+          case "signal-generator":
+          modelController = new SignalGeneratorModelController(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions, controller);
           break;
         }
         // Extending universal Interactive scriptingAPI with model-specific scripting API

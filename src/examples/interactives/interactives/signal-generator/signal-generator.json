@@ -1,0 +1,48 @@
+{
+  "title": "Signal Generator",
+  "publicationStatus": "draft",
+  "subtitle": "Testing the Signal Generator model type",
+  "about": "",
+  "models": [
+    {
+      "id": "signal1",
+      "type": "signal-generator",
+      "url": "models/signal-generator/signal-generator.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "showClock": true
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "graph",
+      "id": "propertiesGraph",
+      "title": "Signal",
+      "xlabel": "Time (s)",
+      "ylabel": "Signal",
+      "ymin": -1.2,
+      "ymax": 1.2,
+      "xmax": 10,
+      "xTickCount": 5,
+      "xFormatter": "2s",
+      "yFormatter": "2s",
+      "properties": [
+        "signalValue"
+      ]
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "propertiesGraph"
+    ]
+  },
+  "template": [
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "model.width",
+      "height": "0.7 * model.width"
+    }
+  ]
+}
