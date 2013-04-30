@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Brownian Motion: Brown&apos;s Observation</page_title>
+<bg_color><Red>241</Red><Green>240</Green><Blue>246</Blue></bg_color>
+<text>Brownian Motion: Brown&apos;s Observation
+
+ 
+
+Close this window before running other models.
+
+ </text>
+<section start="0" end="91">
+<paragraph start="0" end="37">
+<Alignment>1</Alignment>
+<content start="0" end="17">
+<family>SansSerif</family><size>18</size><bold>true</bold></content>
+
+<content start="17" end="36">
+<family>SansSerif</family><size>16</size><bold>true</bold></content>
+
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="38">
+<Alignment>1</Alignment>
+<LeftIndent>60.0</LeftIndent>
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="40">
+<Alignment>1</Alignment>
+<content start="38" end="39">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>brownsExperiment$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="41">
+<Alignment>1</Alignment>
+<LeftIndent>20.0</LeftIndent>
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="88">
+<Alignment>1</Alignment>
+<content start="41" end="88">
+<bold>true</bold></content>
+
+</paragraph>
+<paragraph start="88" end="89">
+<Alignment>1</Alignment>
+<content start="88" end="89">
+</content>
+
+</paragraph>
+<paragraph start="89" end="91">
+<Alignment>1</Alignment>
+<content start="89" end="90">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Close this page.</title>
+<border>Raised Bevel</border>
+<action>Close this page</action></component></content>
+
+</paragraph>
+</section>
+</document>

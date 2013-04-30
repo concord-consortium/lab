@@ -114,6 +114,10 @@
   :name: "Classic Java MW Examples: Wave"
   :category: Examples
 
+- :path: public/part2/newton
+  :name: "Classic Java MW Examples: Part2/Newton"
+  :category: Examples
+
 - :path: tutorial
   :name: "Classic Java MW Tutorial"
   :category: Examples

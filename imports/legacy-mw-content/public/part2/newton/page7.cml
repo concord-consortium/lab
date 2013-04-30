@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Newton&apos;s Laws at the Atomic Level: Rockets.</page_title>
+<bg_color><Red>241</Red><Green>240</Green><Blue>246</Blue></bg_color>
+<text>
+
+ 
+ 
+
+ 
+
+
+ 
+ 
+ 
+    
+    
+ 
+
+
+</text>
+<section start="0" end="32">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; color=&quot;#FFFFFF&quot; size=&quot;5&quot;&gt;Newton&apos;s 
+    Laws at the Atomic Level:&lt;/font&gt;&lt;/strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; color=&quot;#FFFFFF&quot; size=&quot;5&quot;&gt; 
+    Rockets.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-cca464</bgcolor></icon></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="6">
+<Alignment>1</Alignment>
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;0&quot; marginheight=&quot;0&quot; background=&quot;topNavBarLeftMargin.jpg&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; width=&quot;100%&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; src=&quot;topNavBarLeftMargin.jpg&quot; width=&quot;14&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;prev.jpg&quot; width=&quot;60&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;next.jpg&quot; width=&quot;59&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; src=&quot;page.jpg&quot; width=&quot;54&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;index.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;index.jpg&quot; width=&quot;46&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page1.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page2.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page3.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page4.jpg&quot; width=&quot;29&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page5.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page6.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page7Selected.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page8.jpg&quot; width=&quot;29&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page9.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;img height=&quot;26&quot; src=&quot;topNavBarRightMargin.jpg&quot; width=&quot;7&quot;&gt;
+&lt;/font&gt;        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="9">
+<Alignment>1</Alignment>
+<content start="7" end="8">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>85</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; border=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img src=&quot;atomMainIdea.png&quot; width=&quot;98&quot; height=&quot;58&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;How does &lt;a href=&quot;script:page:0:message newtonsLaws.html&quot;&gt;Newton&apos;s 
+          third law&lt;/a&gt; help us launch rockets into space and visit other 
+          planets?&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-282012</bgcolor></icon></content>
+
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="11">
+<Alignment>1</Alignment>
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="13">
+<Alignment>1</Alignment>
+<SpaceBelow>8.0</SpaceBelow>
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>160.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Air may seem 
+    like it is made of &amp;quot;nothing&amp;quot;, but hurricanes use air to knock over trees 
+    and tear off roofs. As mentioned on the first page of this activity, about 
+    10 billion billion molecules of air hit every square inch of your body 
+    every second. Because these collisions are happening from all sides you 
+    tend to stay in place. If the force from the collisions of these molecules 
+    was not equal on each side of your body you would quickly find yourself 
+    knocked over.&lt;/font&gt;
+
+    &lt;p&gt;
+      &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Rockets work 
+      on this principle. Let&apos;s take a look at a simple kind of rocket, the 
+      kind you make when you inflate a balloon with air and let it fly by 
+      allowing the air to escape out of the mouth of the balloon. In the model 
+      below you see an extremely tiny, sub-microsopic &amp;quot;balloon&amp;quot;.&lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="15">
+<Alignment>1</Alignment>
+<content start="13" end="14">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page7$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorderless>true</recorderless>
+</component></content>
+
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="17">
+<Alignment>1</Alignment>
+<SpaceBelow>8.0</SpaceBelow>
+<content start="15" end="16">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>754.0</width>
+<height>39.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;map name=&quot;Map&quot;&gt;
+      &lt;area coords=&quot;8,7,147,28&quot; shape=&quot;rect&quot; href=&quot;script:mw:1:select image all; remove; snapshot; delay 1; add image balloonInstFlat.png (0.5,0.5); select image none;&quot;&gt;&lt;/area&gt;
+      &lt;area coords=&quot;289,10,337,30&quot; shape=&quot;rect&quot; href=&quot;script:mw:1:run; script:textbox:3:load balloonBottomStop.html&quot;&gt;&lt;/area&gt;
+      &lt;area coords=&quot;406,11,463,30&quot; shape=&quot;rect&quot; href=&quot;script:mw:1:reset; set %popped 0&quot;&gt;&lt;/area&gt;
+      &lt;area coords=&quot;523,9,745,29&quot; shape=&quot;rect&quot; href=&quot;script:mw:1:
+if (not %popped);	
+	set %popped 1
+	stop;
+	select element 2;
+	remove;
+	set %a round(rand()*33)+1;
+	set %prevAtom %a-1;
+	select atom  %a;
+	remove;
+	select atom %a; 
+	remove;
+	select atom %a;
+	remove;
+	rbond %prevAtom %a 0.1;
+	set %newBond %number_of_rbonds-1;
+	set rbond[%newBond].style GHOST_STYLE;
+	select atom none;
+	run;
+endif;
+	&quot;&gt;&lt;/area&gt;
+    &lt;/map&gt;
+    &lt;img height=&quot;39&quot; usemap=&quot;#Map&quot; src=&quot;balloonBottomRun.gif&quot; width=&quot;754&quot; border=&quot;0&quot;&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="22">
+<Alignment>1</Alignment>
+<SpaceBelow>8.0</SpaceBelow>
+<content start="17" end="18">
+<component><class>org.concord.modeler.ImageQuestion</class><width>371</width><height>275</height><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;physStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;question&quot;&gt;
+    &lt;p class=&quot;question&quot;&gt;
+      Take a snapshot of a sealed balloon, and place that image here. Make 
+      sure to draw arrows indicating where the gas exerts force on the balloon.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="18" end="20">
+</content>
+
+<content start="20" end="21">
+<component><class>org.concord.modeler.ImageQuestion</class><width>371</width><height>275</height><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;physStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;question&quot;&gt;
+    &lt;p class=&quot;question&quot;&gt;
+      Take a snapshot of a popped balloon, and place that image here. Make 
+      sure to draw arrows indicating where the gas exerts force on the balloon.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="27">
+<Alignment>1</Alignment>
+<SpaceBelow>8.0</SpaceBelow>
+<content start="22" end="23">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>4</row>
+<width>410</width>
+<height>180</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot;&gt;
+    &lt;strong&gt;&lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;When the 
+    balloon is popped, which direction does the balloon move?&lt;/font&gt;&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>It continues to stay in the same general location.</choice>
+<choice>It moves, but in random directions.</choice>
+<choice>It moves in the direction of the escaping air.</choice>
+<choice>&lt;html&gt;It moves in the opposite direction as the escaping air.&lt;/html&gt;</choice>
+<answer>3</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script> -choiceseparator-  -choiceseparator-  -choiceseparator- </script>
+</component></content>
+
+<content start="23" end="25">
+</content>
+
+<content start="25" end="26">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>330</width>
+<height>180</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot;&gt;
+    &lt;strong&gt;&lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Explain on an 
+    atomic level why the balloon moves the way it does when you provide an 
+    opening for the air, and connect this to &lt;a href=&quot;script:page:0:message newtonsLaws.html&quot;&gt;Newton&amp;#8217;s 
+    third law.&lt;/a&gt; &lt;/font&gt;&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="29">
+<Alignment>1</Alignment>
+<content start="27" end="28">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>32.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;0&quot; marginheight=&quot;0&quot; background=&quot;navBarBottomBackground.jpg&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; width=&quot;100%&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img height=&quot;6&quot; src=&quot;navBarBottomColorBar.gif&quot; width=&quot;14&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; src=&quot;navBarBottomLeftMargin.jpg&quot; width=&quot;8&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;prev.jpg&quot; width=&quot;60&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;next.jpg&quot; width=&quot;59&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; src=&quot;page.jpg&quot; width=&quot;54&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;index.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;index.jpg&quot; width=&quot;46&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page1.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page2.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page3.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page4.jpg&quot; width=&quot;29&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page5.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page6.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page7Selected.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page8.jpg&quot; width=&quot;29&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page9.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;img height=&quot;26&quot; src=&quot;navBarBottomRightMargin.jpg&quot; width=&quot;7&quot;&gt;
+&lt;/font&gt;        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="30">
+<Alignment>1</Alignment>
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="31">
+<content start="30" end="31">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="31" end="32">
+</paragraph>
+</section>
+</document>

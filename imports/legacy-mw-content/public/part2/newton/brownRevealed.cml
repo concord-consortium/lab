@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Brownian Motion: Brown&apos;s Observation Explained</page_title>
+<bg_color><Red>241</Red><Green>240</Green><Blue>246</Blue></bg_color>
+<text>Brownian Motion: Brown&apos;s Observation Explained
+
+ 
+ 
+
+Water molecules were constantly colliding with the tiny particles that Brown observed. That is why the movement he saw looked random. It also provided evidence for the existence of atoms and molecules. If water were made up of tiny molecules, then that would explain the movement of the particle he observed! (Note: The size of the water molecules above is highly exaggerated. They would be far too small to have been seen with a microscope.)
+
+Close this window before running other models.
+
+ </text>
+<section start="0" end="547">
+<paragraph start="0" end="47">
+<Alignment>1</Alignment>
+<content start="0" end="17">
+<size>18</size><bold>true</bold><family>SansSerif</family></content>
+
+<content start="17" end="46">
+<size>16</size><bold>true</bold><family>SansSerif</family></content>
+
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="48">
+<Alignment>1</Alignment>
+<LeftIndent>60.0</LeftIndent>
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="50">
+<Alignment>1</Alignment>
+<content start="48" end="49">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>brownRevealed$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="52">
+<Alignment>1</Alignment>
+<LeftIndent>20.0</LeftIndent>
+<content start="50" end="51">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show water molecules</title>
+<tooltip>Show water molecules</tooltip>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>show selectionhalo off; select element 2; set visible on; select element none; show selectionhalo on;</script>
+<script2>show selectionhalo off; select element 2; set visible off; select element none; show selectionhalo on;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="53">
+<Alignment>1</Alignment>
+<LeftIndent>20.0</LeftIndent>
+<content start="52" end="53">
+</content>
+
+</paragraph>
+<paragraph start="53" end="496">
+<LeftIndent>20.0</LeftIndent>
+<content start="53" end="496">
+</content>
+
+</paragraph>
+<paragraph start="496" end="497">
+<Alignment>1</Alignment>
+<LeftIndent>20.0</LeftIndent>
+<content start="496" end="497">
+</content>
+
+</paragraph>
+<paragraph start="497" end="544">
+<Alignment>1</Alignment>
+<content start="497" end="544">
+<bold>true</bold></content>
+
+</paragraph>
+<paragraph start="544" end="545">
+<Alignment>1</Alignment>
+<content start="544" end="545">
+<bold>true</bold></content>
+
+</paragraph>
+<paragraph start="545" end="547">
+<Alignment>1</Alignment>
+<content start="545" end="546">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Close this page.</title>
+<border>Raised Bevel</border>
+<action>Close this page</action></component></content>
+
+</paragraph>
+</section>
+</document>
