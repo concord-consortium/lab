@@ -625,7 +625,7 @@ define(function() {
       */
 
       defineProperty: function(key, descriptor) {
-        descriptor = validateDescriptor(descriptor);
+        descriptor = validateDescriptor(descriptor || {});
 
         propertyInformation[key] = {
           descriptor: descriptor,
