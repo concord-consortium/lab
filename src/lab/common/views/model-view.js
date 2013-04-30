@@ -31,10 +31,6 @@ define(function (require) {
         // from bottom to top, while but SVG has increases from top to bottom
         model2pxInv,
 
-        // Basic scaling function for size, it transforms model units to "pixels".
-        // Use it for dimensions of objects rendered inside the view.
-        modelSize2px,
-
         // "Containers" - SVG g elements used to position layers of the final visualization.
         mainContainer,
         gridContainer,
@@ -46,6 +42,7 @@ define(function (require) {
         textContainerBelow,
         textContainerTop,
         brushContainer,
+        iconContainer,
 
         clickHandler,
         // d3.svg.brush object used to implement select action. It should be
@@ -157,11 +154,6 @@ define(function (require) {
       model2pxInv = d3.scale.linear()
           .domain([viewport.height, 0])
           .range([0, size.height]);
-
-      // Basic modelSize2px scaling function for size.
-      modelSize2px = function (sizeX) {
-        return model2px(sizeX);
-      };
 
       if (selectBrush) {
         // Update brush to use new scaling functions.
@@ -345,6 +337,8 @@ define(function (require) {
         textContainerTop     = viewportG.append("g").attr("class", "text-container-top");
         brushContainer       = viewportG.append("g").attr("class", "brush-container");
 
+        iconContainer = vis.append("g").attr("class", "icon-container");
+
         // Make all layers available for subviews, expect from brush layer
         // which is used only internally.
         api.containers = {
@@ -356,7 +350,8 @@ define(function (require) {
           VDWLinesContainer:    VDWLinesContainer,
           mainContainer:        mainContainer,
           imageContainerTop:    imageContainerTop,
-          textContainerTop:     textContainerTop
+          textContainerTop:     textContainerTop,
+          iconContainer:        iconContainer
         };
       } else {
         // TODO: ?? what g, why is it here?
@@ -447,7 +442,7 @@ define(function (require) {
     //
     function repaint() {
       setupBackground();
-      renderer.repaint(model2px, model2pxInv, modelSize2px);
+      renderer.repaint(model2px, model2pxInv);
       api.updateClickHandlers();
     }
 
@@ -489,10 +484,6 @@ define(function (require) {
       model2pxInv: function(val) {
         // See comments for model2px.
         return model2pxInv(val);
-      },
-      modelSize2px: function(val) {
-        // See comments for model2px.
-        return modelSize2px(val);
       },
       pos: function() {
         // Add a pos() function so the model renderer can more easily

@@ -50,10 +50,6 @@ define(function (require) {
         // from bottom to top, while but SVG has increases from top to bottom
         model2pxInv,
 
-        // Basic scaling function for size, it transforms model units to "pixels".
-        // Use it for dimensions of objects rendered inside the view.
-        modelSize2px,
-
         // "Containers" - SVG g elements used to position layers of the final visualization.
         mainContainer,
         geneticsContainer,
@@ -63,6 +59,7 @@ define(function (require) {
         imageContainerTop,
         textContainerBelow,
         textContainerTop,
+        iconContainer,
 
         dragOrigin,
 
@@ -345,9 +342,9 @@ define(function (require) {
           fSize = Math.max(fontSizeInPixels, 12);
 
       // only add these images if they don't already exist
-      if (textContainerTop.select("#heat-bath").empty()) {
+      if (iconContainer.select("#heat-bath").empty()) {
         // Heat bath key image.
-        textContainerTop.append("image")
+        iconContainer.append("image")
             .attr({
               "id": "heat-bath",
               "x": xMargin,
@@ -360,9 +357,9 @@ define(function (require) {
             .append("title")
             .text("Heatbath active");
       }
-      if (textContainerTop.select("#ke-gradient").empty()) {
+      if (iconContainer.select("#ke-gradient").empty()) {
         // Kinetic Energy Shading gradient image.
-        textContainerTop.append("image")
+        iconContainer.append("image")
             .attr({
               "id": "ke-gradient",
               "x": "0",
@@ -391,7 +388,7 @@ define(function (require) {
         // Heat bath symbol.
         if (heatBath) {
             yPos += yMargin;
-            imageSelect = textContainerTop.select("#heat-bath")
+            imageSelect = iconContainer.select("#heat-bath")
               .attr({
                 "y": yPos,
                 "width": fSize*2,
@@ -402,14 +399,14 @@ define(function (require) {
             imageHeight = parseInt(imageSelect.attr("height"));
             yPos += imageHeight;
         } else {
-            textContainerTop.select("#heat-bath").style("display","none");
+            iconContainer.select("#heat-bath").style("display","none");
         }
 
         // Kinetic Energy shading gradient.
         // Put it under heat bath symbol.
         if (keShadingMode) {
             yPos += yMargin;
-            textContainerTop.select("#ke-gradient")
+            iconContainer.select("#ke-gradient")
               .attr({
                 "y": yPos,
                 "width": fSize*2.2,
@@ -417,12 +414,12 @@ define(function (require) {
               })
               .style("display", "");
         } else {
-            textContainerTop.select("#ke-gradient").style("display", "none");
+            iconContainer.select("#ke-gradient").style("display", "none");
         }
     }
 
     function updateParticleRadius() {
-      mainContainer.selectAll("circle").data(modelResults).attr("r",  function(d) { return modelSize2px(d.radius); });
+      mainContainer.selectAll("circle").data(modelResults).attr("r",  function(d) { return model2px(d.radius); });
     }
 
     /**
@@ -433,7 +430,7 @@ define(function (require) {
       particle.enter().append("circle")
           .attr({
             "class": function (d) { return d.isAminoAcid() ? "draggable atom amino-acid" : "atom draggable"; },
-            "r":  function(d) { return modelSize2px(d.radius); },
+            "r":  function(d) { return model2px(d.radius); },
             "cx": function(d) { return model2px(d.x); },
             "cy": function(d) { return model2pxInv(d.y); },
             "fill-opacity": function(d) { return d.visible ? 1 : 0; },
@@ -468,7 +465,7 @@ define(function (require) {
         .attr({
           "class": "atomTrace",
           "d": getAtomTracePath,
-          "stroke-width": modelSize2px(0.01),
+          "stroke-width": model2px(0.01),
           "stroke": atomTraceColor,
           "fill": "none",
           "stroke-dasharray": "6, 6"
@@ -490,8 +487,8 @@ define(function (require) {
           "class": "obstacle-shape",
           "x": 0,
           "y": 0,
-          "width": function(d, i) {return modelSize2px(obstacles.width[i]); },
-          "height": function(d, i) {return modelSize2px(obstacles.height[i]); },
+          "width": function(d, i) {return model2px(obstacles.width[i]); },
+          "height": function(d, i) {return model2px(obstacles.height[i]); },
           "fill": function(d, i) { return obstacles.visible[i] ? getObstacleColor(i) : "rgba(128,128,128, 0)"; },
           "stroke-width": function(d, i) { return obstacles.visible[i] ? 0.2 : 0.0; },
           "stroke": function(d, i) { return obstacles.visible[i] ? getObstacleColor(i) : "rgba(128,128,128, 0)"; }
@@ -526,15 +523,15 @@ define(function (require) {
               "class": "obstacle-force-hor",
               "d": function (d) {
                 if (obsAx < 0)
-                  return "M " + modelSize2px(obsWidth + vecLen + space) +
-                              "," + modelSize2px(d) +
-                              " L " + modelSize2px(obsWidth + space) +
-                              "," + modelSize2px(d);
+                  return "M " + model2px(obsWidth + vecLen + space) +
+                              "," + model2px(d) +
+                              " L " + model2px(obsWidth + space) +
+                              "," + model2px(d);
                 else
-                  return "M " + modelSize2px(-vecLen - space) +
-                              "," + modelSize2px(d) +
-                              " L " + modelSize2px(-space) +
-                              "," + modelSize2px(d);
+                  return "M " + model2px(-vecLen - space) +
+                              "," + model2px(d) +
+                              " L " + model2px(-space) +
+                              "," + model2px(d);
               }
             });
         }
@@ -548,15 +545,15 @@ define(function (require) {
               "class": "obstacle-force-vert",
               "d": function (d) {
                 if (obsAy < 0)
-                  return "M " + modelSize2px(d) +
-                              "," + modelSize2px(-vecLen - space) +
-                              " L " + modelSize2px(d) +
-                              "," + modelSize2px(-space);
+                  return "M " + model2px(d) +
+                              "," + model2px(-vecLen - space) +
+                              " L " + model2px(d) +
+                              "," + model2px(-space);
                 else
-                  return "M " + modelSize2px(d) +
-                              "," + modelSize2px(obsHeight + vecLen + space) +
-                              " L " + modelSize2px(d) +
-                              "," + modelSize2px(obsHeight + space);
+                  return "M " + model2px(d) +
+                              "," + model2px(obsHeight + vecLen + space) +
+                              " L " + model2px(d) +
+                              "," + model2px(obsHeight + space);
               }
             });
         }
@@ -564,7 +561,7 @@ define(function (require) {
         obstacleGroupEl.selectAll("path.obstacle-force-hor, path.obstacle-force-vert")
           .attr({
             "marker-end": hideLineMarkers ? "" : "url(#Triangle-"+ FORCE_STR +")",
-            "stroke-width": modelSize2px(forceVectorWidth),
+            "stroke-width": model2px(forceVectorWidth),
             "stroke": forceVectorColor,
             "fill": "none"
           });
@@ -579,7 +576,7 @@ define(function (require) {
               if (isSpringBond(d)) {
                 return springStrokeWidth(d);
               } else {
-                return modelSize2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
+                return model2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
               }
             },
             "stroke": getBondAtom1Color,
@@ -597,7 +594,7 @@ define(function (require) {
               if (isSpringBond(d)) {
                 return springStrokeWidth(d);
               } else {
-                return modelSize2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
+                return model2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
               }
             },
             "stroke": getBondAtom2Color,
@@ -638,7 +635,7 @@ define(function (require) {
       dy = y2 - y1;
 
       strength = d.strength;
-      length = Math.sqrt(dx*dx + dy*dy) / modelSize2px(0.01);
+      length = Math.sqrt(dx*dx + dy*dy) / model2px(0.01);
 
       numTurns = Math.floor(d.length * 24);
       springDiameter = length / numTurns;
@@ -650,10 +647,10 @@ define(function (require) {
       cosThetaSpikes = costheta * numTurns;
       sinThetaSpikes = sintheta * numTurns;
 
-      radius_x1 = modelSize2px(modelResults[d.atom1].radius) * costheta;
-      radius_x2 = modelSize2px(modelResults[d.atom2].radius) * costheta;
-      radius_y1 = modelSize2px(modelResults[d.atom1].radius) * sintheta;
-      radius_y2 = modelSize2px(modelResults[d.atom2].radius) * sintheta;
+      radius_x1 = model2px(modelResults[d.atom1].radius) * costheta;
+      radius_x2 = model2px(modelResults[d.atom2].radius) * costheta;
+      radius_y1 = model2px(modelResults[d.atom1].radius) * sintheta;
+      radius_y2 = model2px(modelResults[d.atom2].radius) * sintheta;
       radiusFactorX = radius_x1 - radius_x2;
       radiusFactorY = radius_y1 - radius_y2;
 
@@ -698,8 +695,8 @@ define(function (require) {
     }
 
     function vdwLinesEnter() {
-      var strokeWidth = modelSize2px(0.02),
-          strokeDasharray = modelSize2px(0.03) + " " + modelSize2px(0.02);
+      var strokeWidth = model2px(0.02),
+          strokeDasharray = model2px(0.03) + " " + model2px(0.02);
       // update existing lines
       vdwLines.attr({
         "x1": function(d) { return model2px(modelResults[d[0]].x); },
@@ -771,8 +768,8 @@ define(function (require) {
                 .attr("y", function(d){ return getImageCoords(d["i"])[1] } )
                 .attr("class", function(d){ return "image_attach" + d["i"] + " draggable"})
                 .attr("xlink:href", function(d){ return img[d["i"]].src})
-                .attr("width", function(d){return modelSize2px( imageSizes[d["i"]][0] )})
-                .attr("height", function(d){return modelSize2px( imageSizes[d["i"]][1] )})
+                .attr("width", function(d){return model2px( imageSizes[d["i"]][0] )})
+                .attr("height", function(d){return model2px( imageSizes[d["i"]][1] )})
                 .attr("pointer-events", "none");
           };
         })(i);
@@ -988,8 +985,8 @@ define(function (require) {
             "y": function(d)      { return getTextBoxCoords(d)[1]; },
             "width-data": function(d) { return d.width; },
             "height-data": function(d) { return d.height; },
-            "width":  modelSize2px(size[0]),
-            "height": modelSize2px(size[1]),
+            "width":  model2px(size[0]),
+            "height": model2px(size[1]),
             "xml:space": "preserve",
             "font-family": "'" + labConfig.fontface + "', sans-serif",
             "font-size": function(d) {
@@ -1041,13 +1038,13 @@ define(function (require) {
         if (width === '') {
           width = -1;
         } else {
-          width = modelSize2px(width);
+          width = model2px(width);
         }
 
         if (height === '') {
           height = -1;
         } else {
-          height = modelSize2px(height);
+          height = model2px(height);
         }
 
         while (this.firstChild) {     // clear element first
@@ -1139,27 +1136,27 @@ define(function (require) {
         if (model.get("atomNumbers")) {
           selection.append("text")
             .text(d.idx)
-            .style("font-size", modelSize2px(1.4 * d.radius) + "px");
+            .style("font-size", model2px(1.4 * d.radius) + "px");
         }
         else if (useThreeLetterCode && d.label) {
           // Add shadow - a white stroke, which increases readability.
           selection.append("text")
             .text(d.label)
             .attr("class", "shadow")
-            .style("font-size", modelSize2px(d.radius) + "px");
+            .style("font-size", model2px(d.radius) + "px");
           selection.append("text")
             .text(d.label)
-            .style("font-size", modelSize2px(d.radius) + "px");
+            .style("font-size", model2px(d.radius) + "px");
         }
         else if (!useThreeLetterCode && d.symbol) {
           // Add shadow - a white stroke, which increases readability.
           selection.append("text")
             .text(d.symbol)
             .attr("class", "shadow")
-            .style("font-size", modelSize2px(1.4 * d.radius) + "px");
+            .style("font-size", model2px(1.4 * d.radius) + "px");
           selection.append("text")
             .text(d.symbol)
-            .style("font-size", modelSize2px(1.4 * d.radius) + "px");
+            .style("font-size", model2px(1.4 * d.radius) + "px");
         }
         else if (showChargeSymbols) {
           if (d.charge > 0){
@@ -1171,7 +1168,7 @@ define(function (require) {
           }
           selection.append("text")
             .text(txtValue)
-            .style("font-size", modelSize2px(1.6 * d.radius) + "px");
+            .style("font-size", model2px(1.6 * d.radius) + "px");
         }
         // Set common attributes for labels (+ shadows).
         txtSelection = selection.selectAll("text");
@@ -1197,7 +1194,7 @@ define(function (require) {
         selection.select("text.shadow")
           .style({
             "stroke": "#fff",
-            "stroke-width": 0.15 * modelSize2px(d.radius),
+            "stroke-width": 0.15 * model2px(d.radius),
             "stroke-opacity": 0.7
           });
       });
@@ -1378,7 +1375,7 @@ define(function (require) {
           y_pos = model2pxInv(d.y),
           path = "M "+x_pos+","+y_pos,
           scale = velocityVectorLength * 100;
-      return path + " L "+(x_pos + modelSize2px(d.vx*scale))+","+(y_pos - modelSize2px(d.vy*scale));
+      return path + " L "+(x_pos + model2px(d.vx*scale))+","+(y_pos - model2px(d.vy*scale));
     }
 
     function getForceVectorPath(d) {
@@ -1387,15 +1384,15 @@ define(function (require) {
           mass  = d.mass,
           scale = forceVectorLength * 100,
           path  = "M "+x_pos+","+y_pos;
-      return path + " L "+(x_pos + modelSize2px(d.ax*mass*scale))+","+(y_pos - modelSize2px(d.ay*mass*scale));
+      return path + " L "+(x_pos + model2px(d.ax*mass*scale))+","+(y_pos - model2px(d.ay*mass*scale));
     }
 
     function getVelVectorWidth(d) {
-      return Math.abs(d.vx) + Math.abs(d.vy) > 1e-6 ? modelSize2px(velocityVectorWidth) : 0;
+      return Math.abs(d.vx) + Math.abs(d.vy) > 1e-6 ? model2px(velocityVectorWidth) : 0;
     }
 
     function getForceVectorWidth(d) {
-      return Math.abs(d.ax) + Math.abs(d.ay) > 1e-8 ? modelSize2px(forceVectorWidth) : 0;
+      return Math.abs(d.ax) + Math.abs(d.ay) > 1e-8 ? model2px(forceVectorWidth) : 0;
     }
 
     function updateVectors(vector, pathFunc, widthFunc) {
@@ -1653,10 +1650,10 @@ define(function (require) {
       imageContainerTop    = modelView.containers.imageContainerTop,
       textContainerBelow   = modelView.containers.textContainerBelow,
       textContainerTop     = modelView.containers.textContainerTop,
+      iconContainer        = modelView.containers.iconContainer,
 
       model2px = modelView.model2px;
       model2pxInv = modelView.model2pxInv;
-      modelSize2px = modelView.modelSize2px;
 
       fontSizeInPixels = modelView.getFontSizeInPixels();
       textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
@@ -1718,11 +1715,10 @@ define(function (require) {
     // Also call when the number of objects changes such that the container
     // must be setup again.
     //
-    function repaint(m2px, m2pxInv, mSize2px) {
+    function repaint(m2px, m2pxInv) {
       if (arguments.length) {
         model2px = m2px;
         model2pxInv = m2pxInv;
-        modelSize2px = mSize2px;
       }
       fontSizeInPixels = modelView.getFontSizeInPixels();
       textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
@@ -1808,8 +1804,7 @@ define(function (require) {
       repaint: repaint,
       reset: reset,
       model2px: modelView.model2px,
-      model2pxInv: modelView.model2pxInv,
-      modelSize2px: modelView.modelSize2px
+      model2pxInv: modelView.model2pxInv
     };
 
     // Initialization.
