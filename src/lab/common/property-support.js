@@ -461,7 +461,10 @@ define(function() {
             constructProperty(object, key);
           }
         });
-        Object.freeze(object);
+
+        if (Object.seal) {
+          Object.seal(object);
+        }
 
         if (type) {
           cachedPropertiesObjects.byType[type] = object;
@@ -482,7 +485,7 @@ define(function() {
       mixInto: function(target) {
 
         /**
-          The 'properties' property mixed into 'target' is a frozen Object whose enumerable
+          The 'properties' property mixed into 'target' is a sealed Object whose enumerable
           properties are all the properties defined by calls to the defineProperty method of the
           propertySupport object. Creating this object is the main feature of the PropertySupport
           module.
@@ -495,7 +498,7 @@ define(function() {
           Assigning to a property of the 'properties' object always triggers the observers of that
           property, if any.
 
-          Because the 'properties' object is frozen, if `defineProperty` is subsequently called, the
+          Because the 'properties' object is sealed, if `defineProperty` is subsequently called, the
           value of the 'properties' property will be updated to a new object containing the updated
           set of properties.
         */
@@ -508,7 +511,7 @@ define(function() {
         });
 
         /**
-          The 'propertiesOfType' method mixed in to 'target' returns a frozen Object whose
+          The 'propertiesOfType' method mixed in to 'target' returns a sealed Object whose
           enumerable properties are all the properties defined by calls to the defineProperty
           method with the value 'type' as the type descriptor option.
 
