@@ -1757,12 +1757,13 @@ define(function (require) {
       // Pass data from objects animated by view code to the model. Note that
       // it's very experimental, hacky and will be changed in the future.
       // TODO: cleanup, provide more generic solution.
-      d3.selectAll(".animated-drag").each(function (d) {
+      d3.selectAll(".animated-drag").each(function () {
         var el = d3.select(this),
             x = el.attr("x") || el.attr("cx"),
             y = el.attr("y") || el.attr("cy");
+            springId = el.attr("spring-id")
 
-        model.updateSpringForce(d.springIdx, x, y);
+        model.updateSpringForce(springId, x, y);
       });
 
       if (drawVdwLines) {

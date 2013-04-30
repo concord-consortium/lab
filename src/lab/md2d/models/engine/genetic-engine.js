@@ -297,7 +297,7 @@ define(function (require) {
             elID = aminoacidsHelper.abbrToElement(abbr);
 
         model.addAtom({x: x, y: y, element: elID, visible: true});
-        model.addSpringForce(codonIdx, x, y, 10000);
+        model.addSpringForce(codonIdx, x, y, 8000);
       },
 
       connectAminoAcids: function (codonIdx) {

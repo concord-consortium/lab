@@ -190,6 +190,8 @@ define(function (require) {
     this._mrnaG.attr("transform", "translate(0, " + this.model2pxInv(1.5 * Nucleotide.HEIGHT) + ")");
     this._dnaView.attr("transform", "translate(" + this.model2px(2 * Nucleotide.WIDTH) + ")");
     this._appendRibosome();
+
+    this._g.append("circle").attr("class", "animated-drag");
   };
 
   GeneticRenderer.prototype._scrollContainer = function (suppressAnimation) {
@@ -654,8 +656,13 @@ define(function (require) {
   GeneticRenderer.prototype.translateStep = function (step) {
     var codonIdx = step - 1,
         geneticEngine = this.model.geneticEngine(),
-        gEl = this._g,
         t;
+
+    this._g.select(".animated-drag").attr({
+      "spring-id": codonIdx > 0 ? 1 : 0,
+      "cx": 2.15 + codonIdx * 3 * Nucleotide.WIDTH,
+      "cy": 2.95
+    });
 
     this._appendTRNA(codonIdx);
     this._trnaG.select(".trna:last-child")
@@ -681,58 +688,22 @@ define(function (require) {
       .ease("cubic")
       .style("opacity", 1);
 
-    t.each("start", function () {
-      var animDrag,
-          shiftStart = codonIdx,
-          shiftEnd = codonIdx,
-          newAADrag = {
-            springIdx: codonIdx > 0 ? 1 : 0,
-            xStart: 2.15 + shiftStart * 3 * Nucleotide.WIDTH,
-            yStart: 2.95,
-            xEnd: 1.2 + shiftEnd * 3 * Nucleotide.WIDTH,
-            yEnd: 1.6
-          },
-          data = [];
 
-      /*
-      if (codonIdx > 2) {
-
-        data.push({
-          springIdx: 0,
-          xStart: 1.2 + (shiftEnd) * 3 * Nucleotide.WIDTH,
-          yStart: 1.6,
-          xEnd: 1.2 + (shiftEnd - 1) * 3 * Nucleotide.WIDTH,
-          yEnd: 1.6
-        });
-      }
-      */
-
-      data.push(newAADrag);
-
-      geneticEngine.addAminoAcid(codonIdx, newAADrag.xStart, newAADrag.yStart);
-      animDrag = gEl.selectAll(".animated-drag").data(data);
-      animDrag.enter().append("circle");
-      animDrag.attr({
-        "class": "animated-drag",
-        "cx": function (d) {
-          return d.xStart;
-        },
-        "cy": function (d) {
-          return d.yStart;
-        }
-      });
-      animDrag.transition().duration(1500).attr({
-        "cx": function (d) {
-          return d.xEnd;
-        },
-        "cy": function (d) {
-          return d.yEnd;
-        }
-      });
+    t.select(".animated-drag").attr({
+      "cx": 1.2 + codonIdx * 3 * Nucleotide.WIDTH,
+      "cy": 1.6
     });
 
     this._moveRibosome();
     this._scrollContainer();
+
+    t.each("start", function () {
+      var drag = d3.select(".animated-drag");
+      geneticEngine.addAminoAcid(codonIdx, drag.attr("cx"), drag.attr("cy"));
+    });
+    t.each("end", function () {
+      geneticEngine.connectAminoAcids(codonIdx);
+    });
 
     if (step > 2) {
       // Remove the first tRNA.
@@ -752,11 +723,6 @@ define(function (require) {
         .duration(200)
         .style("opacity", 0);
     }
-
-    t.each("end", function () {
-      gEl.select(".animated-drag").remove();
-      geneticEngine.connectAminoAcids(codonIdx);
-    });
   };
 
   GeneticRenderer.prototype.separateDNA = function (suppressAnimation) {
@@ -831,6 +797,13 @@ define(function (require) {
       this._currentTrans = d3.transition();
     }
     return this._currentTrans;
+  };
+
+  GeneticRenderer.prototype._transInProgress = function() {
+    if (this._currentTrans && this._currentTrans.node().__transition__) {
+      return true;
+    }
+    return false;
   };
 
   return GeneticRenderer;
