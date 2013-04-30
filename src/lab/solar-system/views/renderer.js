@@ -32,10 +32,6 @@ define(function (require) {
         // from bottom to top, while but SVG has increases from top to bottom
         model2pxInv,
 
-        // Basic scaling function for size, it transforms model units to "pixels".
-        // Use it for dimensions of objects rendered inside the view.
-        modelSize2px,
-
         // The model function get_results() returns a 2 dimensional array
         // of particle indices and properties that is updated every model tick.
         // This array is not garbage-collected so the view can be assured that
@@ -107,7 +103,7 @@ define(function (require) {
     }
 
     function updateBodyRadius() {
-      mainContainer.selectAll("circle").data(modelResults).attr("r",  function(d) { return modelSize2px(d.radius); });
+      mainContainer.selectAll("circle").data(modelResults).attr("r",  function(d) { return model2px(d.radius); });
     }
 
     function setupColorsOfBodies() {
@@ -145,7 +141,7 @@ define(function (require) {
         if (model.get("astromonicalBodyNumbers")) {
           selection.append("text")
             .text(d.idx)
-            .style("font-size", modelSize2px(1.4 * d.radius) + "px");
+            .style("font-size", model2px(1.4 * d.radius) + "px");
         }
         // Set common attributes for labels (+ shadows).
         txtSelection = selection.selectAll("text");
@@ -171,7 +167,7 @@ define(function (require) {
         selection.select("text.shadow")
           .style({
             "stroke": "#fff",
-            "stroke-width": 0.15 * modelSize2px(d.radius),
+            "stroke-width": 0.15 * model2px(d.radius),
             "stroke-opacity": 0.7
           });
       });
@@ -197,7 +193,7 @@ define(function (require) {
       astromonicalBody.enter().append("circle")
           .attr({
             "r":  function(d) {
-              return modelSize2px(d.radius); },
+              return model2px(d.radius); },
             "cx": function(d) {
               return model2px(d.x); },
             "cy": function(d) {
@@ -215,7 +211,7 @@ define(function (require) {
     function astromonicalBodyUpdate() {
       astromonicalBody.attr({
         "r":  function(d) {
-          return modelSize2px(d.radius); },
+          return model2px(d.radius); },
         "cx": function(d) {
           return model2px(d.x); },
         "cy": function(d) {
@@ -362,7 +358,6 @@ define(function (require) {
 
       model2px = modelView.model2px;
       model2pxInv = modelView.model2pxInv;
-      modelSize2px = modelView.modelSize2px;
 
       fontSizeInPixels = modelView.getFontSizeInPixels();
       textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
@@ -421,11 +416,10 @@ define(function (require) {
     // Also call when the number of objects changes such that the container
     // must be setup again.
     //
-    function repaint(m2px, m2pxInv, mSize2px) {
+    function repaint(m2px, m2pxInv) {
       if (arguments.length) {
         model2px = m2px;
         model2pxInv = m2pxInv;
-        modelSize2px = mSize2px;
       }
       fontSizeInPixels = modelView.getFontSizeInPixels();
       textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
@@ -464,8 +458,7 @@ define(function (require) {
       repaint: repaint,
       reset: reset,
       model2px: modelView.model2px,
-      model2pxInv: modelView.model2pxInv,
-      modelSize2px: modelView.modelSize2px
+      model2pxInv: modelView.model2pxInv
     };
 
     // Initialization.
