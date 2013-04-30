@@ -2101,8 +2101,12 @@ define(function(require) {
     // TODO: move this to better place.
     if (initialProperties.DNA) {
       // Overwrite width and height options.
-      initialProperties.width = 5;
+      initialProperties.width = 1000;
       initialProperties.height = 3;
+      initialProperties.viewOptions.viewPortX = 0;
+      initialProperties.viewOptions.viewPortY = 0;
+      initialProperties.viewOptions.viewPortWidth = 5;
+      initialProperties.viewOptions.viewPortHeight = 3;
     }
 
     (function () {
