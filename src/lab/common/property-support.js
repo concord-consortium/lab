@@ -130,6 +130,34 @@ define(function() {
     },
 
     /**
+      A callback that is called before assignment to the property. (Exception: it is not called
+      when the value is set via the setRawValues method of propertySupport.)
+
+      Use this to detect changes which may cause other property values to need to be updated.
+
+      For convenience, the property key is passed to the callback. The callback's return value is
+      discarded.
+    */
+    beforeSetCallback: {
+      defaultValue: undefined,
+      type: 'function'
+    },
+
+    /**
+      A callback that is called after assignment to the property. (Exception: it is not called
+      when the value is set via the setRawValues method of propertySupport.)
+
+      Use this to detect changes which may cause other property values to need to be updated.
+
+      For convenience, the property key is passed to the callback. The callback's return value is
+      discarded.
+    */
+    afterSetCallback: {
+      defaultValue: undefined,
+      type: 'function'
+    },
+
+    /**
       A function that is called with the return value of the get method whenever this property value
       is read. The value returned by this function is returned as the value of the property.
 
@@ -379,7 +407,7 @@ define(function() {
 
     // Private implementation of the setter for the property specified by 'key'. Handles caching
     // and the writable check (which, remember, is always applied) but does not handle observer
-    // notification, validation, or the beforeSetTransform.
+    // notification, validation, the beforeSetTransform, or beforeSet/afterSet callbacks.
     function set(key, value) {
       var info = propertyInformation[key];
 
@@ -430,7 +458,15 @@ define(function() {
         // `set` method mixed into the target is called (this might look like `model.set(key,
         // value)`). It is never invoked when the setRawValues method of the propertySupport object
         // is called.
+        //
+        // If beforeSetCallback or afterSetCallback properties have been defined on propertySupport,
+        // then they will be called, respectively, before and after the body of this function
+        // executes. Note again that setRawValues bypasses these callbacks.
         set: function(value) {
+          if (info.descriptor.beforeSetCallback) {
+            info.descriptor.beforeSetCallback();
+          }
+
           if (info.descriptor.beforeSetTransform) {
             value = info.descriptor.beforeSetTransform(value);
           }
@@ -442,6 +478,10 @@ define(function() {
 
           if (info.descriptor.set) {
             info.descriptor.set(value);
+          }
+
+          if (info.descriptor.afterSetCallback) {
+            info.descriptor.afterSetCallback();
           }
         }
       });
