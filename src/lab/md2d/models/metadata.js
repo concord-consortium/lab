@@ -123,24 +123,21 @@ define(function() {
 
     viewOptions: {
       viewPortWidth: {
-        defaultValue: 10,
         unitType: "length",
         immutable: true
       },
       viewPortHeight: {
-        defaultValue: 10,
         unitType: "length",
         immutable: true
+      },
+      viewPortZoom: {
+        defaultValue: 1
       },
       viewPortX: {
-        defaultValue: 0,
-        unitType: "length",
-        immutable: true
+        unitType: "length"
       },
       viewPortY: {
-        defaultValue: 0,
-        unitType: "length",
-        immutable: true
+        unitType: "length"
       },
       backgroundColor: {
         defaultValue: "#eeeeee"
