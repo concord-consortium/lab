@@ -23,6 +23,7 @@
   "viewOptions": {
     "viewPortWidth": 3.5,
     "viewPortHeight": 1.3,
+    "viewPortZoom": 1,
     "viewPortX": 0,
     "viewPortY": 0,
     "backgroundColor": "#eeeeee",
