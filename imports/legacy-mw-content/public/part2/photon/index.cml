@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Excited States and Photons: Table of Contents</page_title>
+<bg_color><Red>241</Red><Green>240</Green><Blue>246</Blue></bg_color>
+<text>
+ 
+ 
+ 
+
+Day One
+
+  1) Atoms emit and absorb light
+  2) Atoms can store energy
+  3) Exciting different kinds of atoms
+  4) An atom&apos;s energy levels
+  5) Exploring an energy level diagram
+
+Day Two
+
+  6) Let there be light!
+  7) Atoms emit photons
+  8) It&apos;s all about energy levels
+  9) Tuning up photons
+10) Photons come in different colors
+11) Adding more energy levels
+12) Summary
+
+
+ 
+
+
+          
+&#169; 2008, Concord Consortium, Inc.
+
+These materials, licensed under Creative Commons Attribution - NonCommercial 3.0, are based upon work supported by the National 
+Science Foundation under grant number 0628181. Any opinions, findings, and conclusions or recommendations expressed in this material 
+are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.
+
+</text>
+<section start="0" end="800">
+<paragraph start="0" end="1">
+<SpaceBelow>1.0</SpaceBelow>
+<SpaceAbove>1.0</SpaceAbove>
+<RightIndent>75.0</RightIndent>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="3">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>84.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;0&quot; marginwidth=&quot;0&quot; background=&quot;bannerBackground.jpg&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; width=&quot;100%&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;left&quot;&gt;
+          &lt;img width=&quot;641&quot; height=&quot;84&quot; src=&quot;lightBanner.jpg&quot; alt=&quot;&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img width=&quot;102&quot; height=&quot;84&quot; src=&quot;bannerSAMLogo.jpg&quot; alt=&quot;&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="5">
+<Alignment>1</Alignment>
+<content start="3" end="4">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;0&quot; marginwidth=&quot;0&quot; background=&quot;topNavBarLeftMargin.jpg&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; width=&quot;100%&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;14&quot; height=&quot;26&quot; src=&quot;topNavBarLeftMargin.jpg&quot;&gt;
+          &lt;img width=&quot;60&quot; height=&quot;26&quot; src=&quot;prev.jpg&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img width=&quot;59&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;next.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img width=&quot;54&quot; height=&quot;26&quot; src=&quot;page.jpg&quot;&gt;
+          &lt;img width=&quot;46&quot; height=&quot;26&quot; src=&quot;indexSelected.jpg&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page1.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page2.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page3.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img width=&quot;29&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page4.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page5.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page6.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page7.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img width=&quot;29&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page8.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page9.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img width=&quot;25&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page10.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page11.cml&quot;&gt;&lt;img width=&quot;27&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page11.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page12.cml&quot;&gt;&lt;img width=&quot;27&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page12.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;img width=&quot;7&quot; height=&quot;26&quot; src=&quot;topNavBarRightMargin.jpg&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-373738</bgcolor>
+</component></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="7">
+<Alignment>1</Alignment>
+<content start="5" end="6">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;5&quot; color=&quot;#FFFFFF&quot;&gt;&lt;strong&gt;Excited 
+    States and Photons:&lt;/strong&gt; Table of Contents&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-cca464</bgcolor></icon></content>
+
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="8">
+<RightIndent>150.0</RightIndent>
+<LeftIndent>190.0</LeftIndent>
+<content start="7" end="8">
+<size>24</size><family>Trebuchet MS</family><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="8" end="16">
+<LeftIndent>270.0</LeftIndent>
+<content start="8" end="15">
+<size>15</size><bold>true</bold></content>
+
+<content start="15" end="16">
+<size>15</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="16" end="17">
+<LeftIndent>290.0</LeftIndent>
+<content start="16" end="17">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="17" end="50">
+<LeftIndent>290.0</LeftIndent>
+<content start="17" end="22">
+<size>15</size></content>
+
+<content start="22" end="49">
+<size>15</size><href>page1.cml</href></content>
+
+<content start="49" end="50">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="50" end="78">
+<LeftIndent>290.0</LeftIndent>
+<content start="50" end="55">
+<size>15</size></content>
+
+<content start="55" end="77">
+<size>15</size><href>page2.cml</href></content>
+
+<content start="77" end="78">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="78" end="117">
+<LeftIndent>290.0</LeftIndent>
+<content start="78" end="83">
+<size>15</size></content>
+
+<content start="83" end="116">
+<size>15</size><href>page3.cml</href></content>
+
+<content start="116" end="117">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="117" end="146">
+<LeftIndent>290.0</LeftIndent>
+<content start="117" end="122">
+<size>15</size></content>
+
+<content start="122" end="145">
+<size>15</size><href>page4.cml</href></content>
+
+<content start="145" end="146">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="146" end="185">
+<LeftIndent>290.0</LeftIndent>
+<content start="146" end="151">
+<size>15</size></content>
+
+<content start="151" end="184">
+<size>15</size><href>page5.cml</href></content>
+
+<content start="184" end="185">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="185" end="186">
+<LeftIndent>270.0</LeftIndent>
+<content start="185" end="186">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="186" end="194">
+<LeftIndent>270.0</LeftIndent>
+<content start="186" end="194">
+<size>15</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="194" end="195">
+<LeftIndent>270.0</LeftIndent>
+<content start="194" end="195">
+<size>15</size><family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="195" end="220">
+<LeftIndent>290.0</LeftIndent>
+<content start="195" end="200">
+<size>15</size></content>
+
+<content start="200" end="219">
+<size>15</size><href>page6.cml</href></content>
+
+<content start="219" end="220">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="220" end="244">
+<LeftIndent>290.0</LeftIndent>
+<content start="220" end="225">
+<size>15</size></content>
+
+<content start="225" end="243">
+<size>15</size><href>page7.cml</href></content>
+
+<content start="243" end="244">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="244" end="278">
+<LeftIndent>290.0</LeftIndent>
+<content start="244" end="249">
+<size>15</size></content>
+
+<content start="249" end="277">
+<size>15</size><href>page8.cml</href></content>
+
+<content start="277" end="278">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="278" end="301">
+<LeftIndent>290.0</LeftIndent>
+<content start="278" end="283">
+<size>15</size></content>
+
+<content start="283" end="300">
+<size>15</size><href>page9.cml</href></content>
+
+<content start="300" end="301">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="301" end="338">
+<LeftIndent>290.0</LeftIndent>
+<content start="301" end="305">
+<size>15</size></content>
+
+<content start="305" end="337">
+<size>15</size><href>page10.cml</href></content>
+
+<content start="337" end="338">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="338" end="368">
+<LeftIndent>290.0</LeftIndent>
+<content start="338" end="342">
+<size>15</size></content>
+
+<content start="342" end="367">
+<size>15</size><href>page11.cml</href></content>
+
+<content start="367" end="368">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="368" end="380">
+<LeftIndent>290.0</LeftIndent>
+<content start="368" end="372">
+<size>15</size></content>
+
+<content start="372" end="379">
+<size>15</size><href>page12.cml</href></content>
+
+<content start="379" end="380">
+</content>
+
+</paragraph>
+<paragraph start="380" end="381">
+<LeftIndent>270.0</LeftIndent>
+<content start="380" end="381">
+</content>
+
+</paragraph>
+<paragraph start="381" end="382">
+<RightIndent>150.0</RightIndent>
+<LeftIndent>190.0</LeftIndent>
+<content start="381" end="382">
+</content>
+
+</paragraph>
+<paragraph start="382" end="384">
+<Alignment>1</Alignment>
+<content start="382" end="383">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>32.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;0&quot; marginwidth=&quot;0&quot; background=&quot;navBarBottomBackground.jpg&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; width=&quot;100%&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img width=&quot;14&quot; height=&quot;6&quot; src=&quot;navBarBottomColorBar.gif&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;8&quot; height=&quot;26&quot; src=&quot;navBarBottomLeftMargin.jpg&quot;&gt;
+          &lt;img width=&quot;60&quot; height=&quot;26&quot; src=&quot;prev.jpg&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img width=&quot;59&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;next.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img width=&quot;54&quot; height=&quot;26&quot; src=&quot;page.jpg&quot;&gt;
+          &lt;img width=&quot;46&quot; height=&quot;26&quot; src=&quot;indexSelected.jpg&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page1.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page2.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page3.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img width=&quot;29&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page4.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page5.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page6.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page7.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img width=&quot;29&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page8.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page9.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img width=&quot;25&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page10.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page11.cml&quot;&gt;&lt;img width=&quot;27&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page11.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page12.cml&quot;&gt;&lt;img width=&quot;27&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page12.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;img width=&quot;7&quot; height=&quot;26&quot; src=&quot;navBarBottomRightMargin.jpg&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-373738</bgcolor>
+</component></content>
+
+<content start="383" end="384">
+</content>
+
+</paragraph>
+<paragraph start="384" end="385">
+<RightIndent>150.0</RightIndent>
+<content start="384" end="385">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="385" end="386">
+<RightIndent>150.0</RightIndent>
+<content start="385" end="386">
+</content>
+
+</paragraph>
+<paragraph start="386" end="397">
+<Alignment>1</Alignment>
+<content start="386" end="388">
+</content>
+
+<content start="388" end="389">
+<icon>cc-logo.png</icon></content>
+
+<content start="389" end="395">
+</content>
+
+<content start="395" end="396">
+<icon>nsf-logo.png</icon></content>
+
+<content start="396" end="397">
+</content>
+
+</paragraph>
+<paragraph start="397" end="430">
+<Alignment>1</Alignment>
+<content start="397" end="430">
+</content>
+
+</paragraph>
+<paragraph start="430" end="431">
+<RightIndent>150.0</RightIndent>
+<LeftIndent>190.0</LeftIndent>
+<content start="430" end="431">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="431" end="560">
+<Alignment>1</Alignment>
+<content start="431" end="463">
+<size>10</size></content>
+
+<content start="463" end="511">
+<size>10</size><href>http://creativecommons.org/licenses/by-nc/3.0/</href></content>
+
+<content start="511" end="560">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="560" end="694">
+<Alignment>1</Alignment>
+<content start="560" end="694">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="694" end="798">
+<Alignment>1</Alignment>
+<content start="694" end="798">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="798" end="799">
+<content start="798" end="799">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="799" end="800">
+</paragraph>
+</section>
+</document>

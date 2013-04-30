@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Heated matter can emit light</page_title>
+<text>  Heated matter can emit light
+p. 8 of 8
+&lt; Previous | Index &gt;
+
+When we heat a substance (an iron bar or a gas, for example) it has the potential to emit light.  Even rocks will emit light when they are turned into lava.
+
+Click run on the simulator below.  Then use the heat and cool tool, the one that looks like this:
+
+ 
+
+located in the upper right of the model window, to raise the temperature of the system and see what happens.  Below the model, an emission spectrum will be generated.   The emission lines in the visible range will be colored according to their energy, while those in the invisible range will be represented by white lines just for us to see them (it does not mean that they really are white).  After letting the model run for two to three minutes, and after experimenting with adjusting the heat and cool tool, answer the question below.  Also consider adjusting the model speed if it helps you make observations.
+
+  
+ 
+Energy
+ 
+ 
+
+ 
+
+
+&lt; Previous | Index &gt;</text>
+<section start="0" end="980">
+<paragraph start="0" end="31">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="0" end="1">
+<icon>prism.gif</icon></content>
+
+<content start="1" end="2">
+</content>
+
+<content start="2" end="30">
+<bold>true</bold><family>Book Antiqua</family><size>24</size></content>
+
+<content start="30" end="31">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="31" end="41">
+<Alignment>1</Alignment>
+<content start="31" end="40">
+<foreground>255 0 0</foreground><bold>true</bold><size>11</size></content>
+
+<content start="40" end="41">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="41" end="62">
+<Alignment>1</Alignment>
+<content start="41" end="43">
+<size>11</size></content>
+
+<content start="43" end="52">
+<size>11</size><href>light7.cml</href></content>
+
+<content start="52" end="54">
+<size>11</size></content>
+
+<content start="54" end="59">
+<size>11</size><href>index.cml</href></content>
+
+<content start="59" end="62">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="62" end="63">
+<content start="62" end="63">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="63" end="220">
+<LeftIndent>46.0</LeftIndent>
+<content start="63" end="220">
+</content>
+
+</paragraph>
+<paragraph start="220" end="221">
+<LeftIndent>46.0</LeftIndent>
+<content start="220" end="221">
+</content>
+
+</paragraph>
+<paragraph start="221" end="319">
+<LeftIndent>46.0</LeftIndent>
+<content start="221" end="319">
+</content>
+
+</paragraph>
+<paragraph start="319" end="320">
+<LeftIndent>46.0</LeftIndent>
+<content start="319" end="320">
+</content>
+
+</paragraph>
+<paragraph start="320" end="322">
+<LeftIndent>46.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="320" end="321">
+<icon>heattool.gif</icon></content>
+
+<content start="321" end="322">
+</content>
+
+</paragraph>
+<paragraph start="322" end="323">
+<LeftIndent>46.0</LeftIndent>
+<content start="322" end="323">
+</content>
+
+</paragraph>
+<paragraph start="323" end="937">
+<LeftIndent>46.0</LeftIndent>
+<content start="323" end="453">
+</content>
+
+<content start="453" end="462">
+<bold>true</bold><italic>true</italic></content>
+
+<content start="462" end="936">
+</content>
+
+<content start="936" end="937">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="937" end="938">
+<content start="937" end="938">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="938" end="941">
+<Alignment>1</Alignment>
+<content start="938" end="939">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>light8$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="939" end="940">
+<component><class>org.concord.modeler.PageElectronicStructureViewer</class>
+<model>0</model>
+<type>3</type>
+<minimum>-2.5</minimum>
+<maximum>-0.5</maximum>
+<nstep>20</nstep>
+<tick>true</tick>
+<width>150</width>
+<height>180</height>
+</component></content>
+
+<content start="940" end="941">
+</content>
+
+</paragraph>
+<paragraph start="941" end="943">
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="941" end="942">
+<component><class>org.concord.modeler.PagePhotonSpectrometer</class>
+<model>0</model>
+<minimum>0.0</minimum>
+<maximum>20.0</maximum>
+<nstep>40</nstep>
+<width>550</width><height>30</height>
+</component></content>
+
+<content start="942" end="943">
+</content>
+
+</paragraph>
+<paragraph start="943" end="950">
+<Alignment>1</Alignment>
+<content start="943" end="950">
+</content>
+
+</paragraph>
+<paragraph start="950" end="952">
+<Alignment>1</Alignment>
+<content start="950" end="951">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.9999999983443153</value>
+<minimum>0.10000000149011612</minimum>
+<maximum>1.0</maximum>
+<nstep>9</nstep>
+<title>Simulation speed</title>
+<width>300</width>
+<height>70</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;0.9999999983443153&quot;, label=&quot;Fast&quot;}{value=&quot;0.09999999983443153&quot;, label=&quot;Slow&quot;}</labeltable>
+<change>Simulation speed of light-matter interactions</change>
+</component></content>
+
+<content start="951" end="952">
+</content>
+
+</paragraph>
+<paragraph start="952" end="954">
+<Alignment>1</Alignment>
+<content start="952" end="953">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>400</width>
+<height>200</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;3&quot;&gt;Describe what you observed as you ran the model and 
+    adjusted the heat and cool tool. &lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-1</bgcolor>
+</component></content>
+
+<content start="953" end="954">
+</content>
+
+</paragraph>
+<paragraph start="954" end="955">
+<Alignment>1</Alignment>
+<content start="954" end="955">
+</content>
+
+</paragraph>
+<paragraph start="955" end="957">
+<Alignment>1</Alignment>
+<content start="955" end="956">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Submit a Report</title>
+<tooltip>Submit a Report</tooltip>
+<group>light1.cml, light2.cml, light3.cml, light4.cml, light5.cml, light6.cml, light7.cml, light8.cml</group>
+<action>Create a report for a page group in a new window</action></component></content>
+
+<content start="956" end="957">
+<bold>true</bold><size>11</size></content>
+
+</paragraph>
+<paragraph start="957" end="958">
+<LeftIndent>6.0</LeftIndent>
+<content start="957" end="958">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="958" end="959">
+<LeftIndent>6.0</LeftIndent>
+<content start="958" end="959">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="959" end="980">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="959" end="961">
+<size>11</size></content>
+
+<content start="961" end="970">
+<size>11</size><href>light7.cml</href></content>
+
+<content start="970" end="972">
+<size>11</size></content>
+
+<content start="972" end="977">
+<size>11</size><href>index.cml</href></content>
+
+<content start="977" end="979">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

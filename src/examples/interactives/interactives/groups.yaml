@@ -114,8 +114,20 @@
   :name: "Classic Java MW Examples: Wave"
   :category: Examples
 
+- :path: public/part1/light
+  :name: "Classic Java MW Examples: Part1/Light"
+  :category: Examples
+
 - :path: public/part2/newton
   :name: "Classic Java MW Examples: Part2/Newton"
+  :category: Examples
+
+- :path: public/part2/photon
+  :name: "Classic Java MW Examples: Part2/Photon"
+  :category: Examples
+
+- :path: public/part2/spectroscopy
+  :name: "Classic Java MW Examples: Part2/Spectroscopy"
   :category: Examples
 
 - :path: tutorial

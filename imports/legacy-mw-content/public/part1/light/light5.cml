@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Difference electronic structure has different absorption and emission spectrum</page_title>
+<text>  Different Substances Have Different Photon Absorptions and Emissions
+p. 5 of 8
+&lt; Previous | Index | Next &gt;
+
+Each atom or molecule has its own unique distribution of energy levels, which is called its electronic structure (or electron configuration).  The electronic structure of a system is very important to its properties.  One way to measure electronic structures is to shine a beam of white light through the sample and to measure what wavelengths of light are absorbed. White light is a mix of photons of all possible energies. 
+
+The atoms in the model window below each have five electronic energy levels, represented by the four black lines and one blue line in the energy level diagram to the right of the model window.
+
+1) Click the Run button to start a parade of photons.  Let it run for at least two to three minutes.  Below the simulator, spectral lines representing photon absorptions should begin to appear.  As the model is running, answer Question A before moving on to step 2.
+2) Click Stop.  Then take snapshots of both the energy level diagram and the absorption spectrum by right-clicking (or control-clicking) on each and selecting Take a Snapshot.
+3) Click the Reset button.  Then click Yes when asked if you really want to reset to the saved state.
+4) Now add about 4 or 5 more energy levels by double clicking on any of the tick marks on the energy level diagram (new black lines should appear after each double click).
+5) Click the Run button to start another parade of photons.  Let it run for at least two minutes.  Below the simulator, spectral lines representing photon absorptions should begin to appear.  As the model is running, answer Question B before moving on to step 6.
+6) Click Stop.  Then take snapshots of both the energy level diagram and the absorption spectrum by right-clicking (or control-clicking) on each and selecting Take a Snapshot.
+
+
+
+  
+
+   
+  Infrared                              		Visible 		              Ultraviolet
+Energy
+ 
+Color Conventions of Spectra:  Absorption spectra will be recorded in the strip above.  The strip has a background of a continuous white-color spectrum (called continuum spectrum, the rainbow of colors).  When the simulation begins, black lines will appear which represent the energies of absorbed light. The background for the invisible zones (infrared and ultraviolet) are white.  The black lines can also be thought of as the energy of the absorbed photons. 
+  
+
+ 
+
+ 
+
+Because each substance has a unique electronic structure and its absorption spectrum (of visible light) is solely determined by the electronic structure, a spectrum can be used to identify a substance, just as a fingerprint can be used to identify a person. Once the spectrum of an unknown substance is obtained, we can compare it against those of known substances. If a match is found, then the composition of the substance may be inferred. This technique is widely used in astronomy to determine the composition of stellar matter. The details of spectrum analysis is beyond the scope of our models.
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3087">
+<paragraph start="0" end="71">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="0" end="1">
+<icon>prism.gif</icon></content>
+
+<content start="1" end="2">
+</content>
+
+<content start="2" end="70">
+<bold>true</bold><family>Book Antiqua</family><size>24</size></content>
+
+<content start="70" end="71">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="71" end="81">
+<Alignment>1</Alignment>
+<content start="71" end="80">
+<foreground>255 0 0</foreground><bold>true</bold><family>Book Antiqua</family></content>
+
+<content start="80" end="81">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="81" end="109">
+<Alignment>1</Alignment>
+<content start="81" end="83">
+<size>11</size></content>
+
+<content start="83" end="92">
+<size>11</size><href>light4.cml</href></content>
+
+<content start="92" end="94">
+<size>11</size></content>
+
+<content start="94" end="99">
+<size>11</size><href>index.cml</href></content>
+
+<content start="99" end="102">
+<size>11</size></content>
+
+<content start="102" end="107">
+<size>11</size><href>light6.cml</href></content>
+
+<content start="107" end="109">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="109" end="110">
+<content start="109" end="110">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="110" end="536">
+<LeftIndent>46.0</LeftIndent>
+<content start="110" end="391">
+</content>
+
+<content start="391" end="402">
+<bold>true</bold><italic>true</italic></content>
+
+<content start="402" end="403">
+<bold>true</bold></content>
+
+<content start="403" end="536">
+</content>
+
+</paragraph>
+<paragraph start="536" end="537">
+<LeftIndent>46.0</LeftIndent>
+<content start="536" end="537">
+</content>
+
+</paragraph>
+<paragraph start="537" end="730">
+<LeftIndent>46.0</LeftIndent>
+<content start="537" end="730">
+</content>
+
+</paragraph>
+<paragraph start="730" end="731">
+<LeftIndent>46.0</LeftIndent>
+<content start="730" end="731">
+</content>
+
+</paragraph>
+<paragraph start="731" end="997">
+<LeftIndent>46.0</LeftIndent>
+<content start="731" end="997">
+</content>
+
+</paragraph>
+<paragraph start="997" end="1173">
+<LeftIndent>46.0</LeftIndent>
+<content start="997" end="1173">
+</content>
+
+</paragraph>
+<paragraph start="1173" end="1275">
+<LeftIndent>46.0</LeftIndent>
+<content start="1173" end="1275">
+</content>
+
+</paragraph>
+<paragraph start="1275" end="1447">
+<LeftIndent>46.0</LeftIndent>
+<content start="1275" end="1447">
+</content>
+
+</paragraph>
+<paragraph start="1447" end="1710">
+<LeftIndent>46.0</LeftIndent>
+<content start="1447" end="1710">
+</content>
+
+</paragraph>
+<paragraph start="1710" end="1886">
+<LeftIndent>46.0</LeftIndent>
+<content start="1710" end="1886">
+</content>
+
+</paragraph>
+<paragraph start="1886" end="1887">
+<LeftIndent>6.0</LeftIndent>
+<content start="1886" end="1887">
+</content>
+
+</paragraph>
+<paragraph start="1887" end="1888">
+<LeftIndent>46.0</LeftIndent>
+<content start="1887" end="1888">
+</content>
+
+</paragraph>
+<paragraph start="1888" end="1889">
+<LeftIndent>46.0</LeftIndent>
+<content start="1888" end="1889">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1889" end="1892">
+<LeftIndent>46.0</LeftIndent>
+<content start="1889" end="1890">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>light5$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="1890" end="1891">
+<component><class>org.concord.modeler.PageElectronicStructureViewer</class>
+<model>0</model>
+<type>3</type>
+<minimum>-2.5</minimum>
+<maximum>-0.5</maximum>
+<nstep>20</nstep>
+<tick>true</tick>
+<width>150</width>
+<height>180</height>
+</component></content>
+
+<content start="1891" end="1892">
+</content>
+
+</paragraph>
+<paragraph start="1892" end="1893">
+<LeftIndent>46.0</LeftIndent>
+<content start="1892" end="1893">
+</content>
+
+</paragraph>
+<paragraph start="1893" end="1897">
+<LeftIndent>46.0</LeftIndent>
+<content start="1893" end="1895">
+</content>
+
+<content start="1895" end="1896">
+<component><class>org.concord.modeler.PagePhotonSpectrometer</class>
+<model>0</model>
+<minimum>0.0</minimum>
+<maximum>20.0</maximum>
+<nstep>40</nstep>
+<type>1</type>
+<width>550</width><height>40</height>
+<border>Line</border></component></content>
+
+<content start="1896" end="1897">
+</content>
+
+</paragraph>
+<paragraph start="1897" end="1975">
+<LeftIndent>46.0</LeftIndent>
+<content start="1897" end="1975">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="1975" end="1982">
+<LeftIndent>240.0</LeftIndent>
+<content start="1975" end="1982">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="1982" end="1984">
+<LeftIndent>20.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<SpaceBelow>2.0</SpaceBelow>
+<content start="1982" end="1983">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.95</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1983" end="1984">
+</content>
+
+</paragraph>
+<paragraph start="1984" end="2446">
+<LeftIndent>20.0</LeftIndent>
+<content start="1984" end="2013">
+<bold>true</bold></content>
+
+<content start="2013" end="2144">
+</content>
+
+<content start="2144" end="2162">
+<bold>true</bold></content>
+
+<content start="2162" end="2446">
+</content>
+
+</paragraph>
+<paragraph start="2446" end="2449">
+<Alignment>1</Alignment>
+<SpaceAbove>2.0</SpaceAbove>
+<SpaceBelow>2.0</SpaceBelow>
+<content start="2446" end="2447">
+</content>
+
+<content start="2447" end="2448">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.95</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2448" end="2449">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2449" end="2450">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2449" end="2450">
+</content>
+
+</paragraph>
+<paragraph start="2450" end="2452">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2450" end="2451">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>400</width>
+<height>200</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;3&quot;&gt;Question A: As the model runs, record below as many 
+    observations as you can.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-1</bgcolor>
+</component></content>
+
+<content start="2451" end="2452">
+</content>
+
+</paragraph>
+<paragraph start="2452" end="2453">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2452" end="2453">
+</content>
+
+</paragraph>
+<paragraph start="2453" end="2455">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2453" end="2454">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>400</width>
+<height>200</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;3&quot;&gt;Question B: As the model runs, record below as many 
+    observations as you can, including any differences you notice compared to 
+    the simulation with fewer energy levels.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-1</bgcolor>
+</component></content>
+
+<content start="2454" end="2455">
+</content>
+
+</paragraph>
+<paragraph start="2455" end="2456">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2455" end="2456">
+</content>
+
+</paragraph>
+<paragraph start="2456" end="3057">
+<LeftIndent>46.0</LeftIndent>
+<content start="2456" end="3056">
+</content>
+
+<content start="3056" end="3057">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3057" end="3058">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3057" end="3058">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3058" end="3059">
+<LeftIndent>6.0</LeftIndent>
+<content start="3058" end="3059">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3059" end="3087">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3059" end="3061">
+<size>11</size></content>
+
+<content start="3061" end="3070">
+<size>11</size><href>light4.cml</href></content>
+
+<content start="3070" end="3072">
+<size>11</size></content>
+
+<content start="3072" end="3077">
+<size>11</size><href>index.cml</href></content>
+
+<content start="3077" end="3080">
+<size>11</size></content>
+
+<content start="3080" end="3085">
+<size>11</size><href>light6.cml</href></content>
+
+<content start="3085" end="3086">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

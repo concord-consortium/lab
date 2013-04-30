@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Excited States and Photons: Summary</page_title>
+<bg_color><Red>241</Red><Green>240</Green><Blue>246</Blue></bg_color>
+<text>
+ 
+ 
+
+ 
+
+   
+
+   
+
+   
+
+
+
+ 
+   
+ 
+
+
+ 
+
+
+</text>
+<section start="0" end="41">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="3">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;physStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p class=&quot;pagetitle&quot;&gt;
+      &lt;strong&gt;Excited States and Photons&lt;/strong&gt;: Summary
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-cca464</bgcolor></icon></content>
+
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="5">
+<Alignment>1</Alignment>
+<content start="3" end="4">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;0&quot; marginheight=&quot;0&quot; background=&quot;topNavBarLeftMargin.jpg&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; border=&quot;0&quot; id=&quot;Table_01&quot; width=&quot;100%&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img src=&quot;topNavBarLeftMargin.jpg&quot; height=&quot;26&quot; width=&quot;14&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;page11.cml&quot;&gt;&lt;img src=&quot;prev.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;60&quot;&gt;
+          &lt;/a&gt;&lt;img src=&quot;next.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;59&quot;&gt;
+          &lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img src=&quot;page.jpg&quot; height=&quot;26&quot; width=&quot;54&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;index.cml&quot;&gt;&lt;img src=&quot;index.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;46&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img src=&quot;page1.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img src=&quot;page2.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img src=&quot;page3.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img src=&quot;page4.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img src=&quot;page5.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img src=&quot;page6.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img src=&quot;page7.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img src=&quot;page8.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img src=&quot;page9.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img src=&quot;page10.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;25&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page11.cml&quot;&gt;&lt;img src=&quot;page11.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;27&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page12.cml&quot;&gt;&lt;img src=&quot;page12Selected.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;27&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;img src=&quot;topNavBarRightMargin.jpg&quot; height=&quot;26&quot; width=&quot;7&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<Alignment>1</Alignment>
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="8">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>200</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;physStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;mainidea&quot;&gt;
+    &lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;98&quot; height=&quot;58&quot; src=&quot;lightMainIdea.png&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          What you have learned from this activity:
+
+          &lt;ol&gt;
+            &lt;li&gt;
+              &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Different 
+              atoms have different energy levels. &lt;/font&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+              &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;When 
+              an atom jumps from one energy level to a lower one, it emits a 
+              photon of a particular frequency. &lt;/font&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+              &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;The 
+              energy of the photon is equal to the difference between the 
+              atom&apos;s energy levels. The photon carries the energy that was 
+              previously stored in the atom. &lt;/font&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+              &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Atoms 
+              can also absorb photons, but only if they have exactly the right 
+              frequency to match the difference between the energy levels. &lt;/font&gt;
+            &lt;/li&gt;
+          &lt;/ol&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-282012</bgcolor></icon></content>
+
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="9">
+<Alignment>1</Alignment>
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="13">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>372</width>
+<height>250</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body bgcolor=&quot;rgb(230, 230, 230)&quot; marginwidth=&quot;5&quot; marginheight=&quot;5&quot;&gt;
+    &lt;strong&gt;&lt;font size=&quot;4&quot; face=&quot;Arial, Helvetica, sans-serif&quot;&gt;When two balls 
+    collide with each other they bounce away from each other with the same 
+    kinetic energy they had when they collided. This can happen for atoms too. 
+    However, sometimes the atoms have less kinetic energy after a collision. 
+    Explain what must have happened to the lost kinetic energy.&lt;/font&gt;&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+</component></content>
+
+<content start="10" end="11">
+</content>
+
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>372</width>
+<height>250</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body bgcolor=&quot;rgb(230, 230, 230)&quot; marginwidth=&quot;5&quot; marginheight=&quot;5&quot;&gt;
+    &lt;strong&gt;&lt;font size=&quot;4&quot; face=&quot;Arial, Helvetica, sans-serif&quot;&gt;Give one reason 
+    it would take more energy to excite on kind of atom when compared to 
+    another?&lt;/font&gt;&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+</component></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="14">
+<Alignment>1</Alignment>
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="18">
+<Alignment>1</Alignment>
+<content start="14" end="15">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>372.0</width>
+<height>220.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;table width=&quot;100%&quot;&gt;
+      &lt;tr bgcolor=&quot;white&quot;&gt;
+        &lt;td valign=&quot;middle&quot; align=&quot;center&quot;&gt;
+          &lt;img src=&quot;energyLevels.gif&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="15" end="16">
+</content>
+
+<content start="16" end="17">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>4</row>
+<width>372</width>
+<height>220</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body bgcolor=&quot;rgb(230, 230, 230)&quot; marginwidth=&quot;5&quot; marginheight=&quot;5&quot;&gt;
+    &lt;strong&gt;&lt;font size=&quot;4&quot; face=&quot;Arial, Helvetica, sans-serif&quot;&gt;If an atom had 
+    an energy diagram that looked like the image on the left, which transition 
+    between levels would cause the atoms to give off its lowest energy photon?&lt;/font&gt;&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<choice>&lt;html&gt;From level 4&amp;#8669;3.&lt;/html&gt;</choice>
+<choice>&lt;html&gt;From level 3&amp;#8669;4.&lt;/html&gt;</choice>
+<choice>&lt;html&gt;From level 4&amp;#8669;1.&lt;/html&gt;</choice>
+<choice>&lt;html&gt;From level 2&amp;#8669;3.&lt;/html&gt;</choice>
+<answer>0</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script>script:page:0:message atomVelNo.html -choiceseparator- script:page:0:message atomVelNo.html -choiceseparator- script:page:0:message atomVelYes.html -choiceseparator- </script>
+</component></content>
+
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<Alignment>1</Alignment>
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="23">
+<Alignment>1</Alignment>
+<content start="19" end="20">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>3</row>
+<width>372</width>
+<height>250</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body bgcolor=&quot;rgb(230, 230, 230)&quot; marginwidth=&quot;5&quot; marginheight=&quot;5&quot;&gt;
+    &lt;strong&gt;&lt;font size=&quot;4&quot; face=&quot;Arial, Helvetica, sans-serif&quot;&gt;If an atom goes 
+    from a very high energy state to a very low energy state what kind of 
+    photon must be emitted?&lt;/font&gt;&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<choice>&lt;html&gt;A very high energy photon equal to the difference in the energy levels of the atom.&lt;/html&gt;</choice>
+<choice>&lt;html&gt;A very low energy photon equal to the low energy state of the atom.&lt;/html&gt;</choice>
+<choice>&lt;html&gt;A very high energy photon equal to the high energy state of the atom.&lt;/html&gt;</choice>
+<answer>0</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script>script:page:0:message atomVelNo.html -choiceseparator- script:page:0:message atomVelNo.html -choiceseparator- script:page:0:message atomVelYes.html</script>
+</component></content>
+
+<content start="20" end="21">
+</content>
+
+<content start="21" end="22">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>4</row>
+<width>372</width>
+<height>250</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body bgcolor=&quot;rgb(230, 230, 230)&quot; marginwidth=&quot;5&quot; marginheight=&quot;5&quot;&gt;
+    &lt;strong&gt;&lt;font size=&quot;4&quot; face=&quot;Arial, Helvetica, sans-serif&quot;&gt;When an atom 
+    absorbs a photon it is very picky about which photons can excite it. Why 
+    is this?&lt;/font&gt;&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<choice>&lt;html&gt;The photon has to be the same color as the atom.&lt;/html&gt;</choice>
+<choice>&lt;html&gt;The energy of the photon has to be just right in order to get the atom into one of its predetermined excited states.&lt;/html&gt;</choice>
+<choice>&lt;html&gt;The photon has to be the right size for an atom to be able to absorb it.&lt;/html&gt;</choice>
+<choice>&lt;html&gt;It depends on the direction the atom is moving. If it moves in the right direction it can absorb any photon.&lt;/html&gt;</choice>
+<answer>1</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script>script:page:0:message atomVelNo.html -choiceseparator- script:page:0:message atomVelNo.html -choiceseparator- script:page:0:message atomVelYes.html -choiceseparator- </script>
+</component></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<Alignment>1</Alignment>
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="25">
+<Alignment>1</Alignment>
+<content start="24" end="25">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="25" end="26">
+<Alignment>1</Alignment>
+<content start="25" end="26">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="26" end="28">
+<Alignment>1</Alignment>
+<content start="26" end="27">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>16</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>5</cornerarc><bgcolor>-282012</bgcolor></icon><size>8</size></content>
+
+<content start="27" end="28">
+<bold>true</bold><size>8</size></content>
+
+</paragraph>
+<paragraph start="28" end="32">
+<Alignment>1</Alignment>
+<content start="28" end="29">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>494.0</width><height>44</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;physStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p class=&quot;firstp&quot; align=&quot;center&quot;&gt;
+      &lt;strong&gt;You have reached the end of the activity.&lt;br&gt;Please submit a 
+      report.&lt;/strong&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-282012</bgcolor></icon><size>8</size></content>
+
+<content start="29" end="30">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Create a report of my work</title>
+<description>Excited States and Photons</description>
+<group>page1.cml, page2.cml, page3.cml, page4.cml, page5.cml, page6.cml, page7.cml, page8.cml, page9.cml, page10.cml, page11.cml, page12.cml</group>
+<width>206</width><height>40</height>
+<opaque>false</opaque>
+<action>Create a report for a page group in a new window</action></component><size>8</size></content>
+
+<content start="30" end="31">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>50.0</width><height>44</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-282012</bgcolor></icon><size>8</size></content>
+
+<content start="31" end="32">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="32" end="34">
+<Alignment>1</Alignment>
+<content start="32" end="33">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>16</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>10</cornerarc><bgcolor>-282012</bgcolor></icon><size>8</size></content>
+
+<content start="33" end="34">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<Alignment>1</Alignment>
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<Alignment>1</Alignment>
+<content start="35" end="36">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="36" end="38">
+<Alignment>1</Alignment>
+<content start="36" end="37">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;0&quot; marginheight=&quot;0&quot; background=&quot;topNavBarLeftMargin.jpg&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; border=&quot;0&quot; id=&quot;Table_01&quot; width=&quot;100%&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img src=&quot;topNavBarLeftMargin.jpg&quot; height=&quot;26&quot; width=&quot;14&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;page11.cml&quot;&gt;&lt;img src=&quot;prev.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;60&quot;&gt;
+          &lt;/a&gt;&lt;img src=&quot;next.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;59&quot;&gt;
+          &lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img src=&quot;page.jpg&quot; height=&quot;26&quot; width=&quot;54&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;index.cml&quot;&gt;&lt;img src=&quot;index.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;46&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img src=&quot;page1.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img src=&quot;page2.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img src=&quot;page3.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img src=&quot;page4.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img src=&quot;page5.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img src=&quot;page6.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img src=&quot;page7.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img src=&quot;page8.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img src=&quot;page9.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img src=&quot;page10.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;25&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page11.cml&quot;&gt;&lt;img src=&quot;page11.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;27&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page12.cml&quot;&gt;&lt;img src=&quot;page12Selected.jpg&quot; height=&quot;26&quot; border=&quot;0&quot; width=&quot;27&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;img src=&quot;topNavBarRightMargin.jpg&quot; height=&quot;26&quot; width=&quot;7&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="39">
+<Alignment>1</Alignment>
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="40">
+<content start="39" end="40">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="40" end="41">
+</paragraph>
+</section>
+</document>

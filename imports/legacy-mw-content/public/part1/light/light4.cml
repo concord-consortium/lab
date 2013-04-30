@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Photon absorption and emission</page_title>
+<text>  Photon Absorption and Emission 2
+p. 4 of 8
+&lt; Previous | Index | Next &gt;
+Four atoms ( ) of the fictitious element Ck are shown in the model window below.  To the right of the model window is an electron energy level diagram that represents the two energy levels in each atom. The ground state is represented by the blue line and the higher energy level  called the excited state, is represented by the black line.  The distance between them (really, the difference of their energies) is a called an energy gap.  Imagine that all four atoms begin with one electron in the ground state level.  
+
+Instructions:
+
+1) Click the &quot;Run&quot; button.  You should see a parade of photons coming from the left.  Initially the photons should pass right through the atoms.  This represents our first scenario, that of no interaction.
+
+2) Now move the energy slider one tick at a time in the direction of higher energy.  At each tick, wait for a least three series of photons to pass through the atoms to make sure the change in energy has time to take place.  Continue moving one tick at a time until you reach an energy in which the photons are absorbed by the atom.   At this point, you should observe photons being absorbed and a temporary asterisk (*) appears in the center of the atom. This  symbolizes that the atom is now in an excited state because the electron has jumped to the higher energy level.  Almost immediately, the asterisk should disappear as the electron falls back to the ground state and the atom emits a photon.  This represents our second and third scenario, absorption and emission.
+
+
+
+  
+
+  
+
+3) Continue to increase the energy one tick at a time as you did before, waiting for at least three series of photons to emerge at each tick mark.  Continue this for at least 3 or 4 more tick marks, then answer Question A below before moving on to step 4.
+
+4) Your energy slider should now be somewhere near the middle of the energy scale and photons should now be passing through the atoms without interacting with them.  Now grab the excited state energy level line (the black line) and move it up or down slowly in the direction you think will eventually cause photon absorption.  Continue until you set the excited state at a level which causes photon absorption.  Answer question B before moving on to step 5.
+
+5) Move the energy slider in the direction of lower energy, stopping at any point where photons are no longer being absorbed.  Answer question C before moving on to step 6.
+
+6) With both the energy slider and energy levels kept constant, experiment with changing the intensity of the light source by changing the intensity slider.  After observing the effect of many different intensity settings, answer questions D and E.
+
+ 
+
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2786">
+<paragraph start="0" end="35">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="0" end="1">
+<icon>prism.gif</icon></content>
+
+<content start="1" end="2">
+</content>
+
+<content start="2" end="34">
+<bold>true</bold><family>Book Antiqua</family><size>24</size></content>
+
+<content start="34" end="35">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="35" end="45">
+<Alignment>1</Alignment>
+<content start="35" end="44">
+<foreground>255 0 0</foreground><bold>true</bold><family>Book Antiqua</family></content>
+
+<content start="44" end="45">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="45" end="73">
+<Alignment>1</Alignment>
+<content start="45" end="47">
+<size>11</size></content>
+
+<content start="47" end="56">
+<size>11</size><href>light3.cml</href></content>
+
+<content start="56" end="58">
+<size>11</size></content>
+
+<content start="58" end="63">
+<size>11</size><href>index.cml</href></content>
+
+<content start="63" end="66">
+<size>11</size></content>
+
+<content start="66" end="71">
+<size>11</size><href>light5.cml</href></content>
+
+<content start="71" end="73">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="73" end="593">
+<LeftIndent>40.0</LeftIndent>
+<content start="73" end="84">
+</content>
+
+<content start="84" end="85">
+<size>35</size></content>
+
+<content start="85" end="86">
+<icon>atom.jpg</icon></content>
+
+<content start="86" end="88">
+<size>35</size></content>
+
+<content start="88" end="280">
+</content>
+
+<content start="280" end="292">
+<foreground>0 0 255</foreground><bold>true</bold></content>
+
+<content start="292" end="315">
+</content>
+
+<content start="315" end="324">
+<foreground>0 0 255</foreground><bold>true</bold></content>
+
+<content start="324" end="333">
+</content>
+
+<content start="333" end="380">
+<bold>true</bold></content>
+
+<content start="380" end="394">
+</content>
+
+<content start="394" end="395">
+<bold>true</bold></content>
+
+<content start="395" end="402">
+</content>
+
+<content start="402" end="415">
+<bold>true</bold></content>
+
+<content start="415" end="499">
+</content>
+
+<content start="499" end="510">
+<bold>true</bold></content>
+
+<content start="510" end="593">
+</content>
+
+</paragraph>
+<paragraph start="593" end="594">
+<LeftIndent>26.0</LeftIndent>
+<content start="593" end="594">
+</content>
+
+</paragraph>
+<paragraph start="594" end="608">
+<LeftIndent>26.0</LeftIndent>
+<content start="594" end="607">
+<bold>true</bold></content>
+
+<content start="607" end="608">
+</content>
+
+</paragraph>
+<paragraph start="608" end="609">
+<LeftIndent>26.0</LeftIndent>
+<content start="608" end="609">
+</content>
+
+</paragraph>
+<paragraph start="609" end="815">
+<LeftIndent>46.0</LeftIndent>
+<content start="609" end="799">
+</content>
+
+<content start="799" end="813">
+<bold>true</bold></content>
+
+<content start="813" end="815">
+</content>
+
+</paragraph>
+<paragraph start="815" end="816">
+<LeftIndent>46.0</LeftIndent>
+<content start="815" end="816">
+</content>
+
+</paragraph>
+<paragraph start="816" end="1590">
+<LeftIndent>46.0</LeftIndent>
+<content start="816" end="832">
+</content>
+
+<content start="832" end="838">
+<underline>true</underline></content>
+
+<content start="838" end="1565">
+</content>
+
+<content start="1565" end="1575">
+<bold>true</bold></content>
+
+<content start="1575" end="1580">
+</content>
+
+<content start="1580" end="1588">
+<bold>true</bold></content>
+
+<content start="1588" end="1590">
+</content>
+
+</paragraph>
+<paragraph start="1590" end="1591">
+<LeftIndent>46.0</LeftIndent>
+<content start="1590" end="1591">
+</content>
+
+</paragraph>
+<paragraph start="1591" end="1592">
+<LeftIndent>46.0</LeftIndent>
+<content start="1591" end="1592">
+</content>
+
+</paragraph>
+<paragraph start="1592" end="1593">
+<LeftIndent>6.0</LeftIndent>
+<content start="1592" end="1593">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1593" end="1596">
+<Alignment>1</Alignment>
+<content start="1593" end="1594">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>light4$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="1594" end="1595">
+<component><class>org.concord.modeler.PageElectronicStructureViewer</class>
+<model>0</model>
+<type>3</type>
+<minimum>-2.5</minimum>
+<maximum>-0.2</maximum>
+<nstep>20</nstep>
+<tick>true</tick>
+<width>150</width>
+<height>180</height>
+</component></content>
+
+<content start="1595" end="1596">
+</content>
+
+</paragraph>
+<paragraph start="1596" end="1597">
+<Alignment>1</Alignment>
+<content start="1596" end="1597">
+</content>
+
+</paragraph>
+<paragraph start="1597" end="1600">
+<Alignment>1</Alignment>
+<content start="1597" end="1598">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>4.588235406314625</value>
+<minimum>4.800000190734863</minimum>
+<maximum>12.600000381469727</maximum>
+<nstep>17</nstep>
+<title>Energy of the Photons</title>
+<width>300</width>
+<height>70</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;4.588235406314625&quot;, label=&quot;Infrared&quot;}{value=&quot;12.388235597049487&quot;, label=&quot;Ultraviolet&quot;}</labeltable>
+<change>Frequency of Light Source</change>
+</component></content>
+
+<content start="1598" end="1599">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.0</value>
+<minimum>0.0</minimum>
+<maximum>10.0</maximum>
+<nstep>30</nstep>
+<title>Intensity of Light Source</title>
+<width>250</width>
+<height>70</height>
+<bgcolor>-1</bgcolor>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;Strong&quot;}{value=&quot;0.0&quot;, label=&quot;Weak&quot;}</labeltable>
+<change>Intensity of Light Source</change>
+</component></content>
+
+<content start="1599" end="1600">
+</content>
+
+</paragraph>
+<paragraph start="1600" end="1601">
+<Alignment>1</Alignment>
+<content start="1600" end="1601">
+</content>
+
+</paragraph>
+<paragraph start="1601" end="1857">
+<LeftIndent>40.0</LeftIndent>
+<content start="1601" end="1857">
+</content>
+
+</paragraph>
+<paragraph start="1857" end="1858">
+<LeftIndent>40.0</LeftIndent>
+<content start="1857" end="1858">
+</content>
+
+</paragraph>
+<paragraph start="1858" end="2316">
+<LeftIndent>40.0</LeftIndent>
+<content start="1858" end="2316">
+</content>
+
+</paragraph>
+<paragraph start="2316" end="2317">
+<LeftIndent>40.0</LeftIndent>
+<content start="2316" end="2317">
+</content>
+
+</paragraph>
+<paragraph start="2317" end="2490">
+<LeftIndent>40.0</LeftIndent>
+<content start="2317" end="2490">
+</content>
+
+</paragraph>
+<paragraph start="2490" end="2491">
+<LeftIndent>40.0</LeftIndent>
+<content start="2490" end="2491">
+</content>
+
+</paragraph>
+<paragraph start="2491" end="2740">
+<LeftIndent>40.0</LeftIndent>
+<content start="2491" end="2630">
+</content>
+
+<content start="2630" end="2646">
+<underline>true</underline></content>
+
+<content start="2646" end="2740">
+</content>
+
+</paragraph>
+<paragraph start="2740" end="2741">
+<LeftIndent>40.0</LeftIndent>
+<content start="2740" end="2741">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2741" end="2743">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2741" end="2742">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>4</row>
+<width>630</width>
+<height>200</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;
+      &lt;font face=&quot;Verdana&quot; size=&quot;3&quot;&gt;Question A: For a photon to be absorbed, 
+      the energy of the photon:&lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<choice>must be less than the energy gap between the two energy levels in the atom.</choice>
+<choice>must exceed the energy gap between the two energy levels in the atom.</choice>
+<choice>must exactly match or exceed the energy gap between the two energy levels in the atom.</choice>
+<choice>must exactly match the energy gap between the two energy levels in the atom.</choice>
+<answer>3</answer>
+<opaque>false</opaque>
+<border>Line</border>
+<script> -choiceseparator-  -choiceseparator-  -choiceseparator- </script>
+</component></content>
+
+<content start="2742" end="2743">
+</content>
+
+</paragraph>
+<paragraph start="2743" end="2744">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2743" end="2744">
+</content>
+
+</paragraph>
+<paragraph start="2744" end="2745">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2744" end="2745">
+</content>
+
+</paragraph>
+<paragraph start="2745" end="2747">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2745" end="2746">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>4</row>
+<width>630</width>
+<height>200</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;
+      &lt;font face=&quot;verdana&quot; size=&quot;3&quot;&gt;Question B: Which of the following best 
+      describes the changes you made in the energy levels to cause photon 
+      absorption?&lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<choice>Decreased the energy gap because the energy of the photon had been increased.</choice>
+<choice>Increased the energy gap because the energy of the photon had been increased.</choice>
+<choice>Decreased the energy gap as electrons require small energy gaps in order to change levels.</choice>
+<choice>None of the above.</choice>
+<answer>1</answer>
+<opaque>false</opaque>
+<border>Line</border>
+<script> -choiceseparator-  -choiceseparator-  -choiceseparator- </script>
+</component></content>
+
+<content start="2746" end="2747">
+</content>
+
+</paragraph>
+<paragraph start="2747" end="2748">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2747" end="2748">
+</content>
+
+</paragraph>
+<paragraph start="2748" end="2750">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2748" end="2749">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>2</row>
+<width>630</width>
+<height>150</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;
+      &lt;font face=&quot;Verdana&quot; size=&quot;3&quot;&gt;Question C: When the energy slider was 
+      moved in the direction of lower energy, it was:&lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>moved toward the infrared end.</choice>
+<choice>moved toward the ultraviolet end.</choice>
+<answer>0</answer>
+<opaque>false</opaque>
+<border>Line</border>
+<script> -choiceseparator- </script>
+</component></content>
+
+<content start="2749" end="2750">
+</content>
+
+</paragraph>
+<paragraph start="2750" end="2751">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2750" end="2751">
+</content>
+
+</paragraph>
+<paragraph start="2751" end="2753">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2751" end="2752">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>424</width>
+<height>197</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;3&quot;&gt;Question D: Describe what you observed as you experimented 
+    with changing the intensity settings. Make sure to comment on how the 
+    photons changed and at what point photon absorption occured.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-1</bgcolor>
+</component></content>
+
+<content start="2752" end="2753">
+</content>
+
+</paragraph>
+<paragraph start="2753" end="2754">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2753" end="2754">
+</content>
+
+</paragraph>
+<paragraph start="2754" end="2756">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2754" end="2755">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>5</row>
+<width>630</width>
+<height>200</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;
+      &lt;font face=&quot;Verdana&quot; size=&quot;3&quot;&gt;Question E: A yellow laser is shown to 
+      pass through gaseous atoms without being absorbed. Which of the 
+      following could be done to test if photon absorption might occur at a 
+      higher energy?&lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<choice>use a red laser</choice>
+<choice>use a brighter yellow laser</choice>
+<choice>use a blue laser</choice>
+<choice>none of the above</choice>
+<choice>both b and c</choice>
+<answer>2</answer>
+<opaque>false</opaque>
+<border>Line</border>
+<script> -choiceseparator-  -choiceseparator-  -choiceseparator-  -choiceseparator- </script>
+</component></content>
+
+<content start="2755" end="2756">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2756" end="2757">
+<LeftIndent>6.0</LeftIndent>
+<content start="2756" end="2757">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2757" end="2758">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2757" end="2758">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2758" end="2786">
+<Alignment>1</Alignment>
+<content start="2758" end="2760">
+<size>11</size></content>
+
+<content start="2760" end="2769">
+<size>11</size><href>light3.cml</href></content>
+
+<content start="2769" end="2771">
+<size>11</size></content>
+
+<content start="2771" end="2776">
+<size>11</size><href>index.cml</href></content>
+
+<content start="2776" end="2779">
+<size>11</size></content>
+
+<content start="2779" end="2784">
+<size>11</size><href>light5.cml</href></content>
+
+<content start="2784" end="2785">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>
