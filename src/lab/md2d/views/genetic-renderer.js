@@ -499,8 +499,8 @@ define(function (require) {
   };
 
   GeneticRenderer.prototype.prepareForTranslation = function () {
-    var cx  = this.model2px(this.model.get("width") * 0.5),
-        cy = this.model2pxInv(this.model.get("height") * 0.5),
+    var cx  = this.model2px(5 * 0.5),
+        cy = this.model2pxInv(3 * 0.5),
         ms2px = this.model2px,
         t;
 
@@ -651,6 +651,8 @@ define(function (require) {
       .style("opacity", 0);
     t.selectAll(".ribosome-under, .ribosome-over")
       .style("opacity", 1);
+
+    this._g.append("circle").attr("class", "animated-drag");
   };
 
   GeneticRenderer.prototype.translateStep = function (step) {
@@ -797,13 +799,6 @@ define(function (require) {
       this._currentTrans = d3.transition();
     }
     return this._currentTrans;
-  };
-
-  GeneticRenderer.prototype._transInProgress = function() {
-    if (this._currentTrans && this._currentTrans.node().__transition__) {
-      return true;
-    }
-    return false;
   };
 
   return GeneticRenderer;
