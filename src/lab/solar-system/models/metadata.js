@@ -41,10 +41,12 @@ define(function() {
         defaultValue: "default"
       },
       timeStep: {
-        defaultValue: 0.1
+        defaultValue: 0.1,
+        storeInTickHistory: true
       },
       timeStepsPerTick: {
-        defaultValue: 50
+        defaultValue: 50,
+        storeInTickHistory: true
       },
       horizontalWrapping: {
         defaultValue: false
@@ -56,42 +58,42 @@ define(function() {
 
     viewOptions: {
       viewPortWidth: {
-        defaultValue: 50,
         unitType: "length",
         immutable: true
       },
       viewPortHeight: {
-        defaultValue: 50,
         unitType: "length",
         immutable: true
+      },
+      viewPortZoom: {
+        defaultValue: 1
       },
       viewPortX: {
-        defaultValue: 0,
-        unitType: "length",
-        immutable: true
+        unitType: "length"
       },
       viewPortY: {
+        unitType: "length"
+      },
+      showClock: {
+        defaultValue: true,
+        storeInTickHistory: true
+      },
+      showBodyTrace: {
+        defaultValue: false,
+        storeInTickHistory: true
+      },
+      bodyTraceId: {
         defaultValue: 0,
-        unitType: "length",
-        immutable: true
+        storeInTickHistory: true
       },
       backgroundColor: {
         defaultValue: "#eeeeee"
       },
-      showClock: {
-        defaultValue: true
+      bodyTraceColor: {
+        defaultValue: "#ee8833"
       },
       markColor: {
         defaultValue: "#f8b500"
-      },
-      showBodyTrace: {
-        defaultValue: false
-      },
-      bodyTraceId: {
-        defaultValue: 0
-      },
-      bodyTraceColor: {
-        defaultValue: "#ee8833"
       },
       images: {
         defaultValue: []
@@ -103,6 +105,12 @@ define(function() {
         defaultValue: []
       },
       fitToParent: {
+        defaultValue: false
+      },
+      xlabel: {
+        defaultValue: false
+      },
+      ylabel: {
         defaultValue: false
       },
       xunits: {
