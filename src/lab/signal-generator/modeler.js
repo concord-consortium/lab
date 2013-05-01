@@ -41,9 +41,9 @@ define(function(require) {
 
         function tick() {
           stepCounter++;
-          makeInvalidatingChange(function() {
-            time += (0.001 * intervalLength * model.properties.timeScale);
-          });
+          time += (0.001 * intervalLength * model.properties.timeScale);
+          propertySupport.deleteComputedPropertyCachedValues();
+          propertySupport.notifyAllComputedProperties();
           dispatch.tick();
         }
 
