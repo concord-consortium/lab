@@ -76,7 +76,7 @@ define(function() {
       propertySupport object is false. The cache can be cleared by calling the
       deleteComputedPropertyCachedValues method of the propertySupport object. The caching normally
       occurs lazily, but paired calls to the storeComputedProperties and
-      notifyAllChangedComputedProperties methods of the propertySupport object cause all properties
+      notifyChangedComputedProperties methods of the propertySupport object cause all properties
       with getters to be computed and then recomputed, triggering notification of the observers of
       properties whose value changed between the calls.
 
@@ -607,10 +607,10 @@ define(function() {
           If 'key' represents a computed property, then observer notification is supported but
           happends according to a different cycle. Specifically, notification of the observer will
           happen if the value of the property changes between paired calls to
-          `storeComputedProperties` and `notifyAllChangedComputedProperties`, or whenever
+          `storeComputedProperties` and `notifyChangedComputedProperties`, or whenever
           `notifyAllComputedProperties` is called (regardless of the current or previous value of
           the property). As with batched property assignment, each callback is guaranteed to be
-          called directly by `notifyAllComputedProperties` or `notifyAllChangedComputedProperties`
+          called directly by `notifyAllComputedProperties` or `notifyChangedComputedProperties`
           at most once per invocation.
 
           Notification is never triggered by simply accessing the property, regardless of whether or
@@ -690,7 +690,7 @@ define(function() {
         properties (i.e., all properties with getters.)
 
         The next access of the property (either caused directly by code that explicitly accesses the
-        property, or indirectly by `notifyAllChangedComputedProperties`, which retrieves the current
+        property, or indirectly by `notifyChangedComputedProperties`, which retrieves the current
         value of all observed computed properties) will cause a recomputation of the property.
       */
       deleteComputedPropertyCachedValues: function() {
@@ -703,10 +703,10 @@ define(function() {
       /**
         The 'storeComputedProperties' method retrieves the current value of all computed properties,
         respecting any previously-cached value, and stores it in a secondary cache for subsequent
-        comparison to an updated value, by `notifyAllChangedComputedProperties`.
+        comparison to an updated value, by `notifyChangedComputedProperties`.
 
         Normally, one would call this method prior to updating the simulation clock, and then call
-        `deleteComputedPropertyCachedValues` and notifyAllChangedComputedProperties` after updating
+        `deleteComputedPropertyCachedValues` and notifyChangedComputedProperties` after updating
         the simulation clock.
       */
       storeComputedProperties: function() {
@@ -731,7 +731,7 @@ define(function() {
         Note that, because this method observes the cache, you probably want to call
         `deleteComputedPropertyCachedValues` after calling `storeComputedProperties`,
       */
-      notifyAllChangedComputedProperties: function() {
+      notifyChangedComputedProperties: function() {
         withBatchedNotifications(function() {
           observedComputedPropertyKeys().forEach(function(key) {
             if (get(key) !== propertyInformation[key].previousValue) {

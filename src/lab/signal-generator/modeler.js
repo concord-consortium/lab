@@ -29,7 +29,7 @@ define(function(require) {
           invalidatingChangeNestingLevel--;
           if (invalidatingChangeNestingLevel === 0) {
             propertySupport.enableCaching = true;
-            propertySupport.notifyAllChangedComputedProperties();
+            propertySupport.notifyChangedComputedProperties();
           }
         }
 

@@ -330,7 +330,7 @@ define(function(require) {
         filteredOutputsByName[name].addSample();
       });
 
-      propertySupport.notifyAllChangedComputedProperties();
+      propertySupport.notifyChangedComputedProperties();
       if (tickHistory) tickHistory.invalidateFollowingState();
       dispatch.invalidation();
     }
