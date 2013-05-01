@@ -60,7 +60,7 @@ module Parsers
           json_string = self.uri_helper.read
           self.update_from_json!(json_string)
         rescue Errno::ENOENT => e
-          puts "WARNING: Could not read #{self.data_hash['url']}"
+          puts "WARNING: Could not read #{self.data_hash['url']} #{e}"
         end
       end
       return self

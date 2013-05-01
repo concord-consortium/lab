@@ -47,7 +47,7 @@ module Parsers
       def adapt_url(url)
         # HACK: re-write paths with regex, mostly for parsing from FS :/
         if (url.match %r{^/})
-          self.uri_helper.path = self.uri_helper.path.sub %r{^(.*/public/).*$} do |match|
+          self.uri_helper.path = self.uri_helper.path.sub %r{^(.*?/public/).*$} do |match|
             "#{$1}#{url}"
           end
           # file-system relative urls from import job:
