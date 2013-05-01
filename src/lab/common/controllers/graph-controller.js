@@ -40,14 +40,6 @@ define(function (require) {
         data = [],
         namespace = "graphController" + (++graphControllerCount);
 
-    /**
-      Returns the time interval that elapses between succeessive data points, same units as model's
-      displayTime property. (e.g, for MD2D model, picoseconds.) The current implementation of the
-      grapher requires this knowledge.
-    */
-    function getSamplePeriod() {
-      return model.get('displayTimePerTick');
-    }
 
     /**
       Returns an array containing two-element arrays each containing the current model
@@ -67,11 +59,9 @@ define(function (require) {
       Return an options hash for use by the grapher.
     */
     function getOptions() {
-      var cProp,
-          gOption,
-          options = {
-            sampleInterval: getSamplePeriod()
-          };
+      var options = {},
+          cProp,
+          gOption;
 
       // update grapher options from component spec & defaults
       for (cProp in grapherOptionForComponentSpecProperty) {
@@ -158,13 +148,6 @@ define(function (require) {
         }
       });
       model.on('invalidation.'+namespace, removeDataAfterStepPointer);
-
-      // As an imperfect hack (really the grapher should allow us to pass the correct x-axis value)
-      // we reset the graph if a model property change changes the time interval between ticks
-      model.addPropertiesListener(['timeStepsPerTick', 'timeStep'], function() {
-        resetGrapher();
-        resetData();
-      });
     }
 
     //

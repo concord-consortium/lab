@@ -125,10 +125,6 @@ helpers.withIsolatedRequireJS (requirejs) ->
               newData = grapher.resetPoints.getCall(0).args[0]
               newData.should.eql [ [ [0, model.get('potentialEnergy')] ], [[0, model.get('kineticEnergy')] ] ]
 
-          it "should pass option.sampleInterval = viewRefreshRate * timeStep (/ 1000)", ->
-            options = mock.Graph.getCall(0).args[1]
-            options.should.have.property 'sampleInterval', model.get('timeStepsPerTick') * model.get('timeStep') / 1000
-
         describe "after 1 model tick", ->
           beforeEach ->
             grapher.addPoints.reset()
@@ -206,10 +202,6 @@ helpers.withIsolatedRequireJS (requirejs) ->
               options = grapher.reset.getCall(0).args[1]
               options.should.be.a 'object'
 
-            it "should pass option.sampleInterval = viewRefreshRate * timeStep (/ 1000)", ->
-              options = grapher.reset.getCall(0).args[1]
-              options.should.have.property 'sampleInterval', model.get('timeStepsPerTick') * model.get('timeStep') / 1000
-
             it "should pass 1 array of length 2 to resetPoints", ->
               newData = grapher.resetPoints.getCall(0).args[0]
               newData.should.have.length 2
@@ -274,25 +266,6 @@ helpers.withIsolatedRequireJS (requirejs) ->
                 newData[0].should.have.length 2
                 newData[1].should.have.length 2
 
-        describe "handling of sampleInterval size changes", ->
-          beforeEach ->
-            grapher.reset.reset()
-
-          grapherShouldReset = ->
-            grapher.reset.callCount.should.equal 1
-          sampleIntervalShouldBeCorrect = ->
-            options = grapher.reset.getCall(0).args[1]
-            options.sampleInterval.should.equal model.get('timeStepsPerTick') * model.get('timeStep') / 1000
-
-          it "should reset the graph and sampleInterval size after timeStepsPerTick is changed", ->
-            model.set timeStepsPerTick: 2 * model.get 'timeStepsPerTick'
-            grapherShouldReset()
-            sampleIntervalShouldBeCorrect()
-
-          it "should reset the graph and sampleInterval size after timeStep is changed", ->
-            model.set timeStep: 2 * model.get 'timeStep'
-            grapherShouldReset()
-            sampleIntervalShouldBeCorrect()
 
     describe "handling of graph configuration options in component spec", ->
       grapherOptionsForComponentSpec = (componentSpec) ->
