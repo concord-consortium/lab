@@ -2,10 +2,26 @@
 
 define(function(require) {
 
-  var PropertySupport = require('common/property-support');
+  var PropertySupport      = require('common/property-support'),
+      PropertyDescription  = require('md2d/models/property-description'),
+      RunningAverageFilter = require('cs!md2d/models/running-average-filter'),
+
+      unitsDefinition = {
+        time: {
+          name: "second",
+          pluralName: "seconds",
+          symbol: "s",
+          displayValue: {
+            unitsPerBaseUnit: 1e-3,
+            pluralName: "picoseconds",
+            name: "picosecond",
+            symbol: "ps"
+          }
+        }
+      };
 
   return function Model(initialProperties) {
-    var propertySupport = new PropertySupport(),
+    var propertySupport = new PropertySupport('parameter', 'output'),
 
         isStopped = true,
         dispatch = d3.dispatch('play', 'stop', 'tick', 'reset', 'stepForward', 'stepBack', 'seek', 'invalidation'),
@@ -14,6 +30,7 @@ define(function(require) {
         time = 0,
         stepCounter = 0,
         invalidatingChangeNestingLevel = 0,
+        filteredOutputs = [],
         model;
 
         function invalidatingChangePreHook() {
@@ -30,6 +47,7 @@ define(function(require) {
           if (invalidatingChangeNestingLevel === 0) {
             propertySupport.enableCaching = true;
             propertySupport.notifyChangedComputedProperties();
+            updateFilteredOutputs();
           }
         }
 
@@ -39,11 +57,20 @@ define(function(require) {
           invalidatingChangePostHook();
         }
 
+        function updateFilteredOutputs() {
+          filteredOutputs.forEach(function(output) {
+            output.addSample();
+          });
+        }
+
         function tick() {
           stepCounter++;
           time += (0.001 * intervalLength * model.properties.timeScale);
+
           propertySupport.deleteComputedPropertyCachedValues();
           propertySupport.notifyAllComputedProperties();
+          updateFilteredOutputs();
+
           dispatch.tick();
         }
 
@@ -78,7 +105,10 @@ define(function(require) {
         return stepCounter;
       },
 
-      // COPIED from MD2D modeler
+      //
+      // The following are essentially copied from MD2D modeler, and should moved to a common module
+      //
+
       addPropertiesListener: function(properties, callback) {
         if (typeof properties === 'string') {
           model.addObserver(properties, callback);
@@ -87,6 +117,67 @@ define(function(require) {
             model.addObserver(property, callback);
           });
         }
+      },
+
+      defineParameter: function(key, descriptionHash, setter) {
+        var descriptor = {
+              type: 'parameter',
+              includeInHistoryState: true,
+              invokeSetterAfterBulkRestore: false,
+              description: new PropertyDescription(unitsDefinition, descriptionHash),
+              beforeSetCallback: invalidatingChangePreHook,
+              afterSetCallback: invalidatingChangePostHook
+            };
+
+        // In practice, some parameters are meant only to be observed, and have no setter
+        if (setter) {
+          descriptor.set = function(value) {
+            setter.call(model, value);
+          };
+        }
+        propertySupport.defineProperty(key, descriptor);
+      },
+
+      defineOutput: function(key, descriptionHash, getter) {
+        propertySupport.defineProperty(key, {
+          type: 'output',
+          writable: false,
+          get: getter,
+          includeInHistoryState: false,
+          description: new PropertyDescription(unitsDefinition, descriptionHash)
+        });
+      },
+
+      defineFilteredOutput: function(key, description, filteredPropertyKey, type, period) {
+        var filter, initialValue;
+
+        if (type === "RunningAverage") {
+          filter = new RunningAverageFilter(period);
+        } else {
+          throw new Error("FilteredOutput: unknown filter type " + type + ".");
+        }
+
+        // Add initial sample
+        initialValue = model.properties[key];
+        if (initialValue === undefined || isNaN(Number(initialValue))) {
+          throw new Error("FilteredOutput: property is not a valid numeric value or it is undefined.");
+        }
+        filter.addSample(model.properties.time, initialValue);
+
+        filteredOutputs.push({
+          addSample: function() {
+            filter.addSample(model.properties.time, model.properties[filteredPropertyKey]);
+          }
+        });
+
+        // Extend description to contain information about filter
+        description.property = filteredPropertyKey;
+        description.type = type;
+        description.period = period;
+
+        model.defineOutput(key, description, function () {
+          return filter.calculate();
+        });
       }
     };
 
