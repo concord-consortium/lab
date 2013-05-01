@@ -118,6 +118,10 @@ define(function() {
       },
       mRNA: {
         serialize: false
+      },
+      useQuantumDynamics: {
+      },
+      elementEnergyLevels: {
       }
     },
 
@@ -321,6 +325,8 @@ define(function() {
         readOnly: true,
         unitType: "mass",
         serialize: false
+      },
+      excitation: {
       }
     },
 

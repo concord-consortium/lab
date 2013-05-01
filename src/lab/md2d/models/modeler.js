@@ -1394,7 +1394,7 @@ define(function(require) {
           props = {},
           propName;
       for (propName in atomMetaData) {
-        if (atomMetaData.hasOwnProperty(propName)) {
+        if (atomMetaData.hasOwnProperty(propName) && atoms[propName]) {
           props[propName] = atoms[propName][i];
         }
       }
