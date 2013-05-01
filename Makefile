@@ -11,7 +11,7 @@ MOCHA = find test/mocha -type f -name '*.js' -o -name '*.coffee' ! -name '.*' | 
 EXAMPLES_LAB_DIR = ./examples/lab
 SASS_COMPILER = bin/sass -I src --require ./src/helpers/sass/lab_fontface.rb
 R_OPTIMIZER = ./node_modules/.bin/r.js
-GENERATE_INTERACTIVE_INDEX = ruby src/helpers/examples/interactives/process-interactives.rb
+GENERATE_INTERACTIVE_INDEX = ruby src/helpers/process-interactives.rb
 
 LAB_SRC_FILES := $(shell find src/lab -type f ! -name '.*' -print)
 GRAPHER_SRC_FILES := $(shell find src/lab/grapher -type f ! -name '.*' -print)
@@ -32,7 +32,7 @@ COUCHDB_RUNNING := $(findstring couch,$(shell curl http://localhost:5984 2> /dev
 
 # targets
 
-INTERACTIVE_FILES := $(shell find src/examples/interactives/models src/examples/interactives/interactives -name '*.json' -exec echo {} \; | sed s'/src\/\(.*\)/server\/public\/\1/' )
+INTERACTIVE_FILES := $(shell find src/models src/interactives -name '*.json' -exec echo {} \; | sed s'/src\/\(.*\)/server\/public\/\1/' )
 vpath %.json src
 
 HAML_FILES := $(shell find src -name '*.haml' -exec echo {} \; | sed s'/src\/\(.*\)\.haml/server\/public\/\1/' )
@@ -99,9 +99,12 @@ src: \
 	$(SCSS_EXAMPLE_FILES) \
 	$(COFFEESCRIPT_EXAMPLE_FILES) \
 	$(INTERACTIVE_FILES) \
-	server/public/examples/interactives/interactives.json \
+	server/public/interactives.json \
 	server/public/index.css \
 	server/public/grapher.css \
+	server/public/interactives.css \
+	server/public/embeddable.css \
+	server/public/application.js \
 	server/public/lab-amd
 
 
@@ -172,19 +175,7 @@ server/public: \
 	server/public/doc \
 	server/public/experiments \
 	server/public/imports \
-	server/public/jnlp \
-	create_public_symlinks
-
-create_public_symlinks:
-	cd server/public; \
-	ln -s -f examples/interactives/embeddable-author.html embeddable-author.html; \
-	ln -s -f examples/interactives/embeddable.html embeddable.html; \
-	ln -s -f examples/interactives/interactives.html interactives.html; \
-	ln -s -f examples/interactives/embeddable-author.css embeddable-author.css; \
-	ln -s -f examples/interactives/embeddable.css embeddable.css; \
-	ln -s -f examples/interactives/molecules-view.css molecules-view.css; \
-	ln -s -f examples/interactives/interactives.css interactives.css; \
-	ln -s -f examples/interactives/application.js application.js;
+	server/public/jnlp
 
 server/public/examples:
 	mkdir -p server/public/examples
@@ -539,6 +530,18 @@ server/public/%.css: src/%.css
 server/public/index.css:
 	$(SASS_COMPILER) src/index.sass server/public/index.css
 
+server/public/application.js:
+	cp src/application.js server/public/application.js
+
+server/public/interactives.css:
+	$(SASS_COMPILER) src/interactives.sass server/public/interactives.css
+
+server/public/embeddable-author.css:
+	$(SASS_COMPILER) src/embeddable.sass server/public/embeddable-author.css
+
+server/public/embeddable.css:
+	$(SASS_COMPILER) src/embeddable.sass server/public/embeddable.css
+
 server/public/grapher.css: src/grapher.sass \
 	src/sass/lab/_colors.sass \
 	src/sass/lab/_grapher.sass
@@ -567,15 +570,15 @@ server/public/%.html: %.md
 	@rm -f $@
 	$(MARKDOWN_COMPILER) $< --toc-levels 2..6 --template src/layouts/$*.html.erb > $@
 
-server/public/examples/interactives/interactives/%.json: src/examples/interactives/interactives/%.json
+server/public/interactives/%.json: src/interactives/%.json
 	mkdir -p `dirname $@`
 	@cp $< $@
 
-server/public/examples/interactives/models/%.json: src/examples/interactives/models/%.json
+server/public/models/%.json: src/models/%.json
 	mkdir -p `dirname $@`
 	@cp $< $@
 
-server/public/examples/interactives/interactives.json: $(INTERACTIVE_FILES)
+server/public/interactives.json: $(INTERACTIVE_FILES)
 	$(GENERATE_INTERACTIVE_INDEX)
 
 .PHONY: h

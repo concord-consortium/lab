@@ -47,9 +47,9 @@ third-parties and are distributed under either BSD, MIT, or Apache 2.0 licenses.
 
 ### Molecular Modeling Examples
 
-- [Oil and Water](/examples/interactives/interactives.html#interactives/samples/1-oil-and-water-shake.json), ([embeddable link](/examples/interactives/embeddable.html#interactives/samples/1-oil-and-water-shake.json))
-- [A Simple Gas](/examples/interactives/interactives.html#interactives/samples/2-simple-gas.json), ([embeddable link](/examples/interactives/embeddable.html#interactives/samples/2-simple-gas.json))
-- [Explore 100 Atoms](/examples/interactives/interactives.html#interactives/samples/3-100-atoms.json), ([embeddable link](/examples/interactives/embeddable.html#interactives/samples/3-100-atoms.json))
+- [Oil and Water](interactives.html#interactives/samples/1-oil-and-water-shake.json), ([embeddable link](embeddable.html#interactives/samples/1-oil-and-water-shake.json))
+- [A Simple Gas](interactives.html#interactives/samples/2-simple-gas.json), ([embeddable link](embeddable.html#interactives/samples/2-simple-gas.json))
+- [Explore 100 Atoms](interactives.html#interactives/samples/3-100-atoms.json), ([embeddable link](embeddable.html#interactives/samples/3-100-atoms.json))
 
 ### Energy2D Examples
 
@@ -81,7 +81,7 @@ local computer. Once there open the file index.html in the expanded archive.
 For example Chrome generates this error when I try and load the sample Oil and Water Interactive directly
 from my filesystem:
 
-    XMLHttpRequest cannot load file:///Users/stephen/Downloads/concord-consortium-lab-9771ec6/examples/interactives/interactives/samples/1-oil-and-water-shake.json.
+    XMLHttpRequest cannot load file:///Users/stephen/Downloads/concord-consortium-lab-9771ec6/interactives/samples/1-oil-and-water-shake.json.
     Origin null is not allowed by Access-Control-Allow-Origin.
 
 ## Setup Development
@@ -738,7 +738,7 @@ In a full build environment the JavaScript configuration is set in the `:jsconfg
       :home: http://lab.concord.org
       :homeForSharing:
       :homeInteractivePath: /examples/interactives/interactive.html
-      :homeEmbeddablePath: /examples/interactives/embeddable.html
+      :homeEmbeddablePath: embeddable.html
       :utmCampaign: <external-campaign-key>
 
 **`sharing`** A boolean attribute used to determine if the **Share** link in the Interactives will be enabled.
@@ -777,7 +777,7 @@ sharing is impractical in some manner you can disable the display of the Interac
       :home: http://lab.concord.org
       :homeForSharing: http://lab.concord.org
       :homeInteractivePath: /examples/interactives/interactive.html
-      :homeEmbeddablePath: /examples/interactives/embeddable.html
+      :homeEmbeddablePath: embeddable.html
       :utmCampaign: <external-campaign-key>
 
 The additional values for `:home`, `homeInteractivePath`, and `homeEmbeddablePath` are used to construct an
@@ -1122,7 +1122,7 @@ First one will be more accurate and two times slower (more or less) than second 
 
 **modelSampleRate** defines how often we should execute "tick". Of course, in most cases we should call it as often as it's possible and that's the default behavior (with upper limit of 60 times per second to avoid running simple models too fast).
 
-You can test how these parameters work using [this interactive](http://lab.dev.concord.org/examples/interactives/interactives.html#interactives/basic-examples/sample-rate-and-refresh-rate.json).
+You can test how these parameters work using [this interactive](http://lab.dev.concord.orginteractives.html#interactives/basic-examples/sample-rate-and-refresh-rate.json).
 
 #### 2D Thermal Energy: [`energy2d`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d)
 
