@@ -5,6 +5,9 @@ define(function(require) {
   var PropertySupport      = require('common/property-support'),
       PropertyDescription  = require('md2d/models/property-description'),
       RunningAverageFilter = require('cs!md2d/models/running-average-filter'),
+      validator            = require('common/validator'),
+
+      metadata             = require('signal-generator/metadata'),
 
       unitsDefinition = {
         units: {
@@ -18,15 +21,22 @@ define(function(require) {
               name: "picosecond",
               symbol: "ps"
             }
+          },
+          frequency: {
+            name: "Hertz",
+            pluralName: "Hertz",
+            symbol: "Hz"
           }
         }
       };
 
   return function Model(initialProperties) {
     var propertySupport = new PropertySupport({
-          types: ['parameter', 'output']
+          types: ['mainProperty', 'viewOption', 'parameter', 'output']
         }),
 
+        viewOptions,
+        mainProperties,
         isStopped = true,
         dispatch = d3.dispatch('play', 'stop', 'tick', 'reset', 'stepForward', 'stepBack', 'seek', 'invalidation'),
         interval,
@@ -36,6 +46,46 @@ define(function(require) {
         invalidatingChangeNestingLevel = 0,
         filteredOutputs = [],
         model;
+
+    //
+    // The following function is essentially copied from MD2D modeler, and should moved to a common
+    // module
+    //
+    function defineBuiltinProperty(key, type, setter) {
+      var metadataForType,
+          descriptor,
+          propertyChangeInvalidates,
+          unitType;
+
+      if (type === 'mainProperty') {
+        metadataForType = metadata.mainProperties;
+      } else if (type === 'viewOption') {
+        metadataForType = metadata.viewOptions;
+      } else {
+        throw new Error(type + " is not a supported built-in property type");
+      }
+
+      propertyChangeInvalidates = validator.propertyChangeInvalidates(metadataForType[key]);
+
+      descriptor = {
+        type: type,
+        writable: validator.propertyIsWritable(metadataForType[key]),
+        set: setter,
+        includeInHistoryState: !!metadataForType[key].storeInTickHistory,
+        validate: function(value) {
+          return validator.validateSingleProperty(metadataForType[key], key, value, false);
+        },
+        beforeSetCallback: propertyChangeInvalidates ? invalidatingChangePreHook : undefined,
+        afterSetCallback: propertyChangeInvalidates ? invalidatingChangePostHook : undefined
+      };
+
+      unitType = metadataForType[key].unitType;
+      if (unitType) {
+        descriptor.description = new PropertyDescription(unitsDefinition, { unitType: unitType });
+      }
+
+      propertySupport.defineProperty(key, descriptor);
+    }
 
     function invalidatingChangePreHook() {
       invalidatingChangeNestingLevel++;
@@ -187,12 +237,17 @@ define(function(require) {
 
     propertySupport.mixInto(model);
 
-    propertySupport.defineProperty('controlButtons');
-    propertySupport.defineProperty('showClock');
+    mainProperties = validator.validateCompleteness(metadata.mainProperties, initialProperties);
+    Object.keys(mainProperties).forEach(function(key) {
+      defineBuiltinProperty(key, 'mainProperty');
+    });
+    propertySupport.setRawValues(mainProperties);
 
-    // Settable, but have no dependencies
-    propertySupport.defineProperty('frequency');
-    propertySupport.defineProperty('timeScale');
+    viewOptions = validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {});
+    Object.keys(viewOptions).forEach(function(key) {
+      defineBuiltinProperty(key, 'viewOption');
+    });
+    propertySupport.setRawValues(viewOptions);
 
     model.defineOutput('time', {
       label: "Time",
@@ -215,13 +270,6 @@ define(function(require) {
       format: '.2f'
     }, function() {
       return Math.cos(2 * Math.PI * model.properties.frequency * model.properties.time);
-    });
-
-    propertySupport.setRawValues({
-      controlButtons: initialProperties.viewOptions.controlButtons,
-      showClock: initialProperties.viewOptions.showClock,
-      timeScale: 1,
-      frequency: 1
     });
 
     return model;
