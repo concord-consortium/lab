@@ -116,12 +116,13 @@ guard 'shell' do
     command("./node_modules/.bin/mocha #{match[0]}")
   end
 
-  watch(/(^src\/examples\/[^.].+)$/) do |match|
+  watch(/(^src\/(?!sass).*\/[^.].+)$/) do |match|
+    puts match[0]
     unless match[0][/(\.haml)|(\.sass)|(\.scss)|(\.coffee)(\.yaml)|(^\..+)$/]
       source_path = match[0]
       destination_path = 'server/public/' + source_path[/src\/(.+?)$/, 1]
       command("cp -f #{source_path} #{destination_path}")
-      command("ruby src/helpers/examples/interactives/process-interactives.rb")
+      command("ruby src/helpers/process-interactives.rb")
     end
   end
 
