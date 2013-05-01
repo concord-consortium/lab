@@ -46,6 +46,10 @@
   :name: "Basic Interactive Examples"
   :category: Examples
 
+- :path: signal-generator
+  :name: "Signal Generator Interactives"
+  :category: Tests
+
 - :path: conversion-tests
   :name: "Physics Conversion Tests"
   :category: Tests
