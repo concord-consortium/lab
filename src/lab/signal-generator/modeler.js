@@ -26,6 +26,11 @@ define(function(require) {
             name: "Hertz",
             pluralName: "Hertz",
             symbol: "Hz"
+          },
+          angle: {
+            name: "radian",
+            pluralName: "radians",
+            symbol: "rad"
           }
         }
       };
@@ -41,10 +46,13 @@ define(function(require) {
         dispatch = d3.dispatch('play', 'stop', 'tick', 'reset', 'stepForward', 'stepBack', 'seek', 'invalidation'),
         interval,
         intervalLength = 16, // ms
+        lastFrequency,
+        phase = 0,
         time = 0,
         stepCounter = 0,
         invalidatingChangeNestingLevel = 0,
         filteredOutputs = [],
+        customSetters,
         model;
 
     //
@@ -126,6 +134,10 @@ define(function(require) {
       updateFilteredOutputs();
 
       dispatch.tick();
+    }
+
+    function constrain(angle) {
+      return angle - 2 * Math.PI * Math.floor(angle / (2 * Math.PI));
     }
 
     model = {
@@ -237,9 +249,20 @@ define(function(require) {
 
     propertySupport.mixInto(model);
 
+    // Ensure that phase + (time * angular frequency) remains unchanged when the frequency changes.
+    // This makes for continuous signals.
+    customSetters = {
+      frequency: function(newFrequency) {
+        if (lastFrequency !== undefined) {
+          phase = constrain(phase + 2 * Math.PI * (lastFrequency - newFrequency) * model.properties.time);
+        }
+        lastFrequency = newFrequency;
+      }
+    };
+
     mainProperties = validator.validateCompleteness(metadata.mainProperties, initialProperties);
     Object.keys(mainProperties).forEach(function(key) {
-      defineBuiltinProperty(key, 'mainProperty');
+      defineBuiltinProperty(key, 'mainProperty', customSetters[key]);
     });
     propertySupport.setRawValues(mainProperties);
 
@@ -269,7 +292,16 @@ define(function(require) {
       label: "Signal Value",
       format: '.2f'
     }, function() {
-      return Math.cos(2 * Math.PI * model.properties.frequency * model.properties.time);
+      return Math.cos(model.properties.angle);
+    });
+
+    model.defineOutput('angle', {
+      label: "Angle",
+      unitType: 'angle',
+      format: '.2f'
+    }, function() {
+      var angle = phase + 2 * Math.PI * model.properties.frequency * model.properties.time;
+      return constrain(angle);
     });
 
     return model;
