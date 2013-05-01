@@ -233,8 +233,10 @@
     { "name": "rightConcentrationO2", "initialValue": 0 }
   ],
   "components": [
-    { "type": "text", "id": "inside-above-label", "text": "Inside Cell" },
-    { "type": "text", "id": "outside-above-label", "text": "Outside Cell" },
+    { "type": "text", "id": "inside-above-label", "text": "Inside cell" },
+    { "type": "text", "id": "outside-above-label", "text": "Outside cell" },
+    { "type": "text", "id": "inside-right-label", "text": "Inside cell" },
+    { "type": "text", "id": "outside-right-label", "text": "Outside cell" },
     {
       "type": "barGraph",
       "id": "left-concentration-CO2",
@@ -245,6 +247,8 @@
       "barColor": "rgb(143,113,178)",
       "fillColor": "rgb(225,243,253)",
       "title": "CO2",
+      "titleOn": "top",
+      "height": "10em",
       "property": "leftConcentrationCO2"
     },
     {
@@ -256,6 +260,8 @@
       "barColor": "rgb(242,234,27)",
       "fillColor": "rgb(225,243,253)",
       "title": "O2",
+      "titleOn": "top",
+      "height": "10em",
       "property": "leftConcentrationO2"
     },
     {
@@ -267,6 +273,8 @@
       "barColor": "rgb(143,113,178)",
       "fillColor": "rgb(243,222,223)",
       "title": "CO2",
+      "titleOn": "top",
+      "height": "10em",
       "property": "rightConcentrationCO2"
     },
     {
@@ -278,6 +286,8 @@
       "barColor": "rgb(242,234,27)",
       "fillColor": "rgb(243,222,223)",
       "title": "O2",
+      "titleOn": "top",
+      "height": "10em",
       "property": "rightConcentrationO2"
     },
     {
@@ -285,7 +295,7 @@
       "id": "select-left-concentration-co2",
       "property": "initialLeftCO2",
       "label": "CO2",
-      "labelOn": "left",
+      "labelOn": "right",
       "options": [
         { 
           "text": "None",
@@ -306,7 +316,7 @@
       "id": "select-left-concentration-o2",
       "property": "initialLeftO2",
       "label": "O2",
-      "labelOn": "left",
+      "labelOn": "right",
       "options": [
         {
           "text": "None",
@@ -362,14 +372,50 @@
           "value": 50
         }
       ]
+    },
+    {
+      "id": "select-O2-action",
+      "type": "radio",
+      "label": "Select O2 atoms for marking",
+      "orientation": "horizontal",
+      "options": [
+        {
+          "text": "disabled",
+          "action": "onSelect(null);",
+          "selected": true
+        },
+        {
+          "text": "enabled",
+          "action": "onSelect(function (x, y, w, h) { markAtoms(atomsWithinRect(x, y, w, h, 10); });"
+        }
+      ]
+    },
+    {
+      "id": "select-CO2-action",
+      "type": "radio",
+      "label": "Select CO2 atoms for marking",
+      "orientation": "horizontal",
+      "options": [
+        {
+          "text": "disabled",
+          "action": "onSelect(null);",
+          "selected": true
+        },
+        {
+          "text": "enabled",
+          "action": "onSelect(function (x, y, w, h) { markAtoms(atomsWithinRect(x, y, w, h, 1)); });"
+        }
+      ]
     }
   ],
   "layout": {
-    "left": [
-      "left-concentration-O2", "left-concentration-CO2"
+    "right-inside": [
+      ["inside-right-label"],
+      ["left-concentration-O2", "left-concentration-CO2"]
     ],
-    "right": [
-      "right-concentration-O2", "right-concentration-CO2"
+    "right-outside": [
+      ["outside-right-label"],
+      ["right-concentration-O2", "right-concentration-CO2"]
     ],
     "bottom-left":  [
       [ "select-left-concentration-o2" ],
@@ -378,6 +424,10 @@
     "bottom-right": [
       [ "select-right-concentration-o2" ],
       [ "select-right-concentration-co2" ]
+    ],
+    "bottom": [
+      ["select-O2-action"],
+      ["select-CO2-action"]
     ],
     "above-left": [
       "outside-above-label"
@@ -402,6 +452,13 @@
       "align": "right"
     },
     {
+      "id": "bottom",
+      "top": "bottom-left.bottom",
+      "left": "bottom-left.left",
+      "width": "model.width",
+      "align": "center"
+    },
+    {
       "id": "above-left",
       "left": "model.left",
       "bottom": "model.top",
@@ -418,16 +475,16 @@
       "align": "right"
     },
     {
-      "id": "right",
+      "id": "right-inside",
       "left": "model.right",
-      "top": "model.top",
+      "top": "above-right.top",
       "height": "model.height",
       "align": "center"
     },
     {
-      "id": "left",
-      "right": "model.left",
-      "top": "model.top",
+      "id": "right-outside",
+      "left": "right-inside.right",
+      "top": "above-right.top",
       "height": "model.height",
       "align": "center"
     }
