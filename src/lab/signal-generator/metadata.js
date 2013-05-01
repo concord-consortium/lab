@@ -5,7 +5,7 @@ define(function() {
   return {
     mainProperties: {
       type: {
-        defaultValue: "md2d",
+        defaultValue: "signal-generator",
         immutable: true
       },
       frequency: {
