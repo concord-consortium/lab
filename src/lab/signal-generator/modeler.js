@@ -194,25 +194,27 @@ define(function(require) {
     propertySupport.defineProperty('frequency');
     propertySupport.defineProperty('timeScale');
 
-    propertySupport.defineProperty('signalValue', {
-      writable: false,
-      get: function() {
-        return Math.cos(2 * Math.PI * model.properties.frequency * model.properties.time);
-      }
+    model.defineOutput('time', {
+      label: "Time",
+      unitType: 'time',
+      format: '.2f'
+    }, function() {
+      return time;
     });
 
-    propertySupport.defineProperty('time', {
-      writable: false,
-      get: function() { return time; }
+    model.defineOutput('displayTime', {
+      label: "Time",
+      unitType: 'time',
+      format: '.2f'
+    }, function() {
+      return time;
     });
 
-    propertySupport.defineProperty('displayTime', {
-      get: function() {
-        return model.properties.time;
-      },
-      description: {
-        getUnitAbbreviation: function() { return "s"; }
-      }
+    model.defineOutput('signalValue', {
+      label: "Signal Value",
+      format: '.2f'
+    }, function() {
+      return Math.cos(2 * Math.PI * model.properties.frequency * model.properties.time);
     });
 
     propertySupport.setRawValues({
