@@ -32,7 +32,7 @@ COUCHDB_RUNNING := $(findstring couch,$(shell curl http://localhost:5984 2> /dev
 
 # targets
 
-INTERACTIVE_FILES := $(shell find src/examples/interactives/interactives -name '*.json' -exec echo {} \; | sed s'/src\/\(.*\)/server\/public\/\1/' )
+INTERACTIVE_FILES := $(shell find src/examples/interactives/models src/examples/interactives/interactives -name '*.json' -exec echo {} \; | sed s'/src\/\(.*\)/server\/public\/\1/' )
 vpath %.json src
 
 HAML_FILES := $(shell find src -name '*.haml' -exec echo {} \; | sed s'/src\/\(.*\)\.haml/server\/public\/\1/' )
@@ -103,7 +103,7 @@ src: \
 	server/public/index.css \
 	server/public/grapher.css \
 	server/public/lab-amd
-	
+
 
 .PHONY: import-interactives
 import-interactives:
@@ -568,6 +568,11 @@ server/public/%.html: %.md
 	$(MARKDOWN_COMPILER) $< --toc-levels 2..6 --template src/layouts/$*.html.erb > $@
 
 server/public/examples/interactives/interactives/%.json: src/examples/interactives/interactives/%.json
+	mkdir -p `dirname $@`
+	@cp $< $@
+
+server/public/examples/interactives/models/%.json: src/examples/interactives/models/%.json
+	mkdir -p `dirname $@`
 	@cp $< $@
 
 server/public/examples/interactives/interactives.json: $(INTERACTIVE_FILES)
