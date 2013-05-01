@@ -7,15 +7,17 @@ define(function(require) {
       RunningAverageFilter = require('cs!md2d/models/running-average-filter'),
 
       unitsDefinition = {
-        time: {
-          name: "second",
-          pluralName: "seconds",
-          symbol: "s",
-          displayValue: {
-            unitsPerBaseUnit: 1e-3,
-            pluralName: "picoseconds",
-            name: "picosecond",
-            symbol: "ps"
+        units: {
+          time: {
+            name: "second",
+            pluralName: "seconds",
+            symbol: "s",
+            displayValue: {
+              unitsPerBaseUnit: 1e-3,
+              pluralName: "picoseconds",
+              name: "picosecond",
+              symbol: "ps"
+            }
           }
         }
       };
