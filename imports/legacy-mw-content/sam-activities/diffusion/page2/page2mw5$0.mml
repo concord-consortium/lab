@@ -486,7 +486,7 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1366817611000</long> 
+     <long>1367430244000</long> 
     </object> 
    </void> 
    <void method="put"> 
@@ -651,10 +651,10 @@ store 2 %countCOR;</string>
        <byte>2</byte> 
       </void> 
       <void property="x"> 
-       <double>162.0</double> 
+       <double>177.0</double> 
       </void> 
       <void property="y"> 
-       <double>209.0</double> 
+       <double>216.0</double> 
       </void> 
      </object> 
     </void> 

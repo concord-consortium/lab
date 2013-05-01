@@ -2,8 +2,12 @@
   "title": "Diffusion Across a Permeable Membrane",
   "publicationStatus": "draft",
   "subtitle": "",
-  "about": "Oxygen and Carbon Dioxide can both easily cross this gas permeable membrane. Change the starting concentrations of the gases on either side and observe how long it takes for the gases to diffuse across the membrane.",
-  "fontScale": 1,
+  "about": [
+    "Oxygen and Carbon Dioxide can both easily cross this gas permeable membrane.",
+    "----------------------------------------------------------------------------",
+    "Change the starting concentrations of the gases on either side and observe how long it takes for the gases to diffuse across the membrane."
+  ],
+  "fontScale": 0.8,
   "models": [
     {
       "id": "model1",
@@ -26,7 +30,11 @@
         "  set('leftConcentrationO2',  nLeftO2/(nLeftO2+nRightO2));",
         "  set('rightConcentrationCO2',nRightCO2/(nLeftCO2+nRightCO2));",
         "  set('rightConcentrationO2', nRightO2/(nLeftO2+nRightO2));",
-        "});"
+        "});",
+        "onClick('plot', function(x, y, d, i) {",
+        "  addAtom({x: x, y: y});",
+        "});",
+        "onSelect(function (x, y, w, h) { markAtoms(atomsWithinRect(x, y, w, h)); });"
       ]
     }
   ],
@@ -77,7 +85,8 @@
         "   if (addAtom({x: w/2+x, y: y, vx: vx, vy: vy, element: 1})) nAtomsToAdd--;",
         "  }",
         "});",
-        "set('targetTemperature',500);"
+        "set('targetTemperature',500);",
+        "repaint();"
       ]
     },
     { "name": "initialLeftO2",
@@ -126,7 +135,8 @@
         "   if (addAtom({x: w/2+x, y: y, vx: vx, vy: vy, element: 1})) nAtomsToAdd--;",
         "  }",
         "});",
-        "set('targetTemperature',500);"
+        "set('targetTemperature',500);",
+        "repaint();"
       ]
     },
     { "name": "initialRightCO2",
@@ -175,7 +185,8 @@
         "   if (addAtom({x: w/2+x, y: y, vx: vx, vy: vy, element: 1})) nAtomsToAdd--;",
         "  }",
         "});",
-        "set('targetTemperature',500);"
+        "set('targetTemperature',500);",
+        "repaint();"
       ]
     },
     { "name": "initialRightO2",
@@ -224,15 +235,33 @@
         "   if (addAtom({x: w/2+x, y: y, vx: vx, vy: vy, element: 1})) nAtomsToAdd--;",
         "  }",
         "});",
-        "set('targetTemperature',500);"
+        "set('targetTemperature',500);",
+        "repaint();"
       ]
     },
     { "name": "leftConcentrationCO2", "initialValue": 0 },
     { "name": "leftConcentrationO2", "initialValue": 0 },
     { "name": "rightConcentrationCO2", "initialValue": 0 },
-    { "name": "rightConcentrationO2", "initialValue": 0 }
+    { "name": "rightConcentrationO2", "initialValue": 0 },
+    {
+      "name": "markingAtoms",
+      "initialValue": false,
+      "onChange": [
+        "if (value) { ",
+        "  onSelect(function (x, y, w, h) { markAtoms(atomsWithinRect(x, y, w, h)); });",
+        "} else {",
+        "  onSelect(null);",
+        "}"
+      ]
+    }
   ],
   "components": [
+    { 
+      "type": "checkbox",
+      "id": "toggle-select",
+      "text": "Mark atoms",
+      "property": "markingAtoms"
+    },
     { "type": "text", "id": "inside-above-label", "text": "Inside cell" },
     { "type": "text", "id": "outside-above-label", "text": "Outside cell" },
     { "type": "text", "id": "inside-right-label", "text": "Inside cell" },
@@ -246,9 +275,10 @@
       "labels": 0,
       "barColor": "rgb(143,113,178)",
       "fillColor": "rgb(225,243,253)",
-      "title": "CO2",
+      "title": "CO₂",
       "titleOn": "top",
-      "height": "10em",
+      "height": "15em",
+      "barWidth": "1em",
       "property": "leftConcentrationCO2"
     },
     {
@@ -259,9 +289,10 @@
       "labels": 0,
       "barColor": "rgb(242,234,27)",
       "fillColor": "rgb(225,243,253)",
-      "title": "O2",
+      "title": "O₂",
       "titleOn": "top",
-      "height": "10em",
+      "height": "15em",
+      "barWidth": "1em",
       "property": "leftConcentrationO2"
     },
     {
@@ -272,9 +303,10 @@
       "labels": 0,
       "barColor": "rgb(143,113,178)",
       "fillColor": "rgb(243,222,223)",
-      "title": "CO2",
+      "title": "CO₂",
       "titleOn": "top",
-      "height": "10em",
+      "height": "15em",
+      "barWidth": "1em",
       "property": "rightConcentrationCO2"
     },
     {
@@ -285,16 +317,17 @@
       "labels": 0,
       "barColor": "rgb(242,234,27)",
       "fillColor": "rgb(243,222,223)",
-      "title": "O2",
+      "title": "O₂",
       "titleOn": "top",
-      "height": "10em",
+      "height": "15em",
+      "barWidth": "1em",
       "property": "rightConcentrationO2"
     },
     {
       "type": "pulldown",
       "id": "select-left-concentration-co2",
       "property": "initialLeftCO2",
-      "label": "CO2",
+      "label": "CO₂",
       "labelOn": "right",
       "options": [
         { 
@@ -315,7 +348,7 @@
       "type": "pulldown",
       "id": "select-left-concentration-o2",
       "property": "initialLeftO2",
-      "label": "O2",
+      "label": "O₂",
       "labelOn": "right",
       "options": [
         {
@@ -336,7 +369,7 @@
       "type": "pulldown",
       "id": "select-right-concentration-co2",
       "property": "initialRightCO2",
-      "label": "CO2",
+      "label": "CO₂",
       "labelOn": "left",
       "options": [
         {
@@ -357,7 +390,7 @@
       "type": "pulldown",
       "id": "select-right-concentration-o2",
       "property": "initialRightO2",
-      "label": "O2",
+      "label": "O₂",
       "labelOn": "left",
       "options": [
         { 
@@ -370,40 +403,6 @@
         {
           "text": "High",
           "value": 50
-        }
-      ]
-    },
-    {
-      "id": "select-O2-action",
-      "type": "radio",
-      "label": "Select O2 atoms for marking",
-      "orientation": "horizontal",
-      "options": [
-        {
-          "text": "disabled",
-          "action": "onSelect(null);",
-          "selected": true
-        },
-        {
-          "text": "enabled",
-          "action": "onSelect(function (x, y, w, h) { markAtoms(atomsWithinRect(x, y, w, h, 10); });"
-        }
-      ]
-    },
-    {
-      "id": "select-CO2-action",
-      "type": "radio",
-      "label": "Select CO2 atoms for marking",
-      "orientation": "horizontal",
-      "options": [
-        {
-          "text": "disabled",
-          "action": "onSelect(null);",
-          "selected": true
-        },
-        {
-          "text": "enabled",
-          "action": "onSelect(function (x, y, w, h) { markAtoms(atomsWithinRect(x, y, w, h, 1)); });"
         }
       ]
     }
@@ -425,9 +424,8 @@
       [ "select-right-concentration-o2" ],
       [ "select-right-concentration-co2" ]
     ],
-    "bottom": [
-      ["select-O2-action"],
-      ["select-CO2-action"]
+    "below": [
+      "toggle-select"
     ],
     "above-left": [
       "outside-above-label"
@@ -452,7 +450,7 @@
       "align": "right"
     },
     {
-      "id": "bottom",
+      "id": "below",
       "top": "bottom-left.bottom",
       "left": "bottom-left.left",
       "width": "model.width",
