@@ -37,46 +37,46 @@ define(function(require) {
         filteredOutputs = [],
         model;
 
-        function invalidatingChangePreHook() {
-          invalidatingChangeNestingLevel++;
-          if (invalidatingChangeNestingLevel === 1) {
-            propertySupport.storeComputedProperties();
-            propertySupport.deleteComputedPropertyCachedValues();
-            propertySupport.enableCaching = false;
-          }
-        }
+    function invalidatingChangePreHook() {
+      invalidatingChangeNestingLevel++;
+      if (invalidatingChangeNestingLevel === 1) {
+        propertySupport.storeComputedProperties();
+        propertySupport.deleteComputedPropertyCachedValues();
+        propertySupport.enableCaching = false;
+      }
+    }
 
-        function invalidatingChangePostHook() {
-          invalidatingChangeNestingLevel--;
-          if (invalidatingChangeNestingLevel === 0) {
-            propertySupport.enableCaching = true;
-            propertySupport.notifyChangedComputedProperties();
-            updateFilteredOutputs();
-          }
-        }
+    function invalidatingChangePostHook() {
+      invalidatingChangeNestingLevel--;
+      if (invalidatingChangeNestingLevel === 0) {
+        propertySupport.enableCaching = true;
+        propertySupport.notifyChangedComputedProperties();
+        updateFilteredOutputs();
+      }
+    }
 
-        function makeInvalidatingChange(closure) {
-          invalidatingChangePreHook();
-          closure();
-          invalidatingChangePostHook();
-        }
+    function makeInvalidatingChange(closure) {
+      invalidatingChangePreHook();
+      closure();
+      invalidatingChangePostHook();
+    }
 
-        function updateFilteredOutputs() {
-          filteredOutputs.forEach(function(output) {
-            output.addSample();
-          });
-        }
+    function updateFilteredOutputs() {
+      filteredOutputs.forEach(function(output) {
+        output.addSample();
+      });
+    }
 
-        function tick() {
-          stepCounter++;
-          time += (0.001 * intervalLength * model.properties.timeScale);
+    function tick() {
+      stepCounter++;
+      time += (0.001 * intervalLength * model.properties.timeScale);
 
-          propertySupport.deleteComputedPropertyCachedValues();
-          propertySupport.notifyAllComputedProperties();
-          updateFilteredOutputs();
+      propertySupport.deleteComputedPropertyCachedValues();
+      propertySupport.notifyAllComputedProperties();
+      updateFilteredOutputs();
 
-          dispatch.tick();
-        }
+      dispatch.tick();
+    }
 
     model = {
       resetTime: function() {
