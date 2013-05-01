@@ -74,6 +74,14 @@ define(function(require) {
       return ! propertyMetadata.readOnly;
     },
 
+    propertyChangeInvalidates: function(propertyMetadata) {
+      // Default to true for safety.
+      if (propertyMetadata.propertyChangeInvalidates === undefined) {
+        return true;
+      }
+      return !!propertyMetadata.propertyChangeInvalidates;
+    },
+
     // Complete validation.
     // Assume that provided 'input' hash is used for creation of new
     // object. Start with checking if all required values are provided,
