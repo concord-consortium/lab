@@ -21,7 +21,9 @@ define(function(require) {
       };
 
   return function Model(initialProperties) {
-    var propertySupport = new PropertySupport('parameter', 'output'),
+    var propertySupport = new PropertySupport({
+          types: ['parameter', 'output']
+        }),
 
         isStopped = true,
         dispatch = d3.dispatch('play', 'stop', 'tick', 'reset', 'stepForward', 'stepBack', 'seek', 'invalidation'),
