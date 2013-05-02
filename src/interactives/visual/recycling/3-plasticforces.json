@@ -14,7 +14,7 @@
   "models": [
     {
       "id": "plasticforcesimple$0",
-      "url": "/imports/legacy-mw-content/converted/visual/Recycling/plasticforcesimple$0.json",
+      "url": "imports/legacy-mw-content/converted/visual/Recycling/plasticforcesimple$0.json",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       }

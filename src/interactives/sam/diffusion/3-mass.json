@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "model1",
-      "url": "/imports/legacy-mw-content/converted/sam-activities/diffusion/DiffusionTemp/DiffusionMass.json",
+      "url": "imports/legacy-mw-content/converted/sam-activities/diffusion/DiffusionTemp/DiffusionMass.json",
       "viewOptions": {
         "controlButtons": "play",
         "textBoxes" : [

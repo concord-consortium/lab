@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "hexshockwave_thermalexpansion",
-      "url": "/imports/legacy-mw-content/converted/student/materials/hexshockwave_thermalexpansion.json",
+      "url": "imports/legacy-mw-content/converted/student/materials/hexshockwave_thermalexpansion.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

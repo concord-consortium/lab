@@ -11,7 +11,7 @@
   "models": [
     {
       "id": "simple-gas$0",
-      "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
+      "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
       "viewOptions": {
         "controlButtons": "play_reset_step",
         "modelTimeLabel": true
@@ -19,7 +19,7 @@
     },
     {
       "id": "multiatomic-gas$0",
-      "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/multiatomic-gas$0.json",
+      "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/multiatomic-gas$0.json",
       "viewOptions": {
         "controlButtons": "play_reset_step",
         "modelTimeLabel": true
@@ -27,7 +27,7 @@
     },
     {
       "id": "pendulum1$0",
-      "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/pendulum1$0.json",
+      "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/pendulum1$0.json",
       "viewOptions": {
         "controlButtons": "play_reset_step",
         "modelTimeLabel": true
@@ -35,7 +35,7 @@
     },
     {
       "id": "plasticforcesimple$0",
-      "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/plasticforcesimple$0.json",
+      "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/plasticforcesimple$0.json",
       "viewOptions": {
         "controlButtons": "play_reset_step",
         "modelTimeLabel": true

@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "hob$0",
-      "url": "/imports/legacy-mw-content/converted/student/classic/harmonic/hob$0.json",
+      "url": "imports/legacy-mw-content/converted/student/classic/harmonic/hob$0.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

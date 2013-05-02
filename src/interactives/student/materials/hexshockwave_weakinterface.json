@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "hexshockwave_weakinterface",
-      "url": "/imports/legacy-mw-content/converted/student/materials/hexshockwave_weakinterface.json",
+      "url": "imports/legacy-mw-content/converted/student/materials/hexshockwave_weakinterface.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "page3$1",
-      "url": "/imports/legacy-mw-content/converted/benchmarks/oil-and-water/page3$1.json",
+      "url": "imports/legacy-mw-content/converted/benchmarks/oil-and-water/page3$1.json",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       },
@@ -14,7 +14,7 @@
     },
     {
       "id": "oilAndWaterMix",
-      "url": "/imports/legacy-mw-content/converted/benchmarks/oil-and-water/oilAndWaterMix.json",
+      "url": "imports/legacy-mw-content/converted/benchmarks/oil-and-water/oilAndWaterMix.json",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       },

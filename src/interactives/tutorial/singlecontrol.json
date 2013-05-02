@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "singlecontrol$0",
-      "url": "/imports/legacy-mw-content/converted/tutorial/singlecontrol$0.json",
+      "url": "imports/legacy-mw-content/converted/tutorial/singlecontrol$0.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

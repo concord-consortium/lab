@@ -9,7 +9,7 @@
   "models": [
     {
       "id": "simple-gas",
-      "url": "/imports/legacy-mw-content/converted/benchmarks/simple-gas/simple-gas$0.json",
+      "url": "imports/legacy-mw-content/converted/benchmarks/simple-gas/simple-gas$0.json",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       },
@@ -17,7 +17,7 @@
     },
     {
       "id": "oil-and-water",
-      "url": "/imports/legacy-mw-content/converted/benchmarks/oil-and-water/page3$1.json",
+      "url": "imports/legacy-mw-content/converted/benchmarks/oil-and-water/page3$1.json",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       },
@@ -25,7 +25,7 @@
     },
     {
       "id": "temperature-volume",
-      "url": "/imports/legacy-mw-content/converted/benchmarks/gas-laws-temperature-volume/page4$0.json",
+      "url": "imports/legacy-mw-content/converted/benchmarks/gas-laws-temperature-volume/page4$0.json",
       "viewOptions": {
         "controlButtons": "play_reset_step",
         "imageMapping": {
@@ -36,7 +36,7 @@
     },
     {
       "id": "hydrogen-bonds",
-      "url": "/imports/legacy-mw-content/converted/benchmarks/hydrogen-bonds/page6$0.json",
+      "url": "imports/legacy-mw-content/converted/benchmarks/hydrogen-bonds/page6$0.json",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       },
@@ -44,7 +44,7 @@
     },
     {
       "id": "100-atoms-charged",
-      "url": "/imports/legacy-mw-content/converted/benchmarks/100-atoms/100-atoms-charged.json",
+      "url": "imports/legacy-mw-content/converted/benchmarks/100-atoms/100-atoms-charged.json",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       },
@@ -52,7 +52,7 @@
     },
     {
       "id": "phase-change",
-      "url": "/imports/legacy-mw-content/converted/benchmarks/phase-change-energy-input/page6$0.json",
+      "url": "imports/legacy-mw-content/converted/benchmarks/phase-change-energy-input/page6$0.json",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       },
@@ -60,7 +60,7 @@
     },
     {
       "id": "plasticforce",
-      "url": "/imports/legacy-mw-content/converted/benchmarks/plastic-forces/plasticforcesimple$0.json",
+      "url": "imports/legacy-mw-content/converted/benchmarks/plastic-forces/plasticforcesimple$0.json",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       },

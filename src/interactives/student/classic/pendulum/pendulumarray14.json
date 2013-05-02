@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "pendulumarray14",
-      "url": "/imports/legacy-mw-content/converted/student/classic/pendulum/pendulumarray14.json",
+      "url": "imports/legacy-mw-content/converted/student/classic/pendulum/pendulumarray14.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

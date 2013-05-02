@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "moreonright",
-      "url": "/imports/legacy-mw-content/converted/student/fluid/moreonright.json",
+      "url": "imports/legacy-mw-content/converted/student/fluid/moreonright.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

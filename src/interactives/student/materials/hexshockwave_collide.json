@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "hexshockwave_collide",
-      "url": "/imports/legacy-mw-content/converted/student/materials/hexshockwave_collide.json",
+      "url": "imports/legacy-mw-content/converted/student/materials/hexshockwave_collide.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

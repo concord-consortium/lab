@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "peelcenter",
-      "url": "/imports/legacy-mw-content/converted/student/materials/peelcenter.json",
+      "url": "imports/legacy-mw-content/converted/student/materials/peelcenter.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

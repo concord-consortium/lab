@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "FewCharge",
-      "url": "/imports/legacy-mw-content/converted/student/motionandforce/FewCharge.json",
+      "url": "imports/legacy-mw-content/converted/student/motionandforce/FewCharge.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "h2o_pressure$0",
-      "url": "/imports/legacy-mw-content/converted/tutorial/h2o_pressure$0.json",
+      "url": "imports/legacy-mw-content/converted/tutorial/h2o_pressure$0.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

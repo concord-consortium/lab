@@ -6,14 +6,14 @@
   "models": [
     {
       "id": "DissolveCompare$0",
-      "url": "/imports/legacy-mw-content/converted/visual/Detergents/DissolveCompare$0.json",
+      "url": "imports/legacy-mw-content/converted/visual/Detergents/DissolveCompare$0.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }
     },
     {
       "id": "DissolveCompare$1",
-      "url": "/imports/legacy-mw-content/converted/visual/Detergents/DissolveCompare$1.json",
+      "url": "imports/legacy-mw-content/converted/visual/Detergents/DissolveCompare$1.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

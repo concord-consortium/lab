@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "solid",
-      "url": "/imports/legacy-mw-content/converted/tutorial/solid.json",
+      "url": "imports/legacy-mw-content/converted/tutorial/solid.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

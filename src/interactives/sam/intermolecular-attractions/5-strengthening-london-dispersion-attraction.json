@@ -10,7 +10,7 @@
   "models": [
     {
       "id": "instructions",
-      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/instructions.json",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/instructions.json",
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,
@@ -37,7 +37,7 @@
     },
     {
       "id": "npSmallStraight",
-      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npSmallStraight.json",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npSmallStraight.json",
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,
@@ -55,7 +55,7 @@
     },
     {
       "id": "npLargeStraight",
-      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npLargeStraight.json",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npLargeStraight.json",
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,
@@ -73,7 +73,7 @@
     },
     {
       "id": "npStraightJagged",
-      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npStraightJagged.json",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npStraightJagged.json",
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,
@@ -91,7 +91,7 @@
     },
     {
       "id": "npStraightRound",
-      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npStraightRound.json",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npStraightRound.json",
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,
@@ -109,7 +109,7 @@
     },
     {
       "id": "npCurvedRound",
-      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npCurvedRound.json",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npCurvedRound.json",
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,

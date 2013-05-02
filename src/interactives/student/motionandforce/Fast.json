@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "Fast",
-      "url": "/imports/legacy-mw-content/converted/student/motionandforce/Fast.json",
+      "url": "imports/legacy-mw-content/converted/student/motionandforce/Fast.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

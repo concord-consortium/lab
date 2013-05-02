@@ -12,7 +12,7 @@
   "models": [
     {
       "id": "instructions",
-      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/instructions.json",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/instructions.json",
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,
@@ -38,7 +38,7 @@
     },
     {
       "id": "npPulling",
-      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/npPulling.json",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/npPulling.json",
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,
@@ -59,7 +59,7 @@
     },
     {
       "id": "polarPulling",
-      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarPulling.json",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarPulling.json",
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,
@@ -80,7 +80,7 @@
     },
     {
       "id": "polarNpPulling",
-      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarNpPulling.json",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarNpPulling.json",
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,

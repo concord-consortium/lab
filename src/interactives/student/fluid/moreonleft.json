@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "moreonleft",
-      "url": "/imports/legacy-mw-content/converted/student/fluid/moreonleft.json",
+      "url": "imports/legacy-mw-content/converted/student/fluid/moreonleft.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

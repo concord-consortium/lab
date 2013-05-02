@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "alphatext",
-      "url": "/imports/legacy-mw-content/converted/tutorial/alphatext.json",
+      "url": "imports/legacy-mw-content/converted/tutorial/alphatext.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

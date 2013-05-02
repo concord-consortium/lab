@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "model_example$0",
-      "url": "/imports/legacy-mw-content/converted/tutorial/model_example$0.json",
+      "url": "imports/legacy-mw-content/converted/tutorial/model_example$0.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

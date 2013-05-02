@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "does-not-exist",
-      "url": "/imports/legacy-mw-content/converted/this-model-does-not-exist.json",
+      "url": "imports/legacy-mw-content/converted/this-model-does-not-exist.json",
       "viewOptions": {
         "controlButtons": ""
       }

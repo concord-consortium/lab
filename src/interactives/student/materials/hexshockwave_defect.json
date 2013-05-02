@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "hexshockwave_defect",
-      "url": "/imports/legacy-mw-content/converted/student/materials/hexshockwave_defect.json",
+      "url": "imports/legacy-mw-content/converted/student/materials/hexshockwave_defect.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

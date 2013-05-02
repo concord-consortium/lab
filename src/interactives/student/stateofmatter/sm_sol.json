@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "sm_sol",
-      "url": "/imports/legacy-mw-content/converted/student/stateofmatter/sm_sol.json",
+      "url": "imports/legacy-mw-content/converted/student/stateofmatter/sm_sol.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

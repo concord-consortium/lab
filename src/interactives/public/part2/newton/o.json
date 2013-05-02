@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "o",
-      "url": "/imports/legacy-mw-content/converted/public/part2/newton/o.json",
+      "url": "imports/legacy-mw-content/converted/public/part2/newton/o.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

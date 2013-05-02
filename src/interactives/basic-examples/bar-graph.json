@@ -9,7 +9,7 @@
   "models": [
     {
       "id": "simple-ke-shading$0",
-      "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/simple-ke-shading$0.json",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/simple-ke-shading$0.json",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       },

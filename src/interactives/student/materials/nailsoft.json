@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "nailsoft",
-      "url": "/imports/legacy-mw-content/converted/student/materials/nailsoft.json",
+      "url": "imports/legacy-mw-content/converted/student/materials/nailsoft.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

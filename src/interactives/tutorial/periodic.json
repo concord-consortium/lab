@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "periodic$0",
-      "url": "/imports/legacy-mw-content/converted/tutorial/periodic$0.json",
+      "url": "imports/legacy-mw-content/converted/tutorial/periodic$0.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

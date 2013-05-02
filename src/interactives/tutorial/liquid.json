@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "liquid",
-      "url": "/imports/legacy-mw-content/converted/tutorial/liquid.json",
+      "url": "imports/legacy-mw-content/converted/tutorial/liquid.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

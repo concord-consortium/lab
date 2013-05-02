@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "NegativePressure_hardsphere",
-      "url": "/imports/legacy-mw-content/converted/tutorial/NegativePressure_hardsphere.json",
+      "url": "imports/legacy-mw-content/converted/tutorial/NegativePressure_hardsphere.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

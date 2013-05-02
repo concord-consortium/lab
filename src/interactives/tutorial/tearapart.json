@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "tearapart",
-      "url": "/imports/legacy-mw-content/converted/tutorial/tearapart.json",
+      "url": "imports/legacy-mw-content/converted/tutorial/tearapart.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

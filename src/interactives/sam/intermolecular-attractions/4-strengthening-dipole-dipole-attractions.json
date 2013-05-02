@@ -10,7 +10,7 @@
   "models": [
     {
       "id": "instructions",
-      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/instructions.json",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/instructions.json",
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,
@@ -37,7 +37,7 @@
     },
     {
       "id": "leastPolarPull",
-      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/leastPolarPull.json",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/leastPolarPull.json",
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,
@@ -55,7 +55,7 @@
     },
     {
       "id": "medPolarPull",
-      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/medPolarPull.json",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/medPolarPull.json",
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,
@@ -73,7 +73,7 @@
     },
     {
       "id": "mostPolarPull",
-      "url": "/imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/mostPolarPull.json",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/mostPolarPull.json",
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,

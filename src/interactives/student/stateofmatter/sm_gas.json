@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "sm_gas",
-      "url": "/imports/legacy-mw-content/converted/student/stateofmatter/sm_gas.json",
+      "url": "imports/legacy-mw-content/converted/student/stateofmatter/sm_gas.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

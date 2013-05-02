@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "recshockwave",
-      "url": "/imports/legacy-mw-content/converted/student/materials/recshockwave.json",
+      "url": "imports/legacy-mw-content/converted/student/materials/recshockwave.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

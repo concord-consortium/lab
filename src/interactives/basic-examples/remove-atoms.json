@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "remove-atoms$0",
-      "url": "/imports/legacy-mw-content/converted/new-examples-for-nextgen/remove-atoms$0.json",
+      "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/remove-atoms$0.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

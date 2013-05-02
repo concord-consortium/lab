@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "twogears",
-      "url": "/imports/legacy-mw-content/converted/student/classic/gear/twogears.json",
+      "url": "imports/legacy-mw-content/converted/student/classic/gear/twogears.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

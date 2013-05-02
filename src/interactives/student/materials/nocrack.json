@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "nocrack",
-      "url": "/imports/legacy-mw-content/converted/student/materials/nocrack.json",
+      "url": "imports/legacy-mw-content/converted/student/materials/nocrack.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }
