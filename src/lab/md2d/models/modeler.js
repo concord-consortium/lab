@@ -303,11 +303,15 @@ define(function(require) {
     */
     function invalidatingChangePreHook() {
       if (suppressInvalidatingChangeHooks) return;
-      invalidatingChangeHookNestingLevel++;
 
-      propertySupport.storeComputedProperties();
-      propertySupport.deleteComputedPropertyCachedValues();
-      propertySupport.enableCaching = false;
+      if (invalidatingChangeHookNestingLevel === 0) {
+        // If we're beginning a series of (possibly-nested) invalidating changes, store computed
+        // property values so they can be compared when we finish the invalidating changes.
+        propertySupport.storeComputedProperties();
+        propertySupport.deleteComputedPropertyCachedValues();
+        propertySupport.enableCaching = false;
+      }
+      invalidatingChangeHookNestingLevel++;
     }
 
     /**
@@ -317,22 +321,27 @@ define(function(require) {
       if (suppressInvalidatingChangeHooks) return;
       invalidatingChangeHookNestingLevel--;
 
-      if (invalidatingChangeHookNestingLevel > 0) {
-        return;
+      // Make sure that computed properties which depend on engine state are valid
+      if (engine) {
+        readModelState();
       }
-      propertySupport.enableCaching = true;
-      if (engine) readModelState();
 
-      // Update all filtered outputs.
-      // Note that this have to be performed after invalidation of all outputs
-      // (as filtered output can filter another output).
+      // Non-filtered outputs will be valid at this point (caching is disabl;ed, so they're
+      // recomputed every time.) This ensures that filtered outputs that depend on non-filtered
+      // outputs are also valid:
       filteredOutputNames.forEach(function(name) {
         filteredOutputsByName[name].addSample();
       });
 
-      propertySupport.notifyChangedComputedProperties();
-      if (tickHistory) tickHistory.invalidateFollowingState();
-      dispatch.invalidation();
+      if (invalidatingChangeHookNestingLevel === 0) {
+        // Once we've finished the cycle of invalidating changes, go ahead and notify observers of
+        // computed properties that changed.
+        propertySupport.enableCaching = true;
+        propertySupport.notifyChangedComputedProperties();
+
+        if (tickHistory) tickHistory.invalidateFollowingState();
+        dispatch.invalidation();
+      }
     }
 
     /**
