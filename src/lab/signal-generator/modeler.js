@@ -96,20 +96,20 @@ define(function(require) {
     }
 
     function invalidatingChangePreHook() {
-      invalidatingChangeNestingLevel++;
-      if (invalidatingChangeNestingLevel === 1) {
+      if (invalidatingChangeNestingLevel === 0) {
         propertySupport.storeComputedProperties();
         propertySupport.deleteComputedPropertyCachedValues();
         propertySupport.enableCaching = false;
       }
+      invalidatingChangeNestingLevel++;
     }
 
     function invalidatingChangePostHook() {
       invalidatingChangeNestingLevel--;
+      updateFilteredOutputs();
       if (invalidatingChangeNestingLevel === 0) {
         propertySupport.enableCaching = true;
         propertySupport.notifyChangedComputedProperties();
-        updateFilteredOutputs();
       }
     }
 
