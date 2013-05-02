@@ -25,7 +25,7 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
       # and perform a really comprehensive, slow tests of all interactives serialization.
       # Nested directories are supported.
       # TODO: change path to (...)/interactives directory, when the slow mocha tests problem is fixed.
-      path = './src/examples/interactives/interactives/conversion-tests'
+      path = './src/interactives/conversion-tests'
       queue = fs.readdirSync path
       # Use only absolute paths.
       queue = queue.map (file) -> "#{path}/#{file}"
