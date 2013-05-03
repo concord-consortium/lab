@@ -137,8 +137,27 @@ AUTHORING = false;
     // TODO: some of the Deferred, ajax call have no error handlers?
     interactivesPromise.fail(function(){
       // TODO: need a better way to display errors
-      console.log("Failed to retrieve interactives.json");
-      alert("Failed to retrieve interactives.json");
+      var mesg = "Failed to retrieve interactives.json";
+      if (benchmark.what_browser().browser === "Chrome") {
+        mesg += "\n";
+        mesg += "\nNote: Chrome prevents loading content directly";
+        mesg += "\nfrom the file system.";
+        mesg += "\n";
+        mesg += "\nIf you are using Chrome to load Lab Interatives";
+        mesg += "\nfrom the file system you will need to start a";
+        mesg += "\nlocal web server instead.";
+        mesg += "\n";
+        mesg += "\nHere's one way to do that using python:";
+        mesg += "\n";
+        mesg += "\n    python -m SimpleHTTPServer";
+        mesg += "\n";
+        mesg += "\nNow open this page in your browser:";
+        mesg += "\n";
+        mesg += "\n    http://localhost:8000/interactives.html";
+        mesg += "\n";
+      }
+      console.log(mesg);
+      alert(mesg);
     });
   }
 

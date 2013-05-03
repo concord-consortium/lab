@@ -13,7 +13,7 @@
   "models": [
     {
       "id": "pendulum1$0",
-      "url": "mports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
+      "url": "imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
       "viewOptions": {
         "controlButtons": "play_reset_step",
         "gridLines": true,
