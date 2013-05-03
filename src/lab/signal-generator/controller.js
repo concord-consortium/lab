@@ -2,19 +2,9 @@
 
 define(function (require) {
   // Dependencies.
-  var ModelController   = require("common/controllers/model-controller"),
+  var ModelController   = require('common/controllers/model-controller'),
       Model             = require('signal-generator/modeler'),
-
-      ModelContainer    = function() {
-        return  {
-          $el: $("<div id='model-container' class='container'/>"),
-          getHeightForWidth: function() { return 0; },
-          resize: function() {},
-          reset: function() {},
-          update: function() {}
-        };
-      },
-
+      ModelContainer    = require('common/views/null-model-view'),
       ScriptingAPI      = function() {},
       Benchmarks        = function() {};
 
