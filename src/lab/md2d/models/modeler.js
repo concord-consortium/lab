@@ -18,7 +18,7 @@ define(function(require) {
       aminoacidsHelper     = require('cs!md2d/models/aminoacids-helper'),
       GeneticEngine        = require('md2d/models/engine/genetic-engine'),
       units                = require('md2d/models/engine/constants/units'),
-      PropertyDescription  = require('md2d/models/property-description'),
+      PropertyDescription  = require('common/property-description'),
       unitDefinitions      = require('md2d/models/unit-definitions/index'),
       UnitsTranslation     = require('md2d/models/units-translation'),
       PerformanceOptimizer = require('md2d/models/performance-optimizer'),

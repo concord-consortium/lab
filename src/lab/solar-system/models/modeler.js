@@ -12,7 +12,7 @@ define(function(require) {
       serialize            = require('common/serialize'),
       validator            = require('common/validator'),
       units                = require('solar-system/models/engine/constants/units'),
-      PropertyDescription  = require('solar-system/models/property-description'),
+      PropertyDescription  = require('common/property-description'),
       unitDefinitions      = require('solar-system/models/unit-definitions/index'),
       _ = require('underscore');
 

@@ -3,8 +3,8 @@
 define(function(require) {
 
   var PropertySupport      = require('common/property-support'),
-      PropertyDescription  = require('md2d/models/property-description'),
-      RunningAverageFilter = require('cs!md2d/models/running-average-filter'),
+      PropertyDescription  = require('common/property-description'),
+      RunningAverageFilter = require('cs!common/models/running-average-filter'),
       validator            = require('common/validator'),
 
       metadata             = require('signal-generator/metadata'),
