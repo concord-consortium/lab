@@ -140,6 +140,7 @@
 ;;;
 
 globals [
+  data-export:module-available
   data-export:model-data
   data-export:model-description
   data-export:run-series
@@ -169,6 +170,7 @@ globals [
 ]
 
 to data-export:initialize [ setup ]
+  set data-export:module-available true
   set data-export:data-ready? false
 
   data-export:init-run-series
