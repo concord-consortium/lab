@@ -19,7 +19,7 @@ module Parsers
       end
       self.data_hash['staticExamplePath'] = self.data_hash.fetch('path')
       self.generate_couch_doc_id(self.data_hash['path'])
-      self.data_hash['path'] = "/interactives/" + self.data_hash['id']
+      self.data_hash['path'] = "webapp/interactives/" + self.data_hash['id']
       # here we read in the json file for the interactive
       self.update_from_uri!
       self.add_models
