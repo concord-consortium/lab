@@ -998,9 +998,6 @@ to run-airbag ; computes and draws the position or velocity graphs of the airbag
           ;       has done after the first run but before the next.... 
   setup-for-run   ; housekeeping. advances run-number, saves the-question, hids old data
                   ; locks the sliders, resets logging variables
-                     
-  ; and always call the data-export module's setup-run function when starting a run
-  data-export:setup-run
 
   ; Compute position, velocity, and acceleration for the actors
   ; the car follows an equation given by car-loc
@@ -1937,10 +1934,6 @@ to setup-data-export
   ]
   let setup (list computational-inputs representational-inputs computational-outputs student-inputs model-information time-series-data)
   data-export:initialize setup
-end
-
-to setup-run
-  data-export:setup-run
 end
 
 ;;;
