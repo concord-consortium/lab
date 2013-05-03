@@ -10,7 +10,7 @@ define(function(require) {
       metadata             = require('md2d/models/metadata'),
       TickHistory          = require('common/models/tick-history'),
       PropertySupport      = require('common/property-support'),
-      RunningAverageFilter = require('cs!md2d/models/running-average-filter'),
+      RunningAverageFilter = require('cs!common/running-average-filter'),
       Solvent              = require('cs!md2d/models/solvent'),
       serialize            = require('common/serialize'),
       validator            = require('common/validator'),
