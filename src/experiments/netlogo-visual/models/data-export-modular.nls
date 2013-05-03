@@ -169,6 +169,8 @@ globals [
 ]
 
 to data-export:initialize [ setup ]
+  set data-export:data-ready? false
+
   data-export:init-run-series
   data-export:init-data-series
   data-export:init-inquiry-summary
@@ -210,6 +212,7 @@ to data-export:init-data-series
 end
 
 to data-export:update-data-series [ new-data-series ]
+  set data-export:data-ready? false       ; data-ready? is only true after make-model-data completes
   set data-export:data-series butlast data-export:data-series                                  ; strip off the final square bracket
   set data-export:data-series ( word data-export:data-series data-export:data-series-trip "[" reduce [ ( word ?1 ", " ?2 ) ] new-data-series "]]")
   set data-export:data-series-trip ","                                                         ; subsequent sets of data have a preceding comma
@@ -235,7 +238,6 @@ end
 ;;;
 
 to data-export:make-model-description
-  set data-export:data-ready? false
   let temp ""
   set temp (word temp "{\n")
   set temp (word temp data-export:section 4 "timeSeriesData"         data-export:times-series-keys            [ ] data-export:times-series-data ",\n" )
@@ -246,10 +248,10 @@ to data-export:make-model-description
   set temp (word temp data-export:section 4 "modelInformation"       data-export:model-information-keys       [ ] data-export:model-information "\n" )
   set temp (word temp "  }")
   set data-export:model-description temp
-  set data-export:data-ready? true
 end
 
 to data-export:make-model-data
+  set data-export:data-ready? false
   data-export:make-model-description
   data-export:serialize-run-series
   set data-export:data-ready? false
@@ -284,6 +286,7 @@ to data-export:serialize-run-series
 end
 
 to data-export:update-run-series [ run-series-data ]
+  set data-export:data-ready? false       ; data-ready? is only true after make-model-data completes
   set data-export:last-run-series-data run-series-data
   let run-series data-export:create-run-series run-series-data
   set data-export:run-series lput run-series data-export:run-series
@@ -305,7 +308,6 @@ to-report data-export:create-run-series [ run-series-data ]
   set run-series (word run-series "    }")
   report run-series
 end
-
 
 to-report data-export:run-series-array [indent label-name elements comma]
   let q "\""
