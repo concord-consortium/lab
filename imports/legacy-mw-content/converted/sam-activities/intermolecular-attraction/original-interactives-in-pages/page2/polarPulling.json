@@ -18,9 +18,12 @@
   "polarAAEpsilon": -2,
   "viscosity": 0.25,
   "timeStepsPerTick": 50,
+  "geneticEngineState": "dna",
+  "DNA": "",
   "viewOptions": {
     "viewPortWidth": 3.5,
     "viewPortHeight": 2,
+    "viewPortZoom": 1,
     "viewPortX": 0,
     "viewPortY": 0,
     "backgroundColor": "rgba(225,239,222,255)",
@@ -49,7 +52,7 @@
     "imageMapping": {},
     "textBoxes": [
       {
-        "text": "Polar molecules:\nDipole-Dipole Attraction",
+        "text": "Polar molecules:\ndipole-dipole attraction",
         "x": 0.77,
         "y": 2,
         "layer": 1,

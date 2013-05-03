@@ -1,0 +1,35 @@
+{
+  "title": "Seeing Intermolecular Attractions",
+  "publicationStatus": "public",
+  "subtitle": "A very simple interactive with polar molecules on the left and non-polar molecules on the right.",
+  "about":  [
+    "All matter is attracted to all other matter. How does this work?",
+    "",
+    "This interactive shows polar molecules (with charges) and non-polar molecules in a",
+    "container with each other. Drag molecules around to see how they are attracted to",
+    "each other. Dotted lines indicate intermolecular attractions."
+  ],
+  "models": [
+    {
+      "id": "page1$0",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page1/page1$0.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false,
+        "textBoxes": [
+          {
+            "text": "Drag the molecules close to each other and look for intermolecular attractions.",
+            "x": 0.6,
+            "y": 2.05,
+            "width": 2.3,
+            "fontScale": 1.4,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(245,245,245)"
+          }
+        ]
+      }
+    }
+  ],
+  "components": []
+}

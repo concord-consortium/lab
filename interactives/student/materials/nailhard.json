@@ -1,0 +1,21 @@
+{
+  "title": "nailhard",
+  "publicationStatus": "broken",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "nailhard",
+      "url": "imports/legacy-mw-content/converted/student/materials/nailhard.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

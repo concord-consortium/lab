@@ -1,0 +1,21 @@
+{
+  "title": "debyesheath",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "debyesheath$0",
+      "url": "imports/legacy-mw-content/converted/student/stateofmatter/debyesheath$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "dam",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "dam$0",
+      "url": "imports/legacy-mw-content/converted/student/classic/motion/dam$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

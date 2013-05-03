@@ -1,0 +1,21 @@
+{
+  "title": "insertModel",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "insertModel$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/insertModel$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

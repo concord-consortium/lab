@@ -1,0 +1,67 @@
+{
+  "title": "Simple KE Shading",
+  "publicationStatus": "public",
+  "subtitle": "Kinetic Energy Shading can be turned on and off with scripts (and many other items also).",
+  "about": "",
+  "models": [
+    {
+      "id": "simple-ke-shading$0",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/simple-ke-shading$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "checkbox",
+      "id": "ke-shading",
+      "text": "KE Shading",
+      "property": "keShading"
+    },
+    {
+      "type": "checkbox",
+      "id": "temperature-control",
+      "text": "Temperature Control (property)",
+      "property": "temperatureControl"
+    },
+    {
+      "type": "checkbox",
+      "id": "temperature-control-action",
+      "text": "Temperature Control (onClick script)",
+      "onClick": "set({temperatureControl: value})"
+    },
+    {
+      "type": "button",
+      "id": "mark-two-atoms",
+      "text": "Mark two random atoms",
+      "action": "markAtoms(randomAtoms(2))"
+    },
+    {
+      "type": "button",
+      "id": "unmark-all-atoms",
+      "text": "Unmark all atoms",
+      "action": "unmarkAllAtoms()"
+    },
+    {
+      "type": "button",
+      "id": "add-atom",
+      "text": "Add a random atom",
+      "action": "addRandomAtom()"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      [
+        "ke-shading",
+        "temperature-control",
+        "temperature-control-action"
+      ],
+      [
+        "mark-two-atoms",
+        "unmark-all-atoms",
+        "add-atom"
+      ]
+    ]
+  }
+}

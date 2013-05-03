@@ -1,0 +1,21 @@
+{
+  "title": "light4",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "light4$0",
+      "url": "imports/legacy-mw-content/converted/public/part1/light/light4$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

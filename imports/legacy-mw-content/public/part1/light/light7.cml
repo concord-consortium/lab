@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Simulating black color</page_title>
+<text>  Simulating Black Color
+p. 7 of 8
+&lt; Previous | Index | Next &gt;
+
+What makes a substance black? The answer lies in the model below.  The electronic energy levels of the atoms in the simulator are represented to the right of the model.
+
+Click Run.  A parade of photons of white light should emerge.  After running the simulation for at least a couple minutes, answer the question below. 
+
+
+  
+
+ 
+Energy
+
+ 
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="433">
+<paragraph start="0" end="25">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="0" end="1">
+<icon>prism.gif</icon></content>
+
+<content start="1" end="2">
+</content>
+
+<content start="2" end="24">
+<bold>true</bold><family>Book Antiqua</family><size>24</size></content>
+
+<content start="24" end="25">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="25" end="35">
+<Alignment>1</Alignment>
+<content start="25" end="34">
+<foreground>255 0 0</foreground><bold>true</bold><size>11</size></content>
+
+<content start="34" end="35">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="35" end="63">
+<Alignment>1</Alignment>
+<content start="35" end="37">
+<size>11</size></content>
+
+<content start="37" end="45">
+<size>11</size><href>light6.cml</href></content>
+
+<content start="45" end="48">
+<size>11</size></content>
+
+<content start="48" end="53">
+<size>11</size><href>index.cml</href></content>
+
+<content start="53" end="56">
+<size>11</size></content>
+
+<content start="56" end="61">
+<size>11</size><href>light8.cml</href></content>
+
+<content start="61" end="63">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="63" end="64">
+<content start="63" end="64">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="64" end="233">
+<LeftIndent>46.0</LeftIndent>
+<content start="64" end="233">
+</content>
+
+</paragraph>
+<paragraph start="233" end="234">
+<LeftIndent>46.0</LeftIndent>
+<content start="233" end="234">
+</content>
+
+</paragraph>
+<paragraph start="234" end="385">
+<LeftIndent>46.0</LeftIndent>
+<content start="234" end="385">
+</content>
+
+</paragraph>
+<paragraph start="385" end="386">
+<LeftIndent>6.0</LeftIndent>
+<content start="385" end="386">
+</content>
+
+</paragraph>
+<paragraph start="386" end="387">
+<LeftIndent>6.0</LeftIndent>
+<content start="386" end="387">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="387" end="390">
+<Alignment>1</Alignment>
+<content start="387" end="388">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>light7$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="388" end="389">
+<component><class>org.concord.modeler.PageElectronicStructureViewer</class>
+<model>0</model>
+<type>3</type>
+<minimum>-5.0</minimum>
+<maximum>0.0</maximum>
+<nstep>50</nstep>
+<width>150</width>
+<height>200</height>
+</component></content>
+
+<content start="389" end="390">
+</content>
+
+</paragraph>
+<paragraph start="390" end="391">
+<Alignment>1</Alignment>
+<content start="390" end="391">
+</content>
+
+</paragraph>
+<paragraph start="391" end="393">
+<Alignment>1</Alignment>
+<content start="391" end="392">
+<component><class>org.concord.modeler.PagePhotonSpectrometer</class>
+<model>0</model>
+<minimum>0.0</minimum>
+<maximum>20.0</maximum>
+<nstep>50</nstep>
+<type>1</type>
+<width>550</width><height>40</height>
+<border>Line</border></component></content>
+
+<content start="392" end="393">
+</content>
+
+</paragraph>
+<paragraph start="393" end="400">
+<Alignment>1</Alignment>
+<content start="393" end="400">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="400" end="401">
+<Alignment>1</Alignment>
+<content start="400" end="401">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="401" end="403">
+<Alignment>1</Alignment>
+<content start="401" end="402">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>400</width>
+<height>200</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;3&quot;&gt;Describe what the absorption spectrum looks like after 
+    running the simulation for a couple minutes. Explain why you think it 
+    looks the way it does (relate your answer to energy levels). Be as 
+    detailed as possible.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-1</bgcolor>
+</component></content>
+
+<content start="402" end="403">
+</content>
+
+</paragraph>
+<paragraph start="403" end="404">
+<content start="403" end="404">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="404" end="405">
+<content start="404" end="405">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="405" end="433">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="405" end="407">
+<size>11</size></content>
+
+<content start="407" end="415">
+<size>11</size><href>light6.cml</href></content>
+
+<content start="415" end="418">
+<size>11</size></content>
+
+<content start="418" end="423">
+<size>11</size><href>index.cml</href></content>
+
+<content start="423" end="426">
+<size>11</size></content>
+
+<content start="426" end="431">
+<size>11</size><href>light8.cml</href></content>
+
+<content start="431" end="432">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

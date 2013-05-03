@@ -1,0 +1,21 @@
+{
+  "title": "rolloninclinedplane",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "rolloninclinedplane$0",
+      "url": "imports/legacy-mw-content/converted/student/classic/motion/rolloninclinedplane$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

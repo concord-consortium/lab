@@ -143,4 +143,7 @@ define (require) ->
   Converts RNA Codon to amino acid abbreviation
   ###
   codonToAbbr: (codon) ->
-    RNA_CODON_TABLE[codon]
+    if (codon.length != 3)
+      "STOP"
+    else
+      RNA_CODON_TABLE[codon]

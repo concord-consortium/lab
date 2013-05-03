@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Introducing light and photons</page_title>
+<text>  The Electromagnetic Spectrum
+p. 2 of 8
+&lt; Previous | Index | Next &gt;
+
+Let&apos;s now focus on just three regions of the electromagentic spectrum: infrared, visible light, and ultraviolet.  The image below shows the relationship between all three and features visible light.  The colors of the visible spectrum contain red, orange, yellow, green, blue, indigo, and violet from left to right (these are often remembered by the mnemonic device ROY G. BIV).  Cyan is also considered to be a distinct color between green and blue.  Note that infrared is next to red (the prefix infra- means below; infrared is below red), and ultraviolet is next to violet (the prefix ultra- means beyond; ultraviolet is beyond violet).
+
+
+ 
+
+
+Let&apos;s try our first simulation.  The simulation in the box below will allow you to observe the effect of changing the frequency and intensity of light (intensity relates to the brightness of light; increasing the intensity is equivalent to increasing the brightness of the light source).  
+
+Instructions:
+
+1) Begin by clicking &quot;Start a parade of photons.&quot;
+
+2) Adjust the energy of the light source by moving the slider one or two tick marks at a time and observing the effect on the photons. (Note the energy, color and number of photons per unit time at each new energy level; photons outside the visible region are shown in black just so you can see them).  Answer Question A before moving on to step 3.
+
+
+
+ 
+  
+  
+
+ 
+
+
+3) Once you&apos;ve tried out many different energies, experiment with adjusting the intensity slider, while keeping the energy constant. (Again note the energy, color and number of photons per unit time at each new intensity setting).  Answer Question B.
+
+
+ 
+
+
+
+&lt; Index | Next &gt;</text>
+<section start="0" end="1713">
+<paragraph start="0" end="31">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="0" end="1">
+<size>24</size><family>Book Antiqua</family><icon>prism.gif</icon></content>
+
+<content start="1" end="2">
+<size>24</size><family>Book Antiqua</family></content>
+
+<content start="2" end="31">
+<family>Book Antiqua</family><size>24</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="31" end="41">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="31" end="40">
+<family>Book Antiqua</family><foreground>255 0 0</foreground><bold>true</bold></content>
+
+<content start="40" end="41">
+<family>Book Antiqua</family><size>24</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="41" end="69">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="41" end="43">
+<size>11</size></content>
+
+<content start="43" end="52">
+<size>11</size><href>light1.cml</href></content>
+
+<content start="52" end="54">
+<size>11</size></content>
+
+<content start="54" end="59">
+<size>11</size><href>index.cml</href></content>
+
+<content start="59" end="62">
+<size>11</size></content>
+
+<content start="62" end="67">
+<size>11</size><href>light3.cml</href></content>
+
+<content start="67" end="69">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="69" end="70">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="69" end="70">
+</content>
+
+</paragraph>
+<paragraph start="70" end="710">
+<LeftIndent>26.0</LeftIndent>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="70" end="532">
+</content>
+
+<content start="532" end="540">
+<bold>true</bold></content>
+
+<content start="540" end="552">
+</content>
+
+<content start="552" end="556">
+<foreground>255 0 0</foreground><bold>true</bold></content>
+
+<content start="556" end="568">
+</content>
+
+<content start="568" end="574">
+<italic>true</italic></content>
+
+<content start="574" end="581">
+</content>
+
+<content start="581" end="587">
+<italic>true</italic></content>
+
+<content start="587" end="588">
+</content>
+
+<content start="588" end="593">
+<italic>true</italic></content>
+
+<content start="593" end="600">
+</content>
+
+<content start="600" end="605">
+<italic>true</italic></content>
+
+<content start="605" end="616">
+</content>
+
+<content start="616" end="627">
+<bold>true</bold></content>
+
+<content start="627" end="639">
+</content>
+
+<content start="639" end="646">
+<foreground>153 0 153</foreground><bold>true</bold></content>
+
+<content start="646" end="658">
+</content>
+
+<content start="658" end="664">
+<italic>true</italic></content>
+
+<content start="664" end="671">
+</content>
+
+<content start="671" end="677">
+<italic>true</italic></content>
+
+<content start="677" end="679">
+</content>
+
+<content start="679" end="684">
+<italic>true</italic></content>
+
+<content start="684" end="694">
+</content>
+
+<content start="694" end="700">
+<italic>true</italic></content>
+
+<content start="700" end="710">
+</content>
+
+</paragraph>
+<paragraph start="710" end="711">
+<LeftIndent>26.0</LeftIndent>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="710" end="711">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="711" end="712">
+<LeftIndent>26.0</LeftIndent>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="711" end="712">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="712" end="714">
+<LeftIndent>26.0</LeftIndent>
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="712" end="713">
+<icon>spectrum.gif</icon></content>
+
+<content start="713" end="714">
+</content>
+
+</paragraph>
+<paragraph start="714" end="715">
+<LeftIndent>26.0</LeftIndent>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="714" end="715">
+</content>
+
+</paragraph>
+<paragraph start="715" end="716">
+<LeftIndent>26.0</LeftIndent>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="715" end="716">
+</content>
+
+</paragraph>
+<paragraph start="716" end="1006">
+<LeftIndent>26.0</LeftIndent>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="716" end="868">
+</content>
+
+<content start="868" end="877">
+<foreground>0 0 255</foreground><bold>true</bold></content>
+
+<content start="877" end="878">
+<foreground>0 0 255</foreground></content>
+
+<content start="878" end="892">
+</content>
+
+<content start="892" end="893">
+<foreground>0 0 255</foreground></content>
+
+<content start="893" end="903">
+<foreground>0 0 255</foreground><bold>true</bold></content>
+
+<content start="903" end="904">
+<foreground>0 0 255</foreground></content>
+
+<content start="904" end="1006">
+</content>
+
+</paragraph>
+<paragraph start="1006" end="1007">
+<LeftIndent>6.0</LeftIndent>
+<content start="1006" end="1007">
+</content>
+
+</paragraph>
+<paragraph start="1007" end="1021">
+<LeftIndent>6.0</LeftIndent>
+<content start="1007" end="1020">
+<bold>true</bold></content>
+
+<content start="1020" end="1021">
+</content>
+
+</paragraph>
+<paragraph start="1021" end="1022">
+<LeftIndent>6.0</LeftIndent>
+<content start="1021" end="1022">
+</content>
+
+</paragraph>
+<paragraph start="1022" end="1072">
+<LeftIndent>26.0</LeftIndent>
+<content start="1022" end="1072">
+</content>
+
+</paragraph>
+<paragraph start="1072" end="1073">
+<LeftIndent>26.0</LeftIndent>
+<content start="1072" end="1073">
+</content>
+
+</paragraph>
+<paragraph start="1073" end="1422">
+<LeftIndent>26.0</LeftIndent>
+<content start="1073" end="1422">
+</content>
+
+</paragraph>
+<paragraph start="1422" end="1423">
+<LeftIndent>6.0</LeftIndent>
+<content start="1422" end="1423">
+</content>
+
+</paragraph>
+<paragraph start="1423" end="1424">
+<LeftIndent>6.0</LeftIndent>
+<content start="1423" end="1424">
+</content>
+
+</paragraph>
+<paragraph start="1424" end="1425">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1424" end="1425">
+</content>
+
+</paragraph>
+<paragraph start="1425" end="1427">
+<Alignment>1</Alignment>
+<content start="1425" end="1426">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>light2$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorder>true</recorder></component></content>
+
+<content start="1426" end="1427">
+</content>
+
+</paragraph>
+<paragraph start="1427" end="1430">
+<Alignment>1</Alignment>
+<content start="1427" end="1428">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Start a parade of photons</title>
+<tooltip>Start a parade of photons</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>run;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1428" end="1429">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Pause</title>
+<tooltip>Pause</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1429" end="1430">
+</content>
+
+</paragraph>
+<paragraph start="1430" end="1433">
+<Alignment>1</Alignment>
+<content start="1430" end="1431">
+<component><class>org.concord.modeler.PageSlider</class>
+<title>Energy of Monochromatic Light Source</title>
+<tooltip>change the frequency of monochromatic light source</tooltip>
+<width>250</width>
+<height>70</height>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>1.725</value>
+<minimum>2.0</minimum>
+<maximum>13.5</maximum>
+<tick>true</tick>
+<nstep>20</nstep>
+<labeltable>{value=&quot;2.3000000000000003&quot;, label=&quot;Infrared&quot;}{value=&quot;13.225&quot;, label=&quot;Ultraviolet&quot;}</labeltable>
+<change>Frequency of Light Source</change>
+</component></content>
+
+<content start="1431" end="1432">
+<component><class>org.concord.modeler.PageSlider</class>
+<title>Intensity of Light Source</title>
+<tooltip>Change the intensity of light source</tooltip>
+<width>250</width>
+<height>70</height>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.0</value>
+<minimum>0.0</minimum>
+<maximum>10.0</maximum>
+<tick>true</tick>
+<nstep>20</nstep>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;Strong&quot;}{value=&quot;0.0&quot;, label=&quot;Weak&quot;}</labeltable>
+<change>Intensity of Light Source</change>
+</component></content>
+
+<content start="1432" end="1433">
+</content>
+
+</paragraph>
+<paragraph start="1433" end="1434">
+<LeftIndent>20.0</LeftIndent>
+<content start="1433" end="1434">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1434" end="1436">
+<Alignment>1</Alignment>
+<content start="1434" end="1435">
+<component><class>org.concord.modeler.PageTextArea</class>
+<title>&lt;html&gt;
+   &lt;font size = 3&gt; Question A:  Describe what you observed as you adjusted the energy slider. (Comment on the energy, color and number of photons per unit time).
+&lt;/html&gt;</title>
+</component></content>
+
+<content start="1435" end="1436">
+</content>
+
+</paragraph>
+<paragraph start="1436" end="1437">
+<Alignment>1</Alignment>
+<content start="1436" end="1437">
+</content>
+
+</paragraph>
+<paragraph start="1437" end="1438">
+<Alignment>1</Alignment>
+<content start="1437" end="1438">
+</content>
+
+</paragraph>
+<paragraph start="1438" end="1689">
+<LeftIndent>20.0</LeftIndent>
+<content start="1438" end="1688">
+</content>
+
+<content start="1688" end="1689">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1689" end="1690">
+<Alignment>1</Alignment>
+<content start="1689" end="1690">
+</content>
+
+</paragraph>
+<paragraph start="1690" end="1691">
+<Alignment>1</Alignment>
+<content start="1690" end="1691">
+</content>
+
+</paragraph>
+<paragraph start="1691" end="1693">
+<Alignment>1</Alignment>
+<content start="1691" end="1692">
+<component><class>org.concord.modeler.PageTextArea</class>
+<title>&lt;html&gt;
+   &lt;font size = 3&gt; Question B: Describe what you observed as you adjusted the intensity slider (comment on the energy, color and number of photons per unit time)
+&lt;/html&gt;</title>
+</component></content>
+
+<content start="1692" end="1693">
+</content>
+
+</paragraph>
+<paragraph start="1693" end="1694">
+<Alignment>1</Alignment>
+<content start="1693" end="1694">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1694" end="1695">
+<Alignment>1</Alignment>
+<content start="1694" end="1695">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1695" end="1696">
+<LeftIndent>6.0</LeftIndent>
+<content start="1695" end="1696">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1696" end="1713">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1696" end="1698">
+<size>11</size></content>
+
+<content start="1698" end="1703">
+<size>11</size><href>index.cml</href></content>
+
+<content start="1703" end="1706">
+<size>11</size></content>
+
+<content start="1706" end="1711">
+<size>11</size><href>light3.cml</href></content>
+
+<content start="1711" end="1712">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

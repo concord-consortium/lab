@@ -1,0 +1,21 @@
+{
+  "title": "charge1",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "charge1$0",
+      "url": "imports/legacy-mw-content/converted/student/motionandforce/charge1$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

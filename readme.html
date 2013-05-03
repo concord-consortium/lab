@@ -246,9 +246,9 @@ third-parties and are distributed under either BSD, MIT, or Apache 2.0 licenses.
 <h3 id="molecular-modeling-examples">Molecular Modeling Examples</h3>
 
 <ul>
-  <li><a href="/examples/interactives/interactives.html#interactives/samples/1-oil-and-water-shake.json">Oil and Water</a>, (<a href="/examples/interactives/embeddable.html#interactives/samples/1-oil-and-water-shake.json">embeddable link</a>)</li>
-  <li><a href="/examples/interactives/interactives.html#interactives/samples/2-simple-gas.json">A Simple Gas</a>, (<a href="/examples/interactives/embeddable.html#interactives/samples/2-simple-gas.json">embeddable link</a>)</li>
-  <li><a href="/examples/interactives/interactives.html#interactives/samples/3-100-atoms.json">Explore 100 Atoms</a>, (<a href="/examples/interactives/embeddable.html#interactives/samples/3-100-atoms.json">embeddable link</a>)</li>
+  <li><a href="interactives.html#interactives/samples/1-oil-and-water-shake.json">Oil and Water</a>, (<a href="embeddable.html#interactives/samples/1-oil-and-water-shake.json">embeddable link</a>)</li>
+  <li><a href="interactives.html#interactives/samples/2-simple-gas.json">A Simple Gas</a>, (<a href="embeddable.html#interactives/samples/2-simple-gas.json">embeddable link</a>)</li>
+  <li><a href="interactives.html#interactives/samples/3-100-atoms.json">Explore 100 Atoms</a>, (<a href="embeddable.html#interactives/samples/3-100-atoms.json">embeddable link</a>)</li>
 </ul>
 
 <h3 id="energy2d-examples">Energy2D Examples</h3>
@@ -289,7 +289,7 @@ local computer. Once there open the file index.html in the expanded archive.</p>
 <p>For example Chrome generates this error when I try and load the sample Oil and Water Interactive directly
 from my filesystem:</p>
 
-<pre><code>XMLHttpRequest cannot load file:///Users/stephen/Downloads/concord-consortium-lab-9771ec6/examples/interactives/interactives/samples/1-oil-and-water-shake.json.
+<pre><code>XMLHttpRequest cannot load file:///Users/stephen/Downloads/concord-consortium-lab-9771ec6/interactives/samples/1-oil-and-water-shake.json.
 Origin null is not allowed by Access-Control-Allow-Origin.
 </code></pre>
 
@@ -347,18 +347,17 @@ Successfully installed bundler-1.2.4
 <p><a href="http://nodejs.org/">nodejs</a> and <a href="http://npmjs.org/">npm</a>, the Node Package Manager are additional
 development dependencies.</p>
 
-<p><a href="http://npmjs.org/">npm</a>, the Node Package Manager has been included as part of <a href="http://nodejs.org/">nodejs</a>
-since version 0.8.7.</p>
+<p><a href="http://npmjs.org/">npm</a>, the Node Package Manager is included as part of <a href="http://nodejs.org/">nodejs</a></p>
 
-<p>Install the latest stable version of node (currently v0.8.12) with installers available here: <a href="http://nodejs.org/#download">http://nodejs.org/#download</a></p>
+<p>Install the latest stable version of node (currently v0.10.4) with installers available here: <a href="http://nodejs.org/#download">http://nodejs.org/#download</a></p>
 
 <p>Currently development is being done with these versions of node and npm:</p>
 
 <pre><code>$ node -v
-v0.8.12
+v0.10.4
 
 $ npm -v
-1.1.63
+1.2.18
 </code></pre>
 
 <h4 id="couchdb">CouchDB</h4>
@@ -1055,7 +1054,7 @@ object <code>Lab.config</code>.</p>
   :home: http://lab.concord.org
   :homeForSharing:
   :homeInteractivePath: /examples/interactives/interactive.html
-  :homeEmbeddablePath: /examples/interactives/embeddable.html
+  :homeEmbeddablePath: embeddable.html
   :utmCampaign: &lt;external-campaign-key&gt;
 </code></pre>
 
@@ -1095,7 +1094,7 @@ sharing is impractical in some manner you can disable the display of the Interac
   :home: http://lab.concord.org
   :homeForSharing: http://lab.concord.org
   :homeInteractivePath: /examples/interactives/interactive.html
-  :homeEmbeddablePath: /examples/interactives/embeddable.html
+  :homeEmbeddablePath: embeddable.html
   :utmCampaign: &lt;external-campaign-key&gt;
 </code></pre>
 
@@ -1479,7 +1478,7 @@ First one will be more accurate and two times slower (more or less) than second 
 
 <p><strong>modelSampleRate</strong> defines how often we should execute “tick”. Of course, in most cases we should call it as often as it’s possible and that’s the default behavior (with upper limit of 60 times per second to avoid running simple models too fast).</p>
 
-<p>You can test how these parameters work using <a href="http://lab.dev.concord.org/examples/interactives/interactives.html#interactives/basic-examples/sample-rate-and-refresh-rate.json">this interactive</a>.</p>
+<p>You can test how these parameters work using <a href="http://lab.dev.concord.orginteractives.html#interactives/basic-examples/sample-rate-and-refresh-rate.json">this interactive</a>.</p>
 
 <h4 id="d-thermal-energy-energy2dhttpsgithubcomconcord-consortiumlabtreemastersrclabenergy2d">2D Thermal Energy: <a href="https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d"><code>energy2d</code></a></h4>
 

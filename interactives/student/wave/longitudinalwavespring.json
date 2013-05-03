@@ -1,0 +1,21 @@
+{
+  "title": "longitudinalwavespring",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "longitudinalwavespring$0",
+      "url": "imports/legacy-mw-content/converted/student/wave/longitudinalwavespring$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

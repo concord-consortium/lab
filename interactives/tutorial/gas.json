@@ -1,0 +1,21 @@
+{
+  "title": "gas",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "gas",
+      "url": "imports/legacy-mw-content/converted/tutorial/gas.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

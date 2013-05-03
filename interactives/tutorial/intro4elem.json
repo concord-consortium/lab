@@ -1,0 +1,21 @@
+{
+  "title": "intro4elem",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "intro4elem",
+      "url": "imports/legacy-mw-content/converted/tutorial/intro4elem.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

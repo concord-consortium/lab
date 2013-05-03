@@ -1,0 +1,124 @@
+{
+  "title": "One Radial Bond",
+  "publicationStatus": "public",
+  "subtitle": "Demonstrates effect of aliased signals caused by undersampling.",
+  "about": "",
+  "models": [
+    {
+      "id": "one-radial-bond$0",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/one-radial-bond$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "subtract-velocity",
+      "text": "&#8656; Subtract X Velocity",
+      "action": "var props = getAtomProperties(0); props.vx -= 0.00002; setAtomProperties(0, props); props = getAtomProperties(1); props.vx -= 0.00002; setAtomProperties(1, props);"
+    },
+    {
+      "type": "pulldown",
+      "id": "pulldown1",
+      "options": [
+        {
+          "text": "Bond Strength ...",
+          "disabled": true
+        },
+        {
+          "text": "x 4",
+          "action": "setRadialBondProperties(0, { strength: 10000 * 4})"
+        },
+        {
+          "text": "x 2",
+          "action": "setRadialBondProperties(0, { strength: 10000 * 2})"
+        },
+        {
+          "text": "x 1",
+          "selected": true,
+          "action": "setRadialBondProperties(0, { strength: 10000 })"
+        },
+        {
+          "text": "x 0.5",
+          "action": "setRadialBondProperties(0, { strength: 10000 * 0.5})"
+        },
+        {
+          "text": "x 0.1",
+          "action": "setRadialBondProperties(0, { strength: 10000 * 0.1})"
+        },
+        {
+          "text": "x 1e-2",
+          "action": "setRadialBondProperties(0, { strength: 10000 * 1e-2})"
+        },
+        {
+          "text": "x 1e-3",
+          "action": "setRadialBondProperties(0, { strength: 10000 * 1e-3})"
+        },
+        {
+          "text": "x 1e-4",
+          "action": "setRadialBondProperties(0, { strength: 10000 * 1e-4})"
+        },
+        {
+          "text": "x 1e-5",
+          "action": "setRadialBondProperties(0, { strength: 10000 * 1e-5})"
+        },
+        {
+          "text": "x 1e-6",
+          "action": "setRadialBondProperties(0, { strength: 10000 * 1e-6})"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "id": "add-velocity",
+      "text": "Add X Velocity &#8658;",
+      "action": "var props = getAtomProperties(0); props.vx += 0.00002; setAtomProperties(0, props); props = getAtomProperties(1); props.vx += 0.00002; setAtomProperties(1, props);"
+    },
+    {
+      "type": "graph",
+      "id": "propertiesGraph",
+      "title": "Energy of the System (KE:red, PE:green, TE:blue)",
+      "xlabel": "Model Time (ps)",
+      "ylabel": "eV",
+      "xmax": 40,
+      "ymin": -1,
+      "ymax": 1,
+      "properties": [
+        "kineticEnergy",
+        "potentialEnergy",
+        "totalEnergy"
+      ]
+    }
+  ],
+  "layout": {
+    "right": [
+      "propertiesGraph"
+    ],
+    "bottom": [
+      "subtract-velocity",
+      "pulldown1",
+      "add-velocity"
+    ]
+  },
+  "template": [
+    {
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "height": "model.height",
+      "padding-left": "1em",
+      "padding-right": "0.5em",
+      "width": "model.width*1.5",
+      "min-width": "6em"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "interactive.width",
+      "padding-top": "0.5em"
+    }
+  ]
+}

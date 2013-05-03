@@ -1,0 +1,21 @@
+{
+  "title": "useobstacle",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "useobstacle$0",
+      "url": "imports/legacy-mw-content/converted/student/motionandforce/useobstacle$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

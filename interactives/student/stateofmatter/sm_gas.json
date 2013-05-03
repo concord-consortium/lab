@@ -1,0 +1,21 @@
+{
+  "title": "sm_gas",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "sm_gas",
+      "url": "imports/legacy-mw-content/converted/student/stateofmatter/sm_gas.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

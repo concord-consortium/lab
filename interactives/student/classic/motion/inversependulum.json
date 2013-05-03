@@ -1,0 +1,21 @@
+{
+  "title": "inversependulum",
+  "publicationStatus": "broken",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "inversependulum$0",
+      "url": "imports/legacy-mw-content/converted/student/classic/motion/inversependulum$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

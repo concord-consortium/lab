@@ -1,0 +1,54 @@
+{
+  "title": "Molecular View of a Gas",
+  "publicationStatus": "public",
+  "subtitle": "Explore how molecules in a gas move relative to each other.",
+  "about": [
+    "Molecules are in constant motion. \"Mark two atoms,\" then run the model to see",
+    "how the molecules move relative to each other. How do the distances between gas",
+    "molecules change over time?"
+  ],
+  "models": [
+    {
+      "id": "page2$0",
+      "url": "imports/legacy-mw-content/converted/sam-activities/phase-change/original-interactives-in-pages/page2/page2$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "showVDWLines": true
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "mark-two-atoms",
+      "text": "Mark two atoms",
+      "action": "markAtoms(randomAtoms(2));"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-attractions",
+      "text": "Show attractions",
+      "property": "showVDWLines"
+    },
+    {
+      "type": "button",
+      "id": "trace-atom",
+      "text": "Trace a random atom",
+      "action": "traceAtom(randomAtoms(1));"
+    },
+    {
+      "type": "button",
+      "id": "untrace-atom",
+      "text": "Remove trace",
+      "action": "untraceAtom();"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "mark-two-atoms",
+      "trace-atom",
+      "untrace-atom",
+      "show-attractions"
+    ]
+  }
+}

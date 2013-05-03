@@ -1,0 +1,21 @@
+{
+  "title": "showTrajAction",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "showTrajAction$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/showTrajAction$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

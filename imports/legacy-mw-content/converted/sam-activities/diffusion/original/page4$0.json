@@ -18,9 +18,12 @@
   "polarAAEpsilon": -2,
   "viscosity": 1,
   "timeStepsPerTick": 50,
+  "geneticEngineState": "dna",
+  "DNA": "",
   "viewOptions": {
     "viewPortWidth": 6.15,
     "viewPortHeight": 2.5,
+    "viewPortZoom": 1,
     "viewPortX": 0,
     "viewPortY": 0,
     "backgroundColor": "rgba(226,245,255,255)",
@@ -90,6 +93,10 @@
         "y": 2.38,
         "layer": 1,
         "frame": "rounded rectangle",
+        "calloutPoint": [
+          5.71,
+          2.11
+        ],
         "backgroundColor": "rgb(220,236,218)",
         "anchor": "upper-left"
       }

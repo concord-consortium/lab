@@ -334,11 +334,11 @@ ISImporter.GraphController = defineClass({
     this.initGraph();
 
     this.dataListener = function(d) {
-      self.graph.addOneXYDataPair(d);
+      self.graph.addPoint(d);
     };
 
     this.dataResetListener = function() {
-      self.graph.data(self.dataset.getDataPoints());
+      self.graph.resetPoints(self.dataset.getDataPoints());
     };
   },
 
@@ -355,8 +355,14 @@ ISImporter.GraphController = defineClass({
       yTickCount  : 7,
       xFormatter  : "2s",
       yFormatter  : "2s",
-      points      : [],
-      circleRadius: false,
+
+      dataType: 'points',
+      dataPoints: [],
+
+      markAllDataPoints: false,
+      markNearbyDataPoints: false,
+      extraCirclesVisibleOnHover: 0,
+      showRulersOnSelection: true,
       dataChange  : false
     }, "Select a sensor type");
 
@@ -640,7 +646,6 @@ ISImporter.appController = new ISImporter.Object({
     this.disable(this.$startButton);
     this.disable(this.$stopButton);
     this.disable(this.$resetButton);
-    this.disable(this.$exportButton);
     this.hide(this.$tareButton);
     this.hide(this.$realtimeDisplay);
     if (this.taring) this.endTare();

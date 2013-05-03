@@ -18,9 +18,12 @@
   "polarAAEpsilon": -2,
   "viscosity": 1,
   "timeStepsPerTick": 50,
+  "geneticEngineState": "dna",
+  "DNA": "",
   "viewOptions": {
     "viewPortWidth": 6,
     "viewPortHeight": 4,
+    "viewPortZoom": 1,
     "viewPortX": 0,
     "viewPortY": 0,
     "backgroundColor": "#eeeeee",
@@ -45,6 +48,12 @@
         "y": 1.73,
         "layer": 1,
         "frame": "rounded rectangle",
+        "calloutPoint": [
+          3.16,
+          1.92
+        ],
+        "hostType": "Atom",
+        "hostIndex": 2,
         "backgroundColor": "rgb(0,255,0)",
         "anchor": "upper-left"
       },
@@ -136,6 +145,19 @@
         "y": 0.23,
         "layer": 1,
         "backgroundColor": "rgb(255,255,204)",
+        "anchor": "upper-left"
+      },
+      {
+        "text": "Textbox pointing down",
+        "x": 1.35,
+        "y": 1.23,
+        "layer": 1,
+        "frame": "rounded rectangle",
+        "calloutPoint": [
+          2.28,
+          0.72
+        ],
+        "backgroundColor": "rgb(255,255,192)",
         "anchor": "upper-left"
       }
     ],

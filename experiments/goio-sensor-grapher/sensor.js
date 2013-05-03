@@ -167,7 +167,7 @@ sensor.AppletGrapher.prototype.JsListener = function() {
           newdata = [data[0]];
           self.time += this.sampleInterval;
         }
-        self.graph.addPoints(newdata);
+        self.graph.addSamples(newdata);
       }
     },
     sensorsReady: function() {
@@ -234,7 +234,7 @@ sensor.AppletGrapher.prototype.AddButtons = function() {
     var self = this;
     return function() {
       applet.stopCollecting();
-      self.graph.newRealTimeData([[]]);
+      self.graph.resetSamples([[]]);
       self.time = 0;
       self.graph.reset();
       self.clearButton.className = "inactive";

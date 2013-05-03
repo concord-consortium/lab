@@ -1,0 +1,21 @@
+{
+  "title": "recshockwave",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "recshockwave",
+      "url": "imports/legacy-mw-content/converted/student/materials/recshockwave.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

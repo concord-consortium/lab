@@ -1,0 +1,21 @@
+{
+  "title": "hexshockwave_planewave",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "hexshockwave_planewave",
+      "url": "imports/legacy-mw-content/converted/student/materials/hexshockwave_planewave.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

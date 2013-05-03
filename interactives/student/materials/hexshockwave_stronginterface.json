@@ -1,0 +1,21 @@
+{
+  "title": "hexshockwave_stronginterface",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "hexshockwave_stronginterface",
+      "url": "imports/legacy-mw-content/converted/student/materials/hexshockwave_stronginterface.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

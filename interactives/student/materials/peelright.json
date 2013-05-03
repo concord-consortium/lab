@@ -1,0 +1,21 @@
+{
+  "title": "peelright",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "peelright",
+      "url": "imports/legacy-mw-content/converted/student/materials/peelright.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

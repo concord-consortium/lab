@@ -1,0 +1,21 @@
+{
+  "title": "drop",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "drop$0",
+      "url": "imports/legacy-mw-content/converted/student/materials/drop$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

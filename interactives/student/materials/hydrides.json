@@ -1,0 +1,21 @@
+{
+  "title": "hydrides",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "hydrides$0",
+      "url": "imports/legacy-mw-content/converted/student/materials/hydrides$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

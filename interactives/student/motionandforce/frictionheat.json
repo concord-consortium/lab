@@ -1,0 +1,21 @@
+{
+  "title": "frictionheat",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "frictionheat$0",
+      "url": "imports/legacy-mw-content/converted/student/motionandforce/frictionheat$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

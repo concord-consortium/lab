@@ -1,0 +1,21 @@
+{
+  "title": "calibration1",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "calibration1$0",
+      "url": "imports/legacy-mw-content/converted/student/osmosis/calibration1$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

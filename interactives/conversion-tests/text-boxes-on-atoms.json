@@ -1,0 +1,111 @@
+{
+  "title": "Text Boxes on Atoms",
+  "publicationStatus": "public",
+  "subtitle": "Examples of different styles and positioning of text boxes attached to atoms.",
+  "about": "",
+  "models": [
+    {
+      "id": "simple-gas$0",
+      "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas-and-obstacles$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "gridLines": true,
+        "xunits": false,
+        "yunits": false,
+        "textBoxes": [
+          {
+            "text": "Normal Text",
+            "hostType": "Atom",
+            "hostIndex": 2,
+            "layer": 1,
+            "textAlign": "center",
+            "width": 0.3
+          },
+          {
+            "text": "small text",
+            "hostType": "Atom",
+            "hostIndex": 3,
+            "layer": 1,
+            "textAlign": "center",
+            "width": 0.15,
+            "fontScale": 0.7
+          },
+          {
+            "text": "Large Text",
+            "hostType": "Atom",
+            "hostIndex": 4,
+            "layer": 1,
+            "textAlign": "center",
+            "width": 0.3,
+            "fontScale": 1.4
+          },
+          {
+            "text": "No frame, long text that wraps",
+            "hostType": "Atom",
+            "hostIndex": 5,
+            "layer": 1,
+            "width": 0.8
+          },
+          {
+            "text": "Rounded frame",
+            "hostType": "Atom",
+            "hostIndex": 6,
+            "layer": 1,
+            "frame": "rounded rectangle"
+          },
+          {
+            "text": "Square frame",
+            "hostType": "Atom",
+            "hostIndex": 7,
+            "layer": 1,
+            "frame": "rectangle"
+          },
+          {
+            "text": "smaller and rotated",
+            "hostType": "Atom",
+            "hostIndex": 8,
+            "layer": 1,
+            "width": 0.3,
+            "rotate": -15,
+            "fontScale": 0.8,
+            "frame": "rounded rectangle",
+            "textAlign": "center",
+            "strokeOpacity": 0,
+            "backgroundColor": "rgba(255,32,32,0.2)"
+          },
+          {
+            "text": "Purple Atom",
+            "hostType": "Atom",
+            "hostIndex": 9,
+            "layer": 1,
+            "width": 0.3,
+            "strokeOpacity": 0,
+            "backgroundColor": "rgba(32,32,255,0.3)",
+            "frame": "rounded rectangle"
+          },
+          {
+            "text": "green obstacle",
+            "hostType": "Obstacle",
+            "hostIndex": 0,
+            "layer": 1,
+            "textAlign": "center",
+            "width": 0.25,
+            "fontScale": 0.8
+          },
+          {
+            "text": "blue obstacle",
+            "hostType": "Obstacle",
+            "hostIndex": 1,
+            "layer": 1,
+            "textAlign": "center",
+            "width": 0.25,
+            "fontScale": 0.8,
+            "strokeOpacity": 0,
+            "backgroundColor": "rgba(255,255,255,0.8)",
+            "frame": "rounded rectangle"
+          }
+        ]
+      }
+    }
+  ]
+}

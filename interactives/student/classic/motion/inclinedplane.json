@@ -1,0 +1,21 @@
+{
+  "title": "inclinedplane",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "inclinedplane$0",
+      "url": "imports/legacy-mw-content/converted/student/classic/motion/inclinedplane$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

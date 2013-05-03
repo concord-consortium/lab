@@ -1,0 +1,38 @@
+{
+  "title": "Obstacle External Force",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "External force test: the obstacle should reach an atom after ~5 000 fs when default setup is used.",
+  "models": [
+    {
+      "id": "obstacle-force$0",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/obstacle-force$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      }
+    }
+  ],
+
+  "components": [
+    {
+      "type": "button",
+      "id": "invert-fx",
+      "text": "Invert horizontal force",
+      "action": [
+        "var ax = -1 * getObstacleProperties(0).externalAx;",
+        "setObstacleProperties(0, {externalAx: ax});"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "invert-fy",
+      "text": "Invert vertical force",
+      "action": [
+        "var fy = -1 * getObstacleProperties(0).externalAy;",
+        "setObstacleProperties(0, {externalAy: fy});"
+      ]
+    }
+  ],
+  "layout": {}
+}

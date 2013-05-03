@@ -19,9 +19,12 @@
   "polarAAEpsilon": -2,
   "viscosity": 1,
   "timeStepsPerTick": 50,
+  "geneticEngineState": "dna",
+  "DNA": "",
   "viewOptions": {
     "viewPortWidth": 4,
     "viewPortHeight": 2.5,
+    "viewPortZoom": 1,
     "viewPortX": 0,
     "viewPortY": 0,
     "backgroundColor": "#eeeeee",
@@ -46,6 +49,10 @@
         "y": 1.54,
         "layer": 1,
         "frame": "rounded rectangle",
+        "calloutPoint": [
+          1.7,
+          0.98
+        ],
         "backgroundColor": "rgb(255,192,128)",
         "anchor": "upper-left"
       },
@@ -55,6 +62,10 @@
         "y": 2.27,
         "layer": 1,
         "frame": "rounded rectangle",
+        "calloutPoint": [
+          1.11,
+          2.47
+        ],
         "anchor": "upper-left"
       },
       {
@@ -63,6 +74,10 @@
         "y": 2.29,
         "layer": 1,
         "frame": "rounded rectangle",
+        "calloutPoint": [
+          1.35,
+          2.47
+        ],
         "anchor": "upper-left"
       },
       {
@@ -71,6 +86,10 @@
         "y": 2.26,
         "layer": 1,
         "frame": "rounded rectangle",
+        "calloutPoint": [
+          0.83,
+          2.47
+        ],
         "anchor": "upper-left"
       },
       {
@@ -79,6 +98,10 @@
         "y": 0.3,
         "layer": 1,
         "frame": "rounded rectangle",
+        "calloutPoint": [
+          2.45,
+          0.03
+        ],
         "anchor": "upper-left"
       },
       {
@@ -87,6 +110,10 @@
         "y": 0.3,
         "layer": 1,
         "frame": "rounded rectangle",
+        "calloutPoint": [
+          2.04,
+          0.03
+        ],
         "anchor": "upper-left"
       },
       {
@@ -95,6 +122,10 @@
         "y": 0.29,
         "layer": 1,
         "frame": "rounded rectangle",
+        "calloutPoint": [
+          1.42,
+          0.03
+        ],
         "anchor": "upper-left"
       }
     ],

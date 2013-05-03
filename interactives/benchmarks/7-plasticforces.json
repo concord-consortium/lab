@@ -1,0 +1,56 @@
+{
+  "title": "Plastic Forces",
+  "publicationStatus": "public",
+  "subtitle": "252 uncharged atoms with bonds",
+  "about": "",
+  "models": [
+    {
+      "id": "plasticforcesimple$0",
+      "url": "imports/legacy-mw-content/converted/benchmarks/plastic-forces/plasticforcesimple$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "set({ showClock: true})"
+    }
+  ],
+  "components": [
+    {
+      "type": "radio",
+      "id": "force-buttons",
+      "orientation": "horizontal",
+      "property": "gravitationalField",
+      "options": [
+        {
+          "text": "No force",
+          "value": false
+        },
+        {
+          "text": "Small force",
+          "value": 2e-8
+        },
+        {
+          "text": "Medium force",
+          "value": 6e-8
+        },
+        {
+          "text": "Large force",
+          "value": 8e-8
+        }
+      ]
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "force-buttons"
+    ]
+  },
+  "template":[
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "model.width",
+      "padding-top": "0.5em",
+      "align": "center"
+    }
+  ]
+}

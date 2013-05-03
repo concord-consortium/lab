@@ -1,0 +1,58 @@
+{
+  "title": "Interactive with invalid model reference",
+  "publicationStatus": "broken",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "does-not-exist",
+      "url": "imports/legacy-mw-content/converted/this-model-does-not-exist.json",
+      "viewOptions": {
+        "controlButtons": ""
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "atom0Ke",
+      "unitType": "energy",
+      "label": "Kinetic Energy of Particle",
+      "value": [
+        "return atomsKe([4]);"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "barGraph",
+      "id": "bar-graph",
+      "min": 0,
+      "max": 1,
+      "barColor": "#F42",
+      "title": "Kinetic Energy of Particle (eV)",
+      "property": "atom0Ke"
+    },
+    {
+      "type": "button",
+      "id": "cool",
+      "text": "Cool",
+      "action": "adjustTemperature(0.9);"
+    },
+    {
+      "type": "button",
+      "id": "heat",
+      "text": "Heat",
+      "action": "adjustTemperature(1.1); limitHighTemperature(4000);"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "heat",
+      "cool"
+    ],
+    "right": [
+      "bar-graph"
+    ]
+  },
+  "template": "narrow-right"
+}

@@ -1,0 +1,266 @@
+{
+  "title": "Spring and Mass",
+  "publicationStatus": "public",
+  "subtitle": "Explore some factors that affect the period of a spring.",
+  "about": [
+    "Press the play button. Watch the graph to see how the height of the mass changes as",
+    "it moves up and down. Use the graph to determine the period of the mass-spring system.",
+    "Adjust the scale by dragging the numbers on the axes. Change each variable – gravity,",
+    "spring constant, starting distance and mass – and observe how each one affects the period.",
+    "Can you explain why? Is this different from the relationships for a pendulum? Try the",
+    "damping slider. Does damping change the period?"
+  ],
+  "fontScale": 0.8,
+  "models": [
+    {
+      "id": "spring-mass",
+      "url": "imports/legacy-mw-content/converted/inquiry-space/pendulum/spring-mass$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "gridLines": true,
+        "showClock": true,
+        "velocityVectors": {
+          "length": 10
+        }
+      },
+      "modelOptions": {
+        "unitsScheme": "mks",
+        "timeStepsPerTick": 167,
+        "timeStep": 1,
+        "modelSampleRate": 60
+      },
+      "onLoad": [
+        "function resetDisplacement() {",
+        "  set({startingDisplacement: get('startingDisplacement')});",
+        "}",
+        "function stopMotion() {",
+        "  stop();",
+        "  setAtomProperties(1, { vx: 0, vy: 0 });",
+        "}",
+        "onPropertyChange('springConstant', resetDisplacement);",
+        "onPropertyChange('ballMass', resetDisplacement);",
+        "onPropertyChange('gravitationalField', resetDisplacement);",
+        "onPropertyChange('damping', resetDisplacement);",
+        "onPropertyChange('startingDisplacement', stopMotion);"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "currentDisplacement",
+      "unitType": "length",
+      "label": "Distance from equilibrium",
+      "value": "return get('equilibriumLength') - (getAtomProperties(0).y - getAtomProperties(1).y);"
+    },
+    {
+      "name": "equilibriumLength",
+      "unitType": "length",
+      "label": "Equilibrium spring length",
+      "value": "return getRadialBondProperties(0).length + ((get('ballMass')/1000) * get('gravitationalField') / get('springConstant'));"
+
+    }
+  ],
+  "exports": {
+    "perRun": ["gravity", "springConstant", "startingDisplacement", "ballMass", "damping"],
+    "perTick": ["currentDisplacement"]
+  },
+  "parameters": [
+    {
+      "name": "gravity",
+      "label": "Gravity",
+      "unitType": "acceleration",
+      "onChange": "set('gravitationalField', value);",
+      "initialValue": 9.8
+    },
+    {
+      "name": "ballMass",
+      "label": "Ball mass",
+      "unitAbbreviation": "g",
+      "onChange": "setElementProperties(3, { mass: value/1000 });",
+      "initialValue": 250
+    },
+    {
+      "name": "springConstant",
+      "label": "Spring constant",
+      "unitType": "stiffness",
+      "onChange": "setRadialBondProperties(0, { strength: value });",
+      "initialValue": 6.7
+    },
+    {
+      "name": "startingDisplacement",
+      "label": "Starting distance From equilibrium",
+      "unitType": "length",
+      "onChange": [
+        "var newLength = get('equilibriumLength') - value;",
+        "setAtomProperties(1, { y: getAtomProperties(0).y - newLength });"
+      ],
+      "initialValue": 0.3
+    },
+    {
+      "name": "damping",
+      "label": "Damping",
+      "unitType": "dampingCoefficient",
+      "onChange": "setAtomProperties(1, { friction: value });",
+      "initialValue": 0
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "gravity-slider",
+      "min": 0.8,
+      "max": 19.8,
+      "displayValue": "return format('1.1f')(value)",
+      "labels": [
+        {
+          "value": 1,
+          "label": "1"
+        },
+        {
+          "value": 20,
+          "label": "20"
+        }
+      ],
+      "steps": 38,
+      "title": "Gravity (m/s²)",
+      "property": "gravity"
+    },
+    {
+      "type": "slider",
+      "id": "spring-constant-slider",
+      "min": 1,
+      "max": 30,
+      "displayValue": "return format('1.1f')(value)",
+      "labels": [
+        {
+          "value": 1,
+          "label": "1"
+        },
+        {
+          "value": 30,
+          "label": "30"
+        }
+      ],
+      "steps": 290,
+      "title": "Spring constant (N/m)",
+      "property": "springConstant"
+    },
+    {
+      "type": "slider",
+      "id": "length-slider",
+      "min": -0.6,
+      "max": 0.6,
+      "displayValue": "return format('1.2f')(value)",
+      "labels": [
+        {
+          "value": -0.6,
+          "label": "-0.6"
+        },
+        {
+          "value": 0.6,
+          "label": "0.6"
+        }
+      ],
+      "steps": 24,
+      "title": "Starting distance from equilibrium (m)",
+      "property": "startingDisplacement"
+    },
+    {
+      "type": "slider",
+      "id": "mass-slider",
+      "min": 10,
+      "max": 400,
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": 10,
+          "label": "10"
+        },
+        {
+          "value": 400,
+          "label": "400"
+        }
+      ],
+      "steps": 39,
+      "title": "Mass of the ball (g)",
+      "property": "ballMass"
+    },
+    {
+      "type": "slider",
+      "id": "damping-slider",
+      "min": 0,
+      "max": 1,
+      "displayValue": "return format('1.2f')(value)",
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 1.0,
+          "label": "1"
+        }
+      ],
+      "steps": 20,
+      "title": "Damping (Newton per m/s)",
+      "property": "damping"
+    },
+    {
+      "type": "numericOutput",
+      "id": "equilibrium-display",
+      "property": "equilibriumLength",
+      "displayValue": "return format('1.2f')(value)"
+    },
+    {
+      "type": "checkbox",
+      "id": "velocity-vectors",
+      "text": "Show velocity vector",
+      "property": "showVelocityVectors"
+    },
+    {
+      "type": "numericOutput",
+      "id": "displacement-display",
+      "property": "currentDisplacement",
+      "displayValue": "return format('1.2f')(value)"
+    },
+    {
+      "type": "graph",
+      "id": "propertiesGraph",
+      "title": "Distance from Equilibrium",
+      "xlabel": "Time (s)",
+      "ylabel": "Distance (m)",
+      "ymin": -0.6,
+      "ymax": 0.6,
+      "xmax": 10,
+      "yFormatter": "1.1f",
+      "xTickCount": 5,
+      "xFormatter": "2s",
+      "yFormatter": "2s",
+      "properties": [
+        "currentDisplacement"
+      ]
+    }
+  ],
+  "layout": {
+    "right": [
+      "propertiesGraph"
+    ],
+    "bottom": [
+      [
+        "gravity-slider",
+        "spring-constant-slider",
+        "length-slider"
+      ],
+      [
+        "mass-slider",
+        "damping-slider",
+        "velocity-vectors"
+      ],
+      [
+        "equilibrium-display",
+        "displacement-display"
+      ]
+    ]
+  },
+  "template": "wide-right"
+}

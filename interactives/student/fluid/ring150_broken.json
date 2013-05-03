@@ -1,0 +1,21 @@
+{
+  "title": "ring150_broken",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "ring150_broken",
+      "url": "imports/legacy-mw-content/converted/student/fluid/ring150_broken.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

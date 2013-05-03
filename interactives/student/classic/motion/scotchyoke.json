@@ -1,0 +1,21 @@
+{
+  "title": "scotchyoke",
+  "publicationStatus": "broken",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "scotchyoke$0",
+      "url": "imports/legacy-mw-content/converted/student/classic/motion/scotchyoke$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

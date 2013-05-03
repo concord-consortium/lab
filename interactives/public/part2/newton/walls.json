@@ -1,0 +1,21 @@
+{
+  "title": "walls",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "walls",
+      "url": "imports/legacy-mw-content/converted/public/part2/newton/walls.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

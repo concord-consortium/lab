@@ -1,0 +1,21 @@
+{
+  "title": "NegativePressure_attraction",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "NegativePressure_attraction",
+      "url": "imports/legacy-mw-content/converted/tutorial/NegativePressure_attraction.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

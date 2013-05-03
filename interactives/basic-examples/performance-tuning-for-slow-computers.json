@@ -1,0 +1,227 @@
+{
+  "title": "Performance Tuning for Slow Computers",
+  "publicationStatus": "draft",
+  "subtitle": "Adjust timeStep and timeStepsPerTick to provide a better experience on your device.",
+  "about": [
+    "See **[simulation-stepping](../../readme.html#md2d-simulation-stepping)** in readme for more details."
+  ],
+  "fontScale": 0.8,
+  "models": [
+    {
+      "id": "simple-gas",
+      "url": "imports/legacy-mw-content/converted/benchmarks/simple-gas/simple-gas$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "set({ showClock: true})"
+    },
+    {
+      "id": "oil-and-water",
+      "url": "imports/legacy-mw-content/converted/benchmarks/oil-and-water/page3$1.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "set({ showClock: true})"
+    },
+    {
+      "id": "temperature-volume",
+      "url": "imports/legacy-mw-content/converted/benchmarks/gas-laws-temperature-volume/page4$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "imageMapping": {
+          "ruler.png": "ruler.svg"
+        },
+        "onLoad": "set({ showClock: true})"
+      }
+    },
+    {
+      "id": "hydrogen-bonds",
+      "url": "imports/legacy-mw-content/converted/benchmarks/hydrogen-bonds/page6$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "set({ showClock: true}); set({temperatureControl: true}); set({targetTemperature: 10000});"
+    },
+    {
+      "id": "100-atoms-charged",
+      "url": "imports/legacy-mw-content/converted/benchmarks/100-atoms/100-atoms-charged.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "set({ showClock: true})"
+    },
+    {
+      "id": "phase-change",
+      "url": "imports/legacy-mw-content/converted/benchmarks/phase-change-energy-input/page6$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "set({ showClock: true})"
+    },
+    {
+      "id": "plasticforce",
+      "url": "imports/legacy-mw-content/converted/benchmarks/plastic-forces/plasticforcesimple$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "set({ showClock: true})"
+    }
+  ],
+  "parameters": [
+  ],
+  "outputs": [
+    {
+      "name": "fps",
+      "value": [
+        "return getFPS();"
+      ]
+    },
+    {
+      "name": "progressRate",
+      "value": [
+        "return getSimulationProgressRate();"
+      ],
+      "unitName": "femtoseconds per actual second"
+    }
+  ],
+  "components": [
+    {
+      "type": "pulldown",
+      "id": "select-model",
+      "label": "Model",
+      "options": [
+        {
+          "text": "Simple Gas",
+          "action": "loadModel('simple-gas');"
+        },
+        {
+          "text": "Oil and Water",
+          "action": "loadModel('oil-and-water');"
+        },
+        {
+          "text": "Temperature-Volume",
+          "action": "loadModel('temperature-volume');"
+        },
+        {
+          "text": "Hydrogen Bonds",
+          "action": "loadModel('hydrogen-bonds');"
+        },
+        {
+          "text": "100 Atoms Charged",
+          "action": "loadModel('100-atoms-charged');"
+        },
+        {
+          "text": "Phase Change",
+          "action": "loadModel('phase-change');"
+        },
+        {
+          "text": "Plastic Force",
+          "action": "loadModel('plasticforce');"
+        }
+      ]
+    },
+    {
+      "type": "slider",
+      "id": "timestep-slider",
+      "min": 0.01,
+      "max": 5,
+      "displayValue": "return format('1.2f')(value)",
+      "labels": [
+        {
+          "value": 0.01,
+          "label": "0.01"
+        },
+        {
+          "value": 5.0,
+          "label": "5.0"
+        }
+      ],
+      "steps": 500,
+      "title": "timeStep",
+      "property": "timeStep"
+    },
+    {
+      "type": "slider",
+      "id": "refreshrate-slider",
+      "min": 1,
+      "max": 150,
+      "displayValue": "return value;",
+      "labels": [
+        {
+          "value": 1,
+          "label": "1"
+        },
+        {
+          "value": 150,
+          "label": "150"
+        }
+      ],
+      "steps": 149,
+      "title": "timeStepsPerTick",
+      "property": "timeStepsPerTick"
+    },
+    {
+      "type": "pulldown",
+      "id": "select-model-sample-rate",
+      "label": "Model Sample Rate (Hz)",
+      "property": "modelSampleRate",
+      "options": [
+        {
+          "text": "default (requestAnimFrame)",
+          "value": "default"
+        },
+        {
+          "text": "10",
+          "value": 10
+        },
+        {
+          "text": "15",
+          "value": 15
+        },
+        {
+          "text": "20",
+          "value": 20
+        },
+        {
+          "text": "30",
+          "value": 30
+        },
+        {
+          "text": "120",
+          "value": 120
+        }
+      ]
+    },
+    {
+      "id": "fps",
+      "type": "numericOutput",
+      "property": "fps",
+      "label": "Rendering Speed",
+      "displayValue": "return format('1.2f')(value)",
+      "units": "frames per second"
+    },
+    {
+      "id": "progress-rate",
+      "type": "numericOutput",
+      "property": "progressRate",
+      "label": "Simulation Progress Rate",
+      "displayValue": "return format('1.2f')(value)",
+      "units": "model femtoseconds per actual second"
+    },
+    {
+      "id": "auto-perf-tuning",
+      "type": "button",
+      "text": "Auto Performance Tuning",
+      "action": "startPerformanceTuning();"
+    }
+  ],
+  "layout": {
+    "bottom": [
+       [ "select-model" ],
+       [ "timestep-slider", "refreshrate-slider", "select-model-sample-rate" ],
+       ["fps"],
+       ["progress-rate"],
+       ["auto-perf-tuning"]
+    ]
+  }
+}

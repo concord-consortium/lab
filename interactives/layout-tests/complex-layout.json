@@ -1,0 +1,196 @@
+{
+  "title": "Complex Layout",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "fontScale": 0.7,
+  "models": [
+    {
+      "id": "100-atoms-charged",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/100-atoms$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "temperature-slider",
+      "width": "100%",
+      "height": "5em",
+      "min": 100,
+      "max": 5000,
+      "labels": [
+        {
+          "value": 100,
+          "label": "100 K"
+        },
+        {
+          "value": 5000,
+          "label": "5000 K"
+        }
+      ],
+      "steps": 50,
+      "title": "Temperature",
+      "property": "targetTemperature"
+    },
+    {
+      "type": "graph",
+      "id": "peGraph",
+      "title": "PE",
+      "xmin": 0,
+      "xmax": 20,
+      "ymin": -1,
+      "ymax": 3,
+      "properties": [
+        "potentialEnergy"
+      ]
+    },
+    {
+      "type": "graph",
+      "id": "keGraph",
+      "title": "KE",
+      "xmin": 0,
+      "xmax": 20,
+      "ymin": -1,
+      "ymax": 3,
+      "properties": [
+        "kineticEnergy"
+      ]
+    },
+    {
+      "type": "barGraph",
+      "id": "bar-graph",
+      "min": 0,
+      "max": 5000,
+      "barColor": "#F42",
+      "title": "Temperature",
+      "property": "targetTemperature"
+    },
+    {
+      "type": "button",
+      "id": "button-a",
+      "action": "",
+      "text": "A"
+    },
+    {
+      "type": "button",
+      "id": "button-b",
+      "action": "",
+      "text": "B"
+    },
+    {
+      "type": "button",
+      "id": "button-c",
+      "action": "",
+      "text": "C"
+    },
+    {
+      "type": "button",
+      "id": "button-d",
+      "action": "",
+      "text": "D"
+    },
+    {
+      "type": "button",
+      "id": "button-add-atom",
+      "action": "",
+      "text": "Useful Button 1"
+    },
+    {
+      "type": "button",
+      "id": "button-rm-atom",
+      "action": "",
+      "text": "Useful Button 2"
+    },
+    {
+      "type": "button",
+      "id": "button-graph-1",
+      "action": "",
+      "text": "Modify Graph"
+    },
+    {
+      "type": "button",
+      "id": "button-graph-2",
+      "action": "",
+      "text": "Reset Graph"
+    }
+  ],
+  "layout": {
+    "right-upper": [
+      "keGraph"
+    ],
+    "right-lower": [
+      "peGraph"
+    ],
+    "left": [
+      "bar-graph"
+    ],
+    "top": [
+      "temperature-slider"
+    ],
+    "bottom-left": [
+      ["button-a", "button-b"],
+      ["button-c", "button-d"]
+    ],
+    "bottom-graph": [
+      ["button-graph-1"],
+      ["button-graph-2"]
+    ],
+    "bottom-right": [
+      ["button-add-atom", "button-rm-atom"]
+    ]
+  },
+  "template": [
+    {
+      "id": "top",
+      "left": "model.left",
+      "bottom": "model.top",
+      "width": "model.width"
+    },
+    {
+      "id": "left",
+      "top": "model.top",
+      "right": "model.left",
+      "height": "model.height"
+    },
+    {
+      "id": "right-upper",
+      "top": "model.top",
+      "left": "model.right",
+      "height": "model.height * 0.5",
+      "padding-left": "1em",
+      "width": "model.width * 0.7",
+      "min-width": "6em"
+    },
+    {
+      "id": "right-lower",
+      "left": "model.right",
+      "top": "right-upper.bottom",
+      "height": "model.height * 0.5",
+      "padding-left": "1em",
+      "width": "model.width * 0.7",
+      "min-width": "6em"
+    },
+    {
+      "id": "bottom-left",
+      "left": "model.left",
+      "top": "model.bottom",
+      "padding-bottom": "1em"
+    },
+    {
+      "id": "bottom-right",
+      "top": "model.bottom",
+      "right": "model.right",
+      "padding-bottom": "1em"
+    },
+    {
+      "id": "bottom-graph",
+      "top": "model.bottom",
+      "right": "right-lower.right",
+      "padding-bottom": "1em",
+      "align": "right"
+    }
+  ]
+}

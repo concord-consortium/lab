@@ -11,7 +11,7 @@ define(function (require) {
       // internal implementation detail (the grapher options format).
       grapherOptionForComponentSpecProperty = {
         title: 'title',
-        realTime: 'realTime',
+        dataPoints: 'dataPoints',
         fontScaleRelativeToParent: 'fontScaleRelativeToParent',
         xlabel: 'xlabel',
         xmin: 'xmin',
@@ -31,7 +31,6 @@ define(function (require) {
 
   graphControllerCount = 0;
 
-
   return function graphController(component, scriptingAPI, interactivesController) {
     var // HTML element containing view
         $container,
@@ -41,24 +40,17 @@ define(function (require) {
         data = [],
         namespace = "graphController" + (++graphControllerCount);
 
-    /**
-      Returns the time interval that elapses between succeessive data points, same units as model's
-      displayTime property. (e.g, for MD2D model, picoseconds.) The current implementation of the
-      grapher requires this knowledge.
-    */
-    function getSamplePeriod() {
-      return model.get('displayTimePerTick');
-    }
 
     /**
-      Returns an array containing the current value of each model property specified in
-      component.properties.
+      Returns an array containing two-element arrays each containing the current model
+      time and the current value of each model property specified in component.properties.
     */
     function getDataPoint() {
-      var ret = [], i, len;
+      var ret = [], i, len,
+          time = model.get('time');
 
       for (i = 0, len = properties.length; i < len; i++) {
-        ret.push(model.get(properties[i]));
+        ret.push([time, model.get(properties[i])]);
       }
       return ret;
     }
@@ -67,11 +59,9 @@ define(function (require) {
       Return an options hash for use by the grapher.
     */
     function getOptions() {
-      var cProp,
-          gOption,
-          options = {
-            sample: getSamplePeriod()
-          };
+      var options = {},
+          cProp,
+          gOption;
 
       // update grapher options from component spec & defaults
       for (cProp in grapherOptionForComponentSpecProperty) {
@@ -93,7 +83,7 @@ define(function (require) {
       for (i = 0; i < dataPoint.length; i++) {
         data[i] = [dataPoint[i]];
       }
-      grapher.newRealTimeData(data);
+      grapher.resetPoints(data);
     }
 
     /**
@@ -123,7 +113,7 @@ define(function (require) {
         // Account for initial data, which corresponds to stepCounter == 0
         data[i].length = model.stepCounter() + 1;
       }
-      grapher.truncateRealTimeData(data);
+      grapher.resetPoints(data);
     }
 
     /**
@@ -132,7 +122,6 @@ define(function (require) {
     */
     function redrawCurrentStepPointer() {
       grapher.updateOrRescale(model.stepCounter());
-      grapher.showMarker(model.stepCounter());
     }
 
     /**
@@ -159,13 +148,6 @@ define(function (require) {
         }
       });
       model.on('invalidation.'+namespace, removeDataAfterStepPointer);
-
-      // As an imperfect hack (really the grapher should allow us to pass the correct x-axis value)
-      // we reset the graph if a model property change changes the time interval between ticks
-      model.addPropertiesListener(['timeStepsPerTick', 'timeStep'], function() {
-        resetGrapher();
-        resetData();
-      });
     }
 
     //

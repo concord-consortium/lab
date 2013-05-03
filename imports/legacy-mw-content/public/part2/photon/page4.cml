@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Excited States and Photons: An Atom&apos;s Energy Levels</page_title>
+<referenced_files>orbital1s.html, diagram1s.gif,
+orbital2s.html, diagram2s.gif,
+orbital2p.html, diagram2p.gif,
+orbital3s.html, diagram3s.gif,
+orbital3p.html, diagram3p.gif,
+orbital3d.html, diagram3d.gif,
+orbital4s.html, diagram4s.gif,
+orbital4p.html, diagram4p.gif,
+orbital4d.html, diagram4d.gif,
+orbital4f.html, diagram4f.gif</referenced_files>
+<bg_color><Red>241</Red><Green>240</Green><Blue>246</Blue></bg_color>
+<text>
+ 
+ 
+
+ 
+
+ 
+ 
+ 
+    
+  
+
+   
+
+
+ 
+
+</text>
+<section start="0" end="34">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="1" end="3">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font color=&quot;#FFFFFF&quot; size=&quot;5&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;strong&gt;Excited 
+    States and Photons:&lt;/strong&gt; An Atom&apos;s Energy Levels&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-cca464</bgcolor></icon></content>
+
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="5">
+<Alignment>1</Alignment>
+<content start="3" end="4">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;0&quot; marginwidth=&quot;0&quot; background=&quot;topNavBarLeftMargin.jpg&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; cellpadding=&quot;0&quot; id=&quot;Table_01&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img src=&quot;topNavBarLeftMargin.jpg&quot; width=&quot;14&quot; height=&quot;26&quot;&gt;
+          &lt;a href=&quot;page3.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; src=&quot;prev.jpg&quot; width=&quot;60&quot; height=&quot;26&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; src=&quot;next.jpg&quot; width=&quot;59&quot; height=&quot;26&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img src=&quot;page.jpg&quot; width=&quot;54&quot; height=&quot;26&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; src=&quot;index.jpg&quot; width=&quot;46&quot; height=&quot;26&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page1.jpg&quot; width=&quot;28&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page2.jpg&quot; width=&quot;28&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page3.jpg&quot; width=&quot;28&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page4Selected.jpg&quot; width=&quot;29&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; src=&quot;page5.jpg&quot; width=&quot;28&quot; height=&quot;26&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page6.jpg&quot; width=&quot;28&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page7.jpg&quot; width=&quot;28&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page8.jpg&quot; width=&quot;29&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page9.jpg&quot; width=&quot;28&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page10.jpg&quot; width=&quot;25&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page11.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page11.jpg&quot; width=&quot;27&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page12.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page12.jpg&quot; width=&quot;27&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;img src=&quot;topNavBarRightMargin.jpg&quot; width=&quot;7&quot; height=&quot;26&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-373738</bgcolor>
+</component></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<Alignment>1</Alignment>
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="8">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>85</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;98&quot; height=&quot;58&quot; src=&quot;lightMainIdea.png&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;What 
+          really is the excitation of an atom? &lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-282012</bgcolor></icon></content>
+
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="9">
+<Alignment>1</Alignment>
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="11">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>80.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; face=&quot;verdana&quot;&gt;
+    On the previous page, the energy to excite the target atoms was provided 
+    by converting the kinetic energy of the left atoms into energy stored in 
+    the excited state of the right atoms -- if there wasn&apos;t enough kinetic 
+    energy the atom wouldn&apos;t be excited. Why is that?
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="13">
+<Alignment>1</Alignment>
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>30.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;subHeadingBackground.png&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;33&quot; height=&quot;23&quot; src=&quot;lightBullet.png&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font color=&quot;#5d6b86&quot; size=&quot;5&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;strong&gt;Energy 
+          levels and different representations of electron states&lt;/strong&gt;&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img width=&quot;18&quot; height=&quot;6&quot; src=&quot;rule.png&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="15">
+<Alignment>1</Alignment>
+<content start="13" end="14">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>440.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; face=&quot;verdana&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; border=&quot;0&quot;&gt;
+      &lt;tr valign=&quot;top&quot;&gt;
+        &lt;td&gt;
+          Atoms have a &lt;b&gt;ground state&lt;/b&gt; and many &lt;b&gt;excited states&lt;/b&gt; for 
+          its electrons. It takes energy to move an electron from the ground 
+          state to an excited state. That energy is stored when one of the 
+          atom&apos;s electrons changes from a lower &lt;b&gt;orbital&lt;/b&gt; to a higher one 
+          (see the image on the right).&lt;br&gt;&lt;br&gt;&lt;i&gt;When an atom has an electron 
+          that is in an excited state, we also say that the atom is excited.&lt;/i&gt;&lt;br&gt;&lt;br&gt;In 
+          the 2D models throughout this activity, however, we have simplified 
+          the view of an excited atom to a dotted line halo around the atom.
+        &lt;/td&gt;
+        &lt;td&gt;
+          &amp;#160;&amp;#160;&amp;#160;
+        &lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &lt;img width=&quot;412&quot; height=&quot;329&quot; src=&quot;orbitals2.gif&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+    &lt;p&gt;
+      Below is a model of a hydrogen atom. It has only one electron. Try 
+      clicking on the various energy levels in the chart (click on a gray bar) 
+      to put the electron at that energy level. You can see an interactive 
+      view of that orbital to help you connect the energy level diagram and 
+      the orbital view.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="14" end="15">
+<foreground>255 0 0</foreground></content>
+
+</paragraph>
+<paragraph start="15" end="20">
+<Alignment>1</Alignment>
+<content start="15" end="16">
+<foreground>255 0 0</foreground></content>
+
+<content start="16" end="17">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<script>restrict (atomno=2); select atomno=2; spacefill 8%; color atoms darkred; moveto 0 { 828 -192 -527 73.8} 210.2 0.0 0.0 {0.0 0.0 0.0} 5.2; isosurface delete sign orange violet phase atomicOrbital 1 0 0; set echo bottom center; color echo black; font echo 12 arial; echo drag mouse over orbital to rotate; set echo top center; color echo darkblue; font echo 18 arial bold; echo &quot;1s orbital&quot;; set frank off; spin;</script><spin>true</spin><axes>true</axes><menubar>false</menubar><toolbar>false</toolbar><statusbar>false</statusbar><resource>h.jvxl</resource><state>page4$0.jms</state><width>370.0</width>
+<height>294.0</height>
+<border>Line</border>
+</component></content>
+
+<content start="17" end="18">
+</content>
+
+<content start="18" end="19">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>375.0</width>
+<height>294.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;map name=&quot;map&quot;&gt;
+      &lt;area href=&quot;script:jmol:1:echo 1s orbital; isosurface delete sign orange violet phase atomicOrbital 1 0 0; script:textbox:5:load orbital1s.html;&quot; coords=&quot;70,226,116,243&quot; shape=&quot;rect&quot;&gt;&lt;/area&gt;
+      &lt;area href=&quot;script:jmol:1:echo 2s orbital; isosurface delete sign orange violet phase atomicOrbital 2 0 0; script:textbox:5:load orbital2s.html;&quot; coords=&quot;70,135,116,150&quot; shape=&quot;rect&quot;&gt;&lt;/area&gt;
+      &lt;area href=&quot;script:jmol:1:echo 2p orbital;isosurface delete sign orange violet phase atomicOrbital 2 1 0; script:textbox:5:load orbital2p.html;&quot; coords=&quot;133,134,179,151&quot; shape=&quot;rect&quot;&gt;&lt;/area&gt;
+      &lt;area href=&quot;script:jmol:1:echo 3s orbital;isosurface delete sign orange violet phase atomicOrbital 3 0 0; script:textbox:5:load orbital3s.html;&quot; coords=&quot;69,94,117,109&quot; shape=&quot;rect&quot;&gt;&lt;/area&gt;
+      &lt;area href=&quot;script:jmol:1:echo 3p orbital;isosurface delete sign orange violet phase atomicOrbital 3 1 0; script:textbox:5:load orbital3p.html;&quot; coords=&quot;132,94,178,109&quot; shape=&quot;rect&quot;&gt;&lt;/area&gt;
+      &lt;area href=&quot;script:jmol:1:echo 3d orbital; isosurface delete sign orange violet phase atomicOrbital 3 2 0; script:textbox:5:load orbital3d.html;&quot; coords=&quot;192,94,240,109&quot; shape=&quot;rect&quot;&gt;&lt;/area&gt;
+      &lt;area href=&quot;script:jmol:1:echo 4s orbital; isosurface delete sign orange violet phase atomicOrbital 4 0 0; script:textbox:5:load orbital4s.html;&quot; coords=&quot;69,63,117,78&quot; shape=&quot;rect&quot;&gt;&lt;/area&gt;
+      &lt;area href=&quot;script:jmol:1:echo 4p orbital; isosurface delete sign orange violet phase atomicOrbital 4 1 0; script:textbox:5:load orbital4p.html;&quot; coords=&quot;130,63,177,78&quot; shape=&quot;rect&quot;&gt;&lt;/area&gt;
+      &lt;area href=&quot;script:jmol:1:echo 4d orbital; isosurface delete sign orange violet phase atomicOrbital 4 2 0; script:textbox:5:load orbital4d.html;&quot; coords=&quot;193,63,239,78&quot; shape=&quot;rect&quot;&gt;&lt;/area&gt;
+      &lt;area href=&quot;script:jmol:1:echo 4f orbital; isosurface delete sign orange violet phase atomicOrbital 4 3 0; script:textbox:5:load orbital4f.html;&quot; coords=&quot;253,63,301,79&quot; shape=&quot;rect&quot;&gt;&lt;/area&gt;
+    &lt;/map&gt;
+    &lt;img usemap=&quot;#map&quot; src=&quot;diagram.gif&quot;&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="23">
+<Alignment>1</Alignment>
+<content start="20" end="21">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="21" end="22">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>400.0</width>
+<height>20.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<Alignment>1</Alignment>
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="28">
+<Alignment>1</Alignment>
+<content start="24" end="25">
+<component><class>org.concord.modeler.ImageQuestion</class><width>372</width><height>300</height><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link href=&quot;physStyles.css&quot; type=&quot;text/css&quot; rel=&quot;stylesheet&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;question&quot;&gt;
+    &lt;p class=&quot;question&quot;&gt;
+      Place a snapshot of the orbital of the hydrogen atom above that shows it 
+      in a state that might represent an excited state.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="25" end="26">
+</content>
+
+<content start="26" end="27">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>4</row>
+<width>371</width>
+<height>300</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot;&gt;
+    &lt;table&gt;
+      &lt;tr valign=&quot;top&quot;&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;4&quot; face=&quot;Arial, Helvetica, sans-serif&quot;&gt;&lt;strong&gt;What 
+          relationship do you see between the distance electrons can be found 
+          from the nucleus and the energy level of the electrons?&lt;/strong&gt;&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>&lt;html&gt;The closer the electrons are to the center of the atom the higher their energy.</choice>
+<choice>&lt;html&gt;The farther the electrons are from the center of the atom the higher their energy</choice>
+<choice>&lt;html&gt;There is no relationship between the distance of electrons from the nucleus and their energy.</choice>
+<choice>&lt;html&gt;The ground state electrons have the highest energy and can be found farthest from the nucleus.</choice>
+<answer>1</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script> -choiceseparator-  -choiceseparator-  -choiceseparator- </script>
+</component></content>
+
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="29">
+<Alignment>1</Alignment>
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="30">
+<Alignment>1</Alignment>
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="32">
+<Alignment>1</Alignment>
+<content start="30" end="31">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>32.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;0&quot; marginwidth=&quot;0&quot; background=&quot;navBarBottomBackground.jpg&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; cellpadding=&quot;0&quot; id=&quot;Table_01&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img src=&quot;navBarBottomColorBar.gif&quot; width=&quot;14&quot; height=&quot;6&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img src=&quot;navBarBottomLeftMargin.jpg&quot; width=&quot;8&quot; height=&quot;26&quot;&gt;
+          &lt;a href=&quot;page3.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; src=&quot;prev.jpg&quot; width=&quot;60&quot; height=&quot;26&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; src=&quot;next.jpg&quot; width=&quot;59&quot; height=&quot;26&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img src=&quot;page.jpg&quot; width=&quot;54&quot; height=&quot;26&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; src=&quot;index.jpg&quot; width=&quot;46&quot; height=&quot;26&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page1.jpg&quot; width=&quot;28&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page2.jpg&quot; width=&quot;28&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page3.jpg&quot; width=&quot;28&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page4Selected.jpg&quot; width=&quot;29&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; src=&quot;page5.jpg&quot; width=&quot;28&quot; height=&quot;26&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page6.jpg&quot; width=&quot;28&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page7.jpg&quot; width=&quot;28&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page8.jpg&quot; width=&quot;29&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page9.jpg&quot; width=&quot;28&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page10.jpg&quot; width=&quot;25&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page11.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page11.jpg&quot; width=&quot;27&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page12.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page12.jpg&quot; width=&quot;27&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;img src=&quot;navBarBottomRightMargin.jpg&quot; width=&quot;7&quot; height=&quot;26&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-373738</bgcolor>
+</component></content>
+
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="33">
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="34">
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,59 @@
+{
+  "title": "Angular Bonds",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "angular-bonds$0",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/angular-bonds$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "angular-bond-strength",
+      "min": 0.1,
+      "max": 200,
+      "labels": [
+        {
+          "value": 0.1,
+          "label": "low"
+        },
+        {
+          "value": 200,
+          "label": "high"
+        }
+      ],
+      "steps": 50,
+      "title": "Angular Bonds Strength",
+      "initialValue": 50,
+      "action": "for(var i = 0; i < 5; i++) setAngularBondProperties(i, { strength: value });"
+    },
+    {
+      "type": "slider",
+      "id": "angular-bond-angle",
+      "min": 0.4,
+      "max": 3.14,
+      "labels": [
+        {
+          "value": 0.4,
+          "label": "narrow"
+        },
+        {
+          "value": 3.14,
+          "label": "wide"
+        }
+      ],
+      "steps": 50,
+      "title": "Angular Bonds Angle",
+      "initialValue": 1.5,
+      "action": "for(var i = 0; i < 5; i++) setAngularBondProperties(i, { angle: value });"
+    }
+  ],
+  "layout": {}
+}

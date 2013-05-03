@@ -1,0 +1,81 @@
+{
+  "title": "The Temperature-Pressure Relationship",
+  "publicationStatus": "public",
+  "subtitle": "Consider how temperature affects the pressure exerted by a gas.",
+  "about": "Run the model and change the temperature. What happens to the pressure when the temperature changes?",
+  "models": [
+    {
+      "id": "page5$0",
+      "url": "imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page5/page5$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "textBoxes": [
+          {
+            "text": "Pressure gauge →",
+            "x": 2.15,
+            "y": 2.27,
+            "width": 1.05,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(250,250,250)"
+          }
+        ]
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "pressureProbeInstantaneous",
+      "unitType": "pressure",
+      "label": "Pressure gauge",
+      "value": [
+        "return getObstacleProperties(0).westProbeValue;"
+      ]
+    }
+  ],
+  "filteredOutputs": [
+    {
+      "name": "pressureProbeFiltered",
+      "unitType": "pressure",
+      "label": "Pressure gauge",
+      "property": "pressureProbeInstantaneous",
+      "type": "RunningAverage",
+      "period": 2500
+    }
+  ],
+  "components": [
+      {
+      "type": "slider",
+      "id": "temperature-slider",
+      "min": 100,
+      "max": 1000,
+      "labels": [
+        {
+          "value": 100,
+          "label": "100 K"
+        },
+        {
+          "value": 1000,
+          "label": "1000 K"
+        }
+      ],
+      "steps": 50,
+      "title": "Temperature",
+      "property": "targetTemperature"
+    },
+    {
+      "type": "barGraph",
+      "id": "bar-graph",
+      "min": 0,
+      "max": 0.8,
+      "title": "Pressure (Bar)",
+      "property": "pressureProbeFiltered"
+    }
+  ],
+  "layout": {
+    "right": [
+      "bar-graph"
+    ]
+  },
+  "template": "narrow-right"
+}

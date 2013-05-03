@@ -1,0 +1,21 @@
+{
+  "title": "elasticcollision",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "elasticcollision$0",
+      "url": "imports/legacy-mw-content/converted/student/motionandforce/elasticcollision$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

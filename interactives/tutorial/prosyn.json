@@ -1,0 +1,21 @@
+{
+  "title": "prosyn",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "prosyn$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/prosyn$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

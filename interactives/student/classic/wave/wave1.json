@@ -1,0 +1,21 @@
+{
+  "title": "wave1",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "wave1$0",
+      "url": "imports/legacy-mw-content/converted/student/classic/wave/wave1$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

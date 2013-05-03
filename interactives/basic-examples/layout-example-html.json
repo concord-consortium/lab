@@ -1,0 +1,56 @@
+{
+  "title": "Testing: Layout Example with html",
+  "publicationStatus": "broken",
+  "subtitle": "Current layout system does not support embedded html.",
+  "about": "",
+  "models": [
+    {
+      "id": "testingForces$0",
+      "url": "imports/legacy-mw-content/converted/potential-tests/static-coulomb-test/testingForces$0.json",
+      "viewOptions": {
+        "controlButtons": ""
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "abs-zero",
+      "text": "Set to absolute zero",
+      "action": "set({targetTemperature: 0.00001});"
+    },
+    {
+      "type": "button",
+      "id": "add-heat",
+      "text": "Add lots of heat",
+      "action": [
+        "var curTemp = get('temperature'), newTemp = curTemp + 2500;",
+        "if (newTemp > 4000) {",
+        "  newTemp = 4000;",
+        "}",
+        "set({targetTemperature: newTemp});"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "start",
+      "text": "Start",
+      "action": "start();"
+    },
+    {
+      "type": "button",
+      "id": "stop",
+      "text": "Stop",
+      "action": "stop();"
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": "reset();"
+    }
+  ],
+  "layout": {
+    "bottom": [ "<img src='http://lab.dev.concord.org/resources/layout/cc-logo.png'/> <span id='start' style='position: absolute; left: 30%'/> <span id='stop' style='position: absolute; left: 35%'/>  <span style='position: absolute; left: 45%;'>Click here to reset: <span id='reset'/></span>" ]
+  }
+}

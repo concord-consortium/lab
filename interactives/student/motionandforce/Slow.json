@@ -1,0 +1,21 @@
+{
+  "title": "Slow",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "Slow",
+      "url": "imports/legacy-mw-content/converted/student/motionandforce/Slow.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

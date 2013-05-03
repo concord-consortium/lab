@@ -1,0 +1,86 @@
+{
+  "title": "Signal Generator",
+  "publicationStatus": "draft",
+  "subtitle": "Testing the Signal Generator model type",
+  "about": "",
+  "models": [
+    {
+      "id": "signal1",
+      "type": "signal-generator",
+      "url": "models/signal-generator/signal-generator.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "showClock": true
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "logFrequency",
+      "onChange": "set('frequency', Math.pow(10, value));",
+      "initialValue": 0
+    }
+  ],
+  "components": [
+    {
+      "type": "graph",
+      "id": "propertiesGraph",
+      "title": "Signal",
+      "xlabel": "Time (s)",
+      "ylabel": "Signal",
+      "ymin": -1.2,
+      "ymax": 1.2,
+      "xmax": 10,
+      "xTickCount": 5,
+      "xFormatter": "2s",
+      "yFormatter": "2s",
+      "properties": [
+        "signalValue"
+      ]
+    },
+    {
+      "type": "slider",
+      "id": "frequency-slider",
+      "title": "Frequency (Hz)",
+      "min": -1,
+      "max": 1,
+      "steps": 10,
+      "property": "logFrequency",
+      "displayValue": "return format('.1f')(Math.pow(10, value))",
+      "labels": [
+        {
+          "value": -1,
+          "label": "0.1"
+        },
+        {
+          "value": 1,
+          "label": "10"
+        }
+      ]
+    },
+    {
+      "type": "numericOutput",
+      "id": "angle-output",
+      "property": "angle",
+      "displayValue": "return format('.1f')(value)"
+    }
+  ],
+  "layout": {
+    "below-model": [
+      "propertiesGraph"
+    ]
+  },
+  "template": [
+    {
+      "id": "below-model",
+      "top": "model.bottom",
+      "width": "model.width",
+      "height": "0.7 * model.width"
+    },
+    {
+      "id": "container-bottom",
+      "top": "below-model.bottom",
+      "width": "model.width"
+    }
+  ]
+}

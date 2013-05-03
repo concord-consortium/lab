@@ -1,0 +1,88 @@
+{
+  "title": "Modeling Transcription",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "fontScale": 0.8,
+  "models": [
+    {
+      "id": "page2$0",
+      "url": "imports/legacy-mw-content/converted/sam-activities/DNA-to-proteins/page2/page2$0.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      },
+      "modelOptions": {
+        "DNA": "ATGTTGACTCTAACTCGCATCCGCACTGTG"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "edit-dna",
+      "text": "Edit DNA",
+      "action": "openDNADialog();"
+    },
+    {
+      "type": "button",
+      "id": "intro",
+      "text": "Play DNA intro",
+      "action": "playDNAIntro();"
+    },
+    {
+      "type": "button",
+      "id": "transcribe",
+      "text": "Transcribe",
+      "action": "transcribe();"
+    },
+    {
+      "type": "button",
+      "id": "transcribe-step",
+      "text": "Transcribe step by step",
+      "action": "transcribeStep();"
+    },
+    {
+      "type": "button",
+      "id": "separate",
+      "text": "Separate the strands of DNA",
+      "action": "separateDNA();"
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": "reset();"
+    },
+    {
+      "type": "button",
+      "id": "transcribeA",
+      "text": "A",
+      "action": "transcribeStep('A');"
+    },
+    {
+      "type": "button",
+      "id": "transcribeC",
+      "text": "C",
+      "action": "transcribeStep('C');"
+    },
+    {
+      "type": "button",
+      "id": "transcribeG",
+      "text": "G",
+      "action": "transcribeStep('G');"
+    },
+    {
+      "type": "button",
+      "id": "transcribeU",
+      "text": "U",
+      "action": "transcribeStep('U');"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      ["edit-dna", "reset", "intro", "transcribe", "transcribe-step"],
+      ["separate", "transcribeA", "transcribeU", "transcribeG", "transcribeC"]
+    ]
+  }
+}

@@ -50,18 +50,16 @@ define(function (require) {
         // from bottom to top, while but SVG has increases from top to bottom
         model2pxInv,
 
-        // Basic scaling function for size, it transforms model units to "pixels".
-        // Use it for dimensions of objects rendered inside the view.
-        modelSize2px,
-
         // "Containers" - SVG g elements used to position layers of the final visualization.
         mainContainer,
+        geneticsContainer,
         radialBondsContainer,
         VDWLinesContainer,
         imageContainerBelow,
         imageContainerTop,
         textContainerBelow,
         textContainerTop,
+        iconContainer,
 
         dragOrigin,
 
@@ -132,6 +130,9 @@ define(function (require) {
         FORCE_STR    = "force",
 
         browser = benchmark.what_browser(),
+
+        // pre-calculations
+        halfPi = Math.PI/2,
 
         // this is a hack put in place to temporarily deal with an image-size
         // caching bug in Chrome Canary
@@ -333,36 +334,43 @@ define(function (require) {
 
     // Create key images which can be shown in the
     // upper left corner in different situations.
-    // IMPORTANT: use percentage values whenever possible,
-    // especially for *height* attribute!
-    // It will allow to properly calculate images
+    // IMPORTANT: The height attribute must be set,
+    // it will allow to properly calculate images
     // placement in drawSymbolImages() function.
     function createSymbolImages() {
-      var xMargin = "1%";
+      var xMargin = "1%",
+          fSize = Math.max(fontSizeInPixels, 12);
+
       // only add these images if they don't already exist
-      if (mainContainer.select("#heat-bath").empty()) {
+      if (iconContainer.select("#heat-bath").empty()) {
         // Heat bath key image.
-        mainContainer.append("image")
+        iconContainer.append("image")
             .attr({
               "id": "heat-bath",
               "x": xMargin,
-              "width": "3%",
-              "height": "3%",
+              "width": fSize*2,
+              "height": fSize*2,
               "preserveAspectRatio": "xMinYMin",
-              "xlink:href": "../../resources/heatbath.gif"
-            });
+              "xlink:href": "../../resources/upstatement/heatbath.svg",
+              "class": "opaque-on-hover"
+            })
+            .append("title")
+            .text("Heatbath active");
       }
-      if (mainContainer.select("#ke-gradient").empty()) {
+      if (iconContainer.select("#ke-gradient").empty()) {
         // Kinetic Energy Shading gradient image.
-        mainContainer.append("image")
+        iconContainer.append("image")
             .attr({
               "id": "ke-gradient",
-              "x": xMargin,
-              "width": "12%",
-              "height": "12%",
+              "x": "0",
+              "width": fSize*2.2,
+              "height": fSize*6,
               "preserveAspectRatio": "xMinYMin",
-              "xlink:href": "../../resources/ke-gradient.png"
-            });
+              "xlink:href": "../../resources/upstatement/ke-gradient.svg",
+              "class": "opaque-on-hover"
+            })
+            .append("title")
+            .text("Kinetic energy gradient");
       }
     }
 
@@ -373,39 +381,45 @@ define(function (require) {
         var heatBath = model.get('temperatureControl'),
             imageSelect, imageHeight,
             // Variables used for calculating proper y positions.
-            // The unit for these values is percentage points!
             yPos = 0,
-            yMargin = 1;
+            yMargin = 1,
+            fSize = Math.max(fontSizeInPixels, 12);
 
         // Heat bath symbol.
         if (heatBath) {
             yPos += yMargin;
-            imageSelect = mainContainer.select("#heat-bath")
-              .attr("y", yPos + "%")
+            imageSelect = iconContainer.select("#heat-bath")
+              .attr({
+                "y": yPos,
+                "width": fSize*2,
+                "height": fSize*2,
+              })
               .style("display", "");
 
-            imageHeight = imageSelect.attr("height");
-            // Truncate % symbol and convert to Number.
-            imageHeight = Number(imageHeight.substring(0, imageHeight.length - 1));
+            imageHeight = parseInt(imageSelect.attr("height"));
             yPos += imageHeight;
         } else {
-            mainContainer.select("#heat-bath").style("display","none");
+            iconContainer.select("#heat-bath").style("display","none");
         }
 
         // Kinetic Energy shading gradient.
         // Put it under heat bath symbol.
         if (keShadingMode) {
             yPos += yMargin;
-            mainContainer.select("#ke-gradient")
-              .attr("y", yPos + "%")
+            iconContainer.select("#ke-gradient")
+              .attr({
+                "y": yPos,
+                "width": fSize*2.2,
+                "height": fSize*6,
+              })
               .style("display", "");
         } else {
-            mainContainer.select("#ke-gradient").style("display", "none");
+            iconContainer.select("#ke-gradient").style("display", "none");
         }
     }
 
     function updateParticleRadius() {
-      mainContainer.selectAll("circle").data(modelResults).attr("r",  function(d) { return modelSize2px(d.radius); });
+      mainContainer.selectAll("circle").data(modelResults).attr("r",  function(d) { return model2px(d.radius); });
     }
 
     /**
@@ -416,7 +430,7 @@ define(function (require) {
       particle.enter().append("circle")
           .attr({
             "class": function (d) { return d.isAminoAcid() ? "draggable atom amino-acid" : "atom draggable"; },
-            "r":  function(d) { return modelSize2px(d.radius); },
+            "r":  function(d) { return model2px(d.radius); },
             "cx": function(d) { return model2px(d.x); },
             "cy": function(d) { return model2pxInv(d.y); },
             "fill-opacity": function(d) { return d.visible ? 1 : 0; },
@@ -451,7 +465,7 @@ define(function (require) {
         .attr({
           "class": "atomTrace",
           "d": getAtomTracePath,
-          "stroke-width": modelSize2px(0.01),
+          "stroke-width": model2px(0.01),
           "stroke": atomTraceColor,
           "fill": "none",
           "stroke-dasharray": "6, 6"
@@ -473,8 +487,8 @@ define(function (require) {
           "class": "obstacle-shape",
           "x": 0,
           "y": 0,
-          "width": function(d, i) {return modelSize2px(obstacles.width[i]); },
-          "height": function(d, i) {return modelSize2px(obstacles.height[i]); },
+          "width": function(d, i) {return model2px(obstacles.width[i]); },
+          "height": function(d, i) {return model2px(obstacles.height[i]); },
           "fill": function(d, i) { return obstacles.visible[i] ? getObstacleColor(i) : "rgba(128,128,128, 0)"; },
           "stroke-width": function(d, i) { return obstacles.visible[i] ? 0.2 : 0.0; },
           "stroke": function(d, i) { return obstacles.visible[i] ? getObstacleColor(i) : "rgba(128,128,128, 0)"; }
@@ -509,15 +523,15 @@ define(function (require) {
               "class": "obstacle-force-hor",
               "d": function (d) {
                 if (obsAx < 0)
-                  return "M " + modelSize2px(obsWidth + vecLen + space) +
-                              "," + modelSize2px(d) +
-                              " L " + modelSize2px(obsWidth + space) +
-                              "," + modelSize2px(d);
+                  return "M " + model2px(obsWidth + vecLen + space) +
+                              "," + model2px(d) +
+                              " L " + model2px(obsWidth + space) +
+                              "," + model2px(d);
                 else
-                  return "M " + modelSize2px(-vecLen - space) +
-                              "," + modelSize2px(d) +
-                              " L " + modelSize2px(-space) +
-                              "," + modelSize2px(d);
+                  return "M " + model2px(-vecLen - space) +
+                              "," + model2px(d) +
+                              " L " + model2px(-space) +
+                              "," + model2px(d);
               }
             });
         }
@@ -531,15 +545,15 @@ define(function (require) {
               "class": "obstacle-force-vert",
               "d": function (d) {
                 if (obsAy < 0)
-                  return "M " + modelSize2px(d) +
-                              "," + modelSize2px(-vecLen - space) +
-                              " L " + modelSize2px(d) +
-                              "," + modelSize2px(-space);
+                  return "M " + model2px(d) +
+                              "," + model2px(-vecLen - space) +
+                              " L " + model2px(d) +
+                              "," + model2px(-space);
                 else
-                  return "M " + modelSize2px(d) +
-                              "," + modelSize2px(obsHeight + vecLen + space) +
-                              " L " + modelSize2px(d) +
-                              "," + modelSize2px(obsHeight + space);
+                  return "M " + model2px(d) +
+                              "," + model2px(obsHeight + vecLen + space) +
+                              " L " + model2px(d) +
+                              "," + model2px(obsHeight + space);
               }
             });
         }
@@ -547,7 +561,7 @@ define(function (require) {
         obstacleGroupEl.selectAll("path.obstacle-force-hor, path.obstacle-force-vert")
           .attr({
             "marker-end": hideLineMarkers ? "" : "url(#Triangle-"+ FORCE_STR +")",
-            "stroke-width": modelSize2px(forceVectorWidth),
+            "stroke-width": model2px(forceVectorWidth),
             "stroke": forceVectorColor,
             "fill": "none"
           });
@@ -562,7 +576,7 @@ define(function (require) {
               if (isSpringBond(d)) {
                 return springStrokeWidth(d);
               } else {
-                return modelSize2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
+                return model2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
               }
             },
             "stroke": getBondAtom1Color,
@@ -580,7 +594,7 @@ define(function (require) {
               if (isSpringBond(d)) {
                 return springStrokeWidth(d);
               } else {
-                return modelSize2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
+                return model2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
               }
             },
             "stroke": getBondAtom2Color,
@@ -621,7 +635,7 @@ define(function (require) {
       dy = y2 - y1;
 
       strength = d.strength;
-      length = Math.sqrt(dx*dx + dy*dy) / modelSize2px(0.01);
+      length = Math.sqrt(dx*dx + dy*dy) / model2px(0.01);
 
       numTurns = Math.floor(d.length * 24);
       springDiameter = length / numTurns;
@@ -633,10 +647,10 @@ define(function (require) {
       cosThetaSpikes = costheta * numTurns;
       sinThetaSpikes = sintheta * numTurns;
 
-      radius_x1 = modelSize2px(modelResults[d.atom1].radius) * costheta;
-      radius_x2 = modelSize2px(modelResults[d.atom2].radius) * costheta;
-      radius_y1 = modelSize2px(modelResults[d.atom1].radius) * sintheta;
-      radius_y2 = modelSize2px(modelResults[d.atom2].radius) * sintheta;
+      radius_x1 = model2px(modelResults[d.atom1].radius) * costheta;
+      radius_x2 = model2px(modelResults[d.atom2].radius) * costheta;
+      radius_y1 = model2px(modelResults[d.atom1].radius) * sintheta;
+      radius_y2 = model2px(modelResults[d.atom2].radius) * sintheta;
       radiusFactorX = radius_x1 - radius_x2;
       radiusFactorY = radius_y1 - radius_y2;
 
@@ -681,8 +695,8 @@ define(function (require) {
     }
 
     function vdwLinesEnter() {
-      var strokeWidth = modelSize2px(0.02),
-          strokeDasharray = modelSize2px(0.03) + " " + modelSize2px(0.02);
+      var strokeWidth = model2px(0.02),
+          strokeDasharray = model2px(0.03) + " " + model2px(0.02);
       // update existing lines
       vdwLines.attr({
         "x1": function(d) { return model2px(modelResults[d[0]].x); },
@@ -736,7 +750,7 @@ define(function (require) {
             imglayer = imageProp[i].imageLayer;
             positionOrder = imglayer === 1 ? positionOrderTop : positionOrderBelow;
             positionOrder.push({
-              i: i, 
+              i: i,
               zOrder: (!!imageProp[i].imageLayerPosition) ? imageProp[i].imageLayerPosition : 0
             });
             positionOrder.sort(function(a,b){return d3.ascending(a["zOrder"],b["zOrder"])});
@@ -754,8 +768,8 @@ define(function (require) {
                 .attr("y", function(d){ return getImageCoords(d["i"])[1] } )
                 .attr("class", function(d){ return "image_attach" + d["i"] + " draggable"})
                 .attr("xlink:href", function(d){ return img[d["i"]].src})
-                .attr("width", function(d){return modelSize2px( imageSizes[d["i"]][0] )})
-                .attr("height", function(d){return modelSize2px( imageSizes[d["i"]][1] )})
+                .attr("width", function(d){return model2px( imageSizes[d["i"]][0] )})
+                .attr("height", function(d){return model2px( imageSizes[d["i"]][1] )})
                 .attr("pointer-events", "none");
           };
         })(i);
@@ -763,26 +777,65 @@ define(function (require) {
     }
 
     function getTextBoxCoords(d) {
-      var x, y, textX, textY, frameX, frameY,
+      var x, y, hostX, hostY, textX, textY, frameX, frameY, calloutX, calloutY,
           pixelScale = textBoxFontSizeInPixels * d.fontScale;
+
+      x = d.x;
+      y = d.y;
+
       if (d.hostType) {
         if (d.hostType === "Atom") {
-          x = modelResults[d.hostIndex].x;
-          y = modelResults[d.hostIndex].y;
+          hostX = modelResults[d.hostIndex].x;
+          hostY = modelResults[d.hostIndex].y;
         } else {
-          x = obstacles.x[d.hostIndex] + (obstacles.width[d.hostIndex] / 2);
-          y = obstacles.y[d.hostIndex] + (obstacles.height[d.hostIndex] / 2);
+          hostX = obstacles.x[d.hostIndex] + (obstacles.width[d.hostIndex] / 2);
+          hostY = obstacles.y[d.hostIndex] + (obstacles.height[d.hostIndex] / 2);
         }
-      } else {
-        x = d.x;
-        y = d.y;
       }
+
+      if (d.hostType && !d.calloutPoint) {
+        x = hostX;
+        y = hostY;
+      }
+
+      if (d.calloutPoint) {
+        if (!d.hostType) {
+          calloutX = d.calloutPoint[0];
+          calloutY = d.calloutPoint[1];
+        } else {
+          calloutX = hostX;
+          calloutY = hostY;
+        }
+      }
+
       frameX = model2px(x);
       frameY = model2pxInv(y);
 
       textX = frameX + pixelScale*0.75;
       textY = frameY + pixelScale*1.2;
-      return [textX, textY, frameX, frameY];
+
+      calloutX = model2px(calloutX);
+      calloutY = model2pxInv(calloutY);
+
+      return [textX, textY, frameX, frameY, calloutX, calloutY];
+    }
+
+    function getCalloutPath(location, frame, fullWidth, fullHeight, fontSize) {
+      var calloutLocation = [
+            parseFloat(location[0]),
+            parseFloat(location[1])
+          ],
+          center = [
+            parseFloat(frame.getAttribute("x")) + (fullWidth / 2),
+            parseFloat(frame.getAttribute("y")) + (fullHeight / 2)
+          ],
+          angle = halfPi - Math.atan((calloutLocation[0] - center[0]) / (calloutLocation[1] - center[1])),
+          baseSize = Math.min(fontSize, fullHeight/2),
+
+          dcx = Math.sin(angle) * baseSize,
+          dcy = Math.cos(angle) * baseSize;
+
+      return (center[0]+dcx) + ", " + (center[1]-dcy) + " " + (center[0]-dcx) + ", " + (center[1]+dcy) + " " + calloutLocation;
     }
 
     function updateTextBoxes() {
@@ -815,10 +868,36 @@ define(function (require) {
               return getTextBoxCoords(d)[1];
             }
           });
+
+        layer.selectAll("g.textBoxWrapper polygon")
+          .data(layerTextBoxes.filter( function(d) { return d.calloutPoint; } ))
+          .attr({
+            "callout-location-data": function(d) {
+              var pos = getTextBoxCoords(d);
+              return pos[4] + ", " + pos[5];
+            }
+          });
       };
 
       updateText(1);
       updateText(2);
+
+      // update callouts
+      $(".textBox").each( function() {
+        var $parentNode = $(this.parentNode),
+            callout     = $parentNode.find("polygon"),
+            frame       = $parentNode.find("rect")[0],
+            fontSize, width, height, calloutLocation;
+
+        if (!frame || callout.length === 0) return;
+
+        fontSize  = parseFloat(this.getAttributeNS(null, "font-size"));
+        width  = frame.getAttribute("width");
+        height = frame.getAttribute("height");
+        calloutLocation = callout.attr("callout-location-data").split(", ");
+
+        callout.attr("points", getCalloutPath(calloutLocation, frame, width, height, fontSize) );
+      });
     }
 
     function drawTextBoxes() {
@@ -844,10 +923,27 @@ define(function (require) {
         text = selection.enter().append("svg:g")
           .attr("class", "textBoxWrapper");
 
+        text.filter(function (d) { return d.calloutPoint; })
+          .append("polygon")
+          .attr({
+            "points": "0,0 0,0 0,0",
+            "style": function(d) {
+              var backgroundColor = d.backgroundColor,
+                  strokeWidth = d.strokeWidthEms * fontSizeInPixels,
+                  strokeOpacity = d.strokeOpacity;
+              return "fill:"+backgroundColor+";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:"+(strokeWidth*2)+";stroke-opacity:"+strokeOpacity;
+            },
+            "callout-location-data": function(d) {
+              var pos = getTextBoxCoords(d);
+              return pos[4] + ", " + pos[5];
+            }
+          });
+
         text.filter(function (d) { return d.frame; })
           .append("rect")
           .attr({
             "class": function(d, i) { return "textBoxFrame text-"+i; },
+            "id": function(d, i) { return "text-"+i; },
             "transform": function(d) {
               var rotate = d.rotate,
                   pos = getTextBoxCoords(d);
@@ -867,6 +963,16 @@ define(function (require) {
             "y":  function(d) { return getTextBoxCoords(d)[3]; }
           });
 
+        text.filter(function (d) { return d.calloutPoint; })
+          .append("polygon")
+          .attr({
+            "points": "0,0 0,0 0,0",
+            "style": function(d) {
+              var backgroundColor = d.backgroundColor;
+              return "fill:"+backgroundColor+";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:0;";
+            }
+          });
+
         text.append("text")
           .attr({
             "class": function() { return "textBox" + (AUTHORING ? " draggable" : ""); },
@@ -879,8 +985,8 @@ define(function (require) {
             "y": function(d)      { return getTextBoxCoords(d)[1]; },
             "width-data": function(d) { return d.width; },
             "height-data": function(d) { return d.height; },
-            "width":  modelSize2px(size[0]),
-            "height": modelSize2px(size[1]),
+            "width":  model2px(size[0]),
+            "height": model2px(size[1]),
             "xml:space": "preserve",
             "font-family": "'" + labConfig.fontface + "', sans-serif",
             "font-size": function(d) {
@@ -910,7 +1016,7 @@ define(function (require) {
       appendTextBoxes(1);
       appendTextBoxes(2);
 
-      // wrap text
+      // wrap text, set callouts
       $(".textBox").each( function() {
         var text      = this.getAttributeNS(null, "text-data"),
             x         = this.getAttributeNS(null, "x-data"),
@@ -920,8 +1026,10 @@ define(function (require) {
             transform = this.getAttributeNS(null, "transform"),
             hasHost   = this.getAttributeNS(null, "has-host"),
             textAlign = this.getAttributeNS(null, "text-anchor"),
+            $parentNode = $(this.parentNode),
             horizontalPadding, verticalPadding,
-            result, frame, dy, tx, ty;
+            result, fullWidth, fullHeight, frame, dy, tx, ty,
+            callout, calloutLocation;
 
         dy = fontSize*1.2;
         horizontalPadding = +fontSize*1.5;
@@ -930,13 +1038,13 @@ define(function (require) {
         if (width === '') {
           width = -1;
         } else {
-          width = modelSize2px(width);
+          width = model2px(width);
         }
 
         if (height === '') {
           height = -1;
         } else {
-          height = modelSize2px(height);
+          height = model2px(height);
         }
 
         while (this.firstChild) {     // clear element first
@@ -945,14 +1053,23 @@ define(function (require) {
 
         result = wrapSVGText(text, this, width, x, dy);
 
-        if (this.parentNode.childElementCount > 1) {
-          frame = this.parentNode.childNodes[0];
-          frame.setAttributeNS(null, "width", result.width + horizontalPadding);
+        if ($parentNode.find("rect").length > 0) {
+          frame = $parentNode.find("rect")[0];
+          fullWidth = result.width + horizontalPadding;
+          frame.setAttributeNS(null, "width", fullWidth);
           if (height > 0) {
-            frame.setAttributeNS(null, "height", height);
+            fullHeight = height;
           } else {
-            frame.setAttributeNS(null, "height", (result.lines * dy) + verticalPadding);
+            fullHeight = (result.lines * dy) + verticalPadding;
           }
+          frame.setAttributeNS(null, "height", fullHeight);
+        }
+
+        // if we have a callout
+        callout = $parentNode.find("polygon");
+        if (frame && callout.length > 0) {
+          calloutLocation = callout.attr("callout-location-data").split(", ");
+          callout.attr("points", getCalloutPath(calloutLocation, frame, fullWidth, fullHeight, fontSize) );
         }
 
         // center all hosted labels simply by tweaking the g.transform
@@ -966,10 +1083,10 @@ define(function (require) {
           transform = transform + " translate("+tx+","+ty+")";
           $(this).attr("transform", transform);
         }
-        if (hasHost === "true") {
+        if (hasHost === "true" && callout.length === 0) {
           tx = result.width / -2 - horizontalPadding/2;
           ty = result.lines * dy / -2 - verticalPadding/2;
-          $(this.parentNode).attr("transform", "translate("+tx+","+ty+")");
+          $parentNode.attr("transform", "translate("+tx+","+ty+")");
         }
       });
     }
@@ -988,6 +1105,8 @@ define(function (require) {
     function setupParticles() {
       var showChargeSymbols = model.get("showChargeSymbols"),
           useThreeLetterCode = model.get("useThreeLetterCode");
+
+      setupColorsOfParticles();
 
       mainContainer.selectAll("circle").remove();
       mainContainer.selectAll("g.label").remove();
@@ -1017,27 +1136,27 @@ define(function (require) {
         if (model.get("atomNumbers")) {
           selection.append("text")
             .text(d.idx)
-            .style("font-size", modelSize2px(1.4 * d.radius) + "px");
+            .style("font-size", model2px(1.4 * d.radius) + "px");
         }
         else if (useThreeLetterCode && d.label) {
           // Add shadow - a white stroke, which increases readability.
           selection.append("text")
             .text(d.label)
             .attr("class", "shadow")
-            .style("font-size", modelSize2px(d.radius) + "px");
+            .style("font-size", model2px(d.radius) + "px");
           selection.append("text")
             .text(d.label)
-            .style("font-size", modelSize2px(d.radius) + "px");
+            .style("font-size", model2px(d.radius) + "px");
         }
         else if (!useThreeLetterCode && d.symbol) {
           // Add shadow - a white stroke, which increases readability.
           selection.append("text")
             .text(d.symbol)
             .attr("class", "shadow")
-            .style("font-size", modelSize2px(1.4 * d.radius) + "px");
+            .style("font-size", model2px(1.4 * d.radius) + "px");
           selection.append("text")
             .text(d.symbol)
-            .style("font-size", modelSize2px(1.4 * d.radius) + "px");
+            .style("font-size", model2px(1.4 * d.radius) + "px");
         }
         else if (showChargeSymbols) {
           if (d.charge > 0){
@@ -1049,7 +1168,7 @@ define(function (require) {
           }
           selection.append("text")
             .text(txtValue)
-            .style("font-size", modelSize2px(1.6 * d.radius) + "px");
+            .style("font-size", model2px(1.6 * d.radius) + "px");
         }
         // Set common attributes for labels (+ shadows).
         txtSelection = selection.selectAll("text");
@@ -1075,7 +1194,7 @@ define(function (require) {
         selection.select("text.shadow")
           .style({
             "stroke": "#fff",
-            "stroke-width": 0.15 * modelSize2px(d.radius),
+            "stroke-width": 0.15 * model2px(d.radius),
             "stroke-opacity": 0.7
           });
       });
@@ -1226,44 +1345,6 @@ define(function (require) {
       }
     }
 
-    function updateDrawablePositions() {
-      console.time('view update');
-      if (obstacles) {
-        obstacle.attr("transform", function (d, i) {
-          return "translate(" + model2px(obstacles.x[i]) + " " + model2pxInv(obstacles.y[i] + obstacles.height[i]) + ")";
-        });
-      }
-
-      if (drawVdwLines) {
-        updateVdwPairs();
-      }
-      // When Kinetic Energy Shading is enabled, update style of atoms
-      // during each frame.
-      if (keShadingMode) {
-        setupColorsOfParticles();
-      }
-      if (radialBondResults) {
-        updateRadialBonds();
-      }
-      updateParticles();
-      if (drawVelocityVectors) {
-        updateVectors(velVector, getVelVectorPath, getVelVectorWidth);
-      }
-      if (drawForceVectors) {
-        updateVectors(forceVector, getForceVectorPath, getForceVectorWidth);
-      }
-      if (drawAtomTrace) {
-        updateAtomTrace();
-      }
-      if(imageProp && imageProp.length !== 0) {
-        updateImageAttachment();
-      }
-      if (textBoxes && textBoxes.length > 0) {
-        updateTextBoxes();
-      }
-      console.timeEnd('view update');
-    }
-
     // TODO: this function name seems to be inappropriate to
     // its content.
     function updateParticles() {
@@ -1273,7 +1354,10 @@ define(function (require) {
       });
 
       if (keShadingMode) {
-        // Update particles color. Array of colors should be already updated.
+        // When Kinetic Energy Shading is enabled, update style of atoms
+        // during each frame.
+        setupColorsOfParticles();
+        // Update particles "fill" attribute. Array of colors is already updated.
         particle.attr("fill", function (d, i) { return gradientNameForParticle[i]; });
       }
 
@@ -1291,7 +1375,7 @@ define(function (require) {
           y_pos = model2pxInv(d.y),
           path = "M "+x_pos+","+y_pos,
           scale = velocityVectorLength * 100;
-      return path + " L "+(x_pos + modelSize2px(d.vx*scale))+","+(y_pos - modelSize2px(d.vy*scale));
+      return path + " L "+(x_pos + model2px(d.vx*scale))+","+(y_pos - model2px(d.vy*scale));
     }
 
     function getForceVectorPath(d) {
@@ -1300,15 +1384,15 @@ define(function (require) {
           mass  = d.mass,
           scale = forceVectorLength * 100,
           path  = "M "+x_pos+","+y_pos;
-      return path + " L "+(x_pos + modelSize2px(d.ax*mass*scale))+","+(y_pos - modelSize2px(d.ay*mass*scale));
+      return path + " L "+(x_pos + model2px(d.ax*mass*scale))+","+(y_pos - model2px(d.ay*mass*scale));
     }
 
     function getVelVectorWidth(d) {
-      return Math.abs(d.vx) + Math.abs(d.vy) > 1e-6 ? modelSize2px(velocityVectorWidth) : 0;
+      return Math.abs(d.vx) + Math.abs(d.vy) > 1e-6 ? model2px(velocityVectorWidth) : 0;
     }
 
     function getForceVectorWidth(d) {
-      return Math.abs(d.ax) + Math.abs(d.ay) > 1e-8 ? modelSize2px(forceVectorWidth) : 0;
+      return Math.abs(d.ax) + Math.abs(d.ay) > 1e-8 ? model2px(forceVectorWidth) : 0;
     }
 
     function updateVectors(vector, pathFunc, widthFunc) {
@@ -1439,7 +1523,7 @@ define(function (require) {
       if (model.is_stopped()) {
         drag = dragBoundingBox(dragX, dragY, model.getMoleculeBoundingBox(i));
         setAtomPosition(i, drag.x, drag.y, false, true);
-        updateDrawablePositions();
+        update();
       }
       else if ( d.draggable ) {
         drag = dragPoint(dragX, dragY);
@@ -1469,7 +1553,7 @@ define(function (require) {
           alert("You can't drop the atom there");     // should be changed to a nice Lab alert box
           setAtomPosition(i, dragOrigin[0], dragOrigin[1], false, true);
         }
-        updateDrawablePositions();
+        update();
       }
       else if (d.draggable) {
         // here we just assume we are removing the one and only spring force.
@@ -1543,7 +1627,7 @@ define(function (require) {
       amniacidContextMenu.register(model, api, '[class~="amino-acid"]');
 
       // Initialize renderers.
-      geneticRenderer = new GeneticRenderer(mainContainer, api, model);
+      geneticRenderer = new GeneticRenderer(geneticsContainer, api, model);
     }
 
     //
@@ -1559,16 +1643,17 @@ define(function (require) {
       // Assign shortcuts, as these variables / functions shouldn't
       // change.
       mainContainer        = modelView.containers.mainContainer,
+      geneticsContainer    = modelView.containers.geneticsContainer,
       radialBondsContainer = modelView.containers.radialBondsContainer,
       VDWLinesContainer    = modelView.containers.VDWLinesContainer,
       imageContainerBelow  = modelView.containers.imageContainerBelow,
       imageContainerTop    = modelView.containers.imageContainerTop,
       textContainerBelow   = modelView.containers.textContainerBelow,
       textContainerTop     = modelView.containers.textContainerTop,
+      iconContainer        = modelView.containers.iconContainer,
 
       model2px = modelView.model2px;
       model2pxInv = modelView.model2pxInv;
-      modelSize2px = modelView.modelSize2px;
 
       fontSizeInPixels = modelView.getFontSizeInPixels();
       textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
@@ -1602,7 +1687,7 @@ define(function (require) {
         "backgroundColor", "markColor"],
           redrawClickableObjects(repaint));
 
-      model.on('addAtom', redrawClickableObjects(repaint));
+      model.on('addAtom', redrawClickableObjects(setupParticles));
       model.on('removeAtom', redrawClickableObjects(repaint));
       model.on('addRadialBond', redrawClickableObjects(setupRadialBonds));
       model.on('removeRadialBond', redrawClickableObjects(setupRadialBonds));
@@ -1630,11 +1715,10 @@ define(function (require) {
     // Also call when the number of objects changes such that the container
     // must be setup again.
     //
-    function repaint(m2px, m2pxInv, mSize2px) {
+    function repaint(m2px, m2pxInv) {
       if (arguments.length) {
         model2px = m2px;
         model2pxInv = m2pxInv;
-        modelSize2px = mSize2px;
       }
       fontSizeInPixels = modelView.getFontSizeInPixels();
       textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
@@ -1642,16 +1726,17 @@ define(function (require) {
       setupDynamicGradients();
       setupObstacles();
       setupVdwPairs();
-      setupColorsOfParticles();
-      setupRadialBonds();
       setupParticles();
-      geneticRenderer.setup();
+      // Always setup radial bonds *after* particles to use correct atoms
+      // color table.
+      setupRadialBonds();
+      geneticRenderer.render();
       setupVectors();
       setupAtomTrace();
-      drawSymbolImages();
       drawImageAttachment();
       drawTextBoxes();
       setupToolTips();
+      drawSymbolImages();
       setupFirefoxWarning();
     }
 
@@ -1669,21 +1754,30 @@ define(function (require) {
         });
       }
 
+      // Pass data from objects animated by view code to the model. Note that
+      // it's very experimental, hacky and will be changed in the future.
+      // TODO: cleanup, provide more generic solution.
+      d3.selectAll(".animated-drag").each(function () {
+        var el = d3.select(this),
+            x = el.attr("x") || el.attr("cx"),
+            y = el.attr("y") || el.attr("cy");
+            springId = el.attr("spring-id")
+
+        model.updateSpringForce(springId, x, y);
+      });
+
       if (drawVdwLines) {
         updateVdwPairs();
-      }
-      // When Kinetic Energy Shading is enabled, update style of atoms
-      // during each frame.
-      if (keShadingMode) {
-        setupColorsOfParticles();
-      }
-
-      if (radialBondResults) {
-        updateRadialBonds();
       }
 
       updateParticles();
 
+      if (radialBondResults) {
+        // Always update radial bonds *after* particles, as particles can
+        // change their color and radial bonds should reflect that too (=> use
+        // updated colors array).
+        updateRadialBonds();
+      }
       if (drawVelocityVectors) {
         updateVectors(velVector, getVelVectorPath, getVelVectorWidth);
       }
@@ -1711,8 +1805,7 @@ define(function (require) {
       repaint: repaint,
       reset: reset,
       model2px: modelView.model2px,
-      model2pxInv: modelView.model2pxInv,
-      modelSize2px: modelView.modelSize2px
+      model2pxInv: modelView.model2pxInv
     };
 
     // Initialization.

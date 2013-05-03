@@ -335,18 +335,32 @@ modelList = [
         "json": "converted/sam-activities/gas-laws/original-interactives-in-pages/page2/page2$0.json"
       },
       {
-        "name": "page3",
+        "name": "page3-1",
         "path": "sam-activities/gas-laws/original-interactives-in-pages/",
         "cml": "sam-activities/gas-laws/original-interactives-in-pages/page3/page3.cml",
         "mml": "sam-activities/gas-laws/original-interactives-in-pages/page3/page3$0.mml",
         "json": "converted/sam-activities/gas-laws/original-interactives-in-pages/page3/page3$0.json"
       },
       {
-        "name": "page4",
+        "name": "page3-2",
+        "path": "sam-activities/gas-laws/original-interactives-in-pages/",
+        "cml": "sam-activities/gas-laws/original-interactives-in-pages/page3/page3.cml",
+        "mml": "sam-activities/gas-laws/original-interactives-in-pages/page3/page3noScale$0.mml",
+        "json": "converted/sam-activities/gas-laws/original-interactives-in-pages/page3/page3noScale$0.json"
+      },
+      {
+        "name": "page4-1",
         "path": "sam-activities/gas-laws/original-interactives-in-pages/",
         "cml": "sam-activities/gas-laws/original-interactives-in-pages/page4/page4.cml",
         "mml": "sam-activities/gas-laws/original-interactives-in-pages/page4/page4$0.mml",
         "json": "converted/sam-activities/gas-laws/original-interactives-in-pages/page4/page4$0.json"
+      },
+      {
+        "name": "page4-2",
+        "path": "sam-activities/gas-laws/original-interactives-in-pages/",
+        "cml": "sam-activities/gas-laws/original-interactives-in-pages/page4/page4.cml",
+        "mml": "sam-activities/gas-laws/original-interactives-in-pages/page4/page4noScale$0.mml",
+        "json": "converted/sam-activities/gas-laws/original-interactives-in-pages/page4/page4noScale$0.json"
       },
       {
         "name": "page5",
@@ -356,11 +370,18 @@ modelList = [
         "json": "converted/sam-activities/gas-laws/original-interactives-in-pages/page5/page5$0.json"
       },
       {
-        "name": "page6",
+        "name": "page6-1",
         "path": "sam-activities/gas-laws/original-interactives-in-pages/",
         "cml": "sam-activities/gas-laws/original-interactives-in-pages/page6/page6.cml",
         "mml": "sam-activities/gas-laws/original-interactives-in-pages/page6/page6$0.mml",
         "json": "converted/sam-activities/gas-laws/original-interactives-in-pages/page6/page6$0.json"
+      },
+      {
+        "name": "page6-2",
+        "path": "sam-activities/gas-laws/original-interactives-in-pages/",
+        "cml": "sam-activities/gas-laws/original-interactives-in-pages/page6/page6.cml",
+        "mml": "sam-activities/gas-laws/original-interactives-in-pages/page6/page6noScale$0.mml",
+        "json": "converted/sam-activities/gas-laws/original-interactives-in-pages/page6/page6noScale$0.json"
       },
       {
         "name": "page7",

@@ -451,7 +451,7 @@
       </void> 
       <void property="text"> 
        <string>       Non-polar molecules:
-London Dispersion Attraction</string> 
+London dispersion attraction</string> 
       </void> 
       <void property="x"> 
        <double>57.0</double> 

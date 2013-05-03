@@ -1,0 +1,21 @@
+{
+  "title": "effusion",
+  "publicationStatus": "broken",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "effusion$0",
+      "url": "imports/legacy-mw-content/converted/student/motionandforce/effusion$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

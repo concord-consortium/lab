@@ -1,0 +1,21 @@
+{
+  "title": "hexshockwave_ellipticalwave",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "hexshockwave_ellipticalwave",
+      "url": "imports/legacy-mw-content/converted/student/materials/hexshockwave_ellipticalwave.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

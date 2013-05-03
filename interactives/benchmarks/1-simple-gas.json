@@ -1,0 +1,16 @@
+{
+  "title": "Simple Gas",
+  "publicationStatus": "public",
+  "subtitle": "19 uncharged and unbonded atoms.",
+  "about": "",
+  "models": [
+    {
+      "id": "simple-gas$0",
+      "url": "imports/legacy-mw-content/converted/benchmarks/simple-gas/simple-gas$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "set({ showClock: true})"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "title": "adhesion2",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "adhesion2$0",
+      "url": "imports/legacy-mw-content/converted/student/materials/adhesion2$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

@@ -1,0 +1,157 @@
+{
+  "type": "md2d",
+  "imagePath": "",
+  "width": 2.6,
+  "height": 2.5,
+  "unitsScheme": "md2d",
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": false,
+  "gravitationalField": false,
+  "timeStep": 1.5,
+  "dielectricConstant": 1,
+  "realisticDielectricEffect": true,
+  "solventForceFactor": 1.25,
+  "solventForceType": 0,
+  "additionalSolventForceMult": 4,
+  "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
+  "viscosity": 1,
+  "timeStepsPerTick": 50,
+  "geneticEngineState": "dna",
+  "DNA": "",
+  "viewOptions": {
+    "viewPortWidth": 2.6,
+    "viewPortHeight": 2.5,
+    "viewPortZoom": 1,
+    "viewPortX": 0,
+    "viewPortY": 0,
+    "backgroundColor": "rgba(233,233,190,255)",
+    "showClock": false,
+    "markColor": "#f8b500",
+    "keShading": false,
+    "chargeShading": true,
+    "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
+    "showChargeSymbols": true,
+    "showVDWLines": false,
+    "VDWLinesCutoff": "medium",
+    "showVelocityVectors": false,
+    "showForceVectors": true,
+    "showAtomTrace": false,
+    "images": [
+      {
+        "imageUri": "vibrationFrame.gif",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 2.5
+      }
+    ],
+    "imageMapping": {},
+    "textBoxes": [],
+    "xlabel": false,
+    "ylabel": false,
+    "xunits": false,
+    "yunits": false,
+    "controlButtons": "play",
+    "gridLines": false,
+    "atomNumbers": false,
+    "enableAtomTooltips": false,
+    "enableKeyboardHandlers": true,
+    "atomTraceColor": "#6913c5",
+    "velocityVectors": {
+      "color": "#000",
+      "width": 0.02,
+      "length": 2
+    },
+    "forceVectors": {
+      "color": "rgb(0,153,0)",
+      "width": 0.02,
+      "length": 0.97
+    }
+  },
+  "pairwiseLJProperties": [],
+  "elements": {
+    "mass": [
+      100,
+      97.14285714285714,
+      1600,
+      3550,
+      600
+    ],
+    "sigma": [
+      0.16,
+      0.2,
+      0.24,
+      0.28,
+      0.3
+    ],
+    "epsilon": [
+      -0.1,
+      -0.1,
+      -0.1,
+      -0.1,
+      -5
+    ],
+    "color": [
+      -3355444,
+      -3355444,
+      -3355444,
+      -3355444,
+      -855310
+    ]
+  },
+  "atoms": {
+    "x": [
+      1.32,
+      1.32
+    ],
+    "y": [
+      1.404243273,
+      1.115756727
+    ],
+    "vx": [
+      0,
+      0
+    ],
+    "vy": [
+      0.00013638621286694757,
+      -0.00013638621286694757
+    ],
+    "charge": [
+      0,
+      0
+    ],
+    "friction": [
+      0,
+      0
+    ],
+    "element": [
+      0,
+      0
+    ],
+    "pinned": [
+      0,
+      0
+    ]
+  },
+  "radialBonds": {
+    "atom1": [
+      0
+    ],
+    "atom2": [
+      1
+    ],
+    "length": [
+      0.3
+    ],
+    "strength": [
+      20
+    ],
+    "type": [
+      101
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "sm_sol",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "sm_sol",
+      "url": "imports/legacy-mw-content/converted/student/stateofmatter/sm_sol.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

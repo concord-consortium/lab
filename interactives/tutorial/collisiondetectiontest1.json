@@ -1,0 +1,21 @@
+{
+  "title": "collisiondetectiontest1",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "collisiondetectiontest1$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/collisiondetectiontest1$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

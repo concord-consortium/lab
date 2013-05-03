@@ -1,0 +1,21 @@
+{
+  "title": "html_layout",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "html_layout$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/html_layout$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "title": "Hydrogen Bonds",
+  "publicationStatus": "draft",
+  "subtitle": "17 molecules created from 51 atoms using 34 radial and 17 angular bonds and displaying VDW lines",
+  "about": "",
+  "models": [
+    {
+      "id": "page6$0",
+      "url": "imports/legacy-mw-content/converted/benchmarks/hydrogen-bonds/page6$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "set({ showClock: true}); set({temperatureControl: true}); set({targetTemperature: 10000});"
+    }
+  ],
+  "components": [
+    {
+      "type": "checkbox",
+      "id": "show_bonds",
+      "text": "Show hydrogen bonds",
+      "property": "showVDWLines"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_charge",
+      "text": "Show partial charges",
+      "property": "chargeShading"
+    },
+    {
+      "type": "checkbox",
+      "id": "slow_motion2",
+      "text": "Slow Motion",
+      "onClick": "if (value) { set({timeStep: 0.1}) } else { set({timeStep: 1})};"
+    },
+    {
+      "type": "button",
+      "id": "cool",
+      "text": "Cool",
+      "action": "adjustTemperature(0.9);"
+    },
+    {
+      "type": "button",
+      "id": "heat",
+      "text": "Heat",
+      "action": "adjustTemperature(1.1); limitHighTemperature(25000);"
+    },
+    {
+      "type": "barGraph",
+      "id": "thermometer",
+      "property": "temperature",
+      "title": "Thermometer",
+      "labels": 0,
+      "min": 0,
+      "max": 25000
+    }
+  ],
+  "layout": {
+    "right": [
+      "thermometer"
+    ],
+    "bottom": [
+      "cool",
+      "heat",
+      "show_bonds",
+      "show_charge",
+      "slow_motion2"
+    ]
+  }
+}

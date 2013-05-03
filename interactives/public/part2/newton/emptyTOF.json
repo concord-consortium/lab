@@ -1,0 +1,21 @@
+{
+  "title": "emptyTOF",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "emptyTOF",
+      "url": "imports/legacy-mw-content/converted/public/part2/newton/emptyTOF.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "page2",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "page2$0",
+      "url": "imports/legacy-mw-content/converted/public/part2/spectroscopy/page2$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

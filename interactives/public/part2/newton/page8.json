@@ -1,0 +1,21 @@
+{
+  "title": "page8",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "page8$0",
+      "url": "imports/legacy-mw-content/converted/public/part2/newton/page8$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

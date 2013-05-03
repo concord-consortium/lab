@@ -1,0 +1,21 @@
+{
+  "title": "hexshockwave_meltingfront",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "hexshockwave_meltingfront",
+      "url": "imports/legacy-mw-content/converted/student/materials/hexshockwave_meltingfront.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

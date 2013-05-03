@@ -1,0 +1,22 @@
+{
+  "title": "Being a Ribosome",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "page4$0",
+      "url": "imports/legacy-mw-content/converted/sam-activities/DNA-to-proteins/page4/page4$0.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      },
+      "modelOptions": {
+        "geneticProperties": {
+          "DNA": "ATGTTGACTCTAACTCGCATCCGCACTGTGTAG"
+        }
+      },
+      "onLoad": "transcribe();"
+    }
+  ]
+}

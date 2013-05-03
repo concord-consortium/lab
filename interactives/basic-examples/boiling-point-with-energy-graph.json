@@ -1,0 +1,92 @@
+{
+  "title": "Boiling Point with Energy Graph",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "boiling-point-with-clock$0",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/boiling-point-with-clock$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      },
+      "onLoad": "set({ targetTemperature: 200 });"
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "cool",
+      "text": "Cool",
+      "action": "adjustTemperature(0.9);"
+    },
+    {
+      "type": "button",
+      "id": "heat",
+      "text": "Heat",
+      "action": "adjustTemperature(1.1); limitHighTemperature(4000);"
+    },
+    {
+      "type": "numericOutput",
+      "id": "temperature-output",
+      "property": "temperature",
+      "displayValue": "return format('f')(value)"
+    },
+    {
+      "type": "graph",
+      "id": "propertiesGraph",
+      "title": "Energy of the System (KE:red, PE:green, TE:blue)",
+      "xlabel": "Model Time (ps)",
+      "ylabel": "eV",
+      "ymin": -15,
+      "ymax": 15,
+      "xmax": 30,
+      "properties": [
+        "kineticEnergy",
+        "potentialEnergy",
+        "totalEnergy"
+      ]
+    }
+  ],
+  "layout": {
+    "right": [
+      "propertiesGraph"
+    ],
+    "bottom": [
+      "heat",
+      "cool"
+    ],
+    "bottom-right": [
+      "temperature-output"
+    ]
+  },
+  "template": [
+    {
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "height": "model.height",
+      "padding-left": "1em",
+      "padding-right": "0.5em",
+      "width": "model.width",
+      "min-width": "6em"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "padding-top": "0.5em",
+      "align": "center"
+    },
+    {
+      "id": "bottom-right",
+      "top": "model.bottom",
+      "left": "right.left",
+      "width": "right.width",
+      "padding-top": "0.5em",
+      "align": "center"
+    }
+  ]
+}

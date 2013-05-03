@@ -1,0 +1,76 @@
+{
+  "title": "Energy Minimization",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "energy-minimization$0",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/energy-minimization$0.json",
+      "viewOptions": {
+        "controlButtons": ""
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "run",
+      "text": "Run",
+      "action": "start();"
+    },
+    {
+      "type": "button",
+      "id": "stop",
+      "text": "Stop",
+      "action": "stop();"
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": "reset();"
+    },
+    {
+      "type": "button",
+      "id": "increase-volume",
+      "text": "Volume &#8593;",
+      "action": [
+        "var props = getObstacleProperties(0);",
+        "if (props.x > 1.8) return;",
+        "props.x *= 5;",
+        "props.xPrev *= 5;",
+        "setObstacleProperties(0, {x:props.x, xPrev: props.xPrev});",
+        "for(var i = 0; i < getNumberOfAtoms(); i++) {",
+        "  props = getAtomProperties(i);",
+        "  props.x *= 5;",
+        "  setAtomProperties(i, {x:props.x});",
+        "}"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "decrease-volume",
+      "text": "Volume &#8595;",
+      "action": [
+        "var props = getObstacleProperties(0);",
+        "if (props.x < 1.8) return;",
+        "props.x *= 0.2;",
+        "props.xPrev *= 0.2;",
+        "setObstacleProperties(0, {x:props.x, xPrev: props.xPrev});",
+        "for(var i = 0; i < getNumberOfAtoms(); i++) {",
+        "  props = getAtomProperties(i);",
+        "  props.x *= 0.19;",
+        "  setAtomProperties(i, {x:props.x});",
+        "}"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "minimize-energy",
+      "text": "Minimize Energy",
+      "action": "minimizeEnergy();"
+    }
+  ],
+  "layout": {}
+}

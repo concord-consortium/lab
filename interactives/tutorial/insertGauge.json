@@ -1,0 +1,21 @@
+{
+  "title": "insertGauge",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "insertGauge$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/insertGauge$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

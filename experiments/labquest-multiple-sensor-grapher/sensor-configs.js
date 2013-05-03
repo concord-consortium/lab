@@ -7,8 +7,8 @@ SENSOR_CONFIGS = {
       ylabel:    "Temperature, (Degrees C)",
       ymin: 10, ymax: 40,
       realTime: true,
-      sample: 0.1,
-      circleRadius: false,
+      sampleInterval: 0.1,
+      markAllDataPoints: false,
       dataChange: false
     },
     "sensor": {
@@ -26,8 +26,8 @@ SENSOR_CONFIGS = {
       ylabel:    "Distance, (m)",
       ymin: 0, ymax: 4,
       realTime: true,
-      sample: 0.05,
-      circleRadius: false,
+      sampleInterval: 0.05,
+      markAllDataPoints: false,
       dataChange: false
     },
     "sensor": {
@@ -45,8 +45,8 @@ SENSOR_CONFIGS = {
       ylabel:    "Force, (N)",
       ymin: -5, ymax: 5,
       realTime: true,
-      sample: 0.05,
-      circleRadius: false,
+      sampleInterval: 0.05,
+      markAllDataPoints: false,
       dataChange: false
     },
     "sensor": {
@@ -64,8 +64,8 @@ SENSOR_CONFIGS = {
       ylabel:    "Force, (N)",
       ymin: -50, ymax: 50,
       realTime: true,
-      sample: 0.05,
-      circleRadius: false,
+      sampleInterval: 0.05,
+      markAllDataPoints: false,
       dataChange: false
     },
     "sensor": {
@@ -83,8 +83,8 @@ SENSOR_CONFIGS = {
       ylabel:    "CO2, (ppm)",
       ymin: 0, ymax: 5000,
       realTime: true,
-      sample: 1.0,
-      circleRadius: false,
+      sampleInterval: 1.0,
+      markAllDataPoints: false,
       dataChange: false
     },
     "sensor": {
@@ -102,8 +102,8 @@ SENSOR_CONFIGS = {
       ylabel:    "O2, (%)",
       ymin: 0, ymax: 100,
       realTime: true,
-      sample: 1.0,
-      circleRadius: false,
+      sampleInterval: 1.0,
+      markAllDataPoints: false,
       dataChange: false
     },
     "sensor": {
@@ -121,8 +121,8 @@ SENSOR_CONFIGS = {
       ylabel:    "pH, (pH)",
       ymin: 0, ymax: 14,
       realTime: true,
-      sample: 0.1,
-      circleRadius: false,
+      sampleInterval: 0.1,
+      markAllDataPoints: false,
       dataChange: false
     },
     "sensor": {
@@ -140,8 +140,8 @@ SENSOR_CONFIGS = {
       ylabel:    "Light, (Lux)",
       ymin: 0, ymax: 10000,
       realTime: true,
-      sample: 0.1,
-      circleRadius: false,
+      sampleInterval: 0.1,
+      markAllDataPoints: false,
       dataChange: false
     },
     "sensor": {
@@ -159,8 +159,8 @@ SENSOR_CONFIGS = {
       ylabel:    "Sound level, (db)",
       ymin: 0, ymax: 120,
       realTime: true,
-      sample: 0.1,
-      circleRadius: false,
+      sampleInterval: 0.1,
+      markAllDataPoints: false,
       dataChange: false
     },
     "sensor": {

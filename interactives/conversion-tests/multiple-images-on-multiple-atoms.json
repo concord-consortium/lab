@@ -1,0 +1,47 @@
+{
+  "title": "Multiple Attached Images on Multiple Atoms",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "multiple-images-on-multiple-atoms$0",
+      "url": "imports/legacy-mw-content/converted/potential-tests/multiple-images-on-multiple-atoms/multiple-images-on-multiple-atoms$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "cool",
+      "text": "lower heat bath",
+      "action": "adjustTemperature(0.8);"
+    },
+    {
+      "type": "button",
+      "id": "heat",
+      "text": "raise heat bath",
+      "action": "adjustTemperature(1.2); limitHighTemperature(25000);"
+    },
+    {
+      "type": "barGraph",
+      "id": "thermometer",
+      "property": "temperature",
+      "title": "Thermometer",
+      "labels": 0,
+      "min": 0,
+      "max": 25000
+    }
+  ],
+  "layout": {
+    "right": [
+      "thermometer"
+    ],
+    "bottom": [
+      "heat",
+      "cool"
+    ]
+  }
+}

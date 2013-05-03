@@ -1,0 +1,387 @@
+{
+  "title": "Pendulum and Spring",
+  "publicationStatus": "public",
+  "subtitle": "Explore the motion of a pendulum on a spring.",
+  "about": [
+    "Press the play button. Watch the graphs to see the motion of the spring pendulum.",
+    "Can you distinguish the pattern of spring motion (up and down) from the pattern",
+    "of pendulum motion (back and forth)? How are the two related? Is there a regular",
+    "pattern to the motion? Compare the periods of the two graphs. How many different",
+    "patterns can you produce by changing the variables – gravity, rod length, mass and",
+    "spring constant? Under what conditions does the energy switch between back and forth",
+    "and up and down? Does the initial starting angle affect the patterns when all the",
+    "other variables are unchanged?"
+  ],
+  "fontScale": 0.8,
+  "models": [
+    {
+      "id": "pendulum1$0",
+      "url": "imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "gridLines": true,
+        "showClock": true,
+        "velocityVectors": {
+          "length": 10
+        }
+      },
+      "modelOptions": {
+        "unitsScheme": "mks",
+        "timeStepsPerTick": 167,
+        "timeStep": 1,
+        "modelSampleRate": 60
+      },
+      "onLoad": [
+        "function resetDisplacement() {",
+        "  set({startingDisplacement: get('startingDisplacement')});",
+        "}",
+        "function resetAngle() {",
+        "  set({startingAngle: get('startingAngle')});",
+        "}",
+        "function stopMotion() {",
+        "  stop();",
+        "  setAtomProperties(1, { vx: 0, vy: 0 });",
+        "}",
+        "onPropertyChange('springConstant', resetDisplacement);",
+        "onPropertyChange('rodLength', resetAngle);",
+        "onPropertyChange('ballMass', resetAngle);",
+        "onPropertyChange('gravitationalField', resetAngle);",
+        "onPropertyChange('damping', resetAngle);",
+        "onPropertyChange('startingAngle', stopMotion);",
+        "onPropertyChange('startingDisplacement', stopMotion);"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "currentAngle",
+      "unitAbbreviation": "°",
+      "label": "Angle",
+      "value": [
+        "var a0 = getAtomProperties(0),",
+        "    a1 = getAtomProperties(1);",
+        "return Math.atan2(-Math.abs(a1.y-a0.y), a1.x-a0.x) * rad2deg + 90;"
+      ]
+    },
+    {
+      "name": "currentDisplacement",
+      "unitType": "length",
+      "label": "Distance from equilibrium",
+      "value": "return get('equilibriumLength') - (getAtomProperties(0).y - getAtomProperties(1).y);"
+    },
+    {
+      "name": "equilibriumLength",
+      "unitType": "length",
+      "label": "Equilibrium spring length",
+      "value": "return getRadialBondProperties(0).length + ((get('ballMass')/1000) * get('gravitationalField') / get('springConstant'));"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "gravity",
+      "label": "Gravity",
+      "unitType": "acceleration",
+      "onChange": "set('gravitationalField', value);",
+      "initialValue": 9.8
+    },
+    {
+      "name": "rodLength",
+      "label": "Rod length",
+      "unitAbbreviation": "cm",
+      "onChange": "var len = value/100, a0 = getAtomProperties(0), a1 = getAtomProperties(1), angle = Math.atan((a1.x-a0.x)/(a0.y-a1.y)); setRadialBondProperties(0, { length: len }); setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});",
+      "initialValue": 100
+    },
+    {
+      "name": "startingAngle",
+      "label": "Starting angle",
+      "unitAbbreviation": "°",
+      "onChange": "var a0 = getAtomProperties(0), angle = value*deg2rad, len = getRadialBondProperties(0).length; setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});",
+      "initialValue": 45
+    },
+    {
+      "name": "ballMass",
+      "label": "Ball mass",
+      "unitAbbreviation": "g",
+      "onChange": "setElementProperties(3, { mass: value/1000 });",
+      "initialValue": 250
+    },
+    {
+      "name": "springConstant",
+      "label": "Spring constant",
+      "unitType": "stiffness",
+      "onChange": "setRadialBondProperties(0, { strength: value });",
+      "initialValue": 6.7
+    },
+    {
+      "name": "startingDisplacement",
+      "label": "Starting distance from equilibrium",
+      "unitType": "length",
+      "onChange": [
+        "var newLength = get('equilibriumLength') - value;",
+        "setAtomProperties(1, { y: getAtomProperties(0).y - newLength });"
+      ],
+      "initialValue": 0.3
+    },
+    {
+      "name": "damping",
+      "label": "Damping",
+      "unitType": "dampingCoefficient",
+      "onChange": "setAtomProperties(1, { friction: value });",
+      "initialValue": 0
+    }
+  ],
+  "exports": {
+    "perRun": ["gravity", "springConstant", "startingDisplacement", "rodLength", "startingAngle", "ballMass", "damping"],
+    "perTick": ["currentAngle", "currentDisplacement"]
+  },
+  "components": [
+    {
+      "type": "slider",
+      "id": "gravity-slider",
+      "min": 0.8,
+      "max": 19.8,
+      "displayValue": "return format('1.1f')(value)",
+      "labels": [
+        {
+          "value": 1,
+          "label": "1"
+        },
+        {
+          "value": 20,
+          "label": "20"
+        }
+      ],
+      "steps": 38,
+      "title": "Gravity (m/s²)",
+      "property": "gravity"
+    },
+    {
+      "type": "slider",
+      "id": "angle-slider",
+      "min": 0,
+      "max": 90,
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 90,
+          "label": "90"
+        }
+      ],
+      "steps": 45,
+      "title": "Starting angle (&deg;)",
+      "property": "startingAngle"
+    },
+    {
+      "type": "slider",
+      "id": "length-slider",
+      "min": 10,
+      "max": 200,
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": 10,
+          "label": "10 cm"
+        },
+        {
+          "value": 200,
+          "label": "2 m"
+        }
+      ],
+      "steps": 19,
+      "title": "Rod length (cm)",
+      "property": "rodLength"
+    },
+    {
+      "type": "slider",
+      "id": "mass-slider",
+      "min": 10,
+      "max": 400,
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": 10,
+          "label": "10"
+        },
+        {
+          "value": 400,
+          "label": "400"
+        }
+      ],
+      "steps": 39,
+      "title": "Mass of the ball (g)",
+      "property": "ballMass"
+    },
+    {
+      "type": "slider",
+      "id": "spring-constant-slider",
+      "min": 1,
+      "max": 30,
+      "displayValue": "return format('1.1f')(value)",
+      "labels": [
+        {
+          "value": 1,
+          "label": "1"
+        },
+        {
+          "value": 30,
+          "label": "30"
+        }
+      ],
+      "steps": 290,
+      "title": "Spring constant (N/m)",
+      "property": "springConstant"
+    },
+    {
+      "type": "slider",
+      "id": "damping-slider",
+      "min": 0,
+      "max": 1,
+      "displayValue": "return format('1.2f')(value)",
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 1.0,
+          "label": "1"
+        }
+      ],
+      "steps": 20,
+      "title": "Damping (Newton per m/s)",
+      "property": "damping"
+    },
+    {
+      "type": "checkbox",
+      "id": "ke-shading",
+      "text": "KE shading",
+      "textOn": "right",
+      "property": "keShading"
+    },
+    {
+      "type": "checkbox",
+      "id": "velocity-vectors",
+      "text": "Show velocity vectors",
+      "textOn": "right",
+      "property": "showVelocityVectors"
+    },
+    {
+      "type": "numericOutput",
+      "id": "equilibrium-display",
+      "property": "equilibriumLength",
+      "width": "14em",
+      "orientation": "vertical",
+      "displayValue": "return format('1.2f')(value)"
+    },
+    {
+      "type": "numericOutput",
+      "id": "displacement-display",
+      "property": "currentDisplacement",
+      "width": "14em",
+      "orientation": "vertical",
+      "displayValue": "return format('1.2f')(value)"
+    },
+    {
+      "type": "numericOutput",
+      "id": "current-angle-display",
+      "property": "currentAngle",
+      "width": "14em",
+      "orientation": "vertical",
+      "displayValue": "return format('f')(value)"
+    },
+    {
+      "type": "graph",
+      "id": "pendulumGraph",
+      "title": false,
+      "xlabel": false,
+      "ylabel": "Angle (°)",
+      "ymin": -100,
+      "ymax": 100,
+      "xmax": 10,
+      "xTickCount": 5,
+      "yTickCount": 4,
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
+      "properties": [
+        "currentAngle"
+      ]
+    },
+    {
+      "type": "graph",
+      "id": "distanceFromEquilibriumGraph",
+      "title": false,
+      "xlabel": false,
+      "ylabel": "Equilibrium dist. (m)",
+      "ymin": -0.6,
+      "ymax": 0.6,
+      "xmax": 10,
+      "yTickCount": 4,
+      "xTickCount": 5,
+      "xFormatter": "2s",
+      "yFormatter": "2s",
+      "properties": [
+        "currentDisplacement"
+      ]
+    }
+  ],
+  "layout": {
+    "right-upper": [
+      "pendulumGraph"
+    ],
+    "right-lower": [
+      "distanceFromEquilibriumGraph"
+    ],
+    "bottom": [
+      [
+        "gravity-slider",
+        "length-slider",
+        "angle-slider",
+        "velocity-vectors"
+      ],
+      [
+        "mass-slider",
+        "spring-constant-slider",
+        "damping-slider",
+        "ke-shading"
+      ],
+      [
+        "equilibrium-display",
+        "displacement-display",
+        "current-angle-display"
+      ]
+    ]
+  },
+  "template": [
+    {
+      "id": "right-upper",
+      "top": "model.top",
+      "left": "model.right",
+      "height": "model.height * 0.5",
+      "padding-left": "1em",
+      "padding-right": "0.5em",
+      "padding-bottom": "0.5em",
+      "width": "model.width * 1.0",
+      "min-width": "model.width * 0.8"
+    },
+    {
+      "id": "right-lower",
+      "left": "model.right",
+      "top": "right-upper.bottom",
+      "height": "model.height * 0.5",
+      "padding-left": "1em",
+      "padding-right": "0.5em",
+      "width": "model.width * 1.0",
+      "min-width": "model.width * 0.8"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "interactive.width",
+      "padding-top": "0.5em"
+    }
+  ]
+}

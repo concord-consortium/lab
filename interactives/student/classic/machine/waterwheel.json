@@ -1,0 +1,21 @@
+{
+  "title": "waterwheel",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "waterwheel$0",
+      "url": "imports/legacy-mw-content/converted/student/classic/machine/waterwheel$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

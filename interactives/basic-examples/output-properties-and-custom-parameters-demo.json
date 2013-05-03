@@ -1,0 +1,233 @@
+{
+  "title": "Pendulum with Output Properties",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "fontScale": 0.8,
+  "models": [
+    {
+      "id": "pendulum1$0",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/pendulum1$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name":  "currentAngle",
+      "label": "Current Angle",
+      "unitAbbreviation": "°",
+      "value": [
+          "var pivotAtom = getAtomProperties(0),",
+              "swingingAtom = getAtomProperties(1),",
+              "dx = swingingAtom.x - pivotAtom.x,",
+              "dy = swingingAtom.y - pivotAtom.y,",
+              "angle = 90 + rad2deg * Math.atan2(dy, dx);",
+          "return angle;"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "startingGravity",
+      "label": "Gravity",
+      "onChange": "set({ gravitationalField: value*8e-8 });",
+      "initialValue": 1.0
+    },
+    {
+      "name": "startingLength",
+      "label": "Length",
+      "unitAbbreviation": "m",
+      "onChange": "var len = value/1.5, a0 = getAtomProperties(0), a1 = getAtomProperties(1), angle = Math.atan((a1.x-a0.x)/(a0.y-a1.y)); setRadialBondProperties(0, { length: len }); setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});",
+      "initialValue": 1.5
+    },
+    {
+      "name": "startingAngle",
+      "label": "Starting Angle",
+      "unitAbbreviation": "°",
+      "onChange": "var a0 = getAtomProperties(0), angle = value*deg2rad, len = getRadialBondProperties(0).length; setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});",
+      "initialValue": 45
+    },
+    {
+      "name": "ballMass",
+      "label": "Mass",
+      "unitAbbreviation": "g",
+      "onChange": "var mass = value*12; setElementProperties(3, { mass: mass });",
+      "initialValue": 150
+    },
+    {
+      "name": "ballFriction",
+      "label": "Friction",
+      "onChange": "setAtomProperties(1, { friction: value });",
+      "initialValue": 0
+    }
+  ],
+  "exports": {
+    "perRun": ["startingGravity", "startingLength", "startingAngle", "ballMass", "ballFriction"],
+    "perTick": ["currentAngle", "kineticEnergy"]
+  },
+  "components": [
+    {
+      "type": "slider",
+      "id": "gravity-slider",
+      "min": 0.1,
+      "max": 4,
+      "displayValue": "return format('1.1f')(value)",
+      "labels": [
+        {
+          "value": 0.1,
+          "label": "0.1"
+        },
+        {
+          "value": 4,
+          "label": "4.0"
+        }
+      ],
+      "steps": 39,
+      "title": "Starting Gravity",
+      "property": "startingGravity"
+    },
+    {
+      "type": "slider",
+      "id": "length-slider",
+      "min": 0.1,
+      "max": 3,
+      "displayValue": "return format('1.1f')(value)",
+      "labels": [
+        {
+          "value": 0.1,
+          "label": "0.1"
+        },
+        {
+          "value": 3,
+          "label": "3.0"
+        }
+      ],
+      "steps": 30,
+      "title": "Starting Length (m)",
+      "property": "startingLength"
+    },
+    {
+      "type": "slider",
+      "id": "angle-slider",
+      "min": -45,
+      "max": 45,
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": -45,
+          "label": "-45&deg;"
+        },
+        {
+          "value": 45,
+          "label": "45&deg;"
+        }
+      ],
+      "steps": 90,
+      "title": "Starting Angle",
+      "property": "startingAngle"
+    },
+    {
+      "type": "slider",
+      "id": "mass-slider",
+      "min": 10,
+      "max": 500,
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": 10,
+          "label": "10"
+        },
+        {
+          "value": 500,
+          "label": "500"
+        }
+      ],
+      "steps": 49,
+      "title": "Mass of the ball (grams)",
+      "property": "ballMass"
+    },
+    {
+      "type": "numericOutput",
+      "id": "kinetic-energy1",
+      "property": "kineticEnergy",
+      "displayValue": "return format('1.3f')(value)"
+    },
+    {
+      "type": "numericOutput",
+      "id": "current-angle-output1",
+      "property": "currentAngle",
+      "label": "Current Angle",
+      "unitAbbreviation": "&deg;",
+      "displayValue": "return format('f')(value)"
+    },
+    {
+      "type": "numericOutput",
+      "id": "current-angle-output2",
+      "property": "currentAngle",
+      "displayValue": "return format('f')(value)"
+    },
+    {
+      "type": "slider",
+      "id": "friction-slider",
+      "min": 0,
+      "max": 1,
+      "displayValue": "return format('1.1f')(value)",
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 1,
+          "label": "1.0"
+        }
+      ],
+      "steps": 25,
+      "title": "Friction",
+      "property": "ballFriction"
+    },
+    {
+      "type": "checkbox",
+      "id": "ke-shading",
+      "text": "KE Shading",
+      "property": "keShading"
+    },
+    {
+      "type": "graph",
+      "id": "propertiesGraph",
+      "title": "Energy vs. starting gravity and starting length",
+      "xmin": 0,
+      "xmax": 100,
+      "ymin": 0,
+      "ymax": 4.5,
+      "properties": ["kineticEnergy", "startingGravity", "startingLength"]
+    }
+  ],
+  "layout": {
+    "right": [
+      "propertiesGraph"
+    ],
+    "top": [
+      "ke-shading"
+    ],
+    "bottom": [
+      [
+        "gravity-slider",
+        "angle-slider",
+        "length-slider"
+      ],
+      [
+        "mass-slider",
+        "friction-slider"
+      ],
+      [
+        "kinetic-energy1",
+        "current-angle-output1",
+        "current-angle-output2"
+      ]
+    ]
+  },
+  "template": "wide-right"
+}

@@ -1,0 +1,21 @@
+{
+  "title": "parallelgears_horizontal2",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "parallelgears_horizontal2",
+      "url": "imports/legacy-mw-content/converted/student/classic/gear/parallelgears_horizontal2.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

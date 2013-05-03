@@ -1,0 +1,47 @@
+{
+  "title": "One Radial Bond, Different Elements",
+  "publicationStatus": "public",
+  "subtitle": "Currently demonstrates a rendering bug ... the radial bond should not extend past the white atom.",
+  "about": "",
+  "models": [
+    {
+      "id": "one-radial-bond_different_elements$0",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/one-radial-bond_different_elements$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "bond-div-4",
+      "text": "Bond 1/4",
+      "action": "setRadialBondProperties(0, { strength: 2000 / 4})"
+    },
+    {
+      "type": "button",
+      "id": "bond-div-2",
+      "text": "Bond 1/2",
+      "action": "setRadialBondProperties(0, { strength: 2000 / 2})"
+    },
+    {
+      "type": "button",
+      "id": "bond-mul-1",
+      "text": "Bond x1",
+      "action": "setRadialBondProperties(0, { strength: 2000 })"
+    },
+    {
+      "type": "button",
+      "id": "bond-mul-2",
+      "text": "Bond x2",
+      "action": "setRadialBondProperties(0, { strength: 2000 * 2})"
+    },
+    {
+      "type": "button",
+      "id": "bond-mul-4",
+      "text": "Bond x4",
+      "action": "setRadialBondProperties(0, { strength: 2000 * 4})"
+    }
+  ]
+}

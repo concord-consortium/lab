@@ -18,9 +18,12 @@
   "polarAAEpsilon": -2,
   "viscosity": 0,
   "timeStepsPerTick": 50,
+  "geneticEngineState": "dna",
+  "DNA": "",
   "viewOptions": {
     "viewPortWidth": 6,
     "viewPortHeight": 2,
+    "viewPortZoom": 1,
     "viewPortX": 0,
     "viewPortY": 0,
     "backgroundColor": "#eeeeee",
@@ -45,6 +48,10 @@
         "y": 1.14,
         "layer": 2,
         "frame": "rounded rectangle",
+        "calloutPoint": [
+          4.94,
+          0.8
+        ],
         "backgroundColor": "rgb(255,192,128)",
         "anchor": "upper-left"
       },
@@ -53,6 +60,10 @@
         "x": -0.06,
         "y": 1.97,
         "layer": 1,
+        "calloutPoint": [
+          0.34,
+          1.53
+        ],
         "anchor": "upper-left"
       },
       {
@@ -60,6 +71,10 @@
         "x": -0.06,
         "y": 1.72,
         "layer": 1,
+        "calloutPoint": [
+          -0.16,
+          1.82
+        ],
         "anchor": "upper-left"
       },
       {
@@ -67,6 +82,10 @@
         "x": -0.06,
         "y": 1.45,
         "layer": 1,
+        "calloutPoint": [
+          -0.16,
+          1.55
+        ],
         "anchor": "upper-left"
       },
       {
@@ -74,6 +93,10 @@
         "x": -0.06,
         "y": 1.22,
         "layer": 1,
+        "calloutPoint": [
+          -0.16,
+          1.32
+        ],
         "anchor": "upper-left"
       },
       {
@@ -81,6 +104,10 @@
         "x": -0.06,
         "y": 0.94,
         "layer": 1,
+        "calloutPoint": [
+          0.72,
+          1.58
+        ],
         "anchor": "upper-left"
       },
       {
@@ -88,6 +115,10 @@
         "x": -0.06,
         "y": 0.7,
         "layer": 1,
+        "calloutPoint": [
+          -0.16,
+          0.8
+        ],
         "anchor": "upper-left"
       },
       {
@@ -95,6 +126,10 @@
         "x": -0.06,
         "y": 0.45,
         "layer": 1,
+        "calloutPoint": [
+          -0.16,
+          0.55
+        ],
         "anchor": "upper-left"
       },
       {
@@ -102,6 +137,10 @@
         "x": -0.06,
         "y": 0.17,
         "layer": 1,
+        "calloutPoint": [
+          -0.16,
+          0.27
+        ],
         "anchor": "upper-left"
       }
     ],

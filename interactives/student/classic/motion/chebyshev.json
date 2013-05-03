@@ -1,0 +1,21 @@
+{
+  "title": "chebyshev",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "chebyshev$0",
+      "url": "imports/legacy-mw-content/converted/student/classic/motion/chebyshev$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

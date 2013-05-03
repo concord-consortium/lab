@@ -1,0 +1,21 @@
+{
+  "title": "light6",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "light6$0",
+      "url": "imports/legacy-mw-content/converted/public/part1/light/light6$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "title": "Temperature-Volume Relationship",
+  "publicationStatus": "public",
+  "subtitle": "57 uncharged and unbonded atoms interacting with an obstacle.",
+  "about": "",
+  "models": [
+    {
+      "id": "page4$0",
+      "url": "imports/legacy-mw-content/converted/benchmarks/gas-laws-temperature-volume/page4$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "imageMapping": {
+          "ruler.png": "ruler.svg"
+        },
+        "onLoad": "set({ showClock: true})"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "volume",
+      "unitAbbreviation": "nm²",
+      "label": "area",
+      "value": [
+        "return getObstacleProperties(0).x * 2;"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "temperature-slider",
+      "min": 100,
+      "max": 1000,
+      "labels": [
+        {
+          "value": 100,
+          "label": "100 K"
+        },
+        {
+          "value": 1000,
+          "label": "1000 K"
+        }
+      ],
+      "steps": 50,
+      "title": "Temperature",
+      "property": "targetTemperature"
+    },
+    {
+      "type": "slider",
+      "id": "volume-slider",
+      "min": 0,
+      "max": 10,
+      "displayValue": "return format('1.2f')(value)",
+      "steps": 80,
+      "title": "Volume of Gas",
+      "property": "volume"
+    }
+  ]
+}

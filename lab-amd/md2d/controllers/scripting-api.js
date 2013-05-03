@@ -411,15 +411,15 @@ define(function (require) {
         e.g. setGeneticProperties({ DNA: "ATCG" })
       */
       setGeneticProperties: function setGeneticProperties(props) {
-        model.getGeneticProperties().set(props);
+        model.geneticEngine().set(props);
       },
 
       /**
         Returns genetic properties as a human-readable hash.
-        e.g. getGeneticProperties() --> {DNA: "ATCG", DNAComplement: "TAGC", x: 0.01, y: 0.01, height: 0.12}
+        e.g. geneticEngine() --> {DNA: "ATCG", DNAComplement: "TAGC", x: 0.01, y: 0.01, height: 0.12}
       */
-      getGeneticProperties: function getGeneticProperties() {
-        return model.getGeneticProperties().get();
+      geneticEngine: function geneticEngine() {
+        return model.geneticEngine().get();
       },
 
       /**
@@ -430,20 +430,60 @@ define(function (require) {
       },
 
       /**
-        Triggers transcription of mRNA from DNA.
-        Result should be rendered. It is also stored in genetic properties.
+       * Plays DNA intro, which shows broader context of the DNA transcription and
+       * translation.
+       */
+      playDNAIntro: function () {
+        model.geneticEngine().playIntro();
+      },
 
-        e.g. getGeneticProperties() --> {DNA: "ATCG", DNAComplement: "TAGC", mRNA: "AUCG", ...}
-      */
+      /**
+       * Separates two strands of DNA.
+       */
+      separateDNA: function separateDNA() {
+        model.geneticEngine().separateDNA();
+      },
+
+      /**
+       * Triggers only one step of DNA transcription.
+       * This method also accepts optional parameter - expected nucleotide.
+       * When it's available, transcription step will be performed only
+       * when passed nucleotide code matches nucleotide, which should
+       * be actually joined to mRNA in this transcription step. When
+       * expected nucleotide code is wrong, this method does nothing.
+       *
+       * e.g.
+       * transcribeStep("A") will perform transcription step only
+       * if "A" nucleotide should be added to mRNA in this step.
+       *
+       * @param  {string} expectedNucleotide code of the expected nucleotide ("U", "C", "A" or "G").
+       */
+      transcribeStep: function transcribeStep(expectedNucleotide) {
+        model.geneticEngine().transcribeStep(expectedNucleotide);
+      },
+
+      /**
+       * Triggers complete DNA to mRNA transcription.
+       *
+       * Complete mRNA will be available in genetic properties.
+       * e.g. geneticEngine() --> {DNA: "ATCG", DNAComplement: "TAGC", mRNA: "AUCG", ...}
+       */
       transcribe: function transcribeDNA() {
-        model.getGeneticProperties().transcribeDNA();
+        model.geneticEngine().transcribe();
+      },
+
+      /**
+       * Triggers only one step of DNA translation.
+       */
+      translateStep: function translateStep() {
+        model.geneticEngine().translateStep();
       },
 
       /**
         Triggers translation of mRNA to protein.
       */
       translate: function translate() {
-        var aaSequence = model.getGeneticProperties().translate();
+        var aaSequence = model.geneticEngine().translate();
         model.generateProtein(aaSequence);
       },
 

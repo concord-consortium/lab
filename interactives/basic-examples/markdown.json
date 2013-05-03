@@ -1,0 +1,95 @@
+{
+  "title": "Markdown Demo",
+  "publicationStatus": "public",
+  "subtitle": "Use markdown syntax to format content of text components and about dialogs.",
+  "about": [
+    "*Markdown* can be also used in this dialog:",
+    "",
+    "#Heading 1#\n##Heading 2##\n###Heading 3####\n",
+    "",
+    "First paragraph. *Emphasis*.",
+    "",
+    "Second paragraph. **Strong**.",
+    "",
+    "Horizontal rule:\n- - -",
+    "",
+    "* An item in a bulleted list\n    * A subitem, indented with 4 spaces\n",
+    "",
+    "Inline image: ![Alt text](/resources/heatbath.gif \"CC logo\")",
+    "",
+    "Inline [link](http://daringfireball.net/projects/markdown/syntax \"Markdown Syntax\") pointing to Markdown Syntax description."
+  ],
+  "models": [
+    {
+      "id": "simple-gas$0",
+      "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "headings",
+      "type": "text",
+      "text": [
+        "#Heading 1#",
+        "##Heading 2##",
+        "###Heading 3####",
+        "####Heading 4#####",
+        "#####Heading 5######",
+        "######Heading 6#######"
+      ]
+    },
+    {
+      "id": "paragraphs",
+      "type": "text",
+      "text": [
+        "First paragraph. *Emphasis*.",
+        "",
+        "Second paragraph. **Strong**.",
+        "",
+        "Horizontal rule:",
+        "",
+        "- - -"
+      ]
+    },
+    {
+      "id": "list",
+      "type": "text",
+      "text": "* An item in a bulleted list\n    * A subitem, indented with 4 spaces\n"
+    },
+    {
+      "id": "enumerated-list",
+      "type": "text",
+      "text": "1. An item in an enumerated list\n2. Another item"
+    },
+    {
+      "id": "code",
+      "type": "text",
+      "text": "Code: `for (var i = 0, len = array.length; i < len; i++) { }`"
+    },
+    {
+      "id": "image",
+      "type": "text",
+      "text": "Inline image: ![Alt text](/resources/heatbath.gif \"CC logo\")"
+    },
+    {
+      "id": "link",
+      "type": "text",
+      "text": "Inline [link](http://daringfireball.net/projects/markdown/syntax \"Markdown Syntax\") pointing to Markdown Syntax description."
+    }
+  ],
+  "layout": {
+    "right": [
+      ["headings", "paragraphs"]
+    ],
+    "bottom": [
+      [ ],
+      ["list", "enumerated-list"],
+      ["code"],
+      ["image"],
+      ["link"]
+    ]
+  }
+}

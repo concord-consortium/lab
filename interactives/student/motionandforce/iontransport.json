@@ -1,0 +1,21 @@
+{
+  "title": "iontransport",
+  "publicationStatus": "broken",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "iontransport$0",
+      "url": "imports/legacy-mw-content/converted/student/motionandforce/iontransport$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

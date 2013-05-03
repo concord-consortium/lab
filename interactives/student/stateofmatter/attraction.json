@@ -1,0 +1,21 @@
+{
+  "title": "attraction",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "attraction$0",
+      "url": "imports/legacy-mw-content/converted/student/stateofmatter/attraction$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

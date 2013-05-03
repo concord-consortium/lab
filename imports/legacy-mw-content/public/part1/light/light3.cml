@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Photon absorption and emission</page_title>
+<text>  Photon Absorption and Emission 1
+p. 3 of 8
+&lt; Previous | Index | Next &gt;
+
+
+Hopefully you now have a basic understanding of what light is.  Remember that light exists as small packets of energy called photons,  and that these photons have wavelike properties.  The higher the energy, the higher the frequency and the shorter the wavlength.  Also, we saw that as the intensity of light increases, more photons are generated per unit time, but this increased intensity has absolutely no effect on the energy of the photons.  Finally remember that &quot;light&quot; can refer to any form of electromagnetic radiation.
+
+Let&apos;s now consider how photons interact with matter.   Three types of interactions will be explored: 1) No interaction 2) Absorption 3) Emission.
+
+1) No interaction
+
+Light can go straight through matter without being affected. For example, visible light can pass through gases, liquids, glasses and crystals, and x-ray can pass through soft tissues of human bodies without causing damages. 
+
+2) Absorption
+
+As shown in the following diagram, one way in which matter can absorb energy (although not the only way) is for an electron to absorb the energy of the photon and jump to a higher energy level.
+
+  
+Mechanism of photon absorption.
+
+3) Emission
+
+When an excited electron loses energy and falls back to a lower state, a photon can be given off. The following picture schematically illustrates this:
+
+  
+Mechanism of photon emission.
+
+The following model will demonstrate these three scenarios.  
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1534">
+<paragraph start="0" end="35">
+<LeftIndent>6.0</LeftIndent>
+<SpaceAbove>4.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="0" end="1">
+<icon>prism.gif</icon></content>
+
+<content start="1" end="2">
+</content>
+
+<content start="2" end="34">
+<family>Book Antiqua</family><bold>true</bold><size>24</size></content>
+
+<content start="34" end="35">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="35" end="45">
+<Alignment>1</Alignment>
+<content start="35" end="44">
+<foreground>255 0 0</foreground><bold>true</bold><family>Book Antiqua</family></content>
+
+<content start="44" end="45">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="45" end="73">
+<Alignment>1</Alignment>
+<content start="45" end="47">
+<size>11</size></content>
+
+<content start="47" end="55">
+<size>11</size><href>light2.cml</href></content>
+
+<content start="55" end="58">
+<size>11</size></content>
+
+<content start="58" end="63">
+<size>11</size><href>index.cml</href></content>
+
+<content start="63" end="66">
+<size>11</size></content>
+
+<content start="66" end="71">
+<size>11</size><href>light4.cml</href></content>
+
+<content start="71" end="73">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="73" end="74">
+<content start="73" end="74">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="74" end="75">
+<LeftIndent>6.0</LeftIndent>
+<content start="74" end="75">
+</content>
+
+</paragraph>
+<paragraph start="75" end="604">
+<LeftIndent>26.0</LeftIndent>
+<content start="75" end="446">
+</content>
+
+<content start="446" end="519">
+<italic>true</italic></content>
+
+<content start="519" end="604">
+</content>
+
+</paragraph>
+<paragraph start="604" end="605">
+<LeftIndent>26.0</LeftIndent>
+<content start="604" end="605">
+</content>
+
+</paragraph>
+<paragraph start="605" end="751">
+<LeftIndent>26.0</LeftIndent>
+<content start="605" end="751">
+</content>
+
+</paragraph>
+<paragraph start="751" end="752">
+<LeftIndent>26.0</LeftIndent>
+<content start="751" end="752">
+</content>
+
+</paragraph>
+<paragraph start="752" end="770">
+<LeftIndent>26.0</LeftIndent>
+<content start="752" end="769">
+<bold>true</bold></content>
+
+<content start="769" end="770">
+</content>
+
+</paragraph>
+<paragraph start="770" end="771">
+<LeftIndent>26.0</LeftIndent>
+<content start="770" end="771">
+</content>
+
+</paragraph>
+<paragraph start="771" end="996">
+<LeftIndent>26.0</LeftIndent>
+<content start="771" end="996">
+</content>
+
+</paragraph>
+<paragraph start="996" end="997">
+<LeftIndent>26.0</LeftIndent>
+<content start="996" end="997">
+</content>
+
+</paragraph>
+<paragraph start="997" end="1011">
+<LeftIndent>26.0</LeftIndent>
+<content start="997" end="1010">
+<bold>true</bold></content>
+
+<content start="1010" end="1011">
+</content>
+
+</paragraph>
+<paragraph start="1011" end="1012">
+<LeftIndent>26.0</LeftIndent>
+<content start="1011" end="1012">
+</content>
+
+</paragraph>
+<paragraph start="1012" end="1206">
+<LeftIndent>26.0</LeftIndent>
+<content start="1012" end="1206">
+</content>
+
+</paragraph>
+<paragraph start="1206" end="1207">
+<LeftIndent>26.0</LeftIndent>
+<content start="1206" end="1207">
+</content>
+
+</paragraph>
+<paragraph start="1207" end="1210">
+<LeftIndent>26.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1207" end="1208">
+</content>
+
+<content start="1208" end="1209">
+<icon>absorption.gif</icon></content>
+
+<content start="1209" end="1210">
+</content>
+
+</paragraph>
+<paragraph start="1210" end="1242">
+<LeftIndent>26.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1210" end="1241">
+<size>11</size></content>
+
+<content start="1241" end="1242">
+</content>
+
+</paragraph>
+<paragraph start="1242" end="1243">
+<LeftIndent>26.0</LeftIndent>
+<content start="1242" end="1243">
+</content>
+
+</paragraph>
+<paragraph start="1243" end="1255">
+<LeftIndent>26.0</LeftIndent>
+<content start="1243" end="1254">
+<bold>true</bold></content>
+
+<content start="1254" end="1255">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1255" end="1256">
+<LeftIndent>26.0</LeftIndent>
+<content start="1255" end="1256">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1256" end="1408">
+<LeftIndent>26.0</LeftIndent>
+<content start="1256" end="1408">
+</content>
+
+</paragraph>
+<paragraph start="1408" end="1409">
+<LeftIndent>26.0</LeftIndent>
+<content start="1408" end="1409">
+</content>
+
+</paragraph>
+<paragraph start="1409" end="1412">
+<LeftIndent>26.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1409" end="1410">
+</content>
+
+<content start="1410" end="1411">
+<icon>emission.gif</icon></content>
+
+<content start="1411" end="1412">
+</content>
+
+</paragraph>
+<paragraph start="1412" end="1442">
+<LeftIndent>26.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1412" end="1442">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1442" end="1443">
+<LeftIndent>6.0</LeftIndent>
+<content start="1442" end="1443">
+</content>
+
+</paragraph>
+<paragraph start="1443" end="1505">
+<LeftIndent>26.0</LeftIndent>
+<content start="1443" end="1504">
+</content>
+
+<content start="1504" end="1505">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1505" end="1506">
+<LeftIndent>6.0</LeftIndent>
+<content start="1505" end="1506">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1506" end="1534">
+<LeftIndent>6.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1506" end="1508">
+<size>11</size></content>
+
+<content start="1508" end="1516">
+<size>11</size><href>light2.cml</href></content>
+
+<content start="1516" end="1519">
+<size>11</size></content>
+
+<content start="1519" end="1524">
+<size>11</size><href>index.cml</href></content>
+
+<content start="1524" end="1527">
+<size>11</size></content>
+
+<content start="1527" end="1532">
+<size>11</size><href>light4.cml</href></content>
+
+<content start="1532" end="1533">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

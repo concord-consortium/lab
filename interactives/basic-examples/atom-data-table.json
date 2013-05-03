@@ -1,0 +1,317 @@
+{
+  "title": "Atom Data Table",
+  "publicationStatus": "draft",
+  "subtitle": "One way to display a table of atom properties.",
+  "about": [
+    "There are three parts in this Interactive that work together to create the atom data table example.",
+    "",
+    "1. Separate outputs are created for each datum to be represented in the table. The result is that the name values for these outputs can later be used for any component that can accept a model property.",
+    "2. numericOutput compnents are created for each of the output properties. All the numericOutput components are given the same width in 'ems'.",
+    "3. text components are created to make the row and column labels. The text components are given widths to match the rest of the values in that column.",
+    "",
+    "The performance of this manual method for creating a table is not as high as if we made a custom table component.",
+    "",
+    "atomToolTips are enabled in this Interactive, hover over an atom to display a tooltip, shift-click on an atom to make that tooltip persistent."
+  ],
+  "models": [
+    {
+      "id": "simple-gas$0",
+      "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "showVelocityVectors": true,
+        "gridLines": true,
+        "xunits": true,
+        "yunits": true,
+        "enableAtomTooltips": true
+      },
+      "modelOptions": {
+        "temperatureControl": true,
+        "targetTemperature": 500
+      },
+      "onLoad": "markAtoms([0, 1, 2, 3]);"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "atom0x",
+      "value": "return getAtomProperties(0).x;"
+    },
+    {
+      "name": "atom1x",
+      "value": "return getAtomProperties(1).x;"
+    },
+    {
+      "name": "atom2x",
+      "value": "return getAtomProperties(2).x;"
+    },
+    {
+      "name": "atom3x",
+      "value": "return getAtomProperties(3).x;"
+    },
+    {
+      "name": "atom0y",
+      "value": "return getAtomProperties(0).y;"
+    },
+    {
+      "name": "atom1y",
+      "value": "return getAtomProperties(1).y;"
+    },
+    {
+      "name": "atom2y",
+      "value": "return getAtomProperties(2).y;"
+    },
+    {
+      "name": "atom3y",
+      "value": "return getAtomProperties(3).y;"
+    },
+    {
+      "name": "atom0speed",
+      "value": "return getAtomProperties(0).speed;"
+    },
+    {
+      "name": "atom1speed",
+      "value": "return getAtomProperties(1).speed;"
+    },
+    {
+      "name": "atom2speed",
+      "value": "return getAtomProperties(2).speed;"
+    },
+    {
+      "name": "atom3speed",
+      "value": "return getAtomProperties(3).speed;"
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "temperature-property-slider",
+      "title": "Set Temperature",
+      "min": 50,
+      "max": 5000,
+      "steps": 99,
+      "width": "10em",
+      "property": "targetTemperature",
+      "displayValue": "return format('1f')(value)",
+      "labels": [
+        {
+          "value": 50,
+          "label": "50"
+        },
+        {
+          "value": 5000,
+          "label": "5000"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "x-label",
+      "text": "X",
+      "width": "4em"
+    },
+    {
+      "type": "text",
+      "id": "y-label",
+      "text": "Y",
+      "width": "4em"
+    },
+    {
+      "type": "text",
+      "id": "speed-label",
+      "text": "Speed",
+      "width": "4em"
+    },
+    {
+      "type": "text",
+      "id": "atoms-label",
+      "text": "Atoms",
+      "width": "4em"
+    },
+    {
+      "type": "text",
+      "id": "atom0-label",
+      "text": "0",
+      "width": "6em"
+    },
+    {
+      "type": "text",
+      "id": "atom1-label",
+      "text": "1",
+      "width": "6em"
+    },
+    {
+      "type": "text",
+      "id": "atom2-label",
+      "text": "2",
+      "width": "6em"
+    },
+    {
+      "type": "text",
+      "id": "atom3-label",
+      "text": "3",
+      "width": "6em"
+    },
+    {
+      "type": "numericOutput",
+      "id": "atom0speed-output",
+      "property": "atom0speed",
+      "width": "6em",
+      "displayValue": "return format('1.1e')(value)"
+    },
+    {
+      "type": "numericOutput",
+      "id": "atom1speed-output",
+      "property": "atom1speed",
+      "width": "6em",
+      "displayValue": "return format('1.1e')(value)"
+    },
+    {
+      "type": "numericOutput",
+      "id": "atom2speed-output",
+      "property": "atom2speed",
+      "width": "6em",
+      "displayValue": "return format('1.1e')(value)"
+    },
+    {
+      "type": "numericOutput",
+      "id": "atom3speed-output",
+      "property": "atom3speed",
+      "width": "6em",
+      "displayValue": "return format('1.1e')(value)"
+    },
+    {
+      "type": "numericOutput",
+      "id": "atom0x-output",
+      "property": "atom0x",
+      "width": "6em",
+      "displayValue": "return format('1.2f')(value)"
+    },
+    {
+      "type": "numericOutput",
+      "id": "atom1x-output",
+      "property": "atom1x",
+      "width": "6em",
+      "displayValue": "return format('1.2f')(value)"
+    },
+    {
+      "type": "numericOutput",
+      "id": "atom2x-output",
+      "property": "atom2x",
+      "width": "6em",
+      "displayValue": "return format('1.2f')(value)"
+    },
+    {
+      "type": "numericOutput",
+      "id": "atom3x-output",
+      "property": "atom3x",
+      "width": "6em",
+      "displayValue": "return format('1.2f')(value)"
+    },
+    {
+      "type": "numericOutput",
+      "id": "atom0y-output",
+      "property": "atom0y",
+      "width": "6em",
+      "displayValue": "return format('1.2f')(value)"
+    },
+    {
+      "type": "numericOutput",
+      "id": "atom1y-output",
+      "property": "atom1y",
+      "width": "6em",
+      "displayValue": "return format('1.2f')(value)"
+    },
+    {
+      "type": "numericOutput",
+      "id": "atom2y-output",
+      "property": "atom2y",
+      "width": "6em",
+      "displayValue": "return format('1.2f')(value)"
+    },
+    {
+      "type": "numericOutput",
+      "id": "atom3y-output",
+      "property": "atom3y",
+      "width": "6em",
+      "displayValue": "return format('1.2f')(value)"
+    },
+    {
+      "type": "text",
+      "id": "axes-label",
+      "text": "#Axes#"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-gridlines",
+      "text": "Grid Lines",
+      "property": "gridLines"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-xunits",
+      "text": "X units",
+      "property": "xunits"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-yunits",
+      "text": "Y units",
+      "property": "yunits"
+    }
+  ],
+  "layout": {
+    "right": [
+      [ "temperature-property-slider" ],
+      [ "axes-label" ],
+      [ "show-gridlines" ],
+      [ "show-xunits" ],
+      [ "show-yunits" ]
+    ],
+    "bottom": [
+      [
+        "atoms-label",
+        "atom0-label",
+        "atom1-label",
+        "atom2-label",
+        "atom3-label"
+      ],
+      [
+        "x-label",
+        "atom0x-output",
+        "atom1x-output",
+        "atom2x-output",
+        "atom3x-output"
+      ],
+      [
+        "y-label",
+        "atom0y-output",
+        "atom1y-output",
+        "atom2y-output",
+        "atom3y-output"
+      ],
+      [
+        "speed-label",
+        "atom0speed-output",
+        "atom1speed-output",
+        "atom2speed-output",
+        "atom3speed-output"
+      ]
+    ]
+  },
+  "template": [
+    {
+      "id": "right",
+      "left": "model.right",
+      "padding-left": "1em",
+      "padding-right": "2em",
+      "align": "left"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "interactive.width",
+      "padding-top": "0.5em"
+    }
+  ]
+}

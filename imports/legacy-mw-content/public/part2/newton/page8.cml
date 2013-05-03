@@ -1,0 +1,592 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Newton&apos;s Laws at the Atomic Level: Springs, bonds, and CSI.</page_title>
+<bg_color><Red>241</Red><Green>240</Green><Blue>246</Blue></bg_color>
+<text>
+
+ 
+ 
+
+ 
+
+
+  
+  
+       
+   
+    
+    
+ 
+ 
+
+
+</text>
+<section start="0" end="46">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; color=&quot;#FFFFFF&quot; size=&quot;5&quot;&gt;Newton&apos;s 
+    Laws at the Atomic Level:&lt;/font&gt;&lt;/strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; color=&quot;#FFFFFF&quot; size=&quot;5&quot;&gt; 
+    Springs, bonds, and CSI.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-cca464</bgcolor></icon></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="6">
+<Alignment>1</Alignment>
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;0&quot; marginwidth=&quot;0&quot; background=&quot;topNavBarLeftMargin.jpg&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; width=&quot;100%&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; src=&quot;topNavBarLeftMargin.jpg&quot; width=&quot;14&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;prev.jpg&quot; width=&quot;60&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;next.jpg&quot; width=&quot;59&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; src=&quot;page.jpg&quot; width=&quot;54&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;index.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;index.jpg&quot; width=&quot;46&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page1.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page2.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page3.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page4.jpg&quot; width=&quot;29&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page5.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page6.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page7.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page8Selected.jpg&quot; width=&quot;29&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page9.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;img height=&quot;26&quot; src=&quot;topNavBarRightMargin.jpg&quot; width=&quot;7&quot;&gt;
+&lt;/font&gt;        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="9">
+<Alignment>1</Alignment>
+<content start="7" end="8">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>85</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; border=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img src=&quot;atomMainIdea.png&quot; width=&quot;98&quot; height=&quot;58&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Different 
+          molecules vibrate in different ways AND they interact with light. 
+          How can we use this to identify chemicals?&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-282012</bgcolor></icon></content>
+
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="11">
+<Alignment>1</Alignment>
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="14">
+<Alignment>1</Alignment>
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>477.0</width>
+<height>160.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;A covalent 
+    bond behaves much the same way as a spring. However, the bond is not 
+    really a stick. It&apos;s a strong attraction between atoms that allows for the 
+    molecule to vibrate.&lt;/font&gt;
+
+    &lt;p&gt;
+      &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Below is a 
+      model of a molecule, and a graph representing the &lt;a href=&quot;script:page:0:message vibFreq.html&quot;&gt;vibrational 
+      frequency&lt;/a&gt; of the molecule. The factors that affect the vibrational 
+      frequency of a molecule (or bond) are the strength of the covalent bond 
+      and the mass of the atoms bonded together. Experiment with these factors 
+      and answer the questions below. &lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="12" end="13">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page8$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="17">
+<Alignment>1</Alignment>
+<content start="14" end="15">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>448.0</width>
+<height>20.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="15" end="16">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>295.0</width><height>25</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body style=&quot;margin-top: 5&quot;&gt;
+    &lt;div align=&quot;center&quot;&gt;
+      &lt;strong&gt;&lt;font face=&quot;Arial&quot; size=&quot;3&quot;&gt;Vibrational Frequency&lt;/font&gt;&lt;/strong&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-695c42</bgcolor></icon></content>
+
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="25">
+<Alignment>1</Alignment>
+<content start="17" end="18">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>1</model>
+<value>100.0</value>
+<minimum>100.0</minimum>
+<maximum>3500.0</maximum>
+<nstep>34</nstep>
+<title>Atom Mass</title>
+<width>80</width>
+<height>250</height>
+<orientation>1</orientation>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;3500.0&quot;, label=&quot;high&quot;}{value=&quot;100.0&quot;, label=&quot;low&quot;}</labeltable>
+<script>set atom[0].rx 13.2;
+set atom[0].ry 10.95756727
+set atom[0].vy -138
+set atom[1].rx 13.2;
+set atom[1].ry 13.84243273;
+set atom[1].vy 138;
+set element[0].mass %val;
+set %newVel sqrt((%startKE/%val)*2);
+set atom[0].vy %newVel*-1;
+set atom[1].vy %newVel;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="18" end="19">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>1</model>
+<value>0.0</value>
+<minimum>0.0</minimum>
+<maximum>4.0</maximum>
+<nstep>10</nstep>
+<title>Bond Strength</title>
+<width>100</width>
+<height>250</height>
+<orientation>1</orientation>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;4.0&quot;, label=&quot;high&quot;}{value=&quot;0.0&quot;, label=&quot;low&quot;}</labeltable>
+<script>set %newVal sqrt(%startKE/%element[0].mass*2);
+set atom[0].rx 13.2;
+set atom[0].ry 10.95756727
+set atom[0].vy -1*%newVal
+set atom[1].rx 13.2;
+set atom[1].ry 13.84243273;
+set atom[1].vy %newVal;
+set rbond[0].strength 0.002+(%val/1000);
+</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="19" end="20">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page8$1.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="20" end="22">
+</content>
+
+<content start="22" end="23">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>20.0</width><height>250</height><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body style=&quot;margin-top: 45; margin-left: 5&quot;&gt;
+    &lt;img src=&quot;yAxislabelFlat.png&quot; width=&quot;11&quot; height=&quot;140&quot;&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-695c42</bgcolor></icon></content>
+
+<content start="23" end="24">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>1</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-cca464" style="0" width="1.0" symbol="0" size="4" spacing="5">Ry: 1Nt</time_series_y1>
+<width>275</width>
+<height>250</height>
+<axis_x_title>time</axis_x_title>
+<axis_y_title>distance between atoms</axis_y_title>
+<legend_x>195</legend_x>
+<legend_y>45</legend_y>
+<bgcolor>-695c42</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<toolbar>false</toolbar>
+</component></content>
+
+<content start="24" end="25">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="25" end="29">
+<Alignment>1</Alignment>
+<SpaceBelow>5.0</SpaceBelow>
+<content start="25" end="26">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>180.0</width>
+<height>25.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="26" end="27">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>269.0</width>
+<height>30.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div align=&quot;center&quot;&gt;
+      &lt;input name=&quot;Submit&quot; script=&quot;script:mw:2:run&quot; type=&quot;submit&quot; value=&quot;run&quot;&gt;
+      &lt;input name=&quot;Submit2&quot; script=&quot;script:mw:2:stop&quot; type=&quot;submit&quot; value=&quot;stop&quot;&gt;
+      &lt;input name=&quot;Submit3&quot; script=&quot;script:mw:2:reset&quot; type=&quot;submit&quot; value=&quot;reset&quot;&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component><size>8</size></content>
+
+<content start="27" end="28">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>295.0</width><height>30</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body style=&quot;margin-bottom: 5&quot;&gt;
+    &lt;div align=&quot;center&quot;&gt;
+      &lt;font size=&quot;3&quot; face=&quot;Arial&quot;&gt;time&lt;/font&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-695c42</bgcolor></icon><size>8</size></content>
+
+<content start="28" end="29">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="29" end="34">
+<Alignment>1</Alignment>
+<SpaceBelow>8.0</SpaceBelow>
+<content start="29" end="30">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>4</row>
+<width>371</width>
+<height>180</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot;&gt;
+    &lt;strong&gt;&lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;How does atom 
+    mass affect the &lt;a href=&quot;script:page:0:message vibFreq.html&quot;&gt;vibrational 
+    frequency&lt;/a&gt; of the bonded atoms?&lt;/font&gt;&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>higher mass causes higher frequency</choice>
+<choice>lower mass causes lower frequency</choice>
+<choice>higher mass causes lower frequency</choice>
+<choice>there is no effect of mass on frequency</choice>
+<answer>2</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script> -choiceseparator-  -choiceseparator-  -choiceseparator- </script>
+</component></content>
+
+<content start="30" end="32">
+</content>
+
+<content start="32" end="33">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>4</row>
+<width>371</width>
+<height>180</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot;&gt;
+    &lt;strong&gt;&lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;How does the 
+    strength of the bond affect the &lt;a href=&quot;script:page:0:message vibFreq.html&quot;&gt;vibrational 
+    frequency&lt;/a&gt; of the bonded atoms?&lt;/font&gt;&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>stronger bond causes higher frequency</choice>
+<choice>weaker bond causes higher frequency</choice>
+<choice>stronger bond causes lower frequency</choice>
+<choice>there is no effect of bond strength on frequency</choice>
+<answer>0</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script> -choiceseparator-  -choiceseparator-  -choiceseparator- </script>
+</component></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="39">
+<Alignment>1</Alignment>
+<SpaceBelow>8.0</SpaceBelow>
+<content start="34" end="35">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>371</width>
+<height>180</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;physStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;question&quot;&gt;
+    &lt;p class=&quot;question&quot;&gt;
+      How does &lt;a href=&quot;script:page:0:message newtonsLaws.html&quot;&gt;Newton&apos;s 
+      second law&lt;/a&gt; help explain the relationship between:
+    &lt;/p&gt;
+    &lt;p style=&quot;margin-left: 10px&quot; class=&quot;question&quot;&gt;
+      a) bond strength and vibrational frequency?&lt;br&gt;b) atom mass and 
+      vibrational frequency?
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="35" end="37">
+</content>
+
+<content start="37" end="38">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>371</width>
+<height>180</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot;&gt;
+    &lt;strong&gt;&lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;How do &lt;a href=&quot;script:page:0:message newtonsLaws.html&quot;&gt;Newton&apos;s 
+    first and third laws&lt;/a&gt; help explain why the molecule as a whole is not 
+    moving around within the model container, and just vibrates in place?&lt;/font&gt;&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="38" end="39">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="39" end="41">
+<Alignment>1</Alignment>
+<SpaceBelow>8.0</SpaceBelow>
+<content start="39" end="40">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>750</width>
+<height>200</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot;&gt;
+    &lt;strong&gt;&lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;When doing 
+    infrared spectroscopy an infrared light is shined on a substance to 
+    determine the vibrational frequency of the various bonds in a molecule. 
+    Because each molecule has a unique set of vibrations you can identify the 
+    molecule using this procedure, which is often used in forensics. &lt;/font&gt;&lt;/strong&gt;
+
+    &lt;p&gt;
+      &lt;strong&gt;&lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;If you knew 
+      that part of a molecule had a high vibrational frequency, what could you 
+      say about the atoms and how they were bonded together in that part of 
+      the molecule?&lt;/font&gt;&lt;/strong&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="43">
+<Alignment>1</Alignment>
+<content start="41" end="42">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>32.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;0&quot; marginwidth=&quot;0&quot; background=&quot;navBarBottomBackground.jpg&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; width=&quot;100%&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img height=&quot;6&quot; src=&quot;navBarBottomColorBar.gif&quot; width=&quot;14&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; src=&quot;navBarBottomLeftMargin.jpg&quot; width=&quot;8&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;prev.jpg&quot; width=&quot;60&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;next.jpg&quot; width=&quot;59&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; src=&quot;page.jpg&quot; width=&quot;54&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;index.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;index.jpg&quot; width=&quot;46&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page1.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page2.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page3.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page4.jpg&quot; width=&quot;29&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page5.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page6.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page7.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page8Selected.jpg&quot; width=&quot;29&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page9.jpg&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;img height=&quot;26&quot; src=&quot;navBarBottomRightMargin.jpg&quot; width=&quot;7&quot;&gt;
+&lt;/font&gt;        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="42" end="43">
+</content>
+
+</paragraph>
+<paragraph start="43" end="44">
+<Alignment>1</Alignment>
+<content start="43" end="44">
+</content>
+
+</paragraph>
+<paragraph start="44" end="45">
+<content start="44" end="45">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="45" end="46">
+</paragraph>
+</section>
+</document>

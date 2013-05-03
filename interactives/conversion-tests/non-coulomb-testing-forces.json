@@ -1,0 +1,52 @@
+{
+  "title": "Non-Coulomb Forces",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "static-non-coulomb-test$0",
+      "url": "imports/legacy-mw-content/converted/potential-tests/static-non-coulomb-test/static-non-coulomb-test$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "distance",
+      "text": "Set distance",
+      "action": [
+        " var distance = 0.39,",
+        "     props;",
+        "                  ",
+        " props = {vx: 0, vy: 0}; ",
+        " props.x = 1.5 - distance/2;",
+        " setAtomProperties(0, props);",
+        " props.x = 1.5 + distance/2;",
+        " setAtomProperties(1, props);",
+        " repaint();"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "test",
+      "text": "Get data",
+      "action": [
+        " var steps = 10,",
+        "     data = [],",
+        "     props0, props1, distance;",
+        "        ",
+        " while (steps--) {",
+        "   tick();",
+        "   props0 = getAtomProperties(0);",
+        "   props1 = getAtomProperties(1);",
+        "   distance = props1.x - props0.x;",
+        "   data.push([distance, props0.ax].join(','))",
+        " }",
+        " console.log(data.join('\\n'));"
+      ]
+    }
+  ]
+}

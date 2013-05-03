@@ -1,0 +1,18 @@
+{
+  "title": "Text Boxes (imported from MML)",
+  "publicationStatus": "public",
+  "subtitle": "Examples showing textBoxes imported from MML.",
+  "about": "",
+  "models": [
+    {
+      "id": "simple-gas$0",
+      "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas-with-textboxes$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "gridLines": true,
+        "xunits": false,
+        "yunits": false
+      }
+    }
+  ]
+}

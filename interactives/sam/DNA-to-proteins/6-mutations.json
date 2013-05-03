@@ -1,0 +1,34 @@
+{
+  "title": "Mutations",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "page6$0",
+      "url": "imports/legacy-mw-content/converted/sam-activities/DNA-to-proteins/page6/page6$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "transcribe",
+      "text": "Transcribe DNA to mRNA",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "translate",
+      "text": "Translate mRNA to protein",
+      "action": ""
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "transcribe", "translate"
+    ]
+  }
+}

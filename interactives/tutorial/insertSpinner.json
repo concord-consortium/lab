@@ -1,0 +1,21 @@
+{
+  "title": "insertSpinner",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "insertSpinner$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/insertSpinner$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

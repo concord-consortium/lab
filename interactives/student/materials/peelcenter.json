@@ -1,0 +1,21 @@
+{
+  "title": "peelcenter",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "peelcenter",
+      "url": "imports/legacy-mw-content/converted/student/materials/peelcenter.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

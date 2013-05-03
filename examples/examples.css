@@ -252,11 +252,11 @@ button.component {
     height: 1.1em;
     background-repeat: no-repeat;
     background-size: 100%;
-    background-image: url("../../resources/upstatement/unchecked.svg"); }
+    background-image: url("../resources/upstatement/unchecked.svg"); }
     .interactive-radio .fakeCheckable.checked {
       background-repeat: no-repeat;
       background-size: 100%;
-      background-image: url("../../resources/upstatement/checked.svg"); }
+      background-image: url("../resources/upstatement/checked.svg"); }
 
 .interactive-pulldown {
   font-size: 1em; }
@@ -545,8 +545,25 @@ svg.graph rect.draggable-axis {
   fill: rgba(255, 255, 255, 0); }
   svg.graph rect.draggable-axis:hover {
     fill: rgba(196, 196, 196, 0.2); }
+svg.graph .ruler.hidden {
+  visibility: hidden; }
+svg.graph circle {
+  fill: none;
+  fill-opacity: 0.2;
+  stroke: steelblue;
+  cursor: move; }
+  svg.graph circle.selected {
+    fill: #ff7f0e;
+    stroke: #ff7f0e; }
+  svg.graph circle:hover {
+    fill: #ff7f0e;
+    stroke: #707f0e; }
+  svg.graph circle.selected:hover {
+    fill: #ff7f0e;
+    stroke: #ff7f0e; }
 
 .bar-graph {
+  text-align: center;
   padding: 0.2em 0.4em;
   border-radius: 0.6em;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2);
@@ -556,9 +573,12 @@ svg.graph rect.draggable-axis {
   background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0));
   background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0));
   background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0));
-  background-image: linear-gradient(top, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0)); }
+  background-image: linear-gradient(top, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0));
+  color: #555555; }
   .bar-graph text {
     fill: #555555; }
+  .bar-graph .top-area p, .bar-graph .bottom-area p {
+    padding-bottom: 0.2em; }
   .bar-graph .hidden {
     display: none; }
   .bar-graph .triangle {
@@ -573,7 +593,8 @@ svg.graph rect.draggable-axis {
     font-size: 0.8em; }
   .bar-graph .title {
     font-size: 1em;
-    text-anchor: middle; }
+    text-anchor: middle;
+    margin: 0; }
 
 * {
   -webkit-box-sizing: border-box;
@@ -584,7 +605,7 @@ svg.graph rect.draggable-axis {
   width: 100%;
   font-size: 0.9em;
   height: 100%;
-  padding: 0 1% 1% 1%; }
+  padding: 0; }
 
 #interactive-container {
   width: 100%;
@@ -633,45 +654,45 @@ svg.graph rect.draggable-axis {
 .fullscreen {
   background-repeat: no-repeat;
   background-size: 90%;
-  background-image: url("../../resources/layout/fullscreen.svg"); }
+  background-image: url("../resources/layout/fullscreen.svg"); }
   .fullscreen:hover {
     background-repeat: no-repeat;
     background-size: 90%;
-    background-image: url("../../resources/layout/fullscreen-dark.svg"); }
+    background-image: url("../resources/layout/fullscreen-dark.svg"); }
 
 body:-moz-full-screen .fullscreen {
   background-repeat: no-repeat;
   background-size: 90%;
-  background-image: url("../../resources/layout/fullscreen-exit.svg"); }
+  background-image: url("../resources/layout/fullscreen-exit.svg"); }
   body:-moz-full-screen .fullscreen:hover {
     background-repeat: no-repeat;
     background-size: 90%;
-    background-image: url("../../resources/layout/fullscreen-exit-dark.svg"); }
+    background-image: url("../resources/layout/fullscreen-exit-dark.svg"); }
 
 body:-webkit-full-screen .fullscreen {
   background-repeat: no-repeat;
   background-size: 90%;
-  background-image: url("../../resources/layout/fullscreen-exit.svg"); }
+  background-image: url("../resources/layout/fullscreen-exit.svg"); }
   body:-webkit-full-screen .fullscreen:hover {
     background-repeat: no-repeat;
     background-size: 90%;
-    background-image: url("../../resources/layout/fullscreen-exit-dark.svg"); }
+    background-image: url("../resources/layout/fullscreen-exit-dark.svg"); }
 
 body:fullscreen .fullscreen {
   background-repeat: no-repeat;
   background-size: 90%;
-  background-image: url("../../resources/layout/fullscreen-exit.svg"); }
+  background-image: url("../resources/layout/fullscreen-exit.svg"); }
   body:fullscreen .fullscreen:hover {
     background-repeat: no-repeat;
     background-size: 90%;
-    background-image: url("../../resources/layout/fullscreen-exit-dark.svg"); }
+    background-image: url("../resources/layout/fullscreen-exit-dark.svg"); }
 
 .credits {
-  background: url("../../resources/layout/cc-logo.png") no-repeat;
+  background: url("../resources/layout/cc-logo.png") no-repeat;
   background-size: 80%;
   background-position: 0.3em 0.2em; }
   .credits:hover {
-    background-image: url("../../resources/layout/cc-logo-dark.png"); }
+    background-image: url("../resources/layout/cc-logo-dark.png"); }
 
 .aminoacids-menu {
   min-width: 9em;
@@ -686,12 +707,12 @@ body:fullscreen .fullscreen {
     background-repeat: no-repeat;
     background-position: 2%;
     background-size: auto 90%;
-    background-image: url("../../resources/plus.svg"); }
+    background-image: url("../resources/plus.svg"); }
   .aminoacids-menu .neg-charge {
     background-repeat: no-repeat;
     background-position: 2%;
     background-size: auto 90%;
-    background-image: url("../../resources/minus.svg"); }
+    background-image: url("../resources/minus.svg"); }
   .aminoacids-menu .hydrophobic {
     background-color: #f3c35d; }
   .aminoacids-menu .hydrophobic.marked {
@@ -708,7 +729,7 @@ body:fullscreen .fullscreen {
     background-repeat: no-repeat;
     background-position: 4%;
     background-size: auto 40%;
-    background-image: url("../../resources/col.svg"); }
+    background-image: url("../resources/col.svg"); }
   .aminoacids-menu .hydrophilic-category {
     font-size: 1.1em;
     font-weight: bold;
@@ -717,12 +738,12 @@ body:fullscreen .fullscreen {
     background-repeat: no-repeat;
     background-position: 4%;
     background-size: auto 40%;
-    background-image: url("../../resources/col.svg"); }
+    background-image: url("../resources/col.svg"); }
   .aminoacids-menu .expanded {
     background-repeat: no-repeat;
     background-position: 4%;
     background-size: auto 40%;
-    background-image: url("../../resources/exp.svg"); }
+    background-image: url("../resources/exp.svg"); }
 
 .dna-edit-dialog {
   font-size: 0.9em; }
@@ -739,15 +760,8 @@ body:fullscreen .fullscreen {
     outline: #76d2b8 solid 0.2em; }
   #model-container .radialbond1.disulphideBond, #model-container .radialbond2.disulphideBond {
     stroke: #ffe95a !important; }
-  #model-container .dna text {
-    font-family: monospace;
-    fill: #333333; }
-    #model-container .dna text.shadow {
-      stroke: #eeeeee;
-      stroke-opacity: 0.7; }
-  #model-container .dna .marked-mrna {
-    font-weight: bold;
-    fill: #dd1111; }
+  #model-container .nucleotide .bonds {
+    stroke: white; }
   #model-container line.attractionforce {
     stroke: #aaaaaa;
     stroke-width: 2.5;
@@ -779,6 +793,10 @@ body:fullscreen .fullscreen {
     stroke: white;
     fill-opacity: 0.125;
     shape-rendering: crispEdges; }
+  #model-container .opaque-on-hover {
+    opacity: 0.8; }
+    #model-container .opaque-on-hover:hover {
+      opacity: 1; }
 
 * {
   -webkit-box-sizing: border-box;

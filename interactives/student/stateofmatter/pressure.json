@@ -1,0 +1,21 @@
+{
+  "title": "pressure",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "pressure$0",
+      "url": "imports/legacy-mw-content/converted/student/stateofmatter/pressure$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

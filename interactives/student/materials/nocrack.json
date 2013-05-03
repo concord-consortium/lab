@@ -1,0 +1,21 @@
+{
+  "title": "nocrack",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "nocrack",
+      "url": "imports/legacy-mw-content/converted/student/materials/nocrack.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

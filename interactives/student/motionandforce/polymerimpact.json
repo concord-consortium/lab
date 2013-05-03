@@ -1,0 +1,21 @@
+{
+  "title": "polymerimpact",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "polymerimpact",
+      "url": "imports/legacy-mw-content/converted/student/motionandforce/polymerimpact.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

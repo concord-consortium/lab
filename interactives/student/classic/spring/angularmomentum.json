@@ -1,0 +1,21 @@
+{
+  "title": "angularmomentum",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "angularmomentum$0",
+      "url": "imports/legacy-mw-content/converted/student/classic/spring/angularmomentum$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "stamper",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "stamper$0",
+      "url": "imports/legacy-mw-content/converted/student/classic/machine/stamper$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

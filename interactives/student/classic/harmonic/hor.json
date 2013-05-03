@@ -1,0 +1,21 @@
+{
+  "title": "hor",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "hor$0",
+      "url": "imports/legacy-mw-content/converted/student/classic/harmonic/hor$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "title": "Tire Forces",
+  "publicationStatus": "public",
+  "subtitle": "Explore how the molecular structure of tire rubber affects its mechanical properties.",
+  "about": [
+    "Tire rubber is a polymer, composed of many long molecular chains. In this model you can",
+    "use a downward force to bend a small beam of tire rubber. Use different amounts of force",
+    "to bend the beam. What happens to the beam when you use a small force or a large force?",
+    "What happens when you release the force?",
+    "",
+    "Compare the structure and behavior of this beam of tire rubber to the beam of plastic.",
+    "How do their behaviors differ and why?"
+  ],
+  "models": [
+    {
+      "id": "tireforcesimple$0",
+      "url": "imports/legacy-mw-content/converted/visual/Recycling/tireforcesimple$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "radio",
+      "id": "force-buttons",
+      "orientation": "horizontal",
+      "property": "gravitationalField",
+      "options": [
+        {
+          "text": "No force",
+          "value": false
+        },
+        {
+          "text": "Small force",
+          "value": 8e-8
+        },
+        {
+          "text": "Medium force",
+          "value": 2.4e-7
+        },
+        {
+          "text": "Large force",
+          "value": 4e-7
+        }
+      ]
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "force-buttons"
+    ]
+  },
+  "template":[
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "model.width",
+      "padding-top": "0.5em",
+      "align": "center"
+    }
+  ]
+}

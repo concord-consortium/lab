@@ -1,0 +1,21 @@
+{
+  "title": "script_charge",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "script_charge$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/script_charge$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

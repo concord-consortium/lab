@@ -1,0 +1,21 @@
+{
+  "title": "rod2wire",
+  "publicationStatus": "broken",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "rod2wire$0",
+      "url": "imports/legacy-mw-content/converted/student/materials/rod2wire$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

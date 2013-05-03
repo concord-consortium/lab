@@ -1,0 +1,21 @@
+{
+  "title": "chargeAction",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "chargeAction$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/chargeAction$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

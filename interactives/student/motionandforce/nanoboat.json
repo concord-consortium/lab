@@ -1,0 +1,21 @@
+{
+  "title": "nanoboat",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "nanoboat$0",
+      "url": "imports/legacy-mw-content/converted/student/motionandforce/nanoboat$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

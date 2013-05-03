@@ -1,0 +1,50 @@
+{
+  "title": "Visible and Invisible Atoms",
+  "publicationStatus": "public",
+  "subtitle": "There are four large invisible atoms near the center. These also participate in the molecular dynamics model.",
+  "about": [
+    "This model defines 8 atoms. There are four larger yellow atoms initially defined as invisible closer to the center. These are surrounded by four smaller purple atoms further away from the center.",
+    "After starting the model the smaller purple atoms will start showing visible attractions with the invisible atoms at 7900 fs.",
+    "You can enable or disable visibility of the larger yellow atoms using the pull-down menu selection"
+  ],
+  "models": [
+    {
+      "id": "visible-and-invisible$0",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/visible-and-invisible$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "invisible",
+      "onChange": [
+        "if(value) {",
+        "  setAtomProperties(4, { visible: false }); setAtomProperties(5, { visible: false }); setAtomProperties(6, { visible: false }); setAtomProperties(7, { visible: false })",
+        "} else {",
+        "  setAtomProperties(4, { visible: true }); setAtomProperties(5, { visible: true }); setAtomProperties(6, { visible: true }); setAtomProperties(7, { visible: true });",
+        "}"
+        ],
+      "initialValue": true
+    }
+  ],
+  "components": [
+    {
+      "type": "radio",
+      "id": "radio",
+      "orientation": "horizontal",
+      "property": "invisible",
+      "options": [
+        {
+          "text": "Large Atoms Invisible",
+          "value": true
+        },
+        {
+          "text": "Large Atoms Visible",
+          "value": false
+        }
+      ]
+    }
+  ]
+}

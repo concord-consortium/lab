@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Brownian Motion: Introduction</page_title>
+<bg_image>yellow_fabric.gif</bg_image>
+<text>Brownian Motion: Introduction
+
+        
+
+To run the model and observe Brownian motion press the   button above.
+
+ 
+
+     </text>
+<section start="0" end="122">
+<paragraph start="0" end="30">
+<Alignment>1</Alignment>
+<content start="0" end="29">
+<family>SansSerif</family><bold>true</bold><size>18</size></content>
+
+<content start="29" end="30">
+<family>Microsoft Sans Serif</family><bold>true</bold><size>18</size></content>
+
+</paragraph>
+<paragraph start="30" end="31">
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="40">
+<Alignment>1</Alignment>
+<content start="31" end="32">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>360.0</width>
+<height>310.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;8&quot; face=&quot;Verdana,sans-serif&quot; marginwidth=&quot;8&quot;&gt;
+    &lt;img src=&quot;quill.gif&quot;&gt;
+    &lt;font size=&quot;3&quot;&gt;In 1827, using a microscope, the botanist Robert Brown 
+    observed that pieces of pollen grains suspended in water moved in random 
+    directions. Initially, people thought Brown had discovered the essence of 
+    life. However, after several other experiments, it was apparent that &lt;strong&gt;any&lt;/strong&gt; 
+    tiny particles floating in water would move in this way, even microscopic 
+    pieces of dust.&lt;br&gt;&lt;br&gt;To the right is a virtual microscope which is 
+    focused on a tiny particle floating in water. When you run that model, you 
+    will see the behavior that Brown observed and what is now known as 
+    Brownian Motion.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-522652</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="32" end="38">
+</content>
+
+<content start="38" end="39">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>newBrownianPage1a$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="41">
+<Alignment>1</Alignment>
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="112">
+<Alignment>1</Alignment>
+<content start="41" end="96">
+</content>
+
+<content start="96" end="97">
+<icon>play.gif</icon></content>
+
+<content start="97" end="112">
+</content>
+
+</paragraph>
+<paragraph start="112" end="113">
+<Alignment>1</Alignment>
+<content start="112" end="113">
+</content>
+
+</paragraph>
+<paragraph start="113" end="115">
+<Alignment>1</Alignment>
+<content start="113" end="114">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>600</width>
+<height>129</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;strong&gt;&lt;font face=&quot;Times New Roman, Times, serif&quot; size=&quot;4&quot;&gt;Describe the 
+    movement of the tiny particle in the microscope.&lt;/font&gt;&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-1</bgcolor>
+</component></content>
+
+<content start="114" end="115">
+</content>
+
+</paragraph>
+<paragraph start="115" end="116">
+<content start="115" end="116">
+</content>
+
+</paragraph>
+<paragraph start="116" end="122">
+<Alignment>1</Alignment>
+<content start="116" end="119">
+</content>
+
+<content start="119" end="120">
+<href>newBrownianPage1.cml</href><icon>upContents.gif</icon></content>
+
+<content start="120" end="121">
+<href>newBrownianPage2.cml</href><icon>upArrowSmall.gif</icon></content>
+
+</paragraph>
+</section>
+</document>

@@ -403,7 +403,10 @@
   </void> 
   <void property="monochromatic"> 
    <boolean>false</boolean> 
-  </void> 
+  </void>
+  <void property="showClock">
+   <boolean>false</boolean>
+  </void>
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
   <void property="rx"> 

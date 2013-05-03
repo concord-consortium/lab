@@ -1,0 +1,21 @@
+{
+  "title": "airpurifier",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "airpurifier$0",
+      "url": "imports/legacy-mw-content/converted/student/materials/airpurifier$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

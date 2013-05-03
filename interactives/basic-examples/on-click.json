@@ -1,0 +1,117 @@
+{
+  "title": "onClick Demo",
+  "publicationStatus": "public",
+  "subtitle": "Use onClick() to add a click listener to a specified type of objects.",
+  "models": [
+    {
+      "id": "simple-gas$0",
+      "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "plotLabel",
+      "type": "text",
+      "text": "Clicking a plot does:",
+      "width": "13em"
+    },
+    {
+      "id": "plotAction",
+      "type": "radio",
+      "orientation": "horizontal",
+      "options": [
+        {
+          "text": "nothing",
+          "action": "onClick('plot', function () {});",
+          "selected": true
+        },
+        {
+          "text": "adds an atom",
+          "action": [
+            "onClick('plot', function(x, y, d, i) {",
+            "  addAtom({x: x, y: y});",
+            "});"
+          ]
+        },
+        {
+          "text": "adds an obstacle",
+          "action": [
+            "onClick('plot', function(x, y, d, i) {",
+            "  addObstacle({x: x, y: y, width: 0.2, height: 0.2});",
+            "});"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "atomLabel",
+      "type": "text",
+      "text": "Clicking an atom does:",
+      "width": "13em"
+    },
+    {
+      "id": "atomAction",
+      "type": "radio",
+      "orientation": "horizontal",
+      "options": [
+        {
+          "text": "nothing",
+          "action": "onClick('atom', function () {});",
+          "selected": true
+        },
+        {
+          "text": "removes it",
+          "action": [
+            "onClick('atom', function(x, y, d, i) {",
+            "  removeAtom(i);",
+            "});"
+          ]
+        },
+        {
+          "text": "sets random charge",
+          "action": [
+            "onClick('atom', function(x, y, d, i) {",
+            "  setAtomProperties(i, {charge: Math.random() * 2 - 1});",
+            "});"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "obstacleLabel",
+      "type": "text",
+      "text": "Clicking an obstacle does:",
+      "width": "13em"
+    },
+    {
+      "id": "obstacleAction",
+      "type": "radio",
+      "orientation": "horizontal",
+      "options": [
+        {
+          "text": "nothing",
+          "action": "onClick('obstacle', function () {});",
+          "selected": true
+        },
+        {
+          "text": "removes it",
+          "action": [
+            "onClick('obstacle', function(x, y, d, i) {",
+            "  removeObstacle(i);",
+            "});"
+          ]
+        }
+      ]
+    }
+  ],
+  "layout": {
+    "bottom": [
+      ["plotLabel", "plotAction"],
+      ["atomLabel", "atomAction"],
+      ["obstacleLabel", "obstacleAction"]
+    ]
+  }
+}

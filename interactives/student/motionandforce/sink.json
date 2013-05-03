@@ -1,0 +1,21 @@
+{
+  "title": "sink",
+  "publicationStatus": "broken",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "sink$0",
+      "url": "imports/legacy-mw-content/converted/student/motionandforce/sink$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "parallelgears_deadlock",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "parallelgears_deadlock",
+      "url": "imports/legacy-mw-content/converted/student/classic/gear/parallelgears_deadlock.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "nanoballoon",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "nanoballoon$0",
+      "url": "imports/legacy-mw-content/converted/student/motionandforce/nanoballoon$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

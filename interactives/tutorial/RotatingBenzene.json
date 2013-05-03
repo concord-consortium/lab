@@ -1,0 +1,21 @@
+{
+  "title": "RotatingBenzene",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "RotatingBenzene",
+      "url": "imports/legacy-mw-content/converted/tutorial/RotatingBenzene.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

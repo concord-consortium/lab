@@ -1,0 +1,168 @@
+{
+  "title": "Model integration time step, period, and sample rate",
+  "publicationStatus": "public",
+  "subtitle": "Model parameters controlling the integration time step, period, and sample rate can be customized.",
+  "about": [
+    "Try to change timeStep, timeStepsPerTick or modelSampleRate and observe changes in the speed of simulation execution.",
+    "",
+    "See **[simulation-stepping](../../readme.html#md2d-simulation-stepping)** in readme for more details."
+  ],
+  "fontScale": 0.8,
+  "models": [
+    {
+      "id": "simple-gas$0",
+      "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      }
+    },
+    {
+      "id": "multiatomic-gas$0",
+      "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/multiatomic-gas$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      }
+    },
+    {
+      "id": "pendulum1$0",
+      "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/pendulum1$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      }
+    },
+    {
+      "id": "plasticforcesimple$0",
+      "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/plasticforcesimple$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "pulldown",
+      "id": "select-model",
+      "options": [
+        {
+          "text": "Select a model",
+          "disabled": true
+        },
+        {
+          "text": "Monatomic Gas",
+          "loadModel": "simple-gas$0"
+        },
+        {
+          "text": "Multiatomic Gas",
+          "loadModel": "multiatomic-gas$0"
+        },
+        {
+          "text": "Pendulum",
+          "loadModel": "pendulum1$0"
+        },
+        {
+          "text": "Plastic Forces",
+          "loadModel": "plasticforcesimple$0"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "id": "calc-fps",
+      "text": "Get FPS",
+      "action": [
+        "start();",
+        "setTimeout(function() {",
+        "stop();",
+        "var startTime = getTime();",
+        "setTimeout(function() {",
+        "start();",
+        "setTimeout(function() {",
+        "stop();",
+        "var time = getTime() - startTime;",
+        "alert( (format('1.2f')(time / (get('timeStepsPerTick') * get('timeStep')) / 2)) + ' fps');",
+        "}, 2000);",
+        "}, 100);",
+        "}, 2000);"
+      ]
+    },
+    {
+      "type": "slider",
+      "id": "timestep-slider",
+      "min": 0.01,
+      "max": 5,
+      "displayValue": "return format('1.2f')(value)",
+      "labels": [
+        {
+          "value": 0.01,
+          "label": "0.01"
+        },
+        {
+          "value": 5.0,
+          "label": "5.0"
+        }
+      ],
+      "steps": 500,
+      "title": "timeStep",
+      "property": "timeStep"
+    },
+    {
+      "type": "slider",
+      "id": "refreshrate-slider",
+      "min": 1,
+      "max": 150,
+      "displayValue": "return value;",
+      "labels": [
+        {
+          "value": 1,
+          "label": "1"
+        },
+        {
+          "value": 150,
+          "label": "150"
+        }
+      ],
+      "steps": 149,
+      "title": "timeStepsPerTick",
+      "property": "timeStepsPerTick"
+    },
+    {
+      "type": "pulldown",
+      "id": "select-model-sample-rate",
+      "options": [
+        {
+          "text": "Model Sample Rate (Hz) ...",
+          "disabled": true
+        },
+        {
+          "text": "10",
+          "action": "set({ 'modelSampleRate' : 10 });"
+        },
+        {
+          "text": "15",
+          "action": "set({ 'modelSampleRate' : 15 });"
+        },
+        {
+          "text": "20",
+          "action": "set({ 'modelSampleRate' : 20 });"
+        },
+        {
+          "text": "30",
+          "action": "set({ 'modelSampleRate' : 30 });"
+        },
+        {
+          "text": "default (requestAnimationFrame)",
+          "selected": true,
+          "action": "set({ 'modelSampleRate' : 'default' });"
+        },
+        {
+          "text": "120",
+          "action": "set({ 'modelSampleRate' : 120 });"
+        }
+      ]
+    }
+  ]
+}

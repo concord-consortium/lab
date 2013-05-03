@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "fc3bf0816fc408ca1f6ee1681e71a18d929aa6f2",
-        "short_sha":      "fc3bf081",
-        "url":            "https://github.com/concord-consortium/lab/commit/fc3bf081",
+        "sha":           "772d3716c0deac86be43e4a69c4ae1405982c5f8",
+        "short_sha":      "772d3716",
+        "url":            "https://github.com/concord-consortium/lab/commit/772d3716",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-04-11 10:14:23 -0400",
-        "short_message": "bar-graph: work around ipad2 container-width bug",
-        "message":       "bar-graph: work around ipad2 container-width bug\n\n[#47854951]"
+        "date":          "2013-05-02 18:06:05 -0400",
+        "short_message": "use relative references for all model JSON urls",
+        "message":       "use relative references for all model JSON urls\n\nIS [#49153149]"
       },
       "dirty": false
     }
@@ -456,8 +456,8 @@ define('lab.config',['require','common/actual-root'],function (require) {
   "sharing": true,
   "home": "http://lab.concord.org",
   "homeForSharing": "http://lab.concord.org",
-  "homeInteractivePath": "/examples/interactives/interactive.html",
-  "homeEmbeddablePath": "/examples/interactives/embeddable.html",
+  "homeInteractivePath": "/interactive.html",
+  "homeEmbeddablePath": "/embeddable.html",
   "utmCampaign": null,
   "fontface": "Lato",
   "hostName": "lab4.dev.concord.org",
@@ -563,33 +563,109 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         autoscale: "Show all data (autoscale)"
       };
 
-
   return function Graph(idOrElement, options, message, tabindex) {
     var api = {},   // Public API object to be returned.
-        elem,
-        node,
-        $node,
-        cx,
-        cy,
 
-        stroke = function(d) { return d ? "#ccc" : "#666"; },
+        // D3 selection of the containing DOM element the graph is placed in
+        elem,
+
+        // Regular representation of containing DOM element the graph is placed in
+        node,
+
+        // JQuerified version of DOM element
+        $node,
+
+        // Size of containing DOM element
+        cx, cy,
+
+        // Calculated padding between edges of DOM container and interior plot area of graph.
+        padding,
+
+        // Object containing width and height in pixels of interior plot area of graph
+        size,
+
+        // D3 objects representing SVG elements/containers in graph
+        svg,
+        vis,
+        plot,
+        viewbox,
+        title,
+        xlabel,
+        ylabel,
+        selectedRulerX,
+        selectedRulerY,
+
+        // Strings used as tooltips when labels are visible but are truncated because
+        // they are too big to be rendered into the space the graph allocates
+        titleTooltip,
+        xlabelTooltip,
+        ylabelTooltip,
+
+        // Instantiated D3 scale functions
+        // currently either d3.scale.linear, d3.scale.log, or d3.scale.pow
+        xScale,
+        yScale,
+
+        // The approximate number of gridlines in the plot, passed to d3.scale.ticks() function
+        xTickCount,
+        yTickCount,
+
+        // Instantiated D3 line function: d3.svg.line()
+        line,
+
+        // Instantiated D3 numeric format functions: d3.format()
+        fx,
+        fy,
+
+        // Function for stroke styling of major and minor grid lines
+        gridStroke = function(d) { return d ? "#ccc" : "#666"; },
+
+        // Functions for translation of grid lines and associated numeric labels
         tx = function(d) { return "translate(" + xScale(d) + ",0)"; },
         ty = function(d) { return "translate(0," + yScale(d) + ")"; },
-        fx, fy,
-        svg, vis, plot, viewbox,
+
+        // Div created and placed with z-index above all other graph layers that holds
+        // graph action/mode buttons.
+        buttonLayer,
+
+        // Div created and placed with z-index under all other graph layers
         background,
-        gcanvas, gctx,
+
+        // Optional string which can be displayed in background of interior plot area of graph.
+        notification,
+
+        // An array of strings holding 0 or more lines for the title of the graph
+        titles = [],
+
+        // D3 selection containing canvas
+        graphCanvas,
+
+        // HTML5 Canvas object containing just plotted lines
+        gcanvas,
+        gctx,
         canvasFillStyle = "rgba(255,255,255, 0.0)",
         cplot = {},
-        buttonLayer,
-        title, xlabel, ylabel,
-        notification,
-        padding, size,
-        xScale, yScale, line,
-        shiftingX = false,
-        cubicEase = d3.ease('cubic'),
+
+        // Function dynamically created when X axis domain shift is in progress
         domainShift,
-        circleCursorStyle,
+        // Boolean indicating X axis domain shif is in progress
+        shiftingX = false,
+        // Easing function used during X axis domain shift
+        cubicEase = d3.ease('cubic'),
+        // These are used to implement fluid X axis domain shifting.
+        // This is used when plotting samples/points and extent of plotted
+        // data approach extent of X axis.
+        // Domain shifting can also occur when the current sample point is moved.
+        // This most often occurs when using a graph to examine data from a model
+        // and movingthe current sample point backwards and forwards in data that
+        // have already been collected.
+
+        // The style of the cursor when hovering over a sample.point marker.
+        // The cursor changes depending on the operations that can be performed.
+        markerCursorStyle,
+
+        // Metrics calculated to support layout of titles, axes as
+        // well as text and numeric labels for axes.
         fontSizeInPixels,
         halfFontSizeInPixels,
         quarterFontSizeInPixels,
@@ -598,26 +674,52 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         xlabelFontSizeInPixels,
         ylabelFontSizeInPixels,
 
+        // Array objects containing width and height of X and Y axis labels
         xlabelMetrics,
         yLabelMetrics,
+
+        // Width of widest numeric labels on X and Y axes
         xAxisNumberWidth,
-        xAxisNumberHeight,
         yAxisNumberWidth,
+
+        // Height of numeric labels on X and Y axes
+        xAxisNumberHeight,
         yAxisNumberHeight,
+
+        // Padding necessary for X and Y axis labels to leave enough room for numeric labels
+        xAxisVerticalPadding,
+        yAxisHorizontalPadding,
+
+        // Padding necessary between right side of interior plot and edge of graph so
+        // make room for numeric lanel on right edge of X axis.
         xAxisLabelHorizontalPadding,
 
-        xAxisVerticalPadding,
-        xAxisDraggableHeight,
+        // Baselines calculated for positioning of X and Y axis labels.
         xAxisLabelBaseline,
-
-        yAxisHorizontalPadding,
-        yAxisDraggableWidth,
         yAxisLabelBaseline,
 
+        // Thickness of draggable areas for rescaling axes, these surround numeric labels
+        xAxisDraggableHeight,
+        yAxisDraggableWidth,
+
+        // D3 SVG rects used to implement axis dragging
         xAxisDraggable,
         yAxisDraggable,
 
+        // Strings used as tooltips when numeric axis draggables are visible but responsive
+        // layout system has removed the axis labels because of small size of graph.
+        xAxisDraggableTooltip,
+        yAxisDraggableTooltip,
+
+        // Used to calculate styles for markers appearing on samples/points (normally circles)
+        markerRadius,
+        markerStrokeWidth,
+
+        // Stroke width used for lines in graph
         strokeWidth,
+
+        // Used to categorize size of graphs in responsive layout mode where
+        // certain graph chrome is removed when graph is rendered smaller.
         sizeType = {
           category: "medium",
           value: 3,
@@ -627,51 +729,157 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           medium: 960,
           large: 1920
         },
+
+        // State variables indicating whether an axis drag operation is in place.
+        // NaN values are used to indicate operation not in progress and
+        // checked like this: if (!isNaN(downx)) { resacle operation in progress }
+        //
+        // When drag/rescale operation is occuring values contain plot
+        // coordinates of start of drag (0 is a valid value).
         downx = NaN,
         downy = NaN,
-        dragged = null,
+
+        // State variable indicating whether a data point is being dragged.
+        // When data point drag operation is occuring value contain two element
+        // array wiith plot coordinates of drag position.
+        draggedPoint = null,
+
+        // When a data point is selected contains two element array wiith plot coordinates
+        // of selected data point.
         selected = null,
-        titles = [],
 
-        points, pointArray,
+        // An array of data points in the plot which are near the cursor.
+        // Normally used to temporarily display data point markers when cursor
+        // is nearby when markAllDataPoints is disabled.
+        selectable = [],
+
+        // An array containing two-element arrays consisting of X and Y values for samples/points
+        points = [],
+
+        // An array containing 1 or more points arrays to be plotted.
+        pointArray,
+
+        // Index into points array for current sample/point.
+        // Normally references data point last added.
+        // Current sample can refer to earlier points. This is
+        // represented in the view by using a desaturated styling for
+        // plotted data after te currentSample.
         currentSample,
-        markedPoint, marker,
-        sample,
 
+        // When graphing data samples as opposed to [x, y] data pairs contains
+        // the fixed time interval between subsequent samples.
+        sampleInterval,
+
+        // The default options for a graph
         default_options = {
+          // Enables the button layer with: AutoScale ...
           showButtons:    true,
+
+          // Responsive Layout provides pregressive removal of
+          // graph elements when size gets smaller
           responsiveLayout: false,
+
+          // Font sizes for graphs are normally specified using ems.
+          // When fontScaleRelativeToParent to true the font-size of the
+          // containing element is set based on the size of the containing
+          // element. hs means whn the containing element is smaller the
+          // foint-size of the labels in thegraph will be smaller.
           fontScaleRelativeToParent: true,
-          realTime:       false,
+
+          //
+          // dataType can be either 'points or 'samples'
+          //
+          dataType: 'points',
+          //
+          // dataType: 'points'
+          //
+          // Arrays of two-element arrays of x, y data pairs, this is the internal
+          // format the graphers uses to represent data.
+          dataPoints:      [],
+          //
+          // dataType: 'samples'
+          //
+          // An array of samples (or an array or arrays of samples)
+          dataSamples:     [],
+          // The constant time interval between sample values
+          sampleInterval:  1,
+          // Normally data sent to graph as samples starts at an X value of 0
+          // A different starting x value can be set
+          dataSampleStart: 0,
+
+          // title can be a string or an array of strings, if an
+          // array of strings each element is on a separate line.
           title:          "graph",
+
+          // The labels for the axes, these are separate from the numeric labels.
           xlabel:         "x-axis",
           ylabel:         "y-axis",
-          xscale:         'linear',
-          yscale:         'linear',
-          xTickCount:      10,
-          yTickCount:      10,
-          xscaleExponent:  0.5,
-          yscaleExponent:  0.5,
-          xFormatter:      "2s",
-          yFormatter:      "2s",
-          axisShift:       10,
+
+          // Initial extent of the X and Y axes.
           xmax:            10,
           xmin:            0,
           ymax:            10,
           ymin:            0,
-          dataset:         [0],
-          selectablePoints: false,
-          circleRadius:    10.0,
+
+          // Approximate values for how many gridlines should appear on the axes.
+          xTickCount:      10,
+          yTickCount:      10,
+
+          // The formatter used to convert numbers into strings.
+          // see: https://github.com/mbostock/d3/wiki/Formatting#wiki-d3_format
+          xFormatter:      ".3s",
+          yFormatter:      ".3r",
+
+          // Scale type: options are:
+          //   linear: https://github.com/mbostock/d3/wiki/Quantitative-Scales#wiki-linear
+          //   log:    https://github.com/mbostock/d3/wiki/Quantitative-Scales#wiki-log
+          //   pow:    https://github.com/mbostock/d3/wiki/Quantitative-Scales#wiki-pow
+          xscale:         'linear',
+          yscale:         'linear',
+
+          // Used when scale type is set to "pow"
+          xscaleExponent:  0.5,
+          yscaleExponent:  0.5,
+
+          // How many samples/points over which a graph shift should take place
+          // when the data being plotted gets close to the edge of the X axis.
+          axisShift:       10,
+
+          // selectablePoints: false,
+
+          // true if data points should be marked ... currently marked with a circle.
+          markAllDataPoints:   false,
+
+          // only show circles when hovering near them with the mouse or
+          // tapping near then on a tablet
+          markNearbyDataPoints: false,
+
+          // number of circles to show on each side of the central point
+          extraCirclesVisibleOnHover: 2,
+
+          // true to show dashed horizontal and vertical rulers when a circle is selected
+          showRulersOnSelection: false,
+
+          // width of the line used for plotting
           strokeWidth:      2.0,
-          dataChange:      true,
-          addData:         true,
-          points:          false,
+
+          // Enable values of data points to be changed by selecting and dragging.
+          dataChange:      false,
+
+          // Enables adding of data to a graph by option/alt clicking in the graph.
+          addData:         false,
+
+          // Set value to a string and it will be rendered in background of graph.
           notification:    false,
-          sample:          1,
+
+          // Render lines between samples/points
           lines:           true,
+
+          // Render vertical bars extending up to samples/points
           bars:            false
         },
 
+        // brush selection variables
         selection_region = {
           xmin: null,
           xmax: null,
@@ -684,6 +892,63 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         selection_listener,
         brush_element,
         brush_control;
+
+
+    // ------------------------------------------------------------
+    //
+    // Initialization
+    //
+    // ------------------------------------------------------------
+
+    function initialize(idOrElement, opts, mesg) {
+      if (opts || !options) {
+        options = setupOptions(opts);
+      }
+
+      initializeLayout(idOrElement, mesg);
+
+      options.xrange = options.xmax - options.xmin;
+      options.yrange = options.ymax - options.ymin;
+
+      if (Object.prototype.toString.call(options.title) === "[object Array]") {
+        titles = options.title;
+      } else {
+        titles = [options.title];
+      }
+      titles.reverse();
+
+      fx = d3.format(options.xFormatter);
+      fy = d3.format(options.yFormatter);
+
+      // use local variables for both access speed and for responsive over-riding
+      sampleInterval = options.sampleInterval;
+      dataSampleStart = options.dataSampleStart;
+      strokeWidth = options.strokeWidth;
+
+      xTickCount = options.xTickCount;
+      yTickCount = options.yTickCount;
+
+      pointArray = [];
+      switch(options.dataType) {
+        case "fake":
+        points = fakeDataPoints();
+        pointArray = [points];
+        break;
+
+        case 'points':
+        resetDataPoints(options.dataPoints);
+        break;
+
+        case 'samples':
+        resetDataSamples(options.dataSamples, sampleInterval, dataSampleStart);
+        break;
+      }
+
+      selectable = [];
+      selected = null;
+
+      setCurrentSample(points.length);
+    }
 
     function initializeLayout(idOrElement, mesg) {
       if (idOrElement) {
@@ -712,15 +977,15 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         background = undefined;
       }
 
-      if (gcanvas !== undefined) {
-        $(gcanvas).remove();
-        gcanvas = undefined;
+      if (graphCanvas !== undefined) {
+        graphCanvas.remove();
+        graphCanvas = undefined;
       }
 
       if (options.dataChange) {
-        circleCursorStyle = "ns-resize";
+        markerCursorStyle = "ns-resize";
       } else {
-        circleCursorStyle = "crosshair";
+        markerCursorStyle = "crosshair";
       }
 
       scale();
@@ -728,7 +993,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       // drag axis logic
       downx = NaN;
       downy = NaN;
-      dragged = null;
+      draggedPoint = null;
     }
 
     function scale(w, h) {
@@ -783,11 +1048,11 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         xlabelMetrics = [fontSizeInPixels, fontSizeInPixels];
         ylabelMetrics = [fontSizeInPixels*2, fontSizeInPixels];
       } else {
-        xlabelMetrics = axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, 
-          longestNumber(xScale.ticks(options.xTickCount), fx));
+        xlabelMetrics = axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels,
+          longestNumber(xScale.ticks(xTickCount), fx));
 
         ylabelMetrics = axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels,
-          longestNumber(yScale.ticks(options.yTickCount), fy));
+          longestNumber(yScale.ticks(yTickCount), fy));
       }
 
       xAxisNumberWidth  = xlabelMetrics[0];
@@ -795,7 +1060,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       yAxisNumberWidth  = ylabelMetrics[0];
       yAxisNumberHeight = ylabelMetrics[0];
 
-      xAxisLabelHorizontalPadding = xAxisNumberWidth * 0.5;
+      xAxisLabelHorizontalPadding = xAxisNumberWidth * 0.6;
       xAxisDraggableHeight = xAxisNumberHeight * 1.1;
       xAxisVerticalPadding = xAxisDraggableHeight + xAxisNumberHeight*1.3;
       xAxisLabelBaseline = xAxisVerticalPadding-xAxisNumberHeight/3;
@@ -805,48 +1070,50 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       yAxisLabelBaseline     = -(yAxisDraggableWidth+yAxisNumberHeight/4);
 
       switch(sizeType.value) {
-        case 0:         // tiny
+        case 0:         // icon
         padding = {
-         "top":    fontSizeInPixels,
-         "right":  fontSizeInPixels,
-         "bottom": fontSizeInPixels,
-         "left":   fontSizeInPixels
+          "top":    halfFontSizeInPixels,
+          "right":  halfFontSizeInPixels,
+          "bottom": fontSizeInPixels,
+          "left":   fontSizeInPixels
         };
         break;
 
-        case 1:         // small
+        case 1:         // tiny
         padding = {
-         "top":    fontSizeInPixels,
-         "right":  fontSizeInPixels,
-         "bottom": fontSizeInPixels,
-         "left":   fontSizeInPixels
+          "top":    options.title  ? titleFontSizeInPixels*1.8 : fontSizeInPixels,
+          "right":  halfFontSizeInPixels,
+          "bottom": fontSizeInPixels,
+          "left":   fontSizeInPixels
         };
         break;
 
-        case 2:         // medium
+        case 2:         // small
         padding = {
-         "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
-         "right":  xAxisLabelHorizontalPadding,
-         "bottom": axisFontSizeInPixels*1.25,
-         "left":   yAxisNumberWidth
+          "top":    options.title  ? titleFontSizeInPixels*1.8 : fontSizeInPixels,
+          "right":  xAxisLabelHorizontalPadding,
+          "bottom": axisFontSizeInPixels*1.25,
+          "left":   yAxisNumberWidth*1.25
+        };
+        xTickCount = Math.max(6, options.xTickCount/2);
+        yTickCount = Math.max(6, options.yTickCount/2);
+        break;
+
+        case 3:         // medium
+        padding = {
+          "top":    options.title  ? titleFontSizeInPixels*1.8 : fontSizeInPixels,
+          "right":  xAxisLabelHorizontalPadding,
+          "bottom": options.xlabel ? xAxisVerticalPadding : axisFontSizeInPixels*1.25,
+          "left":   options.ylabel ? yAxisHorizontalPadding : yAxisNumberWidth
         };
         break;
 
-        case 3:         // large
+        default:         // large
         padding = {
-         "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
-         "right":  xAxisLabelHorizontalPadding,
-         "bottom": options.xlabel ? xAxisVerticalPadding : axisFontSizeInPixels*1.25,
-         "left":   options.ylabel ? yAxisHorizontalPadding : yAxisNumberWidth
-        };
-        break;
-
-        default:         // extralarge
-        padding = {
-         "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
-         "right":  xAxisLabelHorizontalPadding,
-         "bottom": options.xlabel ? xAxisVerticalPadding : axisFontSizeInPixels*1.25,
-         "left":   options.ylabel ? yAxisHorizontalPadding : yAxisNumberWidth
+          "top":    options.title  ? titleFontSizeInPixels*1.8 : fontSizeInPixels,
+          "right":  xAxisLabelHorizontalPadding,
+          "bottom": options.xlabel ? xAxisVerticalPadding : axisFontSizeInPixels*1.25,
+          "left":   options.ylabel ? yAxisHorizontalPadding : yAxisNumberWidth
         };
         break;
       }
@@ -903,7 +1170,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
 
     function calculateSizeType() {
       if (options.responsiveLayout) {
-        if(cx <= sizeType.icon) {
+        if (cx <= sizeType.icon) {
           sizeType.category = 'icon';
           sizeType.value = 0;
         } else if (cx <= sizeType.tiny) {
@@ -915,12 +1182,9 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         } else if (cx <= sizeType.medium) {
           sizeType.category = 'medium';
           sizeType.value = 3;
-        } else if (cx <= sizeType.large) {
+        } else {
           sizeType.category = 'large';
           sizeType.value = 4;
-        } else {
-          sizeType.category = 'extralarge';
-          sizeType.value = 5;
         }
       } else {
         sizeType.category = 'large';
@@ -993,25 +1257,30 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       return currentSample;
     }
 
-    function indexedData(dataset, initial_index, sample) {
+    // converts data samples into an array of points
+    function indexedData(samples, interval, start) {
       var i = 0,
-          start_index = initial_index || 0,
-          n = dataset.length,
-          points = [];
-      sample = sample || 1;
-      for (i = 0; i < n;  i++) {
-        points.push({ x: (i + start_index) * sample, y: dataset[i] });
+          pnts = [];
+      interval = interval || 1;
+      start = start || 0;
+      for (i = 0; i < samples.length;  i++) {
+        pnts.push([i * interval + start, samples[i]]);
       }
-      return points;
+      return pnts;
     }
 
-    function numberOfPoints() {
-      if (points) {
-        return points.length;
+    //
+    // Update notification message
+    //
+    function notify(mesg) {
+      message = mesg;
+      if (mesg) {
+        notification.text(mesg);
       } else {
-        return false;
+        notification.text('');
       }
     }
+
 
     function createButtonLayer() {
       buttonLayer = elem.append("div");
@@ -1043,6 +1312,15 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         });
     }
 
+    // ------------------------------------------------------------
+    //
+    // Rendering
+    //
+    // ------------------------------------------------------------
+
+    //
+    // Render a new graph by creating the SVG and Canvas elements
+    //
     function renderNewGraph() {
       svg = elem.append("svg")
           .attr("width",  cx)
@@ -1060,6 +1338,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         .attr("height", size.height)
         .attr("pointer-events", "all")
         .attr("fill", "rgba(255,255,255,0)")
+        .on("mousemove", plotMousemove)
         .on("mousedown", plotDrag)
         .on("touchstart", plotDrag);
 
@@ -1075,6 +1354,8 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
             "z-index": 0
           });
 
+      createGraphCanvas();
+
       viewbox = vis.append("svg")
         .attr("class", "viewbox")
         .attr("top", 0)
@@ -1083,12 +1364,23 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         .attr("height", size.height)
         .attr("viewBox", "0 0 "+size.width+" "+size.height);
 
-      if (!options.realTime) {
-        viewbox.append("path")
-              .attr("class", "line")
-              .style("stroke-width", strokeWidth)
-              .attr("d", line(points));
-      }
+      selectedRulerX = viewbox.append("line")
+        .attr("stroke", gridStroke)
+        .attr("stroke-dasharray", "2,2")
+        .attr("y1", 0)
+        .attr("y2", size.height)
+        .attr("x1", function(d) { return selected === null ? 0 : selected[0]; } )
+        .attr("x2", function(d) { return selected === null ? 0 : selected[0]; } )
+        .attr("class", "ruler hidden");
+
+      selectedRulerY = viewbox.append("line")
+        .attr("stroke", gridStroke)
+        .attr("stroke-dasharray", "2,2")
+        .attr("x1", 0)
+        .attr("x2", size.width)
+        .attr("y1", function(d) { return selected === null ? 0 : selected[1]; } )
+        .attr("y2", function(d) { return selected === null ? 0 : selected[1]; } )
+        .attr("class", "ruler hidden");
 
       yAxisDraggable = svg.append("rect")
         .attr("class", "draggable-axis")
@@ -1102,6 +1394,8 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         .on("mousedown", yAxisDrag)
         .on("touchstart", yAxisDrag);
 
+      yAxisDraggableTooltip = yAxisDraggable.append("title");
+
       xAxisDraggable = svg.append("rect")
         .attr("class", "draggable-axis")
         .attr("x", padding.left)
@@ -1114,28 +1408,39 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         .on("mousedown", xAxisDrag)
         .on("touchstart", xAxisDrag);
 
-      marker = viewbox.append("path").attr("class", "marker");
-      // path without attributes cause SVG parse problem in IE9
-      //     .attr("d", []);
+      xAxisDraggableTooltip = xAxisDraggable.append("title");
 
+      if (sizeType.value <= 2 && options.ylabel) {
+        xAxisDraggableTooltip.text(options.xlabel);
+      }
+
+      if (sizeType.catefory && options.ylabel) {
+        yAxisDraggableTooltip.text(options.ylabel);
+      }
+
+      adjustAxisDraggableFill();
 
       brush_element = viewbox.append("g")
             .attr("class", "brush");
 
       // add Chart Title
-      if (options.title && sizeType.value > 1) {
+      if (options.title && sizeType.value > 0) {
         title = vis.selectAll("text")
           .data(titles, function(d) { return d; });
         title.enter().append("text")
             .attr("class", "title")
             .text(function(d) { return d; })
-            .attr("x", size.width/2)
-            .attr("dy", function(d, i) { return -i * titleFontSizeInPixels - halfFontSizeInPixels + "px"; })
-            .style("text-anchor","middle");
+            .attr("x", function(d) { return size.width/2 - Math.min(size.width, getComputedTextLength(this))/2; })
+            .attr("dy", function(d, i) { return -i * titleFontSizeInPixels - halfFontSizeInPixels + "px"; });
+        titleTooltip = title.append("title")
+            .text("");
+      } else if (options.title) {
+        titleTooltip = plot.append("title")
+            .text(options.title);
       }
 
       // Add the x-axis label
-     if (options.xlabel && sizeType.value > 2) {
+      if (options.xlabel && sizeType.value > 2) {
         xlabel = vis.append("text")
             .attr("class", "axis")
             .attr("class", "xlabel")
@@ -1154,6 +1459,10 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
             .text( options.ylabel)
             .style("text-anchor","middle")
             .attr("transform","translate(" + yAxisLabelBaseline + " " + size.height/2+") rotate(-90)");
+        if (sizeType.category === "small") {
+          yAxisDraggable.append("title")
+            .text(options.ylabel);
+        }
       }
 
       d3.select(node)
@@ -1169,12 +1478,13 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           .attr("y", size.height/2)
           .style("text-anchor","middle");
 
-      if (options.realTime) {
-        initializeCanvas();
-        showCanvas();
-      }
+      updateMarkers();
+      updateRulers();
     }
 
+    //
+    // Repaint an existing graph by rescaling/updating the SVG and Canvas elements
+    //
     function repaintExistingGraph() {
       vis
         .attr("width",  cx)
@@ -1202,33 +1512,50 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           .attr("viewBox", "0 0 "+size.width+" "+size.height);
 
       yAxisDraggable
-        .attr("x", padding.left-yAxisDraggableWidth)
-        .attr("y", padding.top-yAxisNumberHeight/2)
-        .attr("width", yAxisDraggableWidth)
-        .attr("height", size.height+yAxisNumberHeight);
+          .attr("x", padding.left-yAxisDraggableWidth)
+          .attr("y", padding.top-yAxisNumberHeight/2)
+          .attr("width", yAxisDraggableWidth)
+          .attr("height", size.height+yAxisNumberHeight);
 
       xAxisDraggable
-        .attr("x", padding.left)
-        .attr("y", size.height+padding.top)
-        .attr("width", size.width)
-        .attr("height", xAxisDraggableHeight);
+          .attr("x", padding.left)
+          .attr("y", size.height+padding.top)
+          .attr("width", size.width)
+          .attr("height", xAxisDraggableHeight);
 
-      if (options.title && sizeType.value > 1) {
+      adjustAxisDraggableFill();
+
+      if (options.title && sizeType.value > 0) {
         title
-            .attr("x", size.width/2)
+            .attr("x", function(d) { return size.width/2 - Math.min(size.width, getComputedTextLength(this))/2; })
             .attr("dy", function(d, i) { return -i * titleFontSizeInPixels - halfFontSizeInPixels + "px"; });
+        titleTooltip
+            .text("");
+      } else if (options.title) {
+        titleTooltip
+            .text(options.title);
       }
 
-      if (options.xlabel && sizeType.value > 1) {
+      if (options.xlabel && sizeType.value > 2) {
         xlabel
             .attr("x", size.width/2)
             .attr("y", size.height)
             .attr("dy", xAxisLabelBaseline + "px");
+        xAxisDraggableTooltip
+            .text("");
+      } else {
+        xAxisDraggableTooltip
+            .text(options.xlabel);
       }
 
-      if (options.ylabel && sizeType.value > 1) {
+      if (options.ylabel && sizeType.value > 2) {
         ylabel
             .attr("transform","translate(" + yAxisLabelBaseline + " " + size.height/2+") rotate(-90)");
+        yAxisDraggableTooltip
+            .text("");
+      } else {
+        yAxisDraggableTooltip
+          .text(options.ylabel);
       }
 
       notification
@@ -1238,37 +1565,48 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       vis.selectAll("g.x").remove();
       vis.selectAll("g.y").remove();
 
-      if (options.realTime) {
-        resizeCanvas();
-      }
+      updateMarkers();
+      updateRulers();
+      resizeCanvas();
     }
 
-    // ------------------------------------------------------------
-    //
-    // Chart Notification
-    //
-    // ------------------------------------------------------------
-
-    function notify(mesg) {
-      message = mesg;
-      if (mesg) {
-        notification.text(mesg);
+    function getComputedTextLength(el) {
+      if (el.getComputedTextLength) {
+        return el.getComputedTextLength();
       } else {
-        notification.text('');
+        return 100;
       }
     }
 
-    // ------------------------------------------------------------
-    //
-    // Redraw the plot canvas when it is translated or axes are re-scaled
-    //
-    // ------------------------------------------------------------
+    function adjustAxisDraggableFill() {
+      if (sizeType.value <= 1) {
+        xAxisDraggable
+          .style({
+            "fill":       "rgba(196, 196, 196, 0.2)"
+          });
+        yAxisDraggable
+          .style({
+            "fill":       "rgba(196, 196, 196, 0.2)"
+          });
+      } else {
+        xAxisDraggable
+          .style({
+            "fill":       null
+          });
+        yAxisDraggable
+          .style({
+            "fill":       null
+          });
+      }
+    }
 
+    //
+    // Redraw the plot and axes when plot is translated or axes are re-scaled
+    //
     function redraw() {
-
       // Regenerate x-ticks
       var gx = vis.selectAll("g.x")
-          .data(xScale.ticks(options.xTickCount), String)
+          .data(xScale.ticks(xTickCount), String)
           .attr("transform", tx);
 
       var gxe = gx.enter().insert("g", "a")
@@ -1276,7 +1614,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           .attr("transform", tx);
 
       gxe.append("line")
-          .attr("stroke", stroke)
+          .attr("stroke", gridStroke)
           .attr("y1", 0)
           .attr("y2", size.height);
 
@@ -1295,7 +1633,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
 
       // Regenerate y-ticks
       var gy = vis.selectAll("g.y")
-          .data(yScale.ticks(options.yTickCount), String)
+          .data(yScale.ticks(yTickCount), String)
           .attr("transform", ty);
 
       var gye = gy.enter().insert("g", "a")
@@ -1304,7 +1642,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           .attr("background-fill", "#FFEEB6");
 
       gye.append("line")
-          .attr("stroke", stroke)
+          .attr("stroke", gridStroke)
           .attr("x1", 0)
           .attr("x2", size.width);
 
@@ -1338,307 +1676,43 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
 
     // ------------------------------------------------------------
     //
-    // Draw the data
+    // Rendering: Updating samples/data points in the plot
     //
     // ------------------------------------------------------------
 
+
+    //
+    // Update plotted data, optionally pass in new samplePoint
+    //
     function update(samplePoint) {
       setCurrentSample(samplePoint);
-      if (options.realTime) {
-        realTimeUpdate(currentSample);
-      } else {
-        regularUpdate();
-      }
-    }
-
-    function realTimeUpdate(samplePoint) {
-      setCurrentSample(samplePoint);
-      updateCanvas(currentSample);
-
-      // old code saved for reference:
-
-      // if (graph.selectablePoints) {
-      //   var circle = vis.selectAll("circle")
-      //       .data(points, function(d) { return d; });
-
-      //   circle.enter().append("circle")
-      //       .attr("class", function(d) { return d === selected ? "selected" : null; })
-      //       .attr("cx",    function(d) { return x(d.x); })
-      //       .attr("cy",    function(d) { return y(d.y); })
-      //       .attr("r", 1.0)
-      //       .on("mousedown", function(d) {
-      //         selected = dragged = d;
-      //         update();
-      //       });
-
-      //   circle
-      //       .attr("class", function(d) { return d === selected ? "selected" : null; })
-      //       .attr("cx",    function(d) { return x(d.x); })
-      //       .attr("cy",    function(d) { return y(d.y); });
-
-      //   circle.exit().remove();
-      // }
-
+      updateCanvasFromPoints(currentSample);
+      updateMarkers();
       if (d3.event && d3.event.keyCode) {
         d3.event.preventDefault();
         d3.event.stopPropagation();
       }
     }
-
-
-    // ------------------------------------------------------------
-    //
-    // Update the slower SVG-based grapher canvas
-    //
-    // ------------------------------------------------------------
-
-    function regularUpdate() {
-
-      updateBrushElement();
-
-      vis.select("path").attr("d", line(points));
-
-      var circle = vis.select("svg").selectAll("circle")
-          .data(points, function(d) { return d; });
-
-      if (options.circleRadius && sizeType.value > 1) {
-        if (!(options.circleRadius <= 4 && sizeType.value < 3)) {
-          circle.enter().append("circle")
-              .attr("class", function(d) { return d === selected ? "selected" : null; })
-              .attr("cx",    function(d) { return xScale(d[0]); })
-              .attr("cy",    function(d) { return yScale(d[1]); })
-              .attr("r", options.circleRadius * (1 + sizeType.value) / 4)
-              .style("stroke-width", strokeWidth)
-              .style("cursor", circleCursorStyle)
-              .on("mousedown.drag",  dataPointDrag)
-              .on("touchstart.drag", dataPointDrag);
-
-          circle
-              .attr("class", function(d) { return d === selected ? "selected" : null; })
-              .attr("cx",    function(d) { return xScale(d[0]); })
-              .attr("cy",    function(d) { return yScale(d[1]); })
-              .attr("r", options.circleRadius * (1 + sizeType.value) / 4)
-              .style("stroke-width", strokeWidth);
-        }
-      }
-
-      circle.exit().remove();
-
-      if (d3.event && d3.event.keyCode) {
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
-      }
-    }
-
-    // ------------------------------------------------------------
-    //
-    // Update the real-time graph canvas
-    //
-    // ------------------------------------------------------------
-
-    // currently unused:
-
-    // function updateSample(currentSample) {
-    //   updateCanvas(currentSample);
-
-    //   if (graph.selectablePoints) {
-    //     var circle = vis.selectAll("circle")
-    //         .data(points, function(d) { return d; });
-
-    //     circle.enter().append("circle")
-    //         .attr("class", function(d) { return d === selected ? "selected" : null; })
-    //         .attr("cx",    function(d) { return x(d.x); })
-    //         .attr("cy",    function(d) { return y(d.y); })
-    //         .attr("r", 1.0)
-    //         .on("mousedown", function(d) {
-    //           selected = dragged = d;
-    //           update();
-    //         });
-
-    //     circle
-    //         .attr("class", function(d) { return d === selected ? "selected" : null; })
-    //         .attr("cx",    function(d) { return x(d.x); })
-    //         .attr("cy",    function(d) { return y(d.y); });
-
-    //     circle.exit().remove();
-    //   }
-
-    //   if (d3.event && d3.event.keyCode) {
-    //     d3.event.preventDefault();
-    //     d3.event.stopPropagation();
-    //   }
-    // }
-
-    function plotDrag() {
-      if (options.realTime) {
-        realTimePlotDrag();
-      } else {
-        regularPlotDrag();
-      }
-    }
-
-    function realTimePlotDrag() {
-      d3.event.preventDefault();
-      plot.style("cursor", "move");
-      if (d3.event.altKey) {
-        plot.style("cursor", "nesw-resize");
-        var p = d3.mouse(vis.node());
-        downx = xScale.invert(p[0]);
-        downy = yScale.invert(p[1]);
-        dragged = false;
-        d3.event.stopPropagation();
-      }
-    }
-
-    function regularPlotDrag() {
-      var p;
-      d3.event.preventDefault();
-      d3.select('body').style("cursor", "move");
-      if (d3.event.altKey) {
-        plot.style("cursor", "nesw-resize");
-        if (d3.event.shiftKey && options.addData) {
-          p = d3.mouse(vis.node());
-          var newpoint = [];
-          newpoint[0] = xScale.invert(Math.max(0, Math.min(size.width,  p[0])));
-          newpoint[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
-          points.push(newpoint);
-          points.sort(function(a, b) {
-            if (a[0] < b[0]) { return -1; }
-            if (a[0] > b[0]) { return  1; }
-            return 0;
-          });
-          selected = newpoint;
-          update();
-        } else {
-          p = d3.mouse(vis.node());
-          downx = xScale.invert(p[0]);
-          downy = yScale.invert(p[1]);
-          dragged = false;
-          d3.event.stopPropagation();
-        }
-        // d3.event.stopPropagation();
-      }
-    }
-
-    function falseFunction() {
-      return false;
-    }
-
-    function xAxisDrag() {
-      document.onselectstart = falseFunction;
-      d3.event.preventDefault();
-      var p = d3.mouse(vis.node());
-      downx = xScale.invert(p[0]);
-    }
-
-    function yAxisDrag() {
-      d3.event.preventDefault();
-      document.onselectstart = falseFunction;
-      var p = d3.mouse(vis.node());
-      downy = yScale.invert(p[1]);
-    }
-
-    function dataPointDrag(d) {
-      svg.node().focus();
-      d3.event.preventDefault();
-      document.onselectstart = falseFunction;
-      selected = dragged = d;
-      update();
-    }
-
-    // ------------------------------------------------------------
-    //
-    // Mouse handling for Axis scaling and graph canvas translation
-    //
-    // Attach the mousemove and mouseup to the body
-    // in case one wanders off the axis line
-    // ------------------------------------------------------------
-
-    function mousemove() {
-      var p = d3.mouse(vis.node());
-      // t = d3.event.changedTouches;
-
-      document.onselectstart = function() { return true; };
-      d3.event.preventDefault();
-      if (dragged && options.dataChange) {
-        dragged[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
-        persistScaleChangesToOptions();
-        update();
-      }
-
-      if (!isNaN(downx)) {
-        d3.select('body').style("cursor", "col-resize");
-        plot.style("cursor", "col-resize");
-        if (shiftingX) {
-          xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
-          persistScaleChangesToOptions();
-          redraw();
-        } else {
-          xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
-          persistScaleChangesToOptions();
-          redraw();
-        }
-        d3.event.stopPropagation();
-      }
-
-      if (!isNaN(downy)) {
-        d3.select('body').style("cursor", "row-resize");
-        plot.style("cursor", "row-resize");
-        yScale.domain(axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
-        persistScaleChangesToOptions();
-        redraw();
-        d3.event.stopPropagation();
-      }
-    }
-
-    function mouseup() {
-      d3.select('body').style("cursor", "auto");
-      plot.style("cursor", "auto");
-      document.onselectstart = function() { return true; };
-      if (!isNaN(downx)) {
-        redraw();
-        downx = NaN;
-      }
-      if (!isNaN(downy)) {
-        redraw();
-        downy = NaN;
-      }
-      dragged = null;
-    }
-
-    function showMarker(index) {
-      markedPoint = { x: points[index].x, y: points[index].y };
-    }
-
-    // ------------------------------------------------------------
-    //
-    // Update and rescale
-    //
-    // ------------------------------------------------------------
 
     // samplePoint is optional argument
     function updateOrRescale(samplePoint) {
       setCurrentSample(samplePoint);
-      if (options.realTime) {
-        updateOrRescaleRealTime(currentSample);
-      } else {
-        updateOrRescaleRegular();
-      }
+      updateOrRescalePoints();
     }
 
     // samplePoint is optional argument
-    function updateOrRescaleRealTime(samplePoint) {
+    function updateOrRescalePoints(samplePoint) {
       var i,
           domain = xScale.domain(),
-          xAxisStart = Math.round(domain[0]/sample),
-          xAxisEnd = Math.round(domain[1]/sample),
+          xAxisStart = Math.round(domain[0]),
+          xAxisEnd = Math.round(domain[1]),
           start = Math.max(0, xAxisStart),
           xextent = domain[1] - domain[0],
           shiftPoint = xextent * 0.95,
           currentExtent;
 
       setCurrentSample(samplePoint);
-      currentExtent = currentSample * sample;
+      currentExtent = points[currentSample-1][0];
       if (shiftingX) {
         shiftingX = domainShift();
         if (shiftingX) {
@@ -1697,92 +1771,290 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       }
     }
 
-    function updateOrRescaleRegular() {
-      var i,
-          domain = xScale.domain(),
-          xextent = domain[1] - domain[0],
-          shiftPoint = xextent * 0.8;
-
-      if (shiftingX) {
-        shiftingX = domainShift();
-        if (shiftingX) {
-          redraw();
-        } else {
-          update();
-        }
+    function circleClasses(d) {
+      cs = [];
+      if (d === selected) {
+        cs.push("selected");
+      }
+      if (cs.length === 0) {
+        return null;
       } else {
-        if (points[points.length-1][0] > domain[0] + shiftPoint) {
-          domainShift = shiftXDomainRegular(shiftPoint*0.75, options.axisShift);
-          shiftingX = domainShift();
-          redraw();
-        } else {
-          update();
-        }
+        return cs.join(" ");
       }
     }
 
-    function shiftXDomainRegular(shift, steps) {
-      var d0 = xScale.domain()[0],
-          d1 = xScale.domain()[1],
-          increment = 1/steps,
-          index = 0;
-      return function() {
-        var factor;
-        index += increment;
-        factor = shift * cubicEase(index);
-        xScale.domain([ d0 + factor, d1 + factor]);
+    function updateMarkerRadius() {
+      var d = xScale.domain(),
+          r = xScale.range();
+      markerRadius = (r[1] - r[0]) / ((d[1] - d[0]));
+      markerRadius = Math.min(markerRadius, 6);
+      markerStrokeWidth = markerRadius/4;
+    }
+
+    function updateMarkers() {
+      var marker,
+          markedPoints = null;
+      if (options.markAllDataPoints && sizeType.value > 1) {
+        markedPoints = points;
+      } else if (options.markNearbyDataPoints && sizeType.value > 1) {
+        markedPoints = selectable.slice(0);
+        if (selected !== null && markedPoints.indexOf(selected) == -1) {
+          markedPoints.push(selected);
+        }
+      }
+      if (markedPoints !== null) {
+        updateMarkerRadius();
+        marker = vis.select("svg").selectAll("circle").data(markedPoints);
+        marker.enter().append("circle")
+            .attr("class", circleClasses)
+            .attr("cx",    function(d) { return xScale(d[0]); })
+            .attr("cy",    function(d) { return yScale(d[1]); })
+            .attr("r", markerRadius)
+            .style("stroke-width", markerStrokeWidth)
+            .style("cursor", markerCursorStyle)
+            .on("mousedown.drag",  dataPointDrag)
+            .on("touchstart.drag", dataPointDrag)
+            .append("title")
+            .text(function(d) { return "( " + fx(d[0]) + ", " + fy(d[1]) + " )"; });
+
+        marker
+            .attr("class", circleClasses)
+            .attr("cx",    function(d) { return xScale(d[0]); })
+            .attr("cy",    function(d) { return yScale(d[1]); })
+            .select("title")
+            .text(function(d) { return "( " + fx(d[0]) + ", " + fy(d[1]) + " )"; });
+
+        marker.exit().remove();
+      }
+
+      updateRulers();
+    }
+
+    function updateRulers() {
+      if (options.showRulersOnSelection && selected !== null) {
+        selectedRulerX
+          .attr("y1", 0)
+          .attr("y2", size.height)
+          .attr("x1", function(d) { return selected === null ? 0 : xScale(selected[0]); } )
+          .attr("x2", function(d) { return selected === null ? 0 : xScale(selected[0]); } )
+          .attr("class", function(d) { return "ruler" + (selected === null ? " hidden" : ""); } );
+
+        selectedRulerY
+          .attr("x1", 0)
+          .attr("x2", size.width)
+          .attr("y1", function(d) { return selected === null ? 0 : yScale(selected[1]); } )
+          .attr("y2", function(d) { return selected === null ? 0 : yScale(selected[1]); } )
+          .attr("class", function(d) { return "ruler" + (selected === null ? " hidden" : ""); } );
+      } else {
+        selectedRulerX.attr("class", "ruler hidden");
+        selectedRulerY.attr("class", "ruler hidden");
+      }
+    }
+
+
+    // ------------------------------------------------------------
+    //
+    // UI Interaction: Plot dragging and translation; Axis re-scaling
+    //
+    // ------------------------------------------------------------
+
+    function plotMousemove() {
+      if (options.markNearbyDataPoints) {
+        var mousePoint = d3.mouse(vis.node()),
+            translatedMousePointX = xScale.invert(Math.max(0, Math.min(size.width, mousePoint[0]))),
+            p,
+            idx, pMin, pMax;
+        // highlight the central point, and also points to the left and right
+        // TODO Handle multiple data sets/lines
+        selectable = [];
+        for (i = 0; i < pointArray.length; i++) {
+          points = pointArray[i];
+          p = findClosestPointByX(translatedMousePointX, i);
+          if (p !== null) {
+            idx = points.indexOf(p);
+            pMin = idx - (options.extraCirclesVisibleOnHover);
+            pMax = idx + (options.extraCirclesVisibleOnHover + 1);
+            if (pMin < 0) { pMin = 0; }
+            if (pMax > points.length - 1) { pMax = points.length; }
+            selectable = selectable.concat(points.slice(pMin, pMax));
+          }
+        }
+        update();
+      }
+    }
+
+    function findClosestPointByX(x, line) {
+      if (typeof(line) == "undefined" || line === null) { line = 0; }
+      // binary search through points.
+      // This assumes points is sorted ascending by x value, which for realTime graphs is true.
+      points = pointArray[line];
+      if (points.length === 0) { return null; }
+      var min = 0,
+          max = points.length - 1,
+          mid, diff, p1, p2, p3;
+      while (min < max) {
+        mid = Math.floor((min + max)/2.0);
+        if (points[mid][0] < x) {
+          min = mid + 1;
+        } else {
+          max = mid;
+        }
+      }
+
+      // figure out which point is actually closest.
+      // we have to compare 3 points, to account for floating point rounding errors.
+      // if the mouse moves off the left edge of the graph, p1 may not exist.
+      // if the mouse moves off the right edge of the graph, p3 may not exist.
+      p1 = points[mid - 1];
+      p2 = points[mid];
+      p3 = points[mid + 1];
+      if (typeof(p1) !== "undefined" && Math.abs(p1[0] - x) <= Math.abs(p2[0] - x)) {
+        return p1;
+      } else if (typeof(p3) === "undefined" || Math.abs(p2[0] - x) <= Math.abs(p3[0] - x)) {
+        return p2;
+      } else {
+        return p3;
+      }
+    }
+
+    function plotDrag() {
+      var p;
+      d3.event.preventDefault();
+      d3.select('body').style("cursor", "move");
+      if (d3.event.altKey) {
+        plot.style("cursor", "nesw-resize");
+        if (d3.event.shiftKey && options.addData) {
+          p = d3.mouse(vis.node());
+          var newpoint = [];
+          newpoint[0] = xScale.invert(Math.max(0, Math.min(size.width,  p[0])));
+          newpoint[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
+          points.push(newpoint);
+          points.sort(function(a, b) {
+            if (a[0] < b[0]) { return -1; }
+            if (a[0] > b[0]) { return  1; }
+            return 0;
+          });
+          selected = newpoint;
+          update();
+        } else {
+          p = d3.mouse(vis.node());
+          downx = xScale.invert(p[0]);
+          downy = yScale.invert(p[1]);
+          draggedPoint = false;
+          d3.event.stopPropagation();
+        }
+        // d3.event.stopPropagation();
+      }
+    }
+
+    function falseFunction() {
+      return false;
+    }
+
+    function xAxisDrag() {
+      node.focus();
+      document.onselectstart = falseFunction;
+      d3.event.preventDefault();
+      var p = d3.mouse(vis.node());
+      downx = xScale.invert(p[0]);
+    }
+
+    function yAxisDrag() {
+      node.focus();
+      d3.event.preventDefault();
+      document.onselectstart = falseFunction;
+      var p = d3.mouse(vis.node());
+      downy = yScale.invert(p[1]);
+    }
+
+    function dataPointDrag(d) {
+      node.focus();
+      d3.event.preventDefault();
+      document.onselectstart = falseFunction;
+      if (selected === d) {
+        selected = draggedPoint = null;
+      } else {
+        selected = draggedPoint = d;
+      }
+      update();
+    }
+
+    function mousemove() {
+      var p = d3.mouse(vis.node()),
+          index,
+          px,
+          x,
+          nextPoint,
+          prevPoint,
+          minusHalf,
+          plusHalf;
+
+      // t = d3.event.changedTouches;
+
+      document.onselectstart = function() { return true; };
+      d3.event.preventDefault();
+      if (draggedPoint) {
+        if (options.dataChange) {
+          draggedPoint[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
+        } else {
+          index = points.indexOf(draggedPoint);
+          if (index && index < (points.length-1)) {
+            px = xScale.invert(p[0]);
+            x = draggedPoint[0];
+            nextPoint = points[index+1];
+            prevPoint = points[index-1];
+            minusHalf = x - (x - prevPoint[0])/2;
+            plusHalf =  x + (nextPoint[0] - x)/2;
+            if (px < minusHalf) {
+              draggedPoint = prevPoint;
+              selected = draggedPoint;
+            } else if (px > plusHalf) {
+              draggedPoint = nextPoint;
+              selected = draggedPoint;
+            }
+          }
+        }
         persistScaleChangesToOptions();
-        return xScale.domain()[0] < (d0 + shift);
-      };
-    }
-
-    // ------------------------------------------------------------
-    //
-    // Graph attribute updaters
-    //
-    // ------------------------------------------------------------
-
-    // update the title
-    function updateTitle() {
-      if (options.title && title) {
-        title.text(options.title);
+        update();
       }
-    }
 
-    // update the x-axis label
-    function updateXlabel() {
-      if (options.xlabel && xlabel) {
-        xlabel.text(options.xlabel);
-      }
-    }
-
-    // update the y-axis label
-    function updateYlabel() {
-      if (options.ylabel && ylabel) {
-        ylabel.text(options.ylabel);
-      } else {
-        ylabel.style("display", "none");
-      }
-    }
-
-    function addOneXYDataPair(newdata) {
-      if (!arguments.length) return points;
-      var i;
-      if (newdata instanceof Array && newdata.length > 0) {
-        if (newdata[0] instanceof Array) {
-          for(i = 0; i < newdata.length; i++) {
-            points.push(newdata[i]);
-          }
+      if (!isNaN(downx)) {
+        d3.select('body').style("cursor", "col-resize");
+        plot.style("cursor", "col-resize");
+        if (shiftingX) {
+          xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
         } else {
-          if (newdata.length === 2) {
-            points.push(newdata);
-          } else {
-            throw new Error("invalid argument to graph.addData() " + newdata + " length should === 2.");
-          }
+          xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
         }
+        persistScaleChangesToOptions();
+        updateMarkerRadius();
+        redraw();
+        d3.event.stopPropagation();
       }
-      updateOrRescale();
-      return api;
+
+      if (!isNaN(downy)) {
+        d3.select('body').style("cursor", "row-resize");
+        plot.style("cursor", "row-resize");
+        yScale.domain(axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
+        persistScaleChangesToOptions();
+        redraw();
+        d3.event.stopPropagation();
+      }
+    }
+
+    function mouseup() {
+      d3.select('body').style("cursor", "auto");
+      plot.style("cursor", "auto");
+      document.onselectstart = function() { return true; };
+      if (!isNaN(downx)) {
+        redraw();
+        downx = NaN;
+      }
+      if (!isNaN(downy)) {
+        redraw();
+        downy = NaN;
+      }
+      draggedPoint = null;
     }
 
     //------------------------------------------------------
@@ -1800,6 +2072,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
     */
     function autoscale() {
       var i,
+          j,
           len,
           point,
           x,
@@ -1813,15 +2086,18 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
 
       if (points.length < 2) return;
 
-      for (i = 0, len = points.length; i < len; i++){
-        point = points[i];
-        x = point.length ? point[0] : point.x;
-        y = point.length ? point[1] : point.y;
+      for (i = 0; i < pointArray.length; i++) {
+        points = pointArray[i];
+        for (j = 0, len = points.length; j < len; j++){
+          point = points[j];
+          x = point[0];
+          y = point[1];
 
-        if (x < xmin) xmin = x;
-        if (x > xmax) xmax = x;
-        if (y < ymin) ymin = y;
-        if (y > ymax) ymax = y;
+          if (x < xmin) xmin = x;
+          if (x > xmax) xmax = x;
+          if (y < ymin) ymin = y;
+          if (y > ymax) ymax = y;
+        }
       }
 
       // Like Math.pow but returns a value with the same sign as x: pow(-1, 0.5) -> -1
@@ -2020,94 +2296,183 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
 
     // ------------------------------------------------------------
     //
-    // Support for the real-time canvas-based graphing
+    // Canvas-based plotting
     //
     // ------------------------------------------------------------
 
-    function _realTimeAddPoint(p) {
-      if (points.length === 0) { return; }
-      markedPoint = false;
-      var index = points.length,
-          lengthX = index * sample,
-          point = { x: lengthX, y: p };
-      points.push(point);
+    function createGraphCanvas() {
+      graphCanvas = elem.append("canvas");
+      gcanvas = graphCanvas.node();
+      resizeCanvas();
     }
 
-    function addPoint(p) {
-      if (points.length === 0) { return; }
-      _realTimeAddPoint(p);
-      updateOrRescale();
+    function resizeCanvas() {
+      graphCanvas
+        .attr("class", "overlay")
+        .style({
+          "position": "absolute",
+          "width":    size.width + "px",
+          "height":   size.height + "px",
+          "top":      padding.top + "px",
+          "left":     padding.left + "px",
+          "z-index": 1
+        });
+      gcanvas = graphCanvas.node();
+      gcanvas.width = size.width;
+      gcanvas.height = size.height;
+      gcanvas.top = padding.top;
+      gcanvas.left = padding.left;
+      setupCanvasContext();
+      updateCanvasFromPoints(currentSample);
     }
 
-    function add_canvas_point(p) {
-      if (points.length === 0) { return; }
-      markedPoint = false;
-      var index = points.length,
-          lengthX = index * sample,
-          previousX = lengthX - sample,
-          point = { x: lengthX, y: p },
-          oldx = xScale.call(self, previousX, previousX),
-          oldy = yScale.call(self, points[index-1].y, index-1),
-          newx, newy;
-
-      points.push(point);
-      newx = xScale.call(self, lengthX, lengthX);
-      newy = yScale.call(self, p, lengthX);
-      gctx.beginPath();
-      gctx.moveTo(oldx, oldy);
-      gctx.lineTo(newx, newy);
-      gctx.stroke();
-    }
-
-    function addPoints(pnts) {
-      for (var i = 0; i < pointArray.length; i++) {
-        points = pointArray[i];
-        _realTimeAddPoint(pnts[i]);
+    function clearCanvas() {
+      if (gcanvas.getContext) {
+        gcanvas.width = gcanvas.width;
+        gctx.fillStyle = canvasFillStyle;
+        gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
+        gctx.strokeStyle = "rgba(255,65,0, 1.0)";
       }
-      setCurrentSample(points.length-1);
-      updateOrRescale();
     }
 
-    function updatePointArray(d) {
-      var i;
-      pointArray = [];
-      if (Object.prototype.toString.call(d) === "[object Array]") {
-        for (i = 0; i < d.length; i++) {
-          points = indexedData(d[i], 0, sample);
-          pointArray.push(points);
+    function setupCanvasContext() {
+      if (gcanvas.getContext) {
+        gctx = gcanvas.getContext( '2d' );
+        gctx.globalCompositeOperation = "source-over";
+        gctx.lineWidth = 1;
+        gctx.fillStyle = canvasFillStyle;
+        gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
+        gctx.strokeStyle = "rgba(255,65,0, 1.0)";
+      }
+    }
+
+    //
+    // Update Canvas plotted data from [x, y] data points
+    //
+    function updateCanvasFromPoints(samplePoint) {
+      var i, j, k,
+          dx,
+          px, py,
+          index,
+          yOrigin = yScale(0.00001),
+          lines = options.lines,
+          bars = options.bars,
+          twopi = 2 * Math.PI,
+          pointsLength = pointArray[0].length,
+          numberOfLines = pointArray.length,
+          xAxisStart,
+          xAxisEnd,
+          start,
+          lengthX;
+
+      // hack for lack of canvas support in jsdom tests
+      if (typeof gcanvas.getContext === "undefined" ) { return; }
+
+      setCurrentSample(samplePoint);
+      clearCanvas();
+      gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
+      if (pointsLength === 0) { return; }
+      xAxisStart = xScale.domain()[0];
+      xAxisEnd =   xScale.domain()[1];
+      start = Math.max(0, xAxisStart);
+      if (lines) {
+        for (i = 0; i < numberOfLines; i++) {
+          points = pointArray[i];
+          index = 0;
+          // find first point >= xAxisStart
+          for (j = 0; j < pointsLength; j++) {
+            if (points[j][0] >= xAxisStart) { break; }
+            index++;
+          }
+          if (index > 0) { --index; }
+          if (index >= pointsLength) { break; }
+          px = xScale(points[index][0]);
+          py = yScale(points[index][1]);
+          setStrokeColor(i);
+          gctx.beginPath();
+          gctx.moveTo(px, py);
+          dx = points[index][0];
+          index++;
+          // plot all ... or until one point past xAxisEnd
+          // or until we reach currentSample
+          for (; index < samplePoint; index++) {
+            dx = points[index][0];
+            px = xScale(dx);
+            py = yScale(points[index][1]);
+            gctx.lineTo(px, py);
+            if (dx >= xAxisEnd) { break; }
+          }
+          gctx.stroke();
+          // now plot in a desaturated style all the rest of the points
+          // ... or until one point past xAxisEnd
+          if (index < pointsLength && dx < xAxisEnd) {
+            setStrokeColor(i, true);
+            for (;index < pointsLength; index++) {
+              dx = points[index][0];
+              px = xScale(dx);
+              py = yScale(points[index][1]);
+              gctx.lineTo(px, py);
+              if (dx >= xAxisEnd) { break; }
+            }
+            gctx.stroke();
+          }
+        }
+      } else if (bars) {
+        for (i = 0; i < numberOfLines; i++) {
+          points = pointArray[i];
+          setStrokeColor(i);
+          pointStop = samplePoint - 1;
+          for (index=start; index < pointStop; index++) {
+            px = xScale(points[index][0]);
+            py = yScale(points[index][1]);
+            if (py === 0) {
+              continue;
+            }
+            gctx.beginPath();
+            gctx.moveTo(px, yOrigin);
+            gctx.lineTo(px, py);
+            gctx.stroke();
+          }
+          pointStop = points.length-1;
+          if (index < pointStop) {
+            setStrokeColor(i, true);
+            for (;index < pointStop; index++) {
+              px = xScale(points[index][0]);
+              py = yScale(points[index][1]);
+              gctx.beginPath();
+              gctx.moveTo(px, yOrigin);
+              gctx.lineTo(px, py);
+              gctx.stroke();
+            }
+          }
         }
       } else {
-        points = indexedData(options.dataset, 0, sample);
-        pointArray = [points];
+        for (i = 0; i < numberOfLines; i++) {
+          points = pointArray[i];
+          lengthX = 0;
+          setFillColor(i);
+          setStrokeColor(i, true);
+          pointStop = samplePoint - 1;
+          for (index=0; index < pointStop; index++) {
+            px = xScale(points[index][0]);
+            py = yScale(points[index][1]);
+            gctx.arc(px, py, 1, 0, twopi, false);
+            gctx.fill();
+          }
+          pointStop = points.length-1;
+          if (index < pointStop) {
+            setFillColor(i, true);
+            setStrokeColor(i, true);
+            for (;index < pointStop; index++) {
+              px = xScale(points[index][0]);
+              py = yScale(points[index][1]);
+              gctx.arc(px, py, 1, 0, twopi, false);
+              gctx.fill();
+            }
+          }
+        }
       }
     }
-
-    function truncateRealTimeData(d) {
-      var oldLength = pointArray[0].length;
-      updatePointArray(d);
-      if (pointArray[0].length === oldLength) {
-        return;
-      } else {
-        shiftingX = false;
-        setCurrentSample(points.length);
-        updateOrRescale();
-      }
-    }
-
-    function newRealTimeData(d) {
-      updatePointArray(d);
-      shiftingX = false;
-      setCurrentSample(points.length-1);
-      updateOrRescale();
-    }
-
-    // function addRealTimePoints(pnts) {
-    //   for (var i = 0; i < pointArray.length; i++) {
-    //     points = pointArray[i];
-    //     setStrokeColor(i);
-    //     add_canvas_point(pnts[i]);
-    //   }
-    // }
 
     function setStrokeColor(i, afterSamplePoint) {
       var opacity = afterSamplePoint ? 0.4 : 1.0;
@@ -2139,187 +2504,141 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       }
     }
 
-    function clearCanvas() {
-      gcanvas.width = gcanvas.width;
-      gctx.fillStyle = canvasFillStyle;
-      gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
-      gctx.strokeStyle = "rgba(255,65,0, 1.0)";
+    // ------------------------------------------------------------
+    //
+    // Adding samples/data points
+    //
+    // ------------------------------------------------------------
+
+    // Add an array of points then update the graph.
+    function addPoints(datapoints) {
+      addDataPoints(datapoints);
+      setCurrentSample(points.length);
+      updateOrRescale();
     }
 
-    function showCanvas() {
-      vis.select("path.line").remove();
-      gcanvas.style.zIndex = 1;
+    // Add an array of samples then update the graph.
+    function addSamples(datasamples) {
+      addDataSamples(datasamples);
+      setCurrentSample(points.length);
+      updateOrRescale();
     }
 
-    function hideCanvas() {
-      gcanvas.style.zIndex = -1;
-      update();
+
+    // Add a point [x, y] by processing sample (Y value) synthesizing
+    // X value from sampleInterval and number of points
+    function addSample(sample) {
+      var index = points.length,
+          xvalue = (index + dataSampleStart) * sampleInterval,
+          point = [ xvalue, sample ];
+      points.push(point);
+      setCurrentSample(points.length);
+      updateOrRescale();
     }
 
-    // update real-time canvas line graph
-    function updateCanvas(samplePoint) {
-      var i, index, py, pointStop,
-          yOrigin = yScale(0.00001),
-          lines = options.lines,
-          bars = options.bars,
-          twopi = 2 * Math.PI,
-          pointsLength = pointArray[0].length,
-          numberOfLines = pointArray.length,
-          xAxisStart = Math.round(xScale.domain()[0]/sample),
-          // xAxisEnd = Math.round(xScale.domain()[1]/sample),
-          start = Math.max(0, xAxisStart),
-          lengthX,
-          px;
+    // Add a point [x, y] to points array
+    function addPoint(pnt) {
+      points.push(pnt);
+      setCurrentSample(points.length);
+      updateOrRescale();
+    }
 
-
-      setCurrentSample(samplePoint);
-      clearCanvas();
-      gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
-      if (points.length === 0 || xAxisStart >= points.length) { return; }
-      if (lines) {
-        for (i = 0; i < numberOfLines; i++) {
+    // Add an array (or arrays) of points.
+    function addDataPoints(datapoints) {
+      if (Object.prototype.toString.call(datapoints[0][0]) === "[object Array]") {
+        for (var i = 0; i < datapoints.length; i++) {
           points = pointArray[i];
-          lengthX = start * sample;
-          px = xScale(lengthX);
-          py = yScale(points[start].y);
-          setStrokeColor(i);
-          gctx.beginPath();
-          gctx.moveTo(px, py);
-          pointStop = samplePoint - 1;
-          for (index=start+1; index < pointStop; index++) {
-            lengthX = index * sample;
-            px = xScale(lengthX);
-            py = yScale(points[index].y);
-            gctx.lineTo(px, py);
-          }
-          gctx.stroke();
-          pointStop = points.length-1;
-          if (index < pointStop) {
-            setStrokeColor(i, true);
-            for (;index < pointStop; index++) {
-              lengthX = index * sample;
-              px = xScale(lengthX);
-              py = yScale(points[index].y);
-              gctx.lineTo(px, py);
-            }
-            gctx.stroke();
-          }
+          points.push.apply(points, datapoints[i]);
+          pointArray[i] = points;
         }
-      } else if (bars) {
-        for (i = 0; i < numberOfLines; i++) {
-          points = pointArray[i];
-          setStrokeColor(i);
-          pointStop = samplePoint - 1;
-          for (index=start; index < pointStop; index++) {
-            lengthX = index * sample;
-            px = xScale(lengthX);
-            py = yScale(points[index].y);
-            if (py === 0) {
-              continue;
-            }
-            gctx.beginPath();
-            gctx.moveTo(px, yOrigin);
-            gctx.lineTo(px, py);
-            gctx.stroke();
-          }
-          pointStop = points.length-1;
-          if (index < pointStop) {
-            setStrokeColor(i, true);
-            for (;index < pointStop; index++) {
-              lengthX = index * sample;
-              px = xScale(lengthX);
-              py = yScale(points[index].y);
-              gctx.beginPath();
-              gctx.moveTo(px, yOrigin);
-              gctx.lineTo(px, py);
-              gctx.stroke();
-            }
-          }
-        }
+        points = pointArray[0];
       } else {
-        for (i = 0; i < numberOfLines; i++) {
+        points.push.apply(points, datapoints);
+        pointArray = [points];
+      }
+    }
+
+    // Add an array of points by processing an array of samples (Y values)
+    // synthesizing the X value from sampleInterval interval and number of points.
+    function addDataSamples(datasamples) {
+      var start,
+          i;
+      if (Object.prototype.toString.call(datasamples[0]) === "[object Array]") {
+        for (i = 0; i < datasamples.length; i++) {
+          if (!pointArray[i]) { pointArray.push([]); }
           points = pointArray[i];
-          lengthX = 0;
-          setFillColor(i);
-          setStrokeColor(i, true);
-          pointStop = samplePoint - 1;
-          for (index=0; index < pointStop; index++) {
-            px = xScale(lengthX);
-            py = yScale(points[index].y);
-
-            // gctx.beginPath();
-            // gctx.moveTo(px, py);
-            // gctx.lineTo(px, py);
-            // gctx.stroke();
-
-            gctx.arc(px, py, 1, 0, twopi, false);
-            gctx.fill();
-
-            lengthX += sample;
-          }
-          pointStop = points.length-1;
-          if (index < pointStop) {
-            setFillColor(i, true);
-            setStrokeColor(i, true);
-            for (;index < pointStop; index++) {
-              px = xScale(lengthX);
-              py = yScale(points[index].y);
-
-              // gctx.beginPath();
-              // gctx.moveTo(px, py);
-              // gctx.lineTo(px, py);
-              // gctx.stroke();
-
-              gctx.arc(px, py, 1, 0, twopi, false);
-              gctx.fill();
-
-              lengthX += sample;
-            }
-          }
+          start = points.length * sampleInterval;
+          points.push.apply(points, indexedData(datasamples[i], sampleInterval, start));
+          pointArray[i] = points;
+        }
+        points = pointArray[0];
+      } else {
+        for (i = 0; i < datasamples.length; i++) {
+          if (!pointArray[i]) { pointArray.push([]); }
+          start = pointArray[i].length * sampleInterval;
+          pointArray[i].push([start, datasamples[i]]);
         }
       }
     }
 
-    function initializeCanvas() {
-      if (!gcanvas) {
-        gcanvas = gcanvas || document.createElement('canvas');
-        node.appendChild(gcanvas);
+    function resetDataPoints(datapoints) {
+
+      function copy(array) {
+        var ret = [];
+        array.forEach(function(element) {
+          ret.push(element);
+        });
+        return ret;
       }
-      gcanvas.style.zIndex = -1;
-      setupCanvasProperties(gcanvas);
+
+      pointArray = [];
+      if (!datapoints || datapoints.length === 0) {
+        points = [];
+        pointArray = [points];
+        return;
+      }
+      if (Object.prototype.toString.call(datapoints[0][0]) === "[object Array]") {
+        for (var i = 0; i < datapoints.length; i++) {
+          pointArray.push(copy(datapoints[i]));
+        }
+        points = pointArray[0];
+      } else {
+        points = datapoints;
+        pointArray = [copy(points)];
+      }
     }
 
-    function resizeCanvas() {
-      setupCanvasProperties(gcanvas);
-      updateCanvas();
+    function resetDataSamples(datasamples, interval, start) {
+      pointArray = [];
+      if (Object.prototype.toString.call(datasamples[0]) === "[object Array]") {
+        for (var i = 0; i < datasamples.length; i++) {
+          pointArray.push(indexedData(datasamples[i], interval, start));
+        }
+        points = pointArray[0];
+      } else {
+        points = indexedData(datasamples, interval, start);
+        pointArray = [points];
+      }
+      sampleInterval = interval;
+      dataSampleStart = start;
     }
 
-    function setupCanvasProperties(canvas) {
-      cplot.rect = plot.node();
-      cplot.width = cplot.rect.width.baseVal.value;
-      cplot.height = cplot.rect.height.baseVal.value;
-      cplot.left = cplot.rect.getCTM().e;
-      cplot.top = cplot.rect.getCTM().f;
-      canvas.style.position = 'absolute';
-      canvas.width = cplot.width;
-      canvas.height = cplot.height;
-      canvas.style.width = cplot.width  + 'px';
-      canvas.style.height = cplot.height  + 'px';
-      canvas.offsetLeft = cplot.left;
-      canvas.offsetTop = cplot.top;
-      canvas.style.left = cplot.left + 'px';
-      canvas.style.top = cplot.top + 'px';
-      // canvas.style.border = 'solid 1px red';
-      canvas.style.pointerEvents = "none";
-      if (canvas.className.search("overlay") < 0) {
-         canvas.className += " overlay";
+
+    function resetPoints(datapoints) {
+      resetDataPoints(datapoints);
+    }
+
+    function resetSamples(datasamples) {
+      resetDataSamples(datasamples, sampleInterval, dataSampleStart);
+    }
+
+    function deletePoint(i) {
+      if (points.length) {
+        points.splice(i, 1);
+        if (currentSample >= points.length) {
+          currentSample = points.length-1;
+        }
       }
-      gctx = gcanvas.getContext( '2d' );
-      gctx.globalCompositeOperation = "source-over";
-      gctx.lineWidth = 1;
-      gctx.fillStyle = canvasFillStyle;
-      gctx.fillRect(0, 0, canvas.width, gcanvas.height);
-      gctx.strokeStyle = "rgba(255,65,0, 1.0)";
     }
 
     // ------------------------------------------------------------
@@ -2337,7 +2656,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
             case 46:  // delete
             if (options.dataChange) {
               var i = points.indexOf(selected);
-              points.splice(i, 1);
+              deletePoint(i);
               selected = points.length ? points[i > 0 ? i - 1 : 0] : null;
               update();
             }
@@ -2348,6 +2667,35 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           evt.preventDefault();
         }
       });
+    }
+
+    // ------------------------------------------------------------
+    //
+    // Graph attribute updaters
+    //
+    // ------------------------------------------------------------
+
+    // update the title
+    function updateTitle() {
+      if (options.title && title) {
+        title.text(options.title);
+      }
+    }
+
+    // update the x-axis label
+    function updateXlabel() {
+      if (options.xlabel && xlabel) {
+        xlabel.text(options.xlabel);
+      }
+    }
+
+    // update the y-axis label
+    function updateYlabel() {
+      if (options.ylabel && ylabel) {
+        ylabel.text(options.ylabel);
+      } else {
+        ylabel.style("display", "none");
+      }
     }
 
     // ------------------------------------------------------------
@@ -2388,57 +2736,6 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       initializeLayout();
       renderGraph();
       return api;
-    }
-
-    //
-    // Initialize
-    //
-    function initialize(idOrElement, opts, mesg) {
-      if (opts || !options) {
-        options = setupOptions(opts);
-      }
-
-      initializeLayout(idOrElement, mesg);
-
-      options.xrange = options.xmax - options.xmin;
-      options.yrange = options.ymax - options.ymin;
-
-      if (Object.prototype.toString.call(options.title) === "[object Array]") {
-        titles = options.title;
-      } else {
-        titles = [options.title];
-      }
-      titles.reverse();
-
-      fx = d3.format(options.xFormatter);
-      fy = d3.format(options.yFormatter);
-
-      // use local variable for access speed in addPoint()
-      sample = options.sample;
-
-      strokeWidth = options.strokeWidth;
-
-      points = options.points;
-      if (points === "fake") {
-        points = fakeDataPoints();
-      }
-
-      // In realTime mode the grapher expects either an array or arrays of dependent data.
-      // The sample variable sets the interval spacing between data samples.
-      if (options.realTime) {
-        pointArray = [];
-
-        if (Object.prototype.toString.call(options.dataset[0]) === "[object Array]") {
-          for (var i = 0; i < options.dataset.length; i++) {
-            pointArray.push(indexedData(options.dataset[i], 0, sample));
-          }
-          points = pointArray[0];
-        } else {
-          points = indexedData(options.dataset, 0);
-          pointArray = [points];
-        }
-      }
-      setCurrentSample(points.length-1);
     }
 
     //
@@ -2590,38 +2887,25 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         return api;
       },
 
-      // Adding or truncating real-time data
-      // Real-time data consists of an array (or an array or arrays) of samples.
-      // The interval between samples is assumed to have already been set
-      // by specifying options.sample when creating the graph.
-      newRealTimeData:      newRealTimeData,
-      truncateRealTimeData: truncateRealTimeData,
-      addPoint:             addPoint,
-      addPoints:            addPoints,
-
-      // Adding a single X,Y data pair
-      addOneXYDataPair:     addOneXYDataPair,
-
-      //
-      numberOfPoints:       numberOfPoints,
-
-      data: function(_) {
-        if (!arguments.length) return points;
-        var domain = xScale.domain();
-        options.points = points = _;
-        if (points.length > domain[1]) {
-          domain[0] += shift;
-          domain[1] += shift;
-          xScale.domain(domain);
-          redraw();
+      numberOfPoints: function() {
+        if (points) {
+          return points.length;
         } else {
-          update();
+          return false;
         }
-        return api;
       },
 
-      // unimplemented feature
-      showMarker:           showMarker
+      // Point data consist of an array (or arrays) of [x,y] arrays.
+      addPoints:       addPoints,
+      addPoint:        addPoint,
+      resetPoints:      resetPoints,
+
+      // Sample data consists of an array (or an array or arrays) of samples.
+      // The interval between samples is assumed to have already been set
+      // by specifying options.sampleInterval when creating the graph.
+      addSamples:      addSamples,
+      addSample:       addSample,
+      resetSamples: resetSamples
 
     };
 
@@ -5460,6 +5744,8 @@ define('grapher/bar-graph/bar-graph-model',['require','backbone'],function (requ
           // of strings, e.g.:
           // ["Title", "Subtitle"]
           title: "",
+          // Accepted values are "right", "top" and "bottom".
+          titleOn: "right",
           // Color of the main bar.
           barColor:  "#e23c34",
           // Color of the area behind the bar.
@@ -5637,6 +5923,9 @@ define('grapher/bar-graph/bar-graph-view',['require','common/jquery-plugins','ba
           // Unique ID. Required to generate unique
           // gradient names.
           this.uid = getUID();
+
+          this.$topArea = $('<div class="top-area">').appendTo(this.$el);
+
           // Create some SVG elements, which are constant and doesn't need to
           // be recreated each time during rendering.
           this.vis = d3.select(this.el).append("svg");
@@ -5655,6 +5944,8 @@ define('grapher/bar-graph/bar-graph-view',['require','common/jquery-plugins','ba
 
           this.scale = null;
           this.barWidth = null;
+
+          this.$bottomArea = $('<div class="bottom-area">').appendTo(this.$el);
 
           // Register callbacks!
           this.model.on("change", this.modelChanged, this);
@@ -5680,7 +5971,10 @@ define('grapher/bar-graph/bar-graph-view',['require','common/jquery-plugins','ba
 
           // Set height of the most outer container.
           this.$el.outerHeight(options.height);
-          this.svgHeight = this.$el.height();
+
+          this._setupHorizontalTitle();
+
+          this.svgHeight = this.$el.height() - this.$topArea.height() - this.$bottomArea.height();
 
           // Setup SVG element.
           this.vis
@@ -5779,6 +6073,7 @@ define('grapher/bar-graph/bar-graph-view',['require','common/jquery-plugins','ba
           // Convert final width in px into value in ems.
           // That ensures that the SVG will work well with semantic layout.
           this.vis.attr("width", (offset / fontSize) + "em");
+          this.$el.css("min-width", (offset / fontSize) + "em");
 
           // work-around bug on iPad2 where container is not expanding in width
           // when SVG element rendered inside it
@@ -5920,7 +6215,7 @@ define('grapher/bar-graph/bar-graph-view',['require','common/jquery-plugins','ba
           return offset;
         },
 
-        // Setup title.
+        // Setup vertical title.
         _setupTitle: function (offset) {
               // "title" option is expected to be string
               // or array of strings.
@@ -5929,7 +6224,7 @@ define('grapher/bar-graph/bar-graph-view',['require','common/jquery-plugins','ba
               isArray, lines,
               titleG, gEnter;
 
-          if (title) {
+          if (title && this.model.get("titleOn") === "right") {
             offset += this.scale(10);
 
             isArray = $.isArray(title);
@@ -5960,6 +6255,34 @@ define('grapher/bar-graph/bar-graph-view',['require','common/jquery-plugins','ba
           }
 
           return offset;
+        },
+
+        // Setup horizontal title.
+        _setupHorizontalTitle: function () {
+              // "title" option is expected to be string
+              // or array of strings.
+          var title = this.model.get("title"),
+              pos = this.model.get("titleOn"),
+              $container;
+
+          this.$topArea.empty();
+          this.$bottomArea.empty();
+
+          if (!title || title.length === 0 || pos === "right") {
+            return;
+          }
+
+          title = $.isArray(title) ? title : [title];
+
+          if (pos === "top") {
+            $container = this.$topArea;
+          } else if (pos === "bottom") {
+            $container = this.$bottomArea;
+          }
+
+          title.forEach(function (t) {
+            $container.append('<p class="title">' + t + '</p>');
+          });
         },
 
         _processTitle: function (title) {

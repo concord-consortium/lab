@@ -1,0 +1,48 @@
+{
+  "title": "Microbuoyancy measured by gauges",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "microbuoyancy$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/microbuoyancy$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "modelTimeLabel": true
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "checkbox",
+      "id": "gfield",
+      "text": "Gravity",
+      "property": "gravitationalField",
+      "onClick": "if (value) { set({ 'gravitationalField' : 8e-8 }); }"
+    },
+    {
+      "type": "graph",
+      "id": "propertiesGraph",
+      "title": "Energy of the System (KE:red, PE:green, TE:blue)",
+      "xlabel": "Model Time (ps)",
+      "ylabel": "eV",
+      "ymin": -1000,
+      "ymax": 5000,
+      "properties": [
+        "kineticEnergy",
+        "potentialEnergy",
+        "totalEnergy"
+      ]
+    }
+  ],
+  "layout": {
+    "right": [
+      "propertiesGraph"
+    ],
+    "bottom": [
+      "gfield"
+    ]
+  },
+  "template": "wide-right"
+}

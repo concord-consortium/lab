@@ -1,0 +1,21 @@
+{
+  "title": "PointHeater",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "PointHeater$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/PointHeater$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

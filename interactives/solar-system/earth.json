@@ -1,0 +1,267 @@
+{
+  "title": "Earth in orbit",
+  "publicationStatus": "draft",
+  "subtitle": "Simple model of the Sun and Earth.",
+  "about": "",
+  "models": [
+    {
+      "id": "earth",
+      "type": "solar-system",
+      "url": "models/solar-system/earth.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": [
+        "traceBody(1);",
+        "set('orbitShape',1);",
+        "set('month',1);"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name":  "earthOrbitalDistance",
+      "label": "Current orbital distance",
+      "units": "length",
+      "value": [
+          "var e = getBodyProperties(1);",
+          "return Math.sqrt(e.x * e.x + e.y * e.y)"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "orbitShape",
+      "label": "Orbit Shape",
+      "onChange":[
+        "switch(get('month')) {",
+        "  case 1:",
+        "  switch(value) {",
+        "    case 1:",
+        "    setBodyProperties(1, { x: 1.014323809329035E+00, y: -1.744524342744261E-05, vx: -1.189895102119632E-07, vy: 1.691965746118235E-02});",
+        "    break;",
+        "    case 2:",
+        "    setBodyProperties(1, { x: 1, y: 0, vx: 0, vy: 0.01720000058412552 });",
+        "    break;",
+        "    case 3:",
+        "    setBodyProperties(1, { x: 1.75, y: 0, vx: 0, vy: 0.008999999612569809 });",
+        "    break;",
+        "  }",
+        "  break;",
+        "  case 2:",
+        "  switch(value) {",
+        "    case 1:",
+        "    setBodyProperties(1, { x: -0.001917156740091741, y: 0.9953448176383972, vx: -0.017241528257727623, vy: -0.00035481611848808825 });",
+        "    break;",
+        "    case 2:",
+        "    setBodyProperties(1, { x: 0.005394311621785164, y: 0.9998083710670471, vx: -0.01720280572772026, vy: 0.00008971194620244205 });",
+        "    break;",
+        "    case 3:",
+        "    setBodyProperties(1, { x: -0.0014063763665035367, y: 0.8376170992851257, vx: -0.018786797299981117, vy: -0.009818502701818943 });",
+        "    break;",
+        "  }",
+        "  break;",
+        "  case 3:",
+        "  switch(value) {",
+        "    case 1:",
+        "    setBodyProperties(1, { x: -0.9771330952644348, y: 0.008204617537558079, vx: -0.0001449583942303434, vy: -0.017562182620167732 });",
+        "    break;",
+        "    case 2:",
+        "    setBodyProperties(1, { x: -0.999584972858429, y: 0.010074781253933907, vx: -0.00017324212240055203, vy: -0.017205217853188515 });",
+        "    break;",
+        "    case 3:",
+        "    setBodyProperties(1, { x: 0.002466151025146246, y: -0.9998012185096741, vx: 0.017203019931912422, vy: 0.00003937357178074308 });",
+        "    break;",
+        "  }",
+        "  break;",
+        "  case 4:",
+        "  switch(value) {",
+        "    case 1:",
+        "    setBodyProperties(1, { x: -0.0008463959093205631, y: -0.9953894019126892, vx: 0.017240818589925766, vy: -0.00033629831159487367 });",
+        "    break;",
+        "    case 2:",
+        "    setBodyProperties(1, { x: 0.002466151025146246, y: -0.9998012185096741, vx: 0.017203019931912422, vy: 0.00003937357178074308 });",
+        "    break;",
+        "    case 3:",
+        "    setBodyProperties(1, { x: 0.0020379365887492895, y: -0.839396595954895, vx: 0.018786756321787834, vy: -0.009741311892867088 });",
+        "    break;",
+        "  }",
+        "  break;",
+        "}",
+        "stop();"
+      ],
+      "initialValue": 1
+    },
+    {
+      "name": "month",
+      "label": "Month",
+      "onChange":[
+        "switch(get('orbitShape')) {",
+        "  case 1:",
+        "  switch(value) {",
+        "    case 1:",
+        "    setBodyProperties(1, { x: 1.014323809329035E+00, y: -1.744524342744261E-05, vx: -1.189895102119632E-07, vy: 1.691965746118235E-02});",
+        "    break;",
+        "    case 2:",
+        "    setBodyProperties(1, { x: -0.001917156740091741, y: 0.9953448176383972, vx: -0.017241528257727623, vy: -0.00035481611848808825 });",
+        "    break;",
+        "    case 3:",
+        "    setBodyProperties(1, { x: -0.9771330952644348, y: 0.008204617537558079, vx: -0.0001449583942303434, vy: -0.017562182620167732 });",
+        "    break;",
+        "    case 4:",
+        "    setBodyProperties(1, { x: -0.0008463959093205631, y: -0.9953894019126892, vx: 0.017240818589925766, vy: -0.00033629831159487367 });",
+        "    break;",
+        "  }",
+        "  break;",
+        "  case 2:",
+        "  switch(value) {",
+        "    case 1:",
+        "    setBodyProperties(1, { x: 1, y: 0, vx: 0, vy: 0.01720000058412552 });",
+        "    break;",
+        "    case 2:",
+        "    setBodyProperties(1, { x: 0.005394311621785164, y: 0.9998083710670471, vx: -0.01720280572772026, vy: 0.00008971194620244205 });",
+        "    break;",
+        "    case 3:",
+        "    setBodyProperties(1, { x: -0.999584972858429, y: 0.010074781253933907, vx: -0.00017324212240055203, vy: -0.017205217853188515 });",
+        "    break;",
+        "    case 4:",
+        "    setBodyProperties(1, { x: 0.002466151025146246, y: -0.9998012185096741, vx: 0.017203019931912422, vy: 0.00003937357178074308 });",
+        "    break;",
+        "  }",
+        "  break;",
+        "  case 3:",
+        "  switch(value) {",
+        "    case 1:",
+        "    setBodyProperties(1, { x: 1.75, y: 0, vx: 0, vy: 0.008999999612569809 });",
+        "    break;",
+        "    case 2:",
+        "    setBodyProperties(1, { x: -0.0014063763665035367, y: 0.8376170992851257, vx: -0.018786797299981117, vy: -0.009818502701818943 });",
+        "    break;",
+        "    case 3:",
+        "    setBodyProperties(1, { x: -0.551116406917572, y: 0.011673102155327797, vx: -0.00039763489621691406, vy: -0.02856944501399994 });",
+        "    break;",
+        "    case 4:",
+        "    setBodyProperties(1, { x: 0.0020379365887492895, y: -0.839396595954895, vx: 0.018786756321787834, vy: -0.009741311892867088 });",
+        "    break;",
+        "  }",
+        "  break;",
+        "}"
+      ],
+      "initialValue": 1
+    }
+
+  ],
+  "components": [
+    {
+      "type": "numericOutput",
+      "id": "earth-distance-output",
+      "property": "earthOrbitalDistance",
+      "width": "16em",
+      "displayValue": "return format('1.3r')(value)"
+    },
+    {
+      "type": "radio",
+      "id": "select-orbit-shape",
+      "label": "Select orbit",
+      "orientation": "horizontal",
+      "property": "orbitShape",
+      "options": [
+        {
+          "text": "Earth",
+          "value": 1
+        },
+        {
+          "text": "Circular",
+          "value": 2
+        },
+        {
+          "text": "Oblique",
+          "value": 3
+        }
+      ]
+    },
+    {
+      "type": "radio",
+      "id": "select-month",
+      "label": "Select starting month",
+      "orientation": "horizontal",
+      "property": "month",
+      "options": [
+        {
+          "text": "Jun",
+          "value": 1
+        },
+        {
+          "text": "Sep",
+          "value": 2
+        },
+        {
+          "text": "Dec",
+          "value": 3
+        },
+        {
+          "text": "Mar",
+          "value": 4
+        }
+      ]
+    },
+    {
+      "type": "graph",
+      "id": "orbit-distance-graph",
+      "title": "Orbital distance of Earth from Sun",
+      "xlabel": "Day",
+      "ylabel": "Distance (AU)",
+      "ymin": 0.0,
+      "ymax": 2.0,
+      "xmax": 1200,
+      "yTickCount": 5,
+      "xTickCount": 5,
+      "xFormatter": "3r",
+      "yFormatter": "3r",
+      "properties": [
+        "earthOrbitalDistance"
+      ]
+    },
+    {
+      "type": "numericOutput",
+      "id": "earth-distance-output",
+      "property": "earthOrbitalDistance",
+      "width": "16em",
+      "displayValue": "return format('1.3r')(value)"
+    }
+  ],
+  "layout": {
+    "right-upper": [
+      [ "select-orbit-shape" ],
+      [ "select-month" ]
+    ],
+    "right-middle": [
+      "orbit-distance-graph"
+    ],
+    "right-lower": [
+      "earth-distance-output"
+    ]
+  },
+  "template": [
+    {
+      "id": "right-upper",
+      "top": "model.top",
+      "left": "model.right",
+      "width": "model.width"
+    },
+    {
+      "id": "right-lower",
+      "left": "model.right",
+      "padding-top": "0.5em",
+      "bottom": "interactive.height",
+      "width": "model.width"
+    },
+    {
+      "id": "right-middle",
+      "left": "model.right",
+      "top": "right-upper.bottom",
+      "bottom": "right-lower.top",
+      "width": "model.width"
+    }
+  ]
+}

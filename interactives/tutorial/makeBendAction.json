@@ -1,0 +1,21 @@
+{
+  "title": "makeBendAction",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "makeBendAction$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/makeBendAction$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

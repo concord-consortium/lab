@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_07" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.mw3d.ModelState"> 
+  <void property="cameraAtom"> 
+   <int>0</int> 
+  </void> 
+  <void property="length"> 
+   <float>53.0</float> 
+  </void> 
+  <void property="moleculeStyle"> 
+   <byte>1</byte> 
+  </void> 
+  <void property="navigationMode"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="rotation"> 
+   <string>80 -997 0 109.9</string> 
+  </void> 
+  <void property="showAxes"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="timeStep"> 
+   <float>2.0</float> 
+  </void> 
+  <void property="xyzFileName"> 
+   <string>page1$0.xyz</string> 
+  </void> 
+ </object> 
+</java> 

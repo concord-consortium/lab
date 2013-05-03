@@ -1,0 +1,36 @@
+{
+  "title": "Friction 2",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "friction-2",
+      "url": "imports/legacy-mw-content/converted/potential-tests/friction/friction-2.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "modelTimeLabel": true
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "test",
+      "text": "Get data",
+      "action": [
+        " var steps = 100,",
+        "     data = [],",
+        "     props0, props1;",
+        "        ",
+        " while (steps--) {",
+        "   tick();",
+        "   props0 = getAtomProperties(0);",
+        "   props1 = getAtomProperties(1);",
+        "   data.push([props0.vx, props1.vx].join(','))",
+        " }",
+        " console.log(data.join('\\n'));"
+      ]
+    }
+  ]
+}

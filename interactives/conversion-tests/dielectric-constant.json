@@ -1,0 +1,139 @@
+{
+  "title": "Dielectric Constant",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": [
+    "An interactive presenting the dielectric effect and its influence on Coulomb forces. The graph plots two variables:",
+    "",
+    "- distance between particles (in nanometers),",
+    "- **effective** value of the dielectric constant (*).",
+    "",
+    "What does **effective** mean in the context of dielectric constant?",
+    "",
+    "Next Gen MW uses a special algorithm for calculation of the dielectric effect.",
+    "When particles are close enough to each other, it assumes that the screening effect",
+    "of the solvent (oil or water) should be diminished. That's why you can observe that",
+    "the effective dielectric constant is significantly reduced when particles are closer",
+    "than 1.2nm to each other.",
+    "",
+    "The effective dielectric constant for Coulomb interaction of two particles is",
+    "calculated using following equation:",
+    "",
+    "**effectiveDC = 1 + (DC - 1)/(1 + exp(-12 * R + 7))**",
+    "",
+    "where **DC** is an initial dielectric constant for solvent (e.g. 10 for water)",
+    "and **R** is the distance between particles.",
+    "",
+    "You can disable this algorithm and leave the value of the dielectric constant",
+    "untouched (so, **effectiveDC = DC**) using the **Realistic Dielectric Effect** checkbox.",
+    "",
+    "_Note that the effectiveDielectric output property defined in the interactive JSON does",
+    "**not** ask the model about the effective value, as it's unavailable in Scripting API",
+    "and hidden deeply in the engine internals. Instead, it recalculates effective dielectric",
+    "constant using the same algorithm like the engine._"
+  ],
+  "models": [
+    {
+      "id": "dielectric-constant$0",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/dielectric-constant$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      },
+      "onLoad": "setSolvent('oil');"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "particlesDistance",
+      "value": [
+        "return getAtomProperties(1).x - getAtomProperties(0).x;"
+      ]
+    },
+    {
+      "name": "effectiveDielectric",
+      "value": [
+        "var dC = get('dielectricConstant');",
+        "var rDE = get('realisticDielectricEffect');",
+        "var r = get('particlesDistance');",
+        "if (rDE && r < 1.2) return 1 + (dC - 1)/(1 + Math.exp(-12 * r + 7));",
+        "else return dC;"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "dielectric-constant",
+      "title": "Dielectric Constant",
+      "min": 1,
+      "max": 80,
+      "steps": 80,
+      "labels": [
+        {
+          "value": 1,
+          "label": "vacuum"
+        },
+        {
+          "value": 80,
+          "label": "water"
+        }
+      ],
+      "displayValue": "return format('1.2f')(value)",
+      "property": "dielectricConstant"
+    },
+    {
+      "type": "checkbox",
+      "id": "realistic-dielectric-effect",
+      "text": "Realistic Dielectric Effect",
+      "property": "realisticDielectricEffect"
+    },
+    {
+      "type": "pulldown",
+      "id": "select-solvent",
+      "options": [
+        {
+          "text": "Select the solvent type",
+          "disabled": true,
+          "selected": true
+        },
+        {
+          "text": "vacuum",
+          "action": "reset(); setSolvent('vacuum');"
+        },
+        {
+          "text": "oil",
+          "action": "reset(); setSolvent('oil');"
+        },
+        {
+          "text": "water",
+          "action": "reset(); setSolvent('water');"
+        }
+      ]
+    },
+    {
+      "type": "graph",
+      "id": "propertiesGraph",
+      "title": [
+                  "Effective Dielectric Constant vs",
+                  "Distance Between Particles"
+                ],
+      "xlabel": "time [ps]",
+      "ylabel": "RED: distance [nm], GREEN: dielectric constant",
+      "xmin": 0,
+      "xmax": 20,
+      "ymin": 0,
+      "ymax": 11,
+      "properties": [
+        "particlesDistance",
+        "effectiveDielectric"
+      ]
+    }
+  ],
+  "layout": {
+    "right": [
+      "propertiesGraph"
+    ]
+  },
+  "template": "wide-right"
+}

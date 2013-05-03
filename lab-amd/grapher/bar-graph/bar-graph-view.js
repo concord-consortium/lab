@@ -62,6 +62,9 @@ define(function (require) {
           // Unique ID. Required to generate unique
           // gradient names.
           this.uid = getUID();
+
+          this.$topArea = $('<div class="top-area">').appendTo(this.$el);
+
           // Create some SVG elements, which are constant and doesn't need to
           // be recreated each time during rendering.
           this.vis = d3.select(this.el).append("svg");
@@ -80,6 +83,8 @@ define(function (require) {
 
           this.scale = null;
           this.barWidth = null;
+
+          this.$bottomArea = $('<div class="bottom-area">').appendTo(this.$el);
 
           // Register callbacks!
           this.model.on("change", this.modelChanged, this);
@@ -105,7 +110,10 @@ define(function (require) {
 
           // Set height of the most outer container.
           this.$el.outerHeight(options.height);
-          this.svgHeight = this.$el.height();
+
+          this._setupHorizontalTitle();
+
+          this.svgHeight = this.$el.height() - this.$topArea.height() - this.$bottomArea.height();
 
           // Setup SVG element.
           this.vis
@@ -204,6 +212,7 @@ define(function (require) {
           // Convert final width in px into value in ems.
           // That ensures that the SVG will work well with semantic layout.
           this.vis.attr("width", (offset / fontSize) + "em");
+          this.$el.css("min-width", (offset / fontSize) + "em");
 
           // work-around bug on iPad2 where container is not expanding in width
           // when SVG element rendered inside it
@@ -345,7 +354,7 @@ define(function (require) {
           return offset;
         },
 
-        // Setup title.
+        // Setup vertical title.
         _setupTitle: function (offset) {
               // "title" option is expected to be string
               // or array of strings.
@@ -354,7 +363,7 @@ define(function (require) {
               isArray, lines,
               titleG, gEnter;
 
-          if (title) {
+          if (title && this.model.get("titleOn") === "right") {
             offset += this.scale(10);
 
             isArray = $.isArray(title);
@@ -385,6 +394,34 @@ define(function (require) {
           }
 
           return offset;
+        },
+
+        // Setup horizontal title.
+        _setupHorizontalTitle: function () {
+              // "title" option is expected to be string
+              // or array of strings.
+          var title = this.model.get("title"),
+              pos = this.model.get("titleOn"),
+              $container;
+
+          this.$topArea.empty();
+          this.$bottomArea.empty();
+
+          if (!title || title.length === 0 || pos === "right") {
+            return;
+          }
+
+          title = $.isArray(title) ? title : [title];
+
+          if (pos === "top") {
+            $container = this.$topArea;
+          } else if (pos === "bottom") {
+            $container = this.$bottomArea;
+          }
+
+          title.forEach(function (t) {
+            $container.append('<p class="title">' + t + '</p>');
+          });
         },
 
         _processTitle: function (title) {

@@ -1,0 +1,21 @@
+{
+  "title": "magneticconfinement",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "magneticconfinement$0",
+      "url": "imports/legacy-mw-content/converted/student/motionandforce/magneticconfinement$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

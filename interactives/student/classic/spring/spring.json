@@ -1,0 +1,21 @@
+{
+  "title": "spring",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "spring$0",
+      "url": "imports/legacy-mw-content/converted/student/classic/spring/spring$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "polar_efield",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "polar_efield$0",
+      "url": "imports/legacy-mw-content/converted/student/motionandforce/polar_efield$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

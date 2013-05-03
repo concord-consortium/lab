@@ -1,0 +1,21 @@
+{
+  "title": "compare",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "compare$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/compare$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

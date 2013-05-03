@@ -1,0 +1,21 @@
+{
+  "title": "masseffect",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "masseffect$0",
+      "url": "imports/legacy-mw-content/converted/student/motionandforce/masseffect$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

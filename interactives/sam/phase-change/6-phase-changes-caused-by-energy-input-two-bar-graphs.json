@@ -1,0 +1,155 @@
+{
+  "title": "Phase Changes with two bar graphs",
+  "publicationStatus": "draft",
+  "subtitle": "Explore how energy input causes matter to change states.",
+  "about": [
+    "Matter exists as solids, liquids and gases, and can change state between these.",
+    "",
+    "The model shows a liquid material on the left (small atoms). The amount of heat",
+    "energy is shown by kinetic energy (KE) shading, with deeper shades of red",
+    "representing more energetic atoms. On the right side of the barrier is a solid",
+    "material (large atoms).",
+    "",
+    "Run the model. How much energy is able to penetrate the barrier? Remove the barrier.",
+    "How quickly do the more energetic atoms melt the solid?"
+  ],
+  "models": [
+    {
+      "id": "page6$0",
+      "url": "imports/legacy-mw-content/converted/sam-activities/phase-change/original-interactives-in-pages/page6/page6$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "textBoxes": [
+          {
+            "text": "Cold Solid",
+            "x": 4.1,
+            "y": 0.4,
+            "fontScale": 0.9,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(128,192,255)"
+          },
+          {
+            "text": "Hot Liquid",
+            "x": 0.05,
+            "y": 0.4,
+            "fontScale": 0.9,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(255, 190, 194)"
+          }
+        ]
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "largeAtomKE",
+      "label": "Kinetic Energy of Large Atoms",
+      "unitType": "energy",
+      "value": [
+        "var largeKE = 0;",
+        "var numLarge = 0;",
+        "var elemNum = 3;",
+        "var mass = getElementProperties(elemNum).mass;",
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+        "  if (getAtomProperties(i).element == elemNum) {",
+        "    largeKE += 0.5 * mass * Math.pow(getAtomProperties(i).speed,2);",
+        "    numLarge++;",
+        "  }",
+        "}",
+        "return (largeKE/numLarge)*100000;"
+      ]
+    },
+    {
+      "name": "smallAtomKE",
+      "label": "Kinetic Energy of Small Atoms",
+      "unitType": "energy",
+      "value": [
+        "var smallKE = 0;",
+        "var numSmall = 0;",
+        "var elemNum = 2;",
+        "var mass = getElementProperties(elemNum).mass;",
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+        "  if (getAtomProperties(i).element == elemNum) {",
+        "    smallKE += 0.5 * mass * Math.pow(getAtomProperties(i).speed,2);",
+        "    numSmall++;",
+        "  }",
+        "}",
+        "return (smallKE/numSmall)*100000;"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "checkbox",
+      "id": "ke-shading",
+      "text": "KE Shading",
+      "property": "keShading"
+    },
+    {
+      "type": "button",
+      "id": "withdraw-barrier",
+      "text": "Withdraw the barrier",
+      "action": "if (getNumberOfObstacles() > 0) { removeObstacle(0) };"
+    },
+    {
+      "type": "barGraph",
+      "id": "bar-graph",
+      "min": 0,
+      "max": 5,
+      "title": "Avg. Kinetic Energy of Large Atoms",
+      "property": "largeAtomKE"
+    },
+    {
+      "type": "barGraph",
+      "id": "bar-graph2",
+      "min": 0,
+      "max": 5,
+      "title": "Avg. Kinetic Energy of Small Atoms",
+      "property": "smallAtomKE"
+    }
+  ],
+  "layout": {
+    "left": [
+      "bar-graph2"
+    ],
+    "right": [
+      "bar-graph"
+    ]
+  },
+  "template": [
+
+    {
+      "id": "top",
+      "bottom": "model.top",
+      "width": "interactive.width"
+    },
+    {
+      "id": "left",
+      "top": "model.top",
+      "right": "model.left",
+      "height": "model.height",
+      "padding-right": "1em",
+      "align": "right",
+      "min-width": "6em"
+    },
+    {
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "height": "model.height",
+      "padding-left": "1em",
+      "padding-right": "0.5em",
+      "min-width": "6em"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "align": "center",
+      "padding-top": "0.5em"
+    }
+    ]
+}

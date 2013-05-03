@@ -18,9 +18,12 @@
   "polarAAEpsilon": -2,
   "viscosity": 1,
   "timeStepsPerTick": 50,
+  "geneticEngineState": "dna",
+  "DNA": "",
   "viewOptions": {
     "viewPortWidth": 5,
     "viewPortHeight": 2.5,
+    "viewPortZoom": 1,
     "viewPortX": 0,
     "viewPortY": 0,
     "backgroundColor": "#eeeeee",
@@ -45,6 +48,10 @@
         "y": 2.23,
         "layer": 1,
         "frame": "rounded rectangle",
+        "calloutPoint": [
+          2.97,
+          2.88
+        ],
         "backgroundColor": "rgb(0,255,0)",
         "anchor": "upper-left"
       },
@@ -54,6 +61,10 @@
         "y": 2.4,
         "layer": 1,
         "frame": "rounded rectangle",
+        "calloutPoint": [
+          1.11,
+          2.5
+        ],
         "anchor": "upper-left"
       },
       {
@@ -62,6 +73,10 @@
         "y": 1.15,
         "layer": 1,
         "frame": "rounded rectangle",
+        "calloutPoint": [
+          0.87,
+          0.02
+        ],
         "anchor": "upper-left"
       },
       {
@@ -70,6 +85,10 @@
         "y": 0.62,
         "layer": 1,
         "frame": "rounded rectangle",
+        "calloutPoint": [
+          0.21,
+          0.22
+        ],
         "anchor": "upper-left"
       },
       {
@@ -78,6 +97,10 @@
         "y": 1.37,
         "layer": 1,
         "frame": "rounded rectangle",
+        "calloutPoint": [
+          4.79,
+          1.23
+        ],
         "anchor": "upper-left"
       },
       {
@@ -103,6 +126,10 @@
         "y": 0.52,
         "layer": 1,
         "frame": "rounded rectangle",
+        "calloutPoint": [
+          2.46,
+          0.01
+        ],
         "anchor": "upper-left"
       },
       {
@@ -111,6 +138,10 @@
         "y": 0.52,
         "layer": 1,
         "frame": "rounded rectangle",
+        "calloutPoint": [
+          2.07,
+          0.02
+        ],
         "anchor": "upper-left"
       },
       {
@@ -119,6 +150,10 @@
         "y": 0.51,
         "layer": 1,
         "frame": "rounded rectangle",
+        "calloutPoint": [
+          1.45,
+          0.03
+        ],
         "anchor": "upper-left"
       }
     ],

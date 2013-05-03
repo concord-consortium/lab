@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "fc3bf0816fc408ca1f6ee1681e71a18d929aa6f2",
-        "short_sha":      "fc3bf081",
-        "url":            "https://github.com/concord-consortium/lab/commit/fc3bf081",
+        "sha":           "772d3716c0deac86be43e4a69c4ae1405982c5f8",
+        "short_sha":      "772d3716",
+        "url":            "https://github.com/concord-consortium/lab/commit/772d3716",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-04-11 10:14:23 -0400",
-        "short_message": "bar-graph: work around ipad2 container-width bug",
-        "message":       "bar-graph: work around ipad2 container-width bug\n\n[#47854951]"
+        "date":          "2013-05-02 18:06:05 -0400",
+        "short_message": "use relative references for all model JSON urls",
+        "message":       "use relative references for all model JSON urls\n\nIS [#49153149]"
       },
       "dirty": false
     }
@@ -456,8 +456,8 @@ define('lab.config',['require','common/actual-root'],function (require) {
   "sharing": true,
   "home": "http://lab.concord.org",
   "homeForSharing": "http://lab.concord.org",
-  "homeInteractivePath": "/examples/interactives/interactive.html",
-  "homeEmbeddablePath": "/examples/interactives/embeddable.html",
+  "homeInteractivePath": "/interactive.html",
+  "homeEmbeddablePath": "/embeddable.html",
   "utmCampaign": null,
   "fontface": "Lato",
   "hostName": "lab4.dev.concord.org",
@@ -1442,8 +1442,8 @@ define('common/controllers/interactive-metadata',[],function() {
       type: {
         required: true
       },
-      realTime: {
-        defaultValue: true
+      dataPoints: {
+        defaultValue: []
       },
       fontScaleRelativeToParent: {
         defaultValue: true
@@ -1532,6 +1532,11 @@ define('common/controllers/interactive-metadata',[],function() {
       title: {
         // Graph title.
         defaultValue: ""
+      },
+      titleOn: {
+        // Title position, accepted values are:
+        // "right", "top", "bottom"
+        defaultValue: "right"
       },
       labels: {
         // Number of labels displayed on the left side of the graph.
@@ -1627,6 +1632,15 @@ define('common/validator',['require','arrays'],function(require) {
     }
   }
 
+  function validateSingleProperty(propertyMetadata, prop, value, ignoreImmutable) {
+    if (propertyMetadata.readOnly) {
+      throw new ValidationError(prop, "Properties set tries to overwrite read-only property " + prop);
+    }
+    if (!ignoreImmutable && propertyMetadata.immutable) {
+      throw new ValidationError(prop, "Properties set tries to overwrite immutable property " + prop);
+    }
+  }
+
   return {
 
     // Basic validation.
@@ -1649,13 +1663,7 @@ define('common/validator',['require','arrays'],function(require) {
           propMetadata = metadata[prop];
           // Continue only if the property is listed in meta-data.
           if (propMetadata !== undefined) {
-            // Check if this is readOnly property.
-            if (propMetadata.readOnly === true) {
-              throw new ValidationError(prop, "Properties set tries to overwrite read-only property " + prop);
-            }
-            if (!ignoreImmutable && propMetadata.immutable === true) {
-              throw new ValidationError(prop, "Properties set tries to overwrite immutable property " + prop);
-            }
+            validateSingleProperty(propMetadata, prop, input[prop], ignoreImmutable);
             if (propMetadata.conflictsWith) {
               checkConflicts(input, prop, propMetadata.conflictsWith);
             }
@@ -1664,6 +1672,21 @@ define('common/validator',['require','arrays'],function(require) {
         }
       }
       return result;
+    },
+
+    validateSingleProperty: validateSingleProperty,
+
+    propertyIsWritable: function(propertyMetadata) {
+      // Note that immutable properties are writable, they just have to be
+      return ! propertyMetadata.readOnly;
+    },
+
+    propertyChangeInvalidates: function(propertyMetadata) {
+      // Default to true for safety.
+      if (propertyMetadata.propertyChangeInvalidates === undefined) {
+        return true;
+      }
+      return !!propertyMetadata.propertyChangeInvalidates;
     },
 
     // Complete validation.
@@ -4544,6 +4567,8 @@ define('grapher/bar-graph/bar-graph-model',['require','backbone'],function (requ
           // of strings, e.g.:
           // ["Title", "Subtitle"]
           title: "",
+          // Accepted values are "right", "top" and "bottom".
+          titleOn: "right",
           // Color of the main bar.
           barColor:  "#e23c34",
           // Color of the area behind the bar.
@@ -4721,6 +4746,9 @@ define('grapher/bar-graph/bar-graph-view',['require','common/jquery-plugins','ba
           // Unique ID. Required to generate unique
           // gradient names.
           this.uid = getUID();
+
+          this.$topArea = $('<div class="top-area">').appendTo(this.$el);
+
           // Create some SVG elements, which are constant and doesn't need to
           // be recreated each time during rendering.
           this.vis = d3.select(this.el).append("svg");
@@ -4739,6 +4767,8 @@ define('grapher/bar-graph/bar-graph-view',['require','common/jquery-plugins','ba
 
           this.scale = null;
           this.barWidth = null;
+
+          this.$bottomArea = $('<div class="bottom-area">').appendTo(this.$el);
 
           // Register callbacks!
           this.model.on("change", this.modelChanged, this);
@@ -4764,7 +4794,10 @@ define('grapher/bar-graph/bar-graph-view',['require','common/jquery-plugins','ba
 
           // Set height of the most outer container.
           this.$el.outerHeight(options.height);
-          this.svgHeight = this.$el.height();
+
+          this._setupHorizontalTitle();
+
+          this.svgHeight = this.$el.height() - this.$topArea.height() - this.$bottomArea.height();
 
           // Setup SVG element.
           this.vis
@@ -4863,6 +4896,7 @@ define('grapher/bar-graph/bar-graph-view',['require','common/jquery-plugins','ba
           // Convert final width in px into value in ems.
           // That ensures that the SVG will work well with semantic layout.
           this.vis.attr("width", (offset / fontSize) + "em");
+          this.$el.css("min-width", (offset / fontSize) + "em");
 
           // work-around bug on iPad2 where container is not expanding in width
           // when SVG element rendered inside it
@@ -5004,7 +5038,7 @@ define('grapher/bar-graph/bar-graph-view',['require','common/jquery-plugins','ba
           return offset;
         },
 
-        // Setup title.
+        // Setup vertical title.
         _setupTitle: function (offset) {
               // "title" option is expected to be string
               // or array of strings.
@@ -5013,7 +5047,7 @@ define('grapher/bar-graph/bar-graph-view',['require','common/jquery-plugins','ba
               isArray, lines,
               titleG, gEnter;
 
-          if (title) {
+          if (title && this.model.get("titleOn") === "right") {
             offset += this.scale(10);
 
             isArray = $.isArray(title);
@@ -5046,6 +5080,34 @@ define('grapher/bar-graph/bar-graph-view',['require','common/jquery-plugins','ba
           return offset;
         },
 
+        // Setup horizontal title.
+        _setupHorizontalTitle: function () {
+              // "title" option is expected to be string
+              // or array of strings.
+          var title = this.model.get("title"),
+              pos = this.model.get("titleOn"),
+              $container;
+
+          this.$topArea.empty();
+          this.$bottomArea.empty();
+
+          if (!title || title.length === 0 || pos === "right") {
+            return;
+          }
+
+          title = $.isArray(title) ? title : [title];
+
+          if (pos === "top") {
+            $container = this.$topArea;
+          } else if (pos === "bottom") {
+            $container = this.$bottomArea;
+          }
+
+          title.forEach(function (t) {
+            $container.append('<p class="title">' + t + '</p>');
+          });
+        },
+
         _processTitle: function (title) {
           var $title = $('<span class="title">' + title + '</span>').appendTo(this.$el),
               truncatedText;
@@ -5076,11 +5138,13 @@ define('common/controllers/bar-graph-controller',['require','grapher/bar-graph/b
       // internal implementation detail (the bar graph options format).
       barGraphOptionForComponentSpecProperty = {
         // Min value displayed.
-        min:  'min',
+        min: 'min',
         // Max value displayed.
-        max:  'max',
+        max: 'max',
         // Graph title.
-        title:     'title',
+        title: 'title',
+        // Title position.
+        titleOn: 'titleOn',
         // Color of the main bar.
         barColor:  'barColor',
         // Color of the area behind the bar.
@@ -5320,33 +5384,109 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         autoscale: "Show all data (autoscale)"
       };
 
-
   return function Graph(idOrElement, options, message, tabindex) {
     var api = {},   // Public API object to be returned.
-        elem,
-        node,
-        $node,
-        cx,
-        cy,
 
-        stroke = function(d) { return d ? "#ccc" : "#666"; },
+        // D3 selection of the containing DOM element the graph is placed in
+        elem,
+
+        // Regular representation of containing DOM element the graph is placed in
+        node,
+
+        // JQuerified version of DOM element
+        $node,
+
+        // Size of containing DOM element
+        cx, cy,
+
+        // Calculated padding between edges of DOM container and interior plot area of graph.
+        padding,
+
+        // Object containing width and height in pixels of interior plot area of graph
+        size,
+
+        // D3 objects representing SVG elements/containers in graph
+        svg,
+        vis,
+        plot,
+        viewbox,
+        title,
+        xlabel,
+        ylabel,
+        selectedRulerX,
+        selectedRulerY,
+
+        // Strings used as tooltips when labels are visible but are truncated because
+        // they are too big to be rendered into the space the graph allocates
+        titleTooltip,
+        xlabelTooltip,
+        ylabelTooltip,
+
+        // Instantiated D3 scale functions
+        // currently either d3.scale.linear, d3.scale.log, or d3.scale.pow
+        xScale,
+        yScale,
+
+        // The approximate number of gridlines in the plot, passed to d3.scale.ticks() function
+        xTickCount,
+        yTickCount,
+
+        // Instantiated D3 line function: d3.svg.line()
+        line,
+
+        // Instantiated D3 numeric format functions: d3.format()
+        fx,
+        fy,
+
+        // Function for stroke styling of major and minor grid lines
+        gridStroke = function(d) { return d ? "#ccc" : "#666"; },
+
+        // Functions for translation of grid lines and associated numeric labels
         tx = function(d) { return "translate(" + xScale(d) + ",0)"; },
         ty = function(d) { return "translate(0," + yScale(d) + ")"; },
-        fx, fy,
-        svg, vis, plot, viewbox,
+
+        // Div created and placed with z-index above all other graph layers that holds
+        // graph action/mode buttons.
+        buttonLayer,
+
+        // Div created and placed with z-index under all other graph layers
         background,
-        gcanvas, gctx,
+
+        // Optional string which can be displayed in background of interior plot area of graph.
+        notification,
+
+        // An array of strings holding 0 or more lines for the title of the graph
+        titles = [],
+
+        // D3 selection containing canvas
+        graphCanvas,
+
+        // HTML5 Canvas object containing just plotted lines
+        gcanvas,
+        gctx,
         canvasFillStyle = "rgba(255,255,255, 0.0)",
         cplot = {},
-        buttonLayer,
-        title, xlabel, ylabel,
-        notification,
-        padding, size,
-        xScale, yScale, line,
-        shiftingX = false,
-        cubicEase = d3.ease('cubic'),
+
+        // Function dynamically created when X axis domain shift is in progress
         domainShift,
-        circleCursorStyle,
+        // Boolean indicating X axis domain shif is in progress
+        shiftingX = false,
+        // Easing function used during X axis domain shift
+        cubicEase = d3.ease('cubic'),
+        // These are used to implement fluid X axis domain shifting.
+        // This is used when plotting samples/points and extent of plotted
+        // data approach extent of X axis.
+        // Domain shifting can also occur when the current sample point is moved.
+        // This most often occurs when using a graph to examine data from a model
+        // and movingthe current sample point backwards and forwards in data that
+        // have already been collected.
+
+        // The style of the cursor when hovering over a sample.point marker.
+        // The cursor changes depending on the operations that can be performed.
+        markerCursorStyle,
+
+        // Metrics calculated to support layout of titles, axes as
+        // well as text and numeric labels for axes.
         fontSizeInPixels,
         halfFontSizeInPixels,
         quarterFontSizeInPixels,
@@ -5355,26 +5495,52 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         xlabelFontSizeInPixels,
         ylabelFontSizeInPixels,
 
+        // Array objects containing width and height of X and Y axis labels
         xlabelMetrics,
         yLabelMetrics,
+
+        // Width of widest numeric labels on X and Y axes
         xAxisNumberWidth,
-        xAxisNumberHeight,
         yAxisNumberWidth,
+
+        // Height of numeric labels on X and Y axes
+        xAxisNumberHeight,
         yAxisNumberHeight,
+
+        // Padding necessary for X and Y axis labels to leave enough room for numeric labels
+        xAxisVerticalPadding,
+        yAxisHorizontalPadding,
+
+        // Padding necessary between right side of interior plot and edge of graph so
+        // make room for numeric lanel on right edge of X axis.
         xAxisLabelHorizontalPadding,
 
-        xAxisVerticalPadding,
-        xAxisDraggableHeight,
+        // Baselines calculated for positioning of X and Y axis labels.
         xAxisLabelBaseline,
-
-        yAxisHorizontalPadding,
-        yAxisDraggableWidth,
         yAxisLabelBaseline,
 
+        // Thickness of draggable areas for rescaling axes, these surround numeric labels
+        xAxisDraggableHeight,
+        yAxisDraggableWidth,
+
+        // D3 SVG rects used to implement axis dragging
         xAxisDraggable,
         yAxisDraggable,
 
+        // Strings used as tooltips when numeric axis draggables are visible but responsive
+        // layout system has removed the axis labels because of small size of graph.
+        xAxisDraggableTooltip,
+        yAxisDraggableTooltip,
+
+        // Used to calculate styles for markers appearing on samples/points (normally circles)
+        markerRadius,
+        markerStrokeWidth,
+
+        // Stroke width used for lines in graph
         strokeWidth,
+
+        // Used to categorize size of graphs in responsive layout mode where
+        // certain graph chrome is removed when graph is rendered smaller.
         sizeType = {
           category: "medium",
           value: 3,
@@ -5384,51 +5550,157 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           medium: 960,
           large: 1920
         },
+
+        // State variables indicating whether an axis drag operation is in place.
+        // NaN values are used to indicate operation not in progress and
+        // checked like this: if (!isNaN(downx)) { resacle operation in progress }
+        //
+        // When drag/rescale operation is occuring values contain plot
+        // coordinates of start of drag (0 is a valid value).
         downx = NaN,
         downy = NaN,
-        dragged = null,
+
+        // State variable indicating whether a data point is being dragged.
+        // When data point drag operation is occuring value contain two element
+        // array wiith plot coordinates of drag position.
+        draggedPoint = null,
+
+        // When a data point is selected contains two element array wiith plot coordinates
+        // of selected data point.
         selected = null,
-        titles = [],
 
-        points, pointArray,
+        // An array of data points in the plot which are near the cursor.
+        // Normally used to temporarily display data point markers when cursor
+        // is nearby when markAllDataPoints is disabled.
+        selectable = [],
+
+        // An array containing two-element arrays consisting of X and Y values for samples/points
+        points = [],
+
+        // An array containing 1 or more points arrays to be plotted.
+        pointArray,
+
+        // Index into points array for current sample/point.
+        // Normally references data point last added.
+        // Current sample can refer to earlier points. This is
+        // represented in the view by using a desaturated styling for
+        // plotted data after te currentSample.
         currentSample,
-        markedPoint, marker,
-        sample,
 
+        // When graphing data samples as opposed to [x, y] data pairs contains
+        // the fixed time interval between subsequent samples.
+        sampleInterval,
+
+        // The default options for a graph
         default_options = {
+          // Enables the button layer with: AutoScale ...
           showButtons:    true,
+
+          // Responsive Layout provides pregressive removal of
+          // graph elements when size gets smaller
           responsiveLayout: false,
+
+          // Font sizes for graphs are normally specified using ems.
+          // When fontScaleRelativeToParent to true the font-size of the
+          // containing element is set based on the size of the containing
+          // element. hs means whn the containing element is smaller the
+          // foint-size of the labels in thegraph will be smaller.
           fontScaleRelativeToParent: true,
-          realTime:       false,
+
+          //
+          // dataType can be either 'points or 'samples'
+          //
+          dataType: 'points',
+          //
+          // dataType: 'points'
+          //
+          // Arrays of two-element arrays of x, y data pairs, this is the internal
+          // format the graphers uses to represent data.
+          dataPoints:      [],
+          //
+          // dataType: 'samples'
+          //
+          // An array of samples (or an array or arrays of samples)
+          dataSamples:     [],
+          // The constant time interval between sample values
+          sampleInterval:  1,
+          // Normally data sent to graph as samples starts at an X value of 0
+          // A different starting x value can be set
+          dataSampleStart: 0,
+
+          // title can be a string or an array of strings, if an
+          // array of strings each element is on a separate line.
           title:          "graph",
+
+          // The labels for the axes, these are separate from the numeric labels.
           xlabel:         "x-axis",
           ylabel:         "y-axis",
-          xscale:         'linear',
-          yscale:         'linear',
-          xTickCount:      10,
-          yTickCount:      10,
-          xscaleExponent:  0.5,
-          yscaleExponent:  0.5,
-          xFormatter:      "2s",
-          yFormatter:      "2s",
-          axisShift:       10,
+
+          // Initial extent of the X and Y axes.
           xmax:            10,
           xmin:            0,
           ymax:            10,
           ymin:            0,
-          dataset:         [0],
-          selectablePoints: false,
-          circleRadius:    10.0,
+
+          // Approximate values for how many gridlines should appear on the axes.
+          xTickCount:      10,
+          yTickCount:      10,
+
+          // The formatter used to convert numbers into strings.
+          // see: https://github.com/mbostock/d3/wiki/Formatting#wiki-d3_format
+          xFormatter:      ".3s",
+          yFormatter:      ".3r",
+
+          // Scale type: options are:
+          //   linear: https://github.com/mbostock/d3/wiki/Quantitative-Scales#wiki-linear
+          //   log:    https://github.com/mbostock/d3/wiki/Quantitative-Scales#wiki-log
+          //   pow:    https://github.com/mbostock/d3/wiki/Quantitative-Scales#wiki-pow
+          xscale:         'linear',
+          yscale:         'linear',
+
+          // Used when scale type is set to "pow"
+          xscaleExponent:  0.5,
+          yscaleExponent:  0.5,
+
+          // How many samples/points over which a graph shift should take place
+          // when the data being plotted gets close to the edge of the X axis.
+          axisShift:       10,
+
+          // selectablePoints: false,
+
+          // true if data points should be marked ... currently marked with a circle.
+          markAllDataPoints:   false,
+
+          // only show circles when hovering near them with the mouse or
+          // tapping near then on a tablet
+          markNearbyDataPoints: false,
+
+          // number of circles to show on each side of the central point
+          extraCirclesVisibleOnHover: 2,
+
+          // true to show dashed horizontal and vertical rulers when a circle is selected
+          showRulersOnSelection: false,
+
+          // width of the line used for plotting
           strokeWidth:      2.0,
-          dataChange:      true,
-          addData:         true,
-          points:          false,
+
+          // Enable values of data points to be changed by selecting and dragging.
+          dataChange:      false,
+
+          // Enables adding of data to a graph by option/alt clicking in the graph.
+          addData:         false,
+
+          // Set value to a string and it will be rendered in background of graph.
           notification:    false,
-          sample:          1,
+
+          // Render lines between samples/points
           lines:           true,
+
+          // Render vertical bars extending up to samples/points
           bars:            false
         },
 
+        // brush selection variables
         selection_region = {
           xmin: null,
           xmax: null,
@@ -5441,6 +5713,63 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         selection_listener,
         brush_element,
         brush_control;
+
+
+    // ------------------------------------------------------------
+    //
+    // Initialization
+    //
+    // ------------------------------------------------------------
+
+    function initialize(idOrElement, opts, mesg) {
+      if (opts || !options) {
+        options = setupOptions(opts);
+      }
+
+      initializeLayout(idOrElement, mesg);
+
+      options.xrange = options.xmax - options.xmin;
+      options.yrange = options.ymax - options.ymin;
+
+      if (Object.prototype.toString.call(options.title) === "[object Array]") {
+        titles = options.title;
+      } else {
+        titles = [options.title];
+      }
+      titles.reverse();
+
+      fx = d3.format(options.xFormatter);
+      fy = d3.format(options.yFormatter);
+
+      // use local variables for both access speed and for responsive over-riding
+      sampleInterval = options.sampleInterval;
+      dataSampleStart = options.dataSampleStart;
+      strokeWidth = options.strokeWidth;
+
+      xTickCount = options.xTickCount;
+      yTickCount = options.yTickCount;
+
+      pointArray = [];
+      switch(options.dataType) {
+        case "fake":
+        points = fakeDataPoints();
+        pointArray = [points];
+        break;
+
+        case 'points':
+        resetDataPoints(options.dataPoints);
+        break;
+
+        case 'samples':
+        resetDataSamples(options.dataSamples, sampleInterval, dataSampleStart);
+        break;
+      }
+
+      selectable = [];
+      selected = null;
+
+      setCurrentSample(points.length);
+    }
 
     function initializeLayout(idOrElement, mesg) {
       if (idOrElement) {
@@ -5469,15 +5798,15 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         background = undefined;
       }
 
-      if (gcanvas !== undefined) {
-        $(gcanvas).remove();
-        gcanvas = undefined;
+      if (graphCanvas !== undefined) {
+        graphCanvas.remove();
+        graphCanvas = undefined;
       }
 
       if (options.dataChange) {
-        circleCursorStyle = "ns-resize";
+        markerCursorStyle = "ns-resize";
       } else {
-        circleCursorStyle = "crosshair";
+        markerCursorStyle = "crosshair";
       }
 
       scale();
@@ -5485,7 +5814,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       // drag axis logic
       downx = NaN;
       downy = NaN;
-      dragged = null;
+      draggedPoint = null;
     }
 
     function scale(w, h) {
@@ -5540,11 +5869,11 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         xlabelMetrics = [fontSizeInPixels, fontSizeInPixels];
         ylabelMetrics = [fontSizeInPixels*2, fontSizeInPixels];
       } else {
-        xlabelMetrics = axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels, 
-          longestNumber(xScale.ticks(options.xTickCount), fx));
+        xlabelMetrics = axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels,
+          longestNumber(xScale.ticks(xTickCount), fx));
 
         ylabelMetrics = axis.numberWidthUsingFormatter(elem, cx, cy, axisFontSizeInPixels,
-          longestNumber(yScale.ticks(options.yTickCount), fy));
+          longestNumber(yScale.ticks(yTickCount), fy));
       }
 
       xAxisNumberWidth  = xlabelMetrics[0];
@@ -5552,7 +5881,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       yAxisNumberWidth  = ylabelMetrics[0];
       yAxisNumberHeight = ylabelMetrics[0];
 
-      xAxisLabelHorizontalPadding = xAxisNumberWidth * 0.5;
+      xAxisLabelHorizontalPadding = xAxisNumberWidth * 0.6;
       xAxisDraggableHeight = xAxisNumberHeight * 1.1;
       xAxisVerticalPadding = xAxisDraggableHeight + xAxisNumberHeight*1.3;
       xAxisLabelBaseline = xAxisVerticalPadding-xAxisNumberHeight/3;
@@ -5562,48 +5891,50 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       yAxisLabelBaseline     = -(yAxisDraggableWidth+yAxisNumberHeight/4);
 
       switch(sizeType.value) {
-        case 0:         // tiny
+        case 0:         // icon
         padding = {
-         "top":    fontSizeInPixels,
-         "right":  fontSizeInPixels,
-         "bottom": fontSizeInPixels,
-         "left":   fontSizeInPixels
+          "top":    halfFontSizeInPixels,
+          "right":  halfFontSizeInPixels,
+          "bottom": fontSizeInPixels,
+          "left":   fontSizeInPixels
         };
         break;
 
-        case 1:         // small
+        case 1:         // tiny
         padding = {
-         "top":    fontSizeInPixels,
-         "right":  fontSizeInPixels,
-         "bottom": fontSizeInPixels,
-         "left":   fontSizeInPixels
+          "top":    options.title  ? titleFontSizeInPixels*1.8 : fontSizeInPixels,
+          "right":  halfFontSizeInPixels,
+          "bottom": fontSizeInPixels,
+          "left":   fontSizeInPixels
         };
         break;
 
-        case 2:         // medium
+        case 2:         // small
         padding = {
-         "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
-         "right":  xAxisLabelHorizontalPadding,
-         "bottom": axisFontSizeInPixels*1.25,
-         "left":   yAxisNumberWidth
+          "top":    options.title  ? titleFontSizeInPixels*1.8 : fontSizeInPixels,
+          "right":  xAxisLabelHorizontalPadding,
+          "bottom": axisFontSizeInPixels*1.25,
+          "left":   yAxisNumberWidth*1.25
+        };
+        xTickCount = Math.max(6, options.xTickCount/2);
+        yTickCount = Math.max(6, options.yTickCount/2);
+        break;
+
+        case 3:         // medium
+        padding = {
+          "top":    options.title  ? titleFontSizeInPixels*1.8 : fontSizeInPixels,
+          "right":  xAxisLabelHorizontalPadding,
+          "bottom": options.xlabel ? xAxisVerticalPadding : axisFontSizeInPixels*1.25,
+          "left":   options.ylabel ? yAxisHorizontalPadding : yAxisNumberWidth
         };
         break;
 
-        case 3:         // large
+        default:         // large
         padding = {
-         "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
-         "right":  xAxisLabelHorizontalPadding,
-         "bottom": options.xlabel ? xAxisVerticalPadding : axisFontSizeInPixels*1.25,
-         "left":   options.ylabel ? yAxisHorizontalPadding : yAxisNumberWidth
-        };
-        break;
-
-        default:         // extralarge
-        padding = {
-         "top":    options.title  ? titleFontSizeInPixels*1.8 : halfFontSizeInPixels,
-         "right":  xAxisLabelHorizontalPadding,
-         "bottom": options.xlabel ? xAxisVerticalPadding : axisFontSizeInPixels*1.25,
-         "left":   options.ylabel ? yAxisHorizontalPadding : yAxisNumberWidth
+          "top":    options.title  ? titleFontSizeInPixels*1.8 : fontSizeInPixels,
+          "right":  xAxisLabelHorizontalPadding,
+          "bottom": options.xlabel ? xAxisVerticalPadding : axisFontSizeInPixels*1.25,
+          "left":   options.ylabel ? yAxisHorizontalPadding : yAxisNumberWidth
         };
         break;
       }
@@ -5660,7 +5991,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
 
     function calculateSizeType() {
       if (options.responsiveLayout) {
-        if(cx <= sizeType.icon) {
+        if (cx <= sizeType.icon) {
           sizeType.category = 'icon';
           sizeType.value = 0;
         } else if (cx <= sizeType.tiny) {
@@ -5672,12 +6003,9 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         } else if (cx <= sizeType.medium) {
           sizeType.category = 'medium';
           sizeType.value = 3;
-        } else if (cx <= sizeType.large) {
+        } else {
           sizeType.category = 'large';
           sizeType.value = 4;
-        } else {
-          sizeType.category = 'extralarge';
-          sizeType.value = 5;
         }
       } else {
         sizeType.category = 'large';
@@ -5750,25 +6078,30 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       return currentSample;
     }
 
-    function indexedData(dataset, initial_index, sample) {
+    // converts data samples into an array of points
+    function indexedData(samples, interval, start) {
       var i = 0,
-          start_index = initial_index || 0,
-          n = dataset.length,
-          points = [];
-      sample = sample || 1;
-      for (i = 0; i < n;  i++) {
-        points.push({ x: (i + start_index) * sample, y: dataset[i] });
+          pnts = [];
+      interval = interval || 1;
+      start = start || 0;
+      for (i = 0; i < samples.length;  i++) {
+        pnts.push([i * interval + start, samples[i]]);
       }
-      return points;
+      return pnts;
     }
 
-    function numberOfPoints() {
-      if (points) {
-        return points.length;
+    //
+    // Update notification message
+    //
+    function notify(mesg) {
+      message = mesg;
+      if (mesg) {
+        notification.text(mesg);
       } else {
-        return false;
+        notification.text('');
       }
     }
+
 
     function createButtonLayer() {
       buttonLayer = elem.append("div");
@@ -5800,6 +6133,15 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         });
     }
 
+    // ------------------------------------------------------------
+    //
+    // Rendering
+    //
+    // ------------------------------------------------------------
+
+    //
+    // Render a new graph by creating the SVG and Canvas elements
+    //
     function renderNewGraph() {
       svg = elem.append("svg")
           .attr("width",  cx)
@@ -5817,6 +6159,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         .attr("height", size.height)
         .attr("pointer-events", "all")
         .attr("fill", "rgba(255,255,255,0)")
+        .on("mousemove", plotMousemove)
         .on("mousedown", plotDrag)
         .on("touchstart", plotDrag);
 
@@ -5832,6 +6175,8 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
             "z-index": 0
           });
 
+      createGraphCanvas();
+
       viewbox = vis.append("svg")
         .attr("class", "viewbox")
         .attr("top", 0)
@@ -5840,12 +6185,23 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         .attr("height", size.height)
         .attr("viewBox", "0 0 "+size.width+" "+size.height);
 
-      if (!options.realTime) {
-        viewbox.append("path")
-              .attr("class", "line")
-              .style("stroke-width", strokeWidth)
-              .attr("d", line(points));
-      }
+      selectedRulerX = viewbox.append("line")
+        .attr("stroke", gridStroke)
+        .attr("stroke-dasharray", "2,2")
+        .attr("y1", 0)
+        .attr("y2", size.height)
+        .attr("x1", function(d) { return selected === null ? 0 : selected[0]; } )
+        .attr("x2", function(d) { return selected === null ? 0 : selected[0]; } )
+        .attr("class", "ruler hidden");
+
+      selectedRulerY = viewbox.append("line")
+        .attr("stroke", gridStroke)
+        .attr("stroke-dasharray", "2,2")
+        .attr("x1", 0)
+        .attr("x2", size.width)
+        .attr("y1", function(d) { return selected === null ? 0 : selected[1]; } )
+        .attr("y2", function(d) { return selected === null ? 0 : selected[1]; } )
+        .attr("class", "ruler hidden");
 
       yAxisDraggable = svg.append("rect")
         .attr("class", "draggable-axis")
@@ -5859,6 +6215,8 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         .on("mousedown", yAxisDrag)
         .on("touchstart", yAxisDrag);
 
+      yAxisDraggableTooltip = yAxisDraggable.append("title");
+
       xAxisDraggable = svg.append("rect")
         .attr("class", "draggable-axis")
         .attr("x", padding.left)
@@ -5871,28 +6229,39 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         .on("mousedown", xAxisDrag)
         .on("touchstart", xAxisDrag);
 
-      marker = viewbox.append("path").attr("class", "marker");
-      // path without attributes cause SVG parse problem in IE9
-      //     .attr("d", []);
+      xAxisDraggableTooltip = xAxisDraggable.append("title");
 
+      if (sizeType.value <= 2 && options.ylabel) {
+        xAxisDraggableTooltip.text(options.xlabel);
+      }
+
+      if (sizeType.catefory && options.ylabel) {
+        yAxisDraggableTooltip.text(options.ylabel);
+      }
+
+      adjustAxisDraggableFill();
 
       brush_element = viewbox.append("g")
             .attr("class", "brush");
 
       // add Chart Title
-      if (options.title && sizeType.value > 1) {
+      if (options.title && sizeType.value > 0) {
         title = vis.selectAll("text")
           .data(titles, function(d) { return d; });
         title.enter().append("text")
             .attr("class", "title")
             .text(function(d) { return d; })
-            .attr("x", size.width/2)
-            .attr("dy", function(d, i) { return -i * titleFontSizeInPixels - halfFontSizeInPixels + "px"; })
-            .style("text-anchor","middle");
+            .attr("x", function(d) { return size.width/2 - Math.min(size.width, getComputedTextLength(this))/2; })
+            .attr("dy", function(d, i) { return -i * titleFontSizeInPixels - halfFontSizeInPixels + "px"; });
+        titleTooltip = title.append("title")
+            .text("");
+      } else if (options.title) {
+        titleTooltip = plot.append("title")
+            .text(options.title);
       }
 
       // Add the x-axis label
-     if (options.xlabel && sizeType.value > 2) {
+      if (options.xlabel && sizeType.value > 2) {
         xlabel = vis.append("text")
             .attr("class", "axis")
             .attr("class", "xlabel")
@@ -5911,6 +6280,10 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
             .text( options.ylabel)
             .style("text-anchor","middle")
             .attr("transform","translate(" + yAxisLabelBaseline + " " + size.height/2+") rotate(-90)");
+        if (sizeType.category === "small") {
+          yAxisDraggable.append("title")
+            .text(options.ylabel);
+        }
       }
 
       d3.select(node)
@@ -5926,12 +6299,13 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           .attr("y", size.height/2)
           .style("text-anchor","middle");
 
-      if (options.realTime) {
-        initializeCanvas();
-        showCanvas();
-      }
+      updateMarkers();
+      updateRulers();
     }
 
+    //
+    // Repaint an existing graph by rescaling/updating the SVG and Canvas elements
+    //
     function repaintExistingGraph() {
       vis
         .attr("width",  cx)
@@ -5959,33 +6333,50 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           .attr("viewBox", "0 0 "+size.width+" "+size.height);
 
       yAxisDraggable
-        .attr("x", padding.left-yAxisDraggableWidth)
-        .attr("y", padding.top-yAxisNumberHeight/2)
-        .attr("width", yAxisDraggableWidth)
-        .attr("height", size.height+yAxisNumberHeight);
+          .attr("x", padding.left-yAxisDraggableWidth)
+          .attr("y", padding.top-yAxisNumberHeight/2)
+          .attr("width", yAxisDraggableWidth)
+          .attr("height", size.height+yAxisNumberHeight);
 
       xAxisDraggable
-        .attr("x", padding.left)
-        .attr("y", size.height+padding.top)
-        .attr("width", size.width)
-        .attr("height", xAxisDraggableHeight);
+          .attr("x", padding.left)
+          .attr("y", size.height+padding.top)
+          .attr("width", size.width)
+          .attr("height", xAxisDraggableHeight);
 
-      if (options.title && sizeType.value > 1) {
+      adjustAxisDraggableFill();
+
+      if (options.title && sizeType.value > 0) {
         title
-            .attr("x", size.width/2)
+            .attr("x", function(d) { return size.width/2 - Math.min(size.width, getComputedTextLength(this))/2; })
             .attr("dy", function(d, i) { return -i * titleFontSizeInPixels - halfFontSizeInPixels + "px"; });
+        titleTooltip
+            .text("");
+      } else if (options.title) {
+        titleTooltip
+            .text(options.title);
       }
 
-      if (options.xlabel && sizeType.value > 1) {
+      if (options.xlabel && sizeType.value > 2) {
         xlabel
             .attr("x", size.width/2)
             .attr("y", size.height)
             .attr("dy", xAxisLabelBaseline + "px");
+        xAxisDraggableTooltip
+            .text("");
+      } else {
+        xAxisDraggableTooltip
+            .text(options.xlabel);
       }
 
-      if (options.ylabel && sizeType.value > 1) {
+      if (options.ylabel && sizeType.value > 2) {
         ylabel
             .attr("transform","translate(" + yAxisLabelBaseline + " " + size.height/2+") rotate(-90)");
+        yAxisDraggableTooltip
+            .text("");
+      } else {
+        yAxisDraggableTooltip
+          .text(options.ylabel);
       }
 
       notification
@@ -5995,37 +6386,48 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       vis.selectAll("g.x").remove();
       vis.selectAll("g.y").remove();
 
-      if (options.realTime) {
-        resizeCanvas();
-      }
+      updateMarkers();
+      updateRulers();
+      resizeCanvas();
     }
 
-    // ------------------------------------------------------------
-    //
-    // Chart Notification
-    //
-    // ------------------------------------------------------------
-
-    function notify(mesg) {
-      message = mesg;
-      if (mesg) {
-        notification.text(mesg);
+    function getComputedTextLength(el) {
+      if (el.getComputedTextLength) {
+        return el.getComputedTextLength();
       } else {
-        notification.text('');
+        return 100;
       }
     }
 
-    // ------------------------------------------------------------
-    //
-    // Redraw the plot canvas when it is translated or axes are re-scaled
-    //
-    // ------------------------------------------------------------
+    function adjustAxisDraggableFill() {
+      if (sizeType.value <= 1) {
+        xAxisDraggable
+          .style({
+            "fill":       "rgba(196, 196, 196, 0.2)"
+          });
+        yAxisDraggable
+          .style({
+            "fill":       "rgba(196, 196, 196, 0.2)"
+          });
+      } else {
+        xAxisDraggable
+          .style({
+            "fill":       null
+          });
+        yAxisDraggable
+          .style({
+            "fill":       null
+          });
+      }
+    }
 
+    //
+    // Redraw the plot and axes when plot is translated or axes are re-scaled
+    //
     function redraw() {
-
       // Regenerate x-ticks
       var gx = vis.selectAll("g.x")
-          .data(xScale.ticks(options.xTickCount), String)
+          .data(xScale.ticks(xTickCount), String)
           .attr("transform", tx);
 
       var gxe = gx.enter().insert("g", "a")
@@ -6033,7 +6435,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           .attr("transform", tx);
 
       gxe.append("line")
-          .attr("stroke", stroke)
+          .attr("stroke", gridStroke)
           .attr("y1", 0)
           .attr("y2", size.height);
 
@@ -6052,7 +6454,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
 
       // Regenerate y-ticks
       var gy = vis.selectAll("g.y")
-          .data(yScale.ticks(options.yTickCount), String)
+          .data(yScale.ticks(yTickCount), String)
           .attr("transform", ty);
 
       var gye = gy.enter().insert("g", "a")
@@ -6061,7 +6463,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           .attr("background-fill", "#FFEEB6");
 
       gye.append("line")
-          .attr("stroke", stroke)
+          .attr("stroke", gridStroke)
           .attr("x1", 0)
           .attr("x2", size.width);
 
@@ -6095,307 +6497,43 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
 
     // ------------------------------------------------------------
     //
-    // Draw the data
+    // Rendering: Updating samples/data points in the plot
     //
     // ------------------------------------------------------------
 
+
+    //
+    // Update plotted data, optionally pass in new samplePoint
+    //
     function update(samplePoint) {
       setCurrentSample(samplePoint);
-      if (options.realTime) {
-        realTimeUpdate(currentSample);
-      } else {
-        regularUpdate();
-      }
-    }
-
-    function realTimeUpdate(samplePoint) {
-      setCurrentSample(samplePoint);
-      updateCanvas(currentSample);
-
-      // old code saved for reference:
-
-      // if (graph.selectablePoints) {
-      //   var circle = vis.selectAll("circle")
-      //       .data(points, function(d) { return d; });
-
-      //   circle.enter().append("circle")
-      //       .attr("class", function(d) { return d === selected ? "selected" : null; })
-      //       .attr("cx",    function(d) { return x(d.x); })
-      //       .attr("cy",    function(d) { return y(d.y); })
-      //       .attr("r", 1.0)
-      //       .on("mousedown", function(d) {
-      //         selected = dragged = d;
-      //         update();
-      //       });
-
-      //   circle
-      //       .attr("class", function(d) { return d === selected ? "selected" : null; })
-      //       .attr("cx",    function(d) { return x(d.x); })
-      //       .attr("cy",    function(d) { return y(d.y); });
-
-      //   circle.exit().remove();
-      // }
-
+      updateCanvasFromPoints(currentSample);
+      updateMarkers();
       if (d3.event && d3.event.keyCode) {
         d3.event.preventDefault();
         d3.event.stopPropagation();
       }
     }
-
-
-    // ------------------------------------------------------------
-    //
-    // Update the slower SVG-based grapher canvas
-    //
-    // ------------------------------------------------------------
-
-    function regularUpdate() {
-
-      updateBrushElement();
-
-      vis.select("path").attr("d", line(points));
-
-      var circle = vis.select("svg").selectAll("circle")
-          .data(points, function(d) { return d; });
-
-      if (options.circleRadius && sizeType.value > 1) {
-        if (!(options.circleRadius <= 4 && sizeType.value < 3)) {
-          circle.enter().append("circle")
-              .attr("class", function(d) { return d === selected ? "selected" : null; })
-              .attr("cx",    function(d) { return xScale(d[0]); })
-              .attr("cy",    function(d) { return yScale(d[1]); })
-              .attr("r", options.circleRadius * (1 + sizeType.value) / 4)
-              .style("stroke-width", strokeWidth)
-              .style("cursor", circleCursorStyle)
-              .on("mousedown.drag",  dataPointDrag)
-              .on("touchstart.drag", dataPointDrag);
-
-          circle
-              .attr("class", function(d) { return d === selected ? "selected" : null; })
-              .attr("cx",    function(d) { return xScale(d[0]); })
-              .attr("cy",    function(d) { return yScale(d[1]); })
-              .attr("r", options.circleRadius * (1 + sizeType.value) / 4)
-              .style("stroke-width", strokeWidth);
-        }
-      }
-
-      circle.exit().remove();
-
-      if (d3.event && d3.event.keyCode) {
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
-      }
-    }
-
-    // ------------------------------------------------------------
-    //
-    // Update the real-time graph canvas
-    //
-    // ------------------------------------------------------------
-
-    // currently unused:
-
-    // function updateSample(currentSample) {
-    //   updateCanvas(currentSample);
-
-    //   if (graph.selectablePoints) {
-    //     var circle = vis.selectAll("circle")
-    //         .data(points, function(d) { return d; });
-
-    //     circle.enter().append("circle")
-    //         .attr("class", function(d) { return d === selected ? "selected" : null; })
-    //         .attr("cx",    function(d) { return x(d.x); })
-    //         .attr("cy",    function(d) { return y(d.y); })
-    //         .attr("r", 1.0)
-    //         .on("mousedown", function(d) {
-    //           selected = dragged = d;
-    //           update();
-    //         });
-
-    //     circle
-    //         .attr("class", function(d) { return d === selected ? "selected" : null; })
-    //         .attr("cx",    function(d) { return x(d.x); })
-    //         .attr("cy",    function(d) { return y(d.y); });
-
-    //     circle.exit().remove();
-    //   }
-
-    //   if (d3.event && d3.event.keyCode) {
-    //     d3.event.preventDefault();
-    //     d3.event.stopPropagation();
-    //   }
-    // }
-
-    function plotDrag() {
-      if (options.realTime) {
-        realTimePlotDrag();
-      } else {
-        regularPlotDrag();
-      }
-    }
-
-    function realTimePlotDrag() {
-      d3.event.preventDefault();
-      plot.style("cursor", "move");
-      if (d3.event.altKey) {
-        plot.style("cursor", "nesw-resize");
-        var p = d3.mouse(vis.node());
-        downx = xScale.invert(p[0]);
-        downy = yScale.invert(p[1]);
-        dragged = false;
-        d3.event.stopPropagation();
-      }
-    }
-
-    function regularPlotDrag() {
-      var p;
-      d3.event.preventDefault();
-      d3.select('body').style("cursor", "move");
-      if (d3.event.altKey) {
-        plot.style("cursor", "nesw-resize");
-        if (d3.event.shiftKey && options.addData) {
-          p = d3.mouse(vis.node());
-          var newpoint = [];
-          newpoint[0] = xScale.invert(Math.max(0, Math.min(size.width,  p[0])));
-          newpoint[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
-          points.push(newpoint);
-          points.sort(function(a, b) {
-            if (a[0] < b[0]) { return -1; }
-            if (a[0] > b[0]) { return  1; }
-            return 0;
-          });
-          selected = newpoint;
-          update();
-        } else {
-          p = d3.mouse(vis.node());
-          downx = xScale.invert(p[0]);
-          downy = yScale.invert(p[1]);
-          dragged = false;
-          d3.event.stopPropagation();
-        }
-        // d3.event.stopPropagation();
-      }
-    }
-
-    function falseFunction() {
-      return false;
-    }
-
-    function xAxisDrag() {
-      document.onselectstart = falseFunction;
-      d3.event.preventDefault();
-      var p = d3.mouse(vis.node());
-      downx = xScale.invert(p[0]);
-    }
-
-    function yAxisDrag() {
-      d3.event.preventDefault();
-      document.onselectstart = falseFunction;
-      var p = d3.mouse(vis.node());
-      downy = yScale.invert(p[1]);
-    }
-
-    function dataPointDrag(d) {
-      svg.node().focus();
-      d3.event.preventDefault();
-      document.onselectstart = falseFunction;
-      selected = dragged = d;
-      update();
-    }
-
-    // ------------------------------------------------------------
-    //
-    // Mouse handling for Axis scaling and graph canvas translation
-    //
-    // Attach the mousemove and mouseup to the body
-    // in case one wanders off the axis line
-    // ------------------------------------------------------------
-
-    function mousemove() {
-      var p = d3.mouse(vis.node());
-      // t = d3.event.changedTouches;
-
-      document.onselectstart = function() { return true; };
-      d3.event.preventDefault();
-      if (dragged && options.dataChange) {
-        dragged[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
-        persistScaleChangesToOptions();
-        update();
-      }
-
-      if (!isNaN(downx)) {
-        d3.select('body').style("cursor", "col-resize");
-        plot.style("cursor", "col-resize");
-        if (shiftingX) {
-          xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
-          persistScaleChangesToOptions();
-          redraw();
-        } else {
-          xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
-          persistScaleChangesToOptions();
-          redraw();
-        }
-        d3.event.stopPropagation();
-      }
-
-      if (!isNaN(downy)) {
-        d3.select('body').style("cursor", "row-resize");
-        plot.style("cursor", "row-resize");
-        yScale.domain(axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
-        persistScaleChangesToOptions();
-        redraw();
-        d3.event.stopPropagation();
-      }
-    }
-
-    function mouseup() {
-      d3.select('body').style("cursor", "auto");
-      plot.style("cursor", "auto");
-      document.onselectstart = function() { return true; };
-      if (!isNaN(downx)) {
-        redraw();
-        downx = NaN;
-      }
-      if (!isNaN(downy)) {
-        redraw();
-        downy = NaN;
-      }
-      dragged = null;
-    }
-
-    function showMarker(index) {
-      markedPoint = { x: points[index].x, y: points[index].y };
-    }
-
-    // ------------------------------------------------------------
-    //
-    // Update and rescale
-    //
-    // ------------------------------------------------------------
 
     // samplePoint is optional argument
     function updateOrRescale(samplePoint) {
       setCurrentSample(samplePoint);
-      if (options.realTime) {
-        updateOrRescaleRealTime(currentSample);
-      } else {
-        updateOrRescaleRegular();
-      }
+      updateOrRescalePoints();
     }
 
     // samplePoint is optional argument
-    function updateOrRescaleRealTime(samplePoint) {
+    function updateOrRescalePoints(samplePoint) {
       var i,
           domain = xScale.domain(),
-          xAxisStart = Math.round(domain[0]/sample),
-          xAxisEnd = Math.round(domain[1]/sample),
+          xAxisStart = Math.round(domain[0]),
+          xAxisEnd = Math.round(domain[1]),
           start = Math.max(0, xAxisStart),
           xextent = domain[1] - domain[0],
           shiftPoint = xextent * 0.95,
           currentExtent;
 
       setCurrentSample(samplePoint);
-      currentExtent = currentSample * sample;
+      currentExtent = points[currentSample-1][0];
       if (shiftingX) {
         shiftingX = domainShift();
         if (shiftingX) {
@@ -6454,92 +6592,290 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       }
     }
 
-    function updateOrRescaleRegular() {
-      var i,
-          domain = xScale.domain(),
-          xextent = domain[1] - domain[0],
-          shiftPoint = xextent * 0.8;
-
-      if (shiftingX) {
-        shiftingX = domainShift();
-        if (shiftingX) {
-          redraw();
-        } else {
-          update();
-        }
+    function circleClasses(d) {
+      cs = [];
+      if (d === selected) {
+        cs.push("selected");
+      }
+      if (cs.length === 0) {
+        return null;
       } else {
-        if (points[points.length-1][0] > domain[0] + shiftPoint) {
-          domainShift = shiftXDomainRegular(shiftPoint*0.75, options.axisShift);
-          shiftingX = domainShift();
-          redraw();
-        } else {
-          update();
-        }
+        return cs.join(" ");
       }
     }
 
-    function shiftXDomainRegular(shift, steps) {
-      var d0 = xScale.domain()[0],
-          d1 = xScale.domain()[1],
-          increment = 1/steps,
-          index = 0;
-      return function() {
-        var factor;
-        index += increment;
-        factor = shift * cubicEase(index);
-        xScale.domain([ d0 + factor, d1 + factor]);
+    function updateMarkerRadius() {
+      var d = xScale.domain(),
+          r = xScale.range();
+      markerRadius = (r[1] - r[0]) / ((d[1] - d[0]));
+      markerRadius = Math.min(markerRadius, 6);
+      markerStrokeWidth = markerRadius/4;
+    }
+
+    function updateMarkers() {
+      var marker,
+          markedPoints = null;
+      if (options.markAllDataPoints && sizeType.value > 1) {
+        markedPoints = points;
+      } else if (options.markNearbyDataPoints && sizeType.value > 1) {
+        markedPoints = selectable.slice(0);
+        if (selected !== null && markedPoints.indexOf(selected) == -1) {
+          markedPoints.push(selected);
+        }
+      }
+      if (markedPoints !== null) {
+        updateMarkerRadius();
+        marker = vis.select("svg").selectAll("circle").data(markedPoints);
+        marker.enter().append("circle")
+            .attr("class", circleClasses)
+            .attr("cx",    function(d) { return xScale(d[0]); })
+            .attr("cy",    function(d) { return yScale(d[1]); })
+            .attr("r", markerRadius)
+            .style("stroke-width", markerStrokeWidth)
+            .style("cursor", markerCursorStyle)
+            .on("mousedown.drag",  dataPointDrag)
+            .on("touchstart.drag", dataPointDrag)
+            .append("title")
+            .text(function(d) { return "( " + fx(d[0]) + ", " + fy(d[1]) + " )"; });
+
+        marker
+            .attr("class", circleClasses)
+            .attr("cx",    function(d) { return xScale(d[0]); })
+            .attr("cy",    function(d) { return yScale(d[1]); })
+            .select("title")
+            .text(function(d) { return "( " + fx(d[0]) + ", " + fy(d[1]) + " )"; });
+
+        marker.exit().remove();
+      }
+
+      updateRulers();
+    }
+
+    function updateRulers() {
+      if (options.showRulersOnSelection && selected !== null) {
+        selectedRulerX
+          .attr("y1", 0)
+          .attr("y2", size.height)
+          .attr("x1", function(d) { return selected === null ? 0 : xScale(selected[0]); } )
+          .attr("x2", function(d) { return selected === null ? 0 : xScale(selected[0]); } )
+          .attr("class", function(d) { return "ruler" + (selected === null ? " hidden" : ""); } );
+
+        selectedRulerY
+          .attr("x1", 0)
+          .attr("x2", size.width)
+          .attr("y1", function(d) { return selected === null ? 0 : yScale(selected[1]); } )
+          .attr("y2", function(d) { return selected === null ? 0 : yScale(selected[1]); } )
+          .attr("class", function(d) { return "ruler" + (selected === null ? " hidden" : ""); } );
+      } else {
+        selectedRulerX.attr("class", "ruler hidden");
+        selectedRulerY.attr("class", "ruler hidden");
+      }
+    }
+
+
+    // ------------------------------------------------------------
+    //
+    // UI Interaction: Plot dragging and translation; Axis re-scaling
+    //
+    // ------------------------------------------------------------
+
+    function plotMousemove() {
+      if (options.markNearbyDataPoints) {
+        var mousePoint = d3.mouse(vis.node()),
+            translatedMousePointX = xScale.invert(Math.max(0, Math.min(size.width, mousePoint[0]))),
+            p,
+            idx, pMin, pMax;
+        // highlight the central point, and also points to the left and right
+        // TODO Handle multiple data sets/lines
+        selectable = [];
+        for (i = 0; i < pointArray.length; i++) {
+          points = pointArray[i];
+          p = findClosestPointByX(translatedMousePointX, i);
+          if (p !== null) {
+            idx = points.indexOf(p);
+            pMin = idx - (options.extraCirclesVisibleOnHover);
+            pMax = idx + (options.extraCirclesVisibleOnHover + 1);
+            if (pMin < 0) { pMin = 0; }
+            if (pMax > points.length - 1) { pMax = points.length; }
+            selectable = selectable.concat(points.slice(pMin, pMax));
+          }
+        }
+        update();
+      }
+    }
+
+    function findClosestPointByX(x, line) {
+      if (typeof(line) == "undefined" || line === null) { line = 0; }
+      // binary search through points.
+      // This assumes points is sorted ascending by x value, which for realTime graphs is true.
+      points = pointArray[line];
+      if (points.length === 0) { return null; }
+      var min = 0,
+          max = points.length - 1,
+          mid, diff, p1, p2, p3;
+      while (min < max) {
+        mid = Math.floor((min + max)/2.0);
+        if (points[mid][0] < x) {
+          min = mid + 1;
+        } else {
+          max = mid;
+        }
+      }
+
+      // figure out which point is actually closest.
+      // we have to compare 3 points, to account for floating point rounding errors.
+      // if the mouse moves off the left edge of the graph, p1 may not exist.
+      // if the mouse moves off the right edge of the graph, p3 may not exist.
+      p1 = points[mid - 1];
+      p2 = points[mid];
+      p3 = points[mid + 1];
+      if (typeof(p1) !== "undefined" && Math.abs(p1[0] - x) <= Math.abs(p2[0] - x)) {
+        return p1;
+      } else if (typeof(p3) === "undefined" || Math.abs(p2[0] - x) <= Math.abs(p3[0] - x)) {
+        return p2;
+      } else {
+        return p3;
+      }
+    }
+
+    function plotDrag() {
+      var p;
+      d3.event.preventDefault();
+      d3.select('body').style("cursor", "move");
+      if (d3.event.altKey) {
+        plot.style("cursor", "nesw-resize");
+        if (d3.event.shiftKey && options.addData) {
+          p = d3.mouse(vis.node());
+          var newpoint = [];
+          newpoint[0] = xScale.invert(Math.max(0, Math.min(size.width,  p[0])));
+          newpoint[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
+          points.push(newpoint);
+          points.sort(function(a, b) {
+            if (a[0] < b[0]) { return -1; }
+            if (a[0] > b[0]) { return  1; }
+            return 0;
+          });
+          selected = newpoint;
+          update();
+        } else {
+          p = d3.mouse(vis.node());
+          downx = xScale.invert(p[0]);
+          downy = yScale.invert(p[1]);
+          draggedPoint = false;
+          d3.event.stopPropagation();
+        }
+        // d3.event.stopPropagation();
+      }
+    }
+
+    function falseFunction() {
+      return false;
+    }
+
+    function xAxisDrag() {
+      node.focus();
+      document.onselectstart = falseFunction;
+      d3.event.preventDefault();
+      var p = d3.mouse(vis.node());
+      downx = xScale.invert(p[0]);
+    }
+
+    function yAxisDrag() {
+      node.focus();
+      d3.event.preventDefault();
+      document.onselectstart = falseFunction;
+      var p = d3.mouse(vis.node());
+      downy = yScale.invert(p[1]);
+    }
+
+    function dataPointDrag(d) {
+      node.focus();
+      d3.event.preventDefault();
+      document.onselectstart = falseFunction;
+      if (selected === d) {
+        selected = draggedPoint = null;
+      } else {
+        selected = draggedPoint = d;
+      }
+      update();
+    }
+
+    function mousemove() {
+      var p = d3.mouse(vis.node()),
+          index,
+          px,
+          x,
+          nextPoint,
+          prevPoint,
+          minusHalf,
+          plusHalf;
+
+      // t = d3.event.changedTouches;
+
+      document.onselectstart = function() { return true; };
+      d3.event.preventDefault();
+      if (draggedPoint) {
+        if (options.dataChange) {
+          draggedPoint[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
+        } else {
+          index = points.indexOf(draggedPoint);
+          if (index && index < (points.length-1)) {
+            px = xScale.invert(p[0]);
+            x = draggedPoint[0];
+            nextPoint = points[index+1];
+            prevPoint = points[index-1];
+            minusHalf = x - (x - prevPoint[0])/2;
+            plusHalf =  x + (nextPoint[0] - x)/2;
+            if (px < minusHalf) {
+              draggedPoint = prevPoint;
+              selected = draggedPoint;
+            } else if (px > plusHalf) {
+              draggedPoint = nextPoint;
+              selected = draggedPoint;
+            }
+          }
+        }
         persistScaleChangesToOptions();
-        return xScale.domain()[0] < (d0 + shift);
-      };
-    }
-
-    // ------------------------------------------------------------
-    //
-    // Graph attribute updaters
-    //
-    // ------------------------------------------------------------
-
-    // update the title
-    function updateTitle() {
-      if (options.title && title) {
-        title.text(options.title);
+        update();
       }
-    }
 
-    // update the x-axis label
-    function updateXlabel() {
-      if (options.xlabel && xlabel) {
-        xlabel.text(options.xlabel);
-      }
-    }
-
-    // update the y-axis label
-    function updateYlabel() {
-      if (options.ylabel && ylabel) {
-        ylabel.text(options.ylabel);
-      } else {
-        ylabel.style("display", "none");
-      }
-    }
-
-    function addOneXYDataPair(newdata) {
-      if (!arguments.length) return points;
-      var i;
-      if (newdata instanceof Array && newdata.length > 0) {
-        if (newdata[0] instanceof Array) {
-          for(i = 0; i < newdata.length; i++) {
-            points.push(newdata[i]);
-          }
+      if (!isNaN(downx)) {
+        d3.select('body').style("cursor", "col-resize");
+        plot.style("cursor", "col-resize");
+        if (shiftingX) {
+          xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
         } else {
-          if (newdata.length === 2) {
-            points.push(newdata);
-          } else {
-            throw new Error("invalid argument to graph.addData() " + newdata + " length should === 2.");
-          }
+          xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
         }
+        persistScaleChangesToOptions();
+        updateMarkerRadius();
+        redraw();
+        d3.event.stopPropagation();
       }
-      updateOrRescale();
-      return api;
+
+      if (!isNaN(downy)) {
+        d3.select('body').style("cursor", "row-resize");
+        plot.style("cursor", "row-resize");
+        yScale.domain(axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
+        persistScaleChangesToOptions();
+        redraw();
+        d3.event.stopPropagation();
+      }
+    }
+
+    function mouseup() {
+      d3.select('body').style("cursor", "auto");
+      plot.style("cursor", "auto");
+      document.onselectstart = function() { return true; };
+      if (!isNaN(downx)) {
+        redraw();
+        downx = NaN;
+      }
+      if (!isNaN(downy)) {
+        redraw();
+        downy = NaN;
+      }
+      draggedPoint = null;
     }
 
     //------------------------------------------------------
@@ -6557,6 +6893,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
     */
     function autoscale() {
       var i,
+          j,
           len,
           point,
           x,
@@ -6570,15 +6907,18 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
 
       if (points.length < 2) return;
 
-      for (i = 0, len = points.length; i < len; i++){
-        point = points[i];
-        x = point.length ? point[0] : point.x;
-        y = point.length ? point[1] : point.y;
+      for (i = 0; i < pointArray.length; i++) {
+        points = pointArray[i];
+        for (j = 0, len = points.length; j < len; j++){
+          point = points[j];
+          x = point[0];
+          y = point[1];
 
-        if (x < xmin) xmin = x;
-        if (x > xmax) xmax = x;
-        if (y < ymin) ymin = y;
-        if (y > ymax) ymax = y;
+          if (x < xmin) xmin = x;
+          if (x > xmax) xmax = x;
+          if (y < ymin) ymin = y;
+          if (y > ymax) ymax = y;
+        }
       }
 
       // Like Math.pow but returns a value with the same sign as x: pow(-1, 0.5) -> -1
@@ -6777,94 +7117,183 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
 
     // ------------------------------------------------------------
     //
-    // Support for the real-time canvas-based graphing
+    // Canvas-based plotting
     //
     // ------------------------------------------------------------
 
-    function _realTimeAddPoint(p) {
-      if (points.length === 0) { return; }
-      markedPoint = false;
-      var index = points.length,
-          lengthX = index * sample,
-          point = { x: lengthX, y: p };
-      points.push(point);
+    function createGraphCanvas() {
+      graphCanvas = elem.append("canvas");
+      gcanvas = graphCanvas.node();
+      resizeCanvas();
     }
 
-    function addPoint(p) {
-      if (points.length === 0) { return; }
-      _realTimeAddPoint(p);
-      updateOrRescale();
+    function resizeCanvas() {
+      graphCanvas
+        .attr("class", "overlay")
+        .style({
+          "position": "absolute",
+          "width":    size.width + "px",
+          "height":   size.height + "px",
+          "top":      padding.top + "px",
+          "left":     padding.left + "px",
+          "z-index": 1
+        });
+      gcanvas = graphCanvas.node();
+      gcanvas.width = size.width;
+      gcanvas.height = size.height;
+      gcanvas.top = padding.top;
+      gcanvas.left = padding.left;
+      setupCanvasContext();
+      updateCanvasFromPoints(currentSample);
     }
 
-    function add_canvas_point(p) {
-      if (points.length === 0) { return; }
-      markedPoint = false;
-      var index = points.length,
-          lengthX = index * sample,
-          previousX = lengthX - sample,
-          point = { x: lengthX, y: p },
-          oldx = xScale.call(self, previousX, previousX),
-          oldy = yScale.call(self, points[index-1].y, index-1),
-          newx, newy;
-
-      points.push(point);
-      newx = xScale.call(self, lengthX, lengthX);
-      newy = yScale.call(self, p, lengthX);
-      gctx.beginPath();
-      gctx.moveTo(oldx, oldy);
-      gctx.lineTo(newx, newy);
-      gctx.stroke();
-    }
-
-    function addPoints(pnts) {
-      for (var i = 0; i < pointArray.length; i++) {
-        points = pointArray[i];
-        _realTimeAddPoint(pnts[i]);
+    function clearCanvas() {
+      if (gcanvas.getContext) {
+        gcanvas.width = gcanvas.width;
+        gctx.fillStyle = canvasFillStyle;
+        gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
+        gctx.strokeStyle = "rgba(255,65,0, 1.0)";
       }
-      setCurrentSample(points.length-1);
-      updateOrRescale();
     }
 
-    function updatePointArray(d) {
-      var i;
-      pointArray = [];
-      if (Object.prototype.toString.call(d) === "[object Array]") {
-        for (i = 0; i < d.length; i++) {
-          points = indexedData(d[i], 0, sample);
-          pointArray.push(points);
+    function setupCanvasContext() {
+      if (gcanvas.getContext) {
+        gctx = gcanvas.getContext( '2d' );
+        gctx.globalCompositeOperation = "source-over";
+        gctx.lineWidth = 1;
+        gctx.fillStyle = canvasFillStyle;
+        gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
+        gctx.strokeStyle = "rgba(255,65,0, 1.0)";
+      }
+    }
+
+    //
+    // Update Canvas plotted data from [x, y] data points
+    //
+    function updateCanvasFromPoints(samplePoint) {
+      var i, j, k,
+          dx,
+          px, py,
+          index,
+          yOrigin = yScale(0.00001),
+          lines = options.lines,
+          bars = options.bars,
+          twopi = 2 * Math.PI,
+          pointsLength = pointArray[0].length,
+          numberOfLines = pointArray.length,
+          xAxisStart,
+          xAxisEnd,
+          start,
+          lengthX;
+
+      // hack for lack of canvas support in jsdom tests
+      if (typeof gcanvas.getContext === "undefined" ) { return; }
+
+      setCurrentSample(samplePoint);
+      clearCanvas();
+      gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
+      if (pointsLength === 0) { return; }
+      xAxisStart = xScale.domain()[0];
+      xAxisEnd =   xScale.domain()[1];
+      start = Math.max(0, xAxisStart);
+      if (lines) {
+        for (i = 0; i < numberOfLines; i++) {
+          points = pointArray[i];
+          index = 0;
+          // find first point >= xAxisStart
+          for (j = 0; j < pointsLength; j++) {
+            if (points[j][0] >= xAxisStart) { break; }
+            index++;
+          }
+          if (index > 0) { --index; }
+          if (index >= pointsLength) { break; }
+          px = xScale(points[index][0]);
+          py = yScale(points[index][1]);
+          setStrokeColor(i);
+          gctx.beginPath();
+          gctx.moveTo(px, py);
+          dx = points[index][0];
+          index++;
+          // plot all ... or until one point past xAxisEnd
+          // or until we reach currentSample
+          for (; index < samplePoint; index++) {
+            dx = points[index][0];
+            px = xScale(dx);
+            py = yScale(points[index][1]);
+            gctx.lineTo(px, py);
+            if (dx >= xAxisEnd) { break; }
+          }
+          gctx.stroke();
+          // now plot in a desaturated style all the rest of the points
+          // ... or until one point past xAxisEnd
+          if (index < pointsLength && dx < xAxisEnd) {
+            setStrokeColor(i, true);
+            for (;index < pointsLength; index++) {
+              dx = points[index][0];
+              px = xScale(dx);
+              py = yScale(points[index][1]);
+              gctx.lineTo(px, py);
+              if (dx >= xAxisEnd) { break; }
+            }
+            gctx.stroke();
+          }
+        }
+      } else if (bars) {
+        for (i = 0; i < numberOfLines; i++) {
+          points = pointArray[i];
+          setStrokeColor(i);
+          pointStop = samplePoint - 1;
+          for (index=start; index < pointStop; index++) {
+            px = xScale(points[index][0]);
+            py = yScale(points[index][1]);
+            if (py === 0) {
+              continue;
+            }
+            gctx.beginPath();
+            gctx.moveTo(px, yOrigin);
+            gctx.lineTo(px, py);
+            gctx.stroke();
+          }
+          pointStop = points.length-1;
+          if (index < pointStop) {
+            setStrokeColor(i, true);
+            for (;index < pointStop; index++) {
+              px = xScale(points[index][0]);
+              py = yScale(points[index][1]);
+              gctx.beginPath();
+              gctx.moveTo(px, yOrigin);
+              gctx.lineTo(px, py);
+              gctx.stroke();
+            }
+          }
         }
       } else {
-        points = indexedData(options.dataset, 0, sample);
-        pointArray = [points];
+        for (i = 0; i < numberOfLines; i++) {
+          points = pointArray[i];
+          lengthX = 0;
+          setFillColor(i);
+          setStrokeColor(i, true);
+          pointStop = samplePoint - 1;
+          for (index=0; index < pointStop; index++) {
+            px = xScale(points[index][0]);
+            py = yScale(points[index][1]);
+            gctx.arc(px, py, 1, 0, twopi, false);
+            gctx.fill();
+          }
+          pointStop = points.length-1;
+          if (index < pointStop) {
+            setFillColor(i, true);
+            setStrokeColor(i, true);
+            for (;index < pointStop; index++) {
+              px = xScale(points[index][0]);
+              py = yScale(points[index][1]);
+              gctx.arc(px, py, 1, 0, twopi, false);
+              gctx.fill();
+            }
+          }
+        }
       }
     }
-
-    function truncateRealTimeData(d) {
-      var oldLength = pointArray[0].length;
-      updatePointArray(d);
-      if (pointArray[0].length === oldLength) {
-        return;
-      } else {
-        shiftingX = false;
-        setCurrentSample(points.length);
-        updateOrRescale();
-      }
-    }
-
-    function newRealTimeData(d) {
-      updatePointArray(d);
-      shiftingX = false;
-      setCurrentSample(points.length-1);
-      updateOrRescale();
-    }
-
-    // function addRealTimePoints(pnts) {
-    //   for (var i = 0; i < pointArray.length; i++) {
-    //     points = pointArray[i];
-    //     setStrokeColor(i);
-    //     add_canvas_point(pnts[i]);
-    //   }
-    // }
 
     function setStrokeColor(i, afterSamplePoint) {
       var opacity = afterSamplePoint ? 0.4 : 1.0;
@@ -6896,187 +7325,141 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       }
     }
 
-    function clearCanvas() {
-      gcanvas.width = gcanvas.width;
-      gctx.fillStyle = canvasFillStyle;
-      gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
-      gctx.strokeStyle = "rgba(255,65,0, 1.0)";
+    // ------------------------------------------------------------
+    //
+    // Adding samples/data points
+    //
+    // ------------------------------------------------------------
+
+    // Add an array of points then update the graph.
+    function addPoints(datapoints) {
+      addDataPoints(datapoints);
+      setCurrentSample(points.length);
+      updateOrRescale();
     }
 
-    function showCanvas() {
-      vis.select("path.line").remove();
-      gcanvas.style.zIndex = 1;
+    // Add an array of samples then update the graph.
+    function addSamples(datasamples) {
+      addDataSamples(datasamples);
+      setCurrentSample(points.length);
+      updateOrRescale();
     }
 
-    function hideCanvas() {
-      gcanvas.style.zIndex = -1;
-      update();
+
+    // Add a point [x, y] by processing sample (Y value) synthesizing
+    // X value from sampleInterval and number of points
+    function addSample(sample) {
+      var index = points.length,
+          xvalue = (index + dataSampleStart) * sampleInterval,
+          point = [ xvalue, sample ];
+      points.push(point);
+      setCurrentSample(points.length);
+      updateOrRescale();
     }
 
-    // update real-time canvas line graph
-    function updateCanvas(samplePoint) {
-      var i, index, py, pointStop,
-          yOrigin = yScale(0.00001),
-          lines = options.lines,
-          bars = options.bars,
-          twopi = 2 * Math.PI,
-          pointsLength = pointArray[0].length,
-          numberOfLines = pointArray.length,
-          xAxisStart = Math.round(xScale.domain()[0]/sample),
-          // xAxisEnd = Math.round(xScale.domain()[1]/sample),
-          start = Math.max(0, xAxisStart),
-          lengthX,
-          px;
+    // Add a point [x, y] to points array
+    function addPoint(pnt) {
+      points.push(pnt);
+      setCurrentSample(points.length);
+      updateOrRescale();
+    }
 
-
-      setCurrentSample(samplePoint);
-      clearCanvas();
-      gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
-      if (points.length === 0 || xAxisStart >= points.length) { return; }
-      if (lines) {
-        for (i = 0; i < numberOfLines; i++) {
+    // Add an array (or arrays) of points.
+    function addDataPoints(datapoints) {
+      if (Object.prototype.toString.call(datapoints[0][0]) === "[object Array]") {
+        for (var i = 0; i < datapoints.length; i++) {
           points = pointArray[i];
-          lengthX = start * sample;
-          px = xScale(lengthX);
-          py = yScale(points[start].y);
-          setStrokeColor(i);
-          gctx.beginPath();
-          gctx.moveTo(px, py);
-          pointStop = samplePoint - 1;
-          for (index=start+1; index < pointStop; index++) {
-            lengthX = index * sample;
-            px = xScale(lengthX);
-            py = yScale(points[index].y);
-            gctx.lineTo(px, py);
-          }
-          gctx.stroke();
-          pointStop = points.length-1;
-          if (index < pointStop) {
-            setStrokeColor(i, true);
-            for (;index < pointStop; index++) {
-              lengthX = index * sample;
-              px = xScale(lengthX);
-              py = yScale(points[index].y);
-              gctx.lineTo(px, py);
-            }
-            gctx.stroke();
-          }
+          points.push.apply(points, datapoints[i]);
+          pointArray[i] = points;
         }
-      } else if (bars) {
-        for (i = 0; i < numberOfLines; i++) {
-          points = pointArray[i];
-          setStrokeColor(i);
-          pointStop = samplePoint - 1;
-          for (index=start; index < pointStop; index++) {
-            lengthX = index * sample;
-            px = xScale(lengthX);
-            py = yScale(points[index].y);
-            if (py === 0) {
-              continue;
-            }
-            gctx.beginPath();
-            gctx.moveTo(px, yOrigin);
-            gctx.lineTo(px, py);
-            gctx.stroke();
-          }
-          pointStop = points.length-1;
-          if (index < pointStop) {
-            setStrokeColor(i, true);
-            for (;index < pointStop; index++) {
-              lengthX = index * sample;
-              px = xScale(lengthX);
-              py = yScale(points[index].y);
-              gctx.beginPath();
-              gctx.moveTo(px, yOrigin);
-              gctx.lineTo(px, py);
-              gctx.stroke();
-            }
-          }
-        }
+        points = pointArray[0];
       } else {
-        for (i = 0; i < numberOfLines; i++) {
+        points.push.apply(points, datapoints);
+        pointArray = [points];
+      }
+    }
+
+    // Add an array of points by processing an array of samples (Y values)
+    // synthesizing the X value from sampleInterval interval and number of points.
+    function addDataSamples(datasamples) {
+      var start,
+          i;
+      if (Object.prototype.toString.call(datasamples[0]) === "[object Array]") {
+        for (i = 0; i < datasamples.length; i++) {
+          if (!pointArray[i]) { pointArray.push([]); }
           points = pointArray[i];
-          lengthX = 0;
-          setFillColor(i);
-          setStrokeColor(i, true);
-          pointStop = samplePoint - 1;
-          for (index=0; index < pointStop; index++) {
-            px = xScale(lengthX);
-            py = yScale(points[index].y);
-
-            // gctx.beginPath();
-            // gctx.moveTo(px, py);
-            // gctx.lineTo(px, py);
-            // gctx.stroke();
-
-            gctx.arc(px, py, 1, 0, twopi, false);
-            gctx.fill();
-
-            lengthX += sample;
-          }
-          pointStop = points.length-1;
-          if (index < pointStop) {
-            setFillColor(i, true);
-            setStrokeColor(i, true);
-            for (;index < pointStop; index++) {
-              px = xScale(lengthX);
-              py = yScale(points[index].y);
-
-              // gctx.beginPath();
-              // gctx.moveTo(px, py);
-              // gctx.lineTo(px, py);
-              // gctx.stroke();
-
-              gctx.arc(px, py, 1, 0, twopi, false);
-              gctx.fill();
-
-              lengthX += sample;
-            }
-          }
+          start = points.length * sampleInterval;
+          points.push.apply(points, indexedData(datasamples[i], sampleInterval, start));
+          pointArray[i] = points;
+        }
+        points = pointArray[0];
+      } else {
+        for (i = 0; i < datasamples.length; i++) {
+          if (!pointArray[i]) { pointArray.push([]); }
+          start = pointArray[i].length * sampleInterval;
+          pointArray[i].push([start, datasamples[i]]);
         }
       }
     }
 
-    function initializeCanvas() {
-      if (!gcanvas) {
-        gcanvas = gcanvas || document.createElement('canvas');
-        node.appendChild(gcanvas);
+    function resetDataPoints(datapoints) {
+
+      function copy(array) {
+        var ret = [];
+        array.forEach(function(element) {
+          ret.push(element);
+        });
+        return ret;
       }
-      gcanvas.style.zIndex = -1;
-      setupCanvasProperties(gcanvas);
+
+      pointArray = [];
+      if (!datapoints || datapoints.length === 0) {
+        points = [];
+        pointArray = [points];
+        return;
+      }
+      if (Object.prototype.toString.call(datapoints[0][0]) === "[object Array]") {
+        for (var i = 0; i < datapoints.length; i++) {
+          pointArray.push(copy(datapoints[i]));
+        }
+        points = pointArray[0];
+      } else {
+        points = datapoints;
+        pointArray = [copy(points)];
+      }
     }
 
-    function resizeCanvas() {
-      setupCanvasProperties(gcanvas);
-      updateCanvas();
+    function resetDataSamples(datasamples, interval, start) {
+      pointArray = [];
+      if (Object.prototype.toString.call(datasamples[0]) === "[object Array]") {
+        for (var i = 0; i < datasamples.length; i++) {
+          pointArray.push(indexedData(datasamples[i], interval, start));
+        }
+        points = pointArray[0];
+      } else {
+        points = indexedData(datasamples, interval, start);
+        pointArray = [points];
+      }
+      sampleInterval = interval;
+      dataSampleStart = start;
     }
 
-    function setupCanvasProperties(canvas) {
-      cplot.rect = plot.node();
-      cplot.width = cplot.rect.width.baseVal.value;
-      cplot.height = cplot.rect.height.baseVal.value;
-      cplot.left = cplot.rect.getCTM().e;
-      cplot.top = cplot.rect.getCTM().f;
-      canvas.style.position = 'absolute';
-      canvas.width = cplot.width;
-      canvas.height = cplot.height;
-      canvas.style.width = cplot.width  + 'px';
-      canvas.style.height = cplot.height  + 'px';
-      canvas.offsetLeft = cplot.left;
-      canvas.offsetTop = cplot.top;
-      canvas.style.left = cplot.left + 'px';
-      canvas.style.top = cplot.top + 'px';
-      // canvas.style.border = 'solid 1px red';
-      canvas.style.pointerEvents = "none";
-      if (canvas.className.search("overlay") < 0) {
-         canvas.className += " overlay";
+
+    function resetPoints(datapoints) {
+      resetDataPoints(datapoints);
+    }
+
+    function resetSamples(datasamples) {
+      resetDataSamples(datasamples, sampleInterval, dataSampleStart);
+    }
+
+    function deletePoint(i) {
+      if (points.length) {
+        points.splice(i, 1);
+        if (currentSample >= points.length) {
+          currentSample = points.length-1;
+        }
       }
-      gctx = gcanvas.getContext( '2d' );
-      gctx.globalCompositeOperation = "source-over";
-      gctx.lineWidth = 1;
-      gctx.fillStyle = canvasFillStyle;
-      gctx.fillRect(0, 0, canvas.width, gcanvas.height);
-      gctx.strokeStyle = "rgba(255,65,0, 1.0)";
     }
 
     // ------------------------------------------------------------
@@ -7094,7 +7477,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
             case 46:  // delete
             if (options.dataChange) {
               var i = points.indexOf(selected);
-              points.splice(i, 1);
+              deletePoint(i);
               selected = points.length ? points[i > 0 ? i - 1 : 0] : null;
               update();
             }
@@ -7105,6 +7488,35 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           evt.preventDefault();
         }
       });
+    }
+
+    // ------------------------------------------------------------
+    //
+    // Graph attribute updaters
+    //
+    // ------------------------------------------------------------
+
+    // update the title
+    function updateTitle() {
+      if (options.title && title) {
+        title.text(options.title);
+      }
+    }
+
+    // update the x-axis label
+    function updateXlabel() {
+      if (options.xlabel && xlabel) {
+        xlabel.text(options.xlabel);
+      }
+    }
+
+    // update the y-axis label
+    function updateYlabel() {
+      if (options.ylabel && ylabel) {
+        ylabel.text(options.ylabel);
+      } else {
+        ylabel.style("display", "none");
+      }
     }
 
     // ------------------------------------------------------------
@@ -7145,57 +7557,6 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       initializeLayout();
       renderGraph();
       return api;
-    }
-
-    //
-    // Initialize
-    //
-    function initialize(idOrElement, opts, mesg) {
-      if (opts || !options) {
-        options = setupOptions(opts);
-      }
-
-      initializeLayout(idOrElement, mesg);
-
-      options.xrange = options.xmax - options.xmin;
-      options.yrange = options.ymax - options.ymin;
-
-      if (Object.prototype.toString.call(options.title) === "[object Array]") {
-        titles = options.title;
-      } else {
-        titles = [options.title];
-      }
-      titles.reverse();
-
-      fx = d3.format(options.xFormatter);
-      fy = d3.format(options.yFormatter);
-
-      // use local variable for access speed in addPoint()
-      sample = options.sample;
-
-      strokeWidth = options.strokeWidth;
-
-      points = options.points;
-      if (points === "fake") {
-        points = fakeDataPoints();
-      }
-
-      // In realTime mode the grapher expects either an array or arrays of dependent data.
-      // The sample variable sets the interval spacing between data samples.
-      if (options.realTime) {
-        pointArray = [];
-
-        if (Object.prototype.toString.call(options.dataset[0]) === "[object Array]") {
-          for (var i = 0; i < options.dataset.length; i++) {
-            pointArray.push(indexedData(options.dataset[i], 0, sample));
-          }
-          points = pointArray[0];
-        } else {
-          points = indexedData(options.dataset, 0);
-          pointArray = [points];
-        }
-      }
-      setCurrentSample(points.length-1);
     }
 
     //
@@ -7347,38 +7708,25 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         return api;
       },
 
-      // Adding or truncating real-time data
-      // Real-time data consists of an array (or an array or arrays) of samples.
-      // The interval between samples is assumed to have already been set
-      // by specifying options.sample when creating the graph.
-      newRealTimeData:      newRealTimeData,
-      truncateRealTimeData: truncateRealTimeData,
-      addPoint:             addPoint,
-      addPoints:            addPoints,
-
-      // Adding a single X,Y data pair
-      addOneXYDataPair:     addOneXYDataPair,
-
-      //
-      numberOfPoints:       numberOfPoints,
-
-      data: function(_) {
-        if (!arguments.length) return points;
-        var domain = xScale.domain();
-        options.points = points = _;
-        if (points.length > domain[1]) {
-          domain[0] += shift;
-          domain[1] += shift;
-          xScale.domain(domain);
-          redraw();
+      numberOfPoints: function() {
+        if (points) {
+          return points.length;
         } else {
-          update();
+          return false;
         }
-        return api;
       },
 
-      // unimplemented feature
-      showMarker:           showMarker
+      // Point data consist of an array (or arrays) of [x,y] arrays.
+      addPoints:       addPoints,
+      addPoint:        addPoint,
+      resetPoints:      resetPoints,
+
+      // Sample data consists of an array (or an array or arrays) of samples.
+      // The interval between samples is assumed to have already been set
+      // by specifying options.sampleInterval when creating the graph.
+      addSamples:      addSamples,
+      addSample:       addSample,
+      resetSamples: resetSamples
 
     };
 
@@ -7409,7 +7757,7 @@ define('common/controllers/graph-controller',['require','grapher/core/graph','co
       // internal implementation detail (the grapher options format).
       grapherOptionForComponentSpecProperty = {
         title: 'title',
-        realTime: 'realTime',
+        dataPoints: 'dataPoints',
         fontScaleRelativeToParent: 'fontScaleRelativeToParent',
         xlabel: 'xlabel',
         xmin: 'xmin',
@@ -7429,7 +7777,6 @@ define('common/controllers/graph-controller',['require','grapher/core/graph','co
 
   graphControllerCount = 0;
 
-
   return function graphController(component, scriptingAPI, interactivesController) {
     var // HTML element containing view
         $container,
@@ -7439,24 +7786,17 @@ define('common/controllers/graph-controller',['require','grapher/core/graph','co
         data = [],
         namespace = "graphController" + (++graphControllerCount);
 
-    /**
-      Returns the time interval that elapses between succeessive data points, same units as model's
-      displayTime property. (e.g, for MD2D model, picoseconds.) The current implementation of the
-      grapher requires this knowledge.
-    */
-    function getSamplePeriod() {
-      return model.get('displayTimePerTick');
-    }
 
     /**
-      Returns an array containing the current value of each model property specified in
-      component.properties.
+      Returns an array containing two-element arrays each containing the current model
+      time and the current value of each model property specified in component.properties.
     */
     function getDataPoint() {
-      var ret = [], i, len;
+      var ret = [], i, len,
+          time = model.get('time');
 
       for (i = 0, len = properties.length; i < len; i++) {
-        ret.push(model.get(properties[i]));
+        ret.push([time, model.get(properties[i])]);
       }
       return ret;
     }
@@ -7465,11 +7805,9 @@ define('common/controllers/graph-controller',['require','grapher/core/graph','co
       Return an options hash for use by the grapher.
     */
     function getOptions() {
-      var cProp,
-          gOption,
-          options = {
-            sample: getSamplePeriod()
-          };
+      var options = {},
+          cProp,
+          gOption;
 
       // update grapher options from component spec & defaults
       for (cProp in grapherOptionForComponentSpecProperty) {
@@ -7491,7 +7829,7 @@ define('common/controllers/graph-controller',['require','grapher/core/graph','co
       for (i = 0; i < dataPoint.length; i++) {
         data[i] = [dataPoint[i]];
       }
-      grapher.newRealTimeData(data);
+      grapher.resetPoints(data);
     }
 
     /**
@@ -7521,7 +7859,7 @@ define('common/controllers/graph-controller',['require','grapher/core/graph','co
         // Account for initial data, which corresponds to stepCounter == 0
         data[i].length = model.stepCounter() + 1;
       }
-      grapher.truncateRealTimeData(data);
+      grapher.resetPoints(data);
     }
 
     /**
@@ -7530,7 +7868,6 @@ define('common/controllers/graph-controller',['require','grapher/core/graph','co
     */
     function redrawCurrentStepPointer() {
       grapher.updateOrRescale(model.stepCounter());
-      grapher.showMarker(model.stepCounter());
     }
 
     /**
@@ -7557,13 +7894,6 @@ define('common/controllers/graph-controller',['require','grapher/core/graph','co
         }
       });
       model.on('invalidation.'+namespace, removeDataAfterStepPointer);
-
-      // As an imperfect hack (really the grapher should allow us to pass the correct x-axis value)
-      // we reset the graph if a model property change changes the time interval between ticks
-      model.addPropertiesListener(['timeStepsPerTick', 'timeStep'], function() {
-        resetGrapher();
-        resetData();
-      });
     }
 
     //
@@ -13217,15 +13547,9 @@ define('common/layout/semantic-layout-config',[],function () {
     /**
       Canonical dimensions of the interactive, they decide about font size.
       (canoncicalFontSize * fontScale) em is used for the interactive which fits this container:
-      600 * 98% because 2% is reserved for left and right padding (see: src/sass/_semantic-layout.sass).
     */
-    canonicalInteractiveWidth: 600 * 0.98,
-    /**
-      420 - 1% * 600 because 1% is reserved bottom padding (see: src/sass/_semantic-layout.sass).
-      Note that we can't just use 420 * 0.99, because in CSS padding defined in percentages
-      *always* refers to the container width (not height event if it's bottom or top padding).
-    */
-    canonicalInteractiveHeight: 420 - 0.01 * 600,
+    canonicalInteractiveWidth: 600,
+    canonicalInteractiveHeight: 420,
     /**
       Colors used to mark layout containers in the authoring mode.
     */
@@ -13529,13 +13853,21 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
         }
         if (container.right) {
           right = parseDimension(container.right);
-          left = right - $container.outerWidth();
-          $container.css("left", left);
+          if (container.left) {
+            $container.css("width", right - left);
+          } else {
+            left = right - $container.outerWidth();
+            $container.css("left", left);
+          }
         }
         if (container.bottom) {
           bottom = parseDimension(container.bottom);
-          top = bottom - $container.outerHeight();
-          $container.css("top", top);
+          if (container.top) {
+            $container.css("height", bottom - top);
+          } else {
+            top = bottom - $container.outerHeight();
+            $container.css("top", top);
+          }
         }
 
         // Containers with "aboveOthers" property should be treated in a special
@@ -13549,7 +13881,7 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
           }
         }
         if (container.belowOthers) {
-          height = getDimensionOfContainer($container, "height");
+          height = getDimensionOfContainer($container, "height") + padding;
           if (height > bottomBarWidth) {
             bottomBarWidth = height;
           }
@@ -13659,11 +13991,11 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
         case "container.width":
           return availableWidth;
         case "container.height":
-          return availableHeight + padding;
+          return availableHeight;
         case "interactive.width":
-          return availableWidth - padding;
+          return availableWidth - leftBoundary;
         case "interactive.height":
-          return availableHeight - (padding*2) - bottomBarWidth;
+          return availableHeight - topBoundary - bottomBarWidth;
         default:
           dim = dim.split(".");
           return getDimensionOfContainer($containerByID[dim[0]], dim[1]);
@@ -13681,7 +14013,7 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
 
       reset();
       availableWidth = canonicalInteractiveWidth;
-      availableHeight = canonicalInteractiveHeight - bottomBarWidth - padding;
+      availableHeight = canonicalInteractiveHeight;
       modelWidth = availableWidth;
 
       // Set basic interactive dimensions to default values to ensure that default font will be used.
@@ -13805,7 +14137,7 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
 
         reset();
         availableWidth  = $interactiveContainer.width();
-        availableHeight = $interactiveContainer.height() - bottomBarWidth - padding;
+        availableHeight = $interactiveContainer.height();
         modelWidth = availableWidth; // optimization
 
         // 0. Set font size of the interactive-container based on its size.
@@ -15059,7 +15391,11 @@ Module which provides convenience functions related to amino acids.
       */
 
       codonToAbbr: function(codon) {
-        return RNA_CODON_TABLE[codon];
+        if (codon.length !== 3) {
+          return "STOP";
+        } else {
+          return RNA_CODON_TABLE[codon];
+        }
       }
     };
   });
@@ -15585,19 +15921,15 @@ define('md2d/models/metadata',[],function() {
         immutable: true
       },
       minX: {
-        defaultValue: 0,
         serialize: false
       },
       maxX: {
-        defaultValue: 10,
         serialize: false
       },
       minY: {
-        defaultValue: 0,
         serialize: false
       },
       maxY: {
-        defaultValue: 10,
         serialize: false
       },
       width: {
@@ -15614,28 +15946,34 @@ define('md2d/models/metadata',[],function() {
         defaultValue: "md2d"
       },
       lennardJonesForces: {
-        defaultValue: true
+        defaultValue: true,
+        storeInTickHistory: true
       },
       coulombForces: {
-        defaultValue: true
+        defaultValue: true,
+        storeInTickHistory: true
       },
       temperatureControl: {
-        defaultValue: false
+        defaultValue: false,
+        storeInTickHistory: true
       },
       targetTemperature: {
         defaultValue: 300,
-        unitType: "temperature"
+        unitType: "temperature",
+        storeInTickHistory: true
       },
       modelSampleRate: {
         defaultValue: "default"
       },
       gravitationalField: {
         defaultValue: false,
-        unitType: "acceleration"
+        unitType: "acceleration",
+        storeInTickHistory: true
       },
       timeStep: {
         defaultValue: 1,
-        unitType: "time"
+        unitType: "time",
+        storeInTickHistory: true
       },
       dielectricConstant: {
         defaultValue: 1
@@ -15670,48 +16008,62 @@ define('md2d/models/metadata',[],function() {
         defaultValue: -2
       },
       viscosity: {
-        defaultValue: 1
+        defaultValue: 1,
+        storeInTickHistory: true
       },
       timeStepsPerTick: {
-        defaultValue: 50
+        defaultValue: 50,
+        storeInTickHistory: true
+      },
+      geneticEngineState: {
+        defaultValue: "dna"
+      },
+      DNA: {
+        defaultValue: ""
+      },
+      DNAComplement: {
+        serialize: false
+      },
+      mRNA: {
+        serialize: false
       }
     },
 
     viewOptions: {
       viewPortWidth: {
-        defaultValue: 10,
         unitType: "length",
         immutable: true
       },
       viewPortHeight: {
-        defaultValue: 10,
         unitType: "length",
         immutable: true
+      },
+      viewPortZoom: {
+        defaultValue: 1
       },
       viewPortX: {
-        defaultValue: 0,
-        unitType: "length",
-        immutable: true
+        unitType: "length"
       },
       viewPortY: {
-        defaultValue: 0,
-        unitType: "length",
-        immutable: true
+        unitType: "length"
       },
       backgroundColor: {
         defaultValue: "#eeeeee"
       },
       showClock: {
-        defaultValue: true
+        defaultValue: true,
+        storeInTickHistory: true
       },
       markColor: {
         defaultValue: "#f8b500"
       },
       keShading: {
-        defaultValue: false
+        defaultValue: false,
+        storeInTickHistory: true
       },
       chargeShading: {
-        defaultValue: false
+        defaultValue: false,
+        storeInTickHistory: true
       },
       useThreeLetterCode: {
         defaultValue: true
@@ -15723,16 +16075,19 @@ define('md2d/models/metadata',[],function() {
         defaultValue: true
       },
       showVDWLines: {
-        defaultValue: false
+        defaultValue: false,
+        storeInTickHistory: true
       },
       VDWLinesCutoff: {
         defaultValue: "medium"
       },
       showVelocityVectors: {
-        defaultValue: false
+        defaultValue: false,
+        storeInTickHistory: true
       },
       showForceVectors: {
-        defaultValue: false
+        defaultValue: false,
+        storeInTickHistory: true
       },
       showAtomTrace: {
         defaultValue: false
@@ -16067,41 +16422,6 @@ define('md2d/models/metadata',[],function() {
       }
     },
 
-    geneticProperties: {
-      DNA: {
-        defaultValue: ""
-      },
-      DNAComplement: {
-        readOnly: true,
-        serialize: false
-      },
-      mRNA: {
-        // Immutable directly via set method.
-        // Use provided API to generate mRNA.
-        immutable: true
-      },
-      translationStep: {
-        // When this property is undefined, it means that the translation
-        // hasn't been yet started. Note that when translation is finished,
-        // translationStep will be equal to "end".
-        // Immutable directly via set method.
-        // Use provided API to translate step by step.
-        immutable: true
-      },
-      x: {
-        defaultValue: 0.01
-      },
-      y: {
-        defaultValue: 0.01
-      },
-      height: {
-        defaultValue: 0.12
-      },
-      width: {
-        defaultValue: 0.08
-      }
-    },
-
     textBox: {
       text: {
         defaultValue: ""
@@ -16124,6 +16444,7 @@ define('md2d/models/metadata',[],function() {
       height: {},
       frame: {},
       color: {},
+      calloutPoint: {},
       backgroundColor: {
         defaultValue: "white"
       },
@@ -16272,302 +16593,6 @@ Custom pairwise Lennard Jones properties.
   });
 
 }).call(this);
-
-/*global define: false, $ */
-
-define('common/serialize',['require','arrays'],function(require) {
-
-  var arrays = require('arrays'),
-
-      infinityToString = function (obj) {
-        var i, len;
-        if (arrays.isArray(obj)) {
-          for (i = 0, len = obj.length; i < len; i++) {
-            if (obj[i] === Infinity || obj[i] === -Infinity) {
-              obj[i] = obj[i].toString();
-            }
-          }
-        } else {
-          for (i in obj) {
-            if (obj.hasOwnProperty(i)) {
-              if (obj[i] === Infinity || obj[i] === -Infinity) {
-                obj[i] = obj[i].toString();
-              }
-              if (typeof obj[i] === 'object' || arrays.isArray(obj[i])) {
-                infinityToString(obj[i]);
-              }
-            }
-          }
-        }
-      };
-
-  return function serialize(metaData, propertiesHash, count) {
-    var result = {}, propName, prop;
-    for (propName in metaData) {
-      if (metaData.hasOwnProperty(propName)) {
-        if (propertiesHash[propName] !== undefined && metaData[propName].serialize !== false) {
-          prop = propertiesHash[propName];
-          if (arrays.isArray(prop)) {
-            result[propName] = count !== undefined ? arrays.copy(arrays.extend(prop, count), []) : arrays.copy(prop, []);
-          }
-          else if (typeof prop === 'object') {
-            result[propName] = $.extend(true, {}, prop);
-          }
-          else {
-            result[propName] = prop;
-          }
-        }
-      }
-    }
-    // JSON doesn't allow Infinity values so convert them to strings.
-    infinityToString(result);
-    // TODO: to make serialization faster, replace arrays.copy(prop, [])
-    // with arrays.clone(prop) to use typed arrays whenever they are available.
-    // Also, do not call "infinityToString" function. This can be useful when
-    // we decide to use serialization in tick history manager.
-    // Then we can provide toString() function which will use regular arrays,
-    // replace each Infinity value with string and finally call JSON.stringify().
-    return result;
-  };
-
-});
-
-/*global d3, define */
-
-define('md2d/models/engine/genetic-properties',['require','common/validator','common/serialize','md2d/models/metadata','cs!md2d/models/aminoacids-helper'],function (require) {
-
-  var validator        = require('common/validator'),
-      serialize        = require('common/serialize'),
-      metadata         = require('md2d/models/metadata'),
-      aminoacidsHelper = require('cs!md2d/models/aminoacids-helper'),
-
-      ValidationError = validator.ValidationError;
-
-
-  return function GeneticProperties() {
-    var api,
-        changePreHook,
-        changePostHook,
-        data,
-        remainingAAs,
-
-        dispatch = d3.dispatch("change"),
-
-        calculateComplementarySequence = function () {
-          // A-T (A-U)
-          // G-C
-          // T-A (U-A)
-          // C-G
-
-          // Use lower case during conversion to
-          // avoid situation when you change A->T,
-          // and later T->A again.
-          var compSeq = data.DNA
-            .replace(/A/g, "t")
-            .replace(/G/g, "c")
-            .replace(/T/g, "a")
-            .replace(/C/g, "g");
-
-          data.DNAComplement = compSeq.toUpperCase();
-        },
-
-        customValidate = function (props) {
-          if (props.DNA) {
-            // Allow user to use both lower and upper case.
-            props.DNA = props.DNA.toUpperCase();
-
-            if (props.DNA.search(/[^AGTC]/) !== -1) {
-              // Character other than A, G, T or C is found.
-              throw new ValidationError("DNA", "DNA code on sense strand can be defined using only A, G, T or C characters.");
-            }
-          }
-          return props;
-        },
-
-        create = function (props) {
-          changePreHook();
-
-          // Note that validator always returns a copy of the input object, so we can use it safely.
-          props = validator.validateCompleteness(metadata.geneticProperties, props);
-          props = customValidate(props);
-
-          // Note that validator always returns a copy of the input object, so we can use it safely.
-          data = props;
-          calculateComplementarySequence();
-
-          changePostHook();
-          dispatch.change();
-        },
-
-        update = function (props) {
-          var key;
-
-          changePreHook();
-
-          // Validate and update properties.
-          props = validator.validate(metadata.geneticProperties, props);
-          props = customValidate(props);
-
-          for (key in props) {
-            if (props.hasOwnProperty(key)) {
-              data[key] = props[key];
-            }
-          }
-
-          if (props.DNA) {
-            // New DNA code specified, update related properties.
-            // 1. DNA complementary sequence.
-            calculateComplementarySequence();
-            // 2. mRNA is no longer valid. Do not recalculate it automatically
-            //    (transribeDNA method should be used).
-            delete data.mRNA;
-            // 3. Any translation in progress should be reseted.
-            delete data.translationStep;
-          }
-
-          changePostHook();
-          dispatch.change();
-        };
-
-    // Public API.
-    api = {
-      registerChangeHooks: function (newChangePreHook, newChangePostHook) {
-        changePreHook = newChangePreHook;
-        changePostHook = newChangePostHook;
-      },
-
-      // Sets (updates) genetic properties.
-      set: function (props) {
-        if (data === undefined) {
-          // Use other method of validation, ensure that the data hash is complete.
-          create(props);
-        } else {
-          // Just update existing genetic properties.
-          update(props);
-        }
-      },
-
-      // Returns genetic properties.
-      get: function () {
-        return data;
-      },
-
-      // Deserializes genetic properties.
-      deserialize: function (props) {
-        create(props);
-      },
-
-      // Serializes genetic properties.
-      serialize: function () {
-        return data ? serialize(metadata.geneticProperties, data) : undefined;
-      },
-
-      // Convenient method for validation. It doesn't throw an exception,
-      // instead a special object with validation status is returned. It can
-      // be especially useful for UI classes to avoid try-catch sequences with
-      // "set". The returned status object always has a "valid" property,
-      // which contains result of the validation. When validation fails, also
-      // "errors" hash is provided which keeps error for property causing
-      // problems.
-      // e.g. {
-      //   valid: false,
-      //   errors: {
-      //     DNA: "DNA code on sense strand can be defined using only A, G, T or C characters."
-      //   }
-      // }
-      validate: function (props) {
-        var status = {
-          valid: true
-        };
-        try {
-          // Validation based on metamodel definition.
-          props = validator.validate(metadata.geneticProperties, props);
-          // Custom validation.
-          customValidate(props);
-        } catch (e) {
-          status.valid = false;
-          status.errors = {};
-          status.errors[e.prop] = e.message;
-        }
-        return status;
-      },
-
-      on: function(type, listener) {
-        dispatch.on(type, listener);
-      },
-
-      // Transcribes mRNA from DNA.
-      // Result is saved in the mRNA property.
-      transcribeDNA: function() {
-        changePreHook();
-        // A-U
-        // G-C
-        // T-A
-        // C-G
-
-        // Use lower case during conversion to
-        // avoid situation when you change G->C,
-        // and later C->G again.
-        var mRNA = data.DNAComplement
-          .replace(/A/g, "u")
-          .replace(/G/g, "c")
-          .replace(/T/g, "a")
-          .replace(/C/g, "g");
-
-        data.mRNA = mRNA.toUpperCase();
-
-        changePostHook();
-        dispatch.change();
-      },
-
-      // Translates mRNA into amino acids chain.
-      translate: function() {
-        var result = [],
-            mRNA, abbr, i, len;
-
-        // Make sure that mRNA is available.
-        if (data.mRNA === undefined) {
-          api.transcribeDNA();
-        }
-        mRNA = data.mRNA;
-
-        for (i = 0, len = mRNA.length; i + 3 <= len; i += 3) {
-          abbr = aminoacidsHelper.codonToAbbr(mRNA.substr(i, 3));
-          if (abbr === "STOP" || abbr === undefined) {
-            return result;
-          }
-          result.push(abbr);
-        }
-
-        return result;
-      },
-
-      translateStepByStep: function() {
-        var aaSequence, aaAbbr;
-
-        changePreHook();
-
-        aaSequence = api.translate();
-        if (data.translationStep === undefined) {
-          data.translationStep = 0;
-        } else {
-          data.translationStep += 1;
-        }
-        aaAbbr = aaSequence[data.translationStep];
-        if (aaAbbr === undefined) {
-          data.translationStep = "end";
-        }
-        changePostHook();
-        dispatch.change();
-
-        return aaAbbr;
-      }
-    };
-
-    return api;
-  };
-
-});
 
 /*global define */
 
@@ -16814,7 +16839,7 @@ define('md2d/models/engine/neighbor-list',['require','arrays','common/array-type
 /*global define: true */
 /*jslint eqnull: true, boss: true, loopfunc: true*/
 
-define('md2d/models/engine/md2d',['require','exports','module','arrays','common/array-types','common/console','./constants/index','cs!md2d/models/aminoacids-helper','./math/index','./potentials/index','./potentials/index','cs!./pairwise-lj-properties','./genetic-properties','common/models/engines/clone-restore-wrapper','./cell-list','./neighbor-list'],function (require, exports, module) {
+define('md2d/models/engine/md2d',['require','exports','module','arrays','common/array-types','common/console','./constants/index','cs!md2d/models/aminoacids-helper','./math/index','./potentials/index','./potentials/index','cs!./pairwise-lj-properties','common/models/engines/clone-restore-wrapper','./cell-list','./neighbor-list'],function (require, exports, module) {
 
   var arrays               = require('arrays'),
       arrayTypes           = require('common/array-types'),
@@ -16826,7 +16851,6 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
       coulomb              = require('./potentials/index').coulomb,
       lennardJones         = require('./potentials/index').lennardJones,
       PairwiseLJProperties = require('cs!./pairwise-lj-properties'),
-      GeneticProperties    = require('./genetic-properties'),
       CloneRestoreWrapper  = require('common/models/engines/clone-restore-wrapper'),
       CellList             = require('./cell-list'),
       NeighborList         = require('./neighbor-list'),
@@ -17117,9 +17141,6 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         N_obstacles = 0,
 
         // ####################################################################
-        geneticProperties,
-
-        // ####################################################################
         //                      Misc Properties
         // Hash of arrays containing VdW pairs
         vdwPairs,
@@ -17212,9 +17233,6 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
 
           // Custom pairwise properties.
           pairwiseLJProperties = new PairwiseLJProperties(engine);
-
-          // Genetic properties (like DNA, mRNA etc.).
-          geneticProperties = new GeneticProperties();
 
           radialBondMatrix = [];
           //  Initialize radialBondResults[] array consisting of hashes of radial bond
@@ -18309,23 +18327,25 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
                 dy = y[atomIdx] - cm.y;
                 r = Math.sqrt(dx * dx + dy * dy);
 
-                temp = hydrophobicity[atomIdx] * solventFactor;
+                if (r > 0) {
+                  temp = hydrophobicity[atomIdx] * solventFactor;
 
-                // AAs being pulled into the center of mass should feel an additional force factor that depends
-                // on distance from the center of mass, ranging between 1 and 25, with 1 being furthest away from the CoM
-                // and 25 being the max when at the CoM or within a certain radius of the CoM. In some ways this
-                // is closer to nature as the core of a protein is less exposed to solvent and thus even more stable.
-                if (temp > 0 && r < additionalSolventForceThreshold) {
-                  // Force towards the center of mass, distance from the CoM less than a given threshold.
-                  // Multiply force by an additional factor defined by the linear function of 'r' defined by two points:
-                  // (0, additionalSolventForceMult) and (additionalSolventForceThreshold, 1).
-                  temp *= (1 - additionalSolventForceMult) * r / additionalSolventForceThreshold + additionalSolventForceMult;
+                  // AAs being pulled into the center of mass should feel an additional force factor that depends
+                  // on distance from the center of mass, ranging between 1 and 25, with 1 being furthest away from the CoM
+                  // and 25 being the max when at the CoM or within a certain radius of the CoM. In some ways this
+                  // is closer to nature as the core of a protein is less exposed to solvent and thus even more stable.
+                  if (temp > 0 && r < additionalSolventForceThreshold) {
+                    // Force towards the center of mass, distance from the CoM less than a given threshold.
+                    // Multiply force by an additional factor defined by the linear function of 'r' defined by two points:
+                    // (0, additionalSolventForceMult) and (additionalSolventForceThreshold, 1).
+                    temp *= (1 - additionalSolventForceMult) * r / additionalSolventForceThreshold + additionalSolventForceMult;
+                  }
+
+                  fx = temp * dx / r;
+                  fy = temp * dy / r;
+                  ax[atomIdx] -= fx;
+                  ay[atomIdx] -= fy;
                 }
-
-                fx = temp * dx / r;
-                fy = temp * dy / r;
-                ax[atomIdx] -= fx;
-                ay[atomIdx] -= fy;
               }
             }
           }
@@ -19325,9 +19345,21 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         springForceY[i] = y;
       },
 
-      removeSpringForce: function(i) {
-        if (i >= N_springForces) return;
+      removeSpringForce: function(idx) {
+        var i, j;
+
+        if (idx >= N_springForces) {
+          throw new Error("Spring force " + idx + " doesn't exist, so it can't be removed.");
+        }
+
         N_springForces--;
+
+        // Shift spring forces properties.
+        for (i = idx; i < N_springForces; i++) {
+          for (j = 0; j < 4; j++) {
+            springForces[j][i] = springForces[j][i + 1];
+          }
+        }
       },
 
       springForceAtomIndex: function(i) {
@@ -20418,7 +20450,6 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
     // To ensure that client code always has access to these public properties,
     // they should be initialized  only once during the engine lifetime (in the initialize method).
     engine.pairwiseLJProperties = pairwiseLJProperties;
-    engine.geneticProperties = geneticProperties;
 
     // Finally, return Public API.
     return engine;
@@ -20458,7 +20489,18 @@ define('common/models/tick-history',[],function() {
         listState,
         defaultSize = 1000,
         // List of objects defining TickHistoryCompatible Interface.
-        externalObjects = [];
+        externalObjects = [],
+
+        // Provide the "old" interface for models that don't use PropertySupport yet, but provide
+        // a different, new interface for models using PropertySupport for their parameters, etc.
+        // Such models are smart enough to send a single hash of raw property values for all the
+        // properties (parameters, main properties, view properties, etc) we need to save. Older
+        // models need to provide us with separate lists of "regular" properties and parameters,
+        // with their own separate restore callbacks.
+        //
+        //     ***      Remember to remove this when all models use PropertySupport!        ***
+        //
+        useNewInterface = !!modelState.getProperties;
 
     function newState() {
       return { input: {}, state: [], parameters: {} };
@@ -20488,17 +20530,22 @@ define('common/models/tick-history',[],function() {
           parameters,
           name;
 
-      // save model input properties
-      for (i = 0; i < modelState.input.length; i++) {
-        prop = modelState.input[i];
-        destination.input[prop] = modelState.getRawPropertyValue(prop);
-      }
+      if (useNewInterface) {
+        // we expect that modelState.getProperties returns us a hash we can keep
+        destination.input = modelState.getProperties();
+      } else {
+        // save model input properties
+        for (i = 0; i < modelState.input.length; i++) {
+          prop = modelState.input[i];
+          destination.input[prop] = modelState.getRawPropertyValue(prop);
+        }
 
-      // save model parameters
-      parameters = modelState.parameters;
-      for (name in parameters) {
-        if (parameters.hasOwnProperty(name) && parameters[name].isDefined) {
-          destination.parameters[name] = modelState.getRawPropertyValue(name);
+        // save model parameters
+        parameters = modelState.parameters;
+        for (name in parameters) {
+          if (parameters.hasOwnProperty(name) && parameters[name].isDefined) {
+            destination.parameters[name] = modelState.getRawPropertyValue(name);
+          }
         }
       }
 
@@ -20558,8 +20605,10 @@ define('common/models/tick-history',[],function() {
       // restore model input properties
       modelState.restoreProperties(savedState.input);
 
-      // restore parameters
-      modelState.restoreParameters(savedState.parameters);
+      if (!useNewInterface) {
+        // old interface requires restoring parameters separately
+        modelState.restoreParameters(savedState.parameters);
+      }
 
       // restore model objects defining state
       state = savedState.state;
@@ -20680,6 +20729,862 @@ define('common/models/tick-history',[],function() {
     reset();
     push();
     return tickHistory;
+  };
+});
+
+/*global define: false */
+/**
+
+  This module provides support which Lab model types can use to implement observable properties that
+  have custom getters, setters, and validation. It is specialized for the needs of interactive,
+  computationally intensive simulations which want to enable UI bindings to simulation-state
+  variables that evolve in time and change at potentially every clock tick.
+
+  For example, if the model object using PropertySupport is 'model':
+
+    > model.addObserver('kineticEnergy', function() { console.log(model.properties.kineticEnergy); })
+    > model.start()
+    3.10225948103683
+    3.102259509874652
+    3.1022595094558194
+    ...
+    > model.addObserver('property', function() { console.log('property changed!'); })
+    > model.properties.property = 1
+    property changed!
+    > model.properties.property
+    1
+
+  Or, using the "legacy" interface:
+
+    > model.addObserver('kineticEnergy', function() { console.log(model.get('kineticEnergy'); })
+    > model.start()
+    3.10225948103683
+    3.102259509874652
+    3.1022595094558194
+    ...
+    > model.addObserver('property', function() { console.log('property changed!'); })
+    > model.set('property', 1)
+    property changed!
+    > model.get('property')
+    1
+
+  The design of this module differs in several ways than the property support implemented by general
+  web MVC frameworks such as Backbone, Ember, and Angular.
+
+  First, we assume that the properties module is used to enable UI binding and state saving for a
+  simulation engine which has its own internal data structures and which executes many iterations of
+  its inner loop between each screen refresh. As a result, we must assume that any computed property
+  can change between "clock ticks" and that most computed properties are not simple functions of
+  the value of other properties. Therefore we provide mechanisms that must be explicitly invoked by
+  the model to synchronize the engine's internal state to the exposed property values when the
+  engine considers it appropriate to do so.
+
+  Second, we assume that the most properties are numbers that represent physical quantities that
+  either parameterize the simulation or are computed by it.
+
+  Third, we assume that, the simulation may need to save and restore the values of a subset of
+  properties outside the usual setter/getter cycle. Specifically, we allow the simulation to define
+  two subsets of properties: one that represents the entire set of properties required to restore
+  the state of the model, for use when saving the model to storage; and a smaller subset of
+  properties that represent the time-varying state of the model, for use when rewinding or fast-
+  forwarding the model while it retains the remainder of its state in memory.
+
+*/
+define('common/property-support',[],function() {
+
+  // If at all possible, avoid adding dependencies to this module.
+
+  // These are the properties that can be passed as the 'descriptor' argument to defineProperty.
+  var descriptorProperties = {
+
+    /**
+      A getter function that will be executed whenever the value of this property is read.
+
+      Use this, for example, to make a property reflect internal state of the simulation.
+
+      The property will be considered a "computed property" if and only if it has a getter. The
+      return value of the getter is considered the "raw" property value and will be passed through
+      the afterGetTransform, if one is defined, to generate the final value of the property.
+
+      The (untransformed) raw getter value will be cached unless the enableCaching property of the
+      propertySupport object is false. The cache can be cleared by calling the
+      deleteComputedPropertyCachedValues method of the propertySupport object. The caching normally
+      occurs lazily, but paired calls to the storeComputedProperties and
+      notifyChangedComputedProperties methods of the propertySupport object cause all properties
+      with getters to be computed and then recomputed, triggering notification of the observers of
+      properties whose value changed between the calls.
+
+      Optional.
+    */
+    get: {
+      defaultValue: undefined,
+      type: 'function'
+    },
+
+    /**
+      A setter function that will be executed when the value of this property is assigned.
+
+      Use this, for example, to modify simulation state when the property is changed.
+
+      Note that this function is not required to store the value in any way; a corresponding getter
+      does not need to be defined, although one could be. This setter is normally executed just to
+      make sure the correct side effects occur when a property assignment is made.
+
+      The value received by this function is a "raw" value. That is, if the value of this property
+      is set "normally", then the value is first passed through the beforeSetTransform, if one is
+      defined, and the transformed value is passed to this function. (If that sounds backwards,
+      consider "raw" values to be of the type operated on by the simulation engine; transformed
+      values are what are visible in the user interface.)
+
+      The set function is called whenever a normal assignment is made to the property, but it may or
+      may not be called when the property value is set "behind the scenes" by the setRawValues
+      method. It will be called if and onlyh if this property key is present in the hash sent to
+      setRawValues *and* the invokeSetterAfterBulkRestore descriptor value for this property is
+      true.
+
+      This is useful for distinguishing between properties whose setters must manipulate private
+      state variables when they are called, and properties whose setter action operates entirely
+      by setting publicly visible
+    */
+    set: {
+      defaultValue: undefined,
+      type: 'function'
+    },
+
+    /**
+      A function that will be called with the new, "raw" value of this property whenever the
+      property is assigned to.
+
+      If the value is invalid, the validate function should throw an exception. The validate
+      function is *not* called when the property value is set via setRawValues.
+    */
+    validate: {
+      defaultValue: undefined,
+      type: 'function'
+    },
+
+    /**
+      A callback that is called before assignment to the property. (Exception: it is not called
+      when the value is set via the setRawValues method of propertySupport.)
+
+      Use this to detect changes which may cause other property values to need to be updated.
+
+      For convenience, the property key is passed to the callback. The callback's return value is
+      discarded.
+    */
+    beforeSetCallback: {
+      defaultValue: undefined,
+      type: 'function'
+    },
+
+    /**
+      A callback that is called after assignment to the property. (Exception: it is not called
+      when the value is set via the setRawValues method of propertySupport.)
+
+      Use this to detect changes which may cause other property values to need to be updated.
+
+      For convenience, the property key is passed to the callback. The callback's return value is
+      discarded.
+    */
+    afterSetCallback: {
+      defaultValue: undefined,
+      type: 'function'
+    },
+
+    /**
+      A function that is called with the return value of the get method whenever this property value
+      is read. The value returned by this function is returned as the value of the property.
+
+      If the transform is not defined, no transform is applied and the value of the property is
+      simply the value returned by the get method.
+
+      The expected use of this transform (and the associated beforeSetTransform) is to allow the
+      same simulation engine to appear to operate at different length scales. Currently, the MD2D
+      engine uses afterGetTransforms to convert values that are nominally in microscopic units (nm,
+      for example) to values in a macroscopic unit system (m).
+    */
+    afterGetTransform: {
+      defaultValue: undefined,
+      type: 'function'
+    },
+
+    /**
+      A function that is called to transform the property value to a "raw" value which is passed to
+      the set function whenever this property is assigned to.
+
+      If the transform is not defined, no transform is applied and the value that is assigned to the
+      property is the value that is passed to the set method.
+    */
+    beforeSetTransform: {
+      defaultValue: undefined,
+      type: 'function'
+    },
+
+    /**
+      If true, the property is considered read-only (and, practically speaking, must have a getter).
+
+      Attempts to assign to the property will throw an error whether the property is directly
+      assigned to or a value for the property is passed to the setRawValues method of the
+      propertySupport object.
+
+      Note that the native 'writable' property of ES5 Object descriptors does not apply to accessor
+      properties (those with setters and getters, such as we construct in this module).
+    */
+    writable: {
+      defaultValue: true,
+      type: 'boolean'
+    },
+
+    /**
+      If true, then the raw value of this property will be included in historyStateRawValues hash.
+    */
+    includeInHistoryState: {
+      defaultValue: false,
+      type: 'boolean'
+    },
+
+    /**
+      If true, and this property's descriptor also includes a set function, then the set function
+      will be called when the value of this property is updated via the setRawValues method of the
+      PropertySupport object.
+
+      If false, setRawValues will update the property without calling the set method.
+
+      It is useful to set this to false for properties whose setter action operates entirely by
+      directly or indirectly manipulating other properties. When setRawValues is used to restore the
+      value of those properties during navigation of simulation history, it would be undesirable to
+      repeat the setter action as it is entirely accounted for by the value of the other properties.
+    */
+    invokeSetterAfterBulkRestore: {
+      defaultValue: true,
+      type: 'boolean'
+    },
+
+    /**
+      A string that represents the user-defined categorization of this property.
+
+      When the propertySupport object is initialized, it can be passed a list of strings
+      containing the different property types the engine wishes to use to categorize its properties.
+
+      PRopertySupport mixes into its target object a method called propertiesOfType which can be
+      used to filter the set of properties by category
+
+      (For example, MD2D defines "mainProperties", "viewOptions", "parameters", and "outputs")
+    */
+    type: {
+      defaultValue: undefined,
+      type: 'propertyType'
+    },
+
+    /**
+      An arbitrary object that will be returned when this property's key is passed to the
+      getPropertyDescription method of the target object.
+
+      Use this (possibly combined with enumeration and categorization of properties) to expose the
+      list of properties to client code for use by e.g,. a UI builder or live scripting help.
+    */
+    description: {
+      defaultValue: undefined
+    }
+  };
+
+  function validateIsType(type, propertyKey, value) {
+    // This is sufficient for functions and strings, which is all we test for.
+    if (typeof value !== type) {
+      throw new TypeError(propertyKey + " must be a " + type + ".");
+    }
+  }
+
+  function copy(a) {
+    var ret = [];
+    a.forEach(function(item) {
+      ret.push(item);
+    });
+    return ret;
+  }
+
+  // Constructs a propertySupport object for use by client code. Client code (e.g., models) can maintain a
+  // private reference to the propertySupport objectg and delegate property handling to it, and they
+  // can optionally call the mixInto method of the propertySupport method to mix in a useful set of
+  // public-facing methods and properties.
+
+  // Accepts an args object with an optional 'types' arg, which should be a list of strings that
+  // represent user-defined categories of properties.
+  return function PropertySupport(args) {
+
+    var propertyTypes = args && args.types && copy(args.types) || [],
+        propertyInformation = {},
+        cachedPropertiesObjects = {
+          all: undefined,
+          byType: {}
+        },
+        cachingIsEnabled = true,
+        notificationsAreBatched = false,
+
+        // all properties that were notified while notifications were batched
+        changedPropertyKeys = [],
+
+        // all properties with a getter
+        computedPropertyKeys = [],
+
+        // all properties for which includeInHistoryState is true
+        historyStatePropertyKeys = [];
+
+
+    // observed properties with a getter
+    function observedComputedPropertyKeys() {
+      return computedPropertyKeys.filter(function(key) {
+        return propertyInformation[key].observers.length > 0;
+      });
+    }
+
+    function validateIsPropertyType(value) {
+      if (propertyTypes.indexOf(value) < 0) {
+        throw new TypeError(value + " is not a recognized property type.");
+      }
+    }
+
+    // Copy the properties described in descriptorProperties from 'descriptor' to return value;
+    // validate each value of descriptor according to descriptorProperties[key].type and,
+    // if no value is supplied for a given key in 'descriptor' use the default value specified
+    // in descriptorProperties[key].default
+    function validateDescriptor(descriptor) {
+      var ret = {};
+
+      Object.keys(descriptorProperties).forEach(function(key) {
+        var descriptorProperty = descriptorProperties[key];
+
+        if (descriptor[key] !== undefined) {
+          ret[key] = descriptor[key];
+          switch (descriptorProperty.type) {
+            case 'boolean':
+              ret[key] = !!ret[key];
+              break;
+            case 'function':
+              validateIsType('function', key, descriptor[key]);
+              break;
+            case 'string':
+              validateIsType('string', key, descriptor[key]);
+              break;
+            case 'propertyType':
+              validateIsPropertyType(descriptor[key]);
+              break;
+          }
+        } else {
+          ret[key] = descriptorProperty.defaultValue;
+        }
+      });
+
+      return ret;
+    }
+
+    // Given a list of callbacks, invoke each one in order, but skip repeats.
+    function notifyCallbacksOnce(callbacks) {
+      var called = [];
+      callbacks.forEach(function(callback) {
+        // TODO: explore ES6 Map/WeakMap shim that would allow this check to happen in O(1)
+        if (called.indexOf(callback) < 0) {
+          callback();
+          called.push(callback);
+        }
+      });
+    }
+
+    // Execute closure after setting a flag which causes the notify function to queue a list of
+    // notified properties, rather than notifying their observers immediately. After the closure
+    // finishes, notify the observers, making sure to call each callback at most once.
+    function withBatchedNotifications(closure) {
+      var callbacks = [];
+
+      notificationsAreBatched = true;
+      closure();
+      notificationsAreBatched = false;
+
+      changedPropertyKeys.forEach(function(key) {
+        propertyInformation[key].observers.forEach(function(callback) {
+          callbacks.push(callback);
+        });
+      });
+      changedPropertyKeys = [];
+      notifyCallbacksOnce(callbacks);
+    }
+
+    // Notify observers of the passed-in property immediately if notifications are not batched
+    // (see withBatchedNotifications), or else queue the passed-in property key for later
+    // notification
+    function notify(key) {
+      if (notificationsAreBatched) {
+        changedPropertyKeys.push(key);
+      } else {
+        notifyCallbacksOnce(propertyInformation[key].observers);
+      }
+    }
+
+    // Private implementation of the getter for the property specified by 'key'. Handles caching
+    // concerns, but not afterGetTransform, etc.
+    function get(key) {
+      var info = propertyInformation[key];
+
+      if (!info.descriptor.get) {
+        return info.cachedValue;
+      }
+
+      if (cachingIsEnabled) {
+        if (!info.hasCachedValue) {
+          info.hasCachedValue = true;
+          info.cachedValue = info.descriptor.get();
+        }
+        return info.cachedValue;
+      }
+      return info.descriptor.get();
+    }
+
+    // Private implementation of the setter for the property specified by 'key'. Handles caching
+    // and the writable check (which, remember, is always applied) but does not handle observer
+    // notification, validation, the beforeSetTransform, or beforeSet/afterSet callbacks.
+    function set(key, value) {
+      var info = propertyInformation[key];
+
+      if (!info.descriptor.writable) {
+        throw new Error("Attempt to set read-only property " + key);
+      }
+
+      if (info.descriptor.get && !cachingIsEnabled) {
+        info.hasCachedValue = false;
+      } else {
+        info.hasCachedValue = true;
+        info.cachedValue = value;
+      }
+    }
+
+    function invalidateCachedPropertiesObjects(type) {
+      cachedPropertiesObjects.all = undefined;
+      if (type) {
+        cachedPropertiesObjects.byType[type] = undefined;
+      }
+    }
+
+    // This is the meat. Adds an enumerable property to the properties object returned by the
+    // propertySupport object, with custom getters and setters that implement the behavior supported
+    // by this module.
+    function constructProperty(object, key) {
+      var info = propertyInformation[key];
+
+      Object.defineProperty(object, key, {
+        enumerable:   true,
+        configurable: false,
+
+        // This is the publicly-accessible getter for the property. This is invoked whenever the
+        // property is read via code such as `var value = model.properties[key]`, or when the `get`
+        // method mixed into the target is called (this might look like `model.get(key)`). It is
+        // not invoked when a 'raw values' hash is constructed by the historyStateRawValues or
+        // rawValues property accessors.
+        get: function() {
+          var value = get(key);
+          if (info.descriptor.afterGetTransform) {
+            value = info.descriptor.afterGetTransform(value);
+          }
+          return value;
+        },
+
+        // This is the publicly-accessible setter for the property. It is invoked whenever the
+        // property is assigned to via code such as `model.properties[key] = value;`, or when the
+        // `set` method mixed into the target is called (this might look like `model.set(key,
+        // value)`). It is never invoked when the setRawValues method of the propertySupport object
+        // is called.
+        //
+        // If beforeSetCallback or afterSetCallback properties have been defined on propertySupport,
+        // then they will be called, respectively, before and after the body of this function
+        // executes. Note again that setRawValues bypasses these callbacks.
+        set: function(value) {
+          if (info.descriptor.beforeSetCallback) {
+            info.descriptor.beforeSetCallback();
+          }
+
+          if (info.descriptor.beforeSetTransform) {
+            value = info.descriptor.beforeSetTransform(value);
+          }
+          if (info.descriptor.validate) {
+            info.descriptor.validate(value);
+          }
+          set(key, value);
+          notify(key);
+
+          if (info.descriptor.set) {
+            info.descriptor.set(value);
+          }
+
+          if (info.descriptor.afterSetCallback) {
+            info.descriptor.afterSetCallback();
+          }
+        }
+      });
+    }
+
+    // Private support for the `properties` and `propertiesOfType` accessor and method of the
+    // propertySupport object. Returns the cached properties object if one exists, or constructs a
+    // new one. Note that adding a property to the list of properties invalidates the cached object,
+    // forcing construction of a new one when it is requested.
+    function getPropertiesObject(type) {
+      var object = type ? cachedPropertiesObjects.byType[type] : cachedPropertiesObjects.all;
+
+      if (!object) {
+        object = {};
+        Object.keys(propertyInformation).forEach(function(key) {
+          if (!type || type === propertyInformation[key].descriptor.type) {
+            constructProperty(object, key);
+          }
+        });
+
+        if (Object.seal) {
+          Object.seal(object);
+        }
+
+        if (type) {
+          cachedPropertiesObjects.byType[type] = object;
+        } else {
+          cachedPropertiesObjects.all = object;
+        }
+      }
+      return object;
+    }
+
+    // The public methods and properties of the propertySupport object
+    return {
+
+      /**
+        Mixes a useful set of methods and properties into the target object. Lab models are expected
+        to provide themselves as the target, i.e., mix these methods/properties into themselves.
+      */
+      mixInto: function(target) {
+
+        /**
+          The 'properties' property mixed into 'target' is a sealed Object whose enumerable
+          properties are all the properties defined by calls to the defineProperty method of the
+          propertySupport object. Creating this object is the main feature of the PropertySupport
+          module.
+
+          Reading the value of a computed property of the 'properties' object causes that value to
+          be cached, unless the `enableCaching` property of the propertySupport object is false. The
+          cached value is returned on subsequent reads, unless `enableCaching` is set to false,
+          or `deleteComputedPropertyCachedValues` is called.
+
+          Assigning to a property of the 'properties' object always triggers the observers of that
+          property, if any.
+
+          Because the 'properties' object is sealed, if `defineProperty` is subsequently called, the
+          value of the 'properties' property will be updated to a new object containing the updated
+          set of properties.
+        */
+        Object.defineProperty(target, 'properties', {
+          configurable: false,
+          enumerable: true,
+          get: function() {
+            return getPropertiesObject();
+          }
+        });
+
+        /**
+          The 'propertiesOfType' method mixed in to 'target' returns a sealed Object whose
+          enumerable properties are all the properties defined by calls to the defineProperty
+          method with the value 'type' as the type descriptor option.
+
+          These properties behave the same as properties of the 'properties' object.
+        */
+        target.propertiesOfType = function(type) {
+          return getPropertiesObject(type);
+        };
+
+        /**
+          The 'set' method mixed into 'target' sets the value of one or more properties.
+
+          Calling `target.set(key, value)` is equivalent to `target.properties[key] = value`
+
+          However, if the first argument is a hash of properties, then the hash is treated as a
+          set of key-value pairs to be assigned. In that case, observer notification is delayed
+          until after all property values in the hash have been assigned.
+        */
+        target.set = function(key, value) {
+          var hash;
+          if (typeof key === 'string') {
+            target.properties[key] = value;
+          } else {
+            hash = key;
+            withBatchedNotifications(function() {
+              Object.keys(hash).forEach(function(key) {
+                target.properties[key] = hash[key];
+              });
+            });
+          }
+        };
+
+        /**
+          The 'get' method mixed into target reads the value of one property.
+
+          Calling `target.get(key)` is equivalent to accessing `target.properties[key]`
+        */
+        target.get = function(key) {
+          return target.properties[key];
+        };
+
+        /**
+          The 'addObserver' method mixed into 'target' adds 'callback' to the end of the list of
+          property observers of the property specified by 'key'. Note that adding a callback more
+          than once to the observer list for a given property has no effect.
+
+          Whenever the property 'key' is assigned to, the callback will be called. As noted above,
+          sometimes property assignment is batched (e.g., by passing a hash to`target.set`). When
+          this is the case, 'callback' is guaranteed to be called only once after the batched
+          assignment, regardless of how many keys it is registered for. (Of course, if one of those
+          observers then assigns to a property observed by 'callback', a second call will occur.)
+
+          If 'key' represents a computed property, then observer notification is supported but
+          happends according to a different cycle. Specifically, notification of the observer will
+          happen if the value of the property changes between paired calls to
+          `storeComputedProperties` and `notifyChangedComputedProperties`, or whenever
+          `notifyAllComputedProperties` is called (regardless of the current or previous value of
+          the property). As with batched property assignment, each callback is guaranteed to be
+          called directly by `notifyAllComputedProperties` or `notifyChangedComputedProperties`
+          at most once per invocation.
+
+          Notification is never triggered by simply accessing the property, regardless of whether or
+          not the access causes the property to be recalcuated
+
+          Note that there are only 2 arguments accepted by addObserver; it does not support
+          'this'-binding to a target object.
+        */
+        target.addObserver = function(key, callback) {
+          var observers = propertyInformation[key].observers;
+          if (observers.indexOf(callback) < 0) {
+            observers.push(callback);
+          }
+        };
+
+        /**
+          The 'removeObserver' method mixed into 'target' removes 'callback' from the list of
+          callbacks registered for the propery specified by key.
+        */
+        target.removeObserver = function(key, callback) {
+          var observers = propertyInformation[key].observers,
+              index = observers.indexOf(callback);
+
+          if (index > 0) {
+            observers.splice(index, 1);
+          }
+        };
+
+        /**
+          The 'getPropertyDescription' method mixed into 'target' simply returns the object passed
+          in as the 'description' property of the descriptor passed to `defineProperty` when the
+          property named 'key' was defined.
+        */
+        target.getPropertyDescription = function(key) {
+          return propertyInformation[key].descriptor.description;
+        };
+
+        /**
+          The 'getPropertyType' method mixed into 'target' simply returns the 'type' value passed
+          in as the 'type' property of the descriptor passed to 'defineProperty'when the property
+          named 'key' was defined.
+        */
+        target.getPropertyType = function(key) {
+          return propertyInformation[key].descriptor.type;
+        };
+      },
+
+      /**
+        The defineProperty method allows the client object to define a new property named 'key'. The
+        'descriptor' property should be a hash containing property descriptors; see the comments on
+        the descriptorProperties constant, above.
+      */
+
+      defineProperty: function(key, descriptor) {
+        descriptor = validateDescriptor(descriptor || {});
+
+        propertyInformation[key] = {
+          descriptor: descriptor,
+          observers: [],
+          hasCachedValue: false,
+          cachedValue: undefined,
+          previousValue: undefined
+        };
+
+        if (descriptor.get) {
+          computedPropertyKeys.push(key);
+        }
+        if (descriptor.includeInHistoryState) {
+          historyStatePropertyKeys.push(key);
+        }
+
+        invalidateCachedPropertiesObjects(descriptor.type);
+      },
+
+      /**
+        The 'deleteComputedPropertyCachedValues' method removes the cached value of all computed
+        properties (i.e., all properties with getters.)
+
+        The next access of the property (either caused directly by code that explicitly accesses the
+        property, or indirectly by `notifyChangedComputedProperties`, which retrieves the current
+        value of all observed computed properties) will cause a recomputation of the property.
+      */
+      deleteComputedPropertyCachedValues: function() {
+        computedPropertyKeys.forEach(function(key) {
+          propertyInformation[key].hasCachedValue = false;
+          propertyInformation[key].cachedValue = undefined;
+        });
+      },
+
+      /**
+        The 'storeComputedProperties' method retrieves the current value of all computed properties,
+        respecting any previously-cached value, and stores it in a secondary cache for subsequent
+        comparison to an updated value, by `notifyChangedComputedProperties`.
+
+        Normally, one would call this method prior to updating the simulation clock, and then call
+        `deleteComputedPropertyCachedValues` and notifyChangedComputedProperties` after updating
+        the simulation clock.
+      */
+      storeComputedProperties: function() {
+        observedComputedPropertyKeys().forEach(function(key) {
+          propertyInformation[key].previousValue = get(key);
+        });
+      },
+
+      /**
+        Retrieves the current value of all computed properties, respecting any cached value it
+        finds, and compares them to the previous values of the properties stored by
+        `storeComputedProperties`
+
+        Notifies the observers of any properties whose values differ from the previous value. Note
+        that observers are called strictly after all computed property values are calculated, and
+        each observer callback is guaranteed to be called directly by this method only once per
+        invocation.
+
+        (However, it would be possible for any given callback to be called again as a side effect of
+        previous observers.)
+
+        Note that, because this method observes the cache, you probably want to call
+        `deleteComputedPropertyCachedValues` after calling `storeComputedProperties`,
+      */
+      notifyChangedComputedProperties: function() {
+        withBatchedNotifications(function() {
+          observedComputedPropertyKeys().forEach(function(key) {
+            if (get(key) !== propertyInformation[key].previousValue) {
+              notify(key);
+            }
+            propertyInformation[key].previousValue = undefined;
+          });
+        });
+      },
+
+      /**
+        Blanket-notifies the observers of all computed properties. As described above, each observer
+        callback will only be called directly by this method only once per invocation, but the side
+        effects of some observer callbacks may result in subsequent calls to any given observer
+        callback.
+      */
+      notifyAllComputedProperties: function() {
+        withBatchedNotifications(function() {
+          observedComputedPropertyKeys().forEach(function(key) {
+            notify(key);
+          });
+        });
+      },
+
+      /**
+        The 'properties' object is the main object containing the properties defined using this
+        module. This is the same object that is mixed into the mixin target, and it is described
+        above in detail.
+      */
+      get properties() {
+        return getPropertiesObject();
+      },
+
+      /**
+        The 'propertiesOfType' method behaves the same as the `propertiesOfType` method mixed into
+        the mixin target, and it is describd above.
+      */
+      propertiesOfType: function(type) {
+        return getPropertiesObject(type);
+      },
+
+      /**
+        The enableCaching property indicates whether computed property values should be cached.
+        When multiple cycles of property changes are triggered by a single change to the simulation
+        state, you may want to turn off property caching until all cycles complete.
+      */
+
+      get enableCaching() {
+        return cachingIsEnabled;
+      },
+
+      set enableCaching(value) {
+        cachingIsEnabled = !!value;
+      },
+
+      /**
+        The 'historyStateRawValues' property is a hash of key-value pairs of those properties which
+        have the `includeInHistoryState` descriptor property set to true.
+
+        The underlying values are 'raw' values, i.e., those which have been passed through the
+        beforeSetTransform.
+      */
+      get historyStateRawValues() {
+        var ret = {};
+        historyStatePropertyKeys.forEach(function(key) {
+          ret[key] = get(key);
+        });
+        return ret;
+      },
+
+      /**
+        The 'rawValues' property is a hash of key-value pairs of all properties.
+
+        The underlying values are 'raw' values, i.e., those which have been passed through the
+        beforeSetTransform.
+      */
+      get rawValues() {
+        var ret = {};
+        Object.keys(propertyInformation).forEach(function(key) {
+          ret[key] = get(key);
+        });
+        return ret;
+      },
+
+      /**
+        The 'setRawValues' method accepts a hash of key-value pairs of some properties.
+
+        Unlike the argument accepted by the 'set' method mixed into the mixin target, the values are
+        expected to be 'raw' values, i.e., those which have already passed through the
+        beforeSetTransform.
+
+        Furthermore, notification of observers is only triggered for those properties whose value
+        changed. This is because setRawValues is expected to be used as a system interface for
+        restoring past states of the simulation, e.g., rewinding a simulation, and it would be
+        undesirable to notify every observer, every time a history state was revisited.
+
+        Additionally, for each property in the passed-in hash, the 'internal' setter is called if
+        and only if that property has its `invokeSetterAfterBulkRestore` descriptor property set
+        to true.
+      */
+      setRawValues: function(values) {
+        withBatchedNotifications(function() {
+          Object.keys(values).forEach(function(key) {
+            var info = propertyInformation[key];
+            if (!info) {
+              return;
+            }
+            // During bulk state restoration, only actually changed values should trigger observers!
+            if (get(key) !== values[key]) {
+              notify(key);
+            }
+            set(key, values[key]);
+            if (info.invokeSetterAfterBulkRestore && info.descriptor.set) {
+              info.descriptor.set(get(key));
+            }
+          });
+        });
+      }
+    };
   };
 });
 
@@ -20882,6 +21787,433 @@ define('common/models/tick-history',[],function() {
   });
 
 }).call(this);
+
+/*global define: false, $ */
+
+define('common/serialize',['require','arrays'],function(require) {
+
+  var arrays = require('arrays'),
+
+      infinityToString = function (obj) {
+        var i, len;
+        if (arrays.isArray(obj)) {
+          for (i = 0, len = obj.length; i < len; i++) {
+            if (obj[i] === Infinity || obj[i] === -Infinity) {
+              obj[i] = obj[i].toString();
+            }
+          }
+        } else {
+          for (i in obj) {
+            if (obj.hasOwnProperty(i)) {
+              if (obj[i] === Infinity || obj[i] === -Infinity) {
+                obj[i] = obj[i].toString();
+              }
+              if (typeof obj[i] === 'object' || arrays.isArray(obj[i])) {
+                infinityToString(obj[i]);
+              }
+            }
+          }
+        }
+      };
+
+  return function serialize(metaData, propertiesHash, count) {
+    var result = {}, propName, prop;
+    for (propName in metaData) {
+      if (metaData.hasOwnProperty(propName)) {
+        if (propertiesHash[propName] !== undefined && metaData[propName].serialize !== false) {
+          prop = propertiesHash[propName];
+          if (arrays.isArray(prop)) {
+            result[propName] = count !== undefined ? arrays.copy(arrays.extend(prop, count), []) : arrays.copy(prop, []);
+          }
+          else if (typeof prop === 'object') {
+            result[propName] = $.extend(true, {}, prop);
+          }
+          else {
+            result[propName] = prop;
+          }
+        }
+      }
+    }
+    // JSON doesn't allow Infinity values so convert them to strings.
+    infinityToString(result);
+    // TODO: to make serialization faster, replace arrays.copy(prop, [])
+    // with arrays.clone(prop) to use typed arrays whenever they are available.
+    // Also, do not call "infinityToString" function. This can be useful when
+    // we decide to use serialization in tick history manager.
+    // Then we can provide toString() function which will use regular arrays,
+    // replace each Infinity value with string and finally call JSON.stringify().
+    return result;
+  };
+
+});
+
+/*global d3, define */
+
+define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2d/models/aminoacids-helper'],function (require) {
+
+  var ValidationError  = require('common/validator').ValidationError,
+      aminoacidsHelper = require('cs!md2d/models/aminoacids-helper'),
+
+      state = {
+        "undefined": 0,
+        "intro": 1,
+        "dna": 2,
+        "transcription": 3,
+        "transcription-end": 4,
+        "translation": 5
+      };
+
+
+  return function GeneticProperties(model) {
+    var api,
+        // Never change value of this variable outside
+        // the transitionToState() function!
+        stateTransition = false,
+        dispatch = d3.dispatch("change", "transition"),
+
+        calculateComplementarySequence = function () {
+          // A-T (A-U)
+          // G-C
+          // T-A (U-A)
+          // C-G
+
+          // Use lower case during conversion to
+          // avoid situation when you change A->T,
+          // and later T->A again.
+          var compSeq = model.get("DNA")
+            .replace(/A/g, "t")
+            .replace(/G/g, "c")
+            .replace(/T/g, "a")
+            .replace(/C/g, "g");
+
+          model.set("DNAComplement", compSeq.toUpperCase());
+        },
+
+        calculatemRNA = function () {
+          var mRNA, newCode;
+
+          mRNA = model.get("mRNA") || "";
+          newCode = mRNACode(mRNA.length);
+
+          while(newCode) {
+            mRNA += newCode;
+            newCode = mRNACode(mRNA.length);
+          }
+
+          model.set("mRNA", mRNA);
+        },
+
+        mRNAComplete = function () {
+          var mRNA = model.get("mRNA");
+          // mRNA should be defined and its length should be equal to DNA length.
+          return mRNA && mRNA.length === model.get("DNA").length;
+        },
+
+        mRNACode = function (index) {
+          var DNAComplement = model.get("DNAComplement");
+          if (index >= DNAComplement.length) {
+            // No more DNA to transcribe, return null.
+            return null;
+          }
+          switch (DNAComplement[index]) {
+            case "A": return "U";
+            case "G": return "C";
+            case "T": return "A";
+            case "C": return "G";
+          }
+        },
+
+        validateDNA = function (DNA) {
+          // Allow user to use both lower and upper case.
+          DNA = DNA.toUpperCase();
+
+          if (DNA.search(/[^AGTC]/) !== -1) {
+            // Character other than A, G, T or C is found.
+            throw new ValidationError("DNA", "DNA code on sense strand can be defined using only A, G, T or C characters.");
+          }
+        },
+
+        updateGeneticProperties = function () {
+          validateDNA(model.get("DNA"));
+          calculateComplementarySequence();
+
+          if (api.stateBefore("transcription")) {
+            model.set("mRNA", "");
+          }
+          if (api.stateAfter("transcription")) {
+            // So, the first state which triggers it is "transcription-end".
+            calculatemRNA();
+          }
+        },
+
+        stateEq = function (name) {
+          return model.get("geneticEngineState") === name;
+        },
+
+        transitionToState = function (name) {
+          stateTransition = true;
+          model.set("geneticEngineState", name);
+          stateTransition = false;
+        },
+
+        stateUpdated = function () {
+          updateGeneticProperties();
+
+          if (stateTransition) {
+            dispatch.transition();
+          } else {
+            dispatch.change();
+          }
+        },
+
+        DNAUpdated = function () {
+          // Reset to the initial state. All genetic properties will be
+          // recalculated and the "change" event will be dispatched.
+          model.set("geneticEngineState", "dna");
+        };
+
+    // Public API.
+    api = {
+      // Convenient method for validation. It doesn't throw an exception,
+      // instead a special object with validation status is returned. It can
+      // be especially useful for UI classes to avoid try-catch sequences with
+      // "set". The returned status object always has a "valid" property,
+      // which contains result of the validation. When validation fails, also
+      // "error" message is provided.
+      // e.g. {
+      //   valid: false,
+      //   error: "DNA code on sense strand can be defined using only A, G, T or C characters."
+      // }
+      validate: function (DNA) {
+        var status = {
+          valid: true
+        };
+        try {
+          validateDNA(DNA);
+        } catch (e) {
+          status.valid = false;
+          status.error = e.message;
+        }
+        return status;
+      },
+
+      on: function(type, listener) {
+        dispatch.on(type, listener);
+      },
+
+      /**
+       * Plays intro, which shows broader context of the DNA transcription and
+       * translation.
+       */
+      playIntro: function () {
+        transitionToState("dna");
+      },
+
+      /**
+       * Triggers separation of the DNA strands.
+       */
+      separateDNA: function () {
+        if (stateEq("dna")) {
+          transitionToState("transcription");
+        }
+      },
+
+      /**
+       * Triggers *complete* transcription of the DNA.
+       */
+      transcribe: function() {
+        while (api.stateBefore("transcription-end")) {
+          api.transcribeStep();
+        }
+      },
+
+      /**
+       * Triggers only one step of DNA transcription.
+       * This method also accepts optional parameter - expected nucleotide.
+       * When it's available, transcription step will be performed only
+       * when passed nucleotide code matches nucleotide, which should
+       * be actually joined to mRNA in this transcription step. When
+       * expected nucleotide code is wrong, this method does nothing.
+       *
+       * e.g.
+       * transcribeStep("A") will perform transcription step only
+       * if "A" nucleotide should be added to mRNA in this step.
+       *
+       * @param  {string} expectedNucleotide code of the expected nucleotide ("U", "C", "A" or "G").
+       */
+      transcribeStep: function (expectedNucleotide) {
+        var mRNA = model.get("mRNA"),
+            DNA = model.get("DNA"),
+            newCode;
+
+        if (stateEq("dna")) {
+          api.separateDNA();
+          return;
+        }
+
+        newCode = mRNACode(mRNA.length);
+
+        if (expectedNucleotide && expectedNucleotide.toUpperCase() !== newCode) {
+          // Expected nucleotide is wrong, so simply do nothing.
+          return;
+        }
+
+        // Check if new code is different from null.
+        if (newCode) {
+          mRNA += newCode;
+          model.set("mRNA", mRNA);
+          if (mRNA.length < DNA.length) {
+            // TODO: should be "transcription:" + mRNA.length
+            transitionToState("transcription");
+          } else {
+            transitionToState("transcription-end");
+          }
+        }
+      },
+
+      translateStep: function () {
+        var state, abbr;
+
+        // Ensure that the simulation is started.
+        model.start();
+
+        if (api.stateBefore("transcription-end")) {
+          // Make sure that complete mRNA is available.
+          api.transcribe();
+        }
+        state = api.state();
+        if (state.name === "transcription-end") {
+          transitionToState("translation:0");
+        } else if (state.name === "translation") {
+          abbr = aminoacidsHelper.codonToAbbr(api.codon(state.step));
+          if (abbr !== "STOP") {
+            transitionToState("translation:" + (state.step + 1));
+          } else {
+            transitionToState("translation-end");
+          }
+        }
+      },
+
+      state: function () {
+        return api.parseState(model.get("geneticEngineState"));
+      },
+
+      stateBefore: function (name) {
+        var current = api.state(),
+            cmp     = api.parseState(name);
+
+        if (current.name === cmp.name) {
+          return current.step < cmp.step;
+        }
+        return state[current.name] < state[cmp.name];
+      },
+
+      stateAfter: function (name) {
+        var current = api.state(),
+            cmp     = api.parseState(name);
+
+        if (current.name === cmp.name) {
+          return current.step > cmp.step;
+        }
+        return state[current.name] > state[cmp.name];
+      },
+
+      parseState: function (state) {
+        // State can contain ":" and info about step.
+        // e.g. translation:0, translation:1 etc.
+        state = state.split(":");
+        return {
+          name: state[0],
+          step: Number(state[1]) // can be NaN when step is undefined.
+        };
+      },
+
+      codon: function (index) {
+        return model.get("mRNA").substr(3 * index, 3);
+      },
+
+      codonComplement: function (index) {
+        return api.codon(index)
+            .replace(/A/g, "u")
+            .replace(/G/g, "c")
+            .replace(/U/g, "a")
+            .replace(/C/g, "g")
+            .toUpperCase();
+      },
+
+      addAminoAcid: function (codonIdx, x, y) {
+        var abbr = aminoacidsHelper.codonToAbbr(api.codon(codonIdx)),
+            elID = aminoacidsHelper.abbrToElement(abbr);
+
+        model.addAtom({x: x, y: y, element: elID, visible: true});
+        model.addSpringForce(codonIdx, x, y, 8000);
+      },
+
+      connectAminoAcids: function (codonIdx) {
+        if (codonIdx < 1) return;
+
+        var r1 = model.getAtomProperties(codonIdx - 1).radius,
+            r2 = model.getAtomProperties(codonIdx).radius,
+            // Length of bond is based on the radii of AAs.
+            bondLen = (r1 + r2) * 1.25;
+
+        // 10000 is a typical strength for bonds between AAs.
+        model.addRadialBond({atom1: codonIdx, atom2: codonIdx - 1, length: bondLen, strength: 10000});
+        model.removeSpringForce(0);
+      }
+
+      /*
+      Depreciated.
+      Translates mRNA into amino acids chain.
+      translate: function() {
+        var result = [],
+            mRNA, abbr, i, len;
+
+        // Make sure that complete mRNA is available.
+        if (!mRNAComplete()) {
+          api.transcribe();
+        }
+        mRNA = model.get("mRNA");
+
+        for (i = 0, len = mRNA.length; i + 3 <= len; i += 3) {
+          abbr = aminoacidsHelper.codonToAbbr(mRNA.substr(i, 3));
+          if (abbr === "STOP" || abbr === undefined) {
+            return result;
+          }
+          result.push(abbr);
+        }
+
+        return result;
+      }
+
+      Depreciated.
+      translateStepByStep: function() {
+        var aaSequence, aaAbbr;
+
+        aaSequence = api.translate();
+        if (data.translationStep === undefined) {
+          data.translationStep = 0;
+        } else {
+          data.translationStep += 1;
+        }
+        aaAbbr = aaSequence[data.translationStep];
+        if (aaAbbr === undefined) {
+          data.translationStep = "end";
+        }
+
+        return aaAbbr;
+      }
+      */
+    };
+
+    model.addPropertiesListener(["DNA"], DNAUpdated);
+    model.addPropertiesListener(["geneticEngineState"], stateUpdated);
+    updateGeneticProperties();
+
+    return api;
+  };
+
+});
 
 /*global define d3 */
 /*jshint eqnull:true boss:true */
@@ -21421,8 +22753,9 @@ define('md2d/models/performance-optimizer',[],function() {
 });
 
 /*global define: false, d3: false */
+/*jshint eqnull: true */
 
-define('md2d/models/modeler',['require','arrays','common/console','common/performance','md2d/models/engine/md2d','md2d/models/metadata','common/models/tick-history','cs!md2d/models/running-average-filter','cs!md2d/models/solvent','common/serialize','common/validator','md2d/models/aminoacids-props','cs!md2d/models/aminoacids-helper','md2d/models/engine/constants/units','md2d/models/property-description','md2d/models/unit-definitions/index','md2d/models/units-translation','md2d/models/performance-optimizer','underscore'],function(require) {
+define('md2d/models/modeler',['require','arrays','common/console','common/performance','md2d/models/engine/md2d','md2d/models/metadata','common/models/tick-history','common/property-support','cs!md2d/models/running-average-filter','cs!md2d/models/solvent','common/serialize','common/validator','md2d/models/aminoacids-props','cs!md2d/models/aminoacids-helper','md2d/models/engine/genetic-engine','md2d/models/engine/constants/units','md2d/models/property-description','md2d/models/unit-definitions/index','md2d/models/units-translation','md2d/models/performance-optimizer','underscore'],function(require) {
   // Dependencies.
   var arrays               = require('arrays'),
       console              = require('common/console'),
@@ -21430,12 +22763,14 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       md2d                 = require('md2d/models/engine/md2d'),
       metadata             = require('md2d/models/metadata'),
       TickHistory          = require('common/models/tick-history'),
+      PropertySupport      = require('common/property-support'),
       RunningAverageFilter = require('cs!md2d/models/running-average-filter'),
       Solvent              = require('cs!md2d/models/solvent'),
       serialize            = require('common/serialize'),
       validator            = require('common/validator'),
       aminoacids           = require('md2d/models/aminoacids-props'),
       aminoacidsHelper     = require('cs!md2d/models/aminoacids-helper'),
+      GeneticEngine        = require('md2d/models/engine/genetic-engine'),
       units                = require('md2d/models/engine/constants/units'),
       PropertyDescription  = require('md2d/models/property-description'),
       unitDefinitions      = require('md2d/models/unit-definitions/index'),
@@ -21452,6 +22787,11 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
         dispatch = d3.dispatch("tick", "play", "stop", "reset", "willReset", "stepForward", "stepBack",
                                "seek", "addAtom", "removeAtom", "addRadialBond", "removeRadialBond",
                                "removeAngularBond", "invalidation", "textBoxesChanged"),
+
+        propertySupport = new PropertySupport({
+          types: ["output", "parameter", "mainProperty", "viewOption"]
+        }),
+
         VDWLinesCutoffMap = {
           "short": 1.33,
           "medium": 1.67,
@@ -21470,6 +22810,9 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
 
         // Molecular Dynamics engine.
         engine,
+
+        // Genetic engine.
+        geneticEngine,
 
         // An array of elements object.
         editableElements,
@@ -21513,153 +22856,11 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
         // Cached value of the 'friction' property of the atom being dragged in a running model
         liveDragSavedFriction,
 
-        listeners = {},
-
         // If this is true, output properties will not be recalculated on changes
         suppressInvalidatingChangeHooks = false,
 
         // Invalidating change hooks might between others
         invalidatingChangeHookNestingLevel = 0,
-
-        properties = {
-          /**
-            These functions are optional setters that will be called *instead* of simply setting
-            a value when 'model.set({property: value})' is called, and are currently needed if you
-            want to pass a value through to the engine.  The function names are automatically
-            determined from the property name. If you define one of these custom functions, you
-            must remember to also set the property explicitly (if appropriate) as this won't be
-            done automatically
-          */
-
-          set_targetTemperature: function(t) {
-            this.targetTemperature = t;
-            if (engine) {
-              engine.setTargetTemperature(t);
-            }
-          },
-
-          set_temperatureControl: function(tc) {
-            this.temperatureControl = tc;
-            if (engine) {
-              engine.useThermostat(tc);
-            }
-          },
-
-          set_lennardJonesForces: function(lj) {
-            this.lennardJonesForces = lj;
-            if (engine) {
-              engine.useLennardJonesInteraction(lj);
-            }
-          },
-
-          set_coulombForces: function(cf) {
-            this.coulombForces = cf;
-            if (engine) {
-              engine.useCoulombInteraction(cf);
-            }
-          },
-
-          set_solventForceType: function(s) {
-            this.solventForceType = s;
-            if (engine) {
-              engine.setSolventForceType(s);
-            }
-          },
-
-          set_solventForceFactor: function(s) {
-            this.solventForceFactor = s;
-            if (engine) {
-              engine.setSolventForceFactor(s);
-            }
-          },
-
-          set_additionalSolventForceMult: function(s) {
-            this.additionalSolventForceMult = s;
-            if (engine) {
-              engine.setAdditionalSolventForceMult(s);
-            }
-          },
-
-          set_additionalSolventForceThreshold: function(s) {
-            this.additionalSolventForceThreshold = s;
-            if (engine) {
-              engine.setAdditionalSolventForceThreshold(s);
-            }
-          },
-
-          set_dielectricConstant: function(dc) {
-            this.dielectricConstant = dc;
-            if (engine) {
-              engine.setDielectricConstant(dc);
-            }
-          },
-
-          set_realisticDielectricEffect: function (rdc) {
-            this.realisticDielectricEffect = rdc;
-            if (engine) {
-              engine.setRealisticDielectricEffect(rdc);
-            }
-          },
-
-          set_VDWLinesCutoff: function(cutoff) {
-            var ratio;
-            this.VDWLinesCutoff = cutoff;
-            ratio = VDWLinesCutoffMap[cutoff];
-            if (ratio && engine) {
-              engine.setVDWLinesRatio(ratio);
-            }
-          },
-
-          set_gravitationalField: function(gf) {
-            this.gravitationalField = gf;
-            if (engine) {
-              engine.setGravitationalField(gf);
-            }
-          },
-
-          set_modelSampleRate: function(rate) {
-            this.modelSampleRate = rate;
-            if (!stopped) model.restart();
-          },
-
-          set_timeStep: function(ts) {
-            this.timeStep = ts;
-          },
-
-          set_viscosity: function(v) {
-            this.viscosity = v;
-            if (engine) {
-              engine.setViscosity(v);
-            }
-          },
-
-          set_polarAAEpsilon: function (e) {
-            var polarAAs, element1, element2,
-                i, j, len;
-
-            this.polarAAEpsilon = e;
-
-            if (engine) {
-              // Set custom pairwise LJ properties for polar amino acids.
-              // They should attract stronger to better mimic nature.
-              polarAAs = aminoacidsHelper.getPolarAminoAcids();
-              for (i = 0, len = polarAAs.length; i < len; i++) {
-                element1 = polarAAs[i];
-                for (j = i + 1; j < len; j++) {
-                  element2 = polarAAs[j];
-                  // Set custom pairwise LJ epsilon (default one for AA is -0.1).
-                  engine.pairwiseLJProperties.set(element1, element2, {epsilon: e});
-                }
-              }
-            }
-          }
-        },
-
-        // The list of all 'output' properties (which change once per tick).
-        outputNames = [],
-
-        // Information about the description and calculating function for 'output' properties.
-        outputsByName = {},
 
         // The subset of outputName list, containing list of outputs which are filtered
         // by one of the built-in filters (like running average filter).
@@ -21669,114 +22870,56 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
         // are stored in outputsByName object, as filtered output is just extension of normal output.
         filteredOutputsByName = {},
 
-        // Whewther to suppress caching of output properties. Should only be needed between
-        // invalidatingChangePreHook and invalidatingChangePostHook
-        suppressOutputPropertyCaching = false,
-
-        // The currently-defined parameters.
-        parametersByName = {},
-
-        // Unit types for all the properties that can be accessed using model.set/model.get
-        mainPropertyUnitTypes,
-
         // The set of units currently in effect. (Determined by the 'unitsScheme' property of the
         // model; default value is 'md2d')
         unitsDefinition,
 
         // Object that translates between 'native' md2d units and the units defined
         // by unitsDefinition.
-        unitsTranslation;
+        unitsTranslation,
 
-    function notifyPropertyListeners(listeners) {
-      listeners = _.uniq(listeners);
-      for (var i=0, ii=listeners.length; i<ii; i++){
-        listeners[i]();
-      }
-    }
+        // The initial "main" propeties, validated and filtered from the initialProperties array
+        mainProperties,
 
-    function notifyPropertyListenersOfEvents(events) {
-      var evt,
-          evts,
-          waitingToBeNotified = [],
-          i, ii;
+        // The initial viewOptions, validated and filtered from the initialProperties
+        viewOptions;
 
-      if (typeof events === "string") {
-        evts = [events];
+    function defineBuiltinProperty(type, key, setter) {
+      var metadataForType,
+          descriptor,
+          unitType;
+
+      if (type === 'mainProperty') {
+        metadataForType = metadata.mainProperties;
+      } else if (type === 'viewOption') {
+        metadataForType = metadata.viewOptions;
       } else {
-        evts = events;
-      }
-      for (i=0, ii=evts.length; i<ii; i++){
-        evt = evts[i];
-        if (listeners[evt]) {
-          waitingToBeNotified = waitingToBeNotified.concat(listeners[evt]);
-        }
-      }
-      if (listeners["all"]){      // listeners that want to be notified on any change
-        waitingToBeNotified = waitingToBeNotified.concat(listeners["all"]);
-      }
-      notifyPropertyListeners(waitingToBeNotified);
-    }
-
-    /**
-      Restores a set of "input" properties, notifying their listeners of only those properties which
-      changed, and only after the whole set of properties has been updated.
-
-      Expects a hash "raw", untranslated values as returned by getRawPropertyValue
-    */
-    function restoreProperties(savedProperties) {
-      var property,
-          changedProperties = [],
-          savedValue;
-
-      for (property in savedProperties) {
-        if (savedProperties.hasOwnProperty(property)) {
-          // skip read-only properties
-          if (outputsByName[property]) {
-            throw new Error("Attempt to restore output property \"" + property + "\".");
-          }
-          savedValue = savedProperties[property];
-          if (properties[property] !== savedValue) {
-            if (properties["set_"+property]) {
-              properties["set_"+property](savedValue);
-            } else {
-              properties[property] = savedValue;
-            }
-            changedProperties.push(property);
-          }
-        }
-      }
-      notifyPropertyListenersOfEvents(changedProperties);
-    }
-
-    /**
-      Restores a list of parameter values, notifying their listeners after the whole list is
-      updated, and without triggering setters. Sets parameters not in the passed-in list to
-      undefined.
-    */
-    function restoreParameters(savedParameters) {
-      var parameterName,
-          observersToNotify = [];
-
-      for (parameterName in savedParameters) {
-        if (savedParameters.hasOwnProperty(parameterName)) {
-          // restore the property value if it was dispfferent or not defined in the current time step
-          if (properties[parameterName] !== savedParameters[parameterName] || !parametersByName[parameterName].isDefined) {
-            properties[parameterName] = savedParameters[parameterName];
-            parametersByName[parameterName].isDefined = true;
-            observersToNotify.push(parameterName);
-          }
-        }
+        throw new Error(type + " is not a supported built-in property type");
       }
 
-      // remove parameter values that aren't defined at this point in history
-      for (parameterName in parametersByName) {
-        if (parametersByName.hasOwnProperty(parameterName) && !savedParameters.hasOwnProperty(parameterName)) {
-          parametersByName[parameterName].isDefined = false;
-          properties[parameterName] = undefined;
-        }
-      }
+      descriptor = {
+        type: type,
+        writable: validator.propertyIsWritable(metadataForType[key]),
+        set: setter,
+        includeInHistoryState: !!metadataForType[key].storeInTickHistory,
+        validate: function(value) {
+          return validator.validateSingleProperty(metadataForType[key], key, value, false);
+        },
+        beforeSetCallback: invalidatingChangePreHook,
+        afterSetCallback: invalidatingChangePostHook
+      };
 
-      notifyPropertyListenersOfEvents(observersToNotify);
+      unitType = metadataForType[key] && metadataForType[key].unitType;
+
+      if (unitsTranslation && unitType) {
+        descriptor.beforeSetTransform = function(value) {
+          return unitsTranslation.translateToMD2DUnits(value, unitType);
+        };
+        descriptor.afterGetTransform = function(value) {
+          return unitsTranslation.translateFromMD2DUnits(value, unitType);
+        };
+      }
+      propertySupport.defineProperty(key, descriptor);
     }
 
     function average_speed() {
@@ -21786,12 +22929,16 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
     }
 
     function tick(elapsedTime, dontDispatchTickEvent) {
-      var timeStep = getRawPropertyValue('timeStep'),   // Definitely need *untranslated* value!
+      var timeStep = model.get('timeStep'),
           // Save number of radial bonds in engine before integration,
           // as integration can create new disulfide bonds. This is the
           // only type of objects which can be created by the engine autmatically.
           prevNumOfRadialBonds = engine.getNumberOfRadialBonds(),
           t, sampleTime;
+
+      if (unitsTranslation) {
+        timeStep = unitsTranslation.translateToMD2DUnits(timeStep, 'time');
+      }
 
       if (!stopped) {
         t = performance.now();
@@ -21830,35 +22977,6 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       }
 
       return stopped;
-    }
-
-    /* This setter for internal use uses "raw", untranslated property values only. */
-    function set_properties(hash) {
-      var property, propsChanged = [];
-      for (property in hash) {
-        if (hash.hasOwnProperty(property) && hash[property] !== undefined && hash[property] !== null) {
-          // skip read-only properties
-          if (outputsByName[property]) {
-            throw new Error("Attempt to set read-only output property \"" + property + "\".");
-          }
-          // look for set method first, otherwise just set the property
-          if (properties["set_"+property]) {
-            properties["set_"+property](hash[property]);
-          // why was the property not set if the default value property is false ??
-          // } else if (properties[property]) {
-          } else {
-            properties[property] = hash[property];
-          }
-          propsChanged.push(property);
-        }
-      }
-      notifyPropertyListenersOfEvents(propsChanged);
-    }
-
-    // Returns the "raw" (untranslated) version of property 'name'. Used to provide privileged
-    // access to internal representation of properties to, e.g., TickHistory.
-    function getRawPropertyValue(name) {
-      return properties[name];
     }
 
     // Returns a copy of 'obj' with value replaced by fn(key, value) for every (key, value) pair.
@@ -21910,31 +23028,18 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       which would invalidate a cached value without also calling one of these two methods.
     */
     function updateAllOutputProperties() {
-      var i, j, l;
-
       readModelState();
-
-      // invalidate all cached values before notifying any listeners
-      for (i = 0; i < outputNames.length; i++) {
-        outputsByName[outputNames[i]].hasCachedValue = false;
-      }
+      propertySupport.deleteComputedPropertyCachedValues();
 
       // Update all filtered outputs.
       // Note that this have to be performed after invalidation of all outputs
       // (as filtered output can filter another output), but before notifying
       // listeners (as we want to provide current, valid value).
-      for (i = 0; i < filteredOutputNames.length; i++) {
-        filteredOutputsByName[filteredOutputNames[i]].addSample();
-      }
+      filteredOutputNames.forEach(function(name) {
+        filteredOutputsByName[name].addSample();
+      });
 
-      for (i = 0; i < outputNames.length; i++) {
-        l = listeners[outputNames[i]];
-        if (l) {
-          for (j = 0; j < l.length; j++) {
-            l[j]();
-          }
-        }
-      }
+      propertySupport.notifyAllComputedProperties();
     }
 
     // FIXME
@@ -21952,11 +23057,15 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
     */
     function invalidatingChangePreHook() {
       if (suppressInvalidatingChangeHooks) return;
-      invalidatingChangeHookNestingLevel++;
 
-      storeOutputPropertiesBeforeChange();
-      deleteOutputPropertyCachedValues();
-      suppressOutputPropertyCaching = true;
+      if (invalidatingChangeHookNestingLevel === 0) {
+        // If we're beginning a series of (possibly-nested) invalidating changes, store computed
+        // property values so they can be compared when we finish the invalidating changes.
+        propertySupport.storeComputedProperties();
+        propertySupport.deleteComputedPropertyCachedValues();
+        propertySupport.enableCaching = false;
+      }
+      invalidatingChangeHookNestingLevel++;
     }
 
     /**
@@ -21966,12 +23075,27 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       if (suppressInvalidatingChangeHooks) return;
       invalidatingChangeHookNestingLevel--;
 
-      if (invalidatingChangeHookNestingLevel === 0) {
-        suppressOutputPropertyCaching = false;
+      // Make sure that computed properties which depend on engine state are valid
+      if (engine) {
+        readModelState();
       }
-      updateOutputPropertiesAfterChange();
-      if (tickHistory) tickHistory.invalidateFollowingState();
-      dispatch.invalidation();
+
+      // Non-filtered outputs will be valid at this point (caching is disabl;ed, so they're
+      // recomputed every time.) This ensures that filtered outputs that depend on non-filtered
+      // outputs are also valid:
+      filteredOutputNames.forEach(function(name) {
+        filteredOutputsByName[name].addSample();
+      });
+
+      if (invalidatingChangeHookNestingLevel === 0) {
+        // Once we've finished the cycle of invalidating changes, go ahead and notify observers of
+        // computed properties that changed.
+        propertySupport.enableCaching = true;
+        propertySupport.notifyChangedComputedProperties();
+
+        if (tickHistory) tickHistory.invalidateFollowingState();
+        dispatch.invalidation();
+      }
     }
 
     /**
@@ -22011,93 +23135,6 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
         }
       };
     })();
-
-    function deleteOutputPropertyCachedValues() {
-      var i, output;
-
-      for (i = 0; i < outputNames.length; i++) {
-        output = outputsByName[outputNames[i]];
-        output.hasCachedValue = false;
-      }
-    }
-
-    /**
-      Call this method *before* changing any "universe" property or model property (including any
-      property of a model object such as the position of an atom) to save the output-property
-      values before the change. This is required to enabled updateOutputPropertiesAfterChange to be
-      able to detect property value changes.
-
-      After the change is made, call updateOutputPropertiesAfterChange to notify listeners.
-    */
-    function storeOutputPropertiesBeforeChange() {
-      var i, outputName, output, l;
-
-      for (i = 0; i < outputNames.length; i++) {
-        outputName = outputNames[i];
-        if ((l = listeners[outputName]) && l.length > 0) {
-          output = outputsByName[outputName];
-          // Can't save previous value in output.cachedValue because, before we check it, the
-          // cachedValue may be overwritten with an updated value as a side effect of the
-          // calculation of the updated value of some other property
-          output.previousValue = output.hasCachedValue ? output.cachedValue : output.calculate();
-        }
-      }
-    }
-
-    /**
-      Before changing any "universe" property or model property (including any
-      property of a model object such as the position of an atom), call the method
-      storeOutputPropertiesBeforeChange; after changing the property, call this method  to detect
-      changed output-property values and to notify listeners of the output properties which have
-      changed. (However, don't call either method after a model tick or step;
-      updateAllOutputProperties is more efficient for that case.)
-    */
-    function updateOutputPropertiesAfterChange() {
-      var i, j, output, outputName, l, listenersToNotify = [];
-
-      readModelState();
-
-      // Update all filtered outputs.
-      // Note that this have to be performed after invalidation of all outputs
-      // (as filtered output can filter another output).
-      for (i = 0; i < filteredOutputNames.length; i++) {
-        filteredOutputsByName[filteredOutputNames[i]].addSample();
-      }
-
-      // Keep a list of output properties that are being observed and which changed ... and
-      // cache the updated values while we're at it
-      for (i = 0; i < outputNames.length; i++) {
-        outputName = outputNames[i];
-        output = outputsByName[outputName];
-
-        if ((l = listeners[outputName]) && l.length > 0) {
-          // Though we invalidated all cached values in the invalidatingChangePreHook, and
-          // suppressed caching until the invalidatingChangePostHook, nevertheless some outputs may
-          // have been computed & cached during a previous pass through this loop, as a side effect
-          // of the calculation of some other property. Therefore we can respect hasCachedValue
-          // here.
-          if (!output.hasCachedValue) {
-            output.cachedValue = output.calculate();
-            output.hasCachedValue = true;
-          }
-
-          if (output.cachedValue !== output.previousValue) {
-            for (j = 0; j < l.length; j++) {
-              listenersToNotify.push(l[j]);
-            }
-          }
-        }
-        // Now that we're done with it, allow previousValue to be GC'd. (Of course, since we're
-        // using an equality test to check for changes, it doesn't make sense to let outputs be
-        // objects or arrays, yet)
-        output.previousValue = null;
-      }
-
-      // Finally, now that all the changed properties have been cached, notify listeners
-      for (i = 0; i < listenersToNotify.length; i++) {
-        listenersToNotify[i]();
-      }
-    }
 
     /**
       This method is called to refresh the results array and macrostate variables (KE, PE,
@@ -22223,6 +23260,164 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
     //
     // ------------------------------------------------------------
 
+    // Adds model.properties, model.set, model.get, model.addObserver, model.removeObserver...
+    propertySupport.mixInto(model);
+
+    /**
+      Add a listener callback that will be notified when any of the properties in the passed-in
+      array of properties is changed. (The argument `properties` can also be a string, if only a
+      single name needs to be passed.) This is a simple way for views to update themselves in
+      response to property changes.
+    */
+    model.addPropertiesListener = function(properties, callback) {
+      if (typeof properties === 'string') {
+        model.addObserver(properties, callback);
+      } else {
+        properties.forEach(function(property) {
+          model.addObserver(property, callback);
+        });
+      }
+    };
+
+    /**
+      Add an "output" property to the model. Output properties are expected to change at every
+      model tick, and may also be changed indirectly, outside of a model tick, by a change to model
+      properties or the atom, element, etc. properties.
+
+      `key` should be the name of the output. The property value will be accessed by
+      `model.get(<key>);`
+
+      `description` should be a hash of metadata about the property.
+
+      `getter` should be a no-arg function which calculates the property value. These values are not
+      translated after getter returns because we expect that most output getters are authored
+      scripts, which operate entirely with already-translated units. Therefore, getters defined
+      internally in modeler.js needs to make sure to translate any "md2d units" values out of the
+      md2d-unit domain.
+    */
+    model.defineOutput = function(key, descriptionHash, getter) {
+      propertySupport.defineProperty(key, {
+        type: 'output',
+        writable: false,
+        get: getter,
+        includeInHistoryState: false,
+        description: new PropertyDescription(unitsDefinition, descriptionHash)
+      });
+    };
+
+    /**
+      Add an "filtered output" property to the model. This is special kind of output property, which
+      is filtered by one of the built-in filters based on time (like running average). Note that filtered
+      outputs do not specify calculate function - instead, they specify property which should filtered.
+      It can be another output, model parameter or custom parameter.
+
+      Filtered output properties are extension of typical output properties. They share all features of
+      output properties, so they are expected to change at every model tick, and may also be changed indirectly,
+      outside of a model tick, by a change to the model parameters or to the configuration of atoms and other
+      objects in the model.
+
+      `name` should be the name of the parameter. The property value will be accessed by
+      `model.get(<name>);`
+
+      `description` should be a hash of metadata about the property. Right now, these metadata are not
+      used. However, example metadata include the label and units name to be used when graphing
+      this property.
+
+      `property` should be name of the basic property which should be filtered.
+
+      `type` should be type of filter, defined as string. For now only "RunningAverage" is supported.
+
+      `period` should be number defining length of time period used for calculating filtered value. It should
+      be specified in femtoseconds.
+
+    */
+    model.defineFilteredOutput = function(name, description, property, type, period) {
+      // Filter object.
+      var filter, initialValue;
+
+      if (type === "RunningAverage") {
+        filter = new RunningAverageFilter(period);
+      } else {
+        throw new Error("FilteredOutput: unknown filter type " + type + ".");
+      }
+
+      initialValue = model.get(property);
+      if (initialValue === undefined || isNaN(Number(initialValue))) {
+        throw new Error("FilteredOutput: property is not a valid numeric value or it is undefined.");
+      }
+
+      // Add initial sample.
+      filter.addSample(model.get('time'), initialValue);
+
+      filteredOutputNames.push(name);
+      // filteredOutputsByName stores properties which are unique for filtered output.
+      // Other properties like description or calculate function are stored in outputsByName hash.
+      filteredOutputsByName[name] = {
+        addSample: function () {
+          filter.addSample(model.get('time'), model.get(property));
+        }
+      };
+
+      // Create simple adapter implementing TickHistoryCompatible Interface
+      // and register it in tick history.
+      tickHistory.registerExternalObject({
+        push: function () {
+          // Push is empty, as we store samples during each tick anyway.
+        },
+        extract: function (idx) {
+          filter.setCurrentStep(idx);
+        },
+        invalidate: function (idx) {
+          filter.invalidate(idx);
+        },
+        setHistoryLength: function (length) {
+          filter.setMaxBufferLength(length);
+        }
+      });
+
+      // Extend description to contain information about filter.
+      description.property = property;
+      description.type = type;
+      description.period = period;
+
+      // Filtered output is still an output.
+      // Reuse existing, well tested logic for caching, observing etc.
+      model.defineOutput(name, description, function () {
+        return filter.calculate();
+      });
+    };
+
+    /**
+      Define a property of the model to be treated as a custom parameter. Custom parameters are
+      (generally, user-defined) read/write properties that trigger a setter action when set, and
+      whose values are automatically persisted in the tick history.
+
+      Because custom parameters are not intended to be interpreted by the engine, but instead simply
+      *represent* states of the model that are otherwise fully specified by the engine state and
+      other properties of the model, and because the setter function might not limit itself to a
+      purely functional mapping from parameter value to model properties, but might perform any
+      arbitrary stateful change, (stopping the model, etc.), the setter is NOT called when custom
+      parameters are updated by the tick history.
+    */
+    model.defineParameter = function(key, descriptionHash, setter) {
+      var descriptor = {
+            type: 'parameter',
+            includeInHistoryState: true,
+            invokeSetterAfterBulkRestore: false,
+            description: new PropertyDescription(unitsDefinition, descriptionHash),
+            beforeSetCallback: invalidatingChangePreHook,
+            afterSetCallback: invalidatingChangePostHook
+          };
+
+      // In practice, some parameters are meant only to be observed, and have no setter
+      if (setter) {
+        descriptor.set = function(value) {
+          setter.call(model, value);
+        };
+      }
+      propertySupport.defineProperty(key, descriptor);
+    };
+
     model.getStats = function() {
       return {
         time        : model.get('time'),
@@ -22342,14 +23537,19 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
 
     /**
       Initialize minX, minYm, maxX, maxY from width and height
-      MD2D assumes that minX and minY = 0
+      when these options are undefined.
     */
     model.initializeDimensions = function () {
+      var minX = model.get("minX"),
+          minY = model.get("minY"),
+          maxX = model.get("maxX"),
+          maxY = model.get("maxY");
+
       model.set({
-        minX: 0,
-        maxX: model.get('width'),
-        minY: 0,
-        maxY: model.get('height')
+        minX: minX != null ? minX : 0,
+        maxX: maxX != null ? maxX : model.get("width"),
+        minY: minY != null ? minY : 0,
+        maxY: maxY != null ? maxY : model.get("height")
       });
     };
 
@@ -22377,7 +23577,6 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       // Register invalidating change hooks.
       // pairwiseLJProperties object allows to change state which defines state of the whole simulation.
       engine.pairwiseLJProperties.registerChangeHooks(invalidatingChangePreHook, invalidatingChangePostHook);
-      engine.geneticProperties.registerChangeHooks(invalidatingChangePreHook, invalidatingChangePostHook);
 
       window.state = modelOutputState = {};
 
@@ -23109,14 +24308,14 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
 
     model.addTextBox = function(props) {
       props = validator.validateCompleteness(metadata.textBox, props);
-      properties.textBoxes.push(props);
+      model.get('textBoxes').push(props);
       dispatch.textBoxesChanged();
     };
 
     model.removeTextBox = function(i) {
-      var text = properties.textBoxes;
+      var text = model.get('textBoxes');
       if (i >=0 && i < text.length) {
-        properties.textBoxes = text.slice(0,i).concat(text.slice(i+1));
+        model.set('textBoxes', text.slice(0,i).concat(text.slice(i+1)));
         dispatch.textBoxesChanged();
       } else {
         throw new Error("Text box \"" + i + "\" does not exist, so it cannot be removed.");
@@ -23124,7 +24323,7 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
     };
 
     model.setTextBoxProperties = function(i, props) {
-      var textBox = properties.textBoxes[i],
+      var textBox = model.get('textBoxes')[i],
           prop;
 
       if (textBox) {
@@ -23146,7 +24345,7 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       adjusting the friction of the dragged atom.
     */
     model.liveDragStart = function(atomIndex, x, y) {
-      if (liveDragSpringForceIndex !== null) return;    // don't add a second liveDrag force
+      if (liveDragSpringForceIndex != null) return;    // don't add a second liveDrag force
 
       if (x == null) x = atoms.x[atomIndex];
       if (y == null) y = atoms.y[atomIndex];
@@ -23276,8 +24475,8 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       return engine.pairwiseLJProperties;
     };
 
-    model.getGeneticProperties = function() {
-      return engine.geneticProperties;
+    model.geneticEngine = function() {
+      return geneticEngine;
     };
 
     model.get_vdw_pairs = function() {
@@ -23514,52 +24713,6 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       return engine.getDimensions();
     };
 
-    model.set = function(key, val) {
-      var hash;
-      if (arguments.length === 1) {
-        // Hash of options provided.
-        hash = key;
-      } else {
-        // Key - value pair provied.
-        hash = {};
-        hash[key] = val;
-      }
-      // Perform validation in case of setting main properties or
-      // model view properties. Attempts to set immutable or read-only
-      // properties will be caught.
-      validator.validate(metadata.mainProperties, hash);
-      validator.validate(metadata.viewOptions, hash);
-
-      if (engine) invalidatingChangePreHook();
-      set_properties(translateToMD2DUnits(hash, mainPropertyUnitTypes));
-      if (engine) invalidatingChangePostHook();
-    };
-
-    model.get = function(property) {
-      var output,
-          ret;
-
-      if (properties.hasOwnProperty(property)) {
-        ret = properties[property];
-      } else if (output = outputsByName[property]) {
-        if (suppressOutputPropertyCaching) {
-          ret = output.calculate();
-        } else {
-          if (!output.hasCachedValue) {
-            output.hasCachedValue = true;
-            output.cachedValue = output.calculate();
-          }
-          ret = output.cachedValue;
-        }
-      }
-
-      // translateFromMD2DUnits function defined above works on hashes, not individual values, so
-      // use the method from unitsTranslation instead.
-      if (unitsTranslation && mainPropertyUnitTypes[property]) {
-        ret = unitsTranslation.translateFromMD2DUnits(ret, mainPropertyUnitTypes[property].unitType);
-      }
-      return ret;
-    };
 
     model.format = function(property, opts) {
       opts = opts || {};
@@ -23571,184 +24724,6 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       return d3.format(opts.format || 'g')(model.get(property));
     };
 
-    /**
-      Add a listener callback that will be notified when any of the properties in the passed-in
-      array of properties is changed. (The argument `properties` can also be a string, if only a
-      single name needs to be passed.) This is a simple way for views to update themselves in
-      response to property changes.
-
-      Observe all properties with `addPropertiesListener('all', callback);`
-    */
-    model.addPropertiesListener = function(properties, callback) {
-      var i;
-
-      function addListener(prop) {
-        if (!listeners[prop]) listeners[prop] = [];
-        listeners[prop].push(callback);
-      }
-
-      if (typeof properties === 'string') {
-        addListener(properties);
-      } else {
-        for (i = 0; i < properties.length; i++) {
-          addListener(properties[i]);
-        }
-      }
-    };
-
-
-    /**
-      Add an "output" property to the model. Output properties are expected to change at every
-      model tick, and may also be changed indirectly, outside of a model tick, by a change to the
-      model parameters or to the configuration of atoms and other objects in the model.
-
-      `name` should be the name of the parameter. The property value will be accessed by
-      `model.get(<name>);`
-
-      `description` should be a hash of metadata about the property. Right now, these metadata are not
-      used. However, example metadata include the label and units name to be used when graphing
-      this property.
-
-      `calculate` should be a no-arg function which should calculate the property value.
-    */
-    model.defineOutput = function(name, descriptionHash, calculate) {
-      outputNames.push(name);
-
-      mainPropertyUnitTypes[name] = {
-        unitType: descriptionHash.unitType
-      };
-
-      outputsByName[name] = {
-        description: new PropertyDescription(unitsDefinition, descriptionHash),
-        calculate: calculate,
-        hasCachedValue: false,
-        // Used to keep track of whether this property changed as a side effect of some other change
-        // null here is just a placeholder
-        previousValue: null
-      };
-    };
-
-    /**
-      Add an "filtered output" property to the model. This is special kind of output property, which
-      is filtered by one of the built-in filters based on time (like running average). Note that filtered
-      outputs do not specify calculate function - instead, they specify property which should filtered.
-      It can be another output, model parameter or custom parameter.
-
-      Filtered output properties are extension of typical output properties. They share all features of
-      output properties, so they are expected to change at every model tick, and may also be changed indirectly,
-      outside of a model tick, by a change to the model parameters or to the configuration of atoms and other
-      objects in the model.
-
-      `name` should be the name of the parameter. The property value will be accessed by
-      `model.get(<name>);`
-
-      `description` should be a hash of metadata about the property. Right now, these metadata are not
-      used. However, example metadata include the label and units name to be used when graphing
-      this property.
-
-      `property` should be name of the basic property which should be filtered.
-
-      `type` should be type of filter, defined as string. For now only "RunningAverage" is supported.
-
-      `period` should be number defining length of time period used for calculating filtered value. It should
-      be specified in femtoseconds.
-
-    */
-    model.defineFilteredOutput = function(name, description, property, type, period) {
-      // Filter object.
-      var filter, initialValue;
-
-      if (type === "RunningAverage") {
-        filter = new RunningAverageFilter(period);
-      } else {
-        throw new Error("FilteredOutput: unknown filter type " + type + ".");
-      }
-
-      initialValue = model.get(property);
-      if (initialValue === undefined || isNaN(Number(initialValue))) {
-        throw new Error("FilteredOutput: property is not a valid numeric value or it is undefined.");
-      }
-
-      // Add initial sample.
-      filter.addSample(model.get('time'), initialValue);
-
-      filteredOutputNames.push(name);
-      // filteredOutputsByName stores properties which are unique for filtered output.
-      // Other properties like description or calculate function are stored in outputsByName hash.
-      filteredOutputsByName[name] = {
-        addSample: function () {
-          filter.addSample(model.get('time'), model.get(property));
-        }
-      };
-
-      // Create simple adapter implementing TickHistoryCompatible Interface
-      // and register it in tick history.
-      tickHistory.registerExternalObject({
-        push: function () {
-          // Push is empty, as we store samples during each tick anyway.
-        },
-        extract: function (idx) {
-          filter.setCurrentStep(idx);
-        },
-        invalidate: function (idx) {
-          filter.invalidate(idx);
-        },
-        setHistoryLength: function (length) {
-          filter.setMaxBufferLength(length);
-        }
-      });
-
-      // Extend description to contain information about filter.
-      description.property = property;
-      description.type = type;
-      description.period = period;
-
-      // Filtered output is still an output.
-      // Reuse existing, well tested logic for caching, observing etc.
-      model.defineOutput(name, description, function () {
-        return filter.calculate();
-      });
-    };
-
-    /**
-      Define a property of the model to be treated as a custom parameter. Custom parameters are
-      (generally, user-defined) read/write properties that trigger a setter action when set, and
-      whose values are automatically persisted in the tick history.
-
-      Because custom parameters are not intended to be interpreted by the engine, but instead simply
-      *represent* states of the model that are otherwise fully specified by the engine state and
-      other properties of the model, and because the setter function might not limit itself to a
-      purely functional mapping from parameter value to model properties, but might perform any
-      arbitrary stateful change, (stopping the model, etc.), the setter is NOT called when custom
-      parameters are updated by the tick history.
-    */
-    model.defineParameter = function(name, descriptionHash, setter) {
-      parametersByName[name] = {
-        description: new PropertyDescription(unitsDefinition, descriptionHash),
-        setter: setter,
-        isDefined: false
-      };
-
-      // Regardless of the type of unit represented by the parameter, do NOT automatically convert
-      // it to MD2D units in the set method. That is because the set method on the parameter will
-      // also call 'setter', and any native model properties set by 'setter' will be translated.
-      // If the parameter value were also translated in the set method, translations would happen
-      // twice!
-      mainPropertyUnitTypes[name] = {
-        unitType: "untranslated"
-      };
-
-      properties['set_'+name] = function(value) {
-        properties[name] = value;
-        parametersByName[name].isDefined = true;
-        // setter is optional.
-        if (parametersByName[name].setter) {
-          // set a useful 'this' binding in the setter:
-          parametersByName[name].setter.call(model, value);
-        }
-      };
-    };
-
 
     /**
       Return a unitDefinition in the current unitScheme for a quantity
@@ -23756,30 +24731,6 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
     */
     model.getUnitDefinition = function(name) {
       return unitsDefinition.units[name];
-    };
-
-    /**
-      Retrieve (a copy of) the hash describing property 'name', if one exists. This hash can store
-      an arbitrary set of key-value pairs, but is expected to have 'label' and 'units' properties
-      describing, respectively, the property's human-readable label and the short name of the units
-      in which the property is enumerated.
-
-      Right now, only output properties and custom parameters have a description hash.
-    */
-    model.getPropertyDescription = function(name) {
-      var property = outputsByName[name] || parametersByName[name];
-      if (property) {
-        return property.description;
-      }
-    };
-
-    model.getPropertyType = function(name) {
-      if (outputsByName[name]) {
-        return 'output';
-      }
-      if (parametersByName[name]) {
-        return 'parameter';
-      }
     };
 
     /**
@@ -23806,6 +24757,7 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
     model.serialize = function() {
       var propCopy = {},
           ljProps, i, len,
+          rawProperties = propertySupport.rawValues,
 
           removeAtomsArrayIfDefault = function(name, defaultVal) {
             if (propCopy.atoms[name].every(function(i) {
@@ -23815,8 +24767,8 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
             }
           };
 
-      propCopy = serialize(metadata.mainProperties, properties);
-      propCopy.viewOptions = serialize(metadata.viewOptions, properties);
+      propCopy = serialize(metadata.mainProperties, rawProperties);
+      propCopy.viewOptions = serialize(metadata.viewOptions, rawProperties);
       propCopy.atoms = serialize(metadata.atom, atoms, engine.getNumberOfAtoms());
 
       if (engine.getNumberOfRadialBonds()) {
@@ -23850,10 +24802,6 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       }
       if (engine.getNumberOfRestraints() > 0) {
         propCopy.restraints = serialize(metadata.restraint, restraints, engine.getNumberOfRestraints());
-      }
-
-      if (engine.geneticProperties.get() !== undefined) {
-        propCopy.geneticProperties = engine.geneticProperties.serialize();
       }
 
       // FIXME: for now Amino Acid elements are *not* editable and should not be serialized
@@ -23896,10 +24844,25 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
     // Friction parameter temporarily applied to the live-dragged atom.
     model.LIVE_DRAG_FRICTION = 10;
 
-    // Set the regular, main properties.
-    // Note that validation process will return hash without all properties which are
-    // not defined in meta model as mainProperties (like atoms, obstacles, viewOptions etc).
-    set_properties(validator.validateCompleteness(metadata.mainProperties, initialProperties));
+    // ------------------------------
+    // Process initialProperties before setting properties on the model
+    // ------------------------------
+
+    // Ensure that model, which includes DNA (=> so DNA animation too) has
+    // correct, constant dimensions. This is very significant, as if model
+    // dimensions are too big or too small, DNA elements can be unreadable. It
+    // also ensures that aspect ratio of the model is reasonable for
+    // animation.
+    // TODO: move this to better place.
+    if (initialProperties.DNA) {
+      // Overwrite width and height options.
+      initialProperties.width = 1000;
+      initialProperties.height = 3;
+      initialProperties.viewOptions.viewPortX = 0;
+      initialProperties.viewOptions.viewPortY = 0;
+      initialProperties.viewOptions.viewPortWidth = 5;
+      initialProperties.viewOptions.viewPortHeight = 3;
+    }
 
     (function () {
       if (!initialProperties.viewOptions || !initialProperties.viewOptions.textBoxes) {
@@ -23916,14 +24879,154 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
         textBoxes[i] = validator.validateCompleteness(metadata.textBox, textBoxes[i]);
       }
     }());
-    // Set the model view options.
-    set_properties(validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {}));
+    viewOptions = validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {});
 
-    // initialize minX, minYm, maxX, maxY from model width and height
+    // Set the regular, main properties. Note that validation process will return hash without all
+    // properties which are not defined in meta model as mainProperties (like atoms, obstacles,
+    // viewOptions etc).
+    mainProperties = validator.validateCompleteness(metadata.mainProperties, initialProperties);
+
+    // Set up units scheme.
+    unitsDefinition = unitDefinitions.get(mainProperties.unitsScheme);
+
+    // If we're not using MD2D units, we need a translation (which, for each unit type, allows some
+    // number of "native" MD2D units to stand for 1 translated unit, e.g., 1 nm represents 1m, with
+    // the relationships between these ratios set up so that the calculations reamin physically
+    // consistent.
+    if (mainProperties.unitsScheme !== 'md2d') {
+      unitsTranslation = new UnitsTranslation(unitsDefinition);
+    }
+
+    // ------------------------------
+    // Define toplevel properties of the model
+    // ------------------------------
+
+    // Add all the mainProperties, with custom setters defined below
+    (function() {
+      var customSetters = {
+        targetTemperature: function (value) {
+          if (engine) {
+            engine.setTargetTemperature(value);
+          }
+        },
+
+        temperatureControl: function(value) {
+          if (engine) {
+            engine.useThermostat(value);
+          }
+        },
+
+        lennardJonesForces: function(value) {
+          if (engine) {
+            engine.useLennardJonesInteraction(value);
+          }
+        },
+
+        coulombForces: function(value) {
+          if (engine) {
+            engine.useCoulombInteraction(value);
+          }
+        },
+
+        solventForceType: function(value) {
+          if (engine) {
+            engine.setSolventForceType(value);
+          }
+        },
+
+        solventForceFactor: function(value) {
+          if (engine) {
+            engine.setSolventForceFactor(value);
+          }
+        },
+
+        additionalSolventForceMult: function(value) {
+          if (engine) {
+            engine.setAdditionalSolventForceMult(value);
+          }
+        },
+
+        additionalSolventForceThreshold: function(value) {
+          if (engine) {
+            engine.setAdditionalSolventForceThreshold(value);
+          }
+        },
+
+        dielectricConstant: function(value) {
+          if (engine) {
+            engine.setDielectricConstant(value);
+          }
+        },
+
+        realisticDielectricEffect: function(value) {
+          if (engine) {
+            engine.setRealisticDielectricEffect(value);
+          }
+        },
+
+        VDWLinesCutoff: function(value) {
+          var ratio = VDWLinesCutoffMap[value];
+          if (ratio && engine) {
+            engine.setVDWLinesRatio(ratio);
+          }
+        },
+
+        gravitationalField: function(value) {
+          if (engine) {
+            engine.setGravitationalField(value);
+          }
+        },
+
+        modelSampleRate: function() {
+          if (!stopped) model.restart();
+        },
+
+        viscosity: function(value) {
+          if (engine) {
+            engine.setViscosity(value);
+          }
+        },
+
+        polarAAEpsilon: function (value) {
+          var polarAAs, element1, element2,
+              i, j, len;
+
+          if (engine) {
+            // Set custom pairwise LJ properties for polar amino acids.
+            // They should attract stronger to better mimic nature.
+            polarAAs = aminoacidsHelper.getPolarAminoAcids();
+            for (i = 0, len = polarAAs.length; i < len; i++) {
+              element1 = polarAAs[i];
+              for (j = i + 1; j < len; j++) {
+                element2 = polarAAs[j];
+                // Set custom pairwise LJ epsilon (default one for AA is -0.1).
+                engine.pairwiseLJProperties.set(element1, element2, {epsilon: value});
+              }
+            }
+          }
+        }
+      };
+
+      Object.keys(metadata.mainProperties).forEach(function(key) {
+        defineBuiltinProperty('mainProperty', key, customSetters[key]);
+      });
+      propertySupport.setRawValues(mainProperties);
+    })();
+
+    // Define and set the model view options. None of these have custom setters.
+    Object.keys(metadata.viewOptions).forEach(function(key) {
+      defineBuiltinProperty('viewOption', key);
+    });
+    propertySupport.setRawValues(viewOptions);
+
+    // Initialize minX, minYm, maxX, maxY from model width and height
+    // if they are undefined.
     model.initializeDimensions();
 
-    // Setup engine object.
+    // Setup MD2D engine object.
     model.initializeEngine();
+    // Setup genetic engine.
+    geneticEngine = new GeneticEngine(model);
 
     // Finally, if provided, set up the model objects (elements, atoms, bonds, obstacles and the rest).
     // However if these are not provided, client code can create atoms, etc piecemeal.
@@ -23958,56 +25061,17 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
     // above. However, this is the first step to delegate some functionality from modeler to smaller classes.
     if (initialProperties.pairwiseLJProperties)
       engine.pairwiseLJProperties.deserialize(initialProperties.pairwiseLJProperties);
-    if (initialProperties.geneticProperties)
-      engine.geneticProperties.deserialize(initialProperties.geneticProperties);
 
     // Initialize tick history.
     tickHistory = new TickHistory({
-      input: [
-        "targetTemperature",
-        "lennardJonesForces",
-        "coulombForces",
-        "temperatureControl",
-        "keShading",
-        "chargeShading",
-        "showVDWLines",
-        "showVelocityVectors",
-        "showForceVectors",
-        "showClock",
-        "timeStepsPerTick",
-        "timeStep",
-        "viscosity",
-        "gravitationalField"
-      ],
-      getRawPropertyValue: getRawPropertyValue,
-      restoreProperties: restoreProperties,
-      parameters: parametersByName,
-      restoreParameters: restoreParameters,
+      getProperties: function() {
+        return propertySupport.historyStateRawValues;
+      },
+      restoreProperties: propertySupport.setRawValues,
       state: engine.getState()
     }, model, defaultMaxTickHistory);
 
     newStep = true;
-
-    // Set up units scheme.
-    unitsDefinition = unitDefinitions.get(model.get('unitsScheme'));
-
-    // If we're not using MD2D units, we need a translation (which, for each unit type, allows some
-    // number of "native" MD2D units to stand for 1 translated unit, e.g., 1 nm represents 1m, with
-    // the relationships between these ratios set up so that the calculations reamin physically
-    // consistent.
-    if (model.get('unitsScheme') !== 'md2d') {
-      unitsTranslation = new UnitsTranslation(unitsDefinition);
-    }
-
-    // set up types of all properties before any third-party calls to set/get
-    mainPropertyUnitTypes = {};
-    _.each(metadata.mainProperties, function(value, key) {
-      if (value.unitType) {
-        mainPropertyUnitTypes[key] = {
-          unitType: value.unitType
-        };
-      }
-    });
 
     // Define some default output properties.
     model.defineOutput('time', {
@@ -24015,17 +25079,18 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       unitType: 'time',
       format: 'f'
     }, function() {
-      return modelOutputState.time;
+      // Output getters are expected to return values in translated units, since authored outputs
+      // can only read values already in translated units to start with.
+      var value = modelOutputState.time;
+      if (unitsTranslation) {
+        value = unitsTranslation.translateFromMD2DUnits(value, 'time');
+      }
+      return value;
     });
 
-    // Confusing detail for review: setting 'unitType' here will cause the return value of the
-    // output function to be translated to macroscopic units, however, the function takes
-    // macroscopic units as input. Therefore we must not set 'unitType'.
     model.defineOutput('timePerTick', {
       label: "Model time per tick",
-      unitName:         unitsDefinition.units.time.name,
-      unitPluralName:   unitsDefinition.units.time.pluralName,
-      unitAbbreviation: unitsDefinition.units.time.symbol,
+      unitType: 'time',
       format: 'f'
     }, function() {
       return model.get('timeStep') * model.get('timeStepsPerTick');
@@ -24070,7 +25135,7 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       unitType: '',
       format: '4g'
     }, function() {
-      return tickHistory.get("counter");
+      return tickHistory.get('counter');
     });
 
     model.defineOutput('newStep', {
@@ -24086,7 +25151,11 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       unitType: 'energy',
       format: '.4g'
     }, function() {
-      return modelOutputState.KE;
+      var value = modelOutputState.KE;
+      if (unitsTranslation) {
+        value = unitsTranslation.translateFromMD2DUnits(value, 'energy');
+      }
+      return value;
     });
 
     model.defineOutput('potentialEnergy', {
@@ -24094,15 +25163,22 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       unitType: 'energy',
       format: '.4g'
     }, function() {
-      return modelOutputState.PE;
-    });
+      var value = modelOutputState.PE;
+      if (unitsTranslation) {
+        value = unitsTranslation.translateFromMD2DUnits(value, 'energy');
+      }
+      return value;    });
 
     model.defineOutput('totalEnergy', {
       label: "Total Energy",
       unitType: 'energy',
       format: '.4g'
     }, function() {
-      return modelOutputState.KE + modelOutputState.PE;
+      var value = modelOutputState.KE + modelOutputState.PE;
+      if (unitsTranslation) {
+        value = unitsTranslation.translateFromMD2DUnits(value, 'energy');
+      }
+      return value;
     });
 
     model.defineOutput('temperature', {
@@ -24110,7 +25186,11 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       unitType: 'temperature',
       format: 'f'
     }, function() {
-      return modelOutputState.temperature;
+      var value = modelOutputState.temperature;
+      if (unitsTranslation) {
+        value = unitsTranslation.translateFromMD2DUnits(value, 'temperature');
+      }
+      return value;
     });
 
     updateAllOutputProperties();
@@ -24141,9 +25221,9 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
         emsize,
         fontSizeInPixels,
         imagePath,
-        vis1, vis, plot,
+        vis1, vis, plot, viewportG,
         cx, cy,
-        padding, size, modelSize,
+        padding, size, modelSize, viewport,
 
         // Basic scaling functions for positio, it transforms model units to "pixels".
         // Use it for positions of objects rendered inside the view.
@@ -24154,13 +25234,10 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
         // from bottom to top, while but SVG has increases from top to bottom
         model2pxInv,
 
-        // Basic scaling function for size, it transforms model units to "pixels".
-        // Use it for dimensions of objects rendered inside the view.
-        modelSize2px,
-
         // "Containers" - SVG g elements used to position layers of the final visualization.
         mainContainer,
         gridContainer,
+        geneticsContainer,
         radialBondsContainer,
         VDWLinesContainer,
         imageContainerBelow,
@@ -24168,6 +25245,7 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
         textContainerBelow,
         textContainerTop,
         brushContainer,
+        iconContainer,
 
         clickHandler,
         // d3.svg.brush object used to implement select action. It should be
@@ -24218,14 +25296,35 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
     }
 
     function scale() {
-      var modelWidth = model.get('width'),
-          modelHeight = model.get('height'),
-          modelMinX = model.get('minX'),
-          modelMinY = model.get('minY'),
-          modelMaxX = model.get('maxX'),
-          modelMaxY = model.get('maxY'),
-          aspectRatio = modelWidth / modelHeight,
+      var viewPortWidth = model.get("viewPortWidth"),
+          viewPortHeight = model.get("viewPortHeight"),
+          viewPortX = model.get("viewPortX"),
+          viewPortY = model.get("viewPortY"),
+          viewPortZoom = model.get("viewPortZoom"),
+          aspectRatio,
           width, height;
+
+      // Model size in model units.
+      modelSize = {
+        "minX": model.get('minX'),
+        "minY": model.get('minY'),
+        "maxX": model.get('maxX'),
+        "maxY": model.get('maxY')
+      };
+
+      // Note that viewPort specification can be undefined and then viewport
+      // should fit the model.
+      viewport = {
+        width: viewPortWidth != null ? viewPortWidth : modelSize.maxX - modelSize.minX,
+        height: viewPortHeight != null ? viewPortHeight : modelSize.maxY - modelSize.minY,
+        x: viewPortX != null ? viewPortX : modelSize.minX,
+        y: viewPortY != null ? viewPortY : modelSize.minY
+      };
+      viewport.width /= viewPortZoom;
+      viewport.height /= viewPortZoom;
+      viewport.y += viewport.height;
+
+      aspectRatio = viewport.width / viewport.height;
 
       updatePadding();
 
@@ -24246,33 +25345,18 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
         "height": height
       };
 
-      // Model size in model units.
-      modelSize = {
-        "width":  modelWidth,
-        "height": modelHeight,
-        "minX": modelMinX,
-        "minY": modelMinY,
-        "maxX": modelMaxX,
-        "maxY": modelMaxY
-      };
-
       offsetTop  = node.offsetTop + padding.top;
       offsetLeft = node.offsetLeft + padding.left;
 
       // Basic model2px scaling function for position.
       model2px = d3.scale.linear()
-          .domain([modelSize.minX, modelSize.maxX])
+          .domain([0, viewport.width])
           .range([0, size.width]);
 
       // Inverted model2px scaling function for position (for y-coordinates, inverted domain).
       model2pxInv = d3.scale.linear()
-          .domain([modelSize.maxY, modelSize.minY])
+          .domain([viewport.height, 0])
           .range([0, size.height]);
-
-      // Basic modelSize2px scaling function for size.
-      modelSize2px = function (sizeX) {
-        return model2px(modelMinX + sizeX);
-      };
 
       if (selectBrush) {
         // Update brush to use new scaling functions.
@@ -24283,7 +25367,10 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
     }
 
     function redraw() {
-      var tx = function(d) { return "translate(" + model2px(d) + ",0)"; },
+          // Overwrite default model2px and model2pxInv to display correct units.
+      var model2px = d3.scale.linear().domain([viewport.x, viewport.x + viewport.width]).range([0, size.width]),
+          model2pxInv = d3.scale.linear().domain([viewport.y, viewport.y - viewport.height]).range([0, size.height]),
+          tx = function(d) { return "translate(" + model2px(d) + ",0)"; },
           ty = function(d) { return "translate(0," + model2pxInv(d) + ")"; },
           stroke = function(d) { return d ? "#ccc" : "#666"; },
           fx = model2px.tickFormat(5),
@@ -24410,22 +25497,19 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
     }
 
     function renderContainer() {
+      var viewBox;
+
       // Update cx, cy, size and modelSize variables.
       scale();
 
+      viewBox = model2px(viewport.x) + " " + model2pxInv(viewport.y) + " " + model2px(viewport.width) + " " + model2px(viewport.height);
       // Create container, or update properties if it already exists.
       if (vis === undefined) {
         vis1 = d3.select(node).append("svg")
           .attr({
             'xmlns': 'http://www.w3.org/2000/svg',
             'xmlns:xmlns:xlink': 'http://www.w3.org/1999/xlink', // hack: doubling xmlns: so it doesn't disappear once in the DOM
-            width: cx,
-            height: cy
-          })
-          // SVG element should always fit its parent container.
-          .style({
-            width: "100%",
-            height: "100%"
+            overflow: 'hidden'
           });
 
         vis = vis1.append("g").attr("class", "particle-container-vis");
@@ -24439,29 +25523,38 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
             .on("mousedown", mousedown);
         }
 
-        // Create and arrange "layers" of the final image (g elements).
-        // Note that order of their creation is significant.
-        gridContainer        = vis.append("g").attr("class", "grid-container");
-        imageContainerBelow  = vis.append("g").attr("class", "image-container-below");
-        textContainerBelow   = vis.append("g").attr("class", "text-container-below");
-        radialBondsContainer = vis.append("g").attr("class", "radial-bonds-container");
-        VDWLinesContainer    = vis.append("g").attr("class", "vdw-lines-container");
-        mainContainer        = vis.append("g").attr("class", "main-container");
-        imageContainerTop    = vis.append("g").attr("class", "image-container-top");
-        textContainerTop     = vis.append("g").attr("class", "text-container-top");
-        brushContainer       = vis.append("g").attr("class", "brush-container");
+        gridContainer = vis.append("g").attr("class", "grid-container");
+        // Create and arrange "layers" of the final image (g elements). Note
+        // that order of their creation is significant.
+        // TODO: containers should be initialized by renderers. It's weird
+        // that top-level view defines containers for elements that it's
+        // unaware of.
+        viewportG = vis.append("svg").attr("class", "viewport");
+        geneticsContainer    = viewportG.append("g").attr("class", "genetics-container");
+        imageContainerBelow  = viewportG.append("g").attr("class", "image-container-below");
+        textContainerBelow   = viewportG.append("g").attr("class", "text-container-below");
+        radialBondsContainer = viewportG.append("g").attr("class", "radial-bonds-container");
+        VDWLinesContainer    = viewportG.append("g").attr("class", "vdw-lines-container");
+        mainContainer        = viewportG.append("g").attr("class", "main-container");
+        imageContainerTop    = viewportG.append("g").attr("class", "image-container-top");
+        textContainerTop     = viewportG.append("g").attr("class", "text-container-top");
+        brushContainer       = viewportG.append("g").attr("class", "brush-container");
+
+        iconContainer = vis.append("g").attr("class", "icon-container");
 
         // Make all layers available for subviews, expect from brush layer
         // which is used only internally.
         api.containers = {
           gridContainer:        gridContainer,
+          geneticsContainer:    geneticsContainer,
           imageContainerBelow:  imageContainerBelow,
           textContainerBelow:   textContainerBelow,
           radialBondsContainer: radialBondsContainer,
           VDWLinesContainer:    VDWLinesContainer,
           mainContainer:        mainContainer,
           imageContainerTop:    imageContainerTop,
-          textContainerTop:     textContainerTop
+          textContainerTop:     textContainerTop,
+          iconContainer:        iconContainer
         };
       } else {
         // TODO: ?? what g, why is it here?
@@ -24474,7 +25567,20 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
         .attr({
           width: cx,
           height: cy
+        })
+        // Update style values too, as otherwise SVG isn't clipped correctly e.g. in Safari.
+        .style({
+          width: cx,
+          height: cy
         });
+
+      viewportG.attr({
+        viewBox: viewBox,
+        x: 0,
+        y: 0,
+        width: model2px(viewport.width),
+        height: model2px(viewport.height)
+      });
 
       // Update padding, as it can be changed after rescaling.
       vis
@@ -24483,8 +25589,10 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
       // Rescale main plot.
       vis.select("rect.plot")
         .attr({
-          width: size.width,
-          height: size.height
+          width: model2px(viewport.width),
+          height: model2px(viewport.height),
+          x: 0,
+          y: 0
         });
 
       redraw();
@@ -24521,7 +25629,8 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
       // Register listeners.
       // Redraw container each time when some visual-related property is changed.
       model.addPropertiesListener([ "backgroundColor"], repaint);
-      model.addPropertiesListener(["gridLines", "xunits", "yunits", "xlabel", "ylabel" ],
+      model.addPropertiesListener(["gridLines", "xunits", "yunits", "xlabel", "ylabel",
+                                   "viewPortX", "viewPortY", "viewPortZoom"],
         function() {
           renderContainer();
           repaint();
@@ -24536,7 +25645,7 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
     //
     function repaint() {
       setupBackground();
-      renderer.repaint(model2px, model2pxInv, modelSize2px);
+      renderer.repaint(model2px, model2pxInv);
       api.updateClickHandlers();
     }
 
@@ -24553,16 +25662,9 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
         repaint();
       },
       getHeightForWidth: function (width) {
-        var modelWidth = model.get('width'),
-            modelHeight = model.get('height'),
-            aspectRatio = modelWidth / modelHeight,
-            height;
-
-        updatePadding();
-
-        width = width - padding.left - padding.right;
-        height = width / aspectRatio;
-        return height + padding.top  + padding.bottom;
+        var aspectRatio = viewport.width / viewport.height;
+        width = width - padding.left  - padding.right;
+        return width / aspectRatio + padding.top + padding.bottom;
       },
       repaint: function() {
         repaint();
@@ -24585,10 +25687,6 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
       model2pxInv: function(val) {
         // See comments for model2px.
         return model2pxInv(val);
-      },
-      modelSize2px: function(val) {
-        // See comments for model2px.
-        return modelSize2px(val);
       },
       pos: function() {
         // Add a pos() function so the model renderer can more easily
@@ -25424,110 +26522,943 @@ CSS style definition: sass/lab/_aminoacid-context-menu.sass
 
 }).call(this);
 
-/*global define: false */
+/*global define */
 
-define('md2d/views/genetic-renderer',['require'],function (require) {
+define('md2d/views/nucleotide',['require','lab.config'],function (require) {
+  // Dependencies.
+  var labConfig = require('lab.config'),
 
-  return function GeneticRenderer(container, parentView, model) {
-    var api,
-        model2px,
-        model2pxInv,
-        modelSize2px,
+      SCALE = 0.007,
+      W = {
+        "BACKB": 52,
+        "A": 28.151,
+        "C": 21.2,
+        "G": 21.2,
+        "T": 28.651,
+        "U": 28.651
+      },
+      H = {
+        "BACKB": 14,
+        "A": 31.15,
+        "C": 25.3,
+        "G": 30.3,
+        "T": 25.007,
+        "U": 25.007
+      };
 
-        init = function() {
-          // Save shortcuts.
-          model2px = parentView.model2px;
-          model2pxInv = parentView.model2pxInv;
-          modelSize2px = parentView.modelSize2px;
-          // Redraw DNA / mRNA on every genetic properties change.
-          model.getGeneticProperties().on("change", api.setup);
-        },
+  (function () {
+    var name;
+    for (name in W) {
+      if (W.hasOwnProperty(name)) {
+        W[name] *= SCALE;
+      }
+    }
+    for (name in H) {
+      if (H.hasOwnProperty(name)) {
+        H[name] *= SCALE;
+      }
+    }
+  }());
 
-        renderText = function(container, txt, fontSize, dx, dy, markerPos) {
-          var x = 0,
-              xAttr = "",
-              textElement,
-              i, len;
+  function Nucleotide(parent, ms2px, type, direction, index, mRNA) {
+    this._ms2px = ms2px;
+    this.type = type;
+    this._wrapper = parent.append("g").attr("class", "nucleotide");
+    this._g = this._wrapper.append("g");
+    this._bonds = this._g.append("path").attr({
+      "class": "bonds",
+      "x": 0,
+      "y": 0,
+      "d": this._bondsPath()
+    }).style({
+      "stroke-width": ms2px(0.01),
+      "stroke": "#fff"
+    });
+    this._nucleo = this._g.append("image").attr({
+      "class": "nucleotide-img",
+      "x": ms2px(W.BACKB) / 2 - ms2px(W[type]) / 2,
+      "y": ms2px(H.BACKB) * 0.9,
+      "width": ms2px(W[type]),
+      "height": ms2px(H[type]),
+      "preserveAspectRatio": "none",
+      "xlink:href": labConfig.actualRoot + "../../resources/transcription/Nucleotide" + type + "_Direction" + direction + "_noBonds.svg"
+    });
+    this._backbone = this._g.append("image").attr({
+      "x": 0,
+      "y": 0,
+      "width": ms2px(W.BACKB),
+      "height": ms2px(H.BACKB),
+      "preserveAspectRatio": "none",
+      "xlink:href": labConfig.actualRoot + "../../resources/transcription/Backbone_" + (mRNA ? "RNA" : "DNA") + ".svg"
+    });
 
-          // Necessary for example in Firefox.
-          fontSize += "px";
+    if (direction === 1) {
+      this._g.attr("transform", "translate(" + ms2px(Nucleotide.WIDTH) * index + ")");
+    } else if (direction === 2) {
+      this._g.attr("transform", "translate(" + ms2px(Nucleotide.WIDTH) * index + ") scale(1,-1)");
+    }
+  }
 
-          for (i = 0, len = txt.length; i < len; i++) {
-            xAttr += x + "px ";
-            x += dx;
-          }
+  Nucleotide.prototype.hideBonds = function(suppressAnimation) {
+    var selection;
+    if (!suppressAnimation) {
+      selection = this._bonds.transition();
+    } else {
+      selection = this._bonds;
+    }
+    selection.style("opacity", 0);
+  };
 
-          if (markerPos === undefined || markerPos === "end") {
-            markerPos = txt.length / 3;
-          }
-          markerPos *= 3;
+  Nucleotide.prototype.showBonds = function(suppressAnimation) {
+    var selection;
+    if (!suppressAnimation) {
+      selection = this._bonds.transition();
+    } else {
+      selection = this._bonds;
+    }
+    selection.style("opacity", 1);
+  };
 
-          // Text shadow.
-          container.append("text")
-            .text(txt)
-            .attr({
-              "class": "shadow",
-              "x": xAttr,
-              "dy": dy
-            })
-            .style({
-                "stroke-width": modelSize2px(0.01),
-                "font-size": fontSize
-            });
+  /**
+   * Returns path defining bonds of nucleotide.
+   * Note that values used to draw it are strictly connected
+   * with current Nucleotide width, which is equal to 48!
+   * @private
+   * @return {string} SVG path description.
+   */
+  Nucleotide.prototype._bondsPath = function() {
+    var yStart = this._ms2px(SCALE * 20),
+        yEnd = this._ms2px(Nucleotide.HEIGHT);
 
-          // Final text.
-          textElement = container.append("text")
-            .attr({
-              "class": "front",
-              "x": xAttr,
-              "dy": dy
-            })
-            .style("font-size", fontSize);
+    if (this.type === "C" || this.type === "G") {
+      return "M" + this._ms2px(SCALE * 20) + " " + yStart + " L " + this._ms2px(SCALE * 20) + " " + yEnd +
+             "M" + this._ms2px(SCALE * 26) + " " + yStart + " L " + this._ms2px(SCALE * 26) + " " + yEnd +
+             "M" + this._ms2px(SCALE * 32) + " " + yStart + " L " + this._ms2px(SCALE * 32) + " " + yEnd;
+    } else {
+      return "M" + this._ms2px(SCALE * 22) + " " + yStart + " L " + this._ms2px(SCALE * 22) + " " + yEnd +
+             "M" + this._ms2px(SCALE * 30) + " " + yStart + " L " + this._ms2px(SCALE * 30) + " " + yEnd;
+    }
+  };
 
-          textElement.append("tspan")
-            .text(txt.substring(0, markerPos));
-          textElement.append("tspan")
-            .attr("class", "marked-mrna")
-            .text(txt.substring(markerPos, markerPos + 3));
-          textElement.append("tspan")
-            .text(txt.substring(markerPos + 3));
-        };
+  // Width of the nucleotide is width of the DNA backbone.
+  // * 0.92 to ensure that DNA backbone doesn't contain any visual discontinuities.
+  // There are two bugs connected with it. First is in Chrome, where preserveAspectRatio
+  // is ignored for images, the second one is in Safari, which has problems with correct
+  // width of the images. Please see:
+  // https://www.pivotaltracker.com/story/show/48453261
+  Nucleotide.WIDTH  = W.BACKB * 0.92;
+  // Height of the nucleotide is height of the DNA backbone + A nucleotide (tallest one).
+  // * 0.9 because it simply... looks better. This value is used to determine distance
+  // between two strands of DNA and this multiplier causes that they are closer to each other.
+  Nucleotide.HEIGHT = H.BACKB + H.A * 0.9;
 
-    api = {
-      setup: function () {
-        var props = model.getGeneticProperties().get(),
-            dnaGElement, fontSize, dx;
+  return Nucleotide;
+});
 
-        if (props === undefined) {
-          return;
-        }
+/*global define, $, d3 */
 
-        container.selectAll("g.dna").remove();
+define('md2d/views/genetic-renderer',['require','lab.config','md2d/views/nucleotide'],function (require) {
 
-        dnaGElement = container.append("g").attr({
-          "class": "dna",
-          // (0nm, 0nm) + small, constant offset in px.
-          "transform": "translate(" + model2px(props.x) + "," + model2pxInv(props.y) + ")"
-        });
+  var labConfig = require('lab.config'),
+      Nucleotide = require('md2d/views/nucleotide'),
 
-        fontSize = modelSize2px(props.height);
-        dx = modelSize2px(props.width);
+      SCALE = 0.007,
+      W = {
+        "CELLS": 720,
+        "DNA1": 661,
+        "DNA2": 720,
+        "DNA3": 337.4,
+        "POLY_UNDER": 426.15,
+        "POLY_OVER": 402.525,
+        "NUCLEUS": 729.45,
+        "RIBO_TOP": 550.7,
+        "RIBO_BOTTOM": 509.031,
+        "RIBO_UNDER": 550.55,
+        "RIBO_OVER": 550.7,
+        "TRNA": 117.325,
+        "BACKB": 52,
+        "A": 28.151,
+        "C": 21.2,
+        "G": 21.2,
+        "T": 28.651,
+        "U": 28.651
+      },
+      H = {
+        "CELLS": 500,
+        "DNA1": 550,
+        "DNA2": 414.263,
+        "DNA3": 89.824,
+        "POLY_UNDER": 368.6,
+        "POLY_OVER": 368.6,
+        "NUCLEUS": 543.199,
+        "RIBO_TOP": 250,
+        "RIBO_BOTTOM": 147.15,
+        "RIBO_UNDER": 311.6,
+        "RIBO_OVER": 311.6,
+        "TRNA": 67.9,
+        "BACKB": 14,
+        "A": 31.15,
+        "C": 25.3,
+        "G": 30.3,
+        "T": 25.007,
+        "U": 25.007
+      };
 
-        // DNA code on sense strand.
-        renderText(dnaGElement, props.DNA, fontSize, dx, -fontSize);
-        // DNA complementary sequence.
-        renderText(dnaGElement, props.DNAComplement, fontSize, dx, 0);
-        // mRNA (if available).
-        if (props.mRNA !== undefined) {
-          renderText(dnaGElement, props.mRNA, fontSize, dx, -2.5 * fontSize, props.translationStep);
+  (function () {
+    var name;
+    for (name in W) {
+      if (W.hasOwnProperty(name)) {
+        W[name] *= SCALE;
+      }
+    }
+    for (name in H) {
+      if (H.hasOwnProperty(name)) {
+        H[name] *= SCALE;
+      }
+    }
+  }());
+
+  function GeneticRenderer(container, parentView, model) {
+    this.container = container;
+    this.parent = parentView;
+    this.model = model;
+    this.model2px = parentView.model2px;
+    this.model2pxInv = parentView.model2pxInv;
+
+    this._g = null;
+    this._dnaView = null;
+    this._dnaG = null;
+    this._dnaCompG = null;
+    this._mrnaG = null;
+    this._trnaG = null;
+    this._dna = [];
+    this._dnaComp = [];
+    this._mrna = [];
+    this._currentTrans = null;
+
+    // Redraw DNA / mRNA when genetic engine state is changed.
+    this.model.geneticEngine().on("change", $.proxy(this.render, this));
+    // Play animation when there is a "transition" event.
+    this.model.geneticEngine().on("transition", $.proxy(this.stateTransition, this));
+  }
+
+  GeneticRenderer.prototype.stateTransition = function () {
+    var state = this._state(),
+        mRNA  = this.model.get("mRNA");
+
+    if (state.name === "dna") {
+      this.playIntro();
+    }
+    else if (state.name === "transcription" && mRNA.length === 0) {
+      this.separateDNA();
+    }
+    else if (state.name === "transcription" || state.name === "transcription-end") {
+      this.transcribeStep();
+    }
+    else if (state.name === "translation") {
+      if (state.step === 0) {
+        this.prepareForTranslation();
+      } else {
+        this.translateStep(state.step);
+      }
+    }
+  };
+
+  GeneticRenderer.prototype.render = function () {
+    var state = this._state();
+
+    if (!this.model.get("DNA")) { // "", undefined or null
+      return;
+    }
+
+    // Cleanup.
+    this.container.selectAll("g.genetics").remove();
+    this._currentTrans = null;
+    this._dna      = [];
+    this._dnaComp  = [];
+    this._mrna     = [];
+    // Create a new container.
+    this._g       = this.container.append("g").attr("class", "genetics");
+    this._dnaView = this._g.append("g").attr("class", "dna-view");
+    this._mrnaG   = this._dnaView.append("g").attr("class", "mrna");
+    this._trnaG   = this._dnaView.append("g").attr("class", "trna-cont");
+
+    this._renderBackground();
+
+    if (state.name === "dna") {
+      this._renderDNA();
+    }
+    else if (state.name === "transcription" || state.name === "transcription-end") {
+      this._renderTranscription();
+    }
+    else if (state.name === "translation") {
+      this._renderTranslation();
+    }
+  };
+
+  GeneticRenderer.prototype._state = function () {
+    return this.model.geneticEngine().state();
+  };
+
+  GeneticRenderer.prototype._renderDNA = function () {
+    var dna           = this.model.get("DNA"),
+        dnaComplement = this.model.get("DNAComplement"),
+        i, len;
+
+    this._dnaG     = this._dnaView.append("g").attr("class", "dna");
+    this._dnaCompG = this._dnaView.append("g").attr("class", "dna-comp");
+
+    for (i = 0, len = dna.length; i < len; i++) {
+      this._dna.push(new Nucleotide(this._dnaG, this.model2px, dna[i], 1, i));
+    }
+    this._dnaG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("height") / 2 + Nucleotide.HEIGHT) + ")");
+
+    for (i = 0, len = dnaComplement.length; i < len; i++) {
+      this._dnaComp.push(new Nucleotide(this._dnaCompG, this.model2px, dnaComplement[i], 2, i));
+    }
+    this._dnaCompG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("height") / 2 - Nucleotide.HEIGHT) + ")");
+
+    // Prepare container for mRNA.
+    this._mrnaG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("height") / 2 - 0.5 * Nucleotide.HEIGHT) + ")");
+  };
+
+  GeneticRenderer.prototype._renderTranscription = function () {
+    var mRNA = this.model.get("mRNA"),
+        i, len;
+
+    this._renderDNA();
+
+    this.separateDNA(true);
+    for (i = 0, len = mRNA.length; i < len; i++) {
+      this._mrna.push(new Nucleotide(this._mrnaG, this.model2px, mRNA[i], 1, i, true));
+      this._dnaComp[i].showBonds(true);
+    }
+    this._scrollContainer(true);
+  };
+
+  GeneticRenderer.prototype._renderTranslation = function () {
+    var mRNA = this.model.get("mRNA"),
+        i, len;
+
+    for (i = 0, len = mRNA.length; i < len; i++) {
+      this._mrna.push(new Nucleotide(this._mrnaG, this.model2px, mRNA[i], 2, i, true));
+      this._mrna[i].hideBonds(true);
+    }
+    this._mrnaG.attr("transform", "translate(0, " + this.model2pxInv(1.5 * Nucleotide.HEIGHT) + ")");
+    this._dnaView.attr("transform", "translate(" + this.model2px(2 * Nucleotide.WIDTH) + ")");
+    this._appendRibosome();
+
+    this._g.append("circle").attr("class", "animated-drag");
+  };
+
+  GeneticRenderer.prototype._scrollContainer = function (suppressAnimation) {
+    var state = this._state(),
+        selection, shift, viewBox;
+
+    if (state.name === "transcription" || state.name === "transcription-end") {
+      selection = suppressAnimation ? this._g.select(".dna-view") : this._currentTrans.select(".dna-view").ease("linear");
+      shift = Math.min(this._mrna.length, this._dna.length - 4) - 8;
+      if (shift > 0) {
+        selection.attr("transform", "translate(" + this.model2px(-shift * Nucleotide.WIDTH) + ")");
+      }
+    } else if (state.name === "translation") {
+      selection = suppressAnimation ? d3.select(".viewport") : this._currentTrans.select(".viewport").ease("linear");
+      shift = state.step - 3;
+      if (shift > 0) {
+        viewBox = d3.select(".viewport").attr("viewBox").split(" ");
+        viewBox[0] = this.model2px(3 * shift * Nucleotide.WIDTH); // update viewport X coordinate.
+        selection.attr("viewBox", viewBox.join(" "));
+      }
+    }
+  };
+
+  GeneticRenderer.prototype._appendRibosome = function () {
+    this._dnaView.insert("image", ".mrna").attr({
+      "class": "ribosome-under",
+      "x": this.model2px(W.RIBO_UNDER * -0.5),
+      "y": this.model2pxInv(3.7 * Nucleotide.HEIGHT + 0.5 * H.RIBO_UNDER),
+      "width": this.model2px(W.RIBO_UNDER),
+      "height": this.model2px(H.RIBO_UNDER),
+      "preserveAspectRatio": "none",
+      "transform": "translate(" + this.model2px(2 * Nucleotide.WIDTH) + ")",
+      "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_under.svg"
+    });
+
+    this._dnaView.append("image").attr({
+      "class": "ribosome-over",
+      "x": this.model2px(W.RIBO_OVER * -0.5),
+      "y": this.model2pxInv(3.7 * Nucleotide.HEIGHT + 0.5 * H.RIBO_UNDER),
+      "width": this.model2px(W.RIBO_OVER),
+      "height": this.model2px(H.RIBO_OVER),
+      "preserveAspectRatio": "none",
+      "transform": "translate(" + this.model2px(2 * Nucleotide.WIDTH) + ")",
+      "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_over.svg"
+    });
+  };
+
+  GeneticRenderer.prototype._moveRibosome = function () {
+    var shift = this._state().step - 2;
+    if (shift > 0) {
+      this._currentTrans.selectAll(".ribosome-under, .ribosome-over")
+        .attr("transform", "translate(" + this.model2px((2 + shift * 3) * Nucleotide.WIDTH) + ")");
+    }
+  };
+
+  GeneticRenderer.prototype._appendTRNA = function (index) {
+        // The most outer container can be used to set easily position offset.
+        // While the inner g elements provides translation for "ideal" tRNA position
+        // close to the mRNA and optional rotation.
+    var trnaPosG = this._trnaG.append("g").attr("class", "trna").append("g"),
+        trna = trnaPosG.append("g").attr("class", "rot"),
+        type = this.model.geneticEngine().codonComplement(index),
+        nucleo = trna.selectAll("g.nucleotide").data(type.split("")),
+        nucleoG = nucleo.enter().append("g").attr("class", "nucleotide"),
+
+        ms2px   = this.model2px,
+        m2px    = this.model2px,
+        m2pxInv = this.model2pxInv,
+
+        codonWidth = 3 * Nucleotide.WIDTH,
+        offset = (codonWidth - W.TRNA) * 0.55,
+        yStart = ms2px(-20 * SCALE),
+        yEnd = ms2px(0);
+
+    nucleoG.append("path").attr({
+      "class": "bonds",
+      "x": 0,
+      "y": 0,
+      "d": function (d) {
+        if (d === "C" || d === "G") {
+          return "M" + ms2px(SCALE * 20) + " " + yStart + " L " + ms2px(SCALE * 20) + " " + yEnd +
+                 "M" + ms2px(SCALE * 26) + " " + yStart + " L " + ms2px(SCALE * 26) + " " + yEnd +
+                 "M" + ms2px(SCALE * 32) + " " + yStart + " L " + ms2px(SCALE * 32) + " " + yEnd;
+        } else {
+          return "M" + ms2px(SCALE * 22) + " " + yStart + " L " + ms2px(SCALE * 22) + " " + yEnd +
+                 "M" + ms2px(SCALE * 30) + " " + yStart + " L " + ms2px(SCALE * 30) + " " + yEnd;
         }
       }
-    };
+    }).style({
+      "stroke-width": ms2px(0.01),
+      "stroke": "#fff",
+      "opacity": 0
+    });
+    nucleoG.append("image").attr({
+      "class": "nucleotide-img",
+      "x": function (d) { return ms2px(W.BACKB) / 2 - ms2px(W[d]) / 2; },
+      "y": ms2px(-H.A),
+      "width": function (d) { return ms2px(W[d]); },
+      "height": function (d) { return ms2px(H[d]); },
+      "preserveAspectRatio": "none",
+      "xlink:href": function (d) {
+        return labConfig.actualRoot + "../../resources/transcription/Nucleotide" + d + "_Direction1_noBonds.svg";
+      }
+    });
 
-    init();
+    nucleoG.attr("transform", function (d, i) {
+      return "translate(" + ms2px(i * Nucleotide.WIDTH) + ")";
+    });
 
-    return api;
+    trna.append("image").attr({
+      "class": "trna-base",
+      "x": ms2px(offset),
+      "y": ms2px(-H.TRNA - H.A * 0.92),
+      "width": ms2px(W.TRNA),
+      "height": ms2px(H.TRNA),
+      "preserveAspectRatio": "none",
+      "xlink:href": labConfig.actualRoot + "../../resources/translation/tRNA_base.svg"
+    });
+
+    trnaPosG.attr("transform", "translate(" + m2px(index * codonWidth) + ", " + m2pxInv(2.5 * Nucleotide.HEIGHT) + ")");
   };
+
+  GeneticRenderer.prototype._renderBackground = function () {
+    var gradient;
+
+    if (this.model.geneticEngine().stateBefore("translation")) {
+      // Transcription.
+      gradient = this._g.append("defs").append("linearGradient")
+        .attr("id", "transcription-bg")
+        .attr("x1", "0%")
+        .attr("y1", "0%")
+        .attr("x2", "0%")
+        .attr("y2", "100%");
+
+      gradient.append("stop")
+        .attr("stop-color", "#C8DD69")
+        .attr("offset", "0%");
+      gradient.append("stop")
+        .attr("stop-color", "#778B3D")
+        .attr("offset", "100%");
+
+      d3.select(".plot").style("fill", "url(#transcription-bg)");
+    } else {
+      // Translation.
+      d3.select(".plot").style("fill", "#B8EBF0");
+    }
+  };
+
+  GeneticRenderer.prototype._cleanupDNA = function () {
+    this._dna      = [];
+    this._dnaComp  = [];
+    this._dnaG.remove();
+    this._dnaCompG.remove();
+  };
+
+  GeneticRenderer.prototype.playIntro = function () {
+    var ms2px = this.model2px,
+        cx = this.model2px(W.CELLS * 0.567),
+        cy = this.model2px(H.CELLS * 0.445),
+        mWidth  = this.model2px(5),
+        mHeight = this.model2px(3),
+        dna3units = 14,
+        introG, dna3, t;
+
+    this._g.selectAll(".dna-intro").remove();
+    introG = this._g.append("g").attr({
+      "class": "dna-intro",
+      "transform": "translate(" + cx + " " + cy + ")"
+    });
+
+    introG.append("image").attr({
+      "class": "cells",
+      "x": -cx,
+      "y": -cy,
+      "width": this.model2px(W.CELLS),
+      "height": this.model2px(H.CELLS),
+      "preserveAspectRatio": "none",
+      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/Cells.svg"
+    });
+
+    introG.append("image").attr({
+      "class": "dna1",
+      "x": this.model2px(W.DNA1 * -0.5),
+      "y": this.model2px(H.DNA1 * -0.5),
+      "width": this.model2px(W.DNA1),
+      "height": this.model2px(H.DNA1),
+      "transform": "scale(0.13)",
+      "preserveAspectRatio": "none",
+      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/DNA_InsideNucleus_1.svg"
+    }).style("opacity", 0);
+
+    introG.append("image").attr({
+      "class": "dna2",
+      "x": this.model2px(W.DNA2 * -0.5),
+      "y": this.model2px(H.DNA2 * -0.404),
+      "width": this.model2px(W.DNA2),
+      "height": this.model2px(H.DNA2),
+      "preserveAspectRatio": "none",
+      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/DNA_InsideNucleus_2.svg"
+    }).style("opacity", 0);
+
+    introG.append("image").attr({
+      "class": "polymerase-under",
+      "x": this.model2px(W.POLY_UNDER * -0.5),
+      "y": this.model2px(H.POLY_UNDER * -0.5),
+      "width": this.model2px(W.POLY_UNDER),
+      "height": this.model2px(H.POLY_UNDER),
+      "preserveAspectRatio": "none",
+      "transform": "translate(" + mWidth * -0.65 + ", " + mHeight * -0.5 + ") scale(0.2)",
+      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/Polymerase_Under.svg"
+    }).style("opacity", 1);
+
+    dna3 = introG.append("g").attr({
+      "class": "dna3",
+      "transform": "scale(0.2)"
+    }).style("opacity", 0);
+
+    dna3.selectAll("dna3-unit").data(new Array(dna3units)).enter().append("image").attr({
+      "class": "dna3-unit",
+      "x": function (d, i) { return (i - dna3units * 0.5) * ms2px(W.DNA3) * 0.98; },
+      "y": this.model2px(H.DNA3 * -0.5),
+      "width": this.model2px(W.DNA3),
+      "height": this.model2px(H.DNA3),
+      // "transform": "scale(0.13)",
+      "preserveAspectRatio": "none",
+      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/DoubleHelix_Unit.svg"
+    });
+
+    introG.append("image").attr({
+      "class": "polymerase-over",
+      "x": this.model2px(W.POLY_OVER * -0.5),
+      "y": this.model2px(H.POLY_OVER * -0.5),
+      "width": this.model2px(W.POLY_OVER),
+      "height": this.model2px(H.POLY_OVER),
+      "preserveAspectRatio": "none",
+      "transform": "scale(0.8)",
+      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/Polymerase_Over.svg"
+    }).style("opacity", 0);
+
+    t = this._nextTrans().ease("cubic").duration(5000);
+    t.select(".cells")
+      .attr("transform", "scale(12)");  // 1.0  * 12
+    t.select(".dna1")
+      .attr("transform", "scale(1.56)") // 0.13 * 12
+      // Of course max value for opacity is 1. However value bigger than 1
+      // affects transition progress and in this case it's helpful.
+      .style("opacity", 5);
+
+
+    t.select(".dna-intro").ease("cubic-in-out")
+      .attr("transform", "translate(" + mWidth * 0.5 + " " + mHeight * 0.5 + ")");
+
+    t = this._nextTrans().ease("linear").duration(2000);
+    t.select(".dna1")
+      .style("opacity", 0)
+      .attr("transform", "scale(3.12)"); // 1.56 * 2
+    t.select(".dna2")
+      .style("opacity", 1)
+      .attr("transform", "scale(2)");    // 1.0  * 2
+
+    t = this._nextTrans().ease("linear").duration(2000);
+    t.select(".dna2")
+      .style("opacity", 0)
+      .attr("transform", "scale(3.8)");
+    t.select(".dna3")
+      .style("opacity", 1)
+      .attr("transform", "scale(0.4)");
+
+    t = this._nextTrans().ease("quad-out").duration(3500);
+    t.select(".dna3")
+      .attr("transform", "scale(0.6)");
+
+    t = this._nextTrans().ease("quad-out").duration(3000);
+    t.select(".polymerase-under")
+      .attr("transform", "translate(0, 0) scale(0.8)");
+
+    t = this._nextTrans().ease("cubic-in-out").duration(1000);
+    t.select(".polymerase-under")
+      .attr("transform", "scale(1)");
+    t.select(".polymerase-over")
+      .attr("transform", "scale(1)")
+      .style("opacity", 1);
+
+    t = this._nextTrans().duration(2000);
+    t.selectAll(".polymerase-under, .polymerase-over")
+      .attr("transform", "scale(2.5)");  // 1.0 * 2.5
+    t.selectAll(".dna3")
+      .attr("transform", "scale(1.5)");  // 0.6 * 2.5
+
+    t = this._nextTrans().duration(700);
+    t.select(".dna-intro")
+      .style("opacity", 0)
+      .remove();
+
+    /*
+    // Circle (cx, cy) point. Useful for debugging and fitting objects in a right place.
+    introG.append("circle").attr({
+      "class": "ctr",
+      "cx": 0,
+      "cy": 0,
+      "r": 10,
+      "fill": "red"
+    });
+    */
+  };
+
+  GeneticRenderer.prototype.prepareForTranslation = function () {
+    var cx  = this.model2px(5 * 0.5),
+        cy = this.model2pxInv(3 * 0.5),
+        ms2px = this.model2px,
+        t;
+
+    // Nucleus.
+    this._g.insert("image", ".dna-view").attr({
+      "class": "nucleus",
+      "x": this.model2px(W.NUCLEUS * -0.5),
+      "y": this.model2px(H.NUCLEUS * -0.5),
+      "width": this.model2px(W.NUCLEUS),
+      "height": this.model2px(H.NUCLEUS),
+      "preserveAspectRatio": "none",
+      "transform": "translate(" + cx + ", " + cy + ")",
+      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/BG_Nucleus.svg"
+    }).style("opacity", 0);
+
+    // Polymerase.
+    this._g.insert("image", ".dna-view").attr({
+      "class": "polymerase-under",
+      "x": this.model2px(W.POLY_UNDER * -0.5),
+      "y": this.model2px(H.POLY_UNDER * -0.5),
+      "width": this.model2px(W.POLY_UNDER),
+      "height": this.model2px(H.POLY_UNDER),
+      "preserveAspectRatio": "none",
+      "transform": "translate(" + cx + ", " + cy + ") scale(2.5)",
+      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/Polymerase_Under.svg"
+    }).style("opacity", 0);
+
+    this._g.append("image").attr({
+      "class": "polymerase-over",
+      "x": this.model2px(W.POLY_OVER * -0.5),
+      "y": this.model2px(H.POLY_OVER * -0.5),
+      "width": this.model2px(W.POLY_OVER),
+      "height": this.model2px(H.POLY_OVER),
+      "preserveAspectRatio": "none",
+      "transform": "translate(" + cx + ", " + cy + ") scale(2.5)",
+      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/Polymerase_Over.svg"
+    }).style("opacity", 0);
+
+    // Ribosome top-bottom.
+    this._g.append("image").attr({
+      "class": "ribosome-bottom",
+      "x": this.model2px(W.RIBO_BOTTOM * -0.5),
+      "y": this.model2px(H.RIBO_BOTTOM * -0.5),
+      "width": this.model2px(W.RIBO_BOTTOM),
+      "height": this.model2px(H.RIBO_BOTTOM),
+      "preserveAspectRatio": "none",
+      "transform": "translate(" + this.model2px(W.RIBO_TOP * -0.5) + ", " + cy + ")",
+      "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_bottom1.svg"
+    });
+
+    this._g.append("image").attr({
+      "class": "ribosome-top",
+      "x": this.model2px(W.RIBO_TOP * -0.5),
+      "y": this.model2px(H.RIBO_TOP * -0.5),
+      "width": this.model2px(W.RIBO_TOP),
+      "height": this.model2px(H.RIBO_TOP),
+      "preserveAspectRatio": "none",
+      "transform": "translate(" + this.model2px(W.RIBO_TOP * -0.5) + ", " + this.model2pxInv(this.model.get("height")) + ")",
+      "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_top1.svg"
+    });
+
+    // Ribosome under-over.
+    this._appendRibosome();
+    // Hide ribosome at the beginning.
+    this._g.selectAll(".ribosome-under, .ribosome-over").style("opacity", 0);
+
+    this._nextTrans().ease("cubic-in-out").duration(1500)
+      .select(".dna-view")
+        .attr("transform", "translate(" + this.model2px(2 * Nucleotide.WIDTH) + ")");
+
+    this._nextTrans().ease("cubic-in-out").duration(700)
+      .selectAll(".polymerase-under, .polymerase-over")
+        .style("opacity", 1);
+
+    // Show nucleus and set background for translation.
+    this._currentTrans.each("end", function () {
+      d3.select(".genetics .nucleus").style("opacity", 1);
+      d3.select(".plot").style("fill", "#B8EBF0");
+    });
+
+    this._nextTrans().ease("cubic-in-out").duration(1500)
+      .selectAll(".polymerase-under, .polymerase-over")
+        .attr("transform", "translate(0, " + cy + ") scale(2.5) translate(" + this.model2px(W.POLY_UNDER * -0.5) + ")");
+
+    t = this._nextTrans().ease("cubic").duration(1000);
+    t.select(".nucleus")
+      .attr("transform", "translate(" + cx + ", " + this.model2pxInv(0) + ")");
+    t.select(".dna")
+      .attr("transform", "translate(0, " + this.model2pxInv(4 * Nucleotide.HEIGHT) + ")");
+    t.select(".dna-comp")
+      .attr("transform", "translate(0, " + this.model2pxInv(2 * Nucleotide.HEIGHT) + ")");
+    t.selectAll(".mrna .bonds, .dna-comp .bonds").duration(250)
+      .style("opacity", 0);
+
+    t = this._nextTrans().ease("cubic-out").duration(1000);
+    t.select(".nucleus")
+      .attr("transform", "translate(" + cx + ", " + this.model2pxInv(H.NUCLEUS * -0.5) + ")");
+    t.select(".dna")
+      .attr("transform", "translate(0, " + this.model2pxInv(-1 * Nucleotide.HEIGHT) + ")");
+    t.select(".dna-comp")
+      .attr("transform", "translate(0, " + this.model2pxInv(-3 * Nucleotide.HEIGHT) + ")");
+    t.select(".mrna")
+      .attr("transform", "translate(0, " + this.model2pxInv(2.5 * Nucleotide.HEIGHT) + ")");
+
+    this._g.selectAll(".mrna .nucleotide g").data(this._mrna);
+    // Hacky way to change direction of the nucleotides. If we transform
+    // directly from scale(1, 1) to scale(1, -1), resulting transition looks
+    // strange (involves rotation etc.). So, first change scale to value very
+    // close to 0, than swap sign and finally change it to -1. Everything
+    // should look as expected.
+    t = this._nextTrans().ease("cubic-out").duration(250);
+    t.selectAll(".mrna .nucleotide g")
+      .attr("transform", function (d, i) {
+        return "translate(" + ms2px(Nucleotide.WIDTH) * i + ") scale(1, 1e-10)";
+      });
+    t.select(".mrna")
+      .attr("transform", "translate(0, " + this.model2pxInv(2 * Nucleotide.HEIGHT) + ")");
+    t = this._nextTrans().ease("cubic-out").duration(1);
+    t.selectAll(".mrna .nucleotide g")
+      .attr("transform", function (d, i) {
+        return "translate(" + ms2px(Nucleotide.WIDTH) * i + ") scale(1, -1e-10)";
+      });
+    // Replace images with rotated versions.
+    t.each("end", function () {
+      d3.selectAll(".mrna .nucleotide g").each(function (d) {
+        d3.select(this).select(".nucleotide-img")
+          .attr("xlink:href", labConfig.actualRoot + "../../resources/transcription/Nucleotide" + d.type + "_Direction2_noBonds.svg");
+      });
+    });
+    t = this._nextTrans().ease("cubic-out").duration(250);
+    this._g.selectAll(".mrna .nucleotide g").data(this._mrna);
+    t.selectAll(".mrna .nucleotide g")
+      .attr("transform", function (d, i) {
+        return "translate(" + ms2px(Nucleotide.WIDTH) * i + ") scale(1, -1)";
+      });
+    t.select(".mrna")
+      .attr("transform", "translate(0, " + this.model2pxInv(1.5 * Nucleotide.HEIGHT) + ")");
+
+    // Ribosome fade in.
+    t = this._nextTrans().ease("cubic-in-out").duration(1500);
+    t.select(".ribosome-top")
+      .attr("transform", "translate(" + this.model2px(Nucleotide.WIDTH * 4) + ", " + this.model2pxInv(4.52 * Nucleotide.HEIGHT) + ")");
+    t.select(".ribosome-bottom")
+      .attr("transform", "translate(" + this.model2px(Nucleotide.WIDTH * 3.95) + ", " + this.model2pxInv(1.75 * Nucleotide.HEIGHT) + ")");
+
+    t = this._nextTrans().ease("cubic-in-out").duration(500);
+    t.selectAll(".ribosome-top, .ribosome-bottom")
+      .style("opacity", 0);
+    t.selectAll(".ribosome-under, .ribosome-over")
+      .style("opacity", 1);
+
+    this._g.append("circle").attr("class", "animated-drag");
+  };
+
+  GeneticRenderer.prototype.translateStep = function (step) {
+    var codonIdx = step - 1,
+        geneticEngine = this.model.geneticEngine(),
+        t;
+
+    this._g.select(".animated-drag").attr({
+      "spring-id": codonIdx > 0 ? 1 : 0,
+      "cx": 2.15 + codonIdx * 3 * Nucleotide.WIDTH,
+      "cy": 2.95
+    });
+
+    this._appendTRNA(codonIdx);
+    this._trnaG.select(".trna:last-child")
+      .attr("transform", "translate(" + this.model2px(Nucleotide.HEIGHT * 2) + ", " + this.model2px(Nucleotide.HEIGHT * -6) + ")")
+      .style("opacity", 0)
+        .select(".rot")
+          .attr("transform", "rotate(30)");
+
+    t = this._nextTrans().duration(1500);
+    t.select(".trna-cont .trna:last-child")
+      .attr("transform", "translate(0, 0)")
+      .style("opacity", 5) // 5 causes that tRNA is visible earlier.
+        // Rotation g element subselection.
+        .select(".rot")
+          .attr("transform", "")
+          // Bonds subselection.
+          .selectAll(".bonds").ease("cubic")
+            .style("opacity", 1);
+
+    t.selectAll(".mrna .nucleotide:nth-child(" + (3 * codonIdx + 1) + ") .bonds, " +
+                ".mrna .nucleotide:nth-child(" + (3 * codonIdx + 2) + ") .bonds, " +
+                ".mrna .nucleotide:nth-child(" + (3 * codonIdx + 3) + ") .bonds")
+      .ease("cubic")
+      .style("opacity", 1);
+
+
+    t.select(".animated-drag").attr({
+      "cx": 1.2 + codonIdx * 3 * Nucleotide.WIDTH,
+      "cy": 1.6
+    });
+
+    this._moveRibosome();
+    this._scrollContainer();
+
+    t.each("start", function () {
+      var drag = d3.select(".animated-drag");
+      geneticEngine.addAminoAcid(codonIdx, drag.attr("cx"), drag.attr("cy"));
+    });
+    t.each("end", function () {
+      geneticEngine.connectAminoAcids(codonIdx);
+    });
+
+    if (step > 2) {
+      // Remove the first tRNA.
+      t = this._nextTrans().duration(1000);
+      t.select(".trna-cont .trna:nth-child(" + (step - 2) + ")") // step - 3 + 1
+        .attr("transform", "translate(" + this.model2px(Nucleotide.HEIGHT * -5) + ", " + this.model2px(Nucleotide.HEIGHT * -4) + ")")
+        .style("opacity", 0)
+          .select(".rot")
+            .attr("transform", "rotate(-30)")
+              .selectAll(".bonds").duration(200)
+                .style("opacity", 0);
+
+      // Hide mRNA bonds.
+      t.selectAll(".mrna .nucleotide:nth-child(" + (3 * (step - 3) + 1) + ") .bonds, " +
+                  ".mrna .nucleotide:nth-child(" + (3 * (step - 3) + 2) + ") .bonds, " +
+                  ".mrna .nucleotide:nth-child(" + (3 * (step - 3) + 3) + ") .bonds")
+        .duration(200)
+        .style("opacity", 0);
+    }
+  };
+
+  GeneticRenderer.prototype.separateDNA = function (suppressAnimation) {
+    // When animation is disabled (e.g. during initial rendering), main group element
+    // is used as a root instead of d3 transition object.
+    var selection = suppressAnimation ? this._g : this._nextTrans().duration(1500),
+        i, len;
+
+    selection.select(".dna").attr("transform",
+      "translate(0, " + this.model2pxInv(this.model.get("height") / 2 + 2.5 * Nucleotide.HEIGHT) + ")");
+    selection.select(".dna-comp").attr("transform",
+      "translate(0, " + this.model2pxInv(this.model.get("height") / 2 - 2.5 * Nucleotide.HEIGHT) + ")");
+
+    for (i = 0, len = this._dna.length; i < len; i++) {
+      this._dna[i].hideBonds(suppressAnimation);
+      this._dnaComp[i].hideBonds(suppressAnimation);
+    }
+  };
+
+  GeneticRenderer.prototype.transcribeStep = function () {
+    var mRNA  = this.model.get("mRNA"),
+        index  = mRNA.length - 1, // last element
+        type   = mRNA[index],
+        trans  = this._nextTrans().duration(500),
+        t, r;
+
+    this._mrna.push(new Nucleotide(this._mrnaG, this.model2px, type, 1, index, true));
+    this._mrna[index].hideBonds(true);
+
+    // While adding a new mRNA segment, choose a random starting point along a
+    // circle with a certain radius that extends beyond the top DNA strand.
+    // Use parametric circle equation: x = r cos(t), y = r sin(t)
+    // Limit range of the "t" parameter to: [0.25 * PI, 0.75 * PI) and [1.25 * PI, 1.75 * PI),
+    // so new mRNA segments will come only from the top or bottom side of the container.
+    t = Math.random() >= 0.5 ? Math.PI * 0.25 : Math.PI * 1.25;
+    t += Math.random() * Math.PI * 0.5;
+    r = Nucleotide.HEIGHT * 6;
+    this._mrnaG.select(".nucleotide:last-child")
+      .attr("transform", "translate(" + this.model2px(r * Math.cos(t)) + ", " + this.model2px(r * Math.sin(t)) + ")")
+      .style("opacity", 0);
+
+    trans.select(".mrna .nucleotide:last-child")
+      .attr("transform", "translate(0, 0)")
+      .style("opacity", 1)
+        // Subselection of bonds.
+        .select(".bonds").ease("cubic")
+          .style("opacity", 1);
+
+    trans.select(".dna-comp .nucleotide:nth-child(" + (index + 1) + ") .bonds").ease("cubic")
+      .style("opacity", 1);
+
+    this._scrollContainer();
+  };
+
+  /**
+   * Returns a new chained transition.
+   * This transition will be executed when previous one ends.
+   *
+   * @private
+   * @return {d3 transtion} d3 transtion object.
+   */
+  GeneticRenderer.prototype._nextTrans = function () {
+    // TODO: this first check is a workaround.
+    // Ideal scenario would be to call always:
+    // this._currentTrans[name] = this._currentTrans[name].transition();
+    // but it seems to fail when transition has already ended.
+    if (this._currentTrans && this._currentTrans.node().__transition__) {
+      // Some transition is currently in progress, chain a new transition.
+      this._currentTrans = this._currentTrans.transition();
+    } else {
+      // All transitions ended, just create a new one.
+      this._currentTrans = d3.transition();
+    }
+    return this._currentTrans;
+  };
+
+  return GeneticRenderer;
 });
 
 
@@ -25766,18 +27697,16 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         // from bottom to top, while but SVG has increases from top to bottom
         model2pxInv,
 
-        // Basic scaling function for size, it transforms model units to "pixels".
-        // Use it for dimensions of objects rendered inside the view.
-        modelSize2px,
-
         // "Containers" - SVG g elements used to position layers of the final visualization.
         mainContainer,
+        geneticsContainer,
         radialBondsContainer,
         VDWLinesContainer,
         imageContainerBelow,
         imageContainerTop,
         textContainerBelow,
         textContainerTop,
+        iconContainer,
 
         dragOrigin,
 
@@ -25848,6 +27777,9 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         FORCE_STR    = "force",
 
         browser = benchmark.what_browser(),
+
+        // pre-calculations
+        halfPi = Math.PI/2,
 
         // this is a hack put in place to temporarily deal with an image-size
         // caching bug in Chrome Canary
@@ -26049,36 +27981,43 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
     // Create key images which can be shown in the
     // upper left corner in different situations.
-    // IMPORTANT: use percentage values whenever possible,
-    // especially for *height* attribute!
-    // It will allow to properly calculate images
+    // IMPORTANT: The height attribute must be set,
+    // it will allow to properly calculate images
     // placement in drawSymbolImages() function.
     function createSymbolImages() {
-      var xMargin = "1%";
+      var xMargin = "1%",
+          fSize = Math.max(fontSizeInPixels, 12);
+
       // only add these images if they don't already exist
-      if (mainContainer.select("#heat-bath").empty()) {
+      if (iconContainer.select("#heat-bath").empty()) {
         // Heat bath key image.
-        mainContainer.append("image")
+        iconContainer.append("image")
             .attr({
               "id": "heat-bath",
               "x": xMargin,
-              "width": "3%",
-              "height": "3%",
+              "width": fSize*2,
+              "height": fSize*2,
               "preserveAspectRatio": "xMinYMin",
-              "xlink:href": "../../resources/heatbath.gif"
-            });
+              "xlink:href": "../../resources/upstatement/heatbath.svg",
+              "class": "opaque-on-hover"
+            })
+            .append("title")
+            .text("Heatbath active");
       }
-      if (mainContainer.select("#ke-gradient").empty()) {
+      if (iconContainer.select("#ke-gradient").empty()) {
         // Kinetic Energy Shading gradient image.
-        mainContainer.append("image")
+        iconContainer.append("image")
             .attr({
               "id": "ke-gradient",
-              "x": xMargin,
-              "width": "12%",
-              "height": "12%",
+              "x": "0",
+              "width": fSize*2.2,
+              "height": fSize*6,
               "preserveAspectRatio": "xMinYMin",
-              "xlink:href": "../../resources/ke-gradient.png"
-            });
+              "xlink:href": "../../resources/upstatement/ke-gradient.svg",
+              "class": "opaque-on-hover"
+            })
+            .append("title")
+            .text("Kinetic energy gradient");
       }
     }
 
@@ -26089,39 +28028,45 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         var heatBath = model.get('temperatureControl'),
             imageSelect, imageHeight,
             // Variables used for calculating proper y positions.
-            // The unit for these values is percentage points!
             yPos = 0,
-            yMargin = 1;
+            yMargin = 1,
+            fSize = Math.max(fontSizeInPixels, 12);
 
         // Heat bath symbol.
         if (heatBath) {
             yPos += yMargin;
-            imageSelect = mainContainer.select("#heat-bath")
-              .attr("y", yPos + "%")
+            imageSelect = iconContainer.select("#heat-bath")
+              .attr({
+                "y": yPos,
+                "width": fSize*2,
+                "height": fSize*2,
+              })
               .style("display", "");
 
-            imageHeight = imageSelect.attr("height");
-            // Truncate % symbol and convert to Number.
-            imageHeight = Number(imageHeight.substring(0, imageHeight.length - 1));
+            imageHeight = parseInt(imageSelect.attr("height"));
             yPos += imageHeight;
         } else {
-            mainContainer.select("#heat-bath").style("display","none");
+            iconContainer.select("#heat-bath").style("display","none");
         }
 
         // Kinetic Energy shading gradient.
         // Put it under heat bath symbol.
         if (keShadingMode) {
             yPos += yMargin;
-            mainContainer.select("#ke-gradient")
-              .attr("y", yPos + "%")
+            iconContainer.select("#ke-gradient")
+              .attr({
+                "y": yPos,
+                "width": fSize*2.2,
+                "height": fSize*6,
+              })
               .style("display", "");
         } else {
-            mainContainer.select("#ke-gradient").style("display", "none");
+            iconContainer.select("#ke-gradient").style("display", "none");
         }
     }
 
     function updateParticleRadius() {
-      mainContainer.selectAll("circle").data(modelResults).attr("r",  function(d) { return modelSize2px(d.radius); });
+      mainContainer.selectAll("circle").data(modelResults).attr("r",  function(d) { return model2px(d.radius); });
     }
 
     /**
@@ -26132,7 +28077,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       particle.enter().append("circle")
           .attr({
             "class": function (d) { return d.isAminoAcid() ? "draggable atom amino-acid" : "atom draggable"; },
-            "r":  function(d) { return modelSize2px(d.radius); },
+            "r":  function(d) { return model2px(d.radius); },
             "cx": function(d) { return model2px(d.x); },
             "cy": function(d) { return model2pxInv(d.y); },
             "fill-opacity": function(d) { return d.visible ? 1 : 0; },
@@ -26167,7 +28112,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         .attr({
           "class": "atomTrace",
           "d": getAtomTracePath,
-          "stroke-width": modelSize2px(0.01),
+          "stroke-width": model2px(0.01),
           "stroke": atomTraceColor,
           "fill": "none",
           "stroke-dasharray": "6, 6"
@@ -26189,8 +28134,8 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
           "class": "obstacle-shape",
           "x": 0,
           "y": 0,
-          "width": function(d, i) {return modelSize2px(obstacles.width[i]); },
-          "height": function(d, i) {return modelSize2px(obstacles.height[i]); },
+          "width": function(d, i) {return model2px(obstacles.width[i]); },
+          "height": function(d, i) {return model2px(obstacles.height[i]); },
           "fill": function(d, i) { return obstacles.visible[i] ? getObstacleColor(i) : "rgba(128,128,128, 0)"; },
           "stroke-width": function(d, i) { return obstacles.visible[i] ? 0.2 : 0.0; },
           "stroke": function(d, i) { return obstacles.visible[i] ? getObstacleColor(i) : "rgba(128,128,128, 0)"; }
@@ -26225,15 +28170,15 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
               "class": "obstacle-force-hor",
               "d": function (d) {
                 if (obsAx < 0)
-                  return "M " + modelSize2px(obsWidth + vecLen + space) +
-                              "," + modelSize2px(d) +
-                              " L " + modelSize2px(obsWidth + space) +
-                              "," + modelSize2px(d);
+                  return "M " + model2px(obsWidth + vecLen + space) +
+                              "," + model2px(d) +
+                              " L " + model2px(obsWidth + space) +
+                              "," + model2px(d);
                 else
-                  return "M " + modelSize2px(-vecLen - space) +
-                              "," + modelSize2px(d) +
-                              " L " + modelSize2px(-space) +
-                              "," + modelSize2px(d);
+                  return "M " + model2px(-vecLen - space) +
+                              "," + model2px(d) +
+                              " L " + model2px(-space) +
+                              "," + model2px(d);
               }
             });
         }
@@ -26247,15 +28192,15 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
               "class": "obstacle-force-vert",
               "d": function (d) {
                 if (obsAy < 0)
-                  return "M " + modelSize2px(d) +
-                              "," + modelSize2px(-vecLen - space) +
-                              " L " + modelSize2px(d) +
-                              "," + modelSize2px(-space);
+                  return "M " + model2px(d) +
+                              "," + model2px(-vecLen - space) +
+                              " L " + model2px(d) +
+                              "," + model2px(-space);
                 else
-                  return "M " + modelSize2px(d) +
-                              "," + modelSize2px(obsHeight + vecLen + space) +
-                              " L " + modelSize2px(d) +
-                              "," + modelSize2px(obsHeight + space);
+                  return "M " + model2px(d) +
+                              "," + model2px(obsHeight + vecLen + space) +
+                              " L " + model2px(d) +
+                              "," + model2px(obsHeight + space);
               }
             });
         }
@@ -26263,7 +28208,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         obstacleGroupEl.selectAll("path.obstacle-force-hor, path.obstacle-force-vert")
           .attr({
             "marker-end": hideLineMarkers ? "" : "url(#Triangle-"+ FORCE_STR +")",
-            "stroke-width": modelSize2px(forceVectorWidth),
+            "stroke-width": model2px(forceVectorWidth),
             "stroke": forceVectorColor,
             "fill": "none"
           });
@@ -26278,7 +28223,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
               if (isSpringBond(d)) {
                 return springStrokeWidth(d);
               } else {
-                return modelSize2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
+                return model2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
               }
             },
             "stroke": getBondAtom1Color,
@@ -26296,7 +28241,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
               if (isSpringBond(d)) {
                 return springStrokeWidth(d);
               } else {
-                return modelSize2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
+                return model2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
               }
             },
             "stroke": getBondAtom2Color,
@@ -26337,7 +28282,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       dy = y2 - y1;
 
       strength = d.strength;
-      length = Math.sqrt(dx*dx + dy*dy) / modelSize2px(0.01);
+      length = Math.sqrt(dx*dx + dy*dy) / model2px(0.01);
 
       numTurns = Math.floor(d.length * 24);
       springDiameter = length / numTurns;
@@ -26349,10 +28294,10 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       cosThetaSpikes = costheta * numTurns;
       sinThetaSpikes = sintheta * numTurns;
 
-      radius_x1 = modelSize2px(modelResults[d.atom1].radius) * costheta;
-      radius_x2 = modelSize2px(modelResults[d.atom2].radius) * costheta;
-      radius_y1 = modelSize2px(modelResults[d.atom1].radius) * sintheta;
-      radius_y2 = modelSize2px(modelResults[d.atom2].radius) * sintheta;
+      radius_x1 = model2px(modelResults[d.atom1].radius) * costheta;
+      radius_x2 = model2px(modelResults[d.atom2].radius) * costheta;
+      radius_y1 = model2px(modelResults[d.atom1].radius) * sintheta;
+      radius_y2 = model2px(modelResults[d.atom2].radius) * sintheta;
       radiusFactorX = radius_x1 - radius_x2;
       radiusFactorY = radius_y1 - radius_y2;
 
@@ -26397,8 +28342,8 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
     }
 
     function vdwLinesEnter() {
-      var strokeWidth = modelSize2px(0.02),
-          strokeDasharray = modelSize2px(0.03) + " " + modelSize2px(0.02);
+      var strokeWidth = model2px(0.02),
+          strokeDasharray = model2px(0.03) + " " + model2px(0.02);
       // update existing lines
       vdwLines.attr({
         "x1": function(d) { return model2px(modelResults[d[0]].x); },
@@ -26452,7 +28397,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
             imglayer = imageProp[i].imageLayer;
             positionOrder = imglayer === 1 ? positionOrderTop : positionOrderBelow;
             positionOrder.push({
-              i: i, 
+              i: i,
               zOrder: (!!imageProp[i].imageLayerPosition) ? imageProp[i].imageLayerPosition : 0
             });
             positionOrder.sort(function(a,b){return d3.ascending(a["zOrder"],b["zOrder"])});
@@ -26470,8 +28415,8 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
                 .attr("y", function(d){ return getImageCoords(d["i"])[1] } )
                 .attr("class", function(d){ return "image_attach" + d["i"] + " draggable"})
                 .attr("xlink:href", function(d){ return img[d["i"]].src})
-                .attr("width", function(d){return modelSize2px( imageSizes[d["i"]][0] )})
-                .attr("height", function(d){return modelSize2px( imageSizes[d["i"]][1] )})
+                .attr("width", function(d){return model2px( imageSizes[d["i"]][0] )})
+                .attr("height", function(d){return model2px( imageSizes[d["i"]][1] )})
                 .attr("pointer-events", "none");
           };
         })(i);
@@ -26479,26 +28424,65 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
     }
 
     function getTextBoxCoords(d) {
-      var x, y, textX, textY, frameX, frameY,
+      var x, y, hostX, hostY, textX, textY, frameX, frameY, calloutX, calloutY,
           pixelScale = textBoxFontSizeInPixels * d.fontScale;
+
+      x = d.x;
+      y = d.y;
+
       if (d.hostType) {
         if (d.hostType === "Atom") {
-          x = modelResults[d.hostIndex].x;
-          y = modelResults[d.hostIndex].y;
+          hostX = modelResults[d.hostIndex].x;
+          hostY = modelResults[d.hostIndex].y;
         } else {
-          x = obstacles.x[d.hostIndex] + (obstacles.width[d.hostIndex] / 2);
-          y = obstacles.y[d.hostIndex] + (obstacles.height[d.hostIndex] / 2);
+          hostX = obstacles.x[d.hostIndex] + (obstacles.width[d.hostIndex] / 2);
+          hostY = obstacles.y[d.hostIndex] + (obstacles.height[d.hostIndex] / 2);
         }
-      } else {
-        x = d.x;
-        y = d.y;
       }
+
+      if (d.hostType && !d.calloutPoint) {
+        x = hostX;
+        y = hostY;
+      }
+
+      if (d.calloutPoint) {
+        if (!d.hostType) {
+          calloutX = d.calloutPoint[0];
+          calloutY = d.calloutPoint[1];
+        } else {
+          calloutX = hostX;
+          calloutY = hostY;
+        }
+      }
+
       frameX = model2px(x);
       frameY = model2pxInv(y);
 
       textX = frameX + pixelScale*0.75;
       textY = frameY + pixelScale*1.2;
-      return [textX, textY, frameX, frameY];
+
+      calloutX = model2px(calloutX);
+      calloutY = model2pxInv(calloutY);
+
+      return [textX, textY, frameX, frameY, calloutX, calloutY];
+    }
+
+    function getCalloutPath(location, frame, fullWidth, fullHeight, fontSize) {
+      var calloutLocation = [
+            parseFloat(location[0]),
+            parseFloat(location[1])
+          ],
+          center = [
+            parseFloat(frame.getAttribute("x")) + (fullWidth / 2),
+            parseFloat(frame.getAttribute("y")) + (fullHeight / 2)
+          ],
+          angle = halfPi - Math.atan((calloutLocation[0] - center[0]) / (calloutLocation[1] - center[1])),
+          baseSize = Math.min(fontSize, fullHeight/2),
+
+          dcx = Math.sin(angle) * baseSize,
+          dcy = Math.cos(angle) * baseSize;
+
+      return (center[0]+dcx) + ", " + (center[1]-dcy) + " " + (center[0]-dcx) + ", " + (center[1]+dcy) + " " + calloutLocation;
     }
 
     function updateTextBoxes() {
@@ -26531,10 +28515,36 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
               return getTextBoxCoords(d)[1];
             }
           });
+
+        layer.selectAll("g.textBoxWrapper polygon")
+          .data(layerTextBoxes.filter( function(d) { return d.calloutPoint; } ))
+          .attr({
+            "callout-location-data": function(d) {
+              var pos = getTextBoxCoords(d);
+              return pos[4] + ", " + pos[5];
+            }
+          });
       };
 
       updateText(1);
       updateText(2);
+
+      // update callouts
+      $(".textBox").each( function() {
+        var $parentNode = $(this.parentNode),
+            callout     = $parentNode.find("polygon"),
+            frame       = $parentNode.find("rect")[0],
+            fontSize, width, height, calloutLocation;
+
+        if (!frame || callout.length === 0) return;
+
+        fontSize  = parseFloat(this.getAttributeNS(null, "font-size"));
+        width  = frame.getAttribute("width");
+        height = frame.getAttribute("height");
+        calloutLocation = callout.attr("callout-location-data").split(", ");
+
+        callout.attr("points", getCalloutPath(calloutLocation, frame, width, height, fontSize) );
+      });
     }
 
     function drawTextBoxes() {
@@ -26560,10 +28570,27 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         text = selection.enter().append("svg:g")
           .attr("class", "textBoxWrapper");
 
+        text.filter(function (d) { return d.calloutPoint; })
+          .append("polygon")
+          .attr({
+            "points": "0,0 0,0 0,0",
+            "style": function(d) {
+              var backgroundColor = d.backgroundColor,
+                  strokeWidth = d.strokeWidthEms * fontSizeInPixels,
+                  strokeOpacity = d.strokeOpacity;
+              return "fill:"+backgroundColor+";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:"+(strokeWidth*2)+";stroke-opacity:"+strokeOpacity;
+            },
+            "callout-location-data": function(d) {
+              var pos = getTextBoxCoords(d);
+              return pos[4] + ", " + pos[5];
+            }
+          });
+
         text.filter(function (d) { return d.frame; })
           .append("rect")
           .attr({
             "class": function(d, i) { return "textBoxFrame text-"+i; },
+            "id": function(d, i) { return "text-"+i; },
             "transform": function(d) {
               var rotate = d.rotate,
                   pos = getTextBoxCoords(d);
@@ -26583,6 +28610,16 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
             "y":  function(d) { return getTextBoxCoords(d)[3]; }
           });
 
+        text.filter(function (d) { return d.calloutPoint; })
+          .append("polygon")
+          .attr({
+            "points": "0,0 0,0 0,0",
+            "style": function(d) {
+              var backgroundColor = d.backgroundColor;
+              return "fill:"+backgroundColor+";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:0;";
+            }
+          });
+
         text.append("text")
           .attr({
             "class": function() { return "textBox" + (AUTHORING ? " draggable" : ""); },
@@ -26595,8 +28632,8 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
             "y": function(d)      { return getTextBoxCoords(d)[1]; },
             "width-data": function(d) { return d.width; },
             "height-data": function(d) { return d.height; },
-            "width":  modelSize2px(size[0]),
-            "height": modelSize2px(size[1]),
+            "width":  model2px(size[0]),
+            "height": model2px(size[1]),
             "xml:space": "preserve",
             "font-family": "'" + labConfig.fontface + "', sans-serif",
             "font-size": function(d) {
@@ -26626,7 +28663,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       appendTextBoxes(1);
       appendTextBoxes(2);
 
-      // wrap text
+      // wrap text, set callouts
       $(".textBox").each( function() {
         var text      = this.getAttributeNS(null, "text-data"),
             x         = this.getAttributeNS(null, "x-data"),
@@ -26636,8 +28673,10 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
             transform = this.getAttributeNS(null, "transform"),
             hasHost   = this.getAttributeNS(null, "has-host"),
             textAlign = this.getAttributeNS(null, "text-anchor"),
+            $parentNode = $(this.parentNode),
             horizontalPadding, verticalPadding,
-            result, frame, dy, tx, ty;
+            result, fullWidth, fullHeight, frame, dy, tx, ty,
+            callout, calloutLocation;
 
         dy = fontSize*1.2;
         horizontalPadding = +fontSize*1.5;
@@ -26646,13 +28685,13 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         if (width === '') {
           width = -1;
         } else {
-          width = modelSize2px(width);
+          width = model2px(width);
         }
 
         if (height === '') {
           height = -1;
         } else {
-          height = modelSize2px(height);
+          height = model2px(height);
         }
 
         while (this.firstChild) {     // clear element first
@@ -26661,14 +28700,23 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
         result = wrapSVGText(text, this, width, x, dy);
 
-        if (this.parentNode.childElementCount > 1) {
-          frame = this.parentNode.childNodes[0];
-          frame.setAttributeNS(null, "width", result.width + horizontalPadding);
+        if ($parentNode.find("rect").length > 0) {
+          frame = $parentNode.find("rect")[0];
+          fullWidth = result.width + horizontalPadding;
+          frame.setAttributeNS(null, "width", fullWidth);
           if (height > 0) {
-            frame.setAttributeNS(null, "height", height);
+            fullHeight = height;
           } else {
-            frame.setAttributeNS(null, "height", (result.lines * dy) + verticalPadding);
+            fullHeight = (result.lines * dy) + verticalPadding;
           }
+          frame.setAttributeNS(null, "height", fullHeight);
+        }
+
+        // if we have a callout
+        callout = $parentNode.find("polygon");
+        if (frame && callout.length > 0) {
+          calloutLocation = callout.attr("callout-location-data").split(", ");
+          callout.attr("points", getCalloutPath(calloutLocation, frame, fullWidth, fullHeight, fontSize) );
         }
 
         // center all hosted labels simply by tweaking the g.transform
@@ -26682,10 +28730,10 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
           transform = transform + " translate("+tx+","+ty+")";
           $(this).attr("transform", transform);
         }
-        if (hasHost === "true") {
+        if (hasHost === "true" && callout.length === 0) {
           tx = result.width / -2 - horizontalPadding/2;
           ty = result.lines * dy / -2 - verticalPadding/2;
-          $(this.parentNode).attr("transform", "translate("+tx+","+ty+")");
+          $parentNode.attr("transform", "translate("+tx+","+ty+")");
         }
       });
     }
@@ -26704,6 +28752,8 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
     function setupParticles() {
       var showChargeSymbols = model.get("showChargeSymbols"),
           useThreeLetterCode = model.get("useThreeLetterCode");
+
+      setupColorsOfParticles();
 
       mainContainer.selectAll("circle").remove();
       mainContainer.selectAll("g.label").remove();
@@ -26733,27 +28783,27 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         if (model.get("atomNumbers")) {
           selection.append("text")
             .text(d.idx)
-            .style("font-size", modelSize2px(1.4 * d.radius) + "px");
+            .style("font-size", model2px(1.4 * d.radius) + "px");
         }
         else if (useThreeLetterCode && d.label) {
           // Add shadow - a white stroke, which increases readability.
           selection.append("text")
             .text(d.label)
             .attr("class", "shadow")
-            .style("font-size", modelSize2px(d.radius) + "px");
+            .style("font-size", model2px(d.radius) + "px");
           selection.append("text")
             .text(d.label)
-            .style("font-size", modelSize2px(d.radius) + "px");
+            .style("font-size", model2px(d.radius) + "px");
         }
         else if (!useThreeLetterCode && d.symbol) {
           // Add shadow - a white stroke, which increases readability.
           selection.append("text")
             .text(d.symbol)
             .attr("class", "shadow")
-            .style("font-size", modelSize2px(1.4 * d.radius) + "px");
+            .style("font-size", model2px(1.4 * d.radius) + "px");
           selection.append("text")
             .text(d.symbol)
-            .style("font-size", modelSize2px(1.4 * d.radius) + "px");
+            .style("font-size", model2px(1.4 * d.radius) + "px");
         }
         else if (showChargeSymbols) {
           if (d.charge > 0){
@@ -26765,7 +28815,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
           }
           selection.append("text")
             .text(txtValue)
-            .style("font-size", modelSize2px(1.6 * d.radius) + "px");
+            .style("font-size", model2px(1.6 * d.radius) + "px");
         }
         // Set common attributes for labels (+ shadows).
         txtSelection = selection.selectAll("text");
@@ -26791,7 +28841,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         selection.select("text.shadow")
           .style({
             "stroke": "#fff",
-            "stroke-width": 0.15 * modelSize2px(d.radius),
+            "stroke-width": 0.15 * model2px(d.radius),
             "stroke-opacity": 0.7
           });
       });
@@ -26942,44 +28992,6 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       }
     }
 
-    function updateDrawablePositions() {
-      console.time('view update');
-      if (obstacles) {
-        obstacle.attr("transform", function (d, i) {
-          return "translate(" + model2px(obstacles.x[i]) + " " + model2pxInv(obstacles.y[i] + obstacles.height[i]) + ")";
-        });
-      }
-
-      if (drawVdwLines) {
-        updateVdwPairs();
-      }
-      // When Kinetic Energy Shading is enabled, update style of atoms
-      // during each frame.
-      if (keShadingMode) {
-        setupColorsOfParticles();
-      }
-      if (radialBondResults) {
-        updateRadialBonds();
-      }
-      updateParticles();
-      if (drawVelocityVectors) {
-        updateVectors(velVector, getVelVectorPath, getVelVectorWidth);
-      }
-      if (drawForceVectors) {
-        updateVectors(forceVector, getForceVectorPath, getForceVectorWidth);
-      }
-      if (drawAtomTrace) {
-        updateAtomTrace();
-      }
-      if(imageProp && imageProp.length !== 0) {
-        updateImageAttachment();
-      }
-      if (textBoxes && textBoxes.length > 0) {
-        updateTextBoxes();
-      }
-      console.timeEnd('view update');
-    }
-
     // TODO: this function name seems to be inappropriate to
     // its content.
     function updateParticles() {
@@ -26989,7 +29001,10 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       });
 
       if (keShadingMode) {
-        // Update particles color. Array of colors should be already updated.
+        // When Kinetic Energy Shading is enabled, update style of atoms
+        // during each frame.
+        setupColorsOfParticles();
+        // Update particles "fill" attribute. Array of colors is already updated.
         particle.attr("fill", function (d, i) { return gradientNameForParticle[i]; });
       }
 
@@ -27007,7 +29022,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
           y_pos = model2pxInv(d.y),
           path = "M "+x_pos+","+y_pos,
           scale = velocityVectorLength * 100;
-      return path + " L "+(x_pos + modelSize2px(d.vx*scale))+","+(y_pos - modelSize2px(d.vy*scale));
+      return path + " L "+(x_pos + model2px(d.vx*scale))+","+(y_pos - model2px(d.vy*scale));
     }
 
     function getForceVectorPath(d) {
@@ -27016,15 +29031,15 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
           mass  = d.mass,
           scale = forceVectorLength * 100,
           path  = "M "+x_pos+","+y_pos;
-      return path + " L "+(x_pos + modelSize2px(d.ax*mass*scale))+","+(y_pos - modelSize2px(d.ay*mass*scale));
+      return path + " L "+(x_pos + model2px(d.ax*mass*scale))+","+(y_pos - model2px(d.ay*mass*scale));
     }
 
     function getVelVectorWidth(d) {
-      return Math.abs(d.vx) + Math.abs(d.vy) > 1e-6 ? modelSize2px(velocityVectorWidth) : 0;
+      return Math.abs(d.vx) + Math.abs(d.vy) > 1e-6 ? model2px(velocityVectorWidth) : 0;
     }
 
     function getForceVectorWidth(d) {
-      return Math.abs(d.ax) + Math.abs(d.ay) > 1e-8 ? modelSize2px(forceVectorWidth) : 0;
+      return Math.abs(d.ax) + Math.abs(d.ay) > 1e-8 ? model2px(forceVectorWidth) : 0;
     }
 
     function updateVectors(vector, pathFunc, widthFunc) {
@@ -27155,7 +29170,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       if (model.is_stopped()) {
         drag = dragBoundingBox(dragX, dragY, model.getMoleculeBoundingBox(i));
         setAtomPosition(i, drag.x, drag.y, false, true);
-        updateDrawablePositions();
+        update();
       }
       else if ( d.draggable ) {
         drag = dragPoint(dragX, dragY);
@@ -27185,7 +29200,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
           alert("You can't drop the atom there");     // should be changed to a nice Lab alert box
           setAtomPosition(i, dragOrigin[0], dragOrigin[1], false, true);
         }
-        updateDrawablePositions();
+        update();
       }
       else if (d.draggable) {
         // here we just assume we are removing the one and only spring force.
@@ -27259,7 +29274,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       amniacidContextMenu.register(model, api, '[class~="amino-acid"]');
 
       // Initialize renderers.
-      geneticRenderer = new GeneticRenderer(mainContainer, api, model);
+      geneticRenderer = new GeneticRenderer(geneticsContainer, api, model);
     }
 
     //
@@ -27275,16 +29290,17 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       // Assign shortcuts, as these variables / functions shouldn't
       // change.
       mainContainer        = modelView.containers.mainContainer,
+      geneticsContainer    = modelView.containers.geneticsContainer,
       radialBondsContainer = modelView.containers.radialBondsContainer,
       VDWLinesContainer    = modelView.containers.VDWLinesContainer,
       imageContainerBelow  = modelView.containers.imageContainerBelow,
       imageContainerTop    = modelView.containers.imageContainerTop,
       textContainerBelow   = modelView.containers.textContainerBelow,
       textContainerTop     = modelView.containers.textContainerTop,
+      iconContainer        = modelView.containers.iconContainer,
 
       model2px = modelView.model2px;
       model2pxInv = modelView.model2pxInv;
-      modelSize2px = modelView.modelSize2px;
 
       fontSizeInPixels = modelView.getFontSizeInPixels();
       textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
@@ -27318,7 +29334,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         "backgroundColor", "markColor"],
           redrawClickableObjects(repaint));
 
-      model.on('addAtom', redrawClickableObjects(repaint));
+      model.on('addAtom', redrawClickableObjects(setupParticles));
       model.on('removeAtom', redrawClickableObjects(repaint));
       model.on('addRadialBond', redrawClickableObjects(setupRadialBonds));
       model.on('removeRadialBond', redrawClickableObjects(setupRadialBonds));
@@ -27346,11 +29362,10 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
     // Also call when the number of objects changes such that the container
     // must be setup again.
     //
-    function repaint(m2px, m2pxInv, mSize2px) {
+    function repaint(m2px, m2pxInv) {
       if (arguments.length) {
         model2px = m2px;
         model2pxInv = m2pxInv;
-        modelSize2px = mSize2px;
       }
       fontSizeInPixels = modelView.getFontSizeInPixels();
       textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
@@ -27358,16 +29373,17 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       setupDynamicGradients();
       setupObstacles();
       setupVdwPairs();
-      setupColorsOfParticles();
-      setupRadialBonds();
       setupParticles();
-      geneticRenderer.setup();
+      // Always setup radial bonds *after* particles to use correct atoms
+      // color table.
+      setupRadialBonds();
+      geneticRenderer.render();
       setupVectors();
       setupAtomTrace();
-      drawSymbolImages();
       drawImageAttachment();
       drawTextBoxes();
       setupToolTips();
+      drawSymbolImages();
       setupFirefoxWarning();
     }
 
@@ -27385,21 +29401,30 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         });
       }
 
+      // Pass data from objects animated by view code to the model. Note that
+      // it's very experimental, hacky and will be changed in the future.
+      // TODO: cleanup, provide more generic solution.
+      d3.selectAll(".animated-drag").each(function () {
+        var el = d3.select(this),
+            x = el.attr("x") || el.attr("cx"),
+            y = el.attr("y") || el.attr("cy");
+            springId = el.attr("spring-id")
+
+        model.updateSpringForce(springId, x, y);
+      });
+
       if (drawVdwLines) {
         updateVdwPairs();
-      }
-      // When Kinetic Energy Shading is enabled, update style of atoms
-      // during each frame.
-      if (keShadingMode) {
-        setupColorsOfParticles();
-      }
-
-      if (radialBondResults) {
-        updateRadialBonds();
       }
 
       updateParticles();
 
+      if (radialBondResults) {
+        // Always update radial bonds *after* particles, as particles can
+        // change their color and radial bonds should reflect that too (=> use
+        // updated colors array).
+        updateRadialBonds();
+      }
       if (drawVelocityVectors) {
         updateVectors(velVector, getVelVectorPath, getVelVectorWidth);
       }
@@ -27427,8 +29452,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       repaint: repaint,
       reset: reset,
       model2px: modelView.model2px,
-      model2pxInv: modelView.model2pxInv,
-      modelSize2px: modelView.modelSize2px
+      model2pxInv: modelView.model2pxInv
     };
 
     // Initialization.
@@ -27484,7 +29508,7 @@ define('md2d/views/dna-edit-dialog',[],function () {
             width: "35em",
             buttons: {
               "Apply": function () {
-                model.getGeneticProperties().set({
+                model.set({
                   DNA: $dnaTextInput.val()
                 });
                 $(this).dialog("close");
@@ -27495,14 +29519,10 @@ define('md2d/views/dna-edit-dialog',[],function () {
           // Dynamic validation on input.
           $submitButton = $(".dna-edit-dialog button:contains('Apply')");
           $dnaTextInput.on("input", function () {
-            var props = {
-                  DNA: $dnaTextInput.val()
-                },
-                status;
-            status = model.getGeneticProperties().validate(props);
+            var status = model.geneticEngine().validate($dnaTextInput.val());
             if (status.valid === false) {
               $submitButton.button("disable");
-              $errorMsg.text(status.errors["DNA"]);
+              $errorMsg.text(status.error);
             } else {
               $submitButton.button("enable");
               $errorMsg.text("");
@@ -27516,7 +29536,7 @@ define('md2d/views/dna-edit-dialog',[],function () {
         $errorMsg.text("");
         $submitButton.removeAttr("disabled");
         // Set current value of DNA code.
-        $dnaTextInput.val(model.getGeneticProperties().get().DNA);
+        $dnaTextInput.val(model.get("DNA"));
         $dialogDiv.dialog("open");
       }
     };
@@ -27940,15 +29960,15 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
         e.g. setGeneticProperties({ DNA: "ATCG" })
       */
       setGeneticProperties: function setGeneticProperties(props) {
-        model.getGeneticProperties().set(props);
+        model.geneticEngine().set(props);
       },
 
       /**
         Returns genetic properties as a human-readable hash.
-        e.g. getGeneticProperties() --> {DNA: "ATCG", DNAComplement: "TAGC", x: 0.01, y: 0.01, height: 0.12}
+        e.g. geneticEngine() --> {DNA: "ATCG", DNAComplement: "TAGC", x: 0.01, y: 0.01, height: 0.12}
       */
-      getGeneticProperties: function getGeneticProperties() {
-        return model.getGeneticProperties().get();
+      geneticEngine: function geneticEngine() {
+        return model.geneticEngine().get();
       },
 
       /**
@@ -27959,20 +29979,60 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
       },
 
       /**
-        Triggers transcription of mRNA from DNA.
-        Result should be rendered. It is also stored in genetic properties.
+       * Plays DNA intro, which shows broader context of the DNA transcription and
+       * translation.
+       */
+      playDNAIntro: function () {
+        model.geneticEngine().playIntro();
+      },
 
-        e.g. getGeneticProperties() --> {DNA: "ATCG", DNAComplement: "TAGC", mRNA: "AUCG", ...}
-      */
+      /**
+       * Separates two strands of DNA.
+       */
+      separateDNA: function separateDNA() {
+        model.geneticEngine().separateDNA();
+      },
+
+      /**
+       * Triggers only one step of DNA transcription.
+       * This method also accepts optional parameter - expected nucleotide.
+       * When it's available, transcription step will be performed only
+       * when passed nucleotide code matches nucleotide, which should
+       * be actually joined to mRNA in this transcription step. When
+       * expected nucleotide code is wrong, this method does nothing.
+       *
+       * e.g.
+       * transcribeStep("A") will perform transcription step only
+       * if "A" nucleotide should be added to mRNA in this step.
+       *
+       * @param  {string} expectedNucleotide code of the expected nucleotide ("U", "C", "A" or "G").
+       */
+      transcribeStep: function transcribeStep(expectedNucleotide) {
+        model.geneticEngine().transcribeStep(expectedNucleotide);
+      },
+
+      /**
+       * Triggers complete DNA to mRNA transcription.
+       *
+       * Complete mRNA will be available in genetic properties.
+       * e.g. geneticEngine() --> {DNA: "ATCG", DNAComplement: "TAGC", mRNA: "AUCG", ...}
+       */
       transcribe: function transcribeDNA() {
-        model.getGeneticProperties().transcribeDNA();
+        model.geneticEngine().transcribe();
+      },
+
+      /**
+       * Triggers only one step of DNA translation.
+       */
+      translateStep: function translateStep() {
+        model.geneticEngine().translateStep();
       },
 
       /**
         Triggers translation of mRNA to protein.
       */
       translate: function translate() {
-        var aaSequence = model.getGeneticProperties().translate();
+        var aaSequence = model.geneticEngine().translate();
         model.generateProtein(aaSequence);
       },
 
@@ -29067,10 +31127,12 @@ define('solar-system/models/metadata',[],function() {
         defaultValue: "default"
       },
       timeStep: {
-        defaultValue: 0.1
+        defaultValue: 0.1,
+        storeInTickHistory: true
       },
       timeStepsPerTick: {
-        defaultValue: 50
+        defaultValue: 50,
+        storeInTickHistory: true
       },
       horizontalWrapping: {
         defaultValue: false
@@ -29082,42 +31144,42 @@ define('solar-system/models/metadata',[],function() {
 
     viewOptions: {
       viewPortWidth: {
-        defaultValue: 50,
         unitType: "length",
         immutable: true
       },
       viewPortHeight: {
-        defaultValue: 50,
         unitType: "length",
         immutable: true
+      },
+      viewPortZoom: {
+        defaultValue: 1
       },
       viewPortX: {
-        defaultValue: 0,
-        unitType: "length",
-        immutable: true
+        unitType: "length"
       },
       viewPortY: {
+        unitType: "length"
+      },
+      showClock: {
+        defaultValue: true,
+        storeInTickHistory: true
+      },
+      showBodyTrace: {
+        defaultValue: false,
+        storeInTickHistory: true
+      },
+      bodyTraceId: {
         defaultValue: 0,
-        unitType: "length",
-        immutable: true
+        storeInTickHistory: true
       },
       backgroundColor: {
         defaultValue: "#eeeeee"
       },
-      showClock: {
-        defaultValue: true
+      bodyTraceColor: {
+        defaultValue: "#ee8833"
       },
       markColor: {
         defaultValue: "#f8b500"
-      },
-      showBodyTrace: {
-        defaultValue: false
-      },
-      bodyTraceId: {
-        defaultValue: 0
-      },
-      bodyTraceColor: {
-        defaultValue: "#ee8833"
       },
       images: {
         defaultValue: []
@@ -29129,6 +31191,12 @@ define('solar-system/models/metadata',[],function() {
         defaultValue: []
       },
       fitToParent: {
+        defaultValue: false
+      },
+      xlabel: {
+        defaultValue: false
+      },
+      ylabel: {
         defaultValue: false
       },
       xunits: {
@@ -29473,13 +31541,14 @@ define('solar-system/models/unit-definitions/index',['require','solar-system/mod
 /*global define: false, d3: false, $: false */
 /*jslint onevar: true devel:true eqnull: true boss: true */
 
-define('solar-system/models/modeler',['require','arrays','common/console','solar-system/models/engine/solar-system','solar-system/models/metadata','common/models/tick-history','common/serialize','common/validator','solar-system/models/engine/constants/units','solar-system/models/property-description','solar-system/models/unit-definitions/index','underscore'],function(require) {
+define('solar-system/models/modeler',['require','arrays','common/console','solar-system/models/engine/solar-system','solar-system/models/metadata','common/models/tick-history','common/property-support','common/serialize','common/validator','solar-system/models/engine/constants/units','solar-system/models/property-description','solar-system/models/unit-definitions/index','underscore'],function(require) {
   // Dependencies.
   var arrays               = require('arrays'),
       console              = require('common/console'),
       solarSystem          = require('solar-system/models/engine/solar-system'),
       metadata             = require('solar-system/models/metadata'),
       TickHistory          = require('common/models/tick-history'),
+      PropertySupport      = require('common/property-support'),
       serialize            = require('common/serialize'),
       validator            = require('common/validator'),
       units                = require('solar-system/models/engine/constants/units'),
@@ -29495,6 +31564,11 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
     var model = {},
         dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack",
             "seek", "addBody", "removeBody", "invalidation", "textBoxesChanged"),
+
+        propertySupport = new PropertySupport({
+          types: ["output", "parameter", "mainProperty", "viewOption"]
+        }),
+
         defaultMaxTickHistory = 1000,
         stopped = true,
         restart = false,
@@ -29522,50 +31596,11 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
         // property values - in effect transposed from the planet property arrays.
         results,
 
-        listeners = {},
+        // If this is true, output properties will not be recalculated on changes
+        suppressInvalidatingChangeHooks = false,
 
-        properties = {
-          /**
-            These functions are optional setters that will be called *instead* of simply setting
-            a value when 'model.set({property: value})' is called, and are currently needed if you
-            want to pass a value through to the engine.  The function names are automatically
-            determined from the property name. If you define one of these custom functions, you
-            must remember to also set the property explicitly (if appropriate) as this won't be
-            done automatically
-          */
-
-          set_timeStep: function(ts) {
-            this.timeStep = ts;
-          },
-
-          set_horizontalWrapping: function(hw) {
-            this.horizontalWrapping = hw;
-            if (engine) {
-              engine.setHorizontalWrapping(hw);
-            }
-          },
-
-          set_verticalWrapping: function(vw) {
-            this.verticalWrapping = vw;
-            if (engine) {
-              engine.setVerticalWrapping(vw);
-            }
-          },
-
-          set_gravitationalConstant: function(gc) {
-            this.gravitationalConstant = gc;
-            if (engine) {
-              engine.setGravitationalConstant(gc);
-            }
-          }
-
-        },
-
-        // The list of all 'output' properties (which change once per tick).
-        outputNames = [],
-
-        // Information about the description and calculating function for 'output' properties.
-        outputsByName = {},
+        // Invalidating change hooks might between others
+        invalidatingChangeHookNestingLevel = 0,
 
         // The subset of outputName list, containing list of outputs which are filtered
         // by one of the built-in filters (like running average filter).
@@ -29575,108 +31610,44 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
         // are stored in outputsByName object, as filtered output is just extension of normal output.
         filteredOutputsByName = {},
 
-        // Whewther to suppress caching of output properties. Should only be needed between
-        // invalidatingChangePreHook and invalidatingChangePostHook
-        suppressOutputPropertyCaching = false,
-
-        // The currently-defined parameters.
-        parametersByName = {},
-
-        // Unit types for all the properties that can be accessed using model.set/model.get
-        mainPropertyUnitTypes,
-
         // The set of units currently in effect. (Determined by the 'unitsScheme' property of the
         // model; default value is 'md2d')
-        unitsDefinition;
+        unitsDefinition,
 
-    function notifyPropertyListeners(listeners) {
-      listeners = _.uniq(listeners);
-      for (var i=0, ii=listeners.length; i<ii; i++){
-        listeners[i]();
-      }
-    }
+        // Set method mixed in to model by propertySupport; model.set needs to be augmented with
+        // physics-based invalidation concerns.
+        baseSet,
 
-    function notifyPropertyListenersOfEvents(events) {
-      var evt,
-          evts,
-          waitingToBeNotified = [],
-          i, ii;
+        // The initial "main" propeties, validated and filtered from the initialProperties array
+        mainProperties,
 
-      if (typeof events === "string") {
-        evts = [events];
+        // The initial viewOptions, validated and filtered from the initialProperties
+        viewOptions;
+
+    function defineBuiltinProperty(type, key, setter) {
+      var metadataForType,
+          descriptor,
+          unitType;
+
+      if (type === 'mainProperty') {
+        metadataForType = metadata.mainProperties;
+      } else if (type === 'viewOption') {
+        metadataForType = metadata.viewOptions;
       } else {
-        evts = events;
+        throw new Error(type + " is not a supported built-in property type");
       }
-      for (i=0, ii=evts.length; i<ii; i++){
-        evt = evts[i];
-        if (listeners[evt]) {
-          waitingToBeNotified = waitingToBeNotified.concat(listeners[evt]);
+
+      descriptor = {
+        type: type,
+        writable: validator.propertyIsWritable(metadataForType[key]),
+        set: setter,
+        includeInHistoryState: !!metadataForType[key].storeInTickHistory,
+        validate: function(value) {
+          return validator.validateSingleProperty(metadataForType[key], key, value, false);
         }
-      }
-      if (listeners["all"]){      // listeners that want to be notified on any change
-        waitingToBeNotified = waitingToBeNotified.concat(listeners["all"]);
-      }
-      notifyPropertyListeners(waitingToBeNotified);
-    }
+      };
 
-    /**
-      Restores a set of "input" properties, notifying their listeners of only those properties which
-      changed, and only after the whole set of properties has been updated.
-    */
-    function restoreProperties(savedProperties) {
-      var property,
-          changedProperties = [],
-          savedValue;
-
-      for (property in savedProperties) {
-        if (savedProperties.hasOwnProperty(property)) {
-          // skip read-only properties
-          if (outputsByName[property]) {
-            throw new Error("Attempt to restore output property \"" + property + "\".");
-          }
-          savedValue = savedProperties[property];
-          if (properties[property] !== savedValue) {
-            if (properties["set_"+property]) {
-              properties["set_"+property](savedValue);
-            } else {
-              properties[property] = savedValue;
-            }
-            changedProperties.push(property);
-          }
-        }
-      }
-      notifyPropertyListenersOfEvents(changedProperties);
-    }
-
-    /**
-      Restores a list of parameter values, notifying their listeners after the whole list is
-      updated, and without triggering setters. Sets parameters not in the passed-in list to
-      undefined.
-    */
-    function restoreParameters(savedParameters) {
-      var parameterName,
-          observersToNotify = [];
-
-      for (parameterName in savedParameters) {
-        if (savedParameters.hasOwnProperty(parameterName)) {
-          // restore the property value if it was different or not defined in the current time step
-          if (properties[parameterName] !== savedParameters[parameterName] || !parametersByName[parameterName].isDefined) {
-            properties[parameterName] = savedParameters[parameterName];
-            parametersByName[parameterName].isDefined = true;
-            observersToNotify.push(parameterName);
-          }
-        }
-      }
-
-      // remove parameter values that aren't defined at this point in history
-      for (parameterName in parametersByName) {
-        if (parametersByName.hasOwnProperty(parameterName) && !savedParameters.hasOwnProperty(parameterName)) {
-          parametersByName[parameterName].isDefined = false;
-          properties[parameterName] = undefined;
-        }
-      }
-
-      notifyPropertyListenersOfEvents(observersToNotify);
+      propertySupport.defineProperty(key, descriptor);
     }
 
     function tick(elapsedTime, dontDispatchTickEvent) {
@@ -29702,28 +31673,6 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
       }
 
       return stopped;
-    }
-
-    function set_properties(hash) {
-      var property, propsChanged = [];
-      for (property in hash) {
-        if (hash.hasOwnProperty(property) && hash[property] !== undefined && hash[property] !== null) {
-          // skip read-only properties
-          if (outputsByName[property]) {
-            throw new Error("Attempt to set read-only output property \"" + property + "\".");
-          }
-          // look for set method first, otherwise just set the property
-          if (properties["set_"+property]) {
-            properties["set_"+property](hash[property]);
-          // why was the property not set if the default value property is false ??
-          // } else if (properties[property]) {
-          } else {
-            properties[property] = hash[property];
-          }
-          propsChanged.push(property);
-        }
-      }
-      notifyPropertyListenersOfEvents(propsChanged);
     }
 
     // Returns the "raw" (untranslated) version of property 'name'. Used to provide privileged
@@ -29761,31 +31710,25 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
       which would invalidate a cached value without also calling one of these two methods.
     */
     function updateAllOutputProperties() {
-      var i, j, l;
-
       readModelState();
-
-      // invalidate all cached values before notifying any listeners
-      for (i = 0; i < outputNames.length; i++) {
-        outputsByName[outputNames[i]].hasCachedValue = false;
-      }
+      propertySupport.deleteComputedPropertyCachedValues();
 
       // Update all filtered outputs.
       // Note that this have to be performed after invalidation of all outputs
       // (as filtered output can filter another output), but before notifying
       // listeners (as we want to provide current, valid value).
-      for (i = 0; i < filteredOutputNames.length; i++) {
-        filteredOutputsByName[filteredOutputNames[i]].addSample();
-      }
+      filteredOutputNames.forEach(function(name) {
+        filteredOutputsByName[name].addSample();
+      });
 
-      for (i = 0; i < outputNames.length; i++) {
-        if (l = listeners[outputNames[i]]) {
-          for (j = 0; j < l.length; j++) {
-            l[j]();
-          }
-        }
-      }
+      propertySupport.notifyAllComputedProperties();
     }
+
+    // FIXME
+    //
+    // Instead of requiring balanced calls to "PreHooks" and "PostHooks", we should instead accept a
+    // callback containing actions to perform in between the pre and post actions. That would be a
+    // better way of ensuring that pre and post hooks are always balanced.
 
     /**
       ALWAYS CALL THIS FUNCTION before any change to model state outside a model step
@@ -29795,16 +31738,51 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
       by considered non-invalidating changes that don't require calling this hook.
     */
     function invalidatingChangePreHook() {
-      storeOutputPropertiesBeforeChange();
+      if (suppressInvalidatingChangeHooks) return;
+      invalidatingChangeHookNestingLevel++;
+
+      if (invalidatingChangeHookNestingLevel === 0) {
+        // If we're beginning a series of (possibly-nested) invalidating changes, store computed
+        // property values so they can be compared when we finish the invalidating changes.
+        propertySupport.storeComputedProperties();
+        propertySupport.deleteComputedPropertyCachedValues();
+        propertySupport.enableCaching = false;
+      }
+      invalidatingChangeHookNestingLevel++;
     }
 
     /**
       ALWAYS CALL THIS FUNCTION after any change to model state outside a model step.
     */
     function invalidatingChangePostHook() {
-      updateOutputPropertiesAfterChange();
-      if (tickHistory) tickHistory.invalidateFollowingState();
-      dispatch.invalidation();
+      if (suppressInvalidatingChangeHooks) return;
+      invalidatingChangeHookNestingLevel--;
+
+      if (invalidatingChangeHookNestingLevel === 0) {
+        propertySupport.enableCaching = true;
+      }
+
+      // Make sure that computed properties which depend on engine state are valid
+      if (engine) {
+        readModelState();
+      }
+
+      // Non-filtered outputs will be valid at this point (caching is disabl;ed, so they're
+      // recomputed every time.) This ensures that filtered outputs that depend on non-filtered
+      // outputs are also valid:
+      filteredOutputNames.forEach(function(name) {
+        filteredOutputsByName[name].addSample();
+      });
+
+      if (invalidatingChangeHookNestingLevel === 0) {
+        // Once we've finished the cycle of invalidating changes, go ahead and notify observers of
+        // computed properties that changed.
+        propertySupport.enableCaching = true;
+        propertySupport.notifyChangedComputedProperties();
+
+        if (tickHistory) tickHistory.invalidateFollowingState();
+        dispatch.invalidation();
+      }
     }
 
     /**
@@ -29842,89 +31820,6 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
     })();
 
     /**
-      Call this method *before* changing any "universe" property or model property (including any
-      property of a model object such as the position of an planet) to save the output-property
-      values before the change. This is required to enabled updateOutputPropertiesAfterChange to be
-      able to detect property value changes.
-
-      After the change is made, call updateOutputPropertiesAfterChange to notify listeners.
-    */
-    function storeOutputPropertiesBeforeChange() {
-      var i, outputName, output, l;
-
-      for (i = 0; i < outputNames.length; i++) {
-        outputName = outputNames[i];
-        if ((l = listeners[outputName]) && l.length > 0) {
-          output = outputsByName[outputName];
-          // Can't save previous value in output.cachedValue because, before we check it, the
-          // cachedValue may be overwritten with an updated value as a side effect of the
-          // calculation of the updated value of some other property
-          output.previousValue = output.hasCachedValue ? output.cachedValue : output.calculate();
-        }
-      }
-    }
-
-    /**
-      Before changing any "universe" property or model property (including any
-      property of a model object such as the position of an planet), call the method
-      storeOutputPropertiesBeforeChange; after changing the property, call this method  to detect
-      changed output-property values and to notify listeners of the output properties which have
-      changed. (However, don't call either method after a model tick or step;
-      updateAllOutputProperties is more efficient for that case.)
-    */
-    function updateOutputPropertiesAfterChange() {
-      var i, j, output, outputName, l, listenersToNotify = [];
-
-      readModelState();
-
-      // Mark _all_ cached values invalid ... we're not going to be checking the values of the
-      // unobserved properties, so we have to assume their value changed.
-      for (i = 0; i < outputNames.length; i++) {
-        output = outputsByName[outputNames[i]];
-        output.hasCachedValue = false;
-      }
-
-      // Update all filtered outputs.
-      // Note that this have to be performed after invalidation of all outputs
-      // (as filtered output can filter another output).
-      for (i = 0; i < filteredOutputNames.length; i++) {
-        filteredOutputsByName[filteredOutputNames[i]].addSample();
-      }
-
-      // Keep a list of output properties that are being observed and which changed ... and
-      // cache the updated values while we're at it
-      for (i = 0; i < outputNames.length; i++) {
-        outputName = outputNames[i];
-        output = outputsByName[outputName];
-
-        if ((l = listeners[outputName]) && l.length > 0) {
-          // Though we invalidated all cached values above, nevertheless some outputs may have been
-          // computed & cached during a previous pass through this loop, as a side effect of the
-          // calculation of some other property. Therefore we can respect hasCachedValue here.
-          if (!output.hasCachedValue) {
-            output.cachedValue = output.calculate();
-            output.hasCachedValue = true;
-          }
-
-          if (output.cachedValue !== output.previousValue) {
-            for (j = 0; j < l.length; j++) {
-              listenersToNotify.push(l[j]);
-            }
-          }
-        }
-        // Now that we're done with it, allow previousValue to be GC'd. (Of course, since we're
-        // using an equality test to check for changes, it doesn't make sense to let outputs be
-        // objects or arrays, yet)
-        output.previousValue = null;
-      }
-
-      // Finally, now that all the changed properties have been cached, notify listeners
-      for (i = 0; i < listenersToNotify.length; i++) {
-        listenersToNotify[i]();
-      }
-    }
-
-    /**
       This method is called to refresh the results array and macrostate variables (KE, PE,
       temperature) whenever an engine integration occurs or the model state is otherwise changed.
 
@@ -29934,7 +31829,7 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
       the detection of changed properties.
     */
     function readModelState() {
-      var i, prop, n, amino;
+      var i, prop, n;
 
       engine.computeOutputState(modelOutputState);
 
@@ -29955,26 +31850,16 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
       for containing the atom properties.
     */
     function resizeResultsArray() {
-      var isAminoAcid = function () {
-            return aminoacidsHelper.isAminoAcid(this.element);
-          },
-          i, len;
+      var i, len;
 
       // TODO: refactor whole approach to creation of objects from flat arrays.
-      // Think about more general way of detecting and representing amino acids.
-      // However it would be reasonable to perform such refactoring later, when all requirements
-      // related to proteins engine are clearer.
 
       if (!results) results = [];
 
       for (i = results.length, len = model.get_num_bodies(); i < len; i++) {
         if (!results[i]) {
           results[i] = {
-            idx: i,
-            // Provide convenience function for view, do not force it to ask
-            // model / engine directly. In the future, atom objects should be
-            // represented by a separate class.
-            isAminoAcid: isAminoAcid
+            idx: i
           };
         }
       }
@@ -29988,6 +31873,170 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
     // Public functions
     //
     // ------------------------------------------------------------
+
+    // Adds model.properties, model.set, model.get, model.addObserver, model.removeObserver...
+    propertySupport.mixInto(model);
+
+    baseSet = model.set;
+
+    model.set = function(key, value) {
+      if (engine) invalidatingChangePreHook();
+      baseSet(key, value);
+      if (engine) invalidatingChangePostHook();
+    };
+
+    /**
+      Add a listener callback that will be notified when any of the properties in the passed-in
+      array of properties is changed. (The argument `properties` can also be a string, if only a
+      single name needs to be passed.) This is a simple way for views to update themselves in
+      response to property changes.
+    */
+    model.addPropertiesListener = function(properties, callback) {
+      if (typeof properties === 'string') {
+        model.addObserver(properties, callback);
+      } else {
+        properties.forEach(function(property) {
+          model.addObserver(property, callback);
+        });
+      }
+    };
+
+    /**
+      Add an "output" property to the model. Output properties are expected to change at every
+      model tick, and may also be changed indirectly, outside of a model tick, by a change to model
+      properties or the atom, element, etc. properties.
+
+      `key` should be the name of the output. The property value will be accessed by
+      `model.get(<key>);`
+
+      `description` should be a hash of metadata about the property.
+
+      `getter` should be a no-arg function which calculates the property value. These values are not
+      translated after getter returns because we expect that most output getters are authored
+      scripts, which operate entirely with already-translated units. Therefore, getters defined
+      internally in modeler.js needs to make sure to translate any "md2d units" values out of the
+      md2d-unit domain.
+    */
+    model.defineOutput = function(key, descriptionHash, getter) {
+      propertySupport.defineProperty(key, {
+        type: 'output',
+        writable: false,
+        get: getter,
+        includeInHistoryState: false,
+        description: new PropertyDescription(unitsDefinition, descriptionHash)
+      });
+    };
+
+    /**
+      Add an "filtered output" property to the model. This is special kind of output property, which
+      is filtered by one of the built-in filters based on time (like running average). Note that filtered
+      outputs do not specify calculate function - instead, they specify property which should filtered.
+      It can be another output, model parameter or custom parameter.
+
+      Filtered output properties are extension of typical output properties. They share all features of
+      output properties, so they are expected to change at every model tick, and may also be changed indirectly,
+      outside of a model tick, by a change to the model parameters or to the configuration of atoms and other
+      objects in the model.
+
+      `name` should be the name of the parameter. The property value will be accessed by
+      `model.get(<name>);`
+
+      `description` should be a hash of metadata about the property. Right now, these metadata are not
+      used. However, example metadata include the label and units name to be used when graphing
+      this property.
+
+      `property` should be name of the basic property which should be filtered.
+
+      `type` should be type of filter, defined as string. For now only "RunningAverage" is supported.
+
+      `period` should be number defining length of time period used for calculating filtered value. It should
+      be specified in femtoseconds.
+
+    */
+    model.defineFilteredOutput = function(name, description, property, type, period) {
+      // Filter object.
+      var filter, initialValue;
+
+      if (type === "RunningAverage") {
+        filter = new RunningAverageFilter(period);
+      } else {
+        throw new Error("FilteredOutput: unknown filter type " + type + ".");
+      }
+
+      initialValue = model.get(property);
+      if (initialValue === undefined || isNaN(Number(initialValue))) {
+        throw new Error("FilteredOutput: property is not a valid numeric value or it is undefined.");
+      }
+
+      // Add initial sample.
+      filter.addSample(model.get('time'), initialValue);
+
+      filteredOutputNames.push(name);
+      // filteredOutputsByName stores properties which are unique for filtered output.
+      // Other properties like description or calculate function are stored in outputsByName hash.
+      filteredOutputsByName[name] = {
+        addSample: function () {
+          filter.addSample(model.get('time'), model.get(property));
+        }
+      };
+
+      // Create simple adapter implementing TickHistoryCompatible Interface
+      // and register it in tick history.
+      tickHistory.registerExternalObject({
+        push: function () {
+          // Push is empty, as we store samples during each tick anyway.
+        },
+        extract: function (idx) {
+          filter.setCurrentStep(idx);
+        },
+        invalidate: function (idx) {
+          filter.invalidate(idx);
+        },
+        setHistoryLength: function (length) {
+          filter.setMaxBufferLength(length);
+        }
+      });
+
+      // Extend description to contain information about filter.
+      description.property = property;
+      description.type = type;
+      description.period = period;
+
+      // Filtered output is still an output.
+      // Reuse existing, well tested logic for caching, observing etc.
+      model.defineOutput(name, description, function () {
+        return filter.calculate();
+      });
+    };
+
+    /**
+      Define a property of the model to be treated as a custom parameter. Custom parameters are
+      (generally, user-defined) read/write properties that trigger a setter action when set, and
+      whose values are automatically persisted in the tick history.
+
+      Because custom parameters are not intended to be interpreted by the engine, but instead simply
+      *represent* states of the model that are otherwise fully specified by the engine state and
+      other properties of the model, and because the setter function might not limit itself to a
+      purely functional mapping from parameter value to model properties, but might perform any
+      arbitrary stateful change, (stopping the model, etc.), the setter is NOT called when custom
+      parameters are updated by the tick history.
+    */
+    model.defineParameter = function(key, descriptionHash, setter) {
+      var descriptor = {
+            type: 'parameter',
+            includeInHistoryState: true,
+            invokeSetterAfterBulkRestore: false,
+            description: new PropertyDescription(unitsDefinition, descriptionHash)
+          };
+
+      // In practice, some parameters are meant only to be observed, and have no setter
+      if (setter) {
+        descriptor.set = function(value) {
+          setter.call(model, value);
+        };
+      }
+      propertySupport.defineProperty(key, descriptor);
+    };
 
     /**
       Current seek position
@@ -30120,7 +32169,7 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
 
       if (typeof config === 'number') {
         num = config;
-      } else if (config.num != null) {
+      } else if (config.num !== undefined) {
         num = config.num;
       } else if (config.x) {
         num = config.x.length;
@@ -30314,14 +32363,14 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
 
     model.addTextBox = function(props) {
       props = validator.validateCompleteness(metadata.textBox, props);
-      properties.textBoxes.push(props);
+      model.get('textBoxes').push(props);
       dispatch.textBoxesChanged();
     };
 
     model.removeTextBox = function(i) {
-      var text = properties.textBoxes;
+      var text = model.get('textBoxes');
       if (i >=0 && i < text.length) {
-        properties.textBoxes = text.slice(0,i).concat(text.slice(i+1));
+        model.set('textBoxes', text.slice(0,i).concat(text.slice(i+1)));
         dispatch.textBoxesChanged();
       } else {
         throw new Error("Text box \"" + i + "\" does not exist, so it cannot be removed.");
@@ -30329,11 +32378,15 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
     };
 
     model.setTextBoxProperties = function(i, props) {
-      var textBox = properties.textBoxes[i];
+      var textBox = model.get('textBoxes')[i],
+          prop;
+
       if (textBox) {
         props = validator.validate(metadata.textBox, props);
         for (prop in props) {
-          textBox[prop] = props[prop];
+          if (props.hasOwnProperty(prop)) {
+            textBox[prop] = props[prop];
+          }
         }
         dispatch.textBoxesChanged();
       } else {
@@ -30455,239 +32508,12 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
       return model;
     };
 
-    model.set = function(key, val) {
-      var hash;
-      if (arguments.length === 1) {
-        // Hash of options provided.
-        hash = key;
-      } else {
-        // Key - value pair provied.
-        hash = {};
-        hash[key] = val;
-      }
-      // Perform validation in case of setting main properties or
-      // model view properties. Attempts to set immutable or read-only
-      // properties will be caught.
-      validator.validate(metadata.mainProperties, hash);
-      validator.validate(metadata.viewOptions, hash);
-
-      if (engine) invalidatingChangePreHook();
-      set_properties(hash);
-      if (engine) invalidatingChangePostHook();
-    };
-
-    model.get = function(property) {
-      var output;
-
-      if (properties.hasOwnProperty(property)) return properties[property];
-
-      if (output = outputsByName[property]) {
-        if (output.hasCachedValue) return output.cachedValue;
-        output.hasCachedValue = true;
-        output.cachedValue = output.calculate();
-        return output.cachedValue;
-      }
-    };
-
-    /**
-      Add a listener callback that will be notified when any of the properties in the passed-in
-      array of properties is changed. (The argument `properties` can also be a string, if only a
-      single name needs to be passed.) This is a simple way for views to update themselves in
-      response to property changes.
-
-      Observe all properties with `addPropertiesListener('all', callback);`
-    */
-    model.addPropertiesListener = function(properties, callback) {
-      var i;
-
-      function addListener(prop) {
-        if (!listeners[prop]) listeners[prop] = [];
-        listeners[prop].push(callback);
-      }
-
-      if (typeof properties === 'string') {
-        addListener(properties);
-      } else {
-        for (i = 0; i < properties.length; i++) {
-          addListener(properties[i]);
-        }
-      }
-    };
-
-
-    /**
-      Add an "output" property to the model. Output properties are expected to change at every
-      model tick, and may also be changed indirectly, outside of a model tick, by a change to the
-      model parameters or to the configuration of atoms and other objects in the model.
-
-      `name` should be the name of the parameter. The property value will be accessed by
-      `model.get(<name>);`
-
-      `description` should be a hash of metadata about the property. Right now, these metadata are not
-      used. However, example metadata include the label and units name to be used when graphing
-      this property.
-
-      `calculate` should be a no-arg function which should calculate the property value.
-    */
-    model.defineOutput = function(name, descriptionHash, calculate) {
-      outputNames.push(name);
-
-      mainPropertyUnitTypes[name] = {
-        unitType: descriptionHash.unitType
-      };
-
-      outputsByName[name] = {
-        description: new PropertyDescription(unitsDefinition, descriptionHash),
-        calculate: calculate,
-        hasCachedValue: false,
-        // Used to keep track of whether this property changed as a side effect of some other change
-        // null here is just a placeholder
-        previousValue: null
-      };
-    };
-
-    /**
-      Add an "filtered output" property to the model. This is special kind of output property, which
-      is filtered by one of the built-in filters based on time (like running average). Note that filtered
-      outputs do not specify calculate function - instead, they specify property which should filtered.
-      It can be another output, model parameter or custom parameter.
-
-      Filtered output properties are extension of typical output properties. They share all features of
-      output properties, so they are expected to change at every model tick, and may also be changed indirectly,
-      outside of a model tick, by a change to the model parameters or to the configuration of atoms and other
-      objects in the model.
-
-      `name` should be the name of the parameter. The property value will be accessed by
-      `model.get(<name>);`
-
-      `description` should be a hash of metadata about the property. Right now, these metadata are not
-      used. However, example metadata include the label and units name to be used when graphing
-      this property.
-
-      `property` should be name of the basic property which should be filtered.
-
-      `type` should be type of filter, defined as string. For now only "RunningAverage" is supported.
-
-      `period` should be number defining length of time period used for calculating filtered value. It should
-      be specified in femtoseconds.
-
-    */
-    model.defineFilteredOutput = function(name, description, property, type, period) {
-      // Filter object.
-      var filter, initialValue;
-
-      if (type === "RunningAverage") {
-        filter = new RunningAverageFilter(period);
-      } else {
-        throw new Error("FilteredOutput: unknown filter type " + type + ".");
-      }
-
-      initialValue = model.get(property);
-      if (initialValue === undefined || isNaN(Number(initialValue))) {
-        throw new Error("FilteredOutput: property is not a valid numeric value or it is undefined.");
-      }
-
-      // Add initial sample.
-      filter.addSample(model.get('time'), initialValue);
-
-      filteredOutputNames.push(name);
-      // filteredOutputsByName stores properties which are unique for filtered output.
-      // Other properties like description or calculate function are stored in outputsByName hash.
-      filteredOutputsByName[name] = {
-        addSample: function () {
-          filter.addSample(model.get('time'), model.get(property));
-        }
-      };
-
-      // Create simple adapter implementing TickHistoryCompatible Interface
-      // and register it in tick history.
-      tickHistory.registerExternalObject({
-        push: function () {
-          // Push is empty, as we store samples during each tick anyway.
-        },
-        extract: function (idx) {
-          filter.setCurrentStep(idx);
-        },
-        invalidate: function (idx) {
-          filter.invalidate(idx);
-        },
-        setHistoryLength: function (length) {
-          filter.setMaxBufferLength(length);
-        }
-      });
-
-      // Extend description to contain information about filter.
-      description.property = property;
-      description.type = type;
-      description.period = period;
-
-      // Filtered output is still an output.
-      // Reuse existing, well tested logic for caching, observing etc.
-      model.defineOutput(name, description, function () {
-        return filter.calculate();
-      });
-    };
-
-    /**
-      Define a property of the model to be treated as a custom parameter. Custom parameters are
-      (generally, user-defined) read/write properties that trigger a setter action when set, and
-      whose values are automatically persisted in the tick history.
-
-      Because custom parameters are not intended to be interpreted by the engine, but instead simply
-      *represent* states of the model that are otherwise fully specified by the engine state and
-      other properties of the model, and because the setter function might not limit itself to a
-      purely functional mapping from parameter value to model properties, but might perform any
-      arbitrary stateful change, (stopping the model, etc.), the setter is NOT called when custom
-      parameters are updated by the tick history.
-    */
-    model.defineParameter = function(name, descriptionHash, setter) {
-      parametersByName[name] = {
-        description: new PropertyDescription(unitsDefinition, descriptionHash),
-        setter: setter,
-        isDefined: false
-      };
-
-      // Regardless of the type of unit represented by the parameter, do NOT automatically convert
-      // it to MD2D units in the set method. That is because the set method on the parameter will
-      // also call 'setter', and any native model properties set by 'setter' will be translated.
-      // If the parameter value were also translated in the set method, translations would happen
-      // twice!
-      mainPropertyUnitTypes[name] = {
-        unitType: "untranslated"
-      };
-
-      properties['set_'+name] = function(value) {
-        properties[name] = value;
-        parametersByName[name].isDefined = true;
-        // setter is optional.
-        if (parametersByName[name].setter) {
-          // set a useful 'this' binding in the setter:
-          parametersByName[name].setter.call(model, value);
-        }
-      };
-    };
-
     /**
       Return a unitDefinition in the current unitScheme for a quantity
       such as 'length', 'mass', etc.
     */
     model.getUnitDefinition = function(name) {
       return unitsDefinition.units[name];
-    };
-
-    /**
-      Retrieve (a copy of) the hash describing property 'name', if one exists. This hash can store
-      an arbitrary set of key-value pairs, but is expected to have 'label' and 'units' properties
-      describing, respectively, the property's human-readable label and the short name of the units
-      in which the property is enumerated.
-
-      Right now, only output properties and custom parameters have a description hash.
-    */
-    model.getPropertyDescription = function(name) {
-      var property = outputsByName[name] || parametersByName[name];
-      if (property) {
-        return _.extend({}, property.description);
-      }
     };
 
     // FIXME: Broken!! Includes property setter methods, does not include radialBonds, etc.
@@ -30722,11 +32548,6 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
     // finish setting up the model
     // ------------------------------
 
-    // Set the regular, main properties.
-    // Note that validation process will return hash without all properties which are
-    // not defined in meta model as mainProperties (like bodies, viewOptions etc).
-    set_properties(validator.validateCompleteness(metadata.mainProperties, initialProperties));
-
     (function () {
       if (!initialProperties.viewOptions || !initialProperties.viewOptions.textBoxes) {
         return;
@@ -30742,11 +32563,42 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
         textBoxes[i] = validator.validateCompleteness(metadata.textBox, textBoxes[i]);
       }
     }());
+    viewOptions = validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {});
 
-    // Set the model view options.
-    set_properties(validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {}));
+    // Set the regular, main properties. Note that validation process will return hash without all
+    // properties which are not defined in meta model as mainProperties (like atoms, obstacles,
+    // viewOptions etc).
+    mainProperties = validator.validateCompleteness(metadata.mainProperties, initialProperties);
 
-    // initialze width and height from minX, minYm, maxX, maxY
+    // Set up units scheme.
+    unitsDefinition = unitDefinitions.get(mainProperties.unitsScheme);
+
+    // ------------------------------
+    // Define toplevel properties of the model
+    // ------------------------------
+
+    // Add all the mainProperties, with custom setters defined below
+    (function() {
+      var customSetters = {
+        modelSampleRate: function() {
+          if (!stopped) model.restart();
+        }
+      };
+
+      Object.keys(metadata.mainProperties).forEach(function(key) {
+        defineBuiltinProperty('mainProperty', key, customSetters[key]);
+      });
+      propertySupport.setRawValues(mainProperties);
+    })();
+
+    // Define and set the model view options. None of these have custom setters.
+    Object.keys(metadata.viewOptions).forEach(function(key) {
+      defineBuiltinProperty('viewOption', key);
+    });
+    propertySupport.setRawValues(viewOptions);
+
+    // Initialize minX, minYm, maxX, maxY from model width and height
+    // if they are undefined.
     model.initializeDimensions();
 
     // Setup engine object.
@@ -30761,23 +32613,14 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
 
     // Initialize tick history.
     tickHistory = new TickHistory({
-      input: [
-        "showClock",
-        "timeStepsPerTick",
-        "timeStep",
-        "gravitationalConstant"
-      ],
-      getRawPropertyValue: getRawPropertyValue,
-      restoreProperties: restoreProperties,
-      parameters: parametersByName,
-      restoreParameters: restoreParameters,
+      getProperties: function() {
+        return propertySupport.historyStateRawValues;
+      },
+      restoreProperties: propertySupport.setRawValues,
       state: engine.getState()
     }, model, defaultMaxTickHistory);
 
     newStep = true;
-
-    // Set up units scheme.
-    unitsDefinition = unitDefinitions.get(model.get('unitsScheme'));
 
     // set up types of all properties before any third-party calls to set/get
     mainPropertyUnitTypes = {};
@@ -30798,14 +32641,9 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
       return modelOutputState.time;
     });
 
-    // Confusing detail for review: setting 'unitType' here will cause the return value of the
-    // output function to be translated to macroscopic units, however, the function takes
-    // macroscopic units as input. Therefore we must not set 'unitType'.
     model.defineOutput('timePerTick', {
       label: "Model time per tick",
-      unitName:         unitsDefinition.units.time.name,
-      unitPluralName:   unitsDefinition.units.time.pluralName,
-      unitAbbreviation: unitsDefinition.units.time.symbol,
+      unitType: 'time',
       format: 'f'
     }, function() {
       return model.get('timeStep') * model.get('timeStepsPerTick');
@@ -30901,10 +32739,6 @@ define('solar-system/views/renderer',['require','lab.config','common/console','c
         // from bottom to top, while but SVG has increases from top to bottom
         model2pxInv,
 
-        // Basic scaling function for size, it transforms model units to "pixels".
-        // Use it for dimensions of objects rendered inside the view.
-        modelSize2px,
-
         // The model function get_results() returns a 2 dimensional array
         // of particle indices and properties that is updated every model tick.
         // This array is not garbage-collected so the view can be assured that
@@ -30976,7 +32810,7 @@ define('solar-system/views/renderer',['require','lab.config','common/console','c
     }
 
     function updateBodyRadius() {
-      mainContainer.selectAll("circle").data(modelResults).attr("r",  function(d) { return modelSize2px(d.radius); });
+      mainContainer.selectAll("circle").data(modelResults).attr("r",  function(d) { return model2px(d.radius); });
     }
 
     function setupColorsOfBodies() {
@@ -31014,7 +32848,7 @@ define('solar-system/views/renderer',['require','lab.config','common/console','c
         if (model.get("astromonicalBodyNumbers")) {
           selection.append("text")
             .text(d.idx)
-            .style("font-size", modelSize2px(1.4 * d.radius) + "px");
+            .style("font-size", model2px(1.4 * d.radius) + "px");
         }
         // Set common attributes for labels (+ shadows).
         txtSelection = selection.selectAll("text");
@@ -31040,7 +32874,7 @@ define('solar-system/views/renderer',['require','lab.config','common/console','c
         selection.select("text.shadow")
           .style({
             "stroke": "#fff",
-            "stroke-width": 0.15 * modelSize2px(d.radius),
+            "stroke-width": 0.15 * model2px(d.radius),
             "stroke-opacity": 0.7
           });
       });
@@ -31066,7 +32900,7 @@ define('solar-system/views/renderer',['require','lab.config','common/console','c
       astromonicalBody.enter().append("circle")
           .attr({
             "r":  function(d) {
-              return modelSize2px(d.radius); },
+              return model2px(d.radius); },
             "cx": function(d) {
               return model2px(d.x); },
             "cy": function(d) {
@@ -31084,7 +32918,7 @@ define('solar-system/views/renderer',['require','lab.config','common/console','c
     function astromonicalBodyUpdate() {
       astromonicalBody.attr({
         "r":  function(d) {
-          return modelSize2px(d.radius); },
+          return model2px(d.radius); },
         "cx": function(d) {
           return model2px(d.x); },
         "cy": function(d) {
@@ -31231,7 +33065,6 @@ define('solar-system/views/renderer',['require','lab.config','common/console','c
 
       model2px = modelView.model2px;
       model2pxInv = modelView.model2pxInv;
-      modelSize2px = modelView.modelSize2px;
 
       fontSizeInPixels = modelView.getFontSizeInPixels();
       textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
@@ -31290,11 +33123,10 @@ define('solar-system/views/renderer',['require','lab.config','common/console','c
     // Also call when the number of objects changes such that the container
     // must be setup again.
     //
-    function repaint(m2px, m2pxInv, mSize2px) {
+    function repaint(m2px, m2pxInv) {
       if (arguments.length) {
         model2px = m2px;
         model2pxInv = m2pxInv;
-        modelSize2px = mSize2px;
       }
       fontSizeInPixels = modelView.getFontSizeInPixels();
       textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
@@ -31333,8 +33165,7 @@ define('solar-system/views/renderer',['require','lab.config','common/console','c
       repaint: repaint,
       reset: reset,
       model2px: modelView.model2px,
-      model2pxInv: modelView.model2pxInv,
-      modelSize2px: modelView.modelSize2px
+      model2pxInv: modelView.model2pxInv
     };
 
     // Initialization.
@@ -31646,9 +33477,379 @@ define('solar-system/controllers/controller',['require','common/controllers/mode
   }
 });
 
+/*global define: false */
+
+define('signal-generator/metadata',[],function() {
+
+  return {
+    mainProperties: {
+      type: {
+        defaultValue: "signal-generator",
+        immutable: true
+      },
+      frequency: {
+        defaultValue: 1,
+        unitType: "frequency",
+        propertyChangeInvalidates: true
+      },
+      timeScale: {
+        defaultValue: 1,
+        unitType: "time",
+        propertyChangeInvalidates: true
+      }
+    },
+    viewOptions: {
+      showClock: {
+        defaultValue: true,
+        propertyChangeInvalidates: false
+      },
+      controlButtons: {
+        defaultValue: "play_reset",
+        propertyChangeInvalidates: false
+      }
+    }
+  };
+});
+
+/*global define: false d3: false*/
+
+define('signal-generator/modeler',['require','common/property-support','md2d/models/property-description','cs!md2d/models/running-average-filter','common/validator','signal-generator/metadata'],function(require) {
+
+  var PropertySupport      = require('common/property-support'),
+      PropertyDescription  = require('md2d/models/property-description'),
+      RunningAverageFilter = require('cs!md2d/models/running-average-filter'),
+      validator            = require('common/validator'),
+
+      metadata             = require('signal-generator/metadata'),
+
+      unitsDefinition = {
+        units: {
+          time: {
+            name: "second",
+            pluralName: "seconds",
+            symbol: "s",
+            displayValue: {
+              unitsPerBaseUnit: 1e-3,
+              pluralName: "picoseconds",
+              name: "picosecond",
+              symbol: "ps"
+            }
+          },
+          frequency: {
+            name: "Hertz",
+            pluralName: "Hertz",
+            symbol: "Hz"
+          },
+          angle: {
+            name: "radian",
+            pluralName: "radians",
+            symbol: "rad"
+          }
+        }
+      };
+
+  return function Model(initialProperties) {
+    var propertySupport = new PropertySupport({
+          types: ['mainProperty', 'viewOption', 'parameter', 'output']
+        }),
+
+        viewOptions,
+        mainProperties,
+        isStopped = true,
+        dispatch = d3.dispatch('play', 'stop', 'tick', 'reset', 'stepForward', 'stepBack', 'seek', 'invalidation'),
+        interval,
+        intervalLength = 16, // ms
+        lastFrequency,
+        phase = 0,
+        time = 0,
+        stepCounter = 0,
+        invalidatingChangeNestingLevel = 0,
+        filteredOutputs = [],
+        customSetters,
+        model;
+
+    //
+    // The following function is essentially copied from MD2D modeler, and should moved to a common
+    // module
+    //
+    function defineBuiltinProperty(key, type, setter) {
+      var metadataForType,
+          descriptor,
+          propertyChangeInvalidates,
+          unitType;
+
+      if (type === 'mainProperty') {
+        metadataForType = metadata.mainProperties;
+      } else if (type === 'viewOption') {
+        metadataForType = metadata.viewOptions;
+      } else {
+        throw new Error(type + " is not a supported built-in property type");
+      }
+
+      propertyChangeInvalidates = validator.propertyChangeInvalidates(metadataForType[key]);
+
+      descriptor = {
+        type: type,
+        writable: validator.propertyIsWritable(metadataForType[key]),
+        set: setter,
+        includeInHistoryState: !!metadataForType[key].storeInTickHistory,
+        validate: function(value) {
+          return validator.validateSingleProperty(metadataForType[key], key, value, false);
+        },
+        beforeSetCallback: propertyChangeInvalidates ? invalidatingChangePreHook : undefined,
+        afterSetCallback: propertyChangeInvalidates ? invalidatingChangePostHook : undefined
+      };
+
+      unitType = metadataForType[key].unitType;
+      if (unitType) {
+        descriptor.description = new PropertyDescription(unitsDefinition, { unitType: unitType });
+      }
+
+      propertySupport.defineProperty(key, descriptor);
+    }
+
+    function invalidatingChangePreHook() {
+      if (invalidatingChangeNestingLevel === 0) {
+        propertySupport.storeComputedProperties();
+        propertySupport.deleteComputedPropertyCachedValues();
+        propertySupport.enableCaching = false;
+      }
+      invalidatingChangeNestingLevel++;
+    }
+
+    function invalidatingChangePostHook() {
+      invalidatingChangeNestingLevel--;
+      updateFilteredOutputs();
+      if (invalidatingChangeNestingLevel === 0) {
+        propertySupport.enableCaching = true;
+        propertySupport.notifyChangedComputedProperties();
+      }
+    }
+
+    function makeInvalidatingChange(closure) {
+      invalidatingChangePreHook();
+      closure();
+      invalidatingChangePostHook();
+    }
+
+    function updateFilteredOutputs() {
+      filteredOutputs.forEach(function(output) {
+        output.addSample();
+      });
+    }
+
+    function tick() {
+      stepCounter++;
+      time += (0.001 * intervalLength * model.properties.timeScale);
+
+      propertySupport.deleteComputedPropertyCachedValues();
+      propertySupport.notifyAllComputedProperties();
+      updateFilteredOutputs();
+
+      dispatch.tick();
+    }
+
+    function constrain(angle) {
+      return angle - 2 * Math.PI * Math.floor(angle / (2 * Math.PI));
+    }
+
+    model = {
+      resetTime: function() {
+        makeInvalidatingChange(function() {
+          time = 0;
+        });
+      },
+
+      on: function(type, listener) {
+        dispatch.on(type, listener);
+      },
+
+      start: function() {
+        isStopped = false;
+        interval = setInterval(tick, intervalLength);
+        dispatch.play();
+      },
+
+      stop: function() {
+        isStopped = true;
+        clearInterval(interval);
+        dispatch.stop();
+      },
+
+      is_stopped: function() {
+        return isStopped;
+      },
+
+      stepCounter: function() {
+        return stepCounter;
+      },
+
+      //
+      // The following are essentially copied from MD2D modeler, and should moved to a common module
+      //
+
+      addPropertiesListener: function(properties, callback) {
+        if (typeof properties === 'string') {
+          model.addObserver(properties, callback);
+        } else {
+          properties.forEach(function(property) {
+            model.addObserver(property, callback);
+          });
+        }
+      },
+
+      defineParameter: function(key, descriptionHash, setter) {
+        var descriptor = {
+              type: 'parameter',
+              includeInHistoryState: true,
+              invokeSetterAfterBulkRestore: false,
+              description: new PropertyDescription(unitsDefinition, descriptionHash),
+              beforeSetCallback: invalidatingChangePreHook,
+              afterSetCallback: invalidatingChangePostHook
+            };
+
+        // In practice, some parameters are meant only to be observed, and have no setter
+        if (setter) {
+          descriptor.set = function(value) {
+            setter.call(model, value);
+          };
+        }
+        propertySupport.defineProperty(key, descriptor);
+      },
+
+      defineOutput: function(key, descriptionHash, getter) {
+        propertySupport.defineProperty(key, {
+          type: 'output',
+          writable: false,
+          get: getter,
+          includeInHistoryState: false,
+          description: new PropertyDescription(unitsDefinition, descriptionHash)
+        });
+      },
+
+      defineFilteredOutput: function(key, description, filteredPropertyKey, type, period) {
+        var filter, initialValue;
+
+        if (type === "RunningAverage") {
+          filter = new RunningAverageFilter(period);
+        } else {
+          throw new Error("FilteredOutput: unknown filter type " + type + ".");
+        }
+
+        // Add initial sample
+        initialValue = model.properties[key];
+        if (initialValue === undefined || isNaN(Number(initialValue))) {
+          throw new Error("FilteredOutput: property is not a valid numeric value or it is undefined.");
+        }
+        filter.addSample(model.properties.time, initialValue);
+
+        filteredOutputs.push({
+          addSample: function() {
+            filter.addSample(model.properties.time, model.properties[filteredPropertyKey]);
+          }
+        });
+
+        // Extend description to contain information about filter
+        description.property = filteredPropertyKey;
+        description.type = type;
+        description.period = period;
+
+        model.defineOutput(key, description, function () {
+          return filter.calculate();
+        });
+      }
+    };
+
+    propertySupport.mixInto(model);
+
+    // Ensure that phase + (time * angular frequency) remains unchanged when the frequency changes.
+    // This makes for continuous signals.
+    customSetters = {
+      frequency: function(newFrequency) {
+        if (lastFrequency !== undefined) {
+          phase = constrain(phase + 2 * Math.PI * (lastFrequency - newFrequency) * model.properties.time);
+        }
+        lastFrequency = newFrequency;
+      }
+    };
+
+    mainProperties = validator.validateCompleteness(metadata.mainProperties, initialProperties);
+    Object.keys(mainProperties).forEach(function(key) {
+      defineBuiltinProperty(key, 'mainProperty', customSetters[key]);
+    });
+    propertySupport.setRawValues(mainProperties);
+
+    viewOptions = validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {});
+    Object.keys(viewOptions).forEach(function(key) {
+      defineBuiltinProperty(key, 'viewOption');
+    });
+    propertySupport.setRawValues(viewOptions);
+
+    model.defineOutput('time', {
+      label: "Time",
+      unitType: 'time',
+      format: '.2f'
+    }, function() {
+      return time;
+    });
+
+    model.defineOutput('displayTime', {
+      label: "Time",
+      unitType: 'time',
+      format: '.2f'
+    }, function() {
+      return time;
+    });
+
+    model.defineOutput('signalValue', {
+      label: "Signal Value",
+      format: '.2f'
+    }, function() {
+      return Math.cos(model.properties.angle);
+    });
+
+    model.defineOutput('angle', {
+      label: "Angle",
+      unitType: 'angle',
+      format: '.2f'
+    }, function() {
+      var angle = phase + 2 * Math.PI * model.properties.frequency * model.properties.time;
+      return constrain(angle);
+    });
+
+    return model;
+  };
+});
+
+/*global define $ */
+
+define('signal-generator/controller',['require','common/controllers/model-controller','signal-generator/modeler'],function (require) {
+  // Dependencies.
+  var ModelController   = require("common/controllers/model-controller"),
+      Model             = require('signal-generator/modeler'),
+
+      ModelContainer    = function() {
+        return  {
+          $el: $("<div id='model-container' class='container'/>"),
+          getHeightForWidth: function() { return 0; },
+          resize: function() {},
+          reset: function() {},
+          update: function() {}
+        };
+      },
+
+      ScriptingAPI      = function() {},
+      Benchmarks        = function() {};
+
+  return function (modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, interactiveController) {
+    return new ModelController(modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, interactiveController,
+                               Model, ModelContainer, ScriptingAPI, Benchmarks);
+  };
+});
+
 /*global define, model, $, setTimeout, document, window */
 
-define('common/controllers/interactives-controller',['require','lab.config','arrays','common/alert','common/controllers/interactive-metadata','common/validator','common/controllers/bar-graph-controller','common/controllers/graph-controller','common/controllers/export-controller','common/controllers/scripting-api','common/controllers/button-controller','common/controllers/checkbox-controller','common/controllers/text-controller','common/controllers/image-controller','common/controllers/radio-controller','common/controllers/slider-controller','common/controllers/pulldown-controller','common/controllers/numeric-output-controller','common/controllers/parent-message-api','common/controllers/thermometer-controller','common/controllers/playback-controller','common/controllers/div-controller','common/controllers/setup-banner','common/controllers/about-dialog','common/controllers/share-dialog','common/controllers/credits-dialog','common/layout/semantic-layout','common/layout/templates','md2d/controllers/controller','solar-system/controllers/controller'],function (require) {
+define('common/controllers/interactives-controller',['require','lab.config','arrays','common/alert','common/controllers/interactive-metadata','common/validator','common/controllers/bar-graph-controller','common/controllers/graph-controller','common/controllers/export-controller','common/controllers/scripting-api','common/controllers/button-controller','common/controllers/checkbox-controller','common/controllers/text-controller','common/controllers/image-controller','common/controllers/radio-controller','common/controllers/slider-controller','common/controllers/pulldown-controller','common/controllers/numeric-output-controller','common/controllers/parent-message-api','common/controllers/thermometer-controller','common/controllers/playback-controller','common/controllers/div-controller','common/controllers/setup-banner','common/controllers/about-dialog','common/controllers/share-dialog','common/controllers/credits-dialog','common/layout/semantic-layout','common/layout/templates','md2d/controllers/controller','solar-system/controllers/controller','signal-generator/controller'],function (require) {
   // Dependencies.
   var labConfig               = require('lab.config'),
       arrays                  = require('arrays'),
@@ -31682,6 +33883,7 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
 
       MD2DModelController     = require('md2d/controllers/controller'),
       SolarSystemModelController = require('solar-system/controllers/controller'),
+      SignalGeneratorModelController = require('signal-generator/controller'),
 
       // Set of available components.
       // - Key defines 'type', which is used in the interactive JSON.
@@ -31902,6 +34104,9 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
           break;
           case "solar-system":
           modelController = new SolarSystemModelController(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions, controller);
+          break;
+          case "signal-generator":
+          modelController = new SignalGeneratorModelController(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions, controller);
           break;
         }
         // Extending universal Interactive scriptingAPI with model-specific scripting API

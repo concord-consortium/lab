@@ -13,7 +13,6 @@ define(function (require, exports, module) {
       coulomb              = require('./potentials/index').coulomb,
       lennardJones         = require('./potentials/index').lennardJones,
       PairwiseLJProperties = require('cs!./pairwise-lj-properties'),
-      GeneticProperties    = require('./genetic-properties'),
       CloneRestoreWrapper  = require('common/models/engines/clone-restore-wrapper'),
       CellList             = require('./cell-list'),
       NeighborList         = require('./neighbor-list'),
@@ -304,9 +303,6 @@ define(function (require, exports, module) {
         N_obstacles = 0,
 
         // ####################################################################
-        geneticProperties,
-
-        // ####################################################################
         //                      Misc Properties
         // Hash of arrays containing VdW pairs
         vdwPairs,
@@ -399,9 +395,6 @@ define(function (require, exports, module) {
 
           // Custom pairwise properties.
           pairwiseLJProperties = new PairwiseLJProperties(engine);
-
-          // Genetic properties (like DNA, mRNA etc.).
-          geneticProperties = new GeneticProperties();
 
           radialBondMatrix = [];
           //  Initialize radialBondResults[] array consisting of hashes of radial bond
@@ -1496,23 +1489,25 @@ define(function (require, exports, module) {
                 dy = y[atomIdx] - cm.y;
                 r = Math.sqrt(dx * dx + dy * dy);
 
-                temp = hydrophobicity[atomIdx] * solventFactor;
+                if (r > 0) {
+                  temp = hydrophobicity[atomIdx] * solventFactor;
 
-                // AAs being pulled into the center of mass should feel an additional force factor that depends
-                // on distance from the center of mass, ranging between 1 and 25, with 1 being furthest away from the CoM
-                // and 25 being the max when at the CoM or within a certain radius of the CoM. In some ways this
-                // is closer to nature as the core of a protein is less exposed to solvent and thus even more stable.
-                if (temp > 0 && r < additionalSolventForceThreshold) {
-                  // Force towards the center of mass, distance from the CoM less than a given threshold.
-                  // Multiply force by an additional factor defined by the linear function of 'r' defined by two points:
-                  // (0, additionalSolventForceMult) and (additionalSolventForceThreshold, 1).
-                  temp *= (1 - additionalSolventForceMult) * r / additionalSolventForceThreshold + additionalSolventForceMult;
+                  // AAs being pulled into the center of mass should feel an additional force factor that depends
+                  // on distance from the center of mass, ranging between 1 and 25, with 1 being furthest away from the CoM
+                  // and 25 being the max when at the CoM or within a certain radius of the CoM. In some ways this
+                  // is closer to nature as the core of a protein is less exposed to solvent and thus even more stable.
+                  if (temp > 0 && r < additionalSolventForceThreshold) {
+                    // Force towards the center of mass, distance from the CoM less than a given threshold.
+                    // Multiply force by an additional factor defined by the linear function of 'r' defined by two points:
+                    // (0, additionalSolventForceMult) and (additionalSolventForceThreshold, 1).
+                    temp *= (1 - additionalSolventForceMult) * r / additionalSolventForceThreshold + additionalSolventForceMult;
+                  }
+
+                  fx = temp * dx / r;
+                  fy = temp * dy / r;
+                  ax[atomIdx] -= fx;
+                  ay[atomIdx] -= fy;
                 }
-
-                fx = temp * dx / r;
-                fy = temp * dy / r;
-                ax[atomIdx] -= fx;
-                ay[atomIdx] -= fy;
               }
             }
           }
@@ -2512,9 +2507,21 @@ define(function (require, exports, module) {
         springForceY[i] = y;
       },
 
-      removeSpringForce: function(i) {
-        if (i >= N_springForces) return;
+      removeSpringForce: function(idx) {
+        var i, j;
+
+        if (idx >= N_springForces) {
+          throw new Error("Spring force " + idx + " doesn't exist, so it can't be removed.");
+        }
+
         N_springForces--;
+
+        // Shift spring forces properties.
+        for (i = idx; i < N_springForces; i++) {
+          for (j = 0; j < 4; j++) {
+            springForces[j][i] = springForces[j][i + 1];
+          }
+        }
       },
 
       springForceAtomIndex: function(i) {
@@ -3605,7 +3612,6 @@ define(function (require, exports, module) {
     // To ensure that client code always has access to these public properties,
     // they should be initialized  only once during the engine lifetime (in the initialize method).
     engine.pairwiseLJProperties = pairwiseLJProperties;
-    engine.geneticProperties = geneticProperties;
 
     // Finally, return Public API.
     return engine;

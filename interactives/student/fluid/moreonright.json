@@ -1,0 +1,21 @@
+{
+  "title": "moreonright",
+  "publicationStatus": "[#47172851]",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "moreonright",
+      "url": "imports/legacy-mw-content/converted/student/fluid/moreonright.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

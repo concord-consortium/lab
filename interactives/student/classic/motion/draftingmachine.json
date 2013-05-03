@@ -1,0 +1,21 @@
+{
+  "title": "draftingmachine",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "draftingmachine$0",
+      "url": "imports/legacy-mw-content/converted/student/classic/motion/draftingmachine$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

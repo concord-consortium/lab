@@ -1,0 +1,127 @@
+{
+  "title": "Atom Tracing",
+  "publicationStatus": "public",
+  "subtitle": "Tracing and marking atoms.",
+  "about": "Atom Tracing example",
+  "fontScale": 0.8,
+  "models": [
+    {
+      "id": "model",
+      "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "onLoad": "set({temperatureControl: true}); set({targetTemperature: 500});"
+    }
+  ],
+  "components": [
+    {
+      "type": "text",
+      "id": "button-actions-label",
+      "text": "#Mark and trace atoms#"
+    },
+    {
+      "type": "text",
+      "id": "axes-label",
+      "text": "#Axes#"
+    },
+    {
+      "type": "button",
+      "id": "trace-atom",
+      "text": "Trace",
+      "width": "10em",
+      "action": "traceAtom(randomAtoms(1))"
+    },
+    {
+      "type": "button",
+      "id": "mark-trace-atom",
+      "text": "Mark and trace",
+      "width": "10em",
+      "action": [
+        "var atomId = randomAtoms(1);",
+        "markAtoms(atomId)",
+        "traceAtom(atomId)"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "untrace-atom",
+      "text": "Remove trace",
+      "width": "10em",
+      "action": "untraceAtom(); unmarkAllAtoms()"
+    },
+    {
+      "type": "slider",
+      "id": "temperature-property-slider",
+      "title": "Set Temperature",
+      "min": 200,
+      "max": 2000,
+      "steps": 36,
+      "width": "20em",
+      "property": "targetTemperature",
+      "displayValue": "return format('1.1f')(value)",
+      "labels": [
+        {
+          "value": 200,
+          "label": "200"
+        },
+        {
+          "value": 2000,
+          "label": "2000"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show-gridlines",
+      "text": "Show Grid Lines",
+      "textOn": "right",
+      "property": "gridLines"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-xunits",
+      "text": "Show X units",
+      "textOn": "right",
+      "property": "xunits"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-yunits",
+      "text": "Show Y units",
+      "textOn": "right",
+      "property": "yunits"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      [ "temperature-property-slider" ]
+    ],
+    "right": [
+      [ "button-actions-label" ],
+      [ "trace-atom" ],
+      [ "mark-trace-atom" ],
+      [ "untrace-atom" ],
+      [ "axes-label" ],
+      [ "show-gridlines" ],
+      [ "show-xunits" ],
+      [ "show-yunits" ]
+    ]
+  },
+  "template": [
+    {
+      "id": "right",
+      "top": "2em",
+      "left": "model.right",
+      "align": "left"
+    },
+    {
+      "id": "bottom",
+      "left": "model.left",
+      "top": "model.bottom",
+      "padding-top": "0.5em",
+      "width": "model.width",
+      "align": "center"
+    }
+  ]
+}

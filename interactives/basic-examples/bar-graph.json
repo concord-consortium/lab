@@ -1,0 +1,67 @@
+{
+  "title": "Bar Graph Example",
+  "publicationStatus": "public",
+  "subtitle": "Marking an atom and graphing it's kinetic energy.",
+  "about": [
+    "There are 10 atoms in the model and the fifth one is both 'marked' and",
+    "it's kinetic energy is graphed in the bar graph."
+  ],
+  "models": [
+    {
+      "id": "simple-ke-shading$0",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/simple-ke-shading$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "markAtoms([4]);"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "atom0Ke",
+      "unitType": "energy",
+      "label": "Kinetic Energy of Particle",
+      "value": [
+        "return atomsKe([4]);"
+      ]
+    }
+  ],
+  "filteredOutputs": [
+    {
+      "name": "atom0KeCustomAVG",
+      "unitType": "energy",
+      "property": "atom0Ke",
+      "period": 10000
+    }
+  ],
+  "components": [
+    {
+      "type": "barGraph",
+      "id": "bar-graph-1",
+      "min": 0,
+      "max": 1,
+      "labels": 0,
+      "title": "eV",
+      "titleOn": "top",
+      "property": "atom0Ke",
+      "averagePeriod": 2500
+    },
+    {
+      "type": "barGraph",
+      "id": "bar-graph-2",
+      "min": 0,
+      "max": 1,
+      "units": true,
+      "title": ["Kinetic Energy of Particle", "[very long subtitle, which gets truncated]"],
+      "property": "atom0Ke",
+      "secondProperty": "atom0KeCustomAVG"
+    }
+  ],
+  "layout": {
+    "right": [
+      "bar-graph-1",
+      "bar-graph-2"
+    ]
+  },
+  "template": "simple"
+}

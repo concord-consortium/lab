@@ -1,0 +1,23 @@
+{
+  "title": "Latent Heat",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "page7$0",
+      "url": "imports/legacy-mw-content/converted/sam-activities/phase-change/original-interactives-in-pages/page7/page7$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "start-heating",
+      "text": "Start heating",
+      "action": ""
+    }
+  ]
+}

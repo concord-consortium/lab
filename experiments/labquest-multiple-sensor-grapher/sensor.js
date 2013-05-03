@@ -145,7 +145,7 @@ sensor.AppletGrapher.prototype.JsListener = function() {
           self.time += this.sampleInterval;
         }
         for (j= 0; j < sensors; j++) {
-          self.graphs[j].addPoints(newdata[j]);
+          self.graphs[j].addSamples(newdata[j]);
         }
       }
     },
@@ -220,7 +220,7 @@ sensor.AppletGrapher.prototype.AddButtons = function() {
     return function() {
       self.applet.stopCollecting();
       for (var i = 0; i < self.graphs.length; i++) {
-        self.graphs[i].newRealTimeData([[]]);
+        self.graphs[i].resetSamples([[]]);
         self.graphs[i].reset();
       }
       self.time = 0;

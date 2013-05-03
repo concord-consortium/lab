@@ -1,0 +1,21 @@
+{
+  "title": "isopressure_onetype",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "isopressure_onetype",
+      "url": "imports/legacy-mw-content/converted/tutorial/isopressure_onetype.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}
