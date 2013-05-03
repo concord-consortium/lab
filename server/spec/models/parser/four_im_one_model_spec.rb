@@ -31,7 +31,7 @@ describe "Interactive with four ids referencing one model" do
         its(:subtitle) { should ==  "Experiments replacing bitmap images with SVG documents to preserve quality when scaled up."}
         its(:publicationStatus) { should ==  "public" }
         # its(:about) { should =~ /This Interactive displays an image with a suggestion for how to start using the Interactive/ }
-        its(:path) { should == "/interactives/interactives_layout-tests_svg-images" }
+        its(:path) { should == "webapp/interactives/interactives_layout-tests_svg-images" }
 
         describe "the interactive models" do
           it "should have four InteractiveModel " do
@@ -54,7 +54,7 @@ describe "Interactive with four ids referencing one model" do
 
           it "should have models with the same url" do
             subject.interactive_models.map(&:md2d).each do |model|
-              model.url.should == "/imports/legacy-mw-content/converted/layout-tests/svg-images/page1$0.json"
+              model.url.should == "imports/legacy-mw-content/converted/layout-tests/svg-images/page1$0.json"
             end
           end
           it "should have models with the same id" do
