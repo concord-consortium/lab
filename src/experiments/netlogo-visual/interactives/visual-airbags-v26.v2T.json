@@ -1,7 +1,7 @@
 {
   "model": {
     "modelType": "netlogo-applet",
-    "url": "models/airbags24.2P.nlogo",
+    "url": "models/airbags26.v2T.nlogo",
     "viewOptions": {
       "appletDimensions": {
         "width": 1036,

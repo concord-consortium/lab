@@ -40,7 +40,7 @@ globals [
   always-erase?
   parameter-graph?
   shutoff-enabled?
-  bag?
+;  bag?
   vertical-axis
   horizontal-axis
   airbag-size
@@ -104,6 +104,7 @@ globals [
   old-dummy-size
   dummy-crashed?   
   x-bag v-bag              ; position and velocity of the bag
+  uu vv                    ; location of a point in p-space. Used to label no-bag points
   
   question-needed?           ; true if the user tries to run before entering the question
   used-slow-mo?            ; logical that is true if the slow-mo was used
@@ -146,7 +147,7 @@ dots-own [ x-val y-val velocity acceleration dot-color a-max? run-n prior-who]
       ; each dot knows its problem coordinates (x-val and y-val) and its velocity and acceleration
       ; it also knows its run number and whether its acceleration is a maximum acceleration for that run (max-a?) 
       ; Prior-who is the who of the dot that comes before this dot. If prior-who is zero, none comes before.
-dots2-own [ car dist bag-size bag-time ]   ; dots used in the parameter graph. Each stores the parameters that define it. 
+dots2-own [ car dist bag-size bag-time numb ]   ; dots used in the parameter graph. Each stores the parameters that define it. 
 messages-own [number]
 lines-own [run-num]
 
@@ -227,7 +228,7 @@ end
 to initialize
   initialize-author-tools
   set date&time date-and-time   ; record the starting time for this set of runs
-  set filename "airbags24.v1P.nlogo"
+  set filename "airbags25.v1P.nlogo"
   output-print (word "Run Survives   MA    Car speed   Distance  Bag size  Fill time")
   set run-number 0
   set vertical-axis-type "Position (m)"
@@ -239,10 +240,10 @@ to initialize
     
   ; initialize globals   
   ; set slider defaults
-  set car-speed 20
-  set airbag-size .25
-  set distance-to-steering-wheel .5
-  set time-to-fill-bag .015
+  set car-speed 16
+  set airbag-size .26
+  set distance-to-steering-wheel .38
+  set time-to-fill-bag .012
   
 ;  set grid-x-color white   ; the color of the grid lines for a position graph
 ;  set back-x-color 121  ; the color of the background for a position graph
@@ -340,7 +341,7 @@ to initialize
           ;  "draw-view" calls "scale-grid" which completes the information in grid-params
           ; get ready to draw stage scale by creating walk-params, which contains all the information needed to draw the walk scale
           ; The scale represents the distance the actors walk/drive
-  set grid2-params (list bounds2 p2-bounds ["" ""] 0)     
+  set grid2-params (list bounds2 p2-bounds ["Distance to steering wheel (m)" "Car speed (m/s)"] 0)    
   let pw-bounds list min-x max-x    
   let tag-line y-label
   set pw-bounds list min-y max-y                       
@@ -425,13 +426,21 @@ to act-on-changes   ; look for changes in the sliders and selectors and takes ap
   
   if old-vertical-axis != vertical-axis [
     set old-vertical-axis vertical-axis  
-    set grid2-params replace-item 2 grid2-params list horizontal-axis vertical-axis 
+    let v-units units vertical-axis
+    let h-units units horizontal-axis
+    let v-name word vertical-axis v-units
+    let h-name word horizontal-axis h-units
+    set grid2-params replace-item 2 grid2-params list h-name v-name
     draw-view   ; 
     update-run-data ]
   
   if old-horizontal-axis != horizontal-axis [
     set old-horizontal-axis horizontal-axis 
-    set grid2-params replace-item 2 grid2-params list horizontal-axis vertical-axis 
+    let v-units units vertical-axis
+    let h-units units horizontal-axis
+    let v-name word vertical-axis v-units
+    let h-name word horizontal-axis h-units
+    set grid2-params replace-item 2 grid2-params list h-name v-name
     draw-view  ; 
     update-run-data ]
   
@@ -485,13 +494,13 @@ to handle-pick-graph-selector
   if pick-graphs = "Last 3" [
     let i 1
     while [i <= run-number] [
-      if i > (run-number - 4 ) [
+      if i > (run-number - 3 ) [
         display-run i]
       set i i + 1 ]]
   if pick-graphs = "Last 10" [
     let i 1
     while [i <= run-number] [
-      if i > (run-number - 11 ) [
+      if i > (run-number - 10 ) [
         display-run i]
       set i i + 1 ]]
   if pick-graphs = "All" [
@@ -499,12 +508,12 @@ to handle-pick-graph-selector
     while [i <= run-number][
       display-run i
       set i i + 1 ]]
-  if pick-graphs = "Green Only" [
-    display-runs-colored green]
-  if pick-graphs = "Red Only" [
-    display-runs-colored red]
-  if pick-graphs = "Yellow Only" [
-    display-runs-colored yellow]
+  if pick-graphs = "Blue Only (survived)" [
+    display-runs-colored blue]
+  if pick-graphs = "Orange Only (maybe)" [
+    display-runs-colored orange]
+  if pick-graphs = "Magenta Only (died)" [
+    display-runs-colored magenta]
 end
 
 to support-mouse      ; first ask whether the mouse is in one of the grids
@@ -593,8 +602,8 @@ end
     
 to-report cursor-near? [n]               ; reports true if the cursor is near the dot for run n in grid2
   let close 1                            ; sets how close the cursor has to get
-  let x first [xcor] of dots2 with [n = read-from-string label]  ; the label of a dot2 contains a text consisting of some spaces & the run number
-  let y first [ycor] of dots2 with [n = read-from-string label]
+  let x first [xcor] of dots2 with [n = numb]  ; the label of a dot2 contains a text consisting of some spaces & the run number
+  let y first [ycor] of dots2 with [n = numb]
   report (abs (mouse-xcor - x ) < close ) and 
          (abs (mouse-ycor - y ) < close )
 end
@@ -1092,6 +1101,9 @@ to setup-for-run
   let d-color cyan; the dummy and position and velocity lines are all cyan
   ask actors   [st]
   set variables-locked? true  ; used to stop any changes during a run
+  set pick-y-axis "Position (m)"
+  set old-pick-y-axis pick-y-axis
+  set-y-axis 
   tick  
   
   set-times          ; computes   t-start-inflate The time at which the airbag starts inflating
@@ -1479,7 +1491,7 @@ to show-results       ; generates a line of text in the output box and point in 
   output-print word time-to-fill-bag " s" 
   
   ; finally, create one dot2 for the parameter graph
-  if parameter-graph? [
+  if not parameter-graph? [stop]
   create-dots2 1 [
     set color unsafe-color
     if dummy-status = "Maybe" [set color maybe-color]
@@ -1489,14 +1501,27 @@ to show-results       ; generates a line of text in the output box and point in 
     set dist distance-to-steering-wheel
     set bag-size airbag-size
     set bag-time time-to-fill-bag
-    set label word run-number "      " ; put a space before the text
+    set numb run-number
+    set uu p-value horizontal-axis
+    set vv p-value vertical-axis
     ifelse shutoff-enabled? 
       [ifelse bag? 
-        [set shape "Open Box" set size 5]
-        [set shape "X" set size 5 ]]
+        [set shape "Open Box" set size 5
+           set label word run-number "      " ]; put a space before the text
+        [set shape "X" set size 5 ]           ; disable labeling in this case--fix it outside this loop. 
+           ]
 
       [set shape "dot" set size 5 ]
-    place2 (p-value horizontal-axis) (p-value vertical-axis)]] ;show the new dot
+    place2 uu vv] ;show the new dot
+  if shutoff-enabled? and not bag?  [ ; the label was surpressed so that this code can place it above the dot. 
+    create-dots2 1 [
+      place2 uu vv + 1
+      set size .1 
+      set color unsafe-color
+      if dummy-status = "Maybe" [set color maybe-color]
+      if dummy-status = "Yes" [set color safe-color]
+      set label-color color
+      set label word run-number "  " ]]
 end
 
 to-report pad [txt n]; Pads out the text txt to be n spaces long, putting spaces after the txt. Useful in lining up text in the output box
@@ -1504,6 +1529,13 @@ to-report pad [txt n]; Pads out the text txt to be n spaces long, putting spaces
   if k >= n [report txt] ; if txt is too long, just return txt
   repeat n - k [set txt word txt " "]  ; add k-n spaces
   report txt
+end
+
+to-report units [name]
+    if name = "Car speed" [report " m/s" ]
+    if name = "Distance to steering wheel" [report " m"]
+    if name = "Airbag size" [report " m"]
+    if name = "Time to fill bag" [report " s"]
 end
 
 to leave     ; used when exiting this model
@@ -1702,7 +1734,7 @@ to draw-graph2   ; parameter space grapher
   ask verticals2 [die]
   let b2 first grid2-params
   let p2-bounds get-param-bounds                          ; gets bounds for the physical values, but for the parameter graph--depends on the variables being graphed
-  set grid2-params (list b2 p2-bounds list horizontal-axis vertical-axis 0)    
+  set grid2-params (list b2 p2-bounds list "Distance to steering wheel (m)" "Car speed (m/s)" 0)    
 
   
   scale-grid2      ; fixes grid2-params for the the axes selected
@@ -1719,9 +1751,9 @@ to-report get-param-bounds
 end
   
 to-report min-max [name] ;
-  if name = "Car speed" [report list 0 40 ]
+  if name = "Car speed" [report list 0 30 ]
   if name = "Distance to steering wheel" [report list .1 .5]
-  if name = "Airbag size" [report list .2 .5]
+  if name = "Airbag size" [report list .1 .5]
   if name = "Time to fill bag" [report list 0 .05]
 end
     
@@ -1738,7 +1770,7 @@ to scale-grid2    ; Completes the grid2-params by supplying the transform coefic
 
   let screen-bounds first grid2-params
   let p2-bounds get-param-bounds                          ; gets bounds for the physical values, but for the parameter graph--depends on the variables being graphed
-  set grid2-params (list screen-bounds p2-bounds list horizontal-axis vertical-axis 0)    
+  set grid2-params (list screen-bounds p2-bounds list "Distance to steering wheel (m)" "Car speed (m/s)" 0)    
 
   let umin first screen-bounds
   let umax item 1 screen-bounds
@@ -1926,7 +1958,7 @@ to setup-data-export
   let student-inputs [
     [ "Goal" "categorical" ] ]
   let model-information [
-    [ "airbags" "airbags24.v1P.nlogo" "24.v1P" ] ]
+    [ "airbags" "airbags.v19b-include-modular.nlogo" "v19b-include-modular" ] ]
   let time-series-data [
     [ "Time" "s" 0 0.1 ]
     [ "Position" "m" 0 0.6 ]
@@ -2003,7 +2035,7 @@ to initialize-author-tools
   set omit-question? false
   set always-erase? true
   set parameter-graph? true
-  set shutoff-enabled? false
+  set shutoff-enabled? true
   set bag? true
   set vertical-axis "Car speed"
   set horizontal-axis "Distance to steering wheel"
@@ -2063,7 +2095,7 @@ Car-speed
 Car-speed
 2
 30
-20
+16
 2
 1
 m/s
@@ -2078,8 +2110,8 @@ Distance-to-steering-wheel
 Distance-to-steering-wheel
 0.1
 .5
-0.5
-.05
+0.38
+.02
 1
 m
 HORIZONTAL
@@ -2089,9 +2121,9 @@ TEXTBOX
 255
 189
 315
-10 m/s = 22 mph\n20 m/s = 45 mph\n30 m/s = 67 mph\n40 m/s = 89 mph
+10 m/s = 22 mph\n20 m/s = 45 mph\n30 m/s = 67 mph\n
 11
-5.0
+0.0
 1
 
 INPUTBOX
@@ -2145,11 +2177,11 @@ NIL
 CHOOSER
 32
 387
-208
+212
 432
 Pick-Graphs
 Pick-Graphs
-"Last 1" "Last 3" "Last 10" "All" "None" "Green Only" "Yellow Only" "Red Only"
+"Last 1" "Last 3" "Last 10" "All" "None" "Blue Only (survived)" "Orange Only (maybe)" "Magenta Only (died)"
 0
 
 BUTTON
@@ -2179,14 +2211,95 @@ Pick-Y-Axis
 "Position (m)" "Velocity (m/s)"
 0
 
+SWITCH
+66
+113
+169
+146
+Bag?
+Bag?
+0
+1
+-1000
+
 TEXTBOX
-668
-54
-1010
-234
-Steps\n1. Pick your goal for this run\n2. Select slider values\n3. Press \"Run Model\"\n4. Think about the resulting graphs\n5. Use \"Pick-Y-axis\" to compare position and velocity\n6. To review the run, slide the cursor over the left-hand graph\n7. Repeat\nAfter you have several runs, look for patterns in the data. Reexamine old data using \"Pick-Graphs\" and \"Enter-a-run-number\". \n
+670
+59
+997
+210
+NIL
 11
-9.9
+0.0
+0
+
+TEXTBOX
+763
+76
+913
+94
+Blue = survived
+14
+105.0
+1
+
+TEXTBOX
+763
+95
+913
+113
+Orange = maybe
+14
+25.0
+1
+
+TEXTBOX
+764
+115
+914
+133
+Magenta = died
+14
+125.0
+1
+
+TEXTBOX
+762
+137
+912
+171
+[  ] = Airbag on\n X  = Airbag off
+14
+0.0
+1
+
+TEXTBOX
+691
+187
+969
+207
+acceleration survival limit = about 125 g
+14
+0.0
+1
+
+TEXTBOX
+384
+244
+399
+262
+*
+28
+0.0
+1
+
+TEXTBOX
+401
+248
+647
+266
+= point of driver's max acceleration
+14
+0.0
 1
 
 @#$#@#$#@
@@ -2917,7 +3030,7 @@ Polygon -7500403 true true 195 75 225 105 105 225 75 195
 Polygon -7500403 true true 75 105 105 75 225 195 195 225
 
 @#$#@#$#@
-NetLogo 5.0.3
+NetLogo 5.0.2
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@

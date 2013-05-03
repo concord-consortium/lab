@@ -1,18 +1,7 @@
 ; Airbags24.v2T
 ; Started July 2012
 ; Bob Tinker
-; March 23 2013
-
-; This code is based on a graphing utility that I have developed in NetLogo
-; The software keeps separate "problem coordinates" and  "screen coordinates." 
-; problem coordinates can be any size and range. They are designated by x and y
-; screen coordinates must use screen (or patch) coordinates, designated by u and v
-; screen coordinated must fit on the screen defined by (min-xcor, min-ycor) and (max-xcor, max-ycor)
-; the 'stage' is where something can be moved by the user to generate a graph or by the software, animatting a graph
-; The user can select any one of several actors to move, thus creating many possible stories.
-; the stage can be vertical, horizontal, or absent. 
-; Datasets are named by their color in a way that makes it trivial to add datasets by adding new colors in the pull-down lists. 
-; The x,y values of data are saved in turtles called dots in x-val and y-val. ploce x-val y-val converts these into screen coordinates and shows the resulting dots
+; April 20, 2013
 
 __includes [ "data-export-modular.nls" ]
 
@@ -228,7 +217,7 @@ to initialize
   initialize-author-tools
   set date&time date-and-time   ; record the starting time for this set of runs
   set filename "airbags24.vIT.nlogo"
-  output-print (word "Run Survives   MA    Car speed   Distance")
+  output-print (word "Run Survives   MA    Car speed  Distance bag")
   set run-number 0
   set vertical-axis-type "Position (m)"
   set old-pick-y-axis  vertical-axis-type
@@ -239,10 +228,10 @@ to initialize
     
   ; initialize globals   
   ; set slider defaults
-  set car-speed 20
-  set airbag-size .25
-  set distance-to-steering-wheel .5
-  set time-to-fill-bag .015
+  set car-speed 16
+  set airbag-size .26
+  set distance-to-steering-wheel .38
+  set time-to-fill-bag .012
   
 ;  set grid-x-color white   ; the color of the grid lines for a position graph
 ;  set back-x-color 121  ; the color of the background for a position graph
@@ -485,13 +474,13 @@ to handle-pick-graph-selector
   if pick-graphs = "Last 3" [
     let i 1
     while [i <= run-number] [
-      if i > (run-number - 4 ) [
+      if i > (run-number - 3 ) [
         display-run i]
       set i i + 1 ]]
   if pick-graphs = "Last 10" [
     let i 1
     while [i <= run-number] [
-      if i > (run-number - 11 ) [
+      if i > (run-number - 10 ) [
         display-run i]
       set i i + 1 ]]
   if pick-graphs = "All" [
@@ -499,12 +488,12 @@ to handle-pick-graph-selector
     while [i <= run-number][
       display-run i
       set i i + 1 ]]
-  if pick-graphs = "Green Only" [
-    display-runs-colored green]
-  if pick-graphs = "Red Only" [
-    display-runs-colored red]
-  if pick-graphs = "Yellow Only" [
-    display-runs-colored yellow]
+  if pick-graphs = "Blue Only (survived)" [
+    display-runs-colored blue]
+  if pick-graphs = "Orange Only (maybe)" [
+    display-runs-colored orange]
+  if pick-graphs = "Magenta Only (died)" [
+    display-runs-colored magenta]
 end
 
 to support-mouse      ; first ask whether the mouse is in one of the grids
@@ -1092,6 +1081,9 @@ to setup-for-run
   let d-color cyan; the dummy and position and velocity lines are all cyan
   ask actors   [st]
   set variables-locked? true  ; used to stop any changes during a run
+  set pick-y-axis "Position (m)"
+  set old-pick-y-axis pick-y-axis
+  set-y-axis 
   tick  
   
   set-times          ; computes   t-start-inflate The time at which the airbag starts inflating
@@ -1455,28 +1447,40 @@ to update-run-data
 end
 
 to show-results       ; generates a line of text in the output box and point in parameter space summarizing a run
+  ; show run number
+   output-type (pad (word run-number) 6)  ; 'pad' ensures that the same number of characters + spaces are used
+   
+  ; show whether the dummy survives
   ; a-max-g the maximum acceleration experienced in g units, determines whether the dummy survives. 
   set dummy-status "Maybe"
   if a-max-g < .95 * a-cutoff  [set dummy-status "Yes"]  ; give a 10% margin 
   if a-max-g > 1.05 * a-cutoff  [set dummy-status "No"]
+  output-type pad dummy-status 8
   
-  output-type (pad (word run-number) 4)  ; 'pad' ensures that the same number of characters + spaces are used
-  
-  output-type pad dummy-status 9
-  
+  ; show the acceleration
   let temp word a-max-g "g"   ; max acceleration in g units
   output-type pad temp 10
   
+  ; show the car speeds
   set temp word car-speed " m/s"
-  output-type pad temp 11
+  output-type pad temp 10
    
+  ; show distance
   set temp word distance-to-steering-wheel " m"
-  output-print  pad temp 10
+  output-type  pad temp 8
+  
+  ; show whether the bag was on or off
+  let on-off "Off"
+  if bag? [set on-off "On"]
+  output-print pad on-off 6
+  
   
 ;  set temp word airbag-size " m"
 ;  output-type pad temp 10
   
 ;  output-print word time-to-fill-bag " s" 
+
+
   
   ; finally, create one dot2 for the parameter graph
   if parameter-graph? [
@@ -1926,7 +1930,7 @@ to setup-data-export
   let student-inputs [
     [ "Goal" "categorical" ] ]
   let model-information [
-    [ "airbags" "airbags24.v3T.nlogo" "24.v3T" ] ]
+    [ "airbags" "airbags.v19b-include-modular.nlogo" "v19b-include-modular" ] ]
   let time-series-data [
     [ "Time" "s" 0 0.1 ]
     [ "Position" "m" 0 0.6 ]
@@ -2063,7 +2067,7 @@ Car-speed
 Car-speed
 2
 30
-22
+16
 2
 1
 m/s
@@ -2078,8 +2082,8 @@ Distance-to-steering-wheel
 Distance-to-steering-wheel
 0.1
 .5
-0.5
-.05
+0.38
+.02
 1
 m
 HORIZONTAL
@@ -2089,9 +2093,9 @@ TEXTBOX
 255
 189
 315
-10 m/s = 22 mph\n20 m/s = 45 mph\n30 m/s = 67 mph\n40 m/s = 89 mph
+10 m/s = 22 mph\n20 m/s = 45 mph\n30 m/s = 67 mph\n
 11
-5.0
+0.0
 1
 
 INPUTBOX
@@ -2145,11 +2149,11 @@ NIL
 CHOOSER
 32
 387
-208
+212
 432
 Pick-Graphs
 Pick-Graphs
-"Last 1" "Last 3" "Last 10" "All" "None" "Green Only" "Yellow Only" "Red Only"
+"Last 1" "Last 3" "Last 10" "All" "None" "Blue Only (survived)" "Orange Only (maybe)" "Magenta Only (died)"
 0
 
 BUTTON
@@ -2179,20 +2183,10 @@ Pick-Y-Axis
 "Position (m)" "Velocity (m/s)"
 0
 
-TEXTBOX
-668
-54
-1010
-234
-Steps\n1. Pick your goal for this run\n2. Select slider values\n3. Press \"Run Model\"\n4. Think about the resulting graphs\n5. Use \"Pick-Y-axis\" to compare position and velocity\n6. To review the run, slide the cursor over the left-hand graph\n7. Repeat\nAfter you have several runs, look for patterns in the data. Reexamine old data using \"Pick-Graphs\" and \"Enter-a-run-number\". \n
-11
-9.9
-1
-
 OUTPUT
-657
+653
 226
-1001
+1002
 573
 12
 
@@ -2206,6 +2200,76 @@ Bag?
 0
 1
 -1000
+
+TEXTBOX
+669
+59
+999
+225
+NIL
+11
+0.0
+0
+
+TEXTBOX
+763
+82
+913
+100
+Blue = survived
+14
+105.0
+1
+
+TEXTBOX
+763
+102
+913
+120
+Orange = maybe
+14
+25.0
+1
+
+TEXTBOX
+763
+122
+913
+140
+Magenta = died
+14
+125.0
+1
+
+TEXTBOX
+387
+244
+402
+262
+*
+28
+0.0
+1
+
+TEXTBOX
+402
+248
+648
+266
+= point of driver's max acceleration
+14
+0.0
+1
+
+TEXTBOX
+693
+197
+981
+215
+acceleration survival limit = about 125 g
+14
+0.0
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -2935,7 +2999,7 @@ Polygon -7500403 true true 195 75 225 105 105 225 75 195
 Polygon -7500403 true true 75 105 105 75 225 195 195 225
 
 @#$#@#$#@
-NetLogo 5.0.3
+NetLogo 5.0.2
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@

@@ -145,9 +145,13 @@ globals [
   data-export:model-description
   data-export:run-series
   data-export:last-run-series-data
+  data-export:last-run-series-time-stamp
   data-export:serialized-run-series
   data-export:data-series
   data-export:data-series-length
+  data-export:last-time-series
+  data-export:last-time-series-length
+  data-export:data-available?
   data-export:data-ready?
   data-export:computational-inputs
   data-export:computational-inputs-keys
@@ -172,6 +176,7 @@ globals [
 to data-export:initialize [ setup ]
   set data-export:module-available true
   set data-export:data-ready? false
+  set data-export:data-available? false
 
   data-export:init-run-series
   data-export:init-data-series
@@ -228,7 +233,7 @@ end
 to data-export:update-inquiry-summary [ new-inquiry-summary ]
   set data-export:inquiry-summary new-inquiry-summary
   if not empty? data-export:run-series [
-    ; then replace last run-series in data-export:run-series list with update inquiry-summary data
+    ; then replace last run-series in data-export:run-series list with updated inquiry-summary data
     let run-series data-export:create-run-series data-export:last-run-series-data
     set data-export:run-series butlast data-export:run-series
     set data-export:run-series lput run-series data-export:run-series ]
@@ -290,18 +295,22 @@ end
 to data-export:update-run-series [ run-series-data ]
   set data-export:data-ready? false       ; data-ready? is only true after make-model-data completes
   set data-export:last-run-series-data run-series-data
+  set data-export:last-time-series data-export:data-series
+  set data-export:last-time-series-length data-export:data-series-length
+  set data-export:last-run-series-time-stamp date-and-time
   let run-series data-export:create-run-series run-series-data
   set data-export:run-series lput run-series data-export:run-series
   data-export:init-data-series
   data-export:init-inquiry-summary
+  set data-export:data-available? true   ; but once update-run-series is finished data are available
 end
 
 to-report data-export:create-run-series [ run-series-data ]
   let run-series ""
   set run-series (word run-series "    {\n")
-  set run-series (word run-series "      \"timeStamp\": \"" date-and-time "\",\n")
-  set run-series (word run-series "      \"timeSeriesDataLength\": " data-export:data-series-length ",\n")
-  set run-series (word run-series "      \"timeSeriesData\": " data-export:data-series ",\n")
+  set run-series (word run-series "      \"timeStamp\": \"" data-export:last-run-series-time-stamp "\",\n")
+  set run-series (word run-series "      \"timeSeriesDataLength\": " data-export:last-time-series-length ",\n")
+  set run-series (word run-series "      \"timeSeriesData\": " data-export:last-time-series ",\n")
   set run-series (word run-series (data-export:run-series-array 6 "computationalInputs"     (item 0 run-series-data) ","))
   set run-series (word run-series (data-export:run-series-array 6 "representationalInputs"  (item 1 run-series-data) ","))
   set run-series (word run-series (data-export:run-series-array 6 "computationalOutputs"    (item 2 run-series-data) ","))

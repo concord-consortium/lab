@@ -240,9 +240,9 @@ to initialize
   ; initialize globals   
   ; set slider defaults
   set car-speed 20
-  set airbag-size .34
-  set distance-to-steering-wheel .5
-  set time-to-fill-bag .015
+  set airbag-size .24
+  set distance-to-steering-wheel .38
+  set time-to-fill-bag .02
   
 ;  set grid-x-color white   ; the color of the grid lines for a position graph
 ;  set back-x-color 121  ; the color of the background for a position graph
@@ -340,7 +340,7 @@ to initialize
           ;  "draw-view" calls "scale-grid" which completes the information in grid-params
           ; get ready to draw stage scale by creating walk-params, which contains all the information needed to draw the walk scale
           ; The scale represents the distance the actors walk/drive
-  set grid2-params (list bounds2 p2-bounds ["" ""] 0)     
+  set grid2-params (list bounds2 p2-bounds [ "Airbag size (m)" "Time to fill bag (s)"] 0)     
   let pw-bounds list min-x max-x    
   let tag-line y-label
   set pw-bounds list min-y max-y                       
@@ -485,13 +485,13 @@ to handle-pick-graph-selector
   if pick-graphs = "Last 3" [
     let i 1
     while [i <= run-number] [
-      if i > (run-number - 4 ) [
+      if i > (run-number - 3 ) [
         display-run i]
       set i i + 1 ]]
   if pick-graphs = "Last 10" [
     let i 1
     while [i <= run-number] [
-      if i > (run-number - 11 ) [
+      if i > (run-number - 10 ) [
         display-run i]
       set i i + 1 ]]
   if pick-graphs = "All" [
@@ -499,12 +499,12 @@ to handle-pick-graph-selector
     while [i <= run-number][
       display-run i
       set i i + 1 ]]
-  if pick-graphs = "Green Only" [
-    display-runs-colored green]
-  if pick-graphs = "Red Only" [
-    display-runs-colored red]
-  if pick-graphs = "Yellow Only" [
-    display-runs-colored yellow]
+  if pick-graphs = "Blue Only (survived)" [
+    display-runs-colored blue]
+  if pick-graphs = "Orange Only (maybe)" [
+    display-runs-colored orange]
+  if pick-graphs = "Magenta Only (died)" [
+    display-runs-colored magenta]
 end
 
 to support-mouse      ; first ask whether the mouse is in one of the grids
@@ -749,7 +749,7 @@ to scale-grid   ; Completes the grid-params by supplying the transform coeficien
   let ymin item 2  problem-bounds
   let ymax last  problem-bounds
   
-  ; set the background color     $$$$$$$$$$
+  ; set the background color     
   ask patches [
     if pxcor < umax + 2 and pycor < vmax + 5 [
       ifelse pick-y-axis = "Position (m)"
@@ -985,7 +985,7 @@ end
 ;;;;;;;;    Run Procedure       ;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to run-airbag ; computes and draws the position or velocity graphs of the airbag and dummy
+to run-airbag ; computes and draws the position or velocity graphs of the airbag and dummy 
   ; first, stop if there is no question selected
   if what-is-your-goal? = "" and not omit-question? [
     ; "To continue, first pick a goal."
@@ -998,7 +998,7 @@ to run-airbag ; computes and draws the position or velocity graphs of the airbag
           ;       has done after the first run but before the next.... 
   setup-for-run   ; housekeeping. advances run-number, saves the-question, hids old data
                   ; locks the sliders, resets logging variables
-
+                     
   ; Compute position, velocity, and acceleration for the actors
   ; the car follows an equation given by car-loc
   ; the dummy position is determined by solving F=ma for the pseudo force of the accelerated reference frame, 
@@ -1092,6 +1092,9 @@ to setup-for-run
   let d-color cyan; the dummy and position and velocity lines are all cyan
   ask actors   [st]
   set variables-locked? true  ; used to stop any changes during a run
+  set pick-y-axis "Position (m)"
+  set old-pick-y-axis pick-y-axis
+  set-y-axis 
   tick  
   
   set-times          ; computes   t-start-inflate The time at which the airbag starts inflating
@@ -1702,7 +1705,7 @@ to draw-graph2   ; parameter space grapher
   ask verticals2 [die]
   let b2 first grid2-params
   let p2-bounds get-param-bounds                          ; gets bounds for the physical values, but for the parameter graph--depends on the variables being graphed
-  set grid2-params (list b2 p2-bounds list horizontal-axis vertical-axis 0)    
+  set grid2-params (list b2 p2-bounds list "Airbag size (m)" "Time to fill bag (s)" 0)    
 
   
   scale-grid2      ; fixes grid2-params for the the axes selected
@@ -1719,9 +1722,9 @@ to-report get-param-bounds
 end
   
 to-report min-max [name] ;
-  if name = "Car speed" [report list 0 40 ]
+  if name = "Car speed" [report list 0 30 ]
   if name = "Distance to steering wheel" [report list .1 .5]
-  if name = "Airbag size" [report list .2 .5]
+  if name = "Airbag size" [report list .1 .5]
   if name = "Time to fill bag" [report list 0 .05]
 end
     
@@ -1738,7 +1741,7 @@ to scale-grid2    ; Completes the grid2-params by supplying the transform coefic
 
   let screen-bounds first grid2-params
   let p2-bounds get-param-bounds                          ; gets bounds for the physical values, but for the parameter graph--depends on the variables being graphed
-  set grid2-params (list screen-bounds p2-bounds list horizontal-axis vertical-axis 0)    
+  set grid2-params (list screen-bounds p2-bounds list "Airbag size (m)" "Time to fill bag (s)" 0)    
 
   let umin first screen-bounds
   let umax item 1 screen-bounds
@@ -1926,7 +1929,7 @@ to setup-data-export
   let student-inputs [
     [ "Goal" "categorical" ] ]
   let model-information [
-    [ "airbags" "airbags24.2P.nlogo" "24.2P" ] ]
+    [ "airbags" "airbags.v19b-include-modular.nlogo" "v19b-include-modular" ] ]
   let time-series-data [
     [ "Time" "s" 0 0.1 ]
     [ "Position" "m" 0 0.6 ]
@@ -2081,7 +2084,7 @@ Airbag-size
 Airbag-size
 0.1
 .5
-0.5
+0.36
 .02
 1
 m
@@ -2096,7 +2099,7 @@ Time-to-fill-bag
 Time-to-fill-bag
 .01
 .05
-0.01
+0.02
 .002
 1
 sec
@@ -2107,9 +2110,9 @@ TEXTBOX
 255
 189
 315
-10 m/s = 22 mph\n20 m/s = 45 mph\n30 m/s = 67 mph\n40 m/s = 89 mph
+10 m/s = 22 mph\n20 m/s = 45 mph\n30 m/s = 67 mph
 11
-5.0
+0.0
 1
 
 INPUTBOX
@@ -2141,7 +2144,7 @@ CHOOSER
 What-is-your-goal?
 What-is-your-goal?
 "" "Test a minimum or maximum value" "Make a small change from the last run" "Fill a gap in my results" "Do a controlled comparison" "Explore/other"
-0
+1
 
 BUTTON
 235
@@ -2163,11 +2166,11 @@ NIL
 CHOOSER
 32
 387
-208
+212
 432
 Pick-Graphs
 Pick-Graphs
-"Last 1" "Last 3" "Last 10" "All" "None" "Green Only" "Yellow Only" "Red Only"
+"Last 1" "Last 3" "Last 10" "All" "None" "Blue Only (survived)" "Orange Only (maybe)" "Magenta Only (died)"
 0
 
 BUTTON
@@ -2199,12 +2202,72 @@ Pick-Y-Axis
 
 TEXTBOX
 668
-54
-1010
-234
-Steps\n1. Pick your goal for this run\n2. Select slider values\n3. Press \"Run Model\"\n4. Think about the resulting graphs\n5. Use \"Pick-Y-axis\" to compare position and velocity\n6. To review the run, slide the cursor over the left-hand graph\n7. Repeat\nAfter you have several runs, look for patterns in the data. Reexamine old data using \"Pick-Graphs\" and \"Enter-a-run-number\". \n
+58
+997
+209
+NIL
 11
-9.9
+0.0
+0
+
+TEXTBOX
+772
+85
+922
+103
+Blue = survived
+14
+105.0
+1
+
+TEXTBOX
+772
+103
+922
+121
+Orange = maybe
+14
+25.0
+1
+
+TEXTBOX
+772
+124
+922
+142
+Magenta = died
+14
+125.0
+1
+
+TEXTBOX
+695
+184
+974
+202
+acceleration survival limit = about 125 g
+14
+0.0
+1
+
+TEXTBOX
+376
+242
+391
+260
+*
+28
+0.0
+1
+
+TEXTBOX
+393
+246
+642
+264
+= point of driver's max acceleration
+14
+0.0
 1
 
 @#$#@#$#@
