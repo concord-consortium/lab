@@ -77,7 +77,7 @@ describe Parsers::Interactive do
         its(:title) { should == "Testing: Only One Atom"}
         its(:subtitle) { should ==  "The MD2D model works with just a single atom also." }
         its(:publicationStatus) { should ==  "public" }
-        its(:path) { should == "/interactives/interactives_basic-examples_one-atom"}
+        its(:path) { should == "webapp/interactives/interactives_basic-examples_one-atom"}
         it "template" do
           subject.template.first.should == {"id"=>"left", "top"=>"3em", "right"=>"model.left", "padding-right"=>"0.5em", "align"=>"right"}
         end

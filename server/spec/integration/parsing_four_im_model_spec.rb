@@ -23,7 +23,7 @@ describe "Interactive with four ids referencing one model" do
   end
   it "should all reference the same model" do
     subject.runtime_properties['models'].each do |m|
-      m['url'].should == "http://localhost:3000/models/md2ds/imports_legacy-mw-content_converted_layout-tests_svg-images_page1_0.json"
+      m['url'].should == "http://localhost:3000/webapp/models/md2ds/imports_legacy-mw-content_converted_layout-tests_svg-images_page1_0.json"
     end
   end
 end

@@ -25,7 +25,7 @@ describe Parsers::InteractiveList do
       subject{ Interactive.first}
       its(:title) { should == "Testing: Only One Atom"}
       its(:id) { should == "interactives_basic-examples_one-atom" }
-      its(:path) { should == "/interactives/interactives_basic-examples_one-atom" }
+      its(:path) { should == "webapp/interactives/interactives_basic-examples_one-atom" }
       its(:publicationStatus) { should == "public"}
       it "should be in the correct group" do
         subject.group.name.should == "Basic Interactive Examples"
@@ -67,7 +67,7 @@ describe Parsers::InteractiveList do
     context "#update_from_uri!" do
 
       subject do
-        parser = Parsers::InteractiveList.new(File.join(Rails.root,"public","examples","interactives","interactives.json"))
+        parser = Parsers::InteractiveList.new(File.join(Rails.root,"public","interactives.json"))
         parser.update_from_uri!
         parser
       end

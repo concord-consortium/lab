@@ -9,7 +9,7 @@ module GeneratedInteractiveList
 
     def create
       return if @interactive_meta_hashes && @interactive_meta_hashes.size > 1
-      @interactives_file_path = File.join(Rails.root,"public","examples","interactives","interactives.json")
+      @interactives_file_path = File.join(Rails.root,"public","interactives.json")
 
       interactives_json = File.open(@interactives_file_path).read
       all_hash = JSON.parse(interactives_json)
