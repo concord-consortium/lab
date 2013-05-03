@@ -7,14 +7,15 @@ App::Application.routes.draw do
     "#{host}:5984/_utils/"
   }
 
-  namespace :models do
-    resources :md2ds
+ scope "/webapp" do
+    namespace :models do
+      resources :md2ds
+    end
+
+    # resources :md2d_models
+    resources :interactives
+    resources :groups
   end
-
-  # resources :md2d_models
-  resources :interactives
-  resources :groups
-
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

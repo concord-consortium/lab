@@ -13,7 +13,7 @@ module Parsers
         url = self.data_hash['url']
         unless url.blank?
           # set the full path of the model json file
-          self.adapt_url url
+          self.uri_helper.path = "#{Rails.root}/public/#{url}"
           # read model json file and merge into data_hash
           self.update_from_uri!
         end
@@ -42,20 +42,6 @@ module Parsers
       def update_db
         ::Models::Md2d.create_or_update(self.data_hash)
       end
-
-      # set the self.uri_helper.path to point the model json file.
-      def adapt_url(url)
-        # HACK: re-write paths with regex, mostly for parsing from FS :/
-        if (url.match %r{^/})
-          self.uri_helper.path = self.uri_helper.path.sub %r{^(.*?/public/).*$} do |match|
-            "#{$1}#{url}"
-          end
-          # file-system relative urls from import job:
-        else
-          self.uri_helper.set_relative_path("../../#{url}")
-        end
-      end
-
     end
   end
 end

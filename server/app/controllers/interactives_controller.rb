@@ -79,7 +79,7 @@ class InteractivesController < ApplicationController
     title = params[:interactive][:title].gsub(' ', '_')
 
     params[:interactive][:id] = "interactives_#{groupKey}_#{title}"
-    params[:interactive][:path] = "/interactives/#{params[:interactive][:id]}"
+    params[:interactive][:path] = "webapp/interactives/#{params[:interactive][:id]}"
 
   end
 

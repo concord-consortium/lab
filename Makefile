@@ -173,7 +173,13 @@ server/public: \
 	server/public/doc \
 	server/public/experiments \
 	server/public/imports \
-	server/public/jnlp
+	server/public/jnlp \
+	create_public_symlinks
+
+create_public_symlinks:
+	cd server/public; \
+	ln -s -f interactives.html webapp.html;
+
 
 server/public/examples:
 	mkdir -p server/public/examples
@@ -645,4 +651,3 @@ ifeq ($(COUCHDB_RUNNING),couch)
 else
 	@echo "couchdb not running"
 endif
-

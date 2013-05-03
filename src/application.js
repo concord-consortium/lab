@@ -89,7 +89,8 @@ AUTHORING = false;
       buttonHandlersAdded = false,
       interactiveRemoteKeys = ['id', 'from_import', 'groupKey', 'path'],
       modelRemoteKeys = ['id', 'from_import', 'location'],
-      modelButtonHandlersAdded = false;
+      modelButtonHandlersAdded = false,
+      appPath = '/webapp';
 
   function sendGAPageview(){
     // send the pageview to GA
@@ -113,7 +114,7 @@ AUTHORING = false;
   }
 
   function isStaticPage() {
-    return !(document.location.pathname.match(/^\/interactives.*/));
+    return !(document.location.pathname.match(/^\/webapp.*/));
   }
 
   function isFullPage(){
@@ -125,7 +126,11 @@ AUTHORING = false;
   }
 
   if (!isEmbeddablePage()) {
-    interactivesPromise = $.get('interactives.json');
+    if (isStaticPage()) {
+      interactivesPromise = $.get('interactives.json');
+    }else {
+      interactivesPromise = $.get(appPath + '/interactives.json');
+    }
 
     interactivesPromise.done(function(results) {
       if (typeof results === 'string') {
@@ -732,14 +737,14 @@ AUTHORING = false;
 
   function remoteSaveInteractive(interactiveState, copyInteractive){
     var httpMethod = 'POST',
-        url = '/interactives',
+        url = appPath + '/interactives',
         newInteractiveState,
         interactiveJSON;
 
     if(!copyInteractive) {
       // updating an interactive
       httpMethod = 'PUT';
-      url = '/interactives/' + interactiveRemote.id;
+      url = appPath + '/interactives/' + interactiveRemote.id;
     }
     // create an interactive to POST/PUT
     // merge the, possibly updated, interactive with the interactive last
@@ -794,7 +799,7 @@ AUTHORING = false;
 
     jQuery.ajax({
       type: 'PUT',
-      url: '/models/md2ds/' + modelRemote.id,
+      url: appPath + '/models/md2ds/' + modelRemote.id,
       data: JSON.stringify(modelJSON),
       success: function(results) {
         if (typeof results === 'string') results = JSON.parse(results);
