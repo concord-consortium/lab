@@ -101,7 +101,7 @@ class InteractivesController < ApplicationController
     old_model.clone! do |m|
       m.from_import = false
       m.name = nil
-      m.url = m.id
+      m.url = ::Models::Md2d.generate_url(m.id)
     end
   end
 end

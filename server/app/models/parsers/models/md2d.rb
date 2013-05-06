@@ -18,6 +18,7 @@ module Parsers
           self.update_from_uri!
         end
         self.generate_couch_doc_id(url)
+        data_hash['url'] = ::Models::Md2d.generate_url(data_hash['id'])
         self.generate_image_path(url)
         update_db
       end

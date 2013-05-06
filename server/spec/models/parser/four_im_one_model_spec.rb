@@ -54,7 +54,7 @@ describe "Interactive with four ids referencing one model" do
 
           it "should have models with the same url" do
             subject.interactive_models.map(&:md2d).each do |model|
-              model.url.should == "imports/legacy-mw-content/converted/layout-tests/svg-images/page1$0.json"
+              model.url.should == "webapp/models/md2ds/imports_legacy-mw-content_converted_layout-tests_svg-images_page1_0"
             end
           end
           it "should have models with the same id" do

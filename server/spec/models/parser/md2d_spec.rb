@@ -41,7 +41,8 @@ describe Parsers::Models::Md2d do
     it "#parse" do
       model = subject.parse
       model.from_import.should be_true
-      model.url.should == 'models/md2d/one-atom.json'
+      model.id.should == 'models_md2d_one-atom'
+      model.url.should == "#{::Models::Md2d.generate_url(model.id)}"
       model.viewOptions['controlButtons'].should == "play_reset"
       model.width.should == 0.5
       model.height.should == 0.5
