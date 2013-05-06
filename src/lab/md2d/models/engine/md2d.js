@@ -3069,6 +3069,8 @@ define(function (require, exports, module) {
             zeroTotalMomentumOfMolecules();
           }
 
+          pluginController.callPluginFunction("performActionWithinIntegrationLoop", {neighborList: neighborList});
+
         } // end of integration loop
 
         // Collisions between particles and obstacles are collected during
