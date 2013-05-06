@@ -63,7 +63,7 @@ module Presenters
       def interactive_model_properties
         HashProperties.new(self.md2d).hash_value do |p|
           p.set('type',"md2d")
-          p.set('url', self.json_path)
+          p.add('url')
         end
       end
 
