@@ -88,8 +88,6 @@ public:
 
 .PHONY: src
 src: \
-	src/experiments/netlogo-visual/models/data-export-modular.nls \
-	src/experiments/netlogo-is-exporter/models/data-export-modular.nls \
 	$(MARKDOWN_EXAMPLE_FILES) \
 	$(LAB_JS_FILES) \
 	$(LAB_JS_FILES:.js=.min.js) \
