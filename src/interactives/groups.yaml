@@ -50,6 +50,10 @@
   :name: "Signal Generator Interactives"
   :category: Tests
 
+- :path: sensor
+  :name: "Sensor Interactives"
+  :category: Tests
+
 - :path: conversion-tests
   :name: "Physics Conversion Tests"
   :category: Tests
