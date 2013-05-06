@@ -179,7 +179,7 @@ var ROOT = "/experiments",
         dgExportDone = nlDataReady();
     if (dgExportDone) {
       clearInterval(clearDataReady);
-      modelData = nlReadGlobal("DATA-EXPORT:MODEL-DATA");
+      modelData = getExportedData();
       if (exportedData) {
         exportedData.textContent = modelData;
         if (editor) {
