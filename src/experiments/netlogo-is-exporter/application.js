@@ -140,41 +140,56 @@ var ROOT = "/experiments",
     return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
   }
 
-  function nl_cmd_execute(cmd) {
+  function nlCmdExecute(cmd) {
     nl_obj_panel.commandLater(cmd);
   }
 
-  function nl_read_global(global) {
+  function nlReadGlobal(global) {
     if (nlGlobals.indexOf(global) < 0) return null;
     return nl_obj_observer.getVariable(nlGlobals.indexOf(global));
   }
 
-  function dgDataReady() {
-    var ready = nl_read_global("DG-DATA-READY?");
+  function nlDataExportModuleAvailable() {
+    return this.nlReadGlobal("DATA-EXPORT:MODULE-AVAILABLE");
+  }
 
-    if (ready !== null) return ready;
-    return nl_read_global("DATA-EXPORT:DATA-READY?");
+  function nlDataAvailable() {
+    return nlReadGlobal("DATA-EXPORT:DATA-AVAILABLE?");
+  }
+
+  function nlDataReady() {
+    return nlReadGlobal("DATA-EXPORT:DATA-READY?");
   }
 
   function getExportedData() {
-    return nl_read_global("DG-OUTPUT") || nl_read_global("DATA-EXPORT:MODEL-DATA");
+    return nlReadGlobal("DATA-EXPORT:MODEL-DATA");
+  }
+
+  function dgDataReady() {
+    var ready = nlReadGlobal("DG-DATA-READY?");
+    if (ready !== null) return ready;
+    return nlDataAvailable();
+  }
+
+  function getExportedData() {
+    return nlReadGlobal("DG-OUTPUT") || nlReadGlobal("DATA-EXPORT:MODEL-DATA");
   }
 
   function exportDataHandler() {
     try {
-      nl_cmd_execute("export-data");
+      nlCmdExecute("export-data");
     } catch (e) {
-      nl_cmd_execute("data-export:make-model-data");
+      nlCmdExecute("data-export:make-model-data");
     }
     clearDataReady = window.setInterval(exportDataReadyCallback, 250);
   }
 
   function exportDataReadyCallback() {
-    var dgExportDone = nl_read_global("DG-EXPORTED?"),
+    var dgExportDone = nlReadGlobal("DG-EXPORTED?"),
         nRunsExported = 0,
         data;
 
-    if (dgExportDone === null) dgExportDone = nl_read_global("DATA-EXPORT:DATA-READY?");
+    if (dgExportDone === null) dgExportDone = nlDataReady();
     if (dgExportDone) {
       clearInterval(clearDataReady);
       data = getExportedData();
