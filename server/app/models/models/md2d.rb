@@ -54,5 +54,8 @@ module Models
 
     alternate_id :url
 
+    def self.generate_url(id)
+      "#{Rails.application.routes.url_helpers.models_md2ds_path}/#{id}"[1..-1]
+    end
   end
 end

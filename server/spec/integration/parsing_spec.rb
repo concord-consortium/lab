@@ -43,7 +43,7 @@ describe "Round Trip parsing of a simple interactive" do
       props['models'].length.should == 1
       props['models'][0]['id'].should == 'one-atom'
       props['models'][0]['type'].should == 'md2d'
-      props['models'][0]['url'].should =~ /http:\/\/.*\/models\/md2ds\/.*\.json/
+      props['models'][0]['url'].should == "webapp/models/md2ds/models_md2d_one-atom"
       props['models'][0]['viewOptions'].should include( "controlButtons" => "play_reset",
                                                          "enableAtomTooltips" => true)
 
