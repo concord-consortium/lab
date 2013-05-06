@@ -803,6 +803,38 @@ parseMML = (mmlString) ->
 
     id = atoms[0]?.element || 0
 
+    ###
+      Quantum Dynamics
+    ###
+    excitationStates = $mml(".org-concord-mw2d-models-ExcitedStates [method=put]")
+    useQuantumDynamics = excitationStates.length > 0
+
+    if useQuantumDynamics
+      for atom in excitationStates
+        $node = getNode cheerio atom
+        atomIndex = parseInt cheerio($node.find("int")[0]).text()
+        excitation = parseInt $node.find("[index=1] int").text()
+        excitation = 0 if isNaN excitation
+        atoms[atomIndex].excitation = excitation
+
+      excitation = (atom.excitation for atom in atoms)
+
+      elementEnergyLevels = []
+      for node in elementNodes
+        $node = getNode(cheerio(node))
+        levels = $node.find "[property=energyLevels] [method=add]"
+        if levels.length > 0
+          levelsArray = []
+          for level in levels
+            $level = getNode(cheerio(level))
+            energy = getFloatProperty $level, "energy", "float"
+            # convert from MW units to NextGen (Daltons, nm conversions)
+            energy = energy / (120 * 100)
+            levelsArray.push energy
+          elementEnergyLevels.push levelsArray
+        else
+          elementEnergyLevels.push []
+
     ### Convert array of hashes to a hash of arrays, for use by MD2D ###
     unroll = (array, props...) ->
       unrolled = {}
@@ -823,6 +855,8 @@ parseMML = (mmlString) ->
       timeStep            : timeStep
       dielectricConstant  : dielectricConstant
       solventForceType    : solventForceType
+      useQuantumDynamics  : useQuantumDynamics
+      elementEnergyLevels : elementEnergyLevels
 
     # Unit conversion performed on undefined values can convert them to NaN.
     # Revert back all NaNs to undefined, as they will be replaced by default values.
@@ -882,6 +916,7 @@ parseMML = (mmlString) ->
       marked: marked
       visible: visible
       draggable: draggable
+      excitation: excitation
 
     if radialBonds.length > 0
       json.radialBonds = unroll radialBonds, 'atom1', 'atom2', 'length', 'strength',  'type'
@@ -909,6 +944,10 @@ parseMML = (mmlString) ->
     delete json.targetTemperature if not json.temperatureControl
     # Remove atomTraceId when atom tracing is disabled.
     delete json.viewOptions.atomTraceId if not json.viewOptions.showAtomTrace
+    # Remove quantum dynamics props when not using.
+    delete json.useQuantumDynamics  if not useQuantumDynamics
+    delete json.elementEnergyLevels if not useQuantumDynamics
+    delete json.atoms.excitation    if not useQuantumDynamics
 
     # Remove modelSampleRate as this is Next Gen MW specific option.
     delete json.modelSampleRate
