@@ -4,7 +4,7 @@ define(function() {
   return {
     goMotion: {
       appletClass: 'goio',
-      sensorType: 'distance',
+      measurementType: 'distance',
       samplesPerSecond: 20,
       tareable: true
     }

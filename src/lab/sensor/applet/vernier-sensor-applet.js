@@ -20,7 +20,7 @@ define(function(require) {
     //   "o2"
     //   "ph"
     //   "distance"
-    sensorType: '',
+    measurementType: '',
 
     // supported values are:
     //  "labquest"
@@ -98,14 +98,14 @@ define(function(require) {
     },
 
     initializeSensor: function() {
-      this.appletInstance.getSensorRequest(this.sensorType);
+      this.appletInstance.getSensorRequest(this.measurementType);
       return this.checkIfConnected();
     },
 
     checkIfConnected: function() {
       var self = this;
       if (this.appletInstance.isInterfaceConnected(this.deviceType)) {
-        var req = this.appletInstance.getSensorRequest(this.sensorType);
+        var req = this.appletInstance.getSensorRequest(this.measurementType);
         return this.appletInstance.initSensorInterface(this.listenerPath, this.deviceType, [req]);
       } else {
         $('#dialog-confirm-content').text("No sensor device is connected! Please connect your device and click OK to try again, or Cancel to stop trying.");
