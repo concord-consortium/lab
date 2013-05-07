@@ -92,6 +92,11 @@ define(function () {
 
               // first try to see if we can excite atoms
               atomWasExcited = tryToThermallyExciteAtoms(a1, a2, energyLevels1, energyLevels2);
+
+              // if we didn't excite, see if this pair wants to de-excite
+              if (!atomWasExcited) {
+                tryToDeexciteAtoms(a1, a2);
+              }
             }
           }
         },
@@ -188,6 +193,51 @@ define(function () {
           atoms.vy[atom1Idx] = v1 * dy + w1 * dx;
           atoms.vx[atom2Idx] = v2 * dx - w2 * dy;
           atoms.vy[atom2Idx] = v2 * dy + w2 * dx;
+        },
+
+        // If one atom has an electron in a higher energy state (and we didn't
+        // just excite this pair) the atom may deexcite during a collision. This
+        // will either release a photon (NOT YET IMPLEMENTED) or will increase
+        // the relative KE of the atoms (radiationless transition), with the
+        // probabilities of each depending on the model settings.
+        tryToDeexciteAtoms = function(a1, a2) {
+          var selection,
+              excitation1 = atoms.excitation[a1],
+              excitation2 = atoms.excitation[a2];
+
+          atom1Idx = a1;
+          atom2Idx = a2;
+
+          if (!excitation1 && !excitation2) {
+            return false;
+          }
+
+          // excite a random atom, or pick the excitable one if only one can be excited
+          if (!excitation1) {
+            selection = atom2Idx;
+          } else if (!excitation2) {
+            selection = atom1Idx;
+          } else {
+            selection = Math.random() < 0.5 ? atom1Idx : atom2Idx;
+          }
+          return deexcite(selection);
+        },
+
+        deexcite = function(i) {
+          var energyLevels   = elementEnergyLevels[atoms.element[i]],
+              currentLevel   = atoms.excitation[i],
+              newLevel       = Math.floor(Math.random() * currentLevel),
+              energyReleased = energyLevels[newLevel] - energyLevels[currentLevel];
+
+          atoms.excitation[i] = newLevel;
+
+          if (Math.random() < pRadiationless) {
+            // new energy goes into increasing atom velocities after collision
+            precalculateVelocities();
+            updateVelocities(energyReleased);
+          } else {
+            // emit photon
+          }
         };
 
     // Public API.
