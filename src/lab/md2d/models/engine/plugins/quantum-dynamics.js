@@ -91,7 +91,7 @@ define(function () {
               }
 
               // first try to see if we can excite atoms
-              atomWasExcited = tryToThermallyExciteAtoms(a1, a2, energyLevels1, energyLevels2);
+              atomWasExcited = tryToThermallyExciteAtoms(a1, a2);
 
               // if we didn't excite, see if this pair wants to de-excite
               if (!atomWasExcited) {
@@ -105,37 +105,43 @@ define(function () {
         // the energy required to reach a new excitation level of a random member of
         // the pair, increase the excitation level of that atom and adjust the velocity
         // of the pair as required.
-        tryToThermallyExciteAtoms = function(a1, a2, energyLevels1, energyLevels2) {
-          var selection;
+        tryToThermallyExciteAtoms = function(a1, a2) {
+          var atomWasExcited,
+              selection;
 
           atom1Idx = a1;
           atom2Idx = a2;
 
           // excite a random atom, or pick the excitable one if only one can be excited
-          if (!energyLevels1) {
-            selection = atom2Idx;
-          } else if (!energyLevels2) {
-            selection = atom1Idx;
-          } else {
-            selection = Math.random() < 0.5 ? atom1Idx : atom2Idx;
+          selection = Math.random() < 0.5 ? atom1Idx : atom2Idx;
+          atomWasExcited = tryToExcite(selection);
+          if (!atomWasExcited) {
+            // if we couldn't excite the first, excite the other one
+            atomWasExcited = tryToExcite(atom1Idx+atom2Idx-selection);
           }
-          return tryToExcite(selection);
+
+          return atomWasExcited;
         },
 
         // Excites an atom to a new energy level if the relative KE of the pair atom1Idx
         // and atom2Idx is high enough, and updates the velocities of atoms as necessary
         tryToExcite = function(i) {
-          var energyLevels          = elementEnergyLevels[atoms.element[i]],
-              currentEnergyLevel    = atoms.excitation[i],
-              currentElectronEnergy = energyLevels[currentEnergyLevel],
+          var energyLevels   =   elementEnergyLevels[atoms.element[i]],
+              currentEnergyLevel,
+              currentElectronEnergy,
               relativeKE,
               energyRequired, highest,
               nextEnergyLevel, energyAbsorbed,
               j, jj;
 
+          if (!energyLevels) return;
+
           precalculateVelocities();
 
           relativeKE = getRelativeKE();
+
+          currentEnergyLevel = atoms.excitation[i];
+          currentElectronEnergy = energyLevels[currentEnergyLevel];
 
           // get the highest energy level above the current that the relative KE can reach
           for (j = currentEnergyLevel+1, jj = energyLevels.length; j < jj; j++) {
