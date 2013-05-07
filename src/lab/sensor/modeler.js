@@ -6,34 +6,9 @@ define(function(require) {
       PropertyDescription  = require('common/property-description'),
       RunningAverageFilter = require('cs!common/running-average-filter'),
       validator            = require('common/validator'),
+      metadata             = require('./metadata'),
+      unitsDefinition      = require('./units-definition');
 
-      metadata             = require('sensor/metadata'),
-
-      unitsDefinition = {
-        units: {
-          time: {
-            name: "second",
-            pluralName: "seconds",
-            symbol: "s",
-            displayValue: {
-              unitsPerBaseUnit: 1e-3,
-              pluralName: "picoseconds",
-              name: "picosecond",
-              symbol: "ps"
-            }
-          },
-          frequency: {
-            name: "Hertz",
-            pluralName: "Hertz",
-            symbol: "Hz"
-          },
-          angle: {
-            name: "radian",
-            pluralName: "radians",
-            symbol: "rad"
-          }
-        }
-      };
 
   return function Model(initialProperties) {
     var propertySupport = new PropertySupport({
