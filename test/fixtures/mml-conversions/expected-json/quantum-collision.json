@@ -21,6 +21,7 @@
     "geneticEngineState": "dna",
     "DNA": "",
     "useQuantumDynamics": true,
+    "radiationlessEmissionProb": 0.7896236,
     "elementEnergyLevels": [
       [],
       [

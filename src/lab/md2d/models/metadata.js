@@ -122,6 +122,8 @@ define(function() {
       useQuantumDynamics: {
       },
       elementEnergyLevels: {
+      },
+      radiationlessEmissionProb: {
       }
     },
 

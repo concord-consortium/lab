@@ -835,6 +835,24 @@ parseMML = (mmlString) ->
         else
           elementEnergyLevels.push []
 
+      quantumRule = $mml(".org-concord-mw2d-models-QuantumRule")
+      radiationlessEmissionProb = 1
+
+      if quantumRule.length
+        probabilityMap = quantumRule.find "[property=probabilityMap]>[method=put]"
+        for put in probabilityMap
+          $node = getNode(cheerio(put))
+          key = parseInt $node.find("int").text()
+          val = parseFloat $node.find("float").text()
+
+          # key values are ints hard-coded in classic mw
+          if key is 11
+            radiationlessEmissionProb = val
+
+
+
+
+
     ### Convert array of hashes to a hash of arrays, for use by MD2D ###
     unroll = (array, props...) ->
       unrolled = {}
@@ -844,19 +862,20 @@ parseMML = (mmlString) ->
 
     # Main properties of the model.
     json =
-      coulombForces       : coulombForces
-      temperatureControl  : !!targetTemperature
-      targetTemperature   : targetTemperature
-      width               : width
-      height              : height
-      viscosity           : viscosity
-      gravitationalField  : gravitationalField
-      timeStepsPerTick    : timeStepsPerTick
-      timeStep            : timeStep
-      dielectricConstant  : dielectricConstant
-      solventForceType    : solventForceType
-      useQuantumDynamics  : useQuantumDynamics
-      elementEnergyLevels : elementEnergyLevels
+      coulombForces             : coulombForces
+      temperatureControl        : !!targetTemperature
+      targetTemperature         : targetTemperature
+      width                     : width
+      height                    : height
+      viscosity                 : viscosity
+      gravitationalField        : gravitationalField
+      timeStepsPerTick          : timeStepsPerTick
+      timeStep                  : timeStep
+      dielectricConstant        : dielectricConstant
+      solventForceType          : solventForceType
+      useQuantumDynamics        : useQuantumDynamics
+      radiationlessEmissionProb : radiationlessEmissionProb
+      elementEnergyLevels       : elementEnergyLevels
 
     # Unit conversion performed on undefined values can convert them to NaN.
     # Revert back all NaNs to undefined, as they will be replaced by default values.
@@ -945,9 +964,10 @@ parseMML = (mmlString) ->
     # Remove atomTraceId when atom tracing is disabled.
     delete json.viewOptions.atomTraceId if not json.viewOptions.showAtomTrace
     # Remove quantum dynamics props when not using.
-    delete json.useQuantumDynamics  if not useQuantumDynamics
-    delete json.elementEnergyLevels if not useQuantumDynamics
-    delete json.atoms.excitation    if not useQuantumDynamics
+    delete json.useQuantumDynamics        if not useQuantumDynamics
+    delete json.radiationlessEmissionProb if not useQuantumDynamics
+    delete json.elementEnergyLevels       if not useQuantumDynamics
+    delete json.atoms.excitation          if not useQuantumDynamics
 
     # Remove modelSampleRate as this is Next Gen MW specific option.
     delete json.modelSampleRate

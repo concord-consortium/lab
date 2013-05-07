@@ -26,6 +26,7 @@ define(function () {
         arrayTypes           = require('common/array-types'),
 
         elementEnergyLevels  = props.elementEnergyLevels,
+        pRadiationless       = props.radiationlessEmissionProb,
 
         atoms,
         elements,
