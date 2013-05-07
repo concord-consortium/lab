@@ -105,6 +105,9 @@ define(function (require) {
         this.translateStep(state.step);
       }
     }
+    else if (state.name === "translation-end") {
+      this.finishTranslation();
+    }
   };
 
   GeneticRenderer.prototype.render = function () {
@@ -674,14 +677,16 @@ define(function (require) {
       drag.attr({
         "spring-id": codonIdx > 0 ? 1 : 0
       });
-      geneticEngine.addAminoAcid(codonIdx, 2.15 + codonIdx * 3 * Nucleotide.WIDTH, 2.95);
+      geneticEngine.translationStepStarted(codonIdx, 2.15 + codonIdx * 3 * Nucleotide.WIDTH, 2.95);
     });
 
+    // No idea why, but when simple transition + attr were used,
+    // it wasn't working. It works fine only with attrTween.
     t.select(".animated-drag").attrTween("x", function() {
-      return d3.interpolate(2.15 + codonIdx * 3 * Nucleotide.WIDTH, 1.2 + codonIdx * 3 * Nucleotide.WIDTH);
+      return d3.interpolate(2.1 + codonIdx * 3 * Nucleotide.WIDTH, 1.2 + codonIdx * 3 * Nucleotide.WIDTH);
     });
     t.select(".animated-drag").attrTween("y", function() {
-      return d3.interpolate(2.95, 1.6);
+      return d3.interpolate(2.9, 1.5);
     });
 
     t.select(".trna-cont .trna:last-child")
@@ -703,13 +708,30 @@ define(function (require) {
     this._moveRibosome();
     this._scrollContainer();
 
-    t.each("end", function () {
-      var drag = d3.select(".animated-drag");
-      drag.attr({
-        "spring-id": -1
+    if (step > 1) {
+      t = this._nextTrans().duration(500);
+
+      t.each("start", function () {
+        var drag = d3.select(".animated-drag");
+        // Modify the first spring.
+        drag.attr({
+          "spring-id": 0
+        });
       });
-      geneticEngine.connectAminoAcids(codonIdx);
-    });
+
+      t.select(".animated-drag").attrTween("x", function() {
+        return d3.interpolate(1.2 + (codonIdx - 1) * 3 * Nucleotide.WIDTH, 1.2 + (codonIdx - 1) * 3 * Nucleotide.WIDTH + 2.5 * Nucleotide.WIDTH);
+      });
+
+      t.each("end", function () {
+        var drag = d3.select(".animated-drag");
+        // Disable animated drag.
+        drag.attr({
+          "spring-id": -1
+        });
+        geneticEngine.translationStepEnded(codonIdx);
+      });
+    }
 
     if (step > 2) {
       // Remove the first tRNA.
@@ -729,6 +751,16 @@ define(function (require) {
         .duration(200)
         .style("opacity", 0);
     }
+  };
+
+  GeneticRenderer.prototype.finishTranslation = function () {
+    var geneticEngine = this.model.geneticEngine(),
+        t;
+
+    t = this._nextTrans();
+    t.each("end", function () {
+      geneticEngine.translationCompleted();
+    });
   };
 
   GeneticRenderer.prototype.separateDNA = function (suppressAnimation) {

@@ -305,15 +305,16 @@ define(function (require) {
             .toUpperCase();
       },
 
-      addAminoAcid: function (codonIdx, x, y) {
+      translationStepStarted: function (codonIdx, x, y) {
         var abbr = aminoacidsHelper.codonToAbbr(api.codon(codonIdx)),
             elID = aminoacidsHelper.abbrToElement(abbr);
 
         model.addAtom({x: x, y: y, element: elID, visible: true}, {suppressCheck: true});
-        model.addSpringForce(codonIdx, x, y, 8000);
+        model.addSpringForce(codonIdx, x, y, 100000);
+        model.set("solventForceType", 0);
       },
 
-      connectAminoAcids: function (codonIdx) {
+      translationStepEnded: function (codonIdx) {
         if (codonIdx < 1) return;
 
         var r1 = model.getAtomProperties(codonIdx - 1).radius,
@@ -323,6 +324,12 @@ define(function (require) {
 
         // 10000 is a typical strength for bonds between AAs.
         model.addRadialBond({atom1: codonIdx, atom2: codonIdx - 1, length: bondLen, strength: 10000});
+        model.removeSpringForce(0);
+        model.set("solventForceType", 1);
+      },
+
+      translationCompleted: function () {
+        // Remove the last one spring force.
         model.removeSpringForce(0);
       }
 
