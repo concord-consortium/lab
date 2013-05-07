@@ -24,6 +24,7 @@ define(function () {
 
     var arrays               = require('arrays'),
         arrayTypes           = require('common/array-types'),
+        api,
 
         elementEnergyLevels  = props.elementEnergyLevels,
         pRadiationless       = props.radiationlessEmissionProb,
@@ -41,43 +42,46 @@ define(function () {
 
         u1, u2,                 // temporary velocity-calculation variables
         w1, w2,
-        cos, sin,
+        dx, dy,
 
-        // If a pair of atoms are close enough, and their relative KE is greater than
-        // the energy required to reach a new excitation level of a random member of
-        // the pair, increase the excitation level of that atom and adjust the velocity
-        // of the pair as required.
+        // If a pair of atoms are close enough, QD interactions may occur.
+        //
         // This is called at the end of every integration loop.
-        thermallyExciteAtoms = function(neighborList) {
-          var N = atoms.x.length,
+        performInteractionsBetweenCloseAtoms = function(neighborList) {
+          var N     = atoms.x.length,
               nlist = neighborList.getList(),
+              a1, a2,
               i, len,
-              el1, e2,
-              selection,
-              xi, yi, xij, yij, ijsq;
+              el1, el2,
+              energyLevels1, energyLevels2,
+              xi, yi, xij, yij, ijsq,
+              avrSigma, avrSigmaSq,
+              atomWasExcited;
 
           if (!elementEnergyLevels) return;
 
           // get all proximal pairs of atoms, using neighborList
-          for (atom1Idx = 0; atom1Idx < N; atom1Idx++) {
+          for (a1 = 0; a1 < N; a1++) {
 
-            xi = atoms.x[atom1Idx];
-            yi = atoms.y[atom1Idx];
+            xi = atoms.x[a1];
+            yi = atoms.y[a1];
 
-            for (i = neighborList.getStartIdxFor(atom1Idx), len = neighborList.getEndIdxFor(atom1Idx); i < len; i++) {
-              atom2Idx = nlist[i];
+            for (i = neighborList.getStartIdxFor(a1), len = neighborList.getEndIdxFor(a1); i < len; i++) {
+              a2 = nlist[i];
 
-              el1 = atoms.element[atom1Idx];
-              el2 = atoms.element[atom2Idx];
+              el1 = atoms.element[a1];
+              el2 = atoms.element[a2];
+              energyLevels1 = elementEnergyLevels[el1];
+              energyLevels2 = elementEnergyLevels[el2];
 
               // if neither atom is of an element with energy levels, skip
-             if (!elementEnergyLevels[el1].length && !elementEnergyLevels[el2].length) {
+             if (!energyLevels1.length && !energyLevels2.length) {
                continue;
              }
 
               // if we aren't close (within the avrSigma of two atoms), skip
-              xij = xi - atoms.x[atom2Idx];
-              yij = yi - atoms.y[atom2Idx];
+              xij = xi - atoms.x[a2];
+              yij = yi - atoms.y[a2];
               ijsq = xij * xij + yij * yij;
               avrSigma = 0.5 * (elements.sigma[el1] + elements.sigma[el2]);
               avrSigmaSq = avrSigma * avrSigma;
@@ -86,29 +90,47 @@ define(function () {
                 continue;
               }
 
-              // excite a random atom, or pick the excitable one if only one can be excited
-              if (!elementEnergyLevels[el1]) {
-                tryToExcite(atom2Idx);
-              } else if (!elementEnergyLevels[el2]) {
-                tryToExcite(atom1Idx);
-              } else {
-                selection = Math.random() < 0.5 ? atom1Idx : atom2Idx;
-                tryToExcite(selection);
-              }
+              // first try to see if we can excite atoms
+              atomWasExcited = tryToThermallyExciteAtoms(a1, a2, energyLevels1, energyLevels2);
             }
           }
+        },
+
+        // If a pair of atoms are close enough, and their relative KE is greater than
+        // the energy required to reach a new excitation level of a random member of
+        // the pair, increase the excitation level of that atom and adjust the velocity
+        // of the pair as required.
+        tryToThermallyExciteAtoms = function(a1, a2, energyLevels1, energyLevels2) {
+          var selection;
+
+          atom1Idx = a1;
+          atom2Idx = a2;
+
+          // excite a random atom, or pick the excitable one if only one can be excited
+          if (!energyLevels1) {
+            selection = atom2Idx;
+          } else if (!energyLevels2) {
+            selection = atom1Idx;
+          } else {
+            selection = Math.random() < 0.5 ? atom1Idx : atom2Idx;
+          }
+          return tryToExcite(selection);
         },
 
         // Excites an atom to a new energy level if the relative KE of the pair atom1Idx
         // and atom2Idx is high enough, and updates the velocities of atoms as necessary
         tryToExcite = function(i) {
-          var relativeKE = getRelativeKE(),
-              energyLevels = elementEnergyLevels[atoms.element[i]],
-              currentEnergyLevel = atoms.excitation[i],
+          var energyLevels          = elementEnergyLevels[atoms.element[i]],
+              currentEnergyLevel    = atoms.excitation[i],
               currentElectronEnergy = energyLevels[currentEnergyLevel],
+              relativeKE,
               energyRequired, highest,
               nextEnergyLevel, energyAbsorbed,
               j, jj;
+
+          precalculateVelocities();
+
+          relativeKE = getRelativeKE();
 
           // get the highest energy level above the current that the relative KE can reach
           for (j = currentEnergyLevel+1, jj = energyLevels.length; j < jj; j++) {
@@ -120,7 +142,7 @@ define(function () {
           }
           if (!highest) {
             // there is no higher energy level we can reach
-            return;
+            return false;
           }
 
           // assuming that all the energy levels above have the same chance of
@@ -131,23 +153,25 @@ define(function () {
           atoms.excitation[i] = nextEnergyLevel;
           energyAbsorbed = energyLevels[nextEnergyLevel] - currentElectronEnergy;
           updateVelocities(energyAbsorbed);
+          return true;
+        },
+
+        precalculateVelocities = function() {
+          var dx_ = atoms.x[atom2Idx] - atoms.x[atom1Idx],
+              dy_ = atoms.y[atom2Idx] - atoms.y[atom1Idx],
+              tmp  = 1.0 / Math.sqrt(dx_*dx_ + dy_*dy_);
+
+          dx   = dx_ * tmp;
+          dy   = dy_ * tmp;
+
+          u1   = atoms.vx[atom1Idx] * dx + atoms.vy[atom1Idx] * dy;
+          u2   = atoms.vx[atom2Idx] * dx + atoms.vy[atom2Idx] * dy;
+          w1   = atoms.vy[atom1Idx] * dx - atoms.vx[atom1Idx] * dy;
+          w2   = atoms.vy[atom2Idx] * dx - atoms.vx[atom2Idx] * dy;
         },
 
         getRelativeKE = function() {
-          var cos_ = atoms.x[atom2Idx] - atoms.x[atom1Idx],
-              sin_ = atoms.y[atom2Idx] - atoms.y[atom1Idx],
-              tmp  = 1.0 / Math.sqrt(cos_*cos_ + sin_*sin_),
-              du;
-
-          cos  = cos_ * tmp;
-          sin  = sin_ * tmp;
-
-          u1   = atoms.vx[atom1Idx] * cos + atoms.vy[atom1Idx] * sin,
-          u2   = atoms.vx[atom2Idx] * cos + atoms.vy[atom2Idx] * sin,
-          w1   = atoms.vy[atom1Idx] * cos - atoms.vx[atom1Idx] * sin,
-          w2   = atoms.vy[atom2Idx] * cos - atoms.vx[atom2Idx] * sin,
-
-          du   = u2 - u1;
+          var du   = u2 - u1;
 
           return 0.5 * du * du * atoms.mass[atom1Idx] * atoms.mass[atom2Idx] / (atoms.mass[atom1Idx] + atoms.mass[atom2Idx]);
         },
@@ -160,11 +184,11 @@ define(function () {
               v1 = (g - Math.sqrt(m2 / m1 * (j * (m1 + m2) - g * g))) / (m1 + m2),
               v2 = (g + Math.sqrt(m1 / m2 * (j * (m1 + m2) - g * g))) / (m1 + m2);
 
-          atoms.vx[atom1Idx] = v1 * cos - w1 * sin;
-          atoms.vy[atom1Idx] = v1 * sin + w1 * cos;
-          atoms.vx[atom2Idx] = v2 * cos - w2 * sin;
-          atoms.vy[atom2Idx] = v2 * sin + w2 * cos;
-        }
+          atoms.vx[atom1Idx] = v1 * dx - w1 * dy;
+          atoms.vy[atom1Idx] = v1 * dy + w1 * dx;
+          atoms.vx[atom2Idx] = v2 * dx - w2 * dy;
+          atoms.vy[atom2Idx] = v2 * dy + w2 * dx;
+        };
 
     // Public API.
     api = {
@@ -177,7 +201,7 @@ define(function () {
       performActionWithinIntegrationLoop: function(args) {
         var neighborList = args.neighborList;
 
-        thermallyExciteAtoms(neighborList);
+        performInteractionsBetweenCloseAtoms(neighborList);
       }
     };
 
