@@ -758,10 +758,17 @@ AUTHORING = false;
       url: url,
       data: JSON.stringify(interactiveJSON),
       success: function(results) {
-        if (typeof results === 'string') results = JSON.parse(results);
+        if (typeof results === 'string'){
+          results = JSON.parse(results);
+        }
         interactiveRemote = results;
         interactive = _.omit(interactiveRemote, interactiveRemoteKeys);
 
+        // redirect to the new interactive
+        if (httpMethod == 'POST') {
+          location.hash = "#" + interactiveRemote.path;
+          return;
+        }
 
         if(isFullPage()) {
           controller.loadInteractive(interactive, '#interactive-container');
