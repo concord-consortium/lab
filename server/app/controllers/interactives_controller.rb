@@ -88,7 +88,8 @@ class InteractivesController < ApplicationController
                                              :local_ref_id => params[:interactive][:models].first[:id],
                                              :parameters => params[:interactive][:parameters],
                                              :outputs => params[:interactive][:outputs],
-                                             :filteredOutputs => params[:interactive][:filteredOutputs])
+                                             :filteredOutputs => params[:interactive][:filteredOutputs],
+                                             :modelOptions => params[:interactive][:models].first[:modelOptions] )
     interactive_model.md2d = create_model
     interactive_model.save!
     interactive_model
