@@ -44,7 +44,7 @@ define(function(require) {
       },
 
       _appendTestAppletHTML: function() {
-        $('#main .left').append( this.getTestAppletHTML() );
+        $('body').append( this.getTestAppletHTML() );
         this.testAppletInstance = $('#'+this.appletId + "-test-applet")[0];
         this._state = 'appended';
         this._waitForTestAppletReady();

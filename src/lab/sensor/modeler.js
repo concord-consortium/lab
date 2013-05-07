@@ -1,4 +1,4 @@
-/*global define: false d3: false*/
+/*global define: false, d3: false */
 
 define(function(require) {
 
@@ -7,7 +7,9 @@ define(function(require) {
       RunningAverageFilter = require('cs!common/running-average-filter'),
       validator            = require('common/validator'),
       metadata             = require('./metadata'),
-      unitsDefinition      = require('./units-definition');
+      unitsDefinition      = require('./units-definition'),
+      appletClasses        = require('./applet/applet-classes'),
+      sensorDefinitions    = require('./applet/sensor-definitions');
 
 
   return function Model(initialProperties) {
@@ -19,11 +21,11 @@ define(function(require) {
         mainProperties,
         isStopped = true,
         dispatch = d3.dispatch('play', 'stop', 'tick', 'reset', 'stepForward', 'stepBack', 'seek', 'invalidation'),
-        interval,
-        intervalLength = 16, // ms
-        lastFrequency,
-        phase = 0,
+        sensorType,
+        applet,
+        samplesPerSecond,
         time = 0,
+        sensorReading,
         stepCounter = 0,
         invalidatingChangeNestingLevel = 0,
         filteredOutputs = [],
@@ -100,19 +102,45 @@ define(function(require) {
       });
     }
 
-    function tick() {
+    function setSensorType(_sensorType) {
+      var AppletClass;
+
+      if (sensorType === _sensorType) {
+        return;
+      }
+
+      sensorType = _sensorType;
+
+      if (applet) {
+        applet.removeListeners('data');
+        applet.remove();
+      }
+
+      samplesPerSecond = sensorDefinitions[sensorType].samplesPerSecond;
+      AppletClass = appletClasses[sensorDefinitions[sensorType].appletClass];
+
+      applet = new AppletClass({
+        listenerPath: 'Lab.sensor.' + sensorType,
+        measurementType: sensorDefinitions[sensorType].measurementType,
+        appletId: sensorType+'-sensor'
+      });
+      window.Lab.sensor[sensorType] = applet;
+
+      applet.append();
+      applet.on('data', appletDataCallback);
+    }
+
+    function appletDataCallback(d) {
       stepCounter++;
-      time += (0.001 * intervalLength * model.properties.timeScale);
+
+      time += (1 / samplesPerSecond);
+      sensorReading = d;
 
       propertySupport.deleteComputedPropertyCachedValues();
       propertySupport.notifyAllComputedProperties();
       updateFilteredOutputs();
 
       dispatch.tick();
-    }
-
-    function constrain(angle) {
-      return angle - 2 * Math.PI * Math.floor(angle / (2 * Math.PI));
     }
 
     model = {
@@ -128,13 +156,17 @@ define(function(require) {
 
       start: function() {
         isStopped = false;
-        interval = setInterval(tick, intervalLength);
+        if (applet) {
+          applet.start();
+        }
         dispatch.play();
       },
 
       stop: function() {
         isStopped = true;
-        clearInterval(interval);
+        if (applet) {
+          applet.stop();
+        }
         dispatch.stop();
       },
 
@@ -222,17 +254,16 @@ define(function(require) {
       }
     };
 
+    // Need to define a globally-accessible 'listenerPath' for the sensor to evaluate
+    if (window.Lab === undefined) {
+      window.Lab = {};
+    }
+    window.Lab.sensor = {};
+
     propertySupport.mixInto(model);
 
-    // Ensure that phase + (time * angular frequency) remains unchanged when the frequency changes.
-    // This makes for continuous signals.
     customSetters = {
-      frequency: function(newFrequency) {
-        if (lastFrequency !== undefined) {
-          phase = constrain(phase + 2 * Math.PI * (lastFrequency - newFrequency) * model.properties.time);
-        }
-        lastFrequency = newFrequency;
-      }
+      sensorType: setSensorType
     };
 
     mainProperties = validator.validateCompleteness(metadata.mainProperties, initialProperties);
@@ -263,21 +294,15 @@ define(function(require) {
       return time;
     });
 
-    model.defineOutput('signalValue', {
-      label: "Signal Value",
+    model.defineOutput('sensorReading', {
+      label: "Sensor Reading",
       format: '.2f'
     }, function() {
-      return Math.cos(model.properties.angle);
+      return sensorReading;
     });
 
-    model.defineOutput('angle', {
-      label: "Angle",
-      unitType: 'angle',
-      format: '.2f'
-    }, function() {
-      var angle = phase + 2 * Math.PI * model.properties.frequency * model.properties.time;
-      return constrain(angle);
-    });
+    // Kick things off by doing this explicitly:
+    setSensorType(model.properties.sensorType);
 
     return model;
   };

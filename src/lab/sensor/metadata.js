@@ -8,15 +8,11 @@ define(function() {
         defaultValue: "sensor",
         immutable: true
       },
-      frequency: {
-        defaultValue: 1,
-        unitType: "frequency",
-        propertyChangeInvalidates: true
+      sensorType: {
+        defaultValue: 'goMotion'
       },
-      timeScale: {
-        defaultValue: 1,
-        unitType: "time",
-        propertyChangeInvalidates: true
+      samplesPerSecond: {
+        readOnly: true
       }
     },
     viewOptions: {
