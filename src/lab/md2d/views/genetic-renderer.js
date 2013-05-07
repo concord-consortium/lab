@@ -191,7 +191,7 @@ define(function (require) {
     this._dnaView.attr("transform", "translate(" + this.model2px(2 * Nucleotide.WIDTH) + ")");
     this._appendRibosome();
 
-    this._g.append("circle").attr("class", "animated-drag");
+    this._g.append("rect").attr("class", "animated-drag");
   };
 
   GeneticRenderer.prototype._scrollContainer = function (suppressAnimation) {
@@ -652,19 +652,13 @@ define(function (require) {
     t.selectAll(".ribosome-under, .ribosome-over")
       .style("opacity", 1);
 
-    this._g.append("circle").attr("class", "animated-drag");
+    this._g.append("rect").attr("class", "animated-drag");
   };
 
   GeneticRenderer.prototype.translateStep = function (step) {
     var codonIdx = step - 1,
         geneticEngine = this.model.geneticEngine(),
         t;
-
-    this._g.select(".animated-drag").attr({
-      "spring-id": codonIdx > 0 ? 1 : 0,
-      "cx": 2.15 + codonIdx * 3 * Nucleotide.WIDTH,
-      "cy": 2.95
-    });
 
     this._appendTRNA(codonIdx);
     this._trnaG.select(".trna:last-child")
@@ -674,6 +668,22 @@ define(function (require) {
           .attr("transform", "rotate(30)");
 
     t = this._nextTrans().duration(1500);
+
+    t.each("start", function () {
+      var drag = d3.select(".animated-drag");
+      drag.attr({
+        "spring-id": codonIdx > 0 ? 1 : 0
+      });
+      geneticEngine.addAminoAcid(codonIdx, 2.15 + codonIdx * 3 * Nucleotide.WIDTH, 2.95);
+    });
+
+    t.select(".animated-drag").attrTween("x", function() {
+      return d3.interpolate(2.15 + codonIdx * 3 * Nucleotide.WIDTH, 1.2 + codonIdx * 3 * Nucleotide.WIDTH);
+    });
+    t.select(".animated-drag").attrTween("y", function() {
+      return d3.interpolate(2.95, 1.6);
+    });
+
     t.select(".trna-cont .trna:last-child")
       .attr("transform", "translate(0, 0)")
       .style("opacity", 5) // 5 causes that tRNA is visible earlier.
@@ -690,20 +700,14 @@ define(function (require) {
       .ease("cubic")
       .style("opacity", 1);
 
-
-    t.select(".animated-drag").attr({
-      "cx": 1.2 + codonIdx * 3 * Nucleotide.WIDTH,
-      "cy": 1.6
-    });
-
     this._moveRibosome();
     this._scrollContainer();
 
-    t.each("start", function () {
-      var drag = d3.select(".animated-drag");
-      geneticEngine.addAminoAcid(codonIdx, drag.attr("cx"), drag.attr("cy"));
-    });
     t.each("end", function () {
+      var drag = d3.select(".animated-drag");
+      drag.attr({
+        "spring-id": -1
+      });
       geneticEngine.connectAminoAcids(codonIdx);
     });
 

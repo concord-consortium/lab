@@ -1759,11 +1759,13 @@ define(function (require) {
       // TODO: cleanup, provide more generic solution.
       d3.selectAll(".animated-drag").each(function () {
         var el = d3.select(this),
-            x = el.attr("x") || el.attr("cx"),
-            y = el.attr("y") || el.attr("cy");
-            springId = el.attr("spring-id")
+            x = el.attr("x"),
+            y = el.attr("y"),
+            springId = el.attr("spring-id");
 
-        model.updateSpringForce(springId, x, y);
+        if (springId >= 0) {
+          model.updateSpringForce(springId, x, y);
+        }
       });
 
       if (drawVdwLines) {
