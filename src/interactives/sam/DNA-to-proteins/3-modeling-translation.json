@@ -24,11 +24,12 @@
       "id": "translate-step",
       "text": "Translate step by step",
       "action": "translateStep();"
+    },
+    {
+      "type": "button",
+      "id": "translate",
+      "text": "Translate",
+      "action": "translate();"
     }
-  ],
-  "layout": {
-    "bottom": [
-      "translate-step"
-    ]
-  }
+  ]
 }
