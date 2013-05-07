@@ -11,7 +11,8 @@ define(function (require) {
         "dna": 2,
         "transcription": 3,
         "transcription-end": 4,
-        "translation": 5
+        "translation": 5,
+        "translation-end": 6
       };
 
 
@@ -222,6 +223,9 @@ define(function (require) {
         }
       },
 
+      /**
+       * Triggers only one step of DNA translation.
+       */
       translateStep: function () {
         var state, abbr;
 
@@ -242,6 +246,15 @@ define(function (require) {
           } else {
             transitionToState("translation-end");
           }
+        }
+      },
+
+      /**
+       * Triggers *complete* translation of the DNA.
+       */
+      translate: function() {
+        while (api.stateBefore("translation-end")) {
+          api.translateStep();
         }
       },
 
@@ -296,7 +309,7 @@ define(function (require) {
         var abbr = aminoacidsHelper.codonToAbbr(api.codon(codonIdx)),
             elID = aminoacidsHelper.abbrToElement(abbr);
 
-        model.addAtom({x: x, y: y, element: elID, visible: true});
+        model.addAtom({x: x, y: y, element: elID, visible: true}, {suppressCheck: true});
         model.addSpringForce(codonIdx, x, y, 8000);
       },
 

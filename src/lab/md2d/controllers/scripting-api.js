@@ -480,11 +480,10 @@ define(function (require) {
       },
 
       /**
-        Triggers translation of mRNA to protein.
-      */
+       * Triggers *complete* translation of the DNA.
+       */
       translate: function translate() {
-        var aaSequence = model.geneticEngine().translate();
-        model.generateProtein(aaSequence);
+        model.geneticEngine().translate();
       },
 
       translateStepByStep: function translateStepByStep() {
