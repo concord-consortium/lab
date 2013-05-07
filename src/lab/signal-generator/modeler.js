@@ -14,13 +14,7 @@ define(function(require) {
           time: {
             name: "second",
             pluralName: "seconds",
-            symbol: "s",
-            displayValue: {
-              unitsPerBaseUnit: 1e-3,
-              pluralName: "picoseconds",
-              name: "picosecond",
-              symbol: "ps"
-            }
+            symbol: "s"
           },
           frequency: {
             name: "Hertz",
