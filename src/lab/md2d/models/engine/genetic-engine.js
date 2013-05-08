@@ -229,9 +229,6 @@ define(function (require) {
       translateStep: function () {
         var state, abbr;
 
-        // Ensure that the simulation is started.
-        model.start();
-
         if (api.stateBefore("transcription-end")) {
           // Make sure that complete mRNA is available.
           api.transcribe();
@@ -320,6 +317,9 @@ define(function (require) {
       translationStepStarted: function (codonIdx, x, y) {
         var abbr = aminoacidsHelper.codonToAbbr(api.codon(codonIdx)),
             elID = aminoacidsHelper.abbrToElement(abbr);
+
+        // Ensure that the simulation is started.
+        model.start();
 
         model.addAtom({x: x, y: y, element: elID, visible: true}, {suppressCheck: true});
         model.addSpringForce(codonIdx, x, y, 100000);

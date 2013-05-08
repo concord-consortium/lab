@@ -138,7 +138,7 @@ define(function (require) {
       this._renderTranscription();
     }
     else if (state.name === "translation") {
-      this._renderTranslation();
+      this._renderTranslation(state.step);
     }
     // When there is translation-end state, just do nothing.
     // It means that protein should be ready.
@@ -184,19 +184,32 @@ define(function (require) {
     this._scrollContainer(true);
   };
 
-  GeneticRenderer.prototype._renderTranslation = function () {
+  GeneticRenderer.prototype._renderTranslation = function (step) {
     var mRNA = this.model.get("mRNA"),
         i, len;
 
     for (i = 0, len = mRNA.length; i < len; i++) {
       this._mrna.push(new Nucleotide(this._mrnaG, this.model2px, mRNA[i], 2, i, true));
-      this._mrna[i].hideBonds(true);
+      if (i < 3 * (step - 2) || i >= 3 * step) {
+        this._mrna[i].hideBonds(true);
+      }
     }
+
     this._mrnaG.attr("transform", "translate(0, " + this.model2pxInv(1.5 * Nucleotide.HEIGHT) + ")");
     this._dnaView.attr("transform", "translate(" + this.model2px(2 * Nucleotide.WIDTH) + ")");
     this._appendRibosome();
 
     this._g.append("rect").attr("class", "animated-drag");
+
+    this._scrollContainer(true);
+    this._moveRibosome(true);
+
+    for (i = 1; i <= step; i++) {
+      this._appendTRNA(i - 1);
+      if (i > 2) {
+        this._removeTRNA(i - 3, true);
+      }
+    }
   };
 
   GeneticRenderer.prototype._scrollContainer = function (suppressAnimation) {
@@ -268,10 +281,11 @@ define(function (require) {
     });
   };
 
-  GeneticRenderer.prototype._moveRibosome = function () {
-    var shift = this._state().step - 2;
+  GeneticRenderer.prototype._moveRibosome = function (suppressAnimation) {
+    var shift = this._state().step - 2,
+        selection = suppressAnimation ? this._g : this._currentTrans;
     if (shift > 0) {
-      this._currentTrans.selectAll(".ribosome-under, .ribosome-over")
+      selection.selectAll(".ribosome-under, .ribosome-over")
         .attr("transform", "translate(" + this.model2px((2 + shift * 3) * Nucleotide.WIDTH) + ")");
     }
   };
@@ -311,8 +325,7 @@ define(function (require) {
       }
     }).style({
       "stroke-width": ms2px(0.01),
-      "stroke": "#fff",
-      "opacity": 0
+      "stroke": "#fff"
     });
     nucleoG.append("image").attr({
       "class": "nucleotide-img",
@@ -673,9 +686,12 @@ define(function (require) {
       .attr("transform", "translate(" + this.model2px(Nucleotide.HEIGHT * 2) + ", " + this.model2px(Nucleotide.HEIGHT * -6) + ")")
       .style("opacity", 0)
         .select(".rot")
-          .attr("transform", "rotate(30)");
+          .attr("transform", "rotate(30)")
+          // Bonds subselection.
+          .selectAll(".bonds")
+            .style("opacity", 0);
 
-    t = this._nextTrans().duration(1500);
+    t = this._nextTrans().duration(1200);
 
     t.each("start", function () {
       var drag = d3.select(".animated-drag");
@@ -714,7 +730,7 @@ define(function (require) {
     this._scrollContainer();
 
     if (step > 1) {
-      t = this._nextTrans().duration(500);
+      t = this._nextTrans().duration(350);
 
       t.each("start", function () {
         var drag = d3.select(".animated-drag");
@@ -808,23 +824,23 @@ define(function (require) {
    * @private
    * @param  {[type]} i tRNA index (starting from 0).
    */
-  GeneticRenderer.prototype._removeTRNA = function (i) {
-    var t = this._nextTrans().duration(1000);
+  GeneticRenderer.prototype._removeTRNA = function (i, suppressAnimation) {
+    var t = suppressAnimation ? this._g : this._nextTrans().duration(700),
+        bondsSelString = ".trna-cont .trna:nth-child(" + (i + 1) + ") .bonds, " +      // tRNA bonds
+                         ".mrna .nucleotide:nth-child(" + (3 * i + 1) + ") .bonds, " + // mRNA bonds
+                         ".mrna .nucleotide:nth-child(" + (3 * i + 2) + ") .bonds, " +
+                         ".mrna .nucleotide:nth-child(" + (3 * i + 3) + ") .bonds",
+        bonds = suppressAnimation ? this._g.selectAll(bondsSelString) : t.selectAll(bondsSelString).duration(200);
+
     // Remove the first tRNA.
     t.select(".trna-cont .trna:nth-child(" + (i + 1) + ")")
       .attr("transform", "translate(" + this.model2px(Nucleotide.HEIGHT * -5) + ", " + this.model2px(Nucleotide.HEIGHT * -4) + ")")
       .style("opacity", 0)
         .select(".rot")
-          .attr("transform", "rotate(-30)")
-            .selectAll(".bonds").duration(200)
-              .style("opacity", 0);
+          .attr("transform", "rotate(-30)");
 
-    // Hide mRNA bonds.
-    t.selectAll(".mrna .nucleotide:nth-child(" + (3 * i + 1) + ") .bonds, " +
-                ".mrna .nucleotide:nth-child(" + (3 * i + 2) + ") .bonds, " +
-                ".mrna .nucleotide:nth-child(" + (3 * i + 3) + ") .bonds")
-      .duration(200)
-      .style("opacity", 0);
+    // Hide tRNA and mRNA bonds.
+    bonds.style("opacity", 0);
   };
 
   GeneticRenderer.prototype.separateDNA = function (suppressAnimation) {
