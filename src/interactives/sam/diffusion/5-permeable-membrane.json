@@ -259,7 +259,7 @@
     { 
       "type": "checkbox",
       "id": "toggle-select",
-      "text": "Mark atoms",
+      "text": "Highlight a group of atoms by dragging over them",
       "property": "markingAtoms"
     },
     { "type": "text", "id": "inside-above-label", "text": "Inside cell" },
@@ -439,8 +439,8 @@
       "id": "bottom-left",
       "top": "model.bottom",
       "left": "model.left",
-      "width": "model.width/2",
-      "align": "left"
+      "width": "9.5em",
+      "align": "right"
     },
     {
       "id": "bottom-right",
