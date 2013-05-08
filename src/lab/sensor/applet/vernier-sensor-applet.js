@@ -1,4 +1,4 @@
-/*global define: false $:false*/
+/*global define: false */
 
 define(function(require) {
 
@@ -90,43 +90,42 @@ define(function(require) {
 
     testAppletReady: function() {
       try {
-        this.initializeSensor();
+        // We only care to see if this throws or not. (In some versions of IE, it's not possible
+        // to 'probe' for the mere existence of this.appletInstance.getSensorRequest by testing
+        // it for truthiness, because Java methods can be invoked but not included in expressions.)
+        this.appletInstance.getSensorRequest(this.measurementType);
       } catch(e) {
         return false;
       }
       return true;
     },
 
-    initializeSensor: function() {
-      this.appletInstance.getSensorRequest(this.measurementType);
-      return this.checkIfConnected();
+    /**
+      Returns true if the correct device type is connected.
+
+      NOTE: This will throw if the applet hasn't been initialized yet (which occurs asynchronously
+      after the <applet> tag is appended to the DOM).
+    */
+    isSensorConnected: function() {
+      return this.appletInstance.isInterfaceConnected(this.deviceType);
     },
 
-    checkIfConnected: function() {
-      var self = this;
-      if (this.appletInstance.isInterfaceConnected(this.deviceType)) {
-        var req = this.appletInstance.getSensorRequest(this.measurementType);
-        return this.appletInstance.initSensorInterface(this.listenerPath, this.deviceType, [req]);
-      } else {
-        $('#dialog-confirm-content').text("No sensor device is connected! Please connect your device and click OK to try again, or Cancel to stop trying.");
-        $('#dialog-confirm').attr('title', "No sensor device found!");
-        $('#dialog-confirm').dialog({
-          resizable: false,
-          height: 300,
-          width: 400,
-          modal: true,
-          buttons: {
-            "OK": function() {
-              $(this).dialog("close");
-              window.setTimeout(function() { self.checkIfConnected(); }, 250);
-            },
-            "Cancel": function() {
-              $(this).dialog("close");
-            }
-          }
-        });
+    /**
+      Try to initialize the sensor for the correct device and measurement type (e.g., goio,
+      distance). Returns true on success.
+
+      NOTE: This will throw if the applet hasn't been initialized yet (which occurs asynchronously
+      after the <applet> tag is appended to the DOM).
+    */
+    initializeSensor: function() {
+      var req;
+
+      if (!this.isSensorConnected()) {
+        return false;
       }
-      return false;
+
+      req = this.appletInstance.getSensorRequest(this.measurementType);
+      return this.appletInstance.initSensorInterface(this.listenerPath, this.deviceType, [req]);
     },
 
     // In some browsers, calling an applet method from within a callback triggered by

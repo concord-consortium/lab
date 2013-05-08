@@ -9,6 +9,7 @@ define(function(require) {
       metadata             = require('./metadata'),
       unitsDefinition      = require('./units-definition'),
       appletClasses        = require('./applet/applet-classes'),
+      appletErrors         = require('./applet/errors'),
       sensorDefinitions    = require('./applet/sensor-definitions');
 
 
@@ -126,8 +127,19 @@ define(function(require) {
       });
       window.Lab.sensor[sensorType] = applet;
 
-      applet.append();
-      applet.on('data', appletDataCallback);
+      applet.append(function(error) {
+        if (error) {
+          if (error instanceof appletErrors.JavaLoadError) {
+            window.alert("Java appears not to be running.");
+          } else if (error instanceof appletErrors.AppletInitializationError) {
+            window.alert("The sensor applet is taking too long to respond.");
+          } else if (error instanceof appletErrors.SensorConnectionError) {
+            window.alert("The wrong sensor, or no sensor, is connected to your device.");
+          }
+        } else {
+          applet.on('data', appletDataCallback);
+        }
+      });
     }
 
     function appletDataCallback(d) {
