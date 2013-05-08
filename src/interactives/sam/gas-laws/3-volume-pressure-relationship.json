@@ -36,11 +36,11 @@
   "parameters": [
     {
       "name": "volume",
-      "unitAbbreviation": "nm²",
-      "label": "area",
-      "initialValue": 3,
+      "unitAbbreviation": "nm³",
+      "label": "Volume",
+      "initialValue": 0.3,
       "onChange": [
-        "var newX = value / get('height'),",
+        "var newX = value / 0.1 / get('height'),",
         "    maxX = 0,",
         "    scaleFactor;",
         "for(var i = 0; i < getNumberOfAtoms(); i++) {",
@@ -84,18 +84,18 @@
       "type": "button",
       "id": "increase-volume",
       "text": "Volume &#8593;",
-      "action": "if (get('volume') < 7.0) { set({ volume: get('volume') * 1.1 }) };"
+      "action": "if (get('volume') < 0.7) { set({ volume: get('volume') + 0.05 }) };"
     },
     {
       "type": "button",
       "id": "decrease-volume",
       "text": "Volume &#8595;",
-      "action": "if (get('volume') > 0.87) { set({ volume: get('volume') * (1/1.1) }) };"
+      "action": "if (get('volume') > 0.14) { set({ volume: get('volume') - 0.05 }) };"
     },
     {
       "type": "numericOutput",
       "id": "current-volume",
-      "label": "Area of gas",
+      "label": "Gas volume",
       "property": "volume",
       "displayValue": "return format('1.2f')(value)"
     },
@@ -103,7 +103,7 @@
       "type": "barGraph",
       "id": "bar-graph",
       "min": 0,
-      "max": 3,
+      "max": 2.5,
       "title": "Pressure (Bar)",
       "property": "pressureProbeFiltered"
     }
