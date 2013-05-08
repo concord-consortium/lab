@@ -47,6 +47,36 @@ define(function(require) {
 
     testAppletReadyInterval: 100,
 
+    getCodebase: function(pathname) {
+      var IMPORTER_SUFFIX = "experiments/inquiry-space-importer/",
+          IMPORTER_RE = new RegExp("/(.*/)?" + IMPORTER_SUFFIX),
+          match = pathname && pathname.match(IMPORTER_RE),
+          prefix;
+
+      if (!match) {
+        return "/jnlp";
+      }
+
+      prefix = match[1] || '';
+      return '/' + prefix + 'jnlp';
+    },
+
+    getTestAppletHTML: function() {
+      return [
+       '<applet ',
+         'id="',       this.appletId,         '-test-applet" ',
+         'class="applet test-sensor-applet" ',
+         'code="org.concord.sensor.applet.DetectionApplet" ',
+         'codebase="', this.getCodebase(document.location.pathname), '" ',
+         'width="150px" ',
+         'height="150px" ',
+         'MAYSCRIPT="true" ',
+       '>',
+          '<param name="MAYSCRIPT" value="true" />',
+        '</applet>'
+      ].join('');
+    },
+
     getState: function() {
       return this._state;
     },
