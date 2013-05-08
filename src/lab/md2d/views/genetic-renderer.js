@@ -19,6 +19,7 @@ define(function (require) {
         "RIBO_UNDER": 550.55,
         "RIBO_OVER": 550.7,
         "TRNA": 117.325,
+        "TRNA_NECK": 15.925,
         "BACKB": 52,
         "A": 28.151,
         "C": 21.2,
@@ -39,6 +40,7 @@ define(function (require) {
         "RIBO_UNDER": 311.6,
         "RIBO_OVER": 311.6,
         "TRNA": 67.9,
+        "TRNA_NECK": 21.14,
         "BACKB": 14,
         "A": 31.15,
         "C": 25.3,
@@ -210,6 +212,9 @@ define(function (require) {
         this._removeTRNA(i - 3, true);
       }
     }
+
+    // Hide tRNA neck of the first tRNA (there are two visible only).
+    this._trnaG.select(".trna:nth-child(" + (step - 1) + ") .trna-neck").style("opacity", 0);
   };
 
   GeneticRenderer.prototype._scrollContainer = function (suppressAnimation) {
@@ -341,6 +346,16 @@ define(function (require) {
 
     nucleoG.attr("transform", function (d, i) {
       return "translate(" + ms2px(i * Nucleotide.WIDTH) + ")";
+    });
+
+    trna.append("image").attr({
+      "class": "trna-neck",
+      "x": ms2px(0.52 * (codonWidth - W.TRNA_NECK)),
+      "y": ms2px(-H.TRNA_NECK -H.TRNA * 0.95 - H.A * 0.92),
+      "width": ms2px(W.TRNA_NECK),
+      "height": ms2px(H.TRNA_NECK),
+      "preserveAspectRatio": "none",
+      "xlink:href": labConfig.actualRoot + "../../resources/translation/tRNA_neck.svg"
     });
 
     trna.append("image").attr({
@@ -704,10 +719,10 @@ define(function (require) {
     // No idea why, but when simple transition + attr were used,
     // it wasn't working. It works fine only with attrTween.
     t.select(".animated-drag").attrTween("x", function() {
-      return d3.interpolate(2.1 + codonIdx * 3 * Nucleotide.WIDTH, 1.2 + codonIdx * 3 * Nucleotide.WIDTH);
+      return d3.interpolate(2.13 + codonIdx * 3 * Nucleotide.WIDTH, 1.2 + codonIdx * 3 * Nucleotide.WIDTH);
     });
     t.select(".animated-drag").attrTween("y", function() {
-      return d3.interpolate(2.9, 1.5);
+      return d3.interpolate(2.95, 1.57);
     });
 
     t.select(".trna-cont .trna:last-child")
@@ -741,8 +756,12 @@ define(function (require) {
       });
 
       t.select(".animated-drag").attrTween("x", function() {
-        return d3.interpolate(1.2 + (codonIdx - 1) * 3 * Nucleotide.WIDTH, 1.2 + (codonIdx - 1) * 3 * Nucleotide.WIDTH + 2.5 * Nucleotide.WIDTH);
+        return d3.interpolate(1.2 + (codonIdx - 1) * 3 * Nucleotide.WIDTH, 1.2 + (codonIdx - 1) * 3 * Nucleotide.WIDTH + 2 * Nucleotide.WIDTH);
       });
+
+      t.select(".trna-cont .trna:nth-child(" + codonIdx + ") .trna-neck") // (codonIdx - 1) + 1
+        .duration(70)
+        .style("opacity", 0);
 
       t.each("end", function () {
         var drag = d3.select(".animated-drag");
@@ -769,6 +788,8 @@ define(function (require) {
     this._currentTrans.each("end", function () {
       geneticEngine.translationCompleted();
     });
+    t = this._nextTrans().duration(70);
+    t.select(".trna-cont .trna:nth-child(" + trnaCount + ") .trna-neck").style("opacity", 0);
     this._removeTRNA(trnaCount - 1);
 
     // Show top-over.

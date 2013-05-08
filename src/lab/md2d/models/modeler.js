@@ -2103,7 +2103,7 @@ define(function(require) {
     if (initialProperties.DNA) {
       // Overwrite width and height options.
       initialProperties.width = 1000;
-      initialProperties.height = 3;
+      initialProperties.height = 4;
       initialProperties.viewOptions.viewPortX = 0;
       initialProperties.viewOptions.viewPortY = 0;
       initialProperties.viewOptions.viewPortWidth = 5;
