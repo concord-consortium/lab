@@ -1,6 +1,6 @@
 {
   "title": "Quantum collision",
-  "publicationStatus": "draft",
+  "publicationStatus": "public",
   "subtitle": "",
   "about": "",
   "models": [
@@ -8,21 +8,14 @@
       "id": "quantum-collision",
       "url": "/imports/legacy-mw-content/converted/conversion-and-physics-examples/quantum-collision.json",
       "viewOptions": {
-        "controlButtons": "play_reset"
+        "controlButtons": "play_reset_step",
+        "showClock": true
       },
       "onLoad": [
         "onPropertyChange('initialVelocity', function(){",
         " var vx = get('initialVelocity'); reset(); ",
         " setAtomProperties(1, {vx: vx});",
         " setTextBoxProperties(0,{text: 'initial speed= '+vx*10e5+' m/s'});",
-        "});",
-        "callEvery(10, function() {",
-        "  var excitedAtoms = [];",
-        "  var i=2; while (i--) { ",
-        "    var e = getAtomProperties(i).excitation;",
-        "    if (e>0) {excitedAtoms.push(i);}",
-        "  }",
-        "  markAtoms(excitedAtoms);",
         "});"
       ]
     }
@@ -59,11 +52,15 @@
       "type": "graph",
       "id": "graph",
       "title": "Total Energy of the System",
-      "xlabel": "Model Time (ps)",
+      "xlabel": "Model Time (fs)",
       "ylabel": "eV",
-      "ymin": -1,
-      "ymax": 5,
-      "xmax": 600,
+      "ymin": 0,
+      "ymax": 7,
+      "xmax": 6000,
+      "xTickCount": 5,
+      "yTickCount": 5,
+      "xFormatter": "2s",
+      "yFormatter": "2s",
       "properties": [
         "kineticEnergy"
       ]
