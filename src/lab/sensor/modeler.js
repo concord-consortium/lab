@@ -134,6 +134,12 @@ define(function(require) {
       stepCounter++;
 
       time += (1 / samplesPerSecond);
+
+      // Whaaa? Accessing 'window' seems to prevent a strange bug in which Safari 6.0 stops updating
+      // time after 3.7s. Hard to debug because accessing console, window, or Web Inspector makes
+      // the problem go away!
+      window.__bizarreSafariFix = 1;
+
       sensorReading = d;
 
       propertySupport.deleteComputedPropertyCachedValues();
