@@ -258,6 +258,18 @@ define(function (require) {
         }
       },
 
+      // Helper methods used mainly by the genetic renderer.
+
+      /**
+       * Returns parsed state.
+       * e.g.
+       * {
+       *   name: "translation",
+       *   step: 5
+       * }
+       *
+       * @return {Object} current state object (see above).
+       */
       state: function () {
         return api.parseState(model.get("geneticEngineState"));
       },
@@ -331,6 +343,33 @@ define(function (require) {
       translationCompleted: function () {
         // Remove the last one spring force.
         model.removeSpringForce(0);
+      },
+
+      /**
+       * Returns center of mass coridantes of the whole protein.
+       *
+       * @return {Object} protein's center of mass, e.g. {x: 1, y: 2}.
+       */
+      proteinCenterOfMass: function () {
+        var totalMass = 0,
+            xcm = 0,
+            ycm = 0,
+            atom, i, len;
+
+        // Note that there is a strong asumption that there are *only* amino
+        // acids in the model.
+        for (i = 0, len = model.get_num_atoms(); i < len; i++) {
+          atom = model.getAtomProperties(i);
+          xcm += atom.x * atom.mass;
+          ycm += atom.y * atom.mass;
+          totalMass += atom.mass;
+        }
+        xcm /= totalMass;
+        ycm /= totalMass;
+        return {
+          x: xcm,
+          y: ycm
+        };
       }
 
       /*

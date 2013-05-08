@@ -140,6 +140,8 @@ define(function (require) {
     else if (state.name === "translation") {
       this._renderTranslation();
     }
+    // When there is translation-end state, just do nothing.
+    // It means that protein should be ready.
   };
 
   GeneticRenderer.prototype._state = function () {
@@ -568,9 +570,10 @@ define(function (require) {
 
     // Ribosome (top-bottom and under-over).
     this._appendRibosome();
+
     // Hide under-over version, but show top-bottom.
     this._g.selectAll(".ribosome-under, .ribosome-over").style("opacity", 0);
-    t.selectAll(".ribosome-top, .ribosome-bottom").style("opacity", 1);
+    this._g.selectAll(".ribosome-top, .ribosome-bottom").style("opacity", 1);
 
     this._nextTrans().ease("cubic-in-out").duration(1500)
       .select(".dna-view")
@@ -743,12 +746,8 @@ define(function (require) {
   GeneticRenderer.prototype.finishTranslation = function () {
     var geneticEngine = this.model.geneticEngine(),
         trnaCount = this._trnaG.selectAll(".trna")[0].length,
-        t;
-
-    this._g.select(".ribosome-top")
-      .attr("transform", "translate(" + this.model2px(Nucleotide.WIDTH * (4 + (trnaCount - 2) * 3)) + ", " + this.model2pxInv(4.52 * Nucleotide.HEIGHT) + ")");
-    this._g.select(".ribosome-bottom")
-      .attr("transform", "translate(" + this.model2px(Nucleotide.WIDTH * (3.95 + (trnaCount - 2) * 3)) + ", " + this.model2pxInv(1.75 * Nucleotide.HEIGHT) + ")");
+        self = this,
+        cm, viewBox, t;
 
     this._removeTRNA(trnaCount - 2);
     this._currentTrans.each("end", function () {
@@ -758,6 +757,13 @@ define(function (require) {
 
     // Show top-over.
     t = this._nextTrans().duration(500);
+    t.each("start", function () {
+      // Move top-bottom into a correct position.
+      d3.select(".ribosome-top")
+        .attr("transform", "translate(" + self.model2px(Nucleotide.WIDTH * (4 + (trnaCount - 2) * 3)) + ", " + self.model2pxInv(4.52 * Nucleotide.HEIGHT) + ")");
+      d3.select(".ribosome-bottom")
+        .attr("transform", "translate(" + self.model2px(Nucleotide.WIDTH * (3.95 + (trnaCount - 2) * 3)) + ", " + self.model2pxInv(1.75 * Nucleotide.HEIGHT) + ")");
+    });
     t.selectAll(".ribosome-top, .ribosome-bottom").style("opacity", 1);
     t.selectAll(".ribosome-under, .ribosome-over").style("opacity", 0);
 
@@ -781,6 +787,19 @@ define(function (require) {
 
     // Cleanup everything, DNA animation is completed.
     t.select(".genetics").remove();
+
+    // Center viewport at protein's center of mass.
+    t = this._nextTrans().duration(700);
+    t.each("start", function () {
+      cm = geneticEngine.proteinCenterOfMass();
+      viewBox = d3.select(".viewport").attr("viewBox").split(" ");
+      viewBox[0] = self.model2px(cm.x - 0.5 * self.model.get("viewPortWidth"));
+      t.select(".viewport").attr("viewBox", viewBox.join(" "));
+    });
+    // Update model description of the viewport when animation ends.
+    t.each("end", function () {
+      self.model.set("viewPortX", cm.x - 0.5 * self.model.get("viewPortWidth"));
+    });
   };
 
   /**
