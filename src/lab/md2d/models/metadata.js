@@ -314,6 +314,13 @@ define(function() {
         readOnly: true,
         unitType: "velocity",
         serialize: false
+      },
+      mass: {
+        // Mass is defined per element, but this is a convenience shortcut for
+        // quick access to mass of the given atom.
+        readOnly: true,
+        unitType: "mass",
+        serialize: false
       }
     },
 
