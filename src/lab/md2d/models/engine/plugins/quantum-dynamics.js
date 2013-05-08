@@ -38,9 +38,11 @@ define(function () {
           atoms.excitation = arrays.create(num, 0, arrayTypes.int8Type);
         },
 
-        atom1Idx, atom2Idx,     // current pair of atoms during thermal excitation
+        currentlyOperatedPairs = [],  // all pairs being currently operated on
 
-        u1, u2,                 // temporary velocity-calculation variables
+        atom1Idx, atom2Idx,           // current pair of atoms during thermal excitation
+
+        u1, u2,                       // temporary velocity-calculation variables
         w1, w2,
         dx, dy,
 
@@ -50,13 +52,14 @@ define(function () {
         performInteractionsBetweenCloseAtoms = function(neighborList) {
           var N     = atoms.x.length,
               nlist = neighborList.getList(),
+              currentlyClosePairs = [],
               a1, a2,
               i, len,
               el1, el2,
               energyLevels1, energyLevels2,
               xi, yi, xij, yij, ijsq,
               avrSigma, avrSigmaSq,
-              atomWasExcited;
+              atomWasExcited, atomWasDeexcited;
 
           if (!elementEnergyLevels) return;
 
@@ -90,12 +93,40 @@ define(function () {
                 continue;
               }
 
+              currentlyClosePairs[a1] = a2;   // add this pair to our temporary list of close pairs
+
+              if (currentlyOperatedPairs[a1] === a2) {
+                // we have already operated on this pair, and the atoms have not yet
+                // left each other's neighborhoods, so we skip so as not to operate
+                // on them twice in one collision
+                continue;
+              }
+
               // first try to see if we can excite atoms
               atomWasExcited = tryToThermallyExciteAtoms(a1, a2);
 
               // if we didn't excite, see if this pair wants to de-excite
               if (!atomWasExcited) {
-                tryToDeexciteAtoms(a1, a2);
+                atomWasDeexcited = tryToDeexciteAtoms(a1, a2);
+              }
+
+              if (atomWasExcited || atomWasDeexcited) {
+                // add pair to our operation list
+                currentlyOperatedPairs[a1] = a2;
+                currentlyOperatedPairs[a2] = a1;
+              }
+            }
+          }
+
+          // go through list of currently-operated pairs, and if any of them aren't in
+          // our temporary list of close pairs, they have left each other so we can
+          // strike them from the list
+          for (a1 = 0, len = currentlyOperatedPairs.length; a1 < len; a1++) {
+            a2 = currentlyOperatedPairs[a1];
+            if (!isNaN(a2)) {
+              if (!(currentlyClosePairs[a1] === a2 || currentlyClosePairs[a2] === a1)) {
+                delete currentlyOperatedPairs[a1];
+                delete currentlyOperatedPairs[a2];
               }
             }
           }
@@ -226,7 +257,8 @@ define(function () {
           } else {
             selection = Math.random() < 0.5 ? atom1Idx : atom2Idx;
           }
-          return deexcite(selection);
+          deexcite(selection);
+          return true;
         },
 
         deexcite = function(i) {
