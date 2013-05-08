@@ -219,6 +219,30 @@ define(function (require) {
   };
 
   GeneticRenderer.prototype._appendRibosome = function () {
+    var cy = this.model2pxInv(this.model.get("viewPortHeight") * 0.5);
+    // Ribosome top-bottom.
+    this._g.append("image").attr({
+      "class": "ribosome-bottom",
+      "x": this.model2px(W.RIBO_BOTTOM * -0.5),
+      "y": this.model2px(H.RIBO_BOTTOM * -0.5),
+      "width": this.model2px(W.RIBO_BOTTOM),
+      "height": this.model2px(H.RIBO_BOTTOM),
+      "preserveAspectRatio": "none",
+      "transform": "translate(" + this.model2px(W.RIBO_TOP * -0.5) + ", " + cy + ")",
+      "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_bottom1.svg"
+    }).style("opacity", 0);
+
+    this._g.append("image").attr({
+      "class": "ribosome-top",
+      "x": this.model2px(W.RIBO_TOP * -0.5),
+      "y": this.model2px(H.RIBO_TOP * -0.5),
+      "width": this.model2px(W.RIBO_TOP),
+      "height": this.model2px(H.RIBO_TOP),
+      "preserveAspectRatio": "none",
+      "transform": "translate(" + this.model2px(W.RIBO_TOP * -0.5) + ", " + this.model2pxInv(this.model.get("height")) + ")",
+      "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_top1.svg"
+    }).style("opacity", 0);
+
     this._dnaView.insert("image", ".mrna").attr({
       "class": "ribosome-under",
       "x": this.model2px(W.RIBO_UNDER * -0.5),
@@ -542,33 +566,11 @@ define(function (require) {
       "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/Polymerase_Over.svg"
     }).style("opacity", 0);
 
-    // Ribosome top-bottom.
-    this._g.append("image").attr({
-      "class": "ribosome-bottom",
-      "x": this.model2px(W.RIBO_BOTTOM * -0.5),
-      "y": this.model2px(H.RIBO_BOTTOM * -0.5),
-      "width": this.model2px(W.RIBO_BOTTOM),
-      "height": this.model2px(H.RIBO_BOTTOM),
-      "preserveAspectRatio": "none",
-      "transform": "translate(" + this.model2px(W.RIBO_TOP * -0.5) + ", " + cy + ")",
-      "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_bottom1.svg"
-    });
-
-    this._g.append("image").attr({
-      "class": "ribosome-top",
-      "x": this.model2px(W.RIBO_TOP * -0.5),
-      "y": this.model2px(H.RIBO_TOP * -0.5),
-      "width": this.model2px(W.RIBO_TOP),
-      "height": this.model2px(H.RIBO_TOP),
-      "preserveAspectRatio": "none",
-      "transform": "translate(" + this.model2px(W.RIBO_TOP * -0.5) + ", " + this.model2pxInv(this.model.get("height")) + ")",
-      "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_top1.svg"
-    });
-
-    // Ribosome under-over.
+    // Ribosome (top-bottom and under-over).
     this._appendRibosome();
-    // Hide ribosome at the beginning.
+    // Hide under-over version, but show top-bottom.
     this._g.selectAll(".ribosome-under, .ribosome-over").style("opacity", 0);
+    t.selectAll(".ribosome-top, .ribosome-bottom").style("opacity", 1);
 
     this._nextTrans().ease("cubic-in-out").duration(1500)
       .select(".dna-view")
@@ -734,33 +736,76 @@ define(function (require) {
     }
 
     if (step > 2) {
-      // Remove the first tRNA.
-      t = this._nextTrans().duration(1000);
-      t.select(".trna-cont .trna:nth-child(" + (step - 2) + ")") // step - 3 + 1
-        .attr("transform", "translate(" + this.model2px(Nucleotide.HEIGHT * -5) + ", " + this.model2px(Nucleotide.HEIGHT * -4) + ")")
-        .style("opacity", 0)
-          .select(".rot")
-            .attr("transform", "rotate(-30)")
-              .selectAll(".bonds").duration(200)
-                .style("opacity", 0);
-
-      // Hide mRNA bonds.
-      t.selectAll(".mrna .nucleotide:nth-child(" + (3 * (step - 3) + 1) + ") .bonds, " +
-                  ".mrna .nucleotide:nth-child(" + (3 * (step - 3) + 2) + ") .bonds, " +
-                  ".mrna .nucleotide:nth-child(" + (3 * (step - 3) + 3) + ") .bonds")
-        .duration(200)
-        .style("opacity", 0);
+      this._removeTRNA(step - 3);
     }
   };
 
   GeneticRenderer.prototype.finishTranslation = function () {
     var geneticEngine = this.model.geneticEngine(),
+        trnaCount = this._trnaG.selectAll(".trna")[0].length,
         t;
 
-    t = this._nextTrans();
-    t.each("end", function () {
+    this._g.select(".ribosome-top")
+      .attr("transform", "translate(" + this.model2px(Nucleotide.WIDTH * (4 + (trnaCount - 2) * 3)) + ", " + this.model2pxInv(4.52 * Nucleotide.HEIGHT) + ")");
+    this._g.select(".ribosome-bottom")
+      .attr("transform", "translate(" + this.model2px(Nucleotide.WIDTH * (3.95 + (trnaCount - 2) * 3)) + ", " + this.model2pxInv(1.75 * Nucleotide.HEIGHT) + ")");
+
+    this._removeTRNA(trnaCount - 2);
+    this._currentTrans.each("end", function () {
       geneticEngine.translationCompleted();
     });
+    this._removeTRNA(trnaCount - 1);
+
+    // Show top-over.
+    t = this._nextTrans().duration(500);
+    t.selectAll(".ribosome-top, .ribosome-bottom").style("opacity", 1);
+    t.selectAll(".ribosome-under, .ribosome-over").style("opacity", 0);
+
+    // Detach two parts of ribosome.
+    t = this._nextTrans().duration(300);
+    t.select(".ribosome-top")
+      .attr("transform", "translate(" + this.model2px(Nucleotide.WIDTH * (4 + (trnaCount - 2) * 3)) + ", " + this.model2pxInv(6 * Nucleotide.HEIGHT) + ")");
+    t.select(".ribosome-bottom")
+      .attr("transform", "translate(" + this.model2px(Nucleotide.WIDTH * (3.95 + (trnaCount - 2) * 3)) + ", " + this.model2pxInv(1.3 * Nucleotide.HEIGHT) + ")");
+
+    // Move ribosome away.
+    t = this._nextTrans().duration(1000);
+    t.select(".ribosome-top")
+      .attr("transform", "translate(" + this.model2px(Nucleotide.WIDTH * (4 + (trnaCount + 4) * 3)) + ", " + this.model2pxInv(10 * Nucleotide.HEIGHT) + ")");
+    t.select(".ribosome-bottom")
+      .attr("transform", "translate(" + this.model2px(Nucleotide.WIDTH * (3.95 + (trnaCount + 4) * 3)) + ", " + this.model2pxInv(1.3 * Nucleotide.HEIGHT) + ")");
+
+    // Slide out mRNA.
+    t.select(".mrna")
+      .attr("transform", "translate(" + this.model2px(-15 * Nucleotide.WIDTH) + ", " + this.model2pxInv(1.5 * Nucleotide.HEIGHT) + ")");
+
+    // Cleanup everything, DNA animation is completed.
+    t.select(".genetics").remove();
+  };
+
+  /**
+   * Removes nth tRNA during DNA translation (hides in fact).
+   *
+   * @private
+   * @param  {[type]} i tRNA index (starting from 0).
+   */
+  GeneticRenderer.prototype._removeTRNA = function (i) {
+    var t = this._nextTrans().duration(1000);
+    // Remove the first tRNA.
+    t.select(".trna-cont .trna:nth-child(" + (i + 1) + ")")
+      .attr("transform", "translate(" + this.model2px(Nucleotide.HEIGHT * -5) + ", " + this.model2px(Nucleotide.HEIGHT * -4) + ")")
+      .style("opacity", 0)
+        .select(".rot")
+          .attr("transform", "rotate(-30)")
+            .selectAll(".bonds").duration(200)
+              .style("opacity", 0);
+
+    // Hide mRNA bonds.
+    t.selectAll(".mrna .nucleotide:nth-child(" + (3 * i + 1) + ") .bonds, " +
+                ".mrna .nucleotide:nth-child(" + (3 * i + 2) + ") .bonds, " +
+                ".mrna .nucleotide:nth-child(" + (3 * i + 3) + ") .bonds")
+      .duration(200)
+      .style("opacity", 0);
   };
 
   GeneticRenderer.prototype.separateDNA = function (suppressAnimation) {
