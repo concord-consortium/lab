@@ -103,6 +103,7 @@ define(function (require) {
         vdwLines,
         chargeShadingMode,
         keShadingMode,
+        useQuantumDynamics,
         drawVdwLines,
         drawVelocityVectors,
         velocityVectorColor,
@@ -262,6 +263,38 @@ define(function (require) {
           .attr("fill", color);
         arrowHead.append("path")
             .attr("d", "M 0 0 L 10 5 L 0 10 z");
+      }
+    }
+
+    function createExcitationGlow() {
+      var defs,
+          glow;
+
+      defs = mainContainer.select("defs");
+      if (defs.empty()) {
+        defs = mainContainer.append("defs");
+      }
+      glow = defs.select("#glow");
+      if (glow.empty()) {
+        glow = defs.append("filter")
+          .attr("id", "glow")
+          .attr("x", "-1")
+          .attr("y", "-1")
+          .attr("width", "400%")
+          .attr("height", "400%");
+        glow.append("feMorphology")
+          .attr("result", "bigger")
+          .attr("in", "SourceGraphic")
+          .attr("operator", "dilate")
+          .attr("radius", "6");
+        glow.append("feGaussianBlur")
+          .attr("result", "blurOut")
+          .attr("in", "bigger")
+          .attr("stdDeviation", "10");
+        glow.append("feBlend")
+          .attr("in", "SourceGraphic")
+          .attr("in2", "blurOut")
+          .attr("mode", "normal");
       }
     }
 
@@ -434,7 +467,8 @@ define(function (require) {
             "cx": function(d) { return model2px(d.x); },
             "cy": function(d) { return model2pxInv(d.y); },
             "fill-opacity": function(d) { return d.visible ? 1 : 0; },
-            "fill": function (d, i) { return gradientNameForParticle[i]; }
+            "fill": function (d, i) { return gradientNameForParticle[i]; },
+            "filter": function (d, i) { if (d.excitation) {return "url(#glow)";} return null; }
           })
           .on("mousedown", moleculeMouseDown)
           .on("mouseover", moleculeMouseOver)
@@ -1361,6 +1395,10 @@ define(function (require) {
         particle.attr("fill", function (d, i) { return gradientNameForParticle[i]; });
       }
 
+      if (useQuantumDynamics) {
+        particle.attr("filter", function (d) { if (d.excitation) {return "url(#glow)";} return null; })
+      }
+
       label.attr("transform", function (d) {
         return "translate(" + model2px(d.x) + "," + model2pxInv(d.y) + ")";
       });
@@ -1617,6 +1655,11 @@ define(function (require) {
 
       createVectorArrowHeads(velocityVectorColor, VELOCITY_STR);
       createVectorArrowHeads(forceVectorColor, FORCE_STR);
+
+      useQuantumDynamics = model.get("useQuantumDynamics");
+      if (useQuantumDynamics) {
+        createExcitationGlow();
+      }
 
       createSymbolImages();
       createImmutableGradients();
