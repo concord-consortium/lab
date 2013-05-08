@@ -9,7 +9,7 @@
       "id": "page3$0",
       "url": "imports/legacy-mw-content/converted/sam-activities/DNA-to-proteins/page3/page3$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset",
+        "controlButtons": "",
         "enableKeyboardHandlers": false
       },
       "modelOptions": {
@@ -30,6 +30,12 @@
       "id": "translate",
       "text": "Translate",
       "action": "translate();"
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": "reset();"
     }
   ]
 }
