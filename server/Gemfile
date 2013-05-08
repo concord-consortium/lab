@@ -11,6 +11,7 @@ gem "haml",               "~> 4.0.0"
 gem "sass",               "~> 3.2.6"
 gem 'bourbon',            "~> 3.1.1"
 gem 'neat',               "~> 1.2.0"
+gem 'rack-rewrite',       "~> 1.2.1"
 
 gem 'ruby-progressbar',   "~> 1.0.2"
 
