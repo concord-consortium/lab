@@ -11,7 +11,11 @@
         "controlButtons": "play_reset"
       },
       "onLoad": [
-        "onPropertyChange('initialVelocity', function(){var vx = get('initialVelocity'); reset(); setAtomProperties(1, {vx: vx});});",
+        "onPropertyChange('initialVelocity', function(){",
+        " var vx = get('initialVelocity'); reset(); ",
+        " setAtomProperties(1, {vx: vx});",
+        " setTextBoxProperties(0,{text: 'initial speed= '+vx*10e5+' m/s'});",
+        "});",
         "callEvery(10, function() {",
         "  var excitedAtoms = [];",
         "  var i=2; while (i--) { ",
