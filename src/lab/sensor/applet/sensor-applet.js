@@ -49,7 +49,7 @@ define(function(require) {
     testAppletReadyInterval: 100,
 
     getCodebase: function() {
-      return labConfig.actualRoot + "/jnlp";
+      return labConfig.actualRoot + "jnlp";
     },
 
     getTestAppletHTML: function() {
