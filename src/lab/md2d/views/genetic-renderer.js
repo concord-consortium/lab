@@ -112,15 +112,29 @@ define(function (require) {
     }
   };
 
+  /**
+   * Renders DNA-related graphics using "DNA" and "geneticEngineState"
+   * options of the model.
+   */
   GeneticRenderer.prototype.render = function () {
     var state = this._state();
 
-    if (!this.model.get("DNA")) { // "", undefined or null
+    // Trick to cancel all current transitions. It isn't possible explicitly
+    // so we have to start new, fake transitions, which will cancel previous
+    // ones. Note that some transitions can be applied to elements that live
+    // outside g.genetics element, e.g. viewport and background. So, it isn't
+    // enough to use d3.selectAll("g.genetics *").
+    d3.selectAll("*").transition().delay(0);
+    // Cleanup.
+    this.container.selectAll("g.genetics").remove();
+
+    if (!this.model.get("DNA") || state.name === "translation-end") {
+      // When DNA is not defined (=== "", undefined or null) or
+      // translation is ended, genetic renderer doesn't have to do
+      // anything.
       return;
     }
 
-    // Cleanup.
-    this.container.selectAll("g.genetics").remove();
     this._currentTrans = null;
     this._dna      = [];
     this._dnaComp  = [];
