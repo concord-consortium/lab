@@ -48,7 +48,7 @@ define(function(require) {
          'class="',    this.classNames,       '" ',
          'archive="',  allJarUrls.join(', '), '" ',
          'code="',     this.code,             '" ',
-         'codebase="', this.getCodebase(document.location.pathname), '" ',
+         'codebase="', this.getCodebase(), '" ',
          'width="1px" ',
          'height="1px" ',
          'MAYSCRIPT="true" ',

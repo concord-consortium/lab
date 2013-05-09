@@ -6,6 +6,7 @@ define(function(require) {
   var miniClass = require('common/mini-class'),
       EventEmitter = require('./mini-event-emitter'),
       errors = require('./errors'),
+      labConfig = require('lab.config'),
       SensorApplet;
 
   function waitForTestFunction(test, intervalLength, maxAttempts, done, fail) {
@@ -47,18 +48,8 @@ define(function(require) {
 
     testAppletReadyInterval: 100,
 
-    getCodebase: function(pathname) {
-      var IMPORTER_SUFFIX = "experiments/inquiry-space-importer/",
-          IMPORTER_RE = new RegExp("/(.*/)?" + IMPORTER_SUFFIX),
-          match = pathname && pathname.match(IMPORTER_RE),
-          prefix;
-
-      if (!match) {
-        return "/jnlp";
-      }
-
-      prefix = match[1] || '';
-      return '/' + prefix + 'jnlp';
+    getCodebase: function() {
+      return labConfig.actualRoot + "/jnlp";
     },
 
     getTestAppletHTML: function() {
@@ -67,7 +58,7 @@ define(function(require) {
          'id="',       this.appletId,         '-test-applet" ',
          'class="applet test-sensor-applet" ',
          'code="org.concord.sensor.applet.DetectionApplet" ',
-         'codebase="', this.getCodebase(document.location.pathname), '" ',
+         'codebase="', this.getCodebase(), '" ',
          'width="150px" ',
          'height="150px" ',
          'MAYSCRIPT="true" ',
