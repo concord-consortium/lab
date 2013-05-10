@@ -22,6 +22,8 @@ define(function (require) {
     /** @private */
     this._modelStopped = true;
     /** @private */
+    this._modelPlayable = true;
+    /** @private */
     this._showClock = true;
     /** @private */
     this._timeUnits = "";
@@ -47,7 +49,9 @@ define(function (require) {
     });
     this._$playPause.on("click", $.proxy(function () {
       if (this._modelStopped) {
-        scriptingAPI.api.start();
+        if (this._modelPlayable) {
+          scriptingAPI.api.start();
+        }
       } else {
         scriptingAPI.api.stop();
       }
@@ -71,6 +75,14 @@ define(function (require) {
       this._$playPause.removeClass("playing");
     } else {
       this._$playPause.addClass("playing");
+    }
+
+    // Coerce undefined to *true* for models that don't have isPlayable property
+    this._modelPlayable = model.properties.isPlayable === false ? false : true;
+    if (this._modelPlayable) {
+      this._$playPause.removeClass("disabled");
+    } else {
+      this._$playPause.addClass("disabled");
     }
   };
 
@@ -135,6 +147,7 @@ define(function (require) {
     // Use event namespace to let multiple playbacks work fine with one model.
     model.on('play.' + this.component.id, $.proxy(this._simulationStateChanged, this));
     model.on('stop.' + this.component.id, $.proxy(this._simulationStateChanged, this));
+    model.addPropertiesListener(["isPlayable"], $.proxy(this._simulationStateChanged, this));
     this._simulationStateChanged();
     // Update time units and set time.
     this._timeUnits = model.getPropertyDescription("displayTime").getUnitAbbreviation();
