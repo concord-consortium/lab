@@ -1,10 +1,7 @@
 /*global define */
 
 define(function (require) {
-  // Dependencies.
-  var labConfig = require('lab.config'),
-
-      SCALE = 0.007,
+  var SCALE = 0.007,
       W = {
         "BACKB": 52,
         "A": 28.151,
@@ -57,7 +54,7 @@ define(function (require) {
       "width": ms2px(W[type]),
       "height": ms2px(H[type]),
       "preserveAspectRatio": "none",
-      "xlink:href": labConfig.actualRoot + "resources/transcription/Nucleotide" + type + "_Direction" + direction + "_noBonds.svg"
+      "xlink:href": "resources/transcription/Nucleotide" + type + "_Direction" + direction + "_noBonds.svg"
     });
     this._backbone = this._g.append("image").attr({
       "x": 0,
@@ -65,7 +62,7 @@ define(function (require) {
       "width": ms2px(W.BACKB),
       "height": ms2px(H.BACKB),
       "preserveAspectRatio": "none",
-      "xlink:href": labConfig.actualRoot + "resources/transcription/Backbone_" + (mRNA ? "RNA" : "DNA") + ".svg"
+      "xlink:href": "resources/transcription/Backbone_" + (mRNA ? "RNA" : "DNA") + ".svg"
     });
 
     if (direction === 1) {
