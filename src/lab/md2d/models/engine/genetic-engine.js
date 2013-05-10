@@ -24,6 +24,9 @@ define(function (require) {
         // List of transitions, which are currently ongoing (index 0)
         // or scheduled (index > 0).
         ongoingTransitions = [],
+        // Complete mRNA used internally by this engine. Note that model's
+        // property "mRNA" is updated incrementally during transcription.
+        mRNA = "",
 
         dispatch = d3.dispatch("change", "transition"),
 
@@ -45,24 +48,15 @@ define(function (require) {
           model.set("DNAComplement", compSeq.toUpperCase());
         },
 
-        calculatemRNA = function (maxLength) {
-          var mRNA, newCode;
+        calculatemRNA = function () {
+          var newCode;
 
-          mRNA = model.get("mRNA") || "";
+          mRNA = "";
           newCode = mRNACode(mRNA.length);
-
-          while(newCode && mRNA.length < maxLength) {
+          while(newCode) {
             mRNA += newCode;
             newCode = mRNACode(mRNA.length);
           }
-
-          model.set("mRNA", mRNA);
-        },
-
-        mRNAComplete = function () {
-          var mRNA = model.get("mRNA");
-          // mRNA should be defined and its length should be equal to DNA length.
-          return mRNA && mRNA.length === model.get("DNA").length;
         },
 
         mRNACode = function (index) {
@@ -93,14 +87,16 @@ define(function (require) {
           var DNA = model.get("DNA");
           validateDNA(DNA);
           calculateComplementarySequence();
+          calculatemRNA();
 
+          // Update model's mRNA property.
           if (api.stateBefore("transcription:0")) {
             model.set("mRNA", "");
           } else if (api.state().name === "transcription") {
-            calculatemRNA(api.state().step);
+            model.set("mRNA", mRNA.substr(0, api.state().step));
           } else if (api.stateAfter("transcription")) {
             // So, the first state which triggers it is "transcription-end".
-            calculatemRNA(DNA.length);
+            model.set("mRNA", mRNA);
           }
         },
 
@@ -355,7 +351,7 @@ define(function (require) {
       },
 
       codon: function (index) {
-        return model.get("mRNA").substr(3 * index, 3);
+        return mRNA.substr(3 * index, 3);
       },
 
       codonComplement: function (index) {
@@ -393,8 +389,12 @@ define(function (require) {
       },
 
       translationCompleted: function () {
-        // Remove the last one spring force.
-        model.removeSpringForce(0);
+        if (model.getNumberOfSpringForces() > 0) {
+          // Remove the last one spring force. Note that sometimes translation
+          // can end without any step, so we have to check if any spring force
+          // is present.
+          model.removeSpringForce(0);
+        }
         model.set("gravitationalField", 0);
       },
 
@@ -409,14 +409,21 @@ define(function (require) {
 
       /**
        * Returns center of mass coridantes of the whole protein.
+       * When there are no amino acids, returns null.
        *
-       * @return {Object} protein's center of mass, e.g. {x: 1, y: 2}.
+       * @return {Object|null} protein's center of mass, e.g. {x: 1, y: 2}
+       *                       or null when there are no amino acids.
        */
       proteinCenterOfMass: function () {
         var totalMass = 0,
             xcm = 0,
             ycm = 0,
-            atom, i, len;
+            len = model.get_num_atoms(),
+            atom, i;
+
+        if (len === 0) {
+          return null;
+        }
 
         // Note that there is a strong asumption that there are *only* amino
         // acids in the model.

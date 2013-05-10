@@ -187,15 +187,15 @@ define(function (require) {
     for (i = 0, len = dna.length; i < len; i++) {
       this._dna.push(new Nucleotide(this._dnaG, this.model2px, dna[i], 1, i));
     }
-    this._dnaG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("height") / 2 + Nucleotide.HEIGHT) + ")");
+    this._dnaG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("viewPortHeight") / 2 + Nucleotide.HEIGHT) + ")");
 
     for (i = 0, len = dnaComplement.length; i < len; i++) {
       this._dnaComp.push(new Nucleotide(this._dnaCompG, this.model2px, dnaComplement[i], 2, i));
     }
-    this._dnaCompG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("height") / 2 - Nucleotide.HEIGHT) + ")");
+    this._dnaCompG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("viewPortHeight") / 2 - Nucleotide.HEIGHT) + ")");
 
     // Prepare container for mRNA.
-    this._mrnaG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("height") / 2 - 0.5 * Nucleotide.HEIGHT) + ")");
+    this._mrnaG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("viewPortHeight") / 2 - 0.5 * Nucleotide.HEIGHT) + ")");
   };
 
   GeneticRenderer.prototype._renderTranscription = function (step) {
@@ -806,7 +806,9 @@ define(function (require) {
 
   GeneticRenderer.prototype.finishTranslation = function () {
     var geneticEngine = this.model.geneticEngine(),
-        trnaCount = this._trnaG.selectAll(".trna")[0].length,
+        // Assume that there are at last 2 tRNAs, it won't break anything but
+        // help to keep things simpler.
+        trnaCount = Math.max(this._trnaG.selectAll(".trna")[0].length, 2),
         self = this,
         cm, viewBox, t;
 
@@ -855,13 +857,17 @@ define(function (require) {
     t = this._nextTrans().duration(700);
     t.each("start", function () {
       cm = geneticEngine.proteinCenterOfMass();
-      viewBox = d3.select(".viewport").attr("viewBox").split(" ");
-      viewBox[0] = self.model2px(cm.x - 0.5 * self.model.get("viewPortWidth"));
-      t.select(".viewport").attr("viewBox", viewBox.join(" "));
+      if (cm) { // null when there are no proteins.
+        viewBox = d3.select(".viewport").attr("viewBox").split(" ");
+        viewBox[0] = self.model2px(cm.x - 0.5 * self.model.get("viewPortWidth"));
+        t.select(".viewport").attr("viewBox", viewBox.join(" "));
+      }
     });
     // Update model description of the viewport when animation ends.
     t.each("end", function () {
-      self.model.set("viewPortX", cm.x - 0.5 * self.model.get("viewPortWidth"));
+      if (cm) {
+        self.model.set("viewPortX", cm.x - 0.5 * self.model.get("viewPortWidth"));
+      }
     });
   };
 
@@ -897,9 +903,9 @@ define(function (require) {
         i, len;
 
     selection.select(".dna").attr("transform",
-      "translate(0, " + this.model2pxInv(this.model.get("height") / 2 + 2.5 * Nucleotide.HEIGHT) + ")");
+      "translate(0, " + this.model2pxInv(this.model.get("viewPortHeight") / 2 + 2.5 * Nucleotide.HEIGHT) + ")");
     selection.select(".dna-comp").attr("transform",
-      "translate(0, " + this.model2pxInv(this.model.get("height") / 2 - 2.5 * Nucleotide.HEIGHT) + ")");
+      "translate(0, " + this.model2pxInv(this.model.get("viewPortHeight") / 2 - 2.5 * Nucleotide.HEIGHT) + ")");
 
     for (i = 0, len = this._dna.length; i < len; i++) {
       this._dna[i].hideBonds(suppressAnimation);
