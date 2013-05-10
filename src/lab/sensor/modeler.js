@@ -1,4 +1,4 @@
-/*global define: false, d3: false */
+/*global define: false, d3: false $: true */
 
 define(function(require) {
 
@@ -10,8 +10,18 @@ define(function(require) {
       unitsDefinition      = require('./units-definition'),
       appletClasses        = require('./applet/applet-classes'),
       appletErrors         = require('./applet/errors'),
-      sensorDefinitions    = require('./applet/sensor-definitions');
+      sensorDefinitions    = require('./applet/sensor-definitions'),
+      BasicDialog          = require('common/controllers/basic-dialog');
 
+  function simpleAlert(message, buttons) {
+    var dialog = new BasicDialog({
+          width: "60%",
+          buttons: buttons
+        });
+
+    dialog.setContent(message);
+    dialog.open();
+  }
 
   return function Model(initialProperties) {
     var propertySupport = new PropertySupport({
@@ -103,43 +113,74 @@ define(function(require) {
       });
     }
 
+    function removeApplet() {
+      applet.removeListeners('data');
+      applet.remove();
+    }
+
+    function appendApplet() {
+      applet.on('data', appletDataCallback);
+      applet.append(function(error) {
+        if (error) {
+          if (error instanceof appletErrors.JavaLoadError) {
+            handleLoadingFailure("It appears that Java applets cannot run in your browser. If you are able to fix this, reload the page to use the sensor");
+          } else if (error instanceof appletErrors.AppletInitializationError) {
+            handleLoadingFailure("The sensor applet appears not to be loading. If you are able to fix this, reload the page to use the sensor");
+          } else if (error instanceof appletErrors.SensorConnectionError) {
+            handleSensorConnectionError();
+          } else {
+            handleLoadingFailure("There was an unexpected error when connecting to the sensor.");
+          }
+        }
+      });
+    }
+
+    function handleSensorConnectionError() {
+      removeApplet();
+      simpleAlert("The " + model.properties.sensorName + " does not appear to be attached. Try re-attaching it, and then click \"Try Again\".", {
+        "Try Again" : function() {
+          $(this).dialog("close");
+          // This is a workaround: currently, the applet itself does not appear to respond to its
+          // initialization methods if the sensor was not connected when the applet started up.
+          appendApplet();
+        },
+        Cancel: function() {
+          $(this).dialog("close");
+        }
+      });
+    }
+
+    function handleLoadingFailure(message) {
+      removeApplet();
+      simpleAlert(message, {
+        OK: function() {
+          $(this).dialog("close");
+        }
+      });
+    }
+
     function setSensorType(_sensorType) {
       var AppletClass;
 
       if (sensorType === _sensorType) {
         return;
       }
-
       sensorType = _sensorType;
 
       if (applet) {
-        applet.removeListeners('data');
-        applet.remove();
+        removeApplet();
       }
 
       samplesPerSecond = sensorDefinitions[sensorType].samplesPerSecond;
       AppletClass = appletClasses[sensorDefinitions[sensorType].appletClass];
 
-      applet = new AppletClass({
+      applet = window.Lab.sensor[sensorType] = new AppletClass({
         listenerPath: 'Lab.sensor.' + sensorType,
         measurementType: sensorDefinitions[sensorType].measurementType,
         appletId: sensorType+'-sensor'
       });
-      window.Lab.sensor[sensorType] = applet;
 
-      applet.append(function(error) {
-        if (error) {
-          if (error instanceof appletErrors.JavaLoadError) {
-            window.alert("Java appears not to be running.");
-          } else if (error instanceof appletErrors.AppletInitializationError) {
-            window.alert("The sensor applet is taking too long to respond.");
-          } else if (error instanceof appletErrors.SensorConnectionError) {
-            window.alert("The wrong sensor, or no sensor, is connected to your device.");
-          }
-        } else {
-          applet.on('data', appletDataCallback);
-        }
-      });
+      appendApplet();
     }
 
     function appletDataCallback(d) {
@@ -317,6 +358,12 @@ define(function(require) {
       format: '.2f'
     }, function() {
       return sensorReading;
+    });
+
+    model.defineOutput('sensorName', {
+      label: "Sensor Name"
+    }, function() {
+      return sensorDefinitions[sensorType].sensorName;
     });
 
     // Kick things off by doing this explicitly:
