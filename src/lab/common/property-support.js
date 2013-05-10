@@ -620,6 +620,9 @@ define(function() {
           'this'-binding to a target object.
         */
         target.addObserver = function(key, callback) {
+          if (!propertyInformation[key]) {
+            return;
+          }
           var observers = propertyInformation[key].observers;
           if (observers.indexOf(callback) < 0) {
             observers.push(callback);
