@@ -859,13 +859,19 @@ define(function (require) {
       if (cm) { // null when there are no proteins.
         viewBox = d3.select(".viewport").attr("viewBox").split(" ");
         viewBox[0] = self.model2px(cm.x - 0.5 * self.model.get("viewPortWidth"));
-        t.select(".viewport").attr("viewBox", viewBox.join(" "));
+        // Note that there is + instead of -, as native viewBox attribute uses
+        // *top*-left cordner of a viewBox to define its position. Only our
+        // model property "viewPortY" defines bottom Y coordinate to be
+        // consistent with the general coordinate system used in MD2D.
+        viewBox[1] = self.model2pxInv(cm.y + 0.5 * self.model.get("viewPortHeight"));
+        t.select(".viewport").attr("viewBox", viewBox.join(", "));
       }
     });
     // Update model description of the viewport when animation ends.
     t.each("end", function () {
       if (cm) {
         self.model.set("viewPortX", cm.x - 0.5 * self.model.get("viewPortWidth"));
+        self.model.set("viewPortY", cm.y - 0.5 * self.model.get("viewPortHeight"));
       }
     });
   };
