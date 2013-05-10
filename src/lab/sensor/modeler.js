@@ -34,6 +34,8 @@ define(function(require) {
         dispatch = d3.dispatch('play', 'stop', 'tick', 'reset', 'stepForward', 'stepBack', 'seek', 'invalidation'),
         sensorType,
         applet,
+        didStop = false,
+        sensorIsReady = false,
         samplesPerSecond,
         time = 0,
         sensorReading,
@@ -119,6 +121,9 @@ define(function(require) {
       applet.removeListeners('sensorUnplugged');
 
       applet.remove();
+      makeInvalidatingChange(function() {
+        sensorIsReady = false;
+      });
     }
 
     function appendApplet() {
@@ -137,7 +142,12 @@ define(function(require) {
           } else {
             handleLoadingFailure("There was an unexpected error when connecting to the sensor.");
           }
+          return;
         }
+
+        makeInvalidatingChange(function() {
+          sensorIsReady = true;
+        });
       });
     }
 
@@ -234,6 +244,10 @@ define(function(require) {
       },
 
       start: function() {
+        if (!model.properties.isPlayable) {
+          return;
+        }
+
         isStopped = false;
         if (applet) {
           applet.start();
@@ -247,6 +261,12 @@ define(function(require) {
           applet.stop();
         }
         dispatch.stop();
+
+        // Needed in order to recompute isPlaying. FIXME: need a better paradigm for standard
+        // MVC style properties that don't flow from model physics.
+        makeInvalidatingChange(function() {
+          didStop = true;
+        });
       },
 
       is_stopped: function() {
@@ -380,6 +400,11 @@ define(function(require) {
       return sensorReading;
     });
 
+    // TODO. Need a better way for the model to be able to have a property which it can set the
+    // value of at arbitrary times, but which is read-only to client code. Outputs aren't quite
+    // the right solution because the invalidation stuff is really about time and physics-based
+    // invalidation.
+
     model.defineOutput('sensorName', {
       label: "Sensor Name"
     }, function() {
@@ -390,6 +415,13 @@ define(function(require) {
       label: "Sensor Interface Device Name"
     }, function() {
       return sensorDefinitions[sensorType].deviceName;
+    });
+
+    // TODO. We need a way to make "model-writable" read only properties. custom getters could
+    model.defineOutput('isPlayable', {
+      label: "Playable"
+    }, function() {
+      return !didStop && sensorIsReady;
     });
 
     // Kick things off by doing this explicitly:
