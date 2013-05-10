@@ -115,11 +115,17 @@ define(function(require) {
 
     function removeApplet() {
       applet.removeListeners('data');
+      applet.removeListeners('deviceUnplugged');
+      applet.removeListeners('sensorUnplugged');
+
       applet.remove();
     }
 
     function appendApplet() {
       applet.on('data', appletDataCallback);
+      applet.on('deviceUnplugged', function() { handleUnplugged('device'); });
+      applet.on('sensorUnplugged', function() { handleUnplugged('sensor'); });
+
       applet.append(function(error) {
         if (error) {
           if (error instanceof appletErrors.JavaLoadError) {
@@ -154,6 +160,20 @@ define(function(require) {
       removeApplet();
       simpleAlert(message, {
         OK: function() {
+          $(this).dialog("close");
+        }
+      });
+    }
+
+    function handleUnplugged(what) {
+      removeApplet();
+      model.stop();
+      simpleAlert("The " + model.properties[what+'Name'] + " was unplugged. Try plugging it back in, and then click \"Try Again\".", {
+        "Try Again": function() {
+          $(this).dialog("close");
+          appendApplet();
+        },
+        Cancel: function() {
           $(this).dialog("close");
         }
       });
@@ -364,6 +384,12 @@ define(function(require) {
       label: "Sensor Name"
     }, function() {
       return sensorDefinitions[sensorType].sensorName;
+    });
+
+    model.defineOutput('deviceName', {
+      label: "Sensor Interface Device Name"
+    }, function() {
+      return sensorDefinitions[sensorType].deviceName;
     });
 
     // Kick things off by doing this explicitly:
