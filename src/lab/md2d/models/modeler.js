@@ -820,6 +820,7 @@ define(function(require) {
       engine.setVDWLinesRatio(VDWLinesCutoffMap[model.get('VDWLinesCutoff')]);
       engine.setGravitationalField(model.get('gravitationalField'));
       engine.setTargetTemperature(model.get('targetTemperature'));
+      engine.setGeneticEngineState(model.get('geneticEngineState'));
       engine.setDielectricConstant(model.get('dielectricConstant'));
       engine.setRealisticDielectricEffect(model.get('realisticDielectricEffect'));
       engine.setSolventForceType(model.get('solventForceType'));
@@ -2109,7 +2110,7 @@ define(function(require) {
     // TODO: move this to better place.
     if (initialProperties.DNA) {
       // Overwrite width and height options.
-      initialProperties.width = 1000;
+      initialProperties.width = 100;
       initialProperties.height = 3;
       initialProperties.viewOptions.viewPortX = 0;
       initialProperties.viewOptions.viewPortY = 0;
@@ -2184,6 +2185,12 @@ define(function(require) {
         solventForceType: function(value) {
           if (engine) {
             engine.setSolventForceType(value);
+          }
+        },
+
+        geneticEngineState: function(value) {
+          if (engine) {
+            engine.setGeneticEngineState(value);
           }
         },
 

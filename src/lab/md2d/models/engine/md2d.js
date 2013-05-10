@@ -111,6 +111,10 @@ define(function (require, exports, module) {
         // (usually -1). A positive one represents water environment (usually 1). A zero value means vacuum.
         solventForceType = 0,
 
+        // State describing DNA transcription and translation process.
+        // TODO: move all functionality connected with DNA and proteins to engine plugins!
+        geneticEngineState = "",
+
         // Parameter that influences strength of force applied to amino acids by water of oil (solvent).
         solventForceFactor = 1,
 
@@ -1987,6 +1991,10 @@ define(function (require, exports, module) {
         solventForceType = sft;
       },
 
+      setGeneticEngineState: function (ges) {
+        geneticEngineState = ges;
+      },
+
       setSolventForceFactor: function(sff) {
         solventForceFactor = sff;
       },
@@ -3061,11 +3069,13 @@ define(function (require, exports, module) {
           // Adjust temperature, e.g. when heat bath is enabled.
           adjustTemperature();
 
-          // If solvent is different from vacuum (water or oil), ensure
-          // that the total momentum of each molecule is equal to zero.
-          // This prevents amino acids chains from drifting towards one
-          // boundary of the model.
-          if (solventForceType !== 0) {
+          // If solvent is different from vacuum (water or oil), ensure that
+          // the total momentum of each molecule is equal to zero. This
+          // prevents amino acids chains from drifting towards one boundary of
+          // the model.
+          // Don't do it during translation process (when geneticEngineState
+          // starts with "translation:", e.g. translation:0, translation:1).
+          if (solventForceType !== 0 && geneticEngineState.indexOf("translation:") === -1) {
             zeroTotalMomentumOfMolecules();
           }
 
