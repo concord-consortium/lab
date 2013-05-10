@@ -57,7 +57,7 @@ define(function (require) {
       "width": ms2px(W[type]),
       "height": ms2px(H[type]),
       "preserveAspectRatio": "none",
-      "xlink:href": labConfig.actualRoot + "../../resources/transcription/Nucleotide" + type + "_Direction" + direction + "_noBonds.svg"
+      "xlink:href": labConfig.actualRoot + "resources/transcription/Nucleotide" + type + "_Direction" + direction + "_noBonds.svg"
     });
     this._backbone = this._g.append("image").attr({
       "x": 0,
@@ -65,7 +65,7 @@ define(function (require) {
       "width": ms2px(W.BACKB),
       "height": ms2px(H.BACKB),
       "preserveAspectRatio": "none",
-      "xlink:href": labConfig.actualRoot + "../../resources/transcription/Backbone_" + (mRNA ? "RNA" : "DNA") + ".svg"
+      "xlink:href": labConfig.actualRoot + "resources/transcription/Backbone_" + (mRNA ? "RNA" : "DNA") + ".svg"
     });
 
     if (direction === 1) {
