@@ -89,16 +89,20 @@ define(function (require) {
 
   GeneticRenderer.prototype.stateTransition = function () {
     var state = this._state(),
-        mRNA  = this.model.get("mRNA");
+        geneticEngine = this.model.geneticEngine();
 
     if (state.name === "dna") {
       this.playIntro();
     }
-    else if (state.name === "transcription" && mRNA.length === 0) {
-      this.separateDNA();
+    else if (state.name === "transcription") {
+      if (state.step === 0) {
+        this.separateDNA();
+      } else {
+        this.transcribeStep(state.step);
+      }
     }
-    else if (state.name === "transcription" || state.name === "transcription-end") {
-      this.transcribeStep();
+    else if (state.name === "transcription-end") {
+      this.transcribeStep(this.model.get("mRNA").length);
     }
     else if (state.name === "translation") {
       if (state.step === 0) {
@@ -110,6 +114,11 @@ define(function (require) {
     else if (state.name === "translation-end") {
       this.finishTranslation();
     }
+
+    this._currentTrans.each("end.trans-end", function() {
+      // Notify engine that transition has ended.
+      geneticEngine.transitionEnded();
+    });
   };
 
   /**
@@ -150,8 +159,11 @@ define(function (require) {
     if (state.name === "dna") {
       this._renderDNA();
     }
-    else if (state.name === "transcription" || state.name === "transcription-end") {
-      this._renderTranscription();
+    else if (state.name === "transcription") {
+      this._renderTranscription(state.step);
+    }
+    else if (state.name === "transcription-end") {
+      this._renderTranscription(this.model.get("mRNA").length);
     }
     else if (state.name === "translation") {
       this._renderTranslation(state.step);
@@ -186,14 +198,14 @@ define(function (require) {
     this._mrnaG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("height") / 2 - 0.5 * Nucleotide.HEIGHT) + ")");
   };
 
-  GeneticRenderer.prototype._renderTranscription = function () {
+  GeneticRenderer.prototype._renderTranscription = function (step) {
     var mRNA = this.model.get("mRNA"),
         i, len;
 
     this._renderDNA();
 
     this.separateDNA(true);
-    for (i = 0, len = mRNA.length; i < len; i++) {
+    for (i = 0, len = step; i < len; i++) {
       this._mrna.push(new Nucleotide(this._mrnaG, this.model2px, mRNA[i], 1, i, true));
       this._dnaComp[i].showBonds(true);
     }
@@ -720,7 +732,7 @@ define(function (require) {
           .selectAll(".bonds")
             .style("opacity", 0);
 
-    t = this._nextTrans().duration(1200);
+    t = this._nextTrans().duration(800);
 
     t.each("start", function () {
       var drag = d3.select(".animated-drag");
@@ -759,7 +771,7 @@ define(function (require) {
     this._scrollContainer();
 
     if (step > 1) {
-      t = this._nextTrans().duration(350);
+      t = this._nextTrans().duration(500);
 
       t.each("start", function () {
         var drag = d3.select(".animated-drag");
@@ -860,7 +872,7 @@ define(function (require) {
    * @param  {[type]} i tRNA index (starting from 0).
    */
   GeneticRenderer.prototype._removeTRNA = function (i, suppressAnimation) {
-    var t = suppressAnimation ? this._g : this._nextTrans().duration(700),
+    var t = suppressAnimation ? this._g : this._nextTrans().duration(1400),
         bondsSelString = ".trna-cont .trna:nth-child(" + (i + 1) + ") .bonds, " +      // tRNA bonds
                          ".mrna .nucleotide:nth-child(" + (3 * i + 1) + ") .bonds, " + // mRNA bonds
                          ".mrna .nucleotide:nth-child(" + (3 * i + 2) + ") .bonds, " +
@@ -895,9 +907,9 @@ define(function (require) {
     }
   };
 
-  GeneticRenderer.prototype.transcribeStep = function () {
+  GeneticRenderer.prototype.transcribeStep = function (step) {
     var mRNA  = this.model.get("mRNA"),
-        index  = mRNA.length - 1, // last element
+        index  = step - 1, // last mRNA element
         type   = mRNA[index],
         trans  = this._nextTrans().duration(500),
         t, r;

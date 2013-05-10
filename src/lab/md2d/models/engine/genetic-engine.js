@@ -21,6 +21,10 @@ define(function (require) {
         // Never change value of this variable outside
         // the transitionToState() function!
         stateTransition = false,
+        // List of transitions, which are currently ongoing (index 0)
+        // or scheduled (index > 0).
+        ongoingTransitions = [],
+
         dispatch = d3.dispatch("change", "transition"),
 
         calculateComplementarySequence = function () {
@@ -41,13 +45,13 @@ define(function (require) {
           model.set("DNAComplement", compSeq.toUpperCase());
         },
 
-        calculatemRNA = function () {
+        calculatemRNA = function (maxLength) {
           var mRNA, newCode;
 
           mRNA = model.get("mRNA") || "";
           newCode = mRNACode(mRNA.length);
 
-          while(newCode) {
+          while(newCode && mRNA.length < maxLength) {
             mRNA += newCode;
             newCode = mRNACode(mRNA.length);
           }
@@ -86,15 +90,17 @@ define(function (require) {
         },
 
         updateGeneticProperties = function () {
-          validateDNA(model.get("DNA"));
+          var DNA = model.get("DNA");
+          validateDNA(DNA);
           calculateComplementarySequence();
 
-          if (api.stateBefore("transcription")) {
+          if (api.stateBefore("transcription:0")) {
             model.set("mRNA", "");
-          }
-          if (api.stateAfter("transcription")) {
+          } else if (api.state().name === "transcription") {
+            calculatemRNA(api.state().step);
+          } else if (api.stateAfter("transcription")) {
             // So, the first state which triggers it is "transcription-end".
-            calculatemRNA();
+            calculatemRNA(DNA.length);
           }
         },
 
@@ -102,7 +108,36 @@ define(function (require) {
           return model.get("geneticEngineState") === name;
         },
 
+        stateComp = function (stateA, stateB) {
+          if (stateA === stateB) {
+            return 0;
+          }
+          stateA = api.parseState(stateA);
+          stateB = api.parseState(stateB);
+          if (stateA.name === stateB.name) {
+            if (isNaN(stateA.step) || isNaN(stateB.step)) {
+              // Note that when you compare e.g. "translate"
+              // and "translate:5" these steps are considered to be equal.
+              return 0;
+            }
+            return stateA.step < stateB.step ? -1 : 1;
+          }
+          return state[stateA.name] < state[stateB.name] ? -1 : 1;
+        },
+
         transitionToState = function (name) {
+          if (ongoingTransitions.length > 0) {
+            // Some transition are in progress, so only enqueue a new state.
+            ongoingTransitions.push(name);
+          } else {
+            // Mark transition as ongoing (by adding it to the list)
+            // and do transition.
+            ongoingTransitions.push(name);
+            doTransition(name);
+          }
+        },
+
+        doTransition = function (name) {
           stateTransition = true;
           model.set("geneticEngineState", name);
           stateTransition = false;
@@ -114,6 +149,7 @@ define(function (require) {
           if (stateTransition) {
             dispatch.transition();
           } else {
+            ongoingTransitions = [];
             dispatch.change();
           }
         },
@@ -166,7 +202,7 @@ define(function (require) {
        */
       separateDNA: function () {
         if (stateEq("dna")) {
-          transitionToState("transcription");
+          transitionToState("transcription:0");
         }
       },
 
@@ -174,7 +210,7 @@ define(function (require) {
        * Triggers *complete* transcription of the DNA.
        */
       transcribe: function() {
-        while (api.stateBefore("transcription-end")) {
+        while (api.lastStateBefore("transcription-end")) {
           api.transcribeStep();
         }
       },
@@ -194,31 +230,27 @@ define(function (require) {
        * @param  {string} expectedNucleotide code of the expected nucleotide ("U", "C", "A" or "G").
        */
       transcribeStep: function (expectedNucleotide) {
-        var mRNA = model.get("mRNA"),
-            DNA = model.get("DNA"),
-            newCode;
+        var DNA = model.get("DNA"),
+            state, newCode;
 
         if (stateEq("dna")) {
           api.separateDNA();
           return;
         }
-
-        newCode = mRNACode(mRNA.length);
-
-        if (expectedNucleotide && expectedNucleotide.toUpperCase() !== newCode) {
-          // Expected nucleotide is wrong, so simply do nothing.
-          return;
-        }
-
-        // Check if new code is different from null.
-        if (newCode) {
-          mRNA += newCode;
-          model.set("mRNA", mRNA);
-          if (mRNA.length < DNA.length) {
-            // TODO: should be "transcription:" + mRNA.length
-            transitionToState("transcription");
-          } else {
-            transitionToState("transcription-end");
+        state = api.lastState();
+        if (state.name === "transcription") {
+          newCode = mRNACode(state.step);
+          if (expectedNucleotide && expectedNucleotide.toUpperCase() !== newCode) {
+            // Expected nucleotide is wrong, so simply do nothing.
+            return;
+          }
+          // Check if new code is different from null.
+          if (newCode) {
+            if (state.step < DNA.length - 1) {
+              transitionToState("transcription:" + (state.step + 1));
+            } else {
+              transitionToState("transcription-end");
+            }
           }
         }
       },
@@ -233,7 +265,7 @@ define(function (require) {
           // Make sure that complete mRNA is available.
           api.transcribe();
         }
-        state = api.state();
+        state = api.lastState();
         if (state.name === "transcription-end") {
           transitionToState("translation:0");
         } else if (state.name === "translation") {
@@ -250,7 +282,7 @@ define(function (require) {
        * Triggers *complete* translation of the DNA.
        */
       translate: function() {
-        while (api.stateBefore("translation-end")) {
+        while (api.lastStateBefore("translation-end")) {
           api.translateStep();
         }
       },
@@ -258,7 +290,7 @@ define(function (require) {
       // Helper methods used mainly by the genetic renderer.
 
       /**
-       * Returns parsed state.
+       * Returns parsed *current* state.
        * e.g.
        * {
        *   name: "translation",
@@ -272,23 +304,44 @@ define(function (require) {
       },
 
       stateBefore: function (name) {
-        var current = api.state(),
-            cmp     = api.parseState(name);
-
-        if (current.name === cmp.name) {
-          return current.step < cmp.step;
-        }
-        return state[current.name] < state[cmp.name];
+        return stateComp(model.get("geneticEngineState"), name) === -1 ? true : false;
       },
 
       stateAfter: function (name) {
-        var current = api.state(),
-            cmp     = api.parseState(name);
+        return stateComp(model.get("geneticEngineState"), name) === 1 ? true : false;
+      },
 
-        if (current.name === cmp.name) {
-          return current.step > cmp.step;
+      /**
+       * Returns parsed *last* enqueued state.
+       * When there is no state enqueued or in progress,
+       * it returns simply current state.
+       *
+       * e.g.
+       * {
+       *   name: "translation",
+       *   step: 5
+       * }
+       *
+       * @return {Object} last enqueued state object (see above).
+       */
+      lastState: function () {
+        var queueLen = ongoingTransitions.length;
+        if (queueLen > 0) {
+          return api.parseState(ongoingTransitions[queueLen - 1]);
         }
-        return state[current.name] > state[cmp.name];
+        return api.state();
+      },
+
+      lastStateBefore: function (name) {
+        var queueLen = ongoingTransitions.length,
+            lastStateName = queueLen ? ongoingTransitions[queueLen - 1] : model.get("geneticEngineState");
+        return stateComp(lastStateName, name) === -1 ? true : false;
+      },
+
+      lastStateAfter: function (name) {
+        var queueLen = ongoingTransitions.length,
+            lastStateName = queueLen ? ongoingTransitions[queueLen - 1] : model.get("geneticEngineState");
+        return stateComp(lastStateName, name) === 1 ? true : false;
       },
 
       parseState: function (state) {
@@ -323,7 +376,7 @@ define(function (require) {
 
         model.addAtom({x: x, y: y, element: elID, visible: true}, {suppressCheck: true});
         model.addSpringForce(codonIdx, x, y, 100000);
-        model.set("solventForceType", 0);
+        model.set("gravitationalField", -5e-7);
       },
 
       translationStepEnded: function (codonIdx) {
@@ -337,12 +390,21 @@ define(function (require) {
         // 10000 is a typical strength for bonds between AAs.
         model.addRadialBond({atom1: codonIdx, atom2: codonIdx - 1, length: bondLen, strength: 10000});
         model.removeSpringForce(0);
-        model.set("solventForceType", 1);
       },
 
       translationCompleted: function () {
         // Remove the last one spring force.
         model.removeSpringForce(0);
+        model.set("gravitationalField", 0);
+      },
+
+      transitionEnded: function () {
+        // Transition has just ended so remove it
+        // from transitions list.
+        ongoingTransitions.shift();
+        if (ongoingTransitions.length > 0) {
+          doTransition(ongoingTransitions[0]);
+        }
       },
 
       /**
