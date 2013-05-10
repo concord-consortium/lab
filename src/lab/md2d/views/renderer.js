@@ -384,7 +384,7 @@ define(function (require) {
               "width": fSize*2,
               "height": fSize*2,
               "preserveAspectRatio": "xMinYMin",
-              "xlink:href": "../../resources/upstatement/heatbath.svg",
+              "xlink:href": "resources/upstatement/heatbath.svg",
               "class": "opaque-on-hover"
             })
             .append("title")
@@ -399,7 +399,7 @@ define(function (require) {
               "width": fSize*2.2,
               "height": fSize*6,
               "preserveAspectRatio": "xMinYMin",
-              "xlink:href": "../../resources/upstatement/ke-gradient.svg",
+              "xlink:href": "resources/upstatement/ke-gradient.svg",
               "class": "opaque-on-hover"
             })
             .append("title")
