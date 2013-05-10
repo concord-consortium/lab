@@ -1717,6 +1717,11 @@ define(function(require) {
       return engine.getNumberOfAngularBonds();
     };
 
+    // FIXME. Should be an output property.
+    model.getNumberOfSpringForces = function () {
+      return engine.getNumberOfSpringForces();
+    };
+
     model.get_radial_bonds = function() {
       return radialBonds;
     };

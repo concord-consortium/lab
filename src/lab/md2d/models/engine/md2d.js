@@ -3228,6 +3228,10 @@ define(function (require, exports, module) {
         return N_restraints;
       },
 
+      getNumberOfSpringForces: function() {
+        return N_springForces;
+      },
+
       /**
         Compute the model state and store into the passed-in 'state' object.
         (Avoids GC hit of throwaway object creation.)
