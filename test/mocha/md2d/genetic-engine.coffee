@@ -6,19 +6,6 @@ Model         = requirejs 'md2d/models/modeler'
 
 describe "GeneticEngine", ->
   describe "[basic tests of the class]", ->
-    # Mock the change hooks.
-    hooks =
-      changeListener: ->
-      transitionListener: ->
-
-    beforeEach ->
-      sinon.spy hooks, "changeListener"
-      sinon.spy hooks, "transitionListener"
-
-    afterEach ->
-      hooks.changeListener.restore()
-      hooks.transitionListener.restore()
-
     describe "GeneticEngine constructor", ->
       it "should exist", ->
         should.exist GeneticEngine
@@ -30,27 +17,40 @@ describe "GeneticEngine", ->
     describe "GeneticEngine instance", ->
       model = null
       geneticEngine = null
+      mock =
+        changeListener: ->
+        transitionListener: ->
+          # Call transitionEdned after each transition! It's required, as
+          # geneticEngine will enqueue new transitions as long as some
+          # transition is thought to be in progress.
+          geneticEngine.transitionEnded()
 
       before ->
         model = new Model {}
         geneticEngine = model.geneticEngine()
 
       beforeEach ->
-        geneticEngine.on "change", hooks.changeListener
-        geneticEngine.on "transition", hooks.transitionListener
+        sinon.spy mock, "changeListener"
+        sinon.spy mock, "transitionListener"
+        geneticEngine.on "change", mock.changeListener
+        geneticEngine.on "transition", mock.transitionListener
+
+      afterEach ->
+        mock.changeListener.restore()
+        mock.transitionListener.restore()
 
       it "should calculate DNA complement after setting DNA and dispatch appropriate event", ->
-        hooks.changeListener.callCount.should.eql 0
+        mock.changeListener.callCount.should.eql 0
         model.set "DNA", "ATGC"
         model.get("DNAComplement").should.eql "TACG"
-        hooks.changeListener.callCount.should.eql 1
-        hooks.transitionListener.callCount.should.eql 0
+        mock.changeListener.callCount.should.eql 1
+        mock.transitionListener.callCount.should.eql 0
 
       it "should calculate mRNA when state is set to 'transcription-end' or 'translation'", ->
         model.set "geneticEngineState", "transcription-end"
         model.get("mRNA").should.eql "AUGC"
-        hooks.changeListener.callCount.should.eql 1
-        hooks.transitionListener.callCount.should.eql 0
+        mock.changeListener.callCount.should.eql 1
+        mock.transitionListener.callCount.should.eql 0
 
       it "should perform single step of DNA to mRNA transcription", ->
         model.set "geneticEngineState", "dna"
@@ -67,7 +67,7 @@ describe "GeneticEngine", ->
       it "should transcribe mRNA from DNA and dispatch appropriate events", ->
         model.set {DNA: "ATGC"}
         geneticEngine.transcribe()
-        hooks.transitionListener.callCount.should.eql 5 # separation + 4 x transcription
+        mock.transitionListener.callCount.should.eql 5 # separation + 4 x transcription
 
         model.get("mRNA").should.eql "AUGC"
 
