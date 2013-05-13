@@ -626,11 +626,11 @@ AUTHORING = false;
       });
     }
     // All the extra items are sortable
-    $(".sortable").sortable({
-      axis: "y",
-      containment: "parent",
-      cursor: "row-resize"
-    });
+    // $(".sortable").sortable({
+    //   axis: "y",
+    //   containment: "parent",
+    //   cursor: "row-resize"
+    // });
     if(!isStaticPage()) {
       setupCopySaveInteractive();
     }
