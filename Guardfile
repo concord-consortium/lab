@@ -116,7 +116,7 @@ guard 'shell' do
     command("./node_modules/.bin/mocha #{match[0]}")
   end
 
-  watch(/(^src\/(?!sass).*\/[^.].+)$/) do |match|
+  watch(/(^src\/(?!sass).+)$/) do |match|
     puts match[0]
     unless match[0][/(\.haml)|(\.sass)|(\.scss)|(\.coffee)(\.yaml)|(^\..+)$/]
       source_path = match[0]
