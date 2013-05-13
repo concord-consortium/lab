@@ -20,24 +20,6 @@
     "timeStepsPerTick": 50,
     "geneticEngineState": "dna",
     "DNA": "",
-    "useQuantumDynamics": true,
-    "radiationlessEmissionProb": 0.7896236,
-    "elementEnergyLevels": [
-      [],
-      [
-        -0.0003333333333333333,
-        -0.00027499999999999996
-      ],
-      [
-        -0.0003333333333333333,
-        -0.000303
-      ],
-      [
-        -0.0004166666666666667,
-        -0.0002441666666666667
-      ],
-      []
-    ],
     "viewOptions": {
       "viewPortWidth": 3.5,
       "viewPortHeight": 2.2,
@@ -159,5 +141,25 @@
         1,
         0
       ]
+    },
+    "quantumDynamics": {
+      "useQuantumDynamics": true,
+      "elementEnergyLevels": [
+        [],
+        [
+          -0.0003333333333333333,
+          -0.00027499999999999996
+        ],
+        [
+          -0.0003333333333333333,
+          -0.000303
+        ],
+        [
+          -0.0004166666666666667,
+          -0.0002441666666666667
+        ],
+        []
+      ],
+      "radiationlessEmissionProb": 0.7896236
     }
   }

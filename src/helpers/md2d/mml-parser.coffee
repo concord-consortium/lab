@@ -849,8 +849,13 @@ parseMML = (mmlString) ->
           if key is 11
             radiationlessEmissionProb = val
 
+      quantumDynamics = {
+        useQuantumDynamics
+        elementEnergyLevels
+        radiationlessEmissionProb
+      }
 
-
+      quantumDynamics = validator.validateCompleteness metadata.quantumDynamics, quantumDynamics
 
 
     ### Convert array of hashes to a hash of arrays, for use by MD2D ###
@@ -873,9 +878,6 @@ parseMML = (mmlString) ->
       timeStep                  : timeStep
       dielectricConstant        : dielectricConstant
       solventForceType          : solventForceType
-      useQuantumDynamics        : useQuantumDynamics
-      radiationlessEmissionProb : radiationlessEmissionProb
-      elementEnergyLevels       : elementEnergyLevels
 
     # Unit conversion performed on undefined values can convert them to NaN.
     # Revert back all NaNs to undefined, as they will be replaced by default values.
@@ -950,6 +952,9 @@ parseMML = (mmlString) ->
       json.obstacles = unroll obstacles, 'x', 'y', 'vx', 'vy', 'externalAx', 'externalAy', 'friction',
         'height', 'width', 'mass', 'westProbe', 'northProbe', 'eastProbe', 'southProbe', 'color', 'visible'
 
+    if useQuantumDynamics
+      json.quantumDynamics = quantumDynamics
+
     # Remove some properties from the final serialized model.
     removeArrayIfDefault = (name, array, defaultVal) ->
       delete json.atoms[name] if array.every (i)-> i is defaultVal
@@ -963,11 +968,8 @@ parseMML = (mmlString) ->
     delete json.targetTemperature if not json.temperatureControl
     # Remove atomTraceId when atom tracing is disabled.
     delete json.viewOptions.atomTraceId if not json.viewOptions.showAtomTrace
-    # Remove quantum dynamics props when not using.
-    delete json.useQuantumDynamics        if not useQuantumDynamics
-    delete json.radiationlessEmissionProb if not useQuantumDynamics
-    delete json.elementEnergyLevels       if not useQuantumDynamics
-    delete json.atoms.excitation          if not useQuantumDynamics
+    # Remove excitation if not using quantum dynamics
+    delete json.atoms.excitation if not useQuantumDynamics
 
     # Remove modelSampleRate as this is Next Gen MW specific option.
     delete json.modelSampleRate

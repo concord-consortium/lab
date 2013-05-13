@@ -24,7 +24,14 @@ define(function () {
 
     var arrays               = require('arrays'),
         arrayTypes           = require('common/array-types'),
+        metadata             = require('md2d/models/metadata'),
+        validator            = require('common/validator'),
+
+        props                = validator.validateCompleteness(metadata.quantumDynamics, props),
+
         api,
+
+        useQuantumDynamics   = props.useQuantumDynamics,
 
         elementEnergyLevels  = props.elementEnergyLevels,
         pRadiationless       = props.radiationlessEmissionProb,
@@ -289,7 +296,9 @@ define(function () {
       performActionWithinIntegrationLoop: function(args) {
         var neighborList = args.neighborList;
 
-        performInteractionsBetweenCloseAtoms(neighborList);
+        if (useQuantumDynamics) {
+          performInteractionsBetweenCloseAtoms(neighborList);
+        }
       }
     };
 

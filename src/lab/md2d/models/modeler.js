@@ -808,8 +808,8 @@ define(function(require) {
     model.initializeEngine = function () {
       engine = md2d.createEngine();
 
-      if (model.get('useQuantumDynamics')) {
-        engine.addPlugin(new QuantumDynamics(initialProperties));
+      if (model.get('quantumDynamics')) {
+        engine.addPlugin(new QuantumDynamics(model.get('quantumDynamics')));
       }
 
       engine.setDimensions([model.get('minX'), model.get('minY'), model.get('maxX'), model.get('maxY')]);

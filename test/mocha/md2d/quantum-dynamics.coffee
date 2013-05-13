@@ -9,13 +9,13 @@ describe "MD2D modeler with Quantum Dynamics plugin", ->
 
   beforeEach ->
     model = new Model {
-      useQuantumDynamics: true
+      quantumDynamics: {}
     }
 
   it "should not allow excitation to be set when we don't use quantum dynamics", ->
     # Redefine model just for this test
     model = new Model {
-      useQuantumDynamics: false
+      quantumDynamics: null
     }
     # Atoms data.
     data =
@@ -30,7 +30,7 @@ describe "MD2D modeler with Quantum Dynamics plugin", ->
   it "should not have an excitation table when we don't use quantum dynamics", ->
     # Redefine model just for this test
     model = new Model {
-      useQuantumDynamics: false
+      quantumDynamics: null
     }
     # Atoms data.
     data =

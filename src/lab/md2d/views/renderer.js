@@ -1656,7 +1656,7 @@ define(function (require) {
       createVectorArrowHeads(velocityVectorColor, VELOCITY_STR);
       createVectorArrowHeads(forceVectorColor, FORCE_STR);
 
-      useQuantumDynamics = model.get("useQuantumDynamics");
+      useQuantumDynamics = model.get("quantumDynamics") && model.get("quantumDynamics").useQuantumDynamics;
       if (useQuantumDynamics) {
         createExcitationGlow();
       }

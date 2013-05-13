@@ -119,11 +119,8 @@ define(function() {
       mRNA: {
         serialize: false
       },
-      useQuantumDynamics: {
-      },
-      elementEnergyLevels: {
-      },
-      radiationlessEmissionProb: {
+      quantumDynamics: {
+
       }
     },
 
@@ -570,6 +567,18 @@ define(function() {
       hostType: {},
       hostIndex: {},
       textAlign: {}
+    },
+
+    quantumDynamics: {
+      useQuantumDynamics: {
+        defaultValue: false
+      },
+      elementEnergyLevels: {
+        defaultValue: []
+      },
+      radiationlessEmissionProb: {
+        defaultValue: 1
+      }
     }
   };
 });
