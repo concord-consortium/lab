@@ -375,13 +375,20 @@ define(function (require) {
         model.set("gravitationalField", -5e-7);
       },
 
-      translationStepEnded: function (codonIdx) {
+      translationStepEnded: function (codonIdx, xShift) {
         if (codonIdx < 1) return;
 
         var r1 = model.getAtomProperties(codonIdx - 1).radius,
             r2 = model.getAtomProperties(codonIdx).radius,
             // Length of bond is based on the radii of AAs.
-            bondLen = (r1 + r2) * 1.25;
+            bondLen = (r1 + r2) * 1.25,
+            i, x;
+
+        // Shift almost all amino acids to the right.
+        for (i = 0; i < codonIdx; i++) {
+          x = model.getAtomProperties(i).x + xShift;
+          model.setAtomProperties(i, {x: x});
+        }
 
         // 10000 is a typical strength for bonds between AAs.
         model.addRadialBond({atom1: codonIdx, atom2: codonIdx - 1, length: bondLen, strength: 10000});

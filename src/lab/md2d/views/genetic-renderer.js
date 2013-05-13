@@ -736,7 +736,7 @@ define(function (require) {
           .selectAll(".bonds")
             .style("opacity", 0);
 
-    t = this._nextTrans().duration(600);
+    t = this._nextTrans().duration(900);
 
     t.each("start", function () {
       var drag = d3.select(".animated-drag");
@@ -775,6 +775,7 @@ define(function (require) {
     this._scrollContainer();
 
     if (step > 1) {
+      /*
       t = this._nextTrans().duration(250);
 
       t.each("start", function () {
@@ -801,10 +802,14 @@ define(function (require) {
         });
         geneticEngine.translationStepEnded(codonIdx);
       });
+      */
+      t.each("end", function () {
+        geneticEngine.translationStepEnded(codonIdx, 2 * Nucleotide.WIDTH);
+      });
 
       // Empty translation. Reserve some time for the protein folding, as D3
       // animations are slowing down simulation significantly.
-      t = this._nextTrans().duration(1000);
+      t = this._nextTrans().duration(600);
     }
 
     if (step > 2) {
@@ -896,7 +901,7 @@ define(function (require) {
    * @param  {[type]} i tRNA index (starting from 0).
    */
   GeneticRenderer.prototype._removeTRNA = function (i, suppressAnimation) {
-    var t = suppressAnimation ? this._g : this._nextTrans().duration(600),
+    var t = suppressAnimation ? this._g : this._nextTrans().duration(900),
         bondsSelString = ".trna-cont .trna:nth-child(" + (i + 1) + ") .bonds, " +      // tRNA bonds
                          ".mrna .nucleotide:nth-child(" + (3 * i + 1) + ") .bonds, " + // mRNA bonds
                          ".mrna .nucleotide:nth-child(" + (3 * i + 2) + ") .bonds, " +
