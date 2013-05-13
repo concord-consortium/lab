@@ -135,6 +135,10 @@ define(function (require) {
     d3.selectAll("*").transition().delay(0);
     // Cleanup.
     this.container.selectAll("g.genetics").remove();
+    this._currentTrans = null;
+    this._dna      = [];
+    this._dnaComp  = [];
+    this._mrna     = [];
 
     if (!this.model.get("DNA") || state.name === "translation-end") {
       // When DNA is not defined (=== "", undefined or null) or
@@ -143,10 +147,6 @@ define(function (require) {
       return;
     }
 
-    this._currentTrans = null;
-    this._dna      = [];
-    this._dnaComp  = [];
-    this._mrna     = [];
     // Create a new container.
     this._g       = this.container.append("g").attr("class", "genetics");
     this._dnaView = this._g.append("g").attr("class", "dna-view");
@@ -584,6 +584,7 @@ define(function (require) {
     var cx  = this.model2px(5 * 0.5),
         cy = this.model2pxInv(3 * 0.5),
         ms2px = this.model2px,
+        self = this,
         t;
 
     // Nucleus.
@@ -713,7 +714,11 @@ define(function (require) {
     t.selectAll(".ribosome-under, .ribosome-over")
       .style("opacity", 1);
 
-    this._g.append("rect").attr("class", "animated-drag");
+    t.each("end", function () {
+      // This will cleanup a lot of things and ensure that new elements
+      // required for translation (but not for this intro) are added.
+      self.render();
+    });
   };
 
   GeneticRenderer.prototype.translateStep = function (step) {
@@ -849,8 +854,11 @@ define(function (require) {
     t.select(".mrna")
       .attr("transform", "translate(" + this.model2px(-15 * Nucleotide.WIDTH) + ", " + this.model2pxInv(1.5 * Nucleotide.HEIGHT) + ")");
 
-    // Cleanup everything, DNA animation is completed.
-    t.select(".genetics").remove();
+    t.each("end", function () {
+      // Nothing will be rendered, but this will simply cleanup everything, as
+      // DNA animation is completed.
+      self.render();
+    });
 
     // Center viewport at protein's center of mass.
     t = this._nextTrans().duration(700);
