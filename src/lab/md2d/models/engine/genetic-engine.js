@@ -372,7 +372,7 @@ define(function (require) {
 
         model.addAtom({x: x, y: y, element: elID, visible: true}, {suppressCheck: true});
         model.addSpringForce(codonIdx, x, y, 100000);
-        model.set("gravitationalField", -5e-7);
+        model.set("gravitationalField", -8e-7);
       },
 
       translationStepEnded: function (codonIdx, xShift) {

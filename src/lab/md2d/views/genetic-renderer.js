@@ -803,6 +803,10 @@ define(function (require) {
         geneticEngine.translationStepEnded(codonIdx);
       });
       */
+      t = this._nextTrans().duration(100);
+      t.select(".trna-cont .trna:nth-child(" + codonIdx + ") .trna-neck") // (codonIdx - 1) + 1
+        .style("opacity", 0);
+
       t.each("end", function () {
         geneticEngine.translationStepEnded(codonIdx, 2 * Nucleotide.WIDTH);
       });
