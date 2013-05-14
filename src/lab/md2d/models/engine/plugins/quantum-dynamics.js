@@ -206,17 +206,21 @@ define(function () {
         },
 
         precalculateVelocities = function() {
-          var dx_ = atoms.x[atom2Idx] - atoms.x[atom1Idx],
-              dy_ = atoms.y[atom2Idx] - atoms.y[atom1Idx],
-              tmp  = 1.0 / Math.sqrt(dx_*dx_ + dy_*dy_);
+          dx = atoms.x[atom2Idx] - atoms.x[atom1Idx];
+          dy = atoms.y[atom2Idx] - atoms.y[atom1Idx];
 
-          dx   = dx_ * tmp;
-          dy   = dy_ * tmp;
+          var normalizationFactor = 1 / Math.sqrt(dx*dx + dy*dy);
 
-          u1   = atoms.vx[atom1Idx] * dx + atoms.vy[atom1Idx] * dy;
-          u2   = atoms.vx[atom2Idx] * dx + atoms.vy[atom2Idx] * dy;
-          w1   = atoms.vy[atom1Idx] * dx - atoms.vx[atom1Idx] * dy;
-          w2   = atoms.vy[atom2Idx] * dx - atoms.vx[atom2Idx] * dy;
+          dx *= normalizationFactor;
+          dy *= normalizationFactor;
+
+          // Decompose v1 into components u1 (parallel to d) and w1 (orthogonal to d)
+          u1 = atoms.vx[atom1Idx] * dx + atoms.vy[atom1Idx] * dy;
+          w1 = atoms.vy[atom1Idx] * dx - atoms.vx[atom1Idx] * dy;
+
+          // Decompose v2 similarly
+          u2 = atoms.vx[atom2Idx] * dx + atoms.vy[atom2Idx] * dy;
+          w2 = atoms.vy[atom2Idx] * dx - atoms.vx[atom2Idx] * dy;
         },
 
         getRelativeKE = function() {
