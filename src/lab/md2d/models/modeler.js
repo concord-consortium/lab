@@ -828,10 +828,6 @@ define(function(require) {
     model.initializeEngine = function () {
       engine = md2d.createEngine();
 
-      if (model.get('quantumDynamics')) {
-        engine.addPlugin(new QuantumDynamics(model.get('quantumDynamics')));
-      }
-
       engine.setDimensions([model.get('minX'), model.get('minY'), model.get('maxX'), model.get('maxY')]);
       engine.useLennardJonesInteraction(model.get('lennardJonesForces'));
       engine.useCoulombInteraction(model.get('coulombForces'));
@@ -847,6 +843,10 @@ define(function(require) {
       engine.setSolventForceFactor(model.get('solventForceFactor'));
       engine.setAdditionalSolventForceMult(model.get('additionalSolventForceMult'));
       engine.setAdditionalSolventForceThreshold(model.get('additionalSolventForceThreshold'));
+
+      if (model.get('quantumDynamics')) {
+        engine.addPlugin(new QuantumDynamics(engine, model.get('quantumDynamics')));
+      }
 
       // Register invalidating change hooks.
       // pairwiseLJProperties object allows to change state which defines state of the whole simulation.

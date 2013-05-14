@@ -21,13 +21,14 @@
 define(function () {
 
   return function QuantumDynamics(props) {
+  return function QuantumDynamics(engine, _props) {
 
     var arrays               = require('arrays'),
         arrayTypes           = require('common/array-types'),
         metadata             = require('md2d/models/metadata'),
         validator            = require('common/validator'),
 
-        props                = validator.validateCompleteness(metadata.quantumDynamics, props),
+        props                = validator.validateCompleteness(metadata.quantumDynamics, _props),
 
         api,
 
@@ -36,6 +37,8 @@ define(function () {
         elementEnergyLevels  = props.elementEnergyLevels,
         photons              = props.photons,
         pRadiationless       = props.radiationlessEmissionProb,
+
+        dimensions           = engine.getDimensions(),
 
         atoms,
         elements,
