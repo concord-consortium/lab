@@ -292,6 +292,31 @@ define(function (require) {
       },
 
       /**
+       * Returns atom transition object. It can be used to smoothly change
+       * atom properties over specified time. It's similar to D3 transitions.
+       *
+       * Atom transition object provides following methods:
+       *  id(id)          - sets ID of the atom (required!).
+       *  duration(d)     - sets duration in ms (required!).
+       *  prop(name, val) - sets property name and its final value (required!).
+       *  delay(d)        - sets delay in ms (default is 0).
+       *  ease(name)      - sets easing function (default is "cubic-in-out").
+       *                    Please see:
+       *                    https://github.com/mbostock/d3/wiki/Transitions#wiki-d3_ease
+       *
+       * e.g.
+       *  atomTransition().id(0).duration(1000).ease("linear").prop("x", 10);
+       *
+       * This will change "x" property of the atom with ID=0
+       * to value 10 over 1000ms using linear easing function.
+       *
+       * @return {AtomTransition} AtomTransition instance.
+       */
+      atomTransition: function atomTransition() {
+        return model.atomTransition();
+      },
+
+      /**
         Returns atom properties as a human-readable hash.
         e.g. getAtomProperties(5) --> {x: 1, y: 0.5, charge: 1, ... }
       */
