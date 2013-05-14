@@ -1,0 +1,103 @@
+{
+  "title": "Properties Transition",
+  "publicationStatus": "public",
+  "subtitle": "Atom's properties can be smoothly changed over time using atomTransition() function",
+  "about": "",
+  "models": [
+    {
+      "id": "empty-atom",
+      "url": "models/md2d/empty-model.json",
+      "onLoad": [
+        "setAtomProperties(0, {pinned: true});",
+        "markAtoms([0]);",
+        "atomTransition().id(0).duration(2000).prop('x', 5);",
+        "atomTransition().id(0).duration(2000).prop('y', 3.5);",
+        "atomTransition().id(0).delay(2000).duration(1900).prop('x', 1.5);",
+        "atomTransition().id(0).delay(3900).duration(1800).prop('x', 4.5);",
+        "atomTransition().id(0).delay(3900).duration(1800).prop('y', 2.5);",
+        "atomTransition().id(0).delay(5700).duration(1700).prop('x', 1.5);",
+        "atomTransition().id(0).delay(5700).duration(1700).prop('y', 1);",
+        "atomTransition().id(0).delay(7400).duration(1600).prop('x', 4);",
+        "atomTransition().id(0).delay(7400).duration(1600).prop('y', 3);",
+        "atomTransition().id(0).delay(9000).duration(1500).prop('x', 1);",
+        "atomTransition().id(0).delay(9000).duration(1500).prop('y', 2.5);",
+        "start();"
+      ],
+      "modelOptions": {
+        "type": "md2d",
+        "width": 6,
+        "height": 4,
+        "gravitationalField": 1e-5,
+        "atoms": {
+          "x": [
+            1,
+            1
+          ],
+          "y": [
+            3,
+            2
+          ],
+          "element": [
+            0,
+            1
+          ],
+          "vx": [
+            0,
+            0
+          ],
+          "vy": [
+            0,
+            0
+          ],
+          "charge": [
+            0,
+            0
+          ],
+          "friction": [
+            0,
+            0.1
+          ],
+          "pinned": [
+            0,
+            0
+          ]
+        },
+        "radialBonds": {
+          "atom1": [
+            0
+          ],
+          "atom2": [
+            1
+          ],
+          "length": [
+            1
+          ],
+          "strength": [
+            100
+          ],
+          "type": [
+            106
+          ]
+        },
+        "elements": {
+          "mass": [
+            120,
+            600
+          ],
+          "sigma": [
+            0.3,
+            0.3
+          ],
+          "epsilon": [
+            -0.1,
+            -0.1
+          ],
+          "color": [
+            -855310,
+            -855310
+          ]
+        }
+      }
+    }
+  ]
+}
