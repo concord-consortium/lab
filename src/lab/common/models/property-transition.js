@@ -44,10 +44,6 @@ define(function() {
    */
   PropertyTransition.prototype.id = function(id) {
     this._id = id;
-    if (this._propName != null) {
-      // Update interpolator if .prop() has been already called.
-      this.prop(this._propName, this._endValue);
-    }
     return this;
   };
 
@@ -60,9 +56,7 @@ define(function() {
   PropertyTransition.prototype.prop = function(propName, endValue) {
     this._propName = propName;
     this._endValue = endValue;
-    if (this._id != null) { // undefined or null, but 0 should be ofc accepted.
-      this._interpolator = d3.interpolate(this.getObjectProperties(this._id)[propName], endValue);
-    }
+    return this;
   };
 
   /**
@@ -72,6 +66,16 @@ define(function() {
    */
   PropertyTransition.prototype.duration = function (duration) {
     this._duration = duration;
+    return this;
+  };
+
+  /**
+   * Sets transition delay.
+   * @param  {number} delay Transition delay.
+   * @return {PropertyTransition} this (method chaining).
+   */
+  PropertyTransition.prototype.delay = function (delay) {
+    this._elapsedTime = -delay;
     return this;
   };
 
@@ -97,14 +101,23 @@ define(function() {
    *                              consistent with duration time.
    */
   PropertyTransition.prototype.process = function (elapsedTime) {
-    if (this.isFinished || this._interpolator == null) {
+    if (this.isFinished || this._incompleteSpec()) {
       return;
     }
+    var t, props;
 
-    var props = {}, t;
     this._elapsedTime += elapsedTime;
+    if (this._elapsedTime < 0) {
+      // Elapsed time can be negative when there was a delay specified (which
+      // sets elapsedTime to -delay).
+      return;
+    }
+    if (this._interpolator == null) {
+      this._interpolator = d3.interpolate(this.getObjectProperties(this._id)[this._propName], this._endValue);
+    }
     t = Math.min(1, this._elapsedTime / this._duration);
     t = this._easeFunc(t);
+    props = {};
     props[this._propName] = this._interpolator(t);
     // Update object properties.
     this.setObjectProperties(this._id, props);
@@ -131,6 +144,14 @@ define(function() {
    * @param  {Object} props Properties hash.
    */
   PropertyTransition.prototype.setObjectProperties = null;
+
+  /**
+   * @private
+   * @return {boolean} true when transition specification is incomplete.
+   */
+  PropertyTransition.prototype._incompleteSpec = function () {
+    return this._id == null || this._propName == null || this._endValue == null;
+  };
 
   return PropertyTransition;
 });

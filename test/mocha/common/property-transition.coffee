@@ -55,12 +55,20 @@ describe "PropertyTransition", ->
     it "should let the user choose duration (in ms)", ->
       t.duration 1000
 
+    it "should let the user choose delay (in ms)", ->
+      t.delay 300
+
     it "should let the user choose easing function", ->
       t.ease "linear"
 
     it "should update property when it is being processed", ->
       t.process 0
       t.isFinished.should.be.false
+      model[0].x.should.eql 0
+
+      t.process 300
+      t.isFinished.should.be.false
+      # 300ms of delay
       model[0].x.should.eql 0
 
       t.process 500
