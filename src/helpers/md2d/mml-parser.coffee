@@ -829,7 +829,7 @@ parseMML = (mmlString) ->
             $level = getNode(cheerio(level))
             energy = getFloatProperty $level, "energy", "float"
             # convert from MW units to NextGen (Daltons, nm conversions)
-            energy = energy / (120 * 100)
+            energy = constants.convert energy, { from: constants.unit.EV, to: constants.unit.MW_ENERGY_UNIT }
             levelsArray.push energy
           elementEnergyLevels.push levelsArray
         else
