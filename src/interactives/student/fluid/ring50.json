@@ -1,0 +1,21 @@
+{
+  "title": "ring50",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "ring50",
+      "url": "imports/legacy-mw-content/converted/student/fluid/ring50.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

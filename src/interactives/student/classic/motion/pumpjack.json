@@ -1,0 +1,21 @@
+{
+  "title": "pumpjack",
+  "publicationStatus": "broken",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "pumpjack$0",
+      "url": "imports/legacy-mw-content/converted/student/classic/motion/pumpjack$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

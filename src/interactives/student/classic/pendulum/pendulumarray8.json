@@ -1,0 +1,21 @@
+{
+  "title": "pendulumarray8",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "pendulumarray8",
+      "url": "imports/legacy-mw-content/converted/student/classic/pendulum/pendulumarray8.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

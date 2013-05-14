@@ -18,9 +18,12 @@
   "additionalSolventForceMult": 4,
   "additionalSolventForceThreshold": 10,
   "polarAAEpsilon": -2,
+  "geneticEngineState": "dna",
+  "DNA": "",
   "viewOptions": {
     "viewPortWidth": 3.5,
     "viewPortHeight": 2,
+    "viewPortZoom": 1,
     "viewPortX": 0,
     "viewPortY": 0,
     "backgroundColor": "rgba(225,239,222,255)",
@@ -61,15 +64,19 @@
     },
     "textBoxes": [
       {
-        "text": "You will pull apart pairs of polar and\nnon-polar molecules to see the different\nstrengths of attraction.\nChoose a pair of molecules\nfrom the menu below.", 
-        "x": 0.24, 
-        "y": 1.73, 
-        "layer": 1, 
-        "color": "rgb(153,0,0)", 
-        "hostType": "RectangularObstacle", 
-        "hostIndex": 0, 
-        "backgroundColor": "rgb(255,100,100)", 
-        "anchor": "upper-left"
+        "text": "You will pull apart pairs of polar and\nnon-polar molecules to see the different\nstrengths of attraction.\nChoose a pair of molecules\nfrom the menu below.",
+        "x": 0.24,
+        "y": 1.73,
+        "layer": 1,
+        "color": "rgb(153,0,0)",
+        "hostType": "RectangularObstacle",
+        "hostIndex": 0,
+        "backgroundColor": "rgb(255,100,100)",
+        "anchor": "upper-left",
+        "calloutPoint": [
+          0.24,
+          1.73
+        ]
       }
     ]
   },

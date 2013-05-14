@@ -1,0 +1,21 @@
+{
+  "title": "FacilitatedDiffusion",
+  "publicationStatus": "broken",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "FacilitatedDiffusion$0",
+      "url": "imports/legacy-mw-content/converted/student/motionandforce/FacilitatedDiffusion$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

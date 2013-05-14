@@ -1,0 +1,19 @@
+{
+  "title": "atomsWithinTriangle Demo",
+  "publicationStatus": "public",
+  "subtitle": "Use atomsWithinTriangle() to select atoms within a triangle defined by its three vertices.",
+  "about": "In this text interactive you should see a clear, triangular shape created by marked atoms.",
+  "models": [
+    {
+      "id": "100-atoms-charged",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/100-atoms$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "onLoad": "markAtoms(atomsWithinTriangle(1.25,0, 2,2, 2.75,0));",
+      "viewOptions": {
+        "markColor": "#ff3322"
+      }
+    }
+  ]
+}

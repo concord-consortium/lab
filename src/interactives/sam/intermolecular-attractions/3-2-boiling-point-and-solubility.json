@@ -1,0 +1,51 @@
+{
+  "title": "Boiling Point",
+  "publicationStatus": "public",
+  "subtitle": "Explore what boiling looks like at the molecular level with both polar and non-polar substances.",
+  "about": [
+    "Non-polar molecules (gray) evaporate or boil more quickly than polar molecules (blue and red).",
+    "Attractions between molecules are shown with dotted lines. Run the model, then heat the liquids.",
+    "What does boiling look like at the molecular level?"
+  ],
+  "models": [
+    {
+      "id": "page3$0-with-heatbath",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$0-with-heatbath.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "cool",
+      "text": "Cool",
+      "action": "adjustTemperature(0.9);"
+    },
+    {
+      "type": "button",
+      "id": "heat",
+      "text": "Heat",
+      "action": "adjustTemperature(1.1); limitHighTemperature(5000);"
+    },
+    {
+      "type": "barGraph",
+      "id": "thermometer",
+      "property": "temperature",
+      "units": true,
+      "labelFormat": "3r",
+      "min": 0,
+      "max": 700
+    }
+  ],
+  "layout": {
+    "right": [
+      "thermometer"
+    ],
+    "bottom": [
+      "cool",
+      "heat"
+    ]
+  }
+}

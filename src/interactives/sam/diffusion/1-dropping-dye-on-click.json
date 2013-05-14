@@ -1,0 +1,79 @@
+{
+  "title": "Diffusion of a Drop",
+  "publicationStatus": "public",
+  "subtitle": "Add a drop of dye anywhere in the container, and watch it diffuse through the water.",
+  "about": [
+    "Click in the model to add a drop of dye.  Watch how the molecules move through the water.",
+    "Trace an individual molecule to see how it moves through the liquid."
+  ],
+  "models": [
+    {
+      "id": "model1",
+      "url": "imports/legacy-mw-content/converted/sam-activities/diffusion/page1/page1$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "imageMapping": {
+          "waterDyeKey.png": "waterDyeKey.svg"
+        }
+      },
+      "onLoad": [
+        "function onClickHandler(x, y) {",
+        "  start();",
+        "  batch(function() {",
+        "    var atomsToMark = atomsWithinCircle(x, y, 0.5);",
+        "    markAtoms(atomsToMark);",
+        "  });",
+        "}",
+        "onClick('plot', onClickHandler);",
+        "onClick('atom', onClickHandler);"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "tracedAtom",
+      "initialValue": -99,
+      "onChange": ""
+    },
+    {
+      "name": "wasMarked",
+      "initialValue": 0,
+      "onChange": ""
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "trace",
+      "text": "Trace a random molecule",
+      "action": [
+        "var opt = {suppressRepaint: true};",
+        "var atomID = randomAtoms(1);",
+        "var tracedAtomID = get('tracedAtom');",
+        "if (tracedAtomID != -99) {",
+          "setAtomProperties(tracedAtomID, {element: 0, marked: get('wasMarked')}, false, false, opt);",
+        "}",
+        "setAtomProperties(atomID, {element: 1}, false, false, opt);",
+        "set({tracedAtom: atomID});",
+        "set({wasMarked: getAtomProperties(atomID).marked});",
+        "setAtomProperties(atomID, { marked: 0}, false, false, opt);",
+        "traceAtom(atomID);"
+      ]
+    }
+  ],
+  "layout": {
+    "under-model": [
+      "trace"
+    ]
+  },
+  "template": [
+    {
+      "id": "under-model",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "padding-top": "0.25em",
+      "align": "center"
+    }
+  ]
+}

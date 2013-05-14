@@ -1,12 +1,9 @@
 /*global define */
 
 define(function (require) {
-  // Dependencies.
-  var labConfig = require('lab.config'),
-
-      SCALE = 0.0057,
+  var SCALE = 0.007,
       W = {
-        "BACKB": 48,
+        "BACKB": 52,
         "A": 28.151,
         "C": 21.2,
         "G": 21.2,
@@ -38,7 +35,7 @@ define(function (require) {
 
   function Nucleotide(parent, ms2px, type, direction, index, mRNA) {
     this._ms2px = ms2px;
-    this._type = type;
+    this.type = type;
     this._wrapper = parent.append("g").attr("class", "nucleotide");
     this._g = this._wrapper.append("g");
     this._bonds = this._g.append("path").attr({
@@ -50,21 +47,22 @@ define(function (require) {
       "stroke-width": ms2px(0.01),
       "stroke": "#fff"
     });
+    this._nucleo = this._g.append("image").attr({
+      "class": "nucleotide-img",
+      "x": ms2px(W.BACKB) / 2 - ms2px(W[type]) / 2,
+      "y": ms2px(H.BACKB) * 0.9,
+      "width": ms2px(W[type]),
+      "height": ms2px(H[type]),
+      "preserveAspectRatio": "none",
+      "xlink:href": "resources/dna/Nucleotide" + type + "_Direction" + direction + "_noBonds.svg"
+    });
     this._backbone = this._g.append("image").attr({
       "x": 0,
       "y": 0,
       "width": ms2px(W.BACKB),
       "height": ms2px(H.BACKB),
       "preserveAspectRatio": "none",
-      "xlink:href": labConfig.actualRoot + "../../resources/transcription/Backbone_" + (mRNA ? "RNA" : "DNA") + ".svg"
-    });
-    this._nucleo = this._g.append("image").attr({
-      "x": ms2px(W.BACKB) / 2 - ms2px(W[type]) / 2,
-      "y": ms2px(H.BACKB),
-      "width": ms2px(W[type]),
-      "height": ms2px(H[type]),
-      "preserveAspectRatio": "none",
-      "xlink:href": labConfig.actualRoot + "../../resources/transcription/Nucleotide" + type + "_Direction" + direction + "_noBonds.svg"
+      "xlink:href": "resources/dna/Backbone_" + (mRNA ? "RNA" : "DNA") + ".svg"
     });
 
     if (direction === 1) {
@@ -105,23 +103,27 @@ define(function (require) {
     var yStart = this._ms2px(SCALE * 20),
         yEnd = this._ms2px(Nucleotide.HEIGHT);
 
-    if (this._type === "C" || this._type === "G") {
-      return "M" + this._ms2px(SCALE * 18) + " " + yStart + " L " + this._ms2px(SCALE * 18) + " " + yEnd +
-             "M" + this._ms2px(SCALE * 24) + " " + yStart + " L " + this._ms2px(SCALE * 24) + " " + yEnd +
-             "M" + this._ms2px(SCALE * 30) + " " + yStart + " L " + this._ms2px(SCALE * 30) + " " + yEnd;
-    } else {
+    if (this.type === "C" || this.type === "G") {
       return "M" + this._ms2px(SCALE * 20) + " " + yStart + " L " + this._ms2px(SCALE * 20) + " " + yEnd +
-             "M" + this._ms2px(SCALE * 28) + " " + yStart + " L " + this._ms2px(SCALE * 28) + " " + yEnd;
+             "M" + this._ms2px(SCALE * 26) + " " + yStart + " L " + this._ms2px(SCALE * 26) + " " + yEnd +
+             "M" + this._ms2px(SCALE * 32) + " " + yStart + " L " + this._ms2px(SCALE * 32) + " " + yEnd;
+    } else {
+      return "M" + this._ms2px(SCALE * 22) + " " + yStart + " L " + this._ms2px(SCALE * 22) + " " + yEnd +
+             "M" + this._ms2px(SCALE * 30) + " " + yStart + " L " + this._ms2px(SCALE * 30) + " " + yEnd;
     }
   };
 
   // Width of the nucleotide is width of the DNA backbone.
-  // * 0.98 to ensure that DNA backbone doesn't contain any visual discontinuities.
-  Nucleotide.WIDTH  = W.BACKB * 0.98;
+  // * 0.92 to ensure that DNA backbone doesn't contain any visual discontinuities.
+  // There are two bugs connected with it. First is in Chrome, where preserveAspectRatio
+  // is ignored for images, the second one is in Safari, which has problems with correct
+  // width of the images. Please see:
+  // https://www.pivotaltracker.com/story/show/48453261
+  Nucleotide.WIDTH  = W.BACKB * 0.92;
   // Height of the nucleotide is height of the DNA backbone + A nucleotide (tallest one).
-  // * 0.95 because it simply... looks better. This value is used to determine distance
+  // * 0.9 because it simply... looks better. This value is used to determine distance
   // between two strands of DNA and this multiplier causes that they are closer to each other.
-  Nucleotide.HEIGHT = H.BACKB + H.A * 0.95;
+  Nucleotide.HEIGHT = H.BACKB + H.A * 0.9;
 
   return Nucleotide;
 });

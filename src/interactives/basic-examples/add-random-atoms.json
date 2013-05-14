@@ -1,0 +1,23 @@
+{
+  "title": "Add Random Atom",
+  "publicationStatus": "public",
+  "subtitle": "Using a script to add atoms with a random size and position.",
+  "about": "",
+  "models": [
+    {
+      "id": "three-atoms-three-elements$0",
+      "url": "imports/legacy-mw-content/converted/potential-tests/three-atoms-three-elements/three-atoms-three-elements$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "add-atom",
+      "text": "Add a random atom",
+      "action": "addRandomAtom()"
+    }
+  ]
+}

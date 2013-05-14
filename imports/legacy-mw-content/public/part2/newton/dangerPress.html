@@ -1,0 +1,39 @@
+<html>
+  <head>
+  </head>
+  <body>
+  <img src="dangerPress.gif" width="106" height="53" border="0" usemap="#Map">
+<map name="Map"><area shape="rect" coords="39,0,62,13" href="
+		script:textbox:8:load dangerPress.html;
+		script:mw:1:
+		if (%atomsAdded or (%number_of_atoms > 0));
+			select image %zapIndex;
+			remove;
+			set %zapIndex 99;
+			if (not %modelRunning);
+				run;
+				set %modelRunning 1;
+				add image sparks.gif (0.7,1.9);
+				delay 0.5;
+				set %sparkImage %number_of_images-1;
+				select image %sparkImage;
+				remove;
+				select atom all;
+				set charge 1;
+				select atom none;
+			else;
+				add image sparks.gif (0.7,1.9);
+				delay 0.5;
+				set %sparkImage %number_of_images-1;
+				select image %sparkImage;
+				remove;
+			endif;
+			external disable.mws;
+		else;
+			message addAtoms.html;
+		endif;
+	
+"></map>
+  </body>
+  
+</html>

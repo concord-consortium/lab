@@ -1,0 +1,21 @@
+{
+  "title": "machine2",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "machine2$0",
+      "url": "imports/legacy-mw-content/converted/student/classic/machine/machine2$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

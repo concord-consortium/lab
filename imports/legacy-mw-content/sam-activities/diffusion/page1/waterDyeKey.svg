@@ -140,21 +140,21 @@
    transform="matrix(1 0 0 1 28.8643 19.5039)"
    font-size="16"
    id="text3077"
-   font-family="'OpenSans-Bold'">Key</text>
+   font-family="'Lato','OpenSans-Bold','Sans'">Key</text>
 
 
 <text
    transform="matrix(1 0 0 1 27.8643 39.2793)"
-   font-size="16"
+   font-size="14"
    id="text3079"
-   font-family="'OpenSans'">water</text>
+   font-family="'Lato','OpenSans','Sans'">Water</text>
 
 
 <text
    transform="matrix(1 0 0 1 27.8643 57.9688)"
-   font-size="16"
+   font-size="14"
    id="text3081"
-   font-family="'OpenSans'">dye</text>
+   font-family="'Lato','OpenSans','Sans'">Dye</text>
 
 
 <circle

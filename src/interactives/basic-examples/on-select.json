@@ -1,0 +1,36 @@
+{
+  "title": "onSelect Demo",
+  "publicationStatus": "public",
+  "subtitle": "Use onSelect() to attach an event handler function for select action.",
+  "models": [
+    {
+      "id": "simple-gas$0",
+      "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "select-action",
+      "type": "radio",
+      "label": "Select Atoms for Marking",
+      "orientation": "horizontal",
+      "options": [
+        {
+          "text": "disabled",
+          "action": "onSelect(null);",
+          "selected": true
+        },
+        {
+          "text": "enabled",
+          "action": "onSelect(function (x, y, w, h) { markAtoms(atomsWithinRect(x, y, w, h)); });"
+        }
+      ]
+    }
+  ],
+  "layout": {
+    "bottom": [ "select-action" ]
+  }
+}

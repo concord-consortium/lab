@@ -1,0 +1,21 @@
+{
+  "title": "sticky",
+  "publicationStatus": "broken",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "sticky$0",
+      "url": "imports/legacy-mw-content/converted/student/motionandforce/sticky$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

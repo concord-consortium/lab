@@ -1,0 +1,21 @@
+{
+  "title": "SteerObstacle",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "SteerObstacle$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/SteerObstacle$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "hexshockwave_hexagonalwave",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "hexshockwave_hexagonalwave",
+      "url": "imports/legacy-mw-content/converted/student/materials/hexshockwave_hexagonalwave.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

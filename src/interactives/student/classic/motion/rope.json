@@ -1,0 +1,21 @@
+{
+  "title": "rope",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "rope$0",
+      "url": "imports/legacy-mw-content/converted/student/classic/motion/rope$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

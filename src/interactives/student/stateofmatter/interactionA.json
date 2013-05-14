@@ -1,0 +1,21 @@
+{
+  "title": "interactionA",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "interactionA$0",
+      "url": "imports/legacy-mw-content/converted/student/stateofmatter/interactionA$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

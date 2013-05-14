@@ -1,0 +1,21 @@
+{
+  "title": "periodic2",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "periodic2$0",
+      "url": "imports/legacy-mw-content/converted/student/osmosis/periodic2$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

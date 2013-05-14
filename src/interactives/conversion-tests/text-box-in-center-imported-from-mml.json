@@ -1,0 +1,18 @@
+{
+  "title": "Text Box in Center (imported from MML)",
+  "publicationStatus": "public",
+  "subtitle": "Upper-left corner of textBox should be at model center.",
+  "about": "",
+  "models": [
+    {
+      "id": "simple-gas$0",
+      "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/sinple-gas-with-textbox-at-center$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "gridLines": true,
+        "xunits": true,
+        "yunits": true
+      }
+    }
+  ]
+}

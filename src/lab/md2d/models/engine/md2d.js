@@ -13,10 +13,10 @@ define(function (require, exports, module) {
       coulomb              = require('./potentials/index').coulomb,
       lennardJones         = require('./potentials/index').lennardJones,
       PairwiseLJProperties = require('cs!./pairwise-lj-properties'),
-      GeneticProperties    = require('./genetic-properties'),
       CloneRestoreWrapper  = require('common/models/engines/clone-restore-wrapper'),
       CellList             = require('./cell-list'),
       NeighborList         = require('./neighbor-list'),
+      PluginController     = require('./plugins/plugin-controller'),
 
       // from A. Rahman "Correlations in the Motion of Atoms in Liquid Argon", Physical Review 136 pp. A405–A411 (1964)
       ARGON_LJ_EPSILON_IN_EV = -120 * constants.BOLTZMANN_CONSTANT.as(unit.EV_PER_KELVIN),
@@ -92,6 +92,8 @@ define(function (require, exports, module) {
         // Whether system dimensions have been set. This is only allowed to happen once.
         sizeHasBeenInitialized = false,
 
+        pluginController = new PluginController(),
+
         // Whether to simulate Coulomb forces between particles.
         useCoulombInteraction = false,
 
@@ -108,6 +110,10 @@ define(function (require, exports, module) {
         // hydrophobic/hydrophilic interaction is used. A negative value represents oil environment
         // (usually -1). A positive one represents water environment (usually 1). A zero value means vacuum.
         solventForceType = 0,
+
+        // State describing DNA transcription and translation process.
+        // TODO: move all functionality connected with DNA and proteins to engine plugins!
+        geneticEngineState = "",
 
         // Parameter that influences strength of force applied to amino acids by water of oil (solvent).
         solventForceFactor = 1,
@@ -304,9 +310,6 @@ define(function (require, exports, module) {
         N_obstacles = 0,
 
         // ####################################################################
-        geneticProperties,
-
-        // ####################################################################
         //                      Misc Properties
         // Hash of arrays containing VdW pairs
         vdwPairs,
@@ -399,9 +402,6 @@ define(function (require, exports, module) {
 
           // Custom pairwise properties.
           pairwiseLJProperties = new PairwiseLJProperties(engine);
-
-          // Genetic properties (like DNA, mRNA etc.).
-          geneticProperties = new GeneticProperties();
 
           radialBondMatrix = [];
           //  Initialize radialBondResults[] array consisting of hashes of radial bond
@@ -674,7 +674,7 @@ define(function (require, exports, module) {
           elements.epsilon = arrays.create(num, 0, arrayTypes.floatType);
           elements.sigma   = arrays.create(num, 0, arrayTypes.floatType);
           elements.radius  = arrays.create(num, 0, arrayTypes.floatType);
-          elements.color   = arrays.create(num, 0, arrayTypes.Int32Array);
+          elements.color   = arrays.create(num, 0, arrayTypes.int32Type);
 
           assignShortcutReferences.elements();
         },
@@ -1496,23 +1496,25 @@ define(function (require, exports, module) {
                 dy = y[atomIdx] - cm.y;
                 r = Math.sqrt(dx * dx + dy * dy);
 
-                temp = hydrophobicity[atomIdx] * solventFactor;
+                if (r > 0) {
+                  temp = hydrophobicity[atomIdx] * solventFactor;
 
-                // AAs being pulled into the center of mass should feel an additional force factor that depends
-                // on distance from the center of mass, ranging between 1 and 25, with 1 being furthest away from the CoM
-                // and 25 being the max when at the CoM or within a certain radius of the CoM. In some ways this
-                // is closer to nature as the core of a protein is less exposed to solvent and thus even more stable.
-                if (temp > 0 && r < additionalSolventForceThreshold) {
-                  // Force towards the center of mass, distance from the CoM less than a given threshold.
-                  // Multiply force by an additional factor defined by the linear function of 'r' defined by two points:
-                  // (0, additionalSolventForceMult) and (additionalSolventForceThreshold, 1).
-                  temp *= (1 - additionalSolventForceMult) * r / additionalSolventForceThreshold + additionalSolventForceMult;
+                  // AAs being pulled into the center of mass should feel an additional force factor that depends
+                  // on distance from the center of mass, ranging between 1 and 25, with 1 being furthest away from the CoM
+                  // and 25 being the max when at the CoM or within a certain radius of the CoM. In some ways this
+                  // is closer to nature as the core of a protein is less exposed to solvent and thus even more stable.
+                  if (temp > 0 && r < additionalSolventForceThreshold) {
+                    // Force towards the center of mass, distance from the CoM less than a given threshold.
+                    // Multiply force by an additional factor defined by the linear function of 'r' defined by two points:
+                    // (0, additionalSolventForceMult) and (additionalSolventForceThreshold, 1).
+                    temp *= (1 - additionalSolventForceMult) * r / additionalSolventForceThreshold + additionalSolventForceMult;
+                  }
+
+                  fx = temp * dx / r;
+                  fy = temp * dy / r;
+                  ax[atomIdx] -= fx;
+                  ay[atomIdx] -= fy;
                 }
-
-                fx = temp * dx / r;
-                fy = temp * dy / r;
-                ax[atomIdx] -= fx;
-                ay[atomIdx] -= fy;
               }
             }
           }
@@ -1931,6 +1933,21 @@ define(function (require, exports, module) {
 
     engine = {
 
+      // Adds a new plugin. Plugin will be initialized with the object arrys, so that
+      // it can add to them as necessary, and will then be registered in the controller,
+      // allowing it to respond to functions passed to the controller from arbitrary
+      // points in the md2d code.
+      addPlugin: function(plugin) {
+        if (plugin.initialize) {
+          // plugins can update the data arrays as needed so we pass in the arrays.
+          // we do this as an object, so we can add new arrays as needed by the plugins
+          // without needing to update all existing plugins
+          plugin.initialize({atoms: atoms, elements: elements});
+        }
+
+        pluginController.registerPlugin(plugin);
+      },
+
       useCoulombInteraction: function(v) {
         useCoulombInteraction = !!v;
       },
@@ -1972,6 +1989,10 @@ define(function (require, exports, module) {
 
       setSolventForceType: function(sft) {
         solventForceType = sft;
+      },
+
+      setGeneticEngineState: function (ges) {
+        geneticEngineState = ges;
       },
 
       setSolventForceFactor: function(sff) {
@@ -2512,9 +2533,21 @@ define(function (require, exports, module) {
         springForceY[i] = y;
       },
 
-      removeSpringForce: function(i) {
-        if (i >= N_springForces) return;
+      removeSpringForce: function(idx) {
+        var i, j;
+
+        if (idx >= N_springForces) {
+          throw new Error("Spring force " + idx + " doesn't exist, so it can't be removed.");
+        }
+
         N_springForces--;
+
+        // Shift spring forces properties.
+        for (i = idx; i < N_springForces; i++) {
+          for (j = 0; j < 4; j++) {
+            springForces[j][i] = springForces[j][i + 1];
+          }
+        }
       },
 
       springForceAtomIndex: function(i) {
@@ -3036,13 +3069,17 @@ define(function (require, exports, module) {
           // Adjust temperature, e.g. when heat bath is enabled.
           adjustTemperature();
 
-          // If solvent is different from vacuum (water or oil), ensure
-          // that the total momentum of each molecule is equal to zero.
-          // This prevents amino acids chains from drifting towards one
-          // boundary of the model.
-          if (solventForceType !== 0) {
+          // If solvent is different from vacuum (water or oil), ensure that
+          // the total momentum of each molecule is equal to zero. This
+          // prevents amino acids chains from drifting towards one boundary of
+          // the model.
+          // Don't do it during translation process (when geneticEngineState
+          // starts with "translation:", e.g. translation:0, translation:1).
+          if (solventForceType !== 0 && geneticEngineState.indexOf("translation:") === -1) {
             zeroTotalMomentumOfMolecules();
           }
+
+          pluginController.callPluginFunction("performActionWithinIntegrationLoop", {neighborList: neighborList});
 
         } // end of integration loop
 
@@ -3189,6 +3226,10 @@ define(function (require, exports, module) {
 
       getNumberOfRestraints: function() {
         return N_restraints;
+      },
+
+      getNumberOfSpringForces: function() {
+        return N_springForces;
       },
 
       /**
@@ -3605,7 +3646,6 @@ define(function (require, exports, module) {
     // To ensure that client code always has access to these public properties,
     // they should be initialized  only once during the engine lifetime (in the initialize method).
     engine.pairwiseLJProperties = pairwiseLJProperties;
-    engine.geneticProperties = geneticProperties;
 
     // Finally, return Public API.
     return engine;

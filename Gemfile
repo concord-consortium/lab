@@ -50,4 +50,9 @@ group :development do
   gem "capistrano",         "~> 2.14.2"
   gem "rvm-capistrano",     "~> 1.2.6"
 
+  # debuggers
+  gem "pry"
+  gem "pry-nav"
+  gem "pry-stack_explorer"
+
 end

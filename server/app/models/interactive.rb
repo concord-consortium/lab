@@ -19,7 +19,7 @@ class Interactive < BaseDataObject
   property :filteredOutputs,    [Object]
   property :parameters,         [Object]
 
-  validates_uniqueness_of :title, :scope => :group_id, :message => "has already been taken in this group"
+  validates_uniqueness_of :title, :scope => :group_id, :message => "title: '%{value}' has already been taken in this group"
   validates_presence_of :title
   validates_presence_of :path
 
@@ -47,9 +47,12 @@ class Interactive < BaseDataObject
 
   def update_interactive_models(models)
     models.all? do |im|
-      interactive_model = interactive_models.find(im[:id]).first
+      interactive_model = interactive_models.find{ |i| i.local_ref_id == im['id']}
       interactive_model.update_from_params(im)
     end
   end
 
+  def self.generate_id(url)
+    url.gsub("/","_").gsub('$','_').gsub(/^_/,"").gsub(".json","")
+  end
 end

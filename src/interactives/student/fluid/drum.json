@@ -1,0 +1,21 @@
+{
+  "title": "drum",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "drum$0",
+      "url": "imports/legacy-mw-content/converted/student/fluid/drum$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

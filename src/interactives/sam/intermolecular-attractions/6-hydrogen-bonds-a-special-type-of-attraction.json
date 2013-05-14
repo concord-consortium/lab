@@ -1,0 +1,75 @@
+{
+  "title": "Hydrogen Bonds: A Special Type of Attraction",
+  "publicationStatus": "public",
+  "subtitle": "Explore how polar molecules interact via hydrogen bonds.",
+  "fontScale": 0.99,
+  "about": [
+    "Explore hydrogen bonds forming between polar molecules, such as water. Hydrogen bonds are shown with dotted lines.",
+    "",
+    "Show partial charges and run the model. Where do hydrogen bonds form? Try changing the temperature",
+    "of the model. How does the pattern of hydrogen bonding explain the lattice that makes up ice crystals?"
+  ],
+  "models": [
+    {
+      "id": "page6$0",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page6/page6$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "set({temperatureControl: true}); set({targetTemperature: 10000});"
+    }
+  ],
+  "components": [
+    {
+      "type": "checkbox",
+      "id": "show_bonds",
+      "text": "Show hydrogen bonds",
+      "property": "showVDWLines"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_charge",
+      "text": "Show partial charges",
+      "property": "showChargeSymbols"
+    },
+    {
+      "type": "checkbox",
+      "id": "slow_motion2",
+      "text": "Slow motion",
+      "onClick": "if (value) { set({timeStep: 0.1}) } else { set({timeStep: 1})};"
+    },
+    {
+      "type": "button",
+      "id": "cool",
+      "text": "Cool",
+      "action": "adjustTemperature(0.9);"
+    },
+    {
+      "type": "button",
+      "id": "heat",
+      "text": "Heat",
+      "action": "adjustTemperature(1.1); limitHighTemperature(25000);"
+    },
+    {
+      "type": "barGraph",
+      "id": "thermometer",
+      "property": "temperature",
+      "title": "Thermometer",
+      "labels": 0,
+      "min": 0,
+      "max": 25000
+    }
+  ],
+  "layout": {
+    "right": [
+      "thermometer"
+    ],
+    "bottom": [
+      "cool",
+      "heat",
+      "show_bonds",
+      "show_charge",
+      "slow_motion2"
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Model_C",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "Model_C",
+      "url": "imports/legacy-mw-content/converted/tutorial/Model_C.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

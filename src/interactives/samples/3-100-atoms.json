@@ -1,0 +1,105 @@
+{
+  "title": "Charged and Neutral Atoms",
+  "publicationStatus": "sample",
+  "subtitle": "Explore Coulomb and intermolecular attractions.",
+  "about": [
+    "There are two kinds of attractive forces shown in this model: Coulomb forces (the attraction between ions)",
+    "and Van der Waals forces (an additional attractive force between all atoms).",
+    "",
+    "What kinds of patterns tend to form with charged and neutral atoms? How does changing the Van der Waals",
+    "attraction or charging the atoms affect the melting and boiling point of the substance?"
+  ],
+  "models": [
+    {
+      "id": "100-atoms-charged",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/100-atoms$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "onLoad": ""
+    }
+  ],
+  "components": [
+    {
+      "type": "checkbox",
+      "id": "charged-box",
+      "text": "Charge",
+      "property": "chargeShading",
+      "onClick": [
+        "if (value) {",
+          "var chargeVal = 1.5;",
+          "for (var i=0; i < getNumberOfAtoms(); i++) {",
+            "setAtomProperties(i, {charge: chargeVal}, false, false, {suppressRepaint: true});",
+            "chargeVal *= -1;",
+          "}",
+          "set({chargeShading: true});",
+        "}",
+        "else {",
+          "for (var i=0; i < getNumberOfAtoms(); i++) {",
+            "setAtomProperties(i, { charge: 0}, false, false, {suppressRepaint: true});",
+          "}",
+          "set({chargeShading: false});",
+        "}"
+      ]
+    },
+    {
+      "type": "slider",
+      "id": "epsilon-slider",
+      "min": 0.075,
+      "max": 0.300,
+      "initialValue": 0.14,
+      "displayValue": "return format('1.3f')(value)",
+      "labels": [
+        {
+          "value": 0.075,
+          "label": "Weak"
+        },
+        {
+          "value": 0.300,
+          "label": "Strong"
+        }
+      ],
+      "steps": 199,
+      "title": "Van der Waals attraction",
+      "action": "setElementProperties(2, { epsilon: -value });"
+    },
+    {
+      "type": "slider",
+      "id": "temperature-slider",
+      "min": 10,
+      "max": 5000,
+      "initialValue": 400,
+      "displayValue": "return format('4f')(value)",
+      "labels": [
+        {
+          "value": 10,
+          "label": "10 K"
+        },
+        {
+          "value": 5000,
+          "label": "5000 K"
+        }
+      ],
+      "steps": 499,
+      "title": "Temperature",
+      "action": "set({ targetTemperature: value });"
+    },
+    {
+      "type": "barGraph",
+      "id": "thermometer",
+      "property": "temperature",
+      "units": true,
+      "labelFormat": "3r",
+      "min": 0,
+      "max": 5000
+    }
+  ],
+  "layout": {
+    "right": [
+      "thermometer"
+    ],
+    "bottom": [
+      ["charged-box", "epsilon-slider", "temperature-slider"]
+    ]
+  }
+}

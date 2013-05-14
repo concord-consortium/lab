@@ -460,7 +460,7 @@
       </void> 
       <void property="text"> 
        <string>Non-polar and polar molecules:
-      Induced Dipole Attraction</string> 
+      induced dipole attraction</string> 
       </void> 
       <void property="x"> 
        <double>54.0</double> 

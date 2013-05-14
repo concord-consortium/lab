@@ -1,0 +1,21 @@
+{
+  "title": "script_while",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "script_while$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/script_while$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

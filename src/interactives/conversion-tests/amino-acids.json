@@ -1,0 +1,286 @@
+{
+  "title": "Amino Acids",
+  "publicationStatus": "draft",
+  "subtitle": "A basic test of the proteins engine.",
+  "fontScale": 0.6,
+  "about": [
+    "Using this interactive you can:",
+    "",
+    "- change type of amino acids (right click on the amino acid to open a special context menu)",
+    "- test various coloring schemes and label types",
+    "- watch their behavior in vacuum, oil and water",
+    "- modify strength of the force produced by the solvent",
+    "- switch on or off _realistic dielectric effect_",
+    "- experiment with advanced proteins engine settings like additional solvent force or polar amino acids attraction"
+
+  ],
+  "models": [
+    {
+      "id": "amino-acids$0",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/amino-acids$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "checkbox",
+      "id": "show-labels",
+      "text": "Use Three-Letter Codes",
+      "property": "useThreeLetterCode"
+    },
+    {
+      "type": "pulldown",
+      "id": "select-solvent",
+      "options": [
+        {
+          "text": "Select the solvent type",
+          "disabled": true,
+          "selected": true
+        },
+        {
+          "text": "vacuum",
+          "action": "setSolvent('vacuum');"
+        },
+        {
+          "text": "oil",
+          "action": "setSolvent('oil');"
+        },
+        {
+          "text": "water",
+          "action": "setSolvent('water');"
+        }
+      ]
+    },
+    {
+      "type": "slider",
+      "id": "solvent-force-factor-slider",
+      "title": "Solvent Force Factor",
+      "min": 0,
+      "max": 100,
+      "steps": 400,
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 100,
+          "label": "100"
+        }
+      ],
+      "displayValue": "return format('1.2f')(value)",
+      "property": "solventForceFactor"
+    },
+    {
+      "type": "slider",
+      "id": "add-solvent-force-mult-slider",
+      "title": "Additional Solvent Force Multiplier",
+      "min": 0,
+      "max": 50,
+      "steps": 100,
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 50,
+          "label": "50"
+        }
+      ],
+      "displayValue": "return format('1.2f')(value)",
+      "property": "additionalSolventForceMult"
+    },
+    {
+      "type": "slider",
+      "id": "add-solvent-force-threshold-slider",
+      "title": "Additional Solvent Force Threshold (distance)",
+      "min": 0,
+      "max": 10,
+      "steps": 100,
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 10,
+          "label": "10"
+        }
+      ],
+      "displayValue": "return format('1.2f')(value)",
+      "property": "additionalSolventForceThreshold"
+    },
+    {
+      "type": "slider",
+      "id": "epsilon-slider",
+      "min": -3.0,
+      "max": -0.1,
+      "displayValue": "return format('1.2f')(value)",
+      "labels": [
+        {
+          "value": -3.0,
+          "label": "-3.0"
+        },
+        {
+          "value": -0.1,
+          "label": "-0.1"
+        }
+      ],
+      "steps": 290,
+      "title": "Pairwise Epsilon of Polar Amino Acids",
+      "property": "polarAAEpsilon"
+    },
+    {
+      "type": "checkbox",
+      "id": "realistic-dielectric-effect",
+      "text": "Realistic Dielectric Effect",
+      "property": "realisticDielectricEffect"
+    },
+    {
+      "type": "pulldown",
+      "id": "select-color-scheme",
+      "options": [
+        {
+          "text": "Select the color scheme for the amino acids",
+          "disabled": true,
+          "selected": true
+        },
+        {
+          "text": "none",
+          "action": "set({aminoAcidColorScheme: 'none'});"
+        },
+        {
+          "text": "charge",
+          "action": "set({aminoAcidColorScheme: 'charge'});"
+        },
+        {
+          "text": "hydrophobicity",
+          "action": "set({aminoAcidColorScheme: 'hydrophobicity'});"
+        },
+        {
+          "text": "charge and hydrophobicity",
+          "action": "set({aminoAcidColorScheme: 'chargeAndHydro'});"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "id": "phobic-button",
+      "text": "All Hydrophobic",
+      "width": "14em",
+      "action": [
+        "var opt = {suppressRepaint: true};",
+        "var phobicAA = [5,9,12,14,15,17,18,19,22,23,24];",
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+          "setAtomProperties(i, {element: phobicAA[Math.round(Math.random()*(phobicAA.length-1))]}, false, false, opt);",
+        "}",
+        "repaint();"
+        ]
+    },
+    {
+      "type": "button",
+      "id": "philic-button",
+      "text": "All Hydrophilic",
+      "width": "14em",
+      "action": [
+        "var opt = {suppressRepaint: true};",
+        "var philicAA = [6,7,8,10,11,13,16,20,21];",
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+          "setAtomProperties(i, {element: philicAA[Math.round(Math.random()*(philicAA.length-1))]}, false, false, opt);",
+        "}",
+        "repaint();"
+        ]
+    },
+    {
+      "type": "button",
+      "id": "mostly-phobic-button",
+      "text": "Mostly Hydrophobic",
+      "width": "14em",
+      "action": [
+        "var opt = {suppressRepaint: true};",
+        "var phobicAA = [5,9,12,14,15,17,18,19,22,23,24];",
+        "var philicAA = [6,7,8,10,11,13,16,20,21];",
+        "var phobic,philic;",
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+          "phobic = phobicAA[Math.round(Math.random()*(phobicAA.length-1))];",
+          "philic = philicAA[Math.round(Math.random()*(philicAA.length-1))];",
+          "setAtomProperties(i, {element: (Math.random() > 0.2 ? phobic : philic) }, false, false, opt);",
+        "}",
+        "repaint();"
+        ]
+    },
+    {
+      "type": "button",
+      "id": "mostly-philic-button",
+      "text": "Mostly Hydrophilic",
+      "width": "14em",
+      "action": [
+        "var opt = {suppressRepaint: true};",
+        "var phobicAA = [5,9,12,14,15,17,18,19,22,23,24];",
+        "var philicAA = [6,7,8,10,11,13,16,20,21];",
+        "var phobic,philic;",
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+          "phobic = phobicAA[Math.round(Math.random()*(phobicAA.length-1))];",
+          "philic = philicAA[Math.round(Math.random()*(philicAA.length-1))];",
+          "setAtomProperties(i, {element: (Math.random() < 0.2 ? phobic : philic) }, false, false, opt);",
+        "}",
+        "repaint();"
+        ]
+    },
+    {
+      "type": "button",
+      "id": "random-button",
+      "text": "Random Mix",
+      "width": "14em",
+      "action": [
+        "var opt = {suppressRepaint: true};",
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+          "setAtomProperties(i, {element: (Math.floor(Math.random() * 20) + 5)}, false, false, opt);",
+        "}",
+        "repaint();"
+        ]
+    },
+    {
+      "type": "button",
+      "id": "random-protein-button",
+      "text": "Generate Random Protein",
+      "width": "14em",
+      "action": "generateRandomProtein(80);"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      ["show-labels", "select-color-scheme"],
+      ["select-solvent", "solvent-force-factor-slider", "realistic-dielectric-effect"],
+      ["add-solvent-force-mult-slider", "add-solvent-force-threshold-slider"],
+      ["epsilon-slider"]
+    ],
+    "right": [
+      ["random-protein-button"],
+      ["phobic-button"],
+      ["philic-button"],
+      ["mostly-phobic-button"],
+      ["mostly-philic-button"],
+      ["random-button"]
+    ]
+  },
+  "template": [
+    {
+      "id": "bottom",
+      "padding-top": "1em",
+      "top": "model.bottom"
+    },
+    {
+      "id": "right",
+      "top": "2em",
+      "width": "16em",
+      "left": "model.right",
+      "padding-left": "1em",
+      "align": "left"
+    }
+  ]
+}

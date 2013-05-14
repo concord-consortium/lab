@@ -1,0 +1,130 @@
+{
+  "title": "What is Pressure?",
+  "publicationStatus": "public",
+  "subtitle": "Explore how gas exerts pressure on the sides of a container.",
+  "about": [
+    "Gases have no definite shape or volume. When they are constrained to a container,",
+    "we can measure the pressure they exert on the container walls.",
+    "",
+    "The model shows the inside (yellow atoms) and outside (green atoms) of a balloon.",
+    "The teal barrier represents the wall of the balloon.",
+    "",
+    "Add atoms to the balloon. Watch what happens."
+  ],
+  "models": [
+    {
+      "id": "page2$0",
+      "url": "imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page2/page2$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "textBoxes": [
+          {
+            "text": "Inside balloon",
+            "x": 0.70,
+            "y": 2.45,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(250,250,250)"
+          },
+          {
+            "text": "Outside balloon",
+            "x": 3.35,
+            "y": 2.45,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(250,250,250)"
+          },
+          {
+            "text": "Balloon skin",
+            "x": 2.1593974304199217,
+            "y": 1.5,
+            "width": 0.3,
+            "textAlign": "center",
+            "layer": 1,
+            "hostType": "RectangularObstacle",
+            "hostIndex": 0
+          },
+          {
+            "text": "Atoms inside: 40",
+            "x": 0.70,
+            "y": 0.25,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(160,206,219)"
+          }
+        ]
+      },
+      "onLoad": [
+        "onPropertyChange('atomInside', function(n) {",
+        "  setTextBoxProperties(3, {text: 'Atoms inside: ' + n}) ",
+        "});"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "atomInside",
+      "label": "Atoms inside balloon",
+      "value": [
+        "var atomNum = 0;",
+        "var obsX = getObstacleProperties(0).x;",
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+        "  if (getAtomProperties(i).x < obsX) {",
+        "    atomNum++;",
+        "  }",
+        "}",
+        "return atomNum;"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "checkbox",
+      "id": "show-velocity",
+      "text": "Show velocity",
+      "property": "showVelocityVectors"
+    },
+    {
+      "type": "button",
+      "id": "add-atom",
+      "text": "Add an atom to the balloon",
+      "action": [
+        "var elemNum = 3;",
+        "var obsX = getObstacleProperties(0).x;",
+        "var atomSigma = getElementProperties(elemNum).sigma;",
+        "var avgVx = 0;",
+        "var avgVy = 0;",
+        "var atomNum = getNumberOfAtoms();",
+        "for (var i = 0; i < atomNum; i++) {",
+        "  avgVx += Math.abs(getAtomProperties(i).vx);",
+        "  avgVy += Math.abs(getAtomProperties(i).vy);",
+        "}",
+        "avgVx /= atomNum;",
+        "avgVy /= atomNum;",
+        "addAtom({ element: elemNum, x: (obsX - atomSigma) * Math.random()  , y: get('height') * Math.random(), vx: avgVx, vy: avgVy});"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "remove-atom",
+      "text": "Remove an atom from the balloon",
+      "action": [
+        "var atomNum = getNumberOfAtoms();",
+        "var obsx = getObstacleProperties(0).x;",
+        "if (atomNum > 0) {",
+        "  for (var i = 0; i < atomNum; i++) {",
+        "    if (getAtomProperties(i).x < obsx) {",
+        "      removeAtom(i);",
+        "      break;",
+        "    }",
+        "  }",
+        "}"
+      ]
+    }
+  ],
+  "layout": {
+    "bottom": [
+      ["add-atom", "remove-atom", "show-velocity"]
+    ]
+  }
+}

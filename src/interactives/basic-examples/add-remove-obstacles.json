@@ -1,0 +1,63 @@
+{
+  "title": "Add Remove Obstacles",
+  "publicationStatus": "public",
+  "subtitle": "Creating and interacting with Obstacles using scripts.",
+  "about": "",
+  "fontScale": 0.9,
+  "models": [
+    {
+      "id": "three-atoms-three-elements$0",
+      "url": "imports/legacy-mw-content/converted/potential-tests/three-atoms-three-elements/three-atoms-three-elements$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name":  "numObstacles",
+      "label": "Number of Obstacles",
+      "value": [
+          "return getNumberOfObstacles();"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "add-obstacle-1",
+      "text": "Place an obstacle at (0.1, 0.1)",
+      "action": "addObstacle({ x: 0.1, y: 0.1, width: 0.5, height: 0.5 });"
+    },
+    {
+      "type": "button",
+      "id": "add-obstacle-2",
+      "text": "Place an obstacle at (0.1, 0.1), silent: true",
+      "action": "addObstacle({ x: 0.1, y: 0.1, width: 0.5, height: 0.5 }, {silent: true});"
+    },
+    {
+      "type": "button",
+      "id": "add-obstacle-3",
+      "text": "Place an obstacle colliding with atoms",
+      "action": "addObstacle({ x: 2, y: 1.25, width: 0.5, height: 0.5 });"
+    },
+    {
+      "type": "button",
+      "id": "rm-obstacle-1",
+      "text": "Remove first obstacle in list",
+      "action": "removeObstacle(0);"
+    },
+    {
+      "type": "button",
+      "id": "rm-obstacle-2",
+      "text": "Remove first obstacle, silent: true",
+      "action": "removeObstacle(0, {silent: true});"
+    },
+    {
+      "type": "numericOutput",
+      "id": "current-obstacles",
+      "property": "numObstacles",
+      "displayValue": "return format('f')(value)"
+    }
+  ]
+}

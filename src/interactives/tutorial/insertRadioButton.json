@@ -1,0 +1,21 @@
+{
+  "title": "insertRadioButton",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "insertRadioButton$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/insertRadioButton$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

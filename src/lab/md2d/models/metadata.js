@@ -13,19 +13,15 @@ define(function() {
         immutable: true
       },
       minX: {
-        defaultValue: 0,
         serialize: false
       },
       maxX: {
-        defaultValue: 10,
         serialize: false
       },
       minY: {
-        defaultValue: 0,
         serialize: false
       },
       maxY: {
-        defaultValue: 10,
         serialize: false
       },
       width: {
@@ -42,28 +38,34 @@ define(function() {
         defaultValue: "md2d"
       },
       lennardJonesForces: {
-        defaultValue: true
+        defaultValue: true,
+        storeInTickHistory: true
       },
       coulombForces: {
-        defaultValue: true
+        defaultValue: true,
+        storeInTickHistory: true
       },
       temperatureControl: {
-        defaultValue: false
+        defaultValue: false,
+        storeInTickHistory: true
       },
       targetTemperature: {
         defaultValue: 300,
-        unitType: "temperature"
+        unitType: "temperature",
+        storeInTickHistory: true
       },
       modelSampleRate: {
         defaultValue: "default"
       },
       gravitationalField: {
         defaultValue: false,
-        unitType: "acceleration"
+        unitType: "acceleration",
+        storeInTickHistory: true
       },
       timeStep: {
         defaultValue: 1,
-        unitType: "time"
+        unitType: "time",
+        storeInTickHistory: true
       },
       dielectricConstant: {
         defaultValue: 1
@@ -98,48 +100,65 @@ define(function() {
         defaultValue: -2
       },
       viscosity: {
-        defaultValue: 1
+        defaultValue: 1,
+        storeInTickHistory: true
       },
       timeStepsPerTick: {
-        defaultValue: 50
+        defaultValue: 50,
+        storeInTickHistory: true
+      },
+      geneticEngineState: {
+        defaultValue: "dna"
+      },
+      DNA: {
+        defaultValue: ""
+      },
+      DNAComplement: {
+        serialize: false
+      },
+      mRNA: {
+        serialize: false
+      },
+      quantumDynamics: {
+
       }
     },
 
     viewOptions: {
       viewPortWidth: {
-        defaultValue: 10,
         unitType: "length",
         immutable: true
       },
       viewPortHeight: {
-        defaultValue: 10,
         unitType: "length",
         immutable: true
+      },
+      viewPortZoom: {
+        defaultValue: 1
       },
       viewPortX: {
-        defaultValue: 0,
-        unitType: "length",
-        immutable: true
+        unitType: "length"
       },
       viewPortY: {
-        defaultValue: 0,
-        unitType: "length",
-        immutable: true
+        unitType: "length"
       },
       backgroundColor: {
         defaultValue: "#eeeeee"
       },
       showClock: {
-        defaultValue: true
+        defaultValue: true,
+        storeInTickHistory: true
       },
       markColor: {
         defaultValue: "#f8b500"
       },
       keShading: {
-        defaultValue: false
+        defaultValue: false,
+        storeInTickHistory: true
       },
       chargeShading: {
-        defaultValue: false
+        defaultValue: false,
+        storeInTickHistory: true
       },
       useThreeLetterCode: {
         defaultValue: true
@@ -151,16 +170,19 @@ define(function() {
         defaultValue: true
       },
       showVDWLines: {
-        defaultValue: false
+        defaultValue: false,
+        storeInTickHistory: true
       },
       VDWLinesCutoff: {
         defaultValue: "medium"
       },
       showVelocityVectors: {
-        defaultValue: false
+        defaultValue: false,
+        storeInTickHistory: true
       },
       showForceVectors: {
-        defaultValue: false
+        defaultValue: false,
+        storeInTickHistory: true
       },
       showAtomTrace: {
         defaultValue: false
@@ -295,6 +317,15 @@ define(function() {
         readOnly: true,
         unitType: "velocity",
         serialize: false
+      },
+      mass: {
+        // Mass is defined per element, but this is a convenience shortcut for
+        // quick access to mass of the given atom.
+        readOnly: true,
+        unitType: "mass",
+        serialize: false
+      },
+      excitation: {
       }
     },
 
@@ -495,41 +526,6 @@ define(function() {
       }
     },
 
-    geneticProperties: {
-      DNA: {
-        defaultValue: ""
-      },
-      DNAComplement: {
-        readOnly: true,
-        serialize: false
-      },
-      mRNA: {
-        // Immutable directly via set method.
-        // Use provided API to generate mRNA.
-        immutable: true
-      },
-      translationStep: {
-        // When this property is undefined, it means that the translation
-        // hasn't been yet started. Note that when translation is finished,
-        // translationStep will be equal to "end".
-        // Immutable directly via set method.
-        // Use provided API to translate step by step.
-        immutable: true
-      },
-      x: {
-        defaultValue: 0.01
-      },
-      y: {
-        defaultValue: 0.01
-      },
-      height: {
-        defaultValue: 0.12
-      },
-      width: {
-        defaultValue: 0.08
-      }
-    },
-
     textBox: {
       text: {
         defaultValue: ""
@@ -552,6 +548,7 @@ define(function() {
       height: {},
       frame: {},
       color: {},
+      calloutPoint: {},
       backgroundColor: {
         defaultValue: "white"
       },
@@ -570,6 +567,18 @@ define(function() {
       hostType: {},
       hostIndex: {},
       textAlign: {}
+    },
+
+    quantumDynamics: {
+      useQuantumDynamics: {
+        defaultValue: false
+      },
+      elementEnergyLevels: {
+        defaultValue: []
+      },
+      radiationlessEmissionProb: {
+        defaultValue: 1
+      }
     }
   };
 });

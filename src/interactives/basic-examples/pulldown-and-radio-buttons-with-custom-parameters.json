@@ -1,0 +1,220 @@
+{
+  "title": "Pulldowns, radio buttons and custom parameters",
+  "publicationStatus": "public",
+  "subtitle": "Testing property/value based pulldown and radio-button group using derived properties such as startingLength and startingAngle.",
+  "about": "",
+  "fontScale": 0.8,
+  "models": [
+    {
+      "id": "pendulum1$0",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/pendulum1$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "velocityVectors": {
+          "length": 10
+        }
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "startingGravity",
+      "onChange": "set({ gravitationalField: value*8e-8 });",
+      "initialValue": 1.0
+    },
+    {
+      "name": "startingLength",
+      "onChange": "var len = value/1.5, a0 = getAtomProperties(0), a1 = getAtomProperties(1), angle = Math.atan((a1.x-a0.x)/(a0.y-a1.y)); setRadialBondProperties(0, { length: len }); setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});",
+      "initialValue": 1.5
+    },
+    {
+      "name": "startingAngle",
+      "onChange": "var a0 = getAtomProperties(0), angle = value*deg2rad, len = getRadialBondProperties(0).length; setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});",
+      "initialValue": 45
+    },
+    {
+      "name": "ballMass",
+      "onChange": "var mass = value*12; setElementProperties(3, { mass: mass });",
+      "initialValue": 150
+    },
+    {
+      "name": "ballFriction",
+      "onChange": "setAtomProperties(1, { friction: value });",
+      "initialValue": 0
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "gravity-slider",
+      "min": 0.1,
+      "max": 4,
+      "width": "14em",
+      "displayValue": "return format('1.1f')(value)",
+      "labels": [
+        {
+          "value": 0.1,
+          "label": "0.1"
+        },
+        {
+          "value": 4,
+          "label": "4.0"
+        }
+      ],
+      "steps": 39,
+      "title": "Starting Gravity",
+      "property": "startingGravity"
+    },
+    {
+      "type": "pulldown",
+      "id": "length-pulldown",
+      "property": "startingLength",
+      "label": "Starting Length",
+      "labelOn": "top",
+      "options": [
+        {
+          "text": "Starting Length ...",
+          "disabled": true
+        },
+        {
+          "text": "0.5",
+          "value": 0.5
+        },
+        {
+          "text": "0.75",
+          "value": 0.75
+        },
+        {
+          "text": "1.0",
+          "value": 1.0
+        },
+        {
+          "text": "1.25",
+          "value": 1.25
+        },
+        {
+          "text": "1.5",
+          "value": 1.5
+        },
+        {
+          "text": "1.75",
+          "value": 1.75
+        }
+      ]
+    },
+    {
+      "type": "radio",
+      "id": "angle-buttons",
+      "orientation": "horizontal",
+      "property": "startingAngle",
+      "label": "Starting Angle",
+      "labelOn": "top",
+      "options": [
+        {
+          "text": "45",
+          "value": 45
+        },
+        {
+          "text": "30",
+          "value": 30
+        },
+        {
+          "text": "15",
+          "value": 15
+        }
+      ]
+    },
+    {
+      "type": "slider",
+      "id": "mass-slider",
+      "min": 10,
+      "max": 500,
+      "width": "14em",
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": 10,
+          "label": "10"
+        },
+        {
+          "value": 500,
+          "label": "500"
+        }
+      ],
+      "steps": 49,
+      "title": "Mass of the ball (grams)",
+      "property": "ballMass"
+    },
+    {
+      "type": "slider",
+      "id": "friction-slider",
+      "min": 0,
+      "max": 1,
+      "width": "14em",
+      "displayValue": "return format('1.1f')(value)",
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 1,
+          "label": "1.0"
+        }
+      ],
+      "steps": 25,
+      "title": "Friction",
+      "property": "ballFriction"
+    },
+    {
+      "type": "checkbox",
+      "id": "ke-shading",
+      "text": "KE Shading",
+      "width": "14em",
+      "property": "keShading"
+    },
+    {
+      "type": "checkbox",
+      "id": "velocity-vectors",
+      "text": "Velocity Vectors",
+      "width": "14em",
+      "property": "showVelocityVectors"
+    },
+    {
+      "type": "graph",
+      "id": "propertiesGraph",
+      "title": "Energy of the System (KE:red, PE:green, TE:blue)",
+      "xlabel": "Model Time (ps)",
+      "ylabel": "eV",
+      "ymin": -0.1,
+      "ymax": 1,
+      "xmax": 50,
+      "properties": [
+        "kineticEnergy",
+        "potentialEnergy",
+        "totalEnergy"
+      ]
+    }
+  ],
+  "layout": {
+    "right": [
+      "propertiesGraph"
+    ],
+    "bottom": [
+      [
+        "gravity-slider",
+        "angle-buttons",
+        "length-pulldown"
+      ],
+      [
+        "mass-slider",
+        "friction-slider"
+      ],
+      [
+        "velocity-vectors",
+        "ke-shading"
+      ]
+    ]
+  },
+  "template": "wide-right"
+}

@@ -407,7 +407,10 @@
 endif;</string> 
      </void> 
     </object> 
-   </void> 
+   </void>
+   <void property="showClock"> 
+    <boolean>false</boolean> 
+   </void>
   </void> 
   <void property="timeStep"> 
    <double>1.0</double> 

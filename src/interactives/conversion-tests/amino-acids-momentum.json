@@ -1,0 +1,217 @@
+{
+  "title": "Amino Acids Momentum Test",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "fontScale": 0.6,
+  "about": [
+    "A simple test checking whether the total momentum of each molecule (amino acids chain)",
+    "is always equal to zero.",
+    "",
+    "Amino acids in water or oil are pushed toward the molecule center of mass or in the opposite",
+    "direction (it depends on the hydrophobicity of the amino acids). In most cases the sum of",
+    "these forces would be different from zero and would cause a confusing movement of the molecule.",
+    "They would drift and collide with boundaries.",
+    "",
+    "To avoid this effect, Next Gen MW modifies velocities of each particle to ensure that the",
+    "total momentum of the whole molecule is <b>always</b> equal to zero.",
+    "",
+    "That's why you can observe that each molecule holds its initial position."
+  ],
+  "models": [
+    {
+      "id": "amino-acids$0",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/amino-acids-momentum$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      },
+      "modelOptions": {
+        "solventForceFactor": 1.25,
+        "additionalSolventForceMult" : 4,
+        "additionalSolventForceThreshold": 10,
+        "polarAAEpislon": -2
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "polarAAEpislon",
+      "label": "epsilon",
+      "onChange": [
+        "var i, j, len;",
+        "var polarAAs = [7, 10, 20, 21];",
+        "for (i = 0, len = polarAAs.length; i < len; i++) {",
+        "  for (j = i + 1; j < len; j++) {",
+        "    setPairwiseLJProperties(polarAAs[i], polarAAs[j], { epsilon: value });",
+        "  }",
+        "}"
+      ],
+      "initialValue": -2.0
+    }
+  ],
+  "components": [
+    {
+      "type": "pulldown",
+      "id": "select-solvent",
+      "options": [
+        {
+          "text": "Select the solvent type",
+          "disabled": true,
+          "selected": true
+        },
+        {
+          "text": "vacuum",
+          "action": "setSolvent('vacuum');"
+        },
+        {
+          "text": "oil",
+          "action": "setSolvent('oil');"
+        },
+        {
+          "text": "water",
+          "action": "setSolvent('water');"
+        }
+      ]
+    },
+    {
+      "type": "slider",
+      "id": "solvent-force-factor-slider",
+      "title": "Solvent Force Factor",
+      "min": 0,
+      "max": 3,
+      "steps": 300,
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 3,
+          "label": "3"
+        }
+      ],
+      "displayValue": "return format('1.2f')(value)",
+      "property": "solventForceFactor"
+    },
+    {
+      "type": "slider",
+      "id": "solvent-force-factor-slider",
+      "title": "Solvent Force Factor",
+      "min": 0,
+      "max": 100,
+      "steps": 400,
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 100,
+          "label": "100"
+        }
+      ],
+      "displayValue": "return format('1.2f')(value)",
+      "property": "solventForceFactor"
+    },
+    {
+      "type": "slider",
+      "id": "add-solvent-force-mult-slider",
+      "title": "Additional Solvent Force Multiplier",
+      "min": 0,
+      "max": 50,
+      "steps": 100,
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 50,
+          "label": "50"
+        }
+      ],
+      "displayValue": "return format('1.2f')(value)",
+      "property": "additionalSolventForceMult"
+    },
+    {
+      "type": "slider",
+      "id": "add-solvent-force-threshold-slider",
+      "title": "Additional Solvent Force Threshold (distance)",
+      "min": 0,
+      "max": 10,
+      "steps": 100,
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 10,
+          "label": "10"
+        }
+      ],
+      "displayValue": "return format('1.2f')(value)",
+      "property": "additionalSolventForceThreshold"
+    },
+    {
+      "type": "slider",
+      "id": "epsilon-slider",
+      "min": -3.0,
+      "max": -0.1,
+      "displayValue": "return format('1.2f')(value)",
+      "labels": [
+        {
+          "value": -3.0,
+          "label": "-3.0"
+        },
+        {
+          "value": -0.1,
+          "label": "-0.1"
+        }
+      ],
+      "steps": 290,
+      "title": "Pairwise Epsilon of Polar Amino Acids",
+      "property": "polarAAEpislon"
+    },
+    {
+      "type": "checkbox",
+      "id": "realistic-dielectric-effect",
+      "text": "Realistic Dielectric Effect",
+      "property": "realisticDielectricEffect"
+    },
+    {
+      "type": "checkbox",
+      "id": "realistic-dielectric-effect",
+      "text": "Realistic Dielectric Effect",
+      "property": "realisticDielectricEffect"
+    },
+    {
+      "type": "pulldown",
+      "id": "select-color-scheme",
+      "options": [
+        {
+          "text": "Select the color scheme for the amino acids",
+          "disabled": true,
+          "selected": true
+        },
+        {
+          "text": "none",
+          "action": "set({aminoAcidColorScheme: 'none'});"
+        },
+        {
+          "text": "charge",
+          "action": "set({aminoAcidColorScheme: 'charge'});"
+        },
+        {
+          "text": "hydrophobicity",
+          "action": "set({aminoAcidColorScheme: 'hydrophobicity'});"
+        },
+        {
+          "text": "charge and hydrophobicity",
+          "action": "set({aminoAcidColorScheme: 'chargeAndHydro'});"
+        }
+      ]
+    }
+  ],
+  "layout": {}
+}

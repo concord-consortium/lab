@@ -1,0 +1,21 @@
+{
+  "title": "magneticreverse$1",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "magneticreverse$1",
+      "url": "imports/legacy-mw-content/converted/tutorial/magneticreverse$1.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "solid",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "solid",
+      "url": "imports/legacy-mw-content/converted/tutorial/solid.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

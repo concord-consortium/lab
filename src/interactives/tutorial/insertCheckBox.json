@@ -1,0 +1,21 @@
+{
+  "title": "insertCheckBox",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "insertCheckBox$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/insertCheckBox$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

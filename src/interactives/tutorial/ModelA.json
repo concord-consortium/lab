@@ -1,0 +1,21 @@
+{
+  "title": "ModelA",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "ModelA",
+      "url": "imports/legacy-mw-content/converted/tutorial/ModelA.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

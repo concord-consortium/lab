@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 12.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 51448)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
-	<!ENTITY ns_svg "http://www.w3.org/2000/svg">
-	<!ENTITY ns_xlink "http://www.w3.org/1999/xlink">
-]>
-<svg  version="1.1" id="svg" xmlns="&ns_svg;" xmlns:xlink="&ns_xlink;" width="191" height="25.111" viewBox="0 0 191 25.111"
-	 overflow="visible" enable-background="new 0 0 191 25.111" xml:space="preserve">
-<path fill="#FFFFFF" stroke="#000000" d="M190.5,12.611c0,6.627-5.373,12-12,12h-166c-6.627,0-12-5.373-12-12V12.5
-	c0-6.627,5.373-12,12-12h166c6.627,0,12,5.373,12,12V12.611z"/>
-<text transform="matrix(1 0 0 1 23.4995 16.6069)" font-family="'Lato-Regular'" font-size="12">oxygen</text>
-<text transform="matrix(1 0 0 1 97.833 16.6104)" font-family="'Lato-Regular'" font-size="12">carbon dioxide</text>
-<circle fill="#F2EA1B" stroke="#000000" cx="13.167" cy="12.556" r="5.667"/>
-<circle fill="#8F71B2" stroke="#000000" cx="85.833" cy="12.556" r="5.667"/>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="157.815px" height="32.562px" viewBox="0 4.833 157.815 32.562" enable-background="new 0 4.833 157.815 32.562"
+	 xml:space="preserve">
+<path fill="#FFFFFF" stroke="#010101" d="M157.375,21.167c0.01,8.633-4.414,15.641-9.875,15.646L10.655,36.959
+	c-5.463,0.007-9.901-6.992-9.91-15.626v-0.145C0.735,12.551,5.157,5.546,10.62,5.541l136.845-0.145
+	c5.463-0.006,9.9,6.991,9.908,15.627v0.145H157.375z"/>
+<text transform="matrix(1 0 0 1 29.7495 26.4331)" fill="#010101" font-family="'Lato-Regular'" font-size="22">O</text>
+<text transform="matrix(0.583 0 0 0.583 47.3052 33.7593)" fill="#010101" font-family="'Lato-Regular'" font-size="22">2</text>
+<text transform="matrix(1 0 0 1 102.3325 27.0112)" fill="#010101" font-family="'Lato-Regular'" font-size="22">CO</text>
+<text transform="matrix(0.583 0 0 0.583 134.9585 34.3374)" fill="#010101" font-family="'Lato-Regular'" font-size="22">2</text>
+<circle fill="#F1E91A" stroke="#010101" cx="18.417" cy="19.577" r="5.667"/>
+<circle fill="#8F72B3" stroke="#010101" cx="90.5" cy="19.577" r="5.667"/>
 </svg>

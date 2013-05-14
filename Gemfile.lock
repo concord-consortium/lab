@@ -30,6 +30,8 @@ GEM
       multi_json (~> 1.0)
     archive-tar-minitar (0.5.2)
     arel (3.0.2)
+    binding_of_caller (0.7.1)
+      debug_inspector (>= 0.0.1)
     bourbon (3.1.1)
       sass (>= 3.2.0)
       thor
@@ -59,6 +61,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.4.0)
+    debug_inspector (0.0.2)
     diff-lcs (1.2.1)
     em-websocket (0.4.0)
       eventmachine (>= 0.12.9)
@@ -167,6 +170,11 @@ GEM
       coderay (~> 1.0.5)
       method_source (~> 0.8)
       slop (~> 3.4)
+    pry-nav (0.2.3)
+      pry (~> 0.9.10)
+    pry-stack_explorer (0.4.9)
+      binding_of_caller (>= 0.7)
+      pry (~> 0.9.11)
     rack (1.4.5)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -239,6 +247,9 @@ DEPENDENCIES
   librarian (~> 0.0.26)
   mustache (~> 0.99.4)
   neat (~> 1.2.0)
+  pry
+  pry-nav
+  pry-stack_explorer
   rails (~> 3.2.12)
   rake (~> 10.0.3)
   rb-fsevent (~> 0.9.3)

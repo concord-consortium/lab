@@ -1,0 +1,64 @@
+{
+  "title": "Phase Changes Caused by Energy Input",
+  "publicationStatus": "public",
+  "subtitle": "196 uncharged and unbonded atoms with about 400 VDW lines rendered.",
+  "about": "",
+  "models": [
+    {
+      "id": "page6$0",
+      "url": "imports/legacy-mw-content/converted/benchmarks/phase-change-energy-input/page6$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "set({ showClock: true})"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "largeAtomKE",
+      "label": "Kinetic energy of large atoms",
+      "unitType": "energy",
+      "value": [
+        "var largeKE = 0;",
+        "var numLarge = 0;",
+        "var elemNum = 3;",
+        "var mass = getElementProperties(elemNum).mass;",
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+        "  if (getAtomProperties(i).element == elemNum) {",
+        "    largeKE += 0.5 * mass * Math.pow(getAtomProperties(i).speed,2);",
+        "    numLarge++;",
+        "  }",
+        "}",
+        "return (largeKE/numLarge)*100000;"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "checkbox",
+      "id": "ke-shading",
+      "text": "KE shading",
+      "property": "keShading"
+    },
+    {
+      "type": "button",
+      "id": "withdraw-barrier",
+      "text": "Withdraw the barrier",
+      "action": "removeObstacle(0);"
+    },
+    {
+      "type": "barGraph",
+      "id": "bar-graph",
+      "min": 0,
+      "max": 5,
+      "title": "Avg. Kinetic Energy of Large Atoms",
+      "property": "largeAtomKE"
+    }
+  ],
+  "layout": {
+    "right": [
+      "bar-graph"
+    ]
+  },
+  "template": "narrow-right"
+}

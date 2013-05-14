@@ -32,8 +32,12 @@ define(function (require) {
       SemanticLayout          = require('common/layout/semantic-layout'),
       templates               = require('common/layout/templates'),
 
-      MD2DModelController     = require('md2d/controllers/controller'),
-      SolarSystemModelController = require('solar-system/controllers/controller'),
+      ModelControllerFor = {
+        'md2d':             require('md2d/controllers/controller'),
+        'solar-system':     require('solar-system/controllers/controller'),
+        'signal-generator': require('signal-generator/controller'),
+        'sensor':           require('sensor/controller')
+      },
 
       // Set of available components.
       // - Key defines 'type', which is used in the interactive JSON.
@@ -248,14 +252,13 @@ define(function (require) {
       function createModelController(type, modelUrl, modelConfig) {
         // set default model type to "md2d"
         var modelType = type || "md2d";
-        switch(modelType) {
-          case "md2d":
-          modelController = new MD2DModelController(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions, controller);
-          break;
-          case "solar-system":
-          modelController = new SolarSystemModelController(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions, controller);
-          break;
+
+        if (ModelControllerFor[modelType] == null) {
+          throw new Error("Couldn't understand modelType '" + modelType + "'!");
         }
+
+        modelController = new ModelControllerFor[modelType](modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions, controller);
+
         // Extending universal Interactive scriptingAPI with model-specific scripting API
         if (modelController.ScriptingAPI) {
           scriptingAPI.extend(modelController.ScriptingAPI);

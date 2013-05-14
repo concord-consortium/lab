@@ -1,0 +1,21 @@
+{
+  "title": "phasedetection",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "phasedetection$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/phasedetection$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

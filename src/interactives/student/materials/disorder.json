@@ -1,0 +1,21 @@
+{
+  "title": "disorder",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "disorder$0",
+      "url": "imports/legacy-mw-content/converted/student/materials/disorder$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

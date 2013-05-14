@@ -1,0 +1,22 @@
+{
+  "title": "Empty",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "model1",
+      "url": "imports/legacy-mw-content/converted/sam-activities/diffusion/original/empty.json"
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "add-atom",
+      "text": "Add atoms",
+      "action": "var i = 5; while (i--) addRandomAtom();"
+    }
+  ],
+  "layout": {
+  }
+}

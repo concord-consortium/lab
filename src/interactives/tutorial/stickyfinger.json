@@ -1,0 +1,21 @@
+{
+  "title": "stickyfinger",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "stickyfinger",
+      "url": "imports/legacy-mw-content/converted/tutorial/stickyfinger.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

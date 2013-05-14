@@ -1,0 +1,21 @@
+{
+  "title": "hexshockwave_thermalexpansion",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "hexshockwave_thermalexpansion",
+      "url": "imports/legacy-mw-content/converted/student/materials/hexshockwave_thermalexpansion.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

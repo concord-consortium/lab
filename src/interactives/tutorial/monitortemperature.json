@@ -1,0 +1,21 @@
+{
+  "title": "monitortemperature",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "monitortemperature$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/monitortemperature$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

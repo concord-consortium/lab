@@ -1,0 +1,21 @@
+{
+  "title": "autostop",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "autostop$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/autostop$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

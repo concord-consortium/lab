@@ -1,0 +1,21 @@
+{
+  "title": "mixturediffusion",
+  "publicationStatus": "broken",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "mixturediffusion$0",
+      "url": "imports/legacy-mw-content/converted/student/motionandforce/mixturediffusion$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

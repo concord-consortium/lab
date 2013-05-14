@@ -1,0 +1,108 @@
+{
+  "title": "100 Charged Atoms",
+  "publicationStatus": "public",
+  "subtitle": "100 charged unbonded atoms: benchmarking long-range pairwise (Coulomb) calculations.",
+  "about": [
+    "This model has 100 charged atoms, this means that the modeling engine spends proportionally more time calculating pairwise forces for the long-range Coulomb forces than in some of the other models.",
+    "Since there are no bonds and no display of VDW lines the view is less computationaly intensive than other benchmarks."
+  ],
+  "models": [
+    {
+      "id": "100-atoms-charged",
+      "url": "imports/legacy-mw-content/converted/benchmarks/100-atoms/100-atoms-charged.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "set({ showClock: true})"
+    }
+  ],
+  "components": [
+    {
+      "type": "pulldown",
+      "id": "pulldown1",
+      "label": "Select Atoms",
+      "options": [
+        {
+          "text": "Charged Atoms",
+          "action": [
+            "var chargeVal = 1;",
+            "for (var i=0; i < getNumberOfAtoms(); i++) {",
+              "setAtomProperties(i, {charge: chargeVal}, false, false, {suppressRepaint: true});",
+              "chargeVal *= -1;",
+            "}",
+            "set({chargeShading: true});"
+          ]
+        },
+        {
+          "text": "Neutral Atoms",
+          "action": [
+            "for (var i=0; i < getNumberOfAtoms(); i++) {",
+              "setAtomProperties(i, { charge: 0}, false, false, {suppressRepaint: true});",
+            "}",
+            "set({chargeShading: false});"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "slider",
+      "id": "epsilon-slider",
+      "min": 0.075,
+      "max": 0.300,
+      "initialValue": 0.14,
+      "displayValue": "return format('1.3f')(value)",
+      "labels": [
+        {
+          "value": 0.075,
+          "label": "weak"
+        },
+        {
+          "value": 0.300,
+          "label": "strong"
+        }
+      ],
+      "steps": 199,
+      "title": "Van der Waals Atrraction",
+      "action": "setElementProperties(2, { epsilon: -value });"
+    },
+    {
+      "type": "slider",
+      "id": "temperature-slider",
+      "min": 10,
+      "max": 5000,
+      "initialValue": 400,
+      "displayValue": "return format('4f')(value)",
+      "labels": [
+        {
+          "value": 10,
+          "label": "10 K"
+        },
+        {
+          "value": 5000,
+          "label": "5000 K"
+        }
+      ],
+      "steps": 499,
+      "title": "Temperature",
+      "action": "set({ targetTemperature: value });"
+    },
+    {
+      "type": "barGraph",
+      "id": "thermometer",
+      "property": "temperature",
+      "units": true,
+      "min": 0,
+      "max": 5000
+    }
+  ],
+  "layout": {
+    "right": [
+      "thermometer"
+    ],
+    "bottom": [
+      "pulldown1",
+      "epsilon-slider",
+      "temperature-slider"
+    ]
+  }
+}

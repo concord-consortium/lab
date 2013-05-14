@@ -1,0 +1,21 @@
+{
+  "title": "alphatext",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "alphatext",
+      "url": "imports/legacy-mw-content/converted/tutorial/alphatext.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

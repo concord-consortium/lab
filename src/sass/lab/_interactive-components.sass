@@ -111,9 +111,9 @@ button.component
     padding: 0
     width: 1.1em
     height: 1.1em
-    @include icon-bg("../../resources/upstatement/unchecked.svg", center, 100%)
+    @include icon-bg("#{$directory}/resources/upstatement/unchecked.svg", center, 100%)
     &.checked
-      @include icon-bg("../../resources/upstatement/checked.svg", center, 100%)
+      @include icon-bg("#{$directory}/resources/upstatement/checked.svg", center, 100%)
 
 .interactive-pulldown
   font-size: 1em
@@ -336,6 +336,15 @@ button.component
         display: inline-block
       .icon-play
         display: none
+
+    &.disabled
+      @include linear-gradient(#fff, #e6e6e6, $fallback: #e6e6e6)
+      &:hover
+        cursor: default
+      .icon-pause
+        opacity: 0.5
+      .icon-play
+        opacity: 0.5
 
     // Style clock display.
     .time-display

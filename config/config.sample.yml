@@ -9,8 +9,8 @@
   # Example if you host the Interactives on a static S3 site and want the
   # sharing links to point to the same Interactives at http://lab.concord.org
   :homeForSharing:
-  :homeInteractivePath: /examples/interactives/interactive.html
-  :homeEmbeddablePath: /examples/interactives/embeddable.html
+  :homeInteractivePath: /interactives.html
+  :homeEmbeddablePath: /embeddable.html
   :actualRoot: ""
   :utmCampaign:
   :fontface: Lato

@@ -13,21 +13,14 @@ module Parsers
         url = self.data_hash['url']
         unless url.blank?
           # set the full path of the model json file
-          self.adapt_url url
+          self.uri_helper.path = "#{Rails.root}/public/#{url}"
           # read model json file and merge into data_hash
           self.update_from_uri!
         end
-        self.generate_local_ref_id
         self.generate_couch_doc_id(url)
+        data_hash['url'] = ::Models::Md2d.generate_url(data_hash['id'])
         self.generate_image_path(url)
         update_db
-      end
-
-      def generate_local_ref_id
-        # TODO: Its possible that the ID field has something we want
-        # when importing, the 'id' is often a non-unique id.
-        # this short id is for local references in interactives
-        self.data_hash['local_ref_id'] = self.data_hash.delete('id')
       end
 
       # NOTE: The imagePath is only set on import for now. We
@@ -50,20 +43,6 @@ module Parsers
       def update_db
         ::Models::Md2d.create_or_update(self.data_hash)
       end
-
-      # set the self.uri_helper.path to point the model json file.
-      def adapt_url(url)
-        # HACK: re-write paths with regex, mostly for parsing from FS :/
-        if (url.match %r{^/})
-          self.uri_helper.path = self.uri_helper.path.sub %r{^(.*/public/).*$} do |match|
-            "#{$1}#{url}"
-          end
-          # file-system relative urls from import job:
-        else
-          self.uri_helper.set_relative_path("../../#{url}")
-        end
-      end
-
     end
   end
 end

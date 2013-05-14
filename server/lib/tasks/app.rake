@@ -38,10 +38,10 @@ namespace :app do
       puts db_output.info.to_yaml
     end
 
-    desc "import interactives from public/examples/interactives.json"
+    desc "import interactives from public/interactives.json"
     task :built_interactives => :environment do
       BaseDataObject.delete_everything
-      parser = Parsers::InteractiveList.new(File.join(Rails.root,"public","examples","interactives","interactives.json"))
+      parser = Parsers::InteractiveList.new(File.join(Rails.root,"public","interactives.json"))
       parser.parse
       Interactive.report_extra_keys
       Models::Md2d.report_extra_keys

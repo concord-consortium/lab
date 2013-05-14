@@ -1,0 +1,21 @@
+{
+  "title": "accuracyproof1",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "accuracyproof1$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/accuracyproof1$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

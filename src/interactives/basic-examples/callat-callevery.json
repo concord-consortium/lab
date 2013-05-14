@@ -1,0 +1,200 @@
+{
+  "title": "callAt and callEvery Demo",
+  "publicationStatus": "public",
+  "subtitle": "Use an callAt() to perform a script at any given time. Use callEvery() to perform a script repeatedly.",
+  "about": [
+    "Changes in the model property: temperatureControl are monitored with an onPropertyChange() script."
+  ],
+  "models": [
+    {
+      "id": "simple-gas$0",
+      "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "onLoad": [
+        "callAt(1000, function() {",
+        "  set('callAt1000', get('time'));",
+        "  set('callAt1000Count', get('callAt1000Count') + 1);",
+        "});",
+        "callAt(1033, function() {",
+        "  set('callAt1033', get('time'));",
+        "  set('callAt1033Count', get('callAt1033Count') + 1);",
+        "});",
+        "callEvery(3000, function() {",
+        "  set('callEvery3000', get('time'));",
+        "  set('callEvery3000Count', get('callEvery3000Count') + 1);",
+        "});",
+        "callEvery(3033, function() {",
+        "  set('callEvery3033', get('time'));",
+        "  set('callEvery3033Count', get('callEvery3033Count') + 1);",
+        "});",
+        "callEvery(25, function() {",
+        "  set('callEvery25', get('time'));",
+        "  set('callEvery25Count', get('callEvery25Count') + 1);",
+        "});"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "callAt1000",
+      "initialValue": "n/a"
+    },
+    {
+      "name": "callAt1033",
+      "initialValue": "n/a"
+    },
+    {
+      "name": "callEvery3000",
+      "initialValue": "n/a"
+    },
+    {
+      "name": "callEvery3033",
+      "initialValue": "n/a"
+    },
+    {
+      "name": "callEvery25",
+      "initialValue": "n/a"
+    },
+    {
+      "name": "callAt1000Count",
+      "initialValue": 0
+    },
+    {
+      "name": "callAt1033Count",
+      "initialValue": 0
+    },
+    {
+      "name": "callEvery3000Count",
+      "initialValue": 0
+    },
+    {
+      "name": "callEvery3033Count",
+      "initialValue": 0
+    },
+    {
+      "name": "callEvery25Count",
+      "initialValue": 0
+    }
+  ],
+  "components": [
+    {
+      "id": "c-1",
+      "type": "text",
+      "text": "Script scheduled using:",
+      "width": "12em"
+    },
+    {
+      "id": "c-2",
+      "type": "text",
+      "text": "Last call:",
+      "width": "7em"
+    },
+    {
+      "id": "c-3",
+      "type": "text",
+      "text": "Call count:"
+    },
+    {
+      "id": "r-1",
+      "type": "text",
+      "text": "callAt(1000, ...):",
+      "width": "12em"
+    },
+    {
+      "id": "r-2",
+      "type": "text",
+      "text": "callAt(1033, ...):",
+      "width": "12em"
+    },
+    {
+      "id": "r-3",
+      "type": "text",
+      "text": "callEvery(3000, ...):",
+      "width": "12em"
+    },
+    {
+      "id": "r-4",
+      "type": "text",
+      "text": "callEvery(3033, ...):",
+      "width": "12em"
+    },
+    {
+      "id": "r-5",
+      "type": "text",
+      "text": "callEvery(25, ...):",
+      "width": "12em"
+    },
+    {
+      "id": "callAt1000",
+      "type": "numericOutput",
+      "units": "fs",
+      "property": "callAt1000",
+      "width": "7em"
+    },
+    {
+      "id": "callAt1033",
+      "type": "numericOutput",
+      "units": "fs",
+      "property": "callAt1033",
+      "width": "7em"
+    },
+    {
+      "id": "callEvery3000",
+      "type": "numericOutput",
+      "units": "fs",
+      "property": "callEvery3000",
+      "width": "7em"
+    },
+    {
+      "id": "callEvery3033",
+      "type": "numericOutput",
+      "units": "fs",
+      "property": "callEvery3033",
+      "width": "7em"
+    },
+    {
+      "id": "callEvery25",
+      "type": "numericOutput",
+      "units": "fs",
+      "property": "callEvery25",
+      "width": "7em"
+    },
+    {
+      "id": "callAt1000Count",
+      "type": "numericOutput",
+      "property": "callAt1000Count"
+    },
+    {
+      "id": "callAt1033Count",
+      "type": "numericOutput",
+      "property": "callAt1033Count"
+    },
+    {
+      "id": "callEvery3000Count",
+      "type": "numericOutput",
+      "property": "callEvery3000Count"
+    },
+    {
+      "id": "callEvery3033Count",
+      "type": "numericOutput",
+      "property": "callEvery3033Count"
+    },
+    {
+      "id": "callEvery25Count",
+      "type": "numericOutput",
+      "property": "callEvery25Count"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      ["c-1", "c-2", "c-3"],
+      ["r-1", "callAt1000", "callAt1000Count"],
+      ["r-2", "callAt1033", "callAt1033Count"],
+      ["r-3", "callEvery3000", "callEvery3000Count"],
+      ["r-4", "callEvery3033", "callEvery3033Count"],
+      ["r-5", "callEvery25", "callEvery25Count"]
+    ]
+  }
+}

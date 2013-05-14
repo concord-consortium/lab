@@ -1,0 +1,151 @@
+- :path: samples
+  :name: "Samples"
+  :category: Samples
+
+- :path: sam/intermolecular-attractions
+  :name: "Science of Atoms and Molecules: Intermolecular Attractions"
+  :category: Curriculum
+
+- :path: sam/gas-laws
+  :name: "Science of Atoms and Molecules: Gas Laws"
+  :category: Curriculum
+
+- :path: sam/phase-change
+  :name: "Science of Atoms and Molecules: Phase Change"
+  :category: Curriculum
+
+- :path: sam/DNA-to-proteins
+  :name: "Science of Atoms and Molecules: DNA-to-proteins"
+  :category: Curriculum
+
+- :path: sam/diffusion
+  :name: "Science of Atoms and Molecules: Diffusion"
+  :category: Curriculum
+
+- :path: inquiry-space/pendulum
+  :name: "Inquiry Space: Pendulums"
+  :category: Curriculum
+
+- :path: visual/recycling
+  :name: "VISUAL: Recycling"
+  :category: Curriculum
+
+- :path: visual/detergents
+  :name: "VISUAL: Detergents"
+  :category: Curriculum
+
+- :path: visual/chemical-reactions
+  :name: "VISUAL: Chemical Reactions"
+  :category: Curriculum
+
+- :path: visual/plate-tectonics
+  :name: "VISUAL: Plate Techtonics"
+  :category: Curriculum
+
+- :path: basic-examples
+  :name: "Basic Interactive Examples"
+  :category: Examples
+
+- :path: signal-generator
+  :name: "Signal Generator Interactives"
+  :category: Tests
+
+- :path: sensor
+  :name: "Sensor Interactives"
+  :category: Tests
+
+- :path: conversion-tests
+  :name: "Physics Conversion Tests"
+  :category: Tests
+
+- :path: layout-tests
+  :name: "Layout Tests"
+  :category: Tests
+
+- :path: student/classic/pendulum
+  :name: "Classic Java MW Examples: Pendulum"
+  :category: Examples
+
+- :path: student/classic/motion
+  :name: "Classic Java MW Examples: Motion"
+  :category: Examples
+
+- :path: student/classic/freefall
+  :name: "Classic Java MW Examples: Freefall"
+  :category: Examples
+
+- :path: student/classic/gear
+  :name: "Classic Java MW Examples: Gear"
+  :category: Examples
+
+- :path: student/classic/harmonic
+  :name: "Classic Java MW Examples: Harmonic"
+  :category: Examples
+
+- :path: student/classic/machine
+  :name: "Classic Java MW Examples: Machine"
+  :category: Examples
+
+- :path: student/classic/pulley
+  :name: "Classic Java MW Examples: Pulley"
+  :category: Examples
+
+- :path: student/classic/spring
+  :name: "Classic Java MW Examples: Spring"
+  :category: Examples
+
+- :path: student/fluid
+  :name: "Classic Java MW Examples: Fluid"
+  :category: Examples
+
+- :path: student/materials
+  :name: "Classic Java MW Examples: Materials"
+  :category: Examples
+
+- :path: student/motionandforce
+  :name: "Classic Java MW Examples: Motion and Force"
+  :category: Examples
+
+- :path: student/osmosis
+  :name: "Classic Java MW Examples: Osmosis"
+  :category: Examples
+
+- :path: student/stateofmatter
+  :name: "Classic Java MW Examples: States of Matter"
+  :category: Examples
+
+- :path: student/wave
+  :name: "Classic Java MW Examples: Waves"
+  :category: Examples
+
+- :path: student/classic/wave
+  :name: "Classic Java MW Examples: Wave"
+  :category: Examples
+
+- :path: public/part1/light
+  :name: "Classic Java MW Examples: Part1/Light"
+  :category: Examples
+
+- :path: public/part2/newton
+  :name: "Classic Java MW Examples: Part2/Newton"
+  :category: Examples
+
+- :path: public/part2/photon
+  :name: "Classic Java MW Examples: Part2/Photon"
+  :category: Examples
+
+- :path: public/part2/spectroscopy
+  :name: "Classic Java MW Examples: Part2/Spectroscopy"
+  :category: Examples
+
+- :path: tutorial
+  :name: "Classic Java MW Tutorial"
+  :category: Examples
+
+- :path: benchmarks
+  :name: "Performance Benchmarks"
+  :category: Benchmarks
+
+- :path: solar-system
+  :name: "Solar System Interactives"
+  :category: Tests

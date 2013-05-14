@@ -1,0 +1,22 @@
+{
+  "title": "Move Molecules",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "MoveMolecules2$0.json",
+      "url": "imports/legacy-mw-content/converted/visual/Detergents/MoveMolecules2$0.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

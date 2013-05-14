@@ -1,0 +1,21 @@
+{
+  "title": "periodic$1",
+  "publicationStatus": "broken",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "periodic$1",
+      "url": "imports/legacy-mw-content/converted/tutorial/periodic$1.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

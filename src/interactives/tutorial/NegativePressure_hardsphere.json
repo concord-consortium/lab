@@ -1,0 +1,21 @@
+{
+  "title": "NegativePressure_hardsphere",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "NegativePressure_hardsphere",
+      "url": "imports/legacy-mw-content/converted/tutorial/NegativePressure_hardsphere.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

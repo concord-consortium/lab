@@ -1,0 +1,21 @@
+{
+  "title": "slidingpendulum",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "slidingpendulum$0",
+      "url": "imports/legacy-mw-content/converted/student/classic/pendulum/slidingpendulum$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

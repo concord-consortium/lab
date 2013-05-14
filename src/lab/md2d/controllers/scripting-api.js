@@ -411,15 +411,15 @@ define(function (require) {
         e.g. setGeneticProperties({ DNA: "ATCG" })
       */
       setGeneticProperties: function setGeneticProperties(props) {
-        model.getGeneticProperties().set(props);
+        model.geneticEngine().set(props);
       },
 
       /**
         Returns genetic properties as a human-readable hash.
-        e.g. getGeneticProperties() --> {DNA: "ATCG", DNAComplement: "TAGC", x: 0.01, y: 0.01, height: 0.12}
+        e.g. geneticEngine() --> {DNA: "ATCG", DNAComplement: "TAGC", x: 0.01, y: 0.01, height: 0.12}
       */
-      getGeneticProperties: function getGeneticProperties() {
-        return model.getGeneticProperties().get();
+      geneticEngine: function geneticEngine() {
+        return model.geneticEngine().get();
       },
 
       /**
@@ -434,14 +434,14 @@ define(function (require) {
        * translation.
        */
       playDNAIntro: function () {
-        model.getGeneticProperties().playIntro();
+        model.geneticEngine().playIntro();
       },
 
       /**
        * Separates two strands of DNA.
        */
       separateDNA: function separateDNA() {
-        model.getGeneticProperties().separateDNA();
+        model.geneticEngine().separateDNA();
       },
 
       /**
@@ -459,32 +459,31 @@ define(function (require) {
        * @param  {string} expectedNucleotide code of the expected nucleotide ("U", "C", "A" or "G").
        */
       transcribeStep: function transcribeStep(expectedNucleotide) {
-        model.getGeneticProperties().transcribeStep(expectedNucleotide);
+        model.geneticEngine().transcribeStep(expectedNucleotide);
       },
 
       /**
        * Triggers complete DNA to mRNA transcription.
        *
        * Complete mRNA will be available in genetic properties.
-       * e.g. getGeneticProperties() --> {DNA: "ATCG", DNAComplement: "TAGC", mRNA: "AUCG", ...}
+       * e.g. geneticEngine() --> {DNA: "ATCG", DNAComplement: "TAGC", mRNA: "AUCG", ...}
        */
       transcribe: function transcribeDNA() {
-        model.getGeneticProperties().transcribe();
+        model.geneticEngine().transcribe();
       },
 
       /**
        * Triggers only one step of DNA translation.
        */
       translateStep: function translateStep() {
-        model.getGeneticProperties().translateStep();
+        model.geneticEngine().translateStep();
       },
 
       /**
-        Triggers translation of mRNA to protein.
-      */
+       * Triggers *complete* translation of the DNA.
+       */
       translate: function translate() {
-        var aaSequence = model.getGeneticProperties().translate();
-        model.generateProtein(aaSequence);
+        model.geneticEngine().translate();
       },
 
       translateStepByStep: function translateStepByStep() {

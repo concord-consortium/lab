@@ -1,0 +1,74 @@
+{
+  "title": "Testing: Layout Example",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "testingForces$0",
+      "url": "imports/legacy-mw-content/converted/potential-tests/static-coulomb-test/testingForces$0.json",
+      "viewOptions": {
+        "controlButtons": ""
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "abs-zero",
+      "text": "Set to absolute zero",
+      "action": "set({targetTemperature: 0.00001});"
+    },
+    {
+      "type": "button",
+      "id": "add-heat",
+      "text": "Add lots of heat",
+      "action": [
+        "var curTemp = get('temperature'), newTemp = curTemp + 2500;",
+        "if (newTemp > 4000) {",
+        "  newTemp = 4000;",
+        "}",
+        "set({targetTemperature: newTemp});"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "start",
+      "text": "Start",
+      "action": "start();"
+    },
+    {
+      "type": "button",
+      "id": "stop",
+      "text": "Stop",
+      "action": "stop();"
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": "reset();"
+    },
+    {
+      "type": "barGraph",
+      "id": "thermometer",
+      "property": "temperature",
+      "title": "Thermometer",
+      "labels": 0,
+      "min": 200,
+      "max": 4000
+    }
+  ],
+  "layout": {
+    "right": [
+      "thermometer"
+    ],
+    "bottom": [
+      "start",
+      "stop",
+      "reset",
+      "abs-zero",
+      "add-heat"
+    ]
+  }
+}

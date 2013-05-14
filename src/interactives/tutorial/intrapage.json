@@ -1,0 +1,21 @@
+{
+  "title": "intrapage",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "intrapage$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/intrapage$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

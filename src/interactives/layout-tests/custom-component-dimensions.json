@@ -1,0 +1,179 @@
+{
+  "title": "Custom Component Dimensions",
+  "publicationStatus": "public",
+  "subtitle": "Graph, Bar Graph, Slider, Button and Text can have custom dimensions specified using 'width' and 'height' properties (all CSS values are accepted).",
+  "about": "",
+  "fontScale": 0.7,
+  "models": [
+    {
+      "id": "100-atoms-charged",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/100-atoms$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "temperature-slider",
+      "width": "100%",
+      "height": "5em",
+      "min": 100,
+      "max": 5000,
+      "labels": [
+        {
+          "value": 100,
+          "label": "100 K"
+        },
+        {
+          "value": 5000,
+          "label": "5000 K"
+        }
+      ],
+      "steps": 50,
+      "title": "Slider (100% x 5em)",
+      "property": "targetTemperature"
+    },
+    {
+      "type": "graph",
+      "id": "graph1",
+      "title": "Graph (80% x 80%)",
+      "width": "80%",
+      "height": "80%",
+      "xmin": 0,
+      "xmax": 20,
+      "ymin": -1,
+      "ymax": 3,
+      "properties": [
+        "kineticEnergy"
+      ]
+    },
+    {
+      "type": "graph",
+      "id": "graph2",
+      "title": "Graph (5em x 10em)",
+      "width": "15em",
+      "height": "10em",
+      "xmin": 0,
+      "xmax": 20,
+      "ymin": -1,
+      "ymax": 3,
+      "properties": [
+        "kineticEnergy"
+      ]
+    },
+    {
+      "type": "barGraph",
+      "id": "bar-graph",
+      "barWidth": "2em",
+      "height": "70%",
+      "min": 0,
+      "max": 5000,
+      "barColor": "#F42",
+      "title": "Bar Graph (2em x 70%)",
+      "property": "targetTemperature"
+    },
+    {
+      "type": "barGraph",
+      "id": "bar-graph-2",
+      "barWidth": "4em",
+      "height": "9em",
+      "min": 0,
+      "max": 5000,
+      "barColor": "#F42",
+      "labels": 5,
+      "gridLines": 5,
+      "title": "(4em x 9em)",
+      "property": "targetTemperature"
+    },
+    {
+      "type": "button",
+      "id": "button-big",
+      "action": "",
+      "text": "Button (12em x 6em)",
+      "width": "12em",
+      "height": "6em"
+    },
+    {
+      "type": "button",
+      "id": "button-fill",
+      "action": "",
+      "text": "Button (100% x 100%)",
+      "width": "100%",
+      "height": "100%"
+    },
+    {
+      "type": "text",
+      "id": "text-comp",
+      "text": "This is a text with width explicitly set to 8em and default height",
+      "width": "8em"
+    }
+  ],
+  "layout": {
+    "top": [
+      "temperature-slider"
+    ],
+    "right-upper": [
+      "graph1"
+    ],
+    "right-lower": [
+      "button-fill"
+    ],
+    "left": [
+      "bar-graph"
+    ],
+    "bottom-left": [
+      "text-comp"
+    ],
+    "bottom": [
+      "graph2",
+      "button-big",
+      "bar-graph-2"
+    ]
+  },
+  "template": [
+    {
+      "id": "top",
+      "left": "model.left",
+      "bottom": "model.top",
+      "width": "model.width"
+    },
+    {
+      "id": "left",
+      "top": "model.top",
+      "right": "model.left",
+      "height": "model.height"
+    },
+    {
+      "id": "right-upper",
+      "top": "model.top",
+      "left": "model.right",
+      "height": "model.height * 0.5",
+      "padding-left": "1em",
+      "width": "model.width * 0.7",
+      "min-width": "6em"
+    },
+    {
+      "id": "right-lower",
+      "left": "model.right",
+      "top": "right-upper.bottom",
+      "height": "model.height * 0.5",
+      "padding-left": "1em",
+      "width": "model.width * 0.7",
+      "min-width": "6em"
+    },
+    {
+      "id": "bottom-left",
+      "left": "left.left",
+      "top": "left.bottom",
+      "padding-bottom": "1em"
+    },
+    {
+      "id": "bottom",
+      "left": "model.left",
+      "top": "model.bottom",
+      "padding-bottom": "1em"
+    }
+  ]
+}

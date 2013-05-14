@@ -1,0 +1,21 @@
+{
+  "title": "FullCharge",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "FullCharge",
+      "url": "imports/legacy-mw-content/converted/student/motionandforce/FullCharge.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

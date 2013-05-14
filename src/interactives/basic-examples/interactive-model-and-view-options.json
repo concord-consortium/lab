@@ -1,0 +1,31 @@
+{
+  "title": "Interactive View and Model Options",
+  "publicationStatus": "public",
+  "subtitle": "Overriding model and view properties in the Interactive.",
+  "about": [
+    "This interactive presents how an author can overwrite model properties.",
+    "Take a look at the interactive JSON and **models** hash. There are two nested objects:",
+    "",
+    "- viewOptions",
+    "- modelOptions",
+    "",
+    "Compare values of _showVelocityVectors_ and _timeStep_ with the model JSON.",
+    "",
+    "You will notice that values defined in these sections take precedence over",
+    "values in model JSON. Modify properties in these objects and click the",
+    "**Update Interactive** button to see changes."
+  ],
+  "models": [
+    {
+      "id": "simple-gas$0",
+      "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "showVelocityVectors": true
+      },
+      "modelOptions": {
+        "timeStep": 0.1
+      }
+    }
+  ]
+}

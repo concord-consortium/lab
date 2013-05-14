@@ -25,6 +25,15 @@ define(function(require) {
     }
   }
 
+  function validateSingleProperty(propertyMetadata, prop, value, ignoreImmutable) {
+    if (propertyMetadata.readOnly) {
+      throw new ValidationError(prop, "Properties set tries to overwrite read-only property " + prop);
+    }
+    if (!ignoreImmutable && propertyMetadata.immutable) {
+      throw new ValidationError(prop, "Properties set tries to overwrite immutable property " + prop);
+    }
+  }
+
   return {
 
     // Basic validation.
@@ -47,13 +56,7 @@ define(function(require) {
           propMetadata = metadata[prop];
           // Continue only if the property is listed in meta-data.
           if (propMetadata !== undefined) {
-            // Check if this is readOnly property.
-            if (propMetadata.readOnly === true) {
-              throw new ValidationError(prop, "Properties set tries to overwrite read-only property " + prop);
-            }
-            if (!ignoreImmutable && propMetadata.immutable === true) {
-              throw new ValidationError(prop, "Properties set tries to overwrite immutable property " + prop);
-            }
+            validateSingleProperty(propMetadata, prop, input[prop], ignoreImmutable);
             if (propMetadata.conflictsWith) {
               checkConflicts(input, prop, propMetadata.conflictsWith);
             }
@@ -62,6 +65,21 @@ define(function(require) {
         }
       }
       return result;
+    },
+
+    validateSingleProperty: validateSingleProperty,
+
+    propertyIsWritable: function(propertyMetadata) {
+      // Note that immutable properties are writable, they just have to be
+      return ! propertyMetadata.readOnly;
+    },
+
+    propertyChangeInvalidates: function(propertyMetadata) {
+      // Default to true for safety.
+      if (propertyMetadata.propertyChangeInvalidates === undefined) {
+        return true;
+      }
+      return !!propertyMetadata.propertyChangeInvalidates;
     },
 
     // Complete validation.

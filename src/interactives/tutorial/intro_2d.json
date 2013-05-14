@@ -1,0 +1,21 @@
+{
+  "title": "intro_2d",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "intro_2d$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/intro_2d$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

@@ -1,0 +1,167 @@
+{
+  "title": "Factors Affecting London Dispersion Attractions",
+  "publicationStatus": "public",
+  "subtitle": "Explore how differences in molecular size and shape affect the strength of London dispersion attractions.",
+  "about": [
+    "Some non-polar molecules have stronger attractions than others. Choose a pair of",
+    "molecules from the drop-down menu and \"pull\" on the star to separate the molecules.",
+    "Why do size and shape affect the strength of attraction between two non-polar molecules?"
+  ],
+  "models": [
+    {
+      "id": "instructions",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/instructions.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false,
+        "textBoxes": [
+          {
+            "text": "Explore the different attractive forces between molecules of varying size and shape. Look for how the area of close contact between the molecules influences their attraction.",
+            "x": 0.55,
+            "y": 1.85,
+            "width": 2.7,
+            "fontScale": 1.4,
+            "width": 2.7,
+            "layer": 1
+          },
+          {
+            "text": "Choose a pair of molecules from the menu below.",
+            "x": 0.4,
+            "y": 0.45,
+            "fontScale": 1.4,
+            "width": 3.0,
+            "layer": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "npSmallStraight",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npSmallStraight.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false,
+        "textBoxes": [
+          {
+            "text": "Small straight molecules",
+            "x": 1.36,
+            "y": 1.85,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(250,250,250)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "npLargeStraight",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npLargeStraight.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false,
+        "textBoxes": [
+          {
+            "text": "Large straight molecules",
+            "x": 1.35,
+            "y": 1.85,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(250,250,250)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "npStraightJagged",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npStraightJagged.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false,
+        "textBoxes": [
+          {
+            "text": "Large straight and bent molecules",
+            "x": 1.08,
+            "y": 1.85,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(250,250,250)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "npStraightRound",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npStraightRound.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false,
+        "textBoxes": [
+          {
+            "text": "Large straight and round molecules",
+            "x": 1.01,
+            "y": 1.85,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(250,250,250)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "npCurvedRound",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npCurvedRound.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false,
+        "textBoxes": [
+          {
+            "text": "Large curved and round molecules",
+            "x": 1.05,
+            "y": 1.85,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(250,250,250)"
+          }
+        ]
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "pulldown",
+      "id": "pulldown1",
+      "options": [
+        {
+          "text": "Select a pair of molecules",
+          "loadModel": "instructions"
+        },
+        {
+          "text": "Small molecules",
+          "action": "loadModel('npSmallStraight', start);"
+        },
+        {
+          "text": "Large straight molecules",
+          "action": "loadModel('npLargeStraight', start);"
+        },
+        {
+          "text": "Large straight and bent",
+          "action": "loadModel('npStraightJagged', start);"
+        },
+        {
+          "text": "Large straight and circular",
+          "action": "loadModel('npStraightRound', start);"
+        },
+        {
+          "text": "Large curved and circular",
+          "action": "loadModel('npCurvedRound', start);"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": "reset();"
+    }
+  ]
+}

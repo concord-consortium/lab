@@ -1,0 +1,21 @@
+{
+  "title": "FewCharge",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "FewCharge",
+      "url": "imports/legacy-mw-content/converted/student/motionandforce/FewCharge.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "brownsExperiment",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "brownsExperiment$0",
+      "url": "imports/legacy-mw-content/converted/public/part2/newton/brownsExperiment$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

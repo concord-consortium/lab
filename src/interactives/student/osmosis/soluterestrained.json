@@ -1,0 +1,21 @@
+{
+  "title": "soluterestrained",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "soluterestrained$0",
+      "url": "imports/legacy-mw-content/converted/student/osmosis/soluterestrained$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

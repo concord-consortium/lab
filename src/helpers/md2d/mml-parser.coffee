@@ -434,7 +434,6 @@ parseMML = (mmlString) ->
         textHostIndex = 0
       textHostType = $textBoxNode.find("[property=hostType] string").text()
       textHostType = textHostType.slice(textHostType.lastIndexOf(".")+1)
-      borderType = parseInt($textBoxNode.find("[property=borderType] int").text()) || 0
       colorDef  = $textBoxNode.find "[property=foregroundColor]>.java-awt-Color>int"
       if colorDef and colorDef.length > 0
         fontColor    = "rgb("
@@ -447,16 +446,23 @@ parseMML = (mmlString) ->
         backgroundTextColor   += parseInt(cheerio(backgroundColorDef[0]).text()) + ","
         backgroundTextColor   += parseInt(cheerio(backgroundColorDef[1]).text()) + ","
         backgroundTextColor   += parseInt(cheerio(backgroundColorDef[2]).text()) + ")"
+      borderType = parseInt($textBoxNode.find("[property=borderType] int").text()) || 0
       frame = switch borderType
         when 0 then ""
         when 1 then "rectangle"
         when 2 then "rounded rectangle"
+      callout = parseBoolean($textBoxNode.find("[property=callOut] boolean").text()) || false
+      calloutPointDef = $textBoxNode.find "[property=callOutPoint] .java-awt-Point>int"
+      if callout and calloutPointDef and calloutPointDef.length > 1
+        calloutPoint = (parseInt(cheerio(el).text()) for el in calloutPointDef)
 
       [x, y] = toNextgenCoordinates $x, $y
 
       textBox = { text, x, y, layer }
       textBox.frame = frame if frame
       textBox.color = fontColor if fontColor
+      if calloutPoint
+        textBox.calloutPoint = toNextgenCoordinates calloutPoint[0], calloutPoint[1]
       if textHostType
         textBox.hostType = textHostType
         textBox.hostIndex = textHostIndex
@@ -797,6 +803,61 @@ parseMML = (mmlString) ->
 
     id = atoms[0]?.element || 0
 
+    ###
+      Quantum Dynamics
+    ###
+    excitationStates = $mml(".org-concord-mw2d-models-ExcitedStates [method=put]")
+    useQuantumDynamics = excitationStates.length > 0
+
+    if useQuantumDynamics
+      for atom in excitationStates
+        $node = getNode cheerio atom
+        atomIndex = parseInt cheerio($node.find("int")[0]).text()
+        excitation = parseInt $node.find("[index=1] int").text()
+        excitation = 0 if isNaN excitation
+        atoms[atomIndex].excitation = excitation
+
+      excitation = (atom.excitation for atom in atoms)
+
+      elementEnergyLevels = []
+      for node in elementNodes
+        $node = getNode(cheerio(node))
+        levels = $node.find "[property=energyLevels] [method=add]"
+        if levels.length > 0
+          levelsArray = []
+          for level in levels
+            $level = getNode(cheerio(level))
+            energy = getFloatProperty $level, "energy", "float"
+            # convert from MW units to NextGen (Daltons, nm conversions)
+            energy = energy / (120 * 100)
+            levelsArray.push energy
+          elementEnergyLevels.push levelsArray
+        else
+          elementEnergyLevels.push []
+
+      quantumRule = $mml(".org-concord-mw2d-models-QuantumRule")
+      radiationlessEmissionProb = 1
+
+      if quantumRule.length
+        probabilityMap = quantumRule.find "[property=probabilityMap]>[method=put]"
+        for put in probabilityMap
+          $node = getNode(cheerio(put))
+          key = parseInt $node.find("int").text()
+          val = parseFloat $node.find("float").text()
+
+          # key values are ints hard-coded in classic mw
+          if key is 11
+            radiationlessEmissionProb = val
+
+      quantumDynamics = {
+        useQuantumDynamics
+        elementEnergyLevels
+        radiationlessEmissionProb
+      }
+
+      quantumDynamics = validator.validateCompleteness metadata.quantumDynamics, quantumDynamics
+
+
     ### Convert array of hashes to a hash of arrays, for use by MD2D ###
     unroll = (array, props...) ->
       unrolled = {}
@@ -806,17 +867,17 @@ parseMML = (mmlString) ->
 
     # Main properties of the model.
     json =
-      coulombForces       : coulombForces
-      temperatureControl  : !!targetTemperature
-      targetTemperature   : targetTemperature
-      width               : width
-      height              : height
-      viscosity           : viscosity
-      gravitationalField  : gravitationalField
-      timeStepsPerTick    : timeStepsPerTick
-      timeStep            : timeStep
-      dielectricConstant  : dielectricConstant
-      solventForceType    : solventForceType
+      coulombForces             : coulombForces
+      temperatureControl        : !!targetTemperature
+      targetTemperature         : targetTemperature
+      width                     : width
+      height                    : height
+      viscosity                 : viscosity
+      gravitationalField        : gravitationalField
+      timeStepsPerTick          : timeStepsPerTick
+      timeStep                  : timeStep
+      dielectricConstant        : dielectricConstant
+      solventForceType          : solventForceType
 
     # Unit conversion performed on undefined values can convert them to NaN.
     # Revert back all NaNs to undefined, as they will be replaced by default values.
@@ -876,6 +937,7 @@ parseMML = (mmlString) ->
       marked: marked
       visible: visible
       draggable: draggable
+      excitation: excitation
 
     if radialBonds.length > 0
       json.radialBonds = unroll radialBonds, 'atom1', 'atom2', 'length', 'strength',  'type'
@@ -890,6 +952,9 @@ parseMML = (mmlString) ->
       json.obstacles = unroll obstacles, 'x', 'y', 'vx', 'vy', 'externalAx', 'externalAy', 'friction',
         'height', 'width', 'mass', 'westProbe', 'northProbe', 'eastProbe', 'southProbe', 'color', 'visible'
 
+    if useQuantumDynamics
+      json.quantumDynamics = quantumDynamics
+
     # Remove some properties from the final serialized model.
     removeArrayIfDefault = (name, array, defaultVal) ->
       delete json.atoms[name] if array.every (i)-> i is defaultVal
@@ -903,6 +968,8 @@ parseMML = (mmlString) ->
     delete json.targetTemperature if not json.temperatureControl
     # Remove atomTraceId when atom tracing is disabled.
     delete json.viewOptions.atomTraceId if not json.viewOptions.showAtomTrace
+    # Remove excitation if not using quantum dynamics
+    delete json.atoms.excitation if not useQuantumDynamics
 
     # Remove modelSampleRate as this is Next Gen MW specific option.
     delete json.modelSampleRate

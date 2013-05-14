@@ -1,0 +1,38 @@
+{
+  "title": "Mark Atoms",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "mark-atoms$0",
+      "url": "imports/legacy-mw-content/converted/potential-tests/mark-atoms/mark-atoms$0.json",
+      "viewOptions": {
+        "controlButtons": ""
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "radio",
+      "id": "mark-color",
+      "property": "markColor",
+      "label": "Mark Color",
+      "orientation": "horizontal",
+      "options": [
+        {
+          "text": "default",
+          "value": "#f8b500"
+        },
+        {
+          "text": "green",
+          "value": "green"
+        },
+        {
+          "text": "purple",
+          "value": "purple"
+        }
+      ]
+    }
+  ]
+}

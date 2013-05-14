@@ -1,0 +1,21 @@
+{
+  "title": "densitytemp",
+  "publicationStatus": "broken",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "densitytemp$0",
+      "url": "imports/legacy-mw-content/converted/student/motionandforce/densitytemp$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "parallelgears_triangle",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "parallelgears_triangle",
+      "url": "imports/legacy-mw-content/converted/student/classic/gear/parallelgears_triangle.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

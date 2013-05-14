@@ -1,0 +1,21 @@
+{
+  "title": "buffer",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "buffer$0",
+      "url": "imports/legacy-mw-content/converted/student/classic/spring/buffer$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

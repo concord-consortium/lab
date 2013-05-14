@@ -1,0 +1,42 @@
+{
+  "title": "onPropertyChange Demo",
+  "publicationStatus": "public",
+  "subtitle": "Using an onPropertyChange() script to respond to changes in a model property.",
+  "about": [
+    "Changes in the model property: temperatureControl are monitored with an onPropertyChange() script."
+  ],
+  "models": [
+    {
+      "id": "simple-ke-shading$0",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/simple-ke-shading$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "onLoad": [
+        "onPropertyChange('temperatureControl', function(tc) {",
+        "  alert('Temperature control is now ' + (tc ? 'on.' : 'off.')); ",
+        "});"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "checkbox",
+      "id": "temperature-control",
+      "text": "Temperature Control (property link)",
+      "property": "temperatureControl"
+    },
+    {
+      "type": "checkbox",
+      "id": "temperature-control-action",
+      "text": "Temperature Control (action defined)",
+      "onClick": "set({temperatureControl: value})"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "temperature-control",
+      "temperature-control-action"
+    ]
+  }
+}

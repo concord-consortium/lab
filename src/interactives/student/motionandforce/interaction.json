@@ -1,0 +1,21 @@
+{
+  "title": "interaction",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "interaction$0",
+      "url": "imports/legacy-mw-content/converted/student/motionandforce/interaction$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

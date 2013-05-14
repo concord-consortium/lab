@@ -1,0 +1,21 @@
+{
+  "title": "singleslider",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "singleslider$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/singleslider$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

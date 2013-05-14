@@ -1,0 +1,285 @@
+{
+  "title": "Interactive Components",
+  "publicationStatus": "public",
+  "subtitle": "Examples of defining and using different Interactive components.",
+  "about": "",
+  "fontScale": 0.7,
+  "models": [
+    {
+      "id": "page3$0-with-heatbath",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$0-with-heatbath.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "id": "page3$1",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$1.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "id": "oilAndWaterMix",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/oilAndWaterMix.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "abs-zero",
+      "text": "Set to absolute zero",
+      "action": "set({targetTemperature: 0.00001});"
+    },
+    {
+      "type": "button",
+      "id": "add-heat",
+      "text": "Add lots of heat",
+      "action": [
+        "var curTemp = get('temperature'), newTemp = curTemp + 2500;",
+        "if (newTemp > 4000) {",
+        "  newTemp = 4000;",
+        "}",
+        "set({targetTemperature: newTemp});"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "throw-error",
+      "text": "Throw an error",
+      "action": "x = 1;"
+    },
+    {
+      "type": "pulldown",
+      "id": "pulldown1",
+      "options": [
+        {
+          "text": "Option 1",
+          "action": "alert('You selected option 1!');"
+        },
+        {
+          "text": "Option 2",
+          "action": "alert('You selected option 2!');"
+        }
+      ]
+    },
+    {
+      "type": "pulldown",
+      "id": "pulldown2",
+      "options": [
+        {
+          "text": "select  model ...",
+          "disabled": true
+        },
+        {
+          "text": "Load Oil and Water",
+          "loadModel": "page3$1",
+          "selected": true
+        },
+        {
+          "text": "Load Oil and Water Mixed",
+          "loadModel": "oilAndWaterMix"
+        }
+      ]
+    },
+    {
+      "type": "radio",
+      "id": "radio",
+      "options": [
+        {
+          "text": "Boiling Point",
+          "loadModel": "page3$0-with-heatbath",
+          "selected": true
+        },
+        {
+          "text": "Oil and Water",
+          "loadModel": "page3$1"
+        },
+        {
+          "text": "Oil and Water Mixed",
+          "loadModel": "oilAndWaterMix"
+        },
+        {
+          "text": "Show alert dialog",
+          "action": "alert('Alert!')"
+        },
+        {
+          "text": "This option is disabled",
+          "disabled": true
+        }
+      ]
+    },
+    {
+      "type": "radio",
+      "id": "radio-horizontal",
+      "orientation": "horizontal",
+      "options": [
+        {
+          "text": "Boiling Point",
+          "loadModel": "page3$0-with-heatbath",
+          "selected": true
+        },
+        {
+          "text": "Oil and Water",
+          "loadModel": "page3$1"
+        },
+        {
+          "text": "Oil and Water Mixed",
+          "loadModel": "oilAndWaterMix"
+        },
+        {
+          "text": "Show alert dialog",
+          "action": "alert('Alert!')"
+        },
+        {
+          "text": "This option is disabled",
+          "disabled": true
+        }
+      ]
+    },
+    {
+      "type": "slider",
+      "id": "temperature-property-slider",
+      "title": "Temperature (set via property link)",
+      "width": "18em",
+      "min": 1,
+      "max": 3000,
+      "steps": 30,
+      "labels": [
+        {
+          "value": 1,
+          "label": "0 K"
+        },
+        {
+          "value": 1500,
+          "label": "1500 K"
+        },
+        {
+          "value": 3000,
+          "label": "3000 K"
+        }
+      ],
+      "property": "targetTemperature"
+    },
+    {
+      "type": "slider",
+      "id": "temperature-action-slider",
+      "title": "Temperature (set via action)",
+      "width": "18em",
+      "min": 1,
+      "max": 3000,
+      "steps": 30,
+      "initialValue": 300,
+      "labels": [
+        {
+          "value": 1,
+          "label": "0 K"
+        },
+        {
+          "value": 1500,
+          "label": "1500 K"
+        },
+        {
+          "value": 3000,
+          "label": "3000 K"
+        }
+      ],
+      "action": "set({targetTemperature: value});"
+    },
+    {
+      "type": "text",
+      "id": "text-basic",
+      "text": "Basic Text"
+    },
+    {
+      "type": "text",
+      "id": "text-header",
+      "text": "#Header#"
+    },
+    {
+      "type": "text",
+      "id": "text-link",
+      "text": "Clickable Text (it starts the simulation)",
+      "onClick": "start();"
+    },
+    {
+      "type": "text",
+      "id": "abs-path-label",
+      "width": "12em",
+      "text": "Image with absolute URL:"
+    },
+    {
+      "type": "text",
+      "id": "rel-path-label",
+      "width": "12em",
+      "text": "Image with relative URL (relative to model URL!):"
+    },
+    {
+      "type": "image",
+      "id": "image-relative-path",
+      "height": "3em",
+      "src": "oilWaterComp.png"
+    },
+    {
+      "type": "image",
+      "id": "image-absolute-path",
+      "width": "10em",
+      "src": "http://lab.concord.org/resources/layout/cc-logo.png"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      [
+        "abs-zero",
+        "add-heat",
+        "throw-error"
+      ],
+      [
+        "pulldown1",
+        "pulldown2"
+      ],
+      [
+        "radio-horizontal"
+      ],
+      [
+        "text-header",
+        "text-basic",
+        "text-link"
+      ],
+      [
+        "abs-path-label", "image-absolute-path"
+      ],
+      [
+        "rel-path-label", "image-relative-path"
+      ]
+    ],
+    "right": [
+      [ "temperature-property-slider" ],
+      [ "temperature-action-slider" ],
+      [ "radio" ]
+    ]
+  },
+  "template": [
+    {
+      "id": "top",
+      "bottom": "model.top"
+    },
+    {
+      "id": "right",
+      "left": "model.right",
+      "height": "model.height",
+      "padding-left": "1em",
+      "min-width": "6em"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "interactive.width",
+      "padding-top": "0.5em",
+      "padding-bottom": "1em"
+    }
+  ]
+}

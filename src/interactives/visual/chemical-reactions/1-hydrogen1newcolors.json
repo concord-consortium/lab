@@ -1,0 +1,133 @@
+{
+  "title": "Hydrogen Combustion",
+  "publicationStatus": "draft",
+  "subtitle": "The physics in this model will be incomplete until the development of the Chemical Reactions engine.",
+  "about": "",
+  "models": [
+    {
+      "id": "hydrogen1newcolors$0",
+      "url": "imports/legacy-mw-content/converted/visual/ChemicalReactions/hydrogen1newcolors$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "gridLines": true,
+        "xunits": true,
+        "yunits": true
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name":  "simplifiedTemperature",
+      "label": "Temperature",
+      "units": "°",
+      "value": "return get('temperature')/200;"
+    }
+  ],
+  "filteredOutputs": [
+    {
+      "name": "filteredSimplifiedTemperature",
+      "label": "Temperature",
+      "units": "°",
+      "property": "simplifiedTemperature",
+      "type": "RunningAverage",
+      "period": 100
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "spark-button",
+      "text": "Spark",
+      "action": [
+        "var atoms, index, atom1, atom2, rbonds, atom1props, atom2props;",
+        "atoms = atomsWithinRect(0.5, 0.5, 2, 2)",
+        "if (atoms.length === 0) return;",
+        "atoms = atoms.filter(function(i) { return getAtomProperties(i).element === 1; });",
+        "index = randomInteger(atoms.length);",
+        "atom1 = atoms[index];",
+        "rbonds = getRadialBondsForAtom(atom1);",
+        "while (rbonds.length == 0 && atoms.length > 0) {",
+        "  atoms.splice(index, 1);",
+        "  index = randomInteger(atoms.length);",
+        "  atom1 = atoms[index];",
+        "  rbonds = getRadialBondsForAtom(atom1);",
+        "}",
+        "if (atoms.length > 0) {",
+        "  atom2 = getMoleculeAtoms(atom1)[0];",
+        "  removeRadialBond(rbonds[0]);",
+        "  atom1props = getAtomProperties(atom1);",
+        "  atom2props = getAtomProperties(atom2);",
+        "  setAtomProperties(atom1, { vx: atom1props.vx *  5, vy: atom1props.vy *  2.5 });",
+        "  setAtomProperties(atom2, { vx: atom2props.vx * -5, vy: atom2props.vy *  2.5 });",
+        "}"
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "slow_motion",
+      "text": "Slow Motion",
+      "onClick": "if (value) { set({timeStep: 0.1}) } else { set({timeStep: 1})};"
+    },
+    {
+      "type": "barGraph",
+      "id": "bar-graph",
+      "min": 0,
+      "max": 150,
+      "barColor": "#F42",
+      "title": "Temperature",
+      "property": "filteredSimplifiedTemperature"
+    },
+    {
+      "type": "numericOutput",
+      "id": "temperature-output",
+      "property": "filteredSimplifiedTemperature",
+      "orientation": "vertical",
+      "displayValue": "return format('1.1f')(value)"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "spark-button"
+    ],
+    "right": [
+      "bar-graph"
+    ],
+    "bottom-left": [
+      "slow_motion"
+    ],
+    "bottom-right": [
+      "temperature-output"
+    ]
+  },
+  "template": [
+    {
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "height": "model.height",
+      "padding-left": "0.5em"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "padding-top": "1.0em",
+      "align": "center"
+    },
+    {
+      "id": "bottom-left",
+      "top": "model.bottom",
+      "left": "model.left",
+      "padding-top": "1.0em",
+      "align": "left"
+    },
+    {
+      "id": "bottom-right",
+      "top": "model.bottom",
+      "left": "model.right",
+      "padding-top": "0.5em",
+      "align": "center"
+    }
+  ]
+}

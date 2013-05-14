@@ -1,0 +1,21 @@
+{
+  "title": "TextBoxInModel",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "TextBoxInModel$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/TextBoxInModel$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

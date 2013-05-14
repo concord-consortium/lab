@@ -1,0 +1,21 @@
+{
+  "title": "sm_liq",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "sm_liq",
+      "url": "imports/legacy-mw-content/converted/student/stateofmatter/sm_liq.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

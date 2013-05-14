@@ -1,0 +1,21 @@
+{
+  "title": "script_add",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "script_add$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/script_add$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

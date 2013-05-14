@@ -15,9 +15,13 @@ module Parsers
     end
 
     def parse
+      # read in the list of interactives and groups from the JSON file pointed to by
+      # self.uri into self.hash_data
       self.update_from_uri!();
+      # read in each group contained in self.hash_data and create a Group model
       self.parse_collection('groups', self.groups, self.group_parser)
       remove_broken_interactives
+      # read in each interactive contained in self.hash_data and create an Interactive model
       self.parse_collection('interactives', self.interactives, self.interactive_parser)
       return self
     end

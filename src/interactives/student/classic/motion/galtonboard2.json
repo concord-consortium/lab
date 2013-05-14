@@ -1,0 +1,21 @@
+{
+  "title": "galtonboard2",
+  "publicationStatus": "broken",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "galtonboard2$0",
+      "url": "imports/legacy-mw-content/converted/student/classic/motion/galtonboard2$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

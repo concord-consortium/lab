@@ -8,10 +8,11 @@ define(function(require) {
       solarSystem          = require('solar-system/models/engine/solar-system'),
       metadata             = require('solar-system/models/metadata'),
       TickHistory          = require('common/models/tick-history'),
+      PropertySupport      = require('common/property-support'),
       serialize            = require('common/serialize'),
       validator            = require('common/validator'),
       units                = require('solar-system/models/engine/constants/units'),
-      PropertyDescription  = require('solar-system/models/property-description'),
+      PropertyDescription  = require('common/property-description'),
       unitDefinitions      = require('solar-system/models/unit-definitions/index'),
       _ = require('underscore');
 
@@ -23,6 +24,11 @@ define(function(require) {
     var model = {},
         dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack",
             "seek", "addBody", "removeBody", "invalidation", "textBoxesChanged"),
+
+        propertySupport = new PropertySupport({
+          types: ["output", "parameter", "mainProperty", "viewOption"]
+        }),
+
         defaultMaxTickHistory = 1000,
         stopped = true,
         restart = false,
@@ -50,50 +56,11 @@ define(function(require) {
         // property values - in effect transposed from the planet property arrays.
         results,
 
-        listeners = {},
+        // If this is true, output properties will not be recalculated on changes
+        suppressInvalidatingChangeHooks = false,
 
-        properties = {
-          /**
-            These functions are optional setters that will be called *instead* of simply setting
-            a value when 'model.set({property: value})' is called, and are currently needed if you
-            want to pass a value through to the engine.  The function names are automatically
-            determined from the property name. If you define one of these custom functions, you
-            must remember to also set the property explicitly (if appropriate) as this won't be
-            done automatically
-          */
-
-          set_timeStep: function(ts) {
-            this.timeStep = ts;
-          },
-
-          set_horizontalWrapping: function(hw) {
-            this.horizontalWrapping = hw;
-            if (engine) {
-              engine.setHorizontalWrapping(hw);
-            }
-          },
-
-          set_verticalWrapping: function(vw) {
-            this.verticalWrapping = vw;
-            if (engine) {
-              engine.setVerticalWrapping(vw);
-            }
-          },
-
-          set_gravitationalConstant: function(gc) {
-            this.gravitationalConstant = gc;
-            if (engine) {
-              engine.setGravitationalConstant(gc);
-            }
-          }
-
-        },
-
-        // The list of all 'output' properties (which change once per tick).
-        outputNames = [],
-
-        // Information about the description and calculating function for 'output' properties.
-        outputsByName = {},
+        // Invalidating change hooks might between others
+        invalidatingChangeHookNestingLevel = 0,
 
         // The subset of outputName list, containing list of outputs which are filtered
         // by one of the built-in filters (like running average filter).
@@ -103,108 +70,44 @@ define(function(require) {
         // are stored in outputsByName object, as filtered output is just extension of normal output.
         filteredOutputsByName = {},
 
-        // Whewther to suppress caching of output properties. Should only be needed between
-        // invalidatingChangePreHook and invalidatingChangePostHook
-        suppressOutputPropertyCaching = false,
-
-        // The currently-defined parameters.
-        parametersByName = {},
-
-        // Unit types for all the properties that can be accessed using model.set/model.get
-        mainPropertyUnitTypes,
-
         // The set of units currently in effect. (Determined by the 'unitsScheme' property of the
         // model; default value is 'md2d')
-        unitsDefinition;
+        unitsDefinition,
 
-    function notifyPropertyListeners(listeners) {
-      listeners = _.uniq(listeners);
-      for (var i=0, ii=listeners.length; i<ii; i++){
-        listeners[i]();
-      }
-    }
+        // Set method mixed in to model by propertySupport; model.set needs to be augmented with
+        // physics-based invalidation concerns.
+        baseSet,
 
-    function notifyPropertyListenersOfEvents(events) {
-      var evt,
-          evts,
-          waitingToBeNotified = [],
-          i, ii;
+        // The initial "main" propeties, validated and filtered from the initialProperties array
+        mainProperties,
 
-      if (typeof events === "string") {
-        evts = [events];
+        // The initial viewOptions, validated and filtered from the initialProperties
+        viewOptions;
+
+    function defineBuiltinProperty(type, key, setter) {
+      var metadataForType,
+          descriptor,
+          unitType;
+
+      if (type === 'mainProperty') {
+        metadataForType = metadata.mainProperties;
+      } else if (type === 'viewOption') {
+        metadataForType = metadata.viewOptions;
       } else {
-        evts = events;
+        throw new Error(type + " is not a supported built-in property type");
       }
-      for (i=0, ii=evts.length; i<ii; i++){
-        evt = evts[i];
-        if (listeners[evt]) {
-          waitingToBeNotified = waitingToBeNotified.concat(listeners[evt]);
+
+      descriptor = {
+        type: type,
+        writable: validator.propertyIsWritable(metadataForType[key]),
+        set: setter,
+        includeInHistoryState: !!metadataForType[key].storeInTickHistory,
+        validate: function(value) {
+          return validator.validateSingleProperty(metadataForType[key], key, value, false);
         }
-      }
-      if (listeners["all"]){      // listeners that want to be notified on any change
-        waitingToBeNotified = waitingToBeNotified.concat(listeners["all"]);
-      }
-      notifyPropertyListeners(waitingToBeNotified);
-    }
+      };
 
-    /**
-      Restores a set of "input" properties, notifying their listeners of only those properties which
-      changed, and only after the whole set of properties has been updated.
-    */
-    function restoreProperties(savedProperties) {
-      var property,
-          changedProperties = [],
-          savedValue;
-
-      for (property in savedProperties) {
-        if (savedProperties.hasOwnProperty(property)) {
-          // skip read-only properties
-          if (outputsByName[property]) {
-            throw new Error("Attempt to restore output property \"" + property + "\".");
-          }
-          savedValue = savedProperties[property];
-          if (properties[property] !== savedValue) {
-            if (properties["set_"+property]) {
-              properties["set_"+property](savedValue);
-            } else {
-              properties[property] = savedValue;
-            }
-            changedProperties.push(property);
-          }
-        }
-      }
-      notifyPropertyListenersOfEvents(changedProperties);
-    }
-
-    /**
-      Restores a list of parameter values, notifying their listeners after the whole list is
-      updated, and without triggering setters. Sets parameters not in the passed-in list to
-      undefined.
-    */
-    function restoreParameters(savedParameters) {
-      var parameterName,
-          observersToNotify = [];
-
-      for (parameterName in savedParameters) {
-        if (savedParameters.hasOwnProperty(parameterName)) {
-          // restore the property value if it was different or not defined in the current time step
-          if (properties[parameterName] !== savedParameters[parameterName] || !parametersByName[parameterName].isDefined) {
-            properties[parameterName] = savedParameters[parameterName];
-            parametersByName[parameterName].isDefined = true;
-            observersToNotify.push(parameterName);
-          }
-        }
-      }
-
-      // remove parameter values that aren't defined at this point in history
-      for (parameterName in parametersByName) {
-        if (parametersByName.hasOwnProperty(parameterName) && !savedParameters.hasOwnProperty(parameterName)) {
-          parametersByName[parameterName].isDefined = false;
-          properties[parameterName] = undefined;
-        }
-      }
-
-      notifyPropertyListenersOfEvents(observersToNotify);
+      propertySupport.defineProperty(key, descriptor);
     }
 
     function tick(elapsedTime, dontDispatchTickEvent) {
@@ -230,28 +133,6 @@ define(function(require) {
       }
 
       return stopped;
-    }
-
-    function set_properties(hash) {
-      var property, propsChanged = [];
-      for (property in hash) {
-        if (hash.hasOwnProperty(property) && hash[property] !== undefined && hash[property] !== null) {
-          // skip read-only properties
-          if (outputsByName[property]) {
-            throw new Error("Attempt to set read-only output property \"" + property + "\".");
-          }
-          // look for set method first, otherwise just set the property
-          if (properties["set_"+property]) {
-            properties["set_"+property](hash[property]);
-          // why was the property not set if the default value property is false ??
-          // } else if (properties[property]) {
-          } else {
-            properties[property] = hash[property];
-          }
-          propsChanged.push(property);
-        }
-      }
-      notifyPropertyListenersOfEvents(propsChanged);
     }
 
     // Returns the "raw" (untranslated) version of property 'name'. Used to provide privileged
@@ -289,31 +170,25 @@ define(function(require) {
       which would invalidate a cached value without also calling one of these two methods.
     */
     function updateAllOutputProperties() {
-      var i, j, l;
-
       readModelState();
-
-      // invalidate all cached values before notifying any listeners
-      for (i = 0; i < outputNames.length; i++) {
-        outputsByName[outputNames[i]].hasCachedValue = false;
-      }
+      propertySupport.deleteComputedPropertyCachedValues();
 
       // Update all filtered outputs.
       // Note that this have to be performed after invalidation of all outputs
       // (as filtered output can filter another output), but before notifying
       // listeners (as we want to provide current, valid value).
-      for (i = 0; i < filteredOutputNames.length; i++) {
-        filteredOutputsByName[filteredOutputNames[i]].addSample();
-      }
+      filteredOutputNames.forEach(function(name) {
+        filteredOutputsByName[name].addSample();
+      });
 
-      for (i = 0; i < outputNames.length; i++) {
-        if (l = listeners[outputNames[i]]) {
-          for (j = 0; j < l.length; j++) {
-            l[j]();
-          }
-        }
-      }
+      propertySupport.notifyAllComputedProperties();
     }
+
+    // FIXME
+    //
+    // Instead of requiring balanced calls to "PreHooks" and "PostHooks", we should instead accept a
+    // callback containing actions to perform in between the pre and post actions. That would be a
+    // better way of ensuring that pre and post hooks are always balanced.
 
     /**
       ALWAYS CALL THIS FUNCTION before any change to model state outside a model step
@@ -323,16 +198,51 @@ define(function(require) {
       by considered non-invalidating changes that don't require calling this hook.
     */
     function invalidatingChangePreHook() {
-      storeOutputPropertiesBeforeChange();
+      if (suppressInvalidatingChangeHooks) return;
+      invalidatingChangeHookNestingLevel++;
+
+      if (invalidatingChangeHookNestingLevel === 0) {
+        // If we're beginning a series of (possibly-nested) invalidating changes, store computed
+        // property values so they can be compared when we finish the invalidating changes.
+        propertySupport.storeComputedProperties();
+        propertySupport.deleteComputedPropertyCachedValues();
+        propertySupport.enableCaching = false;
+      }
+      invalidatingChangeHookNestingLevel++;
     }
 
     /**
       ALWAYS CALL THIS FUNCTION after any change to model state outside a model step.
     */
     function invalidatingChangePostHook() {
-      updateOutputPropertiesAfterChange();
-      if (tickHistory) tickHistory.invalidateFollowingState();
-      dispatch.invalidation();
+      if (suppressInvalidatingChangeHooks) return;
+      invalidatingChangeHookNestingLevel--;
+
+      if (invalidatingChangeHookNestingLevel === 0) {
+        propertySupport.enableCaching = true;
+      }
+
+      // Make sure that computed properties which depend on engine state are valid
+      if (engine) {
+        readModelState();
+      }
+
+      // Non-filtered outputs will be valid at this point (caching is disabl;ed, so they're
+      // recomputed every time.) This ensures that filtered outputs that depend on non-filtered
+      // outputs are also valid:
+      filteredOutputNames.forEach(function(name) {
+        filteredOutputsByName[name].addSample();
+      });
+
+      if (invalidatingChangeHookNestingLevel === 0) {
+        // Once we've finished the cycle of invalidating changes, go ahead and notify observers of
+        // computed properties that changed.
+        propertySupport.enableCaching = true;
+        propertySupport.notifyChangedComputedProperties();
+
+        if (tickHistory) tickHistory.invalidateFollowingState();
+        dispatch.invalidation();
+      }
     }
 
     /**
@@ -370,89 +280,6 @@ define(function(require) {
     })();
 
     /**
-      Call this method *before* changing any "universe" property or model property (including any
-      property of a model object such as the position of an planet) to save the output-property
-      values before the change. This is required to enabled updateOutputPropertiesAfterChange to be
-      able to detect property value changes.
-
-      After the change is made, call updateOutputPropertiesAfterChange to notify listeners.
-    */
-    function storeOutputPropertiesBeforeChange() {
-      var i, outputName, output, l;
-
-      for (i = 0; i < outputNames.length; i++) {
-        outputName = outputNames[i];
-        if ((l = listeners[outputName]) && l.length > 0) {
-          output = outputsByName[outputName];
-          // Can't save previous value in output.cachedValue because, before we check it, the
-          // cachedValue may be overwritten with an updated value as a side effect of the
-          // calculation of the updated value of some other property
-          output.previousValue = output.hasCachedValue ? output.cachedValue : output.calculate();
-        }
-      }
-    }
-
-    /**
-      Before changing any "universe" property or model property (including any
-      property of a model object such as the position of an planet), call the method
-      storeOutputPropertiesBeforeChange; after changing the property, call this method  to detect
-      changed output-property values and to notify listeners of the output properties which have
-      changed. (However, don't call either method after a model tick or step;
-      updateAllOutputProperties is more efficient for that case.)
-    */
-    function updateOutputPropertiesAfterChange() {
-      var i, j, output, outputName, l, listenersToNotify = [];
-
-      readModelState();
-
-      // Mark _all_ cached values invalid ... we're not going to be checking the values of the
-      // unobserved properties, so we have to assume their value changed.
-      for (i = 0; i < outputNames.length; i++) {
-        output = outputsByName[outputNames[i]];
-        output.hasCachedValue = false;
-      }
-
-      // Update all filtered outputs.
-      // Note that this have to be performed after invalidation of all outputs
-      // (as filtered output can filter another output).
-      for (i = 0; i < filteredOutputNames.length; i++) {
-        filteredOutputsByName[filteredOutputNames[i]].addSample();
-      }
-
-      // Keep a list of output properties that are being observed and which changed ... and
-      // cache the updated values while we're at it
-      for (i = 0; i < outputNames.length; i++) {
-        outputName = outputNames[i];
-        output = outputsByName[outputName];
-
-        if ((l = listeners[outputName]) && l.length > 0) {
-          // Though we invalidated all cached values above, nevertheless some outputs may have been
-          // computed & cached during a previous pass through this loop, as a side effect of the
-          // calculation of some other property. Therefore we can respect hasCachedValue here.
-          if (!output.hasCachedValue) {
-            output.cachedValue = output.calculate();
-            output.hasCachedValue = true;
-          }
-
-          if (output.cachedValue !== output.previousValue) {
-            for (j = 0; j < l.length; j++) {
-              listenersToNotify.push(l[j]);
-            }
-          }
-        }
-        // Now that we're done with it, allow previousValue to be GC'd. (Of course, since we're
-        // using an equality test to check for changes, it doesn't make sense to let outputs be
-        // objects or arrays, yet)
-        output.previousValue = null;
-      }
-
-      // Finally, now that all the changed properties have been cached, notify listeners
-      for (i = 0; i < listenersToNotify.length; i++) {
-        listenersToNotify[i]();
-      }
-    }
-
-    /**
       This method is called to refresh the results array and macrostate variables (KE, PE,
       temperature) whenever an engine integration occurs or the model state is otherwise changed.
 
@@ -462,7 +289,7 @@ define(function(require) {
       the detection of changed properties.
     */
     function readModelState() {
-      var i, prop, n, amino;
+      var i, prop, n;
 
       engine.computeOutputState(modelOutputState);
 
@@ -483,26 +310,16 @@ define(function(require) {
       for containing the atom properties.
     */
     function resizeResultsArray() {
-      var isAminoAcid = function () {
-            return aminoacidsHelper.isAminoAcid(this.element);
-          },
-          i, len;
+      var i, len;
 
       // TODO: refactor whole approach to creation of objects from flat arrays.
-      // Think about more general way of detecting and representing amino acids.
-      // However it would be reasonable to perform such refactoring later, when all requirements
-      // related to proteins engine are clearer.
 
       if (!results) results = [];
 
       for (i = results.length, len = model.get_num_bodies(); i < len; i++) {
         if (!results[i]) {
           results[i] = {
-            idx: i,
-            // Provide convenience function for view, do not force it to ask
-            // model / engine directly. In the future, atom objects should be
-            // represented by a separate class.
-            isAminoAcid: isAminoAcid
+            idx: i
           };
         }
       }
@@ -516,6 +333,170 @@ define(function(require) {
     // Public functions
     //
     // ------------------------------------------------------------
+
+    // Adds model.properties, model.set, model.get, model.addObserver, model.removeObserver...
+    propertySupport.mixInto(model);
+
+    baseSet = model.set;
+
+    model.set = function(key, value) {
+      if (engine) invalidatingChangePreHook();
+      baseSet(key, value);
+      if (engine) invalidatingChangePostHook();
+    };
+
+    /**
+      Add a listener callback that will be notified when any of the properties in the passed-in
+      array of properties is changed. (The argument `properties` can also be a string, if only a
+      single name needs to be passed.) This is a simple way for views to update themselves in
+      response to property changes.
+    */
+    model.addPropertiesListener = function(properties, callback) {
+      if (typeof properties === 'string') {
+        model.addObserver(properties, callback);
+      } else {
+        properties.forEach(function(property) {
+          model.addObserver(property, callback);
+        });
+      }
+    };
+
+    /**
+      Add an "output" property to the model. Output properties are expected to change at every
+      model tick, and may also be changed indirectly, outside of a model tick, by a change to model
+      properties or the atom, element, etc. properties.
+
+      `key` should be the name of the output. The property value will be accessed by
+      `model.get(<key>);`
+
+      `description` should be a hash of metadata about the property.
+
+      `getter` should be a no-arg function which calculates the property value. These values are not
+      translated after getter returns because we expect that most output getters are authored
+      scripts, which operate entirely with already-translated units. Therefore, getters defined
+      internally in modeler.js needs to make sure to translate any "md2d units" values out of the
+      md2d-unit domain.
+    */
+    model.defineOutput = function(key, descriptionHash, getter) {
+      propertySupport.defineProperty(key, {
+        type: 'output',
+        writable: false,
+        get: getter,
+        includeInHistoryState: false,
+        description: new PropertyDescription(unitsDefinition, descriptionHash)
+      });
+    };
+
+    /**
+      Add an "filtered output" property to the model. This is special kind of output property, which
+      is filtered by one of the built-in filters based on time (like running average). Note that filtered
+      outputs do not specify calculate function - instead, they specify property which should filtered.
+      It can be another output, model parameter or custom parameter.
+
+      Filtered output properties are extension of typical output properties. They share all features of
+      output properties, so they are expected to change at every model tick, and may also be changed indirectly,
+      outside of a model tick, by a change to the model parameters or to the configuration of atoms and other
+      objects in the model.
+
+      `name` should be the name of the parameter. The property value will be accessed by
+      `model.get(<name>);`
+
+      `description` should be a hash of metadata about the property. Right now, these metadata are not
+      used. However, example metadata include the label and units name to be used when graphing
+      this property.
+
+      `property` should be name of the basic property which should be filtered.
+
+      `type` should be type of filter, defined as string. For now only "RunningAverage" is supported.
+
+      `period` should be number defining length of time period used for calculating filtered value. It should
+      be specified in femtoseconds.
+
+    */
+    model.defineFilteredOutput = function(name, description, property, type, period) {
+      // Filter object.
+      var filter, initialValue;
+
+      if (type === "RunningAverage") {
+        filter = new RunningAverageFilter(period);
+      } else {
+        throw new Error("FilteredOutput: unknown filter type " + type + ".");
+      }
+
+      initialValue = model.get(property);
+      if (initialValue === undefined || isNaN(Number(initialValue))) {
+        throw new Error("FilteredOutput: property is not a valid numeric value or it is undefined.");
+      }
+
+      // Add initial sample.
+      filter.addSample(model.get('time'), initialValue);
+
+      filteredOutputNames.push(name);
+      // filteredOutputsByName stores properties which are unique for filtered output.
+      // Other properties like description or calculate function are stored in outputsByName hash.
+      filteredOutputsByName[name] = {
+        addSample: function () {
+          filter.addSample(model.get('time'), model.get(property));
+        }
+      };
+
+      // Create simple adapter implementing TickHistoryCompatible Interface
+      // and register it in tick history.
+      tickHistory.registerExternalObject({
+        push: function () {
+          // Push is empty, as we store samples during each tick anyway.
+        },
+        extract: function (idx) {
+          filter.setCurrentStep(idx);
+        },
+        invalidate: function (idx) {
+          filter.invalidate(idx);
+        },
+        setHistoryLength: function (length) {
+          filter.setMaxBufferLength(length);
+        }
+      });
+
+      // Extend description to contain information about filter.
+      description.property = property;
+      description.type = type;
+      description.period = period;
+
+      // Filtered output is still an output.
+      // Reuse existing, well tested logic for caching, observing etc.
+      model.defineOutput(name, description, function () {
+        return filter.calculate();
+      });
+    };
+
+    /**
+      Define a property of the model to be treated as a custom parameter. Custom parameters are
+      (generally, user-defined) read/write properties that trigger a setter action when set, and
+      whose values are automatically persisted in the tick history.
+
+      Because custom parameters are not intended to be interpreted by the engine, but instead simply
+      *represent* states of the model that are otherwise fully specified by the engine state and
+      other properties of the model, and because the setter function might not limit itself to a
+      purely functional mapping from parameter value to model properties, but might perform any
+      arbitrary stateful change, (stopping the model, etc.), the setter is NOT called when custom
+      parameters are updated by the tick history.
+    */
+    model.defineParameter = function(key, descriptionHash, setter) {
+      var descriptor = {
+            type: 'parameter',
+            includeInHistoryState: true,
+            invokeSetterAfterBulkRestore: false,
+            description: new PropertyDescription(unitsDefinition, descriptionHash)
+          };
+
+      // In practice, some parameters are meant only to be observed, and have no setter
+      if (setter) {
+        descriptor.set = function(value) {
+          setter.call(model, value);
+        };
+      }
+      propertySupport.defineProperty(key, descriptor);
+    };
 
     /**
       Current seek position
@@ -648,7 +629,7 @@ define(function(require) {
 
       if (typeof config === 'number') {
         num = config;
-      } else if (config.num != null) {
+      } else if (config.num !== undefined) {
         num = config.num;
       } else if (config.x) {
         num = config.x.length;
@@ -842,14 +823,14 @@ define(function(require) {
 
     model.addTextBox = function(props) {
       props = validator.validateCompleteness(metadata.textBox, props);
-      properties.textBoxes.push(props);
+      model.get('textBoxes').push(props);
       dispatch.textBoxesChanged();
     };
 
     model.removeTextBox = function(i) {
-      var text = properties.textBoxes;
+      var text = model.get('textBoxes');
       if (i >=0 && i < text.length) {
-        properties.textBoxes = text.slice(0,i).concat(text.slice(i+1));
+        model.set('textBoxes', text.slice(0,i).concat(text.slice(i+1)));
         dispatch.textBoxesChanged();
       } else {
         throw new Error("Text box \"" + i + "\" does not exist, so it cannot be removed.");
@@ -857,11 +838,15 @@ define(function(require) {
     };
 
     model.setTextBoxProperties = function(i, props) {
-      var textBox = properties.textBoxes[i];
+      var textBox = model.get('textBoxes')[i],
+          prop;
+
       if (textBox) {
         props = validator.validate(metadata.textBox, props);
         for (prop in props) {
-          textBox[prop] = props[prop];
+          if (props.hasOwnProperty(prop)) {
+            textBox[prop] = props[prop];
+          }
         }
         dispatch.textBoxesChanged();
       } else {
@@ -983,239 +968,12 @@ define(function(require) {
       return model;
     };
 
-    model.set = function(key, val) {
-      var hash;
-      if (arguments.length === 1) {
-        // Hash of options provided.
-        hash = key;
-      } else {
-        // Key - value pair provied.
-        hash = {};
-        hash[key] = val;
-      }
-      // Perform validation in case of setting main properties or
-      // model view properties. Attempts to set immutable or read-only
-      // properties will be caught.
-      validator.validate(metadata.mainProperties, hash);
-      validator.validate(metadata.viewOptions, hash);
-
-      if (engine) invalidatingChangePreHook();
-      set_properties(hash);
-      if (engine) invalidatingChangePostHook();
-    };
-
-    model.get = function(property) {
-      var output;
-
-      if (properties.hasOwnProperty(property)) return properties[property];
-
-      if (output = outputsByName[property]) {
-        if (output.hasCachedValue) return output.cachedValue;
-        output.hasCachedValue = true;
-        output.cachedValue = output.calculate();
-        return output.cachedValue;
-      }
-    };
-
-    /**
-      Add a listener callback that will be notified when any of the properties in the passed-in
-      array of properties is changed. (The argument `properties` can also be a string, if only a
-      single name needs to be passed.) This is a simple way for views to update themselves in
-      response to property changes.
-
-      Observe all properties with `addPropertiesListener('all', callback);`
-    */
-    model.addPropertiesListener = function(properties, callback) {
-      var i;
-
-      function addListener(prop) {
-        if (!listeners[prop]) listeners[prop] = [];
-        listeners[prop].push(callback);
-      }
-
-      if (typeof properties === 'string') {
-        addListener(properties);
-      } else {
-        for (i = 0; i < properties.length; i++) {
-          addListener(properties[i]);
-        }
-      }
-    };
-
-
-    /**
-      Add an "output" property to the model. Output properties are expected to change at every
-      model tick, and may also be changed indirectly, outside of a model tick, by a change to the
-      model parameters or to the configuration of atoms and other objects in the model.
-
-      `name` should be the name of the parameter. The property value will be accessed by
-      `model.get(<name>);`
-
-      `description` should be a hash of metadata about the property. Right now, these metadata are not
-      used. However, example metadata include the label and units name to be used when graphing
-      this property.
-
-      `calculate` should be a no-arg function which should calculate the property value.
-    */
-    model.defineOutput = function(name, descriptionHash, calculate) {
-      outputNames.push(name);
-
-      mainPropertyUnitTypes[name] = {
-        unitType: descriptionHash.unitType
-      };
-
-      outputsByName[name] = {
-        description: new PropertyDescription(unitsDefinition, descriptionHash),
-        calculate: calculate,
-        hasCachedValue: false,
-        // Used to keep track of whether this property changed as a side effect of some other change
-        // null here is just a placeholder
-        previousValue: null
-      };
-    };
-
-    /**
-      Add an "filtered output" property to the model. This is special kind of output property, which
-      is filtered by one of the built-in filters based on time (like running average). Note that filtered
-      outputs do not specify calculate function - instead, they specify property which should filtered.
-      It can be another output, model parameter or custom parameter.
-
-      Filtered output properties are extension of typical output properties. They share all features of
-      output properties, so they are expected to change at every model tick, and may also be changed indirectly,
-      outside of a model tick, by a change to the model parameters or to the configuration of atoms and other
-      objects in the model.
-
-      `name` should be the name of the parameter. The property value will be accessed by
-      `model.get(<name>);`
-
-      `description` should be a hash of metadata about the property. Right now, these metadata are not
-      used. However, example metadata include the label and units name to be used when graphing
-      this property.
-
-      `property` should be name of the basic property which should be filtered.
-
-      `type` should be type of filter, defined as string. For now only "RunningAverage" is supported.
-
-      `period` should be number defining length of time period used for calculating filtered value. It should
-      be specified in femtoseconds.
-
-    */
-    model.defineFilteredOutput = function(name, description, property, type, period) {
-      // Filter object.
-      var filter, initialValue;
-
-      if (type === "RunningAverage") {
-        filter = new RunningAverageFilter(period);
-      } else {
-        throw new Error("FilteredOutput: unknown filter type " + type + ".");
-      }
-
-      initialValue = model.get(property);
-      if (initialValue === undefined || isNaN(Number(initialValue))) {
-        throw new Error("FilteredOutput: property is not a valid numeric value or it is undefined.");
-      }
-
-      // Add initial sample.
-      filter.addSample(model.get('time'), initialValue);
-
-      filteredOutputNames.push(name);
-      // filteredOutputsByName stores properties which are unique for filtered output.
-      // Other properties like description or calculate function are stored in outputsByName hash.
-      filteredOutputsByName[name] = {
-        addSample: function () {
-          filter.addSample(model.get('time'), model.get(property));
-        }
-      };
-
-      // Create simple adapter implementing TickHistoryCompatible Interface
-      // and register it in tick history.
-      tickHistory.registerExternalObject({
-        push: function () {
-          // Push is empty, as we store samples during each tick anyway.
-        },
-        extract: function (idx) {
-          filter.setCurrentStep(idx);
-        },
-        invalidate: function (idx) {
-          filter.invalidate(idx);
-        },
-        setHistoryLength: function (length) {
-          filter.setMaxBufferLength(length);
-        }
-      });
-
-      // Extend description to contain information about filter.
-      description.property = property;
-      description.type = type;
-      description.period = period;
-
-      // Filtered output is still an output.
-      // Reuse existing, well tested logic for caching, observing etc.
-      model.defineOutput(name, description, function () {
-        return filter.calculate();
-      });
-    };
-
-    /**
-      Define a property of the model to be treated as a custom parameter. Custom parameters are
-      (generally, user-defined) read/write properties that trigger a setter action when set, and
-      whose values are automatically persisted in the tick history.
-
-      Because custom parameters are not intended to be interpreted by the engine, but instead simply
-      *represent* states of the model that are otherwise fully specified by the engine state and
-      other properties of the model, and because the setter function might not limit itself to a
-      purely functional mapping from parameter value to model properties, but might perform any
-      arbitrary stateful change, (stopping the model, etc.), the setter is NOT called when custom
-      parameters are updated by the tick history.
-    */
-    model.defineParameter = function(name, descriptionHash, setter) {
-      parametersByName[name] = {
-        description: new PropertyDescription(unitsDefinition, descriptionHash),
-        setter: setter,
-        isDefined: false
-      };
-
-      // Regardless of the type of unit represented by the parameter, do NOT automatically convert
-      // it to MD2D units in the set method. That is because the set method on the parameter will
-      // also call 'setter', and any native model properties set by 'setter' will be translated.
-      // If the parameter value were also translated in the set method, translations would happen
-      // twice!
-      mainPropertyUnitTypes[name] = {
-        unitType: "untranslated"
-      };
-
-      properties['set_'+name] = function(value) {
-        properties[name] = value;
-        parametersByName[name].isDefined = true;
-        // setter is optional.
-        if (parametersByName[name].setter) {
-          // set a useful 'this' binding in the setter:
-          parametersByName[name].setter.call(model, value);
-        }
-      };
-    };
-
     /**
       Return a unitDefinition in the current unitScheme for a quantity
       such as 'length', 'mass', etc.
     */
     model.getUnitDefinition = function(name) {
       return unitsDefinition.units[name];
-    };
-
-    /**
-      Retrieve (a copy of) the hash describing property 'name', if one exists. This hash can store
-      an arbitrary set of key-value pairs, but is expected to have 'label' and 'units' properties
-      describing, respectively, the property's human-readable label and the short name of the units
-      in which the property is enumerated.
-
-      Right now, only output properties and custom parameters have a description hash.
-    */
-    model.getPropertyDescription = function(name) {
-      var property = outputsByName[name] || parametersByName[name];
-      if (property) {
-        return _.extend({}, property.description);
-      }
     };
 
     // FIXME: Broken!! Includes property setter methods, does not include radialBonds, etc.
@@ -1250,11 +1008,6 @@ define(function(require) {
     // finish setting up the model
     // ------------------------------
 
-    // Set the regular, main properties.
-    // Note that validation process will return hash without all properties which are
-    // not defined in meta model as mainProperties (like bodies, viewOptions etc).
-    set_properties(validator.validateCompleteness(metadata.mainProperties, initialProperties));
-
     (function () {
       if (!initialProperties.viewOptions || !initialProperties.viewOptions.textBoxes) {
         return;
@@ -1270,11 +1023,42 @@ define(function(require) {
         textBoxes[i] = validator.validateCompleteness(metadata.textBox, textBoxes[i]);
       }
     }());
+    viewOptions = validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {});
 
-    // Set the model view options.
-    set_properties(validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {}));
+    // Set the regular, main properties. Note that validation process will return hash without all
+    // properties which are not defined in meta model as mainProperties (like atoms, obstacles,
+    // viewOptions etc).
+    mainProperties = validator.validateCompleteness(metadata.mainProperties, initialProperties);
 
-    // initialze width and height from minX, minYm, maxX, maxY
+    // Set up units scheme.
+    unitsDefinition = unitDefinitions.get(mainProperties.unitsScheme);
+
+    // ------------------------------
+    // Define toplevel properties of the model
+    // ------------------------------
+
+    // Add all the mainProperties, with custom setters defined below
+    (function() {
+      var customSetters = {
+        modelSampleRate: function() {
+          if (!stopped) model.restart();
+        }
+      };
+
+      Object.keys(metadata.mainProperties).forEach(function(key) {
+        defineBuiltinProperty('mainProperty', key, customSetters[key]);
+      });
+      propertySupport.setRawValues(mainProperties);
+    })();
+
+    // Define and set the model view options. None of these have custom setters.
+    Object.keys(metadata.viewOptions).forEach(function(key) {
+      defineBuiltinProperty('viewOption', key);
+    });
+    propertySupport.setRawValues(viewOptions);
+
+    // Initialize minX, minYm, maxX, maxY from model width and height
+    // if they are undefined.
     model.initializeDimensions();
 
     // Setup engine object.
@@ -1289,23 +1073,14 @@ define(function(require) {
 
     // Initialize tick history.
     tickHistory = new TickHistory({
-      input: [
-        "showClock",
-        "timeStepsPerTick",
-        "timeStep",
-        "gravitationalConstant"
-      ],
-      getRawPropertyValue: getRawPropertyValue,
-      restoreProperties: restoreProperties,
-      parameters: parametersByName,
-      restoreParameters: restoreParameters,
+      getProperties: function() {
+        return propertySupport.historyStateRawValues;
+      },
+      restoreProperties: propertySupport.setRawValues,
       state: engine.getState()
     }, model, defaultMaxTickHistory);
 
     newStep = true;
-
-    // Set up units scheme.
-    unitsDefinition = unitDefinitions.get(model.get('unitsScheme'));
 
     // set up types of all properties before any third-party calls to set/get
     mainPropertyUnitTypes = {};
@@ -1326,14 +1101,9 @@ define(function(require) {
       return modelOutputState.time;
     });
 
-    // Confusing detail for review: setting 'unitType' here will cause the return value of the
-    // output function to be translated to macroscopic units, however, the function takes
-    // macroscopic units as input. Therefore we must not set 'unitType'.
     model.defineOutput('timePerTick', {
       label: "Model time per tick",
-      unitName:         unitsDefinition.units.time.name,
-      unitPluralName:   unitsDefinition.units.time.pluralName,
-      unitAbbreviation: unitsDefinition.units.time.symbol,
+      unitType: 'time',
       format: 'f'
     }, function() {
       return model.get('timeStep') * model.get('timeStepsPerTick');

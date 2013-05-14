@@ -1,0 +1,19 @@
+{
+  "title": "Custom Element Colors",
+  "publicationStatus": "public",
+  "subtitle": "This model has a separate custom color defined for each of the four default elements.",
+  "about": "The custom colors from left to right are: orange, light-blue, red, and yellow.",
+  "models": [
+    {
+      "id": "custom-element-colors$0",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/custom-element-colors$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {}
+}

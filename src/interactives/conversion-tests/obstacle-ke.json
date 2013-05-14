@@ -1,0 +1,54 @@
+{
+  "title": "Obstacle Kinetic Energy calculation",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "obstacle-ke$0",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/obstacle-ke$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "temperature-slider",
+      "min": 0.001,
+      "max": 80000,
+      "labels": [
+        {
+          "value": 0.001,
+          "label": "low"
+        },
+        {
+          "value": 80000,
+          "label": "high"
+        }
+      ],
+      "steps": 50,
+      "title": "Temperature",
+      "property": "targetTemperature"
+    },
+    {
+      "type": "barGraph",
+      "id": "thermometer",
+      "property": "temperature",
+      "title": "Thermometer",
+      "labels": 0,
+      "min": 0,
+      "max": 80000
+    }
+  ],
+  "layout": {
+    "right": [
+      "thermometer"
+    ],
+    "bottom": [
+      "temperature-slider"
+    ]
+  }
+}

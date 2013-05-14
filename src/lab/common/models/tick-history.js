@@ -31,7 +31,18 @@ define(function() {
         listState,
         defaultSize = 1000,
         // List of objects defining TickHistoryCompatible Interface.
-        externalObjects = [];
+        externalObjects = [],
+
+        // Provide the "old" interface for models that don't use PropertySupport yet, but provide
+        // a different, new interface for models using PropertySupport for their parameters, etc.
+        // Such models are smart enough to send a single hash of raw property values for all the
+        // properties (parameters, main properties, view properties, etc) we need to save. Older
+        // models need to provide us with separate lists of "regular" properties and parameters,
+        // with their own separate restore callbacks.
+        //
+        //     ***      Remember to remove this when all models use PropertySupport!        ***
+        //
+        useNewInterface = !!modelState.getProperties;
 
     function newState() {
       return { input: {}, state: [], parameters: {} };
@@ -61,17 +72,22 @@ define(function() {
           parameters,
           name;
 
-      // save model input properties
-      for (i = 0; i < modelState.input.length; i++) {
-        prop = modelState.input[i];
-        destination.input[prop] = modelState.getRawPropertyValue(prop);
-      }
+      if (useNewInterface) {
+        // we expect that modelState.getProperties returns us a hash we can keep
+        destination.input = modelState.getProperties();
+      } else {
+        // save model input properties
+        for (i = 0; i < modelState.input.length; i++) {
+          prop = modelState.input[i];
+          destination.input[prop] = modelState.getRawPropertyValue(prop);
+        }
 
-      // save model parameters
-      parameters = modelState.parameters;
-      for (name in parameters) {
-        if (parameters.hasOwnProperty(name) && parameters[name].isDefined) {
-          destination.parameters[name] = modelState.getRawPropertyValue(name);
+        // save model parameters
+        parameters = modelState.parameters;
+        for (name in parameters) {
+          if (parameters.hasOwnProperty(name) && parameters[name].isDefined) {
+            destination.parameters[name] = modelState.getRawPropertyValue(name);
+          }
         }
       }
 
@@ -131,8 +147,10 @@ define(function() {
       // restore model input properties
       modelState.restoreProperties(savedState.input);
 
-      // restore parameters
-      modelState.restoreParameters(savedState.parameters);
+      if (!useNewInterface) {
+        // old interface requires restoring parameters separately
+        modelState.restoreParameters(savedState.parameters);
+      }
 
       // restore model objects defining state
       state = savedState.state;

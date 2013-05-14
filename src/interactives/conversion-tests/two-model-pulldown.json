@@ -1,0 +1,43 @@
+{
+  "title": "Select one of Two Models using Pulldown Menu",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "gas1",
+      "url": "imports/legacy-mw-content/converted/sam-activities/phase-change/original-interactives-in-pages/page2/gas1.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "id": "gas2",
+      "url": "imports/legacy-mw-content/converted/sam-activities/phase-change/original-interactives-in-pages/page2/gas2.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "pulldown",
+      "id": "gas-pulldown",
+      "options": [
+        {
+          "text": "Gas1",
+          "loadModel": "gas1"
+        },
+        {
+          "text": "Gas2",
+          "loadModel": "gas2"
+        }
+      ]
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "gas-pulldown"
+    ]
+  }
+}

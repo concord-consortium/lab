@@ -1,0 +1,27 @@
+{
+  "title": "Oil and Water 2",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "oil-water2$0",
+      "url": "imports/legacy-mw-content/converted/visual/Detergents/OilWater2$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "checkbox",
+      "id": "show_attractions",
+      "text": "Show attractions",
+      "property": "showVDWLines"
+    }
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

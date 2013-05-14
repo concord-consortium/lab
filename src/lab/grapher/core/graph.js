@@ -2026,6 +2026,15 @@ define(function (require) {
     }
 
     function resetDataPoints(datapoints) {
+
+      function copy(array) {
+        var ret = [];
+        array.forEach(function(element) {
+          ret.push(element);
+        });
+        return ret;
+      }
+
       pointArray = [];
       if (!datapoints || datapoints.length === 0) {
         points = [];
@@ -2034,12 +2043,12 @@ define(function (require) {
       }
       if (Object.prototype.toString.call(datapoints[0][0]) === "[object Array]") {
         for (var i = 0; i < datapoints.length; i++) {
-          pointArray.push(datapoints[i]);
+          pointArray.push(copy(datapoints[i]));
         }
         points = pointArray[0];
       } else {
         points = datapoints;
-        pointArray = [points];
+        pointArray = [copy(points)];
       }
     }
 

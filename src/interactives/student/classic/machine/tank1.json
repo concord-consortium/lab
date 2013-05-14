@@ -1,0 +1,21 @@
+{
+  "title": "tank1",
+  "publicationStatus": "broken",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "tank1",
+      "url": "imports/legacy-mw-content/converted/student/classic/machine/tank1.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

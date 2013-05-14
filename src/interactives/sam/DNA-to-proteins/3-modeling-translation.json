@@ -1,0 +1,41 @@
+{
+  "title": "Modeling Translation",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "fontScale": 0.8,
+  "models": [
+    {
+      "id": "page3$0",
+      "url": "imports/legacy-mw-content/converted/sam-activities/DNA-to-proteins/page3/page3$0.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      },
+      "modelOptions": {
+        "DNA": "ATGCCAGGCGGCGAGAGCTTGCTAATTGGCTTATAG",
+        "geneticEngineState": "transcription-end"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "translate-step",
+      "text": "Translate step by step",
+      "action": "translateStep();"
+    },
+    {
+      "type": "button",
+      "id": "translate",
+      "text": "Translate",
+      "action": "translate();"
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": "reset();"
+    }
+  ]
+}

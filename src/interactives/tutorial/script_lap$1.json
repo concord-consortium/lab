@@ -1,0 +1,21 @@
+{
+  "title": "script_lap$1",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "script_lap$1",
+      "url": "imports/legacy-mw-content/converted/tutorial/script_lap$1.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

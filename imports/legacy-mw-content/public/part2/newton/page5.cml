@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Newton&apos;s Laws at the Atomic Level: Mass spectrometry.</page_title>
+<bg_color><Red>241</Red><Green>240</Green><Blue>246</Blue></bg_color>
+<text>
+
+ 
+ 
+
+ 
+
+
+ 
+    
+    
+    
+ 
+
+
+</text>
+<section start="0" end="33">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;5&quot; color=&quot;#FFFFFF&quot;&gt;Newton&apos;s 
+    Laws at the Atomic Level:&lt;/font&gt;&lt;/strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;5&quot; color=&quot;#FFFFFF&quot;&gt; 
+    Mass spectrometry.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-cca464</bgcolor></icon></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="6">
+<Alignment>1</Alignment>
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;0&quot; marginheight=&quot;0&quot; background=&quot;topNavBarLeftMargin.jpg&quot;&gt;
+    &lt;table width=&quot;100%&quot; border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;14&quot; height=&quot;26&quot; src=&quot;topNavBarLeftMargin.jpg&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img width=&quot;60&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;prev.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;59&quot; border=&quot;0&quot; src=&quot;next.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img width=&quot;54&quot; height=&quot;26&quot; src=&quot;page.jpg&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;index.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;46&quot; border=&quot;0&quot; src=&quot;index.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page1.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page2.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page3.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img width=&quot;29&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page4.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page5Selected.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;28&quot; border=&quot;0&quot; src=&quot;page6.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;28&quot; border=&quot;0&quot; src=&quot;page7.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;29&quot; border=&quot;0&quot; src=&quot;page8.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;28&quot; border=&quot;0&quot; src=&quot;page9.jpg&quot;&gt;
+          &lt;/a&gt;&lt;img width=&quot;7&quot; height=&quot;26&quot; src=&quot;topNavBarRightMargin.jpg&quot;&gt;
+&lt;/font&gt;        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="9">
+<Alignment>1</Alignment>
+<content start="7" end="8">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>85</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; border=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img src=&quot;atomMainIdea.png&quot; width=&quot;98&quot; height=&quot;58&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;How can 
+          we use &lt;a href=&quot;script:page:0:message newtonsLaws.html&quot;&gt;Newton&apos;s 
+          second law&lt;/a&gt; to solve crimes?&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-282012</bgcolor></icon></content>
+
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="11">
+<Alignment>1</Alignment>
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="13">
+<Alignment>1</Alignment>
+<SpaceBelow>5.0</SpaceBelow>
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>270.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+      &lt;!--
+        .style1 { font-size: 4px; font-weight: bold }
+      --&gt;
+    &lt;/style&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;table cellspacing=&quot;0&quot; border=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;div style=&quot;margin-right: 10&quot;&gt;
+            &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;If you 
+            have ever watched one of those crime shows, then you know the 
+            importance of forensics (solving crimes using scientific 
+            analysis). One tool used by forensic specialists is mass 
+            spectrometry. &lt;/font&gt;
+
+            &lt;p&gt;
+              &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Let&apos;s 
+              say an unidentified white powder was found at a crime scene and 
+              you wanted to know what it was. One way would be to break it up 
+              into many pieces and see what pieces you had. If you knew the 
+              mass of each piece, then you can put all the pieces back 
+              together to identify the whole. Let&apos;s look at how &lt;strong&gt;&lt;em&gt;F=ma&lt;/em&gt;&lt;/strong&gt; 
+              can help us.&lt;/font&gt;
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;br&gt;
+          
+        &lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &lt;img src=&quot;fma.gif&quot; width=&quot;184&quot; height=&quot;148&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Below is 
+          a mass spectrometer machine (or part of one) which will allow us to 
+          apply the same force to all of the atoms. To apply a force, the 
+          atoms are positively charged, and then placed in a a tube that is 
+          positive on one end and negative on the other. Because opposites 
+          attract (and like charges repel), the atoms are forced across the 
+          tube. &lt;/font&gt;&lt;strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Try 
+          sending atoms with different masses down the tube to see how they 
+          might be separated. &lt;/font&gt;&lt;/strong&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="18">
+<Alignment>1</Alignment>
+<content start="13" end="14">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>130.0</width>
+<height>305.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div align=&quot;center&quot;&gt;
+      &lt;div style=&quot;margin-bottom: 5&quot;&gt;
+        &lt;strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Atom 
+        Mass&lt;/font&gt;&lt;/strong&gt;*
+      &lt;/div&gt;
+      &lt;select script4=&quot;script:mw:1:set %atomsAdded 1; select image %messageIndex; remove; set %messageIndex 99; select atom within (%x,%y1,3,3); remove; add atom 2 (%x,%y1); add image fmaTag3Flat.png atomno=%number_of_atoms-1;select atom none; select image none;&quot; script3=&quot;script:mw:1:set %atomsAdded 1; select image %messageIndex; remove; set %messageIndex 99; select atom within (%x,%y1,3,3); remove; add atom 1 (%x,%y1); add image fmaTag2Flat.png atomno=%number_of_atoms-1;select atom none; select image none;&quot; script2=&quot;script:mw:1:set %atomsAdded 1; select image %messageIndex; remove; set %messageIndex 99; select atom within (%x,%y1,3,3); remove; add atom 0 (%x,%y1);  add image fmaTag1Flat.png atomno=%number_of_atoms-1;select atom none; select image none;&quot; script1=&quot;script:mw:1:select atom within (%x,%y1,3,3); remove; &quot; name=&quot;select&quot; script5=&quot;script:mw:1:set %atomsAdded 1; select image %messageIndex; remove; set %messageIndex 99; select atom within (%x,%y1,3,3); remove; add atom 3 (%x,%y1); add image fmaTag4Flat.png atomno=%number_of_atoms-1;select atom none; select image none;&quot;&gt;
+        &lt;option value=select selected&gt;select mass 
+        &lt;option value=1&gt;1.0 amu 
+        &lt;option value=2&gt;2.0 amu 
+        &lt;option value=3&gt;3.0 amu 
+        &lt;option value=4&gt;4.0 amu 
+      &lt;/select&gt;
+      &lt;br&gt;
+      &lt;br&gt;
+      &lt;br&gt;
+      &lt;br&gt;
+      &lt;select script4=&quot;script:mw:1:set %atomsAdded 1; select image %messageIndex; remove; set %messageIndex 99; select atom within (%x,%y2,3,3); remove; add atom 2 (%x,%y2); add image fmaTag3Flat.png atomno=%number_of_atoms-1;select atom none; select image none;&quot; script3=&quot;script:mw:1:set %atomsAdded 1; select image %messageIndex; remove; set %messageIndex 99; select atom within (%x,%y2,3,3); remove; add atom 1 (%x,%y2); add image fmaTag2Flat.png atomno=%number_of_atoms-1;select atom none; select image none;&quot; script2=&quot;script:mw:1:set %atomsAdded 1; select image %messageIndex; remove; set %messageIndex 99; select atom within (%x,%y2,3,3); remove; add atom 0 (%x,%y2);  add image fmaTag1Flat.png atomno=%number_of_atoms-1;select atom none; select image none;&quot; script1=&quot;script:mw:1:select atom within (%x,%y2,3,3); remove; &quot; name=&quot;select2&quot; script5=&quot;script:mw:1:set %atomsAdded 1; select image %messageIndex; remove; set %messageIndex 99; select atom within (%x,%y2,3,3); remove; add atom 3 (%x,%y2); add image fmaTag4Flat.png atomno=%number_of_atoms-1;select atom none; select image none;&quot;&gt;
+        &lt;option value=select selected&gt;select mass 
+        &lt;option value=1&gt;1.0 amu 
+        &lt;option value=2&gt;2.0 amu 
+        &lt;option value=3&gt;3.0 amu 
+        &lt;option value=4&gt;4.0 amu 
+      &lt;/select&gt;
+      &lt;br&gt;
+      &lt;br&gt;
+      &lt;br&gt;
+      &lt;br&gt;
+      &lt;select script4=&quot;script:mw:1:set %atomsAdded 1; select image %messageIndex; remove; set %messageIndex 99; select atom within (%x,%y3,3,3); remove; add atom 2 (%x,%y3); add image fmaTag3Flat.png atomno=%number_of_atoms-1;select atom none; select image none;&quot; script3=&quot;script:mw:1:set %atomsAdded 1; select image %messageIndex; remove; set %messageIndex 99; select atom within (%x,%y3,3,3); remove; add atom 1 (%x,%y3); add image fmaTag2Flat.png atomno=%number_of_atoms-1;select atom none; select image none;&quot; script2=&quot;script:mw:1:set %atomsAdded 1; select image %messageIndex; remove; set %messageIndex 99; select atom within (%x,%y3,3,3); remove; add atom 0 (%x,%y3);  add image fmaTag1Flat.png atomno=%number_of_atoms-1;select atom none; select image none;&quot; script1=&quot;script:mw:1:select atom within (%x,%y3,3,3); remove; &quot; name=&quot;select3&quot; script5=&quot;script:mw:1:set %atomsAdded 1; select image %messageIndex; remove; set %messageIndex 99; select atom within (%x,%y3,3,3); remove; add atom 3 (%x,%y3); add image fmaTag4Flat.png atomno=%number_of_atoms-1;select atom none; select image none;&quot;&gt;
+        &lt;option value=select selected&gt;select mass 
+        &lt;option value=1&gt;1.0 amu 
+        &lt;option value=2&gt;2.0 amu 
+        &lt;option value=3&gt;3.0 amu 
+        &lt;option value=4&gt;4.0 amu 
+      &lt;/select&gt;
+      &lt;br&gt;
+      &lt;br&gt;
+      &lt;br&gt;
+      &lt;br&gt;
+      &lt;select script4=&quot;script:mw:1:set %atomsAdded 1; select image %messageIndex; remove; set %messageIndex 99; select atom within (%x,%y4,3,3); remove; add atom 2 (%x,%y4); add image fmaTag3Flat.png atomno=%number_of_atoms-1;select atom none; select image none;&quot; script3=&quot;script:mw:1:set %atomsAdded 1; select image %messageIndex; remove; set %messageIndex 99; select atom within (%x,%y4,3,3); remove; add atom 1 (%x,%y4); add image fmaTag2Flat.png atomno=%number_of_atoms-1;select atom none; select image none;&quot; script2=&quot;script:mw:1:set %atomsAdded 1; select image %messageIndex; remove; set %messageIndex 99; select atom within (%x,%y4,3,3); remove; add atom 0 (%x,%y4);  add image fmaTag1Flat.png atomno=%number_of_atoms-1;select atom none; select image none;&quot; script1=&quot;script:mw:1:select atom within (%x,%y4,3,3); remove; &quot; name=&quot;select4&quot; script5=&quot;script:mw:1:set %atomsAdded 1; select image %messageIndex; remove; set %messageIndex 99; select atom within (%x,%y4,3,3); remove; add atom 3 (%x,%y4); add image fmaTag4Flat.png atomno=%number_of_atoms-1;select atom none; select image none;&quot;&gt;
+        &lt;option value=select selected&gt;select mass 
+        &lt;option value=1&gt;1.0 amu 
+        &lt;option value=2&gt;2.0 amu 
+        &lt;option value=3&gt;3.0 amu 
+        &lt;option value=4&gt;4.0 amu 
+      &lt;/select&gt;
+      
+    &lt;/div&gt;
+    &lt;div align=&quot;center&quot;&gt;
+      &lt;a href=&quot;script:page:0:message units.html&quot;&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;*note 
+      about units&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt; 
+      &lt;/font&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="14" end="15">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>15.0</width>
+<height>310.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;img src=&quot;pos.gif&quot;&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-373738</bgcolor>
+</component></content>
+
+<content start="15" end="16">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page5$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="16" end="17">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>15.0</width>
+<height>310.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;img src=&quot;neg.gif&quot;&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-373738</bgcolor>
+</component></content>
+
+<content start="17" end="18">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="18" end="23">
+<Alignment>1</Alignment>
+<SpaceBelow>10.0</SpaceBelow>
+<content start="18" end="19">
+<size>8</size><component><class>org.concord.modeler.PageTextBox</class>
+<width>138.0</width>
+<height>50.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="19" end="20">
+<size>8</size><component><class>org.concord.modeler.PageTextBox</class>
+<width>180.0</width>
+<height>53.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;img src=&quot;wires.gif&quot; width=&quot;180&quot; height=&quot;53&quot;&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="20" end="21">
+<size>8</size><component><class>org.concord.modeler.PageTextBox</class>
+<width>106.0</width>
+<height>53.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;map name=&quot;Map&quot;&gt;
+      &lt;area shape=&quot;rect&quot; coords=&quot;39,0,62,13&quot; href=&quot;
+		script:textbox:8:load dangerPress.html;
+		script:mw:1:
+		if (%atomsAdded or (%number_of_atoms &gt; 0));
+			select image %zapIndex;
+			remove;
+			set %zapIndex 99;
+			if (not %modelRunning);
+				run;
+				set %modelRunning 1;
+				add image sparks.gif (0.7,1.9);
+				delay 0.5;
+				set %sparkImage %number_of_images-1;
+				select image %sparkImage;
+				remove;
+				select atom all;
+				set charge 1;
+				select atom none;
+			else;
+				add image sparks.gif (0.7,1.9);
+				delay 0.5;
+				set %sparkImage %number_of_images-1;
+				select image %sparkImage;
+				remove;
+			endif;
+			external disable.mws;
+		else;
+			message addAtoms.html;
+		endif;
+	
+&quot;&gt;&lt;/area&gt;
+    &lt;/map&gt;
+    &lt;img width=&quot;106&quot; height=&quot;53&quot; border=&quot;0&quot; src=&quot;dangerPress.gif&quot; usemap=&quot;#Map&quot;&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="21" end="22">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>318.0</width>
+<height>53.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;20&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; border=&quot;0&quot; cellpadding=&quot;0&quot; style=&quot;margin-top: 10&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;input value=&quot;reset&quot; type=&quot;submit&quot; script=&quot;script:mw:1:load emptyTOF.mml; set %modelRunning 0; set timestep 0.1; set %step 0.1; script:textbox:3:load enabledMenus.html; script:textbox:9:load noPause.html;&quot; name=&quot;Submit&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td style=&quot;margin-left: 10&quot; align=&quot;right&quot;&gt;
+          &lt;input value=&quot;checkbox&quot; type=&quot;checkbox&quot; script_selected=&quot;script:mw:1:set timestep 0.01; set %step 0.01;&quot; script_deselected=&quot;script:mw:1:set timestep 0.1; set %step 0.1;&quot; name=&quot;checkbox&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          slow motion mode
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="28">
+<Alignment>1</Alignment>
+<SpaceBelow>5.0</SpaceBelow>
+<content start="23" end="24">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>4</row>
+<width>370</width>
+<height>200</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;5&quot; marginheight=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot;&gt;
+    &lt;strong&gt;&lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;The force on 
+    each atom is represented by the green vector, and the acceleration is 
+    represented by the yellow vector. What is true of the force on each atom?&lt;/font&gt;&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>they all feel the same force</choice>
+<choice>the lighter atoms feel a stronger force</choice>
+<choice>the heavier atoms feel a stronger force</choice>
+<choice>the force depends upon the size of the atom</choice>
+<answer>0</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script> -choiceseparator-  -choiceseparator-  -choiceseparator- </script>
+</component></content>
+
+<content start="24" end="26">
+</content>
+
+<content start="26" end="27">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>372</width>
+<height>200</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;5&quot; marginheight=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot;&gt;
+    &lt;strong&gt;&lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Explain why 
+    some atoms move faster than other atoms if the same force is applied to 
+    all of them. Be sure to talk about about the relevance of &lt;em&gt;F=ma&lt;/em&gt; in 
+    your answer:&lt;/font&gt;&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="30">
+<Alignment>1</Alignment>
+<content start="28" end="29">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>32.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;0&quot; marginheight=&quot;0&quot; background=&quot;navBarBottomBackground.jpg&quot;&gt;
+    &lt;table width=&quot;100%&quot; border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img width=&quot;14&quot; height=&quot;6&quot; src=&quot;navBarBottomColorBar.gif&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;8&quot; height=&quot;26&quot; src=&quot;navBarBottomLeftMargin.jpg&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img width=&quot;60&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;prev.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;59&quot; border=&quot;0&quot; src=&quot;next.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img width=&quot;54&quot; height=&quot;26&quot; src=&quot;page.jpg&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;index.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;46&quot; border=&quot;0&quot; src=&quot;index.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page1.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page2.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page3.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img width=&quot;29&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page4.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page5Selected.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;28&quot; border=&quot;0&quot; src=&quot;page6.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;28&quot; border=&quot;0&quot; src=&quot;page7.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;29&quot; border=&quot;0&quot; src=&quot;page8.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;28&quot; border=&quot;0&quot; src=&quot;page9.jpg&quot;&gt;
+          &lt;/a&gt;&lt;img width=&quot;7&quot; height=&quot;26&quot; src=&quot;navBarBottomRightMargin.jpg&quot;&gt;
+&lt;/font&gt;        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="31">
+<Alignment>1</Alignment>
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="32">
+<content start="31" end="32">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="32" end="33">
+</paragraph>
+</section>
+</document>

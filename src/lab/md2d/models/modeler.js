@@ -1,4 +1,5 @@
 /*global define: false, d3: false */
+/*jshint eqnull: true */
 
 define(function(require) {
   // Dependencies.
@@ -8,18 +9,23 @@ define(function(require) {
       md2d                 = require('md2d/models/engine/md2d'),
       metadata             = require('md2d/models/metadata'),
       TickHistory          = require('common/models/tick-history'),
-      RunningAverageFilter = require('cs!md2d/models/running-average-filter'),
+      PropertySupport      = require('common/property-support'),
+      RunningAverageFilter = require('cs!common/running-average-filter'),
       Solvent              = require('cs!md2d/models/solvent'),
       serialize            = require('common/serialize'),
       validator            = require('common/validator'),
       aminoacids           = require('md2d/models/aminoacids-props'),
       aminoacidsHelper     = require('cs!md2d/models/aminoacids-helper'),
+      GeneticEngine        = require('md2d/models/engine/genetic-engine'),
       units                = require('md2d/models/engine/constants/units'),
-      PropertyDescription  = require('md2d/models/property-description'),
+      PropertyDescription  = require('common/property-description'),
       unitDefinitions      = require('md2d/models/unit-definitions/index'),
       UnitsTranslation     = require('md2d/models/units-translation'),
       PerformanceOptimizer = require('md2d/models/performance-optimizer'),
-      _ = require('underscore');
+      _ = require('underscore'),
+
+      // plugins
+      QuantumDynamics      = require('md2d/models/engine/plugins/quantum-dynamics');
 
   return function Model(initialProperties) {
 
@@ -30,6 +36,11 @@ define(function(require) {
         dispatch = d3.dispatch("tick", "play", "stop", "reset", "willReset", "stepForward", "stepBack",
                                "seek", "addAtom", "removeAtom", "addRadialBond", "removeRadialBond",
                                "removeAngularBond", "invalidation", "textBoxesChanged"),
+
+        propertySupport = new PropertySupport({
+          types: ["output", "parameter", "mainProperty", "viewOption"]
+        }),
+
         VDWLinesCutoffMap = {
           "short": 1.33,
           "medium": 1.67,
@@ -48,6 +59,9 @@ define(function(require) {
 
         // Molecular Dynamics engine.
         engine,
+
+        // Genetic engine.
+        geneticEngine,
 
         // An array of elements object.
         editableElements,
@@ -91,153 +105,11 @@ define(function(require) {
         // Cached value of the 'friction' property of the atom being dragged in a running model
         liveDragSavedFriction,
 
-        listeners = {},
-
         // If this is true, output properties will not be recalculated on changes
         suppressInvalidatingChangeHooks = false,
 
         // Invalidating change hooks might between others
         invalidatingChangeHookNestingLevel = 0,
-
-        properties = {
-          /**
-            These functions are optional setters that will be called *instead* of simply setting
-            a value when 'model.set({property: value})' is called, and are currently needed if you
-            want to pass a value through to the engine.  The function names are automatically
-            determined from the property name. If you define one of these custom functions, you
-            must remember to also set the property explicitly (if appropriate) as this won't be
-            done automatically
-          */
-
-          set_targetTemperature: function(t) {
-            this.targetTemperature = t;
-            if (engine) {
-              engine.setTargetTemperature(t);
-            }
-          },
-
-          set_temperatureControl: function(tc) {
-            this.temperatureControl = tc;
-            if (engine) {
-              engine.useThermostat(tc);
-            }
-          },
-
-          set_lennardJonesForces: function(lj) {
-            this.lennardJonesForces = lj;
-            if (engine) {
-              engine.useLennardJonesInteraction(lj);
-            }
-          },
-
-          set_coulombForces: function(cf) {
-            this.coulombForces = cf;
-            if (engine) {
-              engine.useCoulombInteraction(cf);
-            }
-          },
-
-          set_solventForceType: function(s) {
-            this.solventForceType = s;
-            if (engine) {
-              engine.setSolventForceType(s);
-            }
-          },
-
-          set_solventForceFactor: function(s) {
-            this.solventForceFactor = s;
-            if (engine) {
-              engine.setSolventForceFactor(s);
-            }
-          },
-
-          set_additionalSolventForceMult: function(s) {
-            this.additionalSolventForceMult = s;
-            if (engine) {
-              engine.setAdditionalSolventForceMult(s);
-            }
-          },
-
-          set_additionalSolventForceThreshold: function(s) {
-            this.additionalSolventForceThreshold = s;
-            if (engine) {
-              engine.setAdditionalSolventForceThreshold(s);
-            }
-          },
-
-          set_dielectricConstant: function(dc) {
-            this.dielectricConstant = dc;
-            if (engine) {
-              engine.setDielectricConstant(dc);
-            }
-          },
-
-          set_realisticDielectricEffect: function (rdc) {
-            this.realisticDielectricEffect = rdc;
-            if (engine) {
-              engine.setRealisticDielectricEffect(rdc);
-            }
-          },
-
-          set_VDWLinesCutoff: function(cutoff) {
-            var ratio;
-            this.VDWLinesCutoff = cutoff;
-            ratio = VDWLinesCutoffMap[cutoff];
-            if (ratio && engine) {
-              engine.setVDWLinesRatio(ratio);
-            }
-          },
-
-          set_gravitationalField: function(gf) {
-            this.gravitationalField = gf;
-            if (engine) {
-              engine.setGravitationalField(gf);
-            }
-          },
-
-          set_modelSampleRate: function(rate) {
-            this.modelSampleRate = rate;
-            if (!stopped) model.restart();
-          },
-
-          set_timeStep: function(ts) {
-            this.timeStep = ts;
-          },
-
-          set_viscosity: function(v) {
-            this.viscosity = v;
-            if (engine) {
-              engine.setViscosity(v);
-            }
-          },
-
-          set_polarAAEpsilon: function (e) {
-            var polarAAs, element1, element2,
-                i, j, len;
-
-            this.polarAAEpsilon = e;
-
-            if (engine) {
-              // Set custom pairwise LJ properties for polar amino acids.
-              // They should attract stronger to better mimic nature.
-              polarAAs = aminoacidsHelper.getPolarAminoAcids();
-              for (i = 0, len = polarAAs.length; i < len; i++) {
-                element1 = polarAAs[i];
-                for (j = i + 1; j < len; j++) {
-                  element2 = polarAAs[j];
-                  // Set custom pairwise LJ epsilon (default one for AA is -0.1).
-                  engine.pairwiseLJProperties.set(element1, element2, {epsilon: e});
-                }
-              }
-            }
-          }
-        },
-
-        // The list of all 'output' properties (which change once per tick).
-        outputNames = [],
-
-        // Information about the description and calculating function for 'output' properties.
-        outputsByName = {},
 
         // The subset of outputName list, containing list of outputs which are filtered
         // by one of the built-in filters (like running average filter).
@@ -247,114 +119,56 @@ define(function(require) {
         // are stored in outputsByName object, as filtered output is just extension of normal output.
         filteredOutputsByName = {},
 
-        // Whewther to suppress caching of output properties. Should only be needed between
-        // invalidatingChangePreHook and invalidatingChangePostHook
-        suppressOutputPropertyCaching = false,
-
-        // The currently-defined parameters.
-        parametersByName = {},
-
-        // Unit types for all the properties that can be accessed using model.set/model.get
-        mainPropertyUnitTypes,
-
         // The set of units currently in effect. (Determined by the 'unitsScheme' property of the
         // model; default value is 'md2d')
         unitsDefinition,
 
         // Object that translates between 'native' md2d units and the units defined
         // by unitsDefinition.
-        unitsTranslation;
+        unitsTranslation,
 
-    function notifyPropertyListeners(listeners) {
-      listeners = _.uniq(listeners);
-      for (var i=0, ii=listeners.length; i<ii; i++){
-        listeners[i]();
-      }
-    }
+        // The initial "main" propeties, validated and filtered from the initialProperties array
+        mainProperties,
 
-    function notifyPropertyListenersOfEvents(events) {
-      var evt,
-          evts,
-          waitingToBeNotified = [],
-          i, ii;
+        // The initial viewOptions, validated and filtered from the initialProperties
+        viewOptions;
 
-      if (typeof events === "string") {
-        evts = [events];
+    function defineBuiltinProperty(type, key, setter) {
+      var metadataForType,
+          descriptor,
+          unitType;
+
+      if (type === 'mainProperty') {
+        metadataForType = metadata.mainProperties;
+      } else if (type === 'viewOption') {
+        metadataForType = metadata.viewOptions;
       } else {
-        evts = events;
-      }
-      for (i=0, ii=evts.length; i<ii; i++){
-        evt = evts[i];
-        if (listeners[evt]) {
-          waitingToBeNotified = waitingToBeNotified.concat(listeners[evt]);
-        }
-      }
-      if (listeners["all"]){      // listeners that want to be notified on any change
-        waitingToBeNotified = waitingToBeNotified.concat(listeners["all"]);
-      }
-      notifyPropertyListeners(waitingToBeNotified);
-    }
-
-    /**
-      Restores a set of "input" properties, notifying their listeners of only those properties which
-      changed, and only after the whole set of properties has been updated.
-
-      Expects a hash "raw", untranslated values as returned by getRawPropertyValue
-    */
-    function restoreProperties(savedProperties) {
-      var property,
-          changedProperties = [],
-          savedValue;
-
-      for (property in savedProperties) {
-        if (savedProperties.hasOwnProperty(property)) {
-          // skip read-only properties
-          if (outputsByName[property]) {
-            throw new Error("Attempt to restore output property \"" + property + "\".");
-          }
-          savedValue = savedProperties[property];
-          if (properties[property] !== savedValue) {
-            if (properties["set_"+property]) {
-              properties["set_"+property](savedValue);
-            } else {
-              properties[property] = savedValue;
-            }
-            changedProperties.push(property);
-          }
-        }
-      }
-      notifyPropertyListenersOfEvents(changedProperties);
-    }
-
-    /**
-      Restores a list of parameter values, notifying their listeners after the whole list is
-      updated, and without triggering setters. Sets parameters not in the passed-in list to
-      undefined.
-    */
-    function restoreParameters(savedParameters) {
-      var parameterName,
-          observersToNotify = [];
-
-      for (parameterName in savedParameters) {
-        if (savedParameters.hasOwnProperty(parameterName)) {
-          // restore the property value if it was dispfferent or not defined in the current time step
-          if (properties[parameterName] !== savedParameters[parameterName] || !parametersByName[parameterName].isDefined) {
-            properties[parameterName] = savedParameters[parameterName];
-            parametersByName[parameterName].isDefined = true;
-            observersToNotify.push(parameterName);
-          }
-        }
+        throw new Error(type + " is not a supported built-in property type");
       }
 
-      // remove parameter values that aren't defined at this point in history
-      for (parameterName in parametersByName) {
-        if (parametersByName.hasOwnProperty(parameterName) && !savedParameters.hasOwnProperty(parameterName)) {
-          parametersByName[parameterName].isDefined = false;
-          properties[parameterName] = undefined;
-        }
-      }
+      descriptor = {
+        type: type,
+        writable: validator.propertyIsWritable(metadataForType[key]),
+        set: setter,
+        includeInHistoryState: !!metadataForType[key].storeInTickHistory,
+        validate: function(value) {
+          return validator.validateSingleProperty(metadataForType[key], key, value, false);
+        },
+        beforeSetCallback: invalidatingChangePreHook,
+        afterSetCallback: invalidatingChangePostHook
+      };
 
-      notifyPropertyListenersOfEvents(observersToNotify);
+      unitType = metadataForType[key] && metadataForType[key].unitType;
+
+      if (unitsTranslation && unitType) {
+        descriptor.beforeSetTransform = function(value) {
+          return unitsTranslation.translateToMD2DUnits(value, unitType);
+        };
+        descriptor.afterGetTransform = function(value) {
+          return unitsTranslation.translateFromMD2DUnits(value, unitType);
+        };
+      }
+      propertySupport.defineProperty(key, descriptor);
     }
 
     function average_speed() {
@@ -364,12 +178,16 @@ define(function(require) {
     }
 
     function tick(elapsedTime, dontDispatchTickEvent) {
-      var timeStep = getRawPropertyValue('timeStep'),   // Definitely need *untranslated* value!
+      var timeStep = model.get('timeStep'),
           // Save number of radial bonds in engine before integration,
           // as integration can create new disulfide bonds. This is the
           // only type of objects which can be created by the engine autmatically.
           prevNumOfRadialBonds = engine.getNumberOfRadialBonds(),
           t, sampleTime;
+
+      if (unitsTranslation) {
+        timeStep = unitsTranslation.translateToMD2DUnits(timeStep, 'time');
+      }
 
       if (!stopped) {
         t = performance.now();
@@ -408,35 +226,6 @@ define(function(require) {
       }
 
       return stopped;
-    }
-
-    /* This setter for internal use uses "raw", untranslated property values only. */
-    function set_properties(hash) {
-      var property, propsChanged = [];
-      for (property in hash) {
-        if (hash.hasOwnProperty(property) && hash[property] !== undefined && hash[property] !== null) {
-          // skip read-only properties
-          if (outputsByName[property]) {
-            throw new Error("Attempt to set read-only output property \"" + property + "\".");
-          }
-          // look for set method first, otherwise just set the property
-          if (properties["set_"+property]) {
-            properties["set_"+property](hash[property]);
-          // why was the property not set if the default value property is false ??
-          // } else if (properties[property]) {
-          } else {
-            properties[property] = hash[property];
-          }
-          propsChanged.push(property);
-        }
-      }
-      notifyPropertyListenersOfEvents(propsChanged);
-    }
-
-    // Returns the "raw" (untranslated) version of property 'name'. Used to provide privileged
-    // access to internal representation of properties to, e.g., TickHistory.
-    function getRawPropertyValue(name) {
-      return properties[name];
     }
 
     // Returns a copy of 'obj' with value replaced by fn(key, value) for every (key, value) pair.
@@ -488,31 +277,18 @@ define(function(require) {
       which would invalidate a cached value without also calling one of these two methods.
     */
     function updateAllOutputProperties() {
-      var i, j, l;
-
       readModelState();
-
-      // invalidate all cached values before notifying any listeners
-      for (i = 0; i < outputNames.length; i++) {
-        outputsByName[outputNames[i]].hasCachedValue = false;
-      }
+      propertySupport.deleteComputedPropertyCachedValues();
 
       // Update all filtered outputs.
       // Note that this have to be performed after invalidation of all outputs
       // (as filtered output can filter another output), but before notifying
       // listeners (as we want to provide current, valid value).
-      for (i = 0; i < filteredOutputNames.length; i++) {
-        filteredOutputsByName[filteredOutputNames[i]].addSample();
-      }
+      filteredOutputNames.forEach(function(name) {
+        filteredOutputsByName[name].addSample();
+      });
 
-      for (i = 0; i < outputNames.length; i++) {
-        l = listeners[outputNames[i]];
-        if (l) {
-          for (j = 0; j < l.length; j++) {
-            l[j]();
-          }
-        }
-      }
+      propertySupport.notifyAllComputedProperties();
     }
 
     // FIXME
@@ -530,11 +306,15 @@ define(function(require) {
     */
     function invalidatingChangePreHook() {
       if (suppressInvalidatingChangeHooks) return;
-      invalidatingChangeHookNestingLevel++;
 
-      storeOutputPropertiesBeforeChange();
-      deleteOutputPropertyCachedValues();
-      suppressOutputPropertyCaching = true;
+      if (invalidatingChangeHookNestingLevel === 0) {
+        // If we're beginning a series of (possibly-nested) invalidating changes, store computed
+        // property values so they can be compared when we finish the invalidating changes.
+        propertySupport.storeComputedProperties();
+        propertySupport.deleteComputedPropertyCachedValues();
+        propertySupport.enableCaching = false;
+      }
+      invalidatingChangeHookNestingLevel++;
     }
 
     /**
@@ -544,12 +324,27 @@ define(function(require) {
       if (suppressInvalidatingChangeHooks) return;
       invalidatingChangeHookNestingLevel--;
 
-      if (invalidatingChangeHookNestingLevel === 0) {
-        suppressOutputPropertyCaching = false;
+      // Make sure that computed properties which depend on engine state are valid
+      if (engine) {
+        readModelState();
       }
-      updateOutputPropertiesAfterChange();
-      if (tickHistory) tickHistory.invalidateFollowingState();
-      dispatch.invalidation();
+
+      // Non-filtered outputs will be valid at this point (caching is disabl;ed, so they're
+      // recomputed every time.) This ensures that filtered outputs that depend on non-filtered
+      // outputs are also valid:
+      filteredOutputNames.forEach(function(name) {
+        filteredOutputsByName[name].addSample();
+      });
+
+      if (invalidatingChangeHookNestingLevel === 0) {
+        // Once we've finished the cycle of invalidating changes, go ahead and notify observers of
+        // computed properties that changed.
+        propertySupport.enableCaching = true;
+        propertySupport.notifyChangedComputedProperties();
+
+        if (tickHistory) tickHistory.invalidateFollowingState();
+        dispatch.invalidation();
+      }
     }
 
     /**
@@ -589,93 +384,6 @@ define(function(require) {
         }
       };
     })();
-
-    function deleteOutputPropertyCachedValues() {
-      var i, output;
-
-      for (i = 0; i < outputNames.length; i++) {
-        output = outputsByName[outputNames[i]];
-        output.hasCachedValue = false;
-      }
-    }
-
-    /**
-      Call this method *before* changing any "universe" property or model property (including any
-      property of a model object such as the position of an atom) to save the output-property
-      values before the change. This is required to enabled updateOutputPropertiesAfterChange to be
-      able to detect property value changes.
-
-      After the change is made, call updateOutputPropertiesAfterChange to notify listeners.
-    */
-    function storeOutputPropertiesBeforeChange() {
-      var i, outputName, output, l;
-
-      for (i = 0; i < outputNames.length; i++) {
-        outputName = outputNames[i];
-        if ((l = listeners[outputName]) && l.length > 0) {
-          output = outputsByName[outputName];
-          // Can't save previous value in output.cachedValue because, before we check it, the
-          // cachedValue may be overwritten with an updated value as a side effect of the
-          // calculation of the updated value of some other property
-          output.previousValue = output.hasCachedValue ? output.cachedValue : output.calculate();
-        }
-      }
-    }
-
-    /**
-      Before changing any "universe" property or model property (including any
-      property of a model object such as the position of an atom), call the method
-      storeOutputPropertiesBeforeChange; after changing the property, call this method  to detect
-      changed output-property values and to notify listeners of the output properties which have
-      changed. (However, don't call either method after a model tick or step;
-      updateAllOutputProperties is more efficient for that case.)
-    */
-    function updateOutputPropertiesAfterChange() {
-      var i, j, output, outputName, l, listenersToNotify = [];
-
-      readModelState();
-
-      // Update all filtered outputs.
-      // Note that this have to be performed after invalidation of all outputs
-      // (as filtered output can filter another output).
-      for (i = 0; i < filteredOutputNames.length; i++) {
-        filteredOutputsByName[filteredOutputNames[i]].addSample();
-      }
-
-      // Keep a list of output properties that are being observed and which changed ... and
-      // cache the updated values while we're at it
-      for (i = 0; i < outputNames.length; i++) {
-        outputName = outputNames[i];
-        output = outputsByName[outputName];
-
-        if ((l = listeners[outputName]) && l.length > 0) {
-          // Though we invalidated all cached values in the invalidatingChangePreHook, and
-          // suppressed caching until the invalidatingChangePostHook, nevertheless some outputs may
-          // have been computed & cached during a previous pass through this loop, as a side effect
-          // of the calculation of some other property. Therefore we can respect hasCachedValue
-          // here.
-          if (!output.hasCachedValue) {
-            output.cachedValue = output.calculate();
-            output.hasCachedValue = true;
-          }
-
-          if (output.cachedValue !== output.previousValue) {
-            for (j = 0; j < l.length; j++) {
-              listenersToNotify.push(l[j]);
-            }
-          }
-        }
-        // Now that we're done with it, allow previousValue to be GC'd. (Of course, since we're
-        // using an equality test to check for changes, it doesn't make sense to let outputs be
-        // objects or arrays, yet)
-        output.previousValue = null;
-      }
-
-      // Finally, now that all the changed properties have been cached, notify listeners
-      for (i = 0; i < listenersToNotify.length; i++) {
-        listenersToNotify[i]();
-      }
-    }
 
     /**
       This method is called to refresh the results array and macrostate variables (KE, PE,
@@ -801,6 +509,164 @@ define(function(require) {
     //
     // ------------------------------------------------------------
 
+    // Adds model.properties, model.set, model.get, model.addObserver, model.removeObserver...
+    propertySupport.mixInto(model);
+
+    /**
+      Add a listener callback that will be notified when any of the properties in the passed-in
+      array of properties is changed. (The argument `properties` can also be a string, if only a
+      single name needs to be passed.) This is a simple way for views to update themselves in
+      response to property changes.
+    */
+    model.addPropertiesListener = function(properties, callback) {
+      if (typeof properties === 'string') {
+        model.addObserver(properties, callback);
+      } else {
+        properties.forEach(function(property) {
+          model.addObserver(property, callback);
+        });
+      }
+    };
+
+    /**
+      Add an "output" property to the model. Output properties are expected to change at every
+      model tick, and may also be changed indirectly, outside of a model tick, by a change to model
+      properties or the atom, element, etc. properties.
+
+      `key` should be the name of the output. The property value will be accessed by
+      `model.get(<key>);`
+
+      `description` should be a hash of metadata about the property.
+
+      `getter` should be a no-arg function which calculates the property value. These values are not
+      translated after getter returns because we expect that most output getters are authored
+      scripts, which operate entirely with already-translated units. Therefore, getters defined
+      internally in modeler.js needs to make sure to translate any "md2d units" values out of the
+      md2d-unit domain.
+    */
+    model.defineOutput = function(key, descriptionHash, getter) {
+      propertySupport.defineProperty(key, {
+        type: 'output',
+        writable: false,
+        get: getter,
+        includeInHistoryState: false,
+        description: new PropertyDescription(unitsDefinition, descriptionHash)
+      });
+    };
+
+    /**
+      Add an "filtered output" property to the model. This is special kind of output property, which
+      is filtered by one of the built-in filters based on time (like running average). Note that filtered
+      outputs do not specify calculate function - instead, they specify property which should filtered.
+      It can be another output, model parameter or custom parameter.
+
+      Filtered output properties are extension of typical output properties. They share all features of
+      output properties, so they are expected to change at every model tick, and may also be changed indirectly,
+      outside of a model tick, by a change to the model parameters or to the configuration of atoms and other
+      objects in the model.
+
+      `name` should be the name of the parameter. The property value will be accessed by
+      `model.get(<name>);`
+
+      `description` should be a hash of metadata about the property. Right now, these metadata are not
+      used. However, example metadata include the label and units name to be used when graphing
+      this property.
+
+      `property` should be name of the basic property which should be filtered.
+
+      `type` should be type of filter, defined as string. For now only "RunningAverage" is supported.
+
+      `period` should be number defining length of time period used for calculating filtered value. It should
+      be specified in femtoseconds.
+
+    */
+    model.defineFilteredOutput = function(name, description, property, type, period) {
+      // Filter object.
+      var filter, initialValue;
+
+      if (type === "RunningAverage") {
+        filter = new RunningAverageFilter(period);
+      } else {
+        throw new Error("FilteredOutput: unknown filter type " + type + ".");
+      }
+
+      initialValue = model.get(property);
+      if (initialValue === undefined || isNaN(Number(initialValue))) {
+        throw new Error("FilteredOutput: property is not a valid numeric value or it is undefined.");
+      }
+
+      // Add initial sample.
+      filter.addSample(model.get('time'), initialValue);
+
+      filteredOutputNames.push(name);
+      // filteredOutputsByName stores properties which are unique for filtered output.
+      // Other properties like description or calculate function are stored in outputsByName hash.
+      filteredOutputsByName[name] = {
+        addSample: function () {
+          filter.addSample(model.get('time'), model.get(property));
+        }
+      };
+
+      // Create simple adapter implementing TickHistoryCompatible Interface
+      // and register it in tick history.
+      tickHistory.registerExternalObject({
+        push: function () {
+          // Push is empty, as we store samples during each tick anyway.
+        },
+        extract: function (idx) {
+          filter.setCurrentStep(idx);
+        },
+        invalidate: function (idx) {
+          filter.invalidate(idx);
+        },
+        setHistoryLength: function (length) {
+          filter.setMaxBufferLength(length);
+        }
+      });
+
+      // Extend description to contain information about filter.
+      description.property = property;
+      description.type = type;
+      description.period = period;
+
+      // Filtered output is still an output.
+      // Reuse existing, well tested logic for caching, observing etc.
+      model.defineOutput(name, description, function () {
+        return filter.calculate();
+      });
+    };
+
+    /**
+      Define a property of the model to be treated as a custom parameter. Custom parameters are
+      (generally, user-defined) read/write properties that trigger a setter action when set, and
+      whose values are automatically persisted in the tick history.
+
+      Because custom parameters are not intended to be interpreted by the engine, but instead simply
+      *represent* states of the model that are otherwise fully specified by the engine state and
+      other properties of the model, and because the setter function might not limit itself to a
+      purely functional mapping from parameter value to model properties, but might perform any
+      arbitrary stateful change, (stopping the model, etc.), the setter is NOT called when custom
+      parameters are updated by the tick history.
+    */
+    model.defineParameter = function(key, descriptionHash, setter) {
+      var descriptor = {
+            type: 'parameter',
+            includeInHistoryState: true,
+            invokeSetterAfterBulkRestore: false,
+            description: new PropertyDescription(unitsDefinition, descriptionHash),
+            beforeSetCallback: invalidatingChangePreHook,
+            afterSetCallback: invalidatingChangePostHook
+          };
+
+      // In practice, some parameters are meant only to be observed, and have no setter
+      if (setter) {
+        descriptor.set = function(value) {
+          setter.call(model, value);
+        };
+      }
+      propertySupport.defineProperty(key, descriptor);
+    };
+
     model.getStats = function() {
       return {
         time        : model.get('time'),
@@ -920,14 +786,19 @@ define(function(require) {
 
     /**
       Initialize minX, minYm, maxX, maxY from width and height
-      MD2D assumes that minX and minY = 0
+      when these options are undefined.
     */
     model.initializeDimensions = function () {
+      var minX = model.get("minX"),
+          minY = model.get("minY"),
+          maxX = model.get("maxX"),
+          maxY = model.get("maxY");
+
       model.set({
-        minX: 0,
-        maxX: model.get('width'),
-        minY: 0,
-        maxY: model.get('height')
+        minX: minX != null ? minX : 0,
+        maxX: maxX != null ? maxX : model.get("width"),
+        minY: minY != null ? minY : 0,
+        maxY: maxY != null ? maxY : model.get("height")
       });
     };
 
@@ -937,6 +808,10 @@ define(function(require) {
     model.initializeEngine = function () {
       engine = md2d.createEngine();
 
+      if (model.get('quantumDynamics')) {
+        engine.addPlugin(new QuantumDynamics(model.get('quantumDynamics')));
+      }
+
       engine.setDimensions([model.get('minX'), model.get('minY'), model.get('maxX'), model.get('maxY')]);
       engine.useLennardJonesInteraction(model.get('lennardJonesForces'));
       engine.useCoulombInteraction(model.get('coulombForces'));
@@ -945,6 +820,7 @@ define(function(require) {
       engine.setVDWLinesRatio(VDWLinesCutoffMap[model.get('VDWLinesCutoff')]);
       engine.setGravitationalField(model.get('gravitationalField'));
       engine.setTargetTemperature(model.get('targetTemperature'));
+      engine.setGeneticEngineState(model.get('geneticEngineState'));
       engine.setDielectricConstant(model.get('dielectricConstant'));
       engine.setRealisticDielectricEffect(model.get('realisticDielectricEffect'));
       engine.setSolventForceType(model.get('solventForceType'));
@@ -955,7 +831,6 @@ define(function(require) {
       // Register invalidating change hooks.
       // pairwiseLJProperties object allows to change state which defines state of the whole simulation.
       engine.pairwiseLJProperties.registerChangeHooks(invalidatingChangePreHook, invalidatingChangePostHook);
-      engine.geneticProperties.registerChangeHooks(invalidatingChangePreHook, invalidatingChangePostHook);
 
       window.state = modelOutputState = {};
 
@@ -1520,7 +1395,7 @@ define(function(require) {
           props = {},
           propName;
       for (propName in atomMetaData) {
-        if (atomMetaData.hasOwnProperty(propName)) {
+        if (atomMetaData.hasOwnProperty(propName) && atoms[propName]) {
           props[propName] = atoms[propName][i];
         }
       }
@@ -1687,14 +1562,14 @@ define(function(require) {
 
     model.addTextBox = function(props) {
       props = validator.validateCompleteness(metadata.textBox, props);
-      properties.textBoxes.push(props);
+      model.get('textBoxes').push(props);
       dispatch.textBoxesChanged();
     };
 
     model.removeTextBox = function(i) {
-      var text = properties.textBoxes;
+      var text = model.get('textBoxes');
       if (i >=0 && i < text.length) {
-        properties.textBoxes = text.slice(0,i).concat(text.slice(i+1));
+        model.set('textBoxes', text.slice(0,i).concat(text.slice(i+1)));
         dispatch.textBoxesChanged();
       } else {
         throw new Error("Text box \"" + i + "\" does not exist, so it cannot be removed.");
@@ -1702,7 +1577,7 @@ define(function(require) {
     };
 
     model.setTextBoxProperties = function(i, props) {
-      var textBox = properties.textBoxes[i],
+      var textBox = model.get('textBoxes')[i],
           prop;
 
       if (textBox) {
@@ -1724,7 +1599,7 @@ define(function(require) {
       adjusting the friction of the dragged atom.
     */
     model.liveDragStart = function(atomIndex, x, y) {
-      if (liveDragSpringForceIndex !== null) return;    // don't add a second liveDrag force
+      if (liveDragSpringForceIndex != null) return;    // don't add a second liveDrag force
 
       if (x == null) x = atoms.x[atomIndex];
       if (y == null) y = atoms.y[atomIndex];
@@ -1842,6 +1717,11 @@ define(function(require) {
       return engine.getNumberOfAngularBonds();
     };
 
+    // FIXME. Should be an output property.
+    model.getNumberOfSpringForces = function () {
+      return engine.getNumberOfSpringForces();
+    };
+
     model.get_radial_bonds = function() {
       return radialBonds;
     };
@@ -1854,8 +1734,8 @@ define(function(require) {
       return engine.pairwiseLJProperties;
     };
 
-    model.getGeneticProperties = function() {
-      return engine.geneticProperties;
+    model.geneticEngine = function() {
+      return geneticEngine;
     };
 
     model.get_vdw_pairs = function() {
@@ -2092,52 +1972,6 @@ define(function(require) {
       return engine.getDimensions();
     };
 
-    model.set = function(key, val) {
-      var hash;
-      if (arguments.length === 1) {
-        // Hash of options provided.
-        hash = key;
-      } else {
-        // Key - value pair provied.
-        hash = {};
-        hash[key] = val;
-      }
-      // Perform validation in case of setting main properties or
-      // model view properties. Attempts to set immutable or read-only
-      // properties will be caught.
-      validator.validate(metadata.mainProperties, hash);
-      validator.validate(metadata.viewOptions, hash);
-
-      if (engine) invalidatingChangePreHook();
-      set_properties(translateToMD2DUnits(hash, mainPropertyUnitTypes));
-      if (engine) invalidatingChangePostHook();
-    };
-
-    model.get = function(property) {
-      var output,
-          ret;
-
-      if (properties.hasOwnProperty(property)) {
-        ret = properties[property];
-      } else if (output = outputsByName[property]) {
-        if (suppressOutputPropertyCaching) {
-          ret = output.calculate();
-        } else {
-          if (!output.hasCachedValue) {
-            output.hasCachedValue = true;
-            output.cachedValue = output.calculate();
-          }
-          ret = output.cachedValue;
-        }
-      }
-
-      // translateFromMD2DUnits function defined above works on hashes, not individual values, so
-      // use the method from unitsTranslation instead.
-      if (unitsTranslation && mainPropertyUnitTypes[property]) {
-        ret = unitsTranslation.translateFromMD2DUnits(ret, mainPropertyUnitTypes[property].unitType);
-      }
-      return ret;
-    };
 
     model.format = function(property, opts) {
       opts = opts || {};
@@ -2149,184 +1983,6 @@ define(function(require) {
       return d3.format(opts.format || 'g')(model.get(property));
     };
 
-    /**
-      Add a listener callback that will be notified when any of the properties in the passed-in
-      array of properties is changed. (The argument `properties` can also be a string, if only a
-      single name needs to be passed.) This is a simple way for views to update themselves in
-      response to property changes.
-
-      Observe all properties with `addPropertiesListener('all', callback);`
-    */
-    model.addPropertiesListener = function(properties, callback) {
-      var i;
-
-      function addListener(prop) {
-        if (!listeners[prop]) listeners[prop] = [];
-        listeners[prop].push(callback);
-      }
-
-      if (typeof properties === 'string') {
-        addListener(properties);
-      } else {
-        for (i = 0; i < properties.length; i++) {
-          addListener(properties[i]);
-        }
-      }
-    };
-
-
-    /**
-      Add an "output" property to the model. Output properties are expected to change at every
-      model tick, and may also be changed indirectly, outside of a model tick, by a change to the
-      model parameters or to the configuration of atoms and other objects in the model.
-
-      `name` should be the name of the parameter. The property value will be accessed by
-      `model.get(<name>);`
-
-      `description` should be a hash of metadata about the property. Right now, these metadata are not
-      used. However, example metadata include the label and units name to be used when graphing
-      this property.
-
-      `calculate` should be a no-arg function which should calculate the property value.
-    */
-    model.defineOutput = function(name, descriptionHash, calculate) {
-      outputNames.push(name);
-
-      mainPropertyUnitTypes[name] = {
-        unitType: descriptionHash.unitType
-      };
-
-      outputsByName[name] = {
-        description: new PropertyDescription(unitsDefinition, descriptionHash),
-        calculate: calculate,
-        hasCachedValue: false,
-        // Used to keep track of whether this property changed as a side effect of some other change
-        // null here is just a placeholder
-        previousValue: null
-      };
-    };
-
-    /**
-      Add an "filtered output" property to the model. This is special kind of output property, which
-      is filtered by one of the built-in filters based on time (like running average). Note that filtered
-      outputs do not specify calculate function - instead, they specify property which should filtered.
-      It can be another output, model parameter or custom parameter.
-
-      Filtered output properties are extension of typical output properties. They share all features of
-      output properties, so they are expected to change at every model tick, and may also be changed indirectly,
-      outside of a model tick, by a change to the model parameters or to the configuration of atoms and other
-      objects in the model.
-
-      `name` should be the name of the parameter. The property value will be accessed by
-      `model.get(<name>);`
-
-      `description` should be a hash of metadata about the property. Right now, these metadata are not
-      used. However, example metadata include the label and units name to be used when graphing
-      this property.
-
-      `property` should be name of the basic property which should be filtered.
-
-      `type` should be type of filter, defined as string. For now only "RunningAverage" is supported.
-
-      `period` should be number defining length of time period used for calculating filtered value. It should
-      be specified in femtoseconds.
-
-    */
-    model.defineFilteredOutput = function(name, description, property, type, period) {
-      // Filter object.
-      var filter, initialValue;
-
-      if (type === "RunningAverage") {
-        filter = new RunningAverageFilter(period);
-      } else {
-        throw new Error("FilteredOutput: unknown filter type " + type + ".");
-      }
-
-      initialValue = model.get(property);
-      if (initialValue === undefined || isNaN(Number(initialValue))) {
-        throw new Error("FilteredOutput: property is not a valid numeric value or it is undefined.");
-      }
-
-      // Add initial sample.
-      filter.addSample(model.get('time'), initialValue);
-
-      filteredOutputNames.push(name);
-      // filteredOutputsByName stores properties which are unique for filtered output.
-      // Other properties like description or calculate function are stored in outputsByName hash.
-      filteredOutputsByName[name] = {
-        addSample: function () {
-          filter.addSample(model.get('time'), model.get(property));
-        }
-      };
-
-      // Create simple adapter implementing TickHistoryCompatible Interface
-      // and register it in tick history.
-      tickHistory.registerExternalObject({
-        push: function () {
-          // Push is empty, as we store samples during each tick anyway.
-        },
-        extract: function (idx) {
-          filter.setCurrentStep(idx);
-        },
-        invalidate: function (idx) {
-          filter.invalidate(idx);
-        },
-        setHistoryLength: function (length) {
-          filter.setMaxBufferLength(length);
-        }
-      });
-
-      // Extend description to contain information about filter.
-      description.property = property;
-      description.type = type;
-      description.period = period;
-
-      // Filtered output is still an output.
-      // Reuse existing, well tested logic for caching, observing etc.
-      model.defineOutput(name, description, function () {
-        return filter.calculate();
-      });
-    };
-
-    /**
-      Define a property of the model to be treated as a custom parameter. Custom parameters are
-      (generally, user-defined) read/write properties that trigger a setter action when set, and
-      whose values are automatically persisted in the tick history.
-
-      Because custom parameters are not intended to be interpreted by the engine, but instead simply
-      *represent* states of the model that are otherwise fully specified by the engine state and
-      other properties of the model, and because the setter function might not limit itself to a
-      purely functional mapping from parameter value to model properties, but might perform any
-      arbitrary stateful change, (stopping the model, etc.), the setter is NOT called when custom
-      parameters are updated by the tick history.
-    */
-    model.defineParameter = function(name, descriptionHash, setter) {
-      parametersByName[name] = {
-        description: new PropertyDescription(unitsDefinition, descriptionHash),
-        setter: setter,
-        isDefined: false
-      };
-
-      // Regardless of the type of unit represented by the parameter, do NOT automatically convert
-      // it to MD2D units in the set method. That is because the set method on the parameter will
-      // also call 'setter', and any native model properties set by 'setter' will be translated.
-      // If the parameter value were also translated in the set method, translations would happen
-      // twice!
-      mainPropertyUnitTypes[name] = {
-        unitType: "untranslated"
-      };
-
-      properties['set_'+name] = function(value) {
-        properties[name] = value;
-        parametersByName[name].isDefined = true;
-        // setter is optional.
-        if (parametersByName[name].setter) {
-          // set a useful 'this' binding in the setter:
-          parametersByName[name].setter.call(model, value);
-        }
-      };
-    };
-
 
     /**
       Return a unitDefinition in the current unitScheme for a quantity
@@ -2334,30 +1990,6 @@ define(function(require) {
     */
     model.getUnitDefinition = function(name) {
       return unitsDefinition.units[name];
-    };
-
-    /**
-      Retrieve (a copy of) the hash describing property 'name', if one exists. This hash can store
-      an arbitrary set of key-value pairs, but is expected to have 'label' and 'units' properties
-      describing, respectively, the property's human-readable label and the short name of the units
-      in which the property is enumerated.
-
-      Right now, only output properties and custom parameters have a description hash.
-    */
-    model.getPropertyDescription = function(name) {
-      var property = outputsByName[name] || parametersByName[name];
-      if (property) {
-        return property.description;
-      }
-    };
-
-    model.getPropertyType = function(name) {
-      if (outputsByName[name]) {
-        return 'output';
-      }
-      if (parametersByName[name]) {
-        return 'parameter';
-      }
     };
 
     /**
@@ -2384,6 +2016,7 @@ define(function(require) {
     model.serialize = function() {
       var propCopy = {},
           ljProps, i, len,
+          rawProperties = propertySupport.rawValues,
 
           removeAtomsArrayIfDefault = function(name, defaultVal) {
             if (propCopy.atoms[name].every(function(i) {
@@ -2393,8 +2026,8 @@ define(function(require) {
             }
           };
 
-      propCopy = serialize(metadata.mainProperties, properties);
-      propCopy.viewOptions = serialize(metadata.viewOptions, properties);
+      propCopy = serialize(metadata.mainProperties, rawProperties);
+      propCopy.viewOptions = serialize(metadata.viewOptions, rawProperties);
       propCopy.atoms = serialize(metadata.atom, atoms, engine.getNumberOfAtoms());
 
       if (engine.getNumberOfRadialBonds()) {
@@ -2428,10 +2061,6 @@ define(function(require) {
       }
       if (engine.getNumberOfRestraints() > 0) {
         propCopy.restraints = serialize(metadata.restraint, restraints, engine.getNumberOfRestraints());
-      }
-
-      if (engine.geneticProperties.get() !== undefined) {
-        propCopy.geneticProperties = engine.geneticProperties.serialize();
       }
 
       // FIXME: for now Amino Acid elements are *not* editable and should not be serialized
@@ -2474,23 +2103,25 @@ define(function(require) {
     // Friction parameter temporarily applied to the live-dragged atom.
     model.LIVE_DRAG_FRICTION = 10;
 
-    // Ensure that model, which includes DNA (and probably DNA animation) has
+    // ------------------------------
+    // Process initialProperties before setting properties on the model
+    // ------------------------------
+
+    // Ensure that model, which includes DNA (=> so DNA animation too) has
     // correct, constant dimensions. This is very significant, as if model
     // dimensions are too big or too small, DNA elements can be unreadable. It
     // also ensures that aspect ratio of the model is reasonable for
     // animation.
     // TODO: move this to better place.
-    if (initialProperties.geneticProperties &&
-        initialProperties.geneticProperties.DNA.length > 0) {
+    if (initialProperties.DNA) {
       // Overwrite width and height options.
-      initialProperties.width = 5;
-      initialProperties.height = 3;
+      initialProperties.width = 100;
+      initialProperties.height = 10;
+      initialProperties.viewOptions.viewPortX = 0;
+      initialProperties.viewOptions.viewPortY = 0;
+      initialProperties.viewOptions.viewPortWidth = 5;
+      initialProperties.viewOptions.viewPortHeight = 3;
     }
-
-    // Set the regular, main properties.
-    // Note that validation process will return hash without all properties which are
-    // not defined in meta model as mainProperties (like atoms, obstacles, viewOptions etc).
-    set_properties(validator.validateCompleteness(metadata.mainProperties, initialProperties));
 
     (function () {
       if (!initialProperties.viewOptions || !initialProperties.viewOptions.textBoxes) {
@@ -2507,14 +2138,160 @@ define(function(require) {
         textBoxes[i] = validator.validateCompleteness(metadata.textBox, textBoxes[i]);
       }
     }());
-    // Set the model view options.
-    set_properties(validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {}));
+    viewOptions = validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {});
 
-    // initialize minX, minYm, maxX, maxY from model width and height
+    // Set the regular, main properties. Note that validation process will return hash without all
+    // properties which are not defined in meta model as mainProperties (like atoms, obstacles,
+    // viewOptions etc).
+    mainProperties = validator.validateCompleteness(metadata.mainProperties, initialProperties);
+
+    // Set up units scheme.
+    unitsDefinition = unitDefinitions.get(mainProperties.unitsScheme);
+
+    // If we're not using MD2D units, we need a translation (which, for each unit type, allows some
+    // number of "native" MD2D units to stand for 1 translated unit, e.g., 1 nm represents 1m, with
+    // the relationships between these ratios set up so that the calculations reamin physically
+    // consistent.
+    if (mainProperties.unitsScheme !== 'md2d') {
+      unitsTranslation = new UnitsTranslation(unitsDefinition);
+    }
+
+    // ------------------------------
+    // Define toplevel properties of the model
+    // ------------------------------
+
+    // Add all the mainProperties, with custom setters defined below
+    (function() {
+      var customSetters = {
+        targetTemperature: function (value) {
+          if (engine) {
+            engine.setTargetTemperature(value);
+          }
+        },
+
+        temperatureControl: function(value) {
+          if (engine) {
+            engine.useThermostat(value);
+          }
+        },
+
+        lennardJonesForces: function(value) {
+          if (engine) {
+            engine.useLennardJonesInteraction(value);
+          }
+        },
+
+        coulombForces: function(value) {
+          if (engine) {
+            engine.useCoulombInteraction(value);
+          }
+        },
+
+        solventForceType: function(value) {
+          if (engine) {
+            engine.setSolventForceType(value);
+          }
+        },
+
+        geneticEngineState: function(value) {
+          if (engine) {
+            engine.setGeneticEngineState(value);
+          }
+        },
+
+        solventForceFactor: function(value) {
+          if (engine) {
+            engine.setSolventForceFactor(value);
+          }
+        },
+
+        additionalSolventForceMult: function(value) {
+          if (engine) {
+            engine.setAdditionalSolventForceMult(value);
+          }
+        },
+
+        additionalSolventForceThreshold: function(value) {
+          if (engine) {
+            engine.setAdditionalSolventForceThreshold(value);
+          }
+        },
+
+        dielectricConstant: function(value) {
+          if (engine) {
+            engine.setDielectricConstant(value);
+          }
+        },
+
+        realisticDielectricEffect: function(value) {
+          if (engine) {
+            engine.setRealisticDielectricEffect(value);
+          }
+        },
+
+        VDWLinesCutoff: function(value) {
+          var ratio = VDWLinesCutoffMap[value];
+          if (ratio && engine) {
+            engine.setVDWLinesRatio(ratio);
+          }
+        },
+
+        gravitationalField: function(value) {
+          if (engine) {
+            engine.setGravitationalField(value);
+          }
+        },
+
+        modelSampleRate: function() {
+          if (!stopped) model.restart();
+        },
+
+        viscosity: function(value) {
+          if (engine) {
+            engine.setViscosity(value);
+          }
+        },
+
+        polarAAEpsilon: function (value) {
+          var polarAAs, element1, element2,
+              i, j, len;
+
+          if (engine) {
+            // Set custom pairwise LJ properties for polar amino acids.
+            // They should attract stronger to better mimic nature.
+            polarAAs = aminoacidsHelper.getPolarAminoAcids();
+            for (i = 0, len = polarAAs.length; i < len; i++) {
+              element1 = polarAAs[i];
+              for (j = i + 1; j < len; j++) {
+                element2 = polarAAs[j];
+                // Set custom pairwise LJ epsilon (default one for AA is -0.1).
+                engine.pairwiseLJProperties.set(element1, element2, {epsilon: value});
+              }
+            }
+          }
+        }
+      };
+
+      Object.keys(metadata.mainProperties).forEach(function(key) {
+        defineBuiltinProperty('mainProperty', key, customSetters[key]);
+      });
+      propertySupport.setRawValues(mainProperties);
+    })();
+
+    // Define and set the model view options. None of these have custom setters.
+    Object.keys(metadata.viewOptions).forEach(function(key) {
+      defineBuiltinProperty('viewOption', key);
+    });
+    propertySupport.setRawValues(viewOptions);
+
+    // Initialize minX, minYm, maxX, maxY from model width and height
+    // if they are undefined.
     model.initializeDimensions();
 
-    // Setup engine object.
+    // Setup MD2D engine object.
     model.initializeEngine();
+    // Setup genetic engine.
+    geneticEngine = new GeneticEngine(model);
 
     // Finally, if provided, set up the model objects (elements, atoms, bonds, obstacles and the rest).
     // However if these are not provided, client code can create atoms, etc piecemeal.
@@ -2549,56 +2326,17 @@ define(function(require) {
     // above. However, this is the first step to delegate some functionality from modeler to smaller classes.
     if (initialProperties.pairwiseLJProperties)
       engine.pairwiseLJProperties.deserialize(initialProperties.pairwiseLJProperties);
-    if (initialProperties.geneticProperties)
-      engine.geneticProperties.deserialize(initialProperties.geneticProperties);
 
     // Initialize tick history.
     tickHistory = new TickHistory({
-      input: [
-        "targetTemperature",
-        "lennardJonesForces",
-        "coulombForces",
-        "temperatureControl",
-        "keShading",
-        "chargeShading",
-        "showVDWLines",
-        "showVelocityVectors",
-        "showForceVectors",
-        "showClock",
-        "timeStepsPerTick",
-        "timeStep",
-        "viscosity",
-        "gravitationalField"
-      ],
-      getRawPropertyValue: getRawPropertyValue,
-      restoreProperties: restoreProperties,
-      parameters: parametersByName,
-      restoreParameters: restoreParameters,
+      getProperties: function() {
+        return propertySupport.historyStateRawValues;
+      },
+      restoreProperties: propertySupport.setRawValues,
       state: engine.getState()
     }, model, defaultMaxTickHistory);
 
     newStep = true;
-
-    // Set up units scheme.
-    unitsDefinition = unitDefinitions.get(model.get('unitsScheme'));
-
-    // If we're not using MD2D units, we need a translation (which, for each unit type, allows some
-    // number of "native" MD2D units to stand for 1 translated unit, e.g., 1 nm represents 1m, with
-    // the relationships between these ratios set up so that the calculations reamin physically
-    // consistent.
-    if (model.get('unitsScheme') !== 'md2d') {
-      unitsTranslation = new UnitsTranslation(unitsDefinition);
-    }
-
-    // set up types of all properties before any third-party calls to set/get
-    mainPropertyUnitTypes = {};
-    _.each(metadata.mainProperties, function(value, key) {
-      if (value.unitType) {
-        mainPropertyUnitTypes[key] = {
-          unitType: value.unitType
-        };
-      }
-    });
 
     // Define some default output properties.
     model.defineOutput('time', {
@@ -2606,17 +2344,18 @@ define(function(require) {
       unitType: 'time',
       format: 'f'
     }, function() {
-      return modelOutputState.time;
+      // Output getters are expected to return values in translated units, since authored outputs
+      // can only read values already in translated units to start with.
+      var value = modelOutputState.time;
+      if (unitsTranslation) {
+        value = unitsTranslation.translateFromMD2DUnits(value, 'time');
+      }
+      return value;
     });
 
-    // Confusing detail for review: setting 'unitType' here will cause the return value of the
-    // output function to be translated to macroscopic units, however, the function takes
-    // macroscopic units as input. Therefore we must not set 'unitType'.
     model.defineOutput('timePerTick', {
       label: "Model time per tick",
-      unitName:         unitsDefinition.units.time.name,
-      unitPluralName:   unitsDefinition.units.time.pluralName,
-      unitAbbreviation: unitsDefinition.units.time.symbol,
+      unitType: 'time',
       format: 'f'
     }, function() {
       return model.get('timeStep') * model.get('timeStepsPerTick');
@@ -2661,7 +2400,7 @@ define(function(require) {
       unitType: '',
       format: '4g'
     }, function() {
-      return tickHistory.get("counter");
+      return tickHistory.get('counter');
     });
 
     model.defineOutput('newStep', {
@@ -2677,7 +2416,11 @@ define(function(require) {
       unitType: 'energy',
       format: '.4g'
     }, function() {
-      return modelOutputState.KE;
+      var value = modelOutputState.KE;
+      if (unitsTranslation) {
+        value = unitsTranslation.translateFromMD2DUnits(value, 'energy');
+      }
+      return value;
     });
 
     model.defineOutput('potentialEnergy', {
@@ -2685,15 +2428,22 @@ define(function(require) {
       unitType: 'energy',
       format: '.4g'
     }, function() {
-      return modelOutputState.PE;
-    });
+      var value = modelOutputState.PE;
+      if (unitsTranslation) {
+        value = unitsTranslation.translateFromMD2DUnits(value, 'energy');
+      }
+      return value;    });
 
     model.defineOutput('totalEnergy', {
       label: "Total Energy",
       unitType: 'energy',
       format: '.4g'
     }, function() {
-      return modelOutputState.KE + modelOutputState.PE;
+      var value = modelOutputState.KE + modelOutputState.PE;
+      if (unitsTranslation) {
+        value = unitsTranslation.translateFromMD2DUnits(value, 'energy');
+      }
+      return value;
     });
 
     model.defineOutput('temperature', {
@@ -2701,7 +2451,11 @@ define(function(require) {
       unitType: 'temperature',
       format: 'f'
     }, function() {
-      return modelOutputState.temperature;
+      var value = modelOutputState.temperature;
+      if (unitsTranslation) {
+        value = unitsTranslation.translateFromMD2DUnits(value, 'temperature');
+      }
+      return value;
     });
 
     updateAllOutputProperties();

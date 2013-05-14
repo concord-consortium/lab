@@ -79,15 +79,17 @@ class InteractivesController < ApplicationController
     title = params[:interactive][:title].gsub(' ', '_')
 
     params[:interactive][:id] = "interactives_#{groupKey}_#{title}"
-    params[:interactive][:path] = "/interactives/#{params[:interactive][:id]}"
+    params[:interactive][:path] = "webapp/interactives/#{params[:interactive][:id]}"
 
   end
 
   def create_interactive_model
     interactive_model = InteractiveModel.new(:viewOptions => params[:interactive][:models].first[:viewOptions],
+                                             :local_ref_id => params[:interactive][:models].first[:id],
                                              :parameters => params[:interactive][:parameters],
                                              :outputs => params[:interactive][:outputs],
-                                             :filteredOutputs => params[:interactive][:filteredOutputs])
+                                             :filteredOutputs => params[:interactive][:filteredOutputs],
+                                             :modelOptions => params[:interactive][:models].first[:modelOptions] )
     interactive_model.md2d = create_model
     interactive_model.save!
     interactive_model
@@ -99,9 +101,8 @@ class InteractivesController < ApplicationController
     old_model = Models::Md2d.find(model_id)
     old_model.clone! do |m|
       m.from_import = false
-      m.local_ref_id = m.id
       m.name = nil
-      m.url = m.id
+      m.url = ::Models::Md2d.generate_url(m.id)
     end
   end
 end

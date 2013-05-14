@@ -1,0 +1,37 @@
+{
+  "title": "Oil and Water",
+  "publicationStatus": "public",
+  "subtitle": "44 charged and uncharged bonded atoms displaying both bonds and VDW lines.",
+  "about": "",
+  "models": [
+    {
+      "id": "page3$1",
+      "url": "imports/legacy-mw-content/converted/benchmarks/oil-and-water/page3$1.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "set({ showClock: true})"
+    },
+    {
+      "id": "oilAndWaterMix",
+      "url": "imports/legacy-mw-content/converted/benchmarks/oil-and-water/oilAndWaterMix.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "set({ showClock: true})"
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "shake",
+      "text": "Shake up the oil and water mixture",
+      "action": "loadModel('oilAndWaterMix');"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "shake"
+    ]
+  }
+}

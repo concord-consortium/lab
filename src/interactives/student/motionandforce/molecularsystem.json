@@ -1,0 +1,21 @@
+{
+  "title": "molecularsystem",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "molecularsystem$0",
+      "url": "imports/legacy-mw-content/converted/student/motionandforce/molecularsystem$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

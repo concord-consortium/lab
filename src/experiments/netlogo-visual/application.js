@@ -103,15 +103,10 @@ var ROOT = "/experiments",
 
   function buttonStatusCallback() {
     var export_button = exportData,
-        show_button = showData,
-        dgready = "DATA-EXPORT:DATA-READY?",
-        observer = nl_obj_observer,
-        globals = nlGlobals,
-        enable = false;
+        show_button = showData;
 
     try {
-      enable = observer.getVariable(globals.indexOf(dgready));
-      if (enable) {
+      if (nlDataAvailable()) {
         export_button.disabled = false;
         show_button.disabled = false;
       } else {
@@ -141,35 +136,50 @@ var ROOT = "/experiments",
     return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
   }
 
-  function nl_cmd_execute(cmd) {
+  function nlCmdExecute(cmd) {
     nl_obj_panel.commandLater(cmd);
   }
 
-  function nl_read_global(global) {
+  function nlReadGlobal(global) {
     return nl_obj_observer.getVariable(nlGlobals.indexOf(global));
   }
 
-  function dgDataReady() {
-    return nl_read_global("DATA-EXPORT:DATA-READY?");
+  function nlDataExportModuleAvailable() {
+    return this.nlReadGlobal("DATA-EXPORT:MODULE-AVAILABLE");
+  }
+
+  function nlDataAvailable() {
+    return nlReadGlobal("DATA-EXPORT:DATA-AVAILABLE?");
+  }
+
+  function nlDataReady() {
+    return nlReadGlobal("DATA-EXPORT:DATA-READY?");
   }
 
   function getExportedData() {
-    return nl_read_global("DATA-EXPORT:MODEL-DATA");
+    return nlReadGlobal("DATA-EXPORT:MODEL-DATA");
   }
 
   function exportDataHandler() {
-    nl_cmd_execute("data-export:make-model-data");
-    clearDataReady = window.setInterval(exportDataReadyCallback, 250);
+    var startTime,
+        elapsedTime = 0;
+    nlCmdExecute("data-export:make-model-data");
+    // startTime = Date.now();
+    // // for some reason we have to wait here 200ms
+    // while(elapsedTime < 200) {
+    //   elapsedTime = Date.now() - startTime;
+    // }
+    clearDataReady = window.setInterval(exportDataReadyCallback, 200);
   }
 
   function exportDataReadyCallback() {
     var modelDataDesc,
         dataSeries,
         runSeries,
-        dgExportDone = dgDataReady();
+        dgExportDone = nlDataReady();
     if (dgExportDone) {
       clearInterval(clearDataReady);
-      modelData = nl_read_global("DATA-EXPORT:MODEL-DATA");
+      modelData = getExportedData();
       if (exportedData) {
         exportedData.textContent = modelData;
         if (editor) {

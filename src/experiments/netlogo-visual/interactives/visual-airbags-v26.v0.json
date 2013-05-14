@@ -1,0 +1,18 @@
+{
+  "model": {
+    "modelType": "netlogo-applet",
+    "url": "models/airbags26.v0.nlogo",
+    "viewOptions": {
+      "appletDimensions": {
+        "width": 1036,
+        "height": 587
+      },
+      "dimensions": {
+        "width": 1056,
+        "height": 607
+      }
+    }
+  },
+  "components": [
+  ]
+}

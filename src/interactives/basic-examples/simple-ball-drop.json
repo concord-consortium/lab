@@ -1,0 +1,170 @@
+{
+  "title": "Simple Ball Drop",
+  "publicationStatus": "public",
+  "subtitle": "Simple analog of a macroscopic ball dropped in a gravitational field",
+  "about": "",
+  "models": [
+    {
+      "id": "main-model",
+      "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-ball-drop$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "showClock": false
+      },
+      "modelOptions": {
+        "unitsScheme": "mks"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ballHeight",
+      "unitType": "length",
+      "label": "Ball Height",
+      "value": "return getAtomProperties(0).y;"
+    },
+    {
+      "name": "modelHeight",
+      "unitType": "length",
+      "label": "Model Height",
+      "value": "return get('height');"
+    },
+    {
+      "name": "modelWidth",
+      "unitType": "length",
+      "label": "Model Width",
+      "value": "return get('width');"
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "gravity-slider",
+      "min": 1,
+      "max": 20,
+      "displayValue": "return format('1.1f')(value)",
+      "labels": [
+        {
+          "value": 1,
+          "label": "1.0"
+        },
+        {
+          "value": 9.8,
+          "label": "9.8"
+        },
+        {
+          "value": 20,
+          "label": "20.0"
+        }
+      ],
+      "title": "Gravitational acceleration (m/s²)",
+      "steps": 19,
+      "property": "gravitationalField"
+    },
+    {
+      "type": "numericOutput",
+      "id": "time-display",
+      "orientation": "vertical",
+      "property": "time",
+      "displayValue": "return format('1.2f')(value)"
+    },
+    {
+      "type": "numericOutput",
+      "id": "ball-height-display",
+      "orientation": "vertical",
+      "property": "ballHeight",
+      "displayValue": "return format('1.2f')(value)"
+    },
+    {
+      "type": "numericOutput",
+      "id": "height-property",
+      "orientation": "vertical",
+      "property": "modelHeight",
+      "displayValue": "return format('1.2f')(value)"
+    },
+    {
+      "type": "numericOutput",
+      "id": "width-property",
+      "orientation": "vertical",
+      "property": "modelWidth",
+      "displayValue": "return format('1.2f')(value)"
+    },
+    {
+      "type": "text",
+      "id": "axes-label",
+      "text": "#Axes#"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-gridlines",
+      "text": "Grid Lines",
+      "property": "gridLines"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-xunits",
+      "text": "X units",
+      "property": "xunits"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-yunits",
+      "text": "Y units",
+      "property": "yunits"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-xlabel",
+      "text": "X label",
+      "property": "xlabel"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-ylabel",
+      "text": "Y label",
+      "property": "ylabel"
+    }
+  ],
+  "layout": {
+    "left": [
+      [ "gravity-slider" ],
+      [ "time-display" ],
+      [ "ball-height-display" ]
+    ],
+    "bottom": [
+    ],
+    "right": [
+      [ "height-property" ],
+      [ "width-property" ],
+      [ "axes-label" ],
+      [ "show-gridlines" ],
+      [ "show-xunits" ],
+      [ "show-yunits" ],
+      [ "show-xlabel" ],
+      [ "show-ylabel" ]
+    ]
+  },
+  "template": [
+    {
+      "id": "left",
+      "top": "1em",
+      "right": "model.left",
+      "padding-right": "2em",
+      "align": "center"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "left": "model.left",
+      "padding-top": "0.5em",
+      "align": "center"
+    },
+    {
+      "id": "right",
+      "top": "2em",
+      "left": "model.right",
+      "padding-left": "0.5em",
+      "align": "left"
+    }
+  ]
+}

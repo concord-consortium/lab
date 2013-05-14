@@ -1,0 +1,21 @@
+{
+  "title": "heatbath",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "heatbath$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/heatbath$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

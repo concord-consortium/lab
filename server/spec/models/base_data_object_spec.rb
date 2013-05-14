@@ -10,9 +10,6 @@ end
 
 
 describe BaseDataObject do
-  before :each do
-    DbCleaner.clean
-  end
 
   let(:data_hash) do
     { "id" => "xyzzy", "alt_key" => "plugh", "value" => "bar"}

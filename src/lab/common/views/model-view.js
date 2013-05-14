@@ -18,9 +18,9 @@ define(function (require) {
         emsize,
         fontSizeInPixels,
         imagePath,
-        vis1, vis, plot,
+        vis1, vis, plot, viewportG,
         cx, cy,
-        padding, size, modelSize,
+        padding, size, modelSize, viewport,
 
         // Basic scaling functions for positio, it transforms model units to "pixels".
         // Use it for positions of objects rendered inside the view.
@@ -31,13 +31,10 @@ define(function (require) {
         // from bottom to top, while but SVG has increases from top to bottom
         model2pxInv,
 
-        // Basic scaling function for size, it transforms model units to "pixels".
-        // Use it for dimensions of objects rendered inside the view.
-        modelSize2px,
-
         // "Containers" - SVG g elements used to position layers of the final visualization.
         mainContainer,
         gridContainer,
+        geneticsContainer,
         radialBondsContainer,
         VDWLinesContainer,
         imageContainerBelow,
@@ -45,6 +42,7 @@ define(function (require) {
         textContainerBelow,
         textContainerTop,
         brushContainer,
+        iconContainer,
 
         clickHandler,
         // d3.svg.brush object used to implement select action. It should be
@@ -95,14 +93,35 @@ define(function (require) {
     }
 
     function scale() {
-      var modelWidth = model.get('width'),
-          modelHeight = model.get('height'),
-          modelMinX = model.get('minX'),
-          modelMinY = model.get('minY'),
-          modelMaxX = model.get('maxX'),
-          modelMaxY = model.get('maxY'),
-          aspectRatio = modelWidth / modelHeight,
+      var viewPortWidth = model.get("viewPortWidth"),
+          viewPortHeight = model.get("viewPortHeight"),
+          viewPortX = model.get("viewPortX"),
+          viewPortY = model.get("viewPortY"),
+          viewPortZoom = model.get("viewPortZoom"),
+          aspectRatio,
           width, height;
+
+      // Model size in model units.
+      modelSize = {
+        "minX": model.get('minX'),
+        "minY": model.get('minY'),
+        "maxX": model.get('maxX'),
+        "maxY": model.get('maxY')
+      };
+
+      // Note that viewPort specification can be undefined and then viewport
+      // should fit the model.
+      viewport = {
+        width: viewPortWidth != null ? viewPortWidth : modelSize.maxX - modelSize.minX,
+        height: viewPortHeight != null ? viewPortHeight : modelSize.maxY - modelSize.minY,
+        x: viewPortX != null ? viewPortX : modelSize.minX,
+        y: viewPortY != null ? viewPortY : modelSize.minY
+      };
+      viewport.width /= viewPortZoom;
+      viewport.height /= viewPortZoom;
+      viewport.y += viewport.height;
+
+      aspectRatio = viewport.width / viewport.height;
 
       updatePadding();
 
@@ -123,33 +142,18 @@ define(function (require) {
         "height": height
       };
 
-      // Model size in model units.
-      modelSize = {
-        "width":  modelWidth,
-        "height": modelHeight,
-        "minX": modelMinX,
-        "minY": modelMinY,
-        "maxX": modelMaxX,
-        "maxY": modelMaxY
-      };
-
       offsetTop  = node.offsetTop + padding.top;
       offsetLeft = node.offsetLeft + padding.left;
 
       // Basic model2px scaling function for position.
       model2px = d3.scale.linear()
-          .domain([modelSize.minX, modelSize.maxX])
+          .domain([0, viewport.width])
           .range([0, size.width]);
 
       // Inverted model2px scaling function for position (for y-coordinates, inverted domain).
       model2pxInv = d3.scale.linear()
-          .domain([modelSize.maxY, modelSize.minY])
+          .domain([viewport.height, 0])
           .range([0, size.height]);
-
-      // Basic modelSize2px scaling function for size.
-      modelSize2px = function (sizeX) {
-        return model2px(modelMinX + sizeX);
-      };
 
       if (selectBrush) {
         // Update brush to use new scaling functions.
@@ -160,7 +164,10 @@ define(function (require) {
     }
 
     function redraw() {
-      var tx = function(d) { return "translate(" + model2px(d) + ",0)"; },
+          // Overwrite default model2px and model2pxInv to display correct units.
+      var model2px = d3.scale.linear().domain([viewport.x, viewport.x + viewport.width]).range([0, size.width]),
+          model2pxInv = d3.scale.linear().domain([viewport.y, viewport.y - viewport.height]).range([0, size.height]),
+          tx = function(d) { return "translate(" + model2px(d) + ",0)"; },
           ty = function(d) { return "translate(0," + model2pxInv(d) + ")"; },
           stroke = function(d) { return d ? "#ccc" : "#666"; },
           fx = model2px.tickFormat(5),
@@ -287,23 +294,19 @@ define(function (require) {
     }
 
     function renderContainer() {
+      var viewBox;
+
       // Update cx, cy, size and modelSize variables.
       scale();
 
+      viewBox = model2px(viewport.x) + " " + model2pxInv(viewport.y) + " " + model2px(viewport.width) + " " + model2px(viewport.height);
       // Create container, or update properties if it already exists.
       if (vis === undefined) {
         vis1 = d3.select(node).append("svg")
           .attr({
             'xmlns': 'http://www.w3.org/2000/svg',
             'xmlns:xmlns:xlink': 'http://www.w3.org/1999/xlink', // hack: doubling xmlns: so it doesn't disappear once in the DOM
-            overflow: 'hidden',
-            width: cx,
-            height: cy
-          })
-          // SVG element should always fit its parent container.
-          .style({
-            width: "100%",
-            height: "100%"
+            overflow: 'hidden'
           });
 
         vis = vis1.append("g").attr("class", "particle-container-vis");
@@ -317,29 +320,38 @@ define(function (require) {
             .on("mousedown", mousedown);
         }
 
-        // Create and arrange "layers" of the final image (g elements).
-        // Note that order of their creation is significant.
-        gridContainer        = vis.append("g").attr("class", "grid-container");
-        imageContainerBelow  = vis.append("g").attr("class", "image-container-below");
-        textContainerBelow   = vis.append("g").attr("class", "text-container-below");
-        radialBondsContainer = vis.append("g").attr("class", "radial-bonds-container");
-        VDWLinesContainer    = vis.append("g").attr("class", "vdw-lines-container");
-        mainContainer        = vis.append("g").attr("class", "main-container");
-        imageContainerTop    = vis.append("g").attr("class", "image-container-top");
-        textContainerTop     = vis.append("g").attr("class", "text-container-top");
-        brushContainer       = vis.append("g").attr("class", "brush-container");
+        gridContainer = vis.append("g").attr("class", "grid-container");
+        // Create and arrange "layers" of the final image (g elements). Note
+        // that order of their creation is significant.
+        // TODO: containers should be initialized by renderers. It's weird
+        // that top-level view defines containers for elements that it's
+        // unaware of.
+        viewportG = vis.append("svg").attr("class", "viewport");
+        geneticsContainer    = viewportG.append("g").attr("class", "genetics-container");
+        imageContainerBelow  = viewportG.append("g").attr("class", "image-container-below");
+        textContainerBelow   = viewportG.append("g").attr("class", "text-container-below");
+        radialBondsContainer = viewportG.append("g").attr("class", "radial-bonds-container");
+        VDWLinesContainer    = viewportG.append("g").attr("class", "vdw-lines-container");
+        mainContainer        = viewportG.append("g").attr("class", "main-container");
+        imageContainerTop    = viewportG.append("g").attr("class", "image-container-top");
+        textContainerTop     = viewportG.append("g").attr("class", "text-container-top");
+        brushContainer       = viewportG.append("g").attr("class", "brush-container");
+
+        iconContainer = vis.append("g").attr("class", "icon-container");
 
         // Make all layers available for subviews, expect from brush layer
         // which is used only internally.
         api.containers = {
           gridContainer:        gridContainer,
+          geneticsContainer:    geneticsContainer,
           imageContainerBelow:  imageContainerBelow,
           textContainerBelow:   textContainerBelow,
           radialBondsContainer: radialBondsContainer,
           VDWLinesContainer:    VDWLinesContainer,
           mainContainer:        mainContainer,
           imageContainerTop:    imageContainerTop,
-          textContainerTop:     textContainerTop
+          textContainerTop:     textContainerTop,
+          iconContainer:        iconContainer
         };
       } else {
         // TODO: ?? what g, why is it here?
@@ -352,7 +364,20 @@ define(function (require) {
         .attr({
           width: cx,
           height: cy
+        })
+        // Update style values too, as otherwise SVG isn't clipped correctly e.g. in Safari.
+        .style({
+          width: cx,
+          height: cy
         });
+
+      viewportG.attr({
+        viewBox: viewBox,
+        x: 0,
+        y: 0,
+        width: model2px(viewport.width),
+        height: model2px(viewport.height)
+      });
 
       // Update padding, as it can be changed after rescaling.
       vis
@@ -361,8 +386,10 @@ define(function (require) {
       // Rescale main plot.
       vis.select("rect.plot")
         .attr({
-          width: size.width,
-          height: size.height
+          width: model2px(viewport.width),
+          height: model2px(viewport.height),
+          x: 0,
+          y: 0
         });
 
       redraw();
@@ -399,7 +426,8 @@ define(function (require) {
       // Register listeners.
       // Redraw container each time when some visual-related property is changed.
       model.addPropertiesListener([ "backgroundColor"], repaint);
-      model.addPropertiesListener(["gridLines", "xunits", "yunits", "xlabel", "ylabel" ],
+      model.addPropertiesListener(["gridLines", "xunits", "yunits", "xlabel", "ylabel",
+                                   "viewPortX", "viewPortY", "viewPortZoom"],
         function() {
           renderContainer();
           repaint();
@@ -414,7 +442,7 @@ define(function (require) {
     //
     function repaint() {
       setupBackground();
-      renderer.repaint(model2px, model2pxInv, modelSize2px);
+      renderer.repaint(model2px, model2pxInv);
       api.updateClickHandlers();
     }
 
@@ -431,16 +459,9 @@ define(function (require) {
         repaint();
       },
       getHeightForWidth: function (width) {
-        var modelWidth = model.get('width'),
-            modelHeight = model.get('height'),
-            aspectRatio = modelWidth / modelHeight,
-            height;
-
-        updatePadding();
-
-        width = width - padding.left - padding.right;
-        height = width / aspectRatio;
-        return height + padding.top  + padding.bottom;
+        var aspectRatio = viewport.width / viewport.height;
+        width = width - padding.left  - padding.right;
+        return width / aspectRatio + padding.top + padding.bottom;
       },
       repaint: function() {
         repaint();
@@ -463,10 +484,6 @@ define(function (require) {
       model2pxInv: function(val) {
         // See comments for model2px.
         return model2pxInv(val);
-      },
-      modelSize2px: function(val) {
-        // See comments for model2px.
-        return modelSize2px(val);
       },
       pos: function() {
         // Add a pos() function so the model renderer can more easily

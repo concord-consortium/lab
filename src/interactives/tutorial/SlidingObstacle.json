@@ -1,0 +1,21 @@
+{
+  "title": "SlidingObstacle",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "SlidingObstacle$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/SlidingObstacle$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

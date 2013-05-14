@@ -1,0 +1,123 @@
+{
+  "title": "Polarity and Attractive Strength",
+  "publicationStatus": "public",
+  "subtitle": "Explore the different attractive forces between molecules of varying polarity.",
+  "about": [
+    "Attractions between polar molecules vary. Choose a pair of molecules from the drop-down",
+    "menu and \"pull\" on the star to separate the molecules. Why does polarity have an effect",
+    "on the strength of attraction between molecules?"
+  ],
+  "models": [
+    {
+      "id": "instructions",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/instructions.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false,
+        "textBoxes": [
+          {
+            "text": "Explore the different attractive forces between molecules of varying polarity.",
+            "x": 0.85,
+            "y": 1.8,
+            "width": 2.7,
+            "fontScale": 1.4,
+            "width": 2.5,
+            "layer": 1
+          },
+          {
+            "text": "Choose a pair of molecules from the menu below.",
+            "x": 0.6,
+            "y": 0.5,
+            "fontScale": 1.4,
+            "width": 3.0,
+            "layer": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "leastPolarPull",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/leastPolarPull.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false,
+        "textBoxes": [
+          {
+            "text": "Low polarity molecules",
+            "x": 1.48,
+            "y": 1.87,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(250,250,250)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "medPolarPull",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/medPolarPull.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false,
+        "textBoxes": [
+          {
+            "text": "Medium polarity molecules",
+            "x": 1.45,
+            "y": 1.87,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(250,250,250)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "mostPolarPull",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/mostPolarPull.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false,
+        "textBoxes": [
+          {
+            "text": "High polarity molecules",
+            "x": 1.48,
+            "y": 1.87,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(250,250,250)"
+          }
+        ]
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "pulldown",
+      "id": "pulldown1",
+      "options": [
+        {
+          "text": "Select a pair of molecules",
+          "loadModel": "instructions"
+        },
+        {
+          "text": "Low polarity",
+          "action": "loadModel('leastPolarPull', start);"
+        },
+        {
+          "text": "Medium polarity",
+          "action": "loadModel('medPolarPull', start);"
+        },
+        {
+          "text": "High polarity",
+          "action": "loadModel('mostPolarPull', start);"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": "reset();"
+    }
+  ]
+}

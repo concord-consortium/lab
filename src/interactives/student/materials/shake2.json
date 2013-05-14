@@ -1,0 +1,21 @@
+{
+  "title": "shake2",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "shake2$0",
+      "url": "imports/legacy-mw-content/converted/student/materials/shake2$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

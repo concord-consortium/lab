@@ -1,0 +1,80 @@
+{
+  "title": "Area versus Applied Pressure",
+  "publicationStatus": "public",
+  "subtitle": "Demo showing how the area (two-dimensional \"volume\") of a gas changes with changes in the force applied by a piston",
+  "about": "",
+  "fontScale": 0.8,
+  "models": [
+    {
+      "id": "main-model",
+      "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/area-versus-applied-pressure$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "area",
+      "unitAbbreviation": "nm²",
+      "label": "Area",
+      "value": "return getObstacleProperties(0).x * get('height');"
+    },
+    {
+      "name": "pressureTimesArea",
+      "unitAbbreviation": "pN⋅nm",
+      "label": "Pressure Times Area",
+      "value": "return get('pressure') * get('area');"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "pressure",
+      "label": "Pressure",
+      "unitAbbreviation": "pN/nm",
+      "onChange": ["var MW_FORCE_UNITS_PER_PICONEWTON = 6.02e-7,",
+                   "    height = getObstacleProperties(0).height,",
+                   "    mass   = getObstacleProperties(0).mass,",
+                   "    ax     = value * height * MW_FORCE_UNITS_PER_PICONEWTON / mass;",
+                   "setObstacleProperties(0, { externalAx: -ax });"],
+      "initialValue": 60
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "force-slider",
+      "min": 15,
+      "max": 120,
+      "displayValue": "return format('1f')(value)",
+      "labels": [
+        {
+          "value": 15,
+          "label": "15"
+        },
+        {
+          "value": 120,
+          "label": "120"
+        }
+      ],
+      "steps": 7,
+      "title": "Pressure (picoNewton / nm)",
+      "property": "pressure",
+      "width": "15em"
+    },
+    {
+      "type": "numericOutput",
+      "id": "area-display",
+      "property": "area",
+      "orientation": "vertical",
+      "displayValue": "return format('1.1f')(value)"
+    },
+    {
+      "type": "numericOutput",
+      "id": "pressure-times-area-display",
+      "property": "pressureTimesArea",
+      "orientation": "vertical",
+      "displayValue": "return format('1f')(value)"
+    }
+  ]
+}

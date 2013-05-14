@@ -1,0 +1,76 @@
+{
+  "title": "Diffusion Across Semipermeable Membranes",
+  "publicationStatus": "public",
+  "subtitle": "How does pore size affect the diffusion of different molecules?",
+  "about": "Biological membranes are selectively permeable; some molecules can cross while others cannot. One way to affect this is through pore size. Change the pore size with the slider to change the permeability of the membranes to the different types of molecules. Trace an individual molecule to see the path it takes.",
+  "models": [
+    {
+      "id": "model1",
+      "url": "imports/legacy-mw-content/converted/sam-activities/diffusion/semipermeable/semipermeable-twobarrier$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "modelOptions": {
+        "unitsScheme": "mks"
+      },
+      "onLoad": [ 
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "tracedAtom",
+      "initialValue": -99,
+      "onChange": ""
+    },
+    {
+      "name": "poreSize",
+      "initialValue": 0.2,
+      "onChange": [
+        "var h = get('height');",
+        "var barrierHeight = (h - 2*value)/3;",
+        "var offset = 0.4;",
+        "setObstacleProperties(0,{height: barrierHeight, y: 2*(barrierHeight + value)});",
+        "setObstacleProperties(1,{height: barrierHeight, y: barrierHeight + value});",
+        "setObstacleProperties(2,{height: barrierHeight, y: 0});",
+        "setObstacleProperties(3,{height: barrierHeight+offset, y: 2*(barrierHeight + value) - offset});",
+        "setObstacleProperties(4,{height: barrierHeight,        y: barrierHeight + value - offset});",
+        "setObstacleProperties(5,{height: barrierHeight-offset, y: 0});"
+      ]
+    },
+    {
+      "name": "tracingAtom",
+      "initialValue": false,
+      "onChange" : [
+        "if (!value) {",
+        "  untraceAtom();",
+        "} else {",
+        "  var idx = randomAtoms(1);",
+        "  traceAtom(idx);",
+        "  set('tracedAtom',idx);",
+        "}"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "barrier-height",
+      "min": 0,
+      "max": 1,
+      "steps": 50,
+      "title": "Pore size",
+      "property": "poreSize"
+    },
+    {
+      "type": "checkbox",
+      "id": "trace-atom",
+      "text": "Trace a molecule",
+      "property": "tracingAtom"
+    }
+  ],
+  "layout": {
+    "bottom": [ "barrier-height", "trace-atom" ],
+    "right": [  ]
+  }
+}

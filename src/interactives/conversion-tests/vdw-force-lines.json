@@ -1,0 +1,83 @@
+{
+  "title": "VDW Force Lines",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "vdw-force-lines$0",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/vdw-force-lines$0.json",
+      "viewOptions": {
+        "controlButtons": ""
+      }
+    },
+    {
+      "id": "vdw-force-lines-medium",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/vdw-force-lines-medium.json",
+      "viewOptions": {
+        "controlButtons": ""
+      }
+    },
+    {
+      "id": "vdw-force-lines-long",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/vdw-force-lines-long.json",
+      "viewOptions": {
+        "controlButtons": ""
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "checkbox",
+      "id": "vdw-lines",
+      "text": "Show Attraction Forces",
+      "property": "showVDWLines"
+    },
+    {
+      "type": "pulldown",
+      "id": "pulldown1",
+      "options": [
+        {
+          "text": "Select Model with different VDW Line Cutoff ...",
+          "selected": true,
+          "disabled": true
+        },
+        {
+          "text": "Short ",
+          "loadModel": "vdw-force-lines$0"
+        },
+        {
+          "text": "Medium",
+          "loadModel": "vdw-force-lines-medium"
+        },
+        {
+          "text": "Long",
+          "loadModel": "vdw-force-lines-long"
+        }
+      ]
+    },
+    {
+      "type": "pulldown",
+      "id": "pulldown2",
+      "options": [
+        {
+          "text": "Set length of VDW Line Cutoff using script ...",
+          "selected": true,
+          "disabled": true
+        },
+        {
+          "text": "Short",
+          "action": "set({ VDWLinesCutoff: 'short' })"
+        },
+        {
+          "text": "Medium",
+          "action": "set({ VDWLinesCutoff: 'medium' })"
+        },
+        {
+          "text": "Long",
+          "action": "set({ VDWLinesCutoff: 'long' })"
+        }
+      ]
+    }
+  ]
+}

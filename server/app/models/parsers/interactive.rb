@@ -3,20 +3,24 @@ module Parsers
     attr_accessor :models_parser
 
     def initialize(uri=Dir.pwd, data={})
+      # data is a hash for one interactive from the list of interactives,
+      # interactives.json
       data['staticExamplePath'] = ''
       super(uri,data)
       self.models_parser  = Parsers::InteractiveModel
     end
 
+    # meta_data_hash - hash of properties kept in the interactives.json for
+    # each interactive.
     def parse(meta_data_hash={})
-      # TODO: ... why is this needed ... w/o add_models fails when passed collection instead of interactive
+      # The path is the location of the resource/file that defines this interactive
       if (self.data_hash['path'])
         self.uri_helper.set_relative_path(data_hash['path'])
       end
       self.data_hash['staticExamplePath'] = self.data_hash.fetch('path')
       self.generate_couch_doc_id(self.data_hash['path'])
-      self.data_hash['path'] = "/interactives/" + self.data_hash['id']
-
+      self.data_hash['path'] = "webapp/interactives/" + self.data_hash['id']
+      # here we read in the json file for the interactive
       self.update_from_uri!
       self.add_models
       self.set_group

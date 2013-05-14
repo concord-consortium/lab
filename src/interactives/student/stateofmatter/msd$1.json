@@ -1,0 +1,21 @@
+{
+  "title": "msd$1",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "msd$1",
+      "url": "imports/legacy-mw-content/converted/student/stateofmatter/msd$1.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "go3",
+  "publicationStatus": "broken",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "go3$0",
+      "url": "imports/legacy-mw-content/converted/student/osmosis/go3$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

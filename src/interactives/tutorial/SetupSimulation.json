@@ -1,0 +1,21 @@
+{
+  "title": "SetupSimulation",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "SetupSimulation$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/SetupSimulation$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

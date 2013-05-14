@@ -1,0 +1,134 @@
+{
+  "title": "Comparing Dipole-Dipole to London Dispersion",
+  "publicationStatus": "public",
+  "subtitle": "Explore the difference in attractive forces between polar and non-polar molecules.",
+  "about": [
+    "Explore the different strengths of dipole-dipole (polar) and London dispersion (non-polar)",
+    "attractions. These intermolecular attractions are shown by dotted lines between the pairs of molecules.",
+    "",
+    "Choose a pair of molecules from the drop-down menu and \"pull\" on the star to separate the",
+    "molecules. Which type of intermolecular attraction is strongest?"
+  ],
+  "models": [
+    {
+      "id": "instructions",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/instructions.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false,
+        "textBoxes": [
+          {
+            "text": "Explore the different attractive forces between polar and non-polar molecules by dragging the \"star\" image found in the following simulations.",
+            "x": 0.4,
+            "y": 1.7,
+            "width": 2.7,
+            "fontScale": 1.4,
+            "layer": 1
+          },
+          {
+            "text": "Choose a pair of molecules from the menu below.",
+            "x": 0.40,
+            "y": 0.4,
+            "fontScale": 1.4,
+            "width": 3,
+            "layer": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "npPulling",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/npPulling.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false,
+        "imageMapping": {
+          "star.png": "star.svg"
+        },
+        "textBoxes": [
+          {
+            "text": "Non-polar molecules: London dispersion attraction",
+            "x": 0.3,
+            "y": 1.7,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(250,250,250)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "polarPulling",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarPulling.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false,
+        "imageMapping": {
+          "star.png": "star.svg"
+        },
+        "textBoxes": [
+          {
+            "text": "Polar molecules: dipole-dipole attraction",
+            "x": 0.59,
+            "y": 1.7,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(250,250,250)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "polarNpPulling",
+      "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarNpPulling.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false,
+        "imageMapping": {
+          "star.png": "star.svg"
+        },
+        "textBoxes": [
+          {
+            "text": "Non-polar and polar molecules: induced dipole attraction",
+            "x": 0.90,
+            "y": 1.7,
+            "width": 2,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(250,250,250)"
+          }
+        ]
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "pulldown",
+      "id": "pulldown1",
+      "options": [
+        {
+          "text": "Select a pair of molecules",
+          "loadModel": "instructions"
+        },
+        {
+          "text": "Pull apart two non-polar molecules",
+          "action": "loadModel('npPulling', start);"
+        },
+        {
+          "text": "Pull apart two polar molecules",
+          "action": "loadModel('polarPulling', start);"
+        },
+        {
+          "text": "Pull apart a non-polar and polar molecules",
+          "action": "loadModel('polarNpPulling', start);"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": "reset();"
+    }
+  ]
+}

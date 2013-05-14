@@ -1,0 +1,49 @@
+{
+  "title": "Boiling Point Non-Polar Only",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "boiling-point-non-polar-only$0",
+      "url": "imports/legacy-mw-content/converted/potential-tests/boiling-point-non-polar-only/boiling-point-non-polar-only$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "cool",
+      "text": "Cool",
+      "action": [
+        "adjustTemperature(0.9);",
+        "console.log(get('targetTemperature'));"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "heat",
+      "text": "Heat",
+      "action": [
+        "adjustTemperature(1.1);",
+        "console.log(get('targetTemperature'));"
+      ]
+    },
+    {
+      "type": "barGraph",
+      "id": "thermometer",
+      "property": "temperature",
+      "title": "Thermometer",
+      "labels": 0,
+      "min": 0,
+      "max": 2000
+    }
+  ],
+  "layout": {
+    "right": [
+      "thermometer"
+    ]
+  }
+}

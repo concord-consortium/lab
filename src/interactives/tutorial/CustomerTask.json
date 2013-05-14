@@ -1,0 +1,21 @@
+{
+  "title": "CustomerTask",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "CustomerTask$0",
+      "url": "imports/legacy-mw-content/converted/tutorial/CustomerTask$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

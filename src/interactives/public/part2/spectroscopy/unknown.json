@@ -1,0 +1,21 @@
+{
+  "title": "unknown",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "unknown",
+      "url": "imports/legacy-mw-content/converted/public/part2/spectroscopy/unknown.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "model": {
+    "modelType": "netlogo-applet",
+    "url": "models/Ramp-starter.v5.nlogo",
+    "viewOptions": {
+      "dimensions": {
+        "width": 780,
+        "height": 490
+      },
+      "appletDimensions": {
+        "width": 770,
+        "height": 480
+      }
+    }
+  },
+  "components": [
+  ]
+}

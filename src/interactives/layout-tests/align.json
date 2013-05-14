@@ -1,0 +1,118 @@
+{
+  "title": "Horizontal Align",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "fontScale": 0.8,
+  "models": [
+    {
+      "id": "100-atoms-charged",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/100-atoms$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "button-left",
+      "action": "",
+      "text": "Model Left"
+    },
+    {
+      "type": "button",
+      "id": "button-center",
+      "action": "",
+      "text": "Model Center"
+    },
+    {
+      "type": "button",
+      "id": "button-right",
+      "action": "",
+      "text": "Model Right"
+    },
+    {
+      "type": "button",
+      "id": "button-int-left",
+      "action": "",
+      "text": "Interactive Left"
+    },
+    {
+      "type": "button",
+      "id": "button-int-center",
+      "action": "",
+      "text": "Interactive Center"
+    },
+    {
+      "type": "button",
+      "id": "button-int-right",
+      "action": "",
+      "text": "Interactive Right"
+    }
+  ],
+  "layout": {
+    "model-left": [
+      "button-left"
+    ],
+    "model-center": [
+      "button-center"
+    ],
+    "model-right": [
+      "button-right"
+    ],
+    "interactive-left": [
+      "button-int-left"
+    ],
+    "interactive-center": [
+      "button-int-center"
+    ],
+    "interactive-right": [
+      "button-int-right"
+    ]
+  },
+  "template": [
+    {
+      "id": "model-left",
+      "left": "model.left",
+      "top": "model.bottom",
+      "width": "model.width",
+      "align": "left"
+    },
+    {
+      "id": "model-center",
+      "left": "model.left",
+      "top": "model-left.bottom",
+      "width": "model.width",
+      "align": "center"
+    },
+    {
+      "id": "model-right",
+      "left": "model.left",
+      "top": "model-center.bottom",
+      "width": "model.width",
+      "align": "right"
+    },
+    {
+      "id": "interactive-left",
+      "left": "model.left",
+      "top": "model-right.bottom",
+      "width": "interactive.width",
+      "align": "left"
+    },
+    {
+      "id": "interactive-center",
+      "left": "model.left",
+      "top": "interactive-left.bottom",
+      "width": "interactive.width",
+      "align": "center"
+    },
+    {
+      "id": "interactive-right",
+      "left": "model.left",
+      "top": "interactive-center.bottom",
+      "width": "interactive.width",
+      "align": "right"
+    }
+  ]
+}

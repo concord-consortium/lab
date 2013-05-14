@@ -1,0 +1,21 @@
+{
+  "title": "deepimpact",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "deepimpact$0",
+      "url": "imports/legacy-mw-content/converted/student/motionandforce/deepimpact$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}
