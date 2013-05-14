@@ -34,6 +34,7 @@ define(function () {
         useQuantumDynamics   = props.useQuantumDynamics,
 
         elementEnergyLevels  = props.elementEnergyLevels,
+        photons              = props.photons,
         pRadiationless       = props.radiationlessEmissionProb,
 
         atoms,
@@ -43,6 +44,19 @@ define(function () {
           var num = atoms.x.length;
 
           atoms.excitation = arrays.create(num, 0, arrayTypes.int8Type);
+        },
+
+        createPhotonsTable = function() {
+          if (photons.x) {
+            // using an already-existing photon table
+            return;
+          }
+
+          photons.x      = arrays.create(0, 0, arrayTypes.floatType);
+          photons.y      = arrays.create(0, 0, arrayTypes.floatType);
+          photons.vx     = arrays.create(0, 0, arrayTypes.floatType);
+          photons.vy     = arrays.create(0, 0, arrayTypes.floatType);
+          photons.omega  = arrays.create(0, 0, arrayTypes.floatType);
         },
 
         currentlyOperatedPairs = [],  // all pairs being currently operated on
@@ -295,6 +309,7 @@ define(function () {
         atoms     = dataTables.atoms;
         elements  = dataTables.elements;
         updateAtomsTable();
+        createPhotonsTable();
       },
 
       performActionWithinIntegrationLoop: function(args) {

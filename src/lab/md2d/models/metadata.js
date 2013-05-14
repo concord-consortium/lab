@@ -576,6 +576,9 @@ define(function() {
       elementEnergyLevels: {
         defaultValue: []
       },
+      photons: {
+        defaultValue: {}
+      },
       radiationlessEmissionProb: {
         defaultValue: 1
       }
