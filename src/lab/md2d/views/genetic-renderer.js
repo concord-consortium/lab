@@ -728,8 +728,7 @@ define(function (require) {
 
     this._appendTRNA(codonIdx);
     this._trnaG.select(".trna:last-child")
-      .attr("transform", "translate(" + this.model2px(Nucleotide.HEIGHT * 2) + ", " + this.model2px(Nucleotide.HEIGHT * -6) + ")")
-      .style("opacity", 0)
+      .attr("transform", "translate(" + this.model2px(Nucleotide.HEIGHT * 2) + ", " + this.model2px(-2.78) + ")")
         .select(".rot")
           .attr("transform", "rotate(30)")
           // Bonds subselection.
@@ -738,13 +737,12 @@ define(function (require) {
 
     t = this._nextTrans().duration(newAADuration);
     t.each("start", function () {
-      geneticEngine.translationStepStarted(codonIdx, 2.15 + codonIdx * 3 * Nucleotide.WIDTH, 2.95,
+      geneticEngine.translationStepStarted(codonIdx, 2.12 + codonIdx * 3 * Nucleotide.WIDTH, 3.95,
           1.2 + codonIdx * 3 * Nucleotide.WIDTH, 1.57, newAADuration);
     });
 
     t.select(".trna-cont .trna:last-child")
       .attr("transform", "translate(0, 0)")
-      .style("opacity", 5) // 5 causes that tRNA is visible earlier.
         // Rotation g element subselection.
         .select(".rot")
           .attr("transform", "")
