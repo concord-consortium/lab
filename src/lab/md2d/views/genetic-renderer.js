@@ -226,8 +226,6 @@ define(function (require) {
     this._dnaView.attr("transform", "translate(" + this.model2px(2 * Nucleotide.WIDTH) + ")");
     this._appendRibosome();
 
-    this._g.append("rect").attr("class", "animated-drag");
-
     this._scrollContainer(true);
     this._moveRibosome(true);
 
@@ -724,6 +722,8 @@ define(function (require) {
   GeneticRenderer.prototype.translateStep = function (step) {
     var codonIdx = step - 1,
         geneticEngine = this.model.geneticEngine(),
+        newAADuration = 1000,
+        shiftDuration = 400,
         t;
 
     this._appendTRNA(codonIdx);
@@ -736,23 +736,10 @@ define(function (require) {
           .selectAll(".bonds")
             .style("opacity", 0);
 
-    t = this._nextTrans().duration(900);
-
+    t = this._nextTrans().duration(newAADuration);
     t.each("start", function () {
-      var drag = d3.select(".animated-drag");
-      drag.attr({
-        "spring-id": codonIdx > 0 ? 1 : 0
-      });
-      geneticEngine.translationStepStarted(codonIdx, 2.15 + codonIdx * 3 * Nucleotide.WIDTH, 2.95);
-    });
-
-    // No idea why, but when simple transition + attr were used,
-    // it wasn't working. It works fine only with attrTween.
-    t.select(".animated-drag").attrTween("x", function() {
-      return d3.interpolate(2.13 + codonIdx * 3 * Nucleotide.WIDTH, 1.2 + codonIdx * 3 * Nucleotide.WIDTH);
-    });
-    t.select(".animated-drag").attrTween("y", function() {
-      return d3.interpolate(2.95, 1.57);
+      geneticEngine.translationStepStarted(codonIdx, 2.15 + codonIdx * 3 * Nucleotide.WIDTH, 2.95,
+          1.2 + codonIdx * 3 * Nucleotide.WIDTH, 1.57, newAADuration);
     });
 
     t.select(".trna-cont .trna:last-child")
@@ -775,45 +762,20 @@ define(function (require) {
     this._scrollContainer();
 
     if (step > 1) {
-      /*
-      t = this._nextTrans().duration(250);
-
-      t.each("start", function () {
-        var drag = d3.select(".animated-drag");
-        // Modify the first spring.
-        drag.attr({
-          "spring-id": 0
-        });
-      });
-
-      t.select(".animated-drag").attrTween("x", function() {
-        return d3.interpolate(1.2 + (codonIdx - 1) * 3 * Nucleotide.WIDTH, 1.2 + (codonIdx - 1) * 3 * Nucleotide.WIDTH + 2 * Nucleotide.WIDTH);
-      });
-
-      t.select(".trna-cont .trna:nth-child(" + codonIdx + ") .trna-neck") // (codonIdx - 1) + 1
-        .duration(70)
-        .style("opacity", 0);
-
-      t.each("end", function () {
-        var drag = d3.select(".animated-drag");
-        // Disable animated drag.
-        drag.attr({
-          "spring-id": -1
-        });
-        geneticEngine.translationStepEnded(codonIdx);
-      });
-      */
       t = this._nextTrans().duration(100);
       t.select(".trna-cont .trna:nth-child(" + codonIdx + ") .trna-neck") // (codonIdx - 1) + 1
         .style("opacity", 0);
 
-      t.each("end", function () {
-        geneticEngine.translationStepEnded(codonIdx, 2 * Nucleotide.WIDTH);
+      t = this._nextTrans().duration(shiftDuration);
+      t.each("start", function () {
+        geneticEngine.shiftAminoAcids(codonIdx, 2 * Nucleotide.WIDTH, shiftDuration);
       });
-
+      t.each("end", function () {
+        geneticEngine.connectAminoAcid(codonIdx);
+      });
       // Empty translation. Reserve some time for the protein folding, as D3
       // animations are slowing down simulation significantly.
-      t = this._nextTrans().duration(600);
+      // t = this._nextTrans().duration(600);
     }
 
     if (step > 2) {
@@ -879,7 +841,6 @@ define(function (require) {
         // model property "viewPortY" defines bottom Y coordinate to be
         // consistent with the general coordinate system used in MD2D.
         viewBox[1] = self.model2pxInv(cm.y + 0.5 * self.model.get("viewPortHeight"));
-        console.log(viewBox.join(" "));
         t.select(".viewport").attr("viewBox", viewBox.join(" "));
       }
     });

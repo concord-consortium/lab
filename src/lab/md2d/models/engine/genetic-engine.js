@@ -363,44 +363,55 @@ define(function (require) {
             .toUpperCase();
       },
 
-      translationStepStarted: function (codonIdx, x, y) {
+      translationStepStarted: function (codonIdx, x, y, xEnd, yEnd, duration) {
         var abbr = aminoacidsHelper.codonToAbbr(api.codon(codonIdx)),
             elID = aminoacidsHelper.abbrToElement(abbr);
 
+        // Add some entropy to y position to avoid perfectly straight line of
+        // amino acids what can affect folding process.
+        yEnd += Math.random() * 0.02 - 0.01;
+        model.addAtom({x: x, y: y, element: elID, visible: true, pinned: true}, {suppressCheck: true});
+        // Transition new amino acid to its final position.
+        model.atomTransition().id(codonIdx).duration(duration).prop("x", xEnd);
+        model.atomTransition().id(codonIdx).duration(duration).prop("y", yEnd);
         // Ensure that the simulation is started.
         model.start();
-
-        model.addAtom({x: x, y: y, element: elID, visible: true}, {suppressCheck: true});
-        model.addSpringForce(codonIdx, x, y, 100000);
+        // Ensure that gravity is enabled (negative, as we expect that amino
+        // acids will move towards upper boundary of the model).
         model.set("gravitationalField", -8e-7);
       },
 
-      translationStepEnded: function (codonIdx, xShift) {
-        if (codonIdx < 1) return;
+      shiftAminoAcids: function (count, xShift, duration) {
+        var i, x, y;
+        // Shift amino acids to the right.
+        for (i = 0; i < count; i++) {
+          x = model.getAtomProperties(i).x + xShift;
+          y = model.getAtomProperties(i).y;
+          model.atomTransition().id(i).duration(duration).prop("x", x);
+          // This is required to keep Y coordinate constant during this
+          // transition,  as otherwise gravity will change trajectory of the
+          // particles.
+          model.atomTransition().id(i).duration(duration).prop("y", y);
+        }
+      },
 
+      connectAminoAcid: function (codonIdx) {
+        if (codonIdx < 1) return;
         var r1 = model.getAtomProperties(codonIdx - 1).radius,
             r2 = model.getAtomProperties(codonIdx).radius,
             // Length of bond is based on the radii of AAs.
-            bondLen = (r1 + r2) * 1.25,
-            i, x;
-
-        // Shift almost all amino acids to the right.
-        for (i = 0; i < codonIdx; i++) {
-          x = model.getAtomProperties(i).x + xShift;
-          model.setAtomProperties(i, {x: x});
-        }
-
+            bondLen = (r1 + r2) * 1.25;
         // 10000 is a typical strength for bonds between AAs.
         model.addRadialBond({atom1: codonIdx, atom2: codonIdx - 1, length: bondLen, strength: 10000});
-        model.removeSpringForce(0);
+        model.setAtomProperties(codonIdx - 1, {pinned: false});
       },
 
       translationCompleted: function () {
-        if (model.getNumberOfSpringForces() > 0) {
-          // Remove the last one spring force. Note that sometimes translation
-          // can end without any step, so we have to check if any spring force
-          // is present.
-          model.removeSpringForce(0);
+        var atomsCount = model.get_num_atoms();
+        if (atomsCount > 0) {
+          // Unpin the last atom. Note that sometimes translation
+          // can end without any atom.
+          model.setAtomProperties(atomsCount - 1, {pinned: false});
         }
         model.set("gravitationalField", 0);
       },
