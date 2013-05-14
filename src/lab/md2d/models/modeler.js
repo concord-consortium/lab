@@ -22,6 +22,7 @@ define(function(require) {
       unitDefinitions      = require('md2d/models/unit-definitions/index'),
       UnitsTranslation     = require('md2d/models/units-translation'),
       PerformanceOptimizer = require('md2d/models/performance-optimizer'),
+      AtomTransition       = require('md2d/models/atom-transition'),
       _ = require('underscore'),
 
       // plugins
@@ -56,6 +57,9 @@ define(function(require) {
 
         modelOutputState,
         tickHistory,
+
+        // Transitions list.
+        transitions = [],
 
         // Molecular Dynamics engine.
         engine,
@@ -177,6 +181,17 @@ define(function(require) {
       return s/n;
     }
 
+    function processTransitions(timeDiff) {
+      var i, len;
+      for (i = 0, len = transitions.length; i < len; i++) {
+        transitions[i].process(timeDiff);
+      }
+    }
+
+    function cleanupTransitions() {
+      // TODO: implement me!
+    }
+
     function tick(elapsedTime, dontDispatchTickEvent) {
       var timeStep = model.get('timeStep'),
           // Save number of radial bonds in engine before integration,
@@ -196,6 +211,11 @@ define(function(require) {
           lastSampleTime = t;
           sampleTimes.push(sampleTime);
           sampleTimes.splice(0, sampleTimes.length - 64);
+
+          // Process all transitions which are in progress.
+          processTransitions(sampleTime);
+          // Remove all transitions which are finished.
+          cleanupTransitions();
         } else {
           lastSampleTime = t;
         }
@@ -1990,6 +2010,25 @@ define(function(require) {
     */
     model.getUnitDefinition = function(name) {
       return unitsDefinition.units[name];
+    };
+
+    /**
+     * Returns atom transition object. It can be used to smoothly change
+     * atom properties over specified time. It's similar to D3 transitions.
+     * e.g.
+     *  var t = model.atomTransition();
+     *  t.id(0).duration(1000ms).ease("linear").prop("x", 10);
+     *
+     * This will change "x" property of the atom with ID 0 to 10
+     * over 1000ms using linear easing function. Take a look at
+     * AtomTransition class for more details.
+     *
+     * @return {AtomTransition} AtomTransition instance.
+     */
+    model.atomTransition = function () {
+      var t = new AtomTransition(model);
+      transitions.push(t);
+      return t;
     };
 
     /**
