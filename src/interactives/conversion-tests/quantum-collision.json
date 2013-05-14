@@ -12,10 +12,12 @@
         "showClock": true
       },
       "onLoad": [
-        "onPropertyChange('initialVelocity', function(){",
-        " var vx = get('initialVelocity'); reset(); ",
-        " setAtomProperties(1, {vx: vx});",
-        " setTextBoxProperties(0,{text: 'initial speed= '+vx*10e5+' m/s'});",
+        "onPropertyChange('initialVelocityInMKS', function() {",
+        "  var vx = get('initialVelocity');",
+        "  var vxInMKS = get('initialVelocityInMKS');",
+        "  reset();",
+        "  set('initialVelocity', vx);",
+        "  setTextBoxProperties(0,{text: 'initial speed= ' + vxInMKS + ' m/s'});",
         "});"
       ]
     }
@@ -24,34 +26,39 @@
     {
       "name": "initialVelocity",
       "unitType": "velocity",
-      "onChange": "setAtomProperties(1, {vx: value});",
-      "initialValue": 0.0005
+      "onChange": "setAtomProperties(1, { vx: value });",
+      "initialValue": 0
+    },
+    {
+      "name": "initialVelocityInMKS",
+      "onChange": "set('initialVelocity', get('initialVelocityInMKS') * 1e-6);",
+      "initialValue": 500
     }
   ],
   "components": [
     {
       "type": "slider",
       "id": "v-slider",
-      "min": 0.0005,
-      "max": 0.005,
+      "min": 500,
+      "max": 5000,
       "labels": [
         {
-          "value": 0.0005,
+          "value": 500,
           "label": "slow"
         },
         {
-          "value": 0.005,
+          "value": 5000,
           "label": "fast"
         }
       ],
       "steps": 30,
       "title": "Starting velocity",
-      "property": "initialVelocity"
+      "property": "initialVelocityInMKS"
     },
     {
       "type": "graph",
       "id": "graph",
-      "title": "Total Energy of the System",
+      "title": "Kinetic Energy of the System",
       "xlabel": "Model Time (fs)",
       "ylabel": "eV",
       "ymin": 0,
