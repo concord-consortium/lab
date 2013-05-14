@@ -376,9 +376,6 @@ define(function (require) {
         model.atomTransition().id(codonIdx).duration(duration).prop("y", yEnd);
         // Ensure that the simulation is started.
         model.start();
-        // Ensure that gravity is enabled (negative, as we expect that amino
-        // acids will move towards upper boundary of the model).
-        model.set("gravitationalField", -8e-7);
       },
 
       shiftAminoAcids: function (count, xShift, duration) {
@@ -389,8 +386,8 @@ define(function (require) {
           y = model.getAtomProperties(i).y;
           model.atomTransition().id(i).duration(duration).prop("x", x);
           // This is required to keep Y coordinate constant during this
-          // transition,  as otherwise gravity will change trajectory of the
-          // particles.
+          // transition, some forces applied by the MD2D engine can
+          // change trajectory of the particle.
           model.atomTransition().id(i).duration(duration).prop("y", y);
         }
       },
@@ -413,7 +410,6 @@ define(function (require) {
           // can end without any atom.
           model.setAtomProperties(atomsCount - 1, {pinned: false});
         }
-        model.set("gravitationalField", 0);
       },
 
       transitionEnded: function () {

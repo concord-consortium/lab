@@ -111,9 +111,9 @@ define(function (require, exports, module) {
         // (usually -1). A positive one represents water environment (usually 1). A zero value means vacuum.
         solventForceType = 0,
 
-        // State describing DNA transcription and translation process.
+        // State describing whether DNA translation is in progress.
         // TODO: move all functionality connected with DNA and proteins to engine plugins!
-        geneticEngineState = "",
+        dnaTranslationInProgress = false,
 
         // Parameter that influences strength of force applied to amino acids by water of oil (solvent).
         solventForceFactor = 1,
@@ -1530,6 +1530,20 @@ define(function (require, exports, module) {
           }
         },
 
+        // Push all amino acids above some Y coordinate during DNA translation.
+        // TODO: this should be part of the MD2D plug-in for proteins engine!
+        updateDNATranslationAccelerations = function() {
+          if (!dnaTranslationInProgress) return;
+          var i, diff;
+
+          for (i = 0; i < N; i++) {
+            diff = Math.min(1, 2.2 - y[i]);
+            if (diff > 0) {
+              ay[i] += 1e-4 * diff;
+            }
+          }
+        },
+
         // ####################################################################
         // #               Integration main helper functions.                 #
         // ####################################################################
@@ -1637,6 +1651,10 @@ define(function (require, exports, module) {
 
           // Accumulate optional gravitational accelerations into a(t + dt).
           updateGravitationalAccelerations();
+
+          // Push all amino acids above some Y coordinate during DNA translation.
+          // TODO: this should be part of the MD2D plug-in for proteins engine!
+          updateDNATranslationAccelerations();
         },
 
         // Half of the update of v(t + dt) and p(t + dt) using a. During a single integration loop,
@@ -1992,7 +2010,9 @@ define(function (require, exports, module) {
       },
 
       setGeneticEngineState: function (ges) {
-        geneticEngineState = ges;
+        // Don't store geneticEngineState, it's not necessary. Just
+        // information whether translation is in progress is useful.
+        dnaTranslationInProgress = ges.indexOf("translation:") === 0;
       },
 
       setSolventForceFactor: function(sff) {
@@ -3072,10 +3092,9 @@ define(function (require, exports, module) {
           // If solvent is different from vacuum (water or oil), ensure that
           // the total momentum of each molecule is equal to zero. This
           // prevents amino acids chains from drifting towards one boundary of
-          // the model.
-          // Don't do it during translation process (when geneticEngineState
-          // starts with "translation:", e.g. translation:0, translation:1).
-          if (solventForceType !== 0 && geneticEngineState.indexOf("translation:") === -1) {
+          // the model. Don't do it during translation process to let the protein
+          // freely fold.
+          if (solventForceType !== 0 && !dnaTranslationInProgress) {
             zeroTotalMomentumOfMolecules();
           }
 
