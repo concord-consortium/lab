@@ -22,7 +22,7 @@ define(function () {
 
   // static variables
   var PLANCK_CONSTANT = 0.2,      // in reality, 6.626E-34 m^2kg/s. Classic MW uses 0.2 by default.
-      C = 4e-4,                   // speed of light from Classic MW, in nm/fs
+      C = 0.002,                  // speed of light from Classic MW, in nm/fs
       TWO_PI = 2 * Math.PI;
 
   return function QuantumDynamics(engine, _props) {
