@@ -20,7 +20,11 @@
 
 define(function () {
 
-  return function QuantumDynamics(props) {
+  // static variables
+  var PLANCK_CONSTANT = 0.2,      // in reality, 6.626E-34 m^2kg/s. Classic MW uses 0.2 by default.
+      C = 4e-4,                   // speed of light from Classic MW, in nm/fs
+      TWO_PI = 2 * Math.PI;
+
   return function QuantumDynamics(engine, _props) {
 
     var arrays               = require('arrays'),
@@ -35,13 +39,13 @@ define(function () {
         useQuantumDynamics   = props.useQuantumDynamics,
 
         elementEnergyLevels  = props.elementEnergyLevels,
-        photons              = props.photons,
         pRadiationless       = props.radiationlessEmissionProb,
 
         dimensions           = engine.getDimensions(),
 
         atoms,
         elements,
+        photons,
 
         updateAtomsTable = function() {
           var num = atoms.x.length;
@@ -60,6 +64,8 @@ define(function () {
           photons.vx     = arrays.create(0, 0, arrayTypes.floatType);
           photons.vy     = arrays.create(0, 0, arrayTypes.floatType);
           photons.omega  = arrays.create(0, 0, arrayTypes.floatType);
+
+          _props.photons = photons;
         },
 
         currentlyOperatedPairs = [],  // all pairs being currently operated on
@@ -69,6 +75,9 @@ define(function () {
         u1, u2,                       // temporary velocity-calculation variables
         w1, w2,
         dx, dy,
+
+        numPhotons = 0,
+        firstNullPhoton = 0,          // our photon table can have holes in it. Quick way to access next opening
 
         // If a pair of atoms are close enough, QD interactions may occur.
         //
@@ -302,7 +311,77 @@ define(function () {
             precalculateVelocities();
             updateVelocities(energyReleased);
           } else {
-            // emit photon
+            emitPhoton(i, energyReleased);
+          }
+        },
+
+        emitPhoton = function(i, energy) {
+          var angularFreq = energy / PLANCK_CONSTANT,
+              angle       = Math.random() * TWO_PI,
+              cosA        = Math.cos(angle),
+              sinA        = Math.sin(angle),
+
+              // set photon location just outside atom's sigma
+              sigma       = elements.sigma[atoms.element[i]],
+              x           = atoms.x[i] + (sigma * 0.51 * cosA),
+              y           = atoms.y[i] + (sigma * 0.51 * sinA),
+
+              vx          = C * cosA,
+              vy          = C * sinA,
+              length      = photons.x.length,
+              p;
+
+          if (firstNullPhoton >= length) {
+            // extend photon arrays (this function should be extracted out from here and md2d)
+            for (p in photons) {
+              if(photons.hasOwnProperty(p)) {
+                photons[p] = arrays.extend(photons[p], length+10);
+              }
+            }
+          }
+
+          photons.x[firstNullPhoton]      = x;
+          photons.y[firstNullPhoton]      = y;
+          photons.vx[firstNullPhoton]     = vx;
+          photons.vy[firstNullPhoton]     = vy;
+          photons.omega[firstNullPhoton]  = angularFreq;
+
+          if (firstNullPhoton < numPhotons) {
+            // search for next empty slot in photons table
+            for (i = firstNullPhoton+1; i < numPhotons; i++) {
+              if (!photons.vx[i] && !photons.vy[i]) {
+                firstNullPhoton = i;
+                break;
+              }
+            }
+          } else {
+            firstNullPhoton++;
+          }
+
+          numPhotons++;
+        },
+
+        movePhotons = function(dt) {
+          var i, ii,
+              x, y;
+
+          for (i = 0, ii = photons.x.length; i < ii; i++) {
+            if (!photons.vx[i] && !photons.vy[i]) continue;
+
+            x = photons.x[i] += photons.vx[i] * dt;
+            y = photons.y[i] += photons.vy[i] * dt;
+
+            if (x < dimensions[0] || x > dimensions[2] || y < dimensions[1] || y > dimensions[3]) {
+              // remove photon
+              photons.x[i]  = photons.y[i]  =
+              photons.vx[i] = photons.vy[i] =
+              photons.omega[i] = 0;
+
+              if (firstNullPhoton === numPhotons) {
+                firstNullPhoton--;
+              }
+              numPhotons--;
+            }
           }
         };
 
@@ -311,15 +390,19 @@ define(function () {
       initialize: function (dataTables) {
         atoms     = dataTables.atoms;
         elements  = dataTables.elements;
+        photons   = props.photons;
         updateAtomsTable();
         createPhotonsTable();
       },
 
       performActionWithinIntegrationLoop: function(args) {
-        var neighborList = args.neighborList;
+        var neighborList = args.neighborList,
+            dt = args.dt;
 
         if (useQuantumDynamics) {
           performInteractionsBetweenCloseAtoms(neighborList);
+          // sponaneousEmission()   // TODO
+          movePhotons(dt);
         }
       }
     };
