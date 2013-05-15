@@ -229,15 +229,17 @@ define(function (require) {
     this._scrollContainer(true);
     this._moveRibosome(true);
 
-    for (i = 1; i <= step; i++) {
-      this._appendTRNA(i - 1);
-      if (i > 2) {
-        this._removeTRNA(i - 3, true);
-      }
+    // Note that order of these if statement is important.
+    // It ensures that tRNA on the left is the first child,
+    // while the second tRNA is the last child.
+    if (step > 1) {
+      this._appendTRNA(step - 2);
+      // Hide tRNA neck of the first tRNA (there are two visible only).
+      this._trnaG.select(".trna:first-child .trna-neck").style("opacity", 0);
     }
-
-    // Hide tRNA neck of the first tRNA (there are two visible only).
-    this._trnaG.select(".trna:nth-child(" + (step - 1) + ") .trna-neck").style("opacity", 0);
+    if (step > 0) {
+      this._appendTRNA(step - 1);
+    }
   };
 
   GeneticRenderer.prototype._scrollContainer = function (suppressAnimation) {
@@ -761,7 +763,7 @@ define(function (require) {
 
     if (step > 1) {
       t = this._nextTrans().duration(100);
-      t.select(".trna-cont .trna:nth-child(" + codonIdx + ") .trna-neck") // (codonIdx - 1) + 1
+      t.select(".trna-cont .trna:nth-child(" + (step === 2 ? 1 : 2) + ") .trna-neck")
         .style("opacity", 0);
 
       t = this._nextTrans().duration(shiftDuration);
@@ -783,35 +785,33 @@ define(function (require) {
 
   GeneticRenderer.prototype.finishTranslation = function () {
     var geneticEngine = this.model.geneticEngine(),
-        // Assume that there are at last 2 tRNAs, it won't break anything but
-        // help to keep things simpler.
-        trnaCount = this._trnaG.selectAll(".trna")[0].length,
+        aaCount = this.model.get_num_atoms(),
         self = this,
         cm, viewBox, t;
 
-    if (trnaCount >= 2) {
-      this._removeTRNA(trnaCount - 2);
+    if (aaCount >= 2) {
+      this._removeTRNA(aaCount - 2);
     }
-    if (trnaCount >= 1) {
+    if (aaCount >= 1) {
       t = this._nextTrans().duration(70);
-      t.select(".trna-cont .trna:nth-child(" + trnaCount + ") .trna-neck").style("opacity", 0);
+      t.select(".trna-cont .trna:last-child .trna-neck").style("opacity", 0);
       this._currentTrans.each("end", function () {
         geneticEngine.translationCompleted();
       });
-      this._removeTRNA(trnaCount - 1);
+      this._removeTRNA(aaCount - 1);
     }
 
-    // Ensure that trnaCount is >= 2, due to some assumptions used below.
-    trnaCount = Math.max(2, trnaCount);
+    // Ensure that aaCount is >= 2, due to some assumptions used below.
+    aaCount = Math.max(2, aaCount);
 
     // Show top-over.
     t = this._nextTrans().duration(500);
     t.each("start", function () {
       // Move top-bottom into a correct position.
       d3.select(".ribosome-top")
-        .attr("transform", "translate(" + self.model2px(Nucleotide.WIDTH * (4 + (trnaCount - 2) * 3)) + ", " + self.model2pxInv(4.52 * Nucleotide.HEIGHT) + ")");
+        .attr("transform", "translate(" + self.model2px(Nucleotide.WIDTH * (4 + (aaCount - 2) * 3)) + ", " + self.model2pxInv(4.52 * Nucleotide.HEIGHT) + ")");
       d3.select(".ribosome-bottom")
-        .attr("transform", "translate(" + self.model2px(Nucleotide.WIDTH * (3.95 + (trnaCount - 2) * 3)) + ", " + self.model2pxInv(1.75 * Nucleotide.HEIGHT) + ")");
+        .attr("transform", "translate(" + self.model2px(Nucleotide.WIDTH * (3.95 + (aaCount - 2) * 3)) + ", " + self.model2pxInv(1.75 * Nucleotide.HEIGHT) + ")");
     });
     t.selectAll(".ribosome-top, .ribosome-bottom").style("opacity", 1);
     t.selectAll(".ribosome-under, .ribosome-over").style("opacity", 0);
@@ -819,16 +819,16 @@ define(function (require) {
     // Detach two parts of ribosome.
     t = this._nextTrans().duration(300);
     t.select(".ribosome-top")
-      .attr("transform", "translate(" + this.model2px(Nucleotide.WIDTH * (4 + (trnaCount - 2) * 3)) + ", " + this.model2pxInv(6 * Nucleotide.HEIGHT) + ")");
+      .attr("transform", "translate(" + this.model2px(Nucleotide.WIDTH * (4 + (aaCount - 2) * 3)) + ", " + this.model2pxInv(6 * Nucleotide.HEIGHT) + ")");
     t.select(".ribosome-bottom")
-      .attr("transform", "translate(" + this.model2px(Nucleotide.WIDTH * (3.95 + (trnaCount - 2) * 3)) + ", " + this.model2pxInv(1.3 * Nucleotide.HEIGHT) + ")");
+      .attr("transform", "translate(" + this.model2px(Nucleotide.WIDTH * (3.95 + (aaCount - 2) * 3)) + ", " + this.model2pxInv(1.3 * Nucleotide.HEIGHT) + ")");
 
     // Move ribosome away.
     t = this._nextTrans().duration(1000);
     t.select(".ribosome-top")
-      .attr("transform", "translate(" + this.model2px(Nucleotide.WIDTH * (4 + (trnaCount + 4) * 3)) + ", " + this.model2pxInv(10 * Nucleotide.HEIGHT) + ")");
+      .attr("transform", "translate(" + this.model2px(Nucleotide.WIDTH * (4 + (aaCount + 4) * 3)) + ", " + this.model2pxInv(10 * Nucleotide.HEIGHT) + ")");
     t.select(".ribosome-bottom")
-      .attr("transform", "translate(" + this.model2px(Nucleotide.WIDTH * (3.95 + (trnaCount + 4) * 3)) + ", " + this.model2pxInv(1.3 * Nucleotide.HEIGHT) + ")");
+      .attr("transform", "translate(" + this.model2px(Nucleotide.WIDTH * (3.95 + (aaCount + 4) * 3)) + ", " + this.model2pxInv(1.3 * Nucleotide.HEIGHT) + ")");
 
     // Slide out mRNA.
     t.select(".mrna")
@@ -865,28 +865,42 @@ define(function (require) {
   };
 
   /**
-   * Removes nth tRNA during DNA translation (hides in fact).
+   * Removes nth tRNA during DNA translation.
    *
    * @private
    * @param  {[type]} i tRNA index (starting from 0).
    */
   GeneticRenderer.prototype._removeTRNA = function (i, suppressAnimation) {
-    var t = suppressAnimation ? this._g : this._nextTrans().duration(900),
-        bondsSelString = ".trna-cont .trna:nth-child(" + (i + 1) + ") .bonds, " +      // tRNA bonds
+    var bondsSelString = ".trna-cont .trna:first-child .bonds, " +      // tRNA bonds
                          ".mrna .nucleotide:nth-child(" + (3 * i + 1) + ") .bonds, " + // mRNA bonds
                          ".mrna .nucleotide:nth-child(" + (3 * i + 2) + ") .bonds, " +
                          ".mrna .nucleotide:nth-child(" + (3 * i + 3) + ") .bonds",
-        bonds = suppressAnimation ? this._g.selectAll(bondsSelString) : t.selectAll(bondsSelString).duration(200);
+        self = this,
+        t;
 
-    // Remove the first tRNA.
-    t.select(".trna-cont .trna:nth-child(" + (i + 1) + ")")
-      .attr("transform", "translate(" + this.model2px(Nucleotide.HEIGHT * -5) + ", " + this.model2px(Nucleotide.HEIGHT * -4) + ")")
-      .style("opacity", 0)
-        .select(".rot")
-          .attr("transform", "rotate(-30)");
-
-    // Hide tRNA and mRNA bonds.
-    bonds.style("opacity", 0);
+    if (!suppressAnimation) {
+      t = this._nextTrans().duration(900);
+      // Remove the first tRNA.
+      // Note that due to the fact that we use relative ("first") selector,
+      // it has to be inside "start" callback, as only at the beginning of this
+      // transition given tRNA will be first one. Otherwise, when you called _removeTRNA
+      // twice, both transition would be applied to the same tRNA.
+      t.each("start", function () {
+        t.select(".trna-cont .trna:first-child")
+          .attr("transform", "translate(" + self.model2px(Nucleotide.HEIGHT * -5) + ", " + self.model2px(Nucleotide.HEIGHT * -4) + ")")
+          .style("opacity", 0)
+            .select(".rot")
+              .attr("transform", "rotate(-30)");
+        // Hide tRNA and mRNA bonds.
+        t.selectAll(bondsSelString).duration(200).style("opacity", 0);
+      });
+      t.each("end", function () {
+        d3.select(".trna-cont .trna:first-child").remove();
+      });
+    } else {
+      this._g.selectAll(bondsSelString).style("opacity", 0);
+      this._g.select(".trna-cont .trna:first-child").remove();
+    }
   };
 
   GeneticRenderer.prototype.separateDNA = function (suppressAnimation) {
