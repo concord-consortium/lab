@@ -832,6 +832,21 @@ define(function (require, exports, module) {
           return convertKEtoT(twoKE / 2, N);
         },
 
+        // Calculates & returns the instaneous temperature of a particular group of atoms
+        computeTemperatureOfAtoms = function(atomIndices) {
+          var twoKE = 0,
+              i,
+              j;
+
+          // Particles.
+          for (i = 0; i < atomIndices.length; i++) {
+            j = atomIndices[i];
+            twoKE += mass[j] * (vx[j] * vx[j] + vy[j] * vy[j]);
+          }
+
+          return convertKEtoT(twoKE / 2, atomIndices.length);
+        },
+
         // Adds the velocity vector (vx_t, vy_t) to the velocity vector of particle i
         addVelocity = function(i, vx_t, vy_t) {
           vx[i] += vx_t;
@@ -1991,6 +2006,43 @@ define(function (require, exports, module) {
           gravitationalField = false;
         }
       },
+
+      setTemperatureOfAtoms: function(atomIndices, targetT) {
+
+        var i, j, vxtmp, vytmp, scale, s, groupT,
+            ke     = convertTtoKE(targetT,1),
+            nGroup = atomIndices.length;
+
+        for (i = 0; i < nGroup; i++) {
+          j = atomIndices[i];
+          if (!pinned[j] && vx[j] === 0 && vy[j] === 0) {
+            vxtmp = Math.random() - 0.5;
+            vytmp = Math.random() - 0.5;
+            stmp  = Math.sqrt( vxtmp*vxtmp + vytmp*vytmp );
+            s     = Math.sqrt( 2*ke/mass[j] );
+            vx[j] = vxtmp * s / stmp;
+            vy[j] = vytmp * s / stmp;
+            speed[i] = Math.sqrt(vx[j]*vx[j] + vy[j]*vy[j]);
+          }
+        }
+
+        T      = computeTemperature();
+        groupT = computeTemperatureOfAtoms(atomIndices);
+
+        scale = Math.sqrt( targetT / groupT );
+
+        for (i = 0; i < nGroup; i++) {
+          engine.setAtomProperties(atomIndices[i], {
+            vx: vx[atomIndices[i]] * scale,
+            vy: vy[atomIndices[i]] * scale
+          });
+        }
+      },
+
+      getTemperatureOfAtoms: function(atomIndices) {
+        return computeTemperatureOfAtoms(atomIndices);
+      },
+
 
       setTargetTemperature: function(v) {
         validateTemperature(v);

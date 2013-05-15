@@ -1358,6 +1358,16 @@ define(function(require) {
       return { top: top-cy, left: left-cx, bottom: bottom-cy, right: right-cx };
     },
 
+    model.setTemperatureOfAtoms = function(atomIndices, T) {
+      invalidatingChangePreHook();
+      engine.setTemperatureOfAtoms(atomIndices, T);
+      invalidatingChangePostHook();
+    };
+
+    model.getTemperatureOfAtoms = function(atomIndices, T) {
+      return engine.getTemperatureOfAtoms(atomIndices);
+    }
+
     /**
         A generic method to set properties on a single existing atom.
 
