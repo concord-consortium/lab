@@ -9,31 +9,36 @@ define(function () {
     var plugins = [];
 
     // Public API.
-    api = {
-      registerPlugin: function (plugin) {
+    return {
+      registerPlugin: function(plugin) {
         plugins.push(plugin);
       },
 
-      // Calling pluginController.callPluginFunction('foo', args...)
-      // will call the function 'foo' with arbitrary arguments args...
-      // on each plugin registered with the controller
-      callPluginFunction: function (funcName) {
-        var args = [],
-            i, ii, func;
+      /**
+        Calls method 'funcName' of every plugin, for those plugins which have a property 'funcName',
+        in the context of the plugin (i.e., 'this' value is the plugin object) and with the elements
+        of the array 'args' as the argument array of the invocation.
 
-        if (arguments.length > 1) {
-          args = [].splice.call(arguments, 1);
-        }
+        If 'callback' is defined, it will be invoked with the callback.
+
+        The callback signature is callback(returnValue, index, plugin) where returnValue is the
+        return value of the method called, i is the index of the plugin, and plugin is the plugin
+        object itself.
+      */
+      callPluginFunction: function(funcName, args, callback) {
+        var i, ii, func, retVal;
 
         for (i = 0, ii = plugins.length; i<ii; i++) {
-          if (func = plugins[i][funcName]) {
-            func.apply(plugins[i], args);
+          func = plugins[i][funcName];
+          if (func) {
+            retVal = func.apply(plugins[i], args);
+          }
+          if (callback) {
+            callback(retVal, i, plugins[i]);
           }
         }
       }
     };
-
-    return api;
   };
 
 });
