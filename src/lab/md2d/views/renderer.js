@@ -1673,6 +1673,33 @@ define(function (require) {
       geneticRenderer = new GeneticRenderer(geneticsContainer, api, model);
     }
 
+    function enterAndUpdatePhotons() {
+      var photonData = model.get("quantumDynamics").photons,
+          photons =  mainContainer.selectAll("circle.photon").data(photonData.x);
+
+      photons.enter().append("circle")
+        .attr({
+          "class": "atom draggable photon",
+          "r":  10,
+          "stroke": "orange",
+          "stroke-width": 1,
+          "fill-opacity": 1,
+          "fill": "yellow",
+          "filter": "url(#glow)",
+          "display": "none"
+        });
+
+      photons.attr({
+        "cx": function(d, i) { return model2px(photonData.x[i]); },
+        "cy": function(d, i) { return model2pxInv(photonData.y[i]); },
+        "display": function(d, i) {
+          return photonData.vx[i] || photonData.vy[i] ? "inline": "none";
+        }
+      });
+
+      photons.exit().remove();
+    }
+
     //
     // *** Main Renderer functions ***
     //
@@ -1823,6 +1850,9 @@ define(function (require) {
       }
       if (textBoxes && textBoxes.length > 0) {
         updateTextBoxes();
+      }
+      if (useQuantumDynamics) {
+        enterAndUpdatePhotons();
       }
       console.timeEnd('view update');
     }
