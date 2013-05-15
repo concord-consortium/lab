@@ -259,7 +259,7 @@
     { 
       "type": "checkbox",
       "id": "toggle-select",
-      "text": "Highlight a group of atoms by dragging over them",
+      "text": "Highlight atoms by dragging",
       "property": "markingAtoms"
     },
     { "type": "text", "id": "inside-above-label", "text": "Inside cell" },
