@@ -58,7 +58,7 @@
     {
       "type": "graph",
       "id": "graph",
-      "title": "Kinetic Energy of the System",
+      "title": "Total Energy of the System",
       "xlabel": "Model Time (fs)",
       "ylabel": "eV",
       "ymin": 0,
@@ -69,7 +69,7 @@
       "xFormatter": "2s",
       "yFormatter": "2s",
       "properties": [
-        "kineticEnergy"
+        "totalEnergy"
       ]
     }
   ],
