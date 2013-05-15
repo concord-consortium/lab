@@ -832,7 +832,7 @@ define(function (require) {
 
     // Slide out mRNA.
     t.select(".mrna")
-      .attr("transform", "translate(" + this.model2px(-15 * Nucleotide.WIDTH) + ", " + this.model2pxInv(1.5 * Nucleotide.HEIGHT) + ")");
+      .attr("transform", "translate(" + this.model2px(-(this._mrna.length + 4) * Nucleotide.WIDTH) + ", " + this.model2pxInv(1.5 * Nucleotide.HEIGHT) + ")");
 
     // Center viewport at protein's center of mass.
     t = this._nextTrans().duration(700);
