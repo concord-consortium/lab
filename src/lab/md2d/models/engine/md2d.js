@@ -2009,17 +2009,30 @@ define(function (require, exports, module) {
 
       setTemperatureOfAtoms: function(atomIndices, targetT) {
 
-        var i, j, vxtmp, vytmp, scale, s, groupT,
-            ke     = convertTtoKE(targetT,1),
+        var i, j, vxtmp, vytmp, scale, s, groupT, ke,
             nGroup = atomIndices.length;
 
+        // Atoms with velocity == 0 (e.g. cooled drastically or newly created)
+        // will get velocity distributed from the moving atoms to the non-
+        // moving atoms by rescaling from a velocity smaller than the average
+        // velocity. If there are no moving atoms then assign one for the KE.
+
+        groupT = computeTemperatureOfAtoms(atomIndices);
+        if (groupT > 0) {
+            ke = convertTtoKE(groupT,1);
+        } else {
+            // ideally assign velocities from a Maxwell distribution, but here note
+            // that after a few time steps the distribution will converge to a Maxwell
+            // distribution regardless of the initial state
+            ke = convertTtoKE(targetT,1);
+        }
         for (i = 0; i < nGroup; i++) {
           j = atomIndices[i];
           if (!pinned[j] && vx[j] === 0 && vy[j] === 0) {
             vxtmp = Math.random() - 0.5;
             vytmp = Math.random() - 0.5;
             stmp  = Math.sqrt( vxtmp*vxtmp + vytmp*vytmp );
-            s     = Math.sqrt( 2*ke/mass[j] );
+            s     = Math.sqrt( 2*ke/mass[j] ) * 0.01;
             vx[j] = vxtmp * s / stmp;
             vy[j] = vytmp * s / stmp;
             speed[i] = Math.sqrt(vx[j]*vx[j] + vy[j]*vy[j]);
