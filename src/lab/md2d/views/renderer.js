@@ -1680,7 +1680,7 @@ define(function (require) {
       photons.enter().append("circle")
         .attr({
           "class": "atom draggable photon",
-          "r":  10,
+          "r":  function() { return model2px(0.06); },
           "stroke": "orange",
           "stroke-width": 1,
           "fill-opacity": 1,
@@ -1808,6 +1808,9 @@ define(function (require) {
       setupToolTips();
       drawSymbolImages();
       setupFirefoxWarning();
+      if (useQuantumDynamics) {
+        enterAndUpdatePhotons();
+      }
     }
 
     //
