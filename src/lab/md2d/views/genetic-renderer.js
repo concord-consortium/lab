@@ -785,17 +785,24 @@ define(function (require) {
     var geneticEngine = this.model.geneticEngine(),
         // Assume that there are at last 2 tRNAs, it won't break anything but
         // help to keep things simpler.
-        trnaCount = Math.max(this._trnaG.selectAll(".trna")[0].length, 2),
+        trnaCount = this._trnaG.selectAll(".trna")[0].length,
         self = this,
         cm, viewBox, t;
 
-    this._removeTRNA(trnaCount - 2);
-    this._currentTrans.each("end", function () {
-      geneticEngine.translationCompleted();
-    });
-    t = this._nextTrans().duration(70);
-    t.select(".trna-cont .trna:nth-child(" + trnaCount + ") .trna-neck").style("opacity", 0);
-    this._removeTRNA(trnaCount - 1);
+    if (trnaCount >= 2) {
+      this._removeTRNA(trnaCount - 2);
+    }
+    if (trnaCount >= 1) {
+      t = this._nextTrans().duration(70);
+      t.select(".trna-cont .trna:nth-child(" + trnaCount + ") .trna-neck").style("opacity", 0);
+      this._currentTrans.each("end", function () {
+        geneticEngine.translationCompleted();
+      });
+      this._removeTRNA(trnaCount - 1);
+    }
+
+    // Ensure that trnaCount is >= 2, due to some assumptions used below.
+    trnaCount = Math.max(2, trnaCount);
 
     // Show top-over.
     t = this._nextTrans().duration(500);
