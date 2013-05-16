@@ -3616,7 +3616,7 @@ define(function (require, exports, module) {
       // * .restore(state) - restoring state of the object, using 'state'
       //                     as input (returned by clone()).
       getState: function() {
-        return [
+        var state = [
           // Use wrapper providing clone-restore interface to save the hashes-of-arrays
           // that represent model state.
           new CloneRestoreWrapper(elements),
@@ -3655,6 +3655,12 @@ define(function (require, exports, module) {
             }
           }
         ];
+
+        pluginController.callPluginFunction('getState', [], function(pluginState) {
+          state = state.concat(pluginState);
+        });
+
+        return state;
       }
     };
 
