@@ -1,4 +1,4 @@
-/*global sinon $*/
+/*global sinon $ window*/
 var fs = require('fs');
 
 /**
@@ -66,7 +66,7 @@ exports.getRequireJS = function() {
   // it for a while to fool RequireJS.
   if (typeof document !== 'undefined') {
     documentBackup = document;
-    document = undefined;
+    window.document = document = undefined;
   }
 
   config    = require('../requirejs-config'),
@@ -74,7 +74,7 @@ exports.getRequireJS = function() {
   requirejs.config(config.labConfig);
 
   if (typeof documentBackup !== 'undefined') {
-    document = documentBackup;
+    window.document = document = documentBackup;
   }
 
   // Markdown library in node.js environment provides a different namespace
