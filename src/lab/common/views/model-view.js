@@ -163,7 +163,7 @@ define(function (require) {
       }
     }
 
-    function redraw() {
+    function redrawGridLinesAndLabels() {
           // Overwrite default model2px and model2pxInv to display correct units.
       var model2px = d3.scale.linear().domain([viewport.x, viewport.x + viewport.width]).range([0, size.width]),
           model2pxInv = d3.scale.linear().domain([viewport.y, viewport.y - viewport.height]).range([0, size.height]),
@@ -172,10 +172,11 @@ define(function (require) {
           stroke = function(d) { return d ? "#ccc" : "#666"; },
           fx = model2px.tickFormat(5),
           fy = model2pxInv.tickFormat(5),
-          lengthUnits = model.getUnitDefinition('length');
+          lengthUnits = model.getUnitDefinition('length'),
+          xlabel, ylabel;
 
       if (d3.event && d3.event.transform) {
-          d3.event.transform(model2px, model2pxInv);
+        d3.event.transform(model2px, model2pxInv);
       }
 
       // Regenerate x-ticks…
@@ -211,21 +212,19 @@ define(function (require) {
         gxe.select("text.xunits").remove();
       }
 
-      // x-axis label
-      if (model.get("xlabel")) {
-        vis.append("text")
-            .attr("class", "axis")
-            .attr("class", "xlabel")
-            .text(lengthUnits.pluralName)
-            .attr("x", size.width/2)
-            .attr("y", size.height)
-            .attr("dy", fontSizeInPixels*1.6 + "px")
-            .style("text-anchor","middle");
-      } else {
-        vis.select("text.xlabel").remove();
-      }
-
       gx.exit().remove();
+
+      // x-axis label
+      xlabel = vis.selectAll("text.xlabel").data(model.get("xlabel") ? [lengthUnits.pluralName] : []);
+      xlabel.enter().append("text")
+          .attr("class", "axis")
+          .attr("class", "xlabel")
+          .attr("x", size.width / 2)
+          .attr("y", size.height)
+          .attr("dy", (fontSizeInPixels * 1.6) + "px")
+          .style("text-anchor", "middle");
+      xlabel.text(String);
+      xlabel.exit().remove();
 
       // Regenerate y-ticks…
       var gy = gridContainer.selectAll("g.y")
@@ -262,19 +261,17 @@ define(function (require) {
         gxe.select("text.yunits").remove();
       }
 
-      // y-axis label
-      if (model.get("ylabel")) {
-        vis.append("g").append("text")
-            .attr("class", "axis")
-            .attr("class", "ylabel")
-            .text(lengthUnits.pluralName)
-            .style("text-anchor","middle")
-            .attr("transform","translate(" + -fontSizeInPixels*1.6 + " " + size.height/2+") rotate(-90)");
-      } else {
-        vis.select("text.ylabel").remove();
-      }
-
       gy.exit().remove();
+
+      // y-axis label
+      ylabel = vis.selectAll("text.ylabel").data(model.get("ylabel") ? [lengthUnits.pluralName] : []);
+      ylabel.enter().append("text")
+          .attr("class", "axis")
+          .attr("class", "ylabel")
+          .style("text-anchor","middle")
+          .attr("transform","translate(" + -fontSizeInPixels * 1.6 + " " + size.height / 2 + ") rotate(-90)");
+      ylabel.text(String);
+      ylabel.exit().remove();
     }
 
     // Setup background.
@@ -392,7 +389,7 @@ define(function (require) {
           y: 0
         });
 
-      redraw();
+      redrawGridLinesAndLabels();
     }
 
     function removeClickHandlers() {
