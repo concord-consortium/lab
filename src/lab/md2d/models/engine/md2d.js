@@ -17,6 +17,7 @@ define(function (require, exports, module) {
       CellList             = require('./cell-list'),
       NeighborList         = require('./neighbor-list'),
       PluginController     = require('./plugins/plugin-controller'),
+      utils                = require('./utils'),
 
       // from A. Rahman "Correlations in the Motion of Atoms in Liquid Argon", Physical Review 136 pp. A405–A411 (1964)
       ARGON_LJ_EPSILON_IN_EV = -120 * constants.BOLTZMANN_CONSTANT.as(unit.EV_PER_KELVIN),
@@ -546,29 +547,6 @@ define(function (require, exports, module) {
           }
         },
 
-        /**
-          Extend all arrays in arrayContainer to `newLength`. Here, arrayContainer is expected to be `atoms`
-          `elements`, `radialBonds`, etc. arrayContainer might be an array or an object.
-          TODO: this is just interim solution, in the future only objects will be expected.
-        */
-        extendArrays = function(arrayContainer, newLength) {
-          var i, len;
-          if (Array.isArray(arrayContainer)) {
-            // Array of arrays.
-            for (i = 0, len = arrayContainer.length; i < len; i++) {
-              if (arrays.isArray(arrayContainer[i]))
-                arrayContainer[i] = arrays.extend(arrayContainer[i], newLength);
-            }
-          } else {
-            // Object with arrays defined as properties.
-            for (i in arrayContainer) {
-              if(arrayContainer.hasOwnProperty(i)) {
-                if (arrays.isArray(arrayContainer[i]))
-                  arrayContainer[i] = arrays.extend(arrayContainer[i], newLength);
-              }
-            }
-          }
-        },
 
         /**
           Set up "shortcut" references, e.g., x = atoms.x
@@ -2259,7 +2237,7 @@ define(function (require, exports, module) {
       */
       addAtom: function(props) {
         if (N + 1 > atoms.x.length) {
-          extendArrays(atoms, N + 10);
+          utils.extendArrays(atoms, N + 10);
           assignShortcutReferences.atoms();
         }
 
@@ -2372,7 +2350,7 @@ define(function (require, exports, module) {
         var i;
 
         if (N_elements >= elementEpsilon.length) {
-          extendArrays(elements, N_elements + 10);
+          utils.extendArrays(elements, N_elements + 10);
           assignShortcutReferences.elements();
         }
 
@@ -2402,7 +2380,7 @@ define(function (require, exports, module) {
       */
       addRadialBond: function(props) {
         if (N_radialBonds + 1 > radialBondAtom1Index.length) {
-          extendArrays(radialBonds, N_radialBonds + 10);
+          utils.extendArrays(radialBonds, N_radialBonds + 10);
           assignShortcutReferences.radialBonds();
         }
 
@@ -2473,7 +2451,7 @@ define(function (require, exports, module) {
       */
       addRestraint: function(props) {
         if (N_restraints + 1 > restraints.atomIndex.length) {
-          extendArrays(restraints, N_restraints + 10);
+          utils.extendArrays(restraints, N_restraints + 10);
           assignShortcutReferences.restraints();
         }
 
@@ -2491,7 +2469,7 @@ define(function (require, exports, module) {
       */
       addAngularBond: function(props) {
         if (N_angularBonds + 1 > angularBonds.atom1.length) {
-          extendArrays(angularBonds, N_angularBonds + 10);
+          utils.extendArrays(angularBonds, N_angularBonds + 10);
           assignShortcutReferences.angularBonds();
         }
 
@@ -2536,7 +2514,7 @@ define(function (require, exports, module) {
       addSpringForce: function(atomIndex, x, y, strength) {
         // conservatively just add one spring force
         if (N_springForces + 1 > springForces[0].length) {
-          extendArrays(springForces, N_springForces + 1);
+          utils.extendArrays(springForces, N_springForces + 1);
           assignShortcutReferences.springForces();
         }
 
@@ -2581,7 +2559,7 @@ define(function (require, exports, module) {
         if (N_obstacles + 1 > obstacles.x.length) {
           // Extend arrays each time (as there are only
           // a few obstacles in typical model).
-          extendArrays(obstacles, N_obstacles + 1);
+          utils.extendArrays(obstacles, N_obstacles + 1);
           assignShortcutReferences.obstacles();
         }
 
@@ -2614,7 +2592,7 @@ define(function (require, exports, module) {
 
         // FIXME: This shouldn't be necessary, however various modules
         // (e.g. views) use obstacles.x.length as the real number of obstacles.
-        extendArrays(obstacles, N_obstacles);
+        utils.extendArrays(obstacles, N_obstacles);
         assignShortcutReferences.obstacles();
       },
 
@@ -2990,7 +2968,7 @@ define(function (require, exports, module) {
 
               if (r_sq < sig * distanceCutoff_sq && eps > 0) {
                 if (N_vdwPairs + 1 > vdwPairs.atom1.length) {
-                  extendArrays(vdwPairs, (N_vdwPairs + 1) * 2);
+                  utils.extendArrays(vdwPairs, (N_vdwPairs + 1) * 2);
                   assignShortcutReferences.vdwPairs();
                 }
                 vdwPairAtom1Index[N_vdwPairs] = i;

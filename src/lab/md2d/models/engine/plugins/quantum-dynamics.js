@@ -18,7 +18,7 @@
 */
 
 
-define(function () {
+define(function(require) {
 
   // static variables
   var PLANCK_CONSTANT = 0.2,      // in reality, 6.626E-34 m^2kg/s. Classic MW uses 0.2 by default.
