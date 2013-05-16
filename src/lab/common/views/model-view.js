@@ -95,9 +95,9 @@ define(function (require) {
     function scale() {
       var viewPortWidth = model.get("viewPortWidth"),
           viewPortHeight = model.get("viewPortHeight"),
+          viewPortZoom = model.get("viewPortZoom"),
           viewPortX = model.get("viewPortX"),
           viewPortY = model.get("viewPortY"),
-          viewPortZoom = model.get("viewPortZoom"),
           aspectRatio,
           width, height;
 
@@ -117,9 +117,10 @@ define(function (require) {
         x: viewPortX != null ? viewPortX : modelSize.minX,
         y: viewPortY != null ? viewPortY : modelSize.minY
       };
-      viewport.width /= viewPortZoom;
-      viewport.height /= viewPortZoom;
-      viewport.y += viewport.height;
+
+      viewport.scaledWidth  = viewport.width / viewPortZoom;
+      viewport.scaledHeight = viewport.height / viewPortZoom;
+      viewport.y += viewport.scaledHeight;
 
       aspectRatio = viewport.width / viewport.height;
 
@@ -165,8 +166,8 @@ define(function (require) {
 
     function redrawGridLinesAndLabels() {
           // Overwrite default model2px and model2pxInv to display correct units.
-      var model2px = d3.scale.linear().domain([viewport.x, viewport.x + viewport.width]).range([0, size.width]),
-          model2pxInv = d3.scale.linear().domain([viewport.y, viewport.y - viewport.height]).range([0, size.height]),
+      var model2px = d3.scale.linear().domain([viewport.x, viewport.x + viewport.scaledWidth]).range([0, size.width]),
+          model2pxInv = d3.scale.linear().domain([viewport.y, viewport.y - viewport.scaledHeight]).range([0, size.height]),
           tx = function(d) { return "translate(" + model2px(d) + ",0)"; },
           ty = function(d) { return "translate(0," + model2pxInv(d) + ")"; },
           stroke = function(d) { return d ? "#ccc" : "#666"; },
@@ -293,10 +294,9 @@ define(function (require) {
     function renderContainer() {
       var viewBox;
 
-      // Update cx, cy, size and modelSize variables.
+      // Update cx, cy, size, viewport and modelSize variables.
       scale();
 
-      viewBox = model2px(viewport.x) + " " + model2pxInv(viewport.y) + " " + model2px(viewport.width) + " " + model2px(viewport.height);
       // Create container, or update properties if it already exists.
       if (vis === undefined) {
         vis1 = d3.select(node).append("svg")
@@ -368,6 +368,10 @@ define(function (require) {
           height: cy
         });
 
+      viewBox = model2px(viewport.x) + " " +
+                model2pxInv(viewport.y) + " " +
+                model2px(viewport.scaledWidth) + " " +
+                model2px(viewport.scaledHeight);
       viewportG.attr({
         viewBox: viewBox,
         x: 0,
@@ -425,11 +429,7 @@ define(function (require) {
       model.addPropertiesListener([ "backgroundColor"], repaint);
       model.addPropertiesListener(["gridLines", "xunits", "yunits", "xlabel", "ylabel",
                                    "viewPortX", "viewPortY", "viewPortZoom"],
-        function() {
-          renderContainer();
-          repaint();
-        }
-      );
+                                   renderContainer);
     }
 
     //
