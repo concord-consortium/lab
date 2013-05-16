@@ -388,10 +388,7 @@ define(function(require) {
         createPhotonsTable();
       },
 
-      performActionWithinIntegrationLoop: function(args) {
-        var neighborList = args.neighborList,
-            dt = args.dt;
-
+      performActionWithinIntegrationLoop: function(neighborList, dt) {
         if (useQuantumDynamics) {
           performInteractionsBetweenCloseAtoms(neighborList);
           // sponaneousEmission()   // TODO

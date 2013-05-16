@@ -3076,7 +3076,7 @@ define(function (require, exports, module) {
             zeroTotalMomentumOfMolecules();
           }
 
-          pluginController.callPluginFunction('performActionWithinIntegrationLoop', [{neighborList: neighborList, dt: dt}]);
+          pluginController.callPluginFunction('performActionWithinIntegrationLoop', [neighborList, dt]);
 
         } // end of integration loop
 
