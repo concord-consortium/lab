@@ -25,7 +25,8 @@ define(function(require) {
       C = 0.002,                  // speed of light from Classic MW, in nm/fs
       TWO_PI = 2 * Math.PI,
 
-      CloneRestoreWrapper  = require('common/models/engines/clone-restore-wrapper');
+      CloneRestoreWrapper = require('common/models/engines/clone-restore-wrapper'),
+      utils               = require('../utils');
 
   return function QuantumDynamics(engine, _props) {
 
@@ -79,7 +80,6 @@ define(function(require) {
         dx, dy,
 
         numPhotons = 0,
-        firstNullPhoton = 0,          // our photon table can have holes in it. Quick way to access next opening
 
         // If a pair of atoms are close enough, QD interactions may occur.
         //
@@ -317,50 +317,49 @@ define(function(require) {
           }
         },
 
-        emitPhoton = function(i, energy) {
-          var angularFreq = energy / PLANCK_CONSTANT,
-              angle       = Math.random() * TWO_PI,
-              cosA        = Math.cos(angle),
-              sinA        = Math.sin(angle),
-
-              // set photon location just outside atom's sigma
-              sigma       = elements.sigma[atoms.element[i]],
-              x           = atoms.x[i] + (sigma * 0.51 * cosA),
-              y           = atoms.y[i] + (sigma * 0.51 * sinA),
-
-              vx          = C * cosA,
-              vy          = C * sinA,
-              length      = photons.x.length,
-              p;
-
-          if (firstNullPhoton >= length) {
-            // extend photon arrays (this function should be extracted out from here and md2d)
-            for (p in photons) {
-              if(photons.hasOwnProperty(p)) {
-                photons[p] = arrays.extend(photons[p], length+10);
-              }
-            }
-          }
-
-          photons.x[firstNullPhoton]      = x;
-          photons.y[firstNullPhoton]      = y;
-          photons.vx[firstNullPhoton]     = vx;
-          photons.vy[firstNullPhoton]     = vy;
-          photons.omega[firstNullPhoton]  = angularFreq;
-
-          if (firstNullPhoton < numPhotons) {
-            // search for next empty slot in photons table
-            for (i = firstNullPhoton+1; i < numPhotons; i++) {
-              if (!photons.vx[i] && !photons.vy[i]) {
-                firstNullPhoton = i;
-                break;
-              }
-            }
-          } else {
-            firstNullPhoton++;
-          }
+        addPhoton = function() {
+          var length = photons.x.length,
+              i;
 
           numPhotons++;
+
+          if (numPhotons >= length) {
+            utils.extendArrays(photons, length+10);
+            return numPhotons;
+          }
+
+          for (i = 0; i < length; i++) {
+            if (!photons.vx[i] && !photons.vy[i]) {
+              return i;
+            }
+          }
+        },
+
+        removePhoton = function(i) {
+          numPhotons--;
+          photons.x[i] = photons.y[i] = photons.vx[i] = photons.vy[i] = photons.omega[i] = 0;
+        },
+
+        emitPhoton = function(atomIndex, energy) {
+          var angle = Math.random() * TWO_PI,
+              cosA  = Math.cos(angle),
+              sinA  = Math.sin(angle),
+              sigma = elements.sigma[atoms.element[atomIndex]],
+
+              // set photon location just outside atom's sigma
+              x           = atoms.x[atomIndex] + (sigma * 0.51 * cosA),
+              y           = atoms.y[atomIndex] + (sigma * 0.51 * sinA),
+              vx          = C * cosA,
+              vy          = C * sinA,
+              angularFreq = energy / PLANCK_CONSTANT,
+
+              photonIndex = addPhoton();
+
+          photons.x[photonIndex]     = x;
+          photons.y[photonIndex]     = y;
+          photons.vx[photonIndex]    = vx;
+          photons.vy[photonIndex]    = vy;
+          photons.omega[photonIndex] = angularFreq;
         },
 
         movePhotons = function(dt) {
@@ -374,15 +373,7 @@ define(function(require) {
             y = photons.y[i] += photons.vy[i] * dt;
 
             if (x < dimensions[0] || x > dimensions[2] || y < dimensions[1] || y > dimensions[3]) {
-              // remove photon
-              photons.x[i]  = photons.y[i]  =
-              photons.vx[i] = photons.vy[i] =
-              photons.omega[i] = 0;
-
-              if (firstNullPhoton === numPhotons) {
-                firstNullPhoton--;
-              }
-              numPhotons--;
+              removePhoton(i);
             }
           }
         };
