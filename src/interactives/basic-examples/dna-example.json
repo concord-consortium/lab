@@ -99,9 +99,9 @@
       "property": "viewPortX",
       "width": "35em",
       "displayValue": "return format('1.1f')(value)",
-      "min": -5,
-      "max": 20,
-      "steps": 1000
+      "min": -31,
+      "max": 35,
+      "steps": 2000
     }
   ],
   "layout": {
