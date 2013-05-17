@@ -93,19 +93,22 @@
       "displayValue": "return value"
     },
     {
-      "id": "progress-rate",
-      "type": "numericOutput",
-      "property": "progressRate",
-      "label": "Simulation Progress Rate",
-      "displayValue": "return format('1.2f')(value)",
-      "units": "model femtoseconds per actual second"
+      "id": "viewport",
+      "type": "slider",
+      "title": "Viewport Position",
+      "property": "viewPortX",
+      "width": "35em",
+      "displayValue": "return format('1.1f')(value)",
+      "min": -5,
+      "max": 20,
+      "steps": 1000
     }
   ],
   "layout": {
     "bottom": [
+      ["viewport"],
       ["state-pulldown", "reset"],
-      ["current-state"],
-      ["progress-rate"]
+      ["current-state"]
     ],
     "right": [
       ["transcribe-step"],
