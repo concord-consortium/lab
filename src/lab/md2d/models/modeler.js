@@ -410,58 +410,54 @@ define(function(require) {
       updateViewAtoms(modelState.atoms);
     }
 
-    /**
-      Ensure that the 'viewAtoms' array of arrays is defined and contains one typed array per atom
-      for containing the atom properties.
-    */
-    function resizeViewAtomsArray() {
+    // Transpose 'atoms' object into 'viewAtoms' for consumption by view code
+    var updateViewAtoms = (function() {
       var isAminoAcid = function () {
-            return aminoacidsHelper.isAminoAcid(this.element);
-          },
-          i, len;
+        return aminoacidsHelper.isAminoAcid(this.element);
+      };
 
-      // TODO: refactor whole approach to creation of objects from flat arrays.
-      // Think about more general way of detecting and representing amino acids.
-      // However it would be reasonable to perform such refactoring later, when all requirements
-      // related to proteins engine are clearer.
+      return function(atoms) {
+        var n = model.get_num_atoms(),
+            i,
+            prop,
+            amino,
+            viewAtom;
 
-      for (i = viewAtoms.length, len = model.get_num_atoms(); i < len; i++) {
-        if (!viewAtoms[i]) {
-          viewAtoms[i] = {
-            idx: i,
-            // Provide convenience function for view, do not force it to ask
-            // model / engine directly. In the future, atom objects should be
-            // represented by a separate class.
-            isAminoAcid: isAminoAcid
-          };
-        }
-      }
+        // TODO: refactor whole approach to creation of objects from flat arrays.
+        // Think about more general way of detecting and representing amino acids.
+        // However it would be reasonable to perform such refactoring later, when all requirements
+        // related to proteins engine are clearer.
 
-      // Also make sure to truncate the viewAtoms array if it got shorter (i.e., atoms were removed)
-      viewAtoms.length = len;
-    }
+        viewAtoms.length = n;
 
-    function updateViewAtoms(atoms) {
-      var i, prop, n, amino;
+        for (i = 0, n; i < n; i++) {
+          if (!viewAtoms[i]) {
+            viewAtoms[i] = {
+              idx: i
+            };
+          }
+          viewAtom = viewAtoms[i];
 
-      resizeViewAtomsArray();
+          for (prop in atoms) {
+            if (atoms.hasOwnProperty(prop)) {
+              viewAtom[prop] = atoms[prop][i];
+            }
+          }
 
-      // Transpose 'atoms' object into 'viewAtoms' for easier consumption by view code
-      for (i = 0, n = model.get_num_atoms(); i < n; i++) {
-        for (prop in atoms) {
-          if (atoms.hasOwnProperty(prop)) {
-            viewAtoms[i][prop] = atoms[prop][i];
+          // Provide convenience function for view, do not force it to ask
+          // model / engine directly. In the future, atom objects should be
+          // represented by a separate class.
+          viewAtom.isAminoAcid = isAminoAcid;
+
+          // Additional properties, used only by view.
+          if (viewAtom.isAminoAcid()) {
+            amino = aminoacidsHelper.getAminoAcidByElement(atoms.element[i]);
+            viewAtom.symbol = amino.symbol;
+            viewAtom.label  = amino.abbreviation;
           }
         }
-
-        // Additional properties, used only by view.
-        if (aminoacidsHelper.isAminoAcid(atoms.element[i])) {
-          amino = aminoacidsHelper.getAminoAcidByElement(atoms.element[i]);
-          viewAtoms[i].symbol = amino.symbol;
-          viewAtoms[i].label = amino.abbreviation;
-        }
-      }
-    }
+      };
+    }());
 
     /**
       return a random element index ... which is *not* an amino acid element
