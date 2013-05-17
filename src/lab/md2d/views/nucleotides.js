@@ -56,7 +56,7 @@ define(function (require) {
             yEnd = m2px(yOffset + H.A),
             nucleoSVG;
 
-        // Enter
+        // Enter.
         nucleoEnter.append("path").attr({
           "class": "bonds",
           "d": function (d) {
@@ -97,8 +97,7 @@ define(function (require) {
         nucleoSVG.append("path").attr({
           "class": "letter",
           "fill-rule": "evenodd",
-          "clip-rule": "evenodd",
-          "d": function (d) { return nucleotidePaths.letter[d][direction]; }
+          "clip-rule": "evenodd"
         });
 
         if (backbone) {
@@ -113,13 +112,15 @@ define(function (require) {
           });
         }
 
-        // Update
+        // Update.
+        // Note that we update things related only to direction, as for now
+        // this is the only use case for update operation. In theory we could
+        // update also other properties (e.g. assuming that type of nucletoide
+        // can change), but this is not used now, so don't do it (hopefully,
+        // we gain some performance).
+        nucleo.selectAll("path.letter").attr("d", function (d) { return nucleotidePaths.letter[d][direction]; });
         nucleo.select("g.pos").attr("transform", function (d, i) { return "translate(" + m2px(nucleotides.WIDTH) * (startingPos + i) + ")"; });
-        if (direction === 1) {
-          nucleo.select("g.scale").attr("transform", "scale(1, 1)");
-        } else if (direction === 2) {
-          nucleo.select("g.scale").attr("transform", "scale(1, -1)");
-        }
+        nucleo.select("g.scale").attr("transform", "scale(1, " + (direction  === 1 ? 1 : -1) + ")");
       });
     }
 

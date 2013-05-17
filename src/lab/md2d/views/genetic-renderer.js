@@ -201,7 +201,7 @@ define(function (require) {
    * @param  {boolean} suppressAnimation when true, there is no animation.
    * @param  {number} shift              desired scroll position (optional).
    */
-  GeneticRenderer.prototype._scrollContainer = function (suppressAnimation, shift) {
+  GeneticRenderer.prototype._scrollContainer = function (suppressAnimation, shift, ease) {
     var dnaLen = this.model.get("DNA").length,
         state = this._state(),
         self = this,
@@ -229,9 +229,10 @@ define(function (require) {
       shift = calculateViewportPos(state.name);
     }
     if (!suppressAnimation) {
+      ease = ease || "linear";
       viewBox = d3.select(".viewport").attr("viewBox").split(" ");
       viewBox[0] = this.model2px(shift * nucleotides.WIDTH); // update viewport X coordinate.
-      this._currentTrans.select(".viewport").ease("linear").attr("viewBox", viewBox.join(" "));
+      this._currentTrans.select(".viewport").ease(ease).attr("viewBox", viewBox.join(" "));
       this._currentTrans.each("end.viewport-update", updateViewPort);
     } else {
       updateViewPort();
@@ -614,7 +615,7 @@ define(function (require) {
     this._g.selectAll(".ribosome-top, .ribosome-bottom").style("opacity", 1);
 
     t = this._nextTrans().ease("cubic-in-out").duration(1500);
-    this._scrollContainer(false, -2);
+    this._scrollContainer(false, -2, "cubic-in-out");
 
     this._nextTrans().ease("cubic-in-out").duration(700)
       .selectAll(".polymerase-under, .polymerase-over")
@@ -663,9 +664,8 @@ define(function (require) {
 
     // Replace images with rotated versions.
     t.each("end", function () {
-      // FIXME
-      // self._mrnaG.call(nucleotides().model2px(self.model2px).sequence(self.model.get("mRNA")).backbone("RNA").direction(1));
-      // self._mrnaG.selectAll(".nucleotide g.scale").attr("transform", "scale(1, -1e-10)");
+      self._mrnaG.call(nucleotides().model2px(self.model2px).sequence(self.model.get("mRNA")).backbone("RNA").direction(2));
+      self._mrnaG.selectAll(".nucleotide g.scale").attr("transform", "scale(1, -1e-10)");
     });
 
     t = this._nextTrans().ease("cubic-out").duration(250);
@@ -769,7 +769,7 @@ define(function (require) {
       this._removeTRNA(aaCount - 2);
     }
     if (aaCount >= 1) {
-      t = this._nextTrans().duration(70);
+      t = this._nextTrans().duration(100);
       t.select(".trna-cont .trna:last-child .trna-neck").style("opacity", 0);
       this._currentTrans.each("end", function () {
         geneticEngine.translationCompleted();
