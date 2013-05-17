@@ -55,7 +55,7 @@ describe "GeneticEngine", ->
       it "should perform single step of DNA to mRNA transcription", ->
         model.set "geneticEngineState", "dna"
         model.get("mRNA").should.eql ""
-        geneticEngine.separateDNA()
+        geneticEngine.transcribeStep()
         model.get("mRNA").should.eql ""   # DNA separated, mRNA prepared for transcription
         geneticEngine.transcribeStep()
         model.get("mRNA").should.eql "A"
@@ -66,7 +66,7 @@ describe "GeneticEngine", ->
 
       it "should transcribe mRNA from DNA and dispatch appropriate events", ->
         model.set {DNA: "ATGC"}
-        geneticEngine.transcribe()
+        geneticEngine.transitionTo("transcription-end")
         mock.transitionListener.callCount.should.eql 5 # separation + 4 x transcription
 
         model.get("mRNA").should.eql "AUGC"
@@ -82,7 +82,7 @@ describe "GeneticEngine", ->
         state.step.should.eql 15
 
       it "should provide stateBefore() and stateAfter() helper methods", ->
-        model.set "geneticEngineState", "intro"
+        model.set "geneticEngineState", "intro-cells"
         geneticEngine.stateBefore("dna").should.be.true
         geneticEngine.stateAfter("dna").should.be.false
 
