@@ -18,7 +18,6 @@ define(function (require) {
       PROMOTER_SEQ   = "TTGACACCCCCCCCCCCCCCCCCCTATAATCCCCCCCATG",
       TERMINATOR_SEQ = "ACCACAGGCCGCCAGTTCCGCTGGCGGCATTTT";
 
-
   return function GeneticProperties(model) {
     var api,
         // Never change value of this variable outside
@@ -454,6 +453,32 @@ define(function (require) {
         return {
           x: xcm,
           y: ycm
+        };
+      },
+
+      /**
+       * Generates junk DNA sequence of a given length.
+       * e.g.
+       * {
+       *   "sequence": "AGT",
+       *   "compSequence": "TCA"
+       * }
+       *
+       * @param  {number} len junk DNA sequence length.
+       * @return {Object}     sequence and complementary sequence.
+       */
+      junkSequence: function (len) {
+        var letters = ["A", "G", "T", "C"],
+            lettersLen = letters.length,
+            seq = "",
+            i;
+
+        for (i = 0; i < len; i++) {
+          seq += letters[Math.floor(Math.random() * lettersLen)];
+        }
+        return {
+          sequence: seq,
+          compSequence: complementarySequence(seq)
         };
       },
 
