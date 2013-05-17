@@ -31,11 +31,11 @@ define(function (require) {
         // Public API object to be returned.
     var api = {},
 
-        // The model function get_results() returns a 2 dimensional array
+        // The model function getAtoms() returns a 2 dimensional array
         // of particle indices and properties that is updated every model tick.
         // This array is not garbage-collected so the view can be assured that
-        // the latest modelResults will be in this array when the view is executing
-        modelResults,
+        // the latest modelAtoms will be in this array when the view is executing
+        modelAtoms,
         modelElements,
         modelWidth,
         modelHeight,
@@ -452,7 +452,7 @@ define(function (require) {
     }
 
     function updateParticleRadius() {
-      mainContainer.selectAll("circle").data(modelResults).attr("r",  function(d) { return model2px(d.radius); });
+      mainContainer.selectAll("circle").data(modelAtoms).attr("r",  function(d) { return model2px(d.radius); });
     }
 
     /**
@@ -610,7 +610,7 @@ define(function (require) {
               if (isSpringBond(d)) {
                 return springStrokeWidth(d);
               } else {
-                return model2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
+                return model2px(Math.min(modelAtoms[d.atom1].radius, modelAtoms[d.atom2].radius)) * 0.75;
               }
             },
             "stroke": getBondAtom1Color,
@@ -628,7 +628,7 @@ define(function (require) {
               if (isSpringBond(d)) {
                 return springStrokeWidth(d);
               } else {
-                return model2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
+                return model2px(Math.min(modelAtoms[d.atom1].radius, modelAtoms[d.atom2].radius)) * 0.75;
               }
             },
             "stroke": getBondAtom2Color,
@@ -681,10 +681,10 @@ define(function (require) {
       cosThetaSpikes = costheta * numTurns;
       sinThetaSpikes = sintheta * numTurns;
 
-      radius_x1 = model2px(modelResults[d.atom1].radius) * costheta;
-      radius_x2 = model2px(modelResults[d.atom2].radius) * costheta;
-      radius_y1 = model2px(modelResults[d.atom1].radius) * sintheta;
-      radius_y2 = model2px(modelResults[d.atom2].radius) * sintheta;
+      radius_x1 = model2px(modelAtoms[d.atom1].radius) * costheta;
+      radius_x2 = model2px(modelAtoms[d.atom2].radius) * costheta;
+      radius_y1 = model2px(modelAtoms[d.atom1].radius) * sintheta;
+      radius_y2 = model2px(modelAtoms[d.atom2].radius) * sintheta;
       radiusFactorX = radius_x1 - radius_x2;
       radiusFactorY = radius_y1 - radius_y2;
 
@@ -733,20 +733,20 @@ define(function (require) {
           strokeDasharray = model2px(0.03) + " " + model2px(0.02);
       // update existing lines
       vdwLines.attr({
-        "x1": function(d) { return model2px(modelResults[d[0]].x); },
-        "y1": function(d) { return model2pxInv(modelResults[d[0]].y); },
-        "x2": function(d) { return model2px(modelResults[d[1]].x); },
-        "y2": function(d) { return model2pxInv(modelResults[d[1]].y); }
+        "x1": function(d) { return model2px(modelAtoms[d[0]].x); },
+        "y1": function(d) { return model2pxInv(modelAtoms[d[0]].y); },
+        "x2": function(d) { return model2px(modelAtoms[d[1]].x); },
+        "y2": function(d) { return model2pxInv(modelAtoms[d[1]].y); }
       });
 
       // append new lines
       vdwLines.enter().append('line')
         .attr({
           "class": "attractionforce",
-          "x1": function(d) { return model2px(modelResults[d[0]].x); },
-          "y1": function(d) { return model2pxInv(modelResults[d[0]].y); },
-          "x2": function(d) { return model2px(modelResults[d[1]].x); },
-          "y2": function(d) { return model2pxInv(modelResults[d[1]].y); }
+          "x1": function(d) { return model2px(modelAtoms[d[0]].x); },
+          "y1": function(d) { return model2pxInv(modelAtoms[d[0]].y); },
+          "x2": function(d) { return model2px(modelAtoms[d[1]].x); },
+          "y2": function(d) { return model2pxInv(modelAtoms[d[1]].y); }
         })
         .style({
           "stroke-width": strokeWidth,
@@ -819,8 +819,8 @@ define(function (require) {
 
       if (d.hostType) {
         if (d.hostType === "Atom") {
-          hostX = modelResults[d.hostIndex].x;
-          hostY = modelResults[d.hostIndex].y;
+          hostX = modelAtoms[d.hostIndex].x;
+          hostY = modelAtoms[d.hostIndex].y;
         } else {
           hostX = obstacles.x[d.hostIndex] + (obstacles.width[d.hostIndex] / 2);
           hostY = obstacles.y[d.hostIndex] + (obstacles.height[d.hostIndex] / 2);
@@ -1131,9 +1131,9 @@ define(function (require) {
       chargeShadingMode = model.get("chargeShading");
       keShadingMode = model.get("keShading");
 
-      gradientNameForParticle.length = modelResults.length;
-      for (i = 0, len = modelResults.length; i < len; i++)
-        gradientNameForParticle[i] = getParticleGradient(modelResults[i]);
+      gradientNameForParticle.length = modelAtoms.length;
+      for (i = 0, len = modelAtoms.length; i < len; i++)
+        gradientNameForParticle[i] = getParticleGradient(modelAtoms[i]);
     }
 
     function setupParticles() {
@@ -1145,13 +1145,13 @@ define(function (require) {
       mainContainer.selectAll("circle").remove();
       mainContainer.selectAll("g.label").remove();
 
-      particle = mainContainer.selectAll("circle").data(modelResults);
+      particle = mainContainer.selectAll("circle").data(modelAtoms);
       updateParticleRadius();
 
       particleEnterExit();
 
       label = mainContainer.selectAll("g.label")
-          .data(modelResults);
+          .data(modelAtoms);
 
       labelEnter = label.enter().append("g")
           .attr("class", "label")
@@ -1285,11 +1285,11 @@ define(function (require) {
       drawVelocityVectors = model.get("showVelocityVectors");
       drawForceVectors    = model.get("showForceVectors");
       if (drawVelocityVectors) {
-        velVector = mainContainer.selectAll("path.vector-"+VELOCITY_STR).data(modelResults);
+        velVector = mainContainer.selectAll("path.vector-"+VELOCITY_STR).data(modelAtoms);
         vectorEnter(velVector, getVelVectorPath, getVelVectorWidth, velocityVectorColor, VELOCITY_STR);
       }
       if (drawForceVectors) {
-        forceVector = mainContainer.selectAll("path.vector-"+FORCE_STR).data(modelResults);
+        forceVector = mainContainer.selectAll("path.vector-"+FORCE_STR).data(modelAtoms);
         vectorEnter(forceVector, getForceVectorPath, getForceVectorWidth, forceVectorColor, FORCE_STR);
       }
     }
@@ -1301,7 +1301,7 @@ define(function (require) {
       drawAtomTrace = model.get("showAtomTrace");
       atomTraceId = model.get("atomTraceId");
       if (drawAtomTrace) {
-        atomTrace = mainContainer.selectAll("path.atomTrace").data([modelResults[atomTraceId]]);
+        atomTrace = mainContainer.selectAll("path.atomTrace").data([modelAtoms[atomTraceId]]);
         atomTraceEnter();
       }
     }
@@ -1350,8 +1350,8 @@ define(function (require) {
 
     function renderAtomTooltip(i) {
       var pos = modelView.pos(),
-          left = pos.left + model2px(modelResults[i].x),
-          top  = pos.top +  model2pxInv(modelResults[i].y);
+          left = pos.left + model2px(modelAtoms[i].x),
+          top  = pos.top +  model2pxInv(modelAtoms[i].y);
 
       atomToolTip
             .style("opacity", 1.0)
@@ -1365,11 +1365,11 @@ define(function (require) {
       atomToolTipPre.text(
           "atom: " + i + "\n" +
           "time: " + modelTimeLabel() + "\n" +
-          "speed: " + d3.format("+6.3e")(modelResults[i].speed) + "\n" +
-          "vx:    " + d3.format("+6.3e")(modelResults[i].vx)    + "\n" +
-          "vy:    " + d3.format("+6.3e")(modelResults[i].vy)    + "\n" +
-          "ax:    " + d3.format("+6.3e")(modelResults[i].ax)    + "\n" +
-          "ay:    " + d3.format("+6.3e")(modelResults[i].ay)    + "\n"
+          "speed: " + d3.format("+6.3e")(modelAtoms[i].speed) + "\n" +
+          "vx:    " + d3.format("+6.3e")(modelAtoms[i].vx)    + "\n" +
+          "vy:    " + d3.format("+6.3e")(modelAtoms[i].vy)    + "\n" +
+          "ax:    " + d3.format("+6.3e")(modelAtoms[i].ax)    + "\n" +
+          "ay:    " + d3.format("+6.3e")(modelAtoms[i].ay)    + "\n"
         );
     }
 
@@ -1485,8 +1485,8 @@ define(function (require) {
           x, y, img_width, img_height;
       if (props.imageHostType) {
         if (props.imageHostType === "Atom") {
-          x = modelResults[props.imageHostIndex].x;
-          y = modelResults[props.imageHostIndex].y;
+          x = modelAtoms[props.imageHostIndex].x;
+          y = modelAtoms[props.imageHostIndex].y;
         } else if (props.imageHostType === "RectangularObstacle") {
           x = obstacles.x[props.imageHostIndex] + (obstacles.width[props.imageHostIndex] / 2);
           y = obstacles.y[props.imageHostIndex] + (obstacles.height[props.imageHostIndex] / 2);
@@ -1728,7 +1728,7 @@ define(function (require) {
       fontSizeInPixels = modelView.getFontSizeInPixels();
       textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
 
-      modelResults  = model.get_results();
+      modelAtoms  = model.getAtoms();
       modelElements = model.get_elements();
       modelWidth    = model.get('width');
       modelHeight   = model.get('height');

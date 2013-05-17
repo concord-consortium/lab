@@ -92,9 +92,9 @@ define(function(require) {
 
         // ####################################################################
 
-        // A two dimensional array consisting of atom index numbers and atom
-        // property values - in effect transposed from the atom property arrays.
-        results,
+        // A two dimensional array consisting of atom index numbers and atom property values - in
+        // effect transposed from the engine's atom property arrays.
+        viewAtoms = [],
 
         // A two dimensional array consisting of radial bond index numbers, radial bond
         // properties, and the postions of the two bonded atoms.
@@ -279,7 +279,7 @@ define(function(require) {
       if listeners request them. This method also guarantees that all properties have their updated
       value when they are requested by any listener.
 
-      Technically, this method first updates the 'results' array and macrostate variables, then
+      Technically, this method first updates the 'viewAtoms' array and macrostate variables, then
       invalidates any  cached output-property values, and finally notifies all output-property
       listeners.
 
@@ -397,7 +397,7 @@ define(function(require) {
     })();
 
     /**
-      This method is called to refresh the results array and macrostate variables (KE, PE,
+      This method is called to refresh the viewAtoms array and macrostate variables (KE, PE,
       temperature) whenever an engine integration occurs or the model state is otherwise changed.
 
       Normally, you should call the methods updateOutputPropertiesAfterChange or
@@ -407,15 +407,14 @@ define(function(require) {
     */
     function readModelState() {
       engine.computeOutputState(modelState);
-      resizeResultsArray();
-      computeResultsArray(modelState.atoms);
+      updateViewAtoms(modelState.atoms);
     }
 
     /**
-      Ensure that the 'results' array of arrays is defined and contains one typed array per atom
+      Ensure that the 'viewAtoms' array of arrays is defined and contains one typed array per atom
       for containing the atom properties.
     */
-    function resizeResultsArray() {
+    function resizeViewAtomsArray() {
       var isAminoAcid = function () {
             return aminoacidsHelper.isAminoAcid(this.element);
           },
@@ -426,11 +425,9 @@ define(function(require) {
       // However it would be reasonable to perform such refactoring later, when all requirements
       // related to proteins engine are clearer.
 
-      if (!results) results = [];
-
-      for (i = results.length, len = model.get_num_atoms(); i < len; i++) {
-        if (!results[i]) {
-          results[i] = {
+      for (i = viewAtoms.length, len = model.get_num_atoms(); i < len; i++) {
+        if (!viewAtoms[i]) {
+          viewAtoms[i] = {
             idx: i,
             // Provide convenience function for view, do not force it to ask
             // model / engine directly. In the future, atom objects should be
@@ -440,26 +437,28 @@ define(function(require) {
         }
       }
 
-      // Also make sure to truncate the results array if it got shorter (i.e., atoms were removed)
-      results.length = len;
+      // Also make sure to truncate the viewAtoms array if it got shorter (i.e., atoms were removed)
+      viewAtoms.length = len;
     }
 
-    function computeResultsArray(atoms) {
+    function updateViewAtoms(atoms) {
       var i, prop, n, amino;
 
-      // Transpose 'atoms' object into 'results' for easier consumption by view code
+      resizeViewAtomsArray();
+
+      // Transpose 'atoms' object into 'viewAtoms' for easier consumption by view code
       for (i = 0, n = model.get_num_atoms(); i < n; i++) {
         for (prop in atoms) {
           if (atoms.hasOwnProperty(prop)) {
-            results[i][prop] = atoms[prop][i];
+            viewAtoms[i][prop] = atoms[prop][i];
           }
         }
 
         // Additional properties, used only by view.
         if (aminoacidsHelper.isAminoAcid(atoms.element[i])) {
           amino = aminoacidsHelper.getAminoAcidByElement(atoms.element[i]);
-          results[i].symbol = amino.symbol;
-          results[i].label = amino.abbreviation;
+          viewAtoms[i].symbol = amino.symbol;
+          viewAtoms[i].label = amino.abbreviation;
         }
       }
     }
@@ -1164,8 +1163,8 @@ define(function(require) {
 
       invalidatingChangePreHook();
       engine.removeAtom(i);
-      // Enforce modeler to recalculate results array.
-      results.length = 0;
+      // Enforce modeler to recalculate viewAtoms array.
+      viewAtoms.length = 0;
       invalidatingChangePostHook();
 
       if (!options.suppressEvent) {
@@ -1651,8 +1650,8 @@ define(function(require) {
       return elements;
     };
 
-    model.get_results = function() {
-      return results;
+    model.getAtoms = function() {
+      return viewAtoms;
     };
 
     model.get_radial_bond_results = function() {
@@ -1765,9 +1764,9 @@ define(function(require) {
       invalidatingChangePreHook();
 
       generatedAACount = engine.generateProtein(aaSequence, expectedLength);
-      // Enforce modeler to recalculate results array.
+      // Enforce modeler to recalculate viewAtoms array.
       // TODO: it's a workaround, investigate the problem.
-      results.length = 0;
+      viewAtoms.length = 0;
 
       invalidatingChangePostHook();
 
@@ -1780,9 +1779,9 @@ define(function(require) {
       invalidatingChangePreHook();
 
       engine.extendProtein(xPos, yPos, aaAbbr);
-      // Enforce modeler to recalculate results array.
+      // Enforce modeler to recalculate viewAtoms array.
       // TODO: it's a workaround, investigate the problem.
-      results.length = 0;
+      viewAtoms.length = 0;
 
       invalidatingChangePostHook();
 
