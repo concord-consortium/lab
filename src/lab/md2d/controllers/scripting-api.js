@@ -455,18 +455,20 @@ define(function (require) {
       },
 
       /**
-       * Plays DNA intro, which shows broader context of the DNA transcription and
-       * translation.
+       * Triggers animation to the next genetic engine state.
        */
-      playDNAIntro: function () {
-        model.geneticEngine().playIntro();
+      dnaNextState: function geneticEngineNextState() {
+        model.geneticEngine().transitionToNextState();
       },
 
       /**
-       * Separates two strands of DNA.
+       * Triggers animation to the given genetic engine state.
+       * e.g. dnaAnimationTo("transcription-end")
+       *
+       * @param  {string} stateName name of the state.
        */
-      separateDNA: function separateDNA() {
-        model.geneticEngine().separateDNA();
+      dnaAnimationTo: function dnaTransitionToState(stateName) {
+        model.geneticEngine().transitionTo(stateName);
       },
 
       /**
@@ -485,38 +487,6 @@ define(function (require) {
        */
       transcribeStep: function transcribeStep(expectedNucleotide) {
         model.geneticEngine().transcribeStep(expectedNucleotide);
-      },
-
-      /**
-       * Triggers complete DNA to mRNA transcription.
-       *
-       * Complete mRNA will be available in genetic properties.
-       * e.g. geneticEngine() --> {DNA: "ATCG", DNAComplement: "TAGC", mRNA: "AUCG", ...}
-       */
-      transcribe: function transcribeDNA() {
-        model.geneticEngine().transcribe();
-      },
-
-      /**
-       * Triggers only one step of DNA translation.
-       */
-      translateStep: function translateStep() {
-        model.geneticEngine().translateStep();
-      },
-
-      /**
-       * Triggers *complete* translation of the DNA.
-       */
-      translate: function translate() {
-        model.geneticEngine().translate();
-      },
-
-      translateStepByStep: function translateStepByStep() {
-        model.translateStepByStep();
-      },
-
-      animateTranslation: function animateTranslation() {
-        model.animateTranslation();
       },
 
       /**

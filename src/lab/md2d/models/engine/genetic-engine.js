@@ -5,18 +5,30 @@ define(function (require) {
   var ValidationError  = require('common/validator').ValidationError,
       aminoacidsHelper = require('cs!md2d/models/aminoacids-helper'),
 
-      state = {
-        "undefined": 0,
-        "intro": 1,
-        "dna": 2,
-        "transcription": 3,
-        "transcription-end": 4,
-        "translation": 5,
-        "translation-end": 6
-      },
+      STATES = [
+        "undefined",
+        "intro-cells",
+        "intro-zoom1",
+        "intro-zoom2",
+        "intro-zoom3",
+        "intro-polymerase",
+        "dna",
+        "transcription",
+        "transcription-end",
+        "translation",
+        "translation-end"
+      ],
+      STATE_INDEX = {},
 
       PROMOTER_SEQ   = "TTGACACCCCCCCCCCCCCCCCCCTATAATCCCCCCCATG",
       TERMINATOR_SEQ = "ACCACAGGCCGCCAGTTCCGCTGGCGGCATTTT";
+
+  (function () {
+    var i, len;
+    for (i = 0, len = STATES.length; i < len; i++) {
+      STATE_INDEX[STATES[i]] = i;
+    }
+  }());
 
   return function GeneticProperties(model) {
     var api,
@@ -119,7 +131,7 @@ define(function (require) {
             }
             return stateA.step < stateB.step ? -1 : 1;
           }
-          return state[stateA.name] < state[stateB.name] ? -1 : 1;
+          return STATE_INDEX[stateA.name] < STATE_INDEX[stateB.name] ? -1 : 1;
         },
 
         transitionToState = function (name) {
@@ -187,28 +199,43 @@ define(function (require) {
       },
 
       /**
-       * Plays intro, which shows broader context of the DNA transcription and
-       * translation.
+       * Triggers transition to the next genetic engine state.
        */
-      playIntro: function () {
-        transitionToState("dna");
-      },
+      transitionToNextState: function () {
+        var state = api.lastState(),
+            name = state.name,
+            abbr, next, idx;
 
-      /**
-       * Triggers separation of the DNA strands.
-       */
-      separateDNA: function () {
-        if (stateEq("dna")) {
-          transitionToState("transcription:0");
+        if (name === "transcription") {
+          api.transcribeStep();
+        } else if (name === "translation") {
+          abbr = aminoacidsHelper.codonToAbbr(api.codon(state.step));
+          if (abbr !== "STOP") {
+            transitionToState("translation:" + (state.step + 1));
+          } else {
+            transitionToState("translation-end");
+          }
+        } else {
+          idx = STATE_INDEX[name];
+          next = STATES[idx + 1];
+          if (next) {
+            if (next === "transcription" || next === "translation") {
+              next += ":0";
+            }
+            transitionToState(next);
+          }
         }
       },
 
       /**
-       * Triggers *complete* transcription of the DNA.
+       * Triggers transition to the given genetic engine state.
+       * e.g. transitionTo("transcription-end")
+       *
+       * @param  {string} stateName name of the state.
        */
-      transcribe: function() {
-        while (api.lastStateBefore("transcription-end")) {
-          api.transcribeStep();
+      transitionTo: function (stateName) {
+        while (api.lastStateBefore(stateName)) {
+          api.transitionToNextState();
         }
       },
 
@@ -231,7 +258,7 @@ define(function (require) {
             state, newCode;
 
         if (stateEq("dna")) {
-          api.separateDNA();
+          api.transitionToNextState();
           return;
         }
         state = api.lastState();
@@ -249,38 +276,6 @@ define(function (require) {
               transitionToState("transcription-end");
             }
           }
-        }
-      },
-
-      /**
-       * Triggers only one step of DNA translation.
-       */
-      translateStep: function () {
-        var state, abbr;
-
-        if (api.stateBefore("transcription-end")) {
-          // Make sure that complete mRNA is available.
-          api.transcribe();
-        }
-        state = api.lastState();
-        if (state.name === "transcription-end") {
-          transitionToState("translation:0");
-        } else if (state.name === "translation") {
-          abbr = aminoacidsHelper.codonToAbbr(api.codon(state.step));
-          if (abbr !== "STOP") {
-            transitionToState("translation:" + (state.step + 1));
-          } else {
-            transitionToState("translation-end");
-          }
-        }
-      },
-
-      /**
-       * Triggers *complete* translation of the DNA.
-       */
-      translate: function() {
-        while (api.lastStateBefore("translation-end")) {
-          api.translateStep();
         }
       },
 
