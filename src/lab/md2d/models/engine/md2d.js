@@ -658,7 +658,7 @@ define(function (require, exports, module) {
         },
 
         createAtomsArray = function(num) {
-          atoms  = engine.atoms  = {};
+          atoms = {};
 
           // TODO. DRY this up by letting the property list say what type each array is
           atoms.radius         = arrays.create(num, 0, arrayTypes.floatType);
@@ -3380,7 +3380,7 @@ define(function (require, exports, module) {
         // Update temperature.
         T = convertKEtoT(KEinMWUnits, N);
 
-        // State to be read by the rest of the system:
+        // "macro" state
         state.time           = time;
         state.PE             = PE;
         state.KE             = constants.convert(KEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
@@ -3389,6 +3389,9 @@ define(function (require, exports, module) {
         state.CM             = [x_CM, y_CM];
         state.vCM            = [vx_CM, vy_CM];
         state.omega_CM       = omega_CM;
+
+        // "micro" state. TODO: put radial bonds, etc here.
+        state.atoms = atoms;
       },
 
 

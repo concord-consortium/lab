@@ -74,9 +74,6 @@ define(function(require) {
         // They are initialized at the end of this function. These data strucutres
         // are mainly managed by the engine.
 
-        // A hash of arrays consisting of arrays of atom property values
-        atoms,
-
         // A hash of arrays consisting of arrays of element property values
         elements,
 
@@ -415,27 +412,9 @@ define(function(require) {
       the detection of changed properties.
     */
     function readModelState() {
-      var i, prop, n, amino;
-
       engine.computeOutputState(modelOutputState);
-
       resizeResultsArray();
-
-      // Transpose 'atoms' object into 'results' for easier consumption by view code
-      for (i = 0, n = model.get_num_atoms(); i < n; i++) {
-        for (prop in atoms) {
-          if (atoms.hasOwnProperty(prop)) {
-            results[i][prop] = atoms[prop][i];
-          }
-        }
-
-        // Additional properties, used only by view.
-        if (aminoacidsHelper.isAminoAcid(atoms.element[i])) {
-          amino = aminoacidsHelper.getAminoAcidByElement(atoms.element[i]);
-          results[i].symbol = amino.symbol;
-          results[i].label = amino.abbreviation;
-        }
-      }
+      computeResultsArray(modelOutputState.atoms);
     }
 
     /**
@@ -469,6 +448,26 @@ define(function(require) {
 
       // Also make sure to truncate the results array if it got shorter (i.e., atoms were removed)
       results.length = len;
+    }
+
+    function computeResultsArray(atoms) {
+      var i, prop, n, amino;
+
+      // Transpose 'atoms' object into 'results' for easier consumption by view code
+      for (i = 0, n = model.get_num_atoms(); i < n; i++) {
+        for (prop in atoms) {
+          if (atoms.hasOwnProperty(prop)) {
+            results[i][prop] = atoms[prop][i];
+          }
+        }
+
+        // Additional properties, used only by view.
+        if (aminoacidsHelper.isAminoAcid(atoms.element[i])) {
+          amino = aminoacidsHelper.getAminoAcidByElement(atoms.element[i]);
+          results[i].symbol = amino.symbol;
+          results[i].label = amino.abbreviation;
+        }
+      }
     }
 
     /**
@@ -855,7 +854,6 @@ define(function(require) {
       window.state = modelOutputState = {};
 
       // Copy reference to basic properties.
-      atoms = engine.atoms;
       elements = engine.elements;
       radialBonds = engine.radialBonds;
       radialBondResults = engine.radialBondResults;
@@ -1326,7 +1324,8 @@ define(function(require) {
     */
     model.getMoleculeBoundingBox = function(atomIndex) {
 
-      var moleculeAtoms,
+      var atoms = modelOutputState.atoms,
+          moleculeAtoms,
           i,
           x,
           y,
@@ -1371,7 +1370,8 @@ define(function(require) {
         the bonded atoms together.
       */
     model.setAtomProperties = function(i, props, checkLocation, moveMolecule) {
-      var moleculeAtoms,
+      var atoms = modelOutputState.atoms,
+          moleculeAtoms,
           dx, dy,
           new_x, new_y,
           j, jj;
@@ -1411,9 +1411,11 @@ define(function(require) {
     };
 
     model.getAtomProperties = function(i) {
-      var atomMetaData = metadata.atom,
+      var atoms = modelOutputState.atoms,
+          atomMetaData = metadata.atom,
           props = {},
           propName;
+
       for (propName in atomMetaData) {
         if (atomMetaData.hasOwnProperty(propName) && atoms[propName]) {
           props[propName] = atoms[propName][i];
@@ -1621,8 +1623,8 @@ define(function(require) {
     model.liveDragStart = function(atomIndex, x, y) {
       if (liveDragSpringForceIndex != null) return;    // don't add a second liveDrag force
 
-      if (x == null) x = atoms.x[atomIndex];
-      if (y == null) y = atoms.y[atomIndex];
+      if (x == null) x = modelOutputState.atoms.x[atomIndex];
+      if (y == null) y = modelOutputState.atoms.y[atomIndex];
 
       liveDragSavedFriction = model.getAtomProperties(atomIndex).friction;
 
@@ -1689,10 +1691,6 @@ define(function(require) {
 
     model.is_stopped = function() {
       return stopped;
-    };
-
-    model.get_atoms = function() {
-      return atoms;
     };
 
     model.get_elements = function() {
@@ -2075,7 +2073,7 @@ define(function(require) {
 
       propCopy = serialize(metadata.mainProperties, rawProperties);
       propCopy.viewOptions = serialize(metadata.viewOptions, rawProperties);
-      propCopy.atoms = serialize(metadata.atom, atoms, engine.getNumberOfAtoms());
+      propCopy.atoms = serialize(metadata.atom, modelOutputState.atoms, engine.getNumberOfAtoms());
 
       if (engine.getNumberOfRadialBonds()) {
         propCopy.radialBonds = serialize(metadata.radialBond, radialBonds, engine.getNumberOfRadialBonds());
