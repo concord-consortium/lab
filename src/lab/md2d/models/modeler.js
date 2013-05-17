@@ -55,7 +55,7 @@ define(function(require) {
         lastSampleTime,
         sampleTimes = [],
 
-        modelOutputState,
+        modelState,
         tickHistory,
 
         // Transitions list.
@@ -412,9 +412,9 @@ define(function(require) {
       the detection of changed properties.
     */
     function readModelState() {
-      engine.computeOutputState(modelOutputState);
+      engine.computeOutputState(modelState);
       resizeResultsArray();
-      computeResultsArray(modelOutputState.atoms);
+      computeResultsArray(modelState.atoms);
     }
 
     /**
@@ -851,7 +851,7 @@ define(function(require) {
       // pairwiseLJProperties object allows to change state which defines state of the whole simulation.
       engine.pairwiseLJProperties.registerChangeHooks(invalidatingChangePreHook, invalidatingChangePostHook);
 
-      window.state = modelOutputState = {};
+      window.state = modelState = {};
 
       // Copy reference to basic properties.
       elements = engine.elements;
@@ -1324,7 +1324,7 @@ define(function(require) {
     */
     model.getMoleculeBoundingBox = function(atomIndex) {
 
-      var atoms = modelOutputState.atoms,
+      var atoms = modelState.atoms,
           moleculeAtoms,
           i,
           x,
@@ -1370,7 +1370,7 @@ define(function(require) {
         the bonded atoms together.
       */
     model.setAtomProperties = function(i, props, checkLocation, moveMolecule) {
-      var atoms = modelOutputState.atoms,
+      var atoms = modelState.atoms,
           moleculeAtoms,
           dx, dy,
           new_x, new_y,
@@ -1411,7 +1411,7 @@ define(function(require) {
     };
 
     model.getAtomProperties = function(i) {
-      var atoms = modelOutputState.atoms,
+      var atoms = modelState.atoms,
           atomMetaData = metadata.atom,
           props = {},
           propName;
@@ -1623,8 +1623,8 @@ define(function(require) {
     model.liveDragStart = function(atomIndex, x, y) {
       if (liveDragSpringForceIndex != null) return;    // don't add a second liveDrag force
 
-      if (x == null) x = modelOutputState.atoms.x[atomIndex];
-      if (y == null) y = modelOutputState.atoms.y[atomIndex];
+      if (x == null) x = modelState.atoms.x[atomIndex];
+      if (y == null) y = modelState.atoms.y[atomIndex];
 
       liveDragSavedFriction = model.getAtomProperties(atomIndex).friction;
 
@@ -1973,12 +1973,12 @@ define(function(require) {
     model.ave_ke = function() {
       // NB this old/low-level method doesn't get units translation applied.
       // (Use model.get('kineticEnergy') / model.get('numAtoms')
-      return modelOutputState.KE / model.get_num_atoms();
+      return modelState.KE / model.get_num_atoms();
     };
 
     model.ave_pe = function() {
       // NB this old/low-level method doesn't get units translation applied.
-      return modelOutputState.PE / model.get_num_atoms();
+      return modelState.PE / model.get_num_atoms();
     };
 
     model.speed = function() {
@@ -2073,7 +2073,7 @@ define(function(require) {
 
       propCopy = serialize(metadata.mainProperties, rawProperties);
       propCopy.viewOptions = serialize(metadata.viewOptions, rawProperties);
-      propCopy.atoms = serialize(metadata.atom, modelOutputState.atoms, engine.getNumberOfAtoms());
+      propCopy.atoms = serialize(metadata.atom, modelState.atoms, engine.getNumberOfAtoms());
 
       if (engine.getNumberOfRadialBonds()) {
         propCopy.radialBonds = serialize(metadata.radialBond, radialBonds, engine.getNumberOfRadialBonds());
@@ -2391,7 +2391,7 @@ define(function(require) {
     }, function() {
       // Output getters are expected to return values in translated units, since authored outputs
       // can only read values already in translated units to start with.
-      var value = modelOutputState.time;
+      var value = modelState.time;
       if (unitsTranslation) {
         value = unitsTranslation.translateFromMD2DUnits(value, 'time');
       }
@@ -2461,7 +2461,7 @@ define(function(require) {
       unitType: 'energy',
       format: '.4g'
     }, function() {
-      var value = modelOutputState.KE;
+      var value = modelState.KE;
       if (unitsTranslation) {
         value = unitsTranslation.translateFromMD2DUnits(value, 'energy');
       }
@@ -2473,7 +2473,7 @@ define(function(require) {
       unitType: 'energy',
       format: '.4g'
     }, function() {
-      var value = modelOutputState.PE;
+      var value = modelState.PE;
       if (unitsTranslation) {
         value = unitsTranslation.translateFromMD2DUnits(value, 'energy');
       }
@@ -2484,7 +2484,7 @@ define(function(require) {
       unitType: 'energy',
       format: '.4g'
     }, function() {
-      var value = modelOutputState.KE + modelOutputState.PE;
+      var value = modelState.KE + modelState.PE;
       if (unitsTranslation) {
         value = unitsTranslation.translateFromMD2DUnits(value, 'energy');
       }
@@ -2496,7 +2496,7 @@ define(function(require) {
       unitType: 'temperature',
       format: 'f'
     }, function() {
-      var value = modelOutputState.temperature;
+      var value = modelState.temperature;
       if (unitsTranslation) {
         value = unitsTranslation.translateFromMD2DUnits(value, 'temperature');
       }
