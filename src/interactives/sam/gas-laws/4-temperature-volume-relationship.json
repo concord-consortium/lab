@@ -7,7 +7,8 @@
     "volume of gas expands or contracts, keeping the pressure constant. Run the model and",
     "change the temperature. Why does the barrier move when the temperature changes?",
     "",
-    "Note: although the atoms in this model are in a flat plane, volume is calculated using 0.1 nm as the depth of the container"
+    "----",
+    "*Note: although the atoms in this model are in a flat plane, volume is calculated using 0.1 nm as the depth of the container.*"
   ],
   "models": [
     {

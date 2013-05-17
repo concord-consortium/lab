@@ -8,7 +8,8 @@
     "molecules from the drop-down menu. What is the relationship between the number of",
     "molecules and the volume of a gas?",
     "",
-    "Note: although the atoms in this model are in a flat plane, volume is calculated using 0.1 nm as the depth of the container"
+    "----",
+    "*Note: although the atoms in this model are in a flat plane, volume is calculated using 0.1 nm as the depth of the container.*"
   ],
   "models": [
     {
