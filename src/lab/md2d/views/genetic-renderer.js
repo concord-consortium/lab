@@ -213,10 +213,12 @@ define(function (require) {
 
     function calculateViewportPos(sateName) {
       switch(sateName) {
+        case "dna":
+          return -2;
         case "transcription":
-          return Math.min(dnaLen - 12, Math.max(0, state.step - 8));
+          return Math.min(dnaLen - 10, Math.max(0, state.step - 6)) - 2;
         case "transcription-end":
-          return Math.max(0, dnaLen - 12);
+          return Math.max(0, dnaLen - 10) - 2;
         case "translation":
           return Math.max(0, 3 * (state.step - 3)) - 2;
         default:
@@ -280,38 +282,63 @@ define(function (require) {
     var dna            = this.model.get("DNA"),
         dnaComplement  = this.model.get("DNAComplement"),
         dnaLength      = dna.length,
-        n              = nucleotides(),
-        geneticEngine  = this.model.geneticEngine();
+        geneticEngine  = this.model.geneticEngine(),
+        junkDNA        = geneticEngine.junkSequence(50),
+        n              = nucleotides();
 
     this._dnaG      = this._dnaView.append("g").attr("class", "dna");
     this._dnaCompG  = this._dnaView.append("g").attr("class", "dna-comp");
 
+    // Coding.
     n.model2px(this.model2px);
     n.sequence(dna);
     this._dnaG.append("g").attr("class", "coding-region").call(n);
 
+    // Promoter.
     n.sequence(geneticEngine.promoterSequence);
     n.startingPos(-geneticEngine.promoterSequence.length);
     this._dnaG.append("g").attr("class", "promoter-region").call(n);
 
+    // Terminator.
     n.sequence(geneticEngine.terminatorSequence);
     n.startingPos(dnaLength);
     this._dnaG.append("g").attr("class", "terminator-region").call(n);
 
+    // Junk.
+    n.sequence(junkDNA.sequence);
+    n.startingPos(-geneticEngine.promoterSequence.length - junkDNA.sequence.length);
+    this._dnaG.append("g").attr("class", "junk-region").call(n);
+
+    n.sequence(junkDNA.sequence);
+    n.startingPos(dnaLength + geneticEngine.terminatorSequence.length);
+    this._dnaG.append("g").attr("class", "junk-region").call(n);
+
     this._dnaG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("viewPortHeight") / 2 + nucleotides.HEIGHT) + ")");
 
     n.direction(2);
+    // Coding.
     n.sequence(dnaComplement);
     n.startingPos(0);
     this._dnaCompG.append("g").attr("class", "coding-region").call(n);
 
+    // Promoter.
     n.sequence(geneticEngine.promoterCompSequence);
     n.startingPos(-geneticEngine.promoterCompSequence.length);
     this._dnaCompG.append("g").attr("class", "promoter-region").call(n);
 
+    // Terminator.
     n.sequence(geneticEngine.terminatorCompSequence);
     n.startingPos(dnaLength);
     this._dnaCompG.append("g").attr("class", "terminator-region").call(n);
+
+    // Junk.
+    n.sequence(junkDNA.compSequence);
+    n.startingPos(-geneticEngine.promoterCompSequence.length - junkDNA.compSequence.length);
+    this._dnaCompG.append("g").attr("class", "junk-region").call(n);
+
+    n.sequence(junkDNA.compSequence);
+    n.startingPos(dnaLength + geneticEngine.terminatorCompSequence.length);
+    this._dnaCompG.append("g").attr("class", "junk-region").call(n);
 
     this._dnaCompG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("viewPortHeight") / 2 - nucleotides.HEIGHT) + ")");
 

@@ -18,7 +18,7 @@
   // Default style of nucleotides.
   .nucleotide
     .bonds
-      stroke: white
+      stroke: #FFF
 
     .letter
       fill: #4A3217
@@ -56,11 +56,11 @@
   .promoter-region
     .nucleotide
       .outline
-        fill: #006600
+        fill: #060
       .interior
         fill: #5DB473
       .letter
-        fill: #FFFFFF
+        fill: #FFF
 
   .terminator-region
     .nucleotide
@@ -69,7 +69,16 @@
       .interior
         fill: #DC4648
       .letter
-        fill: #FFFFFF
+        fill: #FFF
+
+  .junk-region
+    .nucleotide
+      .outline
+        fill: #666
+      .interior
+        fill: #ADADAD
+      .letter
+        fill: #FFF
 
   // Attraction forces.
   line.attractionforce

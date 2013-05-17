@@ -53,7 +53,7 @@ define(function (require) {
                             .append("g").attr("class", "scale"),
             yOffset = backbone ? 0.9 * H.BACKB : 0,
             yStart = m2px(yOffset + 0.5 * H.A),
-            yEnd = m2px(yOffset + H.A),
+            yEnd = m2px(yOffset + H.A * 0.97),
             nucleoSVG;
 
         // Enter.
@@ -165,9 +165,9 @@ define(function (require) {
   // https://www.pivotaltracker.com/story/show/48453261
   nucleotides.WIDTH  = W.BACKB * 0.92;
   // Height of the nucleotide is height of the DNA backbone + A nucleotide (tallest one).
-  // * 0.9 because it simply... looks better. This value is used to determine distance
+  // * 0.96 because it simply... looks better. This value is used to determine distance
   // between two strands of DNA and this multiplier causes that they are closer to each other.
-  nucleotides.HEIGHT = H.BACKB + H.A * 0.9;
+  nucleotides.HEIGHT = (H.BACKB * 0.9 + H.A) * 0.96;
 
   return nucleotides;
 });
