@@ -13,7 +13,10 @@ define(function (require) {
         "transcription-end": 4,
         "translation": 5,
         "translation-end": 6
-      };
+      },
+
+      PROMOTER_SEQ   = "TTGACACCCCCCCCCCCCCCCCCCTATAATCCCCCCCATG",
+      TERMINATOR_SEQ = "ACCACAGGCCGCCAGTTCCGCTGGCGGCATTTT";
 
 
   return function GeneticProperties(model) {
@@ -30,7 +33,7 @@ define(function (require) {
 
         dispatch = d3.dispatch("change", "transition"),
 
-        calculateComplementarySequence = function () {
+        complementarySequence = function (DNA) {
           // A-T (A-U)
           // G-C
           // T-A (U-A)
@@ -39,13 +42,12 @@ define(function (require) {
           // Use lower case during conversion to
           // avoid situation when you change A->T,
           // and later T->A again.
-          var compSeq = model.get("DNA")
-            .replace(/A/g, "t")
-            .replace(/G/g, "c")
-            .replace(/T/g, "a")
-            .replace(/C/g, "g");
-
-          model.set("DNAComplement", compSeq.toUpperCase());
+          return DNA
+                  .replace(/A/g, "t")
+                  .replace(/G/g, "c")
+                  .replace(/T/g, "a")
+                  .replace(/C/g, "g")
+                  .toUpperCase();
         },
 
         calculatemRNA = function () {
@@ -86,7 +88,7 @@ define(function (require) {
         updateGeneticProperties = function () {
           var DNA = model.get("DNA");
           validateDNA(DNA);
-          calculateComplementarySequence();
+          model.set("DNAComplement", complementarySequence(DNA));
           calculatemRNA();
 
           // Update model's mRNA property.
@@ -453,7 +455,13 @@ define(function (require) {
           x: xcm,
           y: ycm
         };
-      }
+      },
+
+      promoterSequence: PROMOTER_SEQ,
+      promoterCompSequence: complementarySequence(PROMOTER_SEQ),
+
+      terminatorSequence: TERMINATOR_SEQ,
+      terminatorCompSequence: complementarySequence(TERMINATOR_SEQ)
 
       /*
       Depreciated.
