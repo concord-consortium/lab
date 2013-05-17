@@ -98,6 +98,7 @@ define(function(require) {
 
         // A two dimensional array consisting of radial bond index numbers, radial bond
         // properties, and the postions of the two bonded atoms.
+        // FIXME. Engine should not be calculating this.
         radialBondResults,
 
         // The index of the "spring force" used to implement dragging of atoms in a running model
@@ -808,6 +809,7 @@ define(function(require) {
       window.state = modelState = {};
 
       // Copy reference to basic properties.
+      // FIXME. This should go away. https://www.pivotaltracker.com/story/show/50086079
       elements = engine.elements;
       radialBonds = engine.radialBonds;
       radialBondResults = engine.radialBondResults;

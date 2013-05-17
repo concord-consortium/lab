@@ -405,8 +405,13 @@ define(function (require, exports, module) {
           pairwiseLJProperties = new PairwiseLJProperties(engine);
 
           radialBondMatrix = [];
-          //  Initialize radialBondResults[] array consisting of hashes of radial bond
-          //  index numbers and transposed radial bond properties.
+
+          // Initialize radialBondResults[] array consisting of hashes of radial bond
+          // index numbers and transposed radial bond properties.
+
+          // FIXME. Why is the engine computing this? The modeler exists to insulate the engine
+          // code from view concerns such as this "results" array.
+          // See https://www.pivotaltracker.com/story/show/50086303
           radialBondResults = engine.radialBondResults = [];
         },
 
