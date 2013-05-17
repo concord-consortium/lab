@@ -172,12 +172,6 @@ define(function(require) {
       propertySupport.defineProperty(key, descriptor);
     }
 
-    function average_speed() {
-      var i, s = 0, n = model.get_num_atoms();
-      i = -1; while (++i < n) { s += engine.atoms.speed[i]; }
-      return s/n;
-    }
-
     function processTransitions(timeDiff) {
       var i, len;
       for (i = 0, len = transitions.length; i < len; i++) {
@@ -684,41 +678,6 @@ define(function(require) {
         };
       }
       propertySupport.defineProperty(key, descriptor);
-    };
-
-    model.getStats = function() {
-      return {
-        time        : model.get('time'),
-        speed       : average_speed(),
-        ke          : model.get('kineticEnergy'),
-        temperature : model.get('temperature'),
-        current_step: tickHistory.get("counter"),
-        steps       : tickHistory.get("length")-1
-      };
-    };
-
-    // A convenience for interactively getting energy averages
-    model.getStatsHistory = function(num) {
-      var i, len, start,
-          tick,
-          ke, pe,
-          ret = [];
-
-      len = tickHistory.get("length");
-      if (!arguments.length) {
-        start = 0;
-      } else {
-        start = Math.max(len-num, 0);
-      }
-      ret.push("time (fs)\ttotal PE (eV)\ttotal KE (eV)\ttotal energy (eV)");
-
-      for (i = start; i < len; i++) {
-        tick = tickHistory.returnTick(i);
-        pe = tick.output.PE;
-        ke = tick.output.KE;
-        ret.push(tick.output.time + "\t" + pe + "\t" + ke + "\t" + (pe+ke));
-      }
-      return ret.join('\n');
     };
 
     /**
@@ -1658,11 +1617,6 @@ define(function(require) {
       liveDragSpringForceIndex = null;
     };
 
-    // return a copy of the array of speeds
-    model.get_speed = function() {
-      return arrays.copy(engine.atoms.speed, []);
-    };
-
     /**
      * Returns number of frames per second.
      * @return {number} frames per second.
@@ -1970,22 +1924,6 @@ define(function(require) {
       return model;
     };
 
-    model.ave_ke = function() {
-      // NB this old/low-level method doesn't get units translation applied.
-      // (Use model.get('kineticEnergy') / model.get('numAtoms')
-      return modelState.KE / model.get_num_atoms();
-    };
-
-    model.ave_pe = function() {
-      // NB this old/low-level method doesn't get units translation applied.
-      return modelState.PE / model.get_num_atoms();
-    };
-
-    model.speed = function() {
-      // NB this old/low-level method doesn't get units translation applied.
-      return average_speed();
-    };
-
     model.dimensions = function() {
       return engine.getDimensions();
     };
@@ -2000,7 +1938,6 @@ define(function(require) {
       }
       return d3.format(opts.format || 'g')(model.get(property));
     };
-
 
     /**
       Return a unitDefinition in the current unitScheme for a quantity
