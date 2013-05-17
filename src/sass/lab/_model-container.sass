@@ -15,9 +15,61 @@
       stroke: #ffe95a !important
 
   // DNA.
+  // Default style of nucleotides.
   .nucleotide
     .bonds
       stroke: white
+
+    .letter
+      fill: #4A3217
+
+    .type-A
+      .outline
+        fill: #278DB0
+      .interior
+        fill: #A2D6FF
+
+    .type-C
+      .outline
+        fill: #CC5B4C
+      .interior
+        fill: #FBB394
+
+    .type-G
+      .outline
+        fill: #CC5B4C
+      .interior
+        fill: #F9CEFF
+
+    .type-T
+      .outline
+        fill: #278DB0
+      .interior
+        fill: #99F0E3
+
+    .type-U
+      .outline
+        fill: #278DB0
+      .interior
+        fill: #83FEAF
+
+  .promoter-region
+    .nucleotide
+      .outline
+        fill: #006600
+      .interior
+        fill: #5DB473
+      .letter
+        fill: #FFFFFF
+
+  .terminator-region
+    .nucleotide
+      .outline
+        fill: #9E0608
+      .interior
+        fill: #DC4648
+      .letter
+        fill: #FFFFFF
 
   // Attraction forces.
   line.attractionforce
