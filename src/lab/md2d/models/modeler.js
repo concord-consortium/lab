@@ -3,8 +3,7 @@
 
 define(function(require) {
   // Dependencies.
-  var arrays               = require('arrays'),
-      console              = require('common/console'),
+  var console              = require('common/console'),
       performance          = require('common/performance'),
       md2d                 = require('md2d/models/engine/md2d'),
       metadata             = require('md2d/models/metadata'),
@@ -337,9 +336,7 @@ define(function(require) {
       invalidatingChangeHookNestingLevel--;
 
       // Make sure that computed properties which depend on engine state are valid
-      if (engine) {
-        readModelState();
-      }
+      readModelState();
 
       // Non-filtered outputs will be valid at this point (caching is disabl;ed, so they're
       // recomputed every time.) This ensures that filtered outputs that depend on non-filtered
@@ -762,44 +759,27 @@ define(function(require) {
       Initialize minX, minYm, maxX, maxY from width and height
       when these options are undefined.
     */
-    model.initializeDimensions = function () {
-      var minX = model.get("minX"),
-          minY = model.get("minY"),
-          maxX = model.get("maxX"),
-          maxY = model.get("maxY");
+    function initializeDimensions(properties) {
+      var minX = properties.minX,
+          minY = properties.minY,
+          maxX = properties.maxX,
+          maxY = properties.maxY;
 
-      model.set({
-        minX: minX != null ? minX : 0,
-        maxX: maxX != null ? maxX : model.get("width"),
-        minY: minY != null ? minY : 0,
-        maxY: maxY != null ? maxY : model.get("height")
-      });
-    };
+      properties.minX = minX != null ? minX : 0;
+      properties.maxX = maxX != null ? maxX : properties.width;
+      properties.minY = minY != null ? minY : 0;
+      properties.maxY = maxY != null ? maxY : properties.height;
+    }
 
     /**
       Creates a new md2d engine and leaves it in 'engine'.
     */
-    model.initializeEngine = function () {
+    function initializeEngine(properties) {
       engine = md2d.createEngine();
+      engine.setDimensions([properties.minX, properties.minY, properties.maxX, properties.maxY]);
 
-      engine.setDimensions([model.get('minX'), model.get('minY'), model.get('maxX'), model.get('maxY')]);
-      engine.useLennardJonesInteraction(model.get('lennardJonesForces'));
-      engine.useCoulombInteraction(model.get('coulombForces'));
-      engine.useThermostat(model.get('temperatureControl'));
-      engine.setViscosity(model.get('viscosity'));
-      engine.setVDWLinesRatio(VDWLinesCutoffMap[model.get('VDWLinesCutoff')]);
-      engine.setGravitationalField(model.get('gravitationalField'));
-      engine.setTargetTemperature(model.get('targetTemperature'));
-      engine.setGeneticEngineState(model.get('geneticEngineState'));
-      engine.setDielectricConstant(model.get('dielectricConstant'));
-      engine.setRealisticDielectricEffect(model.get('realisticDielectricEffect'));
-      engine.setSolventForceType(model.get('solventForceType'));
-      engine.setSolventForceFactor(model.get('solventForceFactor'));
-      engine.setAdditionalSolventForceMult(model.get('additionalSolventForceMult'));
-      engine.setAdditionalSolventForceThreshold(model.get('additionalSolventForceThreshold'));
-
-      if (model.get('quantumDynamics')) {
-        engine.addPlugin(new QuantumDynamics(engine, model.get('quantumDynamics')));
+      if (properties.quantumDynamics) {
+        engine.addPlugin(new QuantumDynamics(engine, properties.quantumDynamics));
       }
 
       // Register invalidating change hooks.
@@ -816,7 +796,7 @@ define(function(require) {
       angularBonds = engine.angularBonds;
       restraints = engine.restraints;
       obstacles = engine.obstacles;
-    };
+    }
 
     model.createElements = function(_elements) {
       var i, num, prop, elementProps;
@@ -853,35 +833,9 @@ define(function(require) {
     };
 
     /**
-      Creates a new set of atoms, but new engine is created at the beginning.
-      TODO: this method makes no sense. Objects like obstacles, restraints etc.,
-      will be lost. It's confusing and used *only* in tests for now.
-      Think about API change. Probably the best option would be to just create new
-      modeler each time using constructor.
-
-      @config: either the number of atoms (for a random setup) or
-               a hash specifying the x,y,vx,vy properties of the atoms
-      When random setup is used, the option 'relax' determines whether the model is requested to
-      relax to a steady-state temperature (and in effect gets thermalized). If false, the atoms are
-      left in whatever grid the engine's initialization leaves them in.
-    */
-    model.createNewAtoms = function(config) {
-      model.initializeDimensions();
-      model.initializeEngine();
-      model.createElements(editableElements);
-      model.createAtoms(config);
-
-      return model;
-    };
-
-    /**
       Creates a new set of atoms.
 
-      @config: either the number of atoms (for a random setup) or
-               a hash specifying the x,y,vx,vy properties of the atoms
-      When random setup is used, the option 'relax' determines whether the model is requested to
-      relax to a steady-state temperature (and in effect gets thermalized). If false, the atoms are
-      left in whatever grid the engine's initialization leaves them in.
+      config: a hash specifying the x,y,vx,vy properties of the atoms
     */
     model.createAtoms = function(config) {
           // Options for addAtom method.
@@ -896,44 +850,19 @@ define(function(require) {
       // Start batch process
       model.startBatch();
 
-      if (typeof config === 'number') {
-        num = config;
-      } else if (config.num != null) {
-        num = config.num;
-      } else if (config.x) {
-        num = config.x.length;
-      }
+      num = config.x.length;
 
-      // TODO: this branching based on x, y isn't very clear.
-      if (config.x && config.y) {
-        // config is hash of arrays (as specified in JSON model).
-        // So, for each index, create object containing properties of
-        // atom 'i'. Later, use these properties to add atom
-        // using basic addAtom method.
-        for (i = 0; i < num; i++) {
-          atomProps = {};
-          for (prop in config) {
-            if (config.hasOwnProperty(prop)) {
-              atomProps[prop] = config[prop][i];
-            }
+      // config is hash of arrays (as specified in JSON model). So, for each index, create object
+      // containing properties of atom 'i'. Later, use these properties to add atom using basic
+      // addAtom method.
+      for (i = 0; i < num; i++) {
+        atomProps = {};
+        for (prop in config) {
+          if (config.hasOwnProperty(prop)) {
+            atomProps[prop] = config[prop][i];
           }
-          model.addAtom(atomProps, options);
         }
-      } else {
-        for (i = 0; i < num; i++) {
-          // Provide only required values.
-          atomProps = {x: 0, y: 0};
-          model.addAtom(atomProps, options);
-        }
-        // This function rearrange all atoms randomly.
-        engine.setupAtomsRandomly({
-          temperature: model.get('targetTemperature'),
-          // Provide number of user-defined, editable elements.
-          // There is at least one default element, even if no elements are specified in JSON.
-          userElements: editableElements === undefined ? 1 : editableElements.mass.length
-        });
-        if (config.relax)
-          engine.relaxToTemperature();
+        model.addAtom(atomProps, options);
       }
 
       // End batch process
@@ -941,9 +870,6 @@ define(function(require) {
 
       // Listeners should consider resetting the atoms a 'reset' event
       dispatch.reset();
-
-      // return model, for chaining (if used)
-      return model;
     };
 
     model.createRadialBonds = function(_radialBonds) {
@@ -1733,11 +1659,6 @@ define(function(require) {
       return model;
     };
 
-    model.relax = function() {
-      engine.relaxToTemperature();
-      return model;
-    };
-
     model.minimizeEnergy = function () {
       invalidatingChangePreHook();
       engine.minimizeEnergy();
@@ -2135,6 +2056,12 @@ define(function(require) {
       unitsTranslation = new UnitsTranslation(unitsDefinition);
     }
 
+    // Initialize minX, minY, maxX, maxY from model width and height if they are undefined.
+    initializeDimensions(mainProperties);
+
+    // Setup MD2D engine object.
+    initializeEngine(mainProperties);
+
     // ------------------------------
     // Define toplevel properties of the model
     // ------------------------------
@@ -2143,82 +2070,58 @@ define(function(require) {
     (function() {
       var customSetters = {
         targetTemperature: function (value) {
-          if (engine) {
-            engine.setTargetTemperature(value);
-          }
+          engine.setTargetTemperature(value);
         },
 
         temperatureControl: function(value) {
-          if (engine) {
-            engine.useThermostat(value);
-          }
+          engine.useThermostat(value);
         },
 
         lennardJonesForces: function(value) {
-          if (engine) {
-            engine.useLennardJonesInteraction(value);
-          }
+          engine.useLennardJonesInteraction(value);
         },
 
         coulombForces: function(value) {
-          if (engine) {
-            engine.useCoulombInteraction(value);
-          }
+          engine.useCoulombInteraction(value);
         },
 
         solventForceType: function(value) {
-          if (engine) {
-            engine.setSolventForceType(value);
-          }
+          engine.setSolventForceType(value);
         },
 
         geneticEngineState: function(value) {
-          if (engine) {
-            engine.setGeneticEngineState(value);
-          }
+          engine.setGeneticEngineState(value);
         },
 
         solventForceFactor: function(value) {
-          if (engine) {
-            engine.setSolventForceFactor(value);
-          }
+          engine.setSolventForceFactor(value);
         },
 
         additionalSolventForceMult: function(value) {
-          if (engine) {
-            engine.setAdditionalSolventForceMult(value);
-          }
+          engine.setAdditionalSolventForceMult(value);
         },
 
         additionalSolventForceThreshold: function(value) {
-          if (engine) {
-            engine.setAdditionalSolventForceThreshold(value);
-          }
+          engine.setAdditionalSolventForceThreshold(value);
         },
 
         dielectricConstant: function(value) {
-          if (engine) {
-            engine.setDielectricConstant(value);
-          }
+          engine.setDielectricConstant(value);
         },
 
         realisticDielectricEffect: function(value) {
-          if (engine) {
-            engine.setRealisticDielectricEffect(value);
-          }
+          engine.setRealisticDielectricEffect(value);
         },
 
         VDWLinesCutoff: function(value) {
           var ratio = VDWLinesCutoffMap[value];
-          if (ratio && engine) {
+          if (ratio) {
             engine.setVDWLinesRatio(ratio);
           }
         },
 
         gravitationalField: function(value) {
-          if (engine) {
-            engine.setGravitationalField(value);
-          }
+          engine.setGravitationalField(value);
         },
 
         modelSampleRate: function() {
@@ -2226,26 +2129,22 @@ define(function(require) {
         },
 
         viscosity: function(value) {
-          if (engine) {
-            engine.setViscosity(value);
-          }
+          engine.setViscosity(value);
         },
 
         polarAAEpsilon: function (value) {
           var polarAAs, element1, element2,
               i, j, len;
 
-          if (engine) {
-            // Set custom pairwise LJ properties for polar amino acids.
-            // They should attract stronger to better mimic nature.
-            polarAAs = aminoacidsHelper.getPolarAminoAcids();
-            for (i = 0, len = polarAAs.length; i < len; i++) {
-              element1 = polarAAs[i];
-              for (j = i + 1; j < len; j++) {
-                element2 = polarAAs[j];
-                // Set custom pairwise LJ epsilon (default one for AA is -0.1).
-                engine.pairwiseLJProperties.set(element1, element2, {epsilon: value});
-              }
+          // Set custom pairwise LJ properties for polar amino acids.
+          // They should attract stronger to better mimic nature.
+          polarAAs = aminoacidsHelper.getPolarAminoAcids();
+          for (i = 0, len = polarAAs.length; i < len; i++) {
+            element1 = polarAAs[i];
+            for (j = i + 1; j < len; j++) {
+              element2 = polarAAs[j];
+              // Set custom pairwise LJ epsilon (default one for AA is -0.1).
+              engine.pairwiseLJProperties.set(element1, element2, {epsilon: value});
             }
           }
         }
@@ -2263,21 +2162,15 @@ define(function(require) {
     });
     propertySupport.setRawValues(viewOptions);
 
-    // Initialize minX, minYm, maxX, maxY from model width and height
-    // if they are undefined.
-    model.initializeDimensions();
 
-    // Setup MD2D engine object.
-    model.initializeEngine();
     // Setup genetic engine.
     geneticEngine = new GeneticEngine(model);
 
     // Finally, if provided, set up the model objects (elements, atoms, bonds, obstacles and the rest).
     // However if these are not provided, client code can create atoms, etc piecemeal.
 
-    // TODO: Elements are stored and treated different from other objects.
-    // This is enforced by current createNewAtoms() method which should be
-    // depreciated. When it's changed, change also editableElements handling.
+    // TODO: Elements are stored and treated different from other objects. This was enforced by
+    // createNewAtoms() method which has been removed. Change also editableElements handling.
     editableElements = initialProperties.elements;
     // Create editable elements.
     model.createElements(editableElements);
@@ -2290,12 +2183,7 @@ define(function(require) {
     // will be injected to engine automatically.
     model.set({polarAAEpsilon: model.get('polarAAEpsilon')});
 
-    if (initialProperties.atoms) {
-      model.createAtoms(initialProperties.atoms);
-    } else if (initialProperties.mol_number) {
-      model.createAtoms(initialProperties.mol_number);
-      if (initialProperties.relax) model.relax();
-    }
+    model.createAtoms(initialProperties.atoms);
 
     if (initialProperties.radialBonds)  model.createRadialBonds(initialProperties.radialBonds);
     if (initialProperties.angularBonds) model.createAngularBonds(initialProperties.angularBonds);
