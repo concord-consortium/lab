@@ -31,11 +31,32 @@
     {
       "type": "pulldown",
       "id": "state-pulldown",
+      "label": "Jump to...",
       "options": [
         {
-          "text": "Jump to genetic engine state...",
+          "text": "genetic engine state",
           "disabled": true,
           "selected": true
+        },
+        {
+          "text": "intro-cells",
+          "action": "set('geneticEngineState', 'intro-cells');"
+        },
+        {
+          "text": "intro-zoom1",
+          "action": "set('geneticEngineState', 'intro-zoom1');"
+        },
+        {
+          "text": "intro-zoom2",
+          "action": "set('geneticEngineState', 'intro-zoom2');"
+        },
+        {
+          "text": "intro-zoom3",
+          "action": "set('geneticEngineState', 'intro-zoom3');"
+        },
+        {
+          "text": "intro-polymerase",
+          "action": "set('geneticEngineState', 'intro-polymerase');"
         },
         {
           "text": "dna",
@@ -56,28 +77,34 @@
       ]
     },
     {
-      "type": "button",
-      "id": "transcribe",
-      "text": "Transcribe",
-      "action": "transcribe();"
+      "type": "pulldown",
+      "id": "animate-pulldown",
+      "label": "Animate to...",
+      "options": [
+        {
+          "text": "genetic engine state",
+          "disabled": true,
+          "selected": true
+        },
+        {
+          "text": "dna (play intro)",
+          "action": "dnaAnimationTo('dna');"
+        },
+        {
+          "text": "transcription-end",
+          "action": "dnaAnimationTo('transcription-end');"
+        },
+        {
+          "text": "translation-end",
+          "action": "dnaAnimationTo('translation-end');"
+        }
+      ]
     },
     {
       "type": "button",
-      "id": "transcribe-step",
-      "text": "Transcription Step",
-      "action": "transcribeStep();"
-    },
-    {
-      "type": "button",
-      "id": "translate-step",
-      "text": "Translation Step",
-      "action": "translateStep();"
-    },
-    {
-      "type": "button",
-      "id": "translate",
-      "text": "Translate",
-      "action": "translate();"
+      "id": "next-state",
+      "text": "Animate to next state",
+      "action": "dnaNextState();"
     },
     {
       "type": "button",
@@ -107,14 +134,12 @@
   "layout": {
     "bottom": [
       ["viewport"],
-      ["state-pulldown", "reset"],
-      ["current-state"]
+      ["current-state", "reset"]
     ],
     "right": [
-      ["transcribe-step"],
-      ["transcribe"],
-      ["translate-step"],
-      ["translate"]
+      ["state-pulldown"],
+      ["animate-pulldown"],
+      ["next-state"]
     ]
   }
 }

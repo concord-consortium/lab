@@ -26,27 +26,15 @@
     },
     {
       "type": "button",
-      "id": "intro",
-      "text": "Play DNA intro",
-      "action": "playDNAIntro();"
-    },
-    {
-      "type": "button",
       "id": "transcribe",
       "text": "Transcribe",
-      "action": "transcribe();"
+      "action": "dnaAnimationTo('transcription-end');"
     },
     {
       "type": "button",
       "id": "transcribe-step",
       "text": "Transcribe step by step",
       "action": "transcribeStep();"
-    },
-    {
-      "type": "button",
-      "id": "separate",
-      "text": "Separate the strands of DNA",
-      "action": "separateDNA();"
     },
     {
       "type": "button",
@@ -81,8 +69,8 @@
   ],
   "layout": {
     "bottom": [
-      ["edit-dna", "reset", "intro", "transcribe", "transcribe-step"],
-      ["separate", "transcribeA", "transcribeU", "transcribeG", "transcribeC"]
+      ["edit-dna", "reset", "transcribe", "transcribe-step"],
+      ["transcribeA", "transcribeU", "transcribeG", "transcribeC"]
     ]
   }
 }

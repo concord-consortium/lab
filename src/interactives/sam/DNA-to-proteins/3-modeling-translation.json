@@ -23,13 +23,13 @@
       "type": "button",
       "id": "translate-step",
       "text": "Translate step by step",
-      "action": "translateStep();"
+      "action": "dnaNextState();"
     },
     {
       "type": "button",
       "id": "translate",
       "text": "Translate",
-      "action": "translate();"
+      "action": "dnaAnimationTo('translation-end');"
     },
     {
       "type": "button",
