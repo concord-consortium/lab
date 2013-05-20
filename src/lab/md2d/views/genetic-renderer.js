@@ -806,7 +806,8 @@ define(function (require) {
   };
 
   GeneticRenderer.prototype.prepareForTranslation = function () {
-    var cx  = this.model2px(5 * 0.5 - 2 * nucleotides.WIDTH),
+    var cx = this.model2px(5 * 0.5 - 2 * nucleotides.WIDTH),
+        vx = this.model2px((this.model.get("viewPortX") + 0.5 * this.model.get("viewPortWidth"))),
         cy = this.model2pxInv(3 * 0.5),
         self = this,
         t;
@@ -831,7 +832,7 @@ define(function (require) {
       "width": this.model2px(W.POLY_UNDER),
       "height": this.model2px(H.POLY_UNDER),
       "preserveAspectRatio": "none",
-      "transform": "translate(" + cx + ", " + cy + ") scale(2.5)",
+      "transform": "translate(" + vx + ", " + cy + ") scale(2.5)",
       "xlink:href": "resources/dna/Polymerase_Under.svg"
     }).style("opacity", 0);
 
@@ -842,7 +843,7 @@ define(function (require) {
       "width": this.model2px(W.POLY_OVER),
       "height": this.model2px(H.POLY_OVER),
       "preserveAspectRatio": "none",
-      "transform": "translate(" + cx + ", " + cy + ") scale(2.5)",
+      "transform": "translate(" + vx + ", " + cy + ") scale(2.5)",
       "xlink:href": "resources/dna/Polymerase_Over.svg"
     }).style("opacity", 0);
 
@@ -853,22 +854,34 @@ define(function (require) {
     this._g.selectAll(".ribosome-under, .ribosome-over").style("opacity", 0);
     this._g.selectAll(".ribosome-top, .ribosome-bottom").style("opacity", 1);
 
-    t = this._nextTrans().ease("cubic-in-out").duration(1500);
-    this._scrollContainer(false, -2, "cubic-in-out");
-
     this._nextTrans().ease("cubic-in-out").duration(700)
       .selectAll(".polymerase-under, .polymerase-over")
         .style("opacity", 1);
 
-    // Show nucleus and set background for translation.
+    // Show nucleus image and set appropriate background.
+    this._currentTrans.each("end", function () {
+      d3.select(".genetics .nucleus").style("opacity", 1);
+      d3.select(".plot").style("fill", "#8492ef");
+    });
+
+    t = this._nextTrans().ease("cubic-in-out").duration(1000)
+    t.selectAll(".polymerase-under, .polymerase-over")
+      .attr("transform", "translate(" + vx + ", " + cy + ") scale(1.4)");
+    t.select(".polymerase-over")
+      .style("opacity", 0);
+
+    this._nextTrans().ease("cubic-in-out").duration(1500)
+      .selectAll(".polymerase-under, .polymerase-over")
+        .attr("transform", "translate(" + (vx + this.model2px(5)) + ", " + (cy - this.model2px(2)) + ") scale(0.7)");
+
+    t = this._nextTrans().ease("cubic-in-out").duration(1500);
+    this._scrollContainer(false, -2, "cubic-in-out");
+
+    // Set background for translation.
     this._currentTrans.each("end", function () {
       d3.select(".genetics .nucleus").style("opacity", 1);
       d3.select(".plot").style("fill", "#B8EBF0");
     });
-
-    this._nextTrans().ease("cubic-in-out").duration(1500)
-      .selectAll(".polymerase-under, .polymerase-over")
-        .attr("transform", "translate(" + this.model2px(-5) + ", " + cy + ") scale(2.5)");
 
     t = this._nextTrans().ease("cubic").duration(1000);
     t.select(".nucleus")
