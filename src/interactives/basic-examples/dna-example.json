@@ -73,6 +73,10 @@
         {
           "text": "translation:0",
           "action": "set('geneticEngineState', 'translation:0');"
+        },
+        {
+          "text": "translation:5 (!)",
+          "action": "set('geneticEngineState', 'translation:5');"
         }
       ]
     },
