@@ -16,11 +16,7 @@
 			</linearGradient>
 			<path fill-rule="evenodd" clip-rule="evenodd" fill="url(#SVGID_1_)" d="M727.9,3.35c-243.467,21.407-485.967,21.407-727.5,0H0
 				V9.1c239.388,21.401,482.538,21.401,729.45,0V3.35H727.9z"/>
-			<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="364.75" y1="-508.1377" x2="364.7005" y2="-6.9627">
-				<stop  offset="0.0078" style="stop-color:#7D8AEE"/>
-				<stop  offset="1" style="stop-color:#909EF1"/>
-			</linearGradient>
-			<path fill-rule="evenodd" clip-rule="evenodd" fill="url(#SVGID_2_)" d="M0.65,0C244.232,19.375,486.849,19.375,728.5,0h0.95
+			<path fill-rule="evenodd" clip-rule="evenodd" fill="#8492ef" d="M0.65,0C244.232,19.375,486.849,19.375,728.5,0h0.95
 				v-515.05H0V0H0.65z"/>
 		</g>
 	</g>
