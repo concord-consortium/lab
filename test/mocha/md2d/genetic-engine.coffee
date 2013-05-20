@@ -71,14 +71,20 @@ describe "GeneticEngine", ->
 
         model.get("mRNA").should.eql "AUGC"
 
+      it "shouldn't allow setting geneticEngineState to translation:x, where x > 0", ->
+        model.set "geneticEngineState", "translation:15"
+        # Expect fallback state: translation:0.
+        model.get("geneticEngineState").should.eql "translation:0"
+
       it "should provide state() helper methods", ->
+        model.set "geneticEngineState", "transcription-end"
         state = geneticEngine.state()
         state.name.should.eql "transcription-end"
         isNaN(state.step).should.be.true
 
-        model.set "geneticEngineState", "translation:15"
+        model.set "geneticEngineState", "transcription:15"
         state = geneticEngine.state()
-        state.name.should.eql "translation"
+        state.name.should.eql "transcription"
         state.step.should.eql 15
 
       it "should provide stateBefore() and stateAfter() helper methods", ->
@@ -94,13 +100,13 @@ describe "GeneticEngine", ->
         geneticEngine.stateBefore("translation:15").should.be.true
         geneticEngine.stateAfter("translation:15").should.be.false
 
-        model.set "geneticEngineState", "translation:15"
-        geneticEngine.stateBefore("translation:14").should.be.false
-        geneticEngine.stateAfter("translation:14").should.be.true
-        geneticEngine.stateBefore("translation:15").should.be.false
-        geneticEngine.stateAfter("translation:15").should.be.false
-        geneticEngine.stateBefore("translation:16").should.be.true
-        geneticEngine.stateAfter("translation:16").should.be.false
+        model.set "geneticEngineState", "transcription:15"
+        geneticEngine.stateBefore("transcription:14").should.be.false
+        geneticEngine.stateAfter("transcription:14").should.be.true
+        geneticEngine.stateBefore("transcription:15").should.be.false
+        geneticEngine.stateAfter("transcription:15").should.be.false
+        geneticEngine.stateBefore("transcription:16").should.be.true
+        geneticEngine.stateAfter("transcription:16").should.be.false
 
 
       it "should translate mRNA to amino acids sequence correctly", ->
