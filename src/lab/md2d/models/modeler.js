@@ -2062,6 +2062,14 @@ define(function(require) {
     // Setup MD2D engine object.
     initializeEngine(mainProperties);
 
+    // TODO: Elements are stored and treated different from other objects. This was enforced by
+    // createNewAtoms() method which has been removed. Change also editableElements handling.
+    editableElements = initialProperties.elements;
+    // Create editable elements.
+    model.createElements(editableElements);
+    // Create elements which specify amino acids also.
+    createAminoAcids();
+
     // ------------------------------
     // Define toplevel properties of the model
     // ------------------------------
@@ -2168,14 +2176,6 @@ define(function(require) {
 
     // Finally, if provided, set up the model objects (elements, atoms, bonds, obstacles and the rest).
     // However if these are not provided, client code can create atoms, etc piecemeal.
-
-    // TODO: Elements are stored and treated different from other objects. This was enforced by
-    // createNewAtoms() method which has been removed. Change also editableElements handling.
-    editableElements = initialProperties.elements;
-    // Create editable elements.
-    model.createElements(editableElements);
-    // Create elements which specify amino acids also.
-    createAminoAcids();
 
     // Trigger setter of polarAAEpsilon again when engine is initialized and
     // amino acids crated.
