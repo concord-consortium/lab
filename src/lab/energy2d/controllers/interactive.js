@@ -67,7 +67,7 @@ define(function (require) {
         if (typeof Lab.config.actualRoot === "undefined" || url.charAt(0) !== "/") {
           return url;
         }
-        return Lab.config.actualRoot + url;
+        return Lab.config.actualRoot + url.slice(1);
       },
 
       createEnergy2DScene = function (component_def) {
