@@ -2183,8 +2183,7 @@ define(function(require) {
     // will be injected to engine automatically.
     model.set({polarAAEpsilon: model.get('polarAAEpsilon')});
 
-    model.createAtoms(initialProperties.atoms);
-
+    if (initialProperties.atoms)        model.createAtoms(initialProperties.atoms);
     if (initialProperties.radialBonds)  model.createRadialBonds(initialProperties.radialBonds);
     if (initialProperties.angularBonds) model.createAngularBonds(initialProperties.angularBonds);
     if (initialProperties.restraints)   model.createRestraints(initialProperties.restraints);
