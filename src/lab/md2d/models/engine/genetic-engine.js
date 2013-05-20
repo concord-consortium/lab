@@ -4,6 +4,7 @@ define(function (require) {
 
   var ValidationError  = require('common/validator').ValidationError,
       aminoacidsHelper = require('cs!md2d/models/aminoacids-helper'),
+      alert            = require('common/alert'),
 
       STATES = [
         "undefined",
@@ -172,6 +173,8 @@ define(function (require) {
         },
 
         stateUpdated = function () {
+          var state;
+
           updateGeneticProperties();
 
           if (stateTransition) {
@@ -179,7 +182,17 @@ define(function (require) {
           } else {
             ongoingTransitions = [];
             removeAminoAcids();
-            dispatch.change();
+            if (api.stateBefore("translation:1")) {
+              dispatch.change();
+            } else {
+              state = model.get("geneticEngineState");
+              // It means that state was set to 'translation:x', where x > 0.
+              // Use the last safe state ('translation:0') instead.
+              alert("'" + state + "' cannot be set explicitly. " +
+                "'translation:0' should be set and then animation to '" +
+                state + "' should be triggered.");
+              model.set("geneticEngineState", "translation:0");
+            }
           }
         },
 
