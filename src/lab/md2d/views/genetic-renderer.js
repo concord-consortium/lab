@@ -914,10 +914,10 @@ define(function (require) {
       .attr("transform", "translate(0, " + this.model2pxInv(1.5 * nucleotides.HEIGHT) + ")");
 
     // Ribosome fade in.
-    t = this._nextTrans().ease("cubic-in-out").duration(600);
+    t = this._nextTrans().ease("cubic-in-out").duration(1000);
     t.select(".ribosome-bottom")
       .attr("transform", this._ribosomeBottomPos(0));
-    t = this._nextTrans().ease("cubic-in-out").duration(600);
+    t = this._nextTrans().ease("cubic-in-out").duration(1000);
     t.select(".ribosome-top")
       .attr("transform", this._ribosomeTopPos(0));
 
@@ -1098,7 +1098,7 @@ define(function (require) {
       "width": this.model2px(W.RIBO_BOTTOM),
       "height": this.model2px(H.RIBO_BOTTOM),
       "preserveAspectRatio": "none",
-      "transform": "translate(" + this.model2px(-4) + ", " + cy + ")",
+      "transform": "translate(" + this.model2px(-3) + ", " + cy + ")",
       "xlink:href": "resources/dna/Ribosome_bottom1.svg"
     }).style("opacity", 0);
 
@@ -1109,7 +1109,7 @@ define(function (require) {
       "width": this.model2px(W.RIBO_TOP),
       "height": this.model2px(H.RIBO_TOP),
       "preserveAspectRatio": "none",
-      "transform": "translate(" + this.model2px(-4) + ", " + this.model2pxInv(7) + ")",
+      "transform": "translate(" + this.model2px(-3) + ", " + this.model2pxInv(6) + ")",
       "xlink:href": "resources/dna/Ribosome_top1.svg"
     }).style("opacity", 0);
 
