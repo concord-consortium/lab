@@ -113,6 +113,25 @@ define(function (require) {
           }
         },
 
+        removeAminoAcids = function () {
+          var opt = {suppressEvent: true},
+              aaCount;
+
+          aaCount = model.get_num_atoms();
+          if (aaCount > 0) {
+            model.startBatch();
+            while(aaCount > 1) {
+              model.removeAtom(aaCount - 1, opt);
+              aaCount--;
+            }
+            // Remove the last one atom and make sure that events are dispatched!
+            // TODO: Should events be automatically suppressed during batch
+            // execution and then merged and dispatched during .endBatch() call?
+            model.removeAtom(0);
+            model.endBatch();
+          }
+        },
+
         stateEq = function (name) {
           return model.get("geneticEngineState") === name;
         },
@@ -159,6 +178,7 @@ define(function (require) {
             dispatch.transition();
           } else {
             ongoingTransitions = [];
+            removeAminoAcids();
             dispatch.change();
           }
         },
