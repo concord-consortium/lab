@@ -847,7 +847,7 @@ define(function() {
               notify(key);
             }
             set(key, values[key]);
-            if (info.invokeSetterAfterBulkRestore && info.descriptor.set) {
+            if (info.descriptor.invokeSetterAfterBulkRestore && info.descriptor.set) {
               info.descriptor.set(get(key));
             }
           });
