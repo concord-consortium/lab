@@ -16,6 +16,8 @@ define(function (require) {
         "dna",
         "transcription",
         "transcription-end",
+        "after-transcription",
+        "before-translation",
         "translation",
         "translation-end"
       ],
