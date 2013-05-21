@@ -590,52 +590,7 @@ define(function (require) {
   };
 
   GeneticRenderer.prototype._renderTranscriptionEnd = function () {
-    var cx = this.model2px(5 * 0.5 - 2 * nucleotides.WIDTH),
-        vx = this.model2px((this.model.get("viewPortX") + 0.5 * this.model.get("viewPortWidth"))),
-        cy = this.model2pxInv(3 * 0.5);
-
     this._renderTranscription(this.model.get("mRNA").length);
-
-    // Nucleus.
-    this._g.insert("image", ".dna-view").attr({
-      "class": "nucleus",
-      "x": this.model2px(W.NUCLEUS * -0.5),
-      "y": this.model2px(H.NUCLEUS * -0.5),
-      "width": this.model2px(W.NUCLEUS),
-      "height": this.model2px(H.NUCLEUS),
-      "preserveAspectRatio": "none",
-      "transform": "translate(" + cx + ", " + cy + ")",
-      "xlink:href": "resources/dna/BG_Nucleus.svg"
-    }).style("opacity", 0);
-
-    // Polymerase.
-    this._g.insert("image", ".dna-view").attr({
-      "class": "polymerase-under",
-      "x": this.model2px(W.POLY_UNDER * -0.5),
-      "y": this.model2px(H.POLY_UNDER * -0.5),
-      "width": this.model2px(W.POLY_UNDER),
-      "height": this.model2px(H.POLY_UNDER),
-      "preserveAspectRatio": "none",
-      "transform": "translate(" + vx + ", " + cy + ") scale(2.5)",
-      "xlink:href": "resources/dna/Polymerase_Under.svg"
-    }).style("opacity", 0);
-
-    this._g.append("image").attr({
-      "class": "polymerase-over",
-      "x": this.model2px(W.POLY_OVER * -0.5),
-      "y": this.model2px(H.POLY_OVER * -0.5),
-      "width": this.model2px(W.POLY_OVER),
-      "height": this.model2px(H.POLY_OVER),
-      "preserveAspectRatio": "none",
-      "transform": "translate(" + vx + ", " + cy + ") scale(2.5)",
-      "xlink:href": "resources/dna/Polymerase_Over.svg"
-    }).style("opacity", 0);
-
-    // Ribosome (top-bottom and under-over).
-    this._appendRibosome();
-
-    // Hide under-over version.
-    this._g.selectAll(".ribosome-under, .ribosome-over").style("opacity", 0);
   };
 
   GeneticRenderer.prototype._renderAfterTranscription = function () {
@@ -646,6 +601,12 @@ define(function (require) {
   GeneticRenderer.prototype._showPolymerase = function (suppressAnimation) {
     var t = suppressAnimation ? this._g : this._nextTrans().ease("cubic-in-out").duration(700),
         self = this;
+
+    this._appendNucleusAndPolymerase();
+    // Ribosome (top-bottom and under-over).
+    this._appendRibosome();
+    // Hide under-over version.
+    this._g.selectAll(".ribosome-under, .ribosome-over").style("opacity", 0);
 
     t.selectAll(".polymerase-under, .polymerase-over")
       .style("opacity", 1);
@@ -865,8 +826,7 @@ define(function (require) {
   };
 
   GeneticRenderer.prototype.transcribeStep = function (step) {
-    var DNALen  = this.model.get("DNA").length, // complete mRNA length
-        mRNA    = this.model.get("mRNA"),
+    var mRNA    = this.model.get("mRNA"),
         trans   = this._nextTrans().duration(500),
         self = this,
         t, r;
@@ -896,14 +856,6 @@ define(function (require) {
       .style("opacity", 1);
 
     this._scrollContainer();
-
-    if (step === DNALen) {
-      console.log("lol!");
-      // Last transcription step.
-      trans.each("end", function () {
-        self.render();
-      });
-    }
   };
 
   GeneticRenderer.prototype.prepareForTranslation = function () {
@@ -1164,6 +1116,46 @@ define(function (require) {
    * used both during static rendering or transition.
    * Sometimes they accept suppressAnimation argument.
    */
+
+  GeneticRenderer.prototype._appendNucleusAndPolymerase = function () {
+    var cx = this.model2px(5 * 0.5 - 2 * nucleotides.WIDTH),
+        vx = this.model2px((this.model.get("viewPortX") + 0.5 * this.model.get("viewPortWidth"))),
+        cy = this.model2pxInv(3 * 0.5);
+    // Nucleus.
+    this._g.insert("image", ".dna-view").attr({
+      "class": "nucleus",
+      "x": this.model2px(W.NUCLEUS * -0.5),
+      "y": this.model2px(H.NUCLEUS * -0.5),
+      "width": this.model2px(W.NUCLEUS),
+      "height": this.model2px(H.NUCLEUS),
+      "preserveAspectRatio": "none",
+      "transform": "translate(" + cx + ", " + cy + ")",
+      "xlink:href": "resources/dna/BG_Nucleus.svg"
+    }).style("opacity", 0);
+
+    // Polymerase.
+    this._g.insert("image", ".dna-view").attr({
+      "class": "polymerase-under",
+      "x": this.model2px(W.POLY_UNDER * -0.5),
+      "y": this.model2px(H.POLY_UNDER * -0.5),
+      "width": this.model2px(W.POLY_UNDER),
+      "height": this.model2px(H.POLY_UNDER),
+      "preserveAspectRatio": "none",
+      "transform": "translate(" + vx + ", " + cy + ") scale(2.5)",
+      "xlink:href": "resources/dna/Polymerase_Under.svg"
+    }).style("opacity", 0);
+
+    this._g.append("image").attr({
+      "class": "polymerase-over",
+      "x": this.model2px(W.POLY_OVER * -0.5),
+      "y": this.model2px(H.POLY_OVER * -0.5),
+      "width": this.model2px(W.POLY_OVER),
+      "height": this.model2px(H.POLY_OVER),
+      "preserveAspectRatio": "none",
+      "transform": "translate(" + vx + ", " + cy + ") scale(2.5)",
+      "xlink:href": "resources/dna/Polymerase_Over.svg"
+    }).style("opacity", 0);
+  };
 
   GeneticRenderer.prototype._appendRibosome = function () {
     var cy = this.model2pxInv(this.model.get("viewPortHeight") * 0.5);
