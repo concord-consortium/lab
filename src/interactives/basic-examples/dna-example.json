@@ -120,6 +120,12 @@
     },
     {
       "type": "button",
+      "id": "next-state-jump",
+      "text": "Jump to next state",
+      "action": "dnaJumpToNextState();"
+    },
+    {
+      "type": "button",
       "id": "reset",
       "text": "Reset",
       "action": "reset();"
@@ -151,7 +157,8 @@
     "right": [
       ["state-pulldown"],
       ["animate-pulldown"],
-      ["next-state"]
+      ["next-state"],
+      ["next-state-jump"]
     ]
   }
 }

@@ -457,8 +457,15 @@ define(function (require) {
       /**
        * Triggers animation to the next genetic engine state.
        */
-      dnaNextState: function geneticEngineNextState() {
+      dnaNextState: function dnaNextState() {
         model.geneticEngine().transitionToNextState();
+      },
+
+      /**
+       * Jumps to the next genetic engine state.
+       */
+      dnaJumpToNextState: function dnaJumpToNextState() {
+        model.geneticEngine().jumpToNextState();
       },
 
       /**
@@ -467,7 +474,7 @@ define(function (require) {
        *
        * @param  {string} stateName name of the state.
        */
-      dnaAnimationTo: function dnaTransitionToState(stateName) {
+      dnaAnimationTo: function dnaAnimationTo(stateName) {
         model.geneticEngine().transitionTo(stateName);
       },
 
