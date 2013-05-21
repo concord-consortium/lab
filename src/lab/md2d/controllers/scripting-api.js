@@ -469,6 +469,13 @@ define(function (require) {
       },
 
       /**
+       * Jumps to the next genetic engine state.
+       */
+      dnaJumpToPrevState: function dnaJumpToPrevState() {
+        model.geneticEngine().jumpToPrevState();
+      },
+
+      /**
        * Triggers animation to the given genetic engine state.
        * e.g. dnaAnimationTo("transcription-end")
        *
