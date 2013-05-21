@@ -432,22 +432,6 @@ define(function (require) {
       },
 
       /**
-        Sets genetic properties using human-readable hash.
-        e.g. setGeneticProperties({ DNA: "ATCG" })
-      */
-      setGeneticProperties: function setGeneticProperties(props) {
-        model.geneticEngine().set(props);
-      },
-
-      /**
-        Returns genetic properties as a human-readable hash.
-        e.g. geneticEngine() --> {DNA: "ATCG", DNAComplement: "TAGC", x: 0.01, y: 0.01, height: 0.12}
-      */
-      geneticEngine: function geneticEngine() {
-        return model.geneticEngine().get();
-      },
-
-      /**
         Opens DNA properties dialog, which allows to set DNA code.
       */
       openDNADialog: function showDNADialog() {
@@ -455,14 +439,11 @@ define(function (require) {
       },
 
       /**
-       * Triggers animation to the next genetic engine state.
-       */
-      dnaNextState: function dnaNextState() {
-        model.geneticEngine().transitionToNextState();
-      },
-
-      /**
        * Jumps to the next genetic engine state.
+       *
+       * Note that jumping between translation states is not supported!
+       * Please use dnaAnimateToNextState if you need to change state
+       * from translation:x to translation:x+1.
        */
       dnaJumpToNextState: function dnaJumpToNextState() {
         model.geneticEngine().jumpToNextState();
@@ -470,9 +451,24 @@ define(function (require) {
 
       /**
        * Jumps to the next genetic engine state.
+       *
+       * Note that jumping between translation states is not supported!
+       * When current state is translation:x, where x > 0, this functions
+       * will cause jump to translation:0 state.
        */
       dnaJumpToPrevState: function dnaJumpToPrevState() {
         model.geneticEngine().jumpToPrevState();
+      },
+
+      /**
+       * Triggers animation to the next genetic engine state.
+       *
+       * Note that this is the only possible way to change state
+       * from translation:x to translation:x+1. Jumping between
+       * translation states is not supported!
+       */
+      dnaAnimateToNextState: function dnaAnimateToNextState() {
+        model.geneticEngine().transitionToNextState();
       },
 
       /**

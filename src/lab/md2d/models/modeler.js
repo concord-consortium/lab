@@ -1694,76 +1694,6 @@ define(function(require) {
       return generatedAACount;
     };
 
-    model.extendProtein = function (xPos, yPos, aaAbbr) {
-      invalidatingChangePreHook();
-
-      engine.extendProtein(xPos, yPos, aaAbbr);
-      // Enforce modeler to recalculate viewAtoms array.
-      // TODO: it's a workaround, investigate the problem.
-      viewAtoms.length = 0;
-
-      invalidatingChangePostHook();
-
-      dispatch.addAtom();
-    };
-
-    /**
-      Performs only one step of translation.
-
-      Returns true when translation is finished, false otherwise.
-    */
-    model.translateStepByStep = function () {
-      var abbr = engine.geneticProperties.translateStepByStep(),
-          markerPos = engine.geneticProperties.get().translationStep,
-          symbolHeight = engine.geneticProperties.get().height,
-          symbolWidth = engine.geneticProperties.get().width,
-          xPos = symbolWidth * markerPos * 3 + 1.5 * symbolWidth,
-          yPos = symbolHeight * 5,
-          width = model.get("width"),
-          height = model.get("height"),
-          lastAA;
-
-      while (xPos > width) {
-        xPos -= symbolWidth * 3;
-      }
-      while (yPos > height) {
-        yPos -= symbolHeight;
-      }
-
-      if (abbr !== undefined) {
-        model.extendProtein(xPos, yPos, abbr);
-      } else {
-        lastAA = model.get_num_atoms() - 1;
-        model.setAtomProperties(lastAA, {pinned: false});
-      }
-
-      // That means that the last step of translation has just been performed.
-      return abbr === undefined;
-    };
-
-    model.animateTranslation = function () {
-      var translationStep = function () {
-            var lastStep = model.translateStepByStep();
-            if (lastStep === false) {
-              setTimeout(translationStep, 1000);
-            }
-          };
-
-      // Avoid two timers running at the same time.
-      if (translationAnimInProgress === true) {
-        return;
-      }
-      translationAnimInProgress = true;
-
-      // If model is stopped, play it.
-      if (stopped) {
-        model.resume();
-      }
-
-      // Start the animation.
-      translationStep();
-    };
-
     model.start = function() {
       if (!stopped) return model;
       return model.resume();
@@ -2017,6 +1947,8 @@ define(function(require) {
       // Overwrite width and height options.
       initialProperties.width = 100;
       initialProperties.height = 10;
+      // View options are optional, make sure that they are defined.
+      initialProperties.viewOptions = initialProperties.viewOptions || {};
       initialProperties.viewOptions.viewPortX = 0;
       initialProperties.viewOptions.viewPortY = 0;
       initialProperties.viewOptions.viewPortWidth = 5;

@@ -544,49 +544,6 @@ define(function (require) {
 
       terminatorSequence: TERMINATOR_SEQ,
       terminatorCompSequence: complementarySequence(TERMINATOR_SEQ)
-
-      /*
-      Depreciated.
-      Translates mRNA into amino acids chain.
-      translate: function() {
-        var result = [],
-            mRNA, abbr, i, len;
-
-        // Make sure that complete mRNA is available.
-        if (!mRNAComplete()) {
-          api.transcribe();
-        }
-        mRNA = model.get("mRNA");
-
-        for (i = 0, len = mRNA.length; i + 3 <= len; i += 3) {
-          abbr = aminoacidsHelper.codonToAbbr(mRNA.substr(i, 3));
-          if (abbr === "STOP" || abbr === undefined) {
-            return result;
-          }
-          result.push(abbr);
-        }
-
-        return result;
-      }
-
-      Depreciated.
-      translateStepByStep: function() {
-        var aaSequence, aaAbbr;
-
-        aaSequence = api.translate();
-        if (data.translationStep === undefined) {
-          data.translationStep = 0;
-        } else {
-          data.translationStep += 1;
-        }
-        aaAbbr = aaSequence[data.translationStep];
-        if (aaAbbr === undefined) {
-          data.translationStep = "end";
-        }
-
-        return aaAbbr;
-      }
-      */
     };
 
     model.addPropertiesListener(["DNA"], DNAUpdated);

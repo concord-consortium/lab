@@ -116,7 +116,7 @@
       "type": "button",
       "id": "next-state",
       "text": "Animate to next state",
-      "action": "dnaNextState();"
+      "action": "dnaAnimateToNextState();"
     },
     {
       "type": "button",
