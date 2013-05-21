@@ -135,6 +135,33 @@ define(function (require) {
           }
         },
 
+        nextState = function (state) {
+          var name = state.name,
+              next, abbr;
+
+          if (name === "transcription") {
+            if (state.step < model.get("DNA").length - 1) {
+              return "transcription:" + (state.step + 1);
+            } else {
+              return "transcription-end";
+            }
+          } else if (name === "translation") {
+            abbr = aminoacidsHelper.codonToAbbr(api.codon(state.step));
+            if (abbr !== "STOP") {
+              return "translation:" + (state.step + 1);
+            } else {
+              return "translation-end";
+            }
+          } else {
+            // "Typical" state.
+            next = STATES[STATE_INDEX[state.name] + 1];
+            if (next === "transcription" || next === "translation") {
+              next += ":0";
+            }
+            return next;
+          }
+        },
+
         stateEq = function (name) {
           return model.get("geneticEngineState") === name;
         },
@@ -237,28 +264,12 @@ define(function (require) {
        * Triggers transition to the next genetic engine state.
        */
       transitionToNextState: function () {
-        var state = api.lastState(),
-            name = state.name,
-            abbr, next, idx;
+        transitionToState(nextState(api.lastState()));
+      },
 
-        if (name === "transcription") {
-          api.transcribeStep();
-        } else if (name === "translation") {
-          abbr = aminoacidsHelper.codonToAbbr(api.codon(state.step));
-          if (abbr !== "STOP") {
-            transitionToState("translation:" + (state.step + 1));
-          } else {
-            transitionToState("translation-end");
-          }
-        } else {
-          idx = STATE_INDEX[name];
-          next = STATES[idx + 1];
-          if (next) {
-            if (next === "transcription" || next === "translation") {
-              next += ":0";
-            }
-            transitionToState(next);
-          }
+      jumpToNextState: function () {
+        if (api.stateBefore("translation:0")) {
+          model.set("geneticEngineState", nextState(api.state()));
         }
       },
 
@@ -289,8 +300,7 @@ define(function (require) {
        * @param  {string} expectedNucleotide code of the expected nucleotide ("U", "C", "A" or "G").
        */
       transcribeStep: function (expectedNucleotide) {
-        var DNA = model.get("DNA"),
-            state, newCode;
+        var state, newCode;
 
         if (stateEq("dna")) {
           api.transitionToNextState();
@@ -303,14 +313,7 @@ define(function (require) {
             // Expected nucleotide is wrong, so simply do nothing.
             return;
           }
-          // Check if new code is different from null.
-          if (newCode) {
-            if (state.step < DNA.length - 1) {
-              transitionToState("transcription:" + (state.step + 1));
-            } else {
-              transitionToState("transcription-end");
-            }
-          }
+          api.transitionToNextState();
         }
       },
 
