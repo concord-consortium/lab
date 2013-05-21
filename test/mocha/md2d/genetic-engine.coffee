@@ -76,6 +76,37 @@ describe "GeneticEngine", ->
         # Expect fallback state: translation:0.
         model.get("geneticEngineState").should.eql "translation:0"
 
+      it "should allow jumping to the next state", ->
+        model.set "DNA", "ATGC" # so transcription and translation will be short
+        model.set "geneticEngineState", "intro-cells"
+        geneticEngine.jumpToNextState()
+        model.get("geneticEngineState").should.eql "intro-zoom1"
+        geneticEngine.jumpToNextState()
+        model.get("geneticEngineState").should.eql "intro-zoom2"
+        geneticEngine.jumpToNextState()
+        model.get("geneticEngineState").should.eql "intro-zoom3"
+        geneticEngine.jumpToNextState()
+        model.get("geneticEngineState").should.eql "intro-polymerase"
+        geneticEngine.jumpToNextState()
+        model.get("geneticEngineState").should.eql "dna"
+        geneticEngine.jumpToNextState()
+        model.get("geneticEngineState").should.eql "transcription:0"
+        geneticEngine.jumpToNextState()
+        model.get("geneticEngineState").should.eql "transcription:1"
+        geneticEngine.jumpToNextState()
+        model.get("geneticEngineState").should.eql "transcription:2"
+        geneticEngine.jumpToNextState()
+        model.get("geneticEngineState").should.eql "transcription:3"
+        geneticEngine.jumpToNextState()
+        model.get("geneticEngineState").should.eql "transcription-end"
+        geneticEngine.jumpToNextState()
+        model.get("geneticEngineState").should.eql "after-transcription"
+        geneticEngine.jumpToNextState()
+        model.get("geneticEngineState").should.eql "before-translation"
+        geneticEngine.jumpToNextState()
+        model.get("geneticEngineState").should.eql "translation:0"
+        # and that's all, for now it isn't permitted to jump to translation:x, where x > 0.
+
       it "should provide state() helper methods", ->
         model.set "geneticEngineState", "transcription-end"
         state = geneticEngine.state()
