@@ -71,6 +71,14 @@
           "action": "set('geneticEngineState', 'transcription-end');"
         },
         {
+          "text": "after-transcription",
+          "action": "set('geneticEngineState', 'after-transcription');"
+        },
+        {
+          "text": "before-translation",
+          "action": "set('geneticEngineState', 'before-translation');"
+        },
+        {
           "text": "translation:0",
           "action": "set('geneticEngineState', 'translation:0');"
         },
