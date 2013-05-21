@@ -162,6 +162,24 @@ define(function (require) {
           }
         },
 
+        prevState = function (state) {
+          var name = state.name,
+              step = state.step;
+
+          if (name === "transcription" && step > 0) {
+            return "transcription:" + (step - 1);
+          } else if (name === "transcription-end") {
+            return "transcription:" + (model.get("DNA").length - 1);
+          } else if (name === "translation" && step > 0) {
+            // Note that we always return state translation:0,
+            // as jumping between translation steps is not allowed.
+            return "translation:0";
+          } else {
+            return STATES[STATE_INDEX[name] - 1];
+          }
+        },
+
+
         stateEq = function (name) {
           return model.get("geneticEngineState") === name;
         },
@@ -270,6 +288,12 @@ define(function (require) {
       jumpToNextState: function () {
         if (api.stateBefore("translation:0")) {
           model.set("geneticEngineState", nextState(api.state()));
+        }
+      },
+
+      jumpToPrevState: function () {
+        if (api.stateAfter("intro-cells")) {
+          model.set("geneticEngineState", prevState(api.state()));
         }
       },
 

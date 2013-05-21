@@ -107,6 +107,45 @@ describe "GeneticEngine", ->
         model.get("geneticEngineState").should.eql "translation:0"
         # and that's all, for now it isn't permitted to jump to translation:x, where x > 0.
 
+      it "should allow jumping to the previous state", ->
+        # make things more interesting and start from translation-end
+        geneticEngine.transitionToNextState();
+        model.get("geneticEngineState").should.eql "translation:1"
+        geneticEngine.transitionToNextState();
+        model.get("geneticEngineState").should.eql "translation-end"
+
+        geneticEngine.jumpToPrevState();
+        model.get("geneticEngineState").should.eql "translation:0"
+        geneticEngine.jumpToPrevState();
+        model.get("geneticEngineState").should.eql "before-translation"
+        geneticEngine.jumpToPrevState();
+        model.get("geneticEngineState").should.eql "after-transcription"
+        geneticEngine.jumpToPrevState();
+        model.get("geneticEngineState").should.eql "transcription-end"
+        geneticEngine.jumpToPrevState();
+        model.get("geneticEngineState").should.eql "transcription:3"
+        geneticEngine.jumpToPrevState();
+        model.get("geneticEngineState").should.eql "transcription:2"
+        geneticEngine.jumpToPrevState();
+        model.get("geneticEngineState").should.eql "transcription:1"
+        geneticEngine.jumpToPrevState();
+        model.get("geneticEngineState").should.eql "transcription:0"
+        geneticEngine.jumpToPrevState();
+        model.get("geneticEngineState").should.eql "dna"
+        geneticEngine.jumpToPrevState();
+        model.get("geneticEngineState").should.eql "intro-polymerase"
+        geneticEngine.jumpToPrevState();
+        model.get("geneticEngineState").should.eql "intro-zoom3"
+        geneticEngine.jumpToPrevState();
+        model.get("geneticEngineState").should.eql "intro-zoom2"
+        geneticEngine.jumpToPrevState();
+        model.get("geneticEngineState").should.eql "intro-zoom1"
+        geneticEngine.jumpToPrevState();
+        model.get("geneticEngineState").should.eql "intro-cells"
+        # make sure that this won't break anything:
+        geneticEngine.jumpToPrevState();
+        model.get("geneticEngineState").should.eql "intro-cells"
+
       it "should provide state() helper methods", ->
         model.set "geneticEngineState", "transcription-end"
         state = geneticEngine.state()
