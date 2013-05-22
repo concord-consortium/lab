@@ -118,7 +118,7 @@ define(function (require) {
           var opt = {suppressEvent: true},
               aaCount;
 
-          aaCount = model.get_num_atoms();
+          aaCount = model.getNumberOfAtoms();
           if (aaCount > 0) {
             model.startBatch();
             while(aaCount > 1) {
@@ -460,7 +460,7 @@ define(function (require) {
       },
 
       translationCompleted: function () {
-        var atomsCount = model.get_num_atoms();
+        var atomsCount = model.getNumberOfAtoms();
         if (atomsCount > 0) {
           // Unpin the last atom. Note that sometimes translation
           // can end without any atom.
@@ -505,7 +505,7 @@ define(function (require) {
         var totalMass = 0,
             xcm = 0,
             ycm = 0,
-            len = model.get_num_atoms(),
+            len = model.getNumberOfAtoms(),
             atom, i;
 
         if (len === 0) {
@@ -514,7 +514,7 @@ define(function (require) {
 
         // Note that there is a strong asumption that there are *only* amino
         // acids in the model.
-        for (i = 0, len = model.get_num_atoms(); i < len; i++) {
+        for (i = 0, len = model.getNumberOfAtoms(); i < len; i++) {
           atom = model.getAtomProperties(i);
           xcm += atom.x * atom.mass;
           ycm += atom.y * atom.mass;

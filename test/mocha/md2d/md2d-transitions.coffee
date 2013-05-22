@@ -24,7 +24,7 @@ describe "AtomTransition", ->
       model = new Model {}
       # Add atom.
       model.addAtom {x: 1, y: 1}
-      model.get_num_atoms().should.eql 1
+      model.getNumberOfAtoms().should.eql 1
       t = new AtomTransition model
       t.id(0).ease("linear").duration(800).prop("x", 9)
 

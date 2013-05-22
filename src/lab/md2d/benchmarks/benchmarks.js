@@ -20,7 +20,7 @@ define(function (require) {
         name: "atoms",
         numeric: true,
         run: function(done) {
-          done(model.get_num_atoms());
+          done(model.getNumberOfAtoms());
         }
       },
       {

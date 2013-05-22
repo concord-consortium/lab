@@ -1568,7 +1568,7 @@ AUTHORING = false;
         datarows = add_data_rows(atoms.length);
       }
       if (reset) {
-        datarows = add_data_rows(model.get_num_atoms());
+        datarows = add_data_rows(model.getNumberOfAtoms());
       }
       i = -1; while (++i < atoms.length) {
         add_molecule_data(i);

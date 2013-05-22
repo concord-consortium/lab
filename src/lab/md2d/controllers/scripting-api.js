@@ -24,7 +24,7 @@ define(function (require) {
     return {
       /* Returns number of atoms in the system. */
       getNumberOfAtoms: function getNumberOfAtoms(f) {
-        return model.get_num_atoms(f);
+        return model.getNumberOfAtoms(f);
       },
 
       /* Returns number of obstacles in the system. */
@@ -120,7 +120,7 @@ define(function (require) {
 
       /** returns a list of integers corresponding to atoms in the system */
       randomAtoms: function randomAtoms(n) {
-        var numAtoms = model.get_num_atoms();
+        var numAtoms = model.getNumberOfAtoms();
 
         if (n === null) n = 1 + api.randomInteger(numAtoms-1);
 
@@ -145,7 +145,7 @@ define(function (require) {
         var result = [],
             props, dist, i, len;
 
-        for (i = 0, len = model.get_num_atoms(); i < len; i++) {
+        for (i = 0, len = model.getNumberOfAtoms(); i < len; i++) {
           props = model.getAtomProperties(i);
           if (typeof element !== 'undefined' && props.element !== element) continue;
           dist = Math.sqrt(Math.pow(x - props.x, 2) + Math.pow(y - props.y, 2));
@@ -172,7 +172,7 @@ define(function (require) {
         var result = [],
             props, dist, inX, inY, i, len;
 
-        for (i = 0, len = model.get_num_atoms(); i < len; i++) {
+        for (i = 0, len = model.getNumberOfAtoms(); i < len; i++) {
           props = model.getAtomProperties(i);
           if (typeof element !== 'undefined' && props.element !== element) continue;
           if (typeof h === 'undefined') {
@@ -228,7 +228,7 @@ define(function (require) {
           return ((u >= 0) && (v >= 0) && (u + v < 1));
         }
 
-        for (i = 0, len = model.get_num_atoms(); i < len; i++) {
+        for (i = 0, len = model.getNumberOfAtoms(); i < len; i++) {
           props = model.getAtomProperties(i);
           if (typeof element !== 'undefined' && props.element !== element) continue;
           if (isInTriangle(props.x, props.y)) {
@@ -265,7 +265,7 @@ define(function (require) {
       },
 
       unmarkAllAtoms: function unmarkAllAtoms() {
-        for (var i = 0, len = model.get_num_atoms(); i < len; i++) {
+        for (var i = 0, len = model.getNumberOfAtoms(); i < len; i++) {
           model.setAtomProperties(i, {marked: 0});
         }
         api.repaintIfReady();

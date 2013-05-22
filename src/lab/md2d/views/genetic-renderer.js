@@ -1051,7 +1051,7 @@ define(function (require) {
 
   GeneticRenderer.prototype.finishTranslation = function () {
     var geneticEngine = this.model.geneticEngine(),
-        aaCount = this.model.get_num_atoms(),
+        aaCount = this.model.getNumberOfAtoms(),
         dnaLen = this.model.get("DNA").length,
         self = this,
         cm, viewBox, t;

@@ -20,7 +20,7 @@ describe "MD2D modeler", ->
 
     model.createAtoms data
 
-    model.get_num_atoms().should.equal 2
+    model.getNumberOfAtoms().should.equal 2
     atomData = model.getAtomProperties 0
     atomData.x.should.equal data.x[0]
     atomData.y.should.equal data.y[0]
@@ -39,7 +39,7 @@ describe "MD2D modeler", ->
 
         model.addAtom data
 
-        model.get_num_atoms().should.equal 1
+        model.getNumberOfAtoms().should.equal 1
         atomData = model.getAtomProperties 0
         atomData.x.should.equal data.x
         atomData.y.should.equal data.y
@@ -57,7 +57,7 @@ describe "MD2D modeler", ->
         # No y coordinate provided!
         # It is a required parameter, see metadata.
         (-> model.addAtom x: 1).should.throw()
-        model.get_num_atoms().should.equal 0
+        model.getNumberOfAtoms().should.equal 0
 
   describe "when removeAtom() is called", ->
 
@@ -68,17 +68,17 @@ describe "MD2D modeler", ->
 
     describe "and provided index matches some atom", ->
       it "should remove it", ->
-        model.get_num_atoms().should.equal 3
+        model.getNumberOfAtoms().should.equal 3
         model.removeAtom 0
-        model.get_num_atoms().should.equal 2
+        model.getNumberOfAtoms().should.equal 2
         model.removeAtom 0
-        model.get_num_atoms().should.equal 1
+        model.getNumberOfAtoms().should.equal 1
         model.removeAtom 0
-        model.get_num_atoms().should.equal 0
+        model.getNumberOfAtoms().should.equal 0
 
       it "should shift other, remaining atom properties", ->
         model.removeAtom 1
-        model.get_num_atoms().should.equal 2
+        model.getNumberOfAtoms().should.equal 2
         # Remaining obstacles.
         model.getAtomProperties(0).x.should.equal 1
         model.getAtomProperties(0).y.should.equal 1
@@ -104,12 +104,12 @@ describe "MD2D modeler", ->
           model.addRadialBond atom1: 1, atom2: 2, length: 2, strength: 2
 
         it "should also remove them", ->
-          model.get_num_atoms().should.equal 3
+          model.getNumberOfAtoms().should.equal 3
           model.getNumberOfRadialBonds().should.equal 2
 
           model.removeAtom 0
 
-          model.get_num_atoms().should.equal 2
+          model.getNumberOfAtoms().should.equal 2
           model.getNumberOfRadialBonds().should.equal 1
 
           # Note that indices of atoms should be shifter already.
@@ -120,7 +120,7 @@ describe "MD2D modeler", ->
 
           model.removeAtom 0
 
-          model.get_num_atoms().should.equal 1
+          model.getNumberOfAtoms().should.equal 1
           model.getNumberOfRadialBonds().should.equal 0
 
         it "should also trigger 'removeRadialBond' event", ->
@@ -158,7 +158,7 @@ describe "MD2D modeler", ->
             # just correct behavior while adding and removing atoms.
 
           it "should also remove them", ->
-              model.get_num_atoms().should.equal 5
+              model.getNumberOfAtoms().should.equal 5
               model.getNumberOfRadialBonds().should.equal 4
               model.getNumberOfAngularBonds().should.equal 2
 
@@ -170,7 +170,7 @@ describe "MD2D modeler", ->
               #   \
               #    1
 
-              model.get_num_atoms().should.equal 4
+              model.getNumberOfAtoms().should.equal 4
               model.getNumberOfRadialBonds().should.equal 3
               model.getNumberOfAngularBonds().should.equal 1
 
@@ -204,7 +204,7 @@ describe "MD2D modeler", ->
               #
               #    0
 
-              model.get_num_atoms().should.equal 3
+              model.getNumberOfAtoms().should.equal 3
               model.getNumberOfRadialBonds().should.equal 1
               model.getNumberOfAngularBonds().should.equal 0
 
@@ -245,5 +245,5 @@ describe "MD2D modeler", ->
         model.removeAtom 0
         model.removeAtom 0
         model.removeAtom 0
-        model.get_num_atoms().should.equal 0
+        model.getNumberOfAtoms().should.equal 0
         (-> model.removeAtom 0).should.throw()

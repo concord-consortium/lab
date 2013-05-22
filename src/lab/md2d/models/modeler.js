@@ -421,7 +421,7 @@ define(function(require) {
       };
 
       return function(atoms) {
-        var n = model.get_num_atoms(),
+        var n = model.getNumberOfAtoms(),
             i,
             prop,
             amino,
@@ -1594,7 +1594,7 @@ define(function(require) {
 
     // FIXME. Should be deprecated or just outright removed and replaced by an output property
     // 'numberOfAtoms'.
-    model.get_num_atoms = function(f) {
+    model.getNumberOfAtoms = function(f) {
       return engine.getNumberOfAtoms(f);
     };
 
