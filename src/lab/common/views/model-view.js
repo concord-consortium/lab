@@ -364,8 +364,8 @@ define(function (require) {
         })
         // Update style values too, as otherwise SVG isn't clipped correctly e.g. in Safari.
         .style({
-          width: cx,
-          height: cy
+          width: cx + "px",
+          height: cy + "px"
         });
 
       viewBox = model2px(viewport.x) + " " +
