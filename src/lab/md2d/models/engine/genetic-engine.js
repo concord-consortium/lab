@@ -41,9 +41,6 @@ define(function (require) {
         // List of transitions, which are currently ongoing (index 0)
         // or scheduled (index > 0).
         ongoingTransitions = [],
-        // Complete mRNA used internally by this engine. Note that model's
-        // property "mRNA" is updated incrementally during transcription.
-        mRNA = "",
 
         dispatch = d3.dispatch("change", "transition"),
 
@@ -65,14 +62,13 @@ define(function (require) {
         },
 
         calculatemRNA = function () {
-          var newCode;
-
-          mRNA = "";
-          newCode = mRNACode(mRNA.length);
+          var mRNA = "",
+              newCode = mRNACode(0);
           while(newCode) {
             mRNA += newCode;
             newCode = mRNACode(mRNA.length);
           }
+          return mRNA;
         },
 
         mRNACode = function (index) {
@@ -100,10 +96,12 @@ define(function (require) {
         },
 
         updateGeneticProperties = function () {
-          var DNA = model.get("DNA");
+          var DNA = model.get("DNA"),
+              mRNA;
+
           validateDNA(DNA);
           model.set("DNAComplement", complementarySequence(DNA));
-          calculatemRNA();
+          mRNA = calculatemRNA();
 
           // Update model's mRNA property.
           if (api.stateBefore("transcription:0")) {
@@ -409,7 +407,7 @@ define(function (require) {
       },
 
       codon: function (index) {
-        return mRNA.substr(3 * index, 3);
+        return model.get("mRNA").substr(3 * index, 3);
       },
 
       codonComplement: function (index) {
@@ -477,6 +475,23 @@ define(function (require) {
         if (ongoingTransitions.length > 0) {
           doTransition(ongoingTransitions[0]);
         }
+      },
+
+      stopCodonsHash: function () {
+        var result = {},
+            mRNA = model.get("mRNA"),
+            codon, i, len;
+
+        for (i = 0, len = mRNA.length; i < len; i += 3) {
+          codon = mRNA.substr(i, 3);
+          // Note that codonToAbbr returns "STOP" also when codon length is
+          // smaller than 3. In this case, we want to mark only codons which
+          // are a "real" STOP codons, so check their length.
+          if (codon.length === 3 && aminoacidsHelper.codonToAbbr(codon) === "STOP") {
+            result[i] = result[i + 1] = result[i + 2] = true;
+          }
+        }
+        return result;
       },
 
       /**
