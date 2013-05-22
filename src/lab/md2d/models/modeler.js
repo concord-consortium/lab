@@ -91,9 +91,14 @@ define(function(require) {
 
         // ####################################################################
 
-        // A two dimensional array consisting of atom index numbers and atom property values - in
-        // effect transposed from the engine's atom property arrays.
+        // An array of objects consisting of atom index numbers and atom property values, for easy
+        // consumption by the view. It is updated conservatively from the "unrolled" form used for
+        // speedy computation by the engine.
         viewAtoms = [],
+
+        // An array of objects consisting of photon index numbers and property values, for easy
+        // consumption by the view. Only defined if the quantum dynamics plugin is used.
+        viewPhotons,
 
         // A two dimensional array consisting of radial bond index numbers, radial bond
         // properties, and the postions of the two bonded atoms.
@@ -405,6 +410,7 @@ define(function(require) {
     */
     function readModelState() {
       engine.computeOutputState(modelState);
+      viewPhotons = engine.getViewPhotons();
       updateViewAtoms(modelState.atoms);
     }
 
@@ -1577,6 +1583,10 @@ define(function(require) {
     model.getAtoms = function() {
       return viewAtoms;
     };
+
+    model.getPhotons = function() {
+      return viewPhotons;
+    },
 
     model.get_radial_bond_results = function() {
       return radialBondResults;

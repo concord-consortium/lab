@@ -3598,8 +3598,19 @@ define(function (require, exports, module) {
         });
 
         return state;
+      },
+
+      // FIXME. Temporary pass-through of modeler method implemented in plugin
+      getViewPhotons: function() {
+        var viewPhotons;
+        pluginController.callPluginFunction('getViewPhotons', [], function(returnValue) {
+          viewPhotons = returnValue;
+        });
+        return viewPhotons;
       }
     };
+
+
 
     // Initialization
     initialize();

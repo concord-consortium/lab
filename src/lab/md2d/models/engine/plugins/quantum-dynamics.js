@@ -50,6 +50,8 @@ define(function(require) {
         elements,
         photons,
 
+        viewPhotons = [],
+
         updateAtomsTable = function() {
           var num = atoms.x.length;
 
@@ -396,9 +398,62 @@ define(function(require) {
         }
       },
 
+      getPhotons: function() {
+        return photons;
+      },
+
+      getNumPhotons: function() {
+        return numPhotons;
+      },
+
+      // TODO/FIXME: This is a modeler-level method; it's here until the plugin mechanism is
+      // extended to allow plugins to define both engine-level and modeler-level parts.
+      // Additionally, this can be split into updateViewPhotons which can happen in the
+      // modeler's readModelState method, and a simple getViewPhotons accessor used by the view.
+      getViewPhotons: function() {
+        var n = 0,
+            // avoid using closure variable as this method will be relocated to modeler
+            photons = this.getPhotons(),
+            viewPhoton,
+            i,
+            len;
+
+        for (i = 0, len = photons.x.length; i < len; i++) {
+          if (photons.vx[i] || photons.vy[i]) {
+            if (!viewPhotons[n]) {
+              viewPhotons[n] = {
+                idx: n
+              };
+            }
+
+            viewPhoton = viewPhotons[n];
+
+            viewPhoton.x  = photons.x[i];
+            viewPhoton.y  = photons.y[i];
+            viewPhoton.vx = photons.vx[i];
+            viewPhoton.vy = photons.vy[i];
+            viewPhoton.angularFrequency = photons.omega[i];
+          }
+        }
+
+        viewPhotons.length = this.getNumPhotons();
+
+        return viewPhotons;
+      },
+
       getState: function() {
         return [
-          new CloneRestoreWrapper(photons)
+          new CloneRestoreWrapper(photons),
+          {
+            clone: function() {
+              return {
+                numPhotons: numPhotons
+              };
+            },
+            restore: function(state) {
+              numPhotons = state.numPhotons;
+            }
+          }
         ];
       }
     };

@@ -1674,8 +1674,8 @@ define(function (require) {
     }
 
     function enterAndUpdatePhotons() {
-      var photonData = model.get("quantumDynamics").photons,
-          photons =  mainContainer.selectAll("circle.photon").data(photonData.x);
+      var photonData = model.getPhotons(),
+          photons = mainContainer.selectAll("circle.photon").data(photonData);
 
       photons.enter().append("circle")
         .attr({
@@ -1685,16 +1685,12 @@ define(function (require) {
           "stroke-width": 1,
           "fill-opacity": 1,
           "fill": "yellow",
-          "filter": "url(#glow)",
-          "display": "none"
+          "filter": "url(#glow)"
         });
 
       photons.attr({
-        "cx": function(d, i) { return model2px(photonData.x[i]); },
-        "cy": function(d, i) { return model2pxInv(photonData.y[i]); },
-        "display": function(d, i) {
-          return photonData.vx[i] || photonData.vy[i] ? "inline": "none";
-        }
+        "cx": function(d) { return model2px(d.x); },
+        "cy": function(d) { return model2pxInv(d.y); }
       });
 
       photons.exit().remove();
