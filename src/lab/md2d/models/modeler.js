@@ -1690,6 +1690,7 @@ define(function(require) {
       invalidatingChangePostHook();
 
       dispatch.addAtom();
+      dispatch.addRadialBond();
 
       return generatedAACount;
     };
