@@ -1992,33 +1992,28 @@ define(function (require, exports, module) {
 
       setTemperatureOfAtoms: function(atomIndices, targetT) {
 
-        var i, j, vxtmp, vytmp, scale, s, groupT, ke,
+        var i, j, vxtmp, vytmp, smallT, smallKE, scale, s, groupT,
             nGroup = atomIndices.length;
 
-        // Atoms with velocity == 0 (e.g. cooled drastically or newly created)
-        // will get velocity distributed from the moving atoms to the non-
-        // moving atoms by rescaling from a velocity smaller than the average
-        // velocity. If there are no moving atoms then assign one for the KE.
+        // Assign a random direction and speed to atoms with velocity exactly equal to 0 (e.g.
+        // cooled drastically or newly created). This ensures that we don't just rescale the
+        // velocities of the (possibly small or nonexistent) group of atoms that already have some
+        // velocity. After rescaling, the net effect is to transfer some velocity from moving atoms
+        // to non-moving atoms.
 
-        groupT = computeTemperatureOfAtoms(atomIndices);
-        if (groupT > 0) {
-            ke = convertTtoKE(groupT,1);
-        } else {
-            // ideally assign velocities from a Maxwell distribution, but here note
-            // that after a few time steps the distribution will converge to a Maxwell
-            // distribution regardless of the initial state
-            ke = convertTtoKE(targetT,1);
-        }
+        // Pick a small temperature to assign to non-moving atoms
+        smallT = (computeTemperatureOfAtoms(atomIndices) || targetT) * 0.0001;
+        smallKE = convertTtoKE(smallT, 1);
+
+        // Assign moveable, non-moving atoms a small temperature
         for (i = 0; i < nGroup; i++) {
           j = atomIndices[i];
           if (!pinned[j] && vx[j] === 0 && vy[j] === 0) {
             vxtmp = Math.random() - 0.5;
             vytmp = Math.random() - 0.5;
-            stmp  = Math.sqrt( vxtmp*vxtmp + vytmp*vytmp );
-            s     = Math.sqrt( 2*ke/mass[j] ) * 0.01;
-            vx[j] = vxtmp * s / stmp;
-            vy[j] = vytmp * s / stmp;
-            speed[i] = Math.sqrt(vx[j]*vx[j] + vy[j]*vy[j]);
+            s  = Math.sqrt( (2*smallKE/mass[j]) / (vxtmp*vxtmp + vytmp*vytmp) );
+            vx[j] = vxtmp * s;
+            vy[j] = vytmp * s;
           }
         }
 
@@ -2028,9 +2023,10 @@ define(function (require, exports, module) {
         scale = Math.sqrt( targetT / groupT );
 
         for (i = 0; i < nGroup; i++) {
-          engine.setAtomProperties(atomIndices[i], {
-            vx: vx[atomIndices[i]] * scale,
-            vy: vy[atomIndices[i]] * scale
+          j = atomIndices[i];
+          engine.setAtomProperties(j, {
+            vx: vx[j] * scale,
+            vy: vy[j] * scale
           });
         }
       },
@@ -2038,7 +2034,6 @@ define(function (require, exports, module) {
       getTemperatureOfAtoms: function(atomIndices) {
         return computeTemperatureOfAtoms(atomIndices);
       },
-
 
       setTargetTemperature: function(v) {
         validateTemperature(v);
