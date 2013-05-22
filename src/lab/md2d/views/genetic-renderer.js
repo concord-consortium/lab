@@ -155,6 +155,7 @@ define(function (require) {
     this._mrnaG   = this._dnaView.append("g").attr("class", "mrna");
     this._trnaG   = this._dnaView.append("g").attr("class", "trna-cont");
 
+    this._preloadImages();
     this._renderBackground();
     this._scrollContainer(true);
 
@@ -193,6 +194,25 @@ define(function (require) {
         this._renderTranslation(state.step);
         break;
     }
+  };
+
+  GeneticRenderer.prototype._preloadImages = function () {
+    var defs = this._g.append("defs");
+
+    defs.append("image").attr({
+      "id": "trna-neck-img",
+      "width": this.model2px(W.TRNA_NECK),
+      "height": this.model2px(H.TRNA_NECK),
+      "preserveAspectRatio": "none",
+      "xlink:href": "resources/dna/tRNA_neck.svg"
+    });
+    defs.append("image").attr({
+      "id": "trna-base-img",
+      "width": this.model2px(W.TRNA),
+      "height": this.model2px(H.TRNA),
+      "preserveAspectRatio": "none",
+      "xlink:href": "resources/dna/tRNA_base.svg"
+    });
   };
 
   /**
@@ -1253,24 +1273,22 @@ define(function (require) {
       .attr("transform", "translate(0, " + m2px(-H.A) + ")")
       .call(nucleotides().model2px(this.model2px).sequence(type).backbone(false));
 
-    trna.append("image").attr({
+    trna.append("use").attr({
       "class": "trna-neck",
       "x": m2px(0.52 * (codonWidth - W.TRNA_NECK)),
       "y": m2px(-H.TRNA_NECK -H.TRNA * 0.95 - H.A * 0.92),
       "width": m2px(W.TRNA_NECK),
       "height": m2px(H.TRNA_NECK),
-      "preserveAspectRatio": "none",
-      "xlink:href": "resources/dna/tRNA_neck.svg"
+      "xlink:href": "#trna-neck-img"
     });
 
-    trna.append("image").attr({
+    trna.append("use").attr({
       "class": "trna-base",
       "x": m2px(offset),
       "y": m2px(-H.TRNA - H.A * 0.92),
       "width": m2px(W.TRNA),
       "height": m2px(H.TRNA),
-      "preserveAspectRatio": "none",
-      "xlink:href": "resources/dna/tRNA_base.svg"
+      "xlink:href": "#trna-base-img"
     });
 
     trnaPosG.attr("transform", "translate(" + m2px(index * codonWidth) + ", " + m2pxInv(2.5 * nucleotides.HEIGHT) + ")");
