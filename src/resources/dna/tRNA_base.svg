@@ -4,8 +4,7 @@
 <svg version="1.1" id="Selected_Items" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
 	 y="0px" width="117.325px" height="67.9px" viewBox="0 0 117.325 67.9" enable-background="new 0 0 117.325 67.9"
 	 xml:space="preserve">
-<symbol  id="tRNA_x5F_cap" viewBox="1.975 -48.7 117.325 67.9">
-	<g id="Layer_2_2_">
+	<g id="Layer_2_2_" transform="matrix(1 0 0 -1 -1.9751 19.2002)">
 		<path fill-rule="evenodd" clip-rule="evenodd" fill="#9BF386" d="M75.7-14.375c-0.048,0.022-0.098,0.039-0.15,0.05
 			c0.362,0.367,0.779,0.826,1.25,1.375c0.092,0.108,0.184,0.216,0.275,0.325c0.072-0.004,0.146-0.004,0.225,0
 			c3.186-0.21,6.203-0.985,9.05-2.325h0.05c0.567-0.3,1.15-0.6,1.75-0.9l0.05-0.05c1.867-1.067,3.617-2.367,5.25-3.9v0.05
@@ -105,11 +104,11 @@
 				c-0.393-0.19-0.876-0.432-1.45-0.725c-0.346-0.18-0.846-0.388-1.5-0.625c-0.792-0.302-1.567-0.627-2.325-0.975L24.45-9.575
 				c-0.606-0.316-1.206-0.642-1.8-0.975c-1.722-0.984-3.396-2.043-5.025-3.175C9.035-19.808,4.644-30.05,4.45-44.45v-0.025
 				c-0.033-0.983-0.033-1.983,0-3V-47.5z"/>
-			
+
 				<path fill-rule="evenodd" clip-rule="evenodd" fill="none" stroke="#297216" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="3" d="
 				M98.55-47.5c0.143,5.184-0.115,9.717-0.775,13.6c-1.199,7.167-3.758,12.116-7.675,14.85c-3.784,2.65-7.959,4.667-12.525,6.05
 				 M44.45-13.25c-4.267-1.366-8.2-3.3-11.8-5.8c-6.105-4.314-9.172-13.797-9.2-28.45"/>
-			
+
 				<path fill-rule="evenodd" clip-rule="evenodd" fill="none" stroke="#297216" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="3" d="
 				M77.575-13c-0.875-0.455-1.566-0.988-2.075-1.6c-3.503-4.194-5.037-15.227-4.6-33.1H50.7c0.577,20.461-1.506,31.944-6.25,34.45
 				 M23.45-47.5h-19 M117.75-47.5h-19.2"/>
@@ -163,6 +162,4 @@
 			</g>
 		</g>
 	</g>
-</symbol>
-<use xlink:href="#tRNA_x5F_cap"  width="117.325" height="67.9" x="1.975" y="-48.7" transform="matrix(1 0 0 -1 -1.9751 19.2002)" overflow="visible"/>
 </svg>

@@ -4,8 +4,7 @@
 <svg version="1.1" id="Selected_Items" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
 	 y="0px" width="15.925px" height="21.14px" viewBox="0 0 15.925 21.14" enable-background="new 0 0 15.925 21.14"
 	 xml:space="preserve">
-<symbol  id="tRNA_x5F_tail" viewBox="0.05 -19.95 15.526 19.9">
-	<g id="Layer_1_1_">
+	<g id="Layer_1_1_" transform="matrix(1 0 0 -1 -0.0249 -0.0098)">
 		<g>
 			<path fill-rule="evenodd" clip-rule="evenodd" fill="#297216" d="M13.649-19.8v0.05l-0.049,0.05
 				c-0.234,0.3-0.434,0.616-0.601,0.95c-0.634,1.2-1.116,2.517-1.45,3.95c-0.199,0.7-0.35,1.417-0.449,2.149
@@ -26,6 +25,4 @@
 				c0.167-0.334,0.366-0.65,0.601-0.95l0.049-0.05V-19.8z"/>
 		</g>
 	</g>
-</symbol>
-<use xlink:href="#tRNA_x5F_tail"  width="15.526" height="19.9" id="XMLID_1_" x="0.05" y="-19.95" transform="matrix(1 0 0 -1 -0.0249 -0.0098)" overflow="visible"/>
 </svg>
