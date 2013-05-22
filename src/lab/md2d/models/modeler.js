@@ -421,7 +421,7 @@ define(function(require) {
       };
 
       return function(atoms) {
-        var n = model.getNumberOfAtoms(),
+        var n = engine.getNumberOfAtoms(),
             i,
             prop,
             amino,
@@ -1592,10 +1592,25 @@ define(function(require) {
       return radialBondResults;
     };
 
-    // FIXME. Should be deprecated or just outright removed and replaced by an output property
-    // 'numberOfAtoms'.
+    /**
+      Returns the total number of atoms, or else the number of atoms matching some criterion.
+
+      If the argument 'f' is present, it is called once for each atom, passing the atom as the
+      argument to f. The number of atoms for which f evaluates to true is returned.
+
+      Example
+
+        model.getNumberOfAtoms(function(atom) { return atom.mass < 50; })
+
+      returns the number of atoms having mass < 50
+    */
     model.getNumberOfAtoms = function(f) {
-      return engine.getNumberOfAtoms(f);
+      if (!f) {
+        return viewAtoms.length;
+      }
+      return viewAtoms.reduce(function(total, atom) {
+        return f(atom) ? total + 1 : total;
+      }, 0);
     };
 
     model.get_obstacles = function() {

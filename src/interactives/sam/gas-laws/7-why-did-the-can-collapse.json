@@ -38,11 +38,11 @@
   "outputs": [
     {
       "name": "purpleAtoms",
-      "value": "return getNumberOfAtoms('element[i] == 3');"
+      "value": "return getNumberOfAtoms(function(atom) { return atom.element === 3; });"
     },
     {
       "name": "yellowAtoms",
-      "value": "return getNumberOfAtoms('element[i] == 1');"
+      "value": "return getNumberOfAtoms(function(atom) { return atom.element === 1; });"
     },
     {
       "name": "vxMean",

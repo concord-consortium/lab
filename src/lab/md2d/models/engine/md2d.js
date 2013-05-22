@@ -3147,18 +3147,8 @@ define(function (require, exports, module) {
         return elementRadius[el];
       },
 
-      getNumberOfAtoms: function(f) {
-        if (typeof f === 'undefined') {
-          return N;
-        }  else {
-          var i,
-              count = 0,
-              func = new Function('i', 'return this.atoms.' + f).bind(this);
-          for (i = 0; i < N; i++) {
-            if (func(i)) count++;
-          }
-          return count;
-        }
+      getNumberOfAtoms: function() {
+        return N;
       },
 
       getNumberOfElements: function() {
