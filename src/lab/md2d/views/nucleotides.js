@@ -40,7 +40,8 @@ define(function (require) {
         sequence = "",
         direction = 1,
         startingPos = 0,
-        backbone = "DNA"; // if enabled, "RNA" or "DNA" is expected.
+        backbone = "DNA", // if enabled, "RNA" or "DNA" is expected.
+        stopCodonsHash = null;
 
     function nucleo(g) {
       g.each(function() {
@@ -74,7 +75,6 @@ define(function (require) {
           "stroke": "#fff"
         });
         nucleoSVG = nucleoEnter.append("svg").attr({
-          "class": function (d) { return "type-" + d; },
           "viewBox": function (d) { return "0 0 " + (W[d] / SCALE) + " " + (H[d] / SCALE); },
           "x": function (d) { return m2px(W.BACKB) / 2 - m2px(W[d]) / 2; },
           "y": m2px(yOffset),
@@ -112,12 +112,18 @@ define(function (require) {
           });
         }
 
-        // Update.
-        // Note that we update things related only to direction, as for now
-        // this is the only use case for update operation. In theory we could
-        // update also other properties (e.g. assuming that type of nucletoide
-        // can change), but this is not used now, so don't do it (hopefully,
-        // we gain some performance).
+        // Update. Note that we update things related only to direction and
+        // stop-codon class, as for now this is the only use case for update
+        // operation. In theory we could update also other properties (e.g.
+        // assuming that type of nucletoide can change), but this is not used
+        // now, so don't do it (hopefully, we gain some performance).
+        nucleo.select("svg").attr("class", function (d, i) {
+          var className = "type-" + d;
+          if (stopCodonsHash && stopCodonsHash[i]) {
+            className += " stop-codon";
+          }
+          return className;
+        });
         nucleo.selectAll("path.letter").attr("d", function (d) { return nucleotidePaths.letter[d][direction]; });
         nucleo.select("g.pos").attr("transform", function (d, i) { return "translate(" + m2px(nucleotides.WIDTH) * (startingPos + i) + ")"; });
         nucleo.select("g.scale").attr("transform", "scale(1, " + (direction  === 1 ? 1 : -1) + ")");
@@ -148,9 +154,18 @@ define(function (require) {
       return nucleo;
     };
 
+    /**
+     * @param  {String} b "DNA" or "RNA".
+     */
     nucleo.backbone = function (b) {
       if (!arguments.length) return backbone;
       backbone = b;
+      return nucleo;
+    };
+
+    nucleo.stopCodonsHash = function (s) {
+      if (!arguments.length) return stopCodonsHash;
+      stopCodonsHash = s;
       return nucleo;
     };
 

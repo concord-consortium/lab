@@ -578,12 +578,13 @@ define(function (require) {
   };
 
   GeneticRenderer.prototype._renderTranscription = function (step) {
-    var mRNA = this.model.get("mRNA").substr(0, step);
+    var mRNA       = this.model.get("mRNA").substr(0, step),
+        stopCodons = this.model.geneticEngine().stopCodonsHash();
 
     this._renderDNA();
     this.separateDNA(true);
 
-    this._mrnaG.call(nucleotides().model2px(this.model2px).sequence(mRNA).backbone("RNA"));
+    this._mrnaG.call(nucleotides().model2px(this.model2px).sequence(mRNA).backbone("RNA").stopCodonsHash(stopCodons));
     this._dnaCompG.selectAll(".nucleotide .bonds").style("opacity", function (d, i) {
       return i < step ? 1 : 0;
     });
@@ -624,9 +625,10 @@ define(function (require) {
   };
 
   GeneticRenderer.prototype._renderTranslation = function (step) {
-    var mRNA = this.model.get("mRNA");
+    var mRNA       = this.model.get("mRNA"),
+        stopCodons = this.model.geneticEngine().stopCodonsHash();
 
-    this._mrnaG.call(nucleotides().model2px(this.model2px).sequence(mRNA).direction(2).backbone("RNA"));
+    this._mrnaG.call(nucleotides().model2px(this.model2px).sequence(mRNA).direction(2).backbone("RNA").stopCodonsHash(stopCodons));
     this._mrnaG.selectAll(".nucleotide .bonds").style("opacity", function (d, i) {
       // Show bonds only of 6 nucleotides with tRNAs above them.
       return i < 3 * (step - 2) || i >= 3 * step ? 0 : 1;
@@ -826,12 +828,13 @@ define(function (require) {
   };
 
   GeneticRenderer.prototype.transcribeStep = function (step) {
-    var mRNA    = this.model.get("mRNA"),
-        trans   = this._nextTrans().duration(500),
+    var mRNA       = this.model.get("mRNA"),
+        trans      = this._nextTrans().duration(500),
+        stopCodons = this.model.geneticEngine().stopCodonsHash(),
         self = this,
         t, r;
 
-    this._mrnaG.call(nucleotides().model2px(this.model2px).sequence(mRNA).backbone("RNA"));
+    this._mrnaG.call(nucleotides().model2px(this.model2px).sequence(mRNA).backbone("RNA").stopCodonsHash(stopCodons));
 
     // While adding a new mRNA segment, choose a random starting point along a
     // circle with a certain radius that extends beyond the top DNA strand.
