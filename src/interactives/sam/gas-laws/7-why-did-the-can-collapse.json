@@ -32,7 +32,21 @@
             "hostIndex": 0
           }
         ]
-      }
+      },
+      "onLoad": [
+        "var purpleAtomIndices = [],",
+        "    yellowAtomIndices = [],",
+        "    i;",
+        "for (i = 0; i < getNumberOfAtoms(); i++) {",
+        "  if( getAtomProperties(i).element === 1 ) {",
+        "    yellowAtomIndices.push(i);",
+        "  } else {",
+        "    purpleAtomIndices.push(i);",
+        "  }",
+        "}",
+        "set('purpleAtomIndices',purpleAtomIndices);",
+        "set('yellowAtomIndices',yellowAtomIndices);"
+      ]
     }
   ],
   "outputs": [
@@ -67,6 +81,32 @@
         "}",
         "return vySum / atomNum;"
      ]
+    },
+    {
+      "name": "temperatureInside",
+      "unitType": "temperature",
+      "value": [
+        "return getTemperatureOfAtoms(get('purpleAtomIndices'));"
+      ]
+    },
+    {
+      "name": "temperatureOutside",
+      "unitType": "temperature",
+      "value": [
+        "return getTemperatureOfAtoms(get('yellowAtomIndices'));"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "purpleAtomIndices",
+      "initialValue": [],
+      "onChange": ""
+    },
+    {
+      "name": "yellowAtomIndices",
+      "initialValue": [],
+      "onChange": ""
     }
   ],
   "components": [
@@ -101,7 +141,7 @@
     {
       "type": "button",
       "id": "add-inside",
-      "text": "Add",
+      "text": "+",
       "width": "6em",
       "action": [
         "var elemNum = 3;",
@@ -112,7 +152,7 @@
     {
       "type": "button",
       "id": "add-outside",
-      "text": "Add",
+      "text": "+",
       "width": "6em",
       "action": [
         "var elemNum = 1;",
@@ -123,7 +163,7 @@
     {
       "type": "button",
       "id": "remove-inside",
-      "text": "Remove",
+      "text": "-",
       "width": "6em",
       "action": [
         "var firstFound = false;",
@@ -138,7 +178,7 @@
     {
       "type": "button",
       "id": "remove-outside",
-      "text": "Remove",
+      "text": "-",
       "width": "6em",
       "action": [
         "var firstFound = false;",
@@ -219,26 +259,50 @@
         "}",
         "repaint();"
       ]
+    },
+    {
+      "type": "barGraph",
+      "id": "temperature-inside",
+      "property": "temperatureInside",
+      "title": "K",
+      "labels": 0,
+      "min": 0,
+      "max": 2500,
+      "height": "10em",
+      "titleOn": "top"
+    },
+    {
+      "type": "barGraph",
+      "id": "temperature-outside",
+      "property": "temperatureOutside",
+      "title": "K",
+      "labels": 0,
+      "min": 0,
+      "max": 2500,
+      "height": "10em",
+      "titleOn": "top"
     }
   ],
   "layout": {
     "left": [
       ["purple-label"],
       ["purple-atoms"],
-      ["add-inside"],
-      ["remove-inside"],
-      ["heat-inside"],
-      ["cool-inside"]
+      ["temperature-inside"]
     ],
     "right": [
       ["yellow-label"],
       ["yellow-atoms"],
-      ["add-outside"],
-      ["remove-outside"],
-      ["heat-outside"],
-      ["cool-outside"]
+      ["temperature-outside"]
     ],
-    "bottom": [ "show-velocity" ]
+    "bottom-inside": [
+      ["add-inside", "remove-inside"],
+      ["heat-inside", "cool-inside"]
+    ],
+    "bottom-outside": [
+      ["add-outside", "remove-outside"],
+      ["heat-outside", "cool-outside"]
+    ],
+    "footer": [ "show-velocity" ]
   },
   "template": [
     {
@@ -256,9 +320,25 @@
       "fontScale": 0.8
     },
     {
-      "id": "bottom",
-      "left": "model.left",
+      "id": "bottom-inside",
       "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width/2",
+      "align": "left",
+      "fontScale": 0.8
+    },
+    {
+      "id": "bottom-outside",
+      "top": "model.bottom",
+      "right": "model.right",
+      "width": "model.width/2",
+      "align": "right",
+      "fontScale": 0.8
+    },
+    {
+      "id": "footer",
+      "left": "model.left",
+      "top": "bottom-outside.bottom",
       "width": "model.width",
       "align": "center",
       "padding-top": "0.5em"

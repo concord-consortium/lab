@@ -114,6 +114,17 @@ define(function (require) {
         model.set({targetTemperature: fraction * model.get('targetTemperature')});
       },
 
+      /**
+       Scales the velocity of a group of atoms to the desired temperature T
+       */
+      setTemperatureOfAtoms: function setTemperatureOfAtoms(atomIndices, T) {
+        model.setTemperatureOfAtoms(atomIndices,T);
+      },
+
+      getTemperatureOfAtoms: function getTemperatureOfAtoms(atomIndices) {
+        return model.getTemperatureOfAtoms(atomIndices);
+      },
+
       limitHighTemperature: function limitHighTemperature(t) {
         if (model.get('targetTemperature') > t) model.set({targetTemperature: t});
       },
