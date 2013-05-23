@@ -50,7 +50,6 @@ define(function(require) {
         stopped = true,
         restart = false,
         newStep = false,
-        translationAnimInProgress = false,
         lastSampleTime,
         sampleTimes = [],
 
@@ -1251,9 +1250,9 @@ define(function(require) {
       invalidatingChangePostHook();
     };
 
-    model.getTemperatureOfAtoms = function(atomIndices, T) {
+    model.getTemperatureOfAtoms = function(atomIndices) {
       return engine.getTemperatureOfAtoms(atomIndices);
-    }
+    };
 
     /**
         A generic method to set properties on a single existing atom.
