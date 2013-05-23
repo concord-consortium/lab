@@ -3,6 +3,18 @@
 // The PluginController manages an array of plugins, and can call arbitrary functions
 // on any registered plugin that responds to that function.
 
+// TODO:
+//
+//  1. Plugins should define engine component and modeler component
+//  2. Plugins should validate their own properties
+//  3. Plugin controller should handle initialization of plugins and mixing of appropriate methods
+//     and properties into the modeler layer. The main modeler and engine layers should not have to
+//     know details about which plugins are available, what they're named, where they are located,
+//     etc.
+//  4. Plugin controller have a 'getPluginFunction' method which accepts a function name and returns
+//     a function that, when called, does the same thing as callPluginFunction(<function name>,...).
+//     This avoids having to look up the plugin function by name every time it is called.
+
 define(function () {
 
   return function PluginController() {
