@@ -34,6 +34,21 @@ define(function (require) {
         "TRNA": 67.9,
         "TRNA_NECK": 21.14,
         "A": 31.15
+      },
+
+      MAIN_STATE = {
+        "intro-cells":      "intro",
+        "intro-zoom1":      "intro",
+        "intro-zoom2":      "intro",
+        "intro-zoom3":      "intro",
+        "intro-polymerase": "intro",
+        "dna":                 "transcription",
+        "transcription":       "transcription",
+        "transcription-end":   "transcription",
+        "after-transcription": "transcription",
+        "before-translation":     "translation",
+        "translation":            "translation",
+        "translation-end":        "translation"
       };
 
   (function () {
@@ -64,6 +79,7 @@ define(function (require) {
     this._mrnaG = null;
     this._trnaG = null;
     this._currentTrans = null;
+    this._currentMainState = null;
 
     // Redraw DNA / mRNA when genetic engine state is changed.
     this.model.geneticEngine().on("change", $.proxy(this.render, this));
@@ -130,7 +146,8 @@ define(function (require) {
    * options of the model.
    */
   GeneticRenderer.prototype.render = function () {
-    var state = this._state();
+    var state     = this._state(),
+        mainState = MAIN_STATE[state.name];
 
     // Trick to cancel all current transitions. It isn't possible explicitly
     // so we have to start new, fake transitions, which will cancel previous
@@ -138,6 +155,67 @@ define(function (require) {
     // outside g.genetics element, e.g. viewport and background. So, it isn't
     // enough to use d3.selectAll("g.genetics *").
     d3.selectAll("*").transition().delay(0);
+
+    this._renderBackground();
+    this._scrollContainer(true);
+
+    if (this._currentMainState !== mainState) {
+      this._cleanup();
+      switch(mainState) {
+        case "intro":
+          // this._renderIntroElements();
+          break;
+        case "transcription":
+          this._renderTranscriptionElements();
+          break;
+        case "translation":
+          this._renderTranslationElements();
+          break;
+      }
+      // Update current main state!
+      this._currentMainState = mainState;
+    }
+
+    switch(state.name) {
+      case "intro-cells":
+        this._renderIntroElements(this._g, INTRO_CELLS_DATA);
+        break;
+      case "intro-zoom1":
+        this._renderIntroElements(this._g, INTRO_ZOOM1_DATA);
+        break;
+      case "intro-zoom2":
+        this._renderIntroElements(this._g, INTRO_ZOOM2_DATA);
+        break;
+      case "intro-zoom3":
+        this._renderIntroElements(this._g, INTRO_ZOOM3_A_DATA);
+        break;
+      case "intro-polymerase":
+        this._renderIntroElements(this._g, INTRO_POLYMERASE_A_DATA);
+        break;
+      case "dna":
+        this._renderTranscriptionElements();
+        break;
+      case "transcription":
+        this._renderTranscription(state.step);
+        break;
+      case "transcription-end":
+        this._renderTranscriptionEnd();
+        break;
+      case "after-transcription":
+        this._renderAfterTranscription();
+        break;
+      case "before-translation":
+        this._renderBeforeTranslation();
+        break;
+      case "translation":
+        this._renderTranslationElements(state.step);
+        break;
+    }
+  };
+
+  GeneticRenderer.prototype._cleanup = function () {
+    var state = this._state();
+
     // Cleanup.
     this.container.selectAll("g.genetics").remove();
     this._currentTrans = null;
@@ -156,44 +234,6 @@ define(function (require) {
     this._trnaG   = this._dnaView.append("g").attr("class", "trna-cont");
 
     this._preloadImages();
-    this._renderBackground();
-    this._scrollContainer(true);
-
-    switch(state.name) {
-      case "intro-cells":
-        this._renderCells();
-        break;
-      case "intro-zoom1":
-        this._renderCellsZoom1();
-        break;
-      case "intro-zoom2":
-        this._renderCellsZoom2();
-        break;
-      case "intro-zoom3":
-        this._renderCellsZoom3();
-        break;
-      case "intro-polymerase":
-        this._renderDNAWithPolymerase();
-        break;
-      case "dna":
-        this._renderDNA();
-        break;
-      case "transcription":
-        this._renderTranscription(state.step);
-        break;
-      case "transcription-end":
-        this._renderTranscriptionEnd();
-        break;
-      case "after-transcription":
-        this._renderAfterTranscription();
-        break;
-      case "before-translation":
-        this._renderBeforeTranslation();
-        break;
-      case "translation":
-        this._renderTranslation(state.step);
-        break;
-    }
   };
 
   GeneticRenderer.prototype._preloadImages = function () {
@@ -343,171 +383,305 @@ define(function (require) {
    * to render a given state without any animation.
    */
 
-  GeneticRenderer.prototype._renderCells = function () {
-    var ms2px = this.model2px,
-        cx = this.model2px(W.CELLS * 0.567),
-        cy = this.model2px(H.CELLS * 0.445),
-        mWidth  = this.model2px(5),
-        mHeight = this.model2px(3),
-        dna3units = 14,
-        introG, dna3;
+  function scaleFunc(d) {
+    return "scale(" + d.scale + ")";
+  }
+  function opacityFunc(d) {
+    return d.opacity;
+  }
 
-    introG = this._g.append("g").attr({
-      "class": "dna-intro",
-      "transform": "translate(" + cx + " " + cy + ")"
+  GeneticRenderer.prototype._renderIntroElements = function (parent, data) {
+    var self = this;
+    parent.each(function() {
+      var parent = d3.select(this);
+
+      var ms2px = self.model2px,
+          cx = self.model2px(W.CELLS * 0.567),
+          cy = self.model2px(H.CELLS * 0.445),
+          mWidth  = self.model2px(5),
+          mHeight = self.model2px(3),
+          dna3units = 14,
+          introG, introGEnter, cells, dna1, dna2, dna3, polyOver;
+
+      function translateFunc(d) {
+        return "translate(" + self.model2px(d.translateX) + " " + self.model2px(d.translateY) + ")";
+      }
+      function translateScaleFunc(d) {
+        return translateFunc(d) + " " + scaleFunc(d);
+      }
+      function xFunc(d) {
+        return self.model2px(d.x);
+      }
+      function yFunc(d) {
+        return self.model2px(d.y);
+      }
+
+      introG = self._g.selectAll(".dna-intro").data(data.dnaIntro);
+      introGEnter = introG.enter().append("g").attr({
+        "class": "dna-intro",
+        "transform": translateFunc
+      });
+      d3.transition(introG).attr({
+        "transform": translateFunc
+      });
+
+      cells = introG.selectAll(".cells").data(data.cells);
+      cells.enter().append("image").attr({
+        "class": "cells",
+        "width": self.model2px(W.CELLS),
+        "height": self.model2px(H.CELLS),
+        "preserveAspectRatio": "none",
+        "xlink:href": "resources/dna/Cells.svg",
+        "x": xFunc,
+        "y": yFunc,
+        "transform": scaleFunc
+      });
+      d3.transition(cells).attr({
+        "x": xFunc,
+        "y": yFunc,
+        "transform": scaleFunc
+      });
+      cells.exit().remove();
+
+      dna1 = introG.selectAll(".dna1").data(data.dna1);
+      dna1.enter().append("image").attr({
+        "class": "dna1",
+        "x": self.model2px(W.DNA1 * -0.5),
+        "y": self.model2px(H.DNA1 * -0.5),
+        "width": self.model2px(W.DNA1),
+        "height": self.model2px(H.DNA1),
+        "preserveAspectRatio": "none",
+        "xlink:href": "resources/dna/DNA_InsideNucleus_1.svg",
+        "transform": scaleFunc
+      }).style({
+        "opacity": opacityFunc
+      });
+      d3.transition(dna1).attr({
+        "transform": scaleFunc
+      }).style({
+        "opacity": opacityFunc
+      });
+      dna1.exit().remove();
+
+      dna2 = introG.selectAll(".dna2").data(data.dna2);
+      dna2.enter().append("image").attr({
+        "class": "dna2",
+        "x": self.model2px(W.DNA2 * -0.5),
+        "y": self.model2px(H.DNA2 * -0.404),
+        "width": self.model2px(W.DNA2),
+        "height": self.model2px(H.DNA2),
+        "preserveAspectRatio": "none",
+        "xlink:href": "resources/dna/DNA_InsideNucleus_2.svg",
+        "transform": scaleFunc
+      }).style({
+        "opacity": opacityFunc
+      });
+      d3.transition(dna2).attr({
+        "transform": scaleFunc
+      }).style({
+        "opacity": opacityFunc
+      });
+      dna2.exit().remove();
+
+      dna3 = introG.selectAll(".dna3").data(data.dna3);
+      dna3Enter = dna3.enter().append("g").attr({
+        "class": "dna3",
+        "transform": scaleFunc
+      }).style({
+        "opacity": opacityFunc
+      });
+      dna3Enter.selectAll("dna3-unit").data(new Array(dna3units)).enter().append("image").attr({
+        "class": "dna3-unit",
+        "x": function (d, i) { return (i - dna3units * 0.5) * ms2px(W.DNA3) * 0.98; },
+        "y": self.model2px(H.DNA3 * -0.5),
+        "width": self.model2px(W.DNA3),
+        "height": self.model2px(H.DNA3),
+        "preserveAspectRatio": "none",
+        "xlink:href": "resources/dna/DoubleHelix_Unit.svg"
+      });
+      d3.transition(dna3).attr({
+        "transform": scaleFunc
+      }).style({
+        "opacity": opacityFunc
+      });
+      dna3.exit().remove();
+
+      polyUnder = introG.selectAll(".polymerase-under").data(data.polymeraseUnder);
+      polyUnder.enter().insert("image", ".dna3").attr({
+        "class": "polymerase-under",
+        "x": self.model2px(W.POLY_UNDER * -0.5),
+        "y": self.model2px(H.POLY_UNDER * -0.5),
+        "width": self.model2px(W.POLY_UNDER),
+        "height": self.model2px(H.POLY_UNDER),
+        "preserveAspectRatio": "none",
+        "xlink:href": "resources/dna/Polymerase_Under.svg",
+        "transform": translateScaleFunc
+      }).style({
+        "opacity": opacityFunc
+      });
+      d3.transition(polyUnder).attr({
+        "transform": translateScaleFunc
+      }).style({
+        "opacity": opacityFunc
+      });
+      polyUnder.exit().remove();
+
+      polyOver = introG.selectAll(".polymerase-over").data(data.polymeraseOver);
+      polyOver.enter().append("image").attr({
+        "class": "polymerase-over",
+        "x": self.model2px(W.POLY_OVER * -0.5),
+        "y": self.model2px(H.POLY_OVER * -0.5),
+        "width": self.model2px(W.POLY_OVER),
+        "height": self.model2px(H.POLY_OVER),
+        "preserveAspectRatio": "none",
+        "xlink:href": "resources/dna/Polymerase_Over.svg",
+        "transform": scaleFunc
+      }).style({
+        "opacity": opacityFunc
+      });
+      d3.transition(polyOver).attr({
+        "transform": scaleFunc
+      }).style({
+        "opacity": opacityFunc
+      });
+      polyOver.exit().remove();
+    });
+  };
+
+  var INTRO_CELLS_DATA = {
+    "dnaIntro": [{
+      "translateX": W.CELLS * 0.567,
+      "translateY": H.CELLS * 0.445
+    }],
+    "cells": [{
+      "x": -W.CELLS * 0.567,
+      "y": -H.CELLS * 0.445,
+      "scale": 1
+    }],
+    "dna1": [{
+      "scale": 0.13,
+      "opacity": 0
+    }],
+    "dna2": [],
+    "dna3": [],
+    "polymeraseUnder": [],
+    "polymeraseOver": []
+  };
+  var INTRO_ZOOM1_DATA = $.extend(true, {}, INTRO_CELLS_DATA, {
+    "dnaIntro": [{
+      "translateX": 2.5,
+      "translateY": 1.5
+    }],
+    "cells": [{
+      "scale": 6
+    }],
+    "dna1": [{
+      "scale": 0.78,
+      "opacity": 5
+    }],
+    "dna2": [{
+      "scale": 0.5,
+      "opacity": 0
+    }]
+  });
+  var INTRO_ZOOM2_DATA = $.extend(true, {}, INTRO_ZOOM1_DATA, {
+    "cells": [{
+      "scale": 24
+    }],
+    "dna1": [{
+      "scale": 3.12,
+      "opacity": 0
+    }],
+    "dna2": [{
+      "scale": 2,
+      "opacity": 1
+    }],
+    dna3: [{
+      scale: 0.2,
+      opacity: 0
+    }]
+  });
+  var INTRO_ZOOM3_DATA = $.extend(true, {}, INTRO_ZOOM2_DATA, {
+    "dna2": [{
+      "scale": 3.8,
+      "opacity": 0
+    }],
+    dna3: [{
+      scale: 0.4,
+      opacity: 1
+    }]
+  });
+  INTRO_ZOOM3_DATA.dna1 = [];
+  var INTRO_ZOOM3_A_DATA = $.extend(true, {}, INTRO_ZOOM3_DATA, {
+    dna3: [{
+      scale: 0.6
+    }],
+    "polymeraseUnder": [{
+      "scale": 0.2,
+      "translateX": -0.65 * 5,
+      "translateY": -0.5 * 3,
+      "opacity": 0
+    }]
+  });
+  INTRO_ZOOM3_A_DATA.dna2 = [];
+  var INTRO_POLYMERASE_DATA = $.extend(true, {}, INTRO_ZOOM3_A_DATA, {
+    "polymeraseUnder": [{
+      "scale": 0.8,
+      "translateX": 0,
+      "translateY": 0,
+      "opacity": 1
+    }],
+    "polymeraseOver": [{
+      "scale": 0.8,
+      "opacity": 0
+    }]
+  });
+  var INTRO_POLYMERASE_A_DATA = $.extend(true, {}, INTRO_POLYMERASE_DATA, {
+    "polymeraseUnder": [{
+      "scale": 1,
+    }],
+    "polymeraseOver": [{
+      "scale": 1,
+      "opacity": 1
+    }]
+  });
+
+  GeneticRenderer.prototype._cellsZoom1 = function () {
+    var t = this._nextTrans().ease("cubic").duration(3000);
+    t.each("start", function () {
+      this._renderIntroElements(t, INTRO_ZOOM1_DATA);
+    });
+  };
+
+  GeneticRenderer.prototype._cellsZoom2 = function () {
+    var t = this._nextTrans().ease("linear").duration(3000);
+    t.each("start", function () {
+      this._renderIntroElements(t, INTRO_ZOOM2_DATA);
+    });
+  };
+
+  GeneticRenderer.prototype._cellsZoom3 = function () {
+    var t = this._nextTrans().ease("linear").duration(2000);
+    t.each("start", function () {
+      this._renderIntroElements(t, INTRO_ZOOM3_DATA);
     });
 
-    introG.append("image").attr({
-      "class": "cells",
-      "x": -cx,
-      "y": -cy,
-      "width": this.model2px(W.CELLS),
-      "height": this.model2px(H.CELLS),
-      "preserveAspectRatio": "none",
-      "xlink:href": "resources/dna/Cells.svg"
+    t = this._nextTrans().ease("quad-out").duration(3300);
+    t.each("start", function () {
+      this._renderIntroElements(t, INTRO_ZOOM3_A_DATA);
+    });
+  };
+
+  GeneticRenderer.prototype._attachPolymerase = function () {
+    var t = this._nextTrans().ease("quad-out").duration(3000);
+    t.each("start", function () {
+      this._renderIntroElements(t, INTRO_POLYMERASE_DATA);
     });
 
-    introG.append("image").attr({
-      "class": "dna1",
-      "x": this.model2px(W.DNA1 * -0.5),
-      "y": this.model2px(H.DNA1 * -0.5),
-      "width": this.model2px(W.DNA1),
-      "height": this.model2px(H.DNA1),
-      "transform": "scale(0.13)",
-      "preserveAspectRatio": "none",
-      "xlink:href": "resources/dna/DNA_InsideNucleus_1.svg"
-    }).style("opacity", 0);
-
-    introG.append("image").attr({
-      "class": "dna2",
-      "x": this.model2px(W.DNA2 * -0.5),
-      "y": this.model2px(H.DNA2 * -0.404),
-      "width": this.model2px(W.DNA2),
-      "height": this.model2px(H.DNA2),
-      "transform": "scale(0.5)",
-      "preserveAspectRatio": "none",
-      "xlink:href": "resources/dna/DNA_InsideNucleus_2.svg"
-    }).style("opacity", 0);
-
-    introG.append("image").attr({
-      "class": "polymerase-under",
-      "x": this.model2px(W.POLY_UNDER * -0.5),
-      "y": this.model2px(H.POLY_UNDER * -0.5),
-      "width": this.model2px(W.POLY_UNDER),
-      "height": this.model2px(H.POLY_UNDER),
-      "preserveAspectRatio": "none",
-      "transform": "translate(" + mWidth * -0.65 + ", " + mHeight * -0.5 + ") scale(0.2)",
-      "xlink:href": "resources/dna/Polymerase_Under.svg"
-    }).style("opacity", 1);
-
-    dna3 = introG.append("g").attr({
-      "class": "dna3",
-      "transform": "scale(0.2)"
-    }).style("opacity", 0);
-
-    dna3.selectAll("dna3-unit").data(new Array(dna3units)).enter().append("image").attr({
-      "class": "dna3-unit",
-      "x": function (d, i) { return (i - dna3units * 0.5) * ms2px(W.DNA3) * 0.98; },
-      "y": this.model2px(H.DNA3 * -0.5),
-      "width": this.model2px(W.DNA3),
-      "height": this.model2px(H.DNA3),
-      "preserveAspectRatio": "none",
-      "xlink:href": "resources/dna/DoubleHelix_Unit.svg"
+    t = this._nextTrans().ease("cubic-in-out").duration(1000);
+    t.each("start", function () {
+      this._renderIntroElements(t, INTRO_POLYMERASE_A_DATA);
     });
-
-    introG.append("image").attr({
-      "class": "polymerase-over",
-      "x": this.model2px(W.POLY_OVER * -0.5),
-      "y": this.model2px(H.POLY_OVER * -0.5),
-      "width": this.model2px(W.POLY_OVER),
-      "height": this.model2px(H.POLY_OVER),
-      "preserveAspectRatio": "none",
-      "transform": "scale(0.8)",
-      "xlink:href": "resources/dna/Polymerase_Over.svg"
-    }).style("opacity", 0);
-  };
-
-  GeneticRenderer.prototype._renderCellsZoom1 = function () {
-    this._renderCells();
-    this._cellsZoom1(true);
-  };
-
-  GeneticRenderer.prototype._renderCellsZoom2 = function () {
-    this._renderCells();
-    this._cellsZoom1(true);
-    this._cellsZoom2(true);
-  };
-
-  GeneticRenderer.prototype._renderCellsZoom3 = function () {
-    this._renderCells();
-    this._cellsZoom1(true);
-    this._cellsZoom2(true);
-    this._cellsZoom3(true);
-  };
-
-  GeneticRenderer.prototype._renderDNAWithPolymerase = function () {
-    this._renderCells();
-    this._cellsZoom1(true);
-    this._cellsZoom2(true);
-    this._cellsZoom3(true);
-    this._attachPolymerase(true);
-  };
-
-  GeneticRenderer.prototype._cellsZoom1 = function (suppressAnimation) {
-    var selection = suppressAnimation ? this._g : this._nextTrans().ease("cubic").duration(3000);
-
-    selection.select(".cells")
-      .attr("transform", "scale(6)");  // 1.0  * 6
-    selection.select(".dna1")
-      .attr("transform", "scale(0.78)") // 0.13 * 6
-      // Of course max value for opacity is 1. However value bigger than 1
-      // affects transition progress and in this case it's helpful.
-      .style("opacity", 5);
-
-    selection.select(".dna-intro")
-      .attr("transform", "translate(" + this.model2px(2.5) + " " + this.model2px(1.5) + ")");
-  };
-
-  GeneticRenderer.prototype._cellsZoom2 = function (suppressAnimation) {
-    var selection = suppressAnimation ? this._g : this._nextTrans().ease("linear").duration(3000);
-
-    selection.select(".cells")
-      .attr("transform", "scale(24)");  // 6.0  * 4
-    selection.select(".dna1")
-      .style("opacity", 0)
-      .attr("transform", "scale(3.12)"); // 0.78 * 4
-    selection.select(".dna2")
-      .style("opacity", 1)
-      .attr("transform", "scale(2)");    // 0.5  * 4
-  };
-
-  GeneticRenderer.prototype._cellsZoom3 = function (suppressAnimation) {
-    var selection = suppressAnimation ? this._g : this._nextTrans().ease("linear").duration(2000);
-
-    selection.select(".dna2")
-      .style("opacity", 0)
-      .attr("transform", "scale(3.8)");
-    selection.select(".dna3")
-      .style("opacity", 1)
-      .attr("transform", "scale(0.4)");
-
-    selection = suppressAnimation ? this._g : this._nextTrans().ease("quad-out").duration(3300);
-    selection.select(".dna3")
-      .attr("transform", "scale(0.6)");
-  };
-
-  GeneticRenderer.prototype._attachPolymerase = function (suppressAnimation) {
-    var selection = suppressAnimation ? this._g : this._nextTrans().ease("quad-out").duration(3000);
-
-    selection.select(".polymerase-under")
-      .attr("transform", "translate(0, 0) scale(0.8)");
-
-    selection = suppressAnimation ? this._g : this._nextTrans().ease("cubic-in-out").duration(1000);
-    selection.select(".polymerase-under")
-      .attr("transform", "scale(1)");
-    selection.select(".polymerase-over")
-      .attr("transform", "scale(1)")
-      .style("opacity", 1);
   };
 
   GeneticRenderer.prototype._polymeraseZoom = function () {
@@ -520,7 +694,7 @@ define(function (require) {
       .attr("transform", "scale(1.5)");  // 0.6 * 2.5
 
     t.each("end", function () {
-      self._renderDNA();
+      self._renderTranscriptionElements();
     });
 
     t = this._nextTrans().duration(700);
@@ -529,7 +703,7 @@ define(function (require) {
       .remove();
   };
 
-  GeneticRenderer.prototype._renderDNA = function () {
+  GeneticRenderer.prototype._renderTranscriptionElements = function () {
     var dna            = this.model.get("DNA"),
         dnaComplement  = this.model.get("DNAComplement"),
         dnaLength      = dna.length,
@@ -601,7 +775,7 @@ define(function (require) {
     var mRNA       = this.model.get("mRNA").substr(0, step),
         stopCodons = this.model.geneticEngine().stopCodonsHash();
 
-    this._renderDNA();
+    this._renderTranscriptionElements();
     this.separateDNA(true);
 
     this._mrnaG.call(nucleotides().model2px(this.model2px).sequence(mRNA).backbone("RNA").stopCodonsHash(stopCodons));
@@ -640,11 +814,11 @@ define(function (require) {
   };
 
   GeneticRenderer.prototype._renderBeforeTranslation = function () {
-    this._renderTranslation(0);
+    this._renderTranslationElements(0);
     this._g.selectAll(".ribosome-under, .ribosome-over").style("opacity", 0);
   };
 
-  GeneticRenderer.prototype._renderTranslation = function (step) {
+  GeneticRenderer.prototype._renderTranslationElements = function (step) {
     var mRNA       = this.model.get("mRNA"),
         stopCodons = this.model.geneticEngine().stopCodonsHash();
 
@@ -851,7 +1025,6 @@ define(function (require) {
     var mRNA       = this.model.get("mRNA"),
         trans      = this._nextTrans().duration(500),
         stopCodons = this.model.geneticEngine().stopCodonsHash(),
-        self = this,
         t, r;
 
     this._mrnaG.call(nucleotides().model2px(this.model2px).sequence(mRNA).backbone("RNA").stopCodonsHash(stopCodons));
