@@ -41,23 +41,55 @@ define(function (require) {
         direction = 1,
         startingPos = 0,
         backbone = "DNA", // if enabled, "RNA" or "DNA" is expected.
-        stopCodonsHash = null;
+        stopCodonsHash = null,
+
+        xShift = 0,
+        yShift = 0;
+
+    function shift(enabled) {
+      var t, r;
+      if (enabled) {
+        // While adding a new mRNA segment, choose a random starting point along a
+        // circle with a certain radius that extends beyond the top DNA strand.
+        // Use parametric circle equation: x = r cos(t), y = r sin(t)
+        // Limit range of the "t" parameter to: [0.25 * PI, 0.75 * PI) and [1.25 * PI, 1.75 * PI),
+        // so new mRNA segments will come only from the top or bottom side of the container.
+        t = Math.random() >= 0.5 ? Math.PI * 0.25 : Math.PI * 1.25;
+        t += Math.random() * Math.PI * 0.5;
+        r = nucleotides.HEIGHT * 6;
+        xShift = r * Math.cos(t);
+        yShift = r * Math.sin(t);
+      } else {
+        xShift = yShift = 0;
+      }
+    }
+
+    function nucleoTransform(d, i) {
+      return "translate(" + m2px(xShift + nucleotides.WIDTH * (startingPos + i)) +
+             " " + m2px(yShift) + ") scale(1, " + (direction  === 1 ? 1 : -1) + ")";
+    }
 
     function nucleo(g) {
       g.each(function() {
         var g = d3.select(this),
 
-            nucleo = g.selectAll("g.nucleotide").data(sequence.split("")),
-            nucleoEnter = nucleo.enter()
-                            .append("g").attr("class", "nucleotide")
-                            .append("g").attr("class", "pos")
-                            .append("g").attr("class", "scale"),
             yOffset = backbone ? 0.9 * H.BACKB : 0,
             yStart = m2px(yOffset + 0.5 * H.A),
             yEnd = m2px(yOffset + H.A * 0.97),
-            nucleoSVG;
 
+            nucleo, nucleoEnter, nucleoSVG;
+
+        nucleo = g.selectAll("g.nucleotide").data(sequence.split(""));
         // Enter.
+        // Enable random translation of the new mRNAs.
+        shift(true);
+        nucleoEnter = nucleo.enter().append("g").attr({
+          "class": "nucleotide",
+          "transform": nucleoTransform
+        }).style({
+          "opacity": 0
+        });
+
         nucleoEnter.append("path").attr({
           "class": "bonds",
           "d": function (d) {
@@ -125,8 +157,14 @@ define(function (require) {
           return className;
         });
         nucleo.selectAll("path.letter").attr("d", function (d) { return nucleotidePaths.letter[d][direction]; });
-        nucleo.select("g.pos").attr("transform", function (d, i) { return "translate(" + m2px(nucleotides.WIDTH) * (startingPos + i) + ")"; });
-        nucleo.select("g.scale").attr("transform", "scale(1, " + (direction  === 1 ? 1 : -1) + ")");
+
+        shift(false);
+        d3.transition(nucleo)
+          .attr("transform", nucleoTransform)
+          .style("opacity", 1);
+
+        // Exit.
+        d3.transition(nucleo.exit()).remove();
       });
     }
 
