@@ -1,5 +1,4 @@
 /*global define: false, d3: false */
-/*jshint eqnull: true */
 
 define(function(require) {
   // Dependencies.
@@ -1071,11 +1070,15 @@ define(function(require) {
 
       // When atoms are being deserialized, the deserializing function
       // should handle change hooks due to performance reasons.
-      if (!options.deserialization)
+      if (!options.deserialization) {
         invalidatingChangePreHook();
+      }
+
       engine.addAtom(props);
-      if (!options.deserialization)
+
+      if (!options.deserialization) {
         invalidatingChangePostHook();
+      }
 
       if (!options.suppressEvent) {
         dispatch.addAtom();
@@ -1152,14 +1155,16 @@ define(function(require) {
       props = validator.validateCompleteness(metadata.radialBond, props);
 
       // During deserialization change hooks are managed manually.
-      if (!options || !options.deserialization)
+      if (!options || !options.deserialization) {
         invalidatingChangePreHook();
+      }
 
       // Finally, add radial bond.
       engine.addRadialBond(props);
 
-      if (!options || !options.deserialization)
+      if (!options || !options.deserialization) {
         invalidatingChangePostHook();
+      }
 
       dispatch.addRadialBond();
     },
@@ -1176,14 +1181,16 @@ define(function(require) {
       props = validator.validateCompleteness(metadata.angularBond, props);
 
       // During deserialization change hooks are managed manually.
-      if (!options || !options.deserialization)
+      if (!options || !options.deserialization) {
         invalidatingChangePreHook();
+      }
 
       // Finally, add angular bond.
       engine.addAngularBond(props);
 
-      if (!options || !options.deserialization)
+      if (!options || !options.deserialization) {
         invalidatingChangePostHook();
+      }
     };
 
     model.removeAngularBond = function(idx) {
