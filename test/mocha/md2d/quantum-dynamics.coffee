@@ -10,13 +10,14 @@ describe "MD2D modeler with Quantum Dynamics plugin", ->
   describe "when using quantum dynamics", ->
     beforeEach ->
       model = new Model {
-        quantumDynamics: {
-          useQuantumDynamics: true
-        }
+        quantumDynamics: {}
       }
 
     it "should have useQuantumDynamics = true", ->
-      model.properties.quantumDynamics.useQuantumDynamics.should.eql true
+      model.properties.useQuantumDynamics.should.eql true
+
+    it "should not have a 'quantumDynamics' property", ->
+      should.not.exist model.properties.quantumDynamics
 
     it "should have an excitation table with default of zero", ->
       # Atoms data.

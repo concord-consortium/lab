@@ -135,7 +135,10 @@ define(function(require) {
         mainProperties,
 
         // The initial viewOptions, validated and filtered from the initialProperties
-        viewOptions;
+        viewOptions,
+
+        // Properties hashes for use by plugins
+        pluginProperties;
 
     function defineBuiltinProperty(type, key, setter) {
       var metadataForType,
@@ -778,12 +781,15 @@ define(function(require) {
     /**
       Creates a new md2d engine and leaves it in 'engine'.
     */
-    function initializeEngine(properties) {
+    function initializeEngine(properties, pluginProperties) {
       engine = md2d.createEngine();
       engine.setDimensions([properties.minX, properties.minY, properties.maxX, properties.maxY]);
 
-      if (properties.quantumDynamics) {
-        engine.addPlugin(new QuantumDynamics(engine, properties.quantumDynamics));
+      if (pluginProperties.quantumDynamics) {
+        properties.useQuantumDynamics = true;
+        engine.addPlugin(new QuantumDynamics(engine, pluginProperties.quantumDynamics));
+      } else {
+        properties.useQuantumDynamics = false;
       }
 
       // Register invalidating change hooks.
@@ -2013,6 +2019,14 @@ define(function(require) {
     }());
     viewOptions = validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {});
 
+    // TODO. Implement a pattern whereby the pluginController lets each plugins examine the initial
+    // properties and extract the relevant plugin properties. *However*, don't do it in a way that
+    // requires changing the model JSON schema when functionality is moved out of the main engine
+    // and into a plugin, or vice-versa.
+    pluginProperties = {
+      quantumDynamics: initialProperties.quantumDynamics
+    };
+
     // Set the regular, main properties. Note that validation process will return hash without all
     // properties which are not defined in meta model as mainProperties (like atoms, obstacles,
     // viewOptions etc).
@@ -2033,7 +2047,7 @@ define(function(require) {
     initializeDimensions(mainProperties);
 
     // Setup MD2D engine object.
-    initializeEngine(mainProperties);
+    initializeEngine(mainProperties, pluginProperties);
 
     // TODO: Elements are stored and treated different from other objects. This was enforced by
     // createNewAtoms() method which has been removed. Change also editableElements handling.

@@ -39,8 +39,6 @@ define(function(require) {
 
         api,
 
-        useQuantumDynamics   = props.useQuantumDynamics,
-
         elementEnergyLevels  = props.elementEnergyLevels,
         pRadiationless       = props.radiationlessEmissionProb,
 
@@ -391,11 +389,9 @@ define(function(require) {
       },
 
       performActionWithinIntegrationLoop: function(neighborList, dt) {
-        if (useQuantumDynamics) {
-          performInteractionsBetweenCloseAtoms(neighborList);
-          // sponaneousEmission()   // TODO
-          movePhotons(dt);
-        }
+        performInteractionsBetweenCloseAtoms(neighborList);
+        // sponaneousEmission()   // TODO
+        movePhotons(dt);
       },
 
       getPhotons: function() {

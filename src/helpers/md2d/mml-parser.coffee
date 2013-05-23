@@ -850,7 +850,6 @@ parseMML = (mmlString) ->
             radiationlessEmissionProb = val
 
       quantumDynamics = {
-        useQuantumDynamics
         elementEnergyLevels
         radiationlessEmissionProb
       }

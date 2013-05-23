@@ -119,8 +119,9 @@ define(function() {
       mRNA: {
         serialize: false
       },
-      quantumDynamics: {
-
+      useQuantumDynamics: {
+        default: false,
+        serialize: false
       }
     },
 
@@ -570,9 +571,6 @@ define(function() {
     },
 
     quantumDynamics: {
-      useQuantumDynamics: {
-        defaultValue: false
-      },
       elementEnergyLevels: {
         defaultValue: []
       },
