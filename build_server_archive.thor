@@ -1,4 +1,5 @@
 require 'grit'
+require 'fog'
 
 # build assets/resources for the Rails server
 
@@ -28,7 +29,15 @@ class BuildServerAchive < Thor
     # %x{rm -rf tmp/#{tarball} }
   end
 
-  desc "create_tarball", "create a tar file for the server/public directory"
+  desc "upload_tarball", "Upload tar file to S3 storage"
+  method_option :s3_directory, :type => :string, :default => 'lab-staging', :desc => "S3 directory containing the tar file"
+  def upload_tarball
+    tarball_path = create_tarball
+    tarball_url = upload_file(tarball_path, options[:s3_directory])
+    puts "Tar file for lab-interactive-management app created at:\n#{tarball_url}"
+  end
+
+  desc "create_tarball", "Create a tar file for the server/public directory"
   # method_option :clean, :type => :boolean, :default => false, :desc => "Regnerate the tar file"
   def create_tarball
     tarball = tarball_name
@@ -40,6 +49,7 @@ class BuildServerAchive < Thor
     FileUtils.mkdir_p('tmp')
     puts "Create tar file of server/public in tmp/#{tarball}"
     %x{ tar cf tmp/#{tarball} -C server/public . }
+    "tmp/#{tarball}"
   end
 
   #TODO: find out why this is soooo slow.
@@ -57,4 +67,15 @@ class BuildServerAchive < Thor
     commit_hash = %x{git log -1 --format=%h }
     tarball = "lab_#{commit_hash.chomp}.tar.gz"
   end
+
+  def upload_file(file_path, s3_dirname)
+    storage = ::Fog::Storage.new(:provider => 'AWS')
+    directory = storage.directories.create(:key => s3_dirname, :public => true)
+    file_name = file_path.split('/').last
+    file = directory.files.create(:key => file_name,
+                                  :body => File.open(file_path),
+                                  :public => true)
+    file.public_url
+  end
+
 end
