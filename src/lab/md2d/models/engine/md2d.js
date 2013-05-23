@@ -16,7 +16,7 @@ define(function (require, exports, module) {
       CloneRestoreWrapper  = require('common/models/engines/clone-restore-wrapper'),
       CellList             = require('./cell-list'),
       NeighborList         = require('./neighbor-list'),
-      PluginController     = require('./plugins/plugin-controller'),
+      PluginController     = require('common/models/plugin-controller'),
       utils                = require('./utils'),
 
       // from A. Rahman "Correlations in the Motion of Atoms in Liquid Argon", Physical Review 136 pp. A405–A411 (1964)
