@@ -1884,7 +1884,6 @@ define(function(require) {
       invalidatingChangePostHook();
     };
 
-    // FIXME: Broken!! Includes property setter methods, does not include radialBonds, etc.
     model.serialize = function() {
       var propCopy = {},
           ljProps, i, len,
