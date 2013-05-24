@@ -20,14 +20,21 @@
 define(function(require) {
 
   // static variables
-  var PLANCK_CONSTANT = 0.2,      // in reality, 6.626E-34 m^2kg/s. Classic MW uses 0.2 by default.
-      C = 0.002,                  // speed of light from Classic MW, in nm/fs
-      TWO_PI = 2 * Math.PI,
-      LIFETIME = 1000,            // expected value of lifetime of excited energy state, in fs
-      EMISSION_PROBABILITY_PER_FS = 1/LIFETIME,
+  var CloneRestoreWrapper = require('common/models/engines/clone-restore-wrapper'),
+      constants           = require('../constants/index'),
+      utils               = require('../utils'),
 
-      CloneRestoreWrapper = require('common/models/engines/clone-restore-wrapper'),
-      utils               = require('../utils');
+      // in reality, 6.626E-34 m^2kg/s. Classic MW uses 0.2 in its units (eV * fs)
+      PLANCK_CONSTANT = constants.convert(0.2, { from: constants.unit.EV, to: constants.unit.MW_ENERGY_UNIT }),
+
+      // Speed of light.
+      // in reality, about 300 nm/fs! Classic uses 0.2 in its units (0.1Å/fs), which is 0.002 nm/fs:
+      C = 0.002,
+      TWO_PI = 2 * Math.PI,
+
+      // expected value of lifetime of excited energy state, in fs
+      LIFETIME = 1000,
+      EMISSION_PROBABILITY_PER_FS = 1/LIFETIME;
 
   return function QuantumDynamics(engine, _properties) {
 
