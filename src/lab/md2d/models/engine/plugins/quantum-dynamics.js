@@ -28,19 +28,19 @@ define(function(require) {
       CloneRestoreWrapper = require('common/models/engines/clone-restore-wrapper'),
       utils               = require('../utils');
 
-  return function QuantumDynamics(engine, _props) {
+  return function QuantumDynamics(engine, _properties) {
 
     var arrays               = require('arrays'),
         arrayTypes           = require('common/array-types'),
         metadata             = require('md2d/models/metadata'),
         validator            = require('common/validator'),
 
-        props                = validator.validateCompleteness(metadata.quantumDynamics, _props),
+        properties           = validator.validateCompleteness(metadata.quantumDynamics, _properties),
 
         api,
 
-        elementEnergyLevels  = props.elementEnergyLevels,
-        pRadiationless       = props.radiationlessEmissionProbability,
+        elementEnergyLevels  = properties.elementEnergyLevels,
+        pRadiationless       = properties.radiationlessEmissionProbability,
 
         dimensions           = engine.getDimensions(),
 
@@ -56,19 +56,20 @@ define(function(require) {
           atoms.excitation = arrays.create(num, 0, arrayTypes.int8Type);
         },
 
-        createPhotonsTable = function() {
-          if (photons.x) {
-            // using an already-existing photon table
-            return;
+        createPhotonsTable = function(serializedPhotons) {
+          var length = 0;
+
+          if (serializedPhotons.x) {
+            length = Math.ceil(serializedPhotons.x.length / 10) * 10;
           }
 
-          photons.x      = arrays.create(0, 0, arrayTypes.floatType);
-          photons.y      = arrays.create(0, 0, arrayTypes.floatType);
-          photons.vx     = arrays.create(0, 0, arrayTypes.floatType);
-          photons.vy     = arrays.create(0, 0, arrayTypes.floatType);
-          photons.omega  = arrays.create(0, 0, arrayTypes.floatType);
-
-          _props.photons = photons;
+          photons =  {
+            x     : arrays.create(length, 0, arrayTypes.floatType),
+            y     : arrays.create(length, 0, arrayTypes.floatType),
+            vx    : arrays.create(length, 0, arrayTypes.floatType),
+            vy    : arrays.create(length, 0, arrayTypes.floatType),
+            angularFrequency : arrays.create(length, 0, arrayTypes.floatType)
+          };
         },
 
         currentlyOperatedPairs = [],  // all pairs being currently operated on
@@ -80,6 +81,21 @@ define(function(require) {
         dx, dy,
 
         numPhotons = 0,
+
+        copyPhotonData = function(serializedPhotons) {
+          if (!serializedPhotons || !serializedPhotons.x) {
+            return;
+          }
+          ['x', 'y', 'vx', 'vy', 'angularFrequency'].forEach(function(key) {
+            arrays.copy(serializedPhotons[key], photons[key]);
+          });
+
+          for (var i = 0; i < photons.x.length; i++) {
+            if (photons.vx[i] || photons.vy[i]) {
+              numPhotons++;
+            }
+          }
+        },
 
         // If a pair of atoms are close enough, QD interactions may occur.
         //
@@ -323,9 +339,9 @@ define(function(require) {
 
           numPhotons++;
 
-          if (numPhotons >= length) {
+          if (numPhotons > length) {
             utils.extendArrays(photons, length+10);
-            return numPhotons;
+            return numPhotons - 1;
           }
 
           for (i = 0; i < length; i++) {
@@ -337,7 +353,7 @@ define(function(require) {
 
         removePhoton = function(i) {
           numPhotons--;
-          photons.x[i] = photons.y[i] = photons.vx[i] = photons.vy[i] = photons.omega[i] = 0;
+          photons.x[i] = photons.y[i] = photons.vx[i] = photons.vy[i] = photons.angularFrequency[i] = 0;
         },
 
         emitPhoton = function(atomIndex, energy) {
@@ -359,7 +375,7 @@ define(function(require) {
           photons.y[photonIndex]     = y;
           photons.vx[photonIndex]    = vx;
           photons.vy[photonIndex]    = vy;
-          photons.omega[photonIndex] = angularFreq;
+          photons.angularFrequency[photonIndex] = angularFreq;
         },
 
         movePhotons = function(dt) {
@@ -383,9 +399,9 @@ define(function(require) {
       initialize: function(dataTables) {
         atoms     = dataTables.atoms;
         elements  = dataTables.elements;
-        photons   = props.photons;
         updateAtomsTable();
-        createPhotonsTable();
+        createPhotonsTable(properties.photons);
+        copyPhotonData(properties.photons);
       },
 
       performActionWithinIntegrationLoop: function(neighborList, dt) {
@@ -428,7 +444,9 @@ define(function(require) {
             viewPhoton.y  = photons.y[i];
             viewPhoton.vx = photons.vx[i];
             viewPhoton.vy = photons.vy[i];
-            viewPhoton.angularFrequency = photons.omega[i];
+            viewPhoton.angularFrequency = photons.angularFrequency[i];
+
+            n++;
           }
         }
 

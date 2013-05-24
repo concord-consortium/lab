@@ -411,6 +411,8 @@ define(function(require) {
     */
     function readModelState() {
       engine.computeOutputState(modelState);
+      // remember that getViewPhotons will eventually be a modeler-layer method that ingests a raw
+      // representation provided by modelState.photons
       viewPhotons = engine.getViewPhotons();
       updateViewAtoms(modelState.atoms);
     }
@@ -1890,6 +1892,35 @@ define(function(require) {
       invalidatingChangePostHook();
     };
 
+    // Convert array of hashes to a hash of arrays
+    // TODO. Move to a new utils module, share with mml parser
+    function unroll(array) {
+      var ret = {};
+
+      if (array.length === 0) {
+        return {};
+      }
+
+      Object.keys(array[0]).forEach(function(key) {
+        ret[key] = [];
+      });
+
+      array.forEach(function(object) {
+        Object.keys(object).forEach(function(key) {
+          ret[key].push(object[key]);
+        });
+      });
+      return ret;
+    }
+
+    function serializeQuantumDynamics() {
+      var photons = model.getPhotons();
+
+      return {
+        photons: serialize(metadata.photon, unroll(photons), photons.length)
+      };
+    }
+
     model.serialize = function() {
       var propCopy = {},
           ljProps, i, len,
@@ -1964,6 +1995,11 @@ define(function(require) {
       }
       if (propCopy.modelSampleRate === "default") {
         delete propCopy.modelSampleRate;
+      }
+
+      // TODO. Should be able to ask plugins to serialize their data.
+      if (model.properties.useQuantumDynamics) {
+        propCopy.quantumDynamics = serializeQuantumDynamics();
       }
 
       removeAtomsArrayIfDefault("marked", metadata.atom.marked.defaultValue);

@@ -580,6 +580,26 @@ define(function() {
       radiationlessEmissionProbability: {
         defaultValue: 1
       }
+    },
+
+    photon: {
+      x: {
+        serialize: true
+      },
+      y: {
+        serialize: true
+      },
+      vx: {
+        defaultValue: 0,
+        serialize: true
+      },
+      vy: {
+        defaultValue: 0,
+        serialize: true
+      },
+      angularFrequency: {
+        serialize: true
+      }
     }
   };
 });
