@@ -1673,27 +1673,48 @@ define(function (require) {
       geneticRenderer = new GeneticRenderer(geneticsContainer, api, model);
     }
 
+    function photonPath(d) {
+      var lineData = [],
+          nPoints = 40,
+          line = d3.svg.line()
+            .x(function(d) { return model2px(0.5 / nPoints * d.x); })
+            .y(function(d) { return model2px(0.1 * d.y); }),
+
+          t = d.angularFrequency * 2 * Math.PI / nPoints,
+          i;
+
+      // Reference implementation: https://github.com/concord-consortium/mw/blob/6e2f2d4630323b8e993fcfb531a3e7cb06644fef/src/org/concord/mw2d/models/Photon.java#L74-L79
+      for (i = 0; i < nPoints; i++) {
+        lineData.push({
+          x: i - nPoints/2,
+          y: Math.sin(i * t) / (1 + 0.01 * (i - 0.5 * nPoints) * (i - 0.5 * nPoints))
+        });
+      }
+
+      return line(lineData);
+    }
+
     function enterAndUpdatePhotons() {
       var photonData = model.getPhotons(),
-          photons = mainContainer.selectAll("circle.photon").data(photonData);
+          photons = mainContainer.selectAll(".photon").data(photonData);
 
-      photons.enter().append("circle")
+      photons.enter().append("path")
         .attr({
-          "class": "atom draggable photon",
-          "r":  function() { return model2px(0.06); },
-          "stroke": "orange",
+          "class": "photon",
+          "d": photonPath,
           "stroke-width": 1,
-          "fill-opacity": 1,
-          "fill": "yellow",
-          "filter": "url(#glow)"
+          "stroke": "black",
+          "fill-opacity": 0
         });
 
-      photons.attr({
-        "cx": function(d) { return model2px(d.x); },
-        "cy": function(d) { return model2pxInv(d.y); }
+      photons.exit().remove();
+
+      photons.attr("transform", function(d) {
+        var angle = -180 * Math.atan2(d.vy, d.vx) / Math.PI;
+        return "translate(" + model2px(d.x) + ", " + model2pxInv(d.y) + ") " +
+               "rotate(" + angle + ")";
       });
 
-      photons.exit().remove();
     }
 
     //
