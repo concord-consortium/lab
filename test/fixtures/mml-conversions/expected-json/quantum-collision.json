@@ -143,7 +143,6 @@
     ]
   },
   "quantumDynamics": {
-    "useQuantumDynamics": true,
     "elementEnergyLevels": [
       [],
       [

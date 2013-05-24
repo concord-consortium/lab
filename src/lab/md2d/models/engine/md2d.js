@@ -3650,13 +3650,15 @@ define(function (require, exports, module) {
         return state;
       },
 
-      // FIXME. Temporary pass-through of modeler method implemented in plugin
-      getViewPhotons: function() {
-        var viewPhotons;
-        pluginController.callPluginFunction('getViewPhotons', [], function(returnValue) {
-          viewPhotons = returnValue;
+      // FIXME. Not a sustainable pattern. This is just a temporary pass-through of modeler-level
+      // methods that are implemented in the quantumDynamics plugin, because for now the plugin is
+      // only callable from the engine.
+      callPluginAccessor: function(accessorMethodName) {
+        var returnValue;
+        pluginController.callPluginFunction(accessorMethodName, [], function(_) {
+          returnValue = _;
         });
-        return viewPhotons;
+        return returnValue;
       }
     };
 

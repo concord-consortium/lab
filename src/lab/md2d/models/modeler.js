@@ -413,7 +413,7 @@ define(function(require) {
       engine.computeOutputState(modelState);
       // remember that getViewPhotons will eventually be a modeler-layer method that ingests a raw
       // representation provided by modelState.photons
-      viewPhotons = engine.getViewPhotons();
+      viewPhotons = engine.callPluginAccessor('getViewPhotons');
       updateViewAtoms(modelState.atoms);
     }
 
@@ -1917,7 +1917,9 @@ define(function(require) {
       var photons = model.getPhotons();
 
       return {
-        photons: serialize(metadata.photon, unroll(photons), photons.length)
+        photons: serialize(metadata.photon, unroll(photons), photons.length),
+        elementEnergyLevels: engine.callPluginAccessor('getElementEnergyLevels'),
+        radiationlessEmissionProbability: engine.callPluginAccessor('getRadiationlessEmissionProbability')
       };
     }
 

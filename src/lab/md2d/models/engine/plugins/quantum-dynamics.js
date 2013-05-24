@@ -3,8 +3,7 @@
 /**
   This plugin adds quantum dynamics functionality to the MD2D engine.
 
-  Datatable changes:
-
+  Datatable changes`
     atoms:
       excitation: an int representing the current level of excitation of an atom, from
         floor (0) to an arbitrary level. In this model each atom is assumed to have one
@@ -453,6 +452,14 @@ define(function(require) {
         viewPhotons.length = this.getNumPhotons();
 
         return viewPhotons;
+      },
+
+      getElementEnergyLevels: function() {
+        return elementEnergyLevels;
+      },
+
+      getRadiationlessEmissionProbability: function() {
+        return pRadiationless;
       },
 
       getState: function() {
