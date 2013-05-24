@@ -40,7 +40,7 @@ define(function(require) {
         api,
 
         elementEnergyLevels  = props.elementEnergyLevels,
-        pRadiationless       = props.radiationlessEmissionProb,
+        pRadiationless       = props.radiationlessEmissionProbability,
 
         dimensions           = engine.getDimensions(),
 

@@ -836,7 +836,7 @@ parseMML = (mmlString) ->
           elementEnergyLevels.push []
 
       quantumRule = $mml(".org-concord-mw2d-models-QuantumRule")
-      radiationlessEmissionProb = 1
+      radiationlessEmissionProbability = 1
 
       if quantumRule.length
         probabilityMap = quantumRule.find "[property=probabilityMap]>[method=put]"
@@ -847,11 +847,11 @@ parseMML = (mmlString) ->
 
           # key values are ints hard-coded in classic mw
           if key is 11
-            radiationlessEmissionProb = val
+            radiationlessEmissionProbability = val
 
       quantumDynamics = {
         elementEnergyLevels
-        radiationlessEmissionProb
+        radiationlessEmissionProbability
       }
 
       quantumDynamics = validator.validateCompleteness metadata.quantumDynamics, quantumDynamics

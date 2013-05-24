@@ -577,7 +577,7 @@ define(function() {
       photons: {
         defaultValue: {}
       },
-      radiationlessEmissionProb: {
+      radiationlessEmissionProbability: {
         defaultValue: 1
       }
     }
