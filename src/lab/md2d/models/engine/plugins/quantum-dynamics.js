@@ -23,6 +23,8 @@ define(function(require) {
   var PLANCK_CONSTANT = 0.2,      // in reality, 6.626E-34 m^2kg/s. Classic MW uses 0.2 by default.
       C = 0.002,                  // speed of light from Classic MW, in nm/fs
       TWO_PI = 2 * Math.PI,
+      LIFETIME = 1000,            // expected value of lifetime of excited energy state, in fs
+      EMISSION_PROBABILITY_PER_FS = 1/LIFETIME,
 
       CloneRestoreWrapper = require('common/models/engines/clone-restore-wrapper'),
       utils               = require('../utils');
@@ -50,9 +52,9 @@ define(function(require) {
         viewPhotons = [],
 
         updateAtomsTable = function() {
-          var num = atoms.x.length;
+          var length = atoms.x.length;
 
-          atoms.excitation = arrays.create(num, 0, arrayTypes.int8Type);
+          atoms.excitation = arrays.create(length, 0, arrayTypes.int8Type);
         },
 
         createPhotonsTable = function(serializedPhotons) {
@@ -100,7 +102,7 @@ define(function(require) {
         //
         // This is called at the end of every integration loop.
         performInteractionsBetweenCloseAtoms = function(neighborList) {
-          var N     = atoms.x.length,
+          var N     = engine.getNumberOfAtoms(),
               nlist = neighborList.getList(),
               currentlyClosePairs = [],
               a1, a2,
@@ -391,6 +393,46 @@ define(function(require) {
               removePhoton(i);
             }
           }
+        },
+
+        spontaneousEmission = function(dt) {
+          if (!elementEnergyLevels) { return; }
+
+          for (var i = 0, N = engine.getNumberOfAtoms(); i < N; i++) {
+            tryToSpontaneouslyEmit(i, dt);
+          }
+        },
+
+        tryToSpontaneouslyEmit = function(atomIndex, dt) {
+
+          if (atoms.excitation[atomIndex] === 0) { return; }
+
+          // The probability of an emission in the current timestep is the probability that an
+          // exponential random variable T with expected value LIFETIME has value t less than dt.
+          // For dt < ~0.1 * LIFETIME, this probability is approximately equal to dt/LIFETIME.
+
+          if (Math.random() > dt * EMISSION_PROBABILITY_PER_FS) { return; }
+
+          // Randomly select an energy level. Reference:
+          // https://github.com/concord-consortium/mw/blob/6e2f2d4630323b8e993fcfb531a3e7cb06644fef/src/org/concord/mw2d/models/SpontaneousEmission.java#L48-L70
+
+          var u1 = Math.random(),
+              u2 = Math.random(),
+              energyLevels,
+              excessEnergy,
+              i,
+              m = atoms.excitation[atomIndex],
+              mInverse = 1/m;
+
+          for (i = 0; i < m; i++) {
+            if (i*mInverse <= u1 && u1 < (i+1)*mInverse && pRadiationless < u2) {
+              energyLevels = elementEnergyLevels[atoms.element[atomIndex]];
+              excessEnergy = energyLevels[m] - energyLevels[i];
+              atoms.excitation[atomIndex] = i;
+              emitPhoton(atomIndex, excessEnergy);
+              return;
+            }
+          }
         };
 
     // Public API.
@@ -405,7 +447,7 @@ define(function(require) {
 
       performActionWithinIntegrationLoop: function(neighborList, dt) {
         performInteractionsBetweenCloseAtoms(neighborList);
-        // sponaneousEmission()   // TODO
+        spontaneousEmission(dt);
         movePhotons(dt);
       },
 
