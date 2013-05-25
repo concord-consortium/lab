@@ -50,7 +50,7 @@ define(function (require) {
     }
   }());
 
-  return function GeneticElementsRenderer(model, model2px, model2pxInv) {
+  function GeneticElementsRenderer(model, model2px, model2pxInv) {
 
     function scaleFunc(d) {
       return "scale(" + d.scale + ")";
@@ -66,6 +66,24 @@ define(function (require) {
     }
     function translateScaleFuncInv(d) {
       return translateFuncInv(d) + " " + scaleFunc(d);
+    }
+    function ribosomeTopPos(step, xShift, yShift) {
+      step = Math.max(0, step - 2);
+      xShift = xShift || 0;
+      yShift = yShift || 0;
+      return "translate(" + model2px((2 + step * 3) * nucleotides.WIDTH + xShift) + ", " +
+                            model2pxInv(4.52 * nucleotides.HEIGHT + yShift) + ")";
+    }
+    function ribosomeBottomPos(step, xShift, yShift) {
+      step = Math.max(0, step - 2);
+      xShift = xShift || 0;
+      yShift = yShift || 0;
+      return "translate(" + model2px((1.95 + step * 3) * nucleotides.WIDTH + xShift) + ", " +
+                            model2pxInv(1.75 * nucleotides.HEIGHT + yShift) + ")";
+    }
+    function ribosomeUnderOverPos(step) {
+      step = Math.max(0, step - 2);
+      return "translate(" + model2px((2 + step * 3) * nucleotides.WIDTH) + ")";
     }
 
     return {
@@ -344,6 +362,94 @@ define(function (require) {
         d3.transition(nucleus.exit()).remove();
       },
 
+      ribosomeBottom: function (parent, data) {
+        var selection = parent.select(".over-dna-layer").selectAll(".ribosome-bottom").data(data.ribosomeBottom);
+        selection.enter().append("image").attr({
+          "class": "ribosome-bottom",
+          "x": model2px(W.RIBO_BOTTOM * -0.5),
+          "y": model2px(H.RIBO_BOTTOM * -0.5),
+          "width": model2px(W.RIBO_BOTTOM),
+          "height": model2px(H.RIBO_BOTTOM),
+          "preserveAspectRatio": "none",
+          "xlink:href": "resources/dna/Ribosome_bottom1.svg",
+          "transform": translateFuncInv
+        }).style({
+          "opacity": opacityFunc
+        });
+        d3.transition(selection).attr({
+          "transform": translateFuncInv
+        }).style({
+          "opacity": opacityFunc
+        });
+        d3.transition(selection.exit()).remove();
+      },
+
+      ribosomeTop: function (parent, data) {
+        var selection = parent.select(".over-dna-layer").selectAll(".ribosome-top").data(data.ribosomeTop);
+        selection.enter().append("image").attr({
+          "class": "ribosome-top",
+          "x": model2px(W.RIBO_TOP * -0.5),
+          "y": model2px(H.RIBO_TOP * -0.5),
+          "width": model2px(W.RIBO_TOP),
+          "height": model2px(H.RIBO_TOP),
+          "preserveAspectRatio": "none",
+          "xlink:href": "resources/dna/Ribosome_top1.svg",
+          "transform": translateFuncInv
+        }).style({
+          "opacity": opacityFunc
+        });
+        d3.transition(selection).attr({
+          "transform": translateFuncInv
+        }).style({
+          "opacity": opacityFunc
+        });
+        d3.transition(selection.exit()).remove();
+      },
+
+      ribosomeUnder: function (parent, data) {
+        var selection = parent.select(".under-dna-layer").selectAll(".ribosome-under").data(data.ribosomeUnder);
+        selection.enter().append("image").attr({
+          "class": "ribosome-under",
+          "x": model2px(W.RIBO_UNDER * -0.5),
+          "y": model2pxInv(3.7 * nucleotides.HEIGHT + 0.5 * H.RIBO_UNDER),
+          "width": model2px(W.RIBO_UNDER),
+          "height": model2px(H.RIBO_UNDER),
+          "preserveAspectRatio": "none",
+          "xlink:href": "resources/dna/Ribosome_under.svg",
+          "transform": translateFuncInv
+        }).style({
+          "opacity": opacityFunc
+        });
+        d3.transition(selection).attr({
+          "transform": translateFuncInv
+        }).style({
+          "opacity": opacityFunc
+        });
+        d3.transition(selection.exit()).remove();
+      },
+
+      ribosomeOver: function (parent, data) {
+        var selection = parent.select(".over-dna-layer").selectAll(".ribosome-over").data(data.ribosomeOver);
+        selection.enter().append("image").attr({
+          "class": "ribosome-over",
+          "x": model2px(W.RIBO_OVER * -0.5),
+          "y": model2pxInv(3.7 * nucleotides.HEIGHT + 0.5 * H.RIBO_UNDER),
+          "width": model2px(W.RIBO_OVER),
+          "height": model2px(H.RIBO_OVER),
+          "preserveAspectRatio": "none",
+          "xlink:href": "resources/dna/Ribosome_over.svg",
+          "transform": translateFuncInv
+        }).style({
+          "opacity": opacityFunc
+        });
+        d3.transition(selection).attr({
+          "transform": translateFuncInv
+        }).style({
+          "opacity": opacityFunc
+        });
+        d3.transition(selection.exit()).remove();
+      },
+
       viewPort: function (parent, data) {
         var position = data.viewPort[0].position(),
             ease     = data.viewPort[0].ease,
@@ -395,5 +501,10 @@ define(function (require) {
         d3.transition(d3.select(".plot")).style("fill", data.background[0].color());
       }
     };
-  };
+  }
+
+  GeneticElementsRenderer.W = W;
+  GeneticElementsRenderer.H = H;
+
+  return GeneticElementsRenderer;
 });
