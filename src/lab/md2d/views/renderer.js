@@ -1817,7 +1817,7 @@ define(function (require) {
       // Always setup radial bonds *after* particles to use correct atoms
       // color table.
       setupRadialBonds();
-      geneticRenderer.render();
+      geneticRenderer.setup();
       setupVectors();
       setupAtomTrace();
       drawImageAttachment();
