@@ -24,13 +24,47 @@ define(function (require) {
       STATE_INDEX = {},
 
       PROMOTER_SEQ   = "TGACCTCTCCGCGCCATCTATAAACCGAAGCGCTAGCTACA",
-      TERMINATOR_SEQ = "ACCACAGGCCGCCAGTTCCGCTGGCGGCATTTT";
+      TERMINATOR_SEQ = "ACCACAGGCCGCCAGTTCCGCTGGCGGCATTTT",
+      JUNK_SEQ;
+
+  function complementarySequence(DNA) {
+    // A-T (A-U)
+    // G-C
+    // T-A (U-A)
+    // C-G
+
+    // Use lower case during conversion to
+    // avoid situation when you change A->T,
+    // and later T->A again.
+    return DNA
+            .replace(/A/g, "t")
+            .replace(/G/g, "c")
+            .replace(/T/g, "a")
+            .replace(/C/g, "g")
+            .toUpperCase();
+  }
+  // Generates junk DNA sequence.
+  function junkSequence(len) {
+    var letters = ["A", "G", "T", "C"],
+        lettersLen = letters.length,
+        seq = "",
+        i;
+
+    for (i = 0; i < len; i++) {
+      seq += letters[Math.floor(Math.random() * lettersLen)];
+    }
+    return {
+      sequence: seq,
+      compSequence: complementarySequence(seq)
+    };
+  }
 
   (function () {
     var i, len;
     for (i = 0, len = STATES.length; i < len; i++) {
       STATE_INDEX[STATES[i]] = i;
     }
+    JUNK_SEQ = junkSequence(50);
   }());
 
   return function GeneticProperties(model) {
@@ -43,23 +77,6 @@ define(function (require) {
         ongoingTransitions = [],
 
         dispatch = d3.dispatch("change", "transition"),
-
-        complementarySequence = function (DNA) {
-          // A-T (A-U)
-          // G-C
-          // T-A (U-A)
-          // C-G
-
-          // Use lower case during conversion to
-          // avoid situation when you change A->T,
-          // and later T->A again.
-          return DNA
-                  .replace(/A/g, "t")
-                  .replace(/G/g, "c")
-                  .replace(/T/g, "a")
-                  .replace(/C/g, "g")
-                  .toUpperCase();
-        },
 
         calculatemRNA = function () {
           var mRNA = "",
@@ -529,29 +546,17 @@ define(function (require) {
       },
 
       /**
-       * Generates junk DNA sequence of a given length.
+       * Returns junk DNA sequence.
        * e.g.
        * {
        *   "sequence": "AGT",
        *   "compSequence": "TCA"
        * }
        *
-       * @param  {number} len junk DNA sequence length.
-       * @return {Object}     sequence and complementary sequence.
+       * @return {Object} sequence and complementary sequence.
        */
-      junkSequence: function (len) {
-        var letters = ["A", "G", "T", "C"],
-            lettersLen = letters.length,
-            seq = "",
-            i;
-
-        for (i = 0; i < len; i++) {
-          seq += letters[Math.floor(Math.random() * lettersLen)];
-        }
-        return {
-          sequence: seq,
-          compSequence: complementarySequence(seq)
-        };
+      junkSequence: function () {
+        return JUNK_SEQ;
       },
 
       promoterSequence: PROMOTER_SEQ,
