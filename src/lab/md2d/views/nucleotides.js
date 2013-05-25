@@ -64,9 +64,8 @@ define(function (require) {
       }
     }
 
-    function nucleoTransform(d, i) {
-      return "translate(" + m2px(xShift + nucleotides.WIDTH * (startingPos + i)) +
-             " " + m2px(yShift) + ") scale(1, " + (direction  === 1 ? 1 : -1) + ")";
+    function translate(d, i) {
+      return "translate(" + m2px(xShift + nucleotides.WIDTH * (startingPos + i)) + " " + m2px(yShift) + ")";
     }
 
     function nucleo(g) {
@@ -77,7 +76,8 @@ define(function (require) {
             yStart = m2px(yOffset + 0.5 * H.A),
             yEnd = m2px(yOffset + H.A * 0.97),
 
-            nucleo, nucleoEnter, nucleoSVG;
+            nucleo, nucleoEnter, nucleoSVG, nucleoTrans,
+            targetScale;
 
         nucleo = g.selectAll("g.nucleotide").data(sequence.split(""));
         // Enter.
@@ -85,9 +85,15 @@ define(function (require) {
         shift(true);
         nucleoEnter = nucleo.enter().append("g").attr({
           "class": "nucleotide",
-          "transform": nucleoTransform
+          "transform": translate
         }).style({
           "opacity": 0
+        });
+
+        // Additional container for scaling.
+        nucleoEnter = nucleoEnter.append("g").attr({
+          "class": "scale",
+          "transform": "scale(1, " + (direction  === 1 ? 1 : -1) + ")",
         });
 
         nucleoEnter.append("path").attr({
@@ -156,12 +162,36 @@ define(function (require) {
           }
           return className;
         });
-        nucleo.selectAll("path.letter").attr("d", function (d) { return nucleotidePaths.letter[d][direction]; });
 
         shift(false);
-        d3.transition(nucleo)
-          .attr("transform", nucleoTransform)
+        nucleoTrans = d3.transition(nucleo)
+          .attr("transform", translate)
           .style("opacity", 1);
+
+        // Duck test whether nucleoTrans is really translation. See D3 API
+        // Reference - d3.transition(selection) returns  transition only when
+        // called in the context of other transition. Otherwise it returns
+        // selection.
+        if (nucleoTrans.attrTween) {
+          // Scale. We can't simply use .attr, as rotation is used (to make
+          // scale change fancier?). attrTween enforces simple change from
+          // scale(1,1) to scale(1,-1) without using rotation.
+          targetScale  = "scale(1, " + (direction  === 1 ? 1 : -1) + ")";
+          nucleoTrans.select("g.scale").attrTween("transform", function(d, i, a) {
+            return d3.interpolateString(a, targetScale);
+          });
+          // Letters. We can use transition as d3.interpolator creates some
+          // results which can't be parsed.
+          nucleoTrans.each("start", function () {
+            nucleo.selectAll("path.letter")
+              .attr("d", function (d) { return nucleotidePaths.letter[d][direction]; });
+          });
+        } else {
+          // The same operations, but without using transition.
+          nucleo.select("g.scale").attr("transform", "scale(1, " + (direction  === 1 ? 1 : -1) + ")");
+          nucleo.selectAll("path.letter")
+            .attr("d", function (d) { return nucleotidePaths.letter[d][direction]; });
+        }
 
         // Exit.
         d3.transition(nucleo.exit()).remove();
