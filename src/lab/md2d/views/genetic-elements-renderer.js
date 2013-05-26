@@ -61,29 +61,11 @@ define(function (require) {
     function translateFuncInv(d) {
       var x = d.translateX || 0,
           y = d.translateY || 0;
-      x = typeof x === "number" ? x : x(); // used by polymerase!
+      x = typeof x === "number" ? x : x.apply(d);
       return "translate(" + model2px(x) + " " + model2pxInv(y) + ")";
     }
     function translateScaleFuncInv(d) {
       return translateFuncInv(d) + " " + scaleFunc(d);
-    }
-    function ribosomeTopPos(step, xShift, yShift) {
-      step = Math.max(0, step - 2);
-      xShift = xShift || 0;
-      yShift = yShift || 0;
-      return "translate(" + model2px((2 + step * 3) * nucleotides.WIDTH + xShift) + ", " +
-                            model2pxInv(4.52 * nucleotides.HEIGHT + yShift) + ")";
-    }
-    function ribosomeBottomPos(step, xShift, yShift) {
-      step = Math.max(0, step - 2);
-      xShift = xShift || 0;
-      yShift = yShift || 0;
-      return "translate(" + model2px((1.95 + step * 3) * nucleotides.WIDTH + xShift) + ", " +
-                            model2pxInv(1.75 * nucleotides.HEIGHT + yShift) + ")";
-    }
-    function ribosomeUnderOverPos(step) {
-      step = Math.max(0, step - 2);
-      return "translate(" + model2px((2 + step * 3) * nucleotides.WIDTH) + ")";
     }
 
     return {
@@ -185,6 +167,7 @@ define(function (require) {
             dnaLength      = dnaSequence.length,
             geneticEngine  = model.geneticEngine(),
             junkDNA        = geneticEngine.junkSequence(),
+            bonds          = data.dna[0] ? data.dna[0].bonds : 0,
             n              = nucleotides(),
             dna, dnaEnter;
 
@@ -215,10 +198,7 @@ define(function (require) {
         dnaEnter.append("g").attr("class", "junk-region").call(n);
         // DNA update:
         d3.transition(dna).attr("transform", translateFuncInv)
-          .selectAll(".bonds")
-            .style("opacity", function () {
-              return data.dna[0].bonds;
-            });
+          .selectAll(".bonds").style("opacity", bonds);
         // DNA exit:
         d3.transition(dna.exit()).remove();
       },
@@ -226,9 +206,9 @@ define(function (require) {
       dnaComp: function (parent, data) {
         var dnaComplement  = model.get("DNAComplement"),
             dnaLength      = dnaComplement.length,
-            mrnaLength     = model.get("mRNA").length,
             geneticEngine  = model.geneticEngine(),
             junkDNA        = geneticEngine.junkSequence(),
+            bonds          = data.dnaComp[0] ? data.dnaComp[0].bonds : 0,
             n              = nucleotides(),
             dnaComp, dnaCompEnter;
 
@@ -261,11 +241,7 @@ define(function (require) {
         dnaCompEnter.append("g").attr("class", "junk-region").call(n);
         // DNA Comp update:
         d3.transition(dnaComp).attr("transform", translateFuncInv)
-          .selectAll(".bonds")
-            .style("opacity", function (d, i) {
-              var bonds = data.dnaComp[0].bonds;
-              return typeof bonds === "number" ? bonds : bonds(i, mrnaLength);
-            });
+          .selectAll(".bonds").style("opacity", bonds);
         // DNA Comp exit:
         d3.transition(dnaComp.exit()).remove();
       },
@@ -411,7 +387,7 @@ define(function (require) {
         selection.enter().append("image").attr({
           "class": "ribosome-under",
           "x": model2px(W.RIBO_UNDER * -0.5),
-          "y": model2pxInv(3.7 * nucleotides.HEIGHT + 0.5 * H.RIBO_UNDER),
+          "y": model2px(H.RIBO_UNDER * -0.5),
           "width": model2px(W.RIBO_UNDER),
           "height": model2px(H.RIBO_UNDER),
           "preserveAspectRatio": "none",
@@ -433,7 +409,7 @@ define(function (require) {
         selection.enter().append("image").attr({
           "class": "ribosome-over",
           "x": model2px(W.RIBO_OVER * -0.5),
-          "y": model2pxInv(3.7 * nucleotides.HEIGHT + 0.5 * H.RIBO_UNDER),
+          "y": model2px(H.RIBO_OVER * -0.5),
           "width": model2px(W.RIBO_OVER),
           "height": model2px(H.RIBO_OVER),
           "preserveAspectRatio": "none",
@@ -450,8 +426,65 @@ define(function (require) {
         d3.transition(selection.exit()).remove();
       },
 
+      trna: function (parent, data) {
+        var geneticEngine = model.geneticEngine(),
+
+            codonWidth = 3 * nucleotides.WIDTH,
+            offset = (codonWidth - W.TRNA) * 0.55,
+
+            selection, enter;
+
+        selection = parent.select(".top-layer").selectAll(".trna").data(data.trna, function (d) { return d.index; });
+        // The most outer container can be used to set easily position offset.
+        // While the inner g elements provides translation for "ideal" tRNA position
+        // close to the mRNA and optional rotation.
+        enter = selection.enter().append("g").attr("class", "trna").attr({
+          "transform": function (d, i) {
+            return "translate(" + model2px(nucleotides.HEIGHT * 2) + ", " + model2px(-2.78) + ")" + translateFuncInv(d, i);
+          }
+        }).style({
+          "opacity": opacityFunc
+        });
+        enter = enter.append("g").attr("class", "rot");
+
+        enter.append("g")
+          .attr("transform", "translate(0, " + model2px(-H.A) + ")")
+          .call(nucleotides()
+                  .model2px(model2px)
+                  .sequence(function (d) { return geneticEngine.codonComplement(d.index); })
+                  .backbone(false)
+                  .randomEnter(false));
+
+        enter.append("image").attr({
+          "class": "trna-neck",
+          "x": model2px(0.52 * (codonWidth - W.TRNA_NECK)),
+          "y": model2px(-H.TRNA_NECK -H.TRNA * 0.95 - H.A * 0.92),
+          "width": model2px(W.TRNA_NECK),
+          "height": model2px(H.TRNA_NECK),
+          "preserveAspectRatio": "none",
+          "xlink:href": "resources/dna/tRNA_neck.svg"
+        });
+        enter.append("image").attr({
+          "class": "trna-base",
+          "x": model2px(offset),
+          "y": model2px(-H.TRNA - H.A * 0.92),
+          "width": model2px(W.TRNA),
+          "height": model2px(H.TRNA),
+          "preserveAspectRatio": "none",
+          "xlink:href": "resources/dna/tRNA_base.svg"
+        });
+
+        d3.transition(selection).attr({
+          "transform": translateFuncInv
+        }).style({
+          "opacity": opacityFunc
+        });
+
+        d3.transition(selection.exit()).remove();
+      },
+
       viewPort: function (parent, data) {
-        var position = data.viewPort[0].position(),
+        var position = data.viewPort[0].position,
             ease     = data.viewPort[0].ease,
             viewport, viewBox;
 
@@ -498,7 +531,7 @@ define(function (require) {
             .attr("stop-color", "#778B3D")
             .attr("offset", "100%");
         }
-        d3.transition(d3.select(".plot")).style("fill", data.background[0].color());
+        d3.transition(d3.select(".plot")).style("fill", data.background[0].color);
       }
     };
   }
