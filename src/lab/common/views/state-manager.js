@@ -34,7 +34,25 @@ define(function () {
         stateByName[stateName] = state;
       },
       getState: function (name) {
-        return stateByName[name];
+        var orgState = stateByName[name],
+            state = $.extend(true, {}, orgState),
+            objName;
+        for (objName in state) {
+          if (state.hasOwnProperty(objName)) {
+            state[objName].forEach(function (d, i) {
+              var value;
+              for (value in d) {
+                if (typeof d[value] === "function") {
+                  // Very important - evaluate function from original state
+                  // object, not from copy! It can be important where two
+                  // functions call each other. It should still work.
+                  d[value] = orgState[objName][i][value]();
+                }
+              }
+            });
+          }
+        }
+        return state;
       }
     };
     return api;

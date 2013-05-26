@@ -34,7 +34,14 @@ describe "StateManager", ->
       sm.extendLastState "3", state
       sm.getState("3").should.eql {atom: [{x: 3}], trees: [{color: "blue"}, {color: "black"}], rocks: []}
 
-      # There is no definition of trees anymoer, so it will be deleted!
+      # There is no definition of trees anymore, so it will be deleted!
       state = {atom: [{x: 4}]}
-      sm.extendLastState "3", state
-      sm.getState("3").should.eql {atom: [{x: 4}], trees: [], rocks: []}
+      sm.extendLastState "4", state
+      sm.getState("4").should.eql {atom: [{x: 4}], trees: [], rocks: []}
+
+    it "should evaluate all functions in state during getState() operation", ->
+      test = 2
+      state = {atom: [{y: -> 15 + test}]}
+      sm.extendLastState "5", state
+
+      sm.getState("5").should.eql {atom: [{x: 4, y: 17}], trees: [], rocks: []}
