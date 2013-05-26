@@ -42,6 +42,7 @@ define(function (require) {
         startingPos = 0,
         backbone = "DNA", // if enabled, "RNA" or "DNA" is expected.
         stopCodonsHash = null,
+        randomEnter = true,
 
         xShift = 0,
         yShift = 0;
@@ -69,20 +70,22 @@ define(function (require) {
     }
 
     function nucleo(g) {
-      g.each(function() {
+      g.each(function(d, i) {
         var g = d3.select(this),
 
             yOffset = backbone ? 0.9 * H.BACKB : 0,
             yStart = m2px(yOffset + 0.5 * H.A),
             yEnd = m2px(yOffset + H.A * 0.97),
 
+            seq = typeof sequence === "function" ? sequence(d, i) : sequence,
+
             nucleo, nucleoEnter, nucleoSVG, nucleoTrans,
             targetScale;
 
-        nucleo = g.selectAll("g.nucleotide").data(sequence.split(""));
+        nucleo = g.selectAll("g.nucleotide").data(seq.split(""));
         // Enter.
         // Enable random translation of the new mRNAs.
-        shift(true);
+        shift(randomEnter);
         nucleoEnter = nucleo.enter().append("g").attr({
           "class": "nucleotide",
           "transform": translate
@@ -219,6 +222,12 @@ define(function (require) {
     nucleo.startingPos = function (p) {
       if (!arguments.length) return startingPos;
       startingPos = p;
+      return nucleo;
+    };
+
+    nucleo.randomEnter = function (r) {
+      if (!arguments.length) return randomEnter;
+      randomEnter = r;
       return nucleo;
     };
 
