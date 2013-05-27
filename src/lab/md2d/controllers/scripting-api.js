@@ -484,7 +484,14 @@ define(function (require) {
 
       /**
        * Triggers animation to the given genetic engine state.
-       * e.g. dnaAnimationTo("transcription-end")
+       * If current genetic engine state is after the desired state,
+       * nothing happens.
+       * e.g.
+       * get('geneticEngineState'); // transcription:0
+       * dnaAnimationTo("transcription-end") // triggers animation
+       * However:
+       * get('geneticEngineState'); // translation-end
+       * dnaAnimateOrJumpTo("transcription-end") // nothing happens
        *
        * @param  {string} stateName name of the state.
        */
