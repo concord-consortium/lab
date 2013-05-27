@@ -75,12 +75,15 @@ define(function (require) {
         // List of transitions, which are currently ongoing (index 0)
         // or scheduled (index > 0).
         ongoingTransitions = [],
+        // Complete mRNA based on current DNA. Useful for codon() method,
+        // which needs to know the whole sequence in advance.
+        mRNA = "",
 
         dispatch = d3.dispatch("change", "transition"),
 
         calculatemRNA = function () {
-          var mRNA = "",
-              newCode = mRNACode(0);
+          var newCode = mRNACode(0);
+          mRNA = "";
           while(newCode) {
             mRNA += newCode;
             newCode = mRNACode(mRNA.length);
@@ -113,12 +116,11 @@ define(function (require) {
         },
 
         updateGeneticProperties = function () {
-          var DNA = model.get("DNA"),
-              mRNA;
+          var DNA = model.get("DNA");
 
           validateDNA(DNA);
           model.set("DNAComplement", complementarySequence(DNA));
-          mRNA = calculatemRNA();
+          calculatemRNA();
 
           // Update model's mRNA property.
           if (api.stateBefore("transcription:0")) {
@@ -424,7 +426,7 @@ define(function (require) {
       },
 
       codon: function (index) {
-        return model.get("mRNA").substr(3 * index, 3);
+        return mRNA.substr(3 * index, 3);
       },
 
       codonComplement: function (index) {
@@ -452,6 +454,7 @@ define(function (require) {
       },
 
       shiftAminoAcids: function (count, xShift, duration) {
+        if (count < 1) return;
         var i, x, y;
         // Shift amino acids to the right.
         for (i = 0; i < count; i++) {
