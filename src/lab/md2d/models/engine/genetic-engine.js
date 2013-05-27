@@ -187,7 +187,7 @@ define(function (require) {
             return "transcription:" + (step - 1);
           } else if (name === "transcription-end") {
             return "transcription:" + (model.get("DNA").length - 1);
-          } else if (name === "translation" && step > 0) {
+          } else if (name === "translation-end" || (name === "translation" && step > 0)) {
             // Note that we always return state translation:0,
             // as jumping between translation steps is not allowed.
             return "translation:0";
