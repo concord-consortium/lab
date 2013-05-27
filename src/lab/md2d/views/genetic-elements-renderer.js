@@ -61,7 +61,6 @@ define(function (require) {
     function translateFuncInv(d) {
       var x = d.translateX || 0,
           y = d.translateY || 0;
-      x = typeof x === "number" ? x : x.apply(d);
       return "translate(" + model2px(x) + " " + model2pxInv(y) + ")";
     }
     function translateScaleFuncInv(d) {
@@ -251,8 +250,8 @@ define(function (require) {
         var mrnaSequence  = model.get("mRNA"),
             geneticEngine = model.geneticEngine(),
             stopCodons    = geneticEngine.stopCodonsHash(),
-            mrnaData      = data.mrna[0],
-            dir           = mrnaData ? mrnaData.direction : 1,
+            bonds         = data.mrna[0] ? data.mrna[0].bonds : 0,
+            dir           = data.mrna[0] ? data.mrna[0].direction : 1,
             mrna;
 
         // mRNA enter:
@@ -266,10 +265,7 @@ define(function (require) {
         // also during update operation, as it will constantly change).
         mrna.call(nucleotides().model2px(model2px).sequence(mrnaSequence).backbone("RNA").direction(dir).stopCodonsHash(stopCodons));
         d3.transition(mrna).attr("transform", translateFuncInv)
-          .selectAll(".bonds")
-            .style("opacity", function () {
-              return mrnaData.bonds;
-            });
+          .selectAll(".bonds").style("opacity", bonds);
         // mRNA exit:
         d3.transition(mrna.exit()).remove();
       },
@@ -350,14 +346,17 @@ define(function (require) {
           "xlink:href": "resources/dna/Ribosome_bottom1.svg",
           "transform": translateFuncInv
         }).style({
-          "opacity": opacityFunc
+          "opacity": 0
         });
         d3.transition(selection).attr({
           "transform": translateFuncInv
         }).style({
-          "opacity": opacityFunc
+          "opacity": opacityFunc,
+          "display": function (d) { return d.opacity ? "inline" : "none"; }
         });
-        d3.transition(selection.exit()).remove();
+        d3.transition(selection.exit())
+          .style("opacity", 0)
+          .remove();
       },
 
       ribosomeTop: function (parent, data) {
@@ -372,14 +371,16 @@ define(function (require) {
           "xlink:href": "resources/dna/Ribosome_top1.svg",
           "transform": translateFuncInv
         }).style({
-          "opacity": opacityFunc
+          "opacity": 0
         });
         d3.transition(selection).attr({
           "transform": translateFuncInv
         }).style({
           "opacity": opacityFunc
         });
-        d3.transition(selection.exit()).remove();
+        d3.transition(selection.exit())
+          .style("opacity", 0)
+          .remove();
       },
 
       ribosomeUnder: function (parent, data) {
@@ -432,20 +433,22 @@ define(function (require) {
             codonWidth = 3 * nucleotides.WIDTH,
             offset = (codonWidth - W.TRNA) * 0.55,
 
-            selection, enter;
+            selection, enter, update, exit;
 
         selection = parent.select(".top-layer").selectAll(".trna").data(data.trna, function (d) { return d.index; });
         // The most outer container can be used to set easily position offset.
         // While the inner g elements provides translation for "ideal" tRNA position
         // close to the mRNA and optional rotation.
-        enter = selection.enter().append("g").attr("class", "trna").attr({
+        enter = selection.enter().append("g").attr({
+          "class": "trna",
+          "display": function (d) { return d.index < 0 ? "none" : "inline"; },
           "transform": function (d, i) {
-            return "translate(" + model2px(nucleotides.HEIGHT * 2) + ", " + model2px(-2.78) + ")" + translateFuncInv(d, i);
+            return "translate(" + model2px(nucleotides.HEIGHT * 2) + ", " + model2px(-2.78) + ") " +
+                    translateFuncInv(d, i) + " rotate(30)";
           }
         }).style({
           "opacity": opacityFunc
         });
-        enter = enter.append("g").attr("class", "rot");
 
         enter.append("g")
           .attr("transform", "translate(0, " + model2px(-H.A) + ")")
@@ -474,30 +477,44 @@ define(function (require) {
           "xlink:href": "resources/dna/tRNA_base.svg"
         });
 
-        d3.transition(selection).attr({
+        update = d3.transition(selection);
+        update.attr({
           "transform": translateFuncInv
         }).style({
           "opacity": opacityFunc
         });
+        update.select(".trna-neck").style("opacity", function (d) { return d.neck; });
 
-        d3.transition(selection.exit()).remove();
+        exit = d3.transition(selection.exit());
+        exit.attr("transform", function (d, i) {
+          return "translate(" + model2px(nucleotides.HEIGHT * -5) + ", " + model2px(nucleotides.HEIGHT * -4) + ") " +
+                  translateFuncInv(d, i) + " rotate(-30)";
+        }).style("opacity", 0);
+        exit.selectAll(".bonds").style("opacity", 0);
+        exit.remove();
       },
 
       viewPort: function (parent, data) {
-        var position = data.viewPort[0].position,
-            ease     = data.viewPort[0].ease,
+        var position   = data.viewPort[0].position,
+            xy         = data.viewPort[0].xy || [],
+            ease       = data.viewPort[0].ease,
+            height     = model.get("viewPortHeight"),
             viewport, viewBox;
 
-        function transcription() {
+        function updateModel() {
           // TODO: this is slow as it triggers recalculation
           // of the model state!
-          model.set("viewPortX", position * nucleotides.WIDTH);
+          model.set({
+            "viewPortX": xy[0] || position * nucleotides.WIDTH,
+            "viewPortY": xy[1] || 0
+          });
         }
 
         viewport = d3.select(".viewport");
         viewBox = viewport.attr("viewBox").split(" ");
         // Update viewport X coordinate.
-        viewBox[0] = model2px(position * nucleotides.WIDTH);
+        viewBox[0] = model2px(xy[0] ? xy[0] : position * nucleotides.WIDTH);
+        viewBox[1] = model2pxInv(xy[1] ? xy[1] + height : height);
         viewport = d3.transition(viewport).attr("viewBox", viewBox.join(" "));
         // Duck test whether viewportUpdate is a transition or selection.
         // See D3 API Reference - d3.transition(selection) returns  transition
@@ -506,10 +523,10 @@ define(function (require) {
         if (typeof viewport.duration === "function") {
           // Transition!
           viewport.ease(ease);
-          viewport.each("end.viewport-update", transcription);
+          viewport.each("end.viewport-update", updateModel);
         } else {
           // Selection!
-          transcription();
+          updateModel();
         }
       },
 
