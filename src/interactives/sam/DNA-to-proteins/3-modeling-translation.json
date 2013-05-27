@@ -3,7 +3,7 @@
   "publicationStatus": "draft",
   "subtitle": "",
   "about": [
-    "Click **Zoom** to zoom in to cell nucleus and separate DNA strands.",
+    "Click **Prepare for transcription** to zoom in to cell nucleus and separate DNA strands.",
     "",
     "Then click on the **Transcribe** button to trigger complete DNA transcription.",
     "",
@@ -34,7 +34,7 @@
     {
       "type": "button",
       "id": "zoom",
-      "text": "Zoom",
+      "text": "Prepare for transcription",
       "action": [
         "set('geneticEngineState', 'intro-cells');",
         "dnaAnimationTo('transcription:0');"
@@ -81,6 +81,36 @@
       "id": "reset",
       "text": "Reset",
       "action": "reset();"
+    },
+    {
+      "type": "text",
+      "id": "label1A",
+      "text": "Click"
+    },
+    {
+      "type": "text",
+      "id": "label1",
+      "text": "to zoom in to cell nucleus and separate DNA strands."
+    },
+    {
+      "type": "text",
+      "id": "label2A",
+      "text": "Then click"
+    },
+    {
+      "type": "text",
+      "id": "label2",
+      "text": "to trigger complete DNA transcription."
+    },
+    {
+      "type": "text",
+      "id": "label3A",
+      "text": "Finally click"
+    },
+    {
+      "type": "text",
+      "id": "label3",
+      "text": "to see amino acids being linked together into a protein."
     }
   ],
   "template": [
@@ -99,7 +129,9 @@
   ],
   "layout": {
     "bottom": [
-      ["zoom", "transcribe", "translate"]
+      ["label1A", "zoom", "label1"],
+      ["label2A", "transcribe", "label2"],
+      ["label3A", "translate", "label3"]
     ],
     "bottom-2": ["reset", "prev-state-jump", "next-state", "next-state-jump"]
   }

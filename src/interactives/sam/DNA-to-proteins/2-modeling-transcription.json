@@ -3,7 +3,7 @@
   "publicationStatus": "draft",
   "subtitle": "",
   "about": [
-    "Click **begin translation** to zoom in to cell nucleus and separate DNA strands.",
+    "Click **Prepare for transcription** to zoom in to cell nucleus and separate DNA strands.",
     "",
     "Then click on the button representing the correct **complementary** RNA nucleotide to proceed transcription: A, U, G or C.",
     "",
@@ -32,8 +32,11 @@
     {
       "type": "button",
       "id": "begin",
-      "text": "begin transcription",
-      "action": "dnaAnimationTo('transcription:0');"
+      "text": "Prepare for transcription",
+      "action": [
+        "set('geneticEngineState', 'intro-cells');",
+        "dnaAnimationTo('transcription:0');"
+      ]
     },
     {
       "type": "button",
