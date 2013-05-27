@@ -91,8 +91,9 @@ guard 'shell' do
     command("make")
   end
 
-  watch "src/index.sass" do
-    command("bin/sass -I src --require ./src/helpers/sass/lab_fontface.rb src/index.sass server/public/index.css")
+  watch(/^src\/(.+\.sass)$/) do |match|
+    puts match[0]
+    command("bin/sass -I src --require ./src/helpers/sass/lab_fontface.rb src/#{match[0]} server/public/#{match[0]}.css")
   end
 
   watch "src/readme.scss" do
@@ -117,8 +118,8 @@ guard 'shell' do
   end
 
   watch(/(^src\/(?!sass).+)$/) do |match|
-    puts match[0]
     unless match[0][/(\.haml)|(\.sass)|(\.scss)|(\.coffee)(\.yaml)|(^\..+)$/]
+      puts match[0]
       source_path = match[0]
       destination_path = 'server/public/' + source_path[/src\/(.+?)$/, 1]
       command("cp -f #{source_path} #{destination_path}")

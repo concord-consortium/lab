@@ -39,6 +39,9 @@ vpath %.json src
 HAML_FILES := $(shell find src -name '*.haml' -exec echo {} \; | sed s'/src\/\(.*\)\.haml/server\/public\/\1/' )
 vpath %.haml src
 
+SASS_TOP_LEVEL_FILES := $(shell find src -name '*.sass' -maxdepth 1 -exec echo {} \; | sed s'/src\/\(.*\)\.sass/server\/public\/\1.css/' )
+vpath %.sass src
+
 SASS_EXAMPLE_FILES := $(shell find src/examples -name '*.sass' -exec echo {} \; | sed s'/src\/\(.*\)\.sass/server\/public\/\1.css/' )
 vpath %.sass src/examples
 
@@ -93,6 +96,7 @@ src: \
 	$(LAB_JS_FILES) \
 	$(LAB_JS_FILES:.js=.min.js) \
 	$(HAML_FILES) \
+	$(SASS_TOP_LEVEL_FILES) \
 	$(SASS_EXAMPLE_FILES) \
 	$(DOC_FILES) \
 	$(SCSS_EXAMPLE_FILES) \
@@ -539,9 +543,6 @@ server/public/index.css:
 server/public/application.js:
 	cp src/application.js server/public/application.js
 
-server/public/interactives.css:
-	$(SASS_COMPILER) src/interactives.sass server/public/interactives.css
-
 server/public/embeddable-author.css:
 	$(SASS_COMPILER) src/embeddable.sass server/public/embeddable-author.css
 
@@ -566,6 +567,10 @@ lab/%.css: %.sass
 	$(SASS_COMPILER) $< $@
 
 server/public/%.css: %.scss
+	$(SASS_COMPILER) $< $@
+
+server/public/%.css: %.sass
+	@echo $($<)
 	$(SASS_COMPILER) $< $@
 
 server/public/%.js: %.coffee
