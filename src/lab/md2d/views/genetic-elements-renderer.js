@@ -79,14 +79,10 @@ define(function (require) {
           "preserveAspectRatio": "none",
           "xlink:href": "resources/dna/Cells.svg",
           "transform": translateScaleFuncInv
-        }).style({
-          "opacity": opacityFunc
-        });
-        d3.transition(cells).attr({
-          "transform": translateScaleFuncInv
-        }).style({
-          "opacity": opacityFunc
-        });
+        }).style("opacity", opacityFunc);
+        d3.transition(cells)
+          .attr("transform", translateScaleFuncInv)
+          .style("opacity", opacityFunc);
         d3.transition(cells.exit()).remove();
       },
 
@@ -101,14 +97,10 @@ define(function (require) {
           "preserveAspectRatio": "none",
           "xlink:href": "resources/dna/DNA_InsideNucleus_1.svg",
           "transform": translateScaleFuncInv
-        }).style({
-          "opacity": opacityFunc
-        });
-        d3.transition(dna1).attr({
-          "transform": translateScaleFuncInv
-        }).style({
-          "opacity": opacityFunc
-        });
+        }).style("opacity", opacityFunc);
+        d3.transition(dna1)
+          .attr("transform", translateScaleFuncInv)
+          .style("opacity", opacityFunc);
         d3.transition(dna1.exit()).remove();
       },
 
@@ -123,14 +115,10 @@ define(function (require) {
           "preserveAspectRatio": "none",
           "xlink:href": "resources/dna/DNA_InsideNucleus_2.svg",
           "transform": translateScaleFuncInv
-        }).style({
-          "opacity": opacityFunc
-        });
-        d3.transition(dna2).attr({
-          "transform": translateScaleFuncInv
-        }).style({
-          "opacity": opacityFunc
-        });
+        }).style("opacity", opacityFunc);
+        d3.transition(dna2)
+          .attr("transform", translateScaleFuncInv)
+          .style("opacity", opacityFunc);
         d3.transition(dna2.exit()).remove();
       },
 
@@ -141,9 +129,7 @@ define(function (require) {
         dna3Enter = dna3.enter().append("g").attr({
           "class": "dna3 main-dna",
           "transform": translateScaleFuncInv
-        }).style({
-          "opacity": opacityFunc
-        });
+        }).style("opacity", opacityFunc);
         dna3Enter.selectAll("dna3-unit").data(new Array(dna3units)).enter().append("image").attr({
           "class": "dna3-unit",
           "x": function (d, i) { return (i - dna3units * 0.5) * model2px(W.DNA3) * 0.98; },
@@ -153,11 +139,9 @@ define(function (require) {
           "preserveAspectRatio": "none",
           "xlink:href": "resources/dna/DoubleHelix_Unit.svg"
         });
-        d3.transition(dna3).attr({
-          "transform": translateScaleFuncInv
-        }).style({
-          "opacity": opacityFunc
-        });
+        d3.transition(dna3)
+          .attr("transform", translateScaleFuncInv)
+          .style("opacity", opacityFunc);
         d3.transition(dna3.exit()).remove();
       },
 
@@ -281,14 +265,10 @@ define(function (require) {
           "preserveAspectRatio": "none",
           "xlink:href": "resources/dna/Polymerase_Under.svg",
           "transform": translateScaleFuncInv
-        }).style({
-          "opacity": opacityFunc
-        });
-        d3.transition(polyUnder).attr({
-          "transform": translateScaleFuncInv
-        }).style({
-          "opacity": opacityFunc
-        });
+        }).style("opacity", opacityFunc);
+        d3.transition(polyUnder)
+          .attr("transform", translateScaleFuncInv)
+          .style("opacity", opacityFunc);
         d3.transition(polyUnder.exit()).remove();
       },
 
@@ -303,14 +283,10 @@ define(function (require) {
           "preserveAspectRatio": "none",
           "xlink:href": "resources/dna/Polymerase_Over.svg",
           "transform": translateScaleFuncInv
-        }).style({
-          "opacity": opacityFunc
-        });
-        d3.transition(polyOver).attr({
-          "transform": translateScaleFuncInv
-        }).style({
-          "opacity": opacityFunc
-        });
+        }).style("opacity", opacityFunc);
+        d3.transition(polyOver)
+          .attr("transform", translateScaleFuncInv)
+          .style("opacity", opacityFunc);
         d3.transition(polyOver.exit()).remove();
       },
 
@@ -326,11 +302,9 @@ define(function (require) {
           "xlink:href": "resources/dna/BG_Nucleus.svg",
           "transform": translateFuncInv
         }).style("opacity", opacityFunc);
-        d3.transition(nucleus).attr({
-          "transform": translateFuncInv
-        }).style({
-          "opacity": opacityFunc
-        });
+        d3.transition(nucleus)
+          .attr("transform", translateFuncInv)
+          .style("opacity", opacityFunc);
         d3.transition(nucleus.exit()).remove();
       },
 
@@ -345,15 +319,10 @@ define(function (require) {
           "preserveAspectRatio": "none",
           "xlink:href": "resources/dna/Ribosome_bottom1.svg",
           "transform": translateFuncInv
-        }).style({
-          "opacity": 0
-        });
-        d3.transition(selection).attr({
-          "transform": translateFuncInv
-        }).style({
-          "opacity": opacityFunc,
-          "display": function (d) { return d.opacity ? "inline" : "none"; }
-        });
+        }).style("opacity", 0);
+        d3.transition(selection)
+          .attr("transform", translateFuncInv)
+          .style("opacity", opacityFunc);
         d3.transition(selection.exit())
           .style("opacity", 0)
           .remove();
@@ -370,14 +339,10 @@ define(function (require) {
           "preserveAspectRatio": "none",
           "xlink:href": "resources/dna/Ribosome_top1.svg",
           "transform": translateFuncInv
-        }).style({
-          "opacity": 0
-        });
-        d3.transition(selection).attr({
-          "transform": translateFuncInv
-        }).style({
-          "opacity": opacityFunc
-        });
+        }).style("opacity", 0);
+        d3.transition(selection)
+          .attr("transform", translateFuncInv)
+          .style("opacity", opacityFunc);
         d3.transition(selection.exit())
           .style("opacity", 0)
           .remove();
@@ -397,11 +362,9 @@ define(function (require) {
         }).style({
           "opacity": opacityFunc
         });
-        d3.transition(selection).attr({
-          "transform": translateFuncInv
-        }).style({
-          "opacity": opacityFunc
-        });
+        d3.transition(selection)
+          .attr("transform", translateFuncInv)
+          .style("opacity", opacityFunc);
         d3.transition(selection.exit()).remove();
       },
 
@@ -416,14 +379,10 @@ define(function (require) {
           "preserveAspectRatio": "none",
           "xlink:href": "resources/dna/Ribosome_over.svg",
           "transform": translateFuncInv
-        }).style({
-          "opacity": opacityFunc
-        });
-        d3.transition(selection).attr({
-          "transform": translateFuncInv
-        }).style({
-          "opacity": opacityFunc
-        });
+        }).style("opacity", opacityFunc);
+        d3.transition(selection)
+          .attr("transform", translateFuncInv)
+          .style("opacity", opacityFunc);
         d3.transition(selection.exit()).remove();
       },
 
@@ -446,9 +405,7 @@ define(function (require) {
             return "translate(" + model2px(nucleotides.HEIGHT * 2) + ", " + model2px(-2.78) + ") " +
                     translateFuncInv(d, i) + " rotate(30)";
           }
-        }).style({
-          "opacity": opacityFunc
-        });
+        }).style("opacity", opacityFunc);
 
         enter.append("g")
           .attr("transform", "translate(0, " + model2px(-H.A) + ")")
@@ -477,19 +434,17 @@ define(function (require) {
           "xlink:href": "resources/dna/tRNA_base.svg"
         });
 
-        update = d3.transition(selection);
-        update.attr({
-          "transform": translateFuncInv
-        }).style({
-          "opacity": opacityFunc
-        });
+        update = d3.transition(selection)
+          .attr("transform", translateFuncInv)
+          .style("opacity", opacityFunc);
         update.select(".trna-neck").style("opacity", function (d) { return d.neck; });
 
-        exit = d3.transition(selection.exit());
-        exit.attr("transform", function (d, i) {
-          return "translate(" + model2px(nucleotides.HEIGHT * -5) + ", " + model2px(nucleotides.HEIGHT * -4) + ") " +
-                  translateFuncInv(d, i) + " rotate(-30)";
-        }).style("opacity", 0);
+        exit = d3.transition(selection.exit())
+          .attr("transform", function (d, i) {
+            return "translate(" + model2px(nucleotides.HEIGHT * -5) + ", " + model2px(nucleotides.HEIGHT * -4) + ") " +
+                    translateFuncInv(d, i) + " rotate(-30)";
+          })
+          .style("opacity", 0);
         exit.selectAll(".bonds").style("opacity", 0);
         exit.remove();
       },

@@ -17,6 +17,7 @@ define(function (require) {
         g = null,
         trnaG = null,
         currentTrans = null,
+        state = null,
         prevState = null,
 
         objectNames = [
@@ -53,11 +54,17 @@ define(function (require) {
           vy = viewPortHeight * 0.5,
 
           lastStep;
-          function getStep() {
-            var step = getState().step;
-            lastStep = !isNaN(step) ? step : lastStep;
-            return lastStep;
-          }
+      function getStep() {
+        var step = state.step;
+        lastStep = !isNaN(step) ? step : lastStep;
+        return lastStep;
+      }
+      function ribosomeX() {
+        return (2 + Math.max(0, getStep() - 2) * 3) * nucleotides.WIDTH;
+      }
+      function trnaX() {
+        return this.index() * 3 * nucleotides.WIDTH;
+      }
 
       stateMgr.newState("intro-cells", {
         cells: [{
@@ -229,7 +236,7 @@ define(function (require) {
             var mrnaLen = model.get("mRNA").length;
             return function (d, i) {
               return i < mrnaLen ? 1 : 0;
-            }
+            };
           }
         }],
         mrna: [{
@@ -373,7 +380,7 @@ define(function (require) {
       stateMgr.extendLastState("translation-s0", {
         mrna: [{}],
         ribosomeBottom: [{
-          translateX: function () { return (1.95 + Math.max(0, getStep() - 2) * 3) * nucleotides.WIDTH; },
+          translateX: ribosomeX,
           translateY: 1.75 * nucleotides.HEIGHT,
           opacity: 1
         }],
@@ -389,17 +396,17 @@ define(function (require) {
         mrna: [{}],
         ribosomeBottom: [{}],
         ribosomeTop: [{
-          translateX: function () { return (2 + Math.max(0, getStep() - 2) * 3) * nucleotides.WIDTH; },
+          translateX: ribosomeX,
           translateY: 4.52 * nucleotides.HEIGHT,
           opacity: 1
         }],
         ribosomeUnder: [{
-          translateX: function () { return (2 + Math.max(0, getStep() - 2) * 3) * nucleotides.WIDTH; },
+          translateX: ribosomeX,
           translateY: 3.7 * nucleotides.HEIGHT,
           opacity: 0
         }],
         ribosomeOver: [{
-          translateX: function () { return (2 + Math.max(0, getStep() - 2) * 3) * nucleotides.WIDTH; },
+          translateX: ribosomeX,
           translateY: 3.7 * nucleotides.HEIGHT,
           opacity: 0
         }],
@@ -412,7 +419,7 @@ define(function (require) {
             var step = getStep();
             return function (d, i) {
               return i < 3 * (step - 2) || i >= 3 * step ? 0 : 1;
-            }
+            };
           }
         }],
         ribosomeUnder: [{
@@ -424,13 +431,13 @@ define(function (require) {
         trna: [
           {
             index: function () { return getStep() - 2; },
-            translateX: function() { return this.index() * 3 * nucleotides.WIDTH; },
+            translateX: trnaX,
             translateY: 2.5 * nucleotides.HEIGHT,
             neck: 0
           },
           {
             index: function () { return getStep() - 1; },
-            translateX: function() { return this.index() * 3 * nucleotides.WIDTH; },
+            translateX: trnaX,
             translateY: 2.5 * nucleotides.HEIGHT,
             neck: 1
           }
@@ -447,7 +454,7 @@ define(function (require) {
             var step = getStep();
             return function (d, i) {
               return i < 3 * (step - 3) || i >= 3 * step ? 0 : 1;
-            }
+            };
           }
         }],
         ribosomeUnder: [{}],
@@ -461,7 +468,7 @@ define(function (require) {
           },
           {
             index: function () { return getStep() - 1; },
-            translateX: function() { return this.index() * 3 * nucleotides.WIDTH; },
+            translateX: trnaX,
             translateY: 2.5 * nucleotides.HEIGHT,
             neck: 1
           }
@@ -505,7 +512,7 @@ define(function (require) {
             var step = getStep();
             return function (d, i) {
               return i < 3 * (step - 1) || i >= 3 * step ? 0 : 1;
-            }
+            };
           }
         }],
         ribosomeUnder: [{}],
@@ -528,12 +535,12 @@ define(function (require) {
       stateMgr.extendLastState("translation-end-s3", {
         mrna: [{}],
         ribosomeBottom: [{
-          translateX: function () { return (1.95 + Math.max(0, getStep() - 2) * 3) * nucleotides.WIDTH; },
+          translateX: ribosomeX,
           translateY: 1.75 * nucleotides.HEIGHT,
           opacity: 1
         }],
         ribosomeTop: [{
-          translateX: function () { return (2 + Math.max(0, getStep() - 2) * 3) * nucleotides.WIDTH; },
+          translateX: ribosomeX,
           translateY: 4.52 * nucleotides.HEIGHT,
           opacity: 1
         }],
@@ -556,11 +563,11 @@ define(function (require) {
           translateX: function () { return -(model.get("mRNA").length + 8) * nucleotides.WIDTH; }
         }],
         ribosomeBottom: [{
-          translateX: function () { return (1.95 + Math.max(0, getStep() - 2) * 3) * nucleotides.WIDTH + 8; },
+          translateX: function () { return ribosomeX() + 8; },
           translateY: 1.75 * nucleotides.HEIGHT - 0.5,
         }],
         ribosomeTop: [{
-          translateX: function () { return (2 + Math.max(0, getStep() - 2) * 3) * nucleotides.WIDTH + 8; },
+          translateX: function () { return ribosomeX() + 8; },
           translateY: 4.52 * nucleotides.HEIGHT + 5,
         }],
         viewPort: [{}],
@@ -579,8 +586,7 @@ define(function (require) {
     }
 
     function stateTransition() {
-      var state = getState(),
-          geneticEngine = model.geneticEngine();
+      state = model.geneticEngine().state();
 
       switch(state.name) {
         case "intro-zoom1":
@@ -628,7 +634,7 @@ define(function (require) {
 
       currentTrans.each("end.trans-end", function() {
         // Notify engine that transition has ended.
-        geneticEngine.transitionEnded();
+        model.geneticEngine().transitionEnded();
       });
     }
 
@@ -637,16 +643,10 @@ define(function (require) {
      * options of the model.
      */
     function render() {
-      console.time("[genetic-renderer] render");
+      state = model.geneticEngine().state();
 
       cancelTransitions();
-
-      console.time("[genetic-renderer] objects update");
-      smartRender(g, getState().name);
-      // renderAll(g, stateData);
-      console.timeEnd("[genetic-renderer] objects update");
-
-      console.timeEnd("[genetic-renderer] render");
+      smartRender(g, state.name);
     }
 
     /**
@@ -689,7 +689,7 @@ define(function (require) {
     }
 
     function setup() {
-      var state = getState();
+      state = model.geneticEngine().state();
 
       // Cleanup.
       cancelTransitions();
@@ -711,21 +711,6 @@ define(function (require) {
       g.append("g").attr("class", "top-layer");
 
       render();
-    }
-
-    /**
-     * Returns genetic engine state object, already parsed.
-     * e.g.
-     * {
-     *   "name": "translation",
-     *   "step": 10
-     * }
-     *
-     * @private
-     * @return {Object} parsed genetic engine state object.
-     */
-    function getState() {
-      return model.geneticEngine().state();
     }
 
     function smartRender(parent, state) {
@@ -847,7 +832,7 @@ define(function (require) {
 
     function translation() {
       var geneticEngine = model.geneticEngine(),
-          codonIdx = getState().step - 1,
+          codonIdx = state.step - 1,
           newAADuration = 1000,
           shiftDuration = 500,
           t;
