@@ -354,9 +354,9 @@ is running.
 
 #### Startup the Rack-based Lab server for local development
 
-The Lab server is a very simple Rack application.
+The Lab server is a simple Rack application.
 
-    bin/rackup server.ru
+    bin/rackup config.ru
 
 Now open http://localhost:9292/index.html
 
