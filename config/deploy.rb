@@ -49,7 +49,7 @@ namespace :deploy do
   task :update do
     run "cd /var/www/app; git checkout #{branch}; git pull origin #{branch}"
     run "cd /var/www/app; bundle install"
-    run "cd /var/www/app; make public"
+    run "cd /var/www/app; make"
   end
 
 
