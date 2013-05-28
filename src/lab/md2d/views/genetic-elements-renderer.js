@@ -50,7 +50,7 @@ define(function (require) {
     }
   }());
 
-  function GeneticElementsRenderer(model, model2px, model2pxInv) {
+  function GeneticElementsRenderer(svg, model2px, model2pxInv, model) {
 
     function scaleFunc(d) {
       return "scale(" + d.scale + ")";
@@ -465,7 +465,7 @@ define(function (require) {
           });
         }
 
-        viewport = d3.select(".viewport");
+        viewport = svg.select(".viewport");
         viewBox = viewport.attr("viewBox").split(" ");
         // Update viewport X coordinate.
         viewBox[0] = model2px(xy[0] ? xy[0] : position * nucleotides.WIDTH);
@@ -503,7 +503,7 @@ define(function (require) {
             .attr("stop-color", "#778B3D")
             .attr("offset", "100%");
         }
-        d3.transition(d3.select(".plot")).style("fill", data.background[0].color);
+        d3.transition(svg.select(".plot")).style("fill", data.background[0].color);
       }
     };
   }

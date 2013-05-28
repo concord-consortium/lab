@@ -7,8 +7,9 @@ define(function (require) {
 
       H = GeneticElementsRenderer.H;
 
-  function GeneticRenderer(container, parent, model) {
+  function GeneticRenderer(svg, parent, model) {
     var api,
+        viewportG = svg.select(".viewport"),
         model2px = parent.model2px,
         model2pxInv = parent.model2pxInv,
 
@@ -28,7 +29,7 @@ define(function (require) {
           "trna"
         ],
         stateMgr = new StateManager(objectNames),
-        objectRenderer = new GeneticElementsRenderer(model, model2px, model2pxInv),
+        objectRenderer = new GeneticElementsRenderer(svg, model2px, model2pxInv, model),
 
         transitionFunction;
 
@@ -594,7 +595,7 @@ define(function (require) {
 
       // Cleanup.
       canceltransitionFunction();
-      container.selectAll("g.genetics").remove();
+      viewportG.selectAll("g.genetics").remove();
 
       if (!model.get("DNA") || state.name === "translation-end") {
         // When DNA is not defined (=== "", undefined or null) or
@@ -604,7 +605,7 @@ define(function (require) {
       }
 
       // Create a new container.
-      g = container.append("g").attr("class", "genetics");
+      g = viewportG.insert("g", ".image-container-below").attr("class", "genetics");
       g.append("g").attr("class", "background-layer");
       g.append("g").attr("class", "under-dna-layer");
       g.append("g").attr("class", "dna-layer");
@@ -682,12 +683,11 @@ define(function (require) {
      * @private
      */
     function canceltransitionFunction() {
-
-      var g = d3.select("g.genetics");
+      var g = svg.select("g.genetics");
       if (!g.empty() && g.node().__transition__) {
-        d3.selectAll("g.genetics, g.genetics *").transition().delay(0);
-        d3.select(".viewport").transition().delay(0);
-        d3.select(".plot").transition().delay(0);     // background
+        svg.selectAll("g.genetics, g.genetics *").transition().delay(0);
+        svg.select(".plot").transition().delay(0); // background changes
+        viewportG.transition().delay(0);           // viewport scrolling
         currentTrans = null;
       }
     }

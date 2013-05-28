@@ -52,7 +52,6 @@ define(function (require) {
 
         // "Containers" - SVG g elements used to position layers of the final visualization.
         mainContainer,
-        geneticsContainer,
         radialBondsContainer,
         VDWLinesContainer,
         imageContainerBelow,
@@ -1670,7 +1669,7 @@ define(function (require) {
       amniacidContextMenu.register(model, api, '[class~="amino-acid"]');
 
       // Initialize renderers.
-      geneticRenderer = new GeneticRenderer(geneticsContainer, api, model);
+      geneticRenderer = new GeneticRenderer(modelView.containers.svg, api, model);
     }
 
     function photonPath(d) {
@@ -1730,7 +1729,6 @@ define(function (require) {
       // Assign shortcuts, as these variables / functions shouldn't
       // change.
       mainContainer        = modelView.containers.mainContainer,
-      geneticsContainer    = modelView.containers.geneticsContainer,
       radialBondsContainer = modelView.containers.radialBondsContainer,
       VDWLinesContainer    = modelView.containers.VDWLinesContainer,
       imageContainerBelow  = modelView.containers.imageContainerBelow,

@@ -34,7 +34,6 @@ define(function (require) {
         // "Containers" - SVG g elements used to position layers of the final visualization.
         mainContainer,
         gridContainer,
-        geneticsContainer,
         radialBondsContainer,
         VDWLinesContainer,
         imageContainerBelow,
@@ -324,7 +323,6 @@ define(function (require) {
         // that top-level view defines containers for elements that it's
         // unaware of.
         viewportG = vis.append("svg").attr("class", "viewport");
-        geneticsContainer    = viewportG.append("g").attr("class", "genetics-container");
         imageContainerBelow  = viewportG.append("g").attr("class", "image-container-below");
         textContainerBelow   = viewportG.append("g").attr("class", "text-container-below");
         radialBondsContainer = viewportG.append("g").attr("class", "radial-bonds-container");
@@ -339,8 +337,8 @@ define(function (require) {
         // Make all layers available for subviews, expect from brush layer
         // which is used only internally.
         api.containers = {
+          svg:                  vis1,
           gridContainer:        gridContainer,
-          geneticsContainer:    geneticsContainer,
           imageContainerBelow:  imageContainerBelow,
           textContainerBelow:   textContainerBelow,
           radialBondsContainer: radialBondsContainer,
