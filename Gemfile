@@ -1,7 +1,9 @@
 source "http://rubygems.org"
 
-gem "rake",               "~> 10.0.3"
-gem 'rails',              "~> 3.2.12"
+gem "rack",               "~> 1.5.2"
+gem 'rack-rewrite',       "~> 1.3.3"
+
+gem "rake",               "~> 10.0.4"
 
 gem "fog",                "~> 1.9.0"
 gem "librarian",          "~> 0.0.26"
