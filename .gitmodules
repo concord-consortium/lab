@@ -1,71 +1,71 @@
-[submodule "src/vendor/d3"]
-	path = src/vendor/d3
+[submodule "vendor/d3"]
+	path = vendor/d3
 	url = git://github.com/concord-consortium/d3.git
-[submodule "src/vendor/science.js"]
-	path = src/vendor/science.js
+[submodule "vendor/science.js"]
+	path = vendor/science.js
 	url = git://github.com/jasondavies/science.js.git
-[submodule "src/vendor/sizzle"]
-	path = src/vendor/sizzle
+[submodule "vendor/sizzle"]
+	path = vendor/sizzle
 	url = git://github.com/jquery/sizzle.git
-[submodule "src/vendor/hijs"]
-	path = src/vendor/hijs
+[submodule "vendor/hijs"]
+	path = vendor/hijs
 	url = git://github.com/cloudhead/hijs.git
-[submodule "src/vendor/modernizr"]
-	path = src/vendor/modernizr
+[submodule "vendor/modernizr"]
+	path = vendor/modernizr
 	url = git://github.com/Modernizr/Modernizr.git
-[submodule "src/vendor/jquery"]
-	path = src/vendor/jquery
+[submodule "vendor/jquery"]
+	path = vendor/jquery
 	url = git://github.com/jquery/jquery.git
-[submodule "src/vendor/mathjax"]
-	path = src/vendor/mathjax
+[submodule "vendor/mathjax"]
+	path = vendor/mathjax
 	url = git://github.com/mathjax/MathJax.git
-[submodule "src/vendor/dsp.js"]
-	path = src/vendor/dsp.js
+[submodule "vendor/dsp.js"]
+	path = vendor/dsp.js
 	url = git://github.com/concord-consortium/dsp.js.git
-[submodule "src/vendor/d3-plugins"]
-	path = src/vendor/d3-plugins
+[submodule "vendor/d3-plugins"]
+	path = vendor/d3-plugins
 	url = git://github.com/d3/d3-plugins.git
-[submodule "src/vendor/requirejs"]
-	path = src/vendor/requirejs
+[submodule "vendor/requirejs"]
+	path = vendor/requirejs
 	url = git://github.com/jrburke/requirejs.git
-[submodule "src/vendor/text"]
-	path = src/vendor/text
+[submodule "vendor/text"]
+	path = vendor/text
 	url = git://github.com/requirejs/text.git
-[submodule "src/vendor/almond"]
-	path = src/vendor/almond
+[submodule "vendor/almond"]
+	path = vendor/almond
 	url = git://github.com/jrburke/almond.git
-[submodule "src/vendor/domReady"]
-	path = src/vendor/domReady
+[submodule "vendor/domReady"]
+	path = vendor/domReady
 	url = git://github.com/requirejs/domReady.git
-[submodule "src/vendor/codemirror"]
-	path = src/vendor/codemirror
+[submodule "vendor/codemirror"]
+	path = vendor/codemirror
 	url = git://github.com/marijnh/CodeMirror.git
-[submodule "src/vendor/jquery-ui"]
-	path = src/vendor/jquery-ui
+[submodule "vendor/jquery-ui"]
+	path = vendor/jquery-ui
 	url = git://github.com/jquery/jquery-ui.git
-[submodule "src/vendor/tinysort"]
-	path = src/vendor/tinysort
+[submodule "vendor/tinysort"]
+	path = vendor/tinysort
 	url = git://github.com/Sjeiti/TinySort.git
-[submodule "src/vendor/coffee-script"]
-	path = src/vendor/coffee-script
+[submodule "vendor/coffee-script"]
+	path = vendor/coffee-script
 	url = git://github.com/jashkenas/coffee-script.git
-[submodule "src/vendor/require-cs"]
-	path = src/vendor/require-cs
+[submodule "vendor/require-cs"]
+	path = vendor/require-cs
 	url = git://github.com/jrburke/require-cs.git
-[submodule "src/vendor/jquery-ui-touch-punch"]
-	path = src/vendor/jquery-ui-touch-punch
+[submodule "vendor/jquery-ui-touch-punch"]
+	path = vendor/jquery-ui-touch-punch
 	url = git://github.com/furf/jquery-ui-touch-punch.git
-[submodule "src/vendor/underscore"]
-	path = src/vendor/underscore
+[submodule "vendor/underscore"]
+	path = vendor/underscore
 	url = git://github.com/documentcloud/underscore.git
-[submodule "src/vendor/jquery-context-menu"]
-	path = src/vendor/jquery-context-menu
+[submodule "vendor/jquery-context-menu"]
+	path = vendor/jquery-context-menu
 	url = git://github.com/medialize/jQuery-contextMenu.git
-[submodule "src/vendor/jquery-selectBoxIt"]
-	path = src/vendor/jquery-selectBoxIt
+[submodule "vendor/jquery-selectBoxIt"]
+	path = vendor/jquery-selectBoxIt
 	url = git://github.com/gfranko/jquery.selectBoxIt.js.git
-[submodule "src/vendor/fonts/Font-Awesome"]
-	path = src/vendor/fonts/Font-Awesome
+[submodule "vendor/fonts/Font-Awesome"]
+	path = vendor/fonts/Font-Awesome
 	url = git://github.com/FortAwesome/Font-Awesome.git
 [submodule "test/vendor/jsdom"]
 	path = test/vendor/jsdom
