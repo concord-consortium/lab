@@ -5,7 +5,6 @@ require 'json'
 @required_ruby_version = "1.9.3"
 @required_ruby_patchlevel = 392
 @minimum_node_version = "v0.10.0"
-@minimum_couchdb_version = "1.2.0"
 
 def macosx
   RUBY_PLATFORM.include?('darwin')
@@ -76,7 +75,6 @@ def couchdb_check
   ==> couchdb #{couch_version} installed, web server persistence might not work
         HEREDOC
       }
-        
     end
   end
 end
@@ -101,7 +99,6 @@ end
 @errors = {}
 ruby_check
 nodejs_check
-couchdb_check
 xcode_check if macosx
 
 unless @warnings.empty?
@@ -128,7 +125,7 @@ unless @errors.empty?
   @errors.each { |k, v|
     puts <<-HEREDOC
 #{k} #{v["requirement"]}
-    
+
 #{v["details"]}
     HEREDOC
   }
