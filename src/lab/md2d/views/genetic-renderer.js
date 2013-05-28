@@ -59,7 +59,7 @@ define(function (require) {
         return lastStep;
       }
       function ribosomeX() {
-        return (2 + Math.max(0, getStep() - 2) * 3) * nucleotides.WIDTH;
+        return (1.65 + Math.max(0, getStep() - 2) * 3) * nucleotides.WIDTH;
       }
       function trnaX() {
         return this.index() * 3 * nucleotides.WIDTH;
