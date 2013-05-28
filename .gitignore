@@ -1,6 +1,6 @@
 *~
 /bin
-/server/bin
+/public
 /src/lab/lab.version.js
 /src/lab/lab.config.js
 .bundle
@@ -11,16 +11,10 @@ npm-debug.log
 .DS_Store
 *.sublime-workspace
 /*.log
-/server/config/couchdb.yml
-/server/public
 /config/config.yml
 /java
 /sensor-projects
-/lab.*
-**/couchdb.stderr
-**/couchdb.stdout
 /config/deploy
 src/experiments/inquiry-space-importer/reference/Importer.js
-server/config/settings.yml
 config/littlechef
 tarballs
