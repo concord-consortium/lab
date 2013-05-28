@@ -3,14 +3,14 @@ Simple module which provides context menu for amino acids. It allows
 to dynamically change type of amino acids in a convenient way.
 It uses jQuery.contextMenu plug-in.
 
-CSS style definition: sass/lab/_aminoacid-context-menu.sass
+CSS style definition: sass/lab/_context-menu.sass
 ###
 define (require) ->
 
   aminoacids = require 'cs!md2d/models/aminoacids-helper'
 
   # Classes for styling. Note that CSS is used for styling, see header.
-  MENU_CLASS = "aminoacids-menu"
+  MENU_CLASS = "aminoacids-menu lab-contextmenu"
   HYDROPHOBIC_CLASS = "hydrophobic"
   HYDROPHOBIC_CAT_CLASS = "hydrophobic-category"
   HYDROPHILIC_CLASS = "hydrophilic"
