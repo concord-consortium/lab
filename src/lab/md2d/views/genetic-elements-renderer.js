@@ -357,7 +357,7 @@ define(function (require) {
           "width": model2px(W.RIBO_UNDER),
           "height": model2px(H.RIBO_UNDER),
           "preserveAspectRatio": "none",
-          "xlink:href": "resources/dna/Ribosome_under.svg",
+          "xlink:href": "resources/dna/Ribosome_under.png",
           "transform": translateFuncInv
         }).style({
           "opacity": opacityFunc
@@ -377,7 +377,7 @@ define(function (require) {
           "width": model2px(W.RIBO_OVER),
           "height": model2px(H.RIBO_OVER),
           "preserveAspectRatio": "none",
-          "xlink:href": "resources/dna/Ribosome_over.svg",
+          "xlink:href": "resources/dna/Ribosome_over.png",
           "transform": translateFuncInv
         }).style("opacity", opacityFunc);
         d3.transition(selection)
@@ -422,7 +422,7 @@ define(function (require) {
           "width": model2px(W.TRNA_NECK),
           "height": model2px(H.TRNA_NECK),
           "preserveAspectRatio": "none",
-          "xlink:href": "resources/dna/tRNA_neck.svg"
+          "xlink:href": "resources/dna/tRNA_neck.png"
         });
         enter.append("image").attr({
           "class": "trna-base",
@@ -431,7 +431,7 @@ define(function (require) {
           "width": model2px(W.TRNA),
           "height": model2px(H.TRNA),
           "preserveAspectRatio": "none",
-          "xlink:href": "resources/dna/tRNA_base.svg"
+          "xlink:href": "resources/dna/tRNA_base.png"
         });
 
         update = d3.transition(selection)
