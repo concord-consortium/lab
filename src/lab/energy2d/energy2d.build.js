@@ -3,7 +3,7 @@
   // Use Almond.
   // A replacement AMD loader for RequireJS. It is a smaller "shim" loader,
   // providing the minimal AMD API footprint that includes loader plugin support.
-  name: '../vendor/almond/almond',
+  name: '../../vendor/almond/almond',
 
   // Export Public API.
   include: ['energy2d/public-api'],
@@ -26,7 +26,7 @@
 
   paths: {
     // Plugin for loading plain text files (GLSL sources).
-    'text': '../vendor/text/text'
+    'text': '../../vendor/text/text'
   },
 
   // Protect global namespace and call export of API.

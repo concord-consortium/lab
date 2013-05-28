@@ -1203,8 +1203,8 @@ files) contains following options:
 
     // Additional modules.
     paths: {
-    'cs' :'../vendor/require-cs/cs',
-    'coffee-script': '../vendor/coffee-script/extras/coffee-script'
+    'cs' :'../../vendor/require-cs/cs',
+    'coffee-script': '../../vendor/coffee-script/extras/coffee-script'
     },
     //Stub out the cs module after a build since
     //it will not be needed.

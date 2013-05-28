@@ -3,7 +3,7 @@
   // Use Almond.
   // A replacement AMD loader for RequireJS. It is a smaller "shim" loader,
   // providing the minimal AMD API footprint that includes loader plugin support.
-  name: '../vendor/almond/almond',
+  name: '../../vendor/almond/almond',
 
   // Export Public API.
   include: ['grapher/public-api'],
@@ -33,7 +33,7 @@
 
   // Additional modules.
   paths: {
-    'underscore': '../vendor/underscore/underscore',
+    'underscore': '../../vendor/underscore/underscore',
     'backbone': '../../node_modules/backbone/backbone'
   },
 

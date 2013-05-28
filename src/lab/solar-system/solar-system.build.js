@@ -3,7 +3,7 @@
   // Use Almond.
   // A replacement AMD loader for RequireJS. It is a smaller "shim" loader,
   // providing the minimal AMD API footprint that includes loader plugin support.
-  name: '../vendor/almond/almond',
+  name: '../../vendor/almond/almond',
 
   // Export Public API.
   include: ['solar-system/public-api'],
@@ -46,9 +46,9 @@
   // Additional modules.
   paths: {
     // Plugin for loading plain text files.
-    'text': '../vendor/text/text',
-    'cs' :'../vendor/require-cs/cs',
-    'coffee-script': '../vendor/coffee-script/extras/coffee-script',
+    'text': '../../vendor/text/text',
+    'cs' :'../../vendor/require-cs/cs',
+    'coffee-script': '../../vendor/coffee-script/extras/coffee-script',
     'underscore': '../../node_modules/underscore/underscore',
     'backbone': '../../node_modules/backbone/backbone',
     'mustache': '../../node_modules/mustache/mustache',
