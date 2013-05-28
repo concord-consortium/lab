@@ -10,7 +10,11 @@ define(function (require) {
         "C": 21.2,
         "G": 21.2,
         "T": 28.651,
-        "U": 28.651
+        "U": 28.651,
+        "A_GLOW": 44.125,
+        "C_GLOW": 37.2,
+        "G_GLOW": 36.2,
+        "T_GLOW": 45.566
       },
       H = {
         "BACKB": 14,
@@ -18,7 +22,11 @@ define(function (require) {
         "C": 25.3,
         "G": 30.3,
         "T": 25.007,
-        "U": 25.007
+        "U": 25.007,
+        "A_GLOW": 44.55,
+        "C_GLOW": 41.417,
+        "G_GLOW": 45.3,
+        "T_GLOW": 40.65
       };
 
   (function () {
@@ -43,6 +51,7 @@ define(function (require) {
         backbone = "DNA", // if enabled, "RNA" or "DNA" is expected.
         stopCodonsHash = null,
         randomEnter = true,
+        glow = false,
 
         xShift = 0,
         yShift = 0;
@@ -79,7 +88,7 @@ define(function (require) {
 
             seq = typeof sequence === "function" ? sequence(d, i) : sequence,
 
-            nucleo, nucleoEnter, nucleoSVG, nucleoTrans,
+            nucleo, nucleoEnter, nucleoShape, nucleoSVG, nucleoTrans,
             targetScale;
 
         nucleo = g.selectAll("g.nucleotide").data(seq.split(""));
@@ -115,7 +124,21 @@ define(function (require) {
           "stroke-width": m2px(0.01),
           "stroke": "#fff"
         });
-        nucleoSVG = nucleoEnter.append("svg").attr({
+        nucleoShape = nucleoEnter.append("g").attr("class", "nucleo-shape");
+        if (glow) {
+          nucleoShape.append("image").attr({
+            "class": "glow",
+            "x": function (d) { return m2px(W.BACKB) / 2 - m2px(W[d + "_GLOW"]) / 2; },
+            "y": m2px(yOffset - 0.17 * W.G_GLOW),  // move glow closer to the backbone
+            "width": function (d) { return m2px(W[d + "_GLOW"]); },
+            "height": function (d) { return m2px(H[d + "_GLOW"]); },
+            "preserveAspectRatio": "none",
+            "xlink:href": function (d) { return "resources/dna/NucleotideGlow_" + d + ".svg"; }
+          });
+        }
+        nucleoSVG = nucleoShape.append("svg").attr({
+          "class": "nucleo-shape",
+          "overflow": "visible", // glow on hover shouldn't be truncated
           "viewBox": function (d) { return "0 0 " + (W[d] / SCALE) + " " + (H[d] / SCALE); },
           "x": function (d) { return m2px(W.BACKB) / 2 - m2px(W[d]) / 2; },
           "y": m2px(yOffset),
@@ -140,7 +163,6 @@ define(function (require) {
           "fill-rule": "evenodd",
           "clip-rule": "evenodd"
         });
-
         if (backbone) {
           nucleoEnter.append("image").attr({
             "class": "backbone",
@@ -228,6 +250,16 @@ define(function (require) {
     nucleo.randomEnter = function (r) {
       if (!arguments.length) return randomEnter;
       randomEnter = r;
+      return nucleo;
+    };
+
+    /**
+     * Enables or disables nucleotide glowing on hover.
+     * @param  {boolean} g
+     */
+    nucleo.glow = function (g) {
+      if (!arguments.length) return glow;
+      glow = g;
       return nucleo;
     };
 

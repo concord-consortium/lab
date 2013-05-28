@@ -14,77 +14,92 @@
       // !important to overwrite value set by JavaScript code.
       stroke: #ffe95a !important
 
-  // DNA.
-  // Default style of nucleotides.
-  .nucleotide
-    .bonds
-      stroke: #FFF
+  // Genetics renderer styles.
+  .genetics
 
-    .letter
-      fill: #4A3217
-
-    .type-A
-      .outline
-        fill: #278DB0
-      .interior
-        fill: #A2D6FF
-
-    .type-C
-      .outline
-        fill: #CC5B4C
-      .interior
-        fill: #FBB394
-
-    .type-G
-      .outline
-        fill: #CC5B4C
-      .interior
-        fill: #F9CEFF
-
-    .type-T
-      .outline
-        fill: #278DB0
-      .interior
-        fill: #99F0E3
-
-    .type-U
-      .outline
-        fill: #278DB0
-      .interior
-        fill: #83FEAF
-
-    .stop-codon
-      .outline
-        fill: #C00
-      .letter
-        fill: #C00
-
-  .promoter-region
+    // Default style of nucleotides.
     .nucleotide
-      .outline
-        fill: #060
-      .interior
-        fill: #5DB473
-      .letter
-        fill: #FFF
 
-  .terminator-region
-    .nucleotide
-      .outline
-        fill: #9E0608
-      .interior
-        fill: #DC4648
-      .letter
-        fill: #FFF
+      // Show glow only on hover.
+      .glow
+        display: none
+      .nucleo-shape:hover .glow
+        display: inline
 
-  .junk-region
-    .nucleotide
-      .outline
-        fill: #666
-      .interior
-        fill: #ADADAD
+      .bonds
+        stroke: #FFF
+
       .letter
-        fill: #FFF
+        fill: #4A3217
+
+      .type-A
+        .outline
+          fill: #278DB0
+        .interior
+          fill: #A2D6FF
+
+      .type-C
+        .outline
+          fill: #CC5B4C
+        .interior
+          fill: #FBB394
+
+      .type-G
+        .outline
+          fill: #CC5B4C
+        .interior
+          fill: #F9CEFF
+
+      .type-T
+        .outline
+          fill: #278DB0
+        .interior
+          fill: #99F0E3
+
+      .type-U
+        .outline
+          fill: #278DB0
+        .interior
+          fill: #83FEAF
+
+      .stop-codon
+        .outline
+          fill: #C00
+        .letter
+          fill: #C00
+
+    .promoter-region
+      .nucleotide
+        .outline
+          fill: #060
+        .interior
+          fill: #5DB473
+        .letter
+          fill: #FFF
+
+    .terminator-region
+      .nucleotide
+        .outline
+          fill: #9E0608
+        .interior
+          fill: #DC4648
+        .letter
+          fill: #FFF
+
+    .junk-region
+      .nucleotide
+        .outline
+          fill: #666
+        .interior
+          fill: #ADADAD
+        .letter
+          fill: #FFF
+
+    // Disable mouse events for some DNA animation objects as they can
+    // accidentally capture some mouse events (e.g. hover is used), when they are
+    // invisible (opacity: 0).
+    .polymerase-over, .polymerase-under
+      pointer-events: none
 
   // Attraction forces.
   line.attractionforce

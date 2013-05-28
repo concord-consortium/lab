@@ -1,7 +1,7 @@
 /*global define, d3 */
 
 define(function (require) {
-  var nucleotides  = require('md2d/views/nucleotides'),
+  var nucleotides          = require('md2d/views/nucleotides'),
 
       SCALE = 0.007,
       W = {
@@ -49,6 +49,34 @@ define(function (require) {
       }
     }
   }());
+
+  function getDefs(parent) {
+    var defs = parent.select("defs");
+    if (defs.empty()) {
+      defs = parent.append("defs");
+    }
+    return defs;
+  }
+
+  function appendTranscriptionBg(parent) {
+    var defs = getDefs(parent),
+        gradient;
+
+    if (defs.select("#transcription-bg").empty()) {
+      gradient = defs.append("linearGradient")
+        .attr("id", "transcription-bg")
+        .attr("x1", "0%")
+        .attr("y1", "0%")
+        .attr("x2", "0%")
+        .attr("y2", "100%");
+      gradient.append("stop")
+        .attr("stop-color", "#C8DD69")
+        .attr("offset", "0%");
+      gradient.append("stop")
+        .attr("stop-color", "#778B3D")
+        .attr("offset", "100%");
+    }
+  }
 
   function GeneticElementsRenderer(svg, model2px, model2pxInv, model) {
 
@@ -163,10 +191,12 @@ define(function (require) {
         // Coding sequence.
         n.model2px(model2px);
         n.sequence(dnaSequence);
+        n.glow(true);
         dnaEnter.append("g").attr("class", "coding-region").call(n);
         // Promoter sequence.
         n.sequence(geneticEngine.promoterSequence);
         n.startingPos(-geneticEngine.promoterSequence.length);
+        n.glow(false);
         dnaEnter.append("g").attr("class", "promoter-region").call(n);
         // Terminator sequence.
         n.sequence(geneticEngine.terminatorSequence);
@@ -206,10 +236,12 @@ define(function (require) {
         // Coding sequence.
         n.sequence(dnaComplement);
         n.startingPos(0);
+        n.glow(true);
         dnaCompEnter.append("g").attr("class", "coding-region").call(n);
         // Promoter sequence.
         n.sequence(geneticEngine.promoterCompSequence);
         n.startingPos(-geneticEngine.promoterCompSequence.length);
+        n.glow(false);
         dnaCompEnter.append("g").attr("class", "promoter-region").call(n);
         // Terminator sequence.
         n.sequence(geneticEngine.terminatorCompSequence);
@@ -486,23 +518,7 @@ define(function (require) {
       },
 
       background: function (parent, data) {
-        var gradient;
-
-        if (parent.select("#transcription-bg").empty()) {
-          // Transcription.
-          gradient = parent.append("defs").append("linearGradient")
-            .attr("id", "transcription-bg")
-            .attr("x1", "0%")
-            .attr("y1", "0%")
-            .attr("x2", "0%")
-            .attr("y2", "100%");
-          gradient.append("stop")
-            .attr("stop-color", "#C8DD69")
-            .attr("offset", "0%");
-          gradient.append("stop")
-            .attr("stop-color", "#778B3D")
-            .attr("offset", "100%");
-        }
+        appendTranscriptionBg(parent);
         d3.transition(svg.select(".plot")).style("fill", data.background[0].color);
       }
     };
