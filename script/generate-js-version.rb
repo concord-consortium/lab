@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require_relative 'setup.rb'
 require 'grit'
-require 'active_support/core_ext/string/output_safety'
+require "erb"
 
 ENCODING_OPTIONS = {
     :invalid           => :replace,  # Replace invalid byte sequences
@@ -30,8 +30,8 @@ head = repo.head
 head_commit_sha = `git log -1 --pretty="%H"`.strip
 commit = repo.commit(head_commit_sha)
 
-short_message = "".html_safe + commit.short_message.gsub("\n", "\\n")
-message = "".html_safe + commit.message.gsub("\n", "\\n")
+short_message = ERB::Util.html_escape(commit.short_message.gsub("\n", "\\n"))
+message = ERB::Util.html_escape(commit.message.gsub("\n", "\\n"))
 
 version = <<HEREDOC
 // this file is generated during build process by: ./script/generate-js-version.rb

@@ -5,7 +5,6 @@ require 'rubygems'
 require 'fileutils'
 require 'json'                       # http://flori.github.com/json/doc/index.html
 require 'yaml'
-require 'active_support/core_ext'    # http://guides.rubyonrails.org/active_support_core_extensions.html
 require 'pp'
 
 INTERACTIVE_EXAMPLES_PATH = PUBLIC_PATH
