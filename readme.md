@@ -87,16 +87,17 @@ from my filesystem:
 ## Setup Development
 
 Lab uses a number of RubyGems and node modules to manage development. Lab's test framework
-uses [Vows](http://vowsjs.org), which depends on [nodejs](http://nodejs.org/) and
-[npm](http://npmjs.org/) (Node Package Manager). In addition JavaScript minification is
-done using [UglifyJS](https://github.com/mishoo/UglifyJS). JavaScript dependency management
-is handled by [RequireJS](http://requirejs.org/).
+uses [Vows](http://vowsjs.org) amd [Mocha](http://visionmedia.github.io/mocha/) which both depend
+on [nodejs](http://nodejs.org/) and [npm](http://npmjs.org/) the Node Package Manager.
+
+In addition JavaScript minification is done using [UglifyJS](https://github.com/mishoo/UglifyJS).
+JavaScript dependency management is handled by [RequireJS](http://requirejs.org/).
 
 ### Prerequisites:
 
 #### RVM, Ruby 1.9 and the RubyGem bundler
 
-We use [RVM](https://rvm.io/) to mange our development dependency on [Ruby 1.9.3](http://www.ruby-lang.org/en/)
+We normally use [RVM](https://rvm.io/) to mange our development dependency on [Ruby 1.9.3](http://www.ruby-lang.org/en/)
 and the specific Ruby Gems needed for building Lab and running the Lab server.
 
 1. [Install RVM](https://rvm.io/rvm/install/)
@@ -117,14 +118,14 @@ is already installed:
 
     *** LOCAL GEMS ***
 
-    bundler (1.2.4)
+    bundler (1.3.5)
 
 If Bundler is not installed install it now into the global gemset for ruby-1.9.3-p392
 
     $ rvm gemset use global
     $ gem install bundler
-    Fetching: bundler-1.2.4.gem (100%)
-    Successfully installed bundler-1.2.4
+    Fetching: bundler-1.3.5.gem (100%)
+    Successfully installed bundler-1.3.5
     1 gem installed
 
 #### nodejs and npm, the Node Package Manager
@@ -143,23 +144,6 @@ Currently development is being done with these versions of node and npm:
 
     $ npm -v
     1.2.18
-
-#### CouchDB
-
-Install the nosql document-oriented [CouchDB](http://couchdb.apache.org/) database server to support persistence for the Lab server.
-
-Installation options:
-
-**MacOS X**
-
-Most of the developers on Lab use [Homebrew](http://mxcl.github.com/homebrew/) a package manager for Mac OS X.
-
-1. [Install Homebrew](https://github.com/mxcl/homebrew/wiki/installation)
-2. Install CouchDB using homebrew
-
-        brew doctor     # fix issues if needed
-        brew update     # if you haven't run it in the last 24 hours
-        brew install couchdb
 
 #### Java
 
@@ -238,7 +222,7 @@ To do this I've had to reinstall ruby 1.9.3-p194.
 
     *** LOCAL GEMS ***
 
-    bundler (1.1.4)
+    bundler (1.3.5)
 
 If it doesn't return anything install Bundler:
 
@@ -252,8 +236,6 @@ development dependencies.
 [npm](http://npmjs.org/), the Node Package Manager has been included as part of [nodejs](http://nodejs.org/)
 since version 0.6.3.
 
-The nosql document-oriented [CouchDB](http://couchdb.apache.org/) database server is installed to support persistence for the Lab server.
-
 To install the latest stable versions of node and couchdb you first need to add these PPA repositories:
 
 1. [node PPA repo](https://launchpad.net/~chris-lea/+archive/node.js/)
@@ -266,17 +248,9 @@ For these to work as intended python software properties must also be installed.
     $ sudo apt-add-repository ppa:longsleep/couchdb
     $ sudo apt-get update
 
-Now install node and couchdb:
+Now install node and npm:
 
-    $ sudo apt-get install couchdb nodejs npm
-
-Currently development is being done with these versions of node and npm:
-
-    $ node -v
-    v0.8.2
-
-    $ npm -v
-    1.1.37
+    $ sudo apt-get install nodejs npm
 
 Neither the Java run time environment nor the Java development kit are installed by
 default, both of which are used for the java projects.
@@ -291,7 +265,7 @@ Final note, before you `make everything` setup the project configurations files 
 configuration samples:
 
     cp config/config.sample.yml config/config.yml
-    cp server/config/couchdb.sample.yml server/config/couchdb.yml
+    cp config/couchdb.sample.yml config/couchdb.yml
 
 #### Known problems with Linux during Lab build process
 
@@ -359,11 +333,11 @@ When `make everything` is run on a freshly cloned repository it performs the fol
     This creates the `bin/` directory and populates it with command-line executables for running
     the specific versions of the RubyGems installed for development.
 
-4.  Generates the `server/public` directory:
+4.  Generates the `public` directory:
 
-5.  Generates the Java resources in the `server/public/jnlp` directory:
+5.  Generates the Java resources in the `public/jnlp` directory:
 
-You should now be able to open the file: `server/public/index.html` in a browser and run some of the examples.
+You should now be able to open the file: `public/index.html` in a browser and run some of the examples.
 
 #### Automatic build processing using Guard
 
@@ -372,49 +346,76 @@ changed automatically generate the JavaScript Lab modules, the examples, and run
 
     bin/guard
 
-Now any change you make in `src/examples/` will generate the corresponding content in `server/public/examples/`.
+Now any change you make in `src/examples/` will generate the corresponding content in `public/examples/`.
 In addition changes in `src/lab/` generate the associated Lab modules in `lab/` and copy these modules
-to `server/public/lab/`. In addition any change in either the `src/lab/` or `test/`directories will run the
+to `public/lab/`. In addition any change in either the `src/lab/` or `test/`directories will run the
 tests and display the results in the console window where `bin/guard`
 is running.
 
-#### Setup the Rails Lab server for development
+#### Startup the Rack-based Lab server for local development
 
-The Lab server is a very simple Rails 3.2 application that uses CouchDB for persistence.
+The Lab server is a very simple Rack application.
 
-Open a shell and change to the `lab/server` directory. The first time you `cd` into the `lab/server` directory RVM will
-ask you if this *new* `.rvmrc` file should be trusted.
+    bin/rackup server.ru
 
-The `.rvmrc` specifies that this project dependeds on Ruby 1.9.3-p194-server and all the required Ruby Gems
-will be installed in the RVM gemset named `ruby-1.9.3-p194@lab-server`.
+Now open http://localhost:9292/index.html
 
-    cd lab/server
-    bundle install
+##### JnlpApp Rack Application Service
 
-Create a couchdb configuration by copying the sample:
+The Rack server also uses the [Rack::Jnlp](https://github.com/concord-consortium/lab/tree/master/lib/rack/jnlp.rb) for
+servicing requests for Java Web Start JNLPs and versioned jar resources.
 
-    cp config/couchdb.sample.yml config/couchdb.yml
+Normally versions for jars can only be specified by using a jnlp form. A jnlp form of specification can be used for webstart and also for applets.
 
-If you have setup your local CouchDB server to require admin login for creating new databases
-you will need to enter user and password for a valid admin user.
+The older form of applet invocation that uses the <applet> html element normally can't specify version numbers for jar dependencies, however the Jnlp::Rack application included with Lab does allow version specification.
 
-##### Starting the Rails Lab server
+Example: right now on my local system there are two different versions of the vernier-goio-macosx-x86_64-nar.jar:
 
-    cd lab/server
-    thin start
+    $ ls -l public/jnlp/org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar*
+      98396 May 28 01:55 ../org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar__V1.5.0-20101012.203835-2.jar
+      99103 May 28 16:40 ../org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar__V1.5.0-20120528.164030-3.jar
 
-You can now open your local Lab application at this url:
+Note the different lengths for the two different versions.
 
-    http://localhost:3000/
+If a request comes in from Java for vernier-goio-macosx-x86_64-nar.jar the most recent version is returned:
 
-You can use a pre-configured route to open the local CouchDb admin web interface:
+    $ curl --user-agent java -I http://localhost:9292/jnlp/org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar.jar
+    HTTP/1.1 200 OK
+    Last-Modified: Mon, 28 May 2012 20:40:34 GMT
+    Content-Type: application/java-archive
+    Content-Length: 99103
 
-    http://localhost:3000/_utils
+However the version number can be added as a http query parameter.
 
-##### Entering the Rails Lab server console
+    $ curl --user-agent java -I http://localhost:9292/jnlp/org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar.jar?version-id=1.5.0-20101012.203835-2
+    HTTP/1.1 200 OK
+    Last-Modified: Mon, 28 May 2012 05:55:05 GMT
+    Content-Type: application/java-archive
+    Content-Length: 98396
+    x-java-jnlp-version-id: 1.5.0-20101012.203835-2
 
-    cd lab/server
-    rails console
+Note that in the response the x-java-jnlp-version-id HTTP header is added with teh actual version.
+
+This feature of specifying versioned jar resources should NOT be used for production because Java won't properly cache the jar locally. Eveytime a request is made for a jar with a version-id query parameter the complete jar will be downloaded again.
+
+When a version is specified in a jnlp form for an applet the jar WILL be cached properly.
+
+**Development Note**: If the applets no longer operate properly it may be that the server is no longer operating properly
+and needs to be restarted. The Java console log for the applet may show requests made for jars that are not fulfilled.
+
+If a request like the following produces an error:
+
+    $ curl --user-agent java -I http://localhost:9292/jnlp/org/concord/sensor-native/sensor-native.jar
+    HTTP/1.1 500 Internal Server Error
+
+Restart the server and the request should now succeed:
+
+    $ curl --user-agent java -I http://localhost:9292/jnlp/org/concord/sensor-native/sensor-native.jar
+    HTTP/1.1 200 OK
+    Last-Modified: Thu, 07 Jun 2012 16:44:28 GMT
+    Content-Type: application/java-archive
+    Content-Length: 34632
+    content-encoding: pack200-gzip
 
 #### Building the Classic Java applications and the Sensor Java Applet
 
@@ -502,7 +503,7 @@ The first time this task is run it:
 
 1.  Creates a `java/` top-level directory and checks out the required Java projects into this directory.
 2.  Builds each of the projects
-3.  Copies the jar resources into the `server/public/jnlp/` directory packing and signing them as needed.
+3.  Copies the jar resources into the `public/jnlp/` directory packing and signing them as needed.
 
 Later if you have made updates in the Java source code or need to re-build and deploy for any reason you
 can run:
@@ -622,7 +623,7 @@ Optionally you can specify one or more projects to operate on. This builds just 
 
     script/build-and-deploy-jars.rb sensor sensor-applets
 
-The Jar resources deployed to the `server/public/jnlp` directory include a timestamp in the deployed artifact so unless you specifically
+The Jar resources deployed to the `public/jnlp` directory include a timestamp in the deployed artifact so unless you specifically
 request an earlier version you will always get the latest version deployed.
 
 ##### Working with the Sensor projects source
@@ -667,63 +668,6 @@ compiled from source. If you're interested in building them from source:
 
 5. Repeat 2 - 4 for any other projects you'd like to build from source
 
-##### JnlpApp Rack Application Service
-
-The Rails server has a Rack application `JnlpApp` mounted at the route `/jnlp` for servicing requests for Java jar resources.
-
-The `JnlpApp` Rack application uses the `Rack::Jnlp` middleware defined here `server/lib/rack/jnlp.rb`.
-
-Normally versions for jars can only be specified by using a jnlp form. A jnlp form of specification can be used for webstart and also for applets.
-
-The older form of applet invocation that uses the <applet> html element normally can't specify version numbers for jar dependencies, however the Jnlp::Rack application included with Lab does allow version specification.
-
-Example: right now on my local system there are two different versions of the vernier-goio-macosx-x86_64-nar.jar:
-
-    $ ls -l server/public/jnlp/org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar*
-      98396 May 28 01:55 ../org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar__V1.5.0-20101012.203835-2.jar
-      99103 May 28 16:40 ../org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar__V1.5.0-20120528.164030-3.jar
-
-Note the different lengths for the two different versions.
-
-If a request comes in from Java for vernier-goio-macosx-x86_64-nar.jar the most recent version is returned:
-
-    $ curl --user-agent java -I http://localhost:3000/jnlp/org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar.jar
-    HTTP/1.1 200 OK
-    Last-Modified: Mon, 28 May 2012 20:40:34 GMT
-    Content-Type: application/java-archive
-    Content-Length: 99103
-
-However the version number can be added as a http query parameter.
-
-    $ curl --user-agent java -I http://localhost:3000/jnlp/org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar.jar?version-id=1.5.0-20101012.203835-2
-    HTTP/1.1 200 OK
-    Last-Modified: Mon, 28 May 2012 05:55:05 GMT
-    Content-Type: application/java-archive
-    Content-Length: 98396
-    x-java-jnlp-version-id: 1.5.0-20101012.203835-2
-
-Note that in the response the x-java-jnlp-version-id HTTP header is added with teh actual version.
-
-This feature of specifying versioned jar resources should NOT be used for production because Java won't properly cache the jar locally. Eveytime a request is made for a jar with a version-id query parameter the complete jar will be downloaded again.
-
-When a version is specified in a jnlp form for an applet the jar WILL be cached properly.
-
-**Development Note**: If the applets no longer operate properly it may be that the server is no longer operating properly
-and needs to be restarted. The Java console log for the applet may show requests made for jars that are not fulfilled.
-
-If a request like the following produces an error:
-
-    $ curl --user-agent java -I http://localhost:3000/jnlp/org/concord/sensor-native/sensor-native.jar
-    HTTP/1.1 500 Internal Server Error
-
-Restart the server and the request should now succeed:
-
-    $ curl --user-agent java -I http://localhost:3000/jnlp/org/concord/sensor-native/sensor-native.jar
-    HTTP/1.1 200 OK
-    Last-Modified: Thu, 07 Jun 2012 16:44:28 GMT
-    Content-Type: application/java-archive
-    Content-Length: 34632
-    content-encoding: pack200-gzip
 
 ## Project Configuration
 
@@ -863,63 +807,6 @@ Useful [travis-ci](http://travis-ci.org) resources
 - [Nodejs projects](http://about.travis-ci.org/docs/user/languages/javascript-with-nodejs/)
 - [GUI and Headless Browser testing](http://about.travis-ci.org/docs/user/gui-and-headless-browsers/)
 
-## Measuring Performance
-
-The [Complex Atoms Model](http://lab.dev.concord.org/examples/complex-atoms-model/complex-atoms-model.html)
-includes several features for estimating and measuring performance of the molecular modeler.
-
-1. End of **Stats** section displays average number of model steps/s.
-
-2. **Run Benchmarks** button stops model and measures time for running the model
-   100 steps and also time for running the model and rendering the graphics for 100
-   steps. When measuring the speed of the model and graphics together the test is run
-   continuously and control is *not* returned to the browser for repainting the screen.
-
-3. A separate [lab.performance](https://github.com/concord-consortium/lab) repository with a
-   Ruby script [performance.rb](https://github.com/concord-consortium/lab) available which
-   uses Selenium Webdriver to automate running the **Run Benchmarks** test 10 times and
-   collects , averages, and reports the results.
-
-### Installing and using `performance.rb`
-
-We use a completely separate repository for the performance monitoring tools so the
-same performance mesuring scripts can be used to measure performance over a range of
-commits to the Lab project. This  makes it easier to monitor performance and investigate
-performance regressions.
-
-In your working copy of the Lab project:
-
-    git checkout git://github.com/concord-consortium/lab.performance.git
-
-Edit paths in the file `lab.performance/performance.rb` to reference locations for FireFox and Chrome
-on your computer as well as the variable `URL_TO_COMPLEX_MODEL` for running the
-[Complex Atoms Model](http://lab.dev.concord.org/examples/complex-atoms-model/complex-atoms-model.html)
-locally.
-
-Gem prequisites: [selenium-webdriver](http://code.google.com/p/selenium/wiki/RubyBindings)
-
-    gem install selenium-webdriver
-
-**Measuring performance:**
-
-    $ ./lab.performance/performance.rb
-
-    browser: Chrome: 19.0.1085.0, Intel Mac OS X 10_6_8
-    Date: 2012-03-30 08:44
-    Molecule number: 50
-    Temperature: 5
-
-    git commit
-    commit 2c3a9328a43964485ed5f661cfb6e6cc6850ce95
-    Author: Stephen Bannasch <stephen.bannasch@gmail.com>
-    Date:   Fri Mar 30 08:44:05 2012 -0400
-
-        whitespace fixups
-    true
-
-    average steps                  167.30
-    average steps w/graphics       101.63
-
 ## Repository structure
 
 ### Summary of Directories in `src/`
@@ -928,17 +815,17 @@ Gem prequisites: [selenium-webdriver](http://code.google.com/p/selenium/wiki/Rub
 
 The **`src/lab`** directory includes JavaScript source code for the Lab JavaScript modules.
 During the build process individual files are copied into modules which are placed in
-the **`server/public/lab`** directory.
+the **`public/lab`** directory.
 
 #### `src/examples/`, `src/doc/`, and `src/experiments/`
 
 The **`src/examples/`**, **`src/doc/`**, and **`src/experiments/`** directories contain additional
 resources for generating the html, css, and image resources for the matching target
-folders in **`server/public`**.
+folders in **`public`**.
 
 **Note:** remember to make changes you want saved in the **`src/examples/`**, **`src/doc/`**,
 and **`src/experiments/`** and not in the target directories of the same names in
-**`server/public`**. Change made in **`server/public`** will be overwritten during the next
+**`public`**. Change made in **`public`** will be overwritten during the next
 build process.
 
 #### `src/vendor`
@@ -948,10 +835,10 @@ for Lab are located in the **`src/vendor`** directory and are installed as git s
 the first time `make` is run in a new checkout of the source code repository.
 
 Only the necessary JavaScript library files and other resources needed for runtime operation along
-with the associated README and LICENSE files are copied to **`server/public/vendor`** during
+with the associated README and LICENSE files are copied to **`public/vendor`** during
 the build process.
 
-All of the files copied to **`server/public/vendor`** are licensed and distributed under
+All of the files copied to **`public/vendor`** are licensed and distributed under
 one or more of the following licenses: [Simplified BSD](http://www.opensource.org/licenses/BSD-2-Clause),
 [The BSD 3-Clause](http://www.opensource.org/licenses/BSD-3-Clause),
 [MIT](http://www.opensource.org/licenses/MIT), or
@@ -960,7 +847,7 @@ one or more of the following licenses: [Simplified BSD](http://www.opensource.or
 #### `src/resources`
 
 The **`src/resources`** directory contains image resources and are copied directly to
-**`server/public/resources`**.
+**`public/resources`**.
 
 #### `src/sass`
 
@@ -970,17 +857,18 @@ during the build process to generate CSS resources.
 #### `src/helpers`
 
 The **`src/helpers`** directory contains CoffeeScript and JavaScript modules as well as Ruby programs
-only used as part of the testing and build process and are not copied to **`server/public/resources`**.
+only used as part of the testing and build process and are not copied to **`public/resources`**.
 
 #### `src/jnlp`
 
-The **`src/jnlp`** directory currently contains the Vernier GoIO Java sensor Jars. While these
-files are needed to use Vernier GoIO sensor in the browser normally there are no compiled
-artifacts included in either the Lab repository or referenced and used by the Lab either
-as external git submodules or as separately downloaded Java projects. The presence of these
-specific files is temporary until I can recreate or redevelop the specifc combination of Java,
-Vernier GoIO native libraries and JNI code generated by SWIG used 18 months ago to create
-these resources at Concord Consortium.
+The **`src/jnlp`** directory currently contains a
+[template Java web Start JNLP for Molecular Workbench](https://github.com/concord-consortium/lab/blob/master/src/jnlp/jnlps/org/concord/modeler/mw__V1.0.jnlp)
+and (DetectionApplet.class](https://github.com/concord-consortium/lab/blob/master/src/jnlp/org/concord/sensor/applet/DetectionApplet.class)
+a tiny Java class for quickly detecting whether Java applets can be run.
+
+The source code for DetectionApplet is in another repository located here:
+[DetectionApplet.java](https://github.com/concord-consortium/sensor-applets/tree/master/src/main/java/org/concord/sensor/applet/DetectionApplet.java)
+
 
 ### Lab Modules: `src/lab`
 
@@ -1032,7 +920,7 @@ Usage:
 
 Example results:
 
-    Model file: server/public/imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json
+    Model file: public/imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json
     Output: stdout
     Integration time: 150
     time    KE      TE
@@ -1243,7 +1131,7 @@ and may be reused by other modules).
 
     4.1. Define a new target, for example:
 
-        server/public/lab/lab.module-name.js: \
+        public/lab/lab.module-name.js: \
             $(NEW_MODULE_SRC_FILES) \
             $(COMMON_SRC_FILES)
             $(R_OPTIMIZER) -o src/lab/module-name/module-name.build.js
@@ -1353,18 +1241,18 @@ as a reference.
 Just remember about **cs!** prefix in paths when loading CoffeeScript sources. RequireJS Optimizer
 will convert such files to plain JavaScript and include them in the final library.
 
-### Generated Examples: `server/public/examples/`
+### Generated Examples: `public/examples/`
 
-The `server/public/examples/` directory is automatically generated running `make` and is not part of the repository.
+The `public/examples/` directory is automatically generated running `make` and is not part of the repository.
 
 When `bin/guard` is running any changes to files in the `src/examples/` directory cause automatic rebuilding
-of the associated files in the `server/public/examples/` directory.
+of the associated files in the `public/examples/` directory.
 
 ### HTML and CSS Generation
 
-[Haml](http://haml-lang.com/) is used to generate most of the HTML in the `server/public/` directory.
+[Haml](http://haml-lang.com/) is used to generate most of the HTML in the `public/` directory.
 
-[kramdown](http://kramdown.rubyforge.org/) is used to generate `readme.html` in `server/public/` from Mardown markup.
+[kramdown](http://kramdown.rubyforge.org/) is used to generate `readme.html` in `public/` from Mardown markup.
 
 [Sass](http://sass-lang.com/) is used to generate the CSS assets. The Sass markup may be in the form of
 `*.sass` or `*.scss` files
@@ -1717,7 +1605,7 @@ Github's [github:pages](http://pages.github.com/) feature supports sharing any c
 a `gh-pages` repository branch as static web content.
 
 The [gh-pages branch of the Lab repository](https://github.com/concord-consortium/lab/tree/gh-pages)
-is used to store the static pages and client-side code built by the Makefile at the directory `server/public`.
+is used to store the static pages and client-side code built by the Makefile at the directory `public`.
 
   [concord-consortium.github.com/lab](http://concord-consortium.github.com/lab/)
 
@@ -1734,24 +1622,24 @@ web-page form (as opposed to the standard Github page for showing a repository) 
 If you maintain a fork of this project on Github, you get a Github Page for free, and the
 instructions below apply to you as well!
 
-#### Making the `server/public/` folder track the gh-pages branch
+#### Making the `public/` folder track the gh-pages branch
 
-If you haven't done this yet, make the `server/public` folder track the contents of the gh-pages branch.
+If you haven't done this yet, make the `public` folder track the contents of the gh-pages branch.
 
 **If you have a `Guard` process running make sure and stop it before continuing!**
 
-    # server/public/ needs to be empty for git clone to be happy:
-    rm -rf server/public
+    # public/ needs to be empty for git clone to be happy:
+    rm -rf public
 
     # substitute the URL for whatever fork of the Lab repository you have write access to:
-    git clone git@github.com:concord-consortium/lab.git -b gh-pages server/public
+    git clone git@github.com:concord-consortium/lab.git -b gh-pages public
 
-Note that `make clean` now empties the `server/public` folder in-place, leaving the Git
-`server/public/.git` and `server/public/jnlp` directories intact.
+Note that `make clean` now empties the `public` folder in-place, leaving the Git
+`public/.git` and `public/jnlp` directories intact.
 
 #### Pushing changes to gh-pages branch
 
-First, make sure your `server/public` folder tracks the gh-pages branch, as per the above.
+First, make sure your `public` folder tracks the gh-pages branch, as per the above.
 
 Then run the following shell command in the `script/` folder:
 
@@ -1906,7 +1794,7 @@ When you have made changes in the repository like adding or updating a git submo
 The Java resources require much less frequent updates since the main body of work
 for Lab is occuriring in the HTML5 development.
 
-The capistrano task: `deploy:update_jnlps` erases the `server/public/jnlp/`
+The capistrano task: `deploy:update_jnlps` erases the `public/jnlp/`
 directory on the remote server and re-generates and deploy the packed signed
 jars from source or from downloads:
 
@@ -1914,8 +1802,8 @@ jars from source or from downloads:
 
 The resulting directory on the server will look something like this:
 
-    $ tree /var/www/app/server/public/jnlp/
-    server/public/jnlp/
+    $ tree /var/www/app/public/jnlp/
+    public/jnlp/
     ├── jdom
     │   └── jdom
     │       ├── jdom__V1.0.jar

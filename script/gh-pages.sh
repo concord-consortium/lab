@@ -6,7 +6,7 @@ cat <<heredoc
 *** dir: public not yet setup as a separate gh-pages tracking branch
 
     Please setup the public as a separate git checkout tracking the gh-pages branch first.
-    See: http://lab.dev.concord.org/readme.html#making-the-serverpublic-folder-track-the-gh-pages-branch
+    See: http://lab.dev.concord.org/readme.html#making-the-public-folder-track-the-gh-pages-branch
 
 heredoc
 exit
