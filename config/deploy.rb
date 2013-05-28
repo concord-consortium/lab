@@ -35,14 +35,11 @@ end
 
 namespace :deploy do
 
-
   desc "setup server"
   task :setup do
     run "cd /var/www/app; git fetch"
     run "cd /var/www/app; git reset --hard origin/#{branch}"
     run "cd /var/www/app; bundle install"
-    run "cd /var/www/app/server; bundle install"
-    run "cd /var/www/app/server; cp config/couchdb.sample.yml config/couchdb.yml"
     run "cd /var/www/app; cp config/config.sample.yml config/config.yml"
     run "cd /var/www/app; make clean; make"
     update_jnlps
@@ -53,8 +50,6 @@ namespace :deploy do
     run "cd /var/www/app; git checkout #{branch}; git pull origin #{branch}"
     run "cd /var/www/app; bundle install"
     run "cd /var/www/app; make public"
-    webapp.make_server_settings
-    webapp.import_interactives
   end
 
 
@@ -63,10 +58,7 @@ namespace :deploy do
     run "cd /var/www/app; git fetch"
     run "cd /var/www/app; git reset --hard origin/#{branch}"
     run "cd /var/www/app; bundle install"
-    run "cd /var/www/app/server; bundle install"
     run "cd /var/www/app; make clean; make"
-    webapp.make_server_settings
-    webapp.import_interactives
   end
 
   desc "clean and rebuild jars in public/jnlp dir on server"
@@ -86,29 +78,9 @@ namespace :deploy do
     run "cd /var/www/app; git log -1"
   end
 
-  namespace :webapp do
-    desc "update the rails server"
-    task :update_rails_server do
-      run "cd /var/www/app/server; git fetch; git reset --hard origin/#{branch}"
-      run "cd /var/www/app/server; bundle install"
-    end
-
-    desc "generate settings.yml for the rails server"
-    task :make_server_settings do
-      put server_config_settings_yml, "/var/www/app/server/config/settings.yml"
-      run "cd /var/www/app/server; cp config/couchdb.sample.yml config/couchdb.yml"
-      run "touch /var/www/app/server/tmp/restart.txt"
-    end
-
-    desc "import generated model and interactive resources into the rails server"
-    task :import_interactives do
-      run "cd /var/www/app/server; RAILS_ENV=production bundle exec rake app:import:built_interactives"
-      run "touch /var/www/app/server/tmp/restart.txt"
-    end
-
-    desc "restart the rails app"
-    task :restart do
-      run "touch /var/www/app/server/tmp/restart.txt"
-    end
+  desc "restart the Rack application"
+  task :restart do
+    run "touch /var/www/app/tmp/restart.txt"
   end
+
 end
