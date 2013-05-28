@@ -8,7 +8,7 @@
   // Export Public API.
   include: ['grapher/public-api'],
   // Out file.
-  out: '../../../server/public/lab/lab.grapher.js',
+  out: '../../../public/lab/lab.grapher.js',
   // Do not use UglifyJS.
   // It's done via Makefile routines.
   optimize: 'none',

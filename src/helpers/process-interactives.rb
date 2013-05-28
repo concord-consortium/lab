@@ -8,7 +8,7 @@ require 'yaml'
 require 'active_support/core_ext'    # http://guides.rubyonrails.org/active_support_core_extensions.html
 require 'pp'
 
-INTERACTIVE_EXAMPLES_PATH = SERVER_PUBLIC_PATH
+INTERACTIVE_EXAMPLES_PATH = PUBLIC_PATH
 INTERACTIVES_PATH = File.join(INTERACTIVE_EXAMPLES_PATH, 'interactives')
 SRC_INTERACTIVES_PATH = File.join(SRC_PATH, 'interactives')
 

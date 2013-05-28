@@ -8,7 +8,7 @@ SRC_LAB_PATH  = File.join(PROJECT_ROOT, 'src', 'lab')              if !defined? 
 CONFIG_PATH  = File.join(PROJECT_ROOT, 'config')                   if !defined? CONFIG_PATH
 SCRIPT_PATH = File.join(PROJECT_ROOT, 'script')                    if !defined? SCRIPT_PATH
 BIN_PATH  = File.join(PROJECT_ROOT, 'bin')                         if !defined? BIN_PATH
-SERVER_PUBLIC_PATH  = File.join(PROJECT_ROOT, 'server', 'public')  if !defined? SERVER_PUBLIC_PATH
+PUBLIC_PATH  = File.join(PROJECT_ROOT, 'public')                   if !defined? PUBLIC_PATH
 
 begin
   CONFIG = YAML.load_file(File.join(CONFIG_PATH, 'config.yml'))

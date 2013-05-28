@@ -4,6 +4,6 @@ var converter = require('../src/helpers/md2d/mw-batch-converter');
     fs        = require('fs'),
     path      = require('path'),
 	  indexFile = path.normalize(path.dirname(require.main.filename) +
-		          '/../server/public/imports/legacy-mw-content/legacyMMLRunnables.html');
+		          '/../public/imports/legacy-mw-content/legacyMMLRunnables.html');
 
 converter.createCmlJsonIndex( indexFile );

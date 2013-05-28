@@ -6,7 +6,7 @@ require 'yaml'
 PROJECT_ROOT = File.expand_path('../..',  __FILE__) if !defined? PROJECT_ROOT
 
 JAVA_ROOT    = File.join(PROJECT_ROOT, 'java')
-PUBLIC_ROOT  = File.join(PROJECT_ROOT, 'server', 'public')
+PUBLIC_ROOT  = File.join(PROJECT_ROOT, 'public')
 
 JNLP_ROOT    = File.join(PUBLIC_ROOT, 'jnlp')
 

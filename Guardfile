@@ -24,18 +24,18 @@ HEREDOC
 
 def delete_css
   puts "re-generating all css resources ..."
-  command("find server/public \! -path 'server/public/vendor*' -name '*.css' | xargs rm -f")
+  command("find public \! -path 'public/vendor*' -name '*.css' | xargs rm -f")
 end
 
-guard 'sass', :input => 'src/examples', :output => 'server/public/examples', :all_on_start => false, :load_paths => ['src']
-guard 'sass', :input => 'src/doc',      :output => 'server/public/doc',      :all_on_start => false, :load_paths => ['src']
+guard 'sass', :input => 'src/examples', :output => 'public/examples', :all_on_start => false, :load_paths => ['src']
+guard 'sass', :input => 'src/doc',      :output => 'public/doc',      :all_on_start => false, :load_paths => ['src']
 
 require "./src/helpers/sass/lab_fontface.rb"
 
-guard 'coffeescript', :input => 'src/examples', :output => 'server/public/examples', :all_on_start => false
-guard 'coffeescript', :input => 'src/doc',      :output => 'server/public/doc', :all_on_start => false
+guard 'coffeescript', :input => 'src/examples', :output => 'public/examples', :all_on_start => false
+guard 'coffeescript', :input => 'src/doc',      :output => 'public/doc', :all_on_start => false
 
-guard 'haml',         :input => 'src', :output => 'server/public', :all_on_start => false do
+guard 'haml',         :input => 'src', :output => 'public', :all_on_start => false do
   watch %r{^src.+(\.html\.haml)}
 end
 
@@ -82,7 +82,7 @@ guard 'shell' do
   end
 
   watch(/^imports\/.+/) do |match|
-    command("make server/public/imports")
+    command("make public/imports")
   end
 
   watch(/(^src\/sass\/.+)/) do |match|
@@ -93,7 +93,7 @@ guard 'shell' do
 
   watch(/^src\/(.+\.sass)$/) do |match|
     puts match[0]
-    command("bin/sass -I src --require ./src/helpers/sass/lab_fontface.rb src/#{match[0]} server/public/#{match[0]}.css")
+    command("bin/sass -I src --require ./src/helpers/sass/lab_fontface.rb src/#{match[0]} public/#{match[0]}.css")
   end
 
   watch "src/readme.scss" do
@@ -121,7 +121,7 @@ guard 'shell' do
     unless match[0][/(\.haml)|(\.sass)|(\.scss)|(\.coffee)(\.yaml)|(^\..+)$/]
       puts match[0]
       source_path = match[0]
-      destination_path = 'server/public/' + source_path[/src\/(.+?)$/, 1]
+      destination_path = 'public/' + source_path[/src\/(.+?)$/, 1]
       command("cp -f #{source_path} #{destination_path}")
       command("ruby src/helpers/process-interactives.rb")
     end
@@ -129,13 +129,13 @@ guard 'shell' do
 
   watch(/^(src\/resources\/[^.].+)$/) do |match|
     source_path = match[0]
-    destination_path = 'server/public/' + source_path[/src\/(.+?)$/, 1]
+    destination_path = 'public/' + source_path[/src\/(.+?)$/, 1]
     command("cp -f #{source_path} #{destination_path}")
   end
 
   watch(/^src\/(experiments\/.+)$/) do |match|
     source_path = match[0]
-    destination_path = "server/public/#{match[1]}"
+    destination_path = "public/#{match[1]}"
     command("cp -f #{source_path} #{destination_path}")
   end
 end
@@ -147,9 +147,9 @@ end
 
 guard 'markdown', :kram_ops => { :toc_levels => [2,3,4,5] } do
   watch "readme.md" do |m|
-    "readme.md|server/public/readme.html|src/layouts/readme.html.erb"
+    "readme.md|public/readme.html|src/layouts/readme.html.erb"
   end
   watch "license.md" do |m|
-    "license.md|server/public/license.html|src/layouts/license.html.erb"
+    "license.md|public/license.html|src/layouts/license.html.erb"
   end
 end

@@ -8,7 +8,7 @@
   // Export Public API.
   include: ['public-api'],
   // Out file.
-  out: '../../server/public/lab/lab.js',
+  out: '../../public/lab/lab.js',
   // Do not use UglifyJS.
   // It's done via Makefile routines.
   optimize: 'none',

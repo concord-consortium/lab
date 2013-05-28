@@ -19,7 +19,7 @@ var parseMML = require('./mml-parser').parseMML,
 
     rootPath = require.main ? path.dirname(require.main.filename) : process.cwd(),
     legacyFolderPath = path.normalize(rootPath + '../../imports/legacy-mw-content/'),
-    convertedFolderPath = path.normalize(rootPath + '../../server/public/imports/legacy-mw-content/converted/'),
+    convertedFolderPath = path.normalize(rootPath + '../../public/imports/legacy-mw-content/converted/'),
     templatePath = legacyFolderPath + 'legacyMMLRunnables.jade';
 
 /**
@@ -147,7 +147,7 @@ function convertMMLFolder(onlyOutdated, showProgress) {
   This assumes that convertMMLFolder() has already run. It searches for all the cml files,
   finds all the related json model files, and creates a web page that has runnable links
   for both of them
-  @param outputFile = e.g. './server/public/imports/legacy-mw-content/legacyMMLRunnables.html'
+  @param outputFile = e.g. './public/imports/legacy-mw-content/legacyMMLRunnables.html'
 */
 function createCmlJsonIndex(outputFile) {
 

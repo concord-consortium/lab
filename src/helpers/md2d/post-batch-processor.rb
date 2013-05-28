@@ -114,7 +114,7 @@ class MD2DImports
   attr_reader :model_list, :model_list_dot_js
   def initialize()
     @model_list = []
-    @path = "server/public/imports/legacy-mw-content"
+    @path = "public/imports/legacy-mw-content"
     @model_list_dot_js = "#{@path}/model-list.js"
     Dir.chdir(@path) do
       @dirs = Dir["sam-activities/**"]

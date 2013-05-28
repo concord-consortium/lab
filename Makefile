@@ -33,50 +33,51 @@ COUCHDB_RUNNING := $(findstring couch,$(shell curl http://localhost:5984 2> /dev
 
 # targets
 
-INTERACTIVE_FILES := $(shell find src/models src/interactives -name '*.json' -exec echo {} \; | sed s'/src\/\(.*\)/server\/public\/\1/' )
+INTERACTIVE_FILES := $(shell find src/models src/interactives -name '*.json' -exec echo {} \; | sed s'/src\/\(.*\)/public\/\1/' )
 vpath %.json src
 
-HAML_FILES := $(shell find src -name '*.haml' -exec echo {} \; | sed s'/src\/\(.*\)\.haml/server\/public\/\1/' )
+HAML_FILES := $(shell find src -name '*.haml' -exec echo {} \; | sed s'/src\/\(.*\)\.haml/public\/\1/' )
 vpath %.haml src
 
-SASS_TOP_LEVEL_FILES := $(shell find src -name '*.sass' -maxdepth 1 -exec echo {} \; | sed s'/src\/\(.*\)\.sass/server\/public\/\1.css/' )
+SASS_TOP_LEVEL_FILES := $(shell find src -name '*.sass' -maxdepth 1 -exec echo {} \; | sed s'/src\/\(.*\)\.sass/public\/\1.css/' )
 vpath %.sass src
 
-SASS_EXAMPLE_FILES := $(shell find src/examples -name '*.sass' -exec echo {} \; | sed s'/src\/\(.*\)\.sass/server\/public\/\1.css/' )
+SASS_EXAMPLE_FILES := $(shell find src/examples -name '*.sass' -exec echo {} \; | sed s'/src\/\(.*\)\.sass/public\/\1.css/' )
 vpath %.sass src/examples
 
-SASS_DOC_FILES := $(shell find src/doc -name '*.sass' -exec echo {} \; | sed s'/src\/\(.*\)\.sass/server\/public\/\1.css/' )
+SASS_DOC_FILES := $(shell find src/doc -name '*.sass' -exec echo {} \; | sed s'/src\/\(.*\)\.sass/public\/\1.css/' )
 DOC_FILES := $(SASS_DOC_FILES)
 vpath %.sass src/doc
 
-DOC_FILES += $(shell find src/doc -name '*.html' -print | sed s'/src\/\(.*\)\.html/server\/public\/\1.html/')
+DOC_FILES += $(shell find src/doc -name '*.html' -print | sed s'/src\/\(.*\)\.html/public\/\1.html/')
 vpath %.html src/doc
 
-DOC_FILES += $(shell find src/doc -name '*.css' -print | sed s'/src\/\(.*\)\.css/server\/public\/\1.css/')
+DOC_FILES += $(shell find src/doc -name '*.css' -print | sed s'/src\/\(.*\)\.css/public\/\1.css/')
 vpath %.css src/doc
 
-SCSS_EXAMPLE_FILES := $(shell find src -type d -name 'sass' -prune -o -name '*.scss' -exec echo {} \; | grep -v bourbon | sed s'/src\/\(.*\)\.scss/server\/public\/\1.css/' )
+SCSS_EXAMPLE_FILES := $(shell find src -type d -name 'sass' -prune -o -name '*.scss' -exec echo {} \; | grep -v bourbon | sed s'/src\/\(.*\)\.scss/public\/\1.css/' )
 vpath %.scss src
 
-COFFEESCRIPT_EXAMPLE_FILES := $(shell find src/examples -name '*.coffee' -exec echo {} \; | sed s'/src\/\(.*\)\.coffee/server\/public\/\1.js/' )
+COFFEESCRIPT_EXAMPLE_FILES := $(shell find src/examples -name '*.coffee' -exec echo {} \; | sed s'/src\/\(.*\)\.coffee/public\/\1.js/' )
 vpath %.coffee src
 
-MARKDOWN_EXAMPLE_FILES := $(shell find src -type d -name 'sass' -prune -o -name '*.md'  -maxdepth 1 -exec echo {} \; | grep -v vendor | sed s'/src\/\(.*\)\.md/server\/public\/\1.html/' )
+MARKDOWN_EXAMPLE_FILES := $(shell find src -type d -name 'sass' -prune -o -name '*.md'  -maxdepth 1 -exec echo {} \; | grep -v vendor | sed s'/src\/\(.*\)\.md/public\/\1.html/' )
 vpath %.md src
 
 LAB_JS_FILES = \
-	server/public/lab/lab.grapher.js \
-	server/public/lab/lab.energy2d.js \
-	server/public/lab/lab.md2d.js \
-	server/public/lab/lab.import-export.js \
-	server/public/lab/lab.solar-system.js \
-	server/public/lab/lab.js
+	public/lab/lab.grapher.js \
+	public/lab/lab.energy2d.js \
+	public/lab/lab.md2d.js \
+	public/lab/lab.import-export.js \
+	public/lab/lab.solar-system.js \
+	public/lab/lab.js
 
+.PHONY: all
 all: \
 	src/vendor/d3/d3.js \
 	node_modules \
 	bin \
-	server/public
+	public
 	$(MAKE) src
 
 .PHONY: everything
@@ -85,10 +86,10 @@ everything:
 	$(MAKE) all
 	$(MAKE) jnlp-all
 
-.PHONY: public
-public:
-	bash -O extglob -c 'rm -rf server/public/!(.git|jnlp|vendor)'
-	$(MAKE) all
+# .PHONY: public
+# public:
+# 	bash -O extglob -c 'rm -rf public/!(.git|jnlp|vendor)'
+# 	$(MAKE) all
 
 .PHONY: src
 src: \
@@ -102,31 +103,25 @@ src: \
 	$(SCSS_EXAMPLE_FILES) \
 	$(COFFEESCRIPT_EXAMPLE_FILES) \
 	$(INTERACTIVE_FILES) \
-	server/public/interactives.json \
-	server/public/index.css \
-	server/public/grapher.css \
-	server/public/interactives.css \
-	server/public/embeddable.css \
-	server/public/application.js \
-	server/public/lab-amd
-
-
-.PHONY: import-interactives
-import-interactives:
-	cd server; RAILS_ENV=production bundle exec rake app:import:built_interactives
-	touch server/tmp/restart.txt
+	public/interactives.json \
+	public/index.css \
+	public/grapher.css \
+	public/interactives.css \
+	public/embeddable.css \
+	public/application.js \
+	public/lab-amd
 
 .PHONY: jnlp-all
 jnlp-all: clean-jnlp \
-	server/public/jnlp
+	public/jnlp
 	script/build-and-deploy-jars.rb --maven-update
 
 clean:
 	ruby script/check-development-dependencies.rb
 	bundle install --binstubs
-	cd server && bundle install --binstubs
-	# Server dir cleanup.
-	bash -O extglob -c 'rm -rf server/public/!(.git|jnlp)'
+	mkdir -p public
+	# public dir cleanup.
+	bash -O extglob -c 'rm -rf public/!(.git|jnlp)'
 	# Remove auto-generated files.
 	rm -f src/lab/lab.config.js
 	rm -f src/lab/lab.version.js
@@ -150,7 +145,7 @@ submodule-update-tags:
 	git submodule update --init --recursive
 
 clean-jnlp:
-	rm -rf server/public/jnlp
+	rm -rf public/jnlp
 
 node_modules: node_modules/d3 \
 	node_modules/jsdom \
@@ -169,66 +164,60 @@ node_modules/arrays:
 bin:
 	bundle install --binstubs
 
-server/public: \
-	server/public/lab \
-	server/public/lab-amd \
-	server/public/vendor \
-	server/public/resources \
-	server/public/examples \
-	server/public/doc \
-	server/public/experiments \
-	server/public/imports \
-	server/public/jnlp \
-	create_public_symlinks
+public: \
+	public/lab \
+	public/lab-amd \
+	public/vendor \
+	public/resources \
+	public/examples \
+	public/doc \
+	public/experiments \
+	public/imports \
+	public/jnlp
 
-create_public_symlinks:
-	cd server/public; \
-	ln -s -f interactives.html webapp.html;
-
-
-server/public/examples:
-	mkdir -p server/public/examples
+public/examples:
+	mkdir -p public/examples
 	# copy everything (including symbolic links) except files that are used to generate
-  # resources from src/examples/ to server/public/examples/
-	rsync -aq --filter '+ */' --exclude='*.haml' --exclude='*.sass' --exclude='*.scss' --exclude='*.yaml' --exclude='*.coffee' src/examples/ server/public/examples/
+  # resources from src/examples/ to public/examples/
+	rsync -aq --filter '+ */' --exclude='*.haml' --exclude='*.sass' --exclude='*.scss' --exclude='*.yaml' --exclude='*.coffee' src/examples/ public/examples/
 	$(INTERACTIVES_JSON)
 
-server/public/doc: \
-	server/public/doc/interactives \
-	server/public/doc/models
+public/doc: \
+	public/doc/interactives \
+	public/doc/models
 	# copy HTML/CSS, directories, javascript, json, and image resources from src/doc/
-	rsync -aq --filter '+ */' --include='*.html' --include='*.css' --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg'  --filter 'hide,! */' src/doc/ server/public/doc/
+	rsync -aq --filter '+ */' --include='*.html' --include='*.css' --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg'  --filter 'hide,! */' src/doc/ public/doc/
 
-server/public/doc/interactives:
-	mkdir -p server/public/doc/interactives
+public/doc/interactives:
+	mkdir -p public/doc/interactives
 
-server/public/doc/models:
-	mkdir -p server/public/doc/models
+public/doc/models:
+	mkdir -p public/doc/models
 
-server/public/lab-amd: $(LAB_SRC_FILES)
-	mkdir -p server/public/lab-amd
-	rsync -aq src/lab/* server/public/lab-amd
+public/lab-amd: $(LAB_SRC_FILES)
+	mkdir -p public/lab-amd
+	rsync -aq src/lab/* public/lab-amd
 
-.PHONY: server/public/experiments
-server/public/experiments:
-	mkdir -p server/public/experiments
-	rsync -aq src/experiments server/public/
+.PHONY: public/experiments
+public/experiments:
+	mkdir -p public/experiments
+	rsync -aq src/experiments public/
 
-.PHONY: server/public/jnlp
-server/public/jnlp:
-	mkdir -p server/public/jnlp
-	rsync -aq src/jnlp server/public/
+.PHONY: public/jnlp
+public/jnlp:
+	mkdir -p public/jnlp
+	rsync -aq src/jnlp public/
 
 # MML->JSON conversion uses MD2D models for validation and default values handling
 # so it depends on appropriate sources.
-.PHONY: server/public/imports
-server/public/imports: \
+.PHONY: public/imports
+public/imports: \
 	$(MD2D_SRC_FILES) \
 	$(COMMON_SRC_FILES)
-	mkdir -p server/public/imports
-	rsync -aq imports/ server/public/imports/
+	mkdir -p public/imports
+	rsync -aq imports/ public/imports/
 	$(MAKE) convert-mml
-	rsync -aq --exclude 'converted/***' --filter '+ */'  --prune-empty-dirs --exclude '*.mml' --exclude '*.cml' --exclude '.*' --exclude '/*' server/public/imports/legacy-mw-content/ server/public/imports/legacy-mw-content/converted/
+	rsync -aq --exclude 'converted/***' --filter '+ */'  --prune-empty-dirs --exclude '*.mml' --exclude '*.cml' --exclude '.*' --exclude '/*' public/imports/legacy-mw-content/ public/imports/legacy-mw-content/converted/
 
 .PHONY: convert-mml
 convert-mml:
@@ -242,168 +231,168 @@ convert-all-mml:
 	./node-bin/create-mml-html-index
 	./src/helpers/md2d/post-batch-processor.rb
 
-server/public/resources:
-	cp -R ./src/resources ./server/public/
+public/resources:
+	cp -R ./src/resources ./public/
 
-server/public/vendor: \
-	server/public/vendor/d3 \
-	server/public/vendor/d3-plugins \
-	server/public/vendor/jquery/jquery.min.js \
-	server/public/vendor/jquery-ui/jquery-ui.min.js \
-	server/public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js \
-	server/public/vendor/jquery-selectBoxIt \
-	server/public/vendor/tinysort/jquery.tinysort.js \
-	server/public/vendor/jquery-context-menu \
-	server/public/vendor/science.js \
-	server/public/vendor/modernizr \
-	server/public/vendor/sizzle \
-	server/public/vendor/hijs \
-	server/public/vendor/mathjax \
-	server/public/vendor/fonts \
-	server/public/vendor/codemirror \
-	server/public/vendor/dsp.js \
-	server/public/vendor/requirejs \
-	server/public/vendor/text \
-	server/public/vendor/domReady \
-	server/public/favicon.ico
+public/vendor: \
+	public/vendor/d3 \
+	public/vendor/d3-plugins \
+	public/vendor/jquery/jquery.min.js \
+	public/vendor/jquery-ui/jquery-ui.min.js \
+	public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js \
+	public/vendor/jquery-selectBoxIt \
+	public/vendor/tinysort/jquery.tinysort.js \
+	public/vendor/jquery-context-menu \
+	public/vendor/science.js \
+	public/vendor/modernizr \
+	public/vendor/sizzle \
+	public/vendor/hijs \
+	public/vendor/mathjax \
+	public/vendor/fonts \
+	public/vendor/codemirror \
+	public/vendor/dsp.js \
+	public/vendor/requirejs \
+	public/vendor/text \
+	public/vendor/domReady \
+	public/favicon.ico
 
-server/public/vendor/dsp.js:
-	mkdir -p server/public/vendor/dsp.js
-	cp src/vendor/dsp.js/dsp.js server/public/vendor/dsp.js
-	cp src/vendor/dsp.js/LICENSE server/public/vendor/dsp.js/LICENSE
-	cp src/vendor/dsp.js/README server/public/vendor/dsp.js/README
+public/vendor/dsp.js:
+	mkdir -p public/vendor/dsp.js
+	cp src/vendor/dsp.js/dsp.js public/vendor/dsp.js
+	cp src/vendor/dsp.js/LICENSE public/vendor/dsp.js/LICENSE
+	cp src/vendor/dsp.js/README public/vendor/dsp.js/README
 
-server/public/vendor/d3: src/vendor/d3
-	mkdir -p server/public/vendor/d3
-	cp src/vendor/d3/d3*.js server/public/vendor/d3
-	cp src/vendor/d3/LICENSE server/public/vendor/d3/LICENSE
-	cp src/vendor/d3/README.md server/public/vendor/d3/README.md
+public/vendor/d3: src/vendor/d3
+	mkdir -p public/vendor/d3
+	cp src/vendor/d3/d3*.js public/vendor/d3
+	cp src/vendor/d3/LICENSE public/vendor/d3/LICENSE
+	cp src/vendor/d3/README.md public/vendor/d3/README.md
 
-server/public/vendor/d3-plugins:
-	mkdir -p server/public/vendor/d3-plugins/cie
-	cp src/vendor/d3-plugins/LICENSE server/public/vendor/d3-plugins/LICENSE
-	cp src/vendor/d3-plugins/README.md server/public/vendor/d3-plugins/README.md
-	cp src/vendor/d3-plugins/cie/*.js server/public/vendor/d3-plugins/cie
-	cp src/vendor/d3-plugins/cie/README.md server/public/vendor/d3-plugins/cie/README.md
+public/vendor/d3-plugins:
+	mkdir -p public/vendor/d3-plugins/cie
+	cp src/vendor/d3-plugins/LICENSE public/vendor/d3-plugins/LICENSE
+	cp src/vendor/d3-plugins/README.md public/vendor/d3-plugins/README.md
+	cp src/vendor/d3-plugins/cie/*.js public/vendor/d3-plugins/cie
+	cp src/vendor/d3-plugins/cie/README.md public/vendor/d3-plugins/cie/README.md
 
-server/public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js: \
-	server/public/vendor/jquery-ui-touch-punch
-	cp src/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js server/public/vendor/jquery-ui-touch-punch
+public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js: \
+	public/vendor/jquery-ui-touch-punch
+	cp src/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js public/vendor/jquery-ui-touch-punch
 
-server/public/vendor/jquery-ui-touch-punch:
-	mkdir -p server/public/vendor/jquery-ui-touch-punch
+public/vendor/jquery-ui-touch-punch:
+	mkdir -p public/vendor/jquery-ui-touch-punch
 
-server/public/vendor/jquery-selectBoxIt:
-	mkdir -p server/public/vendor/jquery-selectBoxIt
-	cp src/vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.min.js server/public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js
-	cp src/vendor/jquery-selectBoxIt/src/stylesheets/jquery.selectBoxIt.css server/public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.css
+public/vendor/jquery-selectBoxIt:
+	mkdir -p public/vendor/jquery-selectBoxIt
+	cp src/vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.min.js public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js
+	cp src/vendor/jquery-selectBoxIt/src/stylesheets/jquery.selectBoxIt.css public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.css
 
-server/public/vendor/jquery-context-menu:
-	mkdir -p server/public/vendor/jquery-context-menu
-	cp src/vendor/jquery-context-menu/src/jquery.contextMenu.js server/public/vendor/jquery-context-menu
-	cp src/vendor/jquery-context-menu/src/jquery.contextMenu.css server/public/vendor/jquery-context-menu
+public/vendor/jquery-context-menu:
+	mkdir -p public/vendor/jquery-context-menu
+	cp src/vendor/jquery-context-menu/src/jquery.contextMenu.js public/vendor/jquery-context-menu
+	cp src/vendor/jquery-context-menu/src/jquery.contextMenu.css public/vendor/jquery-context-menu
 
-server/public/vendor/jquery/jquery.min.js: \
+public/vendor/jquery/jquery.min.js: \
 	src/vendor/jquery/dist/jquery.min.js \
-	server/public/vendor/jquery
-	cp src/vendor/jquery/dist/jquery*.js server/public/vendor/jquery
-	cp src/vendor/jquery/MIT-LICENSE.txt server/public/vendor/jquery
-	cp src/vendor/jquery/README.md server/public/vendor/jquery
+	public/vendor/jquery
+	cp src/vendor/jquery/dist/jquery*.js public/vendor/jquery
+	cp src/vendor/jquery/MIT-LICENSE.txt public/vendor/jquery
+	cp src/vendor/jquery/README.md public/vendor/jquery
 
-server/public/vendor/jquery:
-	mkdir -p server/public/vendor/jquery
+public/vendor/jquery:
+	mkdir -p public/vendor/jquery
 
-server/public/vendor/jquery-ui/jquery-ui.min.js: \
+public/vendor/jquery-ui/jquery-ui.min.js: \
 	src/vendor/jquery-ui/dist/jquery-ui.min.js \
-	server/public/vendor/jquery-ui
-	cp -r src/vendor/jquery-ui/dist/* server/public/vendor/jquery-ui
-	cp -r src/vendor/jquery-ui/themes/base/images server/public/vendor/jquery-ui
-	cp src/vendor/jquery-ui/MIT-LICENSE.txt server/public/vendor/jquery-ui
+	public/vendor/jquery-ui
+	cp -r src/vendor/jquery-ui/dist/* public/vendor/jquery-ui
+	cp -r src/vendor/jquery-ui/themes/base/images public/vendor/jquery-ui
+	cp src/vendor/jquery-ui/MIT-LICENSE.txt public/vendor/jquery-ui
 
-server/public/vendor/jquery-ui:
-	mkdir -p server/public/vendor/jquery-ui
+public/vendor/jquery-ui:
+	mkdir -p public/vendor/jquery-ui
 
-server/public/vendor/tinysort:
-	mkdir -p server/public/vendor/tinysort
+public/vendor/tinysort:
+	mkdir -p public/vendor/tinysort
 
-server/public/vendor/tinysort/jquery.tinysort.js: \
-	server/public/vendor/tinysort
-	cp -r src/vendor/tinysort/src/* server/public/vendor/tinysort
-	cp src/vendor/tinysort/README.md server/public/vendor/tinysort
+public/vendor/tinysort/jquery.tinysort.js: \
+	public/vendor/tinysort
+	cp -r src/vendor/tinysort/src/* public/vendor/tinysort
+	cp src/vendor/tinysort/README.md public/vendor/tinysort
 
-server/public/vendor/science.js:
-	mkdir -p server/public/vendor/science.js
-	cp src/vendor/science.js/science*.js server/public/vendor/science.js
-	cp src/vendor/science.js/LICENSE server/public/vendor/science.js
-	cp src/vendor/science.js/README.md server/public/vendor/science.js
+public/vendor/science.js:
+	mkdir -p public/vendor/science.js
+	cp src/vendor/science.js/science*.js public/vendor/science.js
+	cp src/vendor/science.js/LICENSE public/vendor/science.js
+	cp src/vendor/science.js/README.md public/vendor/science.js
 
-server/public/vendor/modernizr:
-	mkdir -p server/public/vendor/modernizr
-	cp src/vendor/modernizr/modernizr.js server/public/vendor/modernizr
-	cp src/vendor/modernizr/readme.md server/public/vendor/modernizr
+public/vendor/modernizr:
+	mkdir -p public/vendor/modernizr
+	cp src/vendor/modernizr/modernizr.js public/vendor/modernizr
+	cp src/vendor/modernizr/readme.md public/vendor/modernizr
 
-server/public/vendor/sizzle:
-	mkdir -p server/public/vendor/sizzle
-	cp src/vendor/sizzle/sizzle.js server/public/vendor/sizzle
-	cp src/vendor/sizzle/LICENSE server/public/vendor/sizzle
-	cp src/vendor/sizzle/README server/public/vendor/sizzle
+public/vendor/sizzle:
+	mkdir -p public/vendor/sizzle
+	cp src/vendor/sizzle/sizzle.js public/vendor/sizzle
+	cp src/vendor/sizzle/LICENSE public/vendor/sizzle
+	cp src/vendor/sizzle/README public/vendor/sizzle
 
-server/public/vendor/hijs:
-	mkdir -p server/public/vendor/hijs
-	cp src/vendor/hijs/hijs.js server/public/vendor/hijs
-	cp src/vendor/hijs/LICENSE server/public/vendor/hijs
-	cp src/vendor/hijs/README.md server/public/vendor/hijs
+public/vendor/hijs:
+	mkdir -p public/vendor/hijs
+	cp src/vendor/hijs/hijs.js public/vendor/hijs
+	cp src/vendor/hijs/LICENSE public/vendor/hijs
+	cp src/vendor/hijs/README.md public/vendor/hijs
 
-server/public/vendor/mathjax:
-	mkdir -p server/public/vendor/mathjax
-	cp src/vendor/mathjax/MathJax.js server/public/vendor/mathjax
-	cp src/vendor/mathjax/LICENSE server/public/vendor/mathjax
-	cp src/vendor/mathjax/README.md server/public/vendor/mathjax
-	cp -R src/vendor/mathjax/jax server/public/vendor/mathjax
-	cp -R src/vendor/mathjax/extensions server/public/vendor/mathjax
-	cp -R src/vendor/mathjax/images server/public/vendor/mathjax
-	cp -R src/vendor/mathjax/fonts server/public/vendor/mathjax
-	cp -R src/vendor/mathjax/config server/public/vendor/mathjax
+public/vendor/mathjax:
+	mkdir -p public/vendor/mathjax
+	cp src/vendor/mathjax/MathJax.js public/vendor/mathjax
+	cp src/vendor/mathjax/LICENSE public/vendor/mathjax
+	cp src/vendor/mathjax/README.md public/vendor/mathjax
+	cp -R src/vendor/mathjax/jax public/vendor/mathjax
+	cp -R src/vendor/mathjax/extensions public/vendor/mathjax
+	cp -R src/vendor/mathjax/images public/vendor/mathjax
+	cp -R src/vendor/mathjax/fonts public/vendor/mathjax
+	cp -R src/vendor/mathjax/config public/vendor/mathjax
 
-server/public/vendor/fonts: $(FONT_FOLDERS)
-	mkdir -p server/public/vendor/fonts
-	cp -R src/vendor/fonts server/public/vendor/
-	rm -rf server/public/vendor/fonts/Font-Awesome/.git
+public/vendor/fonts: $(FONT_FOLDERS)
+	mkdir -p public/vendor/fonts
+	cp -R src/vendor/fonts public/vendor/
+	rm -rf public/vendor/fonts/Font-Awesome/.git
 
-server/public/vendor/requirejs:
-	mkdir -p server/public/vendor/requirejs
-	cp src/vendor/requirejs/require.js server/public/vendor/requirejs
-	cp src/vendor/requirejs/LICENSE server/public/vendor/requirejs
-	cp src/vendor/requirejs/README.md server/public/vendor/requirejs
+public/vendor/requirejs:
+	mkdir -p public/vendor/requirejs
+	cp src/vendor/requirejs/require.js public/vendor/requirejs
+	cp src/vendor/requirejs/LICENSE public/vendor/requirejs
+	cp src/vendor/requirejs/README.md public/vendor/requirejs
 
-server/public/vendor/text:
-	mkdir -p server/public/vendor/text
-	cp src/vendor/text/text.js server/public/vendor/text
-	cp src/vendor/text/LICENSE server/public/vendor/text
-	cp src/vendor/text/README.md server/public/vendor/text
+public/vendor/text:
+	mkdir -p public/vendor/text
+	cp src/vendor/text/text.js public/vendor/text
+	cp src/vendor/text/LICENSE public/vendor/text
+	cp src/vendor/text/README.md public/vendor/text
 
-server/public/vendor/domReady:
-	mkdir -p server/public/vendor/domReady
-	cp src/vendor/domReady/domReady.js server/public/vendor/domReady
-	cp src/vendor/domReady/LICENSE server/public/vendor/domReady
-	cp src/vendor/domReady/README.md server/public/vendor/domReady
+public/vendor/domReady:
+	mkdir -p public/vendor/domReady
+	cp src/vendor/domReady/domReady.js public/vendor/domReady
+	cp src/vendor/domReady/LICENSE public/vendor/domReady
+	cp src/vendor/domReady/README.md public/vendor/domReady
 
-server/public/vendor/codemirror:
-	mkdir -p server/public/vendor/codemirror
-	cp src/vendor/codemirror/LICENSE server/public/vendor/codemirror
-	cp src/vendor/codemirror/README.md server/public/vendor/codemirror
-	cp -R src/vendor/codemirror/lib server/public/vendor/codemirror
-	cp -R src/vendor/codemirror/addon server/public/vendor/codemirror
-	cp -R src/vendor/codemirror/mode server/public/vendor/codemirror
-	cp -R src/vendor/codemirror/theme server/public/vendor/codemirror
-	cp -R src/vendor/codemirror/keymap server/public/vendor/codemirror
+public/vendor/codemirror:
+	mkdir -p public/vendor/codemirror
+	cp src/vendor/codemirror/LICENSE public/vendor/codemirror
+	cp src/vendor/codemirror/README.md public/vendor/codemirror
+	cp -R src/vendor/codemirror/lib public/vendor/codemirror
+	cp -R src/vendor/codemirror/addon public/vendor/codemirror
+	cp -R src/vendor/codemirror/mode public/vendor/codemirror
+	cp -R src/vendor/codemirror/theme public/vendor/codemirror
+	cp -R src/vendor/codemirror/keymap public/vendor/codemirror
 	# remove codemirror modules excluded by incompatible licensing
-	rm -rf server/public/vendor/codemirror/mode/go
-	rm -rf server/public/vendor/codemirror/mode/rst
-	rm -rf server/public/vendor/codemirror/mode/verilog
+	rm -rf public/vendor/codemirror/mode/go
+	rm -rf public/vendor/codemirror/mode/rst
+	rm -rf public/vendor/codemirror/mode/verilog
 
-server/public/favicon.ico:
-	cp -f src/favicon.ico server/public/favicon.ico
+public/favicon.ico:
+	cp -f src/favicon.ico public/favicon.ico
 
 src/vendor/jquery/dist/jquery.min.js: src/vendor/jquery
 	cd src/vendor/jquery; npm install; \
@@ -419,13 +408,13 @@ src/vendor/jquery-ui/dist/jquery-ui.min.js: src/vendor/jquery-ui
 src/vendor/jquery-ui:
 	git submodule update --init --recursive
 
-server/public/lab:
-	mkdir -p server/public/lab
+public/lab:
+	mkdir -p public/lab
 
-server/public/lab/lab.js: \
-	server/public/lab/lab.grapher.js \
-	server/public/lab/lab.md2d.js \
-	server/public/lab/lab.solar-system.js \
+public/lab/lab.js: \
+	public/lab/lab.grapher.js \
+	public/lab/lab.md2d.js \
+	public/lab/lab.solar-system.js \
 	$(SIGNAL_GENERATOR_SRC_FILES) \
 	$(SENSOR_SRC_FILES) \
 	src/lab/lab.version.js \
@@ -440,32 +429,32 @@ src/lab/lab.config.js: \
 	config/config.yml
 	./script/generate-js-config.rb
 
-server/public/lab/lab.energy2d.js: \
+public/lab/lab.energy2d.js: \
 	$(ENERGY2D_SRC_FILES) \
 	$(COMMON_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/energy2d/energy2d.build.js
 
-server/public/lab/lab.grapher.js: \
+public/lab/lab.grapher.js: \
 	$(GRAPHER_SRC_FILES) \
 	$(COMMON_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/grapher/grapher.build.js
 
-server/public/lab/lab.import-export.js: \
+public/lab/lab.import-export.js: \
 	$(IMPORT_EXPORT_SRC_FILES) \
 	$(COMMON_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/import-export/import-export.build.js
 
-server/public/lab/lab.solar-system.js: \
+public/lab/lab.solar-system.js: \
 	$(SOLAR_SYSTEM_SRC_FILES) \
 	$(COMMON_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/solar-system/solar-system.build.js
 
-server/public/lab/lab.md2d.js: \
+public/lab/lab.md2d.js: \
 	$(MD2D_SRC_FILES) \
 	$(COMMON_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/md2d/md2d.build.js
 
-server/public/lab/lab.mw-helpers.js: src/mw-helpers/*.coffee
+public/lab/lab.mw-helpers.js: src/mw-helpers/*.coffee
 	cat $^ | $(COFFEESCRIPT_COMPILER) --stdio --print > $@
 	@chmod ug+w $@
 
@@ -479,7 +468,7 @@ src/experiments/netlogo-is-exporter/models/data-export-modular.nls: \
 
 test: test/layout.html \
 	src/vendor/d3 \
-	server/public \
+	public \
 	$(LAB_JS_FILES) \
 	$(JS_FILES:.js=.min.js)
 	@echo
@@ -526,70 +515,70 @@ endif
 test/%.html: test/%.html.haml
 	haml $< $@
 
-server/public/%.html: src/%.html.haml
+public/%.html: src/%.html.haml
 	haml -r ./script/setup.rb $< $@
 
-server/public/%.html: src/%.html
+public/%.html: src/%.html
 	mkdir -p `dirname $@`
 	cp $< $@
 
-server/public/%.css: src/%.css
+public/%.css: src/%.css
 	mkdir -p `dirname $@`
 	cp $< $@
 
-server/public/index.css:
-	$(SASS_COMPILER) src/index.sass server/public/index.css
+public/index.css:
+	$(SASS_COMPILER) src/index.sass public/index.css
 
-server/public/application.js:
-	cp src/application.js server/public/application.js
+public/application.js:
+	cp src/application.js public/application.js
 
-server/public/embeddable-author.css:
-	$(SASS_COMPILER) src/embeddable.sass server/public/embeddable-author.css
+public/embeddable-author.css:
+	$(SASS_COMPILER) src/embeddable.sass public/embeddable-author.css
 
-server/public/embeddable.css:
-	$(SASS_COMPILER) src/embeddable.sass server/public/embeddable.css
+public/embeddable.css:
+	$(SASS_COMPILER) src/embeddable.sass public/embeddable.css
 
-server/public/grapher.css: src/grapher.sass \
+public/grapher.css: src/grapher.sass \
 	src/sass/lab/_colors.sass \
 	src/sass/lab/_grapher.sass
-	$(SASS_COMPILER) src/grapher.sass server/public/grapher.css
+	$(SASS_COMPILER) src/grapher.sass public/grapher.css
 
-server/public/examples/%.css: %.sass
+public/examples/%.css: %.sass
 	$(SASS_COMPILER) $< $@
 
-server/public/doc/%.css: %.sass
+public/doc/%.css: %.sass
 	$(SASS_COMPILER) $< $@
 
-server/public/lab/%.css: %.sass
+public/lab/%.css: %.sass
 	$(SASS_COMPILER) $< $@
 
 lab/%.css: %.sass
 	$(SASS_COMPILER) $< $@
 
-server/public/%.css: %.scss
+public/%.css: %.scss
 	$(SASS_COMPILER) $< $@
 
-server/public/%.css: %.sass
+public/%.css: %.sass
 	@echo $($<)
 	$(SASS_COMPILER) $< $@
 
-server/public/%.js: %.coffee
+public/%.js: %.coffee
 	@rm -f $@
 	$(COFFEESCRIPT_COMPILER) --compile --print $< > $@
 
-server/public/%.html: %.md
+public/%.html: %.md
 	@rm -f $@
 	$(MARKDOWN_COMPILER) $< --toc-levels 2..6 --template src/layouts/$*.html.erb > $@
 
-server/public/interactives/%.json: src/interactives/%.json
+public/interactives/%.json: src/interactives/%.json
 	mkdir -p `dirname $@`
 	@cp $< $@
 
-server/public/models/%.json: src/models/%.json
+public/models/%.json: src/models/%.json
 	mkdir -p `dirname $@`
 	@cp $< $@
 
-server/public/interactives.json: $(INTERACTIVE_FILES)
+public/interactives.json: $(INTERACTIVE_FILES)
 	$(GENERATE_INTERACTIVE_INDEX)
 
 .PHONY: h

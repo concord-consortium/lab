@@ -8,7 +8,7 @@
   // Export Public API.
   include: ['md2d/public-api'],
   // Out file.
-  out: '../../../server/public/lab/lab.md2d.js',
+  out: '../../../public/lab/lab.md2d.js',
   // Do not use UglifyJS.
   // It's done via Makefile routines.
   optimize: 'none',

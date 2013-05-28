@@ -8,7 +8,7 @@
   // Export Public API.
   include: ['solar-system/public-api'],
   // Out file.
-  out: '../../../server/public/lab/lab.solar-system.js',
+  out: '../../../public/lab/lab.solar-system.js',
   // Do not use UglifyJS.
   // It's done via Makefile routines.
   optimize: 'none',

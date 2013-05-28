@@ -8,7 +8,7 @@
   // Export Public API.
   include: ['energy2d/public-api'],
   // Out file.
-  out: '../../../server/public/lab/lab.energy2d.js',
+  out: '../../../public/lab/lab.energy2d.js',
   // Do not use UglifyJS.
   // It's done via Makefile rutines.
   optimize: 'none',
