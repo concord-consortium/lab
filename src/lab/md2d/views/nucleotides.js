@@ -88,10 +88,16 @@ define(function (require) {
 
             seq = typeof sequence === "function" ? sequence(d, i) : sequence,
 
-            nucleo, nucleoEnter, nucleoShape, nucleoSVG, nucleoTrans,
+            nucleo, nucleoEnter, nucleoShape, nucleoSVG, nucleoSVGUpdate, nucleoTrans,
             targetScale;
 
-        nucleo = g.selectAll("g.nucleotide").data(seq.split(""));
+        // seq is string now. Change it to array of objects.
+        // e.g. "AG" will be change to [{idx: 0, type: "A"}, {idx: 1, type: "G"}].
+        seq = seq.split("");
+        seq.forEach(function(val, i) {
+          seq[i] = {idx: i, type: val};
+        });
+        nucleo = g.selectAll("g.nucleotide").data(seq);
         // Enter.
         // Enable random translation of the new mRNAs.
         shift(randomEnter);
@@ -108,55 +114,33 @@ define(function (require) {
           "transform": "scale(1, " + (direction  === 1 ? 1 : -1) + ")",
         });
 
-        nucleoEnter.append("path").attr({
-          "class": "bonds",
-          "d": function (d) {
-            if (d === "C" || d === "G") {
-              return "M" + m2px(SCALE * 20) + " " + yStart + " L " + m2px(SCALE * 20) + " " + yEnd +
-                     "M" + m2px(SCALE * 26) + " " + yStart + " L " + m2px(SCALE * 26) + " " + yEnd +
-                     "M" + m2px(SCALE * 32) + " " + yStart + " L " + m2px(SCALE * 32) + " " + yEnd;
-            } else {
-              return "M" + m2px(SCALE * 22) + " " + yStart + " L " + m2px(SCALE * 22) + " " + yEnd +
-                     "M" + m2px(SCALE * 30) + " " + yStart + " L " + m2px(SCALE * 30) + " " + yEnd;
-            }
-          }
-        }).style({
-          "stroke-width": m2px(0.01),
-          "stroke": "#fff"
-        });
+        nucleoEnter.append("path").attr("class", "bonds")
+          .style({
+            "stroke-width": m2px(0.01),
+            "stroke": "#fff"
+          });
         nucleoShape = nucleoEnter.append("g").attr("class", "nucleo-shape");
         if (glow) {
           nucleoShape.append("image").attr({
             "class": "glow",
-            "x": function (d) { return m2px(W.BACKB) / 2 - m2px(W[d + "_GLOW"]) / 2; },
             "y": m2px(yOffset - 0.17 * W.G_GLOW),  // move glow closer to the backbone
-            "width": function (d) { return m2px(W[d + "_GLOW"]); },
-            "height": function (d) { return m2px(H[d + "_GLOW"]); },
-            "preserveAspectRatio": "none",
-            "xlink:href": function (d) { return "resources/dna/NucleotideGlow_" + d + ".svg"; }
+            "preserveAspectRatio": "none"
           });
         }
         nucleoSVG = nucleoShape.append("svg").attr({
-          "class": "nucleo-shape",
           "overflow": "visible", // glow on hover shouldn't be truncated
-          "viewBox": function (d) { return "0 0 " + (W[d] / SCALE) + " " + (H[d] / SCALE); },
-          "x": function (d) { return m2px(W.BACKB) / 2 - m2px(W[d]) / 2; },
           "y": m2px(yOffset),
-          "width": function (d) { return m2px(W[d]); },
-          "height": function (d) { return m2px(H[d]); },
           "preserveAspectRatio": "none"
         });
         nucleoSVG.append("path").attr({
           "class": "outline",
           "fill-rule": "evenodd",
-          "clip-rule": "evenodd",
-          "d": function (d) { return nucleotidePaths.outline[d]; }
+          "clip-rule": "evenodd"
         });
         nucleoSVG.append("path").attr({
           "class": "interior",
           "fill-rule": "evenodd",
-          "clip-rule": "evenodd",
-          "d": function (d) { return nucleotidePaths.interior[d]; }
+          "clip-rule": "evenodd"
         });
         nucleoSVG.append("path").attr({
           "class": "letter",
@@ -175,17 +159,42 @@ define(function (require) {
           });
         }
 
-        // Update. Note that we update things related only to direction and
-        // stop-codon class, as for now this is the only use case for update
-        // operation. In theory we could update also other properties (e.g.
-        // assuming that type of nucletoide can change), but this is not used
-        // now, so don't do it (hopefully, we gain some performance).
-        nucleo.select("svg").attr("class", function (d, i) {
-          var className = "type-" + d;
-          if (stopCodonsHash && stopCodonsHash[i]) {
-            className += " stop-codon";
+        // Update.
+        nucleo.select(".bonds").attr("d", function (d) {
+          if (d.type === "C" || d.type === "G") {
+            return "M" + m2px(SCALE * 20) + " " + yStart + " L " + m2px(SCALE * 20) + " " + yEnd +
+                   "M" + m2px(SCALE * 26) + " " + yStart + " L " + m2px(SCALE * 26) + " " + yEnd +
+                   "M" + m2px(SCALE * 32) + " " + yStart + " L " + m2px(SCALE * 32) + " " + yEnd;
+          } else {
+            return "M" + m2px(SCALE * 22) + " " + yStart + " L " + m2px(SCALE * 22) + " " + yEnd +
+                   "M" + m2px(SCALE * 30) + " " + yStart + " L " + m2px(SCALE * 30) + " " + yEnd;
           }
-          return className;
+        });
+        nucleo.select("g.nucleo-shape image.glow").attr({
+          "x": function (d) { return m2px(W.BACKB) / 2 - m2px(W[d.type + "_GLOW"]) / 2; },
+          "width": function (d) { return m2px(W[d.type + "_GLOW"]); },
+          "height": function (d) { return m2px(H[d.type + "_GLOW"]); },
+          "xlink:href": function (d) { return "resources/dna/NucleotideGlow_" + d.type + ".svg"; }
+        });
+        nucleoSVGUpdate = nucleo.select("g.nucleo-shape svg");
+        nucleoSVGUpdate.attr({
+          "class": function (d, i) {
+            var className = "type-" + d.type;
+            if (stopCodonsHash && stopCodonsHash[i]) {
+              className += " stop-codon";
+            }
+            return className;
+          },
+          "viewBox": function (d) { return "0 0 " + (W[d.type] / SCALE) + " " + (H[d.type] / SCALE); },
+          "x": function (d) { return m2px(W.BACKB) / 2 - m2px(W[d.type]) / 2; },
+          "width": function (d) { return m2px(W[d.type]); },
+          "height": function (d) { return m2px(H[d.type]); }
+        });
+        nucleoSVGUpdate.select("path.interior").attr("d", function (d) {
+          return nucleotidePaths.interior[d.type];
+        });
+        nucleoSVGUpdate.select("path.outline").attr("d", function (d) {
+          return nucleotidePaths.outline[d.type];
         });
 
         shift(false);
@@ -208,14 +217,14 @@ define(function (require) {
           // Letters. We can use transition as d3.interpolator creates some
           // results which can't be parsed.
           nucleoTrans.each("start", function () {
-            nucleo.selectAll("path.letter")
-              .attr("d", function (d) { return nucleotidePaths.letter[d][direction]; });
+            nucleo.select("path.letter")
+              .attr("d", function (d) { return nucleotidePaths.letter[d.type][direction]; });
           });
         } else {
           // The same operations, but without using transition.
           nucleo.select("g.scale").attr("transform", "scale(1, " + (direction  === 1 ? 1 : -1) + ")");
-          nucleo.selectAll("path.letter")
-            .attr("d", function (d) { return nucleotidePaths.letter[d][direction]; });
+          nucleo.select("path.letter")
+            .attr("d", function (d) { return nucleotidePaths.letter[d.type][direction]; });
         }
 
         // Exit.
