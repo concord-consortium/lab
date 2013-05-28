@@ -261,9 +261,8 @@ define(function (require) {
         },
 
         DNAUpdated = function () {
-          // Reset to the initial state. All genetic properties will be
-          // recalculated and the "change" event will be dispatched.
-          model.set("geneticEngineState", "dna");
+          updateGeneticProperties();
+          dispatch.change();
         };
 
     // Public API.
@@ -293,6 +292,16 @@ define(function (require) {
 
       on: function(type, listener) {
         dispatch.on(type, listener);
+      },
+
+      mutate: function(nucleotideIdx, newType, DNAComplement) {
+        var DNA = model.get("DNA");
+        if (nucleotideIdx < DNA.length) {
+          DNA = DNA.substr(0, nucleotideIdx) +
+                (DNAComplement ? complementarySequence(newType) : newType) +
+                DNA.substr(nucleotideIdx + 1);
+          model.set("DNA", DNA);
+        }
       },
 
       /**

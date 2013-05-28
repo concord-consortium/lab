@@ -65,6 +65,7 @@ describe "GeneticEngine", ->
         model.get("mRNA").should.eql "AU" # so it's added to mRNA.
 
       it "should transcribe mRNA from DNA and dispatch appropriate events", ->
+        model.set "geneticEngineState", "dna"
         model.set {DNA: "ATGC"}
         geneticEngine.transitionTo("transcription-end")
         mock.transitionListener.callCount.should.eql 5 # separation + 4 x transcription
