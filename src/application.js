@@ -536,8 +536,8 @@ AUTHORING = false;
     // construct Java MW link for running Interactive via jnlp
     // uses generated resource list: /imports/legacy-mw-content/model-list.js
     // also updates link to original MML in Model Editor
-    mmlPath = jsonModelPath.replace("/imports/legacy-mw-content/converted/", "/imports/legacy-mw-content/").replace(".json", ".mml");
-    contentItems = getObjects(modelList, "mml", mmlPath.replace("/imports/legacy-mw-content/", ""));
+    mmlPath = jsonModelPath.replace("imports/legacy-mw-content/converted/", "imports/legacy-mw-content/").replace(".json", ".mml");
+    contentItems = getObjects(modelList, "mml", mmlPath.replace("imports/legacy-mw-content/", ""));
     if (contentItems.length > 0) {
       javaMWhref = "/jnlp/jnlps/org/concord/modeler/mw.jnlp?version-id=1.0&jnlp-args=remote," +
                       origin + Lab.config.actualRoot + "/imports/legacy-mw-content/" + contentItems[0].cml;
