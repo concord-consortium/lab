@@ -94,9 +94,9 @@ PROJECT_LIST = {
                         :also_unsigned => true },
 
   'NetLogoLite'         => { :build_type => :download,
-                        :url => 'http://ccl.northwestern.edu/netlogo/5.0.3/NetLogoLite.jar',
+                        :url => 'http://ccl.northwestern.edu/netlogo/5.0.4/NetLogoLite.jar',
                         :path => 'org/nlogo',
-                        :version => '5.0.3',
+                        :version => '5.0.4',
                         :sign => false },
 
 }
