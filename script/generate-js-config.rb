@@ -10,16 +10,14 @@ JS_CONFIG_PATH = File.join(SRC_LAB_PATH, 'lab.config.js')
 # info, and deducing the hostname from the URL at JS runtime is unreliable in the face of proxies,
 # etc.)
 
-SERVER_SETTINGS_PATH = File.join(PROJECT_ROOT, 'server', 'config', 'settings.yml')
-if File.exist?(SERVER_SETTINGS_PATH)
-  SERVER_SETTINGS = YAML.load_file(SERVER_SETTINGS_PATH)
+SERVER_SETTINGS = CONFIG[:server]
+if SERVER_SETTINGS
   hostname = SERVER_SETTINGS['production'][:hostname]
   CONFIG[:jsconfig][:hostName] = hostname
 
   target = CONFIG[:deploy][:targets].find { |t| t[:url] == hostname }
   CONFIG[:jsconfig][:dataGamesProxyPrefix] = target[:dataGamesProxyPrefix] unless target == nil
 end
-
 
 # Provide default values for some values.
 CONFIG[:jsconfig] = {} if CONFIG[:jsconfig] == nil

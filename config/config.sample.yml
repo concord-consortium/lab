@@ -1,4 +1,9 @@
 ---
+:server:
+  development:
+    :hostname: localhost:9292
+  production:
+    :hostname: lab.concord.org
 :jsconfig:
   :sharing: true
   :logging: true
