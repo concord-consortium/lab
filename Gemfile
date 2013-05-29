@@ -42,7 +42,7 @@ group :development do
   gem 'guard-markdown',     "~> 0.2.0"
   # FS Notification libraries for guard (non-polling)
   gem 'rb-fsevent', "~> 0.9.3", :require => darwin_only('rb-fsevent')
-  gem 'rb-inotify', "~> 0.8.8", :require => linux_only('rb-inotify')
+  gem 'rb-inotify', "~> 0.9.0", :require => linux_only('rb-inotify')
   gem 'wdm',        "~> 0.1.0", :require => windows_only('wdm')
   # Growl Notification Transport Protocol (used by guard)
   gem 'ruby_gntp',  "~> 0.3.4"
