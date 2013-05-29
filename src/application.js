@@ -1427,7 +1427,7 @@ AUTHORING = false;
     // private functions
     function renderModelDatatable(reset) {
       var i,
-          nodes = model.get_atoms(),
+          nodes = model.getAtoms(),
           atoms = [],
           $thead =  $('#model-datatable-results>thead'),
           $tbody =  $('#model-datatable-results>tbody'),
@@ -1447,7 +1447,7 @@ AUTHORING = false;
                         e_formatter, e_formatter, e_formatter,
                         charge_formatter, f2_formatter, f2_formatter, i_formatter, i_formatter, i_formatter];
 
-      atoms.length = nodes.x.length;
+      atoms.length = nodes.length;
       reset = reset || false;
 
       function add_row($el, kind, rownum) {
@@ -1479,7 +1479,7 @@ AUTHORING = false;
           $cells[0].textContent = index;
           for(i = 0; i < column_titles.length; i++) {
             column = column_titles[i];
-            value = nodes[column][index];
+            value = nodes[index][column];
             textValue = formatters[i](value);
             $cells[i+1].textContent = textValue;
           }
@@ -1487,7 +1487,7 @@ AUTHORING = false;
           add_data($row, index);
           for(i = 0; i < column_titles.length; i++) {
             column = column_titles[i];
-            value = nodes[column][index];
+            value = nodes[index][column];
             textValue = formatters[i](value);
             add_data($row, textValue);
           }
