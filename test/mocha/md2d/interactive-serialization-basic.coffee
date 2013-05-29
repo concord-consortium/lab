@@ -45,7 +45,7 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
             interactiveJSON = fs.readFileSync(inputFile).toString()
             interactive = JSON.parse interactiveJSON
 
-            modelJSON = fs.readFileSync("./server/public/#{interactive.models[0].url}").toString()
+            modelJSON = fs.readFileSync("./public/#{interactive.models[0].url}").toString()
             model = JSON.parse modelJSON
 
             helpers.withModel model, ->

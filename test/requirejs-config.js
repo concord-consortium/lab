@@ -5,8 +5,8 @@ exports.labConfig = {
 
   paths: {
     // Define RequireJS plugin for CoffeScript loading.
-    'cs': '../vendor/require-cs/cs',
+    'cs': '../../vendor/require-cs/cs',
       // Plugin for loading plain text files (GLSL sources).
-    'text': '../vendor/text/text'
+    'text': '../../vendor/text/text'
   }
 };
