@@ -396,8 +396,8 @@ public/favicon.ico:
 
 vendor/jquery/dist/jquery.min.js: vendor/jquery
 	cd vendor/jquery; npm install; \
-	 npm rm grunt-compare-size; npm install grunt-compare-size@0.2.0; \
-	 ./node_modules/grunt/bin/grunt
+	 npm install grunt-cli; \
+	 ./node_modules/grunt-cli/bin/grunt
 
 vendor/jquery:
 	git submodule update --init --recursive
