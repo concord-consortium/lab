@@ -18,3 +18,4 @@ npm-debug.log
 src/experiments/inquiry-space-importer/reference/Importer.js
 config/littlechef
 tarballs
+/tmp/*

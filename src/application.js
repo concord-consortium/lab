@@ -766,7 +766,7 @@ AUTHORING = false;
 
         // redirect to the new interactive
         if (httpMethod == 'POST') {
-          location.hash = "#" + interactiveRemote.path;
+          location.hash = "#" + "webapp/interactives/" +interactiveRemote.path;
           return;
         }
 
@@ -782,7 +782,7 @@ AUTHORING = false;
           document.title = interactive.title;
         }
 
-        document.location.hash = interactiveRemote.path;
+        location.hash = "#" + "webapp/interactives/" +interactiveRemote.path;
       },
       error: function(jqXHR, textStatus, errorThrown) {
         var updateErrors = JSON.parse(jqXHR.responseText),
