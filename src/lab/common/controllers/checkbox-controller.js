@@ -25,10 +25,10 @@ define(function () {
 
     function setCheckbox(value) {
       if (value) {
-        $checkbox.attr('checked', 'checked');
+        $checkbox.prop('checked', true);
         $fakeCheckable.addClass('checked');
       } else {
-        $checkbox.removeAttr('checked');
+        $checkbox.prop('checked', false);
         $fakeCheckable.removeClass('checked');
       }
     }
@@ -36,7 +36,7 @@ define(function () {
     function customClickEvent (e) {
       e.preventDefault();
 
-      if ($checkbox.attr('checked') !== undefined) {
+      if ($checkbox.prop('checked')) {
         setCheckbox(false);
       } else {
         setCheckbox(true);
