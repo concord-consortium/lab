@@ -168,6 +168,7 @@ bin:
 	bundle install --binstubs
 
 public: \
+	copy-resources-to-public \
 	public/lab \
 	public/lab-amd \
 	public/vendor \
@@ -177,20 +178,21 @@ public: \
 	public/experiments \
 	public/imports \
 	public/jnlp
-	rsync -aq --filter '+ */' --exclude='*.haml' --exclude='*.sass' --exclude='*.scss' --exclude='*.yaml' --exclude='*.coffee' --exclude='*.rb' src/ public/
+
+.PHONY: copy-resources-to-public
+copy-resources-to-public:
+	# copy everything (including symbolic links) except files that are used to generate
+  # resources from src/ to public/
+	rsync -aq --exclude='helpers/' --exclude='layouts/' --exclude='modules/' --exclude='sass/' --exclude='vendor/' --filter '+ */' --exclude='*.haml' --exclude='*.sass' --exclude='*.scss' --exclude='*.yaml' --exclude='*.coffee' --exclude='*.rb' src/ public/
 
 public/examples:
 	mkdir -p public/examples
-	# copy everything (including symbolic links) except files that are used to generate
-  # resources from src/examples/ to public/examples/
-	rsync -aq --filter '+ */' --exclude='*.haml' --exclude='*.sass' --exclude='*.scss' --exclude='*.yaml' --exclude='*.coffee' src/examples/ public/examples/
-	$(INTERACTIVES_JSON)
 
 public/doc: \
 	public/doc/interactives \
 	public/doc/models
 	# copy HTML/CSS, directories, javascript, json, and image resources from src/doc/
-	rsync -aq --filter '+ */' --include='*.html' --include='*.css' --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg'  --filter 'hide,! */' src/doc/ public/doc/
+	# rsync -aq --filter '+ */' --include='*.html' --include='*.css' --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg'  --filter 'hide,! */' src/doc/ public/doc/
 
 public/doc/interactives:
 	mkdir -p public/doc/interactives
