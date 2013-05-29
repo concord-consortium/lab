@@ -9,7 +9,7 @@
     "molecules and the volume of a gas?",
     "",
     "----",
-    "*Note: although the atoms in this model are in a flat plane, volume is calculated using 0.1 nm as the depth of the container.*"
+    "*Note: Although the atoms in this model are in a flat plane, volume is calculated using 0.1 nm as the depth of the container.*"
   ],
   "models": [
     {
