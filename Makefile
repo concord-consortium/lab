@@ -177,6 +177,7 @@ public: \
 	public/experiments \
 	public/imports \
 	public/jnlp
+	rsync -aq --filter '+ */' --exclude='*.haml' --exclude='*.sass' --exclude='*.scss' --exclude='*.yaml' --exclude='*.coffee' --exclude='*.rb' src/ public/
 
 public/examples:
 	mkdir -p public/examples
