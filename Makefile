@@ -103,6 +103,9 @@ src: \
 	$(SCSS_EXAMPLE_FILES) \
 	$(COFFEESCRIPT_EXAMPLE_FILES) \
 	$(INTERACTIVE_FILES) \
+	public/interactives.html \
+	public/embeddable.html \
+	public/browser-check.html \
 	public/interactives.json \
 	public/index.css \
 	public/grapher.css \

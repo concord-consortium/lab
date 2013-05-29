@@ -50,7 +50,7 @@ else
   FONTFACE = 'Open Sans'
 end
 
-FONTFACE_LINK = case @fontface
+FONTFACE_LINK = case FONTFACE
 when "Lato"
   <<-HEREDOC
 <link href='http://fonts.googleapis.com/css?family=Lato:300italic,700italic,300,400,400italic,700' rel='stylesheet' type='text/css'>
