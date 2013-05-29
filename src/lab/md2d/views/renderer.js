@@ -134,10 +134,6 @@ define(function (require) {
         // pre-calculations
         halfPi = Math.PI/2,
 
-        // this is a hack put in place to temporarily deal with an image-size
-        // caching bug in Chrome Canary
-        needCachebusting = browser.browser == "Chrome" && browser.version >= "26",
-
         // this is a hack put in place to temporarily deal with a IE 10 bug which
         // does not update line markers when svg lines are moved
         // see https://connect.microsoft.com/IE/feedback/details/781964/
@@ -776,8 +772,7 @@ define(function (require) {
 
       for (i = 0; i < imageProp.length; i++) {
         img[i] = new Image();
-        // temp: add cachebusting string if we are in Chrome 26 or above
-        img[i].src = getImagePath(imageProp[i]) + (needCachebusting ? "?"+Math.random() : "");
+        img[i].src = getImagePath(imageProp[i]);
         img[i].onload = (function(i) {
           return function() {
             imglayer = imageProp[i].imageLayer;
