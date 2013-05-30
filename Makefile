@@ -191,8 +191,6 @@ public/examples:
 public/doc: \
 	public/doc/interactives \
 	public/doc/models
-	# copy HTML/CSS, directories, javascript, json, and image resources from src/doc/
-	# rsync -aq --filter '+ */' --include='*.html' --include='*.css' --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg'  --filter 'hide,! */' src/doc/ public/doc/
 
 public/doc/interactives:
 	mkdir -p public/doc/interactives
@@ -207,12 +205,10 @@ public/lab-amd: $(LAB_SRC_FILES)
 .PHONY: public/experiments
 public/experiments:
 	mkdir -p public/experiments
-	rsync -aq src/experiments public/
 
 .PHONY: public/jnlp
 public/jnlp:
 	mkdir -p public/jnlp
-	rsync -aq src/jnlp public/
 
 # MML->JSON conversion uses MD2D models for validation and default values handling
 # so it depends on appropriate sources.
@@ -525,7 +521,6 @@ public/%.html: src/%.html.haml
 	haml -r ./script/setup.rb $< $@
 
 public/%.html: src/%.html
-	mkdir -p `dirname $@`
 	cp $< $@
 
 public/%.css: src/%.css
