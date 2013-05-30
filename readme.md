@@ -41,6 +41,11 @@ The Lab framework supports embedding multiple model-types into the Lab Interacti
 Each of the examples below also has an **embeddable** form that fluidly scales to the browser
 window it is rendered in and is designed to be easily embedded using an iframe.
 
+_Note: these demo links do not resolve properly at
+[github.com/concord-consortium/lab](https://github.com/concord-consortium/lab).
+A live version of the readme where these links work is always available here:
+[lab.dev.concord.org/readme.html](http://lab.dev.concord.org/readme.html)._
+
 ### MD2D model-type: 2D molecular modeling
 
 #### MD2D: Basic 2D molecular modeling
