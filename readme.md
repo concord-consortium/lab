@@ -880,29 +880,12 @@ Useful [travis-ci](http://travis-ci.org) resources
 
 ## Repository structure
 
-### Summary of Directories in `src/`
-
-#### `src/lab`
-
-The **`src/lab`** directory includes JavaScript source code for the Lab JavaScript modules.
-During the build process individual files are copied into modules which are placed in
-the **`public/lab`** directory.
-
-#### `src/examples/`, `src/doc/`, and `src/experiments/`
-
-The **`src/examples/`**, **`src/doc/`**, and **`src/experiments/`** directories contain additional
-resources for generating the html, css, and image resources for the matching target
-folders in **`public`**.
-
-**Note:** remember to make changes you want saved in the **`src/examples/`**, **`src/doc/`**,
-and **`src/experiments/`** and not in the target directories of the same names in
-**`public`**. Change made in **`public`** will be overwritten during the next
-build process.
-
-#### `src/vendor`
+### vendor/
 
 [Third-party JavaScript runtime dependencies](#javascript-library-runtime-dependencies)
-for Lab are located in the **`src/vendor`** directory and are installed as git submodules
+for Lab are located in the
+**[`vendor/`](https://github.com/concord-consortium/lab/tree/master/vendor)**
+directory and are installed as git submodules
 the first time `make` is run in a new checkout of the source code repository.
 
 Only the necessary JavaScript library files and other resources needed for runtime operation along
@@ -910,68 +893,41 @@ with the associated README and LICENSE files are copied to **`public/vendor`** d
 the build process.
 
 All of the files copied to **`public/vendor`** are licensed and distributed under
-one or more of the following licenses: [Simplified BSD](http://www.opensource.org/licenses/BSD-2-Clause),
+one or more of the following licenses:
+[Simplified BSD](http://www.opensource.org/licenses/BSD-2-Clause),
 [The BSD 3-Clause](http://www.opensource.org/licenses/BSD-3-Clause),
 [MIT](http://www.opensource.org/licenses/MIT), or
 [Apache 2.0](http://www.opensource.org/licenses/Apache-2.0).
 
-#### `src/resources`
+### src/
 
-The **`src/resources`** directory contains image resources and are copied directly to
-**`public/resources`**.
+The **[src/](https://github.com/concord-consortium/lab/tree/master/src)** directory
+contains the main source code for the Lab framework, examples, and documentation. This
+code is either copied directly or used to generate resources  that are copied.
 
-#### `src/sass`
+#### src/lab/
 
-The **`src/sass`** directory contains Sass templates and the Bourbon Sass library are are used
-during the build process to generate CSS resources.
+The **[src/lab\](https://github.com/concord-consortium/lab/tree/master/src/lab)**
+directory includes JavaScript source code for the Lab JavaScript modules.
+During the build process individual files are copied into modules which are placed in
+the **`public/lab`** directory.
 
-#### `src/helpers`
+##### src/lab/md2d
 
-The **`src/helpers`** directory contains CoffeeScript and JavaScript modules as well as Ruby programs
-only used as part of the testing and build process and are not copied to **`public/resources`**.
-
-#### `src/jnlp`
-
-The **`src/jnlp`** directory currently contains a
-[template Java web Start JNLP for Molecular Workbench](https://github.com/concord-consortium/lab/blob/master/src/jnlp/jnlps/org/concord/modeler/mw__V1.0.jnlp)
-and (DetectionApplet.class](https://github.com/concord-consortium/lab/blob/master/src/jnlp/org/concord/sensor/applet/DetectionApplet.class)
-a tiny Java class for quickly detecting whether Java applets can be run.
-
-The source code for DetectionApplet is in another repository located here:
-[DetectionApplet.java](https://github.com/concord-consortium/sensor-applets/tree/master/src/main/java/org/concord/sensor/applet/DetectionApplet.java)
-
-
-### Lab Modules: `src/lab`
-
-The source code for the Lab modules is all contained in
-**[`src/lab`](https://github.com/concord-consortium/lab/tree/master/src/lab)**:
-
-- [`src/lab/md2d`](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d)
-- [`src/lab/energy2d`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d)
-- [`src/lab/grapher`](https://github.com/concord-consortium/lab/tree/master/src/lab/grapher)
-- [`src/lab/common`](https://github.com/concord-consortium/lab/tree/master/src/lab/common)
-
-The list above presents independent modules built as separate sub-libraries (`md2d`, `energy2d`, `grapher`)
-and one directory which contains common utilities and modules (`common`).
-
-### Lab Modeling Engines: `md2d` and `energy2d`
-
-#### 2D Molecular Dynamics: [`md2d`](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d)
-
-[`md2d`](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d) module contains a basic *Next Gen Molecular Workbench* application. It built over MVC design
-pattern and consist of following units:
+The [md2d](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d) model-type contains a basic
+**Next Generation Molecular Workbench* application. It built using a hybrid of a MVC design pattern
+with a dataflow architecture necessary for performance and consist of following units:
 
 - Models - [`src/lab/md2d/models`](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d/models)
 - Views - [`src/lab/md2d/views`](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d/views)
 - Controllers - [`src/lab/md2d/controllers`](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d/controllers)
 
 The source code of the core molecular dynamics engine is currently located in the
-[`src/lab/md2d/models/engine`](https://github.com/concord-
-consortium/lab/tree/master/src/lab/md2d/models/engine) directory, which is organized as a set of
-related RequireJS modules. These modules are compatible both with the Web browser environment and
-Node.
+[src/lab/md2d/models/engine](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d/models/engine)
+directory, which is organized as a set of related RequireJS modules. These modules are compatible
+both with the Web browser environment and Node.
 
-##### MD2D Headless Mode
+###### MD2D Headless Mode
 
 ###### [`node-bin/run-md2d`](https://github.com/concord-consortium/lab/blob/master/node-bin/run-md2d)
 
@@ -1039,7 +995,6 @@ There is a chance that existing RequireJS config won't be sufficient (e.g. if yo
 
   [`test/requirejs-config.js`](https://github.com/concord-consortium/lab/blob/master/test/requirejs-config.js)
 
-
 Hashbang scripts for starting these executables (i.e., files which start with the line
 `#!/usr/bin/env node` and which have the execute bit set) should be placed in the directory
 [`node-bin`](https://github.com/concord-consortium/lab/tree/master/node-bin). Lab's
@@ -1049,7 +1004,7 @@ location of the executable scripts which `npm` should make available whenever La
 another project as a Node module. (For developer convenience, `bin/` is being reserved for Ruby
 executables made available via Bundler.)
 
-##### MD2D simulation stepping
+###### MD2D simulation stepping
 
 Main parameters which define speed and accuracy of simulation in MD2D are:
 
@@ -1081,12 +1036,38 @@ First one will be more accurate and two times slower (more or less) than second 
 
 **modelSampleRate** defines how often we should execute "tick". Of course, in most cases we should call it as often as it's possible and that's the default behavior (with upper limit of 60 times per second to avoid running simple models too fast).
 
-You can test how these parameters work using [this interactive](http://lab.dev.concord.orginteractives.html#interactives/basic-examples/sample-rate-and-refresh-rate.json).
+You can test how these parameters work using the
+[Model integration time step, period, and sample rate](interactives.html#interactives/basic-examples/sample-rate-and-refresh-rate.json)
+interactive.
 
-#### 2D Thermal Energy: [`energy2d`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d)
+##### src/lab/solar-system/
 
-[`energy2d`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d) module contains
-a basic *Energy2D* application. It is a direct port of [Java Energy2D](http://energy.concord.org/energy2d/).
+- [src/lab/solar-system](https://github.com/concord-consortium/lab/tree/master/src/lab/solar-system)
+
+##### src/lab/signal-generator/
+
+- [src/lab/signal-generator](https://github.com/concord-consortium/lab/tree/master/src/lab/signal-generator)
+
+##### src/lab/sensor/
+
+- [src/lab/sensor](https://github.com/concord-consortium/lab/tree/master/src/lab/sensor)
+
+##### src/lab/grapher/
+
+- [src/lab/grapher](https://github.com/concord-consortium/lab/tree/master/src/lab/grapher)
+
+##### src/lab/common/
+
+- [src/lab/common](https://github.com/concord-consortium/lab/tree/master/src/lab/common)
+
+##### src/lab/import-export/
+
+- [src/lab/import-export](https://github.com/concord-consortium/lab/tree/master/src/lab/import-export)
+
+##### src/lab/energy2d/
+
+The **[src/lab/energy2d](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d)** model-type contains
+a basic **Energy2D* application*. It is a direct port of [Java Energy2D](http://energy.concord.org/energy2d/).
 Energy2D is also built over MVC design pattern and consist of following units:
 
 - Models - [`src/lab/energy2d/models`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/models)
@@ -1116,6 +1097,46 @@ implementation (WebGL-based) of heat and fluid solvers.
 Necessary GLSL (GL Shading Language) sources are stored in separate files. They are loaded using
 RequireJS *text* plug-in which just allows to load plain text files. Finally, they are inlined in
 the resulting library due to the RequireJS optimization process.
+
+#### src/examples/, src/doc/, and src/experiments/
+
+The
+**[src/examples/](https://github.com/concord-consortium/lab/tree/master/src/examples)**,
+**[src/doc](https://github.com/concord-consortium/lab/tree/master/src/doc)** and,
+**[src/exoperments](https://github.com/concord-consortium/lab/tree/master/src/experiments)**
+directories contain additional resources for generating the html, css, and image resources
+for the matching target folders in **`public`**.
+
+**Note:** remember to make changes you want saved in the **`src/examples/`**, **`src/doc/`**,
+and **`src/experiments/`** and not in the target directories of the same names in
+**`public`**. Change made in **`public`** will be overwritten during the next
+build process.
+
+#### src/resources
+
+The **[src/resources/](https://github.com/concord-consortium/lab/tree/master/src/resources)** directory contains image resources and are copied directly to
+**`public/resources`**.
+
+#### src/jnlp
+
+The **[src/jnlp/](https://github.com/concord-consortium/lab/tree/master/src/jnlp)** directory currently contains a
+[template Java web Start JNLP for Molecular Workbench](https://github.com/concord-consortium/lab/blob/master/src/jnlp/jnlps/org/concord/modeler/mw__V1.0.jnlp)
+and (DetectionApplet.class](https://github.com/concord-consortium/lab/blob/master/src/jnlp/org/concord/sensor/applet/DetectionApplet.class)
+a tiny Java class for quickly detecting whether Java applets can be run.
+
+The source code for DetectionApplet is in another repository located here:
+[DetectionApplet.java](https://github.com/concord-consortium/sensor-applets/tree/master/src/main/java/org/concord/sensor/applet/DetectionApplet.java)
+
+#### src/sass
+
+The **[src/sass/](https://github.com/concord-consortium/lab/tree/master/src/sass)** directory contains Sass templates and the Bourbon Sass library are are used
+during the build process to generate CSS resources.
+
+#### src/helpers
+
+The **[src/helpers/](https://github.com/concord-consortium/lab/tree/master/src/helpers)** directory contains
+CoffeeScript and JavaScript modules as well as Ruby programs only used as part of the testing and
+build process and are not copied to **`public/resources`**.
 
 ### JavaScript Dependency Management and Build Process - RequreJS
 
