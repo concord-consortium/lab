@@ -28,7 +28,7 @@ git fetch
 git reset --hard origin/gh-pages
 cd ..; make clean; make; cd public
 git add .
-git commit -am "gh-pages generated from `git --git-dir ../../.git log -1 --format=%H`"
+git commit -am "gh-pages generated from `git --git-dir ../.git log -1 --format=%H`"
 git push origin gh-pages
 cd ..
 cat <<heredoc
