@@ -524,7 +524,6 @@ public/%.html: src/%.html
 	cp $< $@
 
 public/%.css: src/%.css
-	mkdir -p `dirname $@`
 	cp $< $@
 
 public/index.css:
@@ -572,11 +571,9 @@ public/%.html: %.md
 	$(MARKDOWN_COMPILER) $< --toc-levels 2..6 --template src/layouts/$*.html.erb > $@
 
 public/interactives/%.json: src/interactives/%.json
-	mkdir -p `dirname $@`
 	@cp $< $@
 
 public/models/%.json: src/models/%.json
-	mkdir -p `dirname $@`
 	@cp $< $@
 
 public/interactives.json: $(INTERACTIVE_FILES)
