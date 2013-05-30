@@ -1611,7 +1611,7 @@ define(function (require) {
           left,
           b = benchmark.what_browser();   // we need to recalc this for FF, for some reason
 
-      if (b.browser === "Firefox" && b.version >= "18") {
+      if (b.browser === "Firefox" && b.version >= "18" && b.version < "23") {
         $firefoxWarningPane = $("#firefox-warning-pane");
         pos = modelView.pos();
         top  = pos.bottom - $firefoxWarningPane.height();
