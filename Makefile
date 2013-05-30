@@ -86,11 +86,6 @@ everything:
 	$(MAKE) all
 	$(MAKE) jnlp-all
 
-# .PHONY: public
-# public:
-# 	bash -O extglob -c 'rm -rf public/!(.git|jnlp|vendor)'
-# 	$(MAKE) all
-
 .PHONY: src
 src: \
 	$(MARKDOWN_EXAMPLE_FILES) \
@@ -111,8 +106,7 @@ src: \
 	public/grapher.css \
 	public/interactives.css \
 	public/embeddable.css \
-	public/application.js \
-	public/lab-amd
+	public/application.js
 
 .PHONY: jnlp-all
 jnlp-all: clean-jnlp \
@@ -170,7 +164,6 @@ bin:
 public: \
 	copy-resources-to-public \
 	public/lab \
-	public/lab-amd \
 	public/vendor \
 	public/resources \
 	public/examples \
@@ -197,10 +190,6 @@ public/doc/interactives:
 
 public/doc/models:
 	mkdir -p public/doc/models
-
-public/lab-amd: $(LAB_SRC_FILES)
-	mkdir -p public/lab-amd
-	rsync -aq src/lab/* public/lab-amd
 
 .PHONY: public/experiments
 public/experiments:
