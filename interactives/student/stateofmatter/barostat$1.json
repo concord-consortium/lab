@@ -1,0 +1,21 @@
+{
+  "title": "barostat$1",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "barostat$1",
+      "url": "imports/legacy-mw-content/converted/student/stateofmatter/barostat$1.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

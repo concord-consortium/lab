@@ -1,0 +1,21 @@
+{
+  "title": "dropAction$1",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "dropAction$1",
+      "url": "imports/legacy-mw-content/converted/tutorial/dropAction$1.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

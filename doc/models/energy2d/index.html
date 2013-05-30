@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html;charset=utf-8' http-equiv='Content-Type'>
+    <title>Energy2D Using JavaScript and WebGL</title>
+    <script src='../../../vendor/modernizr/modernizr.js' type='text/javascript'></script>
+    <script src='../../../vendor/d3/d3.js' type='text/javascript'></script>
+    <script src='../../../vendor/jquery/jquery.min.js' type='text/javascript'></script>
+    <script type='text/javascript'>
+      $(document).ready(function() { if (!Modernizr.svg) { $('body').prepend('<div class="warning">Sorry, but you\'ll need to upgrade your browser to use the models and visualizations. <a href="browser-upgrade.html">Learn more</a> &raquo;</div>'); } });
+    </script>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&amp;subset=latin,greek,latin-ext' rel='stylesheet' type='text/css'>
+    <link href='../../../index.css' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <div id='header'>
+      <a href='http://www.concord.org/' id='logo'>
+        <img src='../../../resources/layout/cc-logo.png'>
+      </a>
+      <h1><a href='../../../index.html'>Lab</a>:
+      <a href=''>Energy2D Using JavaScript and WebGL</a></h1>
+    </div>
+    <div id='under-header-links'>
+      <a href='../../../readme.html'>Read Me</a>
+      &nbsp;&nbsp;
+      <a href='../../../license.html'>License</a>
+      &nbsp;&nbsp;
+      <a href='https://github.com/concord-consortium/lab'>Github Repository</a>
+      &nbsp;&nbsp;
+      <a href='https://github.com/concord-consortium/lab/issues'>Github Issues</a>
+      &nbsp;&nbsp;
+      <a href='https://www.pivotaltracker.com/projects/442903'>Pivotal Tracker Project</a>
+      &nbsp;&nbsp;
+      <a href='https://groups.google.com/group/lab-models'>Developer Mail List</a>
+      &nbsp;&nbsp;
+      <a href='../../../experiments/navigator/index.html'>Browser Check</a>
+    </div>
+    <div class='column1'>
+      <div class='item-list'>
+        <h2>
+          Energy2D
+        </h2>
+        <ul>
+          <li>
+            <a href='../../../examples/energy2d-model/energy2d-model.html'>JavaScript Energy2D</a>
+          </li>
+          <li>
+            <a href='../../../examples/energy2d-gpu-model/energy2d-model.html'>JavaScript Energy2D with WebGL support</a>
+          </li>
+          <li>
+            <a href='http://energy.concord.org/energy2d'>Java Energy2D</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class='column2'>
+      <div class='item-list'>
+        <h2>
+          Status
+        </h2>
+        <p>
+          Piotr Janik, a Google Summer of Code student working with us at the Concord Consortium
+          in the summer of 2012 created a
+          <a href='../../../examples/energy2d-model/energy2d-model.html'>JavaScript implementation</a>
+          of the Java application
+          <a href='http://energy.concord.org/energy2d'>Energy2D</a>
+          originally created by Charles Xie at the Concord Consortium.
+        </p>
+        <p>
+          Energy2D simulates thermal conductivity, convection, and radiation in a an authorable
+          2D environment. The
+          <a href='../../../examples/energy2d-model/energy2d-model.html'>JavaScript implementation of Energy2D</a>
+          supports over 80 different models originally written for the Java version of Energy2D.
+        </p>
+        <p>
+          The Java version of Energy2D uses a 100x100 cell grid size. This means that the program is
+          performing a large number of complex array operations on 10,000 cells for every model step.
+          Almost 18 months ago Stephen Bannasch at the Concord Consortium wondered if these modern
+          browsers were now fast enough to perform these calculaions entirely in JavaScript and
+          created the initial JavaScript implementation of Energy2D. The suprisingly fast results
+          convinced us it is now feasible to run complex simulations of this kind in the browser.
+          Piotr extended and re-architected this early prototype to complete the physics
+          modeling and greatly expand the view features. However in this summer's effort we didn't
+          focus on making a web-based authoring environment for creating new models. Instead we
+          implemented scripts to automatically convert the XML-based serialization format to JSON.
+          Currently the Java version of Energy2D models is used to create new models.
+        </p>
+        <p>
+          At the end of the summer Piotr re-implemented the physics solvers and views for
+          <a href='../../../examples/energy2d-gpu-model/energy2d-model.html'>Energy2D in WebGL</a>
+          to find out whether this was practical and what performance gains might be possible.
+          We have only implemented a few of the 80 models in
+          <a href='../../../examples/energy2d-gpu-model/energy2d-model.html'>Energy2D-WebGL</a>
+          but initial results indicate speedups ranging from 2X to 15X!
+        </p>
+        <p>
+          Piotr's article:
+          <i>
+            Under the Hood: Using WebGL to Accelerate Advanced Physics Simulations in the Browser
+          </i>
+          is available on page 14 of our
+          <a href='http://concord.org/sites/default/files/newsletters/2012/fall/at-concord-fall-2012.pdf#page=14'>Fall 2012</a>
+          newsletter. This article and the source code for the
+          <a href='https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/models/physics-solvers'>JavaScript</a>
+          and
+          <a href='https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/models/physics-solvers-gpu'>GPGPU-based</a>
+          heat solvers in Energy2D provide a good introduction to this topic.
+        </p>
+        <p>
+          The speedups are particularly noticable in the following cases:
+          <ul class='item-list'>
+            <li>
+              Large models
+              <p>
+                Moving from a 100x100 simulation grid to 500x500 cells increases
+                the computational load 25 times. Implemented in JavaScript without using WebWorkers
+                this means each model step is now 25 times slower. However these kind of grid-based
+                algorithms can be effectively run in parallel and see great speedups when running
+                in WebGL.
+              </p>
+            </li>
+            <li>
+              Slower browsers
+              <p>
+                JavaScript Energy2D will run somehwat slowly in Android smartphones available today.
+                However the beta version of Firefox for Android supports WebGL and the models run
+                much faster using this capability.
+              </p>
+            </li>
+            <li>
+              Smaller Time Steps
+              <p>
+                Certain models may benefit from using a more fine-grained model time-step.
+              </p>
+            </li>
+            <li>
+              Energy3D
+              <p>
+                It might be practical to make a 3D version with the increased performance available
+                running in WebGL.
+              </p>
+            </li>
+          </ul>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

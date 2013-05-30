@@ -405,27 +405,26 @@ var requirejs, require, define;
     };
 }());
 
-define("../vendor/almond/almond", function(){});
+define("../../vendor/almond/almond", function(){});
 
 /*global define: false */
 
-define('common/actual-root',['require'],function (require) {
-  // Dependencies.
-  var staticResourceMatch = new RegExp("(\\/.*?)\\/(doc|examples|experiments)(\\/\\w+)*?\\/\\w+\\.html"),
-      // String to be returned.
-      value;
+define('common/actual-root',[],function () {
+  var newPattern = /^(\/.+?\/)(interactives|embeddable)\.html$/,
 
-  function actualRoot() {
-    var match = document.location.pathname.match(staticResourceMatch);
-    if (match && match[1]) {
-      return match[1]
-    } else {
-      return ""
-    }
+      // For legacy code, if any, that (a) uses actualRoot and (b) isn't in an interactive
+      // (Not folded into the same regex as newPattern for the sake of readability. Note the regexes
+      // are only matched against one time.)
+      oldPattern = /(\/.+?\/)(doc|examples|experiments)(\/\w+)*?\/\w+\.html/,
+      match;
+
+  match = document.location.pathname.match(newPattern);
+  if (match && match[1]) {
+    return match[1];
   }
 
-  value = actualRoot();
-  return value;
+  match = document.location.pathname.match(oldPattern);
+  return match && match[1] || "/";
 });
 
 // this file is generated during build process by: ./script/generate-js-config.rb
@@ -440,7 +439,7 @@ define('lab.config',['require','common/actual-root'],function (require) {
   "homeEmbeddablePath": "/embeddable.html",
   "utmCampaign": null,
   "fontface": "Lato",
-  "hostName": "lab4.dev.concord.org",
+  "hostName": "lab.dev.concord.org",
   "dataGamesProxyPrefix": "DataGames/Games/concord/lab/",
   "logging": true,
   "tracing": false,
@@ -8791,10 +8790,10 @@ define('common/controllers/checkbox-controller',['common/controllers/interactive
 
     function setCheckbox(value) {
       if (value) {
-        $checkbox.attr('checked', 'checked');
+        $checkbox.prop('checked', true);
         $fakeCheckable.addClass('checked');
       } else {
-        $checkbox.removeAttr('checked');
+        $checkbox.prop('checked', false);
         $fakeCheckable.removeClass('checked');
       }
     }
@@ -8802,7 +8801,7 @@ define('common/controllers/checkbox-controller',['common/controllers/interactive
     function customClickEvent (e) {
       e.preventDefault();
 
-      if ($checkbox.attr('checked') !== undefined) {
+      if ($checkbox.prop('checked')) {
         setCheckbox(false);
       } else {
         setCheckbox(true);
@@ -12818,6 +12817,8 @@ define('common/controllers/playback-controller',['require','common/inherit','com
     /** @private */
     this._modelStopped = true;
     /** @private */
+    this._modelPlayable = true;
+    /** @private */
     this._showClock = true;
     /** @private */
     this._timeUnits = "";
@@ -12843,7 +12844,9 @@ define('common/controllers/playback-controller',['require','common/inherit','com
     });
     this._$playPause.on("click", $.proxy(function () {
       if (this._modelStopped) {
-        scriptingAPI.api.start();
+        if (this._modelPlayable) {
+          scriptingAPI.api.start();
+        }
       } else {
         scriptingAPI.api.stop();
       }
@@ -12867,6 +12870,14 @@ define('common/controllers/playback-controller',['require','common/inherit','com
       this._$playPause.removeClass("playing");
     } else {
       this._$playPause.addClass("playing");
+    }
+
+    // Coerce undefined to *true* for models that don't have isPlayable property
+    this._modelPlayable = model.properties.isPlayable === false ? false : true;
+    if (this._modelPlayable) {
+      this._$playPause.removeClass("disabled");
+    } else {
+      this._$playPause.addClass("disabled");
     }
   };
 
@@ -12931,6 +12942,7 @@ define('common/controllers/playback-controller',['require','common/inherit','com
     // Use event namespace to let multiple playbacks work fine with one model.
     model.on('play.' + this.component.id, $.proxy(this._simulationStateChanged, this));
     model.on('stop.' + this.component.id, $.proxy(this._simulationStateChanged, this));
+    model.addPropertiesListener(["isPlayable"], $.proxy(this._simulationStateChanged, this));
     this._simulationStateChanged();
     // Update time units and set time.
     this._timeUnits = model.getPropertyDescription("displayTime").getUnitAbbreviation();
@@ -15811,6 +15823,10 @@ define('md2d/models/metadata',[],function() {
       },
       mRNA: {
         serialize: false
+      },
+      useQuantumDynamics: {
+        default: false,
+        serialize: false
       }
     },
 
@@ -16007,6 +16023,15 @@ define('md2d/models/metadata',[],function() {
         readOnly: true,
         unitType: "velocity",
         serialize: false
+      },
+      mass: {
+        // Mass is defined per element, but this is a convenience shortcut for
+        // quick access to mass of the given atom.
+        readOnly: true,
+        unitType: "mass",
+        serialize: false
+      },
+      excitation: {
       }
     },
 
@@ -16248,6 +16273,38 @@ define('md2d/models/metadata',[],function() {
       hostType: {},
       hostIndex: {},
       textAlign: {}
+    },
+
+    quantumDynamics: {
+      elementEnergyLevels: {
+        defaultValue: []
+      },
+      photons: {
+        defaultValue: {}
+      },
+      radiationlessEmissionProbability: {
+        defaultValue: 1
+      }
+    },
+
+    photon: {
+      x: {
+        serialize: true
+      },
+      y: {
+        serialize: true
+      },
+      vx: {
+        defaultValue: 0,
+        serialize: true
+      },
+      vy: {
+        defaultValue: 0,
+        serialize: true
+      },
+      angularFrequency: {
+        serialize: true
+      }
     }
   };
 });
@@ -16621,10 +16678,99 @@ define('md2d/models/engine/neighbor-list',['require','arrays','common/array-type
 
 });
 
+/*global define */
+
+// The PluginController manages an array of plugins, and can call arbitrary functions
+// on any registered plugin that responds to that function.
+
+// TODO:
+//
+//  1. Plugins should define engine component and modeler component
+//  2. Plugins should validate their own properties
+//  3. Plugin controller should handle initialization of plugins and mixing of appropriate methods
+//     and properties into the modeler layer. The main modeler and engine layers should not have to
+//     know details about which plugins are available, what they're named, where they are located,
+//     etc.
+//  4. Plugin controller have a 'getPluginFunction' method which accepts a function name and returns
+//     a function that, when called, does the same thing as callPluginFunction(<function name>,...).
+//     This avoids having to look up the plugin function by name every time it is called.
+
+define('common/models/plugin-controller',[],function () {
+
+  return function PluginController() {
+    var plugins = [];
+
+    // Public API.
+    return {
+      registerPlugin: function(plugin) {
+        plugins.push(plugin);
+      },
+
+      /**
+        Calls method 'funcName' of every plugin, for those plugins which have a property 'funcName',
+        in the context of the plugin (i.e., 'this' value is the plugin object) and with the elements
+        of the array 'args' as the argument array of the invocation.
+
+        If 'callback' is defined, it will be invoked with the callback.
+
+        The callback signature is callback(returnValue, index, plugin) where returnValue is the
+        return value of the method called, i is the index of the plugin, and plugin is the plugin
+        object itself.
+      */
+      callPluginFunction: function(funcName, args, callback) {
+        var i, ii, func, retVal;
+
+        for (i = 0, ii = plugins.length; i<ii; i++) {
+          func = plugins[i][funcName];
+          if (func) {
+            retVal = func.apply(plugins[i], args);
+          }
+          if (callback) {
+            callback(retVal, i, plugins[i]);
+          }
+        }
+      }
+    };
+  };
+
+});
+
+/*global define: false*/
+define('md2d/models/engine/utils',['require','arrays'],function(require) {
+
+  var arrays = require('arrays');
+
+  /**
+    Extend all arrays in arrayContainer to `newLength`. Here, arrayContainer is expected to be `atoms`
+    `elements`, `radialBonds`, etc. arrayContainer might be an array or an object.
+    TODO: this is just interim solution, in the future only objects will be expected.
+  */
+  return {
+    extendArrays: function(arrayContainer, newLength) {
+      var i, len;
+      if (Array.isArray(arrayContainer)) {
+        // Array of arrays.
+        for (i = 0, len = arrayContainer.length; i < len; i++) {
+          if (arrays.isArray(arrayContainer[i]))
+            arrayContainer[i] = arrays.extend(arrayContainer[i], newLength);
+        }
+      } else {
+        // Object with arrays defined as properties.
+        for (i in arrayContainer) {
+          if(arrayContainer.hasOwnProperty(i)) {
+            if (arrays.isArray(arrayContainer[i]))
+              arrayContainer[i] = arrays.extend(arrayContainer[i], newLength);
+          }
+        }
+      }
+    }
+  };
+});
+
 /*global define: true */
 /*jslint eqnull: true, boss: true, loopfunc: true*/
 
-define('md2d/models/engine/md2d',['require','exports','module','arrays','common/array-types','common/console','./constants/index','cs!md2d/models/aminoacids-helper','./math/index','./potentials/index','./potentials/index','cs!./pairwise-lj-properties','common/models/engines/clone-restore-wrapper','./cell-list','./neighbor-list'],function (require, exports, module) {
+define('md2d/models/engine/md2d',['require','exports','module','arrays','common/array-types','common/console','./constants/index','cs!md2d/models/aminoacids-helper','./math/index','./potentials/index','./potentials/index','cs!./pairwise-lj-properties','common/models/engines/clone-restore-wrapper','./cell-list','./neighbor-list','common/models/plugin-controller','./utils'],function (require, exports, module) {
 
   var arrays               = require('arrays'),
       arrayTypes           = require('common/array-types'),
@@ -16639,6 +16785,8 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
       CloneRestoreWrapper  = require('common/models/engines/clone-restore-wrapper'),
       CellList             = require('./cell-list'),
       NeighborList         = require('./neighbor-list'),
+      PluginController     = require('common/models/plugin-controller'),
+      utils                = require('./utils'),
 
       // from A. Rahman "Correlations in the Motion of Atoms in Liquid Argon", Physical Review 136 pp. A405–A411 (1964)
       ARGON_LJ_EPSILON_IN_EV = -120 * constants.BOLTZMANN_CONSTANT.as(unit.EV_PER_KELVIN),
@@ -16714,6 +16862,8 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         // Whether system dimensions have been set. This is only allowed to happen once.
         sizeHasBeenInitialized = false,
 
+        pluginController = new PluginController(),
+
         // Whether to simulate Coulomb forces between particles.
         useCoulombInteraction = false,
 
@@ -16730,6 +16880,10 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         // hydrophobic/hydrophilic interaction is used. A negative value represents oil environment
         // (usually -1). A positive one represents water environment (usually 1). A zero value means vacuum.
         solventForceType = 0,
+
+        // State describing whether DNA translation is in progress.
+        // TODO: move all functionality connected with DNA and proteins to engine plugins!
+        dnaTranslationInProgress = false,
 
         // Parameter that influences strength of force applied to amino acids by water of oil (solvent).
         solventForceFactor = 1,
@@ -17020,8 +17174,13 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
           pairwiseLJProperties = new PairwiseLJProperties(engine);
 
           radialBondMatrix = [];
-          //  Initialize radialBondResults[] array consisting of hashes of radial bond
-          //  index numbers and transposed radial bond properties.
+
+          // Initialize radialBondResults[] array consisting of hashes of radial bond
+          // index numbers and transposed radial bond properties.
+
+          // FIXME. Why is the engine computing this? The modeler exists to insulate the engine
+          // code from view concerns such as this "results" array.
+          // See https://www.pivotaltracker.com/story/show/50086303
           radialBondResults = engine.radialBondResults = [];
         },
 
@@ -17162,29 +17321,6 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
           }
         },
 
-        /**
-          Extend all arrays in arrayContainer to `newLength`. Here, arrayContainer is expected to be `atoms`
-          `elements`, `radialBonds`, etc. arrayContainer might be an array or an object.
-          TODO: this is just interim solution, in the future only objects will be expected.
-        */
-        extendArrays = function(arrayContainer, newLength) {
-          var i, len;
-          if (Array.isArray(arrayContainer)) {
-            // Array of arrays.
-            for (i = 0, len = arrayContainer.length; i < len; i++) {
-              if (arrays.isArray(arrayContainer[i]))
-                arrayContainer[i] = arrays.extend(arrayContainer[i], newLength);
-            }
-          } else {
-            // Object with arrays defined as properties.
-            for (i in arrayContainer) {
-              if(arrayContainer.hasOwnProperty(i)) {
-                if (arrays.isArray(arrayContainer[i]))
-                  arrayContainer[i] = arrays.extend(arrayContainer[i], newLength);
-              }
-            }
-          }
-        },
 
         /**
           Set up "shortcut" references, e.g., x = atoms.x
@@ -17290,13 +17426,13 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
           elements.epsilon = arrays.create(num, 0, arrayTypes.floatType);
           elements.sigma   = arrays.create(num, 0, arrayTypes.floatType);
           elements.radius  = arrays.create(num, 0, arrayTypes.floatType);
-          elements.color   = arrays.create(num, 0, arrayTypes.Int32Array);
+          elements.color   = arrays.create(num, 0, arrayTypes.int32Type);
 
           assignShortcutReferences.elements();
         },
 
         createAtomsArray = function(num) {
-          atoms  = engine.atoms  = {};
+          atoms = {};
 
           // TODO. DRY this up by letting the property list say what type each array is
           atoms.radius         = arrays.create(num, 0, arrayTypes.floatType);
@@ -17446,6 +17582,21 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
           }
 
           return convertKEtoT(twoKE / 2, N);
+        },
+
+        // Calculates & returns the instaneous temperature of a particular group of atoms
+        computeTemperatureOfAtoms = function(atomIndices) {
+          var twoKE = 0,
+              i,
+              j;
+
+          // Particles.
+          for (i = 0; i < atomIndices.length; i++) {
+            j = atomIndices[i];
+            twoKE += mass[j] * (vx[j] * vx[j] + vy[j] * vy[j]);
+          }
+
+          return convertKEtoT(twoKE / 2, atomIndices.length);
         },
 
         // Adds the velocity vector (vx_t, vy_t) to the velocity vector of particle i
@@ -18146,6 +18297,20 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
           }
         },
 
+        // Push all amino acids above some Y coordinate during DNA translation.
+        // TODO: this should be part of the MD2D plug-in for proteins engine!
+        updateDNATranslationAccelerations = function() {
+          if (!dnaTranslationInProgress) return;
+          var i, diff;
+
+          for (i = 0; i < N; i++) {
+            diff = Math.min(1, 2.2 - y[i]);
+            if (diff > 0) {
+              ay[i] += 1e-4 * diff;
+            }
+          }
+        },
+
         // ####################################################################
         // #               Integration main helper functions.                 #
         // ####################################################################
@@ -18253,6 +18418,10 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
 
           // Accumulate optional gravitational accelerations into a(t + dt).
           updateGravitationalAccelerations();
+
+          // Push all amino acids above some Y coordinate during DNA translation.
+          // TODO: this should be part of the MD2D plug-in for proteins engine!
+          updateDNATranslationAccelerations();
         },
 
         // Half of the update of v(t + dt) and p(t + dt) using a. During a single integration loop,
@@ -18549,6 +18718,21 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
 
     engine = {
 
+      // Adds a new plugin. Plugin will be initialized with the object arrys, so that
+      // it can add to them as necessary, and will then be registered in the controller,
+      // allowing it to respond to functions passed to the controller from arbitrary
+      // points in the md2d code.
+      addPlugin: function(plugin) {
+        if (plugin.initialize) {
+          // plugins can update the data arrays as needed so we pass in the arrays.
+          // we do this as an object, so we can add new arrays as needed by the plugins
+          // without needing to update all existing plugins
+          plugin.initialize({atoms: atoms, elements: elements});
+        }
+
+        pluginController.registerPlugin(plugin);
+      },
+
       useCoulombInteraction: function(v) {
         useCoulombInteraction = !!v;
       },
@@ -18575,6 +18759,51 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         }
       },
 
+      setTemperatureOfAtoms: function(atomIndices, targetT) {
+
+        var i, j, vxtmp, vytmp, smallT, smallKE, scale, s, groupT,
+            nGroup = atomIndices.length;
+
+        // Assign a random direction and speed to atoms with velocity exactly equal to 0 (e.g.
+        // cooled drastically or newly created). This ensures that we don't just rescale the
+        // velocities of the (possibly small or nonexistent) group of atoms that already have some
+        // velocity. After rescaling, the net effect is to transfer some velocity from moving atoms
+        // to non-moving atoms.
+
+        // Pick a small temperature to assign to non-moving atoms
+        smallT = (computeTemperatureOfAtoms(atomIndices) || targetT) * 0.0001;
+        smallKE = convertTtoKE(smallT, 1);
+
+        // Assign moveable, non-moving atoms a small temperature
+        for (i = 0; i < nGroup; i++) {
+          j = atomIndices[i];
+          if (!pinned[j] && vx[j] === 0 && vy[j] === 0) {
+            vxtmp = Math.random() - 0.5;
+            vytmp = Math.random() - 0.5;
+            s  = Math.sqrt( (2*smallKE/mass[j]) / (vxtmp*vxtmp + vytmp*vytmp) );
+            vx[j] = vxtmp * s;
+            vy[j] = vytmp * s;
+          }
+        }
+
+        T      = computeTemperature();
+        groupT = computeTemperatureOfAtoms(atomIndices);
+
+        scale = Math.sqrt( targetT / groupT );
+
+        for (i = 0; i < nGroup; i++) {
+          j = atomIndices[i];
+          engine.setAtomProperties(j, {
+            vx: vx[j] * scale,
+            vy: vy[j] * scale
+          });
+        }
+      },
+
+      getTemperatureOfAtoms: function(atomIndices) {
+        return computeTemperatureOfAtoms(atomIndices);
+      },
+
       setTargetTemperature: function(v) {
         validateTemperature(v);
         T_target = v;
@@ -18590,6 +18819,12 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
 
       setSolventForceType: function(sft) {
         solventForceType = sft;
+      },
+
+      setGeneticEngineState: function (ges) {
+        // Don't store geneticEngineState, it's not necessary. Just
+        // information whether translation is in progress is useful.
+        dnaTranslationInProgress = ges.indexOf("translation:") === 0;
       },
 
       setSolventForceFactor: function(sff) {
@@ -18836,7 +19071,7 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
       */
       addAtom: function(props) {
         if (N + 1 > atoms.x.length) {
-          extendArrays(atoms, N + 10);
+          utils.extendArrays(atoms, N + 10);
           assignShortcutReferences.atoms();
         }
 
@@ -18949,7 +19184,7 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         var i;
 
         if (N_elements >= elementEpsilon.length) {
-          extendArrays(elements, N_elements + 10);
+          utils.extendArrays(elements, N_elements + 10);
           assignShortcutReferences.elements();
         }
 
@@ -18979,7 +19214,7 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
       */
       addRadialBond: function(props) {
         if (N_radialBonds + 1 > radialBondAtom1Index.length) {
-          extendArrays(radialBonds, N_radialBonds + 10);
+          utils.extendArrays(radialBonds, N_radialBonds + 10);
           assignShortcutReferences.radialBonds();
         }
 
@@ -19050,7 +19285,7 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
       */
       addRestraint: function(props) {
         if (N_restraints + 1 > restraints.atomIndex.length) {
-          extendArrays(restraints, N_restraints + 10);
+          utils.extendArrays(restraints, N_restraints + 10);
           assignShortcutReferences.restraints();
         }
 
@@ -19068,7 +19303,7 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
       */
       addAngularBond: function(props) {
         if (N_angularBonds + 1 > angularBonds.atom1.length) {
-          extendArrays(angularBonds, N_angularBonds + 10);
+          utils.extendArrays(angularBonds, N_angularBonds + 10);
           assignShortcutReferences.angularBonds();
         }
 
@@ -19113,7 +19348,7 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
       addSpringForce: function(atomIndex, x, y, strength) {
         // conservatively just add one spring force
         if (N_springForces + 1 > springForces[0].length) {
-          extendArrays(springForces, N_springForces + 1);
+          utils.extendArrays(springForces, N_springForces + 1);
           assignShortcutReferences.springForces();
         }
 
@@ -19158,7 +19393,7 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         if (N_obstacles + 1 > obstacles.x.length) {
           // Extend arrays each time (as there are only
           // a few obstacles in typical model).
-          extendArrays(obstacles, N_obstacles + 1);
+          utils.extendArrays(obstacles, N_obstacles + 1);
           assignShortcutReferences.obstacles();
         }
 
@@ -19191,7 +19426,7 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
 
         // FIXME: This shouldn't be necessary, however various modules
         // (e.g. views) use obstacles.x.length as the real number of obstacles.
-        extendArrays(obstacles, N_obstacles);
+        utils.extendArrays(obstacles, N_obstacles);
         assignShortcutReferences.obstacles();
       },
 
@@ -19471,55 +19706,6 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         return i;
       },
 
-      extendProtein: function (xPos, yPos, aaAbbr) {
-        var aaCount = aminoacidsHelper.lastElementID - aminoacidsHelper.firstElementID + 1,
-            cx = size[0] / 2,
-            cy = size[1] / 2,
-            el, bondLen, i,
-
-            getRandomAA = function() {
-              return Math.floor(aaCount * Math.random()) + aminoacidsHelper.firstElementID;
-            },
-
-            xcm, ycm,
-            getCenterOfMass = function () {
-              var totalMass = 0,
-                  atomMass, i;
-              xcm = ycm = 0;
-              for (i = 0; i < N; i++) {
-                atomMass = mass[i];
-                xcm += x[i] * atomMass;
-                ycm += y[i] * atomMass;
-                totalMass += atomMass;
-              }
-              xcm /= totalMass;
-              ycm /= totalMass;
-            };
-
-        xPos = xPos !== undefined ? xPos : cx / 10;
-        yPos = yPos !== undefined ? yPos : cy / 2;
-
-        if (N === 0) {
-          el = aaAbbr ? aminoacidsHelper.abbrToElement(aaAbbr) : getRandomAA();
-          engine.addAtom({x: xPos, y: yPos, element: el, pinned: true, visible: true});
-          engine.minimizeEnergy();
-        } else {
-          getCenterOfMass();
-          for (i = 0; i < N; i++) {
-            pinned[i] = false;
-            x[i] += (cx - xcm) / 5 + Math.random() * 0.04 - 0.02;
-            y[i] += (cy - ycm) / 5 + Math.random() * 0.04 - 0.02;
-          }
-          el = aaAbbr ? aminoacidsHelper.abbrToElement(aaAbbr) : getRandomAA();
-          engine.addAtom({x: xPos, y: yPos, element: el, pinned: true, visible: true});
-          // Length of bond is based on the radii of AAs.
-          bondLen = (radius[N - 1] + radius[N - 2]) * 1.25;
-          // 10000 is a typical strength for bonds between AAs.
-          engine.addRadialBond({atom1: N - 1, atom2: N - 2, length: bondLen, strength: 10000});
-          engine.minimizeEnergy();
-        }
-      },
-
       getVdwPairsArray: function() {
         var i,
             j,
@@ -19567,7 +19753,7 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
 
               if (r_sq < sig * distanceCutoff_sq && eps > 0) {
                 if (N_vdwPairs + 1 > vdwPairs.atom1.length) {
-                  extendArrays(vdwPairs, (N_vdwPairs + 1) * 2);
+                  utils.extendArrays(vdwPairs, (N_vdwPairs + 1) * 2);
                   assignShortcutReferences.vdwPairs();
                 }
                 vdwPairAtom1Index[N_vdwPairs] = i;
@@ -19666,13 +19852,16 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
           // Adjust temperature, e.g. when heat bath is enabled.
           adjustTemperature();
 
-          // If solvent is different from vacuum (water or oil), ensure
-          // that the total momentum of each molecule is equal to zero.
-          // This prevents amino acids chains from drifting towards one
-          // boundary of the model.
-          if (solventForceType !== 0) {
+          // If solvent is different from vacuum (water or oil), ensure that
+          // the total momentum of each molecule is equal to zero. This
+          // prevents amino acids chains from drifting towards one boundary of
+          // the model. Don't do it during translation process to let the protein
+          // freely fold.
+          if (solventForceType !== 0 && !dnaTranslationInProgress) {
             zeroTotalMomentumOfMolecules();
           }
+
+          pluginController.callPluginFunction('performActionWithinIntegrationLoop', [neighborList, dt]);
 
         } // end of integration loop
 
@@ -19787,18 +19976,8 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         return elementRadius[el];
       },
 
-      getNumberOfAtoms: function(f) {
-        if (typeof f === 'undefined') {
-          return N;
-        }  else {
-          var i,
-              count = 0,
-              func = new Function('i', 'return this.atoms.' + f).bind(this);
-          for (i = 0; i < N; i++) {
-            if (func(i)) count++;
-          }
-          return count;
-        }
+      getNumberOfAtoms: function() {
+        return N;
       },
 
       getNumberOfElements: function() {
@@ -19819,6 +19998,10 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
 
       getNumberOfRestraints: function() {
         return N_restraints;
+      },
+
+      getNumberOfSpringForces: function() {
+        return N_springForces;
       },
 
       /**
@@ -19972,7 +20155,7 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         // Update temperature.
         T = convertKEtoT(KEinMWUnits, N);
 
-        // State to be read by the rest of the system:
+        // "macro" state
         state.time           = time;
         state.PE             = PE;
         state.KE             = constants.convert(KEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
@@ -19981,6 +20164,9 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         state.CM             = [x_CM, y_CM];
         state.vCM            = [vx_CM, vy_CM];
         state.omega_CM       = omega_CM;
+
+        // "micro" state. TODO: put radial bonds, etc here.
+        state.atoms = atoms;
       },
 
 
@@ -20186,7 +20372,7 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
       // * .restore(state) - restoring state of the object, using 'state'
       //                     as input (returned by clone()).
       getState: function() {
-        return [
+        var state = [
           // Use wrapper providing clone-restore interface to save the hashes-of-arrays
           // that represent model state.
           new CloneRestoreWrapper(elements),
@@ -20225,8 +20411,27 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
             }
           }
         ];
+
+        pluginController.callPluginFunction('getState', [], function(pluginState) {
+          state = state.concat(pluginState);
+        });
+
+        return state;
+      },
+
+      // FIXME. Not a sustainable pattern. This is just a temporary pass-through of modeler-level
+      // methods that are implemented in the quantumDynamics plugin, because for now the plugin is
+      // only callable from the engine.
+      callPluginAccessor: function(accessorMethodName) {
+        var returnValue;
+        pluginController.callPluginFunction(accessorMethodName, [], function(_) {
+          returnValue = _;
+        });
+        return returnValue;
       }
     };
+
+
 
     // Initialization
     initialize();
@@ -21139,6 +21344,9 @@ define('common/property-support',[],function() {
           'this'-binding to a target object.
         */
         target.addObserver = function(key, callback) {
+          if (!propertyInformation[key]) {
+            return;
+          }
           var observers = propertyInformation[key].observers;
           if (observers.indexOf(callback) < 0) {
             observers.push(callback);
@@ -21363,7 +21571,7 @@ define('common/property-support',[],function() {
               notify(key);
             }
             set(key, values[key]);
-            if (info.invokeSetterAfterBulkRestore && info.descriptor.set) {
+            if (info.descriptor.invokeSetterAfterBulkRestore && info.descriptor.set) {
               info.descriptor.set(get(key));
             }
           });
@@ -21375,7 +21583,7 @@ define('common/property-support',[],function() {
 
 (function() {
 
-  define('cs!md2d/models/running-average-filter',['require'],function(require) {
+  define('cs!common/running-average-filter',['require'],function(require) {
     /*
       Filter implementing running average.
       This filter assumes that provided samples are samples of some unknown function.
@@ -21540,7 +21748,7 @@ define('common/property-support',[],function() {
       water: {
         forceType: 1,
         dielectricConstant: 80,
-        color: "#a5d9da"
+        color: "#B8EBF0"
       }
     };
     /*
@@ -21634,64 +21842,95 @@ define('common/serialize',['require','arrays'],function(require) {
 
 /*global d3, define */
 
-define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2d/models/aminoacids-helper'],function (require) {
+define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2d/models/aminoacids-helper','common/alert'],function (require) {
 
   var ValidationError  = require('common/validator').ValidationError,
       aminoacidsHelper = require('cs!md2d/models/aminoacids-helper'),
+      alert            = require('common/alert'),
 
-      state = {
-        "undefined": 0,
-        "intro": 1,
-        "dna": 2,
-        "transcription": 3,
-        "transcription-end": 4,
-        "translation": 5
-      };
+      STATES = [
+        "undefined",
+        "intro-cells",
+        "intro-zoom1",
+        "intro-zoom2",
+        "intro-zoom3",
+        "intro-polymerase",
+        "dna",
+        "transcription",
+        "transcription-end",
+        "after-transcription",
+        "before-translation",
+        "translation",
+        "translation-end"
+      ],
+      STATE_INDEX = {},
 
+      PROMOTER_SEQ   = "TGACCTCTCCGCGCCATCTATAAACCGAAGCGCTAGCTACA",
+      TERMINATOR_SEQ = "ACCACAGGCCGCCAGTTCCGCTGGCGGCATTTT",
+      JUNK_SEQ;
+
+  function complementarySequence(DNA) {
+    // A-T (A-U)
+    // G-C
+    // T-A (U-A)
+    // C-G
+
+    // Use lower case during conversion to
+    // avoid situation when you change A->T,
+    // and later T->A again.
+    return DNA
+            .replace(/A/g, "t")
+            .replace(/G/g, "c")
+            .replace(/T/g, "a")
+            .replace(/C/g, "g")
+            .toUpperCase();
+  }
+  // Generates junk DNA sequence.
+  function junkSequence(len) {
+    var letters = ["A", "G", "T", "C"],
+        lettersLen = letters.length,
+        seq = "",
+        i;
+
+    for (i = 0; i < len; i++) {
+      seq += letters[Math.floor(Math.random() * lettersLen)];
+    }
+    return {
+      sequence: seq,
+      compSequence: complementarySequence(seq)
+    };
+  }
+
+  (function () {
+    var i, len;
+    for (i = 0, len = STATES.length; i < len; i++) {
+      STATE_INDEX[STATES[i]] = i;
+    }
+    JUNK_SEQ = junkSequence(50);
+  }());
 
   return function GeneticProperties(model) {
     var api,
         // Never change value of this variable outside
         // the transitionToState() function!
         stateTransition = false,
+        // List of transitions, which are currently ongoing (index 0)
+        // or scheduled (index > 0).
+        ongoingTransitions = [],
+        // Complete mRNA based on current DNA. Useful for codon() method,
+        // which needs to know the whole sequence in advance.
+        mRNA = "",
+
         dispatch = d3.dispatch("change", "transition"),
 
-        calculateComplementarySequence = function () {
-          // A-T (A-U)
-          // G-C
-          // T-A (U-A)
-          // C-G
-
-          // Use lower case during conversion to
-          // avoid situation when you change A->T,
-          // and later T->A again.
-          var compSeq = model.get("DNA")
-            .replace(/A/g, "t")
-            .replace(/G/g, "c")
-            .replace(/T/g, "a")
-            .replace(/C/g, "g");
-
-          model.set("DNAComplement", compSeq.toUpperCase());
-        },
-
         calculatemRNA = function () {
-          var mRNA, newCode;
-
-          mRNA = model.get("mRNA") || "";
-          newCode = mRNACode(mRNA.length);
-
+          var newCode = mRNACode(0);
+          mRNA = "";
           while(newCode) {
             mRNA += newCode;
             newCode = mRNACode(mRNA.length);
           }
-
-          model.set("mRNA", mRNA);
-        },
-
-        mRNAComplete = function () {
-          var mRNA = model.get("mRNA");
-          // mRNA should be defined and its length should be equal to DNA length.
-          return mRNA && mRNA.length === model.get("DNA").length;
+          return mRNA;
         },
 
         mRNACode = function (index) {
@@ -21719,42 +21958,153 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
         },
 
         updateGeneticProperties = function () {
-          validateDNA(model.get("DNA"));
-          calculateComplementarySequence();
+          var DNA = model.get("DNA");
 
-          if (api.stateBefore("transcription")) {
+          validateDNA(DNA);
+          model.set("DNAComplement", complementarySequence(DNA));
+          calculatemRNA();
+
+          // Update model's mRNA property.
+          if (api.stateBefore("transcription:0")) {
             model.set("mRNA", "");
-          }
-          if (api.stateAfter("transcription")) {
+          } else if (api.state().name === "transcription") {
+            model.set("mRNA", mRNA.substr(0, api.state().step));
+          } else if (api.stateAfter("transcription")) {
             // So, the first state which triggers it is "transcription-end".
-            calculatemRNA();
+            model.set("mRNA", mRNA);
           }
         },
+
+        removeAminoAcids = function () {
+          var opt = {suppressEvent: true},
+              aaCount;
+
+          aaCount = model.getNumberOfAtoms();
+          if (aaCount > 0) {
+            model.startBatch();
+            while(aaCount > 1) {
+              model.removeAtom(aaCount - 1, opt);
+              aaCount--;
+            }
+            // Remove the last one atom and make sure that events are dispatched!
+            // TODO: Should events be automatically suppressed during batch
+            // execution and then merged and dispatched during .endBatch() call?
+            model.removeAtom(0);
+            model.endBatch();
+          }
+        },
+
+        nextState = function (state) {
+          var name = state.name,
+              next, abbr;
+
+          if (name === "transcription") {
+            if (state.step < model.get("DNA").length - 1) {
+              return "transcription:" + (state.step + 1);
+            } else {
+              return "transcription-end";
+            }
+          } else if (name === "translation") {
+            abbr = aminoacidsHelper.codonToAbbr(api.codon(state.step));
+            if (abbr !== "STOP") {
+              return "translation:" + (state.step + 1);
+            } else {
+              return "translation-end";
+            }
+          } else {
+            // "Typical" state.
+            next = STATES[STATE_INDEX[state.name] + 1];
+            if (next === "transcription" || next === "translation") {
+              next += ":0";
+            }
+            return next;
+          }
+        },
+
+        prevState = function (state) {
+          var name = state.name,
+              step = state.step;
+
+          if (name === "transcription" && step > 0) {
+            return "transcription:" + (step - 1);
+          } else if (name === "transcription-end") {
+            return "transcription:" + (model.get("DNA").length - 1);
+          } else if (name === "translation-end" || (name === "translation" && step > 0)) {
+            // Note that we always return state translation:0,
+            // as jumping between translation steps is not allowed.
+            return "translation:0";
+          } else {
+            return STATES[STATE_INDEX[name] - 1];
+          }
+        },
+
 
         stateEq = function (name) {
           return model.get("geneticEngineState") === name;
         },
 
+        stateComp = function (stateA, stateB) {
+          if (stateA === stateB) {
+            return 0;
+          }
+          stateA = api.parseState(stateA);
+          stateB = api.parseState(stateB);
+          if (stateA.name === stateB.name) {
+            if (isNaN(stateA.step) || isNaN(stateB.step)) {
+              // Note that when you compare e.g. "translate"
+              // and "translate:5" these steps are considered to be equal.
+              return 0;
+            }
+            return stateA.step < stateB.step ? -1 : 1;
+          }
+          return STATE_INDEX[stateA.name] < STATE_INDEX[stateB.name] ? -1 : 1;
+        },
+
         transitionToState = function (name) {
+          if (ongoingTransitions.length > 0) {
+            // Some transition are in progress, so only enqueue a new state.
+            ongoingTransitions.push(name);
+          } else {
+            // Mark transition as ongoing (by adding it to the list)
+            // and do transition.
+            ongoingTransitions.push(name);
+            doTransition(name);
+          }
+        },
+
+        doTransition = function (name) {
           stateTransition = true;
           model.set("geneticEngineState", name);
           stateTransition = false;
         },
 
         stateUpdated = function () {
+          var state;
+
           updateGeneticProperties();
 
           if (stateTransition) {
             dispatch.transition();
           } else {
-            dispatch.change();
+            ongoingTransitions = [];
+            removeAminoAcids();
+            if (api.stateBefore("translation:1")) {
+              dispatch.change();
+            } else {
+              state = model.get("geneticEngineState");
+              // It means that state was set to 'translation:x', where x > 0.
+              // Use the last safe state ('translation:0') instead.
+              alert("'" + state + "' cannot be set explicitly. " +
+                "'translation:0' should be set and then animation to '" +
+                state + "' should be triggered.");
+              model.set("geneticEngineState", "translation:0");
+            }
           }
         },
 
         DNAUpdated = function () {
-          // Reset to the initial state. All genetic properties will be
-          // recalculated and the "change" event will be dispatched.
-          model.set("geneticEngineState", "dna");
+          updateGeneticProperties();
+          dispatch.change();
         };
 
     // Public API.
@@ -21786,29 +22136,44 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
         dispatch.on(type, listener);
       },
 
-      /**
-       * Plays intro, which shows broader context of the DNA transcription and
-       * translation.
-       */
-      playIntro: function () {
-        transitionToState("dna");
-      },
-
-      /**
-       * Triggers separation of the DNA strands.
-       */
-      separateDNA: function () {
-        if (stateEq("dna")) {
-          transitionToState("transcription");
+      mutate: function(nucleotideIdx, newType, DNAComplement) {
+        var DNA = model.get("DNA");
+        if (nucleotideIdx < DNA.length) {
+          DNA = DNA.substr(0, nucleotideIdx) +
+                (DNAComplement ? complementarySequence(newType) : newType) +
+                DNA.substr(nucleotideIdx + 1);
+          model.set("DNA", DNA);
         }
       },
 
       /**
-       * Triggers *complete* transcription of the DNA.
+       * Triggers transition to the next genetic engine state.
        */
-      transcribe: function() {
-        while (api.stateBefore("transcription-end")) {
-          api.transcribeStep();
+      transitionToNextState: function () {
+        transitionToState(nextState(api.lastState()));
+      },
+
+      jumpToNextState: function () {
+        if (api.stateBefore("translation:0")) {
+          model.set("geneticEngineState", nextState(api.state()));
+        }
+      },
+
+      jumpToPrevState: function () {
+        if (api.stateAfter("intro-cells")) {
+          model.set("geneticEngineState", prevState(api.state()));
+        }
+      },
+
+      /**
+       * Triggers transition to the given genetic engine state.
+       * e.g. transitionTo("transcription-end")
+       *
+       * @param  {string} stateName name of the state.
+       */
+      transitionTo: function (stateName) {
+        while (api.lastStateBefore(stateName)) {
+          api.transitionToNextState();
         }
       },
 
@@ -21827,80 +22192,78 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
        * @param  {string} expectedNucleotide code of the expected nucleotide ("U", "C", "A" or "G").
        */
       transcribeStep: function (expectedNucleotide) {
-        var mRNA = model.get("mRNA"),
-            DNA = model.get("DNA"),
-            newCode;
+        var state, newCode;
 
         if (stateEq("dna")) {
-          api.separateDNA();
+          api.transitionToNextState();
           return;
         }
-
-        newCode = mRNACode(mRNA.length);
-
-        if (expectedNucleotide && expectedNucleotide.toUpperCase() !== newCode) {
-          // Expected nucleotide is wrong, so simply do nothing.
-          return;
-        }
-
-        // Check if new code is different from null.
-        if (newCode) {
-          mRNA += newCode;
-          model.set("mRNA", mRNA);
-          if (mRNA.length < DNA.length) {
-            // TODO: should be "transcription:" + mRNA.length
-            transitionToState("transcription");
-          } else {
-            transitionToState("transcription-end");
+        state = api.lastState();
+        if (state.name === "transcription") {
+          newCode = mRNACode(state.step);
+          if (expectedNucleotide && expectedNucleotide.toUpperCase() !== newCode) {
+            // Expected nucleotide is wrong, so simply do nothing.
+            return;
           }
+          api.transitionToNextState();
         }
       },
 
-      translateStep: function () {
-        var state, abbr;
+      // Helper methods used mainly by the genetic renderer.
 
-        // Ensure that the simulation is started.
-        model.start();
-
-        if (api.stateBefore("transcription-end")) {
-          // Make sure that complete mRNA is available.
-          api.transcribe();
-        }
-        state = api.state();
-        if (state.name === "transcription-end") {
-          transitionToState("translation:0");
-        } else if (state.name === "translation") {
-          abbr = aminoacidsHelper.codonToAbbr(api.codon(state.step));
-          if (abbr !== "STOP") {
-            transitionToState("translation:" + (state.step + 1));
-          } else {
-            transitionToState("translation-end");
-          }
-        }
-      },
-
+      /**
+       * Returns parsed *current* state.
+       * e.g.
+       * {
+       *   name: "translation",
+       *   step: 5
+       * }
+       *
+       * @return {Object} current state object (see above).
+       */
       state: function () {
         return api.parseState(model.get("geneticEngineState"));
       },
 
       stateBefore: function (name) {
-        var current = api.state(),
-            cmp     = api.parseState(name);
-
-        if (current.name === cmp.name) {
-          return current.step < cmp.step;
-        }
-        return state[current.name] < state[cmp.name];
+        return stateComp(model.get("geneticEngineState"), name) === -1 ? true : false;
       },
 
       stateAfter: function (name) {
-        var current = api.state(),
-            cmp     = api.parseState(name);
+        return stateComp(model.get("geneticEngineState"), name) === 1 ? true : false;
+      },
 
-        if (current.name === cmp.name) {
-          return current.step > cmp.step;
+      /**
+       * Returns parsed *last* enqueued state.
+       * When there is no state enqueued or in progress,
+       * it returns simply current state.
+       *
+       * e.g.
+       * {
+       *   name: "translation",
+       *   step: 5
+       * }
+       *
+       * @return {Object} last enqueued state object (see above).
+       */
+      lastState: function () {
+        var queueLen = ongoingTransitions.length;
+        if (queueLen > 0) {
+          return api.parseState(ongoingTransitions[queueLen - 1]);
         }
-        return state[current.name] > state[cmp.name];
+        return api.state();
+      },
+
+      lastStateBefore: function (name) {
+        var queueLen = ongoingTransitions.length,
+            lastStateName = queueLen ? ongoingTransitions[queueLen - 1] : model.get("geneticEngineState");
+        return stateComp(lastStateName, name) === -1 ? true : false;
+      },
+
+      lastStateAfter: function (name) {
+        var queueLen = ongoingTransitions.length,
+            lastStateName = queueLen ? ongoingTransitions[queueLen - 1] : model.get("geneticEngineState");
+        return stateComp(lastStateName, name) === 1 ? true : false;
       },
 
       parseState: function (state) {
@@ -21914,7 +22277,7 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
       },
 
       codon: function (index) {
-        return model.get("mRNA").substr(3 * index, 3);
+        return mRNA.substr(3 * index, 3);
       },
 
       codonComplement: function (index) {
@@ -21926,69 +22289,135 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
             .toUpperCase();
       },
 
-      addAminoAcid: function (codonIdx, x, y) {
+      translationStepStarted: function (codonIdx, x, y, xEnd, yEnd, duration) {
         var abbr = aminoacidsHelper.codonToAbbr(api.codon(codonIdx)),
             elID = aminoacidsHelper.abbrToElement(abbr);
 
-        model.addAtom({x: x, y: y, element: elID, visible: true});
-        model.addSpringForce(codonIdx, x, y, 8000);
+        // Add some entropy to y position to avoid perfectly straight line of
+        // amino acids what can affect folding process.
+        yEnd += Math.random() * 0.02 - 0.01;
+        model.addAtom({x: x, y: y, element: elID, visible: true, pinned: true}, {suppressCheck: true});
+        // Transition new amino acid to its final position.
+        model.atomTransition().id(codonIdx).duration(duration).prop("x", xEnd);
+        model.atomTransition().id(codonIdx).duration(duration).prop("y", yEnd);
+        // Ensure that the simulation is started.
+        model.start();
       },
 
-      connectAminoAcids: function (codonIdx) {
-        if (codonIdx < 1) return;
+      shiftAminoAcids: function (count, xShift, duration) {
+        if (count < 1) return;
+        var i, x, y;
+        // Shift amino acids to the right.
+        for (i = 0; i < count; i++) {
+          x = model.getAtomProperties(i).x + xShift;
+          y = model.getAtomProperties(i).y;
+          model.atomTransition().id(i).duration(duration).prop("x", x);
+          // This is required to keep Y coordinate constant during this
+          // transition, some forces applied by the MD2D engine can
+          // change trajectory of the particle.
+          model.atomTransition().id(i).duration(duration).prop("y", y);
+        }
+      },
 
+      connectAminoAcid: function (codonIdx) {
+        if (codonIdx < 1) return;
         var r1 = model.getAtomProperties(codonIdx - 1).radius,
             r2 = model.getAtomProperties(codonIdx).radius,
             // Length of bond is based on the radii of AAs.
             bondLen = (r1 + r2) * 1.25;
-
         // 10000 is a typical strength for bonds between AAs.
         model.addRadialBond({atom1: codonIdx, atom2: codonIdx - 1, length: bondLen, strength: 10000});
-        model.removeSpringForce(0);
-      }
+        model.setAtomProperties(codonIdx - 1, {pinned: false});
+      },
 
-      /*
-      Depreciated.
-      Translates mRNA into amino acids chain.
-      translate: function() {
-        var result = [],
-            mRNA, abbr, i, len;
-
-        // Make sure that complete mRNA is available.
-        if (!mRNAComplete()) {
-          api.transcribe();
+      translationCompleted: function () {
+        var atomsCount = model.getNumberOfAtoms();
+        if (atomsCount > 0) {
+          // Unpin the last atom. Note that sometimes translation
+          // can end without any atom.
+          model.setAtomProperties(atomsCount - 1, {pinned: false});
         }
-        mRNA = model.get("mRNA");
+      },
 
-        for (i = 0, len = mRNA.length; i + 3 <= len; i += 3) {
-          abbr = aminoacidsHelper.codonToAbbr(mRNA.substr(i, 3));
-          if (abbr === "STOP" || abbr === undefined) {
-            return result;
+      transitionEnded: function () {
+        // Transition has just ended so remove it
+        // from transitions list.
+        ongoingTransitions.shift();
+        if (ongoingTransitions.length > 0) {
+          doTransition(ongoingTransitions[0]);
+        }
+      },
+
+      stopCodonsHash: function () {
+        var result = {},
+            mRNA = model.get("mRNA"),
+            codon, i, len;
+
+        for (i = 0, len = mRNA.length; i < len; i += 3) {
+          codon = mRNA.substr(i, 3);
+          // Note that codonToAbbr returns "STOP" also when codon length is
+          // smaller than 3. In this case, we want to mark only codons which
+          // are a "real" STOP codons, so check their length.
+          if (codon.length === 3 && aminoacidsHelper.codonToAbbr(codon) === "STOP") {
+            result[i] = result[i + 1] = result[i + 2] = true;
           }
-          result.push(abbr);
         }
-
         return result;
-      }
+      },
 
-      Depreciated.
-      translateStepByStep: function() {
-        var aaSequence, aaAbbr;
+      /**
+       * Returns center of mass coridantes of the whole protein.
+       * When there are no amino acids, returns null.
+       *
+       * @return {Object|null} protein's center of mass, e.g. {x: 1, y: 2}
+       *                       or null when there are no amino acids.
+       */
+      proteinCenterOfMass: function () {
+        var totalMass = 0,
+            xcm = 0,
+            ycm = 0,
+            len = model.getNumberOfAtoms(),
+            atom, i;
 
-        aaSequence = api.translate();
-        if (data.translationStep === undefined) {
-          data.translationStep = 0;
-        } else {
-          data.translationStep += 1;
+        if (len === 0) {
+          return null;
         }
-        aaAbbr = aaSequence[data.translationStep];
-        if (aaAbbr === undefined) {
-          data.translationStep = "end";
-        }
 
-        return aaAbbr;
-      }
-      */
+        // Note that there is a strong asumption that there are *only* amino
+        // acids in the model.
+        for (i = 0, len = model.getNumberOfAtoms(); i < len; i++) {
+          atom = model.getAtomProperties(i);
+          xcm += atom.x * atom.mass;
+          ycm += atom.y * atom.mass;
+          totalMass += atom.mass;
+        }
+        xcm /= totalMass;
+        ycm /= totalMass;
+        return {
+          x: xcm,
+          y: ycm
+        };
+      },
+
+      /**
+       * Returns junk DNA sequence.
+       * e.g.
+       * {
+       *   "sequence": "AGT",
+       *   "compSequence": "TCA"
+       * }
+       *
+       * @return {Object} sequence and complementary sequence.
+       */
+      junkSequence: function () {
+        return JUNK_SEQ;
+      },
+
+      promoterSequence: PROMOTER_SEQ,
+      promoterCompSequence: complementarySequence(PROMOTER_SEQ),
+
+      terminatorSequence: TERMINATOR_SEQ,
+      terminatorCompSequence: complementarySequence(TERMINATOR_SEQ)
     };
 
     model.addPropertiesListener(["DNA"], DNAUpdated);
@@ -22003,7 +22432,7 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
 /*global define d3 */
 /*jshint eqnull:true boss:true */
 
-define('md2d/models/property-description',['require','underscore'],function(require) {
+define('common/property-description',['require','underscore'],function(require) {
 
   var _ = require('underscore');
 
@@ -22537,19 +22966,735 @@ define('md2d/models/performance-optimizer',[],function() {
   return PerformanceOptimizer;
 });
 
-/*global define: false, d3: false */
-/*jshint eqnull: true */
+/*global define, d3 */
 
-define('md2d/models/modeler',['require','arrays','common/console','common/performance','md2d/models/engine/md2d','md2d/models/metadata','common/models/tick-history','common/property-support','cs!md2d/models/running-average-filter','cs!md2d/models/solvent','common/serialize','common/validator','md2d/models/aminoacids-props','cs!md2d/models/aminoacids-helper','md2d/models/engine/genetic-engine','md2d/models/engine/constants/units','md2d/models/property-description','md2d/models/unit-definitions/index','md2d/models/units-translation','md2d/models/performance-optimizer','underscore'],function(require) {
+define('common/models/property-transition',[],function() {
+
+  /**
+   * Abstract class, which defines basic interface for property transition.
+   * It allows to smoothly change property over desired time period.
+   *
+   * Note that this class *can't* be instantiated. It should be used
+   * as a base class for other classes, which should implement following
+   * interface:
+   *  - getObjectProperties(id)
+   *  - setObjectProperties(id, props)
+   *
+   * Note that under the hood D3 ease and interpolate methods are used.
+   * Also interface is similar to D3 transitions.
+   */
+  function PropertyTransition() {
+    this.isFinished = false;
+    this._duration = 0;
+    this._easeFunc = d3.ease("cubic-in-out"); // also default in d3
+    this._elapsedTime = 0;
+    this._id = null;
+    this._propName = null;
+    this._endValue = null;
+    this._interpolator = null;
+
+    // Check whether required methods are implemented.
+    // This class can't be instantiated, only subclasses
+    // implementing specified interface:
+    if (this.getObjectProperties == null) {
+      throw new Error("getObjectProperties method must be implemented by descendant!");
+    }
+    if (this.setObjectProperties == null) {
+      throw new Error("setObjectProperties method must be implemented by descendant!");
+    }
+  }
+
+  /**
+   * Sets ID of processed object. It will be passed to
+   * getObjectProperties and setObjectProperties.
+   * @param  {*} id
+   * @return {PropertyTransition} this (method chaining).
+   */
+  PropertyTransition.prototype.id = function(id) {
+    this._id = id;
+    return this;
+  };
+
+  /**
+   * Sets property name and its final value.
+   * @param  {String} propName
+   * @param  {*}      endValue
+   * @return {PropertyTransition} this (method chaining).
+   */
+  PropertyTransition.prototype.prop = function(propName, endValue) {
+    this._propName = propName;
+    this._endValue = endValue;
+    return this;
+  };
+
+  /**
+   * Sets transition duration.
+   * @param  {number} duration Transition duration.
+   * @return {PropertyTransition} this (method chaining).
+   */
+  PropertyTransition.prototype.duration = function (duration) {
+    this._duration = duration;
+    return this;
+  };
+
+  /**
+   * Sets transition delay.
+   * @param  {number} delay Transition delay.
+   * @return {PropertyTransition} this (method chaining).
+   */
+  PropertyTransition.prototype.delay = function (delay) {
+    this._elapsedTime = -delay;
+    return this;
+  };
+
+  /**
+   * Sets easing function duration. Note that under the hood
+   * d3.ease function is used to generate easing function.
+   * Please see:
+   * https://github.com/mbostock/d3/wiki/Transitions#wiki-d3_ease
+   *
+   * @param  {string} funcName Function name.
+   * @return {PropertyTransition} this (method chaining).
+   */
+  PropertyTransition.prototype.ease = function (funcName) {
+    this._easeFunc = d3.ease(funcName);
+    return this;
+  };
+
+  /**
+   * Processes the transition. This should be used by the model
+   * implementing transitions support. When transition is finished,
+   * isFinished field will be set to true.
+   * @param  {number} elapsedTime elapsed time, units have to be
+   *                              consistent with duration time.
+   */
+  PropertyTransition.prototype.process = function (elapsedTime) {
+    if (this.isFinished || this._incompleteSpec()) {
+      return;
+    }
+    var t, props;
+
+    this._elapsedTime += elapsedTime;
+    if (this._elapsedTime < 0) {
+      // Elapsed time can be negative when there was a delay specified (which
+      // sets elapsedTime to -delay).
+      return;
+    }
+    if (this._interpolator == null) {
+      this._interpolator = d3.interpolate(this.getObjectProperties(this._id)[this._propName], this._endValue);
+    }
+    t = Math.min(1, this._elapsedTime / this._duration);
+    t = this._easeFunc(t);
+    props = {};
+    props[this._propName] = this._interpolator(t);
+    // Update object properties.
+    this.setObjectProperties(this._id, props);
+    if (t >= 1) {
+      // This ensures that 1 value is always reached.
+      this.isFinished = true;
+    }
+  };
+
+  /**
+   * getObjectProperties method must be implemented by descendant!
+   * Required interface:
+   * @param  {*}      id Object ID, value passed
+   *                     to .id() method will be used.
+   * @return {Object} Properties hash.
+   */
+  PropertyTransition.prototype.getObjectProperties = null;
+
+  /**
+   * setObjectProperties method must be implemented by descendant!
+   * Required interface:
+   * @param  {*}      id Object ID, value passed
+   *                     to .id() method will be used.
+   * @param  {Object} props Properties hash.
+   */
+  PropertyTransition.prototype.setObjectProperties = null;
+
+  /**
+   * @private
+   * @return {boolean} true when transition specification is incomplete.
+   */
+  PropertyTransition.prototype._incompleteSpec = function () {
+    return this._id == null || this._propName == null || this._endValue == null;
+  };
+
+  return PropertyTransition;
+});
+/*global define */
+
+define('md2d/models/atom-transition',['require','common/inherit','common/models/property-transition'],function (require) {
+
+  var inherit            = require("common/inherit"),
+      PropertyTransition = require("common/models/property-transition");
+
+  function AtomTransition(model) {
+    // Call super constructor.
+    PropertyTransition.call(this);
+    this._model = model;
+  }
+  inherit(AtomTransition, PropertyTransition);
+
+
+  AtomTransition.prototype.setObjectProperties = function(id, props) {
+    this._model.setAtomProperties(id, props);
+  };
+
+  AtomTransition.prototype.getObjectProperties = function (id) {
+    return this._model.getAtomProperties(id);
+  };
+
+  return AtomTransition;
+});
+
+/*global define */
+
+/**
+  This plugin adds quantum dynamics functionality to the MD2D engine.
+
+  Datatable changes`
+    atoms:
+      excitation: an int representing the current level of excitation of an atom, from
+        floor (0) to an arbitrary level. In this model each atom is assumed to have one
+        single electron that can be excited to any of a finite number of levels. The
+        actual energy of each level is defined by the atom's element
+
+  New serialized properties:
+
+    elementEnergyLevels: A 2-dimensional array defining energy levels for each element
+
+*/
+
+
+define('md2d/models/engine/plugins/quantum-dynamics',['require','common/models/engines/clone-restore-wrapper','../constants/index','../utils','arrays','common/array-types','md2d/models/metadata','common/validator'],function(require) {
+
+  // static variables
+  var CloneRestoreWrapper = require('common/models/engines/clone-restore-wrapper'),
+      constants           = require('../constants/index'),
+      utils               = require('../utils'),
+
+      // in reality, 6.626E-34 m^2kg/s. Classic MW uses 0.2 in its units (eV * fs)
+      PLANCK_CONSTANT = constants.convert(0.2, { from: constants.unit.EV, to: constants.unit.MW_ENERGY_UNIT }),
+
+      // Speed of light.
+      // in reality, about 300 nm/fs! Classic uses 0.2 in its units (0.1Å/fs), which is 0.002 nm/fs:
+      C = 0.002,
+      TWO_PI = 2 * Math.PI,
+
+      // expected value of lifetime of excited energy state, in fs
+      LIFETIME = 1000,
+      EMISSION_PROBABILITY_PER_FS = 1/LIFETIME;
+
+  return function QuantumDynamics(engine, _properties) {
+
+    var arrays               = require('arrays'),
+        arrayTypes           = require('common/array-types'),
+        metadata             = require('md2d/models/metadata'),
+        validator            = require('common/validator'),
+
+        properties           = validator.validateCompleteness(metadata.quantumDynamics, _properties),
+
+        api,
+
+        elementEnergyLevels  = properties.elementEnergyLevels,
+        pRadiationless       = properties.radiationlessEmissionProbability,
+
+        dimensions           = engine.getDimensions(),
+
+        atoms,
+        elements,
+        photons,
+
+        viewPhotons = [],
+
+        updateAtomsTable = function() {
+          var length = atoms.x.length;
+
+          atoms.excitation = arrays.create(length, 0, arrayTypes.int8Type);
+        },
+
+        createPhotonsTable = function(serializedPhotons) {
+          var length = 0;
+
+          if (serializedPhotons.x) {
+            length = Math.ceil(serializedPhotons.x.length / 10) * 10;
+          }
+
+          photons =  {
+            x     : arrays.create(length, 0, arrayTypes.floatType),
+            y     : arrays.create(length, 0, arrayTypes.floatType),
+            vx    : arrays.create(length, 0, arrayTypes.floatType),
+            vy    : arrays.create(length, 0, arrayTypes.floatType),
+            angularFrequency : arrays.create(length, 0, arrayTypes.floatType)
+          };
+        },
+
+        currentlyOperatedPairs = [],  // all pairs being currently operated on
+
+        atom1Idx, atom2Idx,           // current pair of atoms during thermal excitation
+
+        u1, u2,                       // temporary velocity-calculation variables
+        w1, w2,
+        dx, dy,
+
+        numPhotons = 0,
+
+        copyPhotonData = function(serializedPhotons) {
+          if (!serializedPhotons || !serializedPhotons.x) {
+            return;
+          }
+          ['x', 'y', 'vx', 'vy', 'angularFrequency'].forEach(function(key) {
+            arrays.copy(serializedPhotons[key], photons[key]);
+          });
+
+          for (var i = 0; i < photons.x.length; i++) {
+            if (photons.vx[i] || photons.vy[i]) {
+              numPhotons++;
+            }
+          }
+        },
+
+        // If a pair of atoms are close enough, QD interactions may occur.
+        //
+        // This is called at the end of every integration loop.
+        performInteractionsBetweenCloseAtoms = function(neighborList) {
+          var N     = engine.getNumberOfAtoms(),
+              nlist = neighborList.getList(),
+              currentlyClosePairs = [],
+              a1, a2,
+              i, len,
+              el1, el2,
+              energyLevels1, energyLevels2,
+              xi, yi, xij, yij, ijsq,
+              avrSigma, avrSigmaSq,
+              atomWasExcited, atomWasDeexcited;
+
+          if (!elementEnergyLevels) return;
+
+          // get all proximal pairs of atoms, using neighborList
+          for (a1 = 0; a1 < N; a1++) {
+
+            xi = atoms.x[a1];
+            yi = atoms.y[a1];
+
+            for (i = neighborList.getStartIdxFor(a1), len = neighborList.getEndIdxFor(a1); i < len; i++) {
+              a2 = nlist[i];
+
+              el1 = atoms.element[a1];
+              el2 = atoms.element[a2];
+              energyLevels1 = elementEnergyLevels[el1];
+              energyLevels2 = elementEnergyLevels[el2];
+
+              // if neither atom is of an element with energy levels, skip
+             if (!energyLevels1.length && !energyLevels2.length) {
+               continue;
+             }
+
+              // if we aren't close (within the avrSigma of two atoms), skip
+              xij = xi - atoms.x[a2];
+              yij = yi - atoms.y[a2];
+              ijsq = xij * xij + yij * yij;
+              avrSigma = 0.5 * (elements.sigma[el1] + elements.sigma[el2]);
+              avrSigmaSq = avrSigma * avrSigma;
+
+              if (ijsq >= avrSigmaSq) {
+                continue;
+              }
+
+              currentlyClosePairs[a1] = a2;   // add this pair to our temporary list of close pairs
+
+              if (currentlyOperatedPairs[a1] === a2) {
+                // we have already operated on this pair, and the atoms have not yet
+                // left each other's neighborhoods, so we skip so as not to operate
+                // on them twice in one collision
+                continue;
+              }
+
+              // first try to see if we can excite atoms
+              atomWasExcited = tryToThermallyExciteAtoms(a1, a2);
+
+              // if we didn't excite, see if this pair wants to de-excite
+              if (!atomWasExcited) {
+                atomWasDeexcited = tryToDeexciteAtoms(a1, a2);
+              }
+
+              if (atomWasExcited || atomWasDeexcited) {
+                // add pair to our operation list
+                currentlyOperatedPairs[a1] = a2;
+                currentlyOperatedPairs[a2] = a1;
+              }
+            }
+          }
+
+          // go through list of currently-operated pairs, and if any of them aren't in
+          // our temporary list of close pairs, they have left each other so we can
+          // strike them from the list
+          for (a1 = 0, len = currentlyOperatedPairs.length; a1 < len; a1++) {
+            a2 = currentlyOperatedPairs[a1];
+            if (!isNaN(a2)) {
+              if (!(currentlyClosePairs[a1] === a2 || currentlyClosePairs[a2] === a1)) {
+                delete currentlyOperatedPairs[a1];
+                delete currentlyOperatedPairs[a2];
+              }
+            }
+          }
+        },
+
+        // If a pair of atoms are close enough, and their relative KE is greater than
+        // the energy required to reach a new excitation level of a random member of
+        // the pair, increase the excitation level of that atom and adjust the velocity
+        // of the pair as required.
+        tryToThermallyExciteAtoms = function(a1, a2) {
+          var atomWasExcited,
+              selection;
+
+          atom1Idx = a1;
+          atom2Idx = a2;
+
+          // excite a random atom, or pick the excitable one if only one can be excited
+          selection = Math.random() < 0.5 ? atom1Idx : atom2Idx;
+          atomWasExcited = tryToExcite(selection);
+          if (!atomWasExcited) {
+            // if we couldn't excite the first, excite the other one
+            atomWasExcited = tryToExcite(atom1Idx+atom2Idx-selection);
+          }
+
+          return atomWasExcited;
+        },
+
+        // Excites an atom to a new energy level if the relative KE of the pair atom1Idx
+        // and atom2Idx is high enough, and updates the velocities of atoms as necessary
+        tryToExcite = function(i) {
+          var energyLevels   =   elementEnergyLevels[atoms.element[i]],
+              currentEnergyLevel,
+              currentElectronEnergy,
+              relativeKE,
+              energyRequired, highest,
+              nextEnergyLevel, energyAbsorbed,
+              j, jj;
+
+          if (!energyLevels) return;
+
+          precalculateVelocities();
+
+          relativeKE = getRelativeKE();
+
+          currentEnergyLevel = atoms.excitation[i];
+          currentElectronEnergy = energyLevels[currentEnergyLevel];
+
+          // get the highest energy level above the current that the relative KE can reach
+          for (j = currentEnergyLevel+1, jj = energyLevels.length; j < jj; j++) {
+            energyRequired = energyLevels[j] - currentElectronEnergy;
+            if (relativeKE < energyRequired) {
+              break;
+            }
+            highest = j;
+          }
+          if (!highest) {
+            // there is no higher energy level we can reach
+            return false;
+          }
+
+          // assuming that all the energy levels above have the same chance of
+          // getting the excited electron, we randomly pick one.
+          highest = highest - currentEnergyLevel;
+          nextEnergyLevel = Math.ceil(Math.random() * highest) + currentEnergyLevel;
+
+          atoms.excitation[i] = nextEnergyLevel;
+          energyAbsorbed = energyLevels[nextEnergyLevel] - currentElectronEnergy;
+          updateVelocities(energyAbsorbed);
+          return true;
+        },
+
+        precalculateVelocities = function() {
+          dx = atoms.x[atom2Idx] - atoms.x[atom1Idx];
+          dy = atoms.y[atom2Idx] - atoms.y[atom1Idx];
+
+          var normalizationFactor = 1 / Math.sqrt(dx*dx + dy*dy);
+
+          dx *= normalizationFactor;
+          dy *= normalizationFactor;
+
+          // Decompose v1 into components u1 (parallel to d) and w1 (orthogonal to d)
+          u1 = atoms.vx[atom1Idx] * dx + atoms.vy[atom1Idx] * dy;
+          w1 = atoms.vy[atom1Idx] * dx - atoms.vx[atom1Idx] * dy;
+
+          // Decompose v2 similarly
+          u2 = atoms.vx[atom2Idx] * dx + atoms.vy[atom2Idx] * dy;
+          w2 = atoms.vy[atom2Idx] * dx - atoms.vx[atom2Idx] * dy;
+        },
+
+        getRelativeKE = function() {
+          var du   = u2 - u1;
+
+          return 0.5 * du * du * atoms.mass[atom1Idx] * atoms.mass[atom2Idx] / (atoms.mass[atom1Idx] + atoms.mass[atom2Idx]);
+        },
+
+        updateVelocities = function(delta) {
+          var m1 = atoms.mass[atom1Idx],
+              m2 = atoms.mass[atom2Idx],
+              j  = m1 * u1 * u1 + m2 * u2 * u2 - delta,
+              g  = m1 * u1 + m2 * u2,
+              v1 = (g - Math.sqrt(m2 / m1 * (j * (m1 + m2) - g * g))) / (m1 + m2),
+              v2 = (g + Math.sqrt(m1 / m2 * (j * (m1 + m2) - g * g))) / (m1 + m2);
+
+          atoms.vx[atom1Idx] = v1 * dx - w1 * dy;
+          atoms.vy[atom1Idx] = v1 * dy + w1 * dx;
+          atoms.vx[atom2Idx] = v2 * dx - w2 * dy;
+          atoms.vy[atom2Idx] = v2 * dy + w2 * dx;
+        },
+
+        // If one atom has an electron in a higher energy state (and we didn't
+        // just excite this pair) the atom may deexcite during a collision. This
+        // will either release a photon (NOT YET IMPLEMENTED) or will increase
+        // the relative KE of the atoms (radiationless transition), with the
+        // probabilities of each depending on the model settings.
+        tryToDeexciteAtoms = function(a1, a2) {
+          var selection,
+              excitation1 = atoms.excitation[a1],
+              excitation2 = atoms.excitation[a2];
+
+          atom1Idx = a1;
+          atom2Idx = a2;
+
+          if (!excitation1 && !excitation2) {
+            return false;
+          }
+
+          // excite a random atom, or pick the excitable one if only one can be excited
+          if (!excitation1) {
+            selection = atom2Idx;
+          } else if (!excitation2) {
+            selection = atom1Idx;
+          } else {
+            selection = Math.random() < 0.5 ? atom1Idx : atom2Idx;
+          }
+          deexcite(selection);
+          return true;
+        },
+
+        deexcite = function(i) {
+          var energyLevels   = elementEnergyLevels[atoms.element[i]],
+              currentLevel   = atoms.excitation[i],
+              newLevel       = Math.floor(Math.random() * currentLevel),
+              energyReleased = energyLevels[newLevel] - energyLevels[currentLevel];
+
+          atoms.excitation[i] = newLevel;
+
+          if (Math.random() < pRadiationless) {
+            // new energy goes into increasing atom velocities after collision
+            precalculateVelocities();
+            updateVelocities(energyReleased);
+          } else {
+            emitPhoton(i, energyReleased);
+          }
+        },
+
+        addPhoton = function() {
+          var length = photons.x.length,
+              i;
+
+          numPhotons++;
+
+          if (numPhotons > length) {
+            utils.extendArrays(photons, length+10);
+            return numPhotons - 1;
+          }
+
+          for (i = 0; i < length; i++) {
+            if (!photons.vx[i] && !photons.vy[i]) {
+              return i;
+            }
+          }
+        },
+
+        removePhoton = function(i) {
+          numPhotons--;
+          photons.x[i] = photons.y[i] = photons.vx[i] = photons.vy[i] = photons.angularFrequency[i] = 0;
+        },
+
+        emitPhoton = function(atomIndex, energy) {
+          var angle = Math.random() * TWO_PI,
+              cosA  = Math.cos(angle),
+              sinA  = Math.sin(angle),
+              sigma = elements.sigma[atoms.element[atomIndex]],
+
+              // set photon location just outside atom's sigma
+              x           = atoms.x[atomIndex] + (sigma * 0.51 * cosA),
+              y           = atoms.y[atomIndex] + (sigma * 0.51 * sinA),
+              vx          = C * cosA,
+              vy          = C * sinA,
+              angularFreq = energy / PLANCK_CONSTANT,
+
+              photonIndex = addPhoton();
+
+          photons.x[photonIndex]     = x;
+          photons.y[photonIndex]     = y;
+          photons.vx[photonIndex]    = vx;
+          photons.vy[photonIndex]    = vy;
+          photons.angularFrequency[photonIndex] = angularFreq;
+        },
+
+        movePhotons = function(dt) {
+          var i, ii,
+              x, y;
+
+          for (i = 0, ii = photons.x.length; i < ii; i++) {
+            if (!photons.vx[i] && !photons.vy[i]) continue;
+
+            x = photons.x[i] += photons.vx[i] * dt;
+            y = photons.y[i] += photons.vy[i] * dt;
+
+            if (x < dimensions[0] || x > dimensions[2] || y < dimensions[1] || y > dimensions[3]) {
+              removePhoton(i);
+            }
+          }
+        },
+
+        spontaneousEmission = function(dt) {
+          if (!elementEnergyLevels) { return; }
+
+          for (var i = 0, N = engine.getNumberOfAtoms(); i < N; i++) {
+            tryToSpontaneouslyEmit(i, dt);
+          }
+        },
+
+        tryToSpontaneouslyEmit = function(atomIndex, dt) {
+
+          if (atoms.excitation[atomIndex] === 0) { return; }
+
+          // The probability of an emission in the current timestep is the probability that an
+          // exponential random variable T with expected value LIFETIME has value t less than dt.
+          // For dt < ~0.1 * LIFETIME, this probability is approximately equal to dt/LIFETIME.
+
+          if (Math.random() > dt * EMISSION_PROBABILITY_PER_FS) { return; }
+
+          // Randomly select an energy level. Reference:
+          // https://github.com/concord-consortium/mw/blob/6e2f2d4630323b8e993fcfb531a3e7cb06644fef/src/org/concord/mw2d/models/SpontaneousEmission.java#L48-L70
+
+          var u1 = Math.random(),
+              u2 = Math.random(),
+              energyLevels,
+              excessEnergy,
+              i,
+              m = atoms.excitation[atomIndex],
+              mInverse = 1/m;
+
+          for (i = 0; i < m; i++) {
+            if (i*mInverse <= u1 && u1 < (i+1)*mInverse && pRadiationless < u2) {
+              energyLevels = elementEnergyLevels[atoms.element[atomIndex]];
+              excessEnergy = energyLevels[m] - energyLevels[i];
+              atoms.excitation[atomIndex] = i;
+              emitPhoton(atomIndex, excessEnergy);
+              return;
+            }
+          }
+        };
+
+    // Public API.
+    api = {
+      initialize: function(dataTables) {
+        atoms     = dataTables.atoms;
+        elements  = dataTables.elements;
+        updateAtomsTable();
+        createPhotonsTable(properties.photons);
+        copyPhotonData(properties.photons);
+      },
+
+      performActionWithinIntegrationLoop: function(neighborList, dt) {
+        performInteractionsBetweenCloseAtoms(neighborList);
+        spontaneousEmission(dt);
+        movePhotons(dt);
+      },
+
+      getPhotons: function() {
+        return photons;
+      },
+
+      getNumPhotons: function() {
+        return numPhotons;
+      },
+
+      // TODO/FIXME: This is a modeler-level method; it's here until the plugin mechanism is
+      // extended to allow plugins to define both engine-level and modeler-level parts.
+      // Additionally, this can be split into updateViewPhotons which can happen in the
+      // modeler's readModelState method, and a simple getViewPhotons accessor used by the view.
+      getViewPhotons: function() {
+        var n = 0,
+            // avoid using closure variable as this method will be relocated to modeler
+            photons = this.getPhotons(),
+            viewPhoton,
+            i,
+            len;
+
+        for (i = 0, len = photons.x.length; i < len; i++) {
+          if (photons.vx[i] || photons.vy[i]) {
+            if (!viewPhotons[n]) {
+              viewPhotons[n] = {
+                idx: n
+              };
+            }
+
+            viewPhoton = viewPhotons[n];
+
+            viewPhoton.x  = photons.x[i];
+            viewPhoton.y  = photons.y[i];
+            viewPhoton.vx = photons.vx[i];
+            viewPhoton.vy = photons.vy[i];
+            viewPhoton.angularFrequency = photons.angularFrequency[i];
+
+            n++;
+          }
+        }
+
+        viewPhotons.length = this.getNumPhotons();
+
+        return viewPhotons;
+      },
+
+      getElementEnergyLevels: function() {
+        return elementEnergyLevels;
+      },
+
+      getRadiationlessEmissionProbability: function() {
+        return pRadiationless;
+      },
+
+      getState: function() {
+        return [
+          new CloneRestoreWrapper(photons),
+          {
+            clone: function() {
+              return {
+                numPhotons: numPhotons
+              };
+            },
+            restore: function(state) {
+              numPhotons = state.numPhotons;
+            }
+          }
+        ];
+      }
+    };
+
+    return api;
+  };
+
+});
+
+/*global define: false, d3: false */
+
+define('md2d/models/modeler',['require','common/console','common/performance','md2d/models/engine/md2d','md2d/models/metadata','common/models/tick-history','common/property-support','cs!common/running-average-filter','cs!md2d/models/solvent','common/serialize','common/validator','md2d/models/aminoacids-props','cs!md2d/models/aminoacids-helper','md2d/models/engine/genetic-engine','md2d/models/engine/constants/units','common/property-description','md2d/models/unit-definitions/index','md2d/models/units-translation','md2d/models/performance-optimizer','md2d/models/atom-transition','underscore','md2d/models/engine/plugins/quantum-dynamics'],function(require) {
   // Dependencies.
-  var arrays               = require('arrays'),
-      console              = require('common/console'),
+  var console              = require('common/console'),
       performance          = require('common/performance'),
       md2d                 = require('md2d/models/engine/md2d'),
       metadata             = require('md2d/models/metadata'),
       TickHistory          = require('common/models/tick-history'),
       PropertySupport      = require('common/property-support'),
-      RunningAverageFilter = require('cs!md2d/models/running-average-filter'),
+      RunningAverageFilter = require('cs!common/running-average-filter'),
       Solvent              = require('cs!md2d/models/solvent'),
       serialize            = require('common/serialize'),
       validator            = require('common/validator'),
@@ -22557,11 +23702,15 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       aminoacidsHelper     = require('cs!md2d/models/aminoacids-helper'),
       GeneticEngine        = require('md2d/models/engine/genetic-engine'),
       units                = require('md2d/models/engine/constants/units'),
-      PropertyDescription  = require('md2d/models/property-description'),
+      PropertyDescription  = require('common/property-description'),
       unitDefinitions      = require('md2d/models/unit-definitions/index'),
       UnitsTranslation     = require('md2d/models/units-translation'),
       PerformanceOptimizer = require('md2d/models/performance-optimizer'),
-      _ = require('underscore');
+      AtomTransition       = require('md2d/models/atom-transition'),
+      _ = require('underscore'),
+
+      // plugins
+      QuantumDynamics      = require('md2d/models/engine/plugins/quantum-dynamics');
 
   return function Model(initialProperties) {
 
@@ -22586,12 +23735,14 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
         stopped = true,
         restart = false,
         newStep = false,
-        translationAnimInProgress = false,
         lastSampleTime,
         sampleTimes = [],
 
-        modelOutputState,
+        modelState,
         tickHistory,
+
+        // Transitions list.
+        transitions = [],
 
         // Molecular Dynamics engine.
         engine,
@@ -22605,9 +23756,6 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
         // ######################### Main Data Structures #####################
         // They are initialized at the end of this function. These data strucutres
         // are mainly managed by the engine.
-
-        // A hash of arrays consisting of arrays of atom property values
-        atoms,
 
         // A hash of arrays consisting of arrays of element property values
         elements,
@@ -22627,12 +23775,18 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
 
         // ####################################################################
 
-        // A two dimensional array consisting of atom index numbers and atom
-        // property values - in effect transposed from the atom property arrays.
-        results,
+        // An array of objects consisting of atom index numbers and atom property values, for easy
+        // consumption by the view. It is updated conservatively from the "unrolled" form used for
+        // speedy computation by the engine.
+        viewAtoms = [],
+
+        // An array of objects consisting of photon index numbers and property values, for easy
+        // consumption by the view. Only defined if the quantum dynamics plugin is used.
+        viewPhotons,
 
         // A two dimensional array consisting of radial bond index numbers, radial bond
         // properties, and the postions of the two bonded atoms.
+        // FIXME. Engine should not be calculating this.
         radialBondResults,
 
         // The index of the "spring force" used to implement dragging of atoms in a running model
@@ -22667,7 +23821,10 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
         mainProperties,
 
         // The initial viewOptions, validated and filtered from the initialProperties
-        viewOptions;
+        viewOptions,
+
+        // Properties hashes for use by plugins
+        pluginProperties;
 
     function defineBuiltinProperty(type, key, setter) {
       var metadataForType,
@@ -22707,10 +23864,15 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       propertySupport.defineProperty(key, descriptor);
     }
 
-    function average_speed() {
-      var i, s = 0, n = model.get_num_atoms();
-      i = -1; while (++i < n) { s += engine.atoms.speed[i]; }
-      return s/n;
+    function processTransitions(timeDiff) {
+      var i, len;
+      for (i = 0, len = transitions.length; i < len; i++) {
+        transitions[i].process(timeDiff);
+      }
+    }
+
+    function cleanupTransitions() {
+      // TODO: implement me!
     }
 
     function tick(elapsedTime, dontDispatchTickEvent) {
@@ -22732,6 +23894,11 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
           lastSampleTime = t;
           sampleTimes.push(sampleTime);
           sampleTimes.splice(0, sampleTimes.length - 64);
+
+          // Process all transitions which are in progress.
+          processTransitions(sampleTime);
+          // Remove all transitions which are finished.
+          cleanupTransitions();
         } else {
           lastSampleTime = t;
         }
@@ -22804,7 +23971,7 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       if listeners request them. This method also guarantees that all properties have their updated
       value when they are requested by any listener.
 
-      Technically, this method first updates the 'results' array and macrostate variables, then
+      Technically, this method first updates the 'viewAtoms' array and macrostate variables, then
       invalidates any  cached output-property values, and finally notifies all output-property
       listeners.
 
@@ -22861,9 +24028,7 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       invalidatingChangeHookNestingLevel--;
 
       // Make sure that computed properties which depend on engine state are valid
-      if (engine) {
-        readModelState();
-      }
+      readModelState();
 
       // Non-filtered outputs will be valid at this point (caching is disabl;ed, so they're
       // recomputed every time.) This ensures that filtered outputs that depend on non-filtered
@@ -22922,7 +24087,7 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
     })();
 
     /**
-      This method is called to refresh the results array and macrostate variables (KE, PE,
+      This method is called to refresh the viewAtoms array and macrostate variables (KE, PE,
       temperature) whenever an engine integration occurs or the model state is otherwise changed.
 
       Normally, you should call the methods updateOutputPropertiesAfterChange or
@@ -22931,61 +24096,61 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       the detection of changed properties.
     */
     function readModelState() {
-      var i, prop, n, amino;
+      engine.computeOutputState(modelState);
+      // remember that getViewPhotons will eventually be a modeler-layer method that ingests a raw
+      // representation provided by modelState.photons
+      viewPhotons = engine.callPluginAccessor('getViewPhotons');
+      updateViewAtoms(modelState.atoms);
+    }
 
-      engine.computeOutputState(modelOutputState);
+    // Transpose 'atoms' object into 'viewAtoms' for consumption by view code
+    var updateViewAtoms = (function() {
+      var isAminoAcid = function () {
+        return aminoacidsHelper.isAminoAcid(this.element);
+      };
 
-      resizeResultsArray();
+      return function(atoms) {
+        var n = engine.getNumberOfAtoms(),
+            i,
+            prop,
+            amino,
+            viewAtom;
 
-      // Transpose 'atoms' object into 'results' for easier consumption by view code
-      for (i = 0, n = model.get_num_atoms(); i < n; i++) {
-        for (prop in atoms) {
-          if (atoms.hasOwnProperty(prop)) {
-            results[i][prop] = atoms[prop][i];
+        // TODO: refactor whole approach to creation of objects from flat arrays.
+        // Think about more general way of detecting and representing amino acids.
+        // However it would be reasonable to perform such refactoring later, when all requirements
+        // related to proteins engine are clearer.
+
+        viewAtoms.length = n;
+
+        for (i = 0, n; i < n; i++) {
+          if (!viewAtoms[i]) {
+            viewAtoms[i] = {
+              idx: i
+            };
+          }
+          viewAtom = viewAtoms[i];
+
+          for (prop in atoms) {
+            if (atoms.hasOwnProperty(prop)) {
+              viewAtom[prop] = atoms[prop][i];
+            }
+          }
+
+          // Provide convenience function for view, do not force it to ask
+          // model / engine directly. In the future, atom objects should be
+          // represented by a separate class.
+          viewAtom.isAminoAcid = isAminoAcid;
+
+          // Additional properties, used only by view.
+          if (viewAtom.isAminoAcid()) {
+            amino = aminoacidsHelper.getAminoAcidByElement(atoms.element[i]);
+            viewAtom.symbol = amino.symbol;
+            viewAtom.label  = amino.abbreviation;
           }
         }
-
-        // Additional properties, used only by view.
-        if (aminoacidsHelper.isAminoAcid(atoms.element[i])) {
-          amino = aminoacidsHelper.getAminoAcidByElement(atoms.element[i]);
-          results[i].symbol = amino.symbol;
-          results[i].label = amino.abbreviation;
-        }
-      }
-    }
-
-    /**
-      Ensure that the 'results' array of arrays is defined and contains one typed array per atom
-      for containing the atom properties.
-    */
-    function resizeResultsArray() {
-      var isAminoAcid = function () {
-            return aminoacidsHelper.isAminoAcid(this.element);
-          },
-          i, len;
-
-      // TODO: refactor whole approach to creation of objects from flat arrays.
-      // Think about more general way of detecting and representing amino acids.
-      // However it would be reasonable to perform such refactoring later, when all requirements
-      // related to proteins engine are clearer.
-
-      if (!results) results = [];
-
-      for (i = results.length, len = model.get_num_atoms(); i < len; i++) {
-        if (!results[i]) {
-          results[i] = {
-            idx: i,
-            // Provide convenience function for view, do not force it to ask
-            // model / engine directly. In the future, atom objects should be
-            // represented by a separate class.
-            isAminoAcid: isAminoAcid
-          };
-        }
-      }
-
-      // Also make sure to truncate the results array if it got shorter (i.e., atoms were removed)
-      results.length = len;
-    }
+      };
+    }());
 
     /**
       return a random element index ... which is *not* an amino acid element
@@ -23203,41 +24368,6 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       propertySupport.defineProperty(key, descriptor);
     };
 
-    model.getStats = function() {
-      return {
-        time        : model.get('time'),
-        speed       : average_speed(),
-        ke          : model.get('kineticEnergy'),
-        temperature : model.get('temperature'),
-        current_step: tickHistory.get("counter"),
-        steps       : tickHistory.get("length")-1
-      };
-    };
-
-    // A convenience for interactively getting energy averages
-    model.getStatsHistory = function(num) {
-      var i, len, start,
-          tick,
-          ke, pe,
-          ret = [];
-
-      len = tickHistory.get("length");
-      if (!arguments.length) {
-        start = 0;
-      } else {
-        start = Math.max(len-num, 0);
-      }
-      ret.push("time (fs)\ttotal PE (eV)\ttotal KE (eV)\ttotal energy (eV)");
-
-      for (i = start; i < len; i++) {
-        tick = tickHistory.returnTick(i);
-        pe = tick.output.PE;
-        ke = tick.output.KE;
-        ret.push(tick.output.time + "\t" + pe + "\t" + ke + "\t" + (pe+ke));
-      }
-      return ret.join('\n');
-    };
-
     /**
       Current seek position
     */
@@ -23324,56 +24454,47 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       Initialize minX, minYm, maxX, maxY from width and height
       when these options are undefined.
     */
-    model.initializeDimensions = function () {
-      var minX = model.get("minX"),
-          minY = model.get("minY"),
-          maxX = model.get("maxX"),
-          maxY = model.get("maxY");
+    function initializeDimensions(properties) {
+      var minX = properties.minX,
+          minY = properties.minY,
+          maxX = properties.maxX,
+          maxY = properties.maxY;
 
-      model.set({
-        minX: minX != null ? minX : 0,
-        maxX: maxX != null ? maxX : model.get("width"),
-        minY: minY != null ? minY : 0,
-        maxY: maxY != null ? maxY : model.get("height")
-      });
-    };
+      properties.minX = minX != null ? minX : 0;
+      properties.maxX = maxX != null ? maxX : properties.width;
+      properties.minY = minY != null ? minY : 0;
+      properties.maxY = maxY != null ? maxY : properties.height;
+    }
 
     /**
       Creates a new md2d engine and leaves it in 'engine'.
     */
-    model.initializeEngine = function () {
+    function initializeEngine(properties, pluginProperties) {
       engine = md2d.createEngine();
+      engine.setDimensions([properties.minX, properties.minY, properties.maxX, properties.maxY]);
 
-      engine.setDimensions([model.get('minX'), model.get('minY'), model.get('maxX'), model.get('maxY')]);
-      engine.useLennardJonesInteraction(model.get('lennardJonesForces'));
-      engine.useCoulombInteraction(model.get('coulombForces'));
-      engine.useThermostat(model.get('temperatureControl'));
-      engine.setViscosity(model.get('viscosity'));
-      engine.setVDWLinesRatio(VDWLinesCutoffMap[model.get('VDWLinesCutoff')]);
-      engine.setGravitationalField(model.get('gravitationalField'));
-      engine.setTargetTemperature(model.get('targetTemperature'));
-      engine.setDielectricConstant(model.get('dielectricConstant'));
-      engine.setRealisticDielectricEffect(model.get('realisticDielectricEffect'));
-      engine.setSolventForceType(model.get('solventForceType'));
-      engine.setSolventForceFactor(model.get('solventForceFactor'));
-      engine.setAdditionalSolventForceMult(model.get('additionalSolventForceMult'));
-      engine.setAdditionalSolventForceThreshold(model.get('additionalSolventForceThreshold'));
+      if (pluginProperties.quantumDynamics) {
+        properties.useQuantumDynamics = true;
+        engine.addPlugin(new QuantumDynamics(engine, pluginProperties.quantumDynamics));
+      } else {
+        properties.useQuantumDynamics = false;
+      }
 
       // Register invalidating change hooks.
       // pairwiseLJProperties object allows to change state which defines state of the whole simulation.
       engine.pairwiseLJProperties.registerChangeHooks(invalidatingChangePreHook, invalidatingChangePostHook);
 
-      window.state = modelOutputState = {};
+      window.state = modelState = {};
 
       // Copy reference to basic properties.
-      atoms = engine.atoms;
+      // FIXME. This should go away. https://www.pivotaltracker.com/story/show/50086079
       elements = engine.elements;
       radialBonds = engine.radialBonds;
       radialBondResults = engine.radialBondResults;
       angularBonds = engine.angularBonds;
       restraints = engine.restraints;
       obstacles = engine.obstacles;
-    };
+    }
 
     model.createElements = function(_elements) {
       var i, num, prop, elementProps;
@@ -23410,35 +24531,9 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
     };
 
     /**
-      Creates a new set of atoms, but new engine is created at the beginning.
-      TODO: this method makes no sense. Objects like obstacles, restraints etc.,
-      will be lost. It's confusing and used *only* in tests for now.
-      Think about API change. Probably the best option would be to just create new
-      modeler each time using constructor.
-
-      @config: either the number of atoms (for a random setup) or
-               a hash specifying the x,y,vx,vy properties of the atoms
-      When random setup is used, the option 'relax' determines whether the model is requested to
-      relax to a steady-state temperature (and in effect gets thermalized). If false, the atoms are
-      left in whatever grid the engine's initialization leaves them in.
-    */
-    model.createNewAtoms = function(config) {
-      model.initializeDimensions();
-      model.initializeEngine();
-      model.createElements(editableElements);
-      model.createAtoms(config);
-
-      return model;
-    };
-
-    /**
       Creates a new set of atoms.
 
-      @config: either the number of atoms (for a random setup) or
-               a hash specifying the x,y,vx,vy properties of the atoms
-      When random setup is used, the option 'relax' determines whether the model is requested to
-      relax to a steady-state temperature (and in effect gets thermalized). If false, the atoms are
-      left in whatever grid the engine's initialization leaves them in.
+      config: a hash specifying the x,y,vx,vy properties of the atoms
     */
     model.createAtoms = function(config) {
           // Options for addAtom method.
@@ -23453,44 +24548,19 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       // Start batch process
       model.startBatch();
 
-      if (typeof config === 'number') {
-        num = config;
-      } else if (config.num != null) {
-        num = config.num;
-      } else if (config.x) {
-        num = config.x.length;
-      }
+      num = config.x.length;
 
-      // TODO: this branching based on x, y isn't very clear.
-      if (config.x && config.y) {
-        // config is hash of arrays (as specified in JSON model).
-        // So, for each index, create object containing properties of
-        // atom 'i'. Later, use these properties to add atom
-        // using basic addAtom method.
-        for (i = 0; i < num; i++) {
-          atomProps = {};
-          for (prop in config) {
-            if (config.hasOwnProperty(prop)) {
-              atomProps[prop] = config[prop][i];
-            }
+      // config is hash of arrays (as specified in JSON model). So, for each index, create object
+      // containing properties of atom 'i'. Later, use these properties to add atom using basic
+      // addAtom method.
+      for (i = 0; i < num; i++) {
+        atomProps = {};
+        for (prop in config) {
+          if (config.hasOwnProperty(prop)) {
+            atomProps[prop] = config[prop][i];
           }
-          model.addAtom(atomProps, options);
         }
-      } else {
-        for (i = 0; i < num; i++) {
-          // Provide only required values.
-          atomProps = {x: 0, y: 0};
-          model.addAtom(atomProps, options);
-        }
-        // This function rearrange all atoms randomly.
-        engine.setupAtomsRandomly({
-          temperature: model.get('targetTemperature'),
-          // Provide number of user-defined, editable elements.
-          // There is at least one default element, even if no elements are specified in JSON.
-          userElements: editableElements === undefined ? 1 : editableElements.mass.length
-        });
-        if (config.relax)
-          engine.relaxToTemperature();
+        model.addAtom(atomProps, options);
       }
 
       // End batch process
@@ -23498,9 +24568,6 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
 
       // Listeners should consider resetting the atoms a 'reset' event
       dispatch.reset();
-
-      // return model, for chaining (if used)
-      return model;
     };
 
     model.createRadialBonds = function(_radialBonds) {
@@ -23697,11 +24764,15 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
 
       // When atoms are being deserialized, the deserializing function
       // should handle change hooks due to performance reasons.
-      if (!options.deserialization)
+      if (!options.deserialization) {
         invalidatingChangePreHook();
+      }
+
       engine.addAtom(props);
-      if (!options.deserialization)
+
+      if (!options.deserialization) {
         invalidatingChangePostHook();
+      }
 
       if (!options.suppressEvent) {
         dispatch.addAtom();
@@ -23718,8 +24789,8 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
 
       invalidatingChangePreHook();
       engine.removeAtom(i);
-      // Enforce modeler to recalculate results array.
-      results.length = 0;
+      // Enforce modeler to recalculate viewAtoms array.
+      viewAtoms.length = 0;
       invalidatingChangePostHook();
 
       if (!options.suppressEvent) {
@@ -23778,14 +24849,16 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       props = validator.validateCompleteness(metadata.radialBond, props);
 
       // During deserialization change hooks are managed manually.
-      if (!options || !options.deserialization)
+      if (!options || !options.deserialization) {
         invalidatingChangePreHook();
+      }
 
       // Finally, add radial bond.
       engine.addRadialBond(props);
 
-      if (!options || !options.deserialization)
+      if (!options || !options.deserialization) {
         invalidatingChangePostHook();
+      }
 
       dispatch.addRadialBond();
     },
@@ -23802,14 +24875,16 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       props = validator.validateCompleteness(metadata.angularBond, props);
 
       // During deserialization change hooks are managed manually.
-      if (!options || !options.deserialization)
+      if (!options || !options.deserialization) {
         invalidatingChangePreHook();
+      }
 
       // Finally, add angular bond.
       engine.addAngularBond(props);
 
-      if (!options || !options.deserialization)
+      if (!options || !options.deserialization) {
         invalidatingChangePostHook();
+      }
     };
 
     model.removeAngularBond = function(idx) {
@@ -23837,7 +24912,8 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
     */
     model.getMoleculeBoundingBox = function(atomIndex) {
 
-      var moleculeAtoms,
+      var atoms = modelState.atoms,
+          moleculeAtoms,
           i,
           x,
           y,
@@ -23869,6 +24945,16 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       return { top: top-cy, left: left-cx, bottom: bottom-cy, right: right-cx };
     },
 
+    model.setTemperatureOfAtoms = function(atomIndices, T) {
+      invalidatingChangePreHook();
+      engine.setTemperatureOfAtoms(atomIndices, T);
+      invalidatingChangePostHook();
+    };
+
+    model.getTemperatureOfAtoms = function(atomIndices) {
+      return engine.getTemperatureOfAtoms(atomIndices);
+    };
+
     /**
         A generic method to set properties on a single existing atom.
 
@@ -23882,7 +24968,8 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
         the bonded atoms together.
       */
     model.setAtomProperties = function(i, props, checkLocation, moveMolecule) {
-      var moleculeAtoms,
+      var atoms = modelState.atoms,
+          moleculeAtoms,
           dx, dy,
           new_x, new_y,
           j, jj;
@@ -23922,11 +25009,13 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
     };
 
     model.getAtomProperties = function(i) {
-      var atomMetaData = metadata.atom,
+      var atoms = modelState.atoms,
+          atomMetaData = metadata.atom,
           props = {},
           propName;
+
       for (propName in atomMetaData) {
-        if (atomMetaData.hasOwnProperty(propName)) {
+        if (atomMetaData.hasOwnProperty(propName) && atoms[propName]) {
           props[propName] = atoms[propName][i];
         }
       }
@@ -24132,8 +25221,8 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
     model.liveDragStart = function(atomIndex, x, y) {
       if (liveDragSpringForceIndex != null) return;    // don't add a second liveDrag force
 
-      if (x == null) x = atoms.x[atomIndex];
-      if (y == null) y = atoms.y[atomIndex];
+      if (x == null) x = modelState.atoms.x[atomIndex];
+      if (y == null) y = modelState.atoms.y[atomIndex];
 
       liveDragSavedFriction = model.getAtomProperties(atomIndex).friction;
 
@@ -24167,11 +25256,6 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       liveDragSpringForceIndex = null;
     };
 
-    // return a copy of the array of speeds
-    model.get_speed = function() {
-      return arrays.copy(engine.atoms.speed, []);
-    };
-
     /**
      * Returns number of frames per second.
      * @return {number} frames per second.
@@ -24202,26 +25286,41 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       return stopped;
     };
 
-    model.get_atoms = function() {
-      return atoms;
-    };
-
     model.get_elements = function() {
       return elements;
     };
 
-    model.get_results = function() {
-      return results;
+    model.getAtoms = function() {
+      return viewAtoms;
     };
+
+    model.getPhotons = function() {
+      return viewPhotons;
+    },
 
     model.get_radial_bond_results = function() {
       return radialBondResults;
     };
 
-    // FIXME. Should be deprecated or just outright removed and replaced by an output property
-    // 'numberOfAtoms'.
-    model.get_num_atoms = function(f) {
-      return engine.getNumberOfAtoms(f);
+    /**
+      Returns the total number of atoms, or else the number of atoms matching some criterion.
+
+      If the argument 'f' is present, it is called once for each atom, passing the atom as the
+      argument to f. The number of atoms for which f evaluates to true is returned.
+
+      Example
+
+        model.getNumberOfAtoms(function(atom) { return atom.mass < 50; })
+
+      returns the number of atoms having mass < 50
+    */
+    model.getNumberOfAtoms = function(f) {
+      if (!f) {
+        return viewAtoms.length;
+      }
+      return viewAtoms.reduce(function(total, atom) {
+        return f(atom) ? total + 1 : total;
+      }, 0);
     };
 
     model.get_obstacles = function() {
@@ -24246,6 +25345,11 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
     // FIXME. Should be an output property.
     model.getNumberOfAngularBonds = function () {
       return engine.getNumberOfAngularBonds();
+    };
+
+    // FIXME. Should be an output property.
+    model.getNumberOfSpringForces = function () {
+      return engine.getNumberOfSpringForces();
     };
 
     model.get_radial_bonds = function() {
@@ -24290,11 +25394,6 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       return model;
     };
 
-    model.relax = function() {
-      engine.relaxToTemperature();
-      return model;
-    };
-
     model.minimizeEnergy = function () {
       invalidatingChangePreHook();
       engine.minimizeEnergy();
@@ -24319,85 +25418,16 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       invalidatingChangePreHook();
 
       generatedAACount = engine.generateProtein(aaSequence, expectedLength);
-      // Enforce modeler to recalculate results array.
+      // Enforce modeler to recalculate viewAtoms array.
       // TODO: it's a workaround, investigate the problem.
-      results.length = 0;
+      viewAtoms.length = 0;
 
       invalidatingChangePostHook();
 
       dispatch.addAtom();
+      dispatch.addRadialBond();
 
       return generatedAACount;
-    };
-
-    model.extendProtein = function (xPos, yPos, aaAbbr) {
-      invalidatingChangePreHook();
-
-      engine.extendProtein(xPos, yPos, aaAbbr);
-      // Enforce modeler to recalculate results array.
-      // TODO: it's a workaround, investigate the problem.
-      results.length = 0;
-
-      invalidatingChangePostHook();
-
-      dispatch.addAtom();
-    };
-
-    /**
-      Performs only one step of translation.
-
-      Returns true when translation is finished, false otherwise.
-    */
-    model.translateStepByStep = function () {
-      var abbr = engine.geneticProperties.translateStepByStep(),
-          markerPos = engine.geneticProperties.get().translationStep,
-          symbolHeight = engine.geneticProperties.get().height,
-          symbolWidth = engine.geneticProperties.get().width,
-          xPos = symbolWidth * markerPos * 3 + 1.5 * symbolWidth,
-          yPos = symbolHeight * 5,
-          width = model.get("width"),
-          height = model.get("height"),
-          lastAA;
-
-      while (xPos > width) {
-        xPos -= symbolWidth * 3;
-      }
-      while (yPos > height) {
-        yPos -= symbolHeight;
-      }
-
-      if (abbr !== undefined) {
-        model.extendProtein(xPos, yPos, abbr);
-      } else {
-        lastAA = model.get_num_atoms() - 1;
-        model.setAtomProperties(lastAA, {pinned: false});
-      }
-
-      // That means that the last step of translation has just been performed.
-      return abbr === undefined;
-    };
-
-    model.animateTranslation = function () {
-      var translationStep = function () {
-            var lastStep = model.translateStepByStep();
-            if (lastStep === false) {
-              setTimeout(translationStep, 1000);
-            }
-          };
-
-      // Avoid two timers running at the same time.
-      if (translationAnimInProgress === true) {
-        return;
-      }
-      translationAnimInProgress = true;
-
-      // If model is stopped, play it.
-      if (stopped) {
-        model.resume();
-      }
-
-      // Start the animation.
-      translationStep();
     };
 
     model.start = function() {
@@ -24478,22 +25508,6 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       return model;
     };
 
-    model.ave_ke = function() {
-      // NB this old/low-level method doesn't get units translation applied.
-      // (Use model.get('kineticEnergy') / model.get('numAtoms')
-      return modelOutputState.KE / model.get_num_atoms();
-    };
-
-    model.ave_pe = function() {
-      // NB this old/low-level method doesn't get units translation applied.
-      return modelOutputState.PE / model.get_num_atoms();
-    };
-
-    model.speed = function() {
-      // NB this old/low-level method doesn't get units translation applied.
-      return average_speed();
-    };
-
     model.dimensions = function() {
       return engine.getDimensions();
     };
@@ -24509,13 +25523,39 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       return d3.format(opts.format || 'g')(model.get(property));
     };
 
-
     /**
       Return a unitDefinition in the current unitScheme for a quantity
       such as 'length', 'mass', etc.
     */
     model.getUnitDefinition = function(name) {
       return unitsDefinition.units[name];
+    };
+
+    /**
+     * Returns atom transition object. It can be used to smoothly change
+     * atom properties over specified time. It's similar to D3 transitions.
+     *
+     * Atom transition object provides following methods:
+     *  id(id)          - sets ID of the atom (required!).
+     *  duration(d)     - sets duration in ms (required!).
+     *  prop(name, val) - sets property name and its final value (required!).
+     *  delay(d)        - sets delay in ms (default is 0).
+     *  ease(name)      - sets easing function (default is "cubic-in-out").
+     *                    Please see:
+     *                    https://github.com/mbostock/d3/wiki/Transitions#wiki-d3_ease
+     *
+     * e.g.
+     *  atomTransition().id(0).duration(1000).ease("linear").prop("x", 10);
+     *
+     * This will change "x" property of the atom with ID=0
+     * to value 10 over 1000ms using linear easing function.
+     *
+     * @return {AtomTransition} AtomTransition instance.
+     */
+    model.atomTransition = function () {
+      var t = new AtomTransition(model);
+      transitions.push(t);
+      return t;
     };
 
     /**
@@ -24538,7 +25578,37 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       invalidatingChangePostHook();
     };
 
-    // FIXME: Broken!! Includes property setter methods, does not include radialBonds, etc.
+    // Convert array of hashes to a hash of arrays
+    // TODO. Move to a new utils module, share with mml parser
+    function unroll(array) {
+      var ret = {};
+
+      if (array.length === 0) {
+        return {};
+      }
+
+      Object.keys(array[0]).forEach(function(key) {
+        ret[key] = [];
+      });
+
+      array.forEach(function(object) {
+        Object.keys(object).forEach(function(key) {
+          ret[key].push(object[key]);
+        });
+      });
+      return ret;
+    }
+
+    function serializeQuantumDynamics() {
+      var photons = model.getPhotons();
+
+      return {
+        photons: serialize(metadata.photon, unroll(photons), photons.length),
+        elementEnergyLevels: engine.callPluginAccessor('getElementEnergyLevels'),
+        radiationlessEmissionProbability: engine.callPluginAccessor('getRadiationlessEmissionProbability')
+      };
+    }
+
     model.serialize = function() {
       var propCopy = {},
           ljProps, i, len,
@@ -24554,7 +25624,7 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
 
       propCopy = serialize(metadata.mainProperties, rawProperties);
       propCopy.viewOptions = serialize(metadata.viewOptions, rawProperties);
-      propCopy.atoms = serialize(metadata.atom, atoms, engine.getNumberOfAtoms());
+      propCopy.atoms = serialize(metadata.atom, modelState.atoms, engine.getNumberOfAtoms());
 
       if (engine.getNumberOfRadialBonds()) {
         propCopy.radialBonds = serialize(metadata.radialBond, radialBonds, engine.getNumberOfRadialBonds());
@@ -24615,6 +25685,11 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
         delete propCopy.modelSampleRate;
       }
 
+      // TODO. Should be able to ask plugins to serialize their data.
+      if (model.properties.useQuantumDynamics) {
+        propCopy.quantumDynamics = serializeQuantumDynamics();
+      }
+
       removeAtomsArrayIfDefault("marked", metadata.atom.marked.defaultValue);
       removeAtomsArrayIfDefault("visible", metadata.atom.visible.defaultValue);
       removeAtomsArrayIfDefault("draggable", metadata.atom.draggable.defaultValue);
@@ -24641,8 +25716,10 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
     // TODO: move this to better place.
     if (initialProperties.DNA) {
       // Overwrite width and height options.
-      initialProperties.width = 1000;
-      initialProperties.height = 3;
+      initialProperties.width = 100;
+      initialProperties.height = 10;
+      // View options are optional, make sure that they are defined.
+      initialProperties.viewOptions = initialProperties.viewOptions || {};
       initialProperties.viewOptions.viewPortX = 0;
       initialProperties.viewOptions.viewPortY = 0;
       initialProperties.viewOptions.viewPortWidth = 5;
@@ -24666,6 +25743,14 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
     }());
     viewOptions = validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {});
 
+    // TODO. Implement a pattern whereby the pluginController lets each plugins examine the initial
+    // properties and extract the relevant plugin properties. *However*, don't do it in a way that
+    // requires changing the model JSON schema when functionality is moved out of the main engine
+    // and into a plugin, or vice-versa.
+    pluginProperties = {
+      quantumDynamics: initialProperties.quantumDynamics
+    };
+
     // Set the regular, main properties. Note that validation process will return hash without all
     // properties which are not defined in meta model as mainProperties (like atoms, obstacles,
     // viewOptions etc).
@@ -24682,6 +25767,20 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       unitsTranslation = new UnitsTranslation(unitsDefinition);
     }
 
+    // Initialize minX, minY, maxX, maxY from model width and height if they are undefined.
+    initializeDimensions(mainProperties);
+
+    // Setup MD2D engine object.
+    initializeEngine(mainProperties, pluginProperties);
+
+    // TODO: Elements are stored and treated different from other objects. This was enforced by
+    // createNewAtoms() method which has been removed. Change also editableElements handling.
+    editableElements = initialProperties.elements;
+    // Create editable elements.
+    model.createElements(editableElements);
+    // Create elements which specify amino acids also.
+    createAminoAcids();
+
     // ------------------------------
     // Define toplevel properties of the model
     // ------------------------------
@@ -24690,76 +25789,58 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
     (function() {
       var customSetters = {
         targetTemperature: function (value) {
-          if (engine) {
-            engine.setTargetTemperature(value);
-          }
+          engine.setTargetTemperature(value);
         },
 
         temperatureControl: function(value) {
-          if (engine) {
-            engine.useThermostat(value);
-          }
+          engine.useThermostat(value);
         },
 
         lennardJonesForces: function(value) {
-          if (engine) {
-            engine.useLennardJonesInteraction(value);
-          }
+          engine.useLennardJonesInteraction(value);
         },
 
         coulombForces: function(value) {
-          if (engine) {
-            engine.useCoulombInteraction(value);
-          }
+          engine.useCoulombInteraction(value);
         },
 
         solventForceType: function(value) {
-          if (engine) {
-            engine.setSolventForceType(value);
-          }
+          engine.setSolventForceType(value);
+        },
+
+        geneticEngineState: function(value) {
+          engine.setGeneticEngineState(value);
         },
 
         solventForceFactor: function(value) {
-          if (engine) {
-            engine.setSolventForceFactor(value);
-          }
+          engine.setSolventForceFactor(value);
         },
 
         additionalSolventForceMult: function(value) {
-          if (engine) {
-            engine.setAdditionalSolventForceMult(value);
-          }
+          engine.setAdditionalSolventForceMult(value);
         },
 
         additionalSolventForceThreshold: function(value) {
-          if (engine) {
-            engine.setAdditionalSolventForceThreshold(value);
-          }
+          engine.setAdditionalSolventForceThreshold(value);
         },
 
         dielectricConstant: function(value) {
-          if (engine) {
-            engine.setDielectricConstant(value);
-          }
+          engine.setDielectricConstant(value);
         },
 
         realisticDielectricEffect: function(value) {
-          if (engine) {
-            engine.setRealisticDielectricEffect(value);
-          }
+          engine.setRealisticDielectricEffect(value);
         },
 
         VDWLinesCutoff: function(value) {
           var ratio = VDWLinesCutoffMap[value];
-          if (ratio && engine) {
+          if (ratio) {
             engine.setVDWLinesRatio(ratio);
           }
         },
 
         gravitationalField: function(value) {
-          if (engine) {
-            engine.setGravitationalField(value);
-          }
+          engine.setGravitationalField(value);
         },
 
         modelSampleRate: function() {
@@ -24767,26 +25848,22 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
         },
 
         viscosity: function(value) {
-          if (engine) {
-            engine.setViscosity(value);
-          }
+          engine.setViscosity(value);
         },
 
         polarAAEpsilon: function (value) {
           var polarAAs, element1, element2,
               i, j, len;
 
-          if (engine) {
-            // Set custom pairwise LJ properties for polar amino acids.
-            // They should attract stronger to better mimic nature.
-            polarAAs = aminoacidsHelper.getPolarAminoAcids();
-            for (i = 0, len = polarAAs.length; i < len; i++) {
-              element1 = polarAAs[i];
-              for (j = i + 1; j < len; j++) {
-                element2 = polarAAs[j];
-                // Set custom pairwise LJ epsilon (default one for AA is -0.1).
-                engine.pairwiseLJProperties.set(element1, element2, {epsilon: value});
-              }
+          // Set custom pairwise LJ properties for polar amino acids.
+          // They should attract stronger to better mimic nature.
+          polarAAs = aminoacidsHelper.getPolarAminoAcids();
+          for (i = 0, len = polarAAs.length; i < len; i++) {
+            element1 = polarAAs[i];
+            for (j = i + 1; j < len; j++) {
+              element2 = polarAAs[j];
+              // Set custom pairwise LJ epsilon (default one for AA is -0.1).
+              engine.pairwiseLJProperties.set(element1, element2, {epsilon: value});
             }
           }
         }
@@ -24804,26 +25881,12 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
     });
     propertySupport.setRawValues(viewOptions);
 
-    // Initialize minX, minYm, maxX, maxY from model width and height
-    // if they are undefined.
-    model.initializeDimensions();
 
-    // Setup MD2D engine object.
-    model.initializeEngine();
     // Setup genetic engine.
     geneticEngine = new GeneticEngine(model);
 
     // Finally, if provided, set up the model objects (elements, atoms, bonds, obstacles and the rest).
     // However if these are not provided, client code can create atoms, etc piecemeal.
-
-    // TODO: Elements are stored and treated different from other objects.
-    // This is enforced by current createNewAtoms() method which should be
-    // depreciated. When it's changed, change also editableElements handling.
-    editableElements = initialProperties.elements;
-    // Create editable elements.
-    model.createElements(editableElements);
-    // Create elements which specify amino acids also.
-    createAminoAcids();
 
     // Trigger setter of polarAAEpsilon again when engine is initialized and
     // amino acids crated.
@@ -24831,13 +25894,7 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
     // will be injected to engine automatically.
     model.set({polarAAEpsilon: model.get('polarAAEpsilon')});
 
-    if (initialProperties.atoms) {
-      model.createAtoms(initialProperties.atoms);
-    } else if (initialProperties.mol_number) {
-      model.createAtoms(initialProperties.mol_number);
-      if (initialProperties.relax) model.relax();
-    }
-
+    if (initialProperties.atoms)        model.createAtoms(initialProperties.atoms);
     if (initialProperties.radialBonds)  model.createRadialBonds(initialProperties.radialBonds);
     if (initialProperties.angularBonds) model.createAngularBonds(initialProperties.angularBonds);
     if (initialProperties.restraints)   model.createRestraints(initialProperties.restraints);
@@ -24866,7 +25923,7 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
     }, function() {
       // Output getters are expected to return values in translated units, since authored outputs
       // can only read values already in translated units to start with.
-      var value = modelOutputState.time;
+      var value = modelState.time;
       if (unitsTranslation) {
         value = unitsTranslation.translateFromMD2DUnits(value, 'time');
       }
@@ -24936,7 +25993,7 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       unitType: 'energy',
       format: '.4g'
     }, function() {
-      var value = modelOutputState.KE;
+      var value = modelState.KE;
       if (unitsTranslation) {
         value = unitsTranslation.translateFromMD2DUnits(value, 'energy');
       }
@@ -24948,7 +26005,7 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       unitType: 'energy',
       format: '.4g'
     }, function() {
-      var value = modelOutputState.PE;
+      var value = modelState.PE;
       if (unitsTranslation) {
         value = unitsTranslation.translateFromMD2DUnits(value, 'energy');
       }
@@ -24959,7 +26016,7 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       unitType: 'energy',
       format: '.4g'
     }, function() {
-      var value = modelOutputState.KE + modelOutputState.PE;
+      var value = modelState.KE + modelState.PE;
       if (unitsTranslation) {
         value = unitsTranslation.translateFromMD2DUnits(value, 'energy');
       }
@@ -24971,7 +26028,7 @@ define('md2d/models/modeler',['require','arrays','common/console','common/perfor
       unitType: 'temperature',
       format: 'f'
     }, function() {
-      var value = modelOutputState.temperature;
+      var value = modelState.temperature;
       if (unitsTranslation) {
         value = unitsTranslation.translateFromMD2DUnits(value, 'temperature');
       }
@@ -25022,7 +26079,6 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
         // "Containers" - SVG g elements used to position layers of the final visualization.
         mainContainer,
         gridContainer,
-        geneticsContainer,
         radialBondsContainer,
         VDWLinesContainer,
         imageContainerBelow,
@@ -25083,9 +26139,9 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
     function scale() {
       var viewPortWidth = model.get("viewPortWidth"),
           viewPortHeight = model.get("viewPortHeight"),
+          viewPortZoom = model.get("viewPortZoom"),
           viewPortX = model.get("viewPortX"),
           viewPortY = model.get("viewPortY"),
-          viewPortZoom = model.get("viewPortZoom"),
           aspectRatio,
           width, height;
 
@@ -25105,9 +26161,10 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
         x: viewPortX != null ? viewPortX : modelSize.minX,
         y: viewPortY != null ? viewPortY : modelSize.minY
       };
-      viewport.width /= viewPortZoom;
-      viewport.height /= viewPortZoom;
-      viewport.y += viewport.height;
+
+      viewport.scaledWidth  = viewport.width / viewPortZoom;
+      viewport.scaledHeight = viewport.height / viewPortZoom;
+      viewport.y += viewport.scaledHeight;
 
       aspectRatio = viewport.width / viewport.height;
 
@@ -25151,19 +26208,20 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
       }
     }
 
-    function redraw() {
+    function redrawGridLinesAndLabels() {
           // Overwrite default model2px and model2pxInv to display correct units.
-      var model2px = d3.scale.linear().domain([viewport.x, viewport.x + viewport.width]).range([0, size.width]),
-          model2pxInv = d3.scale.linear().domain([viewport.y, viewport.y - viewport.height]).range([0, size.height]),
+      var model2px = d3.scale.linear().domain([viewport.x, viewport.x + viewport.scaledWidth]).range([0, size.width]),
+          model2pxInv = d3.scale.linear().domain([viewport.y, viewport.y - viewport.scaledHeight]).range([0, size.height]),
           tx = function(d) { return "translate(" + model2px(d) + ",0)"; },
           ty = function(d) { return "translate(0," + model2pxInv(d) + ")"; },
           stroke = function(d) { return d ? "#ccc" : "#666"; },
           fx = model2px.tickFormat(5),
           fy = model2pxInv.tickFormat(5),
-          lengthUnits = model.getUnitDefinition('length');
+          lengthUnits = model.getUnitDefinition('length'),
+          xlabel, ylabel;
 
       if (d3.event && d3.event.transform) {
-          d3.event.transform(model2px, model2pxInv);
+        d3.event.transform(model2px, model2pxInv);
       }
 
       // Regenerate x-ticks…
@@ -25199,21 +26257,19 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
         gxe.select("text.xunits").remove();
       }
 
-      // x-axis label
-      if (model.get("xlabel")) {
-        vis.append("text")
-            .attr("class", "axis")
-            .attr("class", "xlabel")
-            .text(lengthUnits.pluralName)
-            .attr("x", size.width/2)
-            .attr("y", size.height)
-            .attr("dy", fontSizeInPixels*1.6 + "px")
-            .style("text-anchor","middle");
-      } else {
-        vis.select("text.xlabel").remove();
-      }
-
       gx.exit().remove();
+
+      // x-axis label
+      xlabel = vis.selectAll("text.xlabel").data(model.get("xlabel") ? [lengthUnits.pluralName] : []);
+      xlabel.enter().append("text")
+          .attr("class", "axis")
+          .attr("class", "xlabel")
+          .attr("x", size.width / 2)
+          .attr("y", size.height)
+          .attr("dy", (fontSizeInPixels * 1.6) + "px")
+          .style("text-anchor", "middle");
+      xlabel.text(String);
+      xlabel.exit().remove();
 
       // Regenerate y-ticks…
       var gy = gridContainer.selectAll("g.y")
@@ -25250,19 +26306,17 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
         gxe.select("text.yunits").remove();
       }
 
-      // y-axis label
-      if (model.get("ylabel")) {
-        vis.append("g").append("text")
-            .attr("class", "axis")
-            .attr("class", "ylabel")
-            .text(lengthUnits.pluralName)
-            .style("text-anchor","middle")
-            .attr("transform","translate(" + -fontSizeInPixels*1.6 + " " + size.height/2+") rotate(-90)");
-      } else {
-        vis.select("text.ylabel").remove();
-      }
-
       gy.exit().remove();
+
+      // y-axis label
+      ylabel = vis.selectAll("text.ylabel").data(model.get("ylabel") ? [lengthUnits.pluralName] : []);
+      ylabel.enter().append("text")
+          .attr("class", "axis")
+          .attr("class", "ylabel")
+          .style("text-anchor","middle")
+          .attr("transform","translate(" + -fontSizeInPixels * 1.6 + " " + size.height / 2 + ") rotate(-90)");
+      ylabel.text(String);
+      ylabel.exit().remove();
     }
 
     // Setup background.
@@ -25284,10 +26338,9 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
     function renderContainer() {
       var viewBox;
 
-      // Update cx, cy, size and modelSize variables.
+      // Update cx, cy, size, viewport and modelSize variables.
       scale();
 
-      viewBox = model2px(viewport.x) + " " + model2pxInv(viewport.y) + " " + model2px(viewport.width) + " " + model2px(viewport.height);
       // Create container, or update properties if it already exists.
       if (vis === undefined) {
         vis1 = d3.select(node).append("svg")
@@ -25315,7 +26368,6 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
         // that top-level view defines containers for elements that it's
         // unaware of.
         viewportG = vis.append("svg").attr("class", "viewport");
-        geneticsContainer    = viewportG.append("g").attr("class", "genetics-container");
         imageContainerBelow  = viewportG.append("g").attr("class", "image-container-below");
         textContainerBelow   = viewportG.append("g").attr("class", "text-container-below");
         radialBondsContainer = viewportG.append("g").attr("class", "radial-bonds-container");
@@ -25330,8 +26382,8 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
         // Make all layers available for subviews, expect from brush layer
         // which is used only internally.
         api.containers = {
+          svg:                  vis1,
           gridContainer:        gridContainer,
-          geneticsContainer:    geneticsContainer,
           imageContainerBelow:  imageContainerBelow,
           textContainerBelow:   textContainerBelow,
           radialBondsContainer: radialBondsContainer,
@@ -25355,10 +26407,14 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
         })
         // Update style values too, as otherwise SVG isn't clipped correctly e.g. in Safari.
         .style({
-          width: cx,
-          height: cy
+          width: cx + "px",
+          height: cy + "px"
         });
 
+      viewBox = model2px(viewport.x) + " " +
+                model2pxInv(viewport.y) + " " +
+                model2px(viewport.scaledWidth) + " " +
+                model2px(viewport.scaledHeight);
       viewportG.attr({
         viewBox: viewBox,
         x: 0,
@@ -25380,7 +26436,7 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
           y: 0
         });
 
-      redraw();
+      redrawGridLinesAndLabels();
     }
 
     function removeClickHandlers() {
@@ -25416,11 +26472,7 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
       model.addPropertiesListener([ "backgroundColor"], repaint);
       model.addPropertiesListener(["gridLines", "xunits", "yunits", "xlabel", "ylabel",
                                    "viewPortX", "viewPortY", "viewPortZoom"],
-        function() {
-          renderContainer();
-          repaint();
-        }
-      );
+                                   renderContainer);
     }
 
     //
@@ -26076,7 +27128,7 @@ Simple module which provides context menu for amino acids. It allows
 to dynamically change type of amino acids in a convenient way.
 It uses jQuery.contextMenu plug-in.
 
-CSS style definition: sass/lab/_aminoacid-context-menu.sass
+CSS style definition: sass/lab/_context-menu.sass
 */
 
 
@@ -26085,7 +27137,7 @@ CSS style definition: sass/lab/_aminoacid-context-menu.sass
   define('cs!md2d/views/aminoacid-context-menu',['require','cs!md2d/models/aminoacids-helper'],function(require) {
     var HYDROPHILIC_CAT_CLASS, HYDROPHILIC_CLASS, HYDROPHOBIC_CAT_CLASS, HYDROPHOBIC_CLASS, MARKED_CLASS, MENU_CLASS, NEG_CHARGE_CLASS, POS_CHARGE_CLASS, aminoacids, showCategory;
     aminoacids = require('cs!md2d/models/aminoacids-helper');
-    MENU_CLASS = "aminoacids-menu";
+    MENU_CLASS = "aminoacids-menu lab-contextmenu";
     HYDROPHOBIC_CLASS = "hydrophobic";
     HYDROPHOBIC_CAT_CLASS = "hydrophobic-category";
     HYDROPHILIC_CLASS = "hydrophilic";
@@ -26308,10 +27360,130 @@ CSS style definition: sass/lab/_aminoacid-context-menu.sass
 }).call(this);
 
 /*global define */
+/*jshint multistr: true */
 
-define('md2d/views/nucleotide',['require','lab.config'],function (require) {
-  // Dependencies.
-  var labConfig = require('lab.config'),
+define('md2d/views/nucleotide-paths',[],function () {
+  return {
+    "outline": {
+      "A": "M20.7,0.4l-0.075-0.075C20.672,0.273,20.73,0.231,20.8,0.2 \
+            c0.122-0.049,0.247-0.058,0.375-0.025c0.031,0.002,0.064,0.011,0.1,0.025c0.151,0.054,0.26,0.154,0.325,0.3l6.35,14.15 \
+            c0.026,0.065,0.043,0.132,0.05,0.2c0.092,0.104,0.142,0.229,0.15,0.375c0.01,0.163-0.041,0.304-0.15,0.425l-9.025,9.85 \
+            c-1.65,1.667-3.292,3.55-4.925,5.65L0.2,15.65c-0.11-0.121-0.16-0.262-0.15-0.425c0.008-0.146,0.058-0.271,0.15-0.375 \
+            c0.005-0.068,0.021-0.134,0.05-0.2L6.6,0.5c0.074-0.146,0.19-0.246,0.35-0.3c0.151-0.064,0.301-0.064,0.45,0 \
+            c0.038,0.019,0.071,0.043,0.1,0.075C7.593,0.339,7.66,0.431,7.7,0.55c0.047,0.112-0.012,0.154-0.175,0.125 \
+            C7.461,0.656,7.386,0.63,7.3,0.6L1.65,15.125l12.4,13.625l12.6-13.725L20.7,0.4z",
+      "C": "M12.45,0c2.167,0.5,4.066,1.95,5.7,4.35 \
+            c2.033,2.967,3.05,6.533,3.05,10.7c0,3.8-0.867,7.117-2.6,9.95c-0.067,0.133-0.167,0.217-0.3,0.25c-0.133,0.067-0.267,0.067-0.4,0 \
+            c-0.133-0.033-0.233-0.117-0.3-0.25c-0.133-0.233-0.283-0.45-0.45-0.65V24.3c-1.8-2.667-3.983-4-6.55-4 \
+            c-2.567,0.034-4.767,1.383-6.6,4.05c-0.167,0.2-0.3,0.417-0.4,0.65c-0.1,0.133-0.217,0.217-0.35,0.25 \
+            c-0.133,0.067-0.267,0.067-0.4,0c-0.133-0.033-0.233-0.117-0.3-0.25C0.85,22.167,0,18.85,0,15.05c0-4.167,1-7.733,3-10.7 \
+            C4.633,1.95,6.55,0.5,8.75,0H12.45z M4,5.05V5C3.991,5.016,3.982,5.033,3.975,5.05C2.289,7.935,1.431,11.126,1.4,14.625 \
+            c-0.03,3.519,0.536,6.477,1.7,8.875c2.066-3.39,4.566-5.064,7.5-5.025c2.933,0.04,5.433,1.731,7.5,5.075 \
+            c1.088-2.518,1.605-5.559,1.55-9.125c-0.055-3.565-0.888-6.69-2.5-9.375V5c-1.8-2.397-3.983-3.589-6.55-3.575 \
+            C8.033,1.439,5.833,2.647,4,5.05z",
+      "G": "M8.75,0h3.675c2.191,0.504,4.1,1.963,5.725,4.375V4.35 \
+            c2.035,2.963,3.052,6.53,3.05,10.7c0.001,4.17-1.015,7.737-3.05,10.7v-0.025c-2.066,3.065-4.583,4.59-7.55,4.575 \
+            c-2.966,0.023-5.5-1.494-7.6-4.55v-0.025C0.999,22.77-0.001,19.211,0,15.05c-0.001-4.161,0.999-7.72,3-10.675V4.35 \
+            C4.647,1.953,6.564,0.503,8.75,0z M17.15,25.05c1.754-2.938,2.621-6.354,2.6-10.25c-0.022-3.895-0.889-7.145-2.6-9.75V5.025 \
+            c-1.8-2.269-3.984-3.402-6.55-3.4C8.033,1.63,5.833,2.771,4,5.05V5.025c-1.646,2.778-2.496,6.12-2.55,10.025 \
+            C1.396,18.955,2.246,22.297,4,25.075V25.05c1.583,2.593,3.667,3.985,6.25,4.175c2.583,0.189,4.883-1.194,6.9-4.15V25.05z",
+      "T": "M7.45,0.2H7.9C7.794,0.442,7.677,0.709,7.55,1 \
+            C6.388,3.721,4.504,8.396,1.9,15.025l6.9,8.35l1.025-1.35c1.258-1.424,2.55-2.816,3.875-4.175l0.025-0.025 \
+            c0.148-0.186,0.314-0.336,0.5-0.45c0.046-0.028,0.096-0.036,0.15-0.025c0.059,0.007,0.109,0.032,0.15,0.075l5.325,5.95l6.95-8.35 \
+            C24.252,8.584,22.369,3.909,21.15,1c-0.127-0.284-0.243-0.551-0.35-0.8h0.6h0.575c0.041,0.045,0.075,0.095,0.1,0.15l6.35,14.15 \
+            c0.028,0.066,0.053,0.133,0.075,0.2c0.087,0.129,0.137,0.279,0.15,0.45c0.01,0.238-0.065,0.447-0.225,0.625l-8.2,8.95 \
+            c-0.102,0.12-0.227,0.204-0.375,0.25c-0.167,0.043-0.334,0.043-0.5,0c-0.147-0.046-0.272-0.129-0.375-0.25l-4.675-5.1l-4.625,5.1 \
+            c-0.101,0.121-0.226,0.204-0.375,0.25c-0.167,0.043-0.334,0.043-0.5,0c-0.147-0.046-0.272-0.129-0.375-0.25l-8.15-8.95 \
+            c-0.16-0.178-0.235-0.387-0.225-0.625c0.014-0.168,0.063-0.318,0.15-0.45c0.019-0.066,0.044-0.133,0.075-0.2l6.35-14.15V0.325 \
+            C6.649,0.28,6.674,0.238,6.7,0.2H7.45z",
+      "U": "M20.8,0.2h0.6h0.575c0.041,0.045,0.075,0.095,0.1,0.15 \
+            l6.35,14.15c0.028,0.066,0.053,0.133,0.075,0.2c0.087,0.129,0.137,0.279,0.15,0.45c0.01,0.238-0.065,0.447-0.225,0.625l-8.2,8.95 \
+            c-0.102,0.12-0.227,0.204-0.375,0.25c-0.167,0.043-0.334,0.043-0.5,0c-0.147-0.046-0.272-0.129-0.375-0.25l-4.675-5.1l-4.625,5.1 \
+            c-0.101,0.121-0.226,0.204-0.375,0.25c-0.167,0.043-0.334,0.043-0.5,0c-0.147-0.046-0.272-0.129-0.375-0.25l-8.15-8.95 \
+            c-0.16-0.178-0.235-0.387-0.225-0.625c0.014-0.168,0.063-0.318,0.15-0.45c0.019-0.066,0.044-0.133,0.075-0.2l6.35-14.15V0.325 \
+            C6.649,0.28,6.674,0.238,6.7,0.2h0.75H7.9C7.794,0.442,7.677,0.709,7.55,1C6.388,3.721,4.504,8.396,1.9,15.025l6.9,8.35 \
+            l1.025-1.35c1.258-1.424,2.55-2.816,3.875-4.175l0.025-0.025c0.148-0.186,0.314-0.336,0.5-0.45 \
+            c0.046-0.028,0.096-0.036,0.15-0.025c0.059,0.007,0.109,0.032,0.15,0.075l5.325,5.95l6.95-8.35C24.252,8.584,22.369,3.909,21.15,1 \
+            C21.023,0.716,20.907,0.449,20.8,0.2z"
+    },
+    "interior": {
+      "A": "M21.175,0.175C21.046,0.143,20.921,0.151,20.8,0.2 \
+            c-0.069,0.031-0.128,0.073-0.175,0.125c-0.055,0.054-0.097,0.121-0.125,0.2c-0.063,0.16,0.003,0.118,0.2-0.125l5.95,14.625 \
+            L14.05,28.75L1.65,15.125L7.3,0.6c0.086,0.03,0.161,0.056,0.225,0.075C7.688,0.704,7.747,0.662,7.7,0.55 \
+            C7.66,0.431,7.593,0.339,7.5,0.275L7.6,0.2c4.8-0.067,7.283-0.1,7.45-0.1l6.1,0.05L21.175,0.175z",
+      "C": "M3.975,5.05H4c1.833-2.402,4.033-3.611,6.6-3.625 \
+            C13.167,1.411,15.35,2.603,17.15,5v0.05c1.612,2.685,2.445,5.81,2.5,9.375c0.055,3.566-0.461,6.607-1.55,9.125 \
+            c-2.067-3.344-4.567-5.035-7.5-5.075c-2.934-0.04-5.434,1.635-7.5,5.025c-1.164-2.398-1.73-5.356-1.7-8.875 \
+            C1.431,11.126,2.289,7.935,3.975,5.05z",
+      "G": "M17.15,25.05v0.025c-2.017,2.956-4.317,4.339-6.9,4.15 \
+            C7.667,29.035,5.583,27.643,4,25.05v0.025c-1.754-2.778-2.604-6.12-2.55-10.025C1.504,11.145,2.354,7.803,4,5.025V5.05 \
+            c1.833-2.278,4.033-3.42,6.6-3.425c2.566-0.002,4.75,1.131,6.55,3.4V5.05c1.711,2.605,2.578,5.855,2.6,9.75 \
+            C19.771,18.695,18.904,22.112,17.15,25.05z",
+      "T": "M21.4,0.2h-0.6c0.107,0.249,0.223,0.516,0.35,0.8 \
+            c1.219,2.909,3.103,7.584,5.65,14.025l-6.95,8.35l-5.325-5.95c-0.041-0.042-0.091-0.067-0.15-0.075 \
+            c-0.054-0.011-0.104-0.003-0.15,0.025c-0.186,0.114-0.352,0.264-0.5,0.45L13.7,17.85c-1.325,1.358-2.617,2.75-3.875,4.175 \
+            L8.8,23.375l-6.9-8.35C4.504,8.396,6.388,3.721,7.55,1C7.677,0.709,7.794,0.442,7.9,0.2H7.45c0.133-0.067,0.333-0.1,0.6-0.1 \
+            c0.406,0,1.606-0.008,3.6-0.025l-1.375,0.05C17.28,0.048,20.955,0.056,21.3,0.15C21.334,0.164,21.368,0.181,21.4,0.2z",
+      "U": "M7.9,0.2l0.15-0.1c0.406,0,1.606-0.008,3.6-0.025l-1.375,0.05 \
+            c6.009-0.066,9.568-0.066,10.675,0L20.8,0.2c0.107,0.249,0.223,0.516,0.35,0.8c1.219,2.909,3.103,7.584,5.65,14.025l-6.95,8.35 \
+            l-5.325-5.95c-0.041-0.042-0.091-0.067-0.15-0.075c-0.054-0.011-0.104-0.003-0.15,0.025c-0.186,0.114-0.352,0.264-0.5,0.45 \
+            L13.7,17.85c-1.325,1.358-2.617,2.75-3.875,4.175L8.8,23.375l-6.9-8.35C4.504,8.396,6.388,3.721,7.55,1 \
+            C7.677,0.709,7.794,0.442,7.9,0.2z"
+    },
+    "letter": {
+      "A": {
+        "1": "M12.85,12.55h2.6l-1.3-3.95L12.85,12.55z M13,6.25h2.4l3.55,10.1 \
+              h-2.3L16,14.3h-3.7l-0.7,2.05H9.4L13,6.25z",
+        "2": "M18.7,5.95l-3.55,10.1h-2.4l-3.6-10.1h2.2L12.05,8h3.7l0.65-2.05 \
+              H18.7z M12.6,9.75l1.3,3.95l1.3-3.95H12.6z"
+      },
+      "C": {
+        "1": "M10.45,6.4c1.667,0,2.883,0.55,3.65,1.65 \
+              c0.433,0.633,0.667,1.267,0.7,1.9h-2.1c-0.133-0.5-0.3-0.867-0.5-1.1c-0.4-0.434-0.967-0.65-1.7-0.65S9.183,8.5,8.75,9.1 \
+              C8.317,9.733,8.1,10.617,8.1,11.75c0,1.1,0.217,1.933,0.65,2.5c0.467,0.567,1.05,0.85,1.75,0.85c0.733,0,1.283-0.233,1.65-0.7 \
+              c0.233-0.267,0.417-0.667,0.55-1.2h2.05c-0.167,1.1-0.617,2-1.35,2.7c-0.733,0.7-1.683,1.05-2.85,1.05 \
+              c-1.433,0-2.566-0.467-3.4-1.4c-0.8-0.933-1.2-2.216-1.2-3.85c0-1.767,0.466-3.117,1.4-4.05C8.15,6.817,9.183,6.4,10.45,6.4z",
+        "2": "M15,12.35c-0.033,0.633-0.267,1.267-0.7,1.9 \
+              c-0.767,1.1-1.983,1.65-3.65,1.65c-1.267,0-2.3-0.417-3.1-1.25c-0.933-0.933-1.4-2.283-1.4-4.05c0-1.633,0.4-2.917,1.2-3.85 \
+              c0.833-0.933,1.967-1.4,3.4-1.4c1.167,0,2.117,0.35,2.85,1.05c0.733,0.7,1.183,1.6,1.35,2.7H12.9 \
+              c-0.133-0.533-0.316-0.934-0.55-1.2c-0.367-0.467-0.917-0.7-1.65-0.7c-0.7,0-1.284,0.283-1.75,0.85 \
+              c-0.434,0.567-0.65,1.4-0.65,2.5c0,1.133,0.217,2.017,0.65,2.65c0.433,0.6,1.017,0.9,1.75,0.9c0.733,0,1.3-0.217,1.7-0.65 \
+              c0.2-0.233,0.367-0.6,0.5-1.1H15z"
+      },
+      "G": {
+        "1": "M14.8,10.8h-2.05c-0.167-0.667-0.567-1.133-1.2-1.4 \
+              c-0.333-0.167-0.716-0.25-1.15-0.25c-0.8,0-1.467,0.3-2,0.9c-0.5,0.633-0.75,1.567-0.75,2.8s0.283,2.1,0.85,2.6 \
+              c0.567,0.533,1.2,0.8,1.9,0.8c0.7,0,1.283-0.217,1.75-0.65c0.434-0.4,0.717-0.934,0.85-1.6h-2.35v-1.65h4.2v5.4h-1.4l-0.2-1.25 \
+              c-0.4,0.467-0.767,0.8-1.1,1C11.583,17.833,10.9,18,10.1,18c-1.333,0-2.434-0.467-3.3-1.4c-0.867-0.9-1.3-2.167-1.3-3.8 \
+              s0.45-2.933,1.35-3.9c0.867-1,2.05-1.5,3.55-1.5c1.267,0,2.3,0.333,3.1,1C14.267,9.033,14.7,9.833,14.8,10.8z",
+        "2": "M10.65,9.65c-0.7,0-1.333,0.267-1.9,0.8 \
+              c-0.567,0.5-0.85,1.367-0.85,2.6c0,1.233,0.25,2.167,0.75,2.8c0.533,0.6,1.2,0.9,2,0.9c0.434,0,0.817-0.083,1.15-0.25 \
+              c0.633-0.267,1.034-0.733,1.2-1.4h2.05c-0.1,0.967-0.533,1.767-1.3,2.4c-0.8,0.667-1.833,1-3.1,1c-1.5,0-2.683-0.5-3.55-1.5 \
+              c-0.9-0.967-1.35-2.267-1.35-3.9s0.433-2.9,1.3-3.8c0.867-0.933,1.967-1.4,3.3-1.4c0.8,0,1.483,0.167,2.05,0.5 \
+              c0.333,0.2,0.7,0.533,1.1,1l0.2-1.25h1.4v5.4h-4.2V11.9h2.35c-0.133-0.667-0.417-1.2-0.85-1.6C11.933,9.867,11.35,9.65,10.65,9.65z"
+      },
+      "T": {
+        "1": "M10.3,5 L18.45,5 L18.45,6.8 L15.4,6.8 L15.4,15.1 L13.3,15.1 \
+              L13.3,6.8 L10.3,6.8z",
+        "2": "M10.2,14.65 L10.2,12.85 L13.2,12.85 L13.2,4.55 L15.3,4.55 \
+              L15.3,12.85 L18.35,12.85 L18.35,14.65z"
+      },
+      "U": {
+        "1": "M10.15,10.8V4.6h2.15v6.2c0,0.7,0.083,1.217,0.25,1.55 \
+              c0.267,0.566,0.817,0.85,1.65,0.85c0.867,0,1.417-0.284,1.65-0.85c0.167-0.333,0.25-0.85,0.25-1.55V4.6h2.15v6.2 \
+              c0,1.067-0.167,1.9-0.5,2.5c-0.633,1.1-1.817,1.65-3.55,1.65c-1.733,0-2.917-0.55-3.55-1.65C10.317,12.7,10.15,11.867,10.15,10.8z",
+        "2": "M12.45,8.4v6.2H10.3V8.4c0-1.066,0.167-1.9,0.5-2.5 \
+              c0.633-1.1,1.817-1.65,3.55-1.65S17.267,4.8,17.9,5.9c0.333,0.6,0.5,1.434,0.5,2.5v6.2h-2.15V8.4c0-0.7-0.083-1.217-0.25-1.55 \
+              C15.767,6.283,15.217,6,14.35,6c-0.833,0-1.383,0.283-1.65,0.85C12.533,7.183,12.45,7.7,12.45,8.4z"
+      }
+    }
+  };
+});
+
+/*global define, d3 */
+
+define('md2d/views/nucleotides',['require','md2d/views/nucleotide-paths'],function (require) {
+  var nucleotidePaths = require('md2d/views/nucleotide-paths'),
 
       SCALE = 0.007,
       W = {
@@ -26320,7 +27492,11 @@ define('md2d/views/nucleotide',['require','lab.config'],function (require) {
         "C": 21.2,
         "G": 21.2,
         "T": 28.651,
-        "U": 28.651
+        "U": 28.651,
+        "A_GLOW": 44.125,
+        "C_GLOW": 37.2,
+        "G_GLOW": 36.2,
+        "T_GLOW": 45.566
       },
       H = {
         "BACKB": 14,
@@ -26328,7 +27504,11 @@ define('md2d/views/nucleotide',['require','lab.config'],function (require) {
         "C": 25.3,
         "G": 30.3,
         "T": 25.007,
-        "U": 25.007
+        "U": 25.007,
+        "A_GLOW": 44.55,
+        "C_GLOW": 41.417,
+        "G_GLOW": 45.3,
+        "T_GLOW": 40.65
       };
 
   (function () {
@@ -26345,85 +27525,252 @@ define('md2d/views/nucleotide',['require','lab.config'],function (require) {
     }
   }());
 
-  function Nucleotide(parent, ms2px, type, direction, index, mRNA) {
-    this._ms2px = ms2px;
-    this.type = type;
-    this._wrapper = parent.append("g").attr("class", "nucleotide");
-    this._g = this._wrapper.append("g");
-    this._bonds = this._g.append("path").attr({
-      "class": "bonds",
-      "x": 0,
-      "y": 0,
-      "d": this._bondsPath()
-    }).style({
-      "stroke-width": ms2px(0.01),
-      "stroke": "#fff"
-    });
-    this._nucleo = this._g.append("image").attr({
-      "class": "nucleotide-img",
-      "x": ms2px(W.BACKB) / 2 - ms2px(W[type]) / 2,
-      "y": ms2px(H.BACKB) * 0.9,
-      "width": ms2px(W[type]),
-      "height": ms2px(H[type]),
-      "preserveAspectRatio": "none",
-      "xlink:href": labConfig.actualRoot + "../../resources/transcription/Nucleotide" + type + "_Direction" + direction + "_noBonds.svg"
-    });
-    this._backbone = this._g.append("image").attr({
-      "x": 0,
-      "y": 0,
-      "width": ms2px(W.BACKB),
-      "height": ms2px(H.BACKB),
-      "preserveAspectRatio": "none",
-      "xlink:href": labConfig.actualRoot + "../../resources/transcription/Backbone_" + (mRNA ? "RNA" : "DNA") + ".svg"
-    });
+  function nucleotides() {
+    var m2px = null,
+        sequence = "",
+        direction = 1,
+        startingPos = 0,
+        backbone = "DNA", // if enabled, "RNA" or "DNA" is expected.
+        stopCodonsHash = null,
+        randomEnter = true,
+        glow = false,
 
-    if (direction === 1) {
-      this._g.attr("transform", "translate(" + ms2px(Nucleotide.WIDTH) * index + ")");
-    } else if (direction === 2) {
-      this._g.attr("transform", "translate(" + ms2px(Nucleotide.WIDTH) * index + ") scale(1,-1)");
+        xShift = 0,
+        yShift = 0;
+
+    function shift(enabled) {
+      var t, r;
+      if (enabled) {
+        // While adding a new mRNA segment, choose a random starting point along a
+        // circle with a certain radius that extends beyond the top DNA strand.
+        // Use parametric circle equation: x = r cos(t), y = r sin(t)
+        // Limit range of the "t" parameter to: [0.25 * PI, 0.75 * PI) and [1.25 * PI, 1.75 * PI),
+        // so new mRNA segments will come only from the top or bottom side of the container.
+        t = Math.random() >= 0.5 ? Math.PI * 0.25 : Math.PI * 1.25;
+        t += Math.random() * Math.PI * 0.5;
+        r = nucleotides.HEIGHT * 6;
+        xShift = r * Math.cos(t);
+        yShift = r * Math.sin(t);
+      } else {
+        xShift = yShift = 0;
+      }
     }
+
+    function translate(d, i) {
+      return "translate(" + m2px(xShift + nucleotides.WIDTH * (startingPos + i)) + " " + m2px(yShift) + ")";
+    }
+
+    function nucleo(g) {
+      g.each(function(d, i) {
+        var g = d3.select(this),
+
+            yOffset = backbone ? 0.9 * H.BACKB : 0,
+            yStart = m2px(yOffset + 0.5 * H.A),
+            yEnd = m2px(yOffset + H.A * 0.97),
+
+            seq = typeof sequence === "function" ? sequence(d, i) : sequence,
+
+            nucleo, nucleoEnter, nucleoShape, nucleoSVG, nucleoSVGUpdate, nucleoTrans,
+            targetScale;
+
+        // seq is string now. Change it to array of objects.
+        // e.g. "AG" will be change to [{idx: 0, type: "A"}, {idx: 1, type: "G"}].
+        seq = seq.split("");
+        seq.forEach(function(val, i) {
+          seq[i] = {idx: i, type: val};
+        });
+        nucleo = g.selectAll("g.nucleotide").data(seq);
+        // Enter.
+        // Enable random translation of the new mRNAs.
+        shift(randomEnter);
+        nucleoEnter = nucleo.enter().append("g").attr({
+          "class": "nucleotide",
+          "transform": translate
+        }).style({
+          "opacity": 0
+        });
+
+        // Additional container for scaling.
+        nucleoEnter = nucleoEnter.append("g").attr({
+          "class": "scale",
+          "transform": "scale(1, " + (direction  === 1 ? 1 : -1) + ")",
+        });
+
+        nucleoEnter.append("path").attr("class", "bonds")
+          .style({
+            "stroke-width": m2px(0.01),
+            "stroke": "#fff"
+          });
+        nucleoShape = nucleoEnter.append("g").attr("class", "nucleo-shape");
+        if (glow) {
+          nucleoShape.append("image").attr({
+            "class": "glow",
+            "y": m2px(yOffset - 0.17 * W.G_GLOW),  // move glow closer to the backbone
+            "preserveAspectRatio": "none"
+          });
+        }
+        nucleoSVG = nucleoShape.append("svg").attr({
+          "overflow": "visible", // glow on hover shouldn't be truncated
+          "y": m2px(yOffset),
+          "preserveAspectRatio": "none"
+        });
+        nucleoSVG.append("path").attr({
+          "class": "outline",
+          "fill-rule": "evenodd",
+          "clip-rule": "evenodd"
+        });
+        nucleoSVG.append("path").attr({
+          "class": "interior",
+          "fill-rule": "evenodd",
+          "clip-rule": "evenodd"
+        });
+        nucleoSVG.append("path").attr({
+          "class": "letter",
+          "fill-rule": "evenodd",
+          "clip-rule": "evenodd"
+        });
+        if (backbone) {
+          nucleoEnter.append("image").attr({
+            "class": "backbone",
+            "x": 0,
+            "y": 0,
+            "width": m2px(W.BACKB),
+            "height": m2px(H.BACKB),
+            "preserveAspectRatio": "none",
+            "xlink:href": "resources/dna/Backbone_" + backbone + ".svg"
+          });
+        }
+
+        // Update.
+        nucleo.select(".bonds").attr("d", function (d) {
+          if (d.type === "C" || d.type === "G") {
+            return "M" + m2px(SCALE * 20) + " " + yStart + " L " + m2px(SCALE * 20) + " " + yEnd +
+                   "M" + m2px(SCALE * 26) + " " + yStart + " L " + m2px(SCALE * 26) + " " + yEnd +
+                   "M" + m2px(SCALE * 32) + " " + yStart + " L " + m2px(SCALE * 32) + " " + yEnd;
+          } else {
+            return "M" + m2px(SCALE * 22) + " " + yStart + " L " + m2px(SCALE * 22) + " " + yEnd +
+                   "M" + m2px(SCALE * 30) + " " + yStart + " L " + m2px(SCALE * 30) + " " + yEnd;
+          }
+        });
+        nucleo.select("g.nucleo-shape image.glow").attr({
+          "x": function (d) { return m2px(W.BACKB) / 2 - m2px(W[d.type + "_GLOW"]) / 2; },
+          "width": function (d) { return m2px(W[d.type + "_GLOW"]); },
+          "height": function (d) { return m2px(H[d.type + "_GLOW"]); },
+          "xlink:href": function (d) { return "resources/dna/NucleotideGlow_" + d.type + ".svg"; }
+        });
+        nucleoSVGUpdate = nucleo.select("g.nucleo-shape svg");
+        nucleoSVGUpdate.attr({
+          "class": function (d, i) {
+            var className = "type-" + d.type;
+            if (stopCodonsHash && stopCodonsHash[i]) {
+              className += " stop-codon";
+            }
+            return className;
+          },
+          "viewBox": function (d) { return "0 0 " + (W[d.type] / SCALE) + " " + (H[d.type] / SCALE); },
+          "x": function (d) { return m2px(W.BACKB) / 2 - m2px(W[d.type]) / 2; },
+          "width": function (d) { return m2px(W[d.type]); },
+          "height": function (d) { return m2px(H[d.type]); }
+        });
+        nucleoSVGUpdate.select("path.interior").attr("d", function (d) {
+          return nucleotidePaths.interior[d.type];
+        });
+        nucleoSVGUpdate.select("path.outline").attr("d", function (d) {
+          return nucleotidePaths.outline[d.type];
+        });
+
+        shift(false);
+        nucleoTrans = d3.transition(nucleo)
+          .attr("transform", translate)
+          .style("opacity", 1);
+
+        // Duck test whether nucleoTrans is really translation. See D3 API
+        // Reference - d3.transition(selection) returns  transition only when
+        // called in the context of other transition. Otherwise it returns
+        // selection.
+        if (nucleoTrans.attrTween) {
+          // Scale. We can't simply use .attr, as rotation is used (to make
+          // scale change fancier?). attrTween enforces simple change from
+          // scale(1,1) to scale(1,-1) without using rotation.
+          targetScale  = "scale(1, " + (direction  === 1 ? 1 : -1) + ")";
+          nucleoTrans.select("g.scale").attrTween("transform", function(d, i, a) {
+            return d3.interpolateString(a, targetScale);
+          });
+          // Letters. We can use transition as d3.interpolator creates some
+          // results which can't be parsed.
+          nucleoTrans.each("start", function () {
+            nucleo.select("path.letter")
+              .attr("d", function (d) { return nucleotidePaths.letter[d.type][direction]; });
+          });
+        } else {
+          // The same operations, but without using transition.
+          nucleo.select("g.scale").attr("transform", "scale(1, " + (direction  === 1 ? 1 : -1) + ")");
+          nucleo.select("path.letter")
+            .attr("d", function (d) { return nucleotidePaths.letter[d.type][direction]; });
+        }
+
+        // Exit.
+        d3.transition(nucleo.exit()).remove();
+      });
+    }
+
+    nucleo.sequence = function (s) {
+      if (!arguments.length) return sequence;
+      sequence = s;
+      return nucleo;
+    };
+
+    nucleo.model2px = function (m) {
+      if (!arguments.length) return m2px;
+      m2px = m;
+      return nucleo;
+    };
+
+    nucleo.direction = function (d) {
+      if (!arguments.length) return direction;
+      direction = d;
+      return nucleo;
+    };
+
+    nucleo.startingPos = function (p) {
+      if (!arguments.length) return startingPos;
+      startingPos = p;
+      return nucleo;
+    };
+
+    nucleo.randomEnter = function (r) {
+      if (!arguments.length) return randomEnter;
+      randomEnter = r;
+      return nucleo;
+    };
+
+    /**
+     * Enables or disables nucleotide glowing on hover.
+     * @param  {boolean} g
+     */
+    nucleo.glow = function (g) {
+      if (!arguments.length) return glow;
+      glow = g;
+      return nucleo;
+    };
+
+    /**
+     * @param  {String} b "DNA" or "RNA".
+     */
+    nucleo.backbone = function (b) {
+      if (!arguments.length) return backbone;
+      backbone = b;
+      return nucleo;
+    };
+
+    nucleo.stopCodonsHash = function (s) {
+      if (!arguments.length) return stopCodonsHash;
+      stopCodonsHash = s;
+      return nucleo;
+    };
+
+    return nucleo;
   }
-
-  Nucleotide.prototype.hideBonds = function(suppressAnimation) {
-    var selection;
-    if (!suppressAnimation) {
-      selection = this._bonds.transition();
-    } else {
-      selection = this._bonds;
-    }
-    selection.style("opacity", 0);
-  };
-
-  Nucleotide.prototype.showBonds = function(suppressAnimation) {
-    var selection;
-    if (!suppressAnimation) {
-      selection = this._bonds.transition();
-    } else {
-      selection = this._bonds;
-    }
-    selection.style("opacity", 1);
-  };
-
-  /**
-   * Returns path defining bonds of nucleotide.
-   * Note that values used to draw it are strictly connected
-   * with current Nucleotide width, which is equal to 48!
-   * @private
-   * @return {string} SVG path description.
-   */
-  Nucleotide.prototype._bondsPath = function() {
-    var yStart = this._ms2px(SCALE * 20),
-        yEnd = this._ms2px(Nucleotide.HEIGHT);
-
-    if (this.type === "C" || this.type === "G") {
-      return "M" + this._ms2px(SCALE * 20) + " " + yStart + " L " + this._ms2px(SCALE * 20) + " " + yEnd +
-             "M" + this._ms2px(SCALE * 26) + " " + yStart + " L " + this._ms2px(SCALE * 26) + " " + yEnd +
-             "M" + this._ms2px(SCALE * 32) + " " + yStart + " L " + this._ms2px(SCALE * 32) + " " + yEnd;
-    } else {
-      return "M" + this._ms2px(SCALE * 22) + " " + yStart + " L " + this._ms2px(SCALE * 22) + " " + yEnd +
-             "M" + this._ms2px(SCALE * 30) + " " + yStart + " L " + this._ms2px(SCALE * 30) + " " + yEnd;
-    }
-  };
 
   // Width of the nucleotide is width of the DNA backbone.
   // * 0.92 to ensure that DNA backbone doesn't contain any visual discontinuities.
@@ -26431,21 +27778,115 @@ define('md2d/views/nucleotide',['require','lab.config'],function (require) {
   // is ignored for images, the second one is in Safari, which has problems with correct
   // width of the images. Please see:
   // https://www.pivotaltracker.com/story/show/48453261
-  Nucleotide.WIDTH  = W.BACKB * 0.92;
+  nucleotides.WIDTH  = W.BACKB * 0.92;
   // Height of the nucleotide is height of the DNA backbone + A nucleotide (tallest one).
-  // * 0.9 because it simply... looks better. This value is used to determine distance
+  // * 0.96 because it simply... looks better. This value is used to determine distance
   // between two strands of DNA and this multiplier causes that they are closer to each other.
-  Nucleotide.HEIGHT = H.BACKB + H.A * 0.9;
+  nucleotides.HEIGHT = (H.BACKB * 0.9 + H.A) * 0.96;
 
-  return Nucleotide;
+  return nucleotides;
 });
 
-/*global define, $, d3 */
 
-define('md2d/views/genetic-renderer',['require','lab.config','md2d/views/nucleotide'],function (require) {
+/*
+Simple module which provides mutations context menu for DNA nucleotides.
 
-  var labConfig = require('lab.config'),
-      Nucleotide = require('md2d/views/nucleotide'),
+CSS style definition: sass/lab/_context-menu.sass
+*/
+
+
+(function() {
+
+  define('cs!md2d/views/mutations-context-menu',['require'],function(require) {
+    return {
+      /*
+        Registers context menu for DOM elements defined by @selector.
+        @model should be an instance of Modeler class (MD2D Modeler).
+        @DNAComplement indicates whether this menu is registered for
+        DNA or DNA complementary strand.
+      */
+
+      register: function(selector, model, DNAComplement) {
+        $.contextMenu("destroy", selector);
+        return $.contextMenu({
+          selector: selector,
+          appendTo: "#responsive-content",
+          className: "mutations-menu lab-contextmenu",
+          animation: {
+            show: "show",
+            hide: "hide"
+          },
+          callback: function(key, options) {
+            var d;
+            d = d3.select(options.$trigger[0]).datum();
+            return model.geneticEngine().mutate(d.idx, key, DNAComplement);
+          },
+          position: function(opt, x, y) {
+            var $win, bottom, height, offset, right, triggerIsFixed, width;
+            $win = $(window);
+            if (!x && !y) {
+              opt.determinePosition.call(this, opt.$menu);
+              return;
+            } else if (x === "maintain" && y === "maintain") {
+              offset = opt.$menu.position();
+            } else {
+              triggerIsFixed = opt.$trigger.parents().andSelf().filter(function() {
+                return $(this).css('position') === "fixed";
+              }).length;
+              if (triggerIsFixed) {
+                y -= $win.scrollTop();
+                x -= $win.scrollLeft();
+              }
+              offset = {
+                top: y,
+                left: x
+              };
+            }
+            bottom = $win.scrollTop() + $win.height();
+            right = $win.scrollLeft() + $win.width();
+            /*
+                    !!! Workaround for the correct positioning:
+                    Use scrollHeight / scrollWidth as these functions return correct height / width
+                    in contrast to opt.$menu.height() / opt.$menu.width().
+            */
+
+            height = opt.$menu[0].scrollHeight;
+            width = opt.$menu[0].scrollWidth;
+            if (offset.top + height > bottom) {
+              offset.top -= height;
+            }
+            if (offset.left + width > right) {
+              offset.left -= width;
+            }
+            offset.left += 1;
+            return opt.$menu.css(offset);
+          },
+          items: {
+            "A": {
+              name: "-> A"
+            },
+            "T": {
+              name: "-> T"
+            },
+            "G": {
+              name: "-> G"
+            },
+            "C": {
+              name: "-> C"
+            }
+          }
+        });
+      }
+    };
+  });
+
+}).call(this);
+
+/*global define, d3 */
+
+define('md2d/views/genetic-elements-renderer',['require','md2d/views/nucleotides','cs!md2d/views/mutations-context-menu'],function (require) {
+  var nucleotides          = require('md2d/views/nucleotides'),
+      mutationsContextMenu = require('cs!md2d/views/mutations-context-menu'),
 
       SCALE = 0.007,
       W = {
@@ -26461,12 +27902,7 @@ define('md2d/views/genetic-renderer',['require','lab.config','md2d/views/nucleot
         "RIBO_UNDER": 550.55,
         "RIBO_OVER": 550.7,
         "TRNA": 117.325,
-        "BACKB": 52,
-        "A": 28.151,
-        "C": 21.2,
-        "G": 21.2,
-        "T": 28.651,
-        "U": 28.651
+        "TRNA_NECK": 15.925
       },
       H = {
         "CELLS": 500,
@@ -26481,12 +27917,8 @@ define('md2d/views/genetic-renderer',['require','lab.config','md2d/views/nucleot
         "RIBO_UNDER": 311.6,
         "RIBO_OVER": 311.6,
         "TRNA": 67.9,
-        "BACKB": 14,
-        "A": 31.15,
-        "C": 25.3,
-        "G": 30.3,
-        "T": 25.007,
-        "U": 25.007
+        "TRNA_NECK": 21.14,
+        "A": 31.15
       };
 
   (function () {
@@ -26503,745 +27935,1451 @@ define('md2d/views/genetic-renderer',['require','lab.config','md2d/views/nucleot
     }
   }());
 
-  function GeneticRenderer(container, parentView, model) {
-    this.container = container;
-    this.parent = parentView;
-    this.model = model;
-    this.model2px = parentView.model2px;
-    this.model2pxInv = parentView.model2pxInv;
-
-    this._g = null;
-    this._dnaView = null;
-    this._dnaG = null;
-    this._dnaCompG = null;
-    this._mrnaG = null;
-    this._trnaG = null;
-    this._dna = [];
-    this._dnaComp = [];
-    this._mrna = [];
-    this._currentTrans = null;
-
-    // Redraw DNA / mRNA when genetic engine state is changed.
-    this.model.geneticEngine().on("change", $.proxy(this.render, this));
-    // Play animation when there is a "transition" event.
-    this.model.geneticEngine().on("transition", $.proxy(this.stateTransition, this));
+  function getDefs(parent) {
+    var defs = parent.select("defs");
+    if (defs.empty()) {
+      defs = parent.append("defs");
+    }
+    return defs;
   }
 
-  GeneticRenderer.prototype.stateTransition = function () {
-    var state = this._state(),
-        mRNA  = this.model.get("mRNA");
+  function appendTranscriptionBg(parent) {
+    var defs = getDefs(parent),
+        gradient;
 
-    if (state.name === "dna") {
-      this.playIntro();
-    }
-    else if (state.name === "transcription" && mRNA.length === 0) {
-      this.separateDNA();
-    }
-    else if (state.name === "transcription" || state.name === "transcription-end") {
-      this.transcribeStep();
-    }
-    else if (state.name === "translation") {
-      if (state.step === 0) {
-        this.prepareForTranslation();
-      } else {
-        this.translateStep(state.step);
-      }
-    }
-  };
-
-  GeneticRenderer.prototype.render = function () {
-    var state = this._state();
-
-    if (!this.model.get("DNA")) { // "", undefined or null
-      return;
-    }
-
-    // Cleanup.
-    this.container.selectAll("g.genetics").remove();
-    this._currentTrans = null;
-    this._dna      = [];
-    this._dnaComp  = [];
-    this._mrna     = [];
-    // Create a new container.
-    this._g       = this.container.append("g").attr("class", "genetics");
-    this._dnaView = this._g.append("g").attr("class", "dna-view");
-    this._mrnaG   = this._dnaView.append("g").attr("class", "mrna");
-    this._trnaG   = this._dnaView.append("g").attr("class", "trna-cont");
-
-    this._renderBackground();
-
-    if (state.name === "dna") {
-      this._renderDNA();
-    }
-    else if (state.name === "transcription" || state.name === "transcription-end") {
-      this._renderTranscription();
-    }
-    else if (state.name === "translation") {
-      this._renderTranslation();
-    }
-  };
-
-  GeneticRenderer.prototype._state = function () {
-    return this.model.geneticEngine().state();
-  };
-
-  GeneticRenderer.prototype._renderDNA = function () {
-    var dna           = this.model.get("DNA"),
-        dnaComplement = this.model.get("DNAComplement"),
-        i, len;
-
-    this._dnaG     = this._dnaView.append("g").attr("class", "dna");
-    this._dnaCompG = this._dnaView.append("g").attr("class", "dna-comp");
-
-    for (i = 0, len = dna.length; i < len; i++) {
-      this._dna.push(new Nucleotide(this._dnaG, this.model2px, dna[i], 1, i));
-    }
-    this._dnaG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("height") / 2 + Nucleotide.HEIGHT) + ")");
-
-    for (i = 0, len = dnaComplement.length; i < len; i++) {
-      this._dnaComp.push(new Nucleotide(this._dnaCompG, this.model2px, dnaComplement[i], 2, i));
-    }
-    this._dnaCompG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("height") / 2 - Nucleotide.HEIGHT) + ")");
-
-    // Prepare container for mRNA.
-    this._mrnaG.attr("transform", "translate(0, " + this.model2pxInv(this.model.get("height") / 2 - 0.5 * Nucleotide.HEIGHT) + ")");
-  };
-
-  GeneticRenderer.prototype._renderTranscription = function () {
-    var mRNA = this.model.get("mRNA"),
-        i, len;
-
-    this._renderDNA();
-
-    this.separateDNA(true);
-    for (i = 0, len = mRNA.length; i < len; i++) {
-      this._mrna.push(new Nucleotide(this._mrnaG, this.model2px, mRNA[i], 1, i, true));
-      this._dnaComp[i].showBonds(true);
-    }
-    this._scrollContainer(true);
-  };
-
-  GeneticRenderer.prototype._renderTranslation = function () {
-    var mRNA = this.model.get("mRNA"),
-        i, len;
-
-    for (i = 0, len = mRNA.length; i < len; i++) {
-      this._mrna.push(new Nucleotide(this._mrnaG, this.model2px, mRNA[i], 2, i, true));
-      this._mrna[i].hideBonds(true);
-    }
-    this._mrnaG.attr("transform", "translate(0, " + this.model2pxInv(1.5 * Nucleotide.HEIGHT) + ")");
-    this._dnaView.attr("transform", "translate(" + this.model2px(2 * Nucleotide.WIDTH) + ")");
-    this._appendRibosome();
-
-    this._g.append("circle").attr("class", "animated-drag");
-  };
-
-  GeneticRenderer.prototype._scrollContainer = function (suppressAnimation) {
-    var state = this._state(),
-        selection, shift, viewBox;
-
-    if (state.name === "transcription" || state.name === "transcription-end") {
-      selection = suppressAnimation ? this._g.select(".dna-view") : this._currentTrans.select(".dna-view").ease("linear");
-      shift = Math.min(this._mrna.length, this._dna.length - 4) - 8;
-      if (shift > 0) {
-        selection.attr("transform", "translate(" + this.model2px(-shift * Nucleotide.WIDTH) + ")");
-      }
-    } else if (state.name === "translation") {
-      selection = suppressAnimation ? d3.select(".viewport") : this._currentTrans.select(".viewport").ease("linear");
-      shift = state.step - 3;
-      if (shift > 0) {
-        viewBox = d3.select(".viewport").attr("viewBox").split(" ");
-        viewBox[0] = this.model2px(3 * shift * Nucleotide.WIDTH); // update viewport X coordinate.
-        selection.attr("viewBox", viewBox.join(" "));
-      }
-    }
-  };
-
-  GeneticRenderer.prototype._appendRibosome = function () {
-    this._dnaView.insert("image", ".mrna").attr({
-      "class": "ribosome-under",
-      "x": this.model2px(W.RIBO_UNDER * -0.5),
-      "y": this.model2pxInv(3.7 * Nucleotide.HEIGHT + 0.5 * H.RIBO_UNDER),
-      "width": this.model2px(W.RIBO_UNDER),
-      "height": this.model2px(H.RIBO_UNDER),
-      "preserveAspectRatio": "none",
-      "transform": "translate(" + this.model2px(2 * Nucleotide.WIDTH) + ")",
-      "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_under.svg"
-    });
-
-    this._dnaView.append("image").attr({
-      "class": "ribosome-over",
-      "x": this.model2px(W.RIBO_OVER * -0.5),
-      "y": this.model2pxInv(3.7 * Nucleotide.HEIGHT + 0.5 * H.RIBO_UNDER),
-      "width": this.model2px(W.RIBO_OVER),
-      "height": this.model2px(H.RIBO_OVER),
-      "preserveAspectRatio": "none",
-      "transform": "translate(" + this.model2px(2 * Nucleotide.WIDTH) + ")",
-      "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_over.svg"
-    });
-  };
-
-  GeneticRenderer.prototype._moveRibosome = function () {
-    var shift = this._state().step - 2;
-    if (shift > 0) {
-      this._currentTrans.selectAll(".ribosome-under, .ribosome-over")
-        .attr("transform", "translate(" + this.model2px((2 + shift * 3) * Nucleotide.WIDTH) + ")");
-    }
-  };
-
-  GeneticRenderer.prototype._appendTRNA = function (index) {
-        // The most outer container can be used to set easily position offset.
-        // While the inner g elements provides translation for "ideal" tRNA position
-        // close to the mRNA and optional rotation.
-    var trnaPosG = this._trnaG.append("g").attr("class", "trna").append("g"),
-        trna = trnaPosG.append("g").attr("class", "rot"),
-        type = this.model.geneticEngine().codonComplement(index),
-        nucleo = trna.selectAll("g.nucleotide").data(type.split("")),
-        nucleoG = nucleo.enter().append("g").attr("class", "nucleotide"),
-
-        ms2px   = this.model2px,
-        m2px    = this.model2px,
-        m2pxInv = this.model2pxInv,
-
-        codonWidth = 3 * Nucleotide.WIDTH,
-        offset = (codonWidth - W.TRNA) * 0.55,
-        yStart = ms2px(-20 * SCALE),
-        yEnd = ms2px(0);
-
-    nucleoG.append("path").attr({
-      "class": "bonds",
-      "x": 0,
-      "y": 0,
-      "d": function (d) {
-        if (d === "C" || d === "G") {
-          return "M" + ms2px(SCALE * 20) + " " + yStart + " L " + ms2px(SCALE * 20) + " " + yEnd +
-                 "M" + ms2px(SCALE * 26) + " " + yStart + " L " + ms2px(SCALE * 26) + " " + yEnd +
-                 "M" + ms2px(SCALE * 32) + " " + yStart + " L " + ms2px(SCALE * 32) + " " + yEnd;
-        } else {
-          return "M" + ms2px(SCALE * 22) + " " + yStart + " L " + ms2px(SCALE * 22) + " " + yEnd +
-                 "M" + ms2px(SCALE * 30) + " " + yStart + " L " + ms2px(SCALE * 30) + " " + yEnd;
-        }
-      }
-    }).style({
-      "stroke-width": ms2px(0.01),
-      "stroke": "#fff",
-      "opacity": 0
-    });
-    nucleoG.append("image").attr({
-      "class": "nucleotide-img",
-      "x": function (d) { return ms2px(W.BACKB) / 2 - ms2px(W[d]) / 2; },
-      "y": ms2px(-H.A),
-      "width": function (d) { return ms2px(W[d]); },
-      "height": function (d) { return ms2px(H[d]); },
-      "preserveAspectRatio": "none",
-      "xlink:href": function (d) {
-        return labConfig.actualRoot + "../../resources/transcription/Nucleotide" + d + "_Direction1_noBonds.svg";
-      }
-    });
-
-    nucleoG.attr("transform", function (d, i) {
-      return "translate(" + ms2px(i * Nucleotide.WIDTH) + ")";
-    });
-
-    trna.append("image").attr({
-      "class": "trna-base",
-      "x": ms2px(offset),
-      "y": ms2px(-H.TRNA - H.A * 0.92),
-      "width": ms2px(W.TRNA),
-      "height": ms2px(H.TRNA),
-      "preserveAspectRatio": "none",
-      "xlink:href": labConfig.actualRoot + "../../resources/translation/tRNA_base.svg"
-    });
-
-    trnaPosG.attr("transform", "translate(" + m2px(index * codonWidth) + ", " + m2pxInv(2.5 * Nucleotide.HEIGHT) + ")");
-  };
-
-  GeneticRenderer.prototype._renderBackground = function () {
-    var gradient;
-
-    if (this.model.geneticEngine().stateBefore("translation")) {
-      // Transcription.
-      gradient = this._g.append("defs").append("linearGradient")
+    if (defs.select("#transcription-bg").empty()) {
+      gradient = defs.append("linearGradient")
         .attr("id", "transcription-bg")
         .attr("x1", "0%")
         .attr("y1", "0%")
         .attr("x2", "0%")
         .attr("y2", "100%");
-
       gradient.append("stop")
         .attr("stop-color", "#C8DD69")
         .attr("offset", "0%");
       gradient.append("stop")
         .attr("stop-color", "#778B3D")
         .attr("offset", "100%");
-
-      d3.select(".plot").style("fill", "url(#transcription-bg)");
-    } else {
-      // Translation.
-      d3.select(".plot").style("fill", "#B8EBF0");
     }
-  };
+  }
 
-  GeneticRenderer.prototype._cleanupDNA = function () {
-    this._dna      = [];
-    this._dnaComp  = [];
-    this._dnaG.remove();
-    this._dnaCompG.remove();
-  };
+  function GeneticElementsRenderer(svg, model2px, model2pxInv, model) {
 
-  GeneticRenderer.prototype.playIntro = function () {
-    var ms2px = this.model2px,
-        cx = this.model2px(W.CELLS * 0.567),
-        cy = this.model2px(H.CELLS * 0.445),
-        mWidth  = this.model2px(5),
-        mHeight = this.model2px(3),
-        dna3units = 14,
-        introG, dna3, t;
-
-    this._g.selectAll(".dna-intro").remove();
-    introG = this._g.append("g").attr({
-      "class": "dna-intro",
-      "transform": "translate(" + cx + " " + cy + ")"
-    });
-
-    introG.append("image").attr({
-      "class": "cells",
-      "x": -cx,
-      "y": -cy,
-      "width": this.model2px(W.CELLS),
-      "height": this.model2px(H.CELLS),
-      "preserveAspectRatio": "none",
-      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/Cells.svg"
-    });
-
-    introG.append("image").attr({
-      "class": "dna1",
-      "x": this.model2px(W.DNA1 * -0.5),
-      "y": this.model2px(H.DNA1 * -0.5),
-      "width": this.model2px(W.DNA1),
-      "height": this.model2px(H.DNA1),
-      "transform": "scale(0.13)",
-      "preserveAspectRatio": "none",
-      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/DNA_InsideNucleus_1.svg"
-    }).style("opacity", 0);
-
-    introG.append("image").attr({
-      "class": "dna2",
-      "x": this.model2px(W.DNA2 * -0.5),
-      "y": this.model2px(H.DNA2 * -0.404),
-      "width": this.model2px(W.DNA2),
-      "height": this.model2px(H.DNA2),
-      "preserveAspectRatio": "none",
-      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/DNA_InsideNucleus_2.svg"
-    }).style("opacity", 0);
-
-    introG.append("image").attr({
-      "class": "polymerase-under",
-      "x": this.model2px(W.POLY_UNDER * -0.5),
-      "y": this.model2px(H.POLY_UNDER * -0.5),
-      "width": this.model2px(W.POLY_UNDER),
-      "height": this.model2px(H.POLY_UNDER),
-      "preserveAspectRatio": "none",
-      "transform": "translate(" + mWidth * -0.65 + ", " + mHeight * -0.5 + ") scale(0.2)",
-      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/Polymerase_Under.svg"
-    }).style("opacity", 1);
-
-    dna3 = introG.append("g").attr({
-      "class": "dna3",
-      "transform": "scale(0.2)"
-    }).style("opacity", 0);
-
-    dna3.selectAll("dna3-unit").data(new Array(dna3units)).enter().append("image").attr({
-      "class": "dna3-unit",
-      "x": function (d, i) { return (i - dna3units * 0.5) * ms2px(W.DNA3) * 0.98; },
-      "y": this.model2px(H.DNA3 * -0.5),
-      "width": this.model2px(W.DNA3),
-      "height": this.model2px(H.DNA3),
-      // "transform": "scale(0.13)",
-      "preserveAspectRatio": "none",
-      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/DoubleHelix_Unit.svg"
-    });
-
-    introG.append("image").attr({
-      "class": "polymerase-over",
-      "x": this.model2px(W.POLY_OVER * -0.5),
-      "y": this.model2px(H.POLY_OVER * -0.5),
-      "width": this.model2px(W.POLY_OVER),
-      "height": this.model2px(H.POLY_OVER),
-      "preserveAspectRatio": "none",
-      "transform": "scale(0.8)",
-      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/Polymerase_Over.svg"
-    }).style("opacity", 0);
-
-    t = this._nextTrans().ease("cubic").duration(5000);
-    t.select(".cells")
-      .attr("transform", "scale(12)");  // 1.0  * 12
-    t.select(".dna1")
-      .attr("transform", "scale(1.56)") // 0.13 * 12
-      // Of course max value for opacity is 1. However value bigger than 1
-      // affects transition progress and in this case it's helpful.
-      .style("opacity", 5);
-
-
-    t.select(".dna-intro").ease("cubic-in-out")
-      .attr("transform", "translate(" + mWidth * 0.5 + " " + mHeight * 0.5 + ")");
-
-    t = this._nextTrans().ease("linear").duration(2000);
-    t.select(".dna1")
-      .style("opacity", 0)
-      .attr("transform", "scale(3.12)"); // 1.56 * 2
-    t.select(".dna2")
-      .style("opacity", 1)
-      .attr("transform", "scale(2)");    // 1.0  * 2
-
-    t = this._nextTrans().ease("linear").duration(2000);
-    t.select(".dna2")
-      .style("opacity", 0)
-      .attr("transform", "scale(3.8)");
-    t.select(".dna3")
-      .style("opacity", 1)
-      .attr("transform", "scale(0.4)");
-
-    t = this._nextTrans().ease("quad-out").duration(3500);
-    t.select(".dna3")
-      .attr("transform", "scale(0.6)");
-
-    t = this._nextTrans().ease("quad-out").duration(3000);
-    t.select(".polymerase-under")
-      .attr("transform", "translate(0, 0) scale(0.8)");
-
-    t = this._nextTrans().ease("cubic-in-out").duration(1000);
-    t.select(".polymerase-under")
-      .attr("transform", "scale(1)");
-    t.select(".polymerase-over")
-      .attr("transform", "scale(1)")
-      .style("opacity", 1);
-
-    t = this._nextTrans().duration(2000);
-    t.selectAll(".polymerase-under, .polymerase-over")
-      .attr("transform", "scale(2.5)");  // 1.0 * 2.5
-    t.selectAll(".dna3")
-      .attr("transform", "scale(1.5)");  // 0.6 * 2.5
-
-    t = this._nextTrans().duration(700);
-    t.select(".dna-intro")
-      .style("opacity", 0)
-      .remove();
-
-    /*
-    // Circle (cx, cy) point. Useful for debugging and fitting objects in a right place.
-    introG.append("circle").attr({
-      "class": "ctr",
-      "cx": 0,
-      "cy": 0,
-      "r": 10,
-      "fill": "red"
-    });
-    */
-  };
-
-  GeneticRenderer.prototype.prepareForTranslation = function () {
-    var cx  = this.model2px(5 * 0.5),
-        cy = this.model2pxInv(3 * 0.5),
-        ms2px = this.model2px,
-        t;
-
-    // Nucleus.
-    this._g.insert("image", ".dna-view").attr({
-      "class": "nucleus",
-      "x": this.model2px(W.NUCLEUS * -0.5),
-      "y": this.model2px(H.NUCLEUS * -0.5),
-      "width": this.model2px(W.NUCLEUS),
-      "height": this.model2px(H.NUCLEUS),
-      "preserveAspectRatio": "none",
-      "transform": "translate(" + cx + ", " + cy + ")",
-      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/BG_Nucleus.svg"
-    }).style("opacity", 0);
-
-    // Polymerase.
-    this._g.insert("image", ".dna-view").attr({
-      "class": "polymerase-under",
-      "x": this.model2px(W.POLY_UNDER * -0.5),
-      "y": this.model2px(H.POLY_UNDER * -0.5),
-      "width": this.model2px(W.POLY_UNDER),
-      "height": this.model2px(H.POLY_UNDER),
-      "preserveAspectRatio": "none",
-      "transform": "translate(" + cx + ", " + cy + ") scale(2.5)",
-      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/Polymerase_Under.svg"
-    }).style("opacity", 0);
-
-    this._g.append("image").attr({
-      "class": "polymerase-over",
-      "x": this.model2px(W.POLY_OVER * -0.5),
-      "y": this.model2px(H.POLY_OVER * -0.5),
-      "width": this.model2px(W.POLY_OVER),
-      "height": this.model2px(H.POLY_OVER),
-      "preserveAspectRatio": "none",
-      "transform": "translate(" + cx + ", " + cy + ") scale(2.5)",
-      "xlink:href": labConfig.actualRoot + "../../resources/dnaintro/Polymerase_Over.svg"
-    }).style("opacity", 0);
-
-    // Ribosome top-bottom.
-    this._g.append("image").attr({
-      "class": "ribosome-bottom",
-      "x": this.model2px(W.RIBO_BOTTOM * -0.5),
-      "y": this.model2px(H.RIBO_BOTTOM * -0.5),
-      "width": this.model2px(W.RIBO_BOTTOM),
-      "height": this.model2px(H.RIBO_BOTTOM),
-      "preserveAspectRatio": "none",
-      "transform": "translate(" + this.model2px(W.RIBO_TOP * -0.5) + ", " + cy + ")",
-      "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_bottom1.svg"
-    });
-
-    this._g.append("image").attr({
-      "class": "ribosome-top",
-      "x": this.model2px(W.RIBO_TOP * -0.5),
-      "y": this.model2px(H.RIBO_TOP * -0.5),
-      "width": this.model2px(W.RIBO_TOP),
-      "height": this.model2px(H.RIBO_TOP),
-      "preserveAspectRatio": "none",
-      "transform": "translate(" + this.model2px(W.RIBO_TOP * -0.5) + ", " + this.model2pxInv(this.model.get("height")) + ")",
-      "xlink:href": labConfig.actualRoot + "../../resources/translation/Ribosome_top1.svg"
-    });
-
-    // Ribosome under-over.
-    this._appendRibosome();
-    // Hide ribosome at the beginning.
-    this._g.selectAll(".ribosome-under, .ribosome-over").style("opacity", 0);
-
-    this._nextTrans().ease("cubic-in-out").duration(1500)
-      .select(".dna-view")
-        .attr("transform", "translate(" + this.model2px(2 * Nucleotide.WIDTH) + ")");
-
-    this._nextTrans().ease("cubic-in-out").duration(700)
-      .selectAll(".polymerase-under, .polymerase-over")
-        .style("opacity", 1);
-
-    // Show nucleus and set background for translation.
-    this._currentTrans.each("end", function () {
-      d3.select(".genetics .nucleus").style("opacity", 1);
-      d3.select(".plot").style("fill", "#B8EBF0");
-    });
-
-    this._nextTrans().ease("cubic-in-out").duration(1500)
-      .selectAll(".polymerase-under, .polymerase-over")
-        .attr("transform", "translate(0, " + cy + ") scale(2.5) translate(" + this.model2px(W.POLY_UNDER * -0.5) + ")");
-
-    t = this._nextTrans().ease("cubic").duration(1000);
-    t.select(".nucleus")
-      .attr("transform", "translate(" + cx + ", " + this.model2pxInv(0) + ")");
-    t.select(".dna")
-      .attr("transform", "translate(0, " + this.model2pxInv(4 * Nucleotide.HEIGHT) + ")");
-    t.select(".dna-comp")
-      .attr("transform", "translate(0, " + this.model2pxInv(2 * Nucleotide.HEIGHT) + ")");
-    t.selectAll(".mrna .bonds, .dna-comp .bonds").duration(250)
-      .style("opacity", 0);
-
-    t = this._nextTrans().ease("cubic-out").duration(1000);
-    t.select(".nucleus")
-      .attr("transform", "translate(" + cx + ", " + this.model2pxInv(H.NUCLEUS * -0.5) + ")");
-    t.select(".dna")
-      .attr("transform", "translate(0, " + this.model2pxInv(-1 * Nucleotide.HEIGHT) + ")");
-    t.select(".dna-comp")
-      .attr("transform", "translate(0, " + this.model2pxInv(-3 * Nucleotide.HEIGHT) + ")");
-    t.select(".mrna")
-      .attr("transform", "translate(0, " + this.model2pxInv(2.5 * Nucleotide.HEIGHT) + ")");
-
-    this._g.selectAll(".mrna .nucleotide g").data(this._mrna);
-    // Hacky way to change direction of the nucleotides. If we transform
-    // directly from scale(1, 1) to scale(1, -1), resulting transition looks
-    // strange (involves rotation etc.). So, first change scale to value very
-    // close to 0, than swap sign and finally change it to -1. Everything
-    // should look as expected.
-    t = this._nextTrans().ease("cubic-out").duration(250);
-    t.selectAll(".mrna .nucleotide g")
-      .attr("transform", function (d, i) {
-        return "translate(" + ms2px(Nucleotide.WIDTH) * i + ") scale(1, 1e-10)";
-      });
-    t.select(".mrna")
-      .attr("transform", "translate(0, " + this.model2pxInv(2 * Nucleotide.HEIGHT) + ")");
-    t = this._nextTrans().ease("cubic-out").duration(1);
-    t.selectAll(".mrna .nucleotide g")
-      .attr("transform", function (d, i) {
-        return "translate(" + ms2px(Nucleotide.WIDTH) * i + ") scale(1, -1e-10)";
-      });
-    // Replace images with rotated versions.
-    t.each("end", function () {
-      d3.selectAll(".mrna .nucleotide g").each(function (d) {
-        d3.select(this).select(".nucleotide-img")
-          .attr("xlink:href", labConfig.actualRoot + "../../resources/transcription/Nucleotide" + d.type + "_Direction2_noBonds.svg");
-      });
-    });
-    t = this._nextTrans().ease("cubic-out").duration(250);
-    this._g.selectAll(".mrna .nucleotide g").data(this._mrna);
-    t.selectAll(".mrna .nucleotide g")
-      .attr("transform", function (d, i) {
-        return "translate(" + ms2px(Nucleotide.WIDTH) * i + ") scale(1, -1)";
-      });
-    t.select(".mrna")
-      .attr("transform", "translate(0, " + this.model2pxInv(1.5 * Nucleotide.HEIGHT) + ")");
-
-    // Ribosome fade in.
-    t = this._nextTrans().ease("cubic-in-out").duration(1500);
-    t.select(".ribosome-top")
-      .attr("transform", "translate(" + this.model2px(Nucleotide.WIDTH * 4) + ", " + this.model2pxInv(4.52 * Nucleotide.HEIGHT) + ")");
-    t.select(".ribosome-bottom")
-      .attr("transform", "translate(" + this.model2px(Nucleotide.WIDTH * 3.95) + ", " + this.model2pxInv(1.75 * Nucleotide.HEIGHT) + ")");
-
-    t = this._nextTrans().ease("cubic-in-out").duration(500);
-    t.selectAll(".ribosome-top, .ribosome-bottom")
-      .style("opacity", 0);
-    t.selectAll(".ribosome-under, .ribosome-over")
-      .style("opacity", 1);
-
-    this._g.append("circle").attr("class", "animated-drag");
-  };
-
-  GeneticRenderer.prototype.translateStep = function (step) {
-    var codonIdx = step - 1,
-        geneticEngine = this.model.geneticEngine(),
-        t;
-
-    this._g.select(".animated-drag").attr({
-      "spring-id": codonIdx > 0 ? 1 : 0,
-      "cx": 2.15 + codonIdx * 3 * Nucleotide.WIDTH,
-      "cy": 2.95
-    });
-
-    this._appendTRNA(codonIdx);
-    this._trnaG.select(".trna:last-child")
-      .attr("transform", "translate(" + this.model2px(Nucleotide.HEIGHT * 2) + ", " + this.model2px(Nucleotide.HEIGHT * -6) + ")")
-      .style("opacity", 0)
-        .select(".rot")
-          .attr("transform", "rotate(30)");
-
-    t = this._nextTrans().duration(1500);
-    t.select(".trna-cont .trna:last-child")
-      .attr("transform", "translate(0, 0)")
-      .style("opacity", 5) // 5 causes that tRNA is visible earlier.
-        // Rotation g element subselection.
-        .select(".rot")
-          .attr("transform", "")
-          // Bonds subselection.
-          .selectAll(".bonds").ease("cubic")
-            .style("opacity", 1);
-
-    t.selectAll(".mrna .nucleotide:nth-child(" + (3 * codonIdx + 1) + ") .bonds, " +
-                ".mrna .nucleotide:nth-child(" + (3 * codonIdx + 2) + ") .bonds, " +
-                ".mrna .nucleotide:nth-child(" + (3 * codonIdx + 3) + ") .bonds")
-      .ease("cubic")
-      .style("opacity", 1);
-
-
-    t.select(".animated-drag").attr({
-      "cx": 1.2 + codonIdx * 3 * Nucleotide.WIDTH,
-      "cy": 1.6
-    });
-
-    this._moveRibosome();
-    this._scrollContainer();
-
-    t.each("start", function () {
-      var drag = d3.select(".animated-drag");
-      geneticEngine.addAminoAcid(codonIdx, drag.attr("cx"), drag.attr("cy"));
-    });
-    t.each("end", function () {
-      geneticEngine.connectAminoAcids(codonIdx);
-    });
-
-    if (step > 2) {
-      // Remove the first tRNA.
-      t = this._nextTrans().duration(1000);
-      t.select(".trna-cont .trna:nth-child(" + (step - 2) + ")") // step - 3 + 1
-        .attr("transform", "translate(" + this.model2px(Nucleotide.HEIGHT * -5) + ", " + this.model2px(Nucleotide.HEIGHT * -4) + ")")
-        .style("opacity", 0)
-          .select(".rot")
-            .attr("transform", "rotate(-30)")
-              .selectAll(".bonds").duration(200)
-                .style("opacity", 0);
-
-      // Hide mRNA bonds.
-      t.selectAll(".mrna .nucleotide:nth-child(" + (3 * (step - 3) + 1) + ") .bonds, " +
-                  ".mrna .nucleotide:nth-child(" + (3 * (step - 3) + 2) + ") .bonds, " +
-                  ".mrna .nucleotide:nth-child(" + (3 * (step - 3) + 3) + ") .bonds")
-        .duration(200)
-        .style("opacity", 0);
+    function scaleFunc(d) {
+      return "scale(" + d.scale + ")";
     }
-  };
-
-  GeneticRenderer.prototype.separateDNA = function (suppressAnimation) {
-    // When animation is disabled (e.g. during initial rendering), main group element
-    // is used as a root instead of d3 transition object.
-    var selection = suppressAnimation ? this._g : this._nextTrans().duration(1500),
-        i, len;
-
-    selection.select(".dna").attr("transform",
-      "translate(0, " + this.model2pxInv(this.model.get("height") / 2 + 2.5 * Nucleotide.HEIGHT) + ")");
-    selection.select(".dna-comp").attr("transform",
-      "translate(0, " + this.model2pxInv(this.model.get("height") / 2 - 2.5 * Nucleotide.HEIGHT) + ")");
-
-    for (i = 0, len = this._dna.length; i < len; i++) {
-      this._dna[i].hideBonds(suppressAnimation);
-      this._dnaComp[i].hideBonds(suppressAnimation);
+    function opacityFunc(d) {
+      return d.opacity;
     }
-  };
-
-  GeneticRenderer.prototype.transcribeStep = function () {
-    var mRNA  = this.model.get("mRNA"),
-        index  = mRNA.length - 1, // last element
-        type   = mRNA[index],
-        trans  = this._nextTrans().duration(500),
-        t, r;
-
-    this._mrna.push(new Nucleotide(this._mrnaG, this.model2px, type, 1, index, true));
-    this._mrna[index].hideBonds(true);
-
-    // While adding a new mRNA segment, choose a random starting point along a
-    // circle with a certain radius that extends beyond the top DNA strand.
-    // Use parametric circle equation: x = r cos(t), y = r sin(t)
-    // Limit range of the "t" parameter to: [0.25 * PI, 0.75 * PI) and [1.25 * PI, 1.75 * PI),
-    // so new mRNA segments will come only from the top or bottom side of the container.
-    t = Math.random() >= 0.5 ? Math.PI * 0.25 : Math.PI * 1.25;
-    t += Math.random() * Math.PI * 0.5;
-    r = Nucleotide.HEIGHT * 6;
-    this._mrnaG.select(".nucleotide:last-child")
-      .attr("transform", "translate(" + this.model2px(r * Math.cos(t)) + ", " + this.model2px(r * Math.sin(t)) + ")")
-      .style("opacity", 0);
-
-    trans.select(".mrna .nucleotide:last-child")
-      .attr("transform", "translate(0, 0)")
-      .style("opacity", 1)
-        // Subselection of bonds.
-        .select(".bonds").ease("cubic")
-          .style("opacity", 1);
-
-    trans.select(".dna-comp .nucleotide:nth-child(" + (index + 1) + ") .bonds").ease("cubic")
-      .style("opacity", 1);
-
-    this._scrollContainer();
-  };
-
-  /**
-   * Returns a new chained transition.
-   * This transition will be executed when previous one ends.
-   *
-   * @private
-   * @return {d3 transtion} d3 transtion object.
-   */
-  GeneticRenderer.prototype._nextTrans = function () {
-    // TODO: this first check is a workaround.
-    // Ideal scenario would be to call always:
-    // this._currentTrans[name] = this._currentTrans[name].transition();
-    // but it seems to fail when transition has already ended.
-    if (this._currentTrans && this._currentTrans.node().__transition__) {
-      // Some transition is currently in progress, chain a new transition.
-      this._currentTrans = this._currentTrans.transition();
-    } else {
-      // All transitions ended, just create a new one.
-      this._currentTrans = d3.transition();
+    function translateFuncInv(d) {
+      var x = d.translateX || 0,
+          y = d.translateY || 0;
+      return "translate(" + model2px(x) + " " + model2pxInv(y) + ")";
     }
-    return this._currentTrans;
+    function translateScaleFuncInv(d) {
+      return translateFuncInv(d) + " " + scaleFunc(d);
+    }
+
+    return {
+      cells: function (parent, data) {
+        var cells = parent.select(".background-layer").selectAll(".cells").data(data.cells);
+        cells.enter().append("image").attr({
+          "class": "cells",
+          "x": model2px(W.CELLS * -0.567),
+          "y": model2px(H.CELLS * -0.445),
+          "width": model2px(W.CELLS),
+          "height": model2px(H.CELLS),
+          "preserveAspectRatio": "none",
+          "xlink:href": "resources/dna/Cells.svg",
+          "transform": translateScaleFuncInv
+        }).style("opacity", opacityFunc);
+        d3.transition(cells)
+          .attr("transform", translateScaleFuncInv)
+          .style("opacity", opacityFunc);
+        d3.transition(cells.exit()).remove();
+      },
+
+      dna1: function (parent, data) {
+        var dna1 = parent.select(".dna-layer").selectAll(".dna1").data(data.dna1);
+        dna1.enter().append("image").attr({
+          "class": "dna1",
+          "x": model2px(W.DNA1 * -0.5),
+          "y": model2px(H.DNA1 * -0.5),
+          "width": model2px(W.DNA1),
+          "height": model2px(H.DNA1),
+          "preserveAspectRatio": "none",
+          "xlink:href": "resources/dna/DNA_InsideNucleus_1.svg",
+          "transform": translateScaleFuncInv
+        }).style("opacity", opacityFunc);
+        d3.transition(dna1)
+          .attr("transform", translateScaleFuncInv)
+          .style("opacity", opacityFunc);
+        d3.transition(dna1.exit()).remove();
+      },
+
+      dna2: function (parent, data) {
+        var dna2 = parent.select(".dna-layer").selectAll(".dna2").data(data.dna2);
+        dna2.enter().append("image").attr({
+          "class": "dna2",
+          "x": model2px(W.DNA2 * -0.5),
+          "y": model2px(H.DNA2 * -0.404),
+          "width": model2px(W.DNA2),
+          "height": model2px(H.DNA2),
+          "preserveAspectRatio": "none",
+          "xlink:href": "resources/dna/DNA_InsideNucleus_2.svg",
+          "transform": translateScaleFuncInv
+        }).style("opacity", opacityFunc);
+        d3.transition(dna2)
+          .attr("transform", translateScaleFuncInv)
+          .style("opacity", opacityFunc);
+        d3.transition(dna2.exit()).remove();
+      },
+
+      dna3: function (parent, data) {
+        var dna3units = 14,
+            dna3, dna3Enter;
+        dna3 = parent.select(".dna-layer").selectAll(".dna3").data(data.dna3);
+        dna3Enter = dna3.enter().append("g").attr({
+          "class": "dna3 main-dna",
+          "transform": translateScaleFuncInv
+        }).style("opacity", opacityFunc);
+        dna3Enter.selectAll("dna3-unit").data(new Array(dna3units)).enter().append("image").attr({
+          "class": "dna3-unit",
+          "x": function (d, i) { return (i - dna3units * 0.5) * model2px(W.DNA3) * 0.98; },
+          "y": model2px(H.DNA3 * -0.5),
+          "width": model2px(W.DNA3),
+          "height": model2px(H.DNA3),
+          "preserveAspectRatio": "none",
+          "xlink:href": "resources/dna/DoubleHelix_Unit.svg"
+        });
+        d3.transition(dna3)
+          .attr("transform", translateScaleFuncInv)
+          .style("opacity", opacityFunc);
+        d3.transition(dna3.exit()).remove();
+      },
+
+      dna: function (parent, data) {
+        var dnaSequence    = model.get("DNA"),
+            dnaLength      = dnaSequence.length,
+            geneticEngine  = model.geneticEngine(),
+            junkDNA        = geneticEngine.junkSequence(),
+            bonds          = data.dna[0] ? data.dna[0].bonds : 0,
+            n              = nucleotides().model2px(model2px),
+            dna, dnaEnter;
+
+        // DNA enter:
+        dna = parent.select(".dna-layer").selectAll(".dna").data(data.dna);
+        dnaEnter = dna.enter().append("g").attr({
+          "class": "dna",
+          "transform": translateFuncInv
+        });
+        // Coding sequence.
+        dnaEnter.append("g").attr("class", "coding-region");
+        // Promoter sequence.
+        n.sequence(geneticEngine.promoterSequence);
+        n.startingPos(-geneticEngine.promoterSequence.length);
+        dnaEnter.append("g").attr("class", "promoter-region").call(n);
+        // Terminator sequence.
+        n.sequence(geneticEngine.terminatorSequence);
+        n.startingPos(dnaLength);
+        dnaEnter.append("g").attr("class", "terminator-region").call(n);
+        // Junk sequence.
+        n.sequence(junkDNA.sequence);
+        n.startingPos(-geneticEngine.promoterSequence.length - junkDNA.sequence.length);
+        dnaEnter.append("g").attr("class", "junk-region").call(n);
+        n.sequence(junkDNA.sequence);
+        n.startingPos(dnaLength + geneticEngine.terminatorSequence.length);
+        dnaEnter.append("g").attr("class", "junk-region").call(n);
+
+        // Register mutations menu:
+        mutationsContextMenu.register('[class~="dna"] [class~="coding-region"] [class~="nucleotide"]', model, false);
+
+        // DNA update:
+        n.sequence(dnaSequence);
+        n.startingPos(0);
+        n.glow(true);
+        dna.select(".coding-region").call(n);
+
+        d3.transition(dna).attr("transform", translateFuncInv)
+          .selectAll(".bonds").style("opacity", bonds);
+        // DNA exit:
+        d3.transition(dna.exit()).remove();
+      },
+
+      dnaComp: function (parent, data) {
+        var dnaComplement  = model.get("DNAComplement"),
+            dnaLength      = dnaComplement.length,
+            geneticEngine  = model.geneticEngine(),
+            junkDNA        = geneticEngine.junkSequence(),
+            bonds          = data.dnaComp[0] ? data.dnaComp[0].bonds : 0,
+            n              = nucleotides().model2px(model2px).direction(2),
+            dnaComp, dnaCompEnter;
+
+        // DNA Comp enter:
+        dnaComp = parent.select(".dna-layer").selectAll(".dna-comp").data(data.dnaComp);
+        dnaCompEnter = dnaComp.enter().append("g").attr({
+          "class": "dna-comp",
+          "transform": translateFuncInv
+        });
+
+        // Coding sequence.
+        dnaCompEnter.append("g").attr("class", "coding-region");
+        // Promoter sequence.
+        n.sequence(geneticEngine.promoterCompSequence);
+        n.startingPos(-geneticEngine.promoterCompSequence.length);
+        n.glow(false);
+        dnaCompEnter.append("g").attr("class", "promoter-region").call(n);
+        // Terminator sequence.
+        n.sequence(geneticEngine.terminatorCompSequence);
+        n.startingPos(dnaLength);
+        dnaCompEnter.append("g").attr("class", "terminator-region").call(n);
+        // Junk sequence.
+        n.sequence(junkDNA.compSequence);
+        n.startingPos(-geneticEngine.promoterCompSequence.length - junkDNA.compSequence.length);
+        dnaCompEnter.append("g").attr("class", "junk-region").call(n);
+        n.sequence(junkDNA.compSequence);
+        n.startingPos(dnaLength + geneticEngine.terminatorCompSequence.length);
+        dnaCompEnter.append("g").attr("class", "junk-region").call(n);
+
+        // Register mutations menu:
+        mutationsContextMenu.register('[class~="dna-comp"] [class~="coding-region"] [class~="nucleotide"]', model, true);
+
+        // DNA Comp update:
+        n.sequence(dnaComplement);
+        n.startingPos(0);
+        n.glow(true);
+        dnaComp.select(".coding-region").call(n);
+        d3.transition(dnaComp).attr("transform", translateFuncInv)
+          .selectAll(".bonds").style("opacity", bonds);
+
+        // DNA Comp exit:
+        d3.transition(dnaComp.exit()).remove();
+      },
+
+      mrna: function (parent, data) {
+        var mrnaSequence  = model.get("mRNA"),
+            geneticEngine = model.geneticEngine(),
+            stopCodons    = geneticEngine.stopCodonsHash(),
+            bonds         = data.mrna[0] ? data.mrna[0].bonds : 0,
+            dir           = data.mrna[0] ? data.mrna[0].direction : 1,
+            mrna;
+
+        // mRNA enter:
+        mrna = parent.select(".dna-layer").selectAll(".mrna").data(data.mrna);
+        mrna.enter().append("g").attr({
+          "class": "mrna",
+          "transform": translateFuncInv
+        });
+        // mRNA update:
+        // (note that there is significant difference between DNA enter/update - for mRNA we call nucleotides()
+        // also during update operation, as it will constantly change).
+        mrna.call(nucleotides().model2px(model2px).sequence(mrnaSequence).backbone("RNA").direction(dir).stopCodonsHash(stopCodons));
+        d3.transition(mrna).attr("transform", translateFuncInv)
+          .selectAll(".bonds").style("opacity", bonds);
+        // mRNA exit:
+        d3.transition(mrna.exit()).remove();
+      },
+
+      polymeraseUnder: function (parent, data) {
+        var polyUnder = parent.select(".under-dna-layer").selectAll(".polymerase-under").data(data.polymeraseUnder);
+        polyUnder.enter().append("image").attr({
+          "class": "polymerase-under",
+          "x": model2px(W.POLY_UNDER * -0.5),
+          "y": model2px(H.POLY_UNDER * -0.5),
+          "width": model2px(W.POLY_UNDER),
+          "height": model2px(H.POLY_UNDER),
+          "preserveAspectRatio": "none",
+          "xlink:href": "resources/dna/Polymerase_Under.svg",
+          "transform": translateScaleFuncInv
+        }).style("opacity", opacityFunc);
+        d3.transition(polyUnder)
+          .attr("transform", translateScaleFuncInv)
+          .style("opacity", opacityFunc);
+        d3.transition(polyUnder.exit()).remove();
+      },
+
+      polymeraseOver: function (parent, data) {
+        var polyOver = parent.select(".over-dna-layer").selectAll(".polymerase-over").data(data.polymeraseOver);
+        polyOver.enter().append("image").attr({
+          "class": "polymerase-over",
+          "x": model2px(W.POLY_OVER * -0.5),
+          "y": model2px(H.POLY_OVER * -0.5),
+          "width": model2px(W.POLY_OVER),
+          "height": model2px(H.POLY_OVER),
+          "preserveAspectRatio": "none",
+          "xlink:href": "resources/dna/Polymerase_Over.svg",
+          "transform": translateScaleFuncInv
+        }).style("opacity", opacityFunc);
+        d3.transition(polyOver)
+          .attr("transform", translateScaleFuncInv)
+          .style("opacity", opacityFunc);
+        d3.transition(polyOver.exit()).remove();
+      },
+
+      nucleus: function (parent, data) {
+        var nucleus = parent.select(".background-layer").selectAll(".nucleus").data(data.nucleus);
+        nucleus.enter().append("image").attr({
+          "class": "nucleus",
+          "x": model2px(W.NUCLEUS * -0.5),
+          "y": model2px(H.NUCLEUS * -0.5),
+          "width": model2px(W.NUCLEUS),
+          "height": model2px(H.NUCLEUS),
+          "preserveAspectRatio": "none",
+          "xlink:href": "resources/dna/BG_Nucleus.svg",
+          "transform": translateFuncInv
+        }).style("opacity", opacityFunc);
+        d3.transition(nucleus)
+          .attr("transform", translateFuncInv)
+          .style("opacity", opacityFunc);
+        d3.transition(nucleus.exit()).remove();
+      },
+
+      ribosomeBottom: function (parent, data) {
+        var selection = parent.select(".over-dna-layer").selectAll(".ribosome-bottom").data(data.ribosomeBottom);
+        selection.enter().append("image").attr({
+          "class": "ribosome-bottom",
+          "x": model2px(W.RIBO_BOTTOM * -0.5),
+          "y": model2px(H.RIBO_BOTTOM * -0.5),
+          "width": model2px(W.RIBO_BOTTOM),
+          "height": model2px(H.RIBO_BOTTOM),
+          "preserveAspectRatio": "none",
+          "xlink:href": "resources/dna/Ribosome_bottom1.svg",
+          "transform": translateFuncInv
+        }).style("opacity", 0);
+        d3.transition(selection)
+          .attr("transform", translateFuncInv)
+          .style("opacity", opacityFunc);
+        d3.transition(selection.exit())
+          .style("opacity", 0)
+          .remove();
+      },
+
+      ribosomeTop: function (parent, data) {
+        var selection = parent.select(".over-dna-layer").selectAll(".ribosome-top").data(data.ribosomeTop);
+        selection.enter().append("image").attr({
+          "class": "ribosome-top",
+          "x": model2px(W.RIBO_TOP * -0.5),
+          "y": model2px(H.RIBO_TOP * -0.5),
+          "width": model2px(W.RIBO_TOP),
+          "height": model2px(H.RIBO_TOP),
+          "preserveAspectRatio": "none",
+          "xlink:href": "resources/dna/Ribosome_top1.svg",
+          "transform": translateFuncInv
+        }).style("opacity", 0);
+        d3.transition(selection)
+          .attr("transform", translateFuncInv)
+          .style("opacity", opacityFunc);
+        d3.transition(selection.exit())
+          .style("opacity", 0)
+          .remove();
+      },
+
+      ribosomeUnder: function (parent, data) {
+        var selection = parent.select(".under-dna-layer").selectAll(".ribosome-under").data(data.ribosomeUnder);
+        selection.enter().append("image").attr({
+          "class": "ribosome-under",
+          "x": model2px(W.RIBO_UNDER * -0.5),
+          "y": model2px(H.RIBO_UNDER * -0.5),
+          "width": model2px(W.RIBO_UNDER),
+          "height": model2px(H.RIBO_UNDER),
+          "preserveAspectRatio": "none",
+          "xlink:href": "resources/dna/Ribosome_under.png",
+          "transform": translateFuncInv
+        }).style({
+          "opacity": opacityFunc
+        });
+        d3.transition(selection)
+          .attr("transform", translateFuncInv)
+          .style("opacity", opacityFunc);
+        d3.transition(selection.exit()).remove();
+      },
+
+      ribosomeOver: function (parent, data) {
+        var selection = parent.select(".over-dna-layer").selectAll(".ribosome-over").data(data.ribosomeOver);
+        selection.enter().append("image").attr({
+          "class": "ribosome-over",
+          "x": model2px(W.RIBO_OVER * -0.5),
+          "y": model2px(H.RIBO_OVER * -0.5),
+          "width": model2px(W.RIBO_OVER),
+          "height": model2px(H.RIBO_OVER),
+          "preserveAspectRatio": "none",
+          "xlink:href": "resources/dna/Ribosome_over.png",
+          "transform": translateFuncInv
+        }).style("opacity", opacityFunc);
+        d3.transition(selection)
+          .attr("transform", translateFuncInv)
+          .style("opacity", opacityFunc);
+        d3.transition(selection.exit()).remove();
+      },
+
+      trna: function (parent, data) {
+        var geneticEngine = model.geneticEngine(),
+
+            codonWidth = 3 * nucleotides.WIDTH,
+            offset = (codonWidth - W.TRNA) * 0.55,
+
+            selection, enter, update, exit;
+
+        selection = parent.select(".top-layer").selectAll(".trna").data(data.trna, function (d) { return d.index; });
+        // The most outer container can be used to set easily position offset.
+        // While the inner g elements provides translation for "ideal" tRNA position
+        // close to the mRNA and optional rotation.
+        enter = selection.enter().append("g").attr({
+          "class": "trna",
+          "display": function (d) { return d.index < 0 ? "none" : "inline"; },
+          "transform": function (d, i) {
+            return "translate(" + model2px(nucleotides.HEIGHT * 2) + ", " + model2px(-2.78) + ") " +
+                    translateFuncInv(d, i) + " rotate(30)";
+          }
+        }).style("opacity", opacityFunc);
+
+        enter.append("g")
+          .attr("transform", "translate(0, " + model2px(-H.A) + ")")
+          .call(nucleotides()
+                  .model2px(model2px)
+                  .sequence(function (d) { return geneticEngine.codonComplement(d.index); })
+                  .backbone(false)
+                  .randomEnter(false));
+
+        enter.append("image").attr({
+          "class": "trna-neck",
+          "x": model2px(0.52 * (codonWidth - W.TRNA_NECK)),
+          "y": model2px(-H.TRNA_NECK -H.TRNA * 0.95 - H.A * 0.92),
+          "width": model2px(W.TRNA_NECK),
+          "height": model2px(H.TRNA_NECK),
+          "preserveAspectRatio": "none",
+          "xlink:href": "resources/dna/tRNA_neck.png"
+        });
+        enter.append("image").attr({
+          "class": "trna-base",
+          "x": model2px(offset),
+          "y": model2px(-H.TRNA - H.A * 0.92),
+          "width": model2px(W.TRNA),
+          "height": model2px(H.TRNA),
+          "preserveAspectRatio": "none",
+          "xlink:href": "resources/dna/tRNA_base.png"
+        });
+
+        update = d3.transition(selection)
+          .attr("transform", translateFuncInv)
+          .style("opacity", opacityFunc);
+        update.select(".trna-neck").style("opacity", function (d) { return d.neck; });
+
+        exit = d3.transition(selection.exit())
+          .attr("transform", function (d, i) {
+            return "translate(" + model2px(nucleotides.HEIGHT * -5) + ", " + model2px(nucleotides.HEIGHT * -4) + ") " +
+                    translateFuncInv(d, i) + " rotate(-30)";
+          })
+          .style("opacity", 0);
+        exit.selectAll(".bonds").style("opacity", 0);
+        exit.remove();
+      },
+
+      viewPort: function (parent, data) {
+        var position   = data.viewPort[0].position,
+            xy         = data.viewPort[0].xy || [],
+            ease       = data.viewPort[0].ease,
+            height     = model.get("viewPortHeight"),
+            viewport, viewBox;
+
+        function updateModel() {
+          // TODO: this is slow as it triggers recalculation
+          // of the model state!
+          model.set({
+            "viewPortX": xy[0] || position * nucleotides.WIDTH,
+            "viewPortY": xy[1] || 0
+          });
+        }
+
+        viewport = svg.select(".viewport");
+        viewBox = viewport.attr("viewBox").split(" ");
+        // Update viewport X coordinate.
+        viewBox[0] = model2px(xy[0] ? xy[0] : position * nucleotides.WIDTH);
+        viewBox[1] = model2pxInv(xy[1] ? xy[1] + height : height);
+        viewport = d3.transition(viewport).attr("viewBox", viewBox.join(" "));
+        // Duck test whether viewportUpdate is a transition or selection.
+        // See D3 API Reference - d3.transition(selection) returns  transition
+        // only when called in the context of other transition. Otherwise it
+        // returns selection.
+        if (typeof viewport.duration === "function") {
+          // Transition!
+          viewport.ease(ease);
+          viewport.each("end.viewport-update", updateModel);
+        } else {
+          // Selection!
+          updateModel();
+        }
+      },
+
+      background: function (parent, data) {
+        appendTranscriptionBg(parent);
+        d3.transition(svg.select(".plot")).style("fill", data.background[0].color);
+      }
+    };
+  }
+
+  GeneticElementsRenderer.W = W;
+  GeneticElementsRenderer.H = H;
+
+  return GeneticElementsRenderer;
+});
+
+/*global define, $ */
+
+define('common/views/state-manager',[],function () {
+  return function StateManager(names) {
+    var api,
+        states = [],
+        stateByName = {};
+
+    api = {
+      newState: function (stateName, stateDef) {
+        var state = $.extend(true, {}, stateDef);
+        names.forEach(function (n) {
+          if (typeof state[n] === "undefined") {
+            state[n] = [];
+          }
+        });
+        states.push(state);
+        stateByName[stateName] = state;
+      },
+      extendLastState: function (stateName, stateDef) {
+        var prevState = states[states.length - 1],
+            state = {};
+
+        names.forEach(function (n) {
+          state[n] = [];
+          if (typeof stateDef[n] !== "undefined") {
+            // Array expected!
+            stateDef[n].forEach(function (objDef, idx) {
+              state[n].push($.extend(true, {}, prevState[n][idx], objDef));
+            });
+          }
+        });
+        states.push(state);
+        stateByName[stateName] = state;
+      },
+      getState: function (name) {
+        var orgState = stateByName[name],
+            state = $.extend(true, {}, orgState),
+            objName;
+        for (objName in state) {
+          if (state.hasOwnProperty(objName)) {
+            state[objName].forEach(function (d, i) {
+              var value;
+              for (value in d) {
+                if (typeof d[value] === "function") {
+                  // Very important - evaluate function from original state
+                  // object, not from copy! It can be important where two
+                  // functions call each other. It should still work.
+                  d[value] = orgState[objName][i][value]();
+                }
+              }
+            });
+          }
+        }
+        return state;
+      }
+    };
+    return api;
   };
+});
+
+/*global define, d3 */
+
+define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/views/genetic-elements-renderer','common/views/state-manager'],function (require) {
+  var nucleotides  = require('md2d/views/nucleotides'),
+      GeneticElementsRenderer = require('md2d/views/genetic-elements-renderer'),
+      StateManager = require('common/views/state-manager'),
+
+      H = GeneticElementsRenderer.H;
+
+  function GeneticRenderer(svg, parent, model) {
+    var api,
+        viewportG = svg.select(".viewport"),
+        model2px = parent.model2px,
+        model2pxInv = parent.model2pxInv,
+
+        g = null,
+        currentTrans = null,
+        state = null,
+        prevState = null,
+
+        objectNames = [
+          "viewPort", "background",
+          "cells", "dna1", "dna2", "dna3",
+          "polymeraseUnder", "polymeraseOver",
+          "polymeraseUnder", "polymeraseOver",
+          "dna", "dnaComp", "mrna", "nucleus",
+          "ribosomeBottom", "ribosomeTop",
+          "ribosomeUnder", "ribosomeOver",
+          "trna"
+        ],
+        stateMgr = new StateManager(objectNames),
+        objectRenderer = new GeneticElementsRenderer(svg, model2px, model2pxInv, model),
+
+        transitionFunction;
+
+    function init() {
+      // Redraw DNA / mRNA when genetic engine state is changed.
+      model.geneticEngine().on("change", render);
+      // Play animation when there is a "transition" event.
+      model.geneticEngine().on("transition", transition);
+
+      defineStates();
+    }
+
+    /**
+     * Defines all animations states.
+     * @private
+     */
+    function defineStates() {
+      var viewPortWidth  = model.get("viewPortWidth"),
+          viewPortHeight = model.get("viewPortHeight"),
+          vx = viewPortWidth * 0.5,
+          vy = viewPortHeight * 0.5,
+
+          lastStep;
+      function getStep() {
+        var step = state.step;
+        lastStep = !isNaN(step) ? step : lastStep;
+        return lastStep;
+      }
+      function ribosomeX() {
+        return (1.65 + Math.max(0, getStep() - 2) * 3) * nucleotides.WIDTH;
+      }
+      function trnaX() {
+        return this.index() * 3 * nucleotides.WIDTH;
+      }
+
+      stateMgr.newState("intro-cells", {
+        cells: [{
+          translateX: vx + 0.33,
+          translateY: vy,
+          scale: 1
+        }],
+        dna1: [{
+          translateX: vx + 0.33,
+          translateY: vy,
+          scale: 0.13,
+          opacity: 0
+        }],
+        viewPort: [{
+          position: 0,
+          ease: "cubic-in-out"
+        }],
+        background: [{
+          color: "#8492ef"
+        }]
+      });
+      stateMgr.extendLastState("intro-zoom1", {
+        cells: [{
+          translateX: vx,
+          scale: 6
+        }],
+        dna1: [{
+          translateX: vx,
+          scale: 0.78,
+          opacity: 5
+        }],
+        dna2: [{
+          translateX: vx,
+          translateY: vy,
+          scale: 0.5,
+          opacity: 0
+        }],
+        viewPort: [{}],
+        background: [{}]
+      });
+      stateMgr.extendLastState("intro-zoom2", {
+        cells: [{
+          scale: 24
+        }],
+        dna1: [{
+          scale: 3.12,
+          opacity: 0
+        }],
+        dna2: [{
+          scale: 2,
+          opacity: 1
+        }],
+        dna3: [{
+          translateX: vx,
+          translateY: vy,
+          scale: 0.2,
+          opacity: 0
+        }],
+        viewPort: [{}],
+        background: [{}]
+      });
+      stateMgr.extendLastState("intro-zoom3-s0", {
+        cells: [{}],
+        dna2: [{
+          scale: 3.8,
+          opacity: 0
+        }],
+        dna3: [{
+          scale: 0.4,
+          opacity: 1
+        }],
+        viewPort: [{}],
+        background: [{}]
+      });
+      stateMgr.extendLastState("intro-zoom3", {
+        cells: [{}],
+        dna3: [{
+          scale: 0.6
+        }],
+        polymeraseUnder: [{
+          scale: 0.2,
+          translateX: -2,
+          translateY: 4,
+          opacity: 1
+        }],
+        viewPort: [{}],
+        background: [{}]
+      });
+      stateMgr.extendLastState("intro-polymerase-s0", {
+        cells: [{}],
+        dna3: [{}],
+        polymeraseUnder: [{
+          scale: 0.8,
+          translateX: vx,
+          translateY: vy,
+          opacity: 1
+        }],
+        polymeraseOver: [{
+          translateX: vx,
+          translateY: vy,
+          scale: 0.8,
+          opacity: 0
+        }],
+        viewPort: [{}],
+        background: [{}]
+      });
+      stateMgr.extendLastState("intro-polymerase", {
+        cells: [{}],
+        dna3: [{}],
+        polymeraseUnder: [{
+          scale: 1,
+        }],
+        polymeraseOver: [{
+          scale: 1,
+          opacity: 1
+        }],
+        viewPort: [{}],
+        background: [{}]
+      });
+      stateMgr.extendLastState("dna-s0", {
+        cells: [{
+          opacity: 0
+        }],
+        dna3: [{
+          scale: 1.5
+        }],
+        polymeraseUnder: [{
+          scale: 2.5
+        }],
+        polymeraseOver: [{
+          scale: 2.5
+        }],
+        viewPort: [{}],
+        background: [{}]
+      });
+      stateMgr.extendLastState("dna", {
+        polymeraseUnder: [{
+          opacity: 0
+        }],
+        polymeraseOver: [{
+          opacity: 0
+        }],
+        dna3: [{
+          opacity: 0
+        }],
+        dna: [{
+          translateY: viewPortHeight / 2 + nucleotides.HEIGHT,
+          bonds: 1
+        }],
+        dnaComp: [{
+          translateY: viewPortHeight / 2 - nucleotides.HEIGHT,
+          bonds: 1
+        }],
+        viewPort: [{
+          position: -2
+        }],
+        background: [{
+          color: "url(#transcription-bg)"
+        }]
+      });
+      stateMgr.extendLastState("transcription", {
+        dna: [{
+          translateY: viewPortHeight / 2 + 2.5 * nucleotides.HEIGHT,
+          bonds: 0
+        }],
+        dnaComp: [{
+          translateY: viewPortHeight / 2 - 2.5 * nucleotides.HEIGHT,
+          bonds: function () {
+            var mrnaLen = model.get("mRNA").length;
+            return function (d, i) {
+              return i < mrnaLen ? 1 : 0;
+            };
+          }
+        }],
+        mrna: [{
+          translateY: viewPortHeight / 2 - 0.5 * nucleotides.HEIGHT,
+          bonds: 1,
+          direction: 1
+        }],
+        viewPort: [{
+          position: function () {
+            return Math.min(model.get("DNA").length - 10, Math.max(0, getStep() - 6)) - 2;
+          },
+          ease: "linear"
+        }],
+        background: [{}]
+      });
+      stateMgr.extendLastState("transcription-end", {
+        dna: [{}],
+        dnaComp: [{}],
+        mrna: [{}],
+        polymeraseUnder: [{
+          translateX: function () { return model.get("DNA").length * nucleotides.WIDTH; },
+          translateY: 0.5 * viewPortHeight,
+          scale: 3.5,
+          opacity: 0
+        }],
+        polymeraseOver: [{
+          translateX: function () { return model.get("DNA").length * nucleotides.WIDTH; },
+          translateY: 0.5 * viewPortHeight,
+          scale: 3.5,
+          opacity: 0
+        }],
+        viewPort: [{
+          position: function () { return Math.max(0, model.get("DNA").length - 10) - 2; }
+        }],
+        background: [{}]
+      });
+      stateMgr.extendLastState("after-transcription", {
+        dna: [{}],
+        dnaComp: [{}],
+        mrna: [{}],
+        polymeraseUnder: [{
+          opacity: 1
+        }],
+        polymeraseOver: [{
+          opacity: 1
+        }],
+        viewPort: [{}],
+        background: [{}]
+      });
+      stateMgr.extendLastState("before-translation-s0", {
+        dna: [{}],
+        dnaComp: [{}],
+        mrna: [{}],
+        polymeraseUnder: [{
+          scale: 1.4
+        }],
+        polymeraseOver: [{
+          scale: 1.4,
+          opacity: 0
+        }],
+        viewPort: [{}],
+        background: [{
+          color: "#8492ef"
+        }]
+      });
+      stateMgr.extendLastState("before-translation-s1", {
+        dna: [{}],
+        dnaComp: [{}],
+        mrna: [{}],
+        polymeraseUnder: [{
+          translateX: function () { return model.get("viewPortX") + 0.5 * viewPortWidth + 5; }, // + 5!
+          translateY: 0.5 * viewPortHeight - 2,
+          scale: 0.7
+        }],
+        viewPort: [{}],
+        background: [{}]
+      });
+      stateMgr.extendLastState("before-translation-s2", {
+        dna: [{}],
+        dnaComp: [{}],
+        mrna: [{}],
+        nucleus: [{
+          translateX: 0.5 * viewPortWidth - 2 * nucleotides.WIDTH,
+          translateY: 0.5 * viewPortHeight
+        }],
+        viewPort: [{
+          position: -2,
+          ease: "cubic-in-out"
+        }],
+        background: [{}]
+      });
+      stateMgr.extendLastState("before-translation-s3", {
+        dna: [{
+          translateY: 4 * nucleotides.HEIGHT
+        }],
+        dnaComp: [{
+          translateY: 2 * nucleotides.HEIGHT,
+          bonds: 0
+        }],
+        mrna: [{
+          bonds: 0
+        }],
+        nucleus: [{
+          translateY: 0
+        }],
+        viewPort: [{}],
+        background: [{
+          color: function() { return model.get("backgroundColor"); }
+        }]
+      });
+      stateMgr.extendLastState("before-translation-s4", {
+        dna: [{
+          translateY: -1 * nucleotides.HEIGHT
+        }],
+        dnaComp: [{
+          translateY: -3 * nucleotides.HEIGHT,
+        }],
+        mrna: [{
+          translateY: 2.5 * nucleotides.HEIGHT
+        }],
+        nucleus: [{
+          translateY: H.NUCLEUS * -0.5
+        }],
+        viewPort: [{}],
+        background: [{}]
+      });
+      stateMgr.extendLastState("before-translation", {
+        mrna: [{
+          translateY: 1.5 * nucleotides.HEIGHT,
+          direction: 2,
+          bonds: 0
+        }],
+        ribosomeBottom: [{
+          translateX: -3,
+          translateY: vy,
+          opacity: 0
+        }],
+        viewPort: [{}],
+        background: [{}]
+      });
+      stateMgr.extendLastState("translation-s0", {
+        mrna: [{}],
+        ribosomeBottom: [{
+          translateX: ribosomeX,
+          translateY: 1.75 * nucleotides.HEIGHT,
+          opacity: 1
+        }],
+        ribosomeTop: [{
+          translateX: -3,
+          translateY: 6,
+          opacity: 0
+        }],
+        viewPort: [{}],
+        background: [{}]
+      });
+      stateMgr.extendLastState("translation-s1", {
+        mrna: [{}],
+        ribosomeBottom: [{}],
+        ribosomeTop: [{
+          translateX: ribosomeX,
+          translateY: 4.52 * nucleotides.HEIGHT,
+          opacity: 1
+        }],
+        ribosomeUnder: [{
+          translateX: ribosomeX,
+          translateY: 3.7 * nucleotides.HEIGHT,
+          opacity: 0
+        }],
+        ribosomeOver: [{
+          translateX: ribosomeX,
+          translateY: 3.7 * nucleotides.HEIGHT,
+          opacity: 0
+        }],
+        viewPort: [{}],
+        background: [{}]
+      });
+      stateMgr.extendLastState("translation", {
+        mrna: [{
+          bonds: function () {
+            var step = getStep();
+            return function (d, i) {
+              return i < 3 * (step - 2) || i >= 3 * step ? 0 : 1;
+            };
+          }
+        }],
+        ribosomeUnder: [{
+          opacity: 1
+        }],
+        ribosomeOver: [{
+          opacity: 1
+        }],
+        trna: [
+          {
+            index: function () { return getStep() - 2; },
+            translateX: trnaX,
+            translateY: 2.5 * nucleotides.HEIGHT,
+            neck: 0
+          },
+          {
+            index: function () { return getStep() - 1; },
+            translateX: trnaX,
+            translateY: 2.5 * nucleotides.HEIGHT,
+            neck: 1
+          }
+        ],
+        viewPort: [{
+          position: function () { return Math.max(0, 3 * (getStep() - 3)) - 2; },
+          ease: "linear"
+        }],
+        background: [{}]
+      });
+      stateMgr.extendLastState("translation-step0", {
+        mrna: [{
+          bonds: function () {
+            var step = getStep();
+            return function (d, i) {
+              return i < 3 * (step - 3) || i >= 3 * step ? 0 : 1;
+            };
+          }
+        }],
+        ribosomeUnder: [{}],
+        ribosomeOver: [{}],
+        trna: [
+          {
+            index: function () { return getStep() - 3; },
+          },
+          {
+            index: function () { return getStep() - 2; },
+          },
+          {
+            index: function () { return getStep() - 1; },
+            translateX: trnaX,
+            translateY: 2.5 * nucleotides.HEIGHT,
+            neck: 1
+          }
+        ],
+        viewPort: [{}],
+        background: [{}]
+      });
+      stateMgr.extendLastState("translation-step1", {
+        mrna: [{}],
+        ribosomeUnder: [{}],
+        ribosomeOver: [{}],
+        trna: [
+          {},
+          {
+            neck: 0
+          },
+          {}
+        ],
+        viewPort: [{}],
+        background: [{}]
+      });
+      stateMgr.extendLastState("translation-end-s0", {
+        mrna: [{}],
+        ribosomeUnder: [{}],
+        ribosomeOver: [{}],
+        trna: [
+          {
+            index: function () { return getStep() - 2; }
+          },
+          {
+            index: function () { return getStep() - 1; },
+            neck: 0
+          }
+        ],
+        viewPort: [{}],
+        background: [{}]
+      });
+      stateMgr.extendLastState("translation-end-s1", {
+        mrna: [{
+          bonds: function () {
+            var step = getStep();
+            return function (d, i) {
+              return i < 3 * (step - 1) || i >= 3 * step ? 0 : 1;
+            };
+          }
+        }],
+        ribosomeUnder: [{}],
+        ribosomeOver: [{}],
+        trna: [{
+          index: function () { return getStep() - 1; },
+        }],
+        viewPort: [{}],
+        background: [{}]
+      });
+      stateMgr.extendLastState("translation-end-s2", {
+        mrna: [{
+          bonds: 0
+        }],
+        ribosomeUnder: [{}],
+        ribosomeOver: [{}],
+        viewPort: [{}],
+        background: [{}]
+      });
+      stateMgr.extendLastState("translation-end-s3", {
+        mrna: [{}],
+        ribosomeBottom: [{
+          translateX: ribosomeX,
+          translateY: 1.75 * nucleotides.HEIGHT,
+          opacity: 1
+        }],
+        ribosomeTop: [{
+          translateX: ribosomeX,
+          translateY: 4.52 * nucleotides.HEIGHT,
+          opacity: 1
+        }],
+        viewPort: [{}],
+        background: [{}]
+      });
+      stateMgr.extendLastState("translation-end-s4", {
+        mrna: [{}],
+        ribosomeBottom: [{
+          translateY: 1.75 * nucleotides.HEIGHT - 0.3,
+        }],
+        ribosomeTop: [{
+          translateY: 4.52 * nucleotides.HEIGHT + 0.5,
+        }],
+        viewPort: [{}],
+        background: [{}]
+      });
+      stateMgr.extendLastState("translation-end-s5", {
+        mrna: [{
+          translateX: function () { return -(model.get("mRNA").length + 8) * nucleotides.WIDTH; }
+        }],
+        ribosomeBottom: [{
+          translateX: function () { return ribosomeX() + 8; },
+          translateY: 1.75 * nucleotides.HEIGHT - 0.5,
+        }],
+        ribosomeTop: [{
+          translateX: function () { return ribosomeX() + 8; },
+          translateY: 4.52 * nucleotides.HEIGHT + 5,
+        }],
+        viewPort: [{}],
+        background: [{}]
+      });
+      stateMgr.extendLastState("translation-end", {
+        viewPort: [{
+          xy: function () {
+            var cm = model.geneticEngine().proteinCenterOfMass() || {x: vx, y: vy};
+            return [cm.x - vx, cm.y - vy];
+          },
+          ease: "cubic-in-out"
+        }],
+        background: [{}]
+      });
+    }
+
+    /**
+     * Setups genetic renderer. It will be called when new parent view is created
+     * or reseted.
+     *
+     * @private
+     */
+    function setup() {
+      state = model.geneticEngine().state();
+
+      // Cleanup.
+      canceltransitionFunction();
+      viewportG.selectAll("g.genetics").remove();
+
+      if (!model.get("DNA") || state.name === "translation-end") {
+        // When DNA is not defined (=== "", undefined or null) or
+        // translation is ended, genetic renderer doesn't have to do
+        // anything.
+        return;
+      }
+
+      // Create a new container.
+      g = viewportG.insert("g", ".image-container-below").attr("class", "genetics");
+      g.append("g").attr("class", "background-layer");
+      g.append("g").attr("class", "under-dna-layer");
+      g.append("g").attr("class", "dna-layer");
+      g.append("g").attr("class", "over-dna-layer");
+      g.append("g").attr("class", "top-layer");
+
+      render();
+    }
+
+    /**
+     * Renders DNA-related graphics using "DNA" and "geneticEngineState"
+     * options of the model.
+     */
+    function render() {
+      state = model.geneticEngine().state();
+
+      canceltransitionFunction();
+      renderState(g, state.name);
+    }
+
+    /**
+     * Renders current animation state. You can pass d3.selection or d3.transition
+     * as "parent" argument to decide whether new state should be rendered immediately
+     * or using transition.
+     *
+     * @private
+     * @param  {d3.selection OR d3.transition} parent d3.selection or d3.transition object.
+     * @param  {String} state  state name.
+     */
+    function renderState(parent, state) {
+      var data = stateMgr.getState(state),
+          prevStateData = prevState ? stateMgr.getState(prevState) : null;
+      parent.each(function() {
+        var parent = d3.select(this);
+        objectNames.forEach(function (name) {
+          if (data[name].length || (prevStateData && prevStateData[name].length)) {
+            objectRenderer[name](parent, data);
+          }
+        });
+      });
+      prevState = state;
+    }
+
+    /**
+     * Returns a new, chained transition.
+     * This transition will be executed when previous one ends.
+     *
+     * @private
+     * @return {d3 transtion} d3 transtion object.
+     */
+    function nextTrans() {
+      var newTrans;
+      // TODO: this first check is a workaround.
+      // Ideal scenario would be to call always:
+      // currentTrans[name] = currentTrans[name].transition();
+      // but it seems to fail when transition has already ended.
+      if (currentTrans && currentTrans.node().__transition__) {
+        // Some transition is currently in progress, chain a new transition.
+        newTrans = currentTrans.transition();
+      } else {
+        // All transitionFunction ended, just create a new one.
+        newTrans = g.transition();
+      }
+      currentTrans = newTrans;
+      return newTrans;
+    }
+
+    /**
+     * Trick to cancel all current transitionFunction. It isn't possible explicitly
+     * so we have to start new, fake transitionFunction, which will cancel previous
+     * ones. Note that some transitionFunction can be applied to elements that live
+     * outside g.genetics element, e.g. viewport and background. So, it isn't
+     * enough to use d3.selectAll("g.genetics *").
+     *
+     * @private
+     */
+    function canceltransitionFunction() {
+      var g = svg.select("g.genetics");
+      if (!g.empty() && g.node().__transition__) {
+        svg.selectAll("g.genetics, g.genetics *").transition().delay(0);
+        svg.select(".plot").transition().delay(0); // background changes
+        viewportG.transition().delay(0);           // viewport scrolling
+        currentTrans = null;
+      }
+    }
+
+    /**
+     * Triggers animation state transition.
+     */
+    function transition() {
+      state = model.geneticEngine().state();
+
+      if (state.name === "transcription" && state.step === 0) {
+        transitionFunction["transcription:0"]();
+      } else if (state.name === "translation" && state.step === 0) {
+        transitionFunction["translation:0"]();
+      } else {
+        transitionFunction[state.name]();
+      }
+
+      currentTrans.each("end.trans-end", function() {
+        // Notify engine that transition has ended.
+        model.geneticEngine().transitionEnded();
+      });
+    }
+
+    /**
+     * Definition of all transition functions.
+     * @private
+     * @type {Object}
+     */
+    transitionFunction = {
+      "intro-zoom1": function introZoom1() {
+        var t = nextTrans().ease("cubic").duration(3000);
+        renderState(t, "intro-zoom1");
+      },
+
+      "intro-zoom2": function introZoom2() {
+        var t = nextTrans().ease("linear").duration(3000);
+        renderState(t, "intro-zoom2");
+      },
+
+      "intro-zoom3": function introZoom3() {
+        var t = nextTrans().ease("linear").duration(2000);
+        renderState(t, "intro-zoom3-s0");
+
+        t = nextTrans().ease("quad-out").duration(3300);
+        renderState(t, "intro-zoom3");
+      },
+
+      "intro-polymerase": function introPolymerase() {
+        var t = nextTrans().ease("quad-out").duration(3000);
+        renderState(t, "intro-polymerase-s0");
+
+        t = nextTrans().ease("cubic-in-out").duration(1000);
+        renderState(t, "intro-polymerase");
+      },
+
+      "dna": function dna() {
+        var t = nextTrans().duration(2000);
+        renderState(t, "dna-s0");
+
+
+        t = nextTrans().duration(1000);
+        renderState(t, "dna");
+        // Enter transition connected with new nucleotides,
+        // we don't want it this time.
+        t.selectAll(".nucleotide").duration(15);
+        t.selectAll(".plot").duration(15);
+      },
+
+      "transcription:0": function transcription0() {
+        var t = nextTrans().duration(1500);
+        renderState(t, "transcription");
+        // Reselect bonds transition, change duration to 250.
+        t.selectAll(".bonds").duration(250);
+      },
+
+      "transcription": function transcription() {
+        var t = nextTrans().duration(500);
+        renderState(t, "transcription");
+        // Reselect bonds transition, change duration to ease to cubic.
+        t.selectAll(".bonds").ease("cubic");
+      },
+
+      "transcription-end": function transcriptionEnd() {
+        var t = nextTrans().duration(500);
+        renderState(t, "transcription-end");
+        // Reselect bonds transition, change duration to ease to cubic.
+        t.selectAll(".bonds").ease("cubic");
+      },
+
+      "after-transcription": function afterTranscription() {
+        var t = nextTrans().ease("cubic-in-out").duration(700);
+        renderState(t, "after-transcription");
+      },
+
+      "before-translation": function beforeTranslation() {
+        var t = nextTrans().ease("cubic-in-out").duration(1000);
+        renderState(t, "before-translation-s0");
+        t.selectAll(".plot").duration(5);
+
+        t = nextTrans().ease("cubic-in-out").duration(1500);
+        renderState(t, "before-translation-s1");
+
+        t = nextTrans().ease("cubic-in-out").duration(1500);
+        renderState(t, "before-translation-s2");
+
+        t = nextTrans().ease("cubic").duration(1000);
+        renderState(t, "before-translation-s3");
+        t.selectAll(".bonds").duration(250);
+        t.selectAll(".plot").duration(1);
+
+        t = nextTrans().ease("cubic-out").duration(1000);
+        renderState(t, "before-translation-s4");
+
+        t = nextTrans().ease("cubic-out").duration(500);
+        renderState(t, "before-translation");
+      },
+
+      "translation:0": function translation0() {
+        var t = nextTrans().ease("cubic-in-out").duration(1000);
+        renderState(t, "translation-s0");
+
+        t = nextTrans().ease("cubic-in-out").duration(1000);
+        renderState(t, "translation-s1");
+
+        t = nextTrans().ease("cubic-in-out").duration(500);
+        renderState(t, "translation");
+      },
+
+      "translation": function translation() {
+        var geneticEngine = model.geneticEngine(),
+            codonIdx = state.step - 1,
+            newAADuration = 1000,
+            shiftDuration = 500,
+            t;
+
+        t = nextTrans().duration(newAADuration);
+        renderState(t, "translation-step0");
+        t.selectAll(".bonds").ease("cubic");
+        t.each("start", function () {
+          geneticEngine.translationStepStarted(codonIdx, 1.45 + codonIdx * 3 * nucleotides.WIDTH, 3.95,
+              0.53 + codonIdx * 3 * nucleotides.WIDTH, 1.57, newAADuration);
+        });
+
+        t = nextTrans().duration(shiftDuration);
+        renderState(t, "translation-step1");
+        t.selectAll(".trna-neck").duration(150);
+        t.each("start", function () {
+          geneticEngine.shiftAminoAcids(codonIdx, 2 * nucleotides.WIDTH, shiftDuration);
+        });
+        t.each("end", function () {
+          geneticEngine.connectAminoAcid(codonIdx);
+        });
+
+        // This will remove 3rd tRNA.
+        if (codonIdx > 0) {
+          t = nextTrans().duration(900);
+          renderState(t, "translation");
+          t.selectAll(".bonds").duration(150);
+        }
+      },
+
+      "translation-end": function translationEnd() {
+        var geneticEngine = model.geneticEngine(),
+            aaCount = model.getNumberOfAtoms(),
+            t;
+
+        if (aaCount >= 1) {
+          t = nextTrans().duration(150);
+          renderState(t, "translation-end-s0");
+          t.each("end", function () {
+            geneticEngine.translationCompleted();
+          });
+
+          t = nextTrans().duration(800);
+          renderState(t, "translation-end-s1");
+          t.selectAll(".bonds").duration(150);
+
+          t = nextTrans().duration(800);
+          t.selectAll(".bonds").duration(150);
+          renderState(t, "translation-end-s2");
+        }
+
+        t = nextTrans().duration(500);
+        renderState(t, "translation-end-s3");
+
+        t = nextTrans().duration(300);
+        renderState(t, "translation-end-s4");
+
+        t = nextTrans().duration(1000);
+        renderState(t, "translation-end-s5");
+
+        t = nextTrans().duration(700);
+        renderState(t, "translation-end");
+      }
+    };
+
+    api = {
+      setup: setup,
+      render: render
+    };
+
+    init();
+    return api;
+  }
 
   return GeneticRenderer;
 });
@@ -27463,11 +29601,11 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         // Public API object to be returned.
     var api = {},
 
-        // The model function get_results() returns a 2 dimensional array
+        // The model function getAtoms() returns a 2 dimensional array
         // of particle indices and properties that is updated every model tick.
         // This array is not garbage-collected so the view can be assured that
-        // the latest modelResults will be in this array when the view is executing
-        modelResults,
+        // the latest modelAtoms will be in this array when the view is executing
+        modelAtoms,
         modelElements,
         modelWidth,
         modelHeight,
@@ -27484,7 +29622,6 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
         // "Containers" - SVG g elements used to position layers of the final visualization.
         mainContainer,
-        geneticsContainer,
         radialBondsContainer,
         VDWLinesContainer,
         imageContainerBelow,
@@ -27535,6 +29672,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         vdwLines,
         chargeShadingMode,
         keShadingMode,
+        useQuantumDynamics,
         drawVdwLines,
         drawVelocityVectors,
         velocityVectorColor,
@@ -27565,10 +29703,6 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
         // pre-calculations
         halfPi = Math.PI/2,
-
-        // this is a hack put in place to temporarily deal with an image-size
-        // caching bug in Chrome Canary
-        needCachebusting = browser.browser == "Chrome" && browser.version >= "26",
 
         // this is a hack put in place to temporarily deal with a IE 10 bug which
         // does not update line markers when svg lines are moved
@@ -27697,6 +29831,38 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       }
     }
 
+    function createExcitationGlow() {
+      var defs,
+          glow;
+
+      defs = mainContainer.select("defs");
+      if (defs.empty()) {
+        defs = mainContainer.append("defs");
+      }
+      glow = defs.select("#glow");
+      if (glow.empty()) {
+        glow = defs.append("filter")
+          .attr("id", "glow")
+          .attr("x", "-1")
+          .attr("y", "-1")
+          .attr("width", "400%")
+          .attr("height", "400%");
+        glow.append("feMorphology")
+          .attr("result", "bigger")
+          .attr("in", "SourceGraphic")
+          .attr("operator", "dilate")
+          .attr("radius", "6");
+        glow.append("feGaussianBlur")
+          .attr("result", "blurOut")
+          .attr("in", "bigger")
+          .attr("stdDeviation", "10");
+        glow.append("feBlend")
+          .attr("in", "SourceGraphic")
+          .attr("in2", "blurOut")
+          .attr("mode", "normal");
+      }
+    }
+
     // Returns gradient appropriate for a given atom.
     // d - atom data.
     function getParticleGradient(d) {
@@ -27783,7 +29949,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
               "width": fSize*2,
               "height": fSize*2,
               "preserveAspectRatio": "xMinYMin",
-              "xlink:href": "../../resources/upstatement/heatbath.svg",
+              "xlink:href": "resources/upstatement/heatbath.svg",
               "class": "opaque-on-hover"
             })
             .append("title")
@@ -27798,7 +29964,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
               "width": fSize*2.2,
               "height": fSize*6,
               "preserveAspectRatio": "xMinYMin",
-              "xlink:href": "../../resources/upstatement/ke-gradient.svg",
+              "xlink:href": "resources/upstatement/ke-gradient.svg",
               "class": "opaque-on-hover"
             })
             .append("title")
@@ -27851,7 +30017,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
     }
 
     function updateParticleRadius() {
-      mainContainer.selectAll("circle").data(modelResults).attr("r",  function(d) { return model2px(d.radius); });
+      mainContainer.selectAll("circle").data(modelAtoms).attr("r",  function(d) { return model2px(d.radius); });
     }
 
     /**
@@ -27866,7 +30032,8 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
             "cx": function(d) { return model2px(d.x); },
             "cy": function(d) { return model2pxInv(d.y); },
             "fill-opacity": function(d) { return d.visible ? 1 : 0; },
-            "fill": function (d, i) { return gradientNameForParticle[i]; }
+            "fill": function (d, i) { return gradientNameForParticle[i]; },
+            "filter": function (d, i) { if (d.excitation) {return "url(#glow)";} return null; }
           })
           .on("mousedown", moleculeMouseDown)
           .on("mouseover", moleculeMouseOver)
@@ -28008,7 +30175,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
               if (isSpringBond(d)) {
                 return springStrokeWidth(d);
               } else {
-                return model2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
+                return model2px(Math.min(modelAtoms[d.atom1].radius, modelAtoms[d.atom2].radius)) * 0.75;
               }
             },
             "stroke": getBondAtom1Color,
@@ -28026,7 +30193,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
               if (isSpringBond(d)) {
                 return springStrokeWidth(d);
               } else {
-                return model2px(Math.min(modelResults[d.atom1].radius, modelResults[d.atom2].radius)) * 0.75;
+                return model2px(Math.min(modelAtoms[d.atom1].radius, modelAtoms[d.atom2].radius)) * 0.75;
               }
             },
             "stroke": getBondAtom2Color,
@@ -28079,10 +30246,10 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       cosThetaSpikes = costheta * numTurns;
       sinThetaSpikes = sintheta * numTurns;
 
-      radius_x1 = model2px(modelResults[d.atom1].radius) * costheta;
-      radius_x2 = model2px(modelResults[d.atom2].radius) * costheta;
-      radius_y1 = model2px(modelResults[d.atom1].radius) * sintheta;
-      radius_y2 = model2px(modelResults[d.atom2].radius) * sintheta;
+      radius_x1 = model2px(modelAtoms[d.atom1].radius) * costheta;
+      radius_x2 = model2px(modelAtoms[d.atom2].radius) * costheta;
+      radius_y1 = model2px(modelAtoms[d.atom1].radius) * sintheta;
+      radius_y2 = model2px(modelAtoms[d.atom2].radius) * sintheta;
       radiusFactorX = radius_x1 - radius_x2;
       radiusFactorY = radius_y1 - radius_y2;
 
@@ -28131,20 +30298,20 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
           strokeDasharray = model2px(0.03) + " " + model2px(0.02);
       // update existing lines
       vdwLines.attr({
-        "x1": function(d) { return model2px(modelResults[d[0]].x); },
-        "y1": function(d) { return model2pxInv(modelResults[d[0]].y); },
-        "x2": function(d) { return model2px(modelResults[d[1]].x); },
-        "y2": function(d) { return model2pxInv(modelResults[d[1]].y); }
+        "x1": function(d) { return model2px(modelAtoms[d[0]].x); },
+        "y1": function(d) { return model2pxInv(modelAtoms[d[0]].y); },
+        "x2": function(d) { return model2px(modelAtoms[d[1]].x); },
+        "y2": function(d) { return model2pxInv(modelAtoms[d[1]].y); }
       });
 
       // append new lines
       vdwLines.enter().append('line')
         .attr({
           "class": "attractionforce",
-          "x1": function(d) { return model2px(modelResults[d[0]].x); },
-          "y1": function(d) { return model2pxInv(modelResults[d[0]].y); },
-          "x2": function(d) { return model2px(modelResults[d[1]].x); },
-          "y2": function(d) { return model2pxInv(modelResults[d[1]].y); }
+          "x1": function(d) { return model2px(modelAtoms[d[0]].x); },
+          "y1": function(d) { return model2pxInv(modelAtoms[d[0]].y); },
+          "x2": function(d) { return model2px(modelAtoms[d[1]].x); },
+          "y2": function(d) { return model2pxInv(modelAtoms[d[1]].y); }
         })
         .style({
           "stroke-width": strokeWidth,
@@ -28175,8 +30342,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
       for (i = 0; i < imageProp.length; i++) {
         img[i] = new Image();
-        // temp: add cachebusting string if we are in Chrome 26 or above
-        img[i].src = getImagePath(imageProp[i]) + (needCachebusting ? "?"+Math.random() : "");
+        img[i].src = getImagePath(imageProp[i]);
         img[i].onload = (function(i) {
           return function() {
             imglayer = imageProp[i].imageLayer;
@@ -28217,8 +30383,8 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
       if (d.hostType) {
         if (d.hostType === "Atom") {
-          hostX = modelResults[d.hostIndex].x;
-          hostY = modelResults[d.hostIndex].y;
+          hostX = modelAtoms[d.hostIndex].x;
+          hostY = modelAtoms[d.hostIndex].y;
         } else {
           hostX = obstacles.x[d.hostIndex] + (obstacles.width[d.hostIndex] / 2);
           hostY = obstacles.y[d.hostIndex] + (obstacles.height[d.hostIndex] / 2);
@@ -28529,9 +30695,9 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       chargeShadingMode = model.get("chargeShading");
       keShadingMode = model.get("keShading");
 
-      gradientNameForParticle.length = modelResults.length;
-      for (i = 0, len = modelResults.length; i < len; i++)
-        gradientNameForParticle[i] = getParticleGradient(modelResults[i]);
+      gradientNameForParticle.length = modelAtoms.length;
+      for (i = 0, len = modelAtoms.length; i < len; i++)
+        gradientNameForParticle[i] = getParticleGradient(modelAtoms[i]);
     }
 
     function setupParticles() {
@@ -28543,13 +30709,13 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       mainContainer.selectAll("circle").remove();
       mainContainer.selectAll("g.label").remove();
 
-      particle = mainContainer.selectAll("circle").data(modelResults);
+      particle = mainContainer.selectAll("circle").data(modelAtoms);
       updateParticleRadius();
 
       particleEnterExit();
 
       label = mainContainer.selectAll("g.label")
-          .data(modelResults);
+          .data(modelAtoms);
 
       labelEnter = label.enter().append("g")
           .attr("class", "label")
@@ -28683,11 +30849,11 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       drawVelocityVectors = model.get("showVelocityVectors");
       drawForceVectors    = model.get("showForceVectors");
       if (drawVelocityVectors) {
-        velVector = mainContainer.selectAll("path.vector-"+VELOCITY_STR).data(modelResults);
+        velVector = mainContainer.selectAll("path.vector-"+VELOCITY_STR).data(modelAtoms);
         vectorEnter(velVector, getVelVectorPath, getVelVectorWidth, velocityVectorColor, VELOCITY_STR);
       }
       if (drawForceVectors) {
-        forceVector = mainContainer.selectAll("path.vector-"+FORCE_STR).data(modelResults);
+        forceVector = mainContainer.selectAll("path.vector-"+FORCE_STR).data(modelAtoms);
         vectorEnter(forceVector, getForceVectorPath, getForceVectorWidth, forceVectorColor, FORCE_STR);
       }
     }
@@ -28699,7 +30865,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       drawAtomTrace = model.get("showAtomTrace");
       atomTraceId = model.get("atomTraceId");
       if (drawAtomTrace) {
-        atomTrace = mainContainer.selectAll("path.atomTrace").data([modelResults[atomTraceId]]);
+        atomTrace = mainContainer.selectAll("path.atomTrace").data([modelAtoms[atomTraceId]]);
         atomTraceEnter();
       }
     }
@@ -28748,8 +30914,8 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
     function renderAtomTooltip(i) {
       var pos = modelView.pos(),
-          left = pos.left + model2px(modelResults[i].x),
-          top  = pos.top +  model2pxInv(modelResults[i].y);
+          left = pos.left + model2px(modelAtoms[i].x),
+          top  = pos.top +  model2pxInv(modelAtoms[i].y);
 
       atomToolTip
             .style("opacity", 1.0)
@@ -28763,11 +30929,11 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       atomToolTipPre.text(
           "atom: " + i + "\n" +
           "time: " + modelTimeLabel() + "\n" +
-          "speed: " + d3.format("+6.3e")(modelResults[i].speed) + "\n" +
-          "vx:    " + d3.format("+6.3e")(modelResults[i].vx)    + "\n" +
-          "vy:    " + d3.format("+6.3e")(modelResults[i].vy)    + "\n" +
-          "ax:    " + d3.format("+6.3e")(modelResults[i].ax)    + "\n" +
-          "ay:    " + d3.format("+6.3e")(modelResults[i].ay)    + "\n"
+          "speed: " + d3.format("+6.3e")(modelAtoms[i].speed) + "\n" +
+          "vx:    " + d3.format("+6.3e")(modelAtoms[i].vx)    + "\n" +
+          "vy:    " + d3.format("+6.3e")(modelAtoms[i].vy)    + "\n" +
+          "ax:    " + d3.format("+6.3e")(modelAtoms[i].ax)    + "\n" +
+          "ay:    " + d3.format("+6.3e")(modelAtoms[i].ay)    + "\n"
         );
     }
 
@@ -28791,6 +30957,10 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         setupColorsOfParticles();
         // Update particles "fill" attribute. Array of colors is already updated.
         particle.attr("fill", function (d, i) { return gradientNameForParticle[i]; });
+      }
+
+      if (useQuantumDynamics) {
+        particle.attr("filter", function (d) { if (d.excitation) {return "url(#glow)";} return null; })
       }
 
       label.attr("transform", function (d) {
@@ -28879,8 +31049,8 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
           x, y, img_width, img_height;
       if (props.imageHostType) {
         if (props.imageHostType === "Atom") {
-          x = modelResults[props.imageHostIndex].x;
-          y = modelResults[props.imageHostIndex].y;
+          x = modelAtoms[props.imageHostIndex].x;
+          y = modelAtoms[props.imageHostIndex].y;
         } else if (props.imageHostType === "RectangularObstacle") {
           x = obstacles.x[props.imageHostIndex] + (obstacles.width[props.imageHostIndex] / 2);
           y = obstacles.y[props.imageHostIndex] + (obstacles.height[props.imageHostIndex] / 2);
@@ -29011,7 +31181,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
           left,
           b = benchmark.what_browser();   // we need to recalc this for FF, for some reason
 
-      if (b.browser === "Firefox" && b.version >= "18") {
+      if (b.browser === "Firefox" && b.version >= "18" && b.version < "23") {
         $firefoxWarningPane = $("#firefox-warning-pane");
         pos = modelView.pos();
         top  = pos.bottom - $firefoxWarningPane.height();
@@ -29050,6 +31220,11 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       createVectorArrowHeads(velocityVectorColor, VELOCITY_STR);
       createVectorArrowHeads(forceVectorColor, FORCE_STR);
 
+      useQuantumDynamics = model.properties.useQuantumDynamics;
+      if (useQuantumDynamics) {
+        createExcitationGlow();
+      }
+
       createSymbolImages();
       createImmutableGradients();
 
@@ -29059,7 +31234,51 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       amniacidContextMenu.register(model, api, '[class~="amino-acid"]');
 
       // Initialize renderers.
-      geneticRenderer = new GeneticRenderer(geneticsContainer, api, model);
+      geneticRenderer = new GeneticRenderer(modelView.containers.svg, api, model);
+    }
+
+    function photonPath(d) {
+      var lineData = [],
+          nPoints = 40,
+          line = d3.svg.line()
+            .x(function(d) { return model2px(0.5 / nPoints * d.x); })
+            .y(function(d) { return model2px(0.1 * d.y); }),
+
+          t = d.angularFrequency * 2 * Math.PI / nPoints,
+          i;
+
+      // Reference implementation: https://github.com/concord-consortium/mw/blob/6e2f2d4630323b8e993fcfb531a3e7cb06644fef/src/org/concord/mw2d/models/Photon.java#L74-L79
+      for (i = 0; i < nPoints; i++) {
+        lineData.push({
+          x: i - nPoints/2,
+          y: Math.sin(i * t) / (1 + 0.01 * (i - 0.5 * nPoints) * (i - 0.5 * nPoints))
+        });
+      }
+
+      return line(lineData);
+    }
+
+    function enterAndUpdatePhotons() {
+      var photonData = model.getPhotons(),
+          photons = mainContainer.selectAll(".photon").data(photonData);
+
+      photons.enter().append("path")
+        .attr({
+          "class": "photon",
+          "d": photonPath,
+          "stroke-width": 1,
+          "stroke": "black",
+          "fill-opacity": 0
+        });
+
+      photons.exit().remove();
+
+      photons.attr("transform", function(d) {
+        var angle = -180 * Math.atan2(d.vy, d.vx) / Math.PI;
+        return "translate(" + model2px(d.x) + ", " + model2pxInv(d.y) + ") " +
+               "rotate(" + angle + ")";
+      });
+
     }
 
     //
@@ -29075,7 +31294,6 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       // Assign shortcuts, as these variables / functions shouldn't
       // change.
       mainContainer        = modelView.containers.mainContainer,
-      geneticsContainer    = modelView.containers.geneticsContainer,
       radialBondsContainer = modelView.containers.radialBondsContainer,
       VDWLinesContainer    = modelView.containers.VDWLinesContainer,
       imageContainerBelow  = modelView.containers.imageContainerBelow,
@@ -29090,7 +31308,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       fontSizeInPixels = modelView.getFontSizeInPixels();
       textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
 
-      modelResults  = model.get_results();
+      modelAtoms  = model.getAtoms();
       modelElements = model.get_elements();
       modelWidth    = model.get('width');
       modelHeight   = model.get('height');
@@ -29162,7 +31380,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       // Always setup radial bonds *after* particles to use correct atoms
       // color table.
       setupRadialBonds();
-      geneticRenderer.render();
+      geneticRenderer.setup();
       setupVectors();
       setupAtomTrace();
       drawImageAttachment();
@@ -29170,6 +31388,9 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       setupToolTips();
       drawSymbolImages();
       setupFirefoxWarning();
+      if (useQuantumDynamics) {
+        enterAndUpdatePhotons();
+      }
     }
 
     //
@@ -29185,18 +31406,6 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
           return "translate(" + model2px(obstacles.x[i]) + " " + model2pxInv(obstacles.y[i] + obstacles.height[i]) + ")";
         });
       }
-
-      // Pass data from objects animated by view code to the model. Note that
-      // it's very experimental, hacky and will be changed in the future.
-      // TODO: cleanup, provide more generic solution.
-      d3.selectAll(".animated-drag").each(function () {
-        var el = d3.select(this),
-            x = el.attr("x") || el.attr("cx"),
-            y = el.attr("y") || el.attr("cy");
-            springId = el.attr("spring-id")
-
-        model.updateSpringForce(springId, x, y);
-      });
 
       if (drawVdwLines) {
         updateVdwPairs();
@@ -29224,6 +31433,9 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       }
       if (textBoxes && textBoxes.length > 0) {
         updateTextBoxes();
+      }
+      if (useQuantumDynamics) {
+        enterAndUpdatePhotons();
       }
       console.timeEnd('view update');
     }
@@ -29358,7 +31570,7 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
     return {
       /* Returns number of atoms in the system. */
       getNumberOfAtoms: function getNumberOfAtoms(f) {
-        return model.get_num_atoms(f);
+        return model.getNumberOfAtoms(f);
       },
 
       /* Returns number of obstacles in the system. */
@@ -29448,13 +31660,24 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
         model.set({targetTemperature: fraction * model.get('targetTemperature')});
       },
 
+      /**
+       Scales the velocity of a group of atoms to the desired temperature T
+       */
+      setTemperatureOfAtoms: function setTemperatureOfAtoms(atomIndices, T) {
+        model.setTemperatureOfAtoms(atomIndices,T);
+      },
+
+      getTemperatureOfAtoms: function getTemperatureOfAtoms(atomIndices) {
+        return model.getTemperatureOfAtoms(atomIndices);
+      },
+
       limitHighTemperature: function limitHighTemperature(t) {
         if (model.get('targetTemperature') > t) model.set({targetTemperature: t});
       },
 
       /** returns a list of integers corresponding to atoms in the system */
       randomAtoms: function randomAtoms(n) {
-        var numAtoms = model.get_num_atoms();
+        var numAtoms = model.getNumberOfAtoms();
 
         if (n === null) n = 1 + api.randomInteger(numAtoms-1);
 
@@ -29479,7 +31702,7 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
         var result = [],
             props, dist, i, len;
 
-        for (i = 0, len = model.get_num_atoms(); i < len; i++) {
+        for (i = 0, len = model.getNumberOfAtoms(); i < len; i++) {
           props = model.getAtomProperties(i);
           if (typeof element !== 'undefined' && props.element !== element) continue;
           dist = Math.sqrt(Math.pow(x - props.x, 2) + Math.pow(y - props.y, 2));
@@ -29506,7 +31729,7 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
         var result = [],
             props, dist, inX, inY, i, len;
 
-        for (i = 0, len = model.get_num_atoms(); i < len; i++) {
+        for (i = 0, len = model.getNumberOfAtoms(); i < len; i++) {
           props = model.getAtomProperties(i);
           if (typeof element !== 'undefined' && props.element !== element) continue;
           if (typeof h === 'undefined') {
@@ -29562,7 +31785,7 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
           return ((u >= 0) && (v >= 0) && (u + v < 1));
         }
 
-        for (i = 0, len = model.get_num_atoms(); i < len; i++) {
+        for (i = 0, len = model.getNumberOfAtoms(); i < len; i++) {
           props = model.getAtomProperties(i);
           if (typeof element !== 'undefined' && props.element !== element) continue;
           if (isInTriangle(props.x, props.y)) {
@@ -29599,7 +31822,7 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
       },
 
       unmarkAllAtoms: function unmarkAllAtoms() {
-        for (var i = 0, len = model.get_num_atoms(); i < len; i++) {
+        for (var i = 0, len = model.getNumberOfAtoms(); i < len; i++) {
           model.setAtomProperties(i, {marked: 0});
         }
         api.repaintIfReady();
@@ -29623,6 +31846,31 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
       setAtomProperties: function setAtomProperties(i, props, checkLocation, moveMolecule, options) {
         model.setAtomProperties(i, props, checkLocation, moveMolecule);
         api.repaintIfReady(options);
+      },
+
+      /**
+       * Returns atom transition object. It can be used to smoothly change
+       * atom properties over specified time. It's similar to D3 transitions.
+       *
+       * Atom transition object provides following methods:
+       *  id(id)          - sets ID of the atom (required!).
+       *  duration(d)     - sets duration in ms (required!).
+       *  prop(name, val) - sets property name and its final value (required!).
+       *  delay(d)        - sets delay in ms (default is 0).
+       *  ease(name)      - sets easing function (default is "cubic-in-out").
+       *                    Please see:
+       *                    https://github.com/mbostock/d3/wiki/Transitions#wiki-d3_ease
+       *
+       * e.g.
+       *  atomTransition().id(0).duration(1000).ease("linear").prop("x", 10);
+       *
+       * This will change "x" property of the atom with ID=0
+       * to value 10 over 1000ms using linear easing function.
+       *
+       * @return {AtomTransition} AtomTransition instance.
+       */
+      atomTransition: function atomTransition() {
+        return model.atomTransition();
       },
 
       /**
@@ -29741,22 +31989,6 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
       },
 
       /**
-        Sets genetic properties using human-readable hash.
-        e.g. setGeneticProperties({ DNA: "ATCG" })
-      */
-      setGeneticProperties: function setGeneticProperties(props) {
-        model.geneticEngine().set(props);
-      },
-
-      /**
-        Returns genetic properties as a human-readable hash.
-        e.g. geneticEngine() --> {DNA: "ATCG", DNAComplement: "TAGC", x: 0.01, y: 0.01, height: 0.12}
-      */
-      geneticEngine: function geneticEngine() {
-        return model.geneticEngine().get();
-      },
-
-      /**
         Opens DNA properties dialog, which allows to set DNA code.
       */
       openDNADialog: function showDNADialog() {
@@ -29764,18 +31996,53 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
       },
 
       /**
-       * Plays DNA intro, which shows broader context of the DNA transcription and
-       * translation.
+       * Jumps to the next genetic engine state.
+       *
+       * Note that jumping between translation states is not supported!
+       * Please use dnaAnimateToNextState if you need to change state
+       * from translation:x to translation:x+1.
        */
-      playDNAIntro: function () {
-        model.geneticEngine().playIntro();
+      dnaJumpToNextState: function dnaJumpToNextState() {
+        model.geneticEngine().jumpToNextState();
       },
 
       /**
-       * Separates two strands of DNA.
+       * Jumps to the next genetic engine state.
+       *
+       * Note that jumping between translation states is not supported!
+       * When current state is translation:x, where x > 0, this functions
+       * will cause jump to translation:0 state.
        */
-      separateDNA: function separateDNA() {
-        model.geneticEngine().separateDNA();
+      dnaJumpToPrevState: function dnaJumpToPrevState() {
+        model.geneticEngine().jumpToPrevState();
+      },
+
+      /**
+       * Triggers animation to the next genetic engine state.
+       *
+       * Note that this is the only possible way to change state
+       * from translation:x to translation:x+1. Jumping between
+       * translation states is not supported!
+       */
+      dnaAnimateToNextState: function dnaAnimateToNextState() {
+        model.geneticEngine().transitionToNextState();
+      },
+
+      /**
+       * Triggers animation to the given genetic engine state.
+       * If current genetic engine state is after the desired state,
+       * nothing happens.
+       * e.g.
+       * get('geneticEngineState'); // transcription:0
+       * dnaAnimationTo("transcription-end") // triggers animation
+       * However:
+       * get('geneticEngineState'); // translation-end
+       * dnaAnimateOrJumpTo("transcription-end") // nothing happens
+       *
+       * @param  {string} stateName name of the state.
+       */
+      dnaAnimationTo: function dnaAnimationTo(stateName) {
+        model.geneticEngine().transitionTo(stateName);
       },
 
       /**
@@ -29794,39 +32061,6 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
        */
       transcribeStep: function transcribeStep(expectedNucleotide) {
         model.geneticEngine().transcribeStep(expectedNucleotide);
-      },
-
-      /**
-       * Triggers complete DNA to mRNA transcription.
-       *
-       * Complete mRNA will be available in genetic properties.
-       * e.g. geneticEngine() --> {DNA: "ATCG", DNAComplement: "TAGC", mRNA: "AUCG", ...}
-       */
-      transcribe: function transcribeDNA() {
-        model.geneticEngine().transcribe();
-      },
-
-      /**
-       * Triggers only one step of DNA translation.
-       */
-      translateStep: function translateStep() {
-        model.geneticEngine().translateStep();
-      },
-
-      /**
-        Triggers translation of mRNA to protein.
-      */
-      translate: function translate() {
-        var aaSequence = model.geneticEngine().translate();
-        model.generateProtein(aaSequence);
-      },
-
-      translateStepByStep: function translateStepByStep() {
-        model.translateStepByStep();
-      },
-
-      animateTranslation: function animateTranslation() {
-        model.animateTranslation();
       },
 
       /**
@@ -29933,7 +32167,7 @@ define('md2d/benchmarks/benchmarks',['require'],function (require) {
         name: "atoms",
         numeric: true,
         run: function(done) {
-          done(model.get_num_atoms());
+          done(model.getNumberOfAtoms());
         }
       },
       {
@@ -31105,111 +33339,6 @@ define('solar-system/models/metadata',[],function() {
   };
 });
 
-/*global define d3 */
-/*jshint eqnull:true boss:true */
-
-define('solar-system/models/property-description',['require','underscore'],function(require) {
-
-  var _ = require('underscore');
-
-  function isUndefined(val) {
-    return typeof val === 'undefined';
-  }
-
-  function PropertyDescription(unitDefinition, descriptionHash) {
-    var u;
-
-    this._descriptionHash = descriptionHash;
-    this._label = descriptionHash.label || "";
-
-    if (descriptionHash.unitType) {
-      if ( !(u = unitDefinition.units[descriptionHash.unitType]) ) {
-        throw new Error("PropertyDescription: couldn't find unitType " + descriptionHash.unitType + " in the supplied units definition.");
-      }
-      this._unitType         = descriptionHash.unitType;
-      this._unitName         = u.name;
-      this._unitPluralName   = u.pluralName;
-      this._unitAbbreviation = u.symbol;
-    }
-
-    // allow overriding the unit properties, or specifying custom ones for which there is no
-    // current unit definition.
-    if (descriptionHash.unitName) this._unitName = descriptionHash.unitName;
-    if (descriptionHash.unitPluralName) this._unitPluralName = descriptionHash.unitPluralName;
-    if (descriptionHash.unitAbbreviation) this._unitAbbreviation = descriptionHash.unitAbbreviation;
-
-    this.setFormat(descriptionHash.format || 'g');
-  }
-
-  PropertyDescription.prototype.getHash = function() {
-    return _.extend(
-      _.reject({
-          unitName:         this.getUnitName(),
-          unitPluralName:   this.getUnitPluralName(),
-          unitAbbreviation: this.getUnitAbbreviation()
-        }, isUndefined),
-      this._descriptionHash);
-  };
-
-  PropertyDescription.prototype.getLabel = function() {
-    return this._label;
-  };
-
-  PropertyDescription.prototype.getUnitType = function() {
-    return this._unitType;
-  };
-
-  PropertyDescription.prototype.getUnitName = function() {
-    return this._unitName;
-  };
-
-  PropertyDescription.prototype.getUnitPluralName = function() {
-    return this._unitPluralName;
-  };
-
-  PropertyDescription.prototype.getUnitAbbreviation = function() {
-    return this._unitAbbreviation;
-  };
-
-  PropertyDescription.prototype.setFormat = function(s) {
-    this._formatter = d3.format(s);
-  };
-
-  PropertyDescription.prototype.format = function(val, opts) {
-    opts = opts || {};
-
-    var formatter,
-        formattedVal,
-        plural,
-        abbreviated = true;
-
-    if (opts.format) {
-      if (opts.format === this._lastFormat) {
-        formatter = this._lastFormatter;
-      } else {
-        formatter = d3.format(opts.format);
-        this._lastFormat = opts.format;
-        this._lastFormatter = formatter;
-      }
-    } else {
-      formatter = this._formatter;
-    }
-
-    formattedVal = formatter(val);
-
-    if (opts && opts.abbreviated != null) abbreviated = opts.abbreviated;
-
-    if (abbreviated) {
-      return formattedVal + " " + this._unitAbbreviation;
-    }
-
-    plural = parseFloat(formattedVal) !== 1;
-    return formattedVal + " " + (plural ? this._unitPluralName : this._unitName);
-  };
-
-  return PropertyDescription;
-});
-
 /*global define: false */
 
 // Definitions of the default Solar System units. Every model property exposed by
@@ -31326,7 +33455,7 @@ define('solar-system/models/unit-definitions/index',['require','solar-system/mod
 /*global define: false, d3: false, $: false */
 /*jslint onevar: true devel:true eqnull: true boss: true */
 
-define('solar-system/models/modeler',['require','arrays','common/console','solar-system/models/engine/solar-system','solar-system/models/metadata','common/models/tick-history','common/property-support','common/serialize','common/validator','solar-system/models/engine/constants/units','solar-system/models/property-description','solar-system/models/unit-definitions/index','underscore'],function(require) {
+define('solar-system/models/modeler',['require','arrays','common/console','solar-system/models/engine/solar-system','solar-system/models/metadata','common/models/tick-history','common/property-support','common/serialize','common/validator','solar-system/models/engine/constants/units','common/property-description','solar-system/models/unit-definitions/index','underscore'],function(require) {
   // Dependencies.
   var arrays               = require('arrays'),
       console              = require('common/console'),
@@ -31337,7 +33466,7 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
       serialize            = require('common/serialize'),
       validator            = require('common/validator'),
       units                = require('solar-system/models/engine/constants/units'),
-      PropertyDescription  = require('solar-system/models/property-description'),
+      PropertyDescription  = require('common/property-description'),
       unitDefinitions      = require('solar-system/models/unit-definitions/index'),
       _ = require('underscore');
 
@@ -33298,11 +35427,11 @@ define('signal-generator/metadata',[],function() {
 
 /*global define: false d3: false*/
 
-define('signal-generator/modeler',['require','common/property-support','md2d/models/property-description','cs!md2d/models/running-average-filter','common/validator','signal-generator/metadata'],function(require) {
+define('signal-generator/modeler',['require','common/property-support','common/property-description','cs!common/running-average-filter','common/validator','signal-generator/metadata'],function(require) {
 
   var PropertySupport      = require('common/property-support'),
-      PropertyDescription  = require('md2d/models/property-description'),
-      RunningAverageFilter = require('cs!md2d/models/running-average-filter'),
+      PropertyDescription  = require('common/property-description'),
+      RunningAverageFilter = require('cs!common/running-average-filter'),
       validator            = require('common/validator'),
 
       metadata             = require('signal-generator/metadata'),
@@ -33312,13 +35441,7 @@ define('signal-generator/modeler',['require','common/property-support','md2d/mod
           time: {
             name: "second",
             pluralName: "seconds",
-            symbol: "s",
-            displayValue: {
-              unitsPerBaseUnit: 1e-3,
-              pluralName: "picoseconds",
-              name: "picosecond",
-              symbol: "ps"
-            }
+            symbol: "s"
           },
           frequency: {
             name: "Hertz",
@@ -33606,23 +35729,1187 @@ define('signal-generator/modeler',['require','common/property-support','md2d/mod
   };
 });
 
+/*global define: false $: false */
+
+/**
+  For use with models that do not need an associated view, but which (at least for now) are required
+  by the common ModelController to have a ModelContainer which has an $el property and which
+  responds to certain methods.
+*/
+
+define('common/views/null-model-view',[],function() {
+  return function() {
+    return  {
+      $el: $("<div id='model-container' class='container'/>"),
+      getHeightForWidth: function() { return 0; },
+      resize: function() {},
+      reset: function() {},
+      update: function() {}
+    };
+  };
+});
+
 /*global define $ */
 
-define('signal-generator/controller',['require','common/controllers/model-controller','signal-generator/modeler'],function (require) {
+define('signal-generator/controller',['require','common/controllers/model-controller','signal-generator/modeler','common/views/null-model-view'],function (require) {
   // Dependencies.
-  var ModelController   = require("common/controllers/model-controller"),
+  var ModelController   = require('common/controllers/model-controller'),
       Model             = require('signal-generator/modeler'),
+      ModelContainer    = require('common/views/null-model-view'),
+      ScriptingAPI      = function() {},
+      Benchmarks        = function() {};
 
-      ModelContainer    = function() {
-        return  {
-          $el: $("<div id='model-container' class='container'/>"),
-          getHeightForWidth: function() { return 0; },
-          resize: function() {},
-          reset: function() {},
-          update: function() {}
-        };
+  return function (modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, interactiveController) {
+    return new ModelController(modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, interactiveController,
+                               Model, ModelContainer, ScriptingAPI, Benchmarks);
+  };
+});
+
+/*global define: false */
+
+define('sensor/metadata',[],function() {
+
+  return {
+    mainProperties: {
+      type: {
+        defaultValue: "sensor",
+        immutable: true
+      },
+      sensorType: {
+        defaultValue: 'goMotion'
+      },
+      samplesPerSecond: {
+        readOnly: true
+      }
+    },
+    viewOptions: {
+      showClock: {
+        defaultValue: true,
+        propertyChangeInvalidates: false
+      },
+      controlButtons: {
+        defaultValue: "play_reset",
+        propertyChangeInvalidates: false
+      }
+    }
+  };
+});
+
+/*global define: false*/
+
+define('sensor/units-definition',[],function() {
+  return {
+    units: {
+      time: {
+        name: "second",
+        pluralName: "seconds",
+        symbol: "s"
+      },
+      distance: {
+        name: "meter",
+        pluralName: "meters",
+        symbol: "m"
+      }
+    }
+  };
+});
+
+/*global define: false*/
+
+/**
+
+  mini-class.js
+
+  Minimalist classical-OO style inheritance for JavaScript.
+  Adapted from CoffeeScript and SproutCore.
+
+  Richard Klancer, 7-23-2012
+*/
+define('common/mini-class',[],function() {
+
+  function mixin(dest, src) {
+    var hasProp = {}.hasOwnProperty,
+        key;
+
+    for (key in src) {
+      if (hasProp.call(src, key)) dest[key] = src[key];
+    }
+  }
+
+  //
+  // Remember that "classes" are just constructor functions that create objects, and that the
+  // constructor function property called `prototype` is used to define the prototype object
+  // (aka the __proto__ property) which will be assigned to instances created by the constructor.
+  // Properties added to the prototype object of a constructor effectively become the instance
+  // properties/methods of objects created with that constructor, and properties of the prototype
+  // of the prototype are effectively "superclass" instance properties/methods.
+  //
+  // See http://javascriptweblog.wordpress.com/2010/06/07/understanding-javascript-prototypes/
+  //
+
+  /**
+    Assuming Child, Parent are classes (i.e., constructor functions):
+      1. Copies the properties of the Parent constructor to the Child constructor (These can be
+         considered "class properties"/methods, shared among all instances of a class.)
+      2. Adds Parent's prototype to Child's prototype chain.
+      3. Adds Parent's prototype to the '__super__' property of Child.
+  */
+  function extend(Child, Parent) {
+
+    // First, copy direct properties of the constructor object ("class properties") from Parent to
+    // Child.
+    mixin(Child, Parent);
+
+    // First step in extending the prototype chain: make a throwaway constructor, whose prototype
+    // property is the same as the Parent constructor's prototype property. Objects created by
+    // calling `new PrototypeConstructor()` will have the *same* prototype object as objects created
+    // by calling `new Parent()`.
+    function PrototypeConstructor() {
+      this.constructor = Child;
+    }
+    PrototypeConstructor.prototype = Parent.prototype;
+
+    // Now use PrototypeConstructor to extend the prototype chain by one link.
+    // That is, use PrototypeConstructor to make a new *object* whose prototype object
+    // (__proto__ property) is Parent.prototype, and assign the object to the Child constructor's
+    // prototype property. This way, objects created by calling "new Child()"
+    // will have a prototype object whose prototype object in turn is Parent.prototype.
+    Child.prototype = new PrototypeConstructor();
+
+    // Assign the prototype used by objects created by Parent to the __super__ property of Child.
+    // (This property can be accessed within a Child instance as `this.constructor.__super__`.)
+    // This allows a Child instance to look "up" the prototype chain to find instances properties
+    // defined in Parent that are overridden in Child (i.e., defined on Child.prototype)
+    Child.__super__ = Parent.prototype;
+  }
+
+  /**
+    Defines a "class" whose instances will have the properties defined in `prototypeProperties`:
+      1. Creates a new constructor, which accepts a list of properties to be copied directly onto
+         the instance returned by the constructor.
+      2. Adds the properties in `prototypeProperties` to the prototype object shared by instances
+         created by the constructor.
+  */
+  function defineClass(prototypeProperties) {
+    function NewConstructor(instanceProperties) {
+       mixin(this, instanceProperties);
+    }
+    mixin(NewConstructor.prototype, prototypeProperties);
+    return NewConstructor;
+  }
+
+  /**
+    Given ParentClass, return a new class which is ParentClass extended by childPrototypeProperties
+  */
+  function extendClass(ParentClass, childPrototypeProperties) {
+    function ChildConstructor(instanceProperties) {
+      mixin(this, instanceProperties);
+    }
+    // Extend ParentClass first so childPrototypeProperties override anything defined in ParentClass
+    extend(ChildConstructor, ParentClass);
+    mixin(ChildConstructor.prototype, childPrototypeProperties);
+    return ChildConstructor;
+  }
+
+  return {
+    defineClass: defineClass,
+    extendClass: extendClass,
+    mixin: mixin
+  };
+
+});
+
+/*global define: false*/
+
+define('sensor/applet/mini-event-emitter',[],function() {
+  /**
+    Basic event-emitter functionality to mixin to other classes.
+
+    TODO: needs explicit tests (is currently *implicitly* tested by sensor-applet_spec).
+  */
+  return {
+
+    on: function(evt, cb) {
+      if (!this._ee_listeners) this._ee_listeners = {};
+      if (!this._ee_listeners[evt]) this._ee_listeners[evt] = [];
+
+      this._ee_listeners[evt].push(cb);
+    },
+
+    emit: function(evt) {
+      var args = arguments.length > 1 ? [].splice.call(arguments, 1) : [];
+
+      if (this._ee_listeners && this._ee_listeners[evt]) {
+        for (var i = 0, len = this._ee_listeners[evt].length; i < len; i++) {
+          this._ee_listeners[evt][i].apply(null, args);
+        }
+      }
+    },
+
+    removeListener: function(evt, listener) {
+      if (this._ee_listeners && this._ee_listeners[evt]) {
+        for (var i = 0, len = this._ee_listeners[evt].length; i < len; i++) {
+          if (this._ee_listeners[evt][i] === listener) {
+            this._ee_listeners[evt].splice(i, 1);
+          }
+        }
+      }
+    },
+
+    removeListeners: function(evt) {
+      if (!evt) {
+        this._ee_listeners = {};
+      } else {
+        if (this._ee_listeners) this._ee_listeners[evt] = [];
+      }
+    }
+  };
+
+});
+
+/*global define: false */
+
+define('sensor/applet/errors',['require','common/inherit'],function(require) {
+
+  var inherit = require('common/inherit');
+
+  function errorConstructor(message) {
+    Error.call(this); //super constructor
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, this.constructor); //super helper method to include stack trace in error object
+    }
+
+    this.name = this.constructor.name; //set our function’s name as error name.
+    this.message = message; //set the error message
+  }
+
+  function JavaLoadError() {
+    errorConstructor.apply(this, Array.prototype.slice.apply(arguments));
+  }
+  inherit(JavaLoadError, Error);
+
+  function AppletInitializationError() {
+    errorConstructor.apply(this, Array.prototype.slice.apply(arguments));
+  }
+  inherit(AppletInitializationError, Error);
+
+  function SensorConnectionError() {
+    errorConstructor.apply(this, Array.prototype.slice.apply(arguments));
+  }
+  inherit(SensorConnectionError, Error);
+
+  // temporary check:
+  window.JavaLoadError = JavaLoadError;
+
+  return {
+    JavaLoadError: JavaLoadError,
+    AppletInitializationError: AppletInitializationError,
+    SensorConnectionError: SensorConnectionError
+  };
+
+});
+
+/*global define: false $:false */
+/*jshint unused: false*/
+
+define('sensor/applet/sensor-applet',['require','common/mini-class','./mini-event-emitter','./errors','lab.config'],function(require) {
+
+  var miniClass = require('common/mini-class'),
+      EventEmitter = require('./mini-event-emitter'),
+      errors = require('./errors'),
+      labConfig = require('lab.config'),
+      SensorApplet;
+
+  function waitForTestFunction(test, intervalLength, maxAttempts, done, fail) {
+    var attempts = 0,
+        timer;
+
+    timer = window.setInterval(function() {
+      attempts++;
+      if (test()) {
+        window.clearInterval(timer);
+        done();
+      } else {
+        if (attempts > maxAttempts) {
+          window.clearInterval(timer);
+          fail();
+        }
+      }
+    }, intervalLength);
+  }
+
+  /**
+    events:
+      data
+      deviceUnplugged
+      sensorUnplugged
+
+    states:
+      not appended
+      test applet appended
+      appended
+      applet ready
+      stopped
+      started
+  */
+  SensorApplet = miniClass.defineClass({
+
+    _state: 'not appended',
+    _isInAppletCallback: false,
+
+    testAppletReadyInterval: 100,
+
+    getCodebase: function() {
+      return labConfig.actualRoot + "jnlp";
+    },
+
+    getTestAppletHTML: function() {
+      return [
+       '<applet ',
+         'id="',       this.appletId,         '-test-applet" ',
+         'class="applet test-sensor-applet" ',
+         'code="org.concord.sensor.applet.DetectionApplet" ',
+         'codebase="', this.getCodebase(), '" ',
+         'width="150px" ',
+         'height="150px" ',
+         'MAYSCRIPT="true" ',
+       '>',
+          '<param name="MAYSCRIPT" value="true" />',
+        '</applet>'
+      ].join('');
+    },
+
+    getState: function() {
+      return this._state;
+    },
+
+    getIsInAppletCallback: function() {
+      return this._isInAppletCallback;
+    },
+
+    startAppletCallback: function() {
+      if (this.getIsInAppletCallback()) {
+        throw new Error("SensorApplet.startAppletCallback was called without previous endAppletCallback call");
+      }
+      this._isInAppletCallback = true;
+    },
+
+    endAppletCallback: function() {
+      if (!this.getIsInAppletCallback()) {
+        throw new Error("SensorApplet.endAppletCallback was called without previous startAppletCallback call");
+      }
+      this._isInAppletCallback = false;
+    },
+
+    /**
+      Append the applet to the DOM, and call callback when either:
+
+        (1) The applet is configured and ready, with the correct device attached (it is ready to
+            start collecting data immediately). The SensorApplet instance will be in the 'stopped'
+            state.
+
+        or:
+
+        (2) An error occurs in the initialization process. An error object will be passed as the
+            first argument to the callback (Node.js style).
+
+        Currently, we detect three kinds of errors:
+
+          * The Java plugin does not appear to be working (we time out waiting for a callback from
+            our test applet). In this case, application code may want to remove the applet and try
+            calling 'append' again later.
+
+          * The sensor applet was appended, but never initializes (we time out waiting for its
+            methods to become callable from Javascript).  In this case, application code may want to
+            remove the applet and try calling 'append' again later.
+
+          * The sensor applet reports that the wrong sensor type is attached. In this case,
+            the applet is known to be loaded, and the application code may want to notify the user,
+            and call 'initializeSensor' when the user indicates the sensor is plugged in. If
+            initializeSensor returns true, the applet is ready to collect data.
+
+        We don't yet handle the case that the test applet initializes correctly but never calls the
+        'sensorsReady' callback. If that happens, 'callback' will never be invoked.
+    */
+    append: function(callback) {
+      if (this.getState() !== 'not appended') {
+        throw new Error("Can't call append() when sensor applet has left 'not appended' state");
+      }
+      this._appendTestAppletHTML();
+      this._appendCallback = callback;
+    },
+
+    _appendTestAppletHTML: function() {
+      $('body').append( this.getTestAppletHTML() );
+      this.testAppletInstance = $('#'+this.appletId + "-test-applet")[0];
+      this._state = 'test applet appended';
+      this._waitForTestAppletReady();
+    },
+
+    _waitForTestAppletReady: function() {
+      // TODO: require Function.prototype.bind shim? Or ignore b/c we require Safari >= 5.1?
+      var self = this;
+
+      function testFunction() {
+        try {
+          return self.testAppletInstance.areYouLoaded();
+        } catch(e) {
+          return false;
+        }
+      }
+
+      function done() {
+        self._appendHTML( self.getHTML() );
+        self._state = 'appended';
+        self._waitForAppletReady();
+      }
+
+      function fail() {
+        self._appendCallback(new errors.JavaLoadError("Timed out waiting for test applet to respond."));
+      }
+
+      waitForTestFunction(testFunction, this.testAppletReadyInterval, 10, done, fail);
+    },
+
+    _waitForAppletReady: function() {
+      var self = this;
+
+      function testFunction() {
+        return self.testAppletReady();
+      }
+
+      function done() {
+        $(self.testAppletInstance).remove();
+        if (self.getState() === 'appended') {
+          self._state = 'applet ready';
+        }
+        if (!self.isSensorConnected()) {
+          self._appendCallback(new errors.SensorConnectionError("Device reported the requested sensor type was not attached."));
+        }
+        self.initializeSensor();
+        // now, do nothing. We just wait for the callback from the sensor applet to sensorIsReady.
+      }
+
+      function fail() {
+        self._appendCallback(new errors.AppletInitializationError("Timed out waiting for sensor applet to be ready."));
+      }
+
+      waitForTestFunction(testFunction, this.testAppletReadyInterval, 10, done, fail);
+    },
+
+    sensorIsReady: function() {
+      var self = this;
+      this._state = 'stopped';
+      setTimeout(function() {
+        self._appendCallback(null);
+        self._appendCallback = null;
+      }, 10);
+    },
+
+    start: function() {
+      if (this.getState() === 'stopped') {
+        this._state = 'started';
+        this._startSensor();
+      }
+    },
+
+    stop: function() {
+      if (this.getState() === 'started') {
+        this._state = 'stopped';
+        this._stopSensor();
+      }
+    },
+
+    remove: function() {
+      var self = this;
+
+      function remove() {
+        if (self.getState() !== 'not appended') {
+          self._removeApplet();
+          self._state = 'not appended';
+        }
+      }
+
+      if (this.getIsInAppletCallback()) {
+        window.setTimeout(function() { remove(); }, 10);
+      }
+      else {
+        remove();
+      }
+    },
+
+    _appendHTML: function(html) {
+      $('body').append(html);
+      this.appletInstance = $('#'+this.appletId)[0];
+    },
+
+    _removeApplet: function() {
+      $('#'+this.appletId).remove();
+    },
+
+    getHTML: function() {
+      throw new Error("Override this method!");
+    },
+
+    testAppletReady: function() {
+      throw new Error("Override this method!");
+    },
+
+    _startSensor: function() {
+      throw new Error("Override this method!");
+    },
+
+    _stopSensor: function () {
+      throw new Error("Override this method!");
+    }
+
+  });
+
+  miniClass.mixin(SensorApplet.prototype, EventEmitter);
+
+  return SensorApplet;
+});
+
+/*global define: false */
+
+define('sensor/applet/vernier-sensor-applet',['require','common/mini-class','./sensor-applet'],function(require) {
+
+  var miniClass    = require('common/mini-class'),
+      SensorApplet = require('./sensor-applet');
+
+  return miniClass.extendClass(SensorApplet, {
+
+    // Before appending the applet, set this value with the path to an object that will receive applet callbacks.
+    listenerPath: '',
+
+    // Before appending the applet, set this to the sensor type
+    // supported values are:
+    //   "temperature"
+    //   "light"
+    //   "force 5n"
+    //   "force 50n"
+    //   "co2"
+    //   "o2"
+    //   "ph"
+    //   "distance"
+    measurementType: '',
+
+    // supported values are:
+    //  "labquest"
+    //  "golink"
+    deviceType: '',
+
+    appletId:     'sensor-applet',
+    classNames:   'applet sensor-applet',
+
+    jarUrls:     ['com/sun/jna/jna.jar',
+                  'org/concord/sensor/sensor.jar',
+                  'org/concord/sensor/sensor-vernier/sensor-vernier.jar',
+                  'org/concord/sensor/sensor-applets/sensor-applets.jar'],
+
+    deviceSpecificJarUrls: [],
+
+    code:         'org.concord.sensor.applet.SensorApplet',
+
+    getHTML: function() {
+      var allJarUrls = this.jarUrls.concat(this.deviceSpecificJarUrls);
+
+      return [
+       '<applet ',
+         'id="',       this.appletId,         '" ',
+         'class="',    this.classNames,       '" ',
+         'archive="',  allJarUrls.join(', '), '" ',
+         'code="',     this.code,             '" ',
+         'codebase="', this.getCodebase(), '" ',
+         'width="1px" ',
+         'height="1px" ',
+         'MAYSCRIPT="true" ',
+       '>',
+          '<param name="MAYSCRIPT" value="true" />',
+        '</applet>'
+      ].join('');
+    },
+
+    testAppletReady: function() {
+      try {
+        // We only care to see if this throws or not. (In some versions of IE, it's not possible
+        // to 'probe' for the mere existence of this.appletInstance.getSensorRequest by testing
+        // it for truthiness, because Java methods can be invoked but not included in expressions.)
+        this.appletInstance.getSensorRequest(this.measurementType);
+      } catch(e) {
+        return false;
+      }
+      return true;
+    },
+
+    /**
+      Returns true if the correct device type is connected.
+
+      NOTE: This will throw if the applet hasn't been initialized yet (which occurs asynchronously
+      after the <applet> tag is appended to the DOM).
+    */
+    isSensorConnected: function() {
+      return this.appletInstance.isInterfaceConnected(this.deviceType);
+    },
+
+    /**
+      Try to initialize the sensor for the correct device and measurement type (e.g., goio,
+      distance). Returns true on success.
+
+      NOTE: This will throw if the applet hasn't been initialized yet (which occurs asynchronously
+      after the <applet> tag is appended to the DOM).
+    */
+    initializeSensor: function() {
+      var req;
+
+      if (!this.isSensorConnected()) {
+        return false;
+      }
+
+      req = this.appletInstance.getSensorRequest(this.measurementType);
+      return this.appletInstance.initSensorInterface(this.listenerPath, this.deviceType, [req]);
+    },
+
+    // In some browsers, calling an applet method from within a callback triggered by
+    // an applet seems to cause problems (lock up the browser). Therefore, make sure
+    // not to call the applet's stopCollecting, startCollecting methods within an applet
+    // callback.
+
+    _stopSensor: function() {
+      var self = this;
+
+      if (this.getIsInAppletCallback()) {
+        window.setTimeout(function() { self.appletInstance.stopCollecting(); }, 10);
+      }
+      else {
+        this.appletInstance.stopCollecting();
+      }
+    },
+
+    _startSensor: function() {
+      var self = this;
+
+      if (this.getIsInAppletCallback()) {
+        window.setTimeout(function() { self.appletInstance.startCollecting(); }, 10);
+      }
+      else {
+        this.appletInstance.startCollecting();
+      }
+    },
+
+    // applet callbacks
+
+    sensorsReady: function() {
+      this.startAppletCallback();
+      this.sensorIsReady();
+      this.endAppletCallback();
+    },
+
+    dataReceived: function(type, count, data) {
+      data = data || [];
+      this.startAppletCallback();
+      for (var i = 0, len = data.length; i < len; i++) {
+        this.emit('data', data[i]);
+      }
+      this.endAppletCallback();
+    },
+
+    deviceUnplugged: function() {
+      var self = this;
+      this.startAppletCallback();
+      window.setTimeout(function() { self.emit('deviceUnplugged'); }, 10);
+      this.endAppletCallback();
+    },
+
+    sensorUnplugged: function() {
+      var self = this;
+      this.startAppletCallback();
+      window.setTimeout(function() { self.emit('sensorUnplugged'); }, 10);
+      this.endAppletCallback();
+    }
+  });
+});
+
+/*global define: false*/
+
+define('sensor/applet/applet-classes',['require','common/mini-class','./vernier-sensor-applet'],function(require) {
+
+  var miniClass           = require('common/mini-class'),
+      VernierSensorApplet = require('./vernier-sensor-applet');
+
+  return {
+    goio: miniClass.extendClass(VernierSensorApplet, {
+      deviceType:            'golink',
+      deviceSpecificJarUrls: ['org/concord/sensor/goio-jna/goio-jna.jar']
+    }),
+
+    labquest: miniClass.extendClass(VernierSensorApplet, {
+      deviceType:            'labquest',
+      deviceSpecificJarUrls: ['org/concord/sensor/labquest-jna/labquest-jna.jar']
+    })
+  };
+});
+
+/*global define: false*/
+
+define('sensor/applet/sensor-definitions',[],function() {
+  return {
+    goMotion: {
+      appletClass: 'goio',
+      measurementType: 'distance',
+
+      // fully specified, readable name of the sensor: e.g., "GoIO pH Sensor"
+      sensorName: "GoMotion",
+
+      // readable name of the interface device the sensor connects to, e..g, "GoIO"
+      deviceName: "GoMotion",
+
+      samplesPerSecond: 20,
+      tareable: true
+    }
+  };
+});
+
+/*global define: false, d3: false $: true */
+
+define('sensor/modeler',['require','common/property-support','common/property-description','cs!common/running-average-filter','common/validator','./metadata','./units-definition','./applet/applet-classes','./applet/errors','./applet/sensor-definitions','common/controllers/basic-dialog'],function(require) {
+
+  var PropertySupport      = require('common/property-support'),
+      PropertyDescription  = require('common/property-description'),
+      RunningAverageFilter = require('cs!common/running-average-filter'),
+      validator            = require('common/validator'),
+      metadata             = require('./metadata'),
+      unitsDefinition      = require('./units-definition'),
+      appletClasses        = require('./applet/applet-classes'),
+      appletErrors         = require('./applet/errors'),
+      sensorDefinitions    = require('./applet/sensor-definitions'),
+      BasicDialog          = require('common/controllers/basic-dialog');
+
+  function simpleAlert(message, buttons) {
+    var dialog = new BasicDialog({
+          width: "60%",
+          buttons: buttons
+        });
+
+    dialog.setContent(message);
+    dialog.open();
+  }
+
+  return function Model(initialProperties) {
+    var propertySupport = new PropertySupport({
+          types: ['mainProperty', 'viewOption', 'parameter', 'output']
+        }),
+
+        viewOptions,
+        mainProperties,
+        isStopped = true,
+        dispatch = d3.dispatch('play', 'stop', 'tick', 'reset', 'stepForward', 'stepBack', 'seek', 'invalidation'),
+        sensorType,
+        applet,
+        didStop = false,
+        sensorIsReady = false,
+        samplesPerSecond,
+        time = 0,
+        sensorReading,
+        stepCounter = 0,
+        invalidatingChangeNestingLevel = 0,
+        filteredOutputs = [],
+        customSetters,
+        model;
+
+    //
+    // The following function is essentially copied from MD2D modeler, and should moved to a common
+    // module
+    //
+    function defineBuiltinProperty(key, type, setter) {
+      var metadataForType,
+          descriptor,
+          propertyChangeInvalidates,
+          unitType;
+
+      if (type === 'mainProperty') {
+        metadataForType = metadata.mainProperties;
+      } else if (type === 'viewOption') {
+        metadataForType = metadata.viewOptions;
+      } else {
+        throw new Error(type + " is not a supported built-in property type");
+      }
+
+      propertyChangeInvalidates = validator.propertyChangeInvalidates(metadataForType[key]);
+
+      descriptor = {
+        type: type,
+        writable: validator.propertyIsWritable(metadataForType[key]),
+        set: setter,
+        includeInHistoryState: !!metadataForType[key].storeInTickHistory,
+        validate: function(value) {
+          return validator.validateSingleProperty(metadataForType[key], key, value, false);
+        },
+        beforeSetCallback: propertyChangeInvalidates ? invalidatingChangePreHook : undefined,
+        afterSetCallback: propertyChangeInvalidates ? invalidatingChangePostHook : undefined
+      };
+
+      unitType = metadataForType[key].unitType;
+      if (unitType) {
+        descriptor.description = new PropertyDescription(unitsDefinition, { unitType: unitType });
+      }
+
+      propertySupport.defineProperty(key, descriptor);
+    }
+
+    function invalidatingChangePreHook() {
+      if (invalidatingChangeNestingLevel === 0) {
+        propertySupport.storeComputedProperties();
+        propertySupport.deleteComputedPropertyCachedValues();
+        propertySupport.enableCaching = false;
+      }
+      invalidatingChangeNestingLevel++;
+    }
+
+    function invalidatingChangePostHook() {
+      invalidatingChangeNestingLevel--;
+      updateFilteredOutputs();
+      if (invalidatingChangeNestingLevel === 0) {
+        propertySupport.enableCaching = true;
+        propertySupport.notifyChangedComputedProperties();
+      }
+    }
+
+    function makeInvalidatingChange(closure) {
+      invalidatingChangePreHook();
+      closure();
+      invalidatingChangePostHook();
+    }
+
+    function updateFilteredOutputs() {
+      filteredOutputs.forEach(function(output) {
+        output.addSample();
+      });
+    }
+
+    function removeApplet() {
+      applet.removeListeners('data');
+      applet.removeListeners('deviceUnplugged');
+      applet.removeListeners('sensorUnplugged');
+
+      applet.remove();
+      makeInvalidatingChange(function() {
+        sensorIsReady = false;
+      });
+    }
+
+    function appendApplet() {
+      applet.on('data', appletDataCallback);
+      applet.on('deviceUnplugged', function() { handleUnplugged('device'); });
+      applet.on('sensorUnplugged', function() { handleUnplugged('sensor'); });
+
+      applet.append(function(error) {
+        if (error) {
+          if (error instanceof appletErrors.JavaLoadError) {
+            handleLoadingFailure("It appears that Java applets cannot run in your browser. If you are able to fix this, reload the page to use the sensor");
+          } else if (error instanceof appletErrors.AppletInitializationError) {
+            handleLoadingFailure("The sensor applet appears not to be loading. If you are able to fix this, reload the page to use the sensor");
+          } else if (error instanceof appletErrors.SensorConnectionError) {
+            handleSensorConnectionError();
+          } else {
+            handleLoadingFailure("There was an unexpected error when connecting to the sensor.");
+          }
+          return;
+        }
+
+        makeInvalidatingChange(function() {
+          sensorIsReady = true;
+        });
+      });
+    }
+
+    function handleSensorConnectionError() {
+      removeApplet();
+      simpleAlert("The " + model.properties.sensorName + " does not appear to be attached. Try re-attaching it, and then click \"Try Again\".", {
+        "Try Again" : function() {
+          $(this).dialog("close");
+          // This is a workaround: currently, the applet itself does not appear to respond to its
+          // initialization methods if the sensor was not connected when the applet started up.
+          appendApplet();
+        },
+        Cancel: function() {
+          $(this).dialog("close");
+        }
+      });
+    }
+
+    function handleLoadingFailure(message) {
+      removeApplet();
+      simpleAlert(message, {
+        OK: function() {
+          $(this).dialog("close");
+        }
+      });
+    }
+
+    function handleUnplugged(what) {
+      removeApplet();
+      model.stop();
+      simpleAlert("The " + model.properties[what+'Name'] + " was unplugged. Try plugging it back in, and then click \"Try Again\".", {
+        "Try Again": function() {
+          $(this).dialog("close");
+          appendApplet();
+        },
+        Cancel: function() {
+          $(this).dialog("close");
+        }
+      });
+    }
+
+    function setSensorType(_sensorType) {
+      var AppletClass;
+
+      if (sensorType === _sensorType) {
+        return;
+      }
+      sensorType = _sensorType;
+
+      if (applet) {
+        removeApplet();
+      }
+
+      samplesPerSecond = sensorDefinitions[sensorType].samplesPerSecond;
+      AppletClass = appletClasses[sensorDefinitions[sensorType].appletClass];
+
+      applet = window.Lab.sensor[sensorType] = new AppletClass({
+        listenerPath: 'Lab.sensor.' + sensorType,
+        measurementType: sensorDefinitions[sensorType].measurementType,
+        appletId: sensorType+'-sensor'
+      });
+
+      appendApplet();
+    }
+
+    function appletDataCallback(d) {
+      stepCounter++;
+
+      time += (1 / samplesPerSecond);
+
+      // Whaaa? Accessing 'window' seems to prevent a strange bug in which Safari 6.0 stops updating
+      // time after 3.7s. Hard to debug because accessing console, window, or Web Inspector makes
+      // the problem go away!
+      window.__bizarreSafariFix = 1;
+
+      sensorReading = d;
+
+      propertySupport.deleteComputedPropertyCachedValues();
+      propertySupport.notifyAllComputedProperties();
+      updateFilteredOutputs();
+
+      dispatch.tick();
+    }
+
+    model = {
+      resetTime: function() {
+        makeInvalidatingChange(function() {
+          time = 0;
+        });
       },
 
+      on: function(type, listener) {
+        dispatch.on(type, listener);
+      },
+
+      start: function() {
+        if (!model.properties.isPlayable) {
+          return;
+        }
+
+        isStopped = false;
+        if (applet) {
+          applet.start();
+        }
+        dispatch.play();
+      },
+
+      stop: function() {
+        isStopped = true;
+        if (applet) {
+          applet.stop();
+        }
+        dispatch.stop();
+
+        // Needed in order to recompute isPlaying. FIXME: need a better paradigm for standard
+        // MVC style properties that don't flow from model physics.
+        makeInvalidatingChange(function() {
+          didStop = true;
+        });
+      },
+
+      is_stopped: function() {
+        return isStopped;
+      },
+
+      stepCounter: function() {
+        return stepCounter;
+      },
+
+      //
+      // The following are essentially copied from MD2D modeler, and should moved to a common module
+      //
+
+      addPropertiesListener: function(properties, callback) {
+        if (typeof properties === 'string') {
+          model.addObserver(properties, callback);
+        } else {
+          properties.forEach(function(property) {
+            model.addObserver(property, callback);
+          });
+        }
+      },
+
+      defineParameter: function(key, descriptionHash, setter) {
+        var descriptor = {
+              type: 'parameter',
+              includeInHistoryState: true,
+              invokeSetterAfterBulkRestore: false,
+              description: new PropertyDescription(unitsDefinition, descriptionHash),
+              beforeSetCallback: invalidatingChangePreHook,
+              afterSetCallback: invalidatingChangePostHook
+            };
+
+        // In practice, some parameters are meant only to be observed, and have no setter
+        if (setter) {
+          descriptor.set = function(value) {
+            setter.call(model, value);
+          };
+        }
+        propertySupport.defineProperty(key, descriptor);
+      },
+
+      defineOutput: function(key, descriptionHash, getter) {
+        propertySupport.defineProperty(key, {
+          type: 'output',
+          writable: false,
+          get: getter,
+          includeInHistoryState: false,
+          description: new PropertyDescription(unitsDefinition, descriptionHash)
+        });
+      },
+
+      defineFilteredOutput: function(key, description, filteredPropertyKey, type, period) {
+        var filter, initialValue;
+
+        if (type === "RunningAverage") {
+          filter = new RunningAverageFilter(period);
+        } else {
+          throw new Error("FilteredOutput: unknown filter type " + type + ".");
+        }
+
+        // Add initial sample
+        initialValue = model.properties[key];
+        if (initialValue === undefined || isNaN(Number(initialValue))) {
+          throw new Error("FilteredOutput: property is not a valid numeric value or it is undefined.");
+        }
+        filter.addSample(model.properties.time, initialValue);
+
+        filteredOutputs.push({
+          addSample: function() {
+            filter.addSample(model.properties.time, model.properties[filteredPropertyKey]);
+          }
+        });
+
+        // Extend description to contain information about filter
+        description.property = filteredPropertyKey;
+        description.type = type;
+        description.period = period;
+
+        model.defineOutput(key, description, function () {
+          return filter.calculate();
+        });
+      }
+    };
+
+    // Need to define a globally-accessible 'listenerPath' for the sensor to evaluate
+    if (window.Lab === undefined) {
+      window.Lab = {};
+    }
+    window.Lab.sensor = {};
+
+    propertySupport.mixInto(model);
+
+    customSetters = {
+      sensorType: setSensorType
+    };
+
+    mainProperties = validator.validateCompleteness(metadata.mainProperties, initialProperties);
+    Object.keys(mainProperties).forEach(function(key) {
+      defineBuiltinProperty(key, 'mainProperty', customSetters[key]);
+    });
+    propertySupport.setRawValues(mainProperties);
+
+    viewOptions = validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {});
+    Object.keys(viewOptions).forEach(function(key) {
+      defineBuiltinProperty(key, 'viewOption');
+    });
+    propertySupport.setRawValues(viewOptions);
+
+    model.defineOutput('time', {
+      label: "Time",
+      unitType: 'time',
+      format: '.2f'
+    }, function() {
+      return time;
+    });
+
+    model.defineOutput('displayTime', {
+      label: "Time",
+      unitType: 'time',
+      format: '.2f'
+    }, function() {
+      return time;
+    });
+
+    model.defineOutput('sensorReading', {
+      label: "Sensor Reading",
+      format: '.2f'
+    }, function() {
+      return sensorReading;
+    });
+
+    // TODO. Need a better way for the model to be able to have a property which it can set the
+    // value of at arbitrary times, but which is read-only to client code. Outputs aren't quite
+    // the right solution because the invalidation stuff is really about time and physics-based
+    // invalidation.
+
+    model.defineOutput('sensorName', {
+      label: "Sensor Name"
+    }, function() {
+      return sensorDefinitions[sensorType].sensorName;
+    });
+
+    model.defineOutput('deviceName', {
+      label: "Sensor Interface Device Name"
+    }, function() {
+      return sensorDefinitions[sensorType].deviceName;
+    });
+
+    // TODO. We need a way to make "model-writable" read only properties. custom getters could
+    model.defineOutput('isPlayable', {
+      label: "Playable"
+    }, function() {
+      return !didStop && sensorIsReady;
+    });
+
+    // Kick things off by doing this explicitly:
+    setSensorType(model.properties.sensorType);
+
+    return model;
+  };
+});
+
+/*global define $ */
+
+define('sensor/controller',['require','common/controllers/model-controller','sensor/modeler','common/views/null-model-view'],function (require) {
+  // Dependencies.
+  var ModelController   = require('common/controllers/model-controller'),
+      Model             = require('sensor/modeler'),
+      ModelContainer    = require('common/views/null-model-view'),
       ScriptingAPI      = function() {},
       Benchmarks        = function() {};
 
@@ -33634,7 +36921,7 @@ define('signal-generator/controller',['require','common/controllers/model-contro
 
 /*global define, model, $, setTimeout, document, window */
 
-define('common/controllers/interactives-controller',['require','lab.config','arrays','common/alert','common/controllers/interactive-metadata','common/validator','common/controllers/bar-graph-controller','common/controllers/graph-controller','common/controllers/export-controller','common/controllers/scripting-api','common/controllers/button-controller','common/controllers/checkbox-controller','common/controllers/text-controller','common/controllers/image-controller','common/controllers/radio-controller','common/controllers/slider-controller','common/controllers/pulldown-controller','common/controllers/numeric-output-controller','common/controllers/parent-message-api','common/controllers/thermometer-controller','common/controllers/playback-controller','common/controllers/div-controller','common/controllers/setup-banner','common/controllers/about-dialog','common/controllers/share-dialog','common/controllers/credits-dialog','common/layout/semantic-layout','common/layout/templates','md2d/controllers/controller','solar-system/controllers/controller','signal-generator/controller'],function (require) {
+define('common/controllers/interactives-controller',['require','lab.config','arrays','common/alert','common/controllers/interactive-metadata','common/validator','common/controllers/bar-graph-controller','common/controllers/graph-controller','common/controllers/export-controller','common/controllers/scripting-api','common/controllers/button-controller','common/controllers/checkbox-controller','common/controllers/text-controller','common/controllers/image-controller','common/controllers/radio-controller','common/controllers/slider-controller','common/controllers/pulldown-controller','common/controllers/numeric-output-controller','common/controllers/parent-message-api','common/controllers/thermometer-controller','common/controllers/playback-controller','common/controllers/div-controller','common/controllers/setup-banner','common/controllers/about-dialog','common/controllers/share-dialog','common/controllers/credits-dialog','common/layout/semantic-layout','common/layout/templates','md2d/controllers/controller','solar-system/controllers/controller','signal-generator/controller','sensor/controller'],function (require) {
   // Dependencies.
   var labConfig               = require('lab.config'),
       arrays                  = require('arrays'),
@@ -33666,9 +36953,12 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
       SemanticLayout          = require('common/layout/semantic-layout'),
       templates               = require('common/layout/templates'),
 
-      MD2DModelController     = require('md2d/controllers/controller'),
-      SolarSystemModelController = require('solar-system/controllers/controller'),
-      SignalGeneratorModelController = require('signal-generator/controller'),
+      ModelControllerFor = {
+        'md2d':             require('md2d/controllers/controller'),
+        'solar-system':     require('solar-system/controllers/controller'),
+        'signal-generator': require('signal-generator/controller'),
+        'sensor':           require('sensor/controller')
+      },
 
       // Set of available components.
       // - Key defines 'type', which is used in the interactive JSON.
@@ -33883,17 +37173,13 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
       function createModelController(type, modelUrl, modelConfig) {
         // set default model type to "md2d"
         var modelType = type || "md2d";
-        switch(modelType) {
-          case "md2d":
-          modelController = new MD2DModelController(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions, controller);
-          break;
-          case "solar-system":
-          modelController = new SolarSystemModelController(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions, controller);
-          break;
-          case "signal-generator":
-          modelController = new SignalGeneratorModelController(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions, controller);
-          break;
+
+        if (ModelControllerFor[modelType] == null) {
+          throw new Error("Couldn't understand modelType '" + modelType + "'!");
         }
+
+        modelController = new ModelControllerFor[modelType](modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions, controller);
+
         // Extending universal Interactive scriptingAPI with model-specific scripting API
         if (modelController.ScriptingAPI) {
           scriptingAPI.extend(modelController.ScriptingAPI);

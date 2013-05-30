@@ -1,0 +1,171 @@
+{
+  "title": "DNA Animations Example",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "fontScale": 0.8,
+  "models": [
+    {
+      "id": "page3$0",
+      "url": "imports/legacy-mw-content/converted/sam-activities/DNA-to-proteins/page3/page3$0.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      },
+      "modelOptions": {
+        "DNA": "ATGCCAGGCGGCGAGAGCTTGCTAATTGGCTTATAG",
+        "geneticEngineState": "translation:0"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "progressRate",
+      "value": [
+        "return getSimulationProgressRate();"
+      ],
+      "unitName": "femtoseconds per actual second"
+    }
+  ],
+  "components": [
+    {
+      "type": "pulldown",
+      "id": "state-pulldown",
+      "label": "Jump to...",
+      "options": [
+        {
+          "text": "genetic engine state",
+          "disabled": true,
+          "selected": true
+        },
+        {
+          "text": "intro-cells",
+          "action": "set('geneticEngineState', 'intro-cells');"
+        },
+        {
+          "text": "intro-zoom1",
+          "action": "set('geneticEngineState', 'intro-zoom1');"
+        },
+        {
+          "text": "intro-zoom2",
+          "action": "set('geneticEngineState', 'intro-zoom2');"
+        },
+        {
+          "text": "intro-zoom3",
+          "action": "set('geneticEngineState', 'intro-zoom3');"
+        },
+        {
+          "text": "intro-polymerase",
+          "action": "set('geneticEngineState', 'intro-polymerase');"
+        },
+        {
+          "text": "dna",
+          "action": "set('geneticEngineState', 'dna');"
+        },
+        {
+          "text": "transcription:0",
+          "action": "set('geneticEngineState', 'transcription:0');"
+        },
+        {
+          "text": "transcription-end",
+          "action": "set('geneticEngineState', 'transcription-end');"
+        },
+        {
+          "text": "after-transcription",
+          "action": "set('geneticEngineState', 'after-transcription');"
+        },
+        {
+          "text": "before-translation",
+          "action": "set('geneticEngineState', 'before-translation');"
+        },
+        {
+          "text": "translation:0",
+          "action": "set('geneticEngineState', 'translation:0');"
+        },
+        {
+          "text": "translation:5 (!)",
+          "action": "set('geneticEngineState', 'translation:5');"
+        }
+      ]
+    },
+    {
+      "type": "pulldown",
+      "id": "animate-pulldown",
+      "label": "Animate to...",
+      "options": [
+        {
+          "text": "genetic engine state",
+          "disabled": true,
+          "selected": true
+        },
+        {
+          "text": "dna (play intro)",
+          "action": "dnaAnimationTo('dna');"
+        },
+        {
+          "text": "transcription-end",
+          "action": "dnaAnimationTo('transcription-end');"
+        },
+        {
+          "text": "translation-end",
+          "action": "dnaAnimationTo('translation-end');"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "id": "next-state",
+      "text": "Animate to next state",
+      "action": "dnaAnimateToNextState();"
+    },
+    {
+      "type": "button",
+      "id": "next-state-jump",
+      "text": "Jump to next state",
+      "action": "dnaJumpToNextState();"
+    },
+    {
+      "type": "button",
+      "id": "prev-state-jump",
+      "text": "Jump to prev state",
+      "action": "dnaJumpToPrevState();"
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": "reset();"
+    },
+    {
+      "id": "current-state",
+      "type": "numericOutput",
+      "property": "geneticEngineState",
+      "label": "Current 'geneticEngineState'",
+      "displayValue": "return value"
+    },
+    {
+      "id": "viewport",
+      "type": "slider",
+      "title": "Viewport Position",
+      "property": "viewPortX",
+      "width": "35em",
+      "displayValue": "return format('1.1f')(value)",
+      "min": -31,
+      "max": 35,
+      "steps": 2000
+    }
+  ],
+  "layout": {
+    "bottom": [
+      ["viewport"],
+      ["current-state", "reset"]
+    ],
+    "right": [
+      ["state-pulldown"],
+      ["animate-pulldown"],
+      ["next-state"],
+      ["next-state-jump"],
+      ["prev-state-jump"]
+    ]
+  }
+}

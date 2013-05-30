@@ -190,6 +190,18 @@
       0,
       0,
       0
+    ],
+    "excitation": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
     ]
   },
   "obstacles": {
@@ -305,5 +317,16 @@
       true,
       true
     ]
+  },
+  "quantumDynamics": {
+    "elementEnergyLevels": [
+      [],
+      [],
+      [],
+      [],
+      []
+    ],
+    "photons": {},
+    "radiationlessEmissionProbability": 1
   }
 }

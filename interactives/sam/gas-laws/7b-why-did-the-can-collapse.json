@@ -1,0 +1,298 @@
+{
+  "title": "Collapsing Soda Can",
+  "publicationStatus": "draft",
+  "subtitle": "Explore how heat and number of molecules affect pressure equilibrium between two gases.",
+  "about": [
+    "The model is an incomplete model of a soda can. ",
+    "Currently it is showing gas molecules inside and outside the soda can before it is plunged in ice water. ",
+    "The rectangle in the middle of the model represents a micro-section of the soda can wall. ",
+    "Design a model that shows what happens after the can is placed in ice water. ",
+    "Use the tools on the sides of the model to more accurately represent the experiment. ",
+    "Use tools to heat and cool the molecules where it is appropriate. "
+  ],
+  "models": [
+    {
+      "id": "page7$0",
+      "url": "imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page7/page7$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "showVelocityVectors": true,
+        "textBoxes": [
+          {
+            "text": "Can wall",
+            "x": 1.7465425109863282,
+            "y": 1.43,
+            "width": 0.5,
+            "textAlign": "center",
+            "layer": 1,
+            "hostType": "RectangularObstacle",
+            "hostIndex": 0
+          },
+          {
+            "text": "Inside soda can",
+            "x": 0.02,
+            "y": 0.25,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(250,190,210)"
+          },
+          {
+            "text": "Outside soda can",
+            "x": 2.88,
+            "y": 0.25,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(240,240,119)"
+          }
+        ]
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "purpleAtoms",
+      "value": [
+        "var count = 0;",
+        "var atomNum = getNumberOfAtoms();",
+        "for (var i = 0; i < atomNum; i++) {",
+        "  if (getAtomProperties(i).element == 3) {",
+        "    count += 1;",
+        "  }",
+        "}",
+        "return count;"
+     ]
+    },
+    {
+      "name": "yellowAtoms",
+      "value": [
+        "var count = 0;",
+        "var atomNum = getNumberOfAtoms();",
+        "for (var i = 0; i < atomNum; i++) {",
+        "  if (getAtomProperties(i).element == 1) {",
+        "    count += 1;",
+        "  }",
+        "}",
+        "return count;"
+     ]
+    },
+    {
+      "name": "vxMean",
+      "unitType": "velocity",
+      "value": [
+        "var vxSum = 0;",
+        "var atomNum = getNumberOfAtoms();",
+        "for (var i = 0; i < atomNum; i++) {",
+        "  vxSum += Math.abs(getAtomProperties(i).vx);",
+        "}",
+        "return vxSum / atomNum;"
+     ]
+    },
+    {
+      "name": "vyMean",
+      "unitType": "velocity",
+      "value": [
+        "var vySum = 0;",
+        "var atomNum = getNumberOfAtoms();",
+        "for (var i = 0; i < atomNum; i++) {",
+        "  vySum += Math.abs(getAtomProperties(i).vy);",
+        "}",
+        "return vySum / atomNum;"
+     ]
+    }
+  ],
+  "components": [
+    {
+      "type": "checkbox",
+      "id": "show-velocity",
+      "text": "Show velocity vectors",
+      "property": "showVelocityVectors"
+    },
+    {
+      "type": "numericOutput",
+      "id": "purple-atoms",
+      "property": "purpleAtoms"
+    },
+    {
+      "type": "numericOutput",
+      "id": "yellow-atoms",
+      "property": "yellowAtoms"
+    },
+    {
+      "type": "text",
+      "id": "purple-label",
+      "text": "Purple molecules",
+      "width": "6em"
+    },
+    {
+      "type": "text",
+      "id": "yellow-label",
+      "text": "Yellow molecules",
+      "width": "6em"
+    },
+    {
+      "type": "button",
+      "id": "add-inside",
+      "text": "Add",
+      "width": "6em",
+      "action": [
+        "var elemNum = 3;",
+        "var maxX = getObstacleProperties(0).x - getElementProperties(elemNum).sigma;",
+        "addAtom({ element: elemNum, x: maxX * Math.random()  , y: get('height') * Math.random(), vx: get('vxMean'), vy: get('vyMean')});"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "add-outside",
+      "text": "Add",
+      "width": "6em",
+      "action": [
+        "var elemNum = 1;",
+        "var minX = getObstacleProperties(0).x + getObstacleProperties(0).width + getElementProperties(elemNum).sigma;",
+        "addAtom({ element: elemNum, x: (get('width') - minX) * Math.random() + minX , y: get('height') * Math.random(), vx: get('vxMean'), vy: get('vyMean')});"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "remove-inside",
+      "text": "Remove",
+      "width": "6em",
+      "action": [
+        "var firstFound = false;",
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+        "  if (getAtomProperties(i).x < getObstacleProperties(0).x) {",
+        "    if (!firstFound) { firstFound = true; }",
+        "    else { removeAtom(i); break; }",
+        "  }",
+        "}"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "remove-outside",
+      "text": "Remove",
+      "width": "6em",
+      "action": [
+        "var firstFound = false;",
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+        "  if (getAtomProperties(i).x > (getObstacleProperties(0).x + getObstacleProperties(0).width)) {",
+        "    if (!firstFound) { firstFound = true; }",
+        "    else { removeAtom(i); break; }",
+        "  }",
+        "}"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "heat-inside",
+      "text": "Heat",
+      "width": "6em",
+      "action": [
+        "if (get('temperature') < 10000) {",
+        "  for (var i = 0; i < getNumberOfAtoms(); i++) {",
+        "    var atom = getAtomProperties(i);",
+        "    if (atom.x < getObstacleProperties(0).x) {",
+        "       setAtomProperties(i, { vx: atom.vx * 1.1, vy: atom.vy * 1.1 }, false, false, {suppressRepaint: true})",
+        "    }",
+        "  }",
+        "  repaint();",
+        "}",
+        "else {",
+        "    alert('Max temperature reached.');",
+        "}"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "heat-outside",
+      "text": "Heat",
+      "width": "6em",
+      "action": [
+        "if (get('temperature') < 10000) {",
+        "  for (var i = 0; i < getNumberOfAtoms(); i++) {",
+        "    var atom = getAtomProperties(i);",
+        "    if (atom.x > getObstacleProperties(0).x) {",
+        "       setAtomProperties(i, { vx: atom.vx * 1.1, vy: atom.vy * 1.1 }, false, false, {suppressRepaint: true})",
+        "    }",
+        "  }",
+        "  repaint();",
+        "}",
+        "else {",
+        "    alert('Max temperature reached.');",
+        "}"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "cool-inside",
+      "text": "Cool",
+      "width": "6em",
+      "action": [
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+        "  var atom = getAtomProperties(i);",
+        "  if (atom.x < getObstacleProperties(0).x) {",
+        "     setAtomProperties(i, { vx: atom.vx * 0.9, vy: atom.vy * 0.9 }, false, false, {suppressRepaint: true})",
+        "   }",
+        "}",
+        "repaint();"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "cool-outside",
+      "text": "Cool",
+      "width": "6em",
+      "action": [
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+        "  var atom = getAtomProperties(i);",
+        "  if (atom.x > getObstacleProperties(0).x) {",
+        "     setAtomProperties(i, { vx: atom.vx * 0.9, vy: atom.vy * 0.9}, false, false, {suppressRepaint: true})",
+        "   }",
+        "}",
+        "repaint();"
+      ]
+    }
+  ],
+  "layout": {
+    "left": [
+      ["purple-label"],
+      ["purple-atoms"],
+      ["add-inside"],
+      ["remove-inside"],
+      ["heat-inside"],
+      ["cool-inside"]
+    ],
+    "right": [
+      ["yellow-label"],
+      ["yellow-atoms"],
+      ["add-outside"],
+      ["remove-outside"],
+      ["heat-outside"],
+      ["cool-outside"]
+    ],
+    "bottom": [ "show-velocity" ]
+  },
+  "template": [
+    {
+      "id": "left",
+      "top": "3em",
+      "right": "model.left",
+      "align": "center",
+      "fontScale": 0.8
+    },
+    {
+      "id": "right",
+      "top": "3em",
+      "left": "model.right",
+      "align": "center",
+      "fontScale": 0.8
+    },
+    {
+      "id": "bottom",
+      "left": "model.left",
+      "top": "model.bottom",
+      "width": "model.width",
+      "align": "center",
+      "padding-top": "0.5em"
+    }
+  ]
+}

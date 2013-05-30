@@ -89,7 +89,8 @@ AUTHORING = false;
       buttonHandlersAdded = false,
       interactiveRemoteKeys = ['id', 'from_import', 'groupKey', 'path'],
       modelRemoteKeys = ['id', 'from_import', 'location'],
-      modelButtonHandlersAdded = false;
+      modelButtonHandlersAdded = false,
+      appPath = '/webapp';
 
   function sendGAPageview(){
     // send the pageview to GA
@@ -113,7 +114,7 @@ AUTHORING = false;
   }
 
   function isStaticPage() {
-    return !(document.location.pathname.match(/^\/interactives.*/));
+    return !(document.location.pathname.match(/^\/webapp.*/));
   }
 
   function isFullPage(){
@@ -125,7 +126,11 @@ AUTHORING = false;
   }
 
   if (!isEmbeddablePage()) {
-    interactivesPromise = $.get('interactives.json');
+    if (isStaticPage()) {
+      interactivesPromise = $.get('interactives.json');
+    }else {
+      interactivesPromise = $.get(appPath + '/interactives.json');
+    }
 
     interactivesPromise.done(function(results) {
       if (typeof results === 'string') {
@@ -147,7 +152,9 @@ AUTHORING = false;
         mesg += "\nfrom the file system you will need to start a";
         mesg += "\nlocal web server instead.";
         mesg += "\n";
-        mesg += "\nHere's one way to do that using python:";
+        mesg += "\nOne solution is to start a simple local web";
+        mesg += "\nserver using Python in the same directory where";
+        mesg += "\nthe static resources are located";
         mesg += "\n";
         mesg += "\n    python -m SimpleHTTPServer";
         mesg += "\n";
@@ -529,8 +536,8 @@ AUTHORING = false;
     // construct Java MW link for running Interactive via jnlp
     // uses generated resource list: /imports/legacy-mw-content/model-list.js
     // also updates link to original MML in Model Editor
-    mmlPath = jsonModelPath.replace("/imports/legacy-mw-content/converted/", "/imports/legacy-mw-content/").replace(".json", ".mml");
-    contentItems = getObjects(modelList, "mml", mmlPath.replace("/imports/legacy-mw-content/", ""));
+    mmlPath = jsonModelPath.replace("imports/legacy-mw-content/converted/", "imports/legacy-mw-content/").replace(".json", ".mml");
+    contentItems = getObjects(modelList, "mml", mmlPath.replace("imports/legacy-mw-content/", ""));
     if (contentItems.length > 0) {
       javaMWhref = "/jnlp/jnlps/org/concord/modeler/mw.jnlp?version-id=1.0&jnlp-args=remote," +
                       origin + Lab.config.actualRoot + "/imports/legacy-mw-content/" + contentItems[0].cml;
@@ -619,11 +626,11 @@ AUTHORING = false;
       });
     }
     // All the extra items are sortable
-    $(".sortable").sortable({
-      axis: "y",
-      containment: "parent",
-      cursor: "row-resize"
-    });
+    // $(".sortable").sortable({
+    //   axis: "y",
+    //   containment: "parent",
+    //   cursor: "row-resize"
+    // });
     if(!isStaticPage()) {
       setupCopySaveInteractive();
     }
@@ -730,14 +737,14 @@ AUTHORING = false;
 
   function remoteSaveInteractive(interactiveState, copyInteractive){
     var httpMethod = 'POST',
-        url = '/interactives',
+        url = appPath + '/interactives',
         newInteractiveState,
         interactiveJSON;
 
     if(!copyInteractive) {
       // updating an interactive
       httpMethod = 'PUT';
-      url = '/interactives/' + interactiveRemote.id;
+      url = appPath + '/interactives/' + interactiveRemote.id;
     }
     // create an interactive to POST/PUT
     // merge the, possibly updated, interactive with the interactive last
@@ -751,10 +758,17 @@ AUTHORING = false;
       url: url,
       data: JSON.stringify(interactiveJSON),
       success: function(results) {
-        if (typeof results === 'string') results = JSON.parse(results);
+        if (typeof results === 'string'){
+          results = JSON.parse(results);
+        }
         interactiveRemote = results;
         interactive = _.omit(interactiveRemote, interactiveRemoteKeys);
 
+        // redirect to the new interactive
+        if (httpMethod == 'POST') {
+          location.hash = "#" + interactiveRemote.path;
+          return;
+        }
 
         if(isFullPage()) {
           controller.loadInteractive(interactive, '#interactive-container');
@@ -792,7 +806,7 @@ AUTHORING = false;
 
     jQuery.ajax({
       type: 'PUT',
-      url: '/models/md2ds/' + modelRemote.id,
+      url: appPath + '/models/md2ds/' + modelRemote.id,
       data: JSON.stringify(modelJSON),
       success: function(results) {
         if (typeof results === 'string') results = JSON.parse(results);
@@ -932,8 +946,8 @@ AUTHORING = false;
       // reset index if current Interactive not in select list
       if (index === -1) index = 1;
       if (index > 0) {
-        $selection.removeAttr('selected');
-        $($options[index-1]).attr('selected', 'selected');
+        $selection.prop('selected', false);
+        $($options[index-1]).prop('selected', true);
         selectInteractiveHandler();
       } else {
         $previousInteractive.addClass("disabled");
@@ -946,8 +960,8 @@ AUTHORING = false;
           $selection = $options.filter(":selected"),
           index = $options.index($options.filter(":selected"));
       if (index+1 < $options.length) {
-        $selection.removeAttr('selected');
-        $($options[index+1]).attr('selected', 'selected');
+        $selection.prop('selected', false);
+        $($options[index+1]).prop('selected', true);
         selectInteractiveHandler();
       } else {
         this.addClass("disabled");
@@ -1413,7 +1427,7 @@ AUTHORING = false;
     // private functions
     function renderModelDatatable(reset) {
       var i,
-          nodes = model.get_atoms(),
+          nodes = model.getAtoms(),
           atoms = [],
           $thead =  $('#model-datatable-results>thead'),
           $tbody =  $('#model-datatable-results>tbody'),
@@ -1433,7 +1447,7 @@ AUTHORING = false;
                         e_formatter, e_formatter, e_formatter,
                         charge_formatter, f2_formatter, f2_formatter, i_formatter, i_formatter, i_formatter];
 
-      atoms.length = nodes.x.length;
+      atoms.length = nodes.length;
       reset = reset || false;
 
       function add_row($el, kind, rownum) {
@@ -1465,7 +1479,7 @@ AUTHORING = false;
           $cells[0].textContent = index;
           for(i = 0; i < column_titles.length; i++) {
             column = column_titles[i];
-            value = nodes[column][index];
+            value = nodes[index][column];
             textValue = formatters[i](value);
             $cells[i+1].textContent = textValue;
           }
@@ -1473,7 +1487,7 @@ AUTHORING = false;
           add_data($row, index);
           for(i = 0; i < column_titles.length; i++) {
             column = column_titles[i];
-            value = nodes[column][index];
+            value = nodes[index][column];
             textValue = formatters[i](value);
             add_data($row, textValue);
           }
@@ -1554,7 +1568,7 @@ AUTHORING = false;
         datarows = add_data_rows(atoms.length);
       }
       if (reset) {
-        datarows = add_data_rows(model.get_num_atoms());
+        datarows = add_data_rows(model.getNumberOfAtoms());
       }
       i = -1; while (++i < atoms.length) {
         add_molecule_data(i);

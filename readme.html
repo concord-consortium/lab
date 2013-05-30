@@ -12,37 +12,44 @@
   </head>
   <body>
     <div id="main">
-      <h1 id="labconcordorghttplabconcordorg"><a href="http://lab.concord.org/">lab.concord.org</a></h1>
+      <h1 id="lab-framework">Lab Framework</h1>
 
 <p>HTML5-based open source scientific models, visualizations, graphing, and probeware from the
 <a href="http://www.concord.org">Concord Consortium</a>.</p>
 
-<dl>
-  <dt><strong>Production site:</strong></dt>
-  <dd><strong><a href="http://lab.concord.org/">lab.concord.org</a></strong></dd>
-  <dt><strong>Technical Readme:</strong></dt>
-  <dd><strong><a href="http://lab.concord.org/readme.html">lab.concord.org/readme.html</a></strong></dd>
-  <dt><strong>Development site:</strong></dt>
-  <dd><strong><a href="http://lab.dev.concord.org/">lab.dev.concord.org</a></strong></dd>
-  <dt><strong>Source code repository:</strong></dt>
-  <dd><strong><a href="https://github.com/concord-consortium/lab">github.com/concord-consortium/lab</a></strong></dd>
-</dl>
+<ul>
+  <li><strong><a href="http://lab.concord.org/">lab.concord.org</a></strong> <em>(production)</em></li>
+  <li><strong><a href="http://lab.dev.concord.org/">lab.dev.concord.org</a></strong> <em>(development)</em></li>
+  <li><strong><a href="http://lab.dev.concord.org/readme.html">Developer Readme</a></strong> <em>(working demo links)</em></li>
+  <li><strong><a href="https://github.com/concord-consortium/lab">github.com/concord-consortium/lab</a></strong> <em>(source)</em></li>
+</ul>
 
-<p><em>Note: many of the links in this readme only work properly when this document is served
-from a web-server and do not resolve properly at
+<p><em>Note: some of the demo links in this readme do not resolve properly at
 <a href="https://github.com/concord-consortium/lab">github.com/concord-consortium/lab</a>.
 A live version of the readme is always available here:
-<a href="http://lab.concord.org/readme.html">lab.concord.org/readme.html</a>.</em></p>
+<a href="http://lab.dev.concord.org/readme.html">lab.dev.concord.org/readme.html</a>.</em></p>
 
 <p><strong>Table of Contents</strong></p>
 
 <ul id="markdown-toc">
   <li><a href="#licensing">Licensing</a></li>
-  <li><a href="#examples">Examples</a>    <ul>
-      <li><a href="#molecular-modeling-examples">Molecular Modeling Examples</a></li>
-      <li><a href="#energy2d-examples">Energy2D Examples</a></li>
+  <li><a href="#model-type-examples">Model-type examples</a>    <ul>
+      <li><a href="#md2d-model-type-2d-molecular-modeling">MD2D model-type: 2D molecular modeling</a>        <ul>
+          <li><a href="#md2d-basic-2d-molecular-modeling">MD2D: Basic 2D molecular modeling</a></li>
+          <li><a href="#md2d-using-macroscopic-units-with-the-molecular-modeling-engine">MD2D: Using macroscopic units with the molecular modeling engine</a></li>
+          <li><a href="#md2d-protein-and-dna">MD2D: Protein and DNA</a></li>
+          <li><a href="#md2d-light-and-matter-simple-quantum-dymanics">MD2D: Light and Matter (simple quantum dymanics)</a></li>
+        </ul>
+      </li>
+      <li><a href="#solar-system-model-type">Solar System model-type</a></li>
+      <li><a href="#signal-generator-model-type">Signal generator model-type</a></li>
+      <li><a href="#probeware-sensor-model-type">Probeware (sensor) model-type</a></li>
+    </ul>
+  </li>
+  <li><a href="#additional-examples">Additional examples</a>    <ul>
       <li><a href="#graphing-examples">Graphing examples</a></li>
-      <li><a href="#probeware-examples">Probeware Examples</a></li>
+      <li><a href="#probeware">Probeware</a></li>
+      <li><a href="#energy2d-thermal-simulation">Energy2D: thermal simulation</a></li>
     </ul>
   </li>
   <li><a href="#distribution-of-project-and-examples">Distribution of Project and Examples</a></li>
@@ -50,7 +57,6 @@ A live version of the readme is always available here:
       <li><a href="#prerequisites">Prerequisites:</a>        <ul>
           <li><a href="#rvm-ruby-19-and-the-rubygem-bundler">RVM, Ruby 1.9 and the RubyGem bundler</a></li>
           <li><a href="#nodejs-and-npm-the-node-package-manager">nodejs and npm, the Node Package Manager</a></li>
-          <li><a href="#couchdb">CouchDB</a></li>
           <li><a href="#java">Java</a>            <ul>
               <li><a href="#customize-maven-mirror">Customize Maven mirror</a></li>
             </ul>
@@ -65,9 +71,8 @@ A live version of the readme is always available here:
       <li><a href="#use-git-to-create-a-local-clone-of-the-lab-repository">Use git to create a local clone of the Lab repository.</a></li>
       <li><a href="#setup-the-local-lab-repository-for-development">Setup the local Lab repository for development</a>        <ul>
           <li><a href="#automatic-build-processing-using-guard">Automatic build processing using Guard</a></li>
-          <li><a href="#setup-the-rails-lab-server-for-development">Setup the Rails Lab server for development</a>            <ul>
-              <li><a href="#starting-the-rails-lab-server">Starting the Rails Lab server</a></li>
-              <li><a href="#entering-the-rails-lab-server-console">Entering the Rails Lab server console</a></li>
+          <li><a href="#startup-the-rack-based-lab-server-for-local-development">Startup the Rack-based Lab server for local development</a>            <ul>
+              <li><a href="#jnlpapp-rack-application-service">JnlpApp Rack Application Service</a></li>
             </ul>
           </li>
           <li><a href="#building-the-classic-java-applications-and-the-sensor-java-applet">Building the Classic Java applications and the Sensor Java Applet</a>            <ul>
@@ -79,7 +84,6 @@ A live version of the readme is always available here:
           <li><a href="#java-builddeploy-integration">Java build/deploy integration</a>            <ul>
               <li><a href="#java-projects-build-strategies">Java Projects Build Strategies</a></li>
               <li><a href="#working-with-the-sensor-projects-source">Working with the Sensor projects source</a></li>
-              <li><a href="#jnlpapp-rack-application-service">JnlpApp Rack Application Service</a></li>
             </ul>
           </li>
         </ul>
@@ -97,33 +101,31 @@ A live version of the readme is always available here:
       <li><a href="#setting-up-travis-ci-integration">Setting up travis-ci integration</a></li>
     </ul>
   </li>
-  <li><a href="#measuring-performance">Measuring Performance</a>    <ul>
-      <li><a href="#installing-and-using-performancerb">Installing and using <code>performance.rb</code></a></li>
-    </ul>
-  </li>
   <li><a href="#repository-structure">Repository structure</a>    <ul>
-      <li><a href="#summary-of-directories-in-src">Summary of Directories in <code>src/</code></a>        <ul>
-          <li><a href="#srclab"><code>src/lab</code></a></li>
-          <li><a href="#srcexamples-srcdoc-and-srcexperiments"><code>src/examples/</code>, <code>src/doc/</code>, and <code>src/experiments/</code></a></li>
-          <li><a href="#srcvendor"><code>src/vendor</code></a></li>
-          <li><a href="#srcresources"><code>src/resources</code></a></li>
-          <li><a href="#srcsass"><code>src/sass</code></a></li>
-          <li><a href="#srchelpers"><code>src/helpers</code></a></li>
-          <li><a href="#srcjnlp"><code>src/jnlp</code></a></li>
-        </ul>
-      </li>
-      <li><a href="#lab-modules-srclab">Lab Modules: <code>src/lab</code></a></li>
-      <li><a href="#lab-modeling-engines-md2d-and-energy2d">Lab Modeling Engines: <code>md2d</code> and <code>energy2d</code></a>        <ul>
-          <li><a href="#d-molecular-dynamics-md2dhttpsgithubcomconcord-consortiumlabtreemastersrclabmd2d">2D Molecular Dynamics: <a href="https://github.com/concord-consortium/lab/tree/master/src/lab/md2d"><code>md2d</code></a></a>            <ul>
-              <li><a href="#md2d-headless-mode">MD2D Headless Mode</a>                <ul>
+      <li><a href="#vendor">vendor/</a></li>
+      <li><a href="#src">src/</a>        <ul>
+          <li><a href="#srclab">src/lab/</a>            <ul>
+              <li><a href="#srclabmd2d">src/lab/md2d</a>                <ul>
+                  <li><a href="#md2d-headless-mode">MD2D Headless Mode</a></li>
                   <li><a href="#node-binrun-md2dhttpsgithubcomconcord-consortiumlabblobmasternode-binrun-md2d"><a href="https://github.com/concord-consortium/lab/blob/master/node-bin/run-md2d"><code>node-bin/run-md2d</code></a></a></li>
                   <li><a href="#writing-new-scripts">Writing new scripts</a></li>
+                  <li><a href="#md2d-simulation-stepping">MD2D simulation stepping</a></li>
                 </ul>
               </li>
-              <li><a href="#md2d-simulation-stepping">MD2D simulation stepping</a></li>
+              <li><a href="#srclabsolar-system">src/lab/solar-system/</a></li>
+              <li><a href="#srclabsignal-generator">src/lab/signal-generator/</a></li>
+              <li><a href="#srclabsensor">src/lab/sensor/</a></li>
+              <li><a href="#srclabgrapher">src/lab/grapher/</a></li>
+              <li><a href="#srclabcommon">src/lab/common/</a></li>
+              <li><a href="#srclabimport-export">src/lab/import-export/</a></li>
+              <li><a href="#srclabenergy2d">src/lab/energy2d/</a></li>
             </ul>
           </li>
-          <li><a href="#d-thermal-energy-energy2dhttpsgithubcomconcord-consortiumlabtreemastersrclabenergy2d">2D Thermal Energy: <a href="https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d"><code>energy2d</code></a></a></li>
+          <li><a href="#srcexamples-srcdoc-and-srcexperiments">src/examples/, src/doc/, and src/experiments/</a></li>
+          <li><a href="#srcresources">src/resources</a></li>
+          <li><a href="#srcjnlp">src/jnlp</a></li>
+          <li><a href="#srcsass">src/sass</a></li>
+          <li><a href="#srchelpers">src/helpers</a></li>
         </ul>
       </li>
       <li><a href="#javascript-dependency-management-and-build-process---requrejs">JavaScript Dependency Management and Build Process - RequreJS</a>        <ul>
@@ -135,7 +137,7 @@ A live version of the readme is always available here:
           <li><a href="#coffeescript-files-support">CoffeeScript Files Support</a></li>
         </ul>
       </li>
-      <li><a href="#generated-examples-serverpublicexamples">Generated Examples: <code>server/public/examples/</code></a></li>
+      <li><a href="#generated-examples-publicexamples">Generated Examples: <code>public/examples/</code></a></li>
       <li><a href="#html-and-css-generation">HTML and CSS Generation</a></li>
     </ul>
   </li>
@@ -159,7 +161,7 @@ A live version of the readme is always available here:
   </li>
   <li><a href="#deployment">Deployment</a>    <ul>
       <li><a href="#deploying-static-content-to-a-github-gh-pages-branch">Deploying static content to a Github gh-pages branch</a>        <ul>
-          <li><a href="#making-the-serverpublic-folder-track-the-gh-pages-branch">Making the <code>server/public/</code> folder track the gh-pages branch</a></li>
+          <li><a href="#making-the-public-folder-track-the-gh-pages-branch">Making the <code>public/</code> folder track the gh-pages branch</a></li>
           <li><a href="#pushing-changes-to-gh-pages-branch">Pushing changes to gh-pages branch</a></li>
         </ul>
       </li>
@@ -241,33 +243,131 @@ our copyright applies to all resources <strong>except</strong> the files in the
 <code>vendor/</code> directory. The files in the <code>vendor/</code> directory are from
 third-parties and are distributed under either BSD, MIT, or Apache 2.0 licenses.</p>
 
-<h2 id="examples">Examples</h2>
+<h2 id="model-type-examples">Model-type examples</h2>
 
-<h3 id="molecular-modeling-examples">Molecular Modeling Examples</h3>
+<p>The Lab framework supports embedding multiple model-types into the Lab Interactive form.
+Each of the examples below also has an <strong>embeddable</strong> form that fluidly scales to the browser
+window it is rendered in and is designed to be easily embedded using an iframe.</p>
+
+<p><em>Note: these demo links do not resolve properly at
+<a href="https://github.com/concord-consortium/lab">github.com/concord-consortium/lab</a>.
+A live version of the readme where these links work is always available here:
+<a href="http://lab.dev.concord.org/readme.html">lab.dev.concord.org/readme.html</a>.</em></p>
+
+<h3 id="md2d-model-type-2d-molecular-modeling">MD2D model-type: 2D molecular modeling</h3>
+
+<h4 id="md2d-basic-2d-molecular-modeling">MD2D: Basic 2D molecular modeling</h4>
+
+<ol>
+  <li><a href="interactives.html#interactives/samples/1-oil-and-water-shake.json">Oil and water</a>, <em>(<a href="embeddable.html#interactives/samples/1-oil-and-water-shake.json">embeddable</a>)</em></li>
+  <li><a href="interactives.html#interactives/samples/3-100-atoms.json">Charged and neutral atoms</a>, <em>(<a href="embeddable.html#interactives/samples/3-100-atoms.json">embeddable</a>)</em></li>
+  <li><a href="interactives.html#interactives/sam/gas-laws/3-volume-pressure-relationship.json">The volume-pressure relationship</a>, <em>(<a href="embeddable.html#interactives/sam/gas-laws/3-volume-pressure-relationship.json">embeddable</a>)</em></li>
+  <li><a href="interactives.html#interactives/sam/gas-laws/4-temperature-volume-relationship.json">The temperature-volume relationship</a>, <em>(<a href="embeddable.html#interactives/sam/gas-laws/4-temperature-volume-relationship.json">embeddable</a>)</em></li>
+  <li><a href="interactives.html#interactives/sam/phase-change/6-phase-changes-caused-by-energy-input-two-bar-graphs.json">Phase changes with two bar graphs</a>, <em>(<a href="embeddable.html#interactives/sam/phase-change/6-phase-changes-caused-by-energy-input-two-bar-graphs.json">embeddable</a>)</em></li>
+  <li><a href="interactives.html#interactives/sam/diffusion/2-temperature.json">Diffusion and temperature</a>, <em>(<a href="embeddable.html#interactives/sam/diffusion/2-temperature.json">embeddable</a>)</em></li>
+  <li><a href="interactives.html#interactives/visual/recycling/2-metalforces.json">Force and deformation in a metal-like material</a>, <em>(<a href="embeddable.html#interactives/visual/recycling/2-metalforces.json">embeddable</a>)</em></li>
+  <li><a href="interactives.html#interactives/visual/recycling/1-ceramicforces.json">Force and deformation in a ceramic-like material</a>, <em>(<a href="embeddable.html#interactives/visual/recycling/1-ceramicforces.json">embeddable</a>)</em></li>
+  <li><a href="interactives.html#interactives/visual/recycling/3-plasticforces.json">Force and deformation in a plastic-like material</a>, <em>(<a href="embeddable.html#interactives/visual/recycling/3-plasticforces.json">embeddable</a>)</em></li>
+</ol>
+
+<h4 id="md2d-using-macroscopic-units-with-the-molecular-modeling-engine">MD2D: Using macroscopic units with the molecular modeling engine</h4>
+
+<p>Normally MD2D uses units of femtoseconds and nanometers however it is also possible
+to use the same engine with MKS macroscopic units. In the models listed below modeling
+Coulomb forces is turned off and the Lennard-Jones force modeling has no effect.</p>
+
+<ol>
+  <li><a href="interactives.html#interactives/inquiry-space/pendulum/1-pendulum.json">Pendulum</a>, <em>(<a href="embeddable.html#interactives/inquiry-space/pendulum/1-pendulum.json">embeddable</a>)</em></li>
+  <li><a href="interactives.html#interactives/inquiry-space/pendulum/2-spring.json">Spring</a>, <em>(<a href="embeddable.html#interactives/inquiry-space/pendulum/2-spring.json">embeddable</a>)</em></li>
+  <li><a href="interactives.html#interactives/inquiry-space/pendulum/3-springy-pendulum.json">Springy pendulum</a>, <em>(<a href="embeddable.html#interactives/inquiry-space/pendulum/3-springy-pendulum.json">embeddable</a>)</em></li>
+</ol>
+
+<h4 id="md2d-protein-and-dna">MD2D: Protein and DNA</h4>
+
+<p><em>Currently in early development.</em></p>
+
+<ol>
+  <li><a href="interactives.html#interactives/samples/5-amino-acids.json">Protein folding</a>, <em>(<a href="embeddable.html#interactives/samples/5-amino-acids.json">embeddable</a>)</em></li>
+  <li><a href="interactives.html#interactives/sam/DNA-to-proteins/3-modeling-translation.json">DNA transcription and translation folding</a>, <em>(<a href="embeddable.html#interactives/sam/DNA-to-proteins/3-modeling-translation.json">embeddable</a>)</em></li>
+</ol>
+
+<h4 id="md2d-light-and-matter-simple-quantum-dymanics">MD2D: Light and Matter (simple quantum dymanics)</h4>
+
+<p>A plugin for MD2D.</p>
+
+<p><em>Currently in early development.</em></p>
+
+<ol>
+  <li><a href="interactives.html#interactives/conversion-tests/quantum-collision.json">Quantum collision</a>, <em>(<a href="embeddable.html#interactives/conversion-tests/quantum-collision.json">embeddable</a>)</em></li>
+  <li><a href="interactives.html#interactives/conversion-tests/quantum-emission.json">Quantum emission</a>, <em>(<a href="embeddable.html#interactives/conversion-tests/quantum-emission.json">embeddable</a>)</em></li>
+</ol>
+
+<h3 id="solar-system-model-type">Solar System model-type</h3>
+
+<p><em>Currently in early development.</em></p>
 
 <ul>
-  <li><a href="interactives.html#interactives/samples/1-oil-and-water-shake.json">Oil and Water</a>, (<a href="embeddable.html#interactives/samples/1-oil-and-water-shake.json">embeddable link</a>)</li>
-  <li><a href="interactives.html#interactives/samples/2-simple-gas.json">A Simple Gas</a>, (<a href="embeddable.html#interactives/samples/2-simple-gas.json">embeddable link</a>)</li>
-  <li><a href="interactives.html#interactives/samples/3-100-atoms.json">Explore 100 Atoms</a>, (<a href="embeddable.html#interactives/samples/3-100-atoms.json">embeddable link</a>)</li>
+  <li><a href="interactives.html#interactives/solar-system/earth.json">Earth in orbit</a>, <em>(<a href="embeddable.html#interactives/solar-system/earth.json">embeddable</a>)</em></li>
 </ul>
 
-<h3 id="energy2d-examples">Energy2D Examples</h3>
+<h3 id="signal-generator-model-type">Signal generator model-type</h3>
+
+<p><em>Currently in early development.</em></p>
+
+<p>The signal-generator is a very simple model-type that was developed as a scaffold for building a sensor model-type.</p>
 
 <ul>
-  <li><a href="examples/energy2d-model/energy2d-model.html">Energy2D Models</a></li>
+  <li><a href="interactives.html#interactives/signal-generator/signal-generator.json">Signal generator</a>, <em>(<a href="embeddable.html#interactives/signal-generator/signal-generator.json">embeddable</a>)</em></li>
 </ul>
+
+<h3 id="probeware-sensor-model-type">Probeware (sensor) model-type</h3>
+
+<p><em>Currently in early development.</em></p>
+
+<p>NOTE: this interactive uses an invisible Java applet to connect to a
+<a href="http://www.vernier.com/products/sensors/motion-detectors/go-mot/">Vernier GoMotion</a>
+sonar ranger.</p>
+
+<ul>
+  <li><a href="interactives.html#interactives/sensor/sensor.json">Sensor: Vernier GoMotion</a>, <em>(<a href="embeddable.html#interactives/sensor/sensor.json">embeddable</a>)</em></li>
+</ul>
+
+<h2 id="additional-examples">Additional examples</h2>
 
 <h3 id="graphing-examples">Graphing examples</h3>
 
+<ol>
+  <li><a href="examples/grapher/grapher.html">Line graphs</a></li>
+  <li><a href="examples/grapher-bar-graph/bar-graph.html">Bar graphs</a></li>
+</ol>
+
+<p><strong>Experimental</strong></p>
+
 <ul>
-  <li><a href="examples/grapher/grapher.html">Graphing Samples</a></li>
-  <li><a href="experiments/dsp/dsp.html">Digital Signal Processing Samples</a></li>
+  <li><a href="experiments/dsp/dsp.html">Digital signal processing graphs</a></li>
 </ul>
 
-<h3 id="probeware-examples">Probeware Examples</h3>
+<h3 id="probeware">Probeware</h3>
+
+<p>NOTE: this interactive uses an invisible Java applet to connect to a number of different
+commercial probeware inerfaces from <a href="http://www.vernier.com/">Vernier</a>.</p>
+
+<ol>
+  <li><a href="http://www.vernier.com/products/interfaces/go-link/">Vernier GoLink</a></li>
+  <li><a href="http://www.vernier.com/products/sensors/temperature-sensors/go-temp/">Vernier GoTemp</a></li>
+  <li><a href="http://www.vernier.com/products/sensors/motion-detectors/go-mot/">Vernier GoMotion</a></li>
+  <li><a href="http://www.vernier.com/products/interfaces/lq-mini/">Vernier LabQuest</a></li>
+</ol>
+
+<p><a href="experiments/goio-sensor-grapher/index.html">Vernier Sensor Grapher</a> <em>(only works on web-server)</em></p>
+
+<h3 id="energy2d-thermal-simulation">Energy2D: thermal simulation</h3>
+
+<p>NOTE: The Energy2D thermal simulation models are not yet integrated into the Lab Interactive form.</p>
 
 <ul>
-  <li><a href="experiments/goio-sensor-grapher/index.html">Vernier GoIO Sensor Grapher</a> <em>(only works on web-server)</em></li>
+  <li><a href="examples/energy2d-model/energy2d-model.html">Energy2D Models</a></li>
+  <li><a href="examples/energy2d-gpu-model/energy2d-model.html#interactives/vortex-street100.json">Energy2D Models (WebGL physics solvers)</a></li>
 </ul>
 
 <h2 id="distribution-of-project-and-examples">Distribution of Project and Examples</h2>
@@ -296,16 +396,17 @@ Origin null is not allowed by Access-Control-Allow-Origin.
 <h2 id="setup-development">Setup Development</h2>
 
 <p>Lab uses a number of RubyGems and node modules to manage development. Lab’s test framework
-uses <a href="http://vowsjs.org">Vows</a>, which depends on <a href="http://nodejs.org/">nodejs</a> and
-<a href="http://npmjs.org/">npm</a> (Node Package Manager). In addition JavaScript minification is
-done using <a href="https://github.com/mishoo/UglifyJS">UglifyJS</a>. JavaScript dependency management
-is handled by <a href="http://requirejs.org/">RequireJS</a>.</p>
+uses <a href="http://vowsjs.org">Vows</a> amd <a href="http://visionmedia.github.io/mocha/">Mocha</a> which both depend
+on <a href="http://nodejs.org/">nodejs</a> and <a href="http://npmjs.org/">npm</a> the Node Package Manager.</p>
+
+<p>In addition JavaScript minification is done using <a href="https://github.com/mishoo/UglifyJS">UglifyJS</a>.
+JavaScript dependency management is handled by <a href="http://requirejs.org/">RequireJS</a>.</p>
 
 <h3 id="prerequisites">Prerequisites:</h3>
 
 <h4 id="rvm-ruby-19-and-the-rubygem-bundler">RVM, Ruby 1.9 and the RubyGem bundler</h4>
 
-<p>We use <a href="https://rvm.io/">RVM</a> to mange our development dependency on <a href="http://www.ruby-lang.org/en/">Ruby 1.9.3</a>
+<p>We normally use <a href="https://rvm.io/">RVM</a> to mange our development dependency on <a href="http://www.ruby-lang.org/en/">Ruby 1.9.3</a>
 and the specific Ruby Gems needed for building Lab and running the Lab server.</p>
 
 <ol>
@@ -330,15 +431,15 @@ is already installed:</p>
 
 *** LOCAL GEMS ***
 
-bundler (1.2.4)
+bundler (1.3.5)
 </code></pre>
 
 <p>If Bundler is not installed install it now into the global gemset for ruby-1.9.3-p392</p>
 
 <pre><code>$ rvm gemset use global
 $ gem install bundler
-Fetching: bundler-1.2.4.gem (100%)
-Successfully installed bundler-1.2.4
+Fetching: bundler-1.3.5.gem (100%)
+Successfully installed bundler-1.3.5
 1 gem installed
 </code></pre>
 
@@ -359,28 +460,6 @@ v0.10.4
 $ npm -v
 1.2.18
 </code></pre>
-
-<h4 id="couchdb">CouchDB</h4>
-
-<p>Install the nosql document-oriented <a href="http://couchdb.apache.org/">CouchDB</a> database server to support persistence for the Lab server.</p>
-
-<p>Installation options:</p>
-
-<p><strong>MacOS X</strong></p>
-
-<p>Most of the developers on Lab use <a href="http://mxcl.github.com/homebrew/">Homebrew</a> a package manager for Mac OS X.</p>
-
-<ol>
-  <li><a href="https://github.com/mxcl/homebrew/wiki/installation">Install Homebrew</a></li>
-  <li>
-    <p>Install CouchDB using homebrew</p>
-
-    <pre><code> brew doctor     # fix issues if needed
- brew update     # if you haven't run it in the last 24 hours
- brew install couchdb
-</code></pre>
-  </li>
-</ol>
 
 <h4 id="java">Java</h4>
 
@@ -467,7 +546,7 @@ To do this I’ve had to reinstall ruby 1.9.3-p194.</p>
 
 *** LOCAL GEMS ***
 
-bundler (1.1.4)
+bundler (1.3.5)
 </code></pre>
 
 <p>If it doesn’t return anything install Bundler:</p>
@@ -482,8 +561,6 @@ development dependencies.</p>
 
 <p><a href="http://npmjs.org/">npm</a>, the Node Package Manager has been included as part of <a href="http://nodejs.org/">nodejs</a>
 since version 0.6.3.</p>
-
-<p>The nosql document-oriented <a href="http://couchdb.apache.org/">CouchDB</a> database server is installed to support persistence for the Lab server.</p>
 
 <p>To install the latest stable versions of node and couchdb you first need to add these PPA repositories:</p>
 
@@ -500,18 +577,9 @@ $ sudo apt-add-repository ppa:longsleep/couchdb
 $ sudo apt-get update
 </code></pre>
 
-<p>Now install node and couchdb:</p>
+<p>Now install node and npm:</p>
 
-<pre><code>$ sudo apt-get install couchdb nodejs npm
-</code></pre>
-
-<p>Currently development is being done with these versions of node and npm:</p>
-
-<pre><code>$ node -v
-v0.8.2
-
-$ npm -v
-1.1.37
+<pre><code>$ sudo apt-get install nodejs npm
 </code></pre>
 
 <p>Neither the Java run time environment nor the Java development kit are installed by
@@ -529,7 +597,7 @@ default, both of which are used for the java projects.</p>
 configuration samples:</p>
 
 <pre><code>cp config/config.sample.yml config/config.yml
-cp server/config/couchdb.sample.yml server/config/couchdb.yml
+cp config/couchdb.sample.yml config/couchdb.yml
 </code></pre>
 
 <h4 id="known-problems-with-linux-during-lab-build-process">Known problems with Linux during Lab build process</h4>
@@ -618,14 +686,14 @@ are managed by <a href="http://npmjs.org/">npm</a>:</p>
 the specific versions of the RubyGems installed for development.</p>
   </li>
   <li>
-    <p>Generates the <code>server/public</code> directory:</p>
+    <p>Generates the <code>public</code> directory:</p>
   </li>
   <li>
-    <p>Generates the Java resources in the <code>server/public/jnlp</code> directory:</p>
+    <p>Generates the Java resources in the <code>public/jnlp</code> directory:</p>
   </li>
 </ol>
 
-<p>You should now be able to open the file: <code>server/public/index.html</code> in a browser and run some of the examples.</p>
+<p>You should now be able to open the file: <code>public/index.html</code> in a browser and run some of the examples.</p>
 
 <h4 id="automatic-build-processing-using-guard">Automatic build processing using Guard</h4>
 
@@ -635,54 +703,81 @@ changed automatically generate the JavaScript Lab modules, the examples, and run
 <pre><code>bin/guard
 </code></pre>
 
-<p>Now any change you make in <code>src/examples/</code> will generate the corresponding content in <code>server/public/examples/</code>.
+<p>Now any change you make in <code>src/examples/</code> will generate the corresponding content in <code>public/examples/</code>.
 In addition changes in <code>src/lab/</code> generate the associated Lab modules in <code>lab/</code> and copy these modules
-to <code>server/public/lab/</code>. In addition any change in either the <code>src/lab/</code> or <code>test/</code>directories will run the
+to <code>public/lab/</code>. In addition any change in either the <code>src/lab/</code> or <code>test/</code>directories will run the
 tests and display the results in the console window where <code>bin/guard</code>
 is running.</p>
 
-<h4 id="setup-the-rails-lab-server-for-development">Setup the Rails Lab server for development</h4>
+<h4 id="startup-the-rack-based-lab-server-for-local-development">Startup the Rack-based Lab server for local development</h4>
 
-<p>The Lab server is a very simple Rails 3.2 application that uses CouchDB for persistence.</p>
+<p>The Lab server is a simple Rack application.</p>
 
-<p>Open a shell and change to the <code>lab/server</code> directory. The first time you <code>cd</code> into the <code>lab/server</code> directory RVM will
-ask you if this <em>new</em> <code>.rvmrc</code> file should be trusted.</p>
-
-<p>The <code>.rvmrc</code> specifies that this project dependeds on Ruby 1.9.3-p194-server and all the required Ruby Gems
-will be installed in the RVM gemset named <code>ruby-1.9.3-p194@lab-server</code>.</p>
-
-<pre><code>cd lab/server
-bundle install
+<pre><code>bin/rackup config.ru
 </code></pre>
 
-<p>Create a couchdb configuration by copying the sample:</p>
+<p>Now open http://localhost:9292/index.html</p>
 
-<pre><code>cp config/couchdb.sample.yml config/couchdb.yml
+<h5 id="jnlpapp-rack-application-service">JnlpApp Rack Application Service</h5>
+
+<p>The Rack server also uses the <a href="https://github.com/concord-consortium/lab/tree/master/lib/rack/jnlp.rb">Rack::Jnlp</a> for
+servicing requests for Java Web Start JNLPs and versioned jar resources.</p>
+
+<p>Normally versions for jars can only be specified by using a jnlp form. A jnlp form of specification can be used for webstart and also for applets.</p>
+
+<p>The older form of applet invocation that uses the &lt;applet&gt; html element normally can’t specify version numbers for jar dependencies, however the Jnlp::Rack application included with Lab does allow version specification.</p>
+
+<p>Example: right now on my local system there are two different versions of the vernier-goio-macosx-x86_64-nar.jar:</p>
+
+<pre><code>$ ls -l public/jnlp/org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar*
+  98396 May 28 01:55 ../org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar__V1.5.0-20101012.203835-2.jar
+  99103 May 28 16:40 ../org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar__V1.5.0-20120528.164030-3.jar
 </code></pre>
 
-<p>If you have setup your local CouchDB server to require admin login for creating new databases
-you will need to enter user and password for a valid admin user.</p>
+<p>Note the different lengths for the two different versions.</p>
 
-<h5 id="starting-the-rails-lab-server">Starting the Rails Lab server</h5>
+<p>If a request comes in from Java for vernier-goio-macosx-x86_64-nar.jar the most recent version is returned:</p>
 
-<pre><code>cd lab/server
-thin start
+<pre><code>$ curl --user-agent java -I http://localhost:9292/jnlp/org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar.jar
+HTTP/1.1 200 OK
+Last-Modified: Mon, 28 May 2012 20:40:34 GMT
+Content-Type: application/java-archive
+Content-Length: 99103
 </code></pre>
 
-<p>You can now open your local Lab application at this url:</p>
+<p>However the version number can be added as a http query parameter.</p>
 
-<pre><code>http://localhost:3000/
+<pre><code>$ curl --user-agent java -I http://localhost:9292/jnlp/org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar.jar?version-id=1.5.0-20101012.203835-2
+HTTP/1.1 200 OK
+Last-Modified: Mon, 28 May 2012 05:55:05 GMT
+Content-Type: application/java-archive
+Content-Length: 98396
+x-java-jnlp-version-id: 1.5.0-20101012.203835-2
 </code></pre>
 
-<p>You can use a pre-configured route to open the local CouchDb admin web interface:</p>
+<p>Note that in the response the x-java-jnlp-version-id HTTP header is added with teh actual version.</p>
 
-<pre><code>http://localhost:3000/_utils
+<p>This feature of specifying versioned jar resources should NOT be used for production because Java won’t properly cache the jar locally. Eveytime a request is made for a jar with a version-id query parameter the complete jar will be downloaded again.</p>
+
+<p>When a version is specified in a jnlp form for an applet the jar WILL be cached properly.</p>
+
+<p><strong>Development Note</strong>: If the applets no longer operate properly it may be that the server is no longer operating properly
+and needs to be restarted. The Java console log for the applet may show requests made for jars that are not fulfilled.</p>
+
+<p>If a request like the following produces an error:</p>
+
+<pre><code>$ curl --user-agent java -I http://localhost:9292/jnlp/org/concord/sensor-native/sensor-native.jar
+HTTP/1.1 500 Internal Server Error
 </code></pre>
 
-<h5 id="entering-the-rails-lab-server-console">Entering the Rails Lab server console</h5>
+<p>Restart the server and the request should now succeed:</p>
 
-<pre><code>cd lab/server
-rails console
+<pre><code>$ curl --user-agent java -I http://localhost:9292/jnlp/org/concord/sensor-native/sensor-native.jar
+HTTP/1.1 200 OK
+Last-Modified: Thu, 07 Jun 2012 16:44:28 GMT
+Content-Type: application/java-archive
+Content-Length: 34632
+content-encoding: pack200-gzip
 </code></pre>
 
 <h4 id="building-the-classic-java-applications-and-the-sensor-java-applet">Building the Classic Java applications and the Sensor Java Applet</h4>
@@ -783,7 +878,7 @@ Enter keystore password:
 <ol>
   <li>Creates a <code>java/</code> top-level directory and checks out the required Java projects into this directory.</li>
   <li>Builds each of the projects</li>
-  <li>Copies the jar resources into the <code>server/public/jnlp/</code> directory packing and signing them as needed.</li>
+  <li>Copies the jar resources into the <code>public/jnlp/</code> directory packing and signing them as needed.</li>
 </ol>
 
 <p>Later if you have made updates in the Java source code or need to re-build and deploy for any reason you
@@ -920,7 +1015,7 @@ the <code>master</code> branch of the git mirror here: <a href="https://github.c
 <pre><code>script/build-and-deploy-jars.rb sensor sensor-applets
 </code></pre>
 
-<p>The Jar resources deployed to the <code>server/public/jnlp</code> directory include a timestamp in the deployed artifact so unless you specifically
+<p>The Jar resources deployed to the <code>public/jnlp</code> directory include a timestamp in the deployed artifact so unless you specifically
 request an earlier version you will always get the latest version deployed.</p>
 
 <h5 id="working-with-the-sensor-projects-source">Working with the Sensor projects source</h5>
@@ -977,69 +1072,6 @@ compiled from source. If you’re interested in building them from source:</p>
     <p>Repeat 2 - 4 for any other projects you’d like to build from source</p>
   </li>
 </ol>
-
-<h5 id="jnlpapp-rack-application-service">JnlpApp Rack Application Service</h5>
-
-<p>The Rails server has a Rack application <code>JnlpApp</code> mounted at the route <code>/jnlp</code> for servicing requests for Java jar resources.</p>
-
-<p>The <code>JnlpApp</code> Rack application uses the <code>Rack::Jnlp</code> middleware defined here <code>server/lib/rack/jnlp.rb</code>.</p>
-
-<p>Normally versions for jars can only be specified by using a jnlp form. A jnlp form of specification can be used for webstart and also for applets.</p>
-
-<p>The older form of applet invocation that uses the &lt;applet&gt; html element normally can’t specify version numbers for jar dependencies, however the Jnlp::Rack application included with Lab does allow version specification.</p>
-
-<p>Example: right now on my local system there are two different versions of the vernier-goio-macosx-x86_64-nar.jar:</p>
-
-<pre><code>$ ls -l server/public/jnlp/org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar*
-  98396 May 28 01:55 ../org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar__V1.5.0-20101012.203835-2.jar
-  99103 May 28 16:40 ../org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar__V1.5.0-20120528.164030-3.jar
-</code></pre>
-
-<p>Note the different lengths for the two different versions.</p>
-
-<p>If a request comes in from Java for vernier-goio-macosx-x86_64-nar.jar the most recent version is returned:</p>
-
-<pre><code>$ curl --user-agent java -I http://localhost:3000/jnlp/org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar.jar
-HTTP/1.1 200 OK
-Last-Modified: Mon, 28 May 2012 20:40:34 GMT
-Content-Type: application/java-archive
-Content-Length: 99103
-</code></pre>
-
-<p>However the version number can be added as a http query parameter.</p>
-
-<pre><code>$ curl --user-agent java -I http://localhost:3000/jnlp/org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar.jar?version-id=1.5.0-20101012.203835-2
-HTTP/1.1 200 OK
-Last-Modified: Mon, 28 May 2012 05:55:05 GMT
-Content-Type: application/java-archive
-Content-Length: 98396
-x-java-jnlp-version-id: 1.5.0-20101012.203835-2
-</code></pre>
-
-<p>Note that in the response the x-java-jnlp-version-id HTTP header is added with teh actual version.</p>
-
-<p>This feature of specifying versioned jar resources should NOT be used for production because Java won’t properly cache the jar locally. Eveytime a request is made for a jar with a version-id query parameter the complete jar will be downloaded again.</p>
-
-<p>When a version is specified in a jnlp form for an applet the jar WILL be cached properly.</p>
-
-<p><strong>Development Note</strong>: If the applets no longer operate properly it may be that the server is no longer operating properly
-and needs to be restarted. The Java console log for the applet may show requests made for jars that are not fulfilled.</p>
-
-<p>If a request like the following produces an error:</p>
-
-<pre><code>$ curl --user-agent java -I http://localhost:3000/jnlp/org/concord/sensor-native/sensor-native.jar
-HTTP/1.1 500 Internal Server Error
-</code></pre>
-
-<p>Restart the server and the request should now succeed:</p>
-
-<pre><code>$ curl --user-agent java -I http://localhost:3000/jnlp/org/concord/sensor-native/sensor-native.jar
-HTTP/1.1 200 OK
-Last-Modified: Thu, 07 Jun 2012 16:44:28 GMT
-Content-Type: application/java-archive
-Content-Length: 34632
-content-encoding: pack200-gzip
-</code></pre>
 
 <h2 id="project-configuration">Project Configuration</h2>
 
@@ -1192,155 +1224,45 @@ organization instead of one directly under my own account.</p>
   <li><a href="http://about.travis-ci.org/docs/user/gui-and-headless-browsers/">GUI and Headless Browser testing</a></li>
 </ul>
 
-<h2 id="measuring-performance">Measuring Performance</h2>
-
-<p>The <a href="http://lab.dev.concord.org/examples/complex-atoms-model/complex-atoms-model.html">Complex Atoms Model</a>
-includes several features for estimating and measuring performance of the molecular modeler.</p>
-
-<ol>
-  <li>
-    <p>End of <strong>Stats</strong> section displays average number of model steps/s.</p>
-  </li>
-  <li>
-    <p><strong>Run Benchmarks</strong> button stops model and measures time for running the model
-100 steps and also time for running the model and rendering the graphics for 100
-steps. When measuring the speed of the model and graphics together the test is run
-continuously and control is <em>not</em> returned to the browser for repainting the screen.</p>
-  </li>
-  <li>
-    <p>A separate <a href="https://github.com/concord-consortium/lab">lab.performance</a> repository with a
-Ruby script <a href="https://github.com/concord-consortium/lab">performance.rb</a> available which
-uses Selenium Webdriver to automate running the <strong>Run Benchmarks</strong> test 10 times and
-collects , averages, and reports the results.</p>
-  </li>
-</ol>
-
-<h3 id="installing-and-using-performancerb">Installing and using <code>performance.rb</code></h3>
-
-<p>We use a completely separate repository for the performance monitoring tools so the
-same performance mesuring scripts can be used to measure performance over a range of
-commits to the Lab project. This  makes it easier to monitor performance and investigate
-performance regressions.</p>
-
-<p>In your working copy of the Lab project:</p>
-
-<pre><code>git checkout git://github.com/concord-consortium/lab.performance.git
-</code></pre>
-
-<p>Edit paths in the file <code>lab.performance/performance.rb</code> to reference locations for FireFox and Chrome
-on your computer as well as the variable <code>URL_TO_COMPLEX_MODEL</code> for running the
-<a href="http://lab.dev.concord.org/examples/complex-atoms-model/complex-atoms-model.html">Complex Atoms Model</a>
-locally.</p>
-
-<p>Gem prequisites: <a href="http://code.google.com/p/selenium/wiki/RubyBindings">selenium-webdriver</a></p>
-
-<pre><code>gem install selenium-webdriver
-</code></pre>
-
-<p><strong>Measuring performance:</strong></p>
-
-<pre><code>$ ./lab.performance/performance.rb
-
-browser: Chrome: 19.0.1085.0, Intel Mac OS X 10_6_8
-Date: 2012-03-30 08:44
-Molecule number: 50
-Temperature: 5
-
-git commit
-commit 2c3a9328a43964485ed5f661cfb6e6cc6850ce95
-Author: Stephen Bannasch &lt;stephen.bannasch@gmail.com&gt;
-Date:   Fri Mar 30 08:44:05 2012 -0400
-
-    whitespace fixups
-true
-
-average steps                  167.30
-average steps w/graphics       101.63
-</code></pre>
-
 <h2 id="repository-structure">Repository structure</h2>
 
-<h3 id="summary-of-directories-in-src">Summary of Directories in <code>src/</code></h3>
-
-<h4 id="srclab"><code>src/lab</code></h4>
-
-<p>The <strong><code>src/lab</code></strong> directory includes JavaScript source code for the Lab JavaScript modules.
-During the build process individual files are copied into modules which are placed in
-the <strong><code>server/public/lab</code></strong> directory.</p>
-
-<h4 id="srcexamples-srcdoc-and-srcexperiments"><code>src/examples/</code>, <code>src/doc/</code>, and <code>src/experiments/</code></h4>
-
-<p>The <strong><code>src/examples/</code></strong>, <strong><code>src/doc/</code></strong>, and <strong><code>src/experiments/</code></strong> directories contain additional
-resources for generating the html, css, and image resources for the matching target
-folders in <strong><code>server/public</code></strong>.</p>
-
-<p><strong>Note:</strong> remember to make changes you want saved in the <strong><code>src/examples/</code></strong>, <strong><code>src/doc/</code></strong>,
-and <strong><code>src/experiments/</code></strong> and not in the target directories of the same names in
-<strong><code>server/public</code></strong>. Change made in <strong><code>server/public</code></strong> will be overwritten during the next
-build process.</p>
-
-<h4 id="srcvendor"><code>src/vendor</code></h4>
+<h3 id="vendor">vendor/</h3>
 
 <p><a href="#javascript-library-runtime-dependencies">Third-party JavaScript runtime dependencies</a>
-for Lab are located in the <strong><code>src/vendor</code></strong> directory and are installed as git submodules
+for Lab are located in the
+<strong><a href="https://github.com/concord-consortium/lab/tree/master/vendor"><code>vendor/</code></a></strong>
+directory and are installed as git submodules
 the first time <code>make</code> is run in a new checkout of the source code repository.</p>
 
 <p>Only the necessary JavaScript library files and other resources needed for runtime operation along
-with the associated README and LICENSE files are copied to <strong><code>server/public/vendor</code></strong> during
+with the associated README and LICENSE files are copied to <strong><code>public/vendor</code></strong> during
 the build process.</p>
 
-<p>All of the files copied to <strong><code>server/public/vendor</code></strong> are licensed and distributed under
-one or more of the following licenses: <a href="http://www.opensource.org/licenses/BSD-2-Clause">Simplified BSD</a>,
+<p>All of the files copied to <strong><code>public/vendor</code></strong> are licensed and distributed under
+one or more of the following licenses:
+<a href="http://www.opensource.org/licenses/BSD-2-Clause">Simplified BSD</a>,
 <a href="http://www.opensource.org/licenses/BSD-3-Clause">The BSD 3-Clause</a>,
 <a href="http://www.opensource.org/licenses/MIT">MIT</a>, or
 <a href="http://www.opensource.org/licenses/Apache-2.0">Apache 2.0</a>.</p>
 
-<h4 id="srcresources"><code>src/resources</code></h4>
+<h3 id="src">src/</h3>
 
-<p>The <strong><code>src/resources</code></strong> directory contains image resources and are copied directly to
-<strong><code>server/public/resources</code></strong>.</p>
+<p>The <strong><a href="https://github.com/concord-consortium/lab/tree/master/src">src/</a></strong> directory
+contains the main source code for the Lab framework, examples, and documentation. This
+code is either copied directly or used to generate resources  that are copied.</p>
 
-<h4 id="srcsass"><code>src/sass</code></h4>
+<h4 id="srclab">src/lab/</h4>
 
-<p>The <strong><code>src/sass</code></strong> directory contains Sass templates and the Bourbon Sass library are are used
-during the build process to generate CSS resources.</p>
+<p>The <strong>[src/lab](https://github.com/concord-consortium/lab/tree/master/src/lab)</strong>
+directory includes JavaScript source code for the Lab JavaScript modules.
+During the build process individual files are copied into modules which are placed in
+the <strong><code>public/lab</code></strong> directory.</p>
 
-<h4 id="srchelpers"><code>src/helpers</code></h4>
+<h5 id="srclabmd2d">src/lab/md2d</h5>
 
-<p>The <strong><code>src/helpers</code></strong> directory contains CoffeeScript and JavaScript modules as well as Ruby programs
-only used as part of the testing and build process and are not copied to <strong><code>server/public/resources</code></strong>.</p>
-
-<h4 id="srcjnlp"><code>src/jnlp</code></h4>
-
-<p>The <strong><code>src/jnlp</code></strong> directory currently contains the Vernier GoIO Java sensor Jars. While these
-files are needed to use Vernier GoIO sensor in the browser normally there are no compiled
-artifacts included in either the Lab repository or referenced and used by the Lab either
-as external git submodules or as separately downloaded Java projects. The presence of these
-specific files is temporary until I can recreate or redevelop the specifc combination of Java,
-Vernier GoIO native libraries and JNI code generated by SWIG used 18 months ago to create
-these resources at Concord Consortium.</p>
-
-<h3 id="lab-modules-srclab">Lab Modules: <code>src/lab</code></h3>
-
-<p>The source code for the Lab modules is all contained in
-<strong><a href="https://github.com/concord-consortium/lab/tree/master/src/lab"><code>src/lab</code></a></strong>:</p>
-
-<ul>
-  <li><a href="https://github.com/concord-consortium/lab/tree/master/src/lab/md2d"><code>src/lab/md2d</code></a></li>
-  <li><a href="https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d"><code>src/lab/energy2d</code></a></li>
-  <li><a href="https://github.com/concord-consortium/lab/tree/master/src/lab/grapher"><code>src/lab/grapher</code></a></li>
-  <li><a href="https://github.com/concord-consortium/lab/tree/master/src/lab/common"><code>src/lab/common</code></a></li>
-</ul>
-
-<p>The list above presents independent modules built as separate sub-libraries (<code>md2d</code>, <code>energy2d</code>, <code>grapher</code>)
-and one directory which contains common utilities and modules (<code>common</code>).</p>
-
-<h3 id="lab-modeling-engines-md2d-and-energy2d">Lab Modeling Engines: <code>md2d</code> and <code>energy2d</code></h3>
-
-<h4 id="d-molecular-dynamics-md2dhttpsgithubcomconcord-consortiumlabtreemastersrclabmd2d">2D Molecular Dynamics: <a href="https://github.com/concord-consortium/lab/tree/master/src/lab/md2d"><code>md2d</code></a></h4>
-
-<p><a href="https://github.com/concord-consortium/lab/tree/master/src/lab/md2d"><code>md2d</code></a> module contains a basic <em>Next Gen Molecular Workbench</em> application. It built over MVC design
-pattern and consist of following units:</p>
+<p>The <a href="https://github.com/concord-consortium/lab/tree/master/src/lab/md2d">md2d</a> model-type contains a basic
+<em>*Next Generation Molecular Workbench</em> application. It built using a hybrid of a MVC design pattern
+with a dataflow architecture necessary for performance and consist of following units:</p>
 
 <ul>
   <li>Models - <a href="https://github.com/concord-consortium/lab/tree/master/src/lab/md2d/models"><code>src/lab/md2d/models</code></a></li>
@@ -1349,12 +1271,11 @@ pattern and consist of following units:</p>
 </ul>
 
 <p>The source code of the core molecular dynamics engine is currently located in the
-<a href="https://github.com/concord-
-consortium/lab/tree/master/src/lab/md2d/models/engine"><code>src/lab/md2d/models/engine</code></a> directory, which is organized as a set of
-related RequireJS modules. These modules are compatible both with the Web browser environment and
-Node.</p>
+<a href="https://github.com/concord-consortium/lab/tree/master/src/lab/md2d/models/engine">src/lab/md2d/models/engine</a>
+directory, which is organized as a set of related RequireJS modules. These modules are compatible
+both with the Web browser environment and Node.</p>
 
-<h5 id="md2d-headless-mode">MD2D Headless Mode</h5>
+<h6 id="md2d-headless-mode">MD2D Headless Mode</h6>
 
 <h6 id="node-binrun-md2dhttpsgithubcomconcord-consortiumlabblobmasternode-binrun-md2d"><a href="https://github.com/concord-consortium/lab/blob/master/node-bin/run-md2d"><code>node-bin/run-md2d</code></a></h6>
 
@@ -1375,7 +1296,7 @@ Options:
 
 <p>Example results:</p>
 
-<pre><code>Model file: server/public/imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json
+<pre><code>Model file: public/imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json
 Output: stdout
 Integration time: 150
 time    KE      TE
@@ -1441,7 +1362,7 @@ location of the executable scripts which <code>npm</code> should make available 
 another project as a Node module. (For developer convenience, <code>bin/</code> is being reserved for Ruby
 executables made available via Bundler.)</p>
 
-<h5 id="md2d-simulation-stepping">MD2D simulation stepping</h5>
+<h6 id="md2d-simulation-stepping">MD2D simulation stepping</h6>
 
 <p>Main parameters which define speed and accuracy of simulation in MD2D are:</p>
 
@@ -1478,12 +1399,50 @@ First one will be more accurate and two times slower (more or less) than second 
 
 <p><strong>modelSampleRate</strong> defines how often we should execute “tick”. Of course, in most cases we should call it as often as it’s possible and that’s the default behavior (with upper limit of 60 times per second to avoid running simple models too fast).</p>
 
-<p>You can test how these parameters work using <a href="http://lab.dev.concord.orginteractives.html#interactives/basic-examples/sample-rate-and-refresh-rate.json">this interactive</a>.</p>
+<p>You can test how these parameters work using the
+<a href="interactives.html#interactives/basic-examples/sample-rate-and-refresh-rate.json">Model integration time step, period, and sample rate</a>
+interactive.</p>
 
-<h4 id="d-thermal-energy-energy2dhttpsgithubcomconcord-consortiumlabtreemastersrclabenergy2d">2D Thermal Energy: <a href="https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d"><code>energy2d</code></a></h4>
+<h5 id="srclabsolar-system">src/lab/solar-system/</h5>
 
-<p><a href="https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d"><code>energy2d</code></a> module contains
-a basic <em>Energy2D</em> application. It is a direct port of <a href="http://energy.concord.org/energy2d/">Java Energy2D</a>.
+<ul>
+  <li><a href="https://github.com/concord-consortium/lab/tree/master/src/lab/solar-system">src/lab/solar-system</a></li>
+</ul>
+
+<h5 id="srclabsignal-generator">src/lab/signal-generator/</h5>
+
+<ul>
+  <li><a href="https://github.com/concord-consortium/lab/tree/master/src/lab/signal-generator">src/lab/signal-generator</a></li>
+</ul>
+
+<h5 id="srclabsensor">src/lab/sensor/</h5>
+
+<ul>
+  <li><a href="https://github.com/concord-consortium/lab/tree/master/src/lab/sensor">src/lab/sensor</a></li>
+</ul>
+
+<h5 id="srclabgrapher">src/lab/grapher/</h5>
+
+<ul>
+  <li><a href="https://github.com/concord-consortium/lab/tree/master/src/lab/grapher">src/lab/grapher</a></li>
+</ul>
+
+<h5 id="srclabcommon">src/lab/common/</h5>
+
+<ul>
+  <li><a href="https://github.com/concord-consortium/lab/tree/master/src/lab/common">src/lab/common</a></li>
+</ul>
+
+<h5 id="srclabimport-export">src/lab/import-export/</h5>
+
+<ul>
+  <li><a href="https://github.com/concord-consortium/lab/tree/master/src/lab/import-export">src/lab/import-export</a></li>
+</ul>
+
+<h5 id="srclabenergy2d">src/lab/energy2d/</h5>
+
+<p>The <strong><a href="https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d">src/lab/energy2d</a></strong> model-type contains
+a basic <em>*Energy2D</em> application*. It is a direct port of <a href="http://energy.concord.org/energy2d/">Java Energy2D</a>.
 Energy2D is also built over MVC design pattern and consist of following units:</p>
 
 <ul>
@@ -1519,6 +1478,46 @@ implementation (WebGL-based) of heat and fluid solvers.</li>
 <p>Necessary GLSL (GL Shading Language) sources are stored in separate files. They are loaded using
 RequireJS <em>text</em> plug-in which just allows to load plain text files. Finally, they are inlined in
 the resulting library due to the RequireJS optimization process.</p>
+
+<h4 id="srcexamples-srcdoc-and-srcexperiments">src/examples/, src/doc/, and src/experiments/</h4>
+
+<p>The
+<strong><a href="https://github.com/concord-consortium/lab/tree/master/src/examples">src/examples/</a></strong>,
+<strong><a href="https://github.com/concord-consortium/lab/tree/master/src/doc">src/doc</a></strong> and,
+<strong><a href="https://github.com/concord-consortium/lab/tree/master/src/experiments">src/exoperments</a></strong>
+directories contain additional resources for generating the html, css, and image resources
+for the matching target folders in <strong><code>public</code></strong>.</p>
+
+<p><strong>Note:</strong> remember to make changes you want saved in the <strong><code>src/examples/</code></strong>, <strong><code>src/doc/</code></strong>,
+and <strong><code>src/experiments/</code></strong> and not in the target directories of the same names in
+<strong><code>public</code></strong>. Change made in <strong><code>public</code></strong> will be overwritten during the next
+build process.</p>
+
+<h4 id="srcresources">src/resources</h4>
+
+<p>The <strong><a href="https://github.com/concord-consortium/lab/tree/master/src/resources">src/resources/</a></strong> directory contains image resources and are copied directly to
+<strong><code>public/resources</code></strong>.</p>
+
+<h4 id="srcjnlp">src/jnlp</h4>
+
+<p>The <strong><a href="https://github.com/concord-consortium/lab/tree/master/src/jnlp">src/jnlp/</a></strong> directory currently contains a
+<a href="https://github.com/concord-consortium/lab/blob/master/src/jnlp/jnlps/org/concord/modeler/mw__V1.0.jnlp">template Java web Start JNLP for Molecular Workbench</a>
+and (DetectionApplet.class](https://github.com/concord-consortium/lab/blob/master/src/jnlp/org/concord/sensor/applet/DetectionApplet.class)
+a tiny Java class for quickly detecting whether Java applets can be run.</p>
+
+<p>The source code for DetectionApplet is in another repository located here:
+<a href="https://github.com/concord-consortium/sensor-applets/tree/master/src/main/java/org/concord/sensor/applet/DetectionApplet.java">DetectionApplet.java</a></p>
+
+<h4 id="srcsass">src/sass</h4>
+
+<p>The <strong><a href="https://github.com/concord-consortium/lab/tree/master/src/sass">src/sass/</a></strong> directory contains Sass templates and the Bourbon Sass library are are used
+during the build process to generate CSS resources.</p>
+
+<h4 id="srchelpers">src/helpers</h4>
+
+<p>The <strong><a href="https://github.com/concord-consortium/lab/tree/master/src/helpers">src/helpers/</a></strong> directory contains
+CoffeeScript and JavaScript modules as well as Ruby programs only used as part of the testing and
+build process and are not copied to <strong><code>public/resources</code></strong>.</p>
 
 <h3 id="javascript-dependency-management-and-build-process---requrejs">JavaScript Dependency Management and Build Process - RequreJS</h3>
 
@@ -1620,7 +1619,7 @@ and may be reused by other modules).</li>
 
     <p>4.1. Define a new target, for example:</p>
 
-    <pre><code> server/public/lab/lab.module-name.js: \
+    <pre><code> public/lab/lab.module-name.js: \
      $(NEW_MODULE_SRC_FILES) \
      $(COMMON_SRC_FILES)
      $(R_OPTIMIZER) -o src/lab/module-name/module-name.build.js
@@ -1742,18 +1741,18 @@ as a reference.</p>
 <p>Just remember about <strong>cs!</strong> prefix in paths when loading CoffeeScript sources. RequireJS Optimizer
 will convert such files to plain JavaScript and include them in the final library.</p>
 
-<h3 id="generated-examples-serverpublicexamples">Generated Examples: <code>server/public/examples/</code></h3>
+<h3 id="generated-examples-publicexamples">Generated Examples: <code>public/examples/</code></h3>
 
-<p>The <code>server/public/examples/</code> directory is automatically generated running <code>make</code> and is not part of the repository.</p>
+<p>The <code>public/examples/</code> directory is automatically generated running <code>make</code> and is not part of the repository.</p>
 
 <p>When <code>bin/guard</code> is running any changes to files in the <code>src/examples/</code> directory cause automatic rebuilding
-of the associated files in the <code>server/public/examples/</code> directory.</p>
+of the associated files in the <code>public/examples/</code> directory.</p>
 
 <h3 id="html-and-css-generation">HTML and CSS Generation</h3>
 
-<p><a href="http://haml-lang.com/">Haml</a> is used to generate most of the HTML in the <code>server/public/</code> directory.</p>
+<p><a href="http://haml-lang.com/">Haml</a> is used to generate most of the HTML in the <code>public/</code> directory.</p>
 
-<p><a href="http://kramdown.rubyforge.org/">kramdown</a> is used to generate <code>readme.html</code> in <code>server/public/</code> from Mardown markup.</p>
+<p><a href="http://kramdown.rubyforge.org/">kramdown</a> is used to generate <code>readme.html</code> in <code>public/</code> from Mardown markup.</p>
 
 <p><a href="http://sass-lang.com/">Sass</a> is used to generate the CSS assets. The Sass markup may be in the form of
 <code>*.sass</code> or <code>*.scss</code> files</p>
@@ -2149,7 +2148,7 @@ the mnemonic <code>as</code> form of <code>ratio</code>:</p>
 a <code>gh-pages</code> repository branch as static web content.</p>
 
 <p>The <a href="https://github.com/concord-consortium/lab/tree/gh-pages">gh-pages branch of the Lab repository</a>
-is used to store the static pages and client-side code built by the Makefile at the directory <code>server/public</code>.</p>
+is used to store the static pages and client-side code built by the Makefile at the directory <code>public</code>.</p>
 
 <p><a href="http://concord-consortium.github.com/lab/">concord-consortium.github.com/lab</a></p>
 
@@ -2166,25 +2165,25 @@ web-page form (as opposed to the standard Github page for showing a repository) 
 <p>If you maintain a fork of this project on Github, you get a Github Page for free, and the
 instructions below apply to you as well!</p>
 
-<h4 id="making-the-serverpublic-folder-track-the-gh-pages-branch">Making the <code>server/public/</code> folder track the gh-pages branch</h4>
+<h4 id="making-the-public-folder-track-the-gh-pages-branch">Making the <code>public/</code> folder track the gh-pages branch</h4>
 
-<p>If you haven’t done this yet, make the <code>server/public</code> folder track the contents of the gh-pages branch.</p>
+<p>If you haven’t done this yet, make the <code>public</code> folder track the contents of the gh-pages branch.</p>
 
 <p><strong>If you have a <code>Guard</code> process running make sure and stop it before continuing!</strong></p>
 
-<pre><code># server/public/ needs to be empty for git clone to be happy:
-rm -rf server/public
+<pre><code># public/ needs to be empty for git clone to be happy:
+rm -rf public
 
 # substitute the URL for whatever fork of the Lab repository you have write access to:
-git clone git@github.com:concord-consortium/lab.git -b gh-pages server/public
+git clone git@github.com:concord-consortium/lab.git -b gh-pages public
 </code></pre>
 
-<p>Note that <code>make clean</code> now empties the <code>server/public</code> folder in-place, leaving the Git
-<code>server/public/.git</code> and <code>server/public/jnlp</code> directories intact.</p>
+<p>Note that <code>make clean</code> now empties the <code>public</code> folder in-place, leaving the Git
+<code>public/.git</code> and <code>public/jnlp</code> directories intact.</p>
 
 <h4 id="pushing-changes-to-gh-pages-branch">Pushing changes to gh-pages branch</h4>
 
-<p>First, make sure your <code>server/public</code> folder tracks the gh-pages branch, as per the above.</p>
+<p>First, make sure your <code>public</code> folder tracks the gh-pages branch, as per the above.</p>
 
 <p>Then run the following shell command in the <code>script/</code> folder:</p>
 
@@ -2361,7 +2360,7 @@ cap deploy:update_jnlps     # update public/jnlp dir on server
 <p>The Java resources require much less frequent updates since the main body of work
 for Lab is occuriring in the HTML5 development.</p>
 
-<p>The capistrano task: <code>deploy:update_jnlps</code> erases the <code>server/public/jnlp/</code>
+<p>The capistrano task: <code>deploy:update_jnlps</code> erases the <code>public/jnlp/</code>
 directory on the remote server and re-generates and deploy the packed signed
 jars from source or from downloads:</p>
 
@@ -2370,8 +2369,8 @@ jars from source or from downloads:</p>
 
 <p>The resulting directory on the server will look something like this:</p>
 
-<pre><code>$ tree /var/www/app/server/public/jnlp/
-server/public/jnlp/
+<pre><code>$ tree /var/www/app/public/jnlp/
+public/jnlp/
 ├── jdom
 │   └── jdom
 │       ├── jdom__V1.0.jar

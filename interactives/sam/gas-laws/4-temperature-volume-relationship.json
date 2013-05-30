@@ -5,7 +5,10 @@
   "about": [
     "This model contains gas molecules on the left side and a barrier that moves when the",
     "volume of gas expands or contracts, keeping the pressure constant. Run the model and",
-    "change the temperature. Why does the barrier move when the temperature changes?"
+    "change the temperature. Why does the barrier move when the temperature changes?",
+    "",
+    "----",
+    "*Note: Although the atoms in this model are in a flat plane, volume is calculated using 0.1 nm as the depth of the container.*"
   ],
   "models": [
     {
@@ -34,10 +37,10 @@
   "outputs": [
     {
       "name": "volume",
-      "unitAbbreviation": "nm²",
-      "label": "Area",
+      "unitAbbreviation": "nm³",
+      "label": "Volume",
       "value": [
-        "return getObstacleProperties(0).x * get('height');"
+        "return getObstacleProperties(0).x * get('height') * 0.1;"
       ]
     }
   ],
@@ -64,7 +67,8 @@
     {
       "type": "numericOutput",
       "id": "current-volume",
-      "label": "Area of gas",
+      "label": "Gas volume",
+      "units": "nm³",
       "property": "volume",
       "displayValue": "return format('1.2f')(value)"
     }

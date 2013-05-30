@@ -14,25 +14,23 @@ In the spirit of open source software development, jQuery always encourages comm
 What you need to build your own jQuery
 --------------------------------------
 
-In order to build jQuery, you need to have GNU make 3.8 or later, Node.js/npm latest, and git 1.7 or later.
+In order to build jQuery, you need to have Node.js/npm latest and git 1.7 or later.
 (Earlier versions might work OK, but are not tested.)
 
 Windows users have two options:
 
-1. Install [msysgit](https://code.google.com/p/msysgit/) (Full installer for official Git),
-   [GNU make for Windows](http://gnuwin32.sourceforge.net/packages/make.htm), and a
-   [binary version of Node.js](http://node-js.prcn.co.cc/). Make sure all three packages are installed to the same
+1. Install [msysgit](https://code.google.com/p/msysgit/) (Full installer for official Git) and a
+   [binary version of Node.js](http://nodejs.org). Make sure all two packages are installed to the same
    location (by default, this is C:\Program Files\Git).
-2. Install [Cygwin](http://cygwin.com/) (make sure you install the git, make, and which packages), then either follow
-   the [Node.js build instructions](https://github.com/ry/node/wiki/Building-node.js-on-Cygwin-%28Windows%29) or install
-   the [binary version of Node.js](http://node-js.prcn.co.cc/).
+2. Install [Cygwin](http://cygwin.com/) (make sure you install the git and which packages), and
+   a [binary version of Node.js](http://nodejs.org/).
 
 Mac OS users should install Xcode (comes on your Mac OS install DVD, or downloadable from
 [Apple's Xcode site](http://developer.apple.com/technologies/xcode.html)) and
 [Homebrew](http://mxcl.github.com/homebrew/). Once Homebrew is installed, run `brew install git` to install git,
 and `brew install node` to install Node.js.
 
-Linux/BSD users should use their appropriate package managers to install make, git, and node, or build from source
+Linux/BSD users should use their appropriate package managers to install git and Node.js, or build from source
 if you swing that way. Easy-peasy.
 
 
@@ -45,12 +43,17 @@ First, clone a copy of the main jQuery git repo by running:
 git clone git://github.com/jquery/jquery.git
 ```
 
-Enter the directory and install the Node dependencies:
+Install the grunt-cli package so that you will have the correct version of grunt available from any project that needs it. This should be done as a global install:
+
+```bash
+npm install -g grunt-cli
+```
+
+Enter the jquery directory and install the Node dependencies, this time *without* specifying a global install:
 
 ```bash
 cd jquery && npm install
 ```
-
 
 Make sure you have `grunt` installed by testing:
 
@@ -58,30 +61,37 @@ Make sure you have `grunt` installed by testing:
 grunt -version
 ```
 
-
-
 Then, to get a complete, minified (w/ Uglify.js), linted (w/ JSHint) version of jQuery, type the following:
 
 ```bash
 grunt
 ```
 
-
-The built version of jQuery will be put in the `dist/` subdirectory.
-
-
-### Modules (new in 1.8)
-
-Starting in jQuery 1.8, special builds can now be created that optionally exclude or include any of the following modules:
-
-- ajax
-- css
-- dimensions
-- effects
-- offset
+The built version of jQuery will be put in the `dist/` subdirectory, along with the minified copy and associated map file.
 
 
-Before creating a custom build for use in production, be sure to check out the latest stable version:
+### Modules
+
+Special builds can be created that exclude subsets of jQuery functionality.
+This allows for smaller custom builds when the builder is certain that those parts of jQuery are not being used.
+For example, an app that only used JSONP for `$.ajax()` and did not need to calculate offsets or positions of elements could exclude the offset and ajax/xhr modules. The current modules that can be excluded are:
+
+- **ajax**: All AJAX functionality: `$.ajax()`, `$.get()`, `$.post()`, `$.ajaxSetup()`, `.load()`, transports, and ajax event shorthands such as `.ajaxStart()`.
+- **ajax/xhr**: The XMLHTTPRequest AJAX transport only.
+- **ajax/script**: The `<script>` AJAX transport only; used to retrieve scripts.
+- **ajax/jsonp**: The JSONP AJAX transport only; depends on the ajax/script transport.
+- **css**: The `.css()` method plus non-animated `.show()`, `.hide()` and `.toggle()`.
+- **deprecated**: Methods documented as deprecated but not yet removed; currently only `.andSelf()`.
+- **dimensions**: The `.width()` and `.height()` methods, including `inner-` and `outer-` variations.
+- **effects**: The `.animate()` method and its shorthands such as `.slideUp()` or `.hide("slow")`. 
+- **event-alias**: All event attaching/triggering shorthands like `.click()` or `.mouseover()`.
+- **offset**: The `.offset()`, `.position()`, `.offsetParent()`, `.scrollLeft()`, and `.scrollTop()` methods.
+- **wrap**: The `.wrap()`, `.wrapAll()`, `.wrapInner()`, and `.unwrap()` methods.
+- **sizzle**: The Sizzle selector engine. When this module is excluded, it is replaced by a rudimentary selector engine based on the browser's `querySelectorAll` method that does not support jQuery selector extensions or enhanced semantics. See the selector-native.js file for details.
+
+The grunt build process is aware of dependencies across modules. If you explicitly remove a module, its dependent modules will be removed as well. For example, excluding the css module also excludes effects, since the effects module uses `.css()` to animate CSS properties. These dependencies are listed in Gruntfile.js and the build process shows a message for each dependent module it excludes.
+
+To create a custom build of the latest stable version, first check out the version:
 
 ```bash
 git pull; git checkout $(git describe --abbrev=0 --tags)
@@ -93,57 +103,30 @@ Then, make sure all Node dependencies are installed and all Git submodules are c
 npm install && grunt
 ```
 
-To create a custom build, use the following special `grunt` commands:
+Create the custom build, use the `grunt custom` option, listing the modules to be excluded. Examples:
 
-Exclude **ajax**:
+Exclude all **ajax** functionality:
 
 ```bash
 grunt custom:-ajax
 ```
 
-Exclude **css**:
+Exclude **css**, **effects**, **offset**, **dimensions**, and **position**. Excluding **css** automatically excludes its dependent modules:
 
 ```bash
-grunt custom:-css
+grunt custom:-css:-position
 ```
 
-Exclude **deprecated**:
+Exclude **all** optional modules and use the `querySelectorAll`-based selector engine:
 
 ```bash
-grunt custom:-deprecated
+grunt custom:-ajax,-css,-deprecated,-dimensions,-effects,-event-alias,-offset,-wrap,-sizzle
 ```
 
-Exclude **dimensions**:
-
-```bash
-grunt custom:-dimensions
-```
-
-Exclude **effects**:
-
-```bash
-grunt custom:-effects
-```
-
-Exclude **offset**:
-
-```bash
-grunt custom:-offset
-```
-
-Exclude **all** optional modules:
-
-```bash
-grunt custom:-ajax,-css,-deprecated,-dimensions,-effects,-offset
-```
-
-
-Note: dependencies will be handled internally, by the build process.
-
+For questions or requests regarding custom builds, please start a thread on the [Developing jQuery Core](https://forum.jquery.com/developing-jquery-core) section of the forum. Due to the combinatorics and custom nature of these builds, they are not regularly tested in jQuery's unit test process. The non-Sizzle selector engine currently does not pass unit tests because it is missing too much essential functionality.
 
 Running the Unit Tests
 --------------------------------------
-
 
 Start grunt to auto-build jQuery as you work:
 
@@ -152,7 +135,7 @@ cd jquery && grunt watch
 ```
 
 
-Run the unit tests with a local server that supports PHP. No database is required. Pre-configured php local servers are available for Windows and Mac. Here are some options:
+Run the unit tests with a local server that supports PHP. Ensure that you run the site from the root directory, not the "test" directory. No database is required. Pre-configured php local servers are available for Windows and Mac. Here are some options:
 
 - Windows: [WAMP download](http://www.wampserver.com/en/)
 - Mac: [MAMP download](http://www.mamp.info/en/index.html)
@@ -165,7 +148,7 @@ Run the unit tests with a local server that supports PHP. No database is require
 Building to a different directory
 ---------------------------------
 
-If you want to build jQuery to a directory that is different from the default location:
+To copy the built jQuery files from `/dist` to another directory:
 
 ```bash
 grunt && grunt dist:/path/to/special/location/
@@ -177,7 +160,7 @@ With this example, the output files would be:
 /path/to/special/location/jquery.min.js
 ```
 
-If you want to add a permanent copy destination, create a file in `dist/` called ".destination.json". Inside the file, paste and customize the following:
+To add a permanent copy destination, create a file in `dist/` called ".destination.json". Inside the file, paste and customize the following:
 
 ```json
 
@@ -185,7 +168,6 @@ If you want to add a permanent copy destination, create a file in `dist/` called
   "/Absolute/path/to/other/destination": true
 }
 ```
-
 
 Additionally, both methods can be combined.
 
@@ -197,21 +179,21 @@ Updating Submodules
 Update the submodules to what is probably the latest upstream code.
 
 ```bash
-grunt submodules
+grunt update_submodules
 ```
 
 Note: This task will also be run any time the default `grunt` command is used.
 
 
 
-Git for dummies
----------------
+Essential Git
+-------------
 
 As the source code is handled by the version control system Git, it's useful to know some features used.
 
 ### Submodules ###
 
-The repository uses submodules, which normally are handled directly by the Makefile, but sometimes you want to
+The repository uses submodules, which normally are handled directly by the `grunt update_submodules` command, but sometimes you want to
 be able to work with them manually.
 
 Following are the steps to manually get the submodules:

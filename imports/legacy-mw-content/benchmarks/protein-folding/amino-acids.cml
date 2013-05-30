@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>An Experiment on a Hydrophobic-Hydrophilic-Mixed Polypeptide</page_title>
+<text>An Experiment on a Hydrophobic-Hydrophilic-Mixed Polypeptide
+
+[positive charge-red; negative charge-green; neutral-white; hydrophobic-pink; hydrophilic-cyan; water-blue; oil-yellow]
+
+ 
+      
+
+You have seen the previous two simulations about all-hydrophobic and all-hydrophilic chains. Although they show nicely that our model can produce qualitatively correct results, they are extreme cases that are too unlikely to exist in reality. In reality, proteins are composed of both hydrophobic and hydrophilic residues that runs in an order specified by genetic code. How an array of amino acids folds up into a particular shape is a very complex issue --- it is precisely this complexity that results in the diversity of the biological world. We are of course not trying to lead you to understand this issue, but what the model is capable of showing might be helpful for you to understand some aspects of protein structures.
+
+ 
+ Click the second button above the model and the click on an amino acid to mutate it.
+ 
+
+   Related simulation: An all-hydrophobic polypeptide.
+   Related simulation: An all-hydrophilic polypeptide.
+   Related simulation: Modeling hydrophobic and hydrophilic effects.</text>
+<section start="0" end="1193">
+<paragraph start="0" end="61">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="0" end="60">
+<bold>true</bold><size>15</size></content>
+
+<content start="60" end="61">
+</content>
+
+</paragraph>
+<paragraph start="61" end="62">
+<content start="61" end="62">
+</content>
+
+</paragraph>
+<paragraph start="62" end="182">
+<Alignment>1</Alignment>
+<content start="62" end="182">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="182" end="183">
+<Alignment>1</Alignment>
+<content start="182" end="183">
+</content>
+
+</paragraph>
+<paragraph start="183" end="185">
+<Alignment>1</Alignment>
+<content start="183" end="184">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>amino-acids$0.mml</resource><menubar>false</menubar><button>Select Object</button><button>Change Type</button></component></content>
+
+<content start="184" end="185">
+</content>
+
+</paragraph>
+<paragraph start="185" end="192">
+<Alignment>1</Alignment>
+<content start="185" end="186">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Generate a random self-avoided conformation</title>
+<bgcolor>-333301</bgcolor>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Generate a random self-avoided polypeptide conformation</action>
+</component></content>
+
+<content start="186" end="187">
+</content>
+
+<content start="187" end="188">
+<component><class>org.concord.modeler.PageComboBox</class>
+<model>0</model>
+<action>Solvent Type</action>
+</component></content>
+
+<content start="188" end="189">
+</content>
+
+<content start="189" end="190">
+<component><class>org.concord.modeler.PageComboBox</class>
+<model>0</model>
+<action>Show Properties</action>
+<selectedIndex>2</selectedIndex>
+</component></content>
+
+<content start="190" end="192">
+</content>
+
+</paragraph>
+<paragraph start="192" end="193">
+<content start="192" end="193">
+</content>
+
+</paragraph>
+<paragraph start="193" end="922">
+<LeftIndent>6.0</LeftIndent>
+<content start="193" end="242">
+<size>11</size></content>
+
+<content start="242" end="257">
+<size>11</size><href>ala20.cml</href></content>
+
+<content start="257" end="262">
+<size>11</size></content>
+
+<content start="262" end="277">
+<size>11</size><href>glu20.cml</href></content>
+
+<content start="277" end="921">
+<size>11</size></content>
+
+<content start="921" end="922">
+</content>
+
+</paragraph>
+<paragraph start="922" end="923">
+<content start="922" end="923">
+</content>
+
+</paragraph>
+<paragraph start="923" end="925">
+<Alignment>1</Alignment>
+<SpaceBelow>2.0</SpaceBelow>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="923" end="924">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.95</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="924" end="925">
+</content>
+
+</paragraph>
+<paragraph start="925" end="1011">
+<Alignment>1</Alignment>
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>50.0</RightIndent>
+<content start="925" end="927">
+</content>
+
+<content start="927" end="1011">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1011" end="1013">
+<Alignment>1</Alignment>
+<SpaceBelow>2.0</SpaceBelow>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="1011" end="1012">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.95</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1012" end="1013">
+</content>
+
+</paragraph>
+<paragraph start="1013" end="1014">
+<Alignment>1</Alignment>
+<content start="1013" end="1014">
+</content>
+
+</paragraph>
+<paragraph start="1014" end="1069">
+<LeftIndent>20.0</LeftIndent>
+<content start="1014" end="1015">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1015" end="1017">
+</content>
+
+<content start="1017" end="1037">
+<size>10</size></content>
+
+<content start="1037" end="1067">
+<size>10</size><href>ala20.cml</href></content>
+
+<content start="1067" end="1069">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="1069" end="1124">
+<LeftIndent>20.0</LeftIndent>
+<content start="1069" end="1070">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1070" end="1072">
+</content>
+
+<content start="1072" end="1092">
+<size>10</size></content>
+
+<content start="1092" end="1122">
+<size>10</size><href>glu20.cml</href></content>
+
+<content start="1122" end="1124">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="1124" end="1193">
+<LeftIndent>20.0</LeftIndent>
+<content start="1124" end="1125">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1125" end="1127">
+</content>
+
+<content start="1127" end="1147">
+<size>10</size></content>
+
+<content start="1147" end="1191">
+<size>10</size><href>hydrophobicity.cml</href></content>
+
+<content start="1191" end="1192">
+<size>10</size></content>
+
+</paragraph>
+</section>
+</document>

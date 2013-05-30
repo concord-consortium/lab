@@ -1,0 +1,21 @@
+{
+  "title": "script_external$1",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "script_external$1",
+      "url": "imports/legacy-mw-content/converted/tutorial/script_external$1.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

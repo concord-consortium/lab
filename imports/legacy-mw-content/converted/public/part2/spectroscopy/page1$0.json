@@ -121,6 +121,20 @@
     ],
     "visible": [
       0
+    ],
+    "excitation": [
+      0
     ]
+  },
+  "quantumDynamics": {
+    "elementEnergyLevels": [
+      [],
+      [],
+      [],
+      [],
+      []
+    ],
+    "photons": {},
+    "radiationlessEmissionProbability": 1
   }
 }

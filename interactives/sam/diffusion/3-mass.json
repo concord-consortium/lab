@@ -55,7 +55,7 @@
         "for (var i = 0; i < 17; i++) {",
         "  setAtomProperties(i, {element: value});",
         "}",
-        "set('targetTemperature',500);"
+        "setTemperatureOfAtoms([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],500);"
       ]
     },
     {
@@ -188,7 +188,7 @@
     {
       "type": "barGraph",
       "id": "thermometer",
-      "property": "targetTemperature",
+      "property": "temperature",
       "title": "Thermometer",
       "labels": 0,
       "min": 0,

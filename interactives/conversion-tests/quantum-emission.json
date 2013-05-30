@@ -1,0 +1,134 @@
+{
+  "title": "Quantum emission",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "quantum-emission",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/quantum-emission$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "showClock": true
+      },
+      "onLoad": [
+        "onPropertyChange('initialVelocityInMKS_A', function() {",
+        "  var vx = get('initialVelocity_A');",
+        "  set('initialVelocity_A', vx);",
+        "});",
+        "onPropertyChange('initialVelocityInMKS_B', function() {",
+        "  var vx = get('initialVelocity_B');",
+        "  set('initialVelocity_B', vx);",
+        "});"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "initialVelocity_A",
+      "unitType": "velocity",
+      "onChange": "setAtomProperties(0, { vx: value });",
+      "initialValue": 0
+    },
+    {
+      "name": "initialVelocityInMKS_A",
+      "onChange": "set('initialVelocity_A', get('initialVelocityInMKS_A') * 1e-6);",
+      "initialValue": 500
+    },
+    {
+      "name": "initialVelocity_B",
+      "unitType": "velocity",
+      "onChange": "setAtomProperties(1, { vx: value });",
+      "initialValue": 0
+    },
+    {
+      "name": "initialVelocityInMKS_B",
+      "onChange": "set('initialVelocity_B', get('initialVelocityInMKS_B') * 1e-6);",
+      "initialValue": 500
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "v-slider-a",
+      "min": 500,
+      "max": 3000,
+      "labels": [
+        {
+          "value": 500,
+          "label": "500"
+        },
+        {
+          "value": 3000,
+          "label": "3000"
+        }
+      ],
+      "steps": 30,
+      "title": "Starting velocity of Atom A (m/s)",
+      "displayValue": "return format('f')(value)",
+      "property": "initialVelocityInMKS_A"
+    },
+    {
+      "type": "slider",
+      "id": "v-slider-b",
+      "min": 500,
+      "max": 3000,
+      "labels": [
+        {
+          "value": 500,
+          "label": "500"
+        },
+        {
+          "value": 3000,
+          "label": "3000"
+        }
+      ],
+      "steps": 30,
+      "title": "Starting velocity of Atom B (m/s)",
+      "displayValue": "return format('f')(value)",
+      "property": "initialVelocityInMKS_B"
+    },
+    {
+      "type": "graph",
+      "id": "graph",
+      "title": "Total Energy of the System",
+      "xlabel": "Model Time (fs)",
+      "ylabel": "eV",
+      "ymin": 0,
+      "ymax": 7,
+      "xmax": 6000,
+      "xTickCount": 5,
+      "yTickCount": 5,
+      "xFormatter": "2s",
+      "yFormatter": "2s",
+      "properties": [
+        "totalEnergy"
+      ]
+    }
+  ],
+  "layout": {
+    "right": [
+      "graph"
+    ]
+  },
+  "template": [
+    {
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "height": "model.height",
+      "padding-left": "1em",
+      "padding-right": "0.5em",
+      "width": "model.width",
+      "min-width": "6em"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "padding-top": "0.5em",
+      "align": "center"
+    }
+  ]
+}

@@ -190,6 +190,31 @@
       0,
       0,
       0
+    ],
+    "excitation": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
     ]
+  },
+  "quantumDynamics": {
+    "elementEnergyLevels": [
+      [],
+      [
+        -0.00004824264998133139
+      ],
+      [],
+      [],
+      []
+    ],
+    "photons": {},
+    "radiationlessEmissionProbability": 0
   }
 }

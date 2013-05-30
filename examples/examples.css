@@ -472,6 +472,20 @@ button.component {
       display: inline-block; }
     .interactive-playback .play-pause.playing .icon-play {
       display: none; }
+    .interactive-playback .play-pause.disabled {
+      background-color: #e6e6e6;
+      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #e6e6e6));
+      background-image: -webkit-linear-gradient(top, white, #e6e6e6);
+      background-image: -moz-linear-gradient(top, white, #e6e6e6);
+      background-image: -ms-linear-gradient(top, white, #e6e6e6);
+      background-image: -o-linear-gradient(top, white, #e6e6e6);
+      background-image: linear-gradient(top, white, #e6e6e6); }
+      .interactive-playback .play-pause.disabled:hover {
+        cursor: default; }
+      .interactive-playback .play-pause.disabled .icon-pause {
+        opacity: 0.5; }
+      .interactive-playback .play-pause.disabled .icon-play {
+        opacity: 0.5; }
     .interactive-playback .play-pause .time-display {
       font-size: 0.85em;
       display: none; }
@@ -694,56 +708,60 @@ body:fullscreen .fullscreen {
   .credits:hover {
     background-image: url("../resources/layout/cc-logo-dark.png"); }
 
-.aminoacids-menu {
+.lab-contextmenu {
   min-width: 9em;
   font-size: 0.9em;
   font-family: inherit;
   border: none; }
-  .aminoacids-menu li {
-    padding: 0 0 0 19%; }
-  .aminoacids-menu li:hover {
-    font-weight: bold; }
-  .aminoacids-menu .pos-charge {
-    background-repeat: no-repeat;
-    background-position: 2%;
-    background-size: auto 90%;
-    background-image: url("../resources/plus.svg"); }
-  .aminoacids-menu .neg-charge {
-    background-repeat: no-repeat;
-    background-position: 2%;
-    background-size: auto 90%;
-    background-image: url("../resources/minus.svg"); }
-  .aminoacids-menu .hydrophobic {
-    background-color: #f3c35d; }
-  .aminoacids-menu .hydrophobic.marked {
-    background-color: #ffe64b; }
-  .aminoacids-menu .hydrophilic {
-    background-color: #9dc278; }
-  .aminoacids-menu .hydrophilic.marked {
-    background-color: #bee299; }
-  .aminoacids-menu .hydrophobic-category {
-    font-size: 1.1em;
-    font-weight: bold;
-    padding: 2% 0 2% 14%;
-    background-color: #e0a21b;
-    background-repeat: no-repeat;
-    background-position: 4%;
-    background-size: auto 40%;
-    background-image: url("../resources/col.svg"); }
-  .aminoacids-menu .hydrophilic-category {
-    font-size: 1.1em;
-    font-weight: bold;
-    padding: 2% 0 2% 14%;
-    background-color: #75a643;
-    background-repeat: no-repeat;
-    background-position: 4%;
-    background-size: auto 40%;
-    background-image: url("../resources/col.svg"); }
-  .aminoacids-menu .expanded {
-    background-repeat: no-repeat;
-    background-position: 4%;
-    background-size: auto 40%;
-    background-image: url("../resources/exp.svg"); }
+
+.mutations-menu {
+  min-width: 5em; }
+
+.aminoacids-menu li {
+  padding: 0 0 0 19%; }
+.aminoacids-menu li:hover {
+  font-weight: bold; }
+.aminoacids-menu .pos-charge {
+  background-repeat: no-repeat;
+  background-position: 2%;
+  background-size: auto 90%;
+  background-image: url("../resources/plus.svg"); }
+.aminoacids-menu .neg-charge {
+  background-repeat: no-repeat;
+  background-position: 2%;
+  background-size: auto 90%;
+  background-image: url("../resources/minus.svg"); }
+.aminoacids-menu .hydrophobic {
+  background-color: #f3c35d; }
+.aminoacids-menu .hydrophobic.marked {
+  background-color: #ffe64b; }
+.aminoacids-menu .hydrophilic {
+  background-color: #9dc278; }
+.aminoacids-menu .hydrophilic.marked {
+  background-color: #bee299; }
+.aminoacids-menu .hydrophobic-category {
+  font-size: 1.1em;
+  font-weight: bold;
+  padding: 2% 0 2% 14%;
+  background-color: #e0a21b;
+  background-repeat: no-repeat;
+  background-position: 4%;
+  background-size: auto 40%;
+  background-image: url("../resources/col.svg"); }
+.aminoacids-menu .hydrophilic-category {
+  font-size: 1.1em;
+  font-weight: bold;
+  padding: 2% 0 2% 14%;
+  background-color: #75a643;
+  background-repeat: no-repeat;
+  background-position: 4%;
+  background-size: auto 40%;
+  background-image: url("../resources/col.svg"); }
+.aminoacids-menu .expanded {
+  background-repeat: no-repeat;
+  background-position: 4%;
+  background-size: auto 40%;
+  background-image: url("../resources/exp.svg"); }
 
 .dna-edit-dialog {
   font-size: 0.9em; }
@@ -760,8 +778,58 @@ body:fullscreen .fullscreen {
     outline: #76d2b8 solid 0.2em; }
   #model-container .radialbond1.disulphideBond, #model-container .radialbond2.disulphideBond {
     stroke: #ffe95a !important; }
-  #model-container .nucleotide .bonds {
+  #model-container .genetics .nucleotide .glow {
+    display: none; }
+  #model-container .genetics .nucleotide .nucleo-shape:hover .glow {
+    display: inline; }
+  #model-container .genetics .nucleotide .bonds {
     stroke: white; }
+  #model-container .genetics .nucleotide .letter {
+    fill: #4a3217; }
+  #model-container .genetics .nucleotide .type-A .outline {
+    fill: #278db0; }
+  #model-container .genetics .nucleotide .type-A .interior {
+    fill: #a2d6ff; }
+  #model-container .genetics .nucleotide .type-C .outline {
+    fill: #cc5b4c; }
+  #model-container .genetics .nucleotide .type-C .interior {
+    fill: #fbb394; }
+  #model-container .genetics .nucleotide .type-G .outline {
+    fill: #cc5b4c; }
+  #model-container .genetics .nucleotide .type-G .interior {
+    fill: #f9ceff; }
+  #model-container .genetics .nucleotide .type-T .outline {
+    fill: #278db0; }
+  #model-container .genetics .nucleotide .type-T .interior {
+    fill: #99f0e3; }
+  #model-container .genetics .nucleotide .type-U .outline {
+    fill: #278db0; }
+  #model-container .genetics .nucleotide .type-U .interior {
+    fill: #83feaf; }
+  #model-container .genetics .nucleotide .stop-codon .outline {
+    fill: #cc0000; }
+  #model-container .genetics .nucleotide .stop-codon .letter {
+    fill: #cc0000; }
+  #model-container .genetics .promoter-region .nucleotide .outline {
+    fill: #006600; }
+  #model-container .genetics .promoter-region .nucleotide .interior {
+    fill: #5db473; }
+  #model-container .genetics .promoter-region .nucleotide .letter {
+    fill: white; }
+  #model-container .genetics .terminator-region .nucleotide .outline {
+    fill: #9e0608; }
+  #model-container .genetics .terminator-region .nucleotide .interior {
+    fill: #dc4648; }
+  #model-container .genetics .terminator-region .nucleotide .letter {
+    fill: white; }
+  #model-container .genetics .junk-region .nucleotide .outline {
+    fill: #666666; }
+  #model-container .genetics .junk-region .nucleotide .interior {
+    fill: #adadad; }
+  #model-container .genetics .junk-region .nucleotide .letter {
+    fill: white; }
+  #model-container .genetics .polymerase-over, #model-container .genetics .polymerase-under, #model-container .genetics .dna3 {
+    pointer-events: none; }
   #model-container line.attractionforce {
     stroke: #aaaaaa;
     stroke-width: 2.5;
@@ -794,7 +862,7 @@ body:fullscreen .fullscreen {
     fill-opacity: 0.125;
     shape-rendering: crispEdges; }
   #model-container .opaque-on-hover {
-    opacity: 0.8; }
+    opacity: 0.5; }
     #model-container .opaque-on-hover:hover {
       opacity: 1; }
 

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html;charset=utf-8' http-equiv='Content-Type'>
+    <title>Probeware</title>
+    <script src='../../../vendor/modernizr/modernizr.js' type='text/javascript'></script>
+    <script src='../../../vendor/d3/d3.js' type='text/javascript'></script>
+    <script src='../../../vendor/jquery/jquery.min.js' type='text/javascript'></script>
+    <script type='text/javascript'>
+      $(document).ready(function() { if (!Modernizr.svg) { $('body').prepend('<div class="warning">Sorry, but you\'ll need to upgrade your browser to use the models and visualizations. <a href="browser-upgrade.html">Learn more</a> &raquo;</div>'); } });
+    </script>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&amp;subset=latin,greek,latin-ext' rel='stylesheet' type='text/css'>
+    <link href='../../../index.css' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <div id='header'>
+      <a href='http://www.concord.org/' id='logo'>
+        <img src='../../../resources/layout/cc-logo.png'>
+      </a>
+      <h1><a href='../../../index.html'>Lab</a>:
+      <a href=''>Probeware</a></h1>
+    </div>
+    <div id='under-header-links'>
+      <a href='../../../readme.html'>Read Me</a>
+      &nbsp;&nbsp;
+      <a href='../../../license.html'>License</a>
+      &nbsp;&nbsp;
+      <a href='https://github.com/concord-consortium/lab'>Github Repository</a>
+      &nbsp;&nbsp;
+      <a href='https://github.com/concord-consortium/lab/issues'>Github Issues</a>
+      &nbsp;&nbsp;
+      <a href='https://www.pivotaltracker.com/projects/442903'>Pivotal Tracker Project</a>
+      &nbsp;&nbsp;
+      <a href='https://groups.google.com/group/lab-models'>Developer Mail List</a>
+      &nbsp;&nbsp;
+      <a href='../../../experiments/navigator/index.html'>Browser Check</a>
+    </div>
+    <div class='column1'>
+      <div class='item-list'>
+        <h2>
+          Probeware
+        </h2>
+        <div class='iframe-container'>
+          <iframe allowfullscreen='true' height='300' mozallowfullscreen='true' scrolling='no' src='../../../embeddable.html#interactives/sensor/sensor.json' webkitallowfullscreen='true' width='500'></iframe>
+        </div>
+      </div>
+    </div>
+    <div class='column2'>
+      <div class='item-list'>
+        <h2>
+          Status
+        </h2>
+        <p>
+          The
+          <a href='https://github.com/concord-consortium/lab/tree/master/src/lab/sensor'>sensor</a>
+          model type supports access to Probeware in Interactives in the Lab framework.
+        </p>
+        <p>
+          Currently only the Vernier GoMotion ultrasonic ranger is supported.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

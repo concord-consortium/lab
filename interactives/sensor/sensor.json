@@ -1,0 +1,56 @@
+{
+  "title": "Sensor",
+  "publicationStatus": "draft",
+  "subtitle": "Testing the Sensor model type",
+  "about": "",
+  "models": [
+    {
+      "id": "signal1",
+      "type": "sensor",
+      "url": "models/sensor/sensor.json",
+      "modelOptions": {
+        "sensorType": "goMotion"
+      },
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "showClock": true
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "graph",
+      "id": "propertiesGraph",
+      "title": "GoMotion Sensor Reading",
+      "xlabel": "Time (s)",
+      "ylabel": "Distance (m)",
+      "ymin": 0,
+      "ymax": 6,
+      "xmax": 30,
+      "xTickCount": 6,
+      "xFormatter": "2s",
+      "yFormatter": "2s",
+      "properties": [
+        "sensorReading"
+      ]
+    }
+  ],
+  "layout": {
+    "below-model": [
+      "propertiesGraph"
+    ]
+  },
+  "template": [
+    {
+      "id": "below-model",
+      "top": "model.bottom",
+      "width": "model.width",
+      "height": "0.7 * model.width"
+    },
+    {
+      "id": "container-bottom",
+      "top": "below-model.bottom",
+      "width": "model.width"
+    }
+  ]
+}

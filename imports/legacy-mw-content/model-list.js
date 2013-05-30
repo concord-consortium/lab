@@ -5122,6 +5122,20 @@ modelList = [
         "json": "converted/conversion-and-physics-examples/pressure-probe$0.json"
       },
       {
+        "name": "quantum-collision",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/quantum-collision.cml",
+        "mml": "conversion-and-physics-examples/quantum-collision$0.mml",
+        "json": "converted/conversion-and-physics-examples/quantum-collision$0.json"
+      },
+      {
+        "name": "quantum-emission",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/quantum-emission.cml",
+        "mml": "conversion-and-physics-examples/quantum-emission$0.mml",
+        "json": "converted/conversion-and-physics-examples/quantum-emission$0.json"
+      },
+      {
         "name": "simple-ke-shading",
         "path": "conversion-and-physics-examples/",
         "cml": "conversion-and-physics-examples/simple-ke-shading.cml",

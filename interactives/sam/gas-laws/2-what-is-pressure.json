@@ -20,7 +20,7 @@
         "textBoxes": [
           {
             "text": "Inside balloon",
-            "x": 0.05,
+            "x": 0.70,
             "y": 2.45,
             "layer": 1,
             "frame": "rounded rectangle",
@@ -28,7 +28,7 @@
           },
           {
             "text": "Outside balloon",
-            "x": 3.95,
+            "x": 3.35,
             "y": 2.45,
             "layer": 1,
             "frame": "rounded rectangle",
@@ -46,7 +46,7 @@
           },
           {
             "text": "Atoms inside: 40",
-            "x": 0.05,
+            "x": 0.70,
             "y": 0.25,
             "layer": 1,
             "frame": "rounded rectangle",

@@ -67,6 +67,14 @@
       "publicationStatus": "public"
     },
     {
+      "title": "Properties Transition",
+      "path": "interactives/basic-examples/atom-transition.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Atom's properties can be smoothly changed over time using atomTransition() function",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
       "title": "atomsWithinTriangle Demo",
       "path": "interactives/basic-examples/atomsWithinTriangle.json",
       "groupKey": "basic-examples",
@@ -102,6 +110,14 @@
         "Changes in the model property: temperatureControl are monitored with an onPropertyChange() script."
       ],
       "publicationStatus": "public"
+    },
+    {
+      "title": "DNA Animations Example",
+      "path": "interactives/basic-examples/dna-example.json",
+      "groupKey": "basic-examples",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
     },
     {
       "title": "Empty Model",
@@ -374,6 +390,16 @@
       "publicationStatus": "public"
     },
     {
+      "title": "Protein Folding",
+      "path": "interactives/benchmarks/8-protein-folding.json",
+      "groupKey": "benchmarks",
+      "subtitle": "How do peptides fold into stable conformations?",
+      "about": [
+        "Explore the role of hydrophobic and hydrophilic interactions in protein folding. Generate a random peptide string and watch how it folds in an aqueous environment. Change the solvent to see what happens if the peptide is in an oily environment or a vacuum instead of an aqueous environment."
+      ],
+      "publicationStatus": "public"
+    },
+    {
       "title": "Amino Acids Momentum Test",
       "path": "interactives/conversion-tests/amino-acids-momentum.json",
       "groupKey": "conversion-tests",
@@ -633,6 +659,22 @@
       "publicationStatus": "public"
     },
     {
+      "title": "Quantum collision",
+      "path": "interactives/conversion-tests/quantum-collision.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Quantum emission",
+      "path": "interactives/conversion-tests/quantum-emission.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
       "title": "Single Image on an Atom",
       "path": "interactives/conversion-tests/single-image-on-atom.json",
       "groupKey": "conversion-tests",
@@ -801,6 +843,22 @@
       "publicationStatus": "public"
     },
     {
+      "title": null,
+      "path": "interactives/models/sam/diffusion/diffusion-build-your-own-mml.json",
+      "groupKey": "models/sam/diffusion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": null,
+      "path": "interactives/models/sam/diffusion/diffusion-sandbox-mml.json",
+      "groupKey": "models/sam/diffusion",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "light2",
       "path": "interactives/public/part1/light/light2.json",
       "groupKey": "public/part1/light",
@@ -961,6 +1019,14 @@
       "publicationStatus": "draft"
     },
     {
+      "title": "page8$1",
+      "path": "interactives/public/part2/newton/page8$1.json",
+      "groupKey": "public/part2/newton",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "page8",
       "path": "interactives/public/part2/newton/page8.json",
       "groupKey": "public/part2/newton",
@@ -1089,6 +1155,14 @@
       "publicationStatus": "draft"
     },
     {
+      "title": "page5$1",
+      "path": "interactives/public/part2/spectroscopy/page5$1.json",
+      "groupKey": "public/part2/spectroscopy",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "page5",
       "path": "interactives/public/part2/spectroscopy/page5.json",
       "groupKey": "public/part2/spectroscopy",
@@ -1125,7 +1199,17 @@
       "path": "interactives/sam/DNA-to-proteins/2-modeling-transcription.json",
       "groupKey": "sam/DNA-to-proteins",
       "subtitle": "",
-      "about": "",
+      "about": [
+        "Click **Prepare for transcription** to zoom in to cell nucleus and separate DNA strands.",
+        "",
+        "Then click on the button representing the correct **complementary** RNA nucleotide to proceed transcription: A, U, G or C.",
+        "",
+        "You can also just proceed step by step using **Proceed one step** button.",
+        "",
+        "**<<** and **>>** buttons can be used to jump quickly between steps.",
+        "",
+        "**Reset** button will bring you back to the beginning."
+      ],
       "publicationStatus": "draft"
     },
     {
@@ -1133,7 +1217,19 @@
       "path": "interactives/sam/DNA-to-proteins/3-modeling-translation.json",
       "groupKey": "sam/DNA-to-proteins",
       "subtitle": "",
-      "about": "",
+      "about": [
+        "Click **Prepare for transcription** to zoom in to cell nucleus and separate DNA strands.",
+        "",
+        "Then click on the **Transcribe** button to trigger complete DNA transcription.",
+        "",
+        "After that you can clikc **Translate** to see amino acids being linked together into a protein.",
+        "",
+        "You can also just proceed step by step using **Proceed one step** button.",
+        "",
+        "**<<** and **>>** buttons can be used to jump quickly between steps.",
+        "",
+        "**Reset** button will bring you back to the beginning."
+      ],
       "publicationStatus": "draft"
     },
     {
@@ -1219,6 +1315,22 @@
       "publicationStatus": "draft"
     },
     {
+      "title": "Diffusion - Build your own model",
+      "path": "interactives/sam/diffusion/diffusion-build-your-own.json",
+      "groupKey": "sam/diffusion",
+      "subtitle": "Explore how size and number of particles affect diffusion among gases.",
+      "about": "Modify the model by adding and arranging molecules in order to explore how diffusion works.",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Diffusion Sandbox",
+      "path": "interactives/sam/diffusion/diffusion-sandbox.json",
+      "groupKey": "sam/diffusion",
+      "subtitle": "Explore how size and number of particles affect diffusion among gases.",
+      "about": "Modify the model by adding and arranging molecules in order to explore how diffusion works.",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "Empty",
       "path": "interactives/sam/diffusion/empty.json",
       "groupKey": "sam/diffusion",
@@ -1252,7 +1364,10 @@
         "",
         "Run the model, then change the volume of the containers and observe the change in pressure.",
         "The moving wall converts the effect of molecular collisions into pressure and acts as a pressure gauge.",
-        "What happens to the pressure when the volume changes?"
+        "What happens to the pressure when the volume changes?",
+        "",
+        "----",
+        "*Note: although the atoms in this model are in a flat plane, volume is calculated using 0.1 nm as the depth of the container.*"
       ],
       "publicationStatus": "public"
     },
@@ -1264,7 +1379,10 @@
       "about": [
         "This model contains gas molecules on the left side and a barrier that moves when the",
         "volume of gas expands or contracts, keeping the pressure constant. Run the model and",
-        "change the temperature. Why does the barrier move when the temperature changes?"
+        "change the temperature. Why does the barrier move when the temperature changes?",
+        "",
+        "----",
+        "*Note: Although the atoms in this model are in a flat plane, volume is calculated using 0.1 nm as the depth of the container.*"
       ],
       "publicationStatus": "public"
     },
@@ -1285,7 +1403,10 @@
         "The model contains gas molecules under constant pressure. The barrier moves when the",
         "volume of gas expands or contracts. Run the model and select different numbers of",
         "molecules from the drop-down menu. What is the relationship between the number of",
-        "molecules and the volume of a gas?"
+        "molecules and the volume of a gas?",
+        "",
+        "----",
+        "*Note: Although the atoms in this model are in a flat plane, volume is calculated using 0.1 nm as the depth of the container.*"
       ],
       "publicationStatus": "public"
     },
@@ -1306,6 +1427,21 @@
         "or changing the temperature? Why?"
       ],
       "publicationStatus": "public"
+    },
+    {
+      "title": "Collapsing Soda Can",
+      "path": "interactives/sam/gas-laws/7b-why-did-the-can-collapse.json",
+      "groupKey": "sam/gas-laws",
+      "subtitle": "Explore how heat and number of molecules affect pressure equilibrium between two gases.",
+      "about": [
+        "The model is an incomplete model of a soda can. ",
+        "Currently it is showing gas molecules inside and outside the soda can before it is plunged in ice water. ",
+        "The rectangle in the middle of the model represents a micro-section of the soda can wall. ",
+        "Design a model that shows what happens after the can is placed in ice water. ",
+        "Use the tools on the sides of the model to more accurately represent the experiment. ",
+        "Use tools to heat and cool the molecules where it is appropriate. "
+      ],
+      "publicationStatus": "draft"
     },
     {
       "title": "Seeing Intermolecular Attractions",
@@ -1564,6 +1700,14 @@
         "Explore the role of hydrophobic and hydrophilic interactions in protein folding. Generate a random peptide string and watch how it folds in an aqueous environment. Change the solvent to see what happens if the peptide is in an oily environment or a vacuum instead of an aqueous environment."
       ],
       "publicationStatus": "public"
+    },
+    {
+      "title": "Sensor",
+      "path": "interactives/sensor/sensor.json",
+      "groupKey": "sensor",
+      "subtitle": "Testing the Sensor model type",
+      "about": "",
+      "publicationStatus": "draft"
     },
     {
       "title": "Signal Generator",
@@ -2646,6 +2790,14 @@
       "publicationStatus": "broken"
     },
     {
+      "title": "pressureconveyance1$1",
+      "path": "interactives/student/fluid/pressureconveyance1$1.json",
+      "groupKey": "student/fluid",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
       "title": "pressureconveyance1",
       "path": "interactives/student/fluid/pressureconveyance1.json",
       "groupKey": "student/fluid",
@@ -2702,6 +2854,14 @@
       "publicationStatus": "draft"
     },
     {
+      "title": "Enclosure$1",
+      "path": "interactives/student/materials/Enclosure$1.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "Enclosure",
       "path": "interactives/student/materials/Enclosure.json",
       "groupKey": "student/materials",
@@ -2724,6 +2884,14 @@
       "subtitle": "",
       "about": "",
       "publicationStatus": "broken"
+    },
+    {
+      "title": "MetallicAlloy$1",
+      "path": "interactives/student/materials/MetallicAlloy$1.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
     },
     {
       "title": "MetallicAlloy",
@@ -2760,6 +2928,14 @@
     {
       "title": "SchottkyDefect",
       "path": "interactives/student/materials/SchottkyDefect.json",
+      "groupKey": "student/materials",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "active_filters$1",
+      "path": "interactives/student/materials/active_filters$1.json",
       "groupKey": "student/materials",
       "subtitle": "",
       "about": "",
@@ -3230,6 +3406,14 @@
       "publicationStatus": "broken"
     },
     {
+      "title": "distill1$1",
+      "path": "interactives/student/motionandforce/distill1$1.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "distill1",
       "path": "interactives/student/motionandforce/distill1.json",
       "groupKey": "student/motionandforce",
@@ -3350,6 +3534,14 @@
       "publicationStatus": "draft"
     },
     {
+      "title": "magneticreverse$1",
+      "path": "interactives/student/motionandforce/magneticreverse$1.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "magneticreverse",
       "path": "interactives/student/motionandforce/magneticreverse.json",
       "groupKey": "student/motionandforce",
@@ -3392,6 +3584,14 @@
     {
       "title": "micelle",
       "path": "interactives/student/motionandforce/micelle.json",
+      "groupKey": "student/motionandforce",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "mixturediffusion$1",
+      "path": "interactives/student/motionandforce/mixturediffusion$1.json",
       "groupKey": "student/motionandforce",
       "subtitle": "",
       "about": "",
@@ -3654,6 +3854,14 @@
       "publicationStatus": "draft"
     },
     {
+      "title": "barostat$1",
+      "path": "interactives/student/stateofmatter/barostat$1.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "barostat",
       "path": "interactives/student/stateofmatter/barostat.json",
       "groupKey": "student/stateofmatter",
@@ -3694,6 +3902,14 @@
       "publicationStatus": "draft"
     },
     {
+      "title": "gasliquid$1",
+      "path": "interactives/student/stateofmatter/gasliquid$1.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "gasliquid",
       "path": "interactives/student/stateofmatter/gasliquid.json",
       "groupKey": "student/stateofmatter",
@@ -3710,8 +3926,24 @@
       "publicationStatus": "draft"
     },
     {
+      "title": "interactionA$1",
+      "path": "interactives/student/stateofmatter/interactionA$1.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "interactionA",
       "path": "interactives/student/stateofmatter/interactionA.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "interactionB$1",
+      "path": "interactives/student/stateofmatter/interactionB$1.json",
       "groupKey": "student/stateofmatter",
       "subtitle": "",
       "about": "",
@@ -3774,8 +4006,24 @@
       "publicationStatus": "draft"
     },
     {
+      "title": "liquidsolid$1",
+      "path": "interactives/student/stateofmatter/liquidsolid$1.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "liquidsolid",
       "path": "interactives/student/stateofmatter/liquidsolid.json",
+      "groupKey": "student/stateofmatter",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "msd$1",
+      "path": "interactives/student/stateofmatter/msd$1.json",
       "groupKey": "student/stateofmatter",
       "subtitle": "",
       "about": "",
@@ -3958,6 +4206,14 @@
       "publicationStatus": "draft"
     },
     {
+      "title": "EllipseInModel$1",
+      "path": "interactives/tutorial/EllipseInModel$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "EllipseInModel",
       "path": "interactives/tutorial/EllipseInModel.json",
       "groupKey": "tutorial",
@@ -3968,6 +4224,14 @@
     {
       "title": "ImageInModel",
       "path": "interactives/tutorial/ImageInModel.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "LineInModel$1",
+      "path": "interactives/tutorial/LineInModel$1.json",
       "groupKey": "tutorial",
       "subtitle": "",
       "about": "",
@@ -4062,6 +4326,14 @@
       "publicationStatus": "draft"
     },
     {
+      "title": "RectangleInModel$1",
+      "path": "interactives/tutorial/RectangleInModel$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "RectangleInModel",
       "path": "interactives/tutorial/RectangleInModel.json",
       "groupKey": "tutorial",
@@ -4112,6 +4384,14 @@
     {
       "title": "TextBoxInModel",
       "path": "interactives/tutorial/TextBoxInModel.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "TriangleInModel$1",
+      "path": "interactives/tutorial/TriangleInModel$1.json",
       "groupKey": "tutorial",
       "subtitle": "",
       "about": "",
@@ -4182,6 +4462,14 @@
       "publicationStatus": "draft"
     },
     {
+      "title": "barostat$1",
+      "path": "interactives/tutorial/barostat$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "barostat",
       "path": "interactives/tutorial/barostat.json",
       "groupKey": "tutorial",
@@ -4246,6 +4534,14 @@
       "publicationStatus": "draft"
     },
     {
+      "title": "dropAction$1",
+      "path": "interactives/tutorial/dropAction$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "dropAction",
       "path": "interactives/tutorial/dropAction.json",
       "groupKey": "tutorial",
@@ -4272,6 +4568,14 @@
     {
       "title": "gas",
       "path": "interactives/tutorial/gas.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "h2o$1",
+      "path": "interactives/tutorial/h2o$1.json",
       "groupKey": "tutorial",
       "subtitle": "",
       "about": "",
@@ -4312,6 +4616,14 @@
     {
       "title": "h2o_spark",
       "path": "interactives/tutorial/h2o_spark.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "heatbath$1",
+      "path": "interactives/tutorial/heatbath$1.json",
       "groupKey": "tutorial",
       "subtitle": "",
       "about": "",
@@ -4422,6 +4734,14 @@
       "publicationStatus": "draft"
     },
     {
+      "title": "insertSlider$1",
+      "path": "interactives/tutorial/insertSlider$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "insertSlider",
       "path": "interactives/tutorial/insertSlider.json",
       "groupKey": "tutorial",
@@ -4440,6 +4760,14 @@
     {
       "title": "instrument",
       "path": "interactives/tutorial/instrument.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "intrapage$1",
+      "path": "interactives/tutorial/intrapage$1.json",
       "groupKey": "tutorial",
       "subtitle": "",
       "about": "",
@@ -4504,6 +4832,14 @@
     {
       "title": "liquid",
       "path": "interactives/tutorial/liquid.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "magneticreverse$1",
+      "path": "interactives/tutorial/magneticreverse$1.json",
       "groupKey": "tutorial",
       "subtitle": "",
       "about": "",
@@ -4620,6 +4956,14 @@
       "subtitle": "",
       "about": "",
       "publicationStatus": "draft"
+    },
+    {
+      "title": "periodic$1",
+      "path": "interactives/tutorial/periodic$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
     },
     {
       "title": "periodic",
@@ -4846,8 +5190,24 @@
       "publicationStatus": "draft"
     },
     {
+      "title": "script_external$1",
+      "path": "interactives/tutorial/script_external$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "script_external",
       "path": "interactives/tutorial/script_external.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_external2$1",
+      "path": "interactives/tutorial/script_external2$1.json",
       "groupKey": "tutorial",
       "subtitle": "",
       "about": "",
@@ -4910,8 +5270,24 @@
       "publicationStatus": "draft"
     },
     {
+      "title": "script_lap$1",
+      "path": "interactives/tutorial/script_lap$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "script_lap",
       "path": "interactives/tutorial/script_lap.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_lat$1",
+      "path": "interactives/tutorial/script_lat$1.json",
       "groupKey": "tutorial",
       "subtitle": "",
       "about": "",
@@ -4984,6 +5360,14 @@
     {
       "title": "script_mvd",
       "path": "interactives/tutorial/script_mvd.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_pcf$1",
+      "path": "interactives/tutorial/script_pcf$1.json",
       "groupKey": "tutorial",
       "subtitle": "",
       "about": "",
@@ -5078,6 +5462,14 @@
       "publicationStatus": "broken"
     },
     {
+      "title": "script_tcf$1",
+      "path": "interactives/tutorial/script_tcf$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "script_tcf",
       "path": "interactives/tutorial/script_tcf.json",
       "groupKey": "tutorial",
@@ -5088,6 +5480,14 @@
     {
       "title": "script_traj",
       "path": "interactives/tutorial/script_traj.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "script_variable$1",
+      "path": "interactives/tutorial/script_variable$1.json",
       "groupKey": "tutorial",
       "subtitle": "",
       "about": "",
@@ -5126,8 +5526,24 @@
       "publicationStatus": "draft"
     },
     {
+      "title": "singlecontrol$1",
+      "path": "interactives/tutorial/singlecontrol$1.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "singlecontrol",
       "path": "interactives/tutorial/singlecontrol.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "singleslider$1",
+      "path": "interactives/tutorial/singleslider$1.json",
       "groupKey": "tutorial",
       "subtitle": "",
       "about": "",
@@ -5168,6 +5584,14 @@
     {
       "title": "tearapart",
       "path": "interactives/tutorial/tearapart.json",
+      "groupKey": "tutorial",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "toolbar$1",
+      "path": "interactives/tutorial/toolbar$1.json",
       "groupKey": "tutorial",
       "subtitle": "",
       "about": "",
@@ -5366,6 +5790,11 @@
     {
       "path": "signal-generator",
       "name": "Signal Generator Interactives",
+      "category": "Tests"
+    },
+    {
+      "path": "sensor",
+      "name": "Sensor Interactives",
       "category": "Tests"
     },
     {

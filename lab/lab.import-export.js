@@ -405,27 +405,26 @@ var requirejs, require, define;
     };
 }());
 
-define("../vendor/almond/almond", function(){});
+define("../../vendor/almond/almond", function(){});
 
 /*global define: false */
 
-define('common/actual-root',['require'],function (require) {
-  // Dependencies.
-  var staticResourceMatch = new RegExp("(\\/.*?)\\/(doc|examples|experiments)(\\/\\w+)*?\\/\\w+\\.html"),
-      // String to be returned.
-      value;
+define('common/actual-root',[],function () {
+  var newPattern = /^(\/.+?\/)(interactives|embeddable)\.html$/,
 
-  function actualRoot() {
-    var match = document.location.pathname.match(staticResourceMatch);
-    if (match && match[1]) {
-      return match[1]
-    } else {
-      return ""
-    }
+      // For legacy code, if any, that (a) uses actualRoot and (b) isn't in an interactive
+      // (Not folded into the same regex as newPattern for the sake of readability. Note the regexes
+      // are only matched against one time.)
+      oldPattern = /(\/.+?\/)(doc|examples|experiments)(\/\w+)*?\/\w+\.html/,
+      match;
+
+  match = document.location.pathname.match(newPattern);
+  if (match && match[1]) {
+    return match[1];
   }
 
-  value = actualRoot();
-  return value;
+  match = document.location.pathname.match(oldPattern);
+  return match && match[1] || "/";
 });
 
 // this file is generated during build process by: ./script/generate-js-config.rb
@@ -440,7 +439,7 @@ define('lab.config',['require','common/actual-root'],function (require) {
   "homeEmbeddablePath": "/embeddable.html",
   "utmCampaign": null,
   "fontface": "Lato",
-  "hostName": "lab4.dev.concord.org",
+  "hostName": "lab.dev.concord.org",
   "dataGamesProxyPrefix": "DataGames/Games/concord/lab/",
   "logging": true,
   "tracing": false,

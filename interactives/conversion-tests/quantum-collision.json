@@ -1,0 +1,101 @@
+{
+  "title": "Quantum collision",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "id": "quantum-collision",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/quantum-collision$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "showClock": true
+      },
+      "onLoad": [
+        "onPropertyChange('initialVelocityInMKS', function() {",
+        "  var vx = get('initialVelocity');",
+        "  var vxInMKS = get('initialVelocityInMKS');",
+        "  reset();",
+        "  set('initialVelocity', vx);",
+        "  setTextBoxProperties(0,{text: 'initial speed= ' + vxInMKS + ' m/s'});",
+        "});"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "initialVelocity",
+      "unitType": "velocity",
+      "onChange": "setAtomProperties(1, { vx: value });",
+      "initialValue": 0
+    },
+    {
+      "name": "initialVelocityInMKS",
+      "onChange": "set('initialVelocity', get('initialVelocityInMKS') * 1e-6);",
+      "initialValue": 500
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "v-slider",
+      "min": 500,
+      "max": 5000,
+      "labels": [
+        {
+          "value": 500,
+          "label": "slow"
+        },
+        {
+          "value": 5000,
+          "label": "fast"
+        }
+      ],
+      "steps": 30,
+      "title": "Starting velocity",
+      "property": "initialVelocityInMKS"
+    },
+    {
+      "type": "graph",
+      "id": "graph",
+      "title": "Total Energy of the System",
+      "xlabel": "Model Time (fs)",
+      "ylabel": "eV",
+      "ymin": 0,
+      "ymax": 7,
+      "xmax": 6000,
+      "xTickCount": 5,
+      "yTickCount": 5,
+      "xFormatter": "2s",
+      "yFormatter": "2s",
+      "properties": [
+        "totalEnergy"
+      ]
+    }
+  ],
+  "layout": {
+    "right": [
+      "graph"
+    ]
+  },
+  "template": [
+    {
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "height": "model.height",
+      "padding-left": "1em",
+      "padding-right": "0.5em",
+      "width": "model.width",
+      "min-width": "6em"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "padding-top": "0.5em",
+      "align": "center"
+    }
+  ]
+}

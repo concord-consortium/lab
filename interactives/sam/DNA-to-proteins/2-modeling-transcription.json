@@ -2,7 +2,17 @@
   "title": "Modeling Transcription",
   "publicationStatus": "draft",
   "subtitle": "",
-  "about": "",
+  "about": [
+    "Click **Prepare for transcription** to zoom in to cell nucleus and separate DNA strands.",
+    "",
+    "Then click on the button representing the correct **complementary** RNA nucleotide to proceed transcription: A, U, G or C.",
+    "",
+    "You can also just proceed step by step using **Proceed one step** button.",
+    "",
+    "**<<** and **>>** buttons can be used to jump quickly between steps.",
+    "",
+    "**Reset** button will bring you back to the beginning."
+  ],
   "fontScale": 0.8,
   "models": [
     {
@@ -13,46 +23,20 @@
         "enableKeyboardHandlers": false
       },
       "modelOptions": {
-        "DNA": "ATGTTGACTCTAACTCGCATCCGCACTGTG"
+        "DNA": "ATGTTGACTCTAACTCGCATCCGCACTGTG",
+        "geneticEngineState": "intro-cells"
       }
     }
   ],
   "components": [
     {
       "type": "button",
-      "id": "edit-dna",
-      "text": "Edit DNA",
-      "action": "openDNADialog();"
-    },
-    {
-      "type": "button",
-      "id": "intro",
-      "text": "Play DNA intro",
-      "action": "playDNAIntro();"
-    },
-    {
-      "type": "button",
-      "id": "transcribe",
-      "text": "Transcribe",
-      "action": "transcribe();"
-    },
-    {
-      "type": "button",
-      "id": "transcribe-step",
-      "text": "Transcribe step by step",
-      "action": "transcribeStep();"
-    },
-    {
-      "type": "button",
-      "id": "separate",
-      "text": "Separate the strands of DNA",
-      "action": "separateDNA();"
-    },
-    {
-      "type": "button",
-      "id": "reset",
-      "text": "Reset",
-      "action": "reset();"
+      "id": "begin",
+      "text": "Prepare for transcription",
+      "action": [
+        "set('geneticEngineState', 'intro-cells');",
+        "dnaAnimationTo('transcription:0');"
+      ]
     },
     {
       "type": "button",
@@ -77,12 +61,67 @@
       "id": "transcribeU",
       "text": "U",
       "action": "transcribeStep('U');"
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": "reset();"
+    },
+    {
+      "type": "button",
+      "id": "prev-state-jump",
+      "text": "<<",
+      "action": "dnaJumpToPrevState();"
+    },
+    {
+      "type": "button",
+      "id": "next-state",
+      "text": "Proceed one step",
+      "action": "dnaAnimateToNextState();"
+    },
+    {
+      "type": "button",
+      "id": "next-state-jump",
+      "text": ">>",
+      "action": "if (get('geneticEngineState') !== 'transcription-end') dnaJumpToNextState();"
+    },
+    {
+      "type": "text",
+      "id": "label1A",
+      "text": "Click"
+    },
+    {
+      "type": "text",
+      "id": "label1B",
+      "text": "to zoom in to cell nucleus and separate DNA strands."
+    },
+    {
+      "type": "text",
+      "id": "label2",
+      "text": "Then click on the button representing the correct **complementary** RNA nucleotide to proceed transcription:"
+    }
+  ],
+  "template": [
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "interactive.width",
+      "padding-top": "0.5em"
+    },
+    {
+      "id": "bottom-2",
+      "top": "bottom.bottom",
+      "width": "interactive.width",
+      "padding-top": "1em"
     }
   ],
   "layout": {
     "bottom": [
-      ["edit-dna", "reset", "intro", "transcribe", "transcribe-step"],
-      ["separate", "transcribeA", "transcribeU", "transcribeG", "transcribeC"]
-    ]
+      ["label1A", "begin", "label1B"],
+      ["label2"],
+      ["transcribeA", "transcribeU", "transcribeG", "transcribeC"]
+    ],
+    "bottom-2": ["reset", "prev-state-jump", "next-state", "next-state-jump"]
   }
 }

@@ -126,6 +126,27 @@
     "pinned": [
       0,
       0
+    ],
+    "excitation": [
+      0,
+      0
     ]
+  },
+  "quantumDynamics": {
+    "elementEnergyLevels": [
+      [
+        -0.0003859411998506511,
+        -0.00007718823514586523
+      ],
+      [],
+      [
+        -0.003859411998506511,
+        -0.00004824264998133139
+      ],
+      [],
+      []
+    ],
+    "photons": {},
+    "radiationlessEmissionProbability": 1
   }
 }

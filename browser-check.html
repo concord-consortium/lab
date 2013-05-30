@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html;charset=utf-8' http-equiv='Content-Type'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <title>Check Browser and OS</title>
+    <script src='vendor/modernizr/modernizr.js' type='text/javascript'></script>
+    <script type='text/javascript'>
+      if (!Modernizr.svg) { window.location = 'browser-upgrade.html'; }
+    </script>
+    <script src='vendor/d3/d3.js' type='text/javascript'></script>
+    <script src='vendor/jquery/jquery.min.js' type='text/javascript'></script>
+    <script src='lab/lab.js' type='text/javascript'></script>
+    <link href='index.css' rel='stylesheet' type='text/css'>
+    <style>
+      #content {
+        font: 12px sans-serif;
+        margin: 0.5em 1.0em; }
+      h1.category {
+        font-size: 1.2em;
+        color: black;
+        font-weight: bold; }
+      dl {
+        margin-bottom: 2em; }
+      dl dt {
+          background:#5f9be3;
+          color:#fff;
+          float:left;
+          font-weight:bold;
+          margin-right:1em;
+          padding: 0.5em;
+          width: 12em; }
+      dl dd {
+          margin: 0.2em 0em;
+          padding: 0.5em 0em; }
+      ul {
+        font-size: 1.1em;
+        font-weight: bold;
+        list-style-type: none;
+        margin: 0.5em 0em 0.5em 0em; }
+        ul li {
+          font-size: 1.0em;
+          font-weight: normal;
+          margin:  0.2em 0.0em;
+          padding: 0.5em 1.0em; }
+    </style>
+    
+    <link href='http://fonts.googleapis.com/css?family=Lato:300italic,700italic,300,400,400italic,700' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <div id='header'>
+      <a href='http://www.concord.org/' id='logo'>
+        <img src='resources/layout/cc-logo.png'>
+      </a>
+      <div class='row'>
+        <h1><a href='index.html'>Lab</a>:
+        <a href='browser-check.html'>Browser Check</a></h1>
+      </div>
+    </div>
+    <div id='content'>
+      <h2>
+        This browser will work with the Lab framework.
+      </h2>
+    </div>
+    <script>
+      var browser_data = benchmark.what_browser();
+      var browser_parts = [];
+      var navigator_parts = [];
+      for (var key in browser_data) { browser_parts.push([key, browser_data[key]]) };
+      for (var key in navigator) { navigator_parts.push([key, navigator[key]]) };
+      var data = [
+        ["Browser and OS", browser_parts],
+        ["Navigator Object Data", navigator_parts]
+      ];
+      
+      var collection = d3.select("#content").selectAll("div")
+          .data(data).enter().append("div")
+            .attr("class", "collection")
+      
+      collection.append("h1.category").text(function(d) { return d[0] });
+      
+      var terms = collection.append("dl").selectAll("div")
+          .data(function(d) { return d[1] })
+        .enter().append("div")
+          .attr("class", "collection");
+      
+      terms.each(function(d, i) {
+        var term = d3.select(this);
+        term.append("dt")
+          .text(function(d) { return d[0] });
+        term.append("dd")
+          .text(function(d) { return d[1] || "na" });
+      });
+    </script>
+  </body>
+</html>
