@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "b978dece425cbe9b7270985a06d69b3d3c0d76a2",
-        "short_sha":      "b978dece",
-        "url":            "https://github.com/concord-consortium/lab/commit/b978dece",
-        "author":        "Stephen Bannasch",
-        "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-05-30 09:33:22 -0400",
-        "short_message": "finish fixing script/gh-pages.sh",
-        "message":       "finish fixing script/gh-pages.sh"
+        "sha":           "fcdf2a19f7886e18518616618aef59a66cbe1bc0",
+        "short_sha":      "fcdf2a19",
+        "url":            "https://github.com/concord-consortium/lab/commit/fcdf2a19",
+        "author":        "Piotr Janik",
+        "email":         "janikpiotrek@gmail.com",
+        "date":          "2013-05-30 12:47:08 -0400",
+        "short_message": "Limit pointer cursor on nucleotides hover only to coding region",
+        "message":       "Limit pointer cursor on nucleotides hover only to coding region\n\n[#41660503]"
       },
       "dirty": false
     }

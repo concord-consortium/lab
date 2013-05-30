@@ -21865,6 +21865,8 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
       ],
       STATE_INDEX = {},
 
+      NUCLEO_LAST_ID = 0,
+
       PROMOTER_SEQ   = "TGACCTCTCCGCGCCATCTATAAACCGAAGCGCTAGCTACA",
       TERMINATOR_SEQ = "ACCACAGGCCGCCAGTTCCGCTGGCGGCATTTT",
       JUNK_SEQ;
@@ -21901,6 +21903,10 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
     };
   }
 
+  function getNucleoID() {
+    return NUCLEO_LAST_ID++;
+  }
+
   (function () {
     var i, len;
     for (i = 0, len = STATES.length; i < len; i++) {
@@ -21920,6 +21926,13 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
         // Complete mRNA based on current DNA. Useful for codon() method,
         // which needs to know the whole sequence in advance.
         mRNA = "",
+
+        // Array of nucleotides. Each nucleotide is defined by:
+        // type - letter (A, T, G, C),
+        // idx - its position,
+        // id - unique id.
+        DNANucleotides = [],
+        DNACompNucleotides = [],
 
         dispatch = d3.dispatch("change", "transition"),
 
@@ -21947,6 +21960,19 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
           }
         },
 
+        generateNucleotides = function (array, seq) {
+          var i, len, nucleo;
+          // Set size of the existing array to the size of new DNA string.
+          array.length = seq.length;
+          for (i = 0, len = seq.length; i < len; i++) {
+            nucleo = array[i] || {}; // reuse existing objects.
+            nucleo.id   = getNucleoID();
+            nucleo.idx  = i;
+            nucleo.type = seq[i];
+            array[i] = nucleo;
+          }
+        },
+
         validateDNA = function (DNA) {
           // Allow user to use both lower and upper case.
           DNA = DNA.toUpperCase();
@@ -21958,11 +21984,18 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
         },
 
         updateGeneticProperties = function () {
-          var DNA = model.get("DNA");
+          var DNA = model.get("DNA"),
+              DNAComp;
 
           validateDNA(DNA);
-          model.set("DNAComplement", complementarySequence(DNA));
+          generateNucleotides(DNANucleotides, DNA);
+
+          DNAComp = complementarySequence(DNA);
+          generateNucleotides(DNACompNucleotides, DNAComp);
+          model.set("DNAComplement", DNAComp);
+
           calculatemRNA();
+          // TODO generate mRNA nucleotides (limit GC!)
 
           // Update model's mRNA property.
           if (api.stateBefore("transcription:0")) {
@@ -22363,6 +22396,14 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
           }
         }
         return result;
+      },
+
+      DNANucleotides: function () {
+        return DNANucleotides;
+      },
+
+      DNACompNucleotides: function () {
+        return DNACompNucleotides;
       },
 
       /**
@@ -27137,7 +27178,7 @@ CSS style definition: sass/lab/_context-menu.sass
   define('cs!md2d/views/aminoacid-context-menu',['require','cs!md2d/models/aminoacids-helper'],function(require) {
     var HYDROPHILIC_CAT_CLASS, HYDROPHILIC_CLASS, HYDROPHOBIC_CAT_CLASS, HYDROPHOBIC_CLASS, MARKED_CLASS, MENU_CLASS, NEG_CHARGE_CLASS, POS_CHARGE_CLASS, aminoacids, showCategory;
     aminoacids = require('cs!md2d/models/aminoacids-helper');
-    MENU_CLASS = "aminoacids-menu lab-contextmenu";
+    MENU_CLASS = "aminoacids-menu";
     HYDROPHOBIC_CLASS = "hydrophobic";
     HYDROPHOBIC_CAT_CLASS = "hydrophobic-category";
     HYDROPHILIC_CLASS = "hydrophilic";
@@ -27627,7 +27668,9 @@ define('md2d/views/nucleotides',['require','md2d/views/nucleotide-paths'],functi
         nucleoSVG.append("path").attr({
           "class": "letter",
           "fill-rule": "evenodd",
-          "clip-rule": "evenodd"
+          "clip-rule": "evenodd",
+          "d": function (d) { return nucleotidePaths.letter[d.type][direction]; }
+
         });
         if (backbone) {
           nucleoEnter.append("image").attr({
@@ -27696,11 +27739,13 @@ define('md2d/views/nucleotides',['require','md2d/views/nucleotide-paths'],functi
           nucleoTrans.select("g.scale").attrTween("transform", function(d, i, a) {
             return d3.interpolateString(a, targetScale);
           });
-          // Letters. We can use transition as d3.interpolator creates some
-          // results which can't be parsed.
-          nucleoTrans.each("start", function () {
-            nucleo.select("path.letter")
-              .attr("d", function (d) { return nucleotidePaths.letter[d.type][direction]; });
+          // Letters. Default d3 interpolator creates some
+          // results which can't be parsed. Use custom interpolator,
+          // which changes letters in the middle of transition.
+          nucleoTrans.select("path.letter").attrTween("d", function (d, i, a) {
+            return function(t) {
+              return t < 0.5 ? a : nucleotidePaths.letter[d.type][direction];
+            };
           });
         } else {
           // The same operations, but without using transition.
@@ -27796,6 +27841,7 @@ CSS style definition: sass/lab/_context-menu.sass
 
 
 (function() {
+  var __hasProp = {}.hasOwnProperty;
 
   define('cs!md2d/views/mutations-context-menu',['require'],function(require) {
     return {
@@ -27807,72 +27853,68 @@ CSS style definition: sass/lab/_context-menu.sass
       */
 
       register: function(selector, model, DNAComplement) {
+        var substCallback;
+        substCallback = function(key, options) {
+          var d;
+          d = d3.select(options.$trigger[0]).datum();
+          return model.geneticEngine().mutate(d.idx, key, DNAComplement);
+        };
         $.contextMenu("destroy", selector);
         return $.contextMenu({
           selector: selector,
           appendTo: "#responsive-content",
-          className: "mutations-menu lab-contextmenu",
-          animation: {
-            show: "show",
-            hide: "hide"
-          },
-          callback: function(key, options) {
-            var d;
-            d = d3.select(options.$trigger[0]).datum();
-            return model.geneticEngine().mutate(d.idx, key, DNAComplement);
-          },
-          position: function(opt, x, y) {
-            var $win, bottom, height, offset, right, triggerIsFixed, width;
-            $win = $(window);
-            if (!x && !y) {
-              opt.determinePosition.call(this, opt.$menu);
-              return;
-            } else if (x === "maintain" && y === "maintain") {
-              offset = opt.$menu.position();
-            } else {
-              triggerIsFixed = opt.$trigger.parents().andSelf().filter(function() {
-                return $(this).css('position') === "fixed";
-              }).length;
-              if (triggerIsFixed) {
-                y -= $win.scrollTop();
-                x -= $win.scrollLeft();
+          className: "mutations-menu",
+          trigger: "left",
+          events: {
+            show: function(options) {
+              var item, key, subsItems, type;
+              type = d3.select(options.$trigger[0]).datum().type;
+              subsItems = options.items["Substitution"].items;
+              for (key in subsItems) {
+                if (!__hasProp.call(subsItems, key)) continue;
+                item = subsItems[key];
+                item.$node.addClass("" + type + "-to-" + key);
               }
-              offset = {
-                top: y,
-                left: x
-              };
+              return true;
+            },
+            hide: function(options) {
+              var item, key, subsItems, type;
+              type = d3.select(options.$trigger[0]).datum().type;
+              subsItems = options.items["Substitution"].items;
+              for (key in subsItems) {
+                if (!__hasProp.call(subsItems, key)) continue;
+                item = subsItems[key];
+                item.$node.removeClass("" + type + "-to-" + key);
+              }
+              return true;
             }
-            bottom = $win.scrollTop() + $win.height();
-            right = $win.scrollLeft() + $win.width();
-            /*
-                    !!! Workaround for the correct positioning:
-                    Use scrollHeight / scrollWidth as these functions return correct height / width
-                    in contrast to opt.$menu.height() / opt.$menu.width().
-            */
-
-            height = opt.$menu[0].scrollHeight;
-            width = opt.$menu[0].scrollWidth;
-            if (offset.top + height > bottom) {
-              offset.top -= height;
-            }
-            if (offset.left + width > right) {
-              offset.left -= width;
-            }
-            offset.left += 1;
-            return opt.$menu.css(offset);
           },
           items: {
-            "A": {
-              name: "-> A"
-            },
-            "T": {
-              name: "-> T"
-            },
-            "G": {
-              name: "-> G"
-            },
-            "C": {
-              name: "-> C"
+            "Substitution": {
+              name: "Substitution mutation",
+              className: "submenu",
+              items: {
+                "A": {
+                  name: "",
+                  callback: substCallback,
+                  className: "submenu-item"
+                },
+                "T": {
+                  name: "",
+                  callback: substCallback,
+                  className: "submenu-item"
+                },
+                "G": {
+                  name: "",
+                  callback: substCallback,
+                  className: "submenu-item"
+                },
+                "C": {
+                  name: "",
+                  callback: substCallback,
+                  className: "submenu-item"
+                }
+              }
             }
           }
         });

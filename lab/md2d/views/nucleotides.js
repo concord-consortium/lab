@@ -145,7 +145,9 @@ define(function (require) {
         nucleoSVG.append("path").attr({
           "class": "letter",
           "fill-rule": "evenodd",
-          "clip-rule": "evenodd"
+          "clip-rule": "evenodd",
+          "d": function (d) { return nucleotidePaths.letter[d.type][direction]; }
+
         });
         if (backbone) {
           nucleoEnter.append("image").attr({
@@ -214,11 +216,13 @@ define(function (require) {
           nucleoTrans.select("g.scale").attrTween("transform", function(d, i, a) {
             return d3.interpolateString(a, targetScale);
           });
-          // Letters. We can use transition as d3.interpolator creates some
-          // results which can't be parsed.
-          nucleoTrans.each("start", function () {
-            nucleo.select("path.letter")
-              .attr("d", function (d) { return nucleotidePaths.letter[d.type][direction]; });
+          // Letters. Default d3 interpolator creates some
+          // results which can't be parsed. Use custom interpolator,
+          // which changes letters in the middle of transition.
+          nucleoTrans.select("path.letter").attrTween("d", function (d, i, a) {
+            return function(t) {
+              return t < 0.5 ? a : nucleotidePaths.letter[d.type][direction];
+            };
           });
         } else {
           // The same operations, but without using transition.
