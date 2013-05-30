@@ -23,6 +23,8 @@ define(function (require) {
       ],
       STATE_INDEX = {},
 
+      NUCLEO_LAST_ID = 0,
+
       PROMOTER_SEQ   = "TGACCTCTCCGCGCCATCTATAAACCGAAGCGCTAGCTACA",
       TERMINATOR_SEQ = "ACCACAGGCCGCCAGTTCCGCTGGCGGCATTTT",
       JUNK_SEQ;
@@ -59,6 +61,10 @@ define(function (require) {
     };
   }
 
+  function getNucleoID() {
+    return NUCLEO_LAST_ID++;
+  }
+
   (function () {
     var i, len;
     for (i = 0, len = STATES.length; i < len; i++) {
@@ -78,6 +84,13 @@ define(function (require) {
         // Complete mRNA based on current DNA. Useful for codon() method,
         // which needs to know the whole sequence in advance.
         mRNA = "",
+
+        // Array of nucleotides. Each nucleotide is defined by:
+        // type - letter (A, T, G, C),
+        // idx - its position,
+        // id - unique id.
+        DNANucleotides = [],
+        DNACompNucleotides = [],
 
         dispatch = d3.dispatch("change", "transition"),
 
@@ -105,6 +118,19 @@ define(function (require) {
           }
         },
 
+        generateNucleotides = function (array, seq) {
+          var i, len, nucleo;
+          // Set size of the existing array to the size of new DNA string.
+          array.length = seq.length;
+          for (i = 0, len = seq.length; i < len; i++) {
+            nucleo = array[i] || {}; // reuse existing objects.
+            nucleo.id   = getNucleoID();
+            nucleo.idx  = i;
+            nucleo.type = seq[i];
+            array[i] = nucleo;
+          }
+        },
+
         validateDNA = function (DNA) {
           // Allow user to use both lower and upper case.
           DNA = DNA.toUpperCase();
@@ -116,11 +142,18 @@ define(function (require) {
         },
 
         updateGeneticProperties = function () {
-          var DNA = model.get("DNA");
+          var DNA = model.get("DNA"),
+              DNAComp;
 
           validateDNA(DNA);
-          model.set("DNAComplement", complementarySequence(DNA));
+          generateNucleotides(DNANucleotides, DNA);
+
+          DNAComp = complementarySequence(DNA);
+          generateNucleotides(DNACompNucleotides, DNAComp);
+          model.set("DNAComplement", DNAComp);
+
           calculatemRNA();
+          // TODO generate mRNA nucleotides (limit GC!)
 
           // Update model's mRNA property.
           if (api.stateBefore("transcription:0")) {
@@ -521,6 +554,14 @@ define(function (require) {
           }
         }
         return result;
+      },
+
+      DNANucleotides: function () {
+        return DNANucleotides;
+      },
+
+      DNACompNucleotides: function () {
+        return DNACompNucleotides;
       },
 
       /**

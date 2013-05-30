@@ -46,6 +46,22 @@ describe "GeneticEngine", ->
         mock.changeListener.callCount.should.eql 1
         mock.transitionListener.callCount.should.eql 0
 
+      it "should calculate nucleotides arrays for DNA and DNA Complement", ->
+        check = (d, idx, type) ->
+          d[idx].idx.should.eql idx
+          d[idx].type.should.eql type
+
+        d = geneticEngine.DNANucleotides()
+        check d, 0, "A"
+        check d, 1, "T"
+        check d, 2, "G"
+        check d, 3, "C"
+        d = geneticEngine.DNACompNucleotides()
+        check d, 0, "T"
+        check d, 1, "A"
+        check d, 2, "C"
+        check d, 3, "G"
+
       it "should calculate mRNA when state is set to 'transcription-end' or 'translation'", ->
         model.set "geneticEngineState", "transcription-end"
         model.get("mRNA").should.eql "AUGC"
