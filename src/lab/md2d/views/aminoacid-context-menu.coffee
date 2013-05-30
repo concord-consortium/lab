@@ -10,7 +10,7 @@ define (require) ->
   aminoacids = require 'cs!md2d/models/aminoacids-helper'
 
   # Classes for styling. Note that CSS is used for styling, see header.
-  MENU_CLASS = "aminoacids-menu lab-contextmenu"
+  MENU_CLASS = "aminoacids-menu"
   HYDROPHOBIC_CLASS = "hydrophobic"
   HYDROPHOBIC_CAT_CLASS = "hydrophobic-category"
   HYDROPHILIC_CLASS = "hydrophilic"

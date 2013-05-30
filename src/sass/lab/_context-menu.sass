@@ -1,61 +1,120 @@
-.lab-contextmenu
-  // "min-width": "9em" is a workaround... However elements of this menu aren't dynamic,
-  // so we can use it. Without that hack width is always set to 120px by the jquery.contextMenu
-  // library. We are dynamically scaling font, so this was causing problems and text truncation.
-  min-width: 9em
-  font-size: 0.9em
-  font-family: inherit
-  border: none
+// Mixin for icons.
+@mixin icon-bg($url, $position, $size)
+  background-repeat: no-repeat
+  background-position: $position
+  background-size: auto $size
+  background-image: url($url)
 
-.mutations-menu
-  min-width: 5em
+// Overwrite default jQuery.contextMenu style.
+#responsive-content
+  .context-menu-list
+    min-width: 5em
+    max-width: 20em
+    font-size: 0.9em
+    font-family: inherit
+    border: none
 
-.aminoacids-menu
-  // Each option in context menu (one row).
-  li
-    padding: 0 0 0 19%
+  .context-menu-submenu:after
+    // Original jQuery.contextMenu CSS isn't prepared for responsive layout.
+    top: 0.35em
 
-  li:hover
-    font-weight: bold
+  // ### Mutations menu (visible during DNA animation)
+  .mutations-menu
+    // Top-level menu
+    min-width: 11em
+    border-radius: 0.7em
 
-  // Mixin for icons.
-  @mixin icon-bg($url, $position, $size)
-    background-repeat: no-repeat
-    background-position: $position
-    background-size: auto $size
-    background-image: url($url)
+    .context-menu-list
+      // Submenu
+      min-width: 6em
+      border-radius: 0.7em
 
-  // Style of options:
-  .pos-charge
-    @include icon-bg("#{$directory}/resources/plus.svg", 2%, 90%)
-  .neg-charge
-    @include icon-bg("#{$directory}/resources/minus.svg", 2%, 90%)
+    .context-menu-item
+      border-radius: 0.7em
+      padding: 0.35em 1em
 
-  .hydrophobic
-    background-color: #f3c35d
-  .hydrophobic.marked
-    background-color: #ffe64b
+    .submenu-item
+      // Note that as labels are empty (only background is displayed), padding
+      // and min-width is used to define size of this submenu items.
+      padding: 1.2em
 
-  .hydrophilic
-    background-color: #9dc278
-  .hydrophilic.marked
-    background-color: #bee299
+    .A-to-A
+      display: none
+    .A-to-T
+      @include icon-bg("resources/dna/A-to-T.svg", 50%, 75%)
+    .A-to-G
+      @include icon-bg("resources/dna/A-to-G.svg", 50%, 75%)
+    .A-to-C
+      @include icon-bg("resources/dna/A-to-C.svg", 50%, 75%)
 
-  .hydrophobic-category
-    font-size: 1.1em
-    font-weight: bold
-    padding: 2% 0 2% 14%
-    background-color: #E0A21B
-    @include icon-bg("#{$directory}/resources/col.svg", 4%, 40%)
+    .C-to-C
+      display: none
+    .C-to-T
+      @include icon-bg("resources/dna/C-to-T.svg", 50%, 75%)
+    .C-to-G
+      @include icon-bg("resources/dna/C-to-G.svg", 50%, 75%)
+    .C-to-A
+      @include icon-bg("resources/dna/C-to-A.svg", 50%, 75%)
 
-  .hydrophilic-category
-    font-size: 1.1em
-    font-weight: bold
-    padding: 2% 0 2% 14%
-    background-color: #75a643
-    @include icon-bg("#{$directory}/resources/col.svg", 4%, 40%)
+    .G-to-G
+      display: none
+    .G-to-T
+      @include icon-bg("resources/dna/G-to-T.svg", 50%, 75%)
+    .G-to-C
+      @include icon-bg("resources/dna/G-to-C.svg", 50%, 75%)
+    .G-to-A
+      @include icon-bg("resources/dna/G-to-A.svg", 50%, 75%)
 
-  // Expanded category style.
-  .expanded
-    @include icon-bg("#{$directory}/resources/exp.svg", 4%, 40%)
+    .T-to-T
+      display: none
+    .T-to-G
+      @include icon-bg("resources/dna/T-to-G.svg", 50%, 75%)
+    .T-to-C
+      @include icon-bg("resources/dna/T-to-C.svg", 50%, 75%)
+    .T-to-A
+      @include icon-bg("resources/dna/T-to-A.svg", 50%, 75%)
+
+  // ### Amino-acids menu (used to change type of the amino acid)
+  .aminoacids-menu
+    min-width: 9em
+    // Each option in context menu (one row).
+    .context-menu-item
+      padding: 0 0 0 19%
+
+    .context-menu-item:hover
+      font-weight: bold
+
+    // Style of options:
+    .pos-charge
+      @include icon-bg("#{$directory}/resources/plus.svg", 2%, 90%)
+    .neg-charge
+      @include icon-bg("#{$directory}/resources/minus.svg", 2%, 90%)
+
+    .hydrophobic
+      background-color: #f3c35d
+    .hydrophobic.marked
+      background-color: #ffe64b
+
+    .hydrophilic
+      background-color: #9dc278
+    .hydrophilic.marked
+      background-color: #bee299
+
+    .hydrophobic-category
+      font-size: 1.1em
+      font-weight: bold
+      padding: 2% 0 2% 14%
+      background-color: #E0A21B
+      @include icon-bg("#{$directory}/resources/col.svg", 4%, 40%)
+
+    .hydrophilic-category
+      font-size: 1.1em
+      font-weight: bold
+      padding: 2% 0 2% 14%
+      background-color: #75a643
+      @include icon-bg("#{$directory}/resources/col.svg", 4%, 40%)
+
+    // Expanded category style.
+    .expanded
+      @include icon-bg("#{$directory}/resources/exp.svg", 4%, 40%)
 
