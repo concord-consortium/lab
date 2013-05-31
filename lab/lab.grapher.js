@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "836940654f8519be3cc03591bba649b2dedc50de",
-        "short_sha":      "83694065",
-        "url":            "https://github.com/concord-consortium/lab/commit/83694065",
+        "sha":           "25a3beba5dbe1c8debeffe736a99a05559805ef2",
+        "short_sha":      "25a3beba",
+        "url":            "https://github.com/concord-consortium/lab/commit/25a3beba",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-05-30 21:36:56 -0400",
-        "short_message": "script/archive-public.sh generates public/ tarball",
-        "message":       "script/archive-public.sh generates public/ tarball"
+        "date":          "2013-05-30 21:59:00 -0400",
+        "short_message": "fix script/archive-public.sh",
+        "message":       "fix script/archive-public.sh"
       },
       "dirty": false
     }

@@ -1,10 +1,11 @@
-/jnlp
 .DS_Store
 
-imports/energy2d
-imports/legacy-mw-content
+# don't track java or import resources
+/jnlp
+/imports/energy2d
+/imports/legacy-mw-content
 
-# only save conversions of imported content
-!imports/energy2d/models-index.js
-!imports/energy2d/models-json
-!imports/legacy-mw-content/converted
+# however do save conversions of import resources
+!/imports/energy2d/models-index.js
+!/imports/energy2d/models-json
+!/imports/legacy-mw-content/converted
