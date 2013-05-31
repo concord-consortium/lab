@@ -41,6 +41,7 @@
         "  delete props.px;",
         "  delete props.py;",
         "  delete props.speed;",
+        "  delete props.mass",
         "  height = get('height');",
         "  width = getObstacleProperties(0).x;",
         "  batch(function() {",
