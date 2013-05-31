@@ -24,12 +24,11 @@ else
 
 if git diff --exit-code --quiet && git diff --cached --exit-code --quiet
 then
-archivename = concord-consortium-lab-`git --git-dir ../.git log -1 --format=%h`.tar.gz
+archivename="concord-consortium-lab-`git --git-dir .git log -1 --format=%h`.tar.gz"
 mkdir -p tarballs
 cat <<heredoc
 
-*** generating an archive of the gh-page branch in public/
-    into ./tarballs/$archivename
+*** generating an archive of the gh-page branch in public/ into: ./tarballs/$archivename
 
 heredoc
 cd public
