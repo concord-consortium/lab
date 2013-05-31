@@ -91,13 +91,16 @@ define(function (require) {
             nucleo, nucleoEnter, nucleoShape, nucleoSVG, nucleoSVGUpdate, nucleoTrans,
             targetScale;
 
-        // seq is string now. Change it to array of objects.
+        // seq is a string, generate data array. Change it to array of objects.
         // e.g. "AG" will be change to [{idx: 0, type: "A"}, {idx: 1, type: "G"}].
-        seq = seq.split("");
-        seq.forEach(function(val, i) {
-          seq[i] = {idx: i, type: val};
-        });
-        nucleo = g.selectAll("g.nucleotide").data(seq);
+        if (typeof seq === "string") {
+          seq = seq.split("");
+          seq.forEach(function(val, i) {
+            seq[i] = {id: i, idx: i, type: val};
+          });
+        }
+        // Join by ID.
+        nucleo = g.selectAll("g.nucleotide").data(seq, function (d) { return d.id; });
         // Enter.
         // Enable random translation of the new mRNAs.
         shift(randomEnter);

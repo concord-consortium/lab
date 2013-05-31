@@ -175,13 +175,14 @@ define(function (require) {
       },
 
       dna: function (parent, data) {
-        var dnaSequence    = model.get("DNA"),
-            dnaLength      = dnaSequence.length,
-            geneticEngine  = model.geneticEngine(),
-            junkDNA        = geneticEngine.junkSequence(),
-            bonds          = data.dna[0] ? data.dna[0].bonds : 0,
-            n              = nucleotides().model2px(model2px),
+        var viewModel   = model.geneticEngine().viewModel,
+            bonds       = data.dna[0] ? data.dna[0].bonds : 0,
+            n           = nucleotides().model2px(model2px),
             dna, dnaEnter;
+
+        // Note that first junk and promoter sequences are updated only during
+        // enter operation. They cannot be changed by the user, while DNA can
+        // (and because of that, following nucleotides have to be shifted).
 
         // DNA enter:
         dna = parent.select(".dna-layer").selectAll(".dna").data(data.dna);
@@ -189,47 +190,56 @@ define(function (require) {
           "class": "dna",
           "transform": translateFuncInv
         });
+        // Junk sequence.
+        n.sequence(viewModel.junk);
+        n.startingPos(-viewModel.promoter.length - viewModel.junk.length);
+        dnaEnter.append("g").attr("class", "junk-region").call(n);
+        // Promoter sequence.
+        n.sequence(viewModel.promoter);
+        n.startingPos(-viewModel.promoter.length);
+        dnaEnter.append("g").attr("class", "promoter-region").call(n);
         // Coding sequence.
         dnaEnter.append("g").attr("class", "coding-region");
-        // Promoter sequence.
-        n.sequence(geneticEngine.promoterSequence);
-        n.startingPos(-geneticEngine.promoterSequence.length);
-        dnaEnter.append("g").attr("class", "promoter-region").call(n);
         // Terminator sequence.
-        n.sequence(geneticEngine.terminatorSequence);
-        n.startingPos(dnaLength);
-        dnaEnter.append("g").attr("class", "terminator-region").call(n);
-        // Junk sequence.
-        n.sequence(junkDNA.sequence);
-        n.startingPos(-geneticEngine.promoterSequence.length - junkDNA.sequence.length);
-        dnaEnter.append("g").attr("class", "junk-region").call(n);
-        n.sequence(junkDNA.sequence);
-        n.startingPos(dnaLength + geneticEngine.terminatorSequence.length);
-        dnaEnter.append("g").attr("class", "junk-region").call(n);
+        dnaEnter.append("g").attr("class", "terminator-region");
+        // Junk sequence again.
+        dnaEnter.append("g").attr("class", "junk-region");
 
         // Register mutations menu:
         mutationsContextMenu.register('[class~="dna"] [class~="coding-region"] [class~="nucleotide"]', model, false);
 
         // DNA update:
-        n.sequence(dnaSequence);
-        n.startingPos(0);
+        // Coding sequence.
         n.glow(true);
+        n.sequence(viewModel.DNA);
+        n.startingPos(0);
         dna.select(".coding-region").call(n);
+        // Terminator sequence.
+        n.glow(false);
+        n.sequence(viewModel.terminator);
+        n.startingPos(viewModel.DNA.length);
+        dna.select(".terminator-region").call(n);
+        // Junk sequence.
+        n.sequence(viewModel.junk);
+        n.startingPos(viewModel.DNA.length + viewModel.terminator.length);
+        dna.select(".junk-region").call(n);
 
         d3.transition(dna).attr("transform", translateFuncInv)
           .selectAll(".bonds").style("opacity", bonds);
+
         // DNA exit:
         d3.transition(dna.exit()).remove();
       },
 
       dnaComp: function (parent, data) {
-        var dnaComplement  = model.get("DNAComplement"),
-            dnaLength      = dnaComplement.length,
-            geneticEngine  = model.geneticEngine(),
-            junkDNA        = geneticEngine.junkSequence(),
-            bonds          = data.dnaComp[0] ? data.dnaComp[0].bonds : 0,
-            n              = nucleotides().model2px(model2px).direction(2),
+        var viewModel     = model.geneticEngine().viewModel,
+            bonds         = data.dnaComp[0] ? data.dnaComp[0].bonds : 0,
+            n             = nucleotides().model2px(model2px).direction(2),
             dnaComp, dnaCompEnter;
+
+        // Note that first junk and promoter sequences are updated only during
+        // enter operation. They cannot be changed by the user, while DNA can
+        // (and because of that, following nucleotides have to be shifted).
 
         // DNA Comp enter:
         dnaComp = parent.select(".dna-layer").selectAll(".dna-comp").data(data.dnaComp);
@@ -237,34 +247,41 @@ define(function (require) {
           "class": "dna-comp",
           "transform": translateFuncInv
         });
-
-        // Coding sequence.
-        dnaCompEnter.append("g").attr("class", "coding-region");
+        // Junk sequence.
+        n.sequence(viewModel.junkComp);
+        n.startingPos(-viewModel.promoterComp.length - viewModel.junkComp.length);
+        dnaCompEnter.append("g").attr("class", "junk-region").call(n);
         // Promoter sequence.
-        n.sequence(geneticEngine.promoterCompSequence);
-        n.startingPos(-geneticEngine.promoterCompSequence.length);
+        n.sequence(viewModel.promoterComp);
+        n.startingPos(-viewModel.promoterComp.length);
         n.glow(false);
         dnaCompEnter.append("g").attr("class", "promoter-region").call(n);
+        // Coding sequence.
+        dnaCompEnter.append("g").attr("class", "coding-region");
         // Terminator sequence.
-        n.sequence(geneticEngine.terminatorCompSequence);
-        n.startingPos(dnaLength);
         dnaCompEnter.append("g").attr("class", "terminator-region").call(n);
-        // Junk sequence.
-        n.sequence(junkDNA.compSequence);
-        n.startingPos(-geneticEngine.promoterCompSequence.length - junkDNA.compSequence.length);
-        dnaCompEnter.append("g").attr("class", "junk-region").call(n);
-        n.sequence(junkDNA.compSequence);
-        n.startingPos(dnaLength + geneticEngine.terminatorCompSequence.length);
+        // Junk sequence again.
         dnaCompEnter.append("g").attr("class", "junk-region").call(n);
 
         // Register mutations menu:
         mutationsContextMenu.register('[class~="dna-comp"] [class~="coding-region"] [class~="nucleotide"]', model, true);
 
         // DNA Comp update:
-        n.sequence(dnaComplement);
-        n.startingPos(0);
+        // Coding sequence.
         n.glow(true);
+        n.sequence(viewModel.DNAComp);
+        n.startingPos(0);
         dnaComp.select(".coding-region").call(n);
+        // Terminator sequence.
+        n.glow(false);
+        n.sequence(viewModel.terminatorComp);
+        n.startingPos(viewModel.DNA.length);
+        dnaComp.select(".terminator-region").call(n);
+        // Junk sequence.
+        n.sequence(viewModel.junkComp);
+        n.startingPos(viewModel.DNA.length + viewModel.terminator.length);
+        dnaComp.select(".junk-region").call(n);
+
         d3.transition(dnaComp).attr("transform", translateFuncInv)
           .selectAll(".bonds").style("opacity", bonds);
 
@@ -273,8 +290,8 @@ define(function (require) {
       },
 
       mrna: function (parent, data) {
-        var mrnaSequence  = model.get("mRNA"),
-            geneticEngine = model.geneticEngine(),
+        var geneticEngine = model.geneticEngine(),
+            mrnaSequence  = geneticEngine.viewModel.mRNA,
             stopCodons    = geneticEngine.stopCodonsHash(),
             bonds         = data.mrna[0] ? data.mrna[0].bonds : 0,
             dir           = data.mrna[0] ? data.mrna[0].direction : 1,
