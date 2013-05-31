@@ -113,12 +113,6 @@ define(function() {
       DNA: {
         defaultValue: ""
       },
-      DNAComplement: {
-        serialize: false
-      },
-      mRNA: {
-        serialize: false
-      },
       useQuantumDynamics: {
         default: false,
         serialize: false
