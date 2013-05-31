@@ -1,0 +1,10 @@
+.DS_Store
+
+/jnlp
+/imports/energy2d
+/imports/legacy-mw-content
+
+# only save conversions of imported content
+!/imports/energy2d/models-index.js
+!/imports/energy2d/models-json
+!/imports/legacy-mw-content/converted

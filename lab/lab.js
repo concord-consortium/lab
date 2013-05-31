@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "fcdf2a19f7886e18518616618aef59a66cbe1bc0",
-        "short_sha":      "fcdf2a19",
-        "url":            "https://github.com/concord-consortium/lab/commit/fcdf2a19",
-        "author":        "Piotr Janik",
-        "email":         "janikpiotrek@gmail.com",
-        "date":          "2013-05-30 12:47:08 -0400",
-        "short_message": "Limit pointer cursor on nucleotides hover only to coding region",
-        "message":       "Limit pointer cursor on nucleotides hover only to coding region\n\n[#41660503]"
+        "sha":           "836940654f8519be3cc03591bba649b2dedc50de",
+        "short_sha":      "83694065",
+        "url":            "https://github.com/concord-consortium/lab/commit/83694065",
+        "author":        "Stephen Bannasch",
+        "email":         "stephen.bannasch@gmail.com",
+        "date":          "2013-05-30 21:36:56 -0400",
+        "short_message": "script/archive-public.sh generates public/ tarball",
+        "message":       "script/archive-public.sh generates public/ tarball"
       },
       "dirty": false
     }
