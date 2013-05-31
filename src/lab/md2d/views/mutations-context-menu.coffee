@@ -13,12 +13,6 @@ define (require) ->
   ###
   register: (selector, model, DNAComplement) ->
 
-    substCallback = (key, options) ->
-      # Get nucleotide type
-      d = d3.select(options.$trigger[0]).datum()
-      # Mutate
-      model.geneticEngine().mutate(d.idx, key, DNAComplement);
-
     # Unregister the same menu first.
     $.contextMenu "destroy", selector
     # Register new one.
@@ -37,6 +31,7 @@ define (require) ->
           type = d3.select(options.$trigger[0]).datum().type
           subsItems = options.items["Substitution"].items
           for own key, item of subsItems
+            key = key.split(":")[1]
             item.$node.addClass "#{type}-to-#{key}"
           # Ensure that this callback returns true (required to show menu).
           true
@@ -45,25 +40,34 @@ define (require) ->
           type = d3.select(options.$trigger[0]).datum().type
           subsItems = options.items["Substitution"].items
           for own key, item of subsItems
+            key = key.split(":")[1]
             item.$node.removeClass "#{type}-to-#{key}"
           # Ensure that this callback returns true (required to hide menu).
           true
 
+      callback: (key, options) ->
+        key = key.split ":"
+        # Get nucleotide.
+        d = d3.select(options.$trigger[0]).datum()
+        switch key[0]
+          when "substitute" then model.geneticEngine().mutate d.idx, key[1], DNAComplement
+          when "insert"     then model.geneticEngine().insert d.idx, key[1], DNAComplement
+
       items:
         "Substitution":
           name: "Substitution mutation"
-          className: "submenu"
+          className: "substitution-submenu"
           items:
-            "A": name: "", callback: substCallback, className: "submenu-item"
-            "T": name: "", callback: substCallback, className: "submenu-item"
-            "G": name: "", callback: substCallback, className: "submenu-item"
-            "C": name: "", callback: substCallback, className: "submenu-item"
-        # "Insertion":
-        #   name: "Insertion mutation"
-        #   className: "submenu"
-        #   items:
-        #     "A": name: "", callback: substCallback, className: "submenu-item"
-        #     "T": name: "", callback: substCallback, className: "submenu-item"
-        #     "G": name: "", callback: substCallback, className: "submenu-item"
-        #     "C": name: "", callback: substCallback, className: "submenu-item"
+            "substitute:A": name: ""
+            "substitute:T": name: ""
+            "substitute:G": name: ""
+            "substitute:C": name: ""
+        "Insertion":
+          name: "Insertion mutation"
+          className: "insertion-submenu"
+          items:
+            "insert:A": name: "Insert", className: "A"
+            "insert:T": name: "Insert", className: "T"
+            "insert:G": name: "Insert", className: "G"
+            "insert:C": name: "Insert", className: "C"
         # "Deletion": name: "Deletion mutation"
