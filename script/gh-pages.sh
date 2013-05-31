@@ -28,16 +28,9 @@ git fetch
 git reset --hard origin/gh-pages
 cd ..; make clean; make; cd public
 git add .
-git commit -am "gh-pages generated from `git --git-dir ../.git log -1 --format=%H`"
+git commit -am "generated from commit: `git --git-dir .git log -1 --format="%H%n%n%an <%ae>%n%cd%n%n    %s%n%n    %b"`"
 git push origin gh-pages
 cd ..
-cat <<heredoc
-
-*** downloading copy of tar.gz archive into ./tarballs
-
-heredoc
-mkdir -p tarballs
-wget --directory-prefix=tarballs --max-redirect=1 --content-disposition https://github.com/concord-consortium/lab/tarball/gh-pages
 else
 cat <<heredoc
 
