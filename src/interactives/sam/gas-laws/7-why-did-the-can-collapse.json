@@ -319,7 +319,7 @@
       "title": "P",
       "labels": 0,
       "min": 0,
-      "max": 10,
+      "max": 4,
       "height": "10em",
       "titleOn": "top",
       "barWidth": "1.5em"
@@ -331,7 +331,7 @@
       "title": "P",
       "labels": 0,
       "min": 0,
-      "max": 10,
+      "max": 4,
       "height": "10em",
       "titleOn": "top",
       "barWidth": "1.5em"
