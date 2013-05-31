@@ -539,7 +539,7 @@ AUTHORING = false;
     // uses generated resource list: /imports/legacy-mw-content/model-list.js
     // also updates link to original MML in Model Editor
     mmlPath = jsonModelPath.replace("imports/legacy-mw-content/converted/", "imports/legacy-mw-content/").replace(".json", ".mml");
-    if (modelList) {
+    if (typeof modelList !== 'undefined') {
       contentItems = getObjects(modelList, "mml", mmlPath.replace("imports/legacy-mw-content/", ""));
     }
     if (contentItems.length > 0) {
