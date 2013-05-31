@@ -125,3 +125,4 @@ define (require) ->
     invalidate: (location) ->
       @_value.length = location + 1
       @_time.length = location + 1
+      @_idx = location
