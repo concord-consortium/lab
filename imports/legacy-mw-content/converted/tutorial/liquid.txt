@@ -1,0 +1,6 @@
+Liquid
+
+Molecules in a liquid stay correlated
+to their neighbors (short-range order)
+for a while, but move away after some
+time.

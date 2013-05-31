@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_07" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.mw3d.ModelState"> 
+  <void property="cameraPosition"> 
+   <string>0.0 0.0 0.0</string> 
+  </void> 
+  <void property="moleculeStyle"> 
+   <byte>1</byte> 
+  </void> 
+  <void property="rotation"> 
+   <string>-999 -15 -47 82.5 148</string> 
+  </void> 
+  <void property="timeStep"> 
+   <float>0.2</float> 
+  </void> 
+  <void property="x1Argb"> 
+   <int>-16711732</int> 
+  </void> 
+  <void property="x1Epsilon"> 
+   <float>0.12</float> 
+  </void> 
+  <void property="x1Mass"> 
+   <float>50.0</float> 
+  </void> 
+  <void property="x1Sigma"> 
+   <float>12.0</float> 
+  </void> 
+  <void property="x2Argb"> 
+   <int>-13057</int> 
+  </void> 
+  <void property="x2Sigma"> 
+   <float>10.0</float> 
+  </void> 
+  <void property="x3Argb"> 
+   <int>-3355648</int> 
+  </void> 
+  <void property="x4Argb"> 
+   <int>-3355393</int> 
+  </void> 
+  <void property="x4Sigma"> 
+   <float>12.0</float> 
+  </void> 
+  <void property="xyzFileName"> 
+   <string>script_select3d$1.xyz</string> 
+  </void> 
+ </object> 
+</java> 

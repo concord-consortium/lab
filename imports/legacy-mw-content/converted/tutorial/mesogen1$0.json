@@ -1,0 +1,253 @@
+{
+  "type": "md2d",
+  "imagePath": "",
+  "width": 3.5,
+  "height": 2.5,
+  "unitsScheme": "md2d",
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": false,
+  "gravitationalField": false,
+  "timeStep": 1,
+  "dielectricConstant": 1,
+  "realisticDielectricEffect": true,
+  "solventForceFactor": 1.25,
+  "solventForceType": 0,
+  "additionalSolventForceMult": 4,
+  "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
+  "viscosity": 1,
+  "timeStepsPerTick": 50,
+  "geneticEngineState": "dna",
+  "DNA": "",
+  "viewOptions": {
+    "viewPortWidth": 3.5,
+    "viewPortHeight": 2.5,
+    "viewPortZoom": 1,
+    "viewPortX": 0,
+    "viewPortY": 0,
+    "backgroundColor": "#eeeeee",
+    "showClock": true,
+    "markColor": "#f8b500",
+    "keShading": false,
+    "chargeShading": false,
+    "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
+    "showChargeSymbols": true,
+    "showVDWLines": false,
+    "VDWLinesCutoff": "medium",
+    "showVelocityVectors": false,
+    "showForceVectors": false,
+    "showAtomTrace": false,
+    "images": [],
+    "imageMapping": {},
+    "textBoxes": [],
+    "xlabel": false,
+    "ylabel": false,
+    "xunits": false,
+    "yunits": false,
+    "controlButtons": "play",
+    "gridLines": false,
+    "atomNumbers": false,
+    "enableAtomTooltips": false,
+    "enableKeyboardHandlers": true,
+    "atomTraceColor": "#6913c5",
+    "velocityVectors": {
+      "color": "#000",
+      "width": 0.01,
+      "length": 2
+    },
+    "forceVectors": {
+      "color": "#169C30",
+      "width": 0.01,
+      "length": 2
+    }
+  },
+  "pairwiseLJProperties": [],
+  "elements": {
+    "mass": [
+      120,
+      240,
+      360,
+      480,
+      600
+    ],
+    "sigma": [
+      0.3,
+      0.4,
+      0.4,
+      0.5,
+      0.3
+    ],
+    "epsilon": [
+      -0.1,
+      -0.1,
+      -0.1,
+      -0.1,
+      -5
+    ],
+    "color": [
+      -855310,
+      -9066941,
+      -9092186,
+      -2539040,
+      -855310
+    ]
+  },
+  "atoms": {
+    "x": [
+      2.3790140636678503,
+      2.2809859363321494,
+      2.8295375040053,
+      2.808464708003448,
+      0.8561883413622621,
+      0.6605607935407756,
+      0.9707491069058278,
+      1.3292508930941724,
+      1.8419752639669407,
+      2.0980247360330595,
+      1.5563490452565987,
+      1.423650954743401
+    ],
+    "y": [
+      2.2520940587490954,
+      2.027905941250905,
+      1.6520698285482174,
+      1.9045655414555702,
+      0.4563293826679677,
+      0.610406177116337,
+      1.6596362119042374,
+      1.8203637880957626,
+      1.3379008692261491,
+      1.042099130773851,
+      0.27557099222515236,
+      0.48442900777484793
+    ],
+    "vx": [
+      -0.0004190464966270451,
+      0.0004116332911085151,
+      0.0005357044900071124,
+      -0.00002330098159530667,
+      -0.00033525812789488024,
+      0.00003405428361833175,
+      0.0001636930497838101,
+      -0.00007660849106729441,
+      0.000177000962087418,
+      0.00020593181844252715,
+      0.0003136650300599191,
+      0.00018785586063351517
+    ],
+    "vy": [
+      -0.0002578932502664828,
+      -0.0000679027277249933,
+      -0.0000931293951621619,
+      -0.00025555650498101766,
+      -0.0002071155885833305,
+      -0.0000259745295891017,
+      0.000002642585880791833,
+      -0.00013030857253695043,
+      -0.00009097595775707679,
+      -0.00009682366251886555,
+      0.000011383328519071929,
+      -0.00041024266847601424
+    ],
+    "charge": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "friction": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "element": [
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      3,
+      3,
+      3,
+      3,
+      2,
+      2
+    ],
+    "pinned": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "radialBonds": {
+    "atom1": [
+      0,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "atom2": [
+      1,
+      3,
+      5,
+      7,
+      9,
+      11
+    ],
+    "length": [
+      0.25,
+      0.25,
+      0.25,
+      0.4,
+      0.4,
+      0.25
+    ],
+    "strength": [
+      10000,
+      10000,
+      10000,
+      10000,
+      2000,
+      10000
+    ],
+    "type": [
+      101,
+      101,
+      101,
+      101,
+      101,
+      101
+    ]
+  }
+}

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_01" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.mw3d.ModelState"> 
+  <void property="cameraPosition"> 
+   <string>0.0 0.0 0.0</string> 
+  </void> 
+  <void property="fillMode"> 
+   <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
+    <void property="color"> 
+     <object class="java.awt.Color"> 
+      <int>0</int> 
+      <int>0</int> 
+      <int>0</int> 
+      <int>255</int> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="obstacles"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <object class="org.concord.mw3d.models.CuboidObstacleState"> 
+      <void property="lx"> 
+       <float>5.56958</float> 
+      </void> 
+      <void property="ly"> 
+       <float>3.5415688</float> 
+      </void> 
+      <void property="lz"> 
+       <float>25.0</float> 
+      </void> 
+      <void property="rx"> 
+       <float>-13.572632</float> 
+      </void> 
+      <void property="ry"> 
+       <float>15.458408</float> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.mw3d.models.CuboidObstacleState"> 
+      <void property="lx"> 
+       <float>39.674744</float> 
+      </void> 
+      <void property="ly"> 
+       <float>3.080721</float> 
+      </void> 
+      <void property="lz"> 
+       <float>25.0</float> 
+      </void> 
+      <void property="rx"> 
+       <float>3.0003052</float> 
+      </void> 
+      <void property="ry"> 
+       <float>-14.4192505</float> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.mw3d.models.CuboidObstacleState"> 
+      <void property="lx"> 
+       <float>38.90557</float> 
+      </void> 
+      <void property="ly"> 
+       <float>25.0</float> 
+      </void> 
+      <void property="lz"> 
+       <float>3.5682068</float> 
+      </void> 
+      <void property="rx"> 
+       <float>2.62397</float> 
+      </void> 
+      <void property="rz"> 
+       <float>15.031769</float> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.mw3d.models.CuboidObstacleState"> 
+      <void property="lx"> 
+       <float>37.782578</float> 
+      </void> 
+      <void property="ly"> 
+       <float>25.0</float> 
+      </void> 
+      <void property="lz"> 
+       <float>2.0226517</float> 
+      </void> 
+      <void property="rx"> 
+       <float>3.075821</float> 
+      </void> 
+      <void property="rz"> 
+       <float>-14.577316</float> 
+      </void> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="rotation"> 
+   <string>-425 -537 -729 149.6</string> 
+  </void> 
+  <void property="showEnergizer"> 
+   <boolean>true</boolean> 
+  </void> 
+ </object> 
+</java> 

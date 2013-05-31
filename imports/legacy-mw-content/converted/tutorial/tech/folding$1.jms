@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_24" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.jmol.ModelState"> 
+  <void property="atomAnnotations"> 
+   <object class="java.util.HashMap"/> 
+  </void> 
+  <void property="atomInteractions"> 
+   <object class="java.util.HashMap"/> 
+  </void> 
+  <void property="bondAnnotations"> 
+   <object class="java.util.HashMap"/> 
+  </void> 
+  <void property="bondInteractions"> 
+   <object class="java.util.HashMap"/> 
+  </void> 
+  <void property="fillMode"> 
+   <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
+    <void property="color"> 
+     <object class="java.awt.Color"> 
+      <int>255</int> 
+      <int>255</int> 
+      <int>255</int> 
+      <int>255</int> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="startingScene"> 
+   <object class="org.concord.jmol.SceneState"> 
+    <void property="geoData"> 
+     <string>0.0 0.0 0.0 0.0 0.0 0.0 0.0 197.0</string> 
+    </void> 
+   </object> 
+  </void> 
+ </object> 
+</java> 

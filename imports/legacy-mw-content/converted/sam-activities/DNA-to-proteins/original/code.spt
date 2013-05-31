@@ -1,0 +1,6 @@
+select :I.c1*
+label %r
+font label 10 sans bold
+set fontscaling true
+color label cyan
+set labeloffset 5 0

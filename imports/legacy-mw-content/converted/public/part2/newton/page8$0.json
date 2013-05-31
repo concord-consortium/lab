@@ -1,0 +1,219 @@
+{
+  "type": "md2d",
+  "imagePath": "",
+  "width": 2.73,
+  "height": 1.4,
+  "unitsScheme": "md2d",
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": false,
+  "gravitationalField": false,
+  "timeStep": 1,
+  "dielectricConstant": 1,
+  "realisticDielectricEffect": true,
+  "solventForceFactor": 1.25,
+  "solventForceType": 0,
+  "additionalSolventForceMult": 4,
+  "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
+  "viscosity": 1,
+  "timeStepsPerTick": 50,
+  "geneticEngineState": "dna",
+  "DNA": "",
+  "viewOptions": {
+    "viewPortWidth": 2.73,
+    "viewPortHeight": 1.4,
+    "viewPortZoom": 1,
+    "viewPortX": 0,
+    "viewPortY": 0,
+    "backgroundColor": "rgba(241,240,246,255)",
+    "showClock": false,
+    "markColor": "#f8b500",
+    "keShading": false,
+    "chargeShading": false,
+    "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
+    "showChargeSymbols": true,
+    "showVDWLines": false,
+    "VDWLinesCutoff": "medium",
+    "showVelocityVectors": false,
+    "showForceVectors": false,
+    "showAtomTrace": false,
+    "images": [
+      {
+        "imageUri": "backgdropFlat.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0.02,
+        "imageY": 1.37
+      },
+      {
+        "imageUri": "baseball.gif",
+        "imageHostIndex": 0,
+        "imageHostType": "Atom",
+        "imageLayer": 1,
+        "imageLayerPosition": 1,
+        "imageX": 0.16409238318367933,
+        "imageY": 1.27
+      },
+      {
+        "imageUri": "baseball.gif",
+        "imageHostIndex": 1,
+        "imageHostType": "Atom",
+        "imageLayer": 1,
+        "imageLayerPosition": 2,
+        "imageX": 0.7059076168163257,
+        "imageY": 1.27
+      }
+    ],
+    "imageMapping": {},
+    "textBoxes": [
+      {
+        "text": "two balls attached\nby a spring",
+        "x": 1.12,
+        "y": 1.28,
+        "layer": 1,
+        "anchor": "upper-left"
+      },
+      {
+        "text": "two atoms bonded\ntogether with a\ncovalent bond,\nforming a molecule",
+        "x": 1.12,
+        "y": 0.88,
+        "layer": 1,
+        "anchor": "upper-left"
+      },
+      {
+        "text": "Molecule is magnified about 300 billion times.",
+        "x": 0.14,
+        "y": 0.29,
+        "layer": 1,
+        "color": "rgb(204,0,0)",
+        "anchor": "upper-left"
+      }
+    ],
+    "xlabel": false,
+    "ylabel": false,
+    "xunits": false,
+    "yunits": false,
+    "controlButtons": "play",
+    "gridLines": false,
+    "atomNumbers": false,
+    "enableAtomTooltips": false,
+    "enableKeyboardHandlers": true,
+    "atomTraceColor": "#6913c5",
+    "velocityVectors": {
+      "color": "#000",
+      "width": 0.01,
+      "length": 2
+    },
+    "forceVectors": {
+      "color": "#169C30",
+      "width": 0.01,
+      "length": 2
+    }
+  },
+  "pairwiseLJProperties": [],
+  "elements": {
+    "mass": [
+      20,
+      40,
+      60,
+      80,
+      600
+    ],
+    "sigma": [
+      0.07,
+      0.14,
+      0.21,
+      0.27172412872314455,
+      0.3
+    ],
+    "epsilon": [
+      -0.1,
+      -0.1,
+      -0.1,
+      0,
+      -5
+    ],
+    "color": [
+      -855310,
+      -9066941,
+      -9092186,
+      -2051651,
+      -855310
+    ]
+  },
+  "atoms": {
+    "x": [
+      0.33909238318367935,
+      0.8809076168163257,
+      0.3490433679972608,
+      0.8909566320027118
+    ],
+    "y": [
+      1.1,
+      1.1,
+      0.56,
+      0.56
+    ],
+    "vx": [
+      0.0002989558905237697,
+      -0.0002989558905237697,
+      0.00029900385474813213,
+      -0.00029900385474813213
+    ],
+    "vy": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "charge": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "friction": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "element": [
+      3,
+      3,
+      3,
+      3
+    ],
+    "pinned": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "radialBonds": {
+    "atom1": [
+      0,
+      2
+    ],
+    "atom2": [
+      1,
+      3
+    ],
+    "length": [
+      0.5000999900019995,
+      0.5000999900019995
+    ],
+    "strength": [
+      20,
+      20
+    ],
+    "type": [
+      102,
+      101
+    ]
+  }
+}

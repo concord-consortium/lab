@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_03" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.jmol.ModelState"> 
+  <void property="ZDepthMagnification"> 
+   <int>10</int> 
+  </void> 
+  <void property="atomAnnotations"> 
+   <object class="java.util.HashMap"/> 
+  </void> 
+  <void property="atomInteractions"> 
+   <object class="java.util.HashMap"/> 
+  </void> 
+  <void property="bondAnnotations"> 
+   <object class="java.util.HashMap"> 
+    <void method="put"> 
+     <int>7</int> 
+     <object class="org.jmol.api.SiteAnnotation"> 
+      <void property="backgroundRgb"> 
+       <int>-135733</int> 
+      </void> 
+      <void property="hostType"> 
+       <byte>1</byte> 
+      </void> 
+      <void property="text"> 
+       <string>&lt;html&gt;&lt;h2&gt;&lt;font face=Verdana&gt;The iron-oxygen bond&lt;/h2&gt;&lt;p&gt;&lt;font face=Verdana size=2&gt;The iron atom is bonded to an oxygen atom of a water molecule nearby. The binding between the oxygen and the iron atom is relatively weaker, allowing the water molecule to leave the position in the competition of an oxygen molecule.&lt;/font&gt;&lt;/html&gt;</string> 
+      </void> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="bondInteractions"> 
+   <object class="java.util.HashMap"/> 
+  </void> 
+  <void property="startingScene"> 
+   <object class="org.concord.jmol.SceneState"> 
+    <void property="geoData"> 
+     <string>14.960333 29.241154 0.5057049 908.0 416.0 -46.0 162.1 100.0</string> 
+    </void> 
+   </object> 
+  </void> 
+ </object> 
+</java> 

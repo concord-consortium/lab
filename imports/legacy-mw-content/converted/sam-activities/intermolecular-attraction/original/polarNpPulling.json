@@ -1,0 +1,227 @@
+{
+  "type": "md2d",
+  "imagePath": "",
+  "width": 3.5,
+  "height": 2,
+  "unitsScheme": "md2d",
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": false,
+  "gravitationalField": false,
+  "timeStep": 1,
+  "dielectricConstant": 1,
+  "realisticDielectricEffect": true,
+  "solventForceFactor": 1.25,
+  "solventForceType": 0,
+  "additionalSolventForceMult": 4,
+  "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
+  "viscosity": 0.25,
+  "timeStepsPerTick": 50,
+  "geneticEngineState": "dna",
+  "DNA": "",
+  "viewOptions": {
+    "viewPortWidth": 3.5,
+    "viewPortHeight": 2,
+    "viewPortZoom": 1,
+    "viewPortX": 0,
+    "viewPortY": 0,
+    "backgroundColor": "rgba(225,239,222,255)",
+    "showClock": false,
+    "markColor": "#f8b500",
+    "keShading": false,
+    "chargeShading": true,
+    "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
+    "showChargeSymbols": true,
+    "showVDWLines": true,
+    "VDWLinesCutoff": "medium",
+    "showVelocityVectors": false,
+    "showForceVectors": false,
+    "showAtomTrace": false,
+    "images": [
+      {
+        "imageUri": "star.png",
+        "imageHostIndex": 4,
+        "imageHostType": "Atom",
+        "imageLayer": 1,
+        "imageX": 0.8415186000032427,
+        "imageY": 0.9134199679757344
+      }
+    ],
+    "imageMapping": {},
+    "textBoxes": [
+      {
+        "text": "Non-polar and polar molecules:\nInduced Dipole Attraction",
+        "x": 0.58,
+        "y": 1.88,
+        "layer": 1,
+        "frame": "rounded rectangle",
+        "backgroundColor": "rgb(232,231,231)",
+        "anchor": "upper-left"
+      }
+    ],
+    "xlabel": false,
+    "ylabel": false,
+    "xunits": false,
+    "yunits": false,
+    "controlButtons": "play",
+    "gridLines": false,
+    "atomNumbers": false,
+    "enableAtomTooltips": false,
+    "enableKeyboardHandlers": true,
+    "atomTraceColor": "#6913c5",
+    "velocityVectors": {
+      "color": "#000",
+      "width": 0.01,
+      "length": 2
+    },
+    "forceVectors": {
+      "color": "#169C30",
+      "width": 0.01,
+      "length": 2
+    }
+  },
+  "pairwiseLJProperties": [
+    {
+      "element1": 0,
+      "element2": 1,
+      "sigma": 0.20490673065185547,
+      "epsilon": -0.0892857164144516
+    }
+  ],
+  "elements": {
+    "mass": [
+      120,
+      240,
+      360,
+      480,
+      600
+    ],
+    "sigma": [
+      0.2,
+      0.2,
+      0.2,
+      0.2,
+      0.3
+    ],
+    "epsilon": [
+      -0.1,
+      -0.30000001192092896,
+      -0.1,
+      -0.1,
+      -5
+    ],
+    "color": [
+      -4233370,
+      -1,
+      -9092186,
+      -6240044,
+      -855310
+    ]
+  },
+  "atoms": {
+    "x": [
+      0.7383808738761057,
+      0.7458598261222729,
+      0.5015788454977614,
+      0.5184211545022386,
+      0.9815186000032428
+    ],
+    "y": [
+      0.8858403644752464,
+      0.6474496515368867,
+      0.8957345783145237,
+      0.6442654216854763,
+      0.7834199679757344
+    ],
+    "vx": [
+      -4.4906850631593503e-8,
+      7.229107539290482e-7,
+      0,
+      0,
+      -1.1596913837688479e-7
+    ],
+    "vy": [
+      -4.905145788931799e-7,
+      -8.712290546733473e-7,
+      0,
+      0,
+      6.379153890794307e-8
+    ],
+    "charge": [
+      1.5,
+      -1.5,
+      0,
+      0,
+      0
+    ],
+    "friction": [
+      0.96,
+      0.96,
+      0.96,
+      0.96,
+      0.96
+    ],
+    "element": [
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "pinned": [
+      0,
+      0,
+      1,
+      1,
+      0
+    ],
+    "visible": [
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "draggable": [
+      0,
+      0,
+      0,
+      0,
+      1
+    ]
+  },
+  "radialBonds": {
+    "atom1": [
+      0,
+      2,
+      4,
+      4
+    ],
+    "atom2": [
+      1,
+      3,
+      0,
+      1
+    ],
+    "length": [
+      0.25,
+      0.25,
+      0.3137953482155728,
+      0.31770491449444843
+    ],
+    "strength": [
+      2000,
+      2000,
+      20,
+      20
+    ],
+    "type": [
+      101,
+      101,
+      106,
+      106
+    ]
+  }
+}

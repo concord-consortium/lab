@@ -1,0 +1,36 @@
+@charset "UTF-8";
+body {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+body.mainIdea {
+	margin-top: 5px;
+}
+body.subHead {
+	background-image:subHeadingBackground.png;
+}
+p {
+	font-size:14;
+}	
+.firstP {
+	font-size: 11px;
+	margin: 0px;
+}
+.pageTitle {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #FFFFFF;
+	margin: 0px;
+}
+.mainIdea {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	margin: 0px;
+}
+.subHead {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #5c7b67;
+	margin: 0px;
+	font-weight: bold;
+	text-align: left;
+}

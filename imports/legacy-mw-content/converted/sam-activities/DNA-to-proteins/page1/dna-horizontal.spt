@@ -1,0 +1,85 @@
+#set background [xf4f5ef]; 
+set ambient 20;  
+reset;
+rotate z 90; 
+
+font label 16 sans bold; 
+color label black; 
+set labeloffset 5 5; 
+set labelGroup;
+
+echo " "
+set echo top right
+font echo 14 sans bold;
+
+set frank off
+set antialiasdisplay on
+hover "Base: %n Number: %r, Element: %e" #  Chain: %c   
+
+select all
+wireframe off
+cpk 
+display all
+
+color carbon [xcccccc]; 
+color nitrogen [xc0baf8]; 
+color oxygen [xff3233]; 
+#select oxygen and base; color [xfcabaa]; 
+color phosphorus [xfdc33e]; 
+
+color cpk
+
+calculate hbonds
+hbonds on
+color hbonds white
+hbonds 0.2
+hbonds off
+
+set hbondsBackbone FALSE
+
+set echo off; 
+			select all; color cpk; 
+			set echo KeyEcho 0% 100%; font echo 14 sans bold; color echo white; echo Color key:; 
+			set echo Carbonecho 25% 100%; color echo gray; font echo 14 sans bold; echo C; 
+			set echo HydrogenEcho 30% 100%; font echo 14 sans bold; color echo white; echo H; 
+			set echo oxyEcho 35% 100%; color echo [xff3233]; font echo 14 sans bold; echo O; 
+			set echo nitroEcho 40% 100%; color echo [xc0baff]; font echo 14 sans bold; echo N; 
+			set echo phosEcho 45% 100%; color echo [xfdc33e]; font echo 14 sans bold; echo P;
+
+
+function replicate
+	hbonds on
+	select :I; color purple; select :j; color gold; select *.c1*; label %n; set labeloffset 0 0; select :j; color labels cyan;
+	delay 0.1
+	
+	moveto /* time, axisAngle */ 1.0 { -31 -995 92 40.13} /* zoom, translation */  98.39 0.0 0.0  /* center, rotationRadius */ {43.07697 24.375261 21.502504} 25.420343 /* navigation center, translation, depth */ {0.0 0.0 0.0} -29.90104 42.233887 50.0;
+	delay 0.1
+	
+	  for ( var i=12; i>1; i = i - 1 )
+		x = script("select  " + i + ":J; zoomto (selected or " + (25-i) + ":I) 200%; delay 0.1; display displayed or selected; refresh; delay 0.1; hbonds off; delay 0.1; hbonds on; delay 0.3; move 0 36 0 0 0 0 0 0 1;")	
+	  end for
+	  zoomto (all) 115%
+end function
+
+function replicateFast
+	hbonds on
+	select :I; color purple; select :j; color gold; select *.c1*; label %n; set labeloffset 0 0; select :j; color labels cyan;
+	delay 0.1
+	
+	moveto /* time, axisAngle */ 1.0 { -31 -995 92 40.13} /* zoom, translation */  98.39 0.0 0.0  /* center, rotationRadius */ {43.07697 24.375261 21.502504} 25.420343 /* navigation center, translation, depth */ {0.0 0.0 0.0} -29.90104 42.233887 50.0;
+	delay 0.1
+	
+	  for ( var i=12; i>1; i = i - 1 )
+		x = script("select  " + i + ":J; delay 0.1; display displayed or selected; refresh; delay 0.1; hbonds off; delay 0.1; hbonds on; delay 0.2;")	
+	  end for
+	  zoomto (all) 115%
+end function
+
+
+
+#isosurface dnasurf "dna.jvxl" 
+#color isosurface [xf4f5ef]	
+#isosurface off
+
+select all
+

@@ -2,10 +2,10 @@
 
 # don't track java or import resources in the gh-pages branch
 /jnlp
-/imports/energy2d
-/imports/legacy-mw-content
+/imports/energy2d/*
+/imports/legacy-mw-content/*
 
 # however do save conversions of import resources
 !/imports/energy2d/models-index.js
 !/imports/energy2d/models-json
-!/imports/legacy-mw-content/converted/*
+!/imports/legacy-mw-content/converted

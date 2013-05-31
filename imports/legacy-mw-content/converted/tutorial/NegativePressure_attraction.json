@@ -1,0 +1,311 @@
+{
+  "type": "md2d",
+  "imagePath": "",
+  "width": 3.6,
+  "height": 2.5,
+  "unitsScheme": "md2d",
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": false,
+  "gravitationalField": false,
+  "timeStep": 1,
+  "dielectricConstant": 1,
+  "realisticDielectricEffect": true,
+  "solventForceFactor": 1.25,
+  "solventForceType": 0,
+  "additionalSolventForceMult": 4,
+  "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
+  "viscosity": 1,
+  "timeStepsPerTick": 50,
+  "geneticEngineState": "dna",
+  "DNA": "",
+  "viewOptions": {
+    "viewPortWidth": 3.6,
+    "viewPortHeight": 2.5,
+    "viewPortZoom": 1,
+    "viewPortX": 0,
+    "viewPortY": 0,
+    "backgroundColor": "#eeeeee",
+    "showClock": true,
+    "markColor": "#f8b500",
+    "keShading": false,
+    "chargeShading": false,
+    "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
+    "showChargeSymbols": true,
+    "showVDWLines": true,
+    "VDWLinesCutoff": "medium",
+    "showVelocityVectors": false,
+    "showForceVectors": false,
+    "showAtomTrace": false,
+    "images": [],
+    "imageMapping": {},
+    "textBoxes": [
+      {
+        "text": "Internal gauge",
+        "x": 0.63,
+        "y": 1.77,
+        "layer": 1,
+        "frame": "rounded rectangle",
+        "calloutPoint": [
+          1.38,
+          1.29
+        ],
+        "backgroundColor": "rgb(0,255,0)",
+        "anchor": "upper-left"
+      },
+      {
+        "text": "External gauge",
+        "x": 1.84,
+        "y": 1.76,
+        "layer": 1,
+        "frame": "rounded rectangle",
+        "calloutPoint": [
+          1.95,
+          1.14
+        ],
+        "anchor": "upper-left"
+      }
+    ],
+    "xlabel": false,
+    "ylabel": false,
+    "xunits": false,
+    "yunits": false,
+    "controlButtons": "play",
+    "gridLines": false,
+    "atomNumbers": false,
+    "enableAtomTooltips": false,
+    "enableKeyboardHandlers": true,
+    "atomTraceColor": "#6913c5",
+    "velocityVectors": {
+      "color": "#000",
+      "width": 0.01,
+      "length": 2
+    },
+    "forceVectors": {
+      "color": "#169C30",
+      "width": 0.01,
+      "length": 2
+    }
+  },
+  "pairwiseLJProperties": [],
+  "elements": {
+    "mass": [
+      20,
+      40,
+      60,
+      80,
+      600
+    ],
+    "sigma": [
+      0.07,
+      0.14,
+      0.21,
+      0.28,
+      0.3
+    ],
+    "epsilon": [
+      -0.1,
+      -0.1,
+      -0.20000000298023224,
+      -0.20000000298023224,
+      -5
+    ],
+    "color": [
+      -855310,
+      -9066941,
+      -9092186,
+      -2539040,
+      -855310
+    ]
+  },
+  "atoms": {
+    "x": [
+      1.6083879553998583,
+      1.24
+    ],
+    "y": [
+      1.1433866693211185,
+      1.14
+    ],
+    "vx": [
+      -0.00042449605625339664,
+      0
+    ],
+    "vy": [
+      0.000025987106581882192,
+      0
+    ],
+    "charge": [
+      0,
+      0
+    ],
+    "friction": [
+      0,
+      0
+    ],
+    "element": [
+      2,
+      3
+    ],
+    "pinned": [
+      0,
+      1
+    ]
+  },
+  "obstacles": {
+    "x": [
+      1.86,
+      1.86,
+      1.42,
+      1.42,
+      1.85,
+      1.4
+    ],
+    "y": [
+      1.28,
+      0.040000000000000036,
+      1.27,
+      1.01,
+      1.04,
+      1.02
+    ],
+    "vx": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "vy": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "externalAx": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "externalAy": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "friction": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "height": [
+      1.2,
+      1,
+      0.01,
+      0.01,
+      0.23,
+      0.25
+    ],
+    "width": [
+      0.45,
+      0.44,
+      0.41,
+      0.41,
+      0.15,
+      0.01
+    ],
+    "mass": [
+      "Infinity",
+      "Infinity",
+      "Infinity",
+      "Infinity",
+      "Infinity",
+      "Infinity"
+    ],
+    "westProbe": [
+      false,
+      false,
+      false,
+      false,
+      true,
+      false
+    ],
+    "northProbe": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "eastProbe": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      true
+    ],
+    "southProbe": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "color": [
+      [
+        128,
+        128,
+        128
+      ],
+      [
+        128,
+        128,
+        128
+      ],
+      [
+        128,
+        128,
+        128
+      ],
+      [
+        128,
+        128,
+        128
+      ],
+      [
+        255,
+        255,
+        255
+      ],
+      [
+        255,
+        255,
+        255
+      ]
+    ],
+    "visible": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ]
+  }
+}

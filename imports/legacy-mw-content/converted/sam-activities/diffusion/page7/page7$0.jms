@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_37" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.jmol.ModelState"> 
+  <void property="atomAnnotations"> 
+   <object class="java.util.HashMap"/> 
+  </void> 
+  <void property="atomInteractions"> 
+   <object class="java.util.HashMap"/> 
+  </void> 
+  <void property="bondAnnotations"> 
+   <object class="java.util.HashMap"/> 
+  </void> 
+  <void property="bondInteractions"> 
+   <object class="java.util.HashMap"/> 
+  </void> 
+  <void property="itinerary"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <object class="org.concord.jmol.SceneState"> 
+      <void property="arriveScript"> 
+       <string>select all;
+center selected;
+select ~lipidHead;
+color atoms [xeb4000];
+select ~lipidTail;
+color atoms [xffbf00];
+model 1;
+isosurface off;
+display none;
+model none;
+set echo top center;
+color echo [xdcecda];
+font echo 18 SANSSERIF plain;
+echo &quot;||Use the animation controls below|to go on a guided tour of an aquapore.||At each stop on the tour|you can explore the model by|dragging the mouse to rotate the model|and shift-dragging to zoom the model.||Check out the questions below|to find out what kind of snapshots|you should take along the way.&quot;
+set echo bottom center;
+font echo 12 sansserif;
+color echo pink;
+echo &quot;*Note: With large biological molecules the hydrogen|atoms are commonly not shown.&quot;;
+refresh;</string> 
+      </void> 
+      <void property="geoData"> 
+       <string>0.0 0.0 0.0 32.0 -999.0 -41.0 89.7 118.0</string> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.jmol.SceneState"> 
+      <void property="arriveScript"> 
+       <string>model all;
+select all;
+spacefill off;
+wireframe off;
+display model=5;
+set echo off;
+refresh;
+color echo [xdcecda];
+font echo 18 SANSSERIF plain;
+set echo top center;
+echo &quot;A cross-section of a cell membrane.&quot;
+delay 1.0;
+spacefill 10%; delay 0.1;
+spacefill 20%; delay 0.1;
+spacefill 30%; delay 0.1;
+spacefill 40%; delay 0.1;
+spacefill 50%; delay 0.1;
+spacefill 60%; delay 0.1;
+spacefill 70%; delay 0.1;
+spacefill 80%;
+delay 1.0;
+moveto 1.5 { -291 930 -223 3.4} 118.0 0.0 0.0 {2.2192564 2.027696 -0.02942003} 73.7;
+moveto 1.5 { 1 1000 27 90.9} 113.3 0.0 0.0 {2.2192564 2.027696 -0.02942003} 73.7;
+</string> 
+      </void> 
+      <void property="geoData"> 
+       <string>0.0 0.0 0.0 32.0 -999.0 -41.0 89.7 118.0</string> 
+      </void> 
+      <void property="stopTime"> 
+       <short>2</short> 
+      </void> 
+      <void property="transitionTime"> 
+       <short>0</short> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.jmol.SceneState"> 
+      <void property="XTrans"> 
+       <float>0.79999924</float> 
+      </void> 
+      <void property="YTrans"> 
+       <float>6.5999985</float> 
+      </void> 
+      <void property="arriveScript"> 
+       <string>set echo top center;
+echo &quot;Most molecules need a pore to allow them|to pass through the cell membrane.&quot;
+model all;
+select protein;
+color atoms lightblue;
+select all;
+spacefill off;
+display model=5;
+spacefill 80%;
+delay 4.0;
+echo &quot;&quot;;
+select ~poreLipids;
+spacefill 70%; delay 0.1;
+spacefill 60%; delay 0.1;
+spacefill 50%; delay 0.1;
+spacefill 40%; delay 0.1;
+spacefill 30%; delay 0.1;
+spacefill 20%; delay 0.1;
+spacefill 10%; delay 0.1;
+spacefill off;
+delay 0.5;
+model all;
+display not ~poreLipids and not water;
+select not model=5;
+spacefill 10%; delay 0.1;
+spacefill 20%; delay 0.1;
+spacefill 30%; delay 0.1;
+spacefill 40%; delay 0.1;
+spacefill 50%; delay 0.1;
+spacefill 60%; delay 0.1;
+spacefill 70%; delay 0.1;
+spacefill 80%;
+echo &quot;This is an aquapore that allows|water to pass through the membrane.&quot;
+select protein;
+color atoms lightblue;
+delay 3.0;
+moveto 1.5 { -43 996 79 2.9} 126.6 0.8 6.6 {2.2192564 2.027696 -0.02942003} 73.7;
+delay 0.5;
+moveto 1.5 { -6 1000 30 178.7} 126.6 0.8 6.6 {2.2192564 2.027696 -0.02942003} 73.7;
+</string> 
+      </void> 
+      <void property="departScript"> 
+       <string>moveto 3.0 { -357 850 -388 5.2} 222.5 0.0 3.6 {2.2192564 2.027696 -0.02942003} 73.7;
+select model=5 and not ~poreLipids;
+spacefill 70%; delay 0.1;
+spacefill 60%; delay 0.1;
+spacefill 50%; delay 0.1;
+spacefill 40%; delay 0.1;
+spacefill 30%; delay 0.1;
+spacefill 20%; delay 0.1;
+spacefill 10%; delay 0.1;
+display protein;
+spacefill 80%;</string> 
+      </void> 
+      <void property="geoData"> 
+       <string>0.0 0.0 0.0 6.0 -1000.0 2.0 179.8 126.0</string> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.jmol.SceneState"> 
+      <void property="arriveScript"> 
+       <string>moveto 0.0 { -357 850 -388 5.2} 222.5 0.0 3.6 {2.2192564 2.027696 -0.02942003} 73.7;
+model 1;
+isosurface off;
+model all;
+display protein;
+set echo top center;
+echo &quot;This aquapore is made from four proteins.|Each subunit provides a channel for water.&quot;
+display protein;
+select protein;
+color atoms [x39474c];
+delay 1.0;
+select model=1;
+color atoms lightblue;
+delay 0.75;
+select model=3;
+color atoms [x8fb3bf];
+delay 0.75;
+select model=2;
+color atoms [x728f98];
+delay 0.75;
+select model=4;
+color atoms [x566b72];
+delay 1.0;
+moveto 1.5 { 22 -999 33 179.2} 175.5 0.0 3.6 {2.2192564 2.027696 -0.02942003} 73.7;
+delay 0.5;
+moveto 1.5 { -357 850 -388 5.2} 222.5 0.0 3.6 {2.2192564 2.027696 -0.02942003} 73.7;
+</string> 
+      </void> 
+      <void property="geoData"> 
+       <string>0.0 0.0 0.0 -357.0 850.0 -388.0 5.2 222.0</string> 
+      </void> 
+      <void property="transitionTime"> 
+       <short>0</short> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.jmol.SceneState"> 
+      <void property="YTrans"> 
+       <float>3.6000009</float> 
+      </void> 
+      <void property="arriveScript"> 
+       <string>display protein;
+select model=4;
+spacefill 70%; delay 0.1;
+spacefill 60%; delay 0.1;
+spacefill 50%; delay 0.1;
+spacefill 40%; delay 0.1;
+spacefill 30%; delay 0.1;
+spacefill 20%; delay 0.1;
+spacefill 10%; delay 0.1;
+display protein and (model=1 or model=2 or model=3);
+spacefill 80%;
+select model=2;
+spacefill 70%; delay 0.1;
+spacefill 60%; delay 0.1;
+spacefill 50%; delay 0.1;
+spacefill 40%; delay 0.1;
+spacefill 30%; delay 0.1;
+spacefill 20%; delay 0.1;
+spacefill 10%; delay 0.1;
+display protein and (model=1 or model=3);
+spacefill 80%;
+select model=3;
+spacefill 70%; delay 0.1;
+spacefill 60%; delay 0.1;
+spacefill 50%; delay 0.1;
+spacefill 40%; delay 0.1;
+spacefill 30%; delay 0.1;
+spacefill 20%; delay 0.1;
+spacefill 10%; delay 0.1;
+display protein and model=1;
+spacefill 80%;
+moveto 2.0 { -125 992 -24 172.2} 411.5 0.0 0.0 {-7.42025 -13.1085 0.20650053} 87.4;
+select water;
+center selected;
+set echo top center;
+echo &quot;The structure of the channel can best be|seen if we look at the surface of the protein.&quot;
+refresh;
+model 1;
+select protein and model=1;
+isosurface delete ignore(not selected) color lightblue sasurface 0;</string> 
+      </void> 
+      <void property="geoData"> 
+       <string>0.0 0.0 0.0 -357.0 850.0 -388.0 5.2 222.0</string> 
+      </void> 
+      <void property="stopTime"> 
+       <short>4</short> 
+      </void> 
+      <void property="transitionTime"> 
+       <short>0</short> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.jmol.SceneState"> 
+      <void property="arriveScript"> 
+       <string>set echo top center;
+model 1;
+moveto 3.0 { -125 992 -24 172.2} 136608.8 0.0 0.0 {-7.42025 -13.1085 0.20650053} 87.4;
+echo &quot;The channel may be narrow, but water|molecules can fit through easily.&quot;
+delay 2.5;
+moveto 3.0 { -125 992 -24 172.2} 411.5 0.0 0.0 {-7.42025 -13.1085 0.20650053} 87.4;
+</string> 
+      </void> 
+      <void property="departScript"> 
+       <string>select water;
+spacefill 20%;
+color atoms blue;</string> 
+      </void> 
+      <void property="geoData"> 
+       <string>0.0 0.0 0.0 -125.0 992.0 -24.0 172.2 411.0</string> 
+      </void> 
+      <void property="transitionTime"> 
+       <short>0</short> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.jmol.SceneState"> 
+      <void property="arriveScript"> 
+       <string>set echo top center;
+echo &quot;Here the channel is shown|with water (blue balls).&quot;
+select water;
+color atoms blue;
+spacefill 20%;
+center selected;
+display not ~poreLipids;
+model all;
+</string> 
+      </void> 
+      <void property="geoData"> 
+       <string>0.0 0.0 0.0 -59.0 -995.0 -84.0 175.4 26290.0</string> 
+      </void> 
+      <void property="stopTime"> 
+       <short>3</short> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.jmol.SceneState"> 
+      <void property="arriveScript"> 
+       <string>select all;
+center selected;
+select water;
+color atoms blue;
+spacefill 20%;
+display not ~poreLipids;
+model all;
+set echo top center;
+echo &quot;An aquapore.&quot;</string> 
+      </void> 
+      <void property="geoData"> 
+       <string>0.0 0.0 0.0 6.0 -1000.0 -7.0 179.3 128.0</string> 
+      </void> 
+      <void property="stopTime"> 
+       <short>0</short> 
+      </void> 
+      <void property="transitionTime"> 
+       <short>8</short> 
+      </void> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="pauliRepulsionForAllAtoms"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="showAnimationControls"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="startingScene"> 
+   <object class="org.concord.jmol.SceneState"> 
+    <void property="arriveScript"> 
+     <string>select all;
+center selected;
+select ~lipidHead;
+color atoms [xeb4000];
+select ~lipidTail;
+color atoms [xffbf00];
+model 1;
+isosurface off;
+display none;
+model none;
+set echo top center;
+color echo [xdcecda];
+font echo 18 SANSSERIF plain;
+echo &quot;||Use the animation controls below|to go on a guided tour of an aquapore.||At each stop on the tour|you can explore the model by|dragging the mouse to rotate the model|and shift-dragging to zoom the model.||Check out the questions below|to find out what kind of snapshots|you should take along the way.&quot;
+set echo bottom center;
+font echo 12 sansserif;
+color echo pink;
+echo &quot;*Note: With large biological molecules the hydrogen|atoms are commonly not shown.&quot;;
+refresh;</string> 
+    </void> 
+    <void property="geoData"> 
+     <string>0.0 0.0 0.0 32.0 -999.0 -41.0 89.7 118.0</string> 
+    </void> 
+   </object> 
+  </void> 
+ </object> 
+</java> 

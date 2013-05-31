@@ -1,0 +1,332 @@
+{
+  "type": "md2d",
+  "imagePath": "",
+  "width": 4,
+  "height": 2.5,
+  "unitsScheme": "md2d",
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": false,
+  "gravitationalField": false,
+  "timeStep": 1,
+  "dielectricConstant": 1,
+  "realisticDielectricEffect": true,
+  "solventForceFactor": 1.25,
+  "solventForceType": 0,
+  "additionalSolventForceMult": 4,
+  "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
+  "viscosity": 1,
+  "timeStepsPerTick": 50,
+  "geneticEngineState": "dna",
+  "DNA": "",
+  "viewOptions": {
+    "viewPortWidth": 4,
+    "viewPortHeight": 2.5,
+    "viewPortZoom": 1,
+    "viewPortX": 0,
+    "viewPortY": 0,
+    "backgroundColor": "#eeeeee",
+    "showClock": false,
+    "markColor": "#f8b500",
+    "keShading": false,
+    "chargeShading": false,
+    "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
+    "showChargeSymbols": true,
+    "showVDWLines": false,
+    "VDWLinesCutoff": "medium",
+    "showVelocityVectors": false,
+    "showForceVectors": false,
+    "showAtomTrace": false,
+    "images": [],
+    "imageMapping": {},
+    "textBoxes": [],
+    "xlabel": false,
+    "ylabel": false,
+    "xunits": false,
+    "yunits": false,
+    "controlButtons": "play",
+    "gridLines": false,
+    "atomNumbers": false,
+    "enableAtomTooltips": false,
+    "enableKeyboardHandlers": true,
+    "atomTraceColor": "#6913c5",
+    "velocityVectors": {
+      "color": "#000",
+      "width": 0.01,
+      "length": 2
+    },
+    "forceVectors": {
+      "color": "#169C30",
+      "width": 0.01,
+      "length": 2
+    }
+  },
+  "pairwiseLJProperties": [],
+  "elements": {
+    "mass": [
+      20,
+      40,
+      60,
+      80,
+      600
+    ],
+    "sigma": [
+      0.07,
+      0.36,
+      0.21,
+      0.28,
+      0.3
+    ],
+    "epsilon": [
+      -0.1,
+      -0.1,
+      -0.1,
+      -0.1,
+      -5
+    ],
+    "color": [
+      -855310,
+      -16737793,
+      -9092186,
+      -26113,
+      -855310
+    ]
+  },
+  "atoms": {
+    "x": [
+      3.027413330078125,
+      2.3942022705078125,
+      2.0865415954589843,
+      0.9238469696044922,
+      1.3652760314941406,
+      3.37,
+      2.59,
+      1.48,
+      0.5974670791625977,
+      1.26
+    ],
+    "y": [
+      1.4471052551269532,
+      1.036973876953125,
+      1.799324722290039,
+      1.6372484588623046,
+      1.1758399963378907,
+      1.85,
+      1.78,
+      1.5,
+      1.1501007080078125,
+      0.5
+    ],
+    "vx": [
+      0.000170323572607254,
+      0.0005555984208413199,
+      -0.00019132451792868896,
+      0.00008465972584907207,
+      -0.0004839702460870478,
+      0.0007449562492744055,
+      -0.0005784060825618888,
+      0.00018181418827016606,
+      -0.0002181703695231464,
+      -0.00043690911593715015
+    ],
+    "vy": [
+      -0.00029778340185631903,
+      -0.0005479401605034579,
+      -0.00010903764381919314,
+      -0.00022703875929003394,
+      0.0005957482689283105,
+      -0.0009277531733936031,
+      -0.00016081823458040097,
+      -0.0008548716039417013,
+      0.0010210088436118294,
+      0.0006393087530673804
+    ],
+    "charge": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "friction": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "element": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      1
+    ],
+    "pinned": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "excitation": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "obstacles": {
+    "x": [
+      0.02,
+      3.93,
+      0,
+      0
+    ],
+    "y": [
+      2.4200000000000004,
+      0.040000000000000036,
+      0.039999999999999994,
+      0.0900000000000003
+    ],
+    "vx": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "vy": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "externalAx": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "externalAy": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "friction": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "height": [
+      0.05,
+      2.37,
+      0.05,
+      2.32
+    ],
+    "width": [
+      3.97,
+      0.05,
+      3.93,
+      0.05
+    ],
+    "mass": [
+      "Infinity",
+      "Infinity",
+      "Infinity",
+      "Infinity"
+    ],
+    "westProbe": [
+      false,
+      false,
+      false,
+      false
+    ],
+    "northProbe": [
+      false,
+      false,
+      false,
+      false
+    ],
+    "eastProbe": [
+      false,
+      false,
+      false,
+      false
+    ],
+    "southProbe": [
+      false,
+      false,
+      false,
+      false
+    ],
+    "color": [
+      [
+        255,
+        255,
+        255
+      ],
+      [
+        128,
+        128,
+        128
+      ],
+      [
+        128,
+        128,
+        128
+      ],
+      [
+        128,
+        128,
+        128
+      ]
+    ],
+    "visible": [
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "quantumDynamics": {
+    "elementEnergyLevels": [
+      [],
+      [],
+      [],
+      [],
+      []
+    ],
+    "photons": {},
+    "radiationlessEmissionProbability": 1
+  }
+}

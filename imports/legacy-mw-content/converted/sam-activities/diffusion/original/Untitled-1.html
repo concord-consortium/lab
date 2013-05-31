@@ -1,0 +1,153 @@
+<html>
+  <head>
+    <style type="text/css">
+      <!--
+        .style2 { font-size: 9px }
+      -->
+    </style>
+    <link rel="stylesheet" type="text/css" href="bioStyles.css">
+    
+    <style type="text/css">
+<!--
+.style3 {color: #CC0000}
+-->
+    </style>
+</head>
+  <body>
+    <table cellspacing="0" style="width: 730" cellpadding="0" border="0">
+      <tr>
+        <td style="width: 90px" align="right" rowspan="2">
+          &#160;
+        </td>
+        <td align="right">
+          ATP concentration
+        </td>
+        <td>
+          <select script3="script:mw2d:1:set %atpConc 2;" selfscript3="enablecomponent 1 true;" script2="script:mw2d:1:set %atpConc 1;" selfscript2="enablecomponent 1 true;" script1="script:mw2d:1:set %atpConc -1;" selfscript1="// do nothing;" name="jumpMenu" id="jumpMenu">
+            <option>none 
+            <option>low 
+            <option>high 
+          </select>
+          
+        </td>
+        <td style="width: 120px" rowspan="2">
+          <input selfscript="enablecomponent 2 true; enablecomponent 3 false; enablecomponent 4 false;" type="submit" script="script:mw2d:1:
+          		if ((%atpConc == -1) or (%caConc == -1));
+                	message addBoth.html;
+                else;
+                	stop immediately;
+                	set %filename round(%caConc*10+%atpConc);
+                    load %filename%ext;
+                    set %totalChemicalEnergy %number_of_molecules;
+                    set %waitingForCaBinding 1;
+                    set %waitingForATPBinding 0;
+                    set %waitingForATPSettling 0;
+                    set %waitingForClearCavity 0;
+                    set %waitingForProteinTransition 0;
+                    set %waitingForCaSettling 0;
+                    set %waitingForATPPocketFormation 0;
+                    set %waitingForCaRelease 0;
+                    set %waitingForFlashTransition 0;
+                    set %waitingForProteinReset 0;
+                    set %topBlockerInPlace 1;
+                    set %bottomBlockerInPlace 1;
+                    set %topParticleIndex -1;
+                    set %bottomParticleIndex -1;
+                    set %caToCapture -1;
+                    set %caToCaptureFar -1;
+                    set %caToCaptureNear -1;
+                    set %restraintSet 0;
+                    set %leftObs 0;
+                    set %rightObs 0;
+                    set %rightObs2 0;
+                    set %flashImage 0;
+                    set %caCount 0;
+                    set %atpCount 0;
+                    set %atomsInProtein 0;
+                    set %caLeft 0;
+                    set %caRight 0;
+                    beginexternal;
+                    	@colorbar:10:enablecomponent 2 true;  enablecomponent 1 false;
+                    endexternal;
+               endif;" name="button4" id="button4" value="load model">
+          
+        </td>
+        <td colspan="2" align="center">
+          <input selfscript="enablecomponent 2 false; enablecomponent 3 true; enablecomponent 4 true;" type="submit" script="script:mw2d:1:minimize 1 10; run;" name="button" id="button" value="run">
+          <input selfscript="enablecomponent 2 true; enablecomponent 3 false;" type="submit" script="script:mw2d:1:stop;" name="button2" id="button2" value="stop">
+          <input selfscript="enablecomponent 2 true; enablecomponent 3 false; enablecomponent 4 false;" type="submit" script="script:mw2d:1:
+          		          		if ((%atpConc == -1) or (%caConc == -1));
+                	message addBoth.html;
+                else;
+                	stop immediately;
+                	set %filename round(%caConc*10+%atpConc);
+                    load %filename%ext;
+                    set %totalChemicalEnergy %number_of_molecules;
+                    set %waitingForCaBinding 1;
+                    set %waitingForATPBinding 0;
+                    set %waitingForATPSettling 0;
+                    set %waitingForClearCavity 0;
+                    set %waitingForProteinTransition 0;
+                    set %waitingForCaSettling 0;
+                    set %waitingForATPPocketFormation 0;
+                    set %waitingForCaRelease 0;
+                    set %waitingForFlashTransition 0;
+                    set %waitingForProteinReset 0;
+                    set %topBlockerInPlace 1;
+                    set %bottomBlockerInPlace 1;
+                    set %topParticleIndex -1;
+                    set %bottomParticleIndex -1;
+                    set %caToCapture -1;
+                    set %caToCaptureFar -1;
+                    set %caToCaptureNear -1;
+                    set %restraintSet 0;
+                    set %leftObs 0;
+                    set %rightObs 0;
+                    set %rightObs2 0;
+                    set %flashImage 0;
+                    set %caCount 0;
+                    set %atpCount 0;
+                    set %atomsInProtein 0;
+                    set %caLeft 0;
+                    set %caRight 0;
+               endif;" name="button3" id="button3" value="reset">
+          
+        </td>
+      </tr>
+      <tr>
+        <td align="right">
+          Ca<sup>+2</sup> concentration
+        </td>
+        <td align="left">
+          <select script3="script:mw2d:1:set %caConc 2;" script2="script:mw2d:1:set %caConc 1;" script1="script:mw2d:1:set %caConc -1;" name="jumpMenu2" id="jumpMenu" selfscript1="// do nothing" selfscript2="enablecomponent 1 true;" selfscript3="enablecomponent 1 true;">
+            <option>none 
+            <option>low 
+            <option>high 
+          </select>
+          
+        </td>
+        <td style="width: 30px" align="right">
+          <input checked="checked" script_selected="script:mw2d:1:set %messagesOn 1;" type="checkbox" script_deselected="script:mw2d:1:set %messagesOn 0; select textbox all; set visible off; select textbox none;" name="checkbox" id="checkbox">
+          
+        </td>
+        <td align="left">
+          messages on
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 90px" align="right">
+          &#160;
+        </td>
+        <td colspan="3" align="center">
+          <span class="style2 style3">After changing concentrations press the &quot;load 
+          model&quot; button.</span>        </td>
+        <td style="width: 30px" align="right">
+          &#160;
+        </td>
+        <td align="left">
+          &#160;
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

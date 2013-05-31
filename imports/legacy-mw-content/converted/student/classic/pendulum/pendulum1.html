@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <title>A pendulum</title>
+  </head>
+  <body>
+    <center>
+
+      <applet code="org.concord.modeler.MwApplet" archive="../../../lib/mwapplet.jar" width="100%" height="600">
+        <param name="script" value="page:0:import pendulum1.cml"/>
+      </applet>
+
+      <form action="http://mw2.concord.org/tmp.jnlp" method=GET>
+        <input type=HIDDEN name="address" value="http://mw2.concord.org/public/student/classic/pendulum/pendulum1.cml">
+        <input type=SUBMIT value="Run this simulation using MW">
+      </form>
+
+      <p><b>System requirement:</b> You must have Java Version 5 or higher. <a href="http://java.com">Download Java now</a>.
+
+    </center>
+
+  </body>
+</html>

@@ -1,0 +1,191 @@
+{
+  "type": "md2d",
+  "imagePath": "",
+  "width": 2.6,
+  "height": 2,
+  "unitsScheme": "md2d",
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": true,
+  "targetTemperature": 4500,
+  "gravitationalField": false,
+  "timeStep": 1,
+  "dielectricConstant": 1,
+  "realisticDielectricEffect": true,
+  "solventForceFactor": 1.25,
+  "solventForceType": 0,
+  "additionalSolventForceMult": 4,
+  "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
+  "viscosity": 1,
+  "timeStepsPerTick": 50,
+  "geneticEngineState": "dna",
+  "DNA": "",
+  "viewOptions": {
+    "viewPortWidth": 2.6,
+    "viewPortHeight": 2,
+    "viewPortZoom": 1,
+    "viewPortX": 0,
+    "viewPortY": 0,
+    "backgroundColor": "#eeeeee",
+    "showClock": true,
+    "markColor": "#f8b500",
+    "keShading": false,
+    "chargeShading": false,
+    "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
+    "showChargeSymbols": true,
+    "showVDWLines": false,
+    "VDWLinesCutoff": "medium",
+    "showVelocityVectors": false,
+    "showForceVectors": false,
+    "showAtomTrace": false,
+    "images": [],
+    "imageMapping": {},
+    "textBoxes": [],
+    "xlabel": false,
+    "ylabel": false,
+    "xunits": false,
+    "yunits": false,
+    "controlButtons": "play",
+    "gridLines": false,
+    "atomNumbers": false,
+    "enableAtomTooltips": false,
+    "enableKeyboardHandlers": true,
+    "atomTraceColor": "#6913c5",
+    "velocityVectors": {
+      "color": "#000",
+      "width": 0.01,
+      "length": 2
+    },
+    "forceVectors": {
+      "color": "#169C30",
+      "width": 0.01,
+      "length": 2
+    }
+  },
+  "pairwiseLJProperties": [],
+  "elements": {
+    "mass": [
+      20,
+      40,
+      60,
+      80,
+      600
+    ],
+    "sigma": [
+      0.07,
+      0.14,
+      0.21,
+      0.28,
+      0.3
+    ],
+    "epsilon": [
+      -0.1,
+      -0.1,
+      -0.1,
+      -0.1,
+      -5
+    ],
+    "color": [
+      -855310,
+      -9066941,
+      -9092186,
+      -2539040,
+      -855310
+    ]
+  },
+  "atoms": {
+    "x": [
+      0.579248976263729,
+      0.660751023736271,
+      1.1117181423276008,
+      1.2104197710830447,
+      1.7192489762637297,
+      1.8007510237362703
+    ],
+    "y": [
+      1.3372232497490597,
+      1.4827767502509404,
+      0.7802488965824219,
+      0.5488108878826253,
+      1.2972232497490597,
+      1.4427767502509403
+    ],
+    "vx": [
+      0.0018020847509394775,
+      0.0006917245098786197,
+      0.001040698156998557,
+      -0.0008001987081906391,
+      0.0018020847509394775,
+      0.0006917245098786197
+    ],
+    "vy": [
+      -0.0004713725414495413,
+      0.00020743365921404907,
+      0.0004837396463587673,
+      -0.0004159420534558525,
+      -0.0004713725414495413,
+      0.00020743365921404907
+    ],
+    "charge": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "friction": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "element": [
+      1,
+      1,
+      2,
+      2,
+      1,
+      1
+    ],
+    "pinned": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "radialBonds": {
+    "atom1": [
+      2,
+      0,
+      4
+    ],
+    "atom2": [
+      3,
+      1,
+      5
+    ],
+    "length": [
+      0.2520000100135803,
+      0.1680000066757202,
+      0.1680000066757202
+    ],
+    "strength": [
+      2000,
+      2000,
+      2000
+    ],
+    "type": [
+      101,
+      101,
+      101
+    ]
+  }
+}
