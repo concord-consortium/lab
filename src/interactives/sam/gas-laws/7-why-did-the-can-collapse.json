@@ -45,11 +45,33 @@
         "  }",
         "}",
         "set('purpleAtomIndices',purpleAtomIndices);",
-        "set('yellowAtomIndices',yellowAtomIndices);"
+        "set('yellowAtomIndices',yellowAtomIndices);",
+        "callEvery(get('timeStep')*get('timeStepsPerTick'), function(t) {",
+        "  batch(function(){",
+        "    setTemperatureOfAtoms(get('purpleAtomIndices'),get('purpleAtomTemperature'));",
+        "    setTemperatureOfAtoms(get('yellowAtomIndices'),get('yellowAtomTemperature'));",
+        "  });",
+        "});"
       ]
     }
   ],
   "outputs": [
+    {
+      "name": "westPressureProbeInstantaneous",
+      "unitType": "pressure",
+      "label": "Pressure Gauge",
+      "value": [
+        "return getObstacleProperties(0).westProbeValue;"
+      ]
+    },
+    {
+      "name": "eastPressureProbeInstantaneous",
+      "unitType": "pressure",
+      "label": "Pressure Gauge",
+      "value": [
+        "return getObstacleProperties(0).eastProbeValue;"
+      ]
+    },
     {
       "name": "purpleAtoms",
       "value": "return getNumberOfAtoms(function(atom) { return atom.element === 3; });"
@@ -95,6 +117,34 @@
       "value": [
         "return getTemperatureOfAtoms(get('yellowAtomIndices'));"
       ]
+    },
+    {
+      "name": "volumeInside",
+      "unitType": "length",
+      "value": ["return 0.1 * get('height') * getObstacleProperties(0).x;"]
+    },
+    {
+      "name": "volumeOutside",
+      "unitType": "length",
+      "value": ["return 0.1 * get('height') * (get('width')-getObstacleProperties(0).x+getObstacleProperties(0).width);"]
+    }
+  ],
+  "filteredOutputs": [
+    {
+      "name": "westPressureProbeFiltered",
+      "unitType": "pressure",
+      "label": "Pressure Gauge",
+      "property": "westPressureProbeInstantaneous",
+      "type": "RunningAverage",
+      "period": 2500
+    },
+    {
+      "name": "eastPressureProbeFiltered",
+      "unitType": "pressure",
+      "label": "Pressure Gauge",
+      "property": "eastPressureProbeInstantaneous",
+      "type": "RunningAverage",
+      "period": 2500
     }
   ],
   "parameters": [
@@ -106,6 +156,16 @@
     {
       "name": "yellowAtomIndices",
       "initialValue": [],
+      "onChange": ""
+    },
+    {
+      "name": "purpleAtomTemperature",
+      "initialValue": 500,
+      "onChange": ""
+    },
+    {
+      "name": "yellowAtomTemperature",
+      "initialValue": 500,
       "onChange": ""
     }
   ],
@@ -119,30 +179,24 @@
     {
       "type": "numericOutput",
       "id": "purple-atoms",
-      "property": "purpleAtoms"
+      "property": "purpleAtoms",
+      "width": "6em",
+      "label": "Purple",
+      "labelOn": "top"
     },
     {
       "type": "numericOutput",
       "id": "yellow-atoms",
-      "property": "yellowAtoms"
-    },
-    {
-      "type": "text",
-      "id": "purple-label",
-      "text": "Purple molecules",
-      "width": "6em"
-    },
-    {
-      "type": "text",
-      "id": "yellow-label",
-      "text": "Yellow molecules",
-      "width": "6em"
+      "property": "yellowAtoms",
+      "width": "6em",
+      "label": "Yellow",
+      "labelOn": "top"
     },
     {
       "type": "button",
       "id": "add-inside",
       "text": "+",
-      "width": "6em",
+      "width": "3em",
       "action": [
         "var elemNum = 3;",
         "var maxX = getObstacleProperties(0).x - getElementProperties(elemNum).sigma;",
@@ -153,7 +207,7 @@
       "type": "button",
       "id": "add-outside",
       "text": "+",
-      "width": "6em",
+      "width": "3em",
       "action": [
         "var elemNum = 1;",
         "var minX = getObstacleProperties(0).x + getObstacleProperties(0).width + getElementProperties(elemNum).sigma;",
@@ -164,7 +218,7 @@
       "type": "button",
       "id": "remove-inside",
       "text": "-",
-      "width": "6em",
+      "width": "3em",
       "action": [
         "var firstFound = false;",
         "for (var i = 0; i < getNumberOfAtoms(); i++) {",
@@ -179,7 +233,7 @@
       "type": "button",
       "id": "remove-outside",
       "text": "-",
-      "width": "6em",
+      "width": "3em",
       "action": [
         "var firstFound = false;",
         "for (var i = 0; i < getNumberOfAtoms(); i++) {",
@@ -194,19 +248,10 @@
       "type": "button",
       "id": "heat-inside",
       "text": "Heat",
-      "width": "6em",
+      "width": "4em",
       "action": [
-        "if (get('temperature') < 10000) {",
-        "  for (var i = 0; i < getNumberOfAtoms(); i++) {",
-        "    var atom = getAtomProperties(i);",
-        "    if (atom.x < getObstacleProperties(0).x) {",
-        "       setAtomProperties(i, { vx: atom.vx * 1.1, vy: atom.vy * 1.1 }, false, false, {suppressRepaint: true})",
-        "    }",
-        "  }",
-        "  repaint();",
-        "}",
-        "else {",
-        "    alert('Max temperature reached.');",
+        "if (get('purpleAtomTemperature') < 5000) {",
+        "  set('purpleAtomTemperature', get('purpleAtomTemperature')*1.1);",
         "}"
       ]
     },
@@ -214,19 +259,10 @@
       "type": "button",
       "id": "heat-outside",
       "text": "Heat",
-      "width": "6em",
+      "width": "4em",
       "action": [
-        "if (get('temperature') < 10000) {",
-        "  for (var i = 0; i < getNumberOfAtoms(); i++) {",
-        "    var atom = getAtomProperties(i);",
-        "    if (atom.x > getObstacleProperties(0).x) {",
-        "       setAtomProperties(i, { vx: atom.vx * 1.1, vy: atom.vy * 1.1 }, false, false, {suppressRepaint: true})",
-        "    }",
-        "  }",
-        "  repaint();",
-        "}",
-        "else {",
-        "    alert('Max temperature reached.');",
+        "if (get('yellowAtomTemperature') < 5000) {",
+        "  set('yellowAtomTemperature', get('yellowAtomTemperature')*1.1);",
         "}"
       ]
     },
@@ -234,114 +270,187 @@
       "type": "button",
       "id": "cool-inside",
       "text": "Cool",
-      "width": "6em",
+      "width": "4em",
       "action": [
-        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
-        "  var atom = getAtomProperties(i);",
-        "  if (atom.x < getObstacleProperties(0).x) {",
-        "     setAtomProperties(i, { vx: atom.vx * 0.9, vy: atom.vy * 0.9 }, false, false, {suppressRepaint: true})",
-        "   }",
-        "}",
-        "repaint();"
+        "if (get('purpleAtomTemperature') > 0) {",
+        "  set('purpleAtomTemperature', get('purpleAtomTemperature')*0.9);",
+        "}"
       ]
     },
     {
       "type": "button",
       "id": "cool-outside",
       "text": "Cool",
-      "width": "6em",
+      "width": "4em",
       "action": [
-        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
-        "  var atom = getAtomProperties(i);",
-        "  if (atom.x > getObstacleProperties(0).x) {",
-        "     setAtomProperties(i, { vx: atom.vx * 0.9, vy: atom.vy * 0.9}, false, false, {suppressRepaint: true})",
-        "   }",
-        "}",
-        "repaint();"
+        "if (get('yellowAtomTemperature') > 0) {",
+        "  set('yellowAtomTemperature', get('yellowAtomTemperature')*0.9);",
+        "}"
       ]
     },
     {
       "type": "barGraph",
       "id": "temperature-inside",
       "property": "temperatureInside",
-      "title": "K",
+      "title": "T",
       "labels": 0,
       "min": 0,
-      "max": 2500,
+      "max": 5000,
       "height": "10em",
-      "titleOn": "top"
+      "titleOn": "top",
+      "barWidth": "1.5em"
     },
     {
       "type": "barGraph",
       "id": "temperature-outside",
       "property": "temperatureOutside",
-      "title": "K",
+      "title": "T",
       "labels": 0,
       "min": 0,
-      "max": 2500,
+      "max": 5000,
       "height": "10em",
-      "titleOn": "top"
+      "titleOn": "top",
+      "barWidth": "1.5em"
+    },
+    {
+      "type": "barGraph",
+      "id": "pressure-inside",
+      "property": "westPressureProbeFiltered",
+      "title": "P",
+      "labels": 0,
+      "min": 0,
+      "max": 10,
+      "height": "10em",
+      "titleOn": "top",
+      "barWidth": "1.5em"
+    },
+    {
+      "type": "barGraph",
+      "id": "pressure-outside",
+      "property": "eastPressureProbeFiltered",
+      "title": "P",
+      "labels": 0,
+      "min": 0,
+      "max": 10,
+      "height": "10em",
+      "titleOn": "top",
+      "barWidth": "1.5em"
+    },
+    {
+      "type": "barGraph",
+      "id": "volume-inside",
+      "property": "volumeInside",
+      "title": "V",
+      "labels": 0,
+      "min": 0,
+      "max": 10,
+      "height": "10em",
+      "titleOn": "top",
+      "barWidth": "1.5em"
+    },
+    {
+      "type": "barGraph",
+      "id": "volume-outside",
+      "property": "volumeOutside",
+      "title": "V",
+      "labels": 0,
+      "min": 0,
+      "max": 10,
+      "height": "10em",
+      "titleOn": "top",
+      "barWidth": "1.5em"
     }
   ],
   "layout": {
-    "left": [
-      ["purple-label"],
-      ["purple-atoms"],
-      ["temperature-inside"]
+    "left-graphs": [
+      "temperature-inside", "pressure-inside", "volume-inside"
     ],
-    "right": [
-      ["yellow-label"],
-      ["yellow-atoms"],
-      ["temperature-outside"]
+    "left-count": [
+      "purple-atoms"
     ],
-    "bottom-inside": [
-      ["add-inside", "remove-inside"],
-      ["heat-inside", "cool-inside"]
+    "left-spinner": [
+      ["remove-inside"],
+      ["add-inside"]
     ],
-    "bottom-outside": [
-      ["add-outside", "remove-outside"],
-      ["heat-outside", "cool-outside"]
+    "left-heat": [
+      "heat-inside", "cool-inside"
+    ],
+    "right-graphs": [
+      "temperature-outside", "pressure-outside", "volume-outside"
+    ],
+    "right-count" : [
+      "yellow-atoms"
+    ],
+    "right-spinner": [
+      ["remove-outside"], 
+      ["add-outside"]
+    ],
+    "right-heat": [
+      "heat-outside", "cool-outside"
     ],
     "footer": [ "show-velocity" ]
   },
   "template": [
     {
-      "id": "left",
-      "top": "3em",
+      "id": "left-graphs",
+      "top": "model.top",
       "right": "model.left",
       "align": "center",
       "fontScale": 0.8
     },
     {
-      "id": "right",
-      "top": "3em",
+      "id": "left-count",
+      "top": "left-graphs.bottom",
+      "left": "left-graphs.left",
+      "height": "6em",
+      "fontScale": 0.8
+    },
+    {
+      "id": "left-spinner",
+      "top": "left-graphs.bottom",
+      "left": "left-count.right",
+      "fontScale": 0.6
+    },
+    {
+      "id": "left-heat",
+      "top": "left-count.bottom",
+      "left": "left-graphs.left",
+      "fontScale": 0.8
+    },
+    {
+      "id": "right-graphs",
+      "top": "model.top",
       "left": "model.right",
       "align": "center",
       "fontScale": 0.8
     },
     {
-      "id": "bottom-inside",
-      "top": "model.bottom",
-      "left": "model.left",
-      "width": "model.width/2",
-      "align": "left",
+      "id": "right-count",
+      "left": "model.right",
+      "top": "right-graphs.bottom",
+      "height": "6em",
       "fontScale": 0.8
     },
     {
-      "id": "bottom-outside",
-      "top": "model.bottom",
-      "right": "model.right",
-      "width": "model.width/2",
-      "align": "right",
+      "id": "right-spinner",
+      "left": "right-count.right",
+      "top": "right-graphs.bottom",
+      "fontScale": 0.6
+    },
+    {
+      "id": "right-heat",
+      "left": "model.right",
+      "top": "right-count.bottom",
       "fontScale": 0.8
     },
     {
       "id": "footer",
       "left": "model.left",
-      "top": "bottom-outside.bottom",
+      "top": "model.bottom",
       "width": "model.width",
       "align": "center",
-      "padding-top": "0.5em"
+      "padding-top": "0.5em",
+      "fontScale": 0.8
     }
   ]
 }
