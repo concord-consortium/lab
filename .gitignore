@@ -8,4 +8,4 @@
 # however do save conversions of import resources
 !/imports/energy2d/models-index.js
 !/imports/energy2d/models-json
-!/imports/legacy-mw-content/converted
+!/imports/legacy-mw-content/converted/*
