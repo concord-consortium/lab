@@ -49,16 +49,11 @@ define(function (require) {
   function junkSequence(len) {
     var letters = ["A", "G", "T", "C"],
         lettersLen = letters.length,
-        seq = "",
-        i;
-
+        seq = "", i;
     for (i = 0; i < len; i++) {
       seq += letters[Math.floor(Math.random() * lettersLen)];
     }
-    return {
-      sequence: seq,
-      compSequence: complementarySequence(seq)
-    };
+    return seq;
   }
 
   function getNucleoID() {
@@ -81,22 +76,17 @@ define(function (require) {
         // List of transitions, which are currently ongoing (index 0)
         // or scheduled (index > 0).
         ongoingTransitions = [],
+        // DNA complementary sequence.
+        DNAComp = "",
         // Complete mRNA based on current DNA. Useful for codon() method,
         // which needs to know the whole sequence in advance.
         mRNA = "",
 
-        // Array of nucleotides. Each nucleotide is defined by:
-        // type - letter (A, T, G, C),
-        // idx - its position,
-        // id - unique id.
-        DNANucleotides = [],
-        DNACompNucleotides = [],
-
         dispatch = d3.dispatch("change", "transition"),
 
         calculatemRNA = function () {
-          var newCode = mRNACode(0);
-          mRNA = "";
+          var newCode = mRNACode(0),
+              mRNA = "";
           while(newCode) {
             mRNA += newCode;
             newCode = mRNACode(mRNA.length);
@@ -105,12 +95,11 @@ define(function (require) {
         },
 
         mRNACode = function (index) {
-          var DNAComplement = model.get("DNAComplement");
-          if (index >= DNAComplement.length) {
+          if (index >= DNAComp.length) {
             // No more DNA to transcribe, return null.
             return null;
           }
-          switch (DNAComplement[index]) {
+          switch (DNAComp[index]) {
             case "A": return "U";
             case "G": return "C";
             case "T": return "A";
@@ -118,17 +107,28 @@ define(function (require) {
           }
         },
 
-        generateNucleotides = function (array, seq) {
+        generateViewArray = function (array, sequence, codingRegion) {
           var i, len, nucleo;
-          // Set size of the existing array to the size of new DNA string.
-          array.length = seq.length;
-          for (i = 0, len = seq.length; i < len; i++) {
+          codingRegion = codingRegion || false;
+          // Set size of the existing array to the size of new DNA sequence.
+          array.length = sequence.length;
+          for (i = 0, len = sequence.length; i < len; i++) {
             nucleo = array[i] || {}; // reuse existing objects.
-            nucleo.id   = getNucleoID();
-            nucleo.idx  = i;
-            nucleo.type = seq[i];
-            array[i] = nucleo;
+            nucleo.idx = i;
+            nucleo.coding = codingRegion;
+            // Note that only nucleotides whose type doesn't match sequence
+            // will receive new ID. It lets you to update this array manually,
+            // so the ID as prevented in case of need (e.g. single insertion
+            // or deletion during mutation).
+            if (nucleo.type !== sequence[i]) {
+              nucleo.type = sequence[i];
+              nucleo.id   = getNucleoID();
+              // This block will be also executed when we insert objects for
+              // the first time so update the array[i] reference.
+              array[i] = nucleo;
+            }
           }
+          return array;
         },
 
         validateDNA = function (DNA) {
@@ -142,27 +142,23 @@ define(function (require) {
         },
 
         updateGeneticProperties = function () {
-          var DNA = model.get("DNA"),
-              DNAComp;
+          var DNA = model.get("DNA");
 
           validateDNA(DNA);
-          generateNucleotides(DNANucleotides, DNA);
+          generateViewArray(api.viewModel.DNA, DNA, true);
 
           DNAComp = complementarySequence(DNA);
-          generateNucleotides(DNACompNucleotides, DNAComp);
-          model.set("DNAComplement", DNAComp);
+          generateViewArray(api.viewModel.DNAComp, DNAComp, true);
 
-          calculatemRNA();
-          // TODO generate mRNA nucleotides (limit GC!)
-
-          // Update model's mRNA property.
+          mRNA = calculatemRNA();
+          // mRNA view array is also based on the current state.
           if (api.stateBefore("transcription:0")) {
-            model.set("mRNA", "");
+            generateViewArray(api.viewModel.mRNA, "");
           } else if (api.state().name === "transcription") {
-            model.set("mRNA", mRNA.substr(0, api.state().step));
+            generateViewArray(api.viewModel.mRNA, mRNA.substr(0, api.state().step));
           } else if (api.stateAfter("transcription")) {
             // So, the first state which triggers it is "transcription-end".
-            model.set("mRNA", mRNA);
+            generateViewArray(api.viewModel.mRNA, mRNA);
           }
         },
 
@@ -259,30 +255,35 @@ define(function (require) {
             // Mark transition as ongoing (by adding it to the list)
             // and do transition.
             ongoingTransitions.push(name);
-            doTransition(name);
+            doStateTransition(name);
           }
         },
 
-        doTransition = function (name) {
+        doStateTransition = function (name) {
           stateTransition = true;
           model.set("geneticEngineState", name);
           stateTransition = false;
         },
 
+        doDNATransition = function (newDNA) {
+          stateTransition = true;
+          model.set("DNA", newDNA);
+          stateTransition = false;
+        },
+
         stateUpdated = function () {
-          var state;
+          var state = model.get("geneticEngineState");
 
           updateGeneticProperties();
 
           if (stateTransition) {
-            dispatch.transition();
+            dispatch.transition(state);
           } else {
             ongoingTransitions = [];
             removeAminoAcids();
             if (api.stateBefore("translation:1")) {
               dispatch.change();
             } else {
-              state = model.get("geneticEngineState");
               // It means that state was set to 'translation:x', where x > 0.
               // Use the last safe state ('translation:0') instead.
               alert("'" + state + "' cannot be set explicitly. " +
@@ -295,11 +296,42 @@ define(function (require) {
 
         DNAUpdated = function () {
           updateGeneticProperties();
-          dispatch.change();
+
+          if (stateTransition) {
+            dispatch.transition("dna-updated");
+          } else {
+            dispatch.change();
+          }
         };
 
     // Public API.
     api = {
+      /**
+       * Hash of arrays containing nucleotides objects. Each array can be
+       * consumed by the view. References to arrays are guaranteed to be
+       * untouched during whole life cycle of the GeneticEngine instance.
+       * Only arrays' lengths and content can be changed.
+       *
+       * Each nucleotide is defined by:
+       * type   - letter ("A", "T", "U", "G" or "C"),
+       * idx    - its position,
+       * id     - unique id,
+       * coding - true if nucleotide is a part of coding region (not junk, terminator or promoter).
+       */
+      viewModel: {
+        DNA: [],
+        DNAComp: [],
+        mRNA: [],
+        mRNAComp: [],
+        // These arrays are constant in fact, generate just once:
+        promoter:       generateViewArray([], PROMOTER_SEQ),
+        promoterComp:   generateViewArray([], complementarySequence(PROMOTER_SEQ)),
+        terminator:     generateViewArray([], TERMINATOR_SEQ),
+        terminatorComp: generateViewArray([], complementarySequence(TERMINATOR_SEQ)),
+        junk:           generateViewArray([], JUNK_SEQ),
+        junkComp:       generateViewArray([], complementarySequence(JUNK_SEQ))
+      },
+
       // Convenient method for validation. It doesn't throw an exception,
       // instead a special object with validation status is returned. It can
       // be especially useful for UI classes to avoid try-catch sequences with
@@ -327,14 +359,41 @@ define(function (require) {
         dispatch.on(type, listener);
       },
 
-      mutate: function(nucleotideIdx, newType, DNAComplement) {
+      mutate: function(idx, newType, DNAComplement) {
         var DNA = model.get("DNA");
-        if (nucleotideIdx < DNA.length) {
-          DNA = DNA.substr(0, nucleotideIdx) +
-                (DNAComplement ? complementarySequence(newType) : newType) +
-                DNA.substr(nucleotideIdx + 1);
-          model.set("DNA", DNA);
-        }
+
+        DNA = DNA.substr(0, idx) +
+              (DNAComplement ? complementarySequence(newType) : newType) +
+              DNA.substr(idx + 1);
+        model.set("DNA", DNA);
+      },
+
+      insert: function(idx, type, DNAComplement) {
+        var newDNANucleo = {
+              type: DNAComplement ? complementarySequence(type) : type,
+              id: getNucleoID()
+            },
+            newDNACompNucleo = {
+              type: DNAComplement ? type : complementarySequence(type),
+              id: getNucleoID()
+            },
+            newMRNANucleo = {
+              type: DNAComplement ? complementarySequence(type) : type,
+              id: getNucleoID()
+            },
+            DNA = model.get("DNA");
+
+        // Update view model arrays. It isn't necessary, but as we update them
+        // correctly, nucleotides will preserve their IDs and view will know
+        // exactly what part of DNA have been changed.
+        api.viewModel.DNA.splice(idx, 0, newDNANucleo);
+        api.viewModel.DNAComp.splice(idx, 0, newDNACompNucleo);
+        api.viewModel.mRNA.splice(idx, 0, newMRNANucleo);
+
+        // Update DNA. This will also call updateGeneticProperties(), so
+        // other, related properties will be also updated.
+        DNA = DNA.substr(0, idx) + newDNANucleo.type + DNA.substr(idx);
+        doDNATransition(DNA);
       },
 
       /**
@@ -535,13 +594,12 @@ define(function (require) {
         // from transitions list.
         ongoingTransitions.shift();
         if (ongoingTransitions.length > 0) {
-          doTransition(ongoingTransitions[0]);
+          doStateTransition(ongoingTransitions[0]);
         }
       },
 
       stopCodonsHash: function () {
         var result = {},
-            mRNA = model.get("mRNA"),
             codon, i, len;
 
         for (i = 0, len = mRNA.length; i < len; i += 3) {
@@ -596,27 +654,7 @@ define(function (require) {
           x: xcm,
           y: ycm
         };
-      },
-
-      /**
-       * Returns junk DNA sequence.
-       * e.g.
-       * {
-       *   "sequence": "AGT",
-       *   "compSequence": "TCA"
-       * }
-       *
-       * @return {Object} sequence and complementary sequence.
-       */
-      junkSequence: function () {
-        return JUNK_SEQ;
-      },
-
-      promoterSequence: PROMOTER_SEQ,
-      promoterCompSequence: complementarySequence(PROMOTER_SEQ),
-
-      terminatorSequence: TERMINATOR_SEQ,
-      terminatorCompSequence: complementarySequence(TERMINATOR_SEQ)
+      }
     };
 
     model.addPropertiesListener(["DNA"], DNAUpdated);
