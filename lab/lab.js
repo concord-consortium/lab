@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "fb6cb3afb088de661438676a1db718248af8f21b",
-        "short_sha":      "fb6cb3af",
-        "url":            "https://github.com/concord-consortium/lab/commit/fb6cb3af",
+        "sha":           "64650a8a40d90e60738b13f992ce99db37f6d2e0",
+        "short_sha":      "64650a8a",
+        "url":            "https://github.com/concord-consortium/lab/commit/64650a8a",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-05-30 22:20:10 -0400",
-        "short_message": "use main commit for gh-pages commit message",
-        "message":       "use main commit for gh-pages commit message"
+        "date":          "2013-05-30 22:51:28 -0400",
+        "short_message": "correct check for undefined modelList variable",
+        "message":       "correct check for undefined modelList variable"
       },
       "dirty": false
     }
