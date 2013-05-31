@@ -39,46 +39,37 @@ describe "GeneticEngine", ->
         mock.changeListener.restore()
         mock.transitionListener.restore()
 
-      it "should calculate DNA complement after setting DNA and dispatch appropriate event", ->
+      checkViewModel = (array, sequence) ->
+        for nucleo, i in array
+          nucleo.idx.should.eql i
+          nucleo.type.should.eql sequence[i]
+
+      it "should calculate view arrays and dispatch appropriate event after setting DNA", ->
         mock.changeListener.callCount.should.eql 0
         model.set "DNA", "ATGC"
-        model.get("DNAComplement").should.eql "TACG"
+        checkViewModel geneticEngine.viewModel.DNA, "ATGC"
+        checkViewModel geneticEngine.viewModel.DNAComp, "TACG"
+        checkViewModel geneticEngine.viewModel.mRNA, ""
         mock.changeListener.callCount.should.eql 1
         mock.transitionListener.callCount.should.eql 0
 
-      it "should calculate nucleotides arrays for DNA and DNA Complement", ->
-        check = (d, idx, type) ->
-          d[idx].idx.should.eql idx
-          d[idx].type.should.eql type
-
-        d = geneticEngine.DNANucleotides()
-        check d, 0, "A"
-        check d, 1, "T"
-        check d, 2, "G"
-        check d, 3, "C"
-        d = geneticEngine.DNACompNucleotides()
-        check d, 0, "T"
-        check d, 1, "A"
-        check d, 2, "C"
-        check d, 3, "G"
-
       it "should calculate mRNA when state is set to 'transcription-end' or 'translation'", ->
         model.set "geneticEngineState", "transcription-end"
-        model.get("mRNA").should.eql "AUGC"
+        checkViewModel geneticEngine.viewModel.mRNA, "AUGC"
         mock.changeListener.callCount.should.eql 1
         mock.transitionListener.callCount.should.eql 0
 
       it "should perform single step of DNA to mRNA transcription", ->
         model.set "geneticEngineState", "dna"
-        model.get("mRNA").should.eql ""
+        checkViewModel geneticEngine.viewModel.mRNA, ""
         geneticEngine.transcribeStep()
-        model.get("mRNA").should.eql ""   # DNA separated, mRNA prepared for transcription
+        checkViewModel geneticEngine.viewModel.mRNA, ""   # DNA separated, mRNA prepared for transcription
         geneticEngine.transcribeStep()
-        model.get("mRNA").should.eql "A"
+        checkViewModel geneticEngine.viewModel.mRNA, "A"
         geneticEngine.transcribeStep("A") # Wrong, "U" is expected!
-        model.get("mRNA").should.eql "A"  # Nothing happens, mRNA is still the same.
+        checkViewModel geneticEngine.viewModel.mRNA, "A"  # Nothing happens, mRNA is still the same.
         geneticEngine.transcribeStep("U") # This time expected nucleotide is correct,
-        model.get("mRNA").should.eql "AU" # so it's added to mRNA.
+        checkViewModel geneticEngine.viewModel.mRNA, "AU" # so it's added to mRNA.
 
       it "should transcribe mRNA from DNA and dispatch appropriate events", ->
         model.set "geneticEngineState", "dna"
@@ -86,7 +77,7 @@ describe "GeneticEngine", ->
         geneticEngine.transitionTo("transcription-end")
         mock.transitionListener.callCount.should.eql 5 # separation + 4 x transcription
 
-        model.get("mRNA").should.eql "AUGC"
+        checkViewModel geneticEngine.viewModel.mRNA, "AUGC"
 
       it "shouldn't allow setting geneticEngineState to translation:x, where x > 0", ->
         model.set "geneticEngineState", "translation:15"
