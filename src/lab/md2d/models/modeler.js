@@ -626,7 +626,9 @@ define(function(require) {
       // and register it in tick history.
       tickHistory.registerExternalObject({
         push: function () {
-          // Push is empty, as we store samples during each tick anyway.
+          // add samples on push as the samples added earlier may have been invalidated by
+          // invalidatingChangesPostHook
+          filter.addSample(model.get("time"), model.get(property));
         },
         extract: function (idx) {
           filter.setCurrentStep(idx);
