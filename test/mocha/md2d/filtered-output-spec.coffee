@@ -244,15 +244,17 @@ describe "MD2D filters", ->
           model.set viscosity: 4
 
           model.get("viscosity").should.equal 4
-          model.get("filteredViscosity").should.equal 2.5
+          # Filtered output is based on the historical data,
+          # so it doesn't reflect changes immediately!
+          model.get("filteredViscosity").should.equal 1
+
+          model.tick()
+          model.get("viscosity").should.equal 4
+          model.get("filteredViscosity").should.equal 1.75
 
           model.tick()
           model.get("viscosity").should.equal 4
           model.get("filteredViscosity").should.equal 3.25
-
-          model.tick()
-          model.get("viscosity").should.equal 4
-          model.get("filteredViscosity").should.equal 4
           # etc.
 
         it "should follow changes of the current model step", ->
@@ -264,20 +266,15 @@ describe "MD2D filters", ->
           model.tick 2
           model.stepCounter().should.equal 3
           model.get("viscosity").should.equal 4
-          model.get("filteredViscosity").should.equal 4
+          model.get("filteredViscosity").should.equal 3.25
 
           model.stepBack()
           model.stepCounter().should.equal 2
           model.get("viscosity").should.equal 4
-          model.get("filteredViscosity").should.equal 3.25
+          model.get("filteredViscosity").should.equal 1.75
 
           model.stepBack()
           model.stepCounter().should.equal 1
-          # !!!!!!!
-          # We changed viscosity at step 1 to 4.
-          # Why is it still 1? It looks like parameters aren't
-          # stored in tick history after they are changed.
-          # Filtered output just follows behavior of parameter.
           model.get("viscosity").should.equal 1
           model.get("filteredViscosity").should.equal 1
 
@@ -298,7 +295,5 @@ describe "MD2D filters", ->
 
           model.seek 3
           model.stepCounter().should.equal 3
-          # Note that due to problem mentioned above, we end up
-          # with value of filteredViscosity different from expected 4.
           model.get("viscosity").should.equal 4
           model.get("filteredViscosity").should.equal 3.25
