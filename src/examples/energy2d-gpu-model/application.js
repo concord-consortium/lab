@@ -33,7 +33,7 @@
     document.location.hash = hash;
     interactive_url = hash.substr(1, hash.length);
 
-    select.find("option[data-path='" + interactive_url + "']").attr('selected', true);
+    select.find("option[data-path='" + interactive_url + "']").prop('selected', true);
 
     // Download interactive options and create Energy2D Interactive Controller.
     $.get(interactive_url).done(function (results) {
@@ -53,7 +53,7 @@
     });
 
     enable_WebGL_checkbox.change(function () {
-      controller.setWebGLEnabled($(this).attr("checked"));
+      controller.setWebGLEnabled($(this).prop("checked"));
     });
 
     $(window).bind('hashchange', function () {
@@ -98,7 +98,7 @@
       // It exposes public API to Lab.energy2d global object.
       // Note that particular classes can be loaded directly, e.g.:
       // 'controller/interactive'
-      // but to keep consistency with optimized built, use 
+      // but to keep consistency with optimized built, use
       // global namespace.
       'public-api'
     ], applicationCallback);
