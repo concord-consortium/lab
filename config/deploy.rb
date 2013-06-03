@@ -85,6 +85,6 @@ namespace :deploy do
 
   desc "create symbolic link from old urls to root dir"
   task :create_symbolic_links do
-    run "make symbolic-links"
+    run "cd /var/www/app; make symbolic-links"
   end
 end
