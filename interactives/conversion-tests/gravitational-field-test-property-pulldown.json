@@ -66,6 +66,12 @@
       "id": "button1",
       "text": "Reset",
       "action": "reset();"
+    },
+    {
+      "type": "numericOutput",
+      "id": "potential-energy",
+      "property": "potentialEnergy",
+      "displayValue": "return format('1.2f')(value)"
     }
   ]
 }

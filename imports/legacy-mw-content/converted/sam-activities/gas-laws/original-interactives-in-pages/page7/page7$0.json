@@ -634,13 +634,13 @@
       1470
     ],
     "westProbe": [
-      false
+      true
     ],
     "northProbe": [
       false
     ],
     "eastProbe": [
-      false
+      true
     ],
     "southProbe": [
       false

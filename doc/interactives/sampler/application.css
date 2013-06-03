@@ -714,6 +714,8 @@ body:fullscreen .fullscreen {
   font-size: 0.9em;
   font-family: inherit;
   border: none; }
+  #responsive-content .context-menu-list .context-menu-list {
+    font-size: 1em; }
 #responsive-content .context-menu-submenu:after {
   top: 0.35em; }
 #responsive-content .mutations-menu {
@@ -725,76 +727,98 @@ body:fullscreen .fullscreen {
   #responsive-content .mutations-menu .context-menu-item {
     border-radius: 0.7em;
     padding: 0.35em 1em; }
-  #responsive-content .mutations-menu .submenu-item {
+  #responsive-content .mutations-menu .substitution-submenu .context-menu-item {
     padding: 1.2em; }
-  #responsive-content .mutations-menu .A-to-A {
+  #responsive-content .mutations-menu .substitution-submenu .A-to-A {
     display: none; }
-  #responsive-content .mutations-menu .A-to-T {
+  #responsive-content .mutations-menu .substitution-submenu .A-to-T {
     background-repeat: no-repeat;
     background-position: 50%;
     background-size: auto 75%;
     background-image: url("resources/dna/A-to-T.svg"); }
-  #responsive-content .mutations-menu .A-to-G {
+  #responsive-content .mutations-menu .substitution-submenu .A-to-G {
     background-repeat: no-repeat;
     background-position: 50%;
     background-size: auto 75%;
     background-image: url("resources/dna/A-to-G.svg"); }
-  #responsive-content .mutations-menu .A-to-C {
+  #responsive-content .mutations-menu .substitution-submenu .A-to-C {
     background-repeat: no-repeat;
     background-position: 50%;
     background-size: auto 75%;
     background-image: url("resources/dna/A-to-C.svg"); }
-  #responsive-content .mutations-menu .C-to-C {
+  #responsive-content .mutations-menu .substitution-submenu .C-to-C {
     display: none; }
-  #responsive-content .mutations-menu .C-to-T {
+  #responsive-content .mutations-menu .substitution-submenu .C-to-T {
     background-repeat: no-repeat;
     background-position: 50%;
     background-size: auto 75%;
     background-image: url("resources/dna/C-to-T.svg"); }
-  #responsive-content .mutations-menu .C-to-G {
+  #responsive-content .mutations-menu .substitution-submenu .C-to-G {
     background-repeat: no-repeat;
     background-position: 50%;
     background-size: auto 75%;
     background-image: url("resources/dna/C-to-G.svg"); }
-  #responsive-content .mutations-menu .C-to-A {
+  #responsive-content .mutations-menu .substitution-submenu .C-to-A {
     background-repeat: no-repeat;
     background-position: 50%;
     background-size: auto 75%;
     background-image: url("resources/dna/C-to-A.svg"); }
-  #responsive-content .mutations-menu .G-to-G {
+  #responsive-content .mutations-menu .substitution-submenu .G-to-G {
     display: none; }
-  #responsive-content .mutations-menu .G-to-T {
+  #responsive-content .mutations-menu .substitution-submenu .G-to-T {
     background-repeat: no-repeat;
     background-position: 50%;
     background-size: auto 75%;
     background-image: url("resources/dna/G-to-T.svg"); }
-  #responsive-content .mutations-menu .G-to-C {
+  #responsive-content .mutations-menu .substitution-submenu .G-to-C {
     background-repeat: no-repeat;
     background-position: 50%;
     background-size: auto 75%;
     background-image: url("resources/dna/G-to-C.svg"); }
-  #responsive-content .mutations-menu .G-to-A {
+  #responsive-content .mutations-menu .substitution-submenu .G-to-A {
     background-repeat: no-repeat;
     background-position: 50%;
     background-size: auto 75%;
     background-image: url("resources/dna/G-to-A.svg"); }
-  #responsive-content .mutations-menu .T-to-T {
+  #responsive-content .mutations-menu .substitution-submenu .T-to-T {
     display: none; }
-  #responsive-content .mutations-menu .T-to-G {
+  #responsive-content .mutations-menu .substitution-submenu .T-to-G {
     background-repeat: no-repeat;
     background-position: 50%;
     background-size: auto 75%;
     background-image: url("resources/dna/T-to-G.svg"); }
-  #responsive-content .mutations-menu .T-to-C {
+  #responsive-content .mutations-menu .substitution-submenu .T-to-C {
     background-repeat: no-repeat;
     background-position: 50%;
     background-size: auto 75%;
     background-image: url("resources/dna/T-to-C.svg"); }
-  #responsive-content .mutations-menu .T-to-A {
+  #responsive-content .mutations-menu .substitution-submenu .T-to-A {
     background-repeat: no-repeat;
     background-position: 50%;
     background-size: auto 75%;
     background-image: url("resources/dna/T-to-A.svg"); }
+  #responsive-content .mutations-menu .insertion-submenu .context-menu-item {
+    padding: 0.6em 0.8em; }
+  #responsive-content .mutations-menu .insertion-submenu .A {
+    background-repeat: no-repeat;
+    background-position: 88%;
+    background-size: auto 85%;
+    background-image: url("resources/dna/A.svg"); }
+  #responsive-content .mutations-menu .insertion-submenu .T {
+    background-repeat: no-repeat;
+    background-position: 88%;
+    background-size: auto 85%;
+    background-image: url("resources/dna/T.svg"); }
+  #responsive-content .mutations-menu .insertion-submenu .G {
+    background-repeat: no-repeat;
+    background-position: 86%;
+    background-size: auto 85%;
+    background-image: url("resources/dna/G.svg"); }
+  #responsive-content .mutations-menu .insertion-submenu .C {
+    background-repeat: no-repeat;
+    background-position: 86%;
+    background-size: auto 85%;
+    background-image: url("resources/dna/C.svg"); }
 #responsive-content .aminoacids-menu {
   min-width: 9em; }
   #responsive-content .aminoacids-menu .context-menu-item {

@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "64650a8a40d90e60738b13f992ce99db37f6d2e0",
-        "short_sha":      "64650a8a",
-        "url":            "https://github.com/concord-consortium/lab/commit/64650a8a",
-        "author":        "Stephen Bannasch",
-        "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-05-30 22:51:28 -0400",
-        "short_message": "correct check for undefined modelList variable",
-        "message":       "correct check for undefined modelList variable"
+        "sha":           "6948547d9bcec05d5cb0427f1d01c21500fe6c7f",
+        "short_sha":      "6948547d",
+        "url":            "https://github.com/concord-consortium/lab/commit/6948547d",
+        "author":        "Piotr Janik",
+        "email":         "janikpiotrek@gmail.com",
+        "date":          "2013-06-03 15:28:54 -0400",
+        "short_message": "Fix a bug in substitution mutation context menu",
+        "message":       "Fix a bug in substitution mutation context menu\n\n[#41660503]\n\nDynamically added classes weren't removed correctly, so after a few\nsubstitution mutations submenu elements were invisible."
       },
       "dirty": false
     }

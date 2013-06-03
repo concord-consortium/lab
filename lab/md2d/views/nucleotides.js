@@ -91,13 +91,16 @@ define(function (require) {
             nucleo, nucleoEnter, nucleoShape, nucleoSVG, nucleoSVGUpdate, nucleoTrans,
             targetScale;
 
-        // seq is string now. Change it to array of objects.
+        // seq is a string, generate data array. Change it to array of objects.
         // e.g. "AG" will be change to [{idx: 0, type: "A"}, {idx: 1, type: "G"}].
-        seq = seq.split("");
-        seq.forEach(function(val, i) {
-          seq[i] = {idx: i, type: val};
-        });
-        nucleo = g.selectAll("g.nucleotide").data(seq);
+        if (typeof seq === "string") {
+          seq = seq.split("");
+          seq.forEach(function(val, i) {
+            seq[i] = {id: i, idx: i, type: val};
+          });
+        }
+        // Join by ID.
+        nucleo = g.selectAll("g.nucleotide").data(seq, function (d) { return d.id; });
         // Enter.
         // Enable random translation of the new mRNAs.
         shift(randomEnter);
@@ -120,6 +123,13 @@ define(function (require) {
             "stroke": "#fff"
           });
         nucleoShape = nucleoEnter.append("g").attr("class", "nucleo-shape");
+        nucleoShape.on("click", function () {
+          // Mobile Safari will only produce mouse events when the user taps
+          // on a clickable element, like a link. You can make an element
+          // clickable by adding an onClick event handler to it, even if that
+          // handler does nothing. It's necessary, as nucleotides should be
+          // clickable, e.g. to show context menu.
+        });
         if (glow) {
           nucleoShape.append("image").attr({
             "class": "glow",
@@ -232,7 +242,11 @@ define(function (require) {
         }
 
         // Exit.
-        d3.transition(nucleo.exit()).remove();
+        shift(true);
+        d3.transition(nucleo.exit())
+          .attr("transform", translate)
+          .style("opacity", 0)
+          .remove();
       });
     }
 

@@ -115,14 +115,6 @@ define(function(require) {
         // Invalidating change hooks might between others
         invalidatingChangeHookNestingLevel = 0,
 
-        // The subset of outputName list, containing list of outputs which are filtered
-        // by one of the built-in filters (like running average filter).
-        filteredOutputNames = [],
-
-        // Function adding new sample for filtered outputs. Other properties of filtered output
-        // are stored in outputsByName object, as filtered output is just extension of normal output.
-        filteredOutputsByName = {},
-
         // The set of units currently in effect. (Determined by the 'unitsScheme' property of the
         // model; default value is 'md2d')
         unitsDefinition,
@@ -183,10 +175,15 @@ define(function(require) {
       for (i = 0, len = transitions.length; i < len; i++) {
         transitions[i].process(timeDiff);
       }
-    }
-
-    function cleanupTransitions() {
-      // TODO: implement me!
+      // Cleanup finished transitions.
+      i = 0;
+      while(i < transitions.length) {
+        if (transitions[i].isFinished) {
+          transitions.splice(i, 1);
+        } else {
+          i++;
+        }
+      }
     }
 
     function tick(elapsedTime, dontDispatchTickEvent) {
@@ -209,10 +206,9 @@ define(function(require) {
           sampleTimes.push(sampleTime);
           sampleTimes.splice(0, sampleTimes.length - 64);
 
-          // Process all transitions which are in progress.
+          // Process all transitions which are in progress
+          // and remove finished.
           processTransitions(sampleTime);
-          // Remove all transitions which are finished.
-          cleanupTransitions();
         } else {
           lastSampleTime = t;
         }
@@ -297,14 +293,6 @@ define(function(require) {
       readModelState();
       propertySupport.deleteComputedPropertyCachedValues();
 
-      // Update all filtered outputs.
-      // Note that this have to be performed after invalidation of all outputs
-      // (as filtered output can filter another output), but before notifying
-      // listeners (as we want to provide current, valid value).
-      filteredOutputNames.forEach(function(name) {
-        filteredOutputsByName[name].addSample();
-      });
-
       propertySupport.notifyAllComputedProperties();
     }
 
@@ -343,13 +331,6 @@ define(function(require) {
 
       // Make sure that computed properties which depend on engine state are valid
       readModelState();
-
-      // Non-filtered outputs will be valid at this point (caching is disabl;ed, so they're
-      // recomputed every time.) This ensures that filtered outputs that depend on non-filtered
-      // outputs are also valid:
-      filteredOutputNames.forEach(function(name) {
-        filteredOutputsByName[name].addSample();
-      });
 
       if (invalidatingChangeHookNestingLevel === 0) {
         // Once we've finished the cycle of invalidating changes, go ahead and notify observers of
@@ -613,20 +594,16 @@ define(function(require) {
       // Add initial sample.
       filter.addSample(model.get('time'), initialValue);
 
-      filteredOutputNames.push(name);
-      // filteredOutputsByName stores properties which are unique for filtered output.
-      // Other properties like description or calculate function are stored in outputsByName hash.
-      filteredOutputsByName[name] = {
-        addSample: function () {
-          filter.addSample(model.get('time'), model.get(property));
-        }
-      };
-
       // Create simple adapter implementing TickHistoryCompatible Interface
       // and register it in tick history.
       tickHistory.registerExternalObject({
         push: function () {
-          // Push is empty, as we store samples during each tick anyway.
+          // Filtered outputs are updated only at the end of tick() operation,
+          // druing tickHistory.push() call. So they are *not* updated
+          // immediately after property change, e.g. using model.set("prop", 5).
+          // Filtered ouput bound to "prop" property will reflect this change
+          // in the next tick.
+          filter.addSample(model.get("time"), model.get(property));
         },
         extract: function (idx) {
           filter.setCurrentStep(idx);

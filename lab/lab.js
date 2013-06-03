@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "64650a8a40d90e60738b13f992ce99db37f6d2e0",
-        "short_sha":      "64650a8a",
-        "url":            "https://github.com/concord-consortium/lab/commit/64650a8a",
-        "author":        "Stephen Bannasch",
-        "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-05-30 22:51:28 -0400",
-        "short_message": "correct check for undefined modelList variable",
-        "message":       "correct check for undefined modelList variable"
+        "sha":           "6948547d9bcec05d5cb0427f1d01c21500fe6c7f",
+        "short_sha":      "6948547d",
+        "url":            "https://github.com/concord-consortium/lab/commit/6948547d",
+        "author":        "Piotr Janik",
+        "email":         "janikpiotrek@gmail.com",
+        "date":          "2013-06-03 15:28:54 -0400",
+        "short_message": "Fix a bug in substitution mutation context menu",
+        "message":       "Fix a bug in substitution mutation context menu\n\n[#41660503]\n\nDynamically added classes weren't removed correctly, so after a few\nsubstitution mutations submenu elements were invisible."
       },
       "dirty": false
     }
@@ -16033,12 +16033,6 @@ define('md2d/models/metadata',[],function() {
       DNA: {
         defaultValue: ""
       },
-      DNAComplement: {
-        serialize: false
-      },
-      mRNA: {
-        serialize: false
-      },
       useQuantumDynamics: {
         default: false,
         serialize: false
@@ -21935,7 +21929,8 @@ define('common/property-support',[],function() {
 
       RunningAverageFilter.prototype.invalidate = function(location) {
         this._value.length = location + 1;
-        return this._time.length = location + 1;
+        this._time.length = location + 1;
+        return this._idx = location;
       };
 
       return RunningAverageFilter;
@@ -22106,16 +22101,11 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
   function junkSequence(len) {
     var letters = ["A", "G", "T", "C"],
         lettersLen = letters.length,
-        seq = "",
-        i;
-
+        seq = "", i;
     for (i = 0; i < len; i++) {
       seq += letters[Math.floor(Math.random() * lettersLen)];
     }
-    return {
-      sequence: seq,
-      compSequence: complementarySequence(seq)
-    };
+    return seq;
   }
 
   function getNucleoID() {
@@ -22138,22 +22128,17 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
         // List of transitions, which are currently ongoing (index 0)
         // or scheduled (index > 0).
         ongoingTransitions = [],
+        // DNA complementary sequence.
+        DNAComp = "",
         // Complete mRNA based on current DNA. Useful for codon() method,
         // which needs to know the whole sequence in advance.
         mRNA = "",
 
-        // Array of nucleotides. Each nucleotide is defined by:
-        // type - letter (A, T, G, C),
-        // idx - its position,
-        // id - unique id.
-        DNANucleotides = [],
-        DNACompNucleotides = [],
-
         dispatch = d3.dispatch("change", "transition"),
 
         calculatemRNA = function () {
-          var newCode = mRNACode(0);
-          mRNA = "";
+          var newCode = mRNACode(0),
+              mRNA = "";
           while(newCode) {
             mRNA += newCode;
             newCode = mRNACode(mRNA.length);
@@ -22162,12 +22147,11 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
         },
 
         mRNACode = function (index) {
-          var DNAComplement = model.get("DNAComplement");
-          if (index >= DNAComplement.length) {
+          if (index >= DNAComp.length) {
             // No more DNA to transcribe, return null.
             return null;
           }
-          switch (DNAComplement[index]) {
+          switch (DNAComp[index]) {
             case "A": return "U";
             case "G": return "C";
             case "T": return "A";
@@ -22175,17 +22159,28 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
           }
         },
 
-        generateNucleotides = function (array, seq) {
+        generateViewArray = function (array, sequence, codingRegion) {
           var i, len, nucleo;
-          // Set size of the existing array to the size of new DNA string.
-          array.length = seq.length;
-          for (i = 0, len = seq.length; i < len; i++) {
+          codingRegion = codingRegion || false;
+          // Set size of the existing array to the size of new DNA sequence.
+          array.length = sequence.length;
+          for (i = 0, len = sequence.length; i < len; i++) {
             nucleo = array[i] || {}; // reuse existing objects.
-            nucleo.id   = getNucleoID();
-            nucleo.idx  = i;
-            nucleo.type = seq[i];
-            array[i] = nucleo;
+            nucleo.idx = i;
+            nucleo.coding = codingRegion;
+            // Note that only nucleotides whose type doesn't match sequence
+            // will receive new ID. It lets you to update this array manually,
+            // so the ID as prevented in case of need (e.g. single insertion
+            // or deletion during mutation).
+            if (nucleo.type !== sequence[i]) {
+              nucleo.type = sequence[i];
+              nucleo.id   = getNucleoID();
+              // This block will be also executed when we insert objects for
+              // the first time so update the array[i] reference.
+              array[i] = nucleo;
+            }
           }
+          return array;
         },
 
         validateDNA = function (DNA) {
@@ -22199,27 +22194,23 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
         },
 
         updateGeneticProperties = function () {
-          var DNA = model.get("DNA"),
-              DNAComp;
+          var DNA = model.get("DNA");
 
           validateDNA(DNA);
-          generateNucleotides(DNANucleotides, DNA);
+          generateViewArray(api.viewModel.DNA, DNA, true);
 
           DNAComp = complementarySequence(DNA);
-          generateNucleotides(DNACompNucleotides, DNAComp);
-          model.set("DNAComplement", DNAComp);
+          generateViewArray(api.viewModel.DNAComp, DNAComp, true);
 
-          calculatemRNA();
-          // TODO generate mRNA nucleotides (limit GC!)
-
-          // Update model's mRNA property.
+          mRNA = calculatemRNA();
+          // mRNA view array is also based on the current state.
           if (api.stateBefore("transcription:0")) {
-            model.set("mRNA", "");
+            generateViewArray(api.viewModel.mRNA, "");
           } else if (api.state().name === "transcription") {
-            model.set("mRNA", mRNA.substr(0, api.state().step));
+            generateViewArray(api.viewModel.mRNA, mRNA.substr(0, api.state().step));
           } else if (api.stateAfter("transcription")) {
             // So, the first state which triggers it is "transcription-end".
-            model.set("mRNA", mRNA);
+            generateViewArray(api.viewModel.mRNA, mRNA);
           }
         },
 
@@ -22316,30 +22307,35 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
             // Mark transition as ongoing (by adding it to the list)
             // and do transition.
             ongoingTransitions.push(name);
-            doTransition(name);
+            doStateTransition(name);
           }
         },
 
-        doTransition = function (name) {
+        doStateTransition = function (name) {
           stateTransition = true;
           model.set("geneticEngineState", name);
           stateTransition = false;
         },
 
+        doDNATransition = function (newDNA) {
+          stateTransition = true;
+          model.set("DNA", newDNA);
+          stateTransition = false;
+        },
+
         stateUpdated = function () {
-          var state;
+          var state = model.get("geneticEngineState");
 
           updateGeneticProperties();
 
           if (stateTransition) {
-            dispatch.transition();
+            dispatch.transition(state);
           } else {
             ongoingTransitions = [];
             removeAminoAcids();
             if (api.stateBefore("translation:1")) {
               dispatch.change();
             } else {
-              state = model.get("geneticEngineState");
               // It means that state was set to 'translation:x', where x > 0.
               // Use the last safe state ('translation:0') instead.
               alert("'" + state + "' cannot be set explicitly. " +
@@ -22352,11 +22348,42 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
 
         DNAUpdated = function () {
           updateGeneticProperties();
-          dispatch.change();
+
+          if (stateTransition) {
+            dispatch.transition("dna-updated");
+          } else {
+            dispatch.change();
+          }
         };
 
     // Public API.
     api = {
+      /**
+       * Hash of arrays containing nucleotides objects. Each array can be
+       * consumed by the view. References to arrays are guaranteed to be
+       * untouched during whole life cycle of the GeneticEngine instance.
+       * Only arrays' lengths and content can be changed.
+       *
+       * Each nucleotide is defined by:
+       * type   - letter ("A", "T", "U", "G" or "C"),
+       * idx    - its position,
+       * id     - unique id,
+       * coding - true if nucleotide is a part of coding region (not junk, terminator or promoter).
+       */
+      viewModel: {
+        DNA: [],
+        DNAComp: [],
+        mRNA: [],
+        mRNAComp: [],
+        // These arrays are constant in fact, generate just once:
+        promoter:       generateViewArray([], PROMOTER_SEQ),
+        promoterComp:   generateViewArray([], complementarySequence(PROMOTER_SEQ)),
+        terminator:     generateViewArray([], TERMINATOR_SEQ),
+        terminatorComp: generateViewArray([], complementarySequence(TERMINATOR_SEQ)),
+        junk:           generateViewArray([], JUNK_SEQ),
+        junkComp:       generateViewArray([], complementarySequence(JUNK_SEQ))
+      },
+
       // Convenient method for validation. It doesn't throw an exception,
       // instead a special object with validation status is returned. It can
       // be especially useful for UI classes to avoid try-catch sequences with
@@ -22384,14 +22411,59 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
         dispatch.on(type, listener);
       },
 
-      mutate: function(nucleotideIdx, newType, DNAComplement) {
+      mutate: function(idx, newType, DNAComplement) {
         var DNA = model.get("DNA");
-        if (nucleotideIdx < DNA.length) {
-          DNA = DNA.substr(0, nucleotideIdx) +
-                (DNAComplement ? complementarySequence(newType) : newType) +
-                DNA.substr(nucleotideIdx + 1);
-          model.set("DNA", DNA);
-        }
+
+        DNA = DNA.substr(0, idx) +
+              (DNAComplement ? complementarySequence(newType) : newType) +
+              DNA.substr(idx + 1);
+        // Update DNA. This will also call updateGeneticProperties(), so
+        // other, related properties will be also updated.
+        model.set("DNA", DNA);
+      },
+
+      insert: function(idx, type, DNAComplement) {
+        var newDNANucleo = {
+              type: DNAComplement ? complementarySequence(type) : type,
+              id: getNucleoID()
+            },
+            newDNACompNucleo = {
+              type: DNAComplement ? type : complementarySequence(type),
+              id: getNucleoID()
+            },
+            newMRNANucleo = {
+              type: DNAComplement ? complementarySequence(type) : type,
+              id: getNucleoID()
+            },
+            DNA = model.get("DNA");
+
+        // Update view model arrays. It isn't necessary, but as we update them
+        // correctly, nucleotides will preserve their IDs and view will know
+        // exactly what part of DNA have been changed.
+        api.viewModel.DNA.splice(idx, 0, newDNANucleo);
+        api.viewModel.DNAComp.splice(idx, 0, newDNACompNucleo);
+        api.viewModel.mRNA.splice(idx, 0, newMRNANucleo);
+
+        // Update DNA. This will also call updateGeneticProperties(), so
+        // other, related properties will be also updated.
+        DNA = DNA.substr(0, idx) + newDNANucleo.type + DNA.substr(idx);
+        doDNATransition(DNA);
+      },
+
+      delete: function(idx) {
+        var DNA = model.get("DNA");
+
+        // Update view model arrays. It isn't necessary, but as we update them
+        // correctly, nucleotides will preserve their IDs and view will know
+        // exactly what part of DNA have been changed.
+        api.viewModel.DNA.splice(idx, 1);
+        api.viewModel.DNAComp.splice(idx, 1);
+        api.viewModel.mRNA.splice(idx, 1);
+
+        // Update DNA. This will also call updateGeneticProperties(), so
+        // other, related properties will be also updated.
+        DNA = DNA.substr(0, idx) + DNA.substr(idx + 1);
+        doDNATransition(DNA);
       },
 
       /**
@@ -22592,13 +22664,12 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
         // from transitions list.
         ongoingTransitions.shift();
         if (ongoingTransitions.length > 0) {
-          doTransition(ongoingTransitions[0]);
+          doStateTransition(ongoingTransitions[0]);
         }
       },
 
       stopCodonsHash: function () {
         var result = {},
-            mRNA = model.get("mRNA"),
             codon, i, len;
 
         for (i = 0, len = mRNA.length; i < len; i += 3) {
@@ -22653,27 +22724,7 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
           x: xcm,
           y: ycm
         };
-      },
-
-      /**
-       * Returns junk DNA sequence.
-       * e.g.
-       * {
-       *   "sequence": "AGT",
-       *   "compSequence": "TCA"
-       * }
-       *
-       * @return {Object} sequence and complementary sequence.
-       */
-      junkSequence: function () {
-        return JUNK_SEQ;
-      },
-
-      promoterSequence: PROMOTER_SEQ,
-      promoterCompSequence: complementarySequence(PROMOTER_SEQ),
-
-      terminatorSequence: TERMINATOR_SEQ,
-      terminatorCompSequence: complementarySequence(TERMINATOR_SEQ)
+      }
     };
 
     model.addPropertiesListener(["DNA"], DNAUpdated);
@@ -24057,14 +24108,6 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
         // Invalidating change hooks might between others
         invalidatingChangeHookNestingLevel = 0,
 
-        // The subset of outputName list, containing list of outputs which are filtered
-        // by one of the built-in filters (like running average filter).
-        filteredOutputNames = [],
-
-        // Function adding new sample for filtered outputs. Other properties of filtered output
-        // are stored in outputsByName object, as filtered output is just extension of normal output.
-        filteredOutputsByName = {},
-
         // The set of units currently in effect. (Determined by the 'unitsScheme' property of the
         // model; default value is 'md2d')
         unitsDefinition,
@@ -24125,10 +24168,15 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       for (i = 0, len = transitions.length; i < len; i++) {
         transitions[i].process(timeDiff);
       }
-    }
-
-    function cleanupTransitions() {
-      // TODO: implement me!
+      // Cleanup finished transitions.
+      i = 0;
+      while(i < transitions.length) {
+        if (transitions[i].isFinished) {
+          transitions.splice(i, 1);
+        } else {
+          i++;
+        }
+      }
     }
 
     function tick(elapsedTime, dontDispatchTickEvent) {
@@ -24151,10 +24199,9 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
           sampleTimes.push(sampleTime);
           sampleTimes.splice(0, sampleTimes.length - 64);
 
-          // Process all transitions which are in progress.
+          // Process all transitions which are in progress
+          // and remove finished.
           processTransitions(sampleTime);
-          // Remove all transitions which are finished.
-          cleanupTransitions();
         } else {
           lastSampleTime = t;
         }
@@ -24239,14 +24286,6 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       readModelState();
       propertySupport.deleteComputedPropertyCachedValues();
 
-      // Update all filtered outputs.
-      // Note that this have to be performed after invalidation of all outputs
-      // (as filtered output can filter another output), but before notifying
-      // listeners (as we want to provide current, valid value).
-      filteredOutputNames.forEach(function(name) {
-        filteredOutputsByName[name].addSample();
-      });
-
       propertySupport.notifyAllComputedProperties();
     }
 
@@ -24285,13 +24324,6 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
 
       // Make sure that computed properties which depend on engine state are valid
       readModelState();
-
-      // Non-filtered outputs will be valid at this point (caching is disabl;ed, so they're
-      // recomputed every time.) This ensures that filtered outputs that depend on non-filtered
-      // outputs are also valid:
-      filteredOutputNames.forEach(function(name) {
-        filteredOutputsByName[name].addSample();
-      });
 
       if (invalidatingChangeHookNestingLevel === 0) {
         // Once we've finished the cycle of invalidating changes, go ahead and notify observers of
@@ -24555,20 +24587,16 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       // Add initial sample.
       filter.addSample(model.get('time'), initialValue);
 
-      filteredOutputNames.push(name);
-      // filteredOutputsByName stores properties which are unique for filtered output.
-      // Other properties like description or calculate function are stored in outputsByName hash.
-      filteredOutputsByName[name] = {
-        addSample: function () {
-          filter.addSample(model.get('time'), model.get(property));
-        }
-      };
-
       // Create simple adapter implementing TickHistoryCompatible Interface
       // and register it in tick history.
       tickHistory.registerExternalObject({
         push: function () {
-          // Push is empty, as we store samples during each tick anyway.
+          // Filtered outputs are updated only at the end of tick() operation,
+          // druing tickHistory.push() call. So they are *not* updated
+          // immediately after property change, e.g. using model.set("prop", 5).
+          // Filtered ouput bound to "prop" property will reflect this change
+          // in the next tick.
+          filter.addSample(model.get("time"), model.get(property));
         },
         extract: function (idx) {
           filter.setCurrentStep(idx);
@@ -27829,13 +27857,16 @@ define('md2d/views/nucleotides',['require','md2d/views/nucleotide-paths'],functi
             nucleo, nucleoEnter, nucleoShape, nucleoSVG, nucleoSVGUpdate, nucleoTrans,
             targetScale;
 
-        // seq is string now. Change it to array of objects.
+        // seq is a string, generate data array. Change it to array of objects.
         // e.g. "AG" will be change to [{idx: 0, type: "A"}, {idx: 1, type: "G"}].
-        seq = seq.split("");
-        seq.forEach(function(val, i) {
-          seq[i] = {idx: i, type: val};
-        });
-        nucleo = g.selectAll("g.nucleotide").data(seq);
+        if (typeof seq === "string") {
+          seq = seq.split("");
+          seq.forEach(function(val, i) {
+            seq[i] = {id: i, idx: i, type: val};
+          });
+        }
+        // Join by ID.
+        nucleo = g.selectAll("g.nucleotide").data(seq, function (d) { return d.id; });
         // Enter.
         // Enable random translation of the new mRNAs.
         shift(randomEnter);
@@ -27858,6 +27889,13 @@ define('md2d/views/nucleotides',['require','md2d/views/nucleotide-paths'],functi
             "stroke": "#fff"
           });
         nucleoShape = nucleoEnter.append("g").attr("class", "nucleo-shape");
+        nucleoShape.on("click", function () {
+          // Mobile Safari will only produce mouse events when the user taps
+          // on a clickable element, like a link. You can make an element
+          // clickable by adding an onClick event handler to it, even if that
+          // handler does nothing. It's necessary, as nucleotides should be
+          // clickable, e.g. to show context menu.
+        });
         if (glow) {
           nucleoShape.append("image").attr({
             "class": "glow",
@@ -27970,7 +28008,11 @@ define('md2d/views/nucleotides',['require','md2d/views/nucleotide-paths'],functi
         }
 
         // Exit.
-        d3.transition(nucleo.exit()).remove();
+        shift(true);
+        d3.transition(nucleo.exit())
+          .attr("transform", translate)
+          .style("opacity", 0)
+          .remove();
       });
     }
 
@@ -28047,103 +28089,11 @@ define('md2d/views/nucleotides',['require','md2d/views/nucleotide-paths'],functi
   return nucleotides;
 });
 
-
-/*
-Simple module which provides mutations context menu for DNA nucleotides.
-
-CSS style definition: sass/lab/_context-menu.sass
-*/
-
-
-(function() {
-  var __hasProp = {}.hasOwnProperty;
-
-  define('cs!md2d/views/mutations-context-menu',['require'],function(require) {
-    return {
-      /*
-        Registers context menu for DOM elements defined by @selector.
-        @model should be an instance of Modeler class (MD2D Modeler).
-        @DNAComplement indicates whether this menu is registered for
-        DNA or DNA complementary strand.
-      */
-
-      register: function(selector, model, DNAComplement) {
-        var substCallback;
-        substCallback = function(key, options) {
-          var d;
-          d = d3.select(options.$trigger[0]).datum();
-          return model.geneticEngine().mutate(d.idx, key, DNAComplement);
-        };
-        $.contextMenu("destroy", selector);
-        return $.contextMenu({
-          selector: selector,
-          appendTo: "#responsive-content",
-          className: "mutations-menu",
-          trigger: "left",
-          events: {
-            show: function(options) {
-              var item, key, subsItems, type;
-              type = d3.select(options.$trigger[0]).datum().type;
-              subsItems = options.items["Substitution"].items;
-              for (key in subsItems) {
-                if (!__hasProp.call(subsItems, key)) continue;
-                item = subsItems[key];
-                item.$node.addClass("" + type + "-to-" + key);
-              }
-              return true;
-            },
-            hide: function(options) {
-              var item, key, subsItems, type;
-              type = d3.select(options.$trigger[0]).datum().type;
-              subsItems = options.items["Substitution"].items;
-              for (key in subsItems) {
-                if (!__hasProp.call(subsItems, key)) continue;
-                item = subsItems[key];
-                item.$node.removeClass("" + type + "-to-" + key);
-              }
-              return true;
-            }
-          },
-          items: {
-            "Substitution": {
-              name: "Substitution mutation",
-              className: "submenu",
-              items: {
-                "A": {
-                  name: "",
-                  callback: substCallback,
-                  className: "submenu-item"
-                },
-                "T": {
-                  name: "",
-                  callback: substCallback,
-                  className: "submenu-item"
-                },
-                "G": {
-                  name: "",
-                  callback: substCallback,
-                  className: "submenu-item"
-                },
-                "C": {
-                  name: "",
-                  callback: substCallback,
-                  className: "submenu-item"
-                }
-              }
-            }
-          }
-        });
-      }
-    };
-  });
-
-}).call(this);
-
 /*global define, d3 */
 
-define('md2d/views/genetic-elements-renderer',['require','md2d/views/nucleotides','cs!md2d/views/mutations-context-menu'],function (require) {
-  var nucleotides          = require('md2d/views/nucleotides'),
-      mutationsContextMenu = require('cs!md2d/views/mutations-context-menu'),
+define('md2d/views/genetic-elements-renderer',['require','common/console','md2d/views/nucleotides'],function (require) {
+  var console              = require('common/console'),
+      nucleotides          = require('md2d/views/nucleotides'),
 
       SCALE = 0.007,
       W = {
@@ -28316,61 +28266,79 @@ define('md2d/views/genetic-elements-renderer',['require','md2d/views/nucleotides
       },
 
       dna: function (parent, data) {
-        var dnaSequence    = model.get("DNA"),
-            dnaLength      = dnaSequence.length,
-            geneticEngine  = model.geneticEngine(),
-            junkDNA        = geneticEngine.junkSequence(),
-            bonds          = data.dna[0] ? data.dna[0].bonds : 0,
-            n              = nucleotides().model2px(model2px),
-            dna, dnaEnter;
+        var viewModel   = model.geneticEngine().viewModel,
+            bonds       = data.dna[0] ? data.dna[0].bonds : 0,
+            n           = nucleotides().model2px(model2px),
+            dna, dnaEnter, dnaUpdateTrans;
+
+        function pos(idx) {
+          return "translate(" + model2px(idx * nucleotides.WIDTH) + ")";
+        }
+
+        // Note that first junk and promoter sequences are updated only during
+        // enter operation. They cannot be changed by the user, while DNA can
+        // (and because of that, following nucleotides have to be shifted).
 
         // DNA enter:
         dna = parent.select(".dna-layer").selectAll(".dna").data(data.dna);
+
         dnaEnter = dna.enter().append("g").attr({
           "class": "dna",
           "transform": translateFuncInv
         });
         // Coding sequence.
         dnaEnter.append("g").attr("class", "coding-region");
-        // Promoter sequence.
-        n.sequence(geneticEngine.promoterSequence);
-        n.startingPos(-geneticEngine.promoterSequence.length);
-        dnaEnter.append("g").attr("class", "promoter-region").call(n);
-        // Terminator sequence.
-        n.sequence(geneticEngine.terminatorSequence);
-        n.startingPos(dnaLength);
-        dnaEnter.append("g").attr("class", "terminator-region").call(n);
         // Junk sequence.
-        n.sequence(junkDNA.sequence);
-        n.startingPos(-geneticEngine.promoterSequence.length - junkDNA.sequence.length);
-        dnaEnter.append("g").attr("class", "junk-region").call(n);
-        n.sequence(junkDNA.sequence);
-        n.startingPos(dnaLength + geneticEngine.terminatorSequence.length);
-        dnaEnter.append("g").attr("class", "junk-region").call(n);
+        n.sequence(viewModel.junk);
+        dnaEnter.append("g").attr("class", "junk-region").call(n)
+          .attr("transform", pos(-viewModel.promoter.length - viewModel.junk.length));
+        // Promoter sequence.
+        n.sequence(viewModel.promoter);
+        dnaEnter.append("g").attr("class", "promoter-region").call(n)
+          .attr("transform", pos(-viewModel.promoter.length));
+        // Terminator sequence.
+        n.sequence(viewModel.terminator);
+        dnaEnter.append("g").attr("class", "terminator-region").call(n);
+        // Junk sequence again.
+        n.sequence(viewModel.junk);
+        dnaEnter.append("g").attr("class", "junk-region junk-end").call(n);
 
-        // Register mutations menu:
-        mutationsContextMenu.register('[class~="dna"] [class~="coding-region"] [class~="nucleotide"]', model, false);
+        console.timeEnd("[dna renderer] enter");
 
         // DNA update:
-        n.sequence(dnaSequence);
-        n.startingPos(0);
+        // Coding sequence.
         n.glow(true);
+        n.sequence(viewModel.DNA);
         dna.select(".coding-region").call(n);
 
-        d3.transition(dna).attr("transform", translateFuncInv)
+        dnaUpdateTrans = d3.transition(dna);
+        // Bonds.
+        dnaUpdateTrans.attr("transform", translateFuncInv)
           .selectAll(".bonds").style("opacity", bonds);
+        // Shift terminator sequence.
+        dnaUpdateTrans.select(".terminator-region")
+          .attr("transform", pos(viewModel.DNA.length));
+        // Shift junk sequence.
+        dnaUpdateTrans.select(".junk-end")
+          .attr("transform", pos(viewModel.DNA.length + viewModel.terminator.length));
+
         // DNA exit:
         d3.transition(dna.exit()).remove();
       },
 
       dnaComp: function (parent, data) {
-        var dnaComplement  = model.get("DNAComplement"),
-            dnaLength      = dnaComplement.length,
-            geneticEngine  = model.geneticEngine(),
-            junkDNA        = geneticEngine.junkSequence(),
-            bonds          = data.dnaComp[0] ? data.dnaComp[0].bonds : 0,
-            n              = nucleotides().model2px(model2px).direction(2),
-            dnaComp, dnaCompEnter;
+        var viewModel     = model.geneticEngine().viewModel,
+            bonds         = data.dnaComp[0] ? data.dnaComp[0].bonds : 0,
+            n             = nucleotides().model2px(model2px).direction(2),
+            dnaComp, dnaCompEnter, dnaCompUpdateTrans;
+
+        function pos(idx) {
+          return "translate(" + model2px(idx * nucleotides.WIDTH) + ")";
+        }
+
+        // Note that first junk and promoter sequences are updated only during
+        // enter operation. They cannot be changed by the user, while DNA can
+        // (and because of that, following nucleotides have to be shifted).
 
         // DNA Comp enter:
         dnaComp = parent.select(".dna-layer").selectAll(".dna-comp").data(data.dnaComp);
@@ -28378,44 +28346,47 @@ define('md2d/views/genetic-elements-renderer',['require','md2d/views/nucleotides
           "class": "dna-comp",
           "transform": translateFuncInv
         });
-
         // Coding sequence.
         dnaCompEnter.append("g").attr("class", "coding-region");
-        // Promoter sequence.
-        n.sequence(geneticEngine.promoterCompSequence);
-        n.startingPos(-geneticEngine.promoterCompSequence.length);
-        n.glow(false);
-        dnaCompEnter.append("g").attr("class", "promoter-region").call(n);
-        // Terminator sequence.
-        n.sequence(geneticEngine.terminatorCompSequence);
-        n.startingPos(dnaLength);
-        dnaCompEnter.append("g").attr("class", "terminator-region").call(n);
         // Junk sequence.
-        n.sequence(junkDNA.compSequence);
-        n.startingPos(-geneticEngine.promoterCompSequence.length - junkDNA.compSequence.length);
-        dnaCompEnter.append("g").attr("class", "junk-region").call(n);
-        n.sequence(junkDNA.compSequence);
-        n.startingPos(dnaLength + geneticEngine.terminatorCompSequence.length);
-        dnaCompEnter.append("g").attr("class", "junk-region").call(n);
-
-        // Register mutations menu:
-        mutationsContextMenu.register('[class~="dna-comp"] [class~="coding-region"] [class~="nucleotide"]', model, true);
+        n.sequence(viewModel.junkComp);
+        dnaCompEnter.append("g").attr("class", "junk-region").call(n)
+          .attr("transform", pos(-viewModel.promoter.length - viewModel.junk.length));
+        // Promoter sequence.
+        n.sequence(viewModel.promoterComp);
+        dnaCompEnter.append("g").attr("class", "promoter-region").call(n)
+          .attr("transform", pos(-viewModel.promoter.length));
+        // Terminator sequence.
+        n.sequence(viewModel.terminatorComp);
+        dnaCompEnter.append("g").attr("class", "terminator-region").call(n);
+        // Junk sequence again.
+        n.sequence(viewModel.junkComp);
+        dnaCompEnter.append("g").attr("class", "junk-region junk-end").call(n);
 
         // DNA Comp update:
-        n.sequence(dnaComplement);
-        n.startingPos(0);
+        // Coding sequence.
         n.glow(true);
+        n.sequence(viewModel.DNAComp);
         dnaComp.select(".coding-region").call(n);
-        d3.transition(dnaComp).attr("transform", translateFuncInv)
+
+        dnaCompUpdateTrans = d3.transition(dnaComp);
+        // Bonds.
+        dnaCompUpdateTrans.attr("transform", translateFuncInv)
           .selectAll(".bonds").style("opacity", bonds);
+        // Shift terminator sequence.
+        dnaCompUpdateTrans.select(".terminator-region")
+          .attr("transform", pos(viewModel.DNA.length));
+        // Shift junk sequence.
+        dnaCompUpdateTrans.select(".junk-end")
+          .attr("transform", pos(viewModel.DNA.length + viewModel.terminator.length));
 
         // DNA Comp exit:
         d3.transition(dnaComp.exit()).remove();
       },
 
       mrna: function (parent, data) {
-        var mrnaSequence  = model.get("mRNA"),
-            geneticEngine = model.geneticEngine(),
+        var geneticEngine = model.geneticEngine(),
+            mrnaSequence  = geneticEngine.viewModel.mRNA,
             stopCodons    = geneticEngine.stopCodonsHash(),
             bonds         = data.mrna[0] ? data.mrna[0].bonds : 0,
             dir           = data.mrna[0] ? data.mrna[0].direction : 1,
@@ -28742,12 +28713,134 @@ define('common/views/state-manager',[],function () {
   };
 });
 
+
+/*
+Simple module which provides mutations context menu for DNA nucleotides.
+
+CSS style definition: sass/lab/_context-menu.sass
+*/
+
+
+(function() {
+  var __hasProp = {}.hasOwnProperty;
+
+  define('cs!md2d/views/mutations-context-menu',['require'],function(require) {
+    return {
+      /*
+        Registers context menu for DOM elements defined by @selector.
+        @model should be an instance of Modeler class (MD2D Modeler).
+        @DNAComplement indicates whether this menu is registered for
+        DNA or DNA complementary strand.
+      */
+
+      register: function(selector, model, DNAComplement) {
+        var clickedNucleoType, onMenuHide, onMenuShow;
+        clickedNucleoType = null;
+        onMenuShow = function(options) {
+          var item, key, subsItems;
+          clickedNucleoType = d3.select(options.$trigger[0]).datum().type;
+          subsItems = options.items["Substitution"].items;
+          for (key in subsItems) {
+            if (!__hasProp.call(subsItems, key)) continue;
+            item = subsItems[key];
+            key = key.split(":")[1];
+            item.$node.addClass("" + clickedNucleoType + "-to-" + key);
+          }
+          return true;
+        };
+        onMenuHide = function(options) {
+          var item, key, subsItems;
+          subsItems = options.items["Substitution"].items;
+          for (key in subsItems) {
+            if (!__hasProp.call(subsItems, key)) continue;
+            item = subsItems[key];
+            key = key.split(":")[1];
+            item.$node.removeClass("" + clickedNucleoType + "-to-" + key);
+          }
+          return true;
+        };
+        $.contextMenu("destroy", selector);
+        $.contextMenu({
+          selector: selector,
+          appendTo: "#responsive-content",
+          className: "mutations-menu",
+          trigger: "left",
+          events: {
+            show: onMenuShow,
+            hide: onMenuHide
+          },
+          callback: function(key, options) {
+            var d;
+            key = key.split(":");
+            d = d3.select(options.$trigger[0]).datum();
+            switch (key[0]) {
+              case "substitute":
+                return model.geneticEngine().mutate(d.idx, key[1], DNAComplement);
+              case "insert":
+                return model.geneticEngine().insert(d.idx, key[1], DNAComplement);
+              case "delete":
+                return model.geneticEngine()["delete"](d.idx);
+            }
+          },
+          items: {
+            "Substitution": {
+              name: "Substitution mutation",
+              className: "substitution-submenu",
+              items: {
+                "substitute:A": {
+                  name: ""
+                },
+                "substitute:T": {
+                  name: ""
+                },
+                "substitute:G": {
+                  name: ""
+                },
+                "substitute:C": {
+                  name: ""
+                }
+              }
+            },
+            "Insertion": {
+              name: "Insertion mutation",
+              className: "insertion-submenu",
+              items: {
+                "insert:A": {
+                  name: "Insert",
+                  className: "A"
+                },
+                "insert:T": {
+                  name: "Insert",
+                  className: "T"
+                },
+                "insert:G": {
+                  name: "Insert",
+                  className: "G"
+                },
+                "insert:C": {
+                  name: "Insert",
+                  className: "C"
+                }
+              }
+            },
+            "delete": {
+              name: "Deletion mutation"
+            }
+          }
+        });
+      }
+    };
+  });
+
+}).call(this);
+
 /*global define, d3 */
 
-define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/views/genetic-elements-renderer','common/views/state-manager'],function (require) {
+define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/views/genetic-elements-renderer','common/views/state-manager','cs!md2d/views/mutations-context-menu'],function (require) {
   var nucleotides  = require('md2d/views/nucleotides'),
       GeneticElementsRenderer = require('md2d/views/genetic-elements-renderer'),
       StateManager = require('common/views/state-manager'),
+      mutationsContextMenu = require('cs!md2d/views/mutations-context-menu'),
 
       H = GeneticElementsRenderer.H;
 
@@ -28760,7 +28853,8 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
         g = null,
         currentTrans = null,
         state = null,
-        prevState = null,
+        prevAnimState = null,
+        prevAnimStep = null,
 
         objectNames = [
           "viewPort", "background",
@@ -28783,6 +28877,13 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
       // Play animation when there is a "transition" event.
       model.geneticEngine().on("transition", transition);
 
+      // Register mutation menus for DNA and DNA complement. Note that
+      // jQuery.contextMenu uses event delegation, so it's fully enough to
+      // register this menu only once, even before these elements exists.
+      mutationsContextMenu.register('[class~="dna"] [class~="coding-region"] [class~="nucleotide"]', model, false);
+      mutationsContextMenu.register('[class~="dna-comp"] [class~="coding-region"] [class~="nucleotide"]', model, true);
+
+      // Define animation states.
       defineStates();
     }
 
@@ -28976,9 +29077,9 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
         dnaComp: [{
           translateY: viewPortHeight / 2 - 2.5 * nucleotides.HEIGHT,
           bonds: function () {
-            var mrnaLen = model.get("mRNA").length;
-            return function (d, i) {
-              return i < mrnaLen ? 1 : 0;
+            var limit = getStep();
+            return function (d) {
+              return d.coding && d.idx < limit ? 1 : 0;
             };
           }
         }],
@@ -28997,7 +29098,13 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
       });
       stateMgr.extendLastState("transcription-end", {
         dna: [{}],
-        dnaComp: [{}],
+        dnaComp: [{
+          bonds: function () {
+            return function (d) {
+              return d.coding ? 1 : 0;
+            };
+          }
+        }],
         mrna: [{}],
         polymeraseUnder: [{
           translateX: function () { return model.get("DNA").length * nucleotides.WIDTH; },
@@ -29303,7 +29410,7 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
       });
       stateMgr.extendLastState("translation-end-s5", {
         mrna: [{
-          translateX: function () { return -(model.get("mRNA").length + 8) * nucleotides.WIDTH; }
+          translateX: function () { return -(model.get("DNA").length + 8) * nucleotides.WIDTH; }
         }],
         ribosomeBottom: [{
           translateX: function () { return ribosomeX() + 8; },
@@ -29364,6 +29471,7 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
      * options of the model.
      */
     function render() {
+      // Update genetic engine state.
       state = model.geneticEngine().state();
 
       canceltransitionFunction();
@@ -29371,26 +29479,52 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
     }
 
     /**
-     * Renders current animation state. You can pass d3.selection or d3.transition
-     * as "parent" argument to decide whether new state should be rendered immediately
-     * or using transition.
+     * Renders animation state. It updates all objects from previous and new state.
+     * When rendered state is different from previously rendered state, the viewport
+     * is moved to its default position for the new state. Otherwise, when the same
+     * state is rendered again (e.g. due to changes in model like DNA update),
+     * the viewport isn't modified.
+     *
+     * You can pass d3.selection or d3.transition as "parent" argument to decide whether
+     * new state should be rendered immediately or using transition.
      *
      * @private
      * @param  {d3.selection OR d3.transition} parent d3.selection or d3.transition object.
-     * @param  {String} state  state name.
+     * @param  {String} animState  animation state name.
      */
-    function renderState(parent, state) {
-      var data = stateMgr.getState(state),
-          prevStateData = prevState ? stateMgr.getState(prevState) : null;
+    function renderState(parent, animState) {
+      var data = stateMgr.getState(animState),
+          prevAnimStateData = prevAnimState ? stateMgr.getState(prevAnimState) : null;
+
+      // TODO: make it simpler.
+      function shouldRenderObj(name) {
+        var stateEql   = animState === prevAnimState && prevAnimStep === (state.step || 0), // NaN!
+            inData     = !!data[name].length,
+            inPrevData = !!(prevAnimStateData && prevAnimStateData[name].length);
+
+        if (stateEql && inData && name !== "viewPort") {
+          // State hasn't been changed, so ensure that viewport won't be
+          // rendered again (as user could changed it in the meantime).
+          return true;
+        }
+        else if (!stateEql && (inData || inPrevData)) {
+          // State has been changed, so render all objects from current and previous states.
+          return true;
+        }
+        return false;
+      }
+
       parent.each(function() {
         var parent = d3.select(this);
         objectNames.forEach(function (name) {
-          if (data[name].length || (prevStateData && prevStateData[name].length)) {
+          if (shouldRenderObj(name)) {
             objectRenderer[name](parent, data);
           }
         });
       });
-      prevState = state;
+
+      prevAnimState = animState;
+      prevAnimStep = state.step || 0; // when undefined or NaN
     }
 
     /**
@@ -29439,16 +29573,20 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
     /**
      * Triggers animation state transition.
      */
-    function transition() {
+    function transition(transitionName) {
+      // Update genetic engine state.
       state = model.geneticEngine().state();
 
-      if (state.name === "transcription" && state.step === 0) {
-        transitionFunction["transcription:0"]();
-      } else if (state.name === "translation" && state.step === 0) {
-        transitionFunction["translation:0"]();
-      } else {
-        transitionFunction[state.name]();
+      if (Number(transitionName.split(":")[1]) > 0) {
+        // e.g. translation:5 or transcription:7
+        // We have one common transition function for all "transcription:1" to
+        // "transcription:N" transitions called "transcription", as well as
+        // one common transition function for all "translation:1" to
+        // "translation:N" transitions called "translation".
+        transitionName = transitionName.split(":")[0];
       }
+
+      transitionFunction[transitionName]();
 
       currentTrans.each("end.trans-end", function() {
         // Notify engine that transition has ended.
@@ -29462,6 +29600,13 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
      * @type {Object}
      */
     transitionFunction = {
+      "dna-updated": function dnaUpdated() {
+        // Special state - render current animation state again,
+        // as model was updated.
+        var t = nextTrans().ease("cubic-in-out").duration(800);
+        renderState(t, state.name);
+      },
+
       "intro-zoom1": function introZoom1() {
         var t = nextTrans().ease("cubic").duration(3000);
         renderState(t, "intro-zoom1");

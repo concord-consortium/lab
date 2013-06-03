@@ -4,6 +4,7 @@ define(function (require) {
   var nucleotides  = require('md2d/views/nucleotides'),
       GeneticElementsRenderer = require('md2d/views/genetic-elements-renderer'),
       StateManager = require('common/views/state-manager'),
+      mutationsContextMenu = require('cs!md2d/views/mutations-context-menu'),
 
       H = GeneticElementsRenderer.H;
 
@@ -16,7 +17,8 @@ define(function (require) {
         g = null,
         currentTrans = null,
         state = null,
-        prevState = null,
+        prevAnimState = null,
+        prevAnimStep = null,
 
         objectNames = [
           "viewPort", "background",
@@ -39,6 +41,13 @@ define(function (require) {
       // Play animation when there is a "transition" event.
       model.geneticEngine().on("transition", transition);
 
+      // Register mutation menus for DNA and DNA complement. Note that
+      // jQuery.contextMenu uses event delegation, so it's fully enough to
+      // register this menu only once, even before these elements exists.
+      mutationsContextMenu.register('[class~="dna"] [class~="coding-region"] [class~="nucleotide"]', model, false);
+      mutationsContextMenu.register('[class~="dna-comp"] [class~="coding-region"] [class~="nucleotide"]', model, true);
+
+      // Define animation states.
       defineStates();
     }
 
@@ -232,9 +241,9 @@ define(function (require) {
         dnaComp: [{
           translateY: viewPortHeight / 2 - 2.5 * nucleotides.HEIGHT,
           bonds: function () {
-            var mrnaLen = model.get("mRNA").length;
-            return function (d, i) {
-              return i < mrnaLen ? 1 : 0;
+            var limit = getStep();
+            return function (d) {
+              return d.coding && d.idx < limit ? 1 : 0;
             };
           }
         }],
@@ -253,7 +262,13 @@ define(function (require) {
       });
       stateMgr.extendLastState("transcription-end", {
         dna: [{}],
-        dnaComp: [{}],
+        dnaComp: [{
+          bonds: function () {
+            return function (d) {
+              return d.coding ? 1 : 0;
+            };
+          }
+        }],
         mrna: [{}],
         polymeraseUnder: [{
           translateX: function () { return model.get("DNA").length * nucleotides.WIDTH; },
@@ -559,7 +574,7 @@ define(function (require) {
       });
       stateMgr.extendLastState("translation-end-s5", {
         mrna: [{
-          translateX: function () { return -(model.get("mRNA").length + 8) * nucleotides.WIDTH; }
+          translateX: function () { return -(model.get("DNA").length + 8) * nucleotides.WIDTH; }
         }],
         ribosomeBottom: [{
           translateX: function () { return ribosomeX() + 8; },
@@ -620,6 +635,7 @@ define(function (require) {
      * options of the model.
      */
     function render() {
+      // Update genetic engine state.
       state = model.geneticEngine().state();
 
       canceltransitionFunction();
@@ -627,26 +643,52 @@ define(function (require) {
     }
 
     /**
-     * Renders current animation state. You can pass d3.selection or d3.transition
-     * as "parent" argument to decide whether new state should be rendered immediately
-     * or using transition.
+     * Renders animation state. It updates all objects from previous and new state.
+     * When rendered state is different from previously rendered state, the viewport
+     * is moved to its default position for the new state. Otherwise, when the same
+     * state is rendered again (e.g. due to changes in model like DNA update),
+     * the viewport isn't modified.
+     *
+     * You can pass d3.selection or d3.transition as "parent" argument to decide whether
+     * new state should be rendered immediately or using transition.
      *
      * @private
      * @param  {d3.selection OR d3.transition} parent d3.selection or d3.transition object.
-     * @param  {String} state  state name.
+     * @param  {String} animState  animation state name.
      */
-    function renderState(parent, state) {
-      var data = stateMgr.getState(state),
-          prevStateData = prevState ? stateMgr.getState(prevState) : null;
+    function renderState(parent, animState) {
+      var data = stateMgr.getState(animState),
+          prevAnimStateData = prevAnimState ? stateMgr.getState(prevAnimState) : null;
+
+      // TODO: make it simpler.
+      function shouldRenderObj(name) {
+        var stateEql   = animState === prevAnimState && prevAnimStep === (state.step || 0), // NaN!
+            inData     = !!data[name].length,
+            inPrevData = !!(prevAnimStateData && prevAnimStateData[name].length);
+
+        if (stateEql && inData && name !== "viewPort") {
+          // State hasn't been changed, so ensure that viewport won't be
+          // rendered again (as user could changed it in the meantime).
+          return true;
+        }
+        else if (!stateEql && (inData || inPrevData)) {
+          // State has been changed, so render all objects from current and previous states.
+          return true;
+        }
+        return false;
+      }
+
       parent.each(function() {
         var parent = d3.select(this);
         objectNames.forEach(function (name) {
-          if (data[name].length || (prevStateData && prevStateData[name].length)) {
+          if (shouldRenderObj(name)) {
             objectRenderer[name](parent, data);
           }
         });
       });
-      prevState = state;
+
+      prevAnimState = animState;
+      prevAnimStep = state.step || 0; // when undefined or NaN
     }
 
     /**
@@ -695,16 +737,20 @@ define(function (require) {
     /**
      * Triggers animation state transition.
      */
-    function transition() {
+    function transition(transitionName) {
+      // Update genetic engine state.
       state = model.geneticEngine().state();
 
-      if (state.name === "transcription" && state.step === 0) {
-        transitionFunction["transcription:0"]();
-      } else if (state.name === "translation" && state.step === 0) {
-        transitionFunction["translation:0"]();
-      } else {
-        transitionFunction[state.name]();
+      if (Number(transitionName.split(":")[1]) > 0) {
+        // e.g. translation:5 or transcription:7
+        // We have one common transition function for all "transcription:1" to
+        // "transcription:N" transitions called "transcription", as well as
+        // one common transition function for all "translation:1" to
+        // "translation:N" transitions called "translation".
+        transitionName = transitionName.split(":")[0];
       }
+
+      transitionFunction[transitionName]();
 
       currentTrans.each("end.trans-end", function() {
         // Notify engine that transition has ended.
@@ -718,6 +764,13 @@ define(function (require) {
      * @type {Object}
      */
     transitionFunction = {
+      "dna-updated": function dnaUpdated() {
+        // Special state - render current animation state again,
+        // as model was updated.
+        var t = nextTrans().ease("cubic-in-out").duration(800);
+        renderState(t, state.name);
+      },
+
       "intro-zoom1": function introZoom1() {
         var t = nextTrans().ease("cubic").duration(3000);
         renderState(t, "intro-zoom1");

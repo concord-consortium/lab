@@ -1,5 +1,5 @@
 /*jslint indent: 2, browser: true */
-/*globals Lab: false, $: false, interactivesIndex: false */
+/*global Lab: false, $: false, interactivesIndex: false */
 // ------------------------------------------------------------
 //
 // Energy2D Demo
@@ -30,7 +30,7 @@ $(window).load(function () {
   document.location.hash = hash;
   interactive_url = hash.substr(1, hash.length);
 
-  select.find("option[data-path='" + interactive_url + "']").attr('selected', true);
+  select.find("option[data-path='" + interactive_url + "']").prop('selected', true);
 
   // Download interactive options and create Energy2D Interactive Controller.
   $.get(interactive_url).done(function (results) {
