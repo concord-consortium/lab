@@ -52,6 +52,7 @@ define (require) ->
         switch key[0]
           when "substitute" then model.geneticEngine().mutate d.idx, key[1], DNAComplement
           when "insert"     then model.geneticEngine().insert d.idx, key[1], DNAComplement
+          when "delete"     then model.geneticEngine().delete d.idx
 
       items:
         "Substitution":
@@ -70,4 +71,4 @@ define (require) ->
             "insert:T": name: "Insert", className: "T"
             "insert:G": name: "Insert", className: "G"
             "insert:C": name: "Insert", className: "C"
-        # "Deletion": name: "Deletion mutation"
+        "delete": name: "Deletion mutation"
