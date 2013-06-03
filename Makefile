@@ -133,7 +133,7 @@ vendor/d3:
 
 .PHONY: submodule-update
 symbolic-links:
-	cd public/examples; ln -s ../ interactives
+	cd public/examples; if [ ! -L interactives ]; then ln -s ../ interactives; fi
 
 .PHONY: submodule-update
 submodule-update:
