@@ -123,6 +123,13 @@ define(function (require) {
             "stroke": "#fff"
           });
         nucleoShape = nucleoEnter.append("g").attr("class", "nucleo-shape");
+        nucleoShape.on("click", function () {
+          // Mobile Safari will only produce mouse events when the user taps
+          // on a clickable element, like a link. You can make an element
+          // clickable by adding an onClick event handler to it, even if that
+          // handler does nothing. It's necessary, as nucleotides should be
+          // clickable, e.g. to show context menu.
+        });
         if (glow) {
           nucleoShape.append("image").attr({
             "class": "glow",
