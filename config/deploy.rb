@@ -83,4 +83,8 @@ namespace :deploy do
     run "touch /var/www/app/tmp/restart.txt"
   end
 
+  desc "create symbolic link from old urls to root dir"
+  task :create_symbolic_links do
+    run "make symbolic-links"
+  end
 end

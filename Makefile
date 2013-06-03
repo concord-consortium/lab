@@ -132,6 +132,10 @@ vendor/d3:
 	submodule-update
 
 .PHONY: submodule-update
+symbolic-links:
+	cd public/examples; ln -s ../ interactives
+
+.PHONY: submodule-update
 submodule-update:
 	git submodule update --init --recursive
 

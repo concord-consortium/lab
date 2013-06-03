@@ -15,11 +15,11 @@ Rack::Mime::MIME_TYPES.merge!({
   ".mml" => "application/xml"
 })
 
-use Rack::Rewrite do
-  r301   '/examples/interactives/interactives.html',  '/interactives.html'
-  r301   '/examples/interactives/embeddable.html',    '/embeddable.html'
-  r301   '/examples/interactives/interactives.json',  '/interactives.json'
-end
+# use Rack::Rewrite do
+#   r301   '/examples/interactives/interactives.html',  '/interactives.html'
+#   r301   '/examples/interactives/embeddable.html',    '/embeddable.html'
+#   r301   '/examples/interactives/interactives.json',  '/interactives.json'
+# end
 
 app = Rack::Directory.new PUBLIC_PATH
 
