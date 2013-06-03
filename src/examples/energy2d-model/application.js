@@ -1,5 +1,5 @@
 /*jslint indent: 2, browser: true */
-/*globals Lab: false, $: false, interactivesIndex: false */
+/*global Lab: false, $: false, interactivesIndex: false */
 // ------------------------------------------------------------
 //
 // Energy2D Demo
