@@ -235,7 +235,11 @@ define(function (require) {
         }
 
         // Exit.
-        d3.transition(nucleo.exit()).remove();
+        shift(true);
+        d3.transition(nucleo.exit())
+          .attr("transform", translate)
+          .style("opacity", 0)
+          .remove();
       });
     }
 
