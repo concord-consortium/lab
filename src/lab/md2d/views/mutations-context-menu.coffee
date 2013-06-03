@@ -12,6 +12,31 @@ define (require) ->
   DNA or DNA complementary strand.
   ###
   register: (selector, model, DNAComplement) ->
+    # Define handler for menu show and hide events. They setup classes of
+    # substitution sub-menu items. One  item is hidden (X-to-X - as such
+    # mutation is useless), other items receive correct classes dynamically
+    # (e.g. A-to-G, A-to-C, A-to-T). They are used to set appropriate icons.
+    clickedNucleoType = null
+    onMenuShow = (options) ->
+      # Update closure variable containing current nucleotide type. As it can
+      # be changed by the mutation, it's important to save it.
+      clickedNucleoType = d3.select(options.$trigger[0]).datum().type
+      subsItems = options.items["Substitution"].items
+      for own key, item of subsItems
+        key = key.split(":")[1]
+        item.$node.addClass "#{clickedNucleoType}-to-#{key}"
+      # Ensure that this callback returns true (required to show menu).
+      true
+    onMenuHide = (options) ->
+      # Note that we can't read d3 data again and check nucleotide type, as it
+      # could be changed by the mutation. The function relies on closure
+      # variable set by the onMenuShow function.
+      subsItems = options.items["Substitution"].items
+      for own key, item of subsItems
+        key = key.split(":")[1]
+        item.$node.removeClass "#{clickedNucleoType}-to-#{key}"
+      # Ensure that this callback returns true (required to hide menu).
+      true
 
     # Unregister the same menu first.
     $.contextMenu "destroy", selector
@@ -27,23 +52,8 @@ define (require) ->
       trigger: "left"
 
       events:
-        show: (options) ->
-          type = d3.select(options.$trigger[0]).datum().type
-          subsItems = options.items["Substitution"].items
-          for own key, item of subsItems
-            key = key.split(":")[1]
-            item.$node.addClass "#{type}-to-#{key}"
-          # Ensure that this callback returns true (required to show menu).
-          true
-
-        hide: (options) ->
-          type = d3.select(options.$trigger[0]).datum().type
-          subsItems = options.items["Substitution"].items
-          for own key, item of subsItems
-            key = key.split(":")[1]
-            item.$node.removeClass "#{type}-to-#{key}"
-          # Ensure that this callback returns true (required to hide menu).
-          true
+        show: onMenuShow
+        hide: onMenuHide
 
       callback: (key, options) ->
         key = key.split ":"
@@ -72,3 +82,5 @@ define (require) ->
             "insert:G": name: "Insert", className: "G"
             "insert:C": name: "Insert", className: "C"
         "delete": name: "Deletion mutation"
+    # Don't return anything.
+    return
