@@ -175,10 +175,15 @@ define(function(require) {
       for (i = 0, len = transitions.length; i < len; i++) {
         transitions[i].process(timeDiff);
       }
-    }
-
-    function cleanupTransitions() {
-      // TODO: implement me!
+      // Cleanup finished transitions.
+      i = 0;
+      while(i < transitions.length) {
+        if (transitions[i].isFinished) {
+          transitions.splice(i, 1);
+        } else {
+          i++;
+        }
+      }
     }
 
     function tick(elapsedTime, dontDispatchTickEvent) {
@@ -201,10 +206,9 @@ define(function(require) {
           sampleTimes.push(sampleTime);
           sampleTimes.splice(0, sampleTimes.length - 64);
 
-          // Process all transitions which are in progress.
+          // Process all transitions which are in progress
+          // and remove finished.
           processTransitions(sampleTime);
-          // Remove all transitions which are finished.
-          cleanupTransitions();
         } else {
           lastSampleTime = t;
         }
