@@ -365,6 +365,8 @@ define(function (require) {
         DNA = DNA.substr(0, idx) +
               (DNAComplement ? complementarySequence(newType) : newType) +
               DNA.substr(idx + 1);
+        // Update DNA. This will also call updateGeneticProperties(), so
+        // other, related properties will be also updated.
         model.set("DNA", DNA);
       },
 
@@ -393,6 +395,22 @@ define(function (require) {
         // Update DNA. This will also call updateGeneticProperties(), so
         // other, related properties will be also updated.
         DNA = DNA.substr(0, idx) + newDNANucleo.type + DNA.substr(idx);
+        doDNATransition(DNA);
+      },
+
+      delete: function(idx) {
+        var DNA = model.get("DNA");
+
+        // Update view model arrays. It isn't necessary, but as we update them
+        // correctly, nucleotides will preserve their IDs and view will know
+        // exactly what part of DNA have been changed.
+        api.viewModel.DNA.splice(idx, 1);
+        api.viewModel.DNAComp.splice(idx, 1);
+        api.viewModel.mRNA.splice(idx, 1);
+
+        // Update DNA. This will also call updateGeneticProperties(), so
+        // other, related properties will be also updated.
+        DNA = DNA.substr(0, idx) + DNA.substr(idx + 1);
         doDNATransition(DNA);
       },
 
