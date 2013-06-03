@@ -4,6 +4,7 @@ define(function (require) {
   var nucleotides  = require('md2d/views/nucleotides'),
       GeneticElementsRenderer = require('md2d/views/genetic-elements-renderer'),
       StateManager = require('common/views/state-manager'),
+      mutationsContextMenu = require('cs!md2d/views/mutations-context-menu'),
 
       H = GeneticElementsRenderer.H;
 
@@ -40,6 +41,13 @@ define(function (require) {
       // Play animation when there is a "transition" event.
       model.geneticEngine().on("transition", transition);
 
+      // Register mutation menus for DNA and DNA complement. Note that
+      // jQuery.contextMenu uses event delegation, so it's fully enough to
+      // register this menu only once, even before these elements exists.
+      mutationsContextMenu.register('[class~="dna"] [class~="coding-region"] [class~="nucleotide"]', model, false);
+      mutationsContextMenu.register('[class~="dna-comp"] [class~="coding-region"] [class~="nucleotide"]', model, true);
+
+      // Define animation states.
       defineStates();
     }
 
