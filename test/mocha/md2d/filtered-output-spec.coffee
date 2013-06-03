@@ -125,9 +125,13 @@ describe "MD2D filters", ->
       it "should be able to invalidate data ahead of the given index", ->
         runningAvg.getCurrentStep().should.eql 3
         runningAvg.getCurrentBufferLength().should.eql 7
-        runningAvg.invalidate 3
-        runningAvg.getCurrentBufferLength().should.eql 4
-        runningAvg.calculate().should.eql 2
+        runningAvg.invalidate 1
+        runningAvg.getCurrentBufferLength().should.eql 2
+        runningAvg.calculate().should.eql 0.5
+
+        # Adding new samplse after invalidation should work fine
+        runningAvg.addSample 2, 2
+        runningAvg.addSample 3, 3
 
       describe "when #setCurrentStep is called with location outside the range", ->
         it "should throw an error", ->
@@ -166,6 +170,35 @@ describe "MD2D filters", ->
           model.get("time").should.equal 4
           model.get("filteredTime").should.equal 3
           # etc.
+
+        it "calculate running average correctly when other properties are updated in the meantime", ->
+          # This test is based on the issue found some time ago, see:
+          # https://github.com/concord-consortium/lab/pull/32
+          # https://groups.google.com/forum/?fromgroups#!topic/lab-models/2dpOB-YTatM
+
+          # Filtered outputs weren't working correctly when
+          # invalidatingChangePostHook was called during tick() (e.g. due to
+          # change of some other model property). Test similar case to avoid
+          # regression.
+          model.addPropertiesListener "time", ->
+            # Do anything what can invalidate current state,
+            # e.g. change model option.
+            model.set "viscosity", Math.random() * 2 + 1
+
+          model.get("time").should.equal 0
+          model.get("filteredTime").should.equal 0
+
+          model.tick()
+          model.get("time").should.equal 1
+          model.get("filteredTime").should.equal 0.5
+
+          model.tick()
+          model.get("time").should.equal 2
+          model.get("filteredTime").should.equal 1
+
+          model.tick()
+          model.get("time").should.equal 3
+          model.get("filteredTime").should.equal 2
 
         it "should follow changes of the current model step", ->
           model.tick 3
