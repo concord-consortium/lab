@@ -44,6 +44,16 @@ describe "GeneticEngine", ->
           nucleo.idx.should.eql i
           nucleo.type.should.eql sequence[i]
 
+      it "should automatically change lower case DNA string to upper case", ->
+          model.set "DNA", "atgc"
+          model.get("DNA").should.eql "ATGC"
+          model.set "DNA", "aTGc"
+          model.get("DNA").should.eql "ATGC"
+          model.set "DNA", "AtgC"
+          model.get("DNA").should.eql "ATGC"
+          model.set "DNA", "aTgC"
+          model.get("DNA").should.eql "ATGC"
+
       it "should calculate view arrays and dispatch appropriate event after setting DNA", ->
         mock.changeListener.callCount.should.eql 0
         model.set "DNA", "ATGC"

@@ -27,7 +27,9 @@ define(function (require) {
 
       PROMOTER_SEQ   = "TGACCTCTCCGCGCCATCTATAAACCGAAGCGCTAGCTACA",
       TERMINATOR_SEQ = "ACCACAGGCCGCCAGTTCCGCTGGCGGCATTTT",
-      JUNK_SEQ;
+      JUNK_SEQ,
+
+      LOWER_CASE_DNA = /[agtc]/;
 
   function complementarySequence(DNA) {
     // A-T (A-U)
@@ -131,20 +133,32 @@ define(function (require) {
           return array;
         },
 
+        // There are three options:
+        // - DNA is valid -> return true.
+        // - DNA can be invalid, but we can automatically fix it -> return false.
+        // - DNA is invalid and must be fixed by the user -> throw an error.
         validateDNA = function (DNA) {
-          // Allow user to use both lower and upper case.
-          DNA = DNA.toUpperCase();
+          // Allow users use both lower and upper case.
+          if (LOWER_CASE_DNA.test(DNA)) {
+            // Note that model.set("DNA", ...) will trigger DNAUpdated
+            // callback and validation will be called again too.
+            model.set("DNA", DNA.toUpperCase());
+            return false;
+          }
 
           if (DNA.search(/[^AGTC]/) !== -1) {
             // Character other than A, G, T or C is found.
             throw new ValidationError("DNA", "DNA code on sense strand can be defined using only A, G, T or C characters.");
           }
+
+          return true;
         },
 
+        // Make sure that DNA is valid (using .validateDNA()) before calling
+        // this function!
         updateGeneticProperties = function () {
           var DNA = model.get("DNA");
 
-          validateDNA(DNA);
           generateViewArray(api.viewModel.DNA, DNA, true);
 
           DNAComp = complementarySequence(DNA);
@@ -291,6 +305,10 @@ define(function (require) {
         },
 
         DNAUpdated = function () {
+          if (!validateDNA(model.get("DNA"))) {
+            return;
+          }
+
           updateGeneticProperties();
 
           if (stateTransition) {
@@ -688,8 +706,9 @@ define(function (require) {
 
     model.addPropertiesListener(["DNA"], DNAUpdated);
     model.addPropertiesListener(["geneticEngineState"], stateUpdated);
-    updateGeneticProperties();
-
+    if (validateDNA(model.get("DNA"))) {
+      updateGeneticProperties();
+    }
     return api;
   };
 
