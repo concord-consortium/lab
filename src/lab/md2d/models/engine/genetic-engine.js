@@ -225,11 +225,6 @@ define(function (require) {
           }
         },
 
-
-        stateEq = function (name) {
-          return model.get("geneticEngineState") === name;
-        },
-
         stateComp = function (stateA, stateB) {
           if (stateA === stateB) {
             return 0;
@@ -417,17 +412,26 @@ define(function (require) {
 
       /**
        * Triggers transition to the next genetic engine state.
+       *
+       * If any transition was ongoing, it's canceled.
        */
       transitionToNextState: function () {
-        transitionToState(nextState(api.lastState()));
+        api.stopTransition();
+        if (ongoingTransitions.length === 0) {
+          transitionToState(nextState(api.lastState()));
+        }
       },
 
       /**
        * Stops current animation.
+       * @return {boolean} true when some transitions are canceled, false otherwise.
        */
       stopTransition: function () {
-        // Cleanup queue of waiting transitions.
-        ongoingTransitions.length = 0;
+        if (ongoingTransitions.length > 1) {
+          // Cleanup queue of waiting transitions. ongoingTransitions[0] is
+          // the current transition, don't remove it.
+          ongoingTransitions.length = 1;
+        }
       },
 
       jumpToNextState: function () {
@@ -450,7 +454,7 @@ define(function (require) {
        */
       transitionTo: function (stateName) {
         while (api.lastStateBefore(stateName)) {
-          api.transitionToNextState();
+          transitionToState(nextState(api.lastState()));
         }
       },
 
@@ -471,12 +475,11 @@ define(function (require) {
       transcribeStep: function (expectedNucleotide) {
         var state, newCode;
 
-        if (stateEq("dna")) {
+        state = api.state();
+        if (state.name === "dna") {
           api.transitionToNextState();
-          return;
         }
-        state = api.lastState();
-        if (state.name === "transcription") {
+        else if (state.name === "transcription") {
           newCode = mRNACode(state.step);
           if (expectedNucleotide && expectedNucleotide.toUpperCase() !== newCode) {
             // Expected nucleotide is wrong, so simply do nothing.
