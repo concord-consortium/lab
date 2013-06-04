@@ -248,6 +248,7 @@ define(function (require) {
         },
 
         transitionToState = function (name) {
+          if (typeof name === "undefined") return;
           if (ongoingTransitions.length > 0) {
             // Some transition are in progress, so only enqueue a new state.
             ongoingTransitions.push(name);
@@ -419,6 +420,14 @@ define(function (require) {
        */
       transitionToNextState: function () {
         transitionToState(nextState(api.lastState()));
+      },
+
+      /**
+       * Stops current animation.
+       */
+      stopTransition: function () {
+        // Cleanup queue of waiting transitions.
+        ongoingTransitions.length = 0;
       },
 
       jumpToNextState: function () {
