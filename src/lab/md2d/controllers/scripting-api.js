@@ -529,8 +529,10 @@ define(function (require) {
           // or after transcrption process (so, state is different from:
           // "dna", "transcription:0", ..., "transcription-end").
           model.set("geneticEngineState", "dna");
+        } else {
+          // Proceed to the next step.
+          ge.transcribeStep(expectedNucleotide);
         }
-        ge.transcribeStep(expectedNucleotide);
       },
 
       /**
@@ -538,17 +540,18 @@ define(function (require) {
        */
       translateStep: function translateStep() {
         var ge = model.geneticEngine();
-        if (ge.stateBefore("transcription-end") || ge.stateAfter("translation-end")) {
-          // Jump to beginning of DNA translation if current state is before
-          // or after translation process. Note that we jump to translation:0
-          // state, however if we are between "transcription-end" and
-          // "translation:0", we animate to the next state instead of jump
-          // immediately. This ensures that if user transcribes step by step
-          // and then translates step by step, he will see only animations,
-          // without jumps.
-          model.set("geneticEngineState", "translation:0");
+        if (ge.stateBefore("transcription-end")) {
+          // Ensure that we start from transcription-end.
+          model.set("geneticEngineState", "transcription-end");
         }
-        ge.transitionToNextState();
+        if (ge.stateBefore("translation:0")) {
+          // Animate directly to the translation:0, merge a few shorter
+          // animations.
+          ge.transitionTo("translation:0");
+        } else {
+          // Proceed to the next step.
+          ge.transitionToNextState();
+        }
       },
 
       /**

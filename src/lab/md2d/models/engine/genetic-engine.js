@@ -476,10 +476,9 @@ define(function (require) {
         var state, newCode;
 
         state = api.state();
-        if (state.name === "dna") {
+        if (state.name === "dna" && typeof expectedNucleotide === "undefined") {
           api.transitionToNextState();
-        }
-        else if (state.name === "transcription") {
+        } else if (state.name === "transcription") {
           newCode = mRNACode(state.step);
           if (expectedNucleotide && expectedNucleotide.toUpperCase() !== newCode) {
             // Expected nucleotide is wrong, so simply do nothing.
