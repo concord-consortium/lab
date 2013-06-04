@@ -254,7 +254,7 @@ define(function (require) {
         }],
         viewPort: [{
           position: function () {
-            return Math.min(model.get("DNA").length - 10, Math.max(0, getStep() - 6)) - 2;
+            return Math.max(0, Math.min(model.get("DNA").length - 10, getStep() - 6)) - 2;
           },
           ease: "linear"
         }],
