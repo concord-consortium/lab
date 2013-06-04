@@ -609,7 +609,7 @@ define(function (require) {
       state = model.geneticEngine().state();
 
       // Cleanup.
-      canceltransitionFunction();
+      cancelTransitions();
       viewportG.selectAll("g.genetics").remove();
 
       if (!model.get("DNA") || state.name === "translation-end") {
@@ -638,7 +638,7 @@ define(function (require) {
       // Update genetic engine state.
       state = model.geneticEngine().state();
 
-      canceltransitionFunction();
+      cancelTransitions();
       renderState(g, state.name);
     }
 
@@ -708,7 +708,7 @@ define(function (require) {
         // Some transition is currently in progress, chain a new transition.
         newTrans = currentTrans.transition();
       } else {
-        // All transitionFunction ended, just create a new one.
+        // All transitions ended, just create a new one.
         newTrans = g.transition();
       }
       currentTrans = newTrans;
@@ -716,15 +716,15 @@ define(function (require) {
     }
 
     /**
-     * Trick to cancel all current transitionFunction. It isn't possible explicitly
-     * so we have to start new, fake transitionFunction, which will cancel previous
-     * ones. Note that some transitionFunction can be applied to elements that live
+     * Trick to cancel all current transitions. It isn't possible explicitly
+     * so we have to start new, fake transitions, which will cancel previous
+     * ones. Note that some transitions can be applied to elements that live
      * outside g.genetics element, e.g. viewport and background. So, it isn't
      * enough to use d3.selectAll("g.genetics *").
      *
      * @private
      */
-    function canceltransitionFunction() {
+    function cancelTransitions() {
       var g = svg.select("g.genetics");
       if (!g.empty() && g.node().__transition__) {
         svg.selectAll("g.genetics, g.genetics *").transition().delay(0);
