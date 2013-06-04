@@ -483,6 +483,15 @@ define(function (require) {
       },
 
       /**
+       * Stops current DNA animation.
+       */
+      dnaStopAnimation: function dnaStopAnimation() {
+        // Jumping to previous state will cancel current animation
+        // and cleanup transitions queue.
+        model.geneticEngine().stopTransition();
+      },
+
+      /**
        * Triggers animation to the given genetic engine state.
        * If current genetic engine state is after the desired state,
        * nothing happens.
@@ -514,7 +523,32 @@ define(function (require) {
        * @param  {string} expectedNucleotide code of the expected nucleotide ("U", "C", "A" or "G").
        */
       transcribeStep: function transcribeStep(expectedNucleotide) {
-        model.geneticEngine().transcribeStep(expectedNucleotide);
+        var ge = model.geneticEngine();
+        if (ge.stateBefore("dna") || ge.stateAfter("transcription-end")) {
+          // Jump to beginning of DNA transcription if current state is before
+          // or after transcrption process (so, state is different from:
+          // "dna", "transcription:0", ..., "transcription-end").
+          model.set("geneticEngineState", "dna");
+        }
+        ge.transcribeStep(expectedNucleotide);
+      },
+
+      /**
+       * Triggers only one step of DNA translation.
+       */
+      translateStep: function translateStep() {
+        var ge = model.geneticEngine();
+        if (ge.stateBefore("transcription-end") || ge.stateAfter("translation-end")) {
+          // Jump to beginning of DNA translation if current state is before
+          // or after translation process. Note that we jump to translation:0
+          // state, however if we are between "transcription-end" and
+          // "translation:0", we animate to the next state instead of jump
+          // immediately. This ensures that if user transcribes step by step
+          // and then translates step by step, he will see only animations,
+          // without jumps.
+          model.set("geneticEngineState", "translation:0");
+        }
+        ge.transitionToNextState();
       },
 
       /**
