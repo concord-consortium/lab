@@ -26,37 +26,66 @@
       },
       "modelOptions": {
         "DNA": "ATGCCAGGCGGCGAGAGCTTGCTAATTGGCTTATAG",
-        "geneticEngineState": "translation:0"
+        "geneticEngineState": "dna"
       }
     }
   ],
   "components": [
     {
-      "type": "text",
-      "id": "labelA",
-      "text": "Click"
+      "type": "button",
+      "id": "transcribe",
+      "text": "transcribe",
+      "action": [
+        "set('geneticEngineState', 'dna');",
+        "dnaAnimationTo('translation:0');"
+      ]
     },
     {
-      "type": "text",
-      "id": "labelB",
-      "text": "to see amino acids being linked together into a protein or"
+      "type": "button",
+      "id": "transcribe-step",
+      "text": "transcribe step by step",
+      "action": "transcribeStep();"
     },
     {
       "type": "button",
       "id": "translate",
       "text": "translate",
-      "action": "dnaAnimationTo('translation-end');"
+      "action": [
+        "set('geneticEngineState', 'transcription-end');",
+        "dnaAnimationTo('translation-end');"
+      ]
     },
     {
       "type": "button",
       "id": "translate-step",
       "text": "translate step by step",
       "action": "translateStep();"
+    },
+    {
+      "type": "text",
+      "id": "label2A",
+      "text": "Click"
+    },
+    {
+      "type": "text",
+      "id": "label2",
+      "text": "to trigger complete DNA transcription or"
+    },
+    {
+      "type": "text",
+      "id": "label3A",
+      "text": "Then click"
+    },
+    {
+      "type": "text",
+      "id": "label3",
+      "text": "to see amino acids being linked together into a protein or"
     }
   ],
   "layout": {
     "bottom": [
-      ["labelA", "translate", "labelB", "translate-step"]
+      ["label2A", "transcribe", "label2", "transcribe-step"],
+      ["label3A", "translate", "label3", "translate-step"]
     ]
   }
 }

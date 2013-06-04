@@ -33,7 +33,7 @@
       "text": "prepare for transcription",
       "action": [
         "set('geneticEngineState', 'intro-cells');",
-        "dnaAnimationTo('transcription:0');"
+        "dnaAnimationTo('dna');"
       ]
     },
     {
@@ -41,8 +41,8 @@
       "id": "transcribe",
       "text": "transcribe",
       "action": [
-        "set('geneticEngineState', 'transcription:0');",
-        "dnaAnimationTo('before-translation');"
+        "set('geneticEngineState', 'dna');",
+        "dnaAnimationTo('transcription-end');"
       ]
     },
     {
@@ -56,7 +56,7 @@
       "id": "translate",
       "text": "translate",
       "action": [
-        "set('geneticEngineState', 'before-translation');",
+        "set('geneticEngineState', 'transcription-end');",
         "dnaAnimationTo('translation-end');"
       ]
     },
@@ -74,7 +74,7 @@
     {
       "type": "text",
       "id": "label1",
-      "text": "to zoom in to cell nucleus and separate DNA strands."
+      "text": "to zoom into the cell nucleus."
     },
     {
       "type": "text",
