@@ -9,7 +9,7 @@
       "id": "page3$0",
       "url": "imports/legacy-mw-content/converted/sam-activities/DNA-to-proteins/page3/page3$0.json",
       "viewOptions": {
-        "controlButtons": "",
+        "controlButtons": "reset",
         "enableKeyboardHandlers": false
       },
       "modelOptions": {
@@ -114,6 +114,12 @@
     },
     {
       "type": "button",
+      "id": "stop-anim",
+      "text": "Stop animation",
+      "action": "dnaStopAnimation();"
+    },
+    {
+      "type": "button",
       "id": "next-state",
       "text": "Animate to next state",
       "action": "dnaAnimateToNextState();"
@@ -129,12 +135,6 @@
       "id": "prev-state-jump",
       "text": "Jump to prev state",
       "action": "dnaJumpToPrevState();"
-    },
-    {
-      "type": "button",
-      "id": "reset",
-      "text": "Reset",
-      "action": "reset();"
     },
     {
       "id": "current-state",
@@ -158,14 +158,15 @@
   "layout": {
     "bottom": [
       ["viewport"],
-      ["current-state", "reset"]
+      ["current-state"]
     ],
     "right": [
       ["state-pulldown"],
+      ["next-state-jump"],
+      ["prev-state-jump"],
       ["animate-pulldown"],
       ["next-state"],
-      ["next-state-jump"],
-      ["prev-state-jump"]
+      ["stop-anim"]
     ]
   }
 }
