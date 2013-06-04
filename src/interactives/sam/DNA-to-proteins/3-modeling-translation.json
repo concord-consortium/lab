@@ -21,118 +21,42 @@
       "id": "page3$0",
       "url": "imports/legacy-mw-content/converted/sam-activities/DNA-to-proteins/page3/page3$0.json",
       "viewOptions": {
-        "controlButtons": "",
+        "controlButtons": "reset",
         "enableKeyboardHandlers": false
       },
       "modelOptions": {
         "DNA": "ATGCCAGGCGGCGAGAGCTTGCTAATTGGCTTATAG",
-        "geneticEngineState": "intro-cells"
+        "geneticEngineState": "translation:0"
       }
     }
   ],
   "components": [
     {
-      "type": "button",
-      "id": "zoom",
-      "text": "Prepare for transcription",
-      "action": [
-        "set('geneticEngineState', 'intro-cells');",
-        "dnaAnimationTo('transcription:0');"
-      ]
-    },
-    {
-      "type": "button",
-      "id": "transcribe",
-      "text": "Transcribe",
-      "action": [
-        "set('geneticEngineState', 'transcription:0');",
-        "dnaAnimationTo('before-translation');"
-      ]
-    },
-    {
-      "type": "button",
-      "id": "translate",
-      "text": "Translate",
-      "action": [
-        "set('geneticEngineState', 'before-translation');",
-        "dnaAnimationTo('translation-end');"
-      ]
-    },
-    {
-      "type": "button",
-      "id": "prev-state-jump",
-      "text": "<<",
-      "action": "dnaJumpToPrevState();"
-    },
-    {
-      "type": "button",
-      "id": "next-state",
-      "text": "Proceed one step",
-      "action": "dnaAnimateToNextState();"
-    },
-    {
-      "type": "button",
-      "id": "next-state-jump",
-      "text": ">>",
-      "action": "dnaJumpToNextState();"
-    },
-    {
-      "type": "button",
-      "id": "reset",
-      "text": "Reset",
-      "action": "reset();"
-    },
-    {
       "type": "text",
-      "id": "label1A",
+      "id": "labelA",
       "text": "Click"
     },
     {
       "type": "text",
-      "id": "label1",
-      "text": "to zoom in to cell nucleus and separate DNA strands."
+      "id": "labelB",
+      "text": "to see amino acids being linked together into a protein or"
     },
     {
-      "type": "text",
-      "id": "label2A",
-      "text": "Then click"
+      "type": "button",
+      "id": "translate",
+      "text": "translate",
+      "action": "dnaAnimationTo('translation-end');"
     },
     {
-      "type": "text",
-      "id": "label2",
-      "text": "to trigger complete DNA transcription."
-    },
-    {
-      "type": "text",
-      "id": "label3A",
-      "text": "Finally click"
-    },
-    {
-      "type": "text",
-      "id": "label3",
-      "text": "to see amino acids being linked together into a protein."
-    }
-  ],
-  "template": [
-    {
-      "id": "bottom",
-      "top": "model.bottom",
-      "width": "interactive.width",
-      "padding-top": "0.5em"
-    },
-    {
-      "id": "bottom-2",
-      "top": "bottom.bottom",
-      "width": "interactive.width",
-      "padding-top": "1em"
+      "type": "button",
+      "id": "translate-step",
+      "text": "translate step by step",
+      "action": "translateStep();"
     }
   ],
   "layout": {
     "bottom": [
-      ["label1A", "zoom", "label1"],
-      ["label2A", "transcribe", "label2"],
-      ["label3A", "translate", "label3"]
-    ],
-    "bottom-2": ["reset", "prev-state-jump", "next-state", "next-state-jump"]
+      ["labelA", "translate", "labelB", "translate-step"]
+    ]
   }
 }

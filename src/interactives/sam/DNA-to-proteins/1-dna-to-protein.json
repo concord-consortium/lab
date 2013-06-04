@@ -17,7 +17,7 @@
       "id": "page3$0",
       "url": "imports/legacy-mw-content/converted/sam-activities/DNA-to-proteins/page3/page3$0.json",
       "viewOptions": {
-        "controlButtons": "",
+        "controlButtons": "reset",
         "enableKeyboardHandlers": false
       },
       "modelOptions": {
@@ -119,12 +119,6 @@
       "id": "next-state-jump",
       "text": ">>",
       "action": "dnaJumpToNextState();"
-    },
-    {
-      "type": "button",
-      "id": "reset",
-      "text": "reset",
-      "action": "reset();"
     }
   ],
   "template": [
@@ -147,6 +141,6 @@
       ["label2A", "transcribe", "label2", "transcribe-step"],
       ["label3A", "translate", "label3", "translate-step"]
     ],
-    "bottom-2": ["reset", "prev-state-jump", "stop-anim", "next-state", "next-state-jump"]
+    "bottom-2": ["prev-state-jump", "stop-anim", "next-state", "next-state-jump"]
   }
 }

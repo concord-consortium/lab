@@ -19,12 +19,12 @@
       "id": "page2$0",
       "url": "imports/legacy-mw-content/converted/sam-activities/DNA-to-proteins/page2/page2$0.json",
       "viewOptions": {
-        "controlButtons": "",
+        "controlButtons": "reset",
         "enableKeyboardHandlers": false
       },
       "modelOptions": {
         "DNA": "ATGTTGACTCTAACTCGCATCCGCACTGTG",
-        "geneticEngineState": "intro-cells"
+        "geneticEngineState": "dna"
       }
     }
   ],
@@ -33,10 +33,7 @@
       "type": "button",
       "id": "begin",
       "text": "prepare for transcription",
-      "action": [
-        "set('geneticEngineState', 'intro-cells');",
-        "dnaAnimationTo('transcription:0');"
-      ]
+      "action": "dnaAnimationTo('transcription:0');"
     },
     {
       "type": "button",
@@ -70,7 +67,7 @@
     {
       "type": "text",
       "id": "label1B",
-      "text": "to zoom in to cell nucleus and separate DNA strands."
+      "text": "to separate DNA strands."
     },
     {
       "type": "text",
