@@ -123,13 +123,16 @@ define(function (require) {
     if (!mode) { // mode === "" || mode === null || mode === false
       this.$element.find(".step, .reset, .play-pause").addClass("hidden");
     } else if (mode === "play") {
-      this.$element.find(".step, .reset").addClass("hidden");
       this.$element.find(".play-pause").removeClass("hidden");
+      this.$element.find(".spacer, .step, .reset").addClass("hidden");
+    } else if (mode === "reset") {
+      this.$element.find(".reset").removeClass("hidden");
+      this.$element.find(".spacer, .play-pause, .step").addClass("hidden");
     } else if (mode === "play_reset") {
+      this.$element.find(".spacer, .play-pause, .reset").removeClass("hidden");
       this.$element.find(".step").addClass("hidden");
-      this.$element.find(".play-pause, .reset").removeClass("hidden");
     } else if (mode === "play_reset_step") {
-      this.$element.find(".step, .reset, .play-pause").removeClass("hidden");
+      this.$element.find(".spacer, .step, .reset, .play-pause").removeClass("hidden");
     }
     $buttons = this.$element.find("a");
     $buttons.removeClass("first");
