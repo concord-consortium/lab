@@ -308,6 +308,13 @@ define(function (require) {
           if (!validateDNA(model.get("DNA"))) {
             return;
           }
+          if (api.stateAfter("translation:0")) {
+            // Reset translation if DNA is changed. This will remove all
+            // existing amino acids and notify renderer (via stateUpdated
+            // callback).
+            model.set("geneticEngineState", "translation:0");
+            return;
+          }
 
           updateGeneticProperties();
 

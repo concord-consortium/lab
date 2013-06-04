@@ -54,13 +54,25 @@ describe "GeneticEngine", ->
           model.set "DNA", "aTgC"
           model.get("DNA").should.eql "ATGC"
 
+      it "should reset geneticEngineState to translation:0 if DNA is changed during following steps", ->
+          model.set "DNA", "ATCG"
+          model.set "geneticEngineState", "translation:0"
+          geneticEngine.transitionToNextState()
+          model.get("geneticEngineState").should.eql "translation:1"
+          geneticEngine.transitionToNextState()
+          model.get("geneticEngineState").should.eql "translation-end"
+
+          model.set "DNA", "ATC"
+          model.get("geneticEngineState").should.eql "translation:0"
+
       it "should calculate view arrays and dispatch appropriate event after setting DNA", ->
         mock.changeListener.callCount.should.eql 0
+        model.set "geneticEngineState", "dna"
         model.set "DNA", "ATGC"
         checkViewModel geneticEngine.viewModel.DNA, "ATGC"
         checkViewModel geneticEngine.viewModel.DNAComp, "TACG"
         checkViewModel geneticEngine.viewModel.mRNA, ""
-        mock.changeListener.callCount.should.eql 1
+        mock.changeListener.callCount.should.eql 2
         mock.transitionListener.callCount.should.eql 0
 
       it "should calculate mRNA when state is set to 'transcription-end' or 'translation'", ->

@@ -153,6 +153,12 @@
       "min": -31,
       "max": 35,
       "steps": 2000
+    },
+    {
+      "type": "button",
+      "id": "dna-dialog",
+      "text": "Edit DNA",
+      "action": "openDNADialog();"
     }
   ],
   "layout": {
@@ -161,6 +167,7 @@
       ["current-state"]
     ],
     "right": [
+      ["dna-dialog"],
       ["state-pulldown"],
       ["next-state-jump"],
       ["prev-state-jump"],
