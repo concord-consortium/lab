@@ -18,3 +18,6 @@ npm-debug.log
 src/experiments/inquiry-space-importer/reference/Importer.js
 config/littlechef
 tarballs
+# ignore Java keystore files, except the sample one included with lab
+/config/*.jks
+!/config/lab-sample-keystore.jks
