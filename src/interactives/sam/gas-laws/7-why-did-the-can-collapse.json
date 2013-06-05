@@ -34,18 +34,7 @@
         ]
       },
       "onLoad": [
-        "var purpleAtomIndices = [],",
-        "    yellowAtomIndices = [],",
-        "    i;",
-        "for (i = 0; i < getNumberOfAtoms(); i++) {",
-        "  if( getAtomProperties(i).element === 1 ) {",
-        "    yellowAtomIndices.push(i);",
-        "  } else {",
-        "    purpleAtomIndices.push(i);",
-        "  }",
-        "}",
-        "set('purpleAtomIndices',purpleAtomIndices);",
-        "set('yellowAtomIndices',yellowAtomIndices);",
+        "set('updateAtomIndicesCount',1);",
         "callEvery(get('timeStep')*get('timeStepsPerTick'), function(t) {",
         "  batch(function(){",
         "    setTemperatureOfAtoms(get('purpleAtomIndices'),get('purpleAtomTemperature'));",
@@ -149,13 +138,31 @@
   ],
   "parameters": [
     {
+      "name": "updateAtomIndicesCount",
+      "initialValue": 0,
+      "onChange": [
+        "var purpleAtomIndices = [],",
+        "    yellowAtomIndices = [],",
+        "    i;",
+        "for (i = 0; i < getNumberOfAtoms(); i++) {",
+        "  if( getAtomProperties(i).element === 1 ) {",
+        "    yellowAtomIndices.push(i);",
+        "  } else {",
+        "    purpleAtomIndices.push(i);",
+        "  }",
+        "}",
+        "set('purpleAtomIndices',purpleAtomIndices);",
+        "set('yellowAtomIndices',yellowAtomIndices);"
+      ]
+    },
+    {
       "name": "purpleAtomIndices",
-      "initialValue": [],
+      "initialValue": [1],
       "onChange": ""
     },
     {
       "name": "yellowAtomIndices",
-      "initialValue": [],
+      "initialValue": [1],
       "onChange": ""
     },
     {
@@ -200,7 +207,8 @@
       "action": [
         "var elemNum = 3;",
         "var maxX = getObstacleProperties(0).x - getElementProperties(elemNum).sigma;",
-        "addAtom({ element: elemNum, x: maxX * Math.random()  , y: get('height') * Math.random(), vx: get('vxMean'), vy: get('vyMean')});"
+        "addAtom({ element: elemNum, x: maxX * Math.random()  , y: get('height') * Math.random(), vx: get('vxMean'), vy: get('vyMean')});",
+        "set('updateAtomIndicesCount',get('updateAtomIndicesCount')+1);"
       ]
     },
     {
@@ -211,7 +219,8 @@
       "action": [
         "var elemNum = 1;",
         "var minX = getObstacleProperties(0).x + getObstacleProperties(0).width + getElementProperties(elemNum).sigma;",
-        "addAtom({ element: elemNum, x: (get('width') - minX) * Math.random() + minX , y: get('height') * Math.random(), vx: get('vxMean'), vy: get('vyMean')});"
+        "addAtom({ element: elemNum, x: (get('width') - minX) * Math.random() + minX , y: get('height') * Math.random(), vx: get('vxMean'), vy: get('vyMean')});",
+        "set('updateAtomIndicesCount',get('updateAtomIndicesCount')+1);"
       ]
     },
     {
@@ -226,7 +235,8 @@
         "    if (!firstFound) { firstFound = true; }",
         "    else { removeAtom(i); break; }",
         "  }",
-        "}"
+        "}",
+        "set('updateAtomIndicesCount',get('updateAtomIndicesCount')+1);"
       ]
     },
     {
@@ -241,7 +251,8 @@
         "    if (!firstFound) { firstFound = true; }",
         "    else { removeAtom(i); break; }",
         "  }",
-        "}"
+        "}",
+        "set('updateAtomIndicesCount',get('updateAtomIndicesCount')+1);"
       ]
     },
     {
@@ -343,7 +354,7 @@
       "title": "V",
       "labels": 0,
       "min": 0,
-      "max": 10,
+      "max": 1,
       "height": "10em",
       "titleOn": "top",
       "barWidth": "1.5em"
@@ -355,7 +366,7 @@
       "title": "V",
       "labels": 0,
       "min": 0,
-      "max": 10,
+      "max": 1,
       "height": "10em",
       "titleOn": "top",
       "barWidth": "1.5em"
