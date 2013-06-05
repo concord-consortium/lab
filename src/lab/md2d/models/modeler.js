@@ -17,6 +17,7 @@ define(function(require) {
       GeneticEngine        = require('md2d/models/engine/genetic-engine'),
       units                = require('md2d/models/engine/constants/units'),
       PropertyDescription  = require('common/property-description'),
+      Dispatch             = require('common/dispatch'),
       unitDefinitions      = require('md2d/models/unit-definitions/index'),
       UnitsTranslation     = require('md2d/models/units-translation'),
       PerformanceOptimizer = require('md2d/models/performance-optimizer'),
@@ -32,9 +33,9 @@ define(function(require) {
     this.constructor.type = "md2d";
 
     var model = {},
-        dispatch = d3.dispatch("tick", "play", "stop", "reset", "willReset", "stepForward", "stepBack",
-                               "seek", "addAtom", "removeAtom", "addRadialBond", "removeRadialBond",
-                               "removeAngularBond", "invalidation", "textBoxesChanged"),
+        dispatch = new Dispatch("tick", "play", "stop", "reset", "willReset", "stepForward", "stepBack",
+                                "seek", "addAtom", "removeAtom", "addRadialBond", "removeRadialBond",
+                                "removeAngularBond", "invalidation", "textBoxesChanged"),
 
         propertySupport = new PropertySupport({
           types: ["output", "parameter", "mainProperty", "viewOption"]
@@ -1862,11 +1863,16 @@ define(function(require) {
     model.startBatch = function() {
       invalidatingChangePreHook();
       suppressInvalidatingChangeHooks = true;
+      // Suppress events dispatching. They will be dispatched during
+      // .endBatch() execution.
+      dispatch.startBatch();
     };
 
     model.endBatch = function() {
       suppressInvalidatingChangeHooks = false;
       invalidatingChangePostHook();
+      // All events will be dispatched now (but just once per event type).
+      dispatch.endBatch();
     };
 
     // Convert array of hashes to a hash of arrays
