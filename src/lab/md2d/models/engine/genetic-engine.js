@@ -177,20 +177,15 @@ define(function (require) {
         },
 
         removeAminoAcids = function () {
-          var opt = {suppressEvent: true},
-              aaCount;
+          var aaCount;
 
           aaCount = model.getNumberOfAtoms();
           if (aaCount > 0) {
             model.startBatch();
-            while(aaCount > 1) {
-              model.removeAtom(aaCount - 1, opt);
+            while(aaCount > 0) {
+              model.removeAtom(aaCount - 1);
               aaCount--;
             }
-            // Remove the last one atom and make sure that events are dispatched!
-            // TODO: Should events be automatically suppressed during batch
-            // execution and then merged and dispatched during .endBatch() call?
-            model.removeAtom(0);
             model.endBatch();
           }
         },
@@ -666,14 +661,6 @@ define(function (require) {
           }
         }
         return result;
-      },
-
-      DNANucleotides: function () {
-        return DNANucleotides;
-      },
-
-      DNACompNucleotides: function () {
-        return DNACompNucleotides;
       },
 
       /**
