@@ -174,7 +174,8 @@ public: \
 	public/doc \
 	public/experiments \
 	public/imports \
-	public/jnlp
+	public/jnlp \
+	public/test
 
 .PHONY: copy-resources-to-public
 copy-resources-to-public:
@@ -184,6 +185,15 @@ copy-resources-to-public:
 
 public/examples:
 	mkdir -p public/examples
+
+.PHONY: public/test
+public/test:
+	mkdir -p public/test
+	cp node_modules/mocha/mocha.js public/test
+	cp node_modules/mocha/mocha.css public/test
+	cp node_modules/chai/chai.js public/test
+	cp test/test1.js public/test
+	haml -r ./script/mocha-phantomjs-setup.rb src/embeddable.html.haml public/embeddable-test-mocha.html
 
 public/doc: \
 	public/doc/interactives \

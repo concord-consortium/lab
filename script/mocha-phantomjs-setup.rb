@@ -3,10 +3,7 @@ require 'fileutils'
 require 'yaml'
 require 'optparse'
 
-opts = OptionParser.new
-@mocha_phantomjs = false
-opts.on("--mocha-phantomjs")	{ |val| @mocha_phantomjs = true }
-opts.parse(ARGV)
+@mocha_phantomjs = true
 
 PROJECT_ROOT = File.expand_path('../..',  __FILE__)                if !defined? PROJECT_ROOT
 SRC_PATH  = File.join(PROJECT_ROOT, 'src')                         if !defined? SRC_PATH
@@ -50,20 +47,22 @@ else
 end
 
 if @mocha_phantomjs
-  MOCHA_PHANTOMJS_HEAD = "  <link href='test/mocha.css' rel='stylesheet'>"
+  MOCHA_PHANTOMJS_HEAD = "<link href='test/mocha.css' rel='stylesheet'>"
   MOCHA_PHANTOMJS_BODY = <<-HEREDOC
-    <div id='mocha'></div>
-    <script src='test/mocha.js'></script>
-    <script src='test/chai.js'></script>
-    <script>
-      mocha.ui('bdd');
-      mocha.reporter('html');
-      expect = chai.expect;
-    </script>
-    <script>
-      if (window.mochaPhantomJS) { mochaPhantomJS.run(); }
-      else { mocha.run(); }
-    </script>
+<div id='mocha'></div>
+<script src='test/mocha.js'></script>
+<script src='test/chai.js'></script>
+<script>
+  mocha.setup({globals: ['script','state', 'model']});
+  mocha.ui('bdd');
+  mocha.reporter('html');
+  expect = chai.expect;
+</script>
+<script src='test/test1.js'></script>
+<script>
+  if (window.mochaPhantomJS) { mochaPhantomJS.run(); }
+  else { mocha.run(); }
+</script>
   HEREDOC
 else
   MOCHA_PHANTOMJS_HEAD = ""
