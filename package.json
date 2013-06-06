@@ -39,9 +39,11 @@
     "cheerio": "0.x",
     "jade": "*",
     "mkdirp": "0.3.2",
-    "mocha": ">=1.9.0",
+    "mocha": "1.8.x",
     "should": ">=1.2.2",
-    "sinon": ">=1.6.0"
+    "sinon": ">=1.6.0",
+    "mocha-phantomjs": ">=2.0.2",
+    "chai": ">=1.6.1"
   },
   "directories": {
     "bin": "node-bin"
