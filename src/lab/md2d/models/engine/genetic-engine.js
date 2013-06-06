@@ -174,6 +174,16 @@ define(function (require) {
             // So, the first state which triggers it is "transcription-end".
             generateViewArray(api.viewModel.mRNA, mRNA);
           }
+
+          if (!stateTransition) {
+            // While jumping between states, ensure that user can see a valid
+            // number of amino acids.
+            if (api.stateBefore("translation:1")) {
+              removeAminoAcids();
+            } else if (api.stateEqual("translation-end")) {
+              generateFinalProtein();
+            }
+          }
         },
 
         removeAminoAcids = function () {
@@ -188,6 +198,20 @@ define(function (require) {
             }
             model.endBatch();
           }
+          model.stop();
+        },
+
+        generateFinalProtein = function () {
+          var aaSequenece = [],
+              i = 0,
+              abbr = aminoacidsHelper.codonToAbbr(api.codon(0));
+
+          while(abbr !== "STOP") {
+            aaSequenece.push(abbr);
+            abbr = aminoacidsHelper.codonToAbbr(api.codon(++i));
+          }
+          api.generateProtein(aaSequenece, undefined, 2.3, 0.3);
+          model.start();
         },
 
         nextState = function (state) {
@@ -285,8 +309,7 @@ define(function (require) {
             dispatch.transition(state);
           } else {
             ongoingTransitions = [];
-            removeAminoAcids();
-            if (api.stateBefore("translation:1")) {
+            if (api.stateBefore("translation:1") || api.stateEqual("translation-end")) {
               dispatch.change();
             } else {
               // It means that state was set to 'translation:x', where x > 0.
@@ -303,7 +326,8 @@ define(function (require) {
           if (!validateDNA(model.get("DNA"))) {
             return;
           }
-          if (api.stateAfter("translation:0")) {
+
+          if (api.stateAfter("translation:0") && api.stateBefore("translation-end")) {
             // Reset translation if DNA is changed. This will remove all
             // existing amino acids and notify renderer (via stateUpdated
             // callback).
@@ -457,6 +481,8 @@ define(function (require) {
       jumpToNextState: function () {
         if (api.stateBefore("translation:0")) {
           model.set("geneticEngineState", nextState(api.state()));
+        } else if (api.stateBefore("translation-end")) {
+          model.set("geneticEngineState", "translation-end");
         }
       },
 
@@ -525,11 +551,15 @@ define(function (require) {
       },
 
       stateBefore: function (name) {
-        return stateComp(model.get("geneticEngineState"), name) === -1 ? true : false;
+        return stateComp(model.get("geneticEngineState"), name) === -1;
+      },
+
+      stateEqual: function (name) {
+        return stateComp(model.get("geneticEngineState"), name) === 0;
       },
 
       stateAfter: function (name) {
-        return stateComp(model.get("geneticEngineState"), name) === 1 ? true : false;
+        return stateComp(model.get("geneticEngineState"), name) === 1;
       },
 
       /**
@@ -708,17 +738,17 @@ define(function (require) {
        *                                 the protein will be truncated and its real length returned.
        * @return {Number}                number of created amino acids (<= expectedLength).
        */
-      generateProtein: function (aaSequence, expectedLength) {
-        var minX = model.properties.minX,
-            minY = model.properties.minY,
-            maxX = model.properties.maxX,
-            maxY = model.properties.maxY,
-            createdAA = 0;
-
+      generateProtein: function (aaSequence, expectedLength, paddingTop, paddingBottom) {
         // Process arguments.
-        if (aaSequence !== undefined) {
-          expectedLength = aaSequence.length;
-        }
+        expectedLength = aaSequence ? aaSequence.length : expectedLength;
+        paddingTop = paddingTop || 0;
+        paddingBottom = paddingBottom || 0;
+
+        var minX = model.properties.minX,
+            minY = model.properties.minY + paddingBottom,
+            maxX = model.properties.maxX,
+            maxY = model.properties.maxY - paddingTop,
+            createdAA = 0;
 
         // First, make sure that model is empty.
         removeAminoAcids();
