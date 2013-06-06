@@ -473,8 +473,8 @@ define(function() {
           if (info.descriptor.validate) {
             info.descriptor.validate(value);
           }
+
           set(key, value);
-          notify(key);
 
           if (info.descriptor.set) {
             info.descriptor.set(value);
@@ -483,6 +483,8 @@ define(function() {
           if (info.descriptor.afterSetCallback) {
             info.descriptor.afterSetCallback();
           }
+
+          notify(key);
         }
       });
     }
