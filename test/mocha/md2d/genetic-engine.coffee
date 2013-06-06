@@ -26,7 +26,11 @@ describe "GeneticEngine", ->
           geneticEngine.transitionEnded()
 
       before ->
-        model = new Model {}
+        # Note that we have to set DNA to any value to ensure that model
+        # dimensions will be set correctly. We should refactor xmin, ymin,
+        # xmax, ymax + width and height options and don't  treat them as
+        # immutable (only viewport width and height should be immutable).
+        model = new Model {DNA: "ATCG"}
         geneticEngine = model.geneticEngine()
 
       beforeEach ->
@@ -54,13 +58,11 @@ describe "GeneticEngine", ->
           model.set "DNA", "aTgC"
           model.get("DNA").should.eql "ATGC"
 
-      it "should reset geneticEngineState to translation:0 if DNA is changed during following steps", ->
+      it "should reset geneticEngineState to translation:0 if DNA is changed during translation:x steps", ->
           model.set "DNA", "ATCG"
           model.set "geneticEngineState", "translation:0"
           geneticEngine.transitionToNextState()
           model.get("geneticEngineState").should.eql "translation:1"
-          geneticEngine.transitionToNextState()
-          model.get("geneticEngineState").should.eql "translation-end"
 
           model.set "DNA", "ATC"
           model.get("geneticEngineState").should.eql "translation:0"
@@ -135,13 +137,10 @@ describe "GeneticEngine", ->
         model.get("geneticEngineState").should.eql "before-translation"
         geneticEngine.jumpToNextState()
         model.get("geneticEngineState").should.eql "translation:0"
-        # and that's all, for now it isn't permitted to jump to translation:x, where x > 0.
+        geneticEngine.jumpToNextState()
+        model.get("geneticEngineState").should.eql "translation-end"
 
       it "should allow jumping to the previous state", ->
-        # make things more interesting and start from translation-end
-        geneticEngine.transitionToNextState();
-        model.get("geneticEngineState").should.eql "translation:1"
-        geneticEngine.transitionToNextState();
         model.get("geneticEngineState").should.eql "translation-end"
 
         geneticEngine.jumpToPrevState();
