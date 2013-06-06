@@ -695,6 +695,144 @@ define(function (require) {
           x: xcm,
           y: ycm
         };
+      },
+
+      /**
+       * Generates a new protein (and removes all existing atoms before).
+       *
+       * @param  {array} aaSequence      defines expected sequence of amino acids. Pass undefined and provide
+       *                                 'expectedLength' if you want to generate a random protein.
+       * @param  {Number} expectedLength controls the maximum (and expected) number of amino
+       *                                 acids of the resulting protein. Provide this parameter only when 'aaSequence'
+       *                                 is undefined. When expected length is too big (due to limited area of the model),
+       *                                 the protein will be truncated and its real length returned.
+       * @return {Number}                number of created amino acids (<= expectedLength).
+       */
+      generateProtein: function (aaSequence, expectedLength) {
+        var minX = model.properties.minX,
+            minY = model.properties.minY,
+            maxX = model.properties.maxX,
+            maxY = model.properties.maxY,
+            createdAA = 0;
+
+        // Process arguments.
+        if (aaSequence !== undefined) {
+          expectedLength = aaSequence.length;
+        }
+
+        // First, make sure that model is empty.
+        removeAminoAcids();
+
+        model.batch(function () {
+              // Options for .addAtom modeler's method.
+          var opt = {suppressCheck: true},
+              width   = maxX - minX,
+              height  = maxY - minY,
+              aaCount = aminoacidsHelper.lastElementID - aminoacidsHelper.firstElementID + 1,
+              xPos, yPos, xStep, yStep, el, props, radius, prevRadius, bondLen, i,
+
+              // This function controls how X coordinate is updated,
+              // using current Y coordinate as input.
+              turnHeight = 0.6,
+              xStepFunc = function(y) {
+                if (y > height - turnHeight || y < turnHeight) {
+                  // Close to the boundary increase X step.
+                  return 0.1;
+                }
+                return 0.02 - Math.random() * 0.04;
+              },
+
+              // This function controls how Y coordinate is updated,
+              // using current Y coordinate and previous result as input.
+              changeHeight = 0.3,
+              yStepFunc = function(y, prev) {
+                if (prev === 0) {
+                  // When previously 0 was returned,
+                  // now it's time to switch direction of Y step.
+                  if (y > 0.5 * maxY) {
+                    return -0.1;
+                  }
+                  return 0.1;
+                }
+                if (yPos > maxY - changeHeight || yPos < changeHeight) {
+                  // Close to the boundary return 0 to make smoother turn.
+                  return 0;
+                }
+                // In a typical situation, just return previous value.
+                return prev;
+              },
+
+              getRandomAA = function() {
+                return Math.floor(aaCount * Math.random()) + aminoacidsHelper.firstElementID;
+              };
+
+          // Add the first amino acid. Start from the lower-left corner of
+          // model area.
+          xPos = minX + 0.1;
+          yPos = minY + 0.1;
+          xStep  = 0;
+          yStep  = 0;
+          el     = aaSequence ? aminoacidsHelper.abbrToElement(aaSequence[0]) : getRandomAA();
+          radius = model.getElementProperties(el).radius;
+          props  = {x: xPos, y: yPos, element: el, visible: true};
+
+          model.addAtom(props, opt);
+          createdAA += 1;
+
+          // Add remaining amino acids.
+          for (i = 1; i < expectedLength; i++) {
+            xPos = props.x;
+            yPos = props.y;
+
+            // Update step.
+            xStep = xStepFunc(yPos);
+            yStep = yStepFunc(yPos, yStep);
+
+            // Update coordinates of new AA.
+            xPos += xStep * 1.7;
+            yPos += yStep * 1.7;
+
+            if (xPos > width - 0.1) {
+              // No space left for new AA.
+              return;
+            }
+
+            el = aaSequence ? aminoacidsHelper.abbrToElement(aaSequence[i]) : getRandomAA();
+            props = {x: xPos, y: yPos, element: el, visible: true};
+            model.addAtom(props, opt);
+            createdAA += 1;
+
+            // Length of bond is based on the radii of AAs.
+            prevRadius = radius;
+            radius = model.getElementProperties(el).radius;
+            bondLen = (radius + prevRadius) * 1.25;
+            // 10000 is a typical strength for bonds between AAs.
+            model.addRadialBond({atom1: i, atom2: i - 1, length: bondLen, strength: 10000});
+          }
+        });
+        // We have to use a new batch so atoms array will be updated and we
+        // can use getAtomProperties for recently added atoms.
+        model.batch(function () {
+          // Center protein (X coords only) in the viewport. Make sure
+          // that we don't exceed model boundaries.
+          var proteinsMaxX   = model.getAtomProperties(createdAA - 1).x,
+              proteinsCenter = (proteinsMaxX - minX) / 2,
+              viewPortCenter = model.properties.viewPortX + model.properties.viewPortWidth / 2,
+              spaceOnRight   = maxX - proteinsMaxX,
+              shift = Math.max(0, Math.min(viewPortCenter - proteinsCenter, spaceOnRight)),
+              i;
+
+          // Shift all AAs.
+          for (i = 0; i < expectedLength; i++) {
+            model.setAtomProperties(i, {x: model.getAtomProperties(i).x + shift});
+          }
+        });
+
+        // Minize energy so the protein will look better.
+        model.minimizeEnergy();
+
+        // Return number of created AA.
+        return createdAA;
       }
     };
 
