@@ -554,15 +554,16 @@ define(function (require) {
         }
       },
 
-      /**
-        Generates a random protein.
-
-        'expectedLength' parameter controls the maximum (and expected) number of amino
-        acids of the resulting protein. When expected length is too big (due to limited
-        area of the model), protein will be truncated and warning shown.
+     /**
+      * Generates a random protein. It removes all existing atoms before.
+      *
+      * @param  {[type]} expectedLength controls the maximum (and expected) number of amino acids of
+      *                                 the resulting protein. When expected length is too big
+      *                                 (due to limited area of the model), protein will be truncated
+      *                                 and warning shown.
       */
       generateRandomProtein: function (expectedLength) {
-        var realLength = model.generateProtein(undefined, expectedLength);
+        var realLength = model.geneticEngine().generateProtein(undefined, expectedLength);
 
         if (realLength !== expectedLength) {
           throw new Error("Generated protein was truncated due to limited area of the model. Only" +
