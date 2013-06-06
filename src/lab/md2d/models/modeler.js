@@ -1690,6 +1690,9 @@ define(function(require) {
       invalidatingChangePreHook();
       engine.minimizeEnergy();
       invalidatingChangePostHook();
+      // Positions of atoms could change, so
+      // dispatch tick event.
+      dispatch.tick();
       return model;
     };
 
@@ -1875,6 +1878,16 @@ define(function(require) {
       dispatch.endBatch();
     };
 
+    /**
+     * Executes function between .startBatch() and .endBatch() calls.
+     * @param  {Function} action function that should be executed.
+     */
+    model.batch = function(action) {
+      model.startBatch();
+      action();
+      model.endBatch();
+    };
+
     // Convert array of hashes to a hash of arrays
     // TODO. Move to a new utils module, share with mml parser
     function unroll(array) {
@@ -2014,7 +2027,7 @@ define(function(require) {
     if (initialProperties.DNA) {
       // Overwrite width and height options.
       initialProperties.width = 100;
-      initialProperties.height = 10;
+      initialProperties.height = 5;
       // View options are optional, make sure that they are defined.
       initialProperties.viewOptions = initialProperties.viewOptions || {};
       initialProperties.viewOptions.viewPortX = 0;
