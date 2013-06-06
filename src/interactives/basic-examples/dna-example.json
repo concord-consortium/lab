@@ -85,6 +85,10 @@
         {
           "text": "translation:5 (!)",
           "action": "set('geneticEngineState', 'translation:5');"
+        },
+        {
+          "text": "translation-end",
+          "action": "set('geneticEngineState', 'translation-end');"
         }
       ]
     },
