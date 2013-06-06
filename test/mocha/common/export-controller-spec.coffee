@@ -156,7 +156,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
       describe "after the model is started", ->
         beforeEach ->
-          model.resume()
+          model.start()
 
         it "should log \"User started model\"", ->
           dgExporter.logAction.callCount.should.eql 1

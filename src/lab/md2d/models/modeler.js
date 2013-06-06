@@ -48,7 +48,8 @@ define(function(require) {
         },
         defaultMaxTickHistory = 1000,
         stopped = true,
-        restart = false,
+        stopRequest = false,
+        restartRequest = false,
         newStep = false,
         lastSampleTime,
         sampleTimes = [],
@@ -1696,32 +1697,47 @@ define(function(require) {
       return model;
     };
 
-    model.start = function() {
-      if (!stopped) return model;
-      return model.resume();
+    model.stop = function() {
+      stopRequest = true;
+      dispatch.stop();
+      return model;
     };
 
     /**
-      Restart the model (call model.resume()) after the next tick completes.
+      Restart the model (call model.start()) after the next tick completes.
 
       This is useful for changing the modelSampleRate interactively.
     */
     model.restart = function() {
-      restart = true;
+      restartRequest = true;
     };
 
-    model.resume = function() {
+    model.start = function() {
+      // Cleanup stop and restart requests.
+      stopRequest = false;
+      restartRequest = false;
 
-      console.time('gap between frames');
+      if (!stopped) {
+        // Do nothing, model is running.
+        return model;
+      }
+
+      stopped = false;
+      lastSampleTime = null;
+
       model.timer(function timerTick(elapsedTime) {
         console.timeEnd('gap between frames');
         // Cancel the timer and refuse to to step the model, if the model is stopped.
         // This is necessary because there is no direct way to cancel a d3 timer.
         // See: https://github.com/mbostock/d3/wiki/Transitions#wiki-d3_timer)
-        if (stopped) return true;
+        if (stopRequest) {
+          stopped = true;
+          return true;
+        }
 
-        if (restart) {
-          setTimeout(model.resume, 0);
+        if (restartRequest) {
+          setTimeout(model.start, 0);
+          stopped = true;
           return true;
         }
 
@@ -1731,13 +1747,8 @@ define(function(require) {
         return false;
       });
 
-      restart = false;
-      lastSampleTime = null;
-      if (stopped) {
-        stopped = false;
-        dispatch.play();
-      }
-
+      dispatch.play();
+      console.time('gap between frames');
       return model;
     };
 
@@ -1766,12 +1777,6 @@ define(function(require) {
           }
         }, 1000/sampleRate);
       }
-    };
-
-    model.stop = function() {
-      stopped = true;
-      dispatch.stop();
-      return model;
     };
 
     model.dimensions = function() {

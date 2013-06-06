@@ -134,7 +134,7 @@ define(function(require) {
     });
 
     parentMessageController.addListener('play', function(message) {
-      model.resume();
+      model.start();
     });
 
     parentMessageController.initialize();
