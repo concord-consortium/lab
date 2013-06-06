@@ -19,6 +19,7 @@ define(function (require) {
         state = null,
         prevAnimState = null,
         prevAnimStep = null,
+        suppressViewport = false,
 
         objectNames = [
           "viewPort", "background",
@@ -634,7 +635,9 @@ define(function (require) {
      * Renders DNA-related graphics using "DNA" and "geneticEngineState"
      * options of the model.
      */
-    function render() {
+    function render(suppressViewportUpdate) {
+      suppressViewport = suppressViewportUpdate;
+
       // Update genetic engine state.
       state = model.geneticEngine().state();
 
@@ -644,10 +647,6 @@ define(function (require) {
 
     /**
      * Renders animation state. It updates all objects from previous and new state.
-     * When rendered state is different from previously rendered state, the viewport
-     * is moved to its default position for the new state. Otherwise, when the same
-     * state is rendered again (e.g. due to changes in model like DNA update),
-     * the viewport isn't modified.
      *
      * You can pass d3.selection or d3.transition as "parent" argument to decide whether
      * new state should be rendered immediately or using transition.
@@ -662,17 +661,14 @@ define(function (require) {
 
       // TODO: make it simpler.
       function shouldRenderObj(name) {
-        var stateEql   = animState === prevAnimState && prevAnimStep === (state.step || 0), // NaN!
-            inData     = !!data[name].length,
+        var inData     = !!data[name].length,
             inPrevData = !!(prevAnimStateData && prevAnimStateData[name].length);
 
-        if (stateEql && inData && name !== "viewPort") {
-          // State hasn't been changed, so ensure that viewport won't be
-          // rendered again (as user could changed it in the meantime).
-          return true;
-        }
-        else if (!stateEql && (inData || inPrevData)) {
-          // State has been changed, so render all objects from current and previous states.
+        if (suppressViewport && name === "viewPort") {
+          // Viewport updat can be disabled using special variable.
+          return false;
+        } else if (inData || inPrevData) {
+          // Render all objects from current and previous states.
           return true;
         }
         return false;
@@ -737,7 +733,9 @@ define(function (require) {
     /**
      * Triggers animation state transition.
      */
-    function transition(transitionName) {
+    function transition(transitionName, suppressViewportUpdate) {
+      suppressViewport = suppressViewportUpdate;
+
       // Update genetic engine state.
       state = model.geneticEngine().state();
 

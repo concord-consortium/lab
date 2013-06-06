@@ -29,7 +29,8 @@ define(function (require) {
       TERMINATOR_SEQ = "ACCACAGGCCGCCAGTTCCGCTGGCGGCATTTT",
       JUNK_SEQ,
 
-      LOWER_CASE_DNA = /[agtc]/;
+      LOWER_CASE_DNA = /[agtc]/,
+      DEF_EVENT = "change";
 
   function complementarySequence(DNA) {
     // A-T (A-U)
@@ -72,9 +73,10 @@ define(function (require) {
 
   return function GeneticProperties(model) {
     var api,
-        // Never change value of this variable outside
-        // the transitionToState() function!
-        stateTransition = false,
+        // Do not change this variable manually. It's changed in set() private
+        // function. It decides what type of event should be dispatched when
+        // DNA or geneticEngineState is updated.
+        eventMode = DEF_EVENT,
         // List of transitions, which are currently ongoing (index 0)
         // or scheduled (index > 0).
         ongoingTransitions = [],
@@ -140,9 +142,9 @@ define(function (require) {
         validateDNA = function (DNA) {
           // Allow users use both lower and upper case.
           if (LOWER_CASE_DNA.test(DNA)) {
-            // Note that model.set("DNA", ...) will trigger DNAUpdated
+            // Note that set("DNA", ...) will trigger DNAUpdated
             // callback and validation will be called again too.
-            model.set("DNA", DNA.toUpperCase());
+            set("DNA", DNA.toUpperCase());
             return false;
           }
 
@@ -175,7 +177,7 @@ define(function (require) {
             generateViewArray(api.viewModel.mRNA, mRNA);
           }
 
-          if (!stateTransition) {
+          if (eventMode !== "transition") {
             // While jumping between states, ensure that user can see a valid
             // number of amino acids.
             if (api.stateBefore("translation:1")) {
@@ -289,36 +291,51 @@ define(function (require) {
         },
 
         doStateTransition = function (name) {
-          stateTransition = true;
-          model.set("geneticEngineState", name);
-          stateTransition = false;
+          set("geneticEngineState", name, "transition");
         },
 
         doDNATransition = function (newDNA) {
-          stateTransition = true;
-          model.set("DNA", newDNA);
-          stateTransition = false;
+          set("DNA", newDNA, "transition");
+        },
+
+        // Use this function if you want to change DNA or geneticEngineState
+        // and dispatch event different than "change" (which causes immediate
+        // rendering). Options are:
+        // - "change",
+        // - "transition",
+        // - "suppress".
+        set = function(name, value, eventType) {
+          eventMode = eventType || DEF_EVENT;
+          model.properties[name] = value;
+          eventMode = DEF_EVENT;
         },
 
         stateUpdated = function () {
           var state = model.get("geneticEngineState");
 
+          if (eventMode === "suppress") {
+            return;
+          }
+
           updateGeneticProperties();
 
-          if (stateTransition) {
+          if (eventMode === "transition") {
             dispatch.transition(state);
           } else {
+            // Cancel transitions when we are going to dispatch "change" event.
             ongoingTransitions = [];
-            if (api.stateBefore("translation:1") || api.stateEqual("translation-end")) {
-              dispatch.change();
-            } else {
+
+            if (api.stateAfter("translation:0") && api.stateBefore("translation-end")) {
               // It means that state was set to 'translation:x', where x > 0.
               // Use the last safe state ('translation:0') instead.
               alert("'" + state + "' cannot be set explicitly. " +
                 "'translation:0' should be set and then animation to '" +
                 state + "' should be triggered.");
-              model.set("geneticEngineState", "translation:0");
+              set("geneticEngineState", "translation:0");
+              return;
             }
+
+            dispatch.change();
           }
         },
 
@@ -327,20 +344,24 @@ define(function (require) {
             return;
           }
 
+          if (eventMode === "suppress") {
+            return;
+          }
+
           if (api.stateAfter("translation:0") && api.stateBefore("translation-end")) {
             // Reset translation if DNA is changed. This will remove all
             // existing amino acids and notify renderer (via stateUpdated
             // callback).
-            model.set("geneticEngineState", "translation:0");
+            set("geneticEngineState", "translation:0");
             return;
           }
 
           updateGeneticProperties();
 
-          if (stateTransition) {
-            dispatch.transition("dna-updated");
+          if (eventMode === "transition") {
+            dispatch.transition("dna-updated", true);
           } else {
-            dispatch.change();
+            dispatch.change(true);
           }
         };
 
@@ -407,7 +428,7 @@ define(function (require) {
               DNA.substr(idx + 1);
         // Update DNA. This will also call updateGeneticProperties(), so
         // other, related properties will be also updated.
-        model.set("DNA", DNA);
+        set("DNA", DNA);
       },
 
       insert: function(idx, type, DNAComplement) {
@@ -423,7 +444,8 @@ define(function (require) {
               type: DNAComplement ? complementarySequence(type) : type,
               id: getNucleoID()
             },
-            DNA = model.get("DNA");
+            DNA = model.get("DNA"),
+            state = api.state();
 
         // Update view model arrays. It isn't necessary, but as we update them
         // correctly, nucleotides will preserve their IDs and view will know
@@ -435,11 +457,24 @@ define(function (require) {
         // Update DNA. This will also call updateGeneticProperties(), so
         // other, related properties will be also updated.
         DNA = DNA.substr(0, idx) + newDNANucleo.type + DNA.substr(idx);
+
+        // Special case for transcription process (and state):
+        // If we keep the same geneticEngineState and we insert something
+        // before state.step position, it would cause that the last
+        // transcribed nucleotide would be removed. Avoid that, as this can be
+        // confusing for users.
+        if (state.name === "transcription" && idx < state.step) {
+          // Note that we can't use nextState(state), as in that case, as
+          // state can be changed to transcription-end too fast (as DNA isn't
+          // updated yet).
+          set("geneticEngineState", state.name + ":" + (state.step + 1), "suppress");
+        }
         doDNATransition(DNA);
       },
 
       delete: function(idx) {
-        var DNA = model.get("DNA");
+        var DNA = model.get("DNA"),
+            state = api.state();
 
         // Update view model arrays. It isn't necessary, but as we update them
         // correctly, nucleotides will preserve their IDs and view will know
@@ -451,6 +486,15 @@ define(function (require) {
         // Update DNA. This will also call updateGeneticProperties(), so
         // other, related properties will be also updated.
         DNA = DNA.substr(0, idx) + DNA.substr(idx + 1);
+
+        // Special case for transcription process (and state):
+        // If we keep the same geneticEngineState and we delete something
+        // before state.step position, it would cause that new transcribed
+        // mRNA nucleotide will be added. Avoid that, as this can be
+        // confusing for users.
+        if (state.name === "transcription" && idx < state.step) {
+          set("geneticEngineState", prevState(state), "suppress");
+        }
         doDNATransition(DNA);
       },
 
@@ -480,15 +524,15 @@ define(function (require) {
 
       jumpToNextState: function () {
         if (api.stateBefore("translation:0")) {
-          model.set("geneticEngineState", nextState(api.state()));
+          set("geneticEngineState", nextState(api.state()));
         } else if (api.stateBefore("translation-end")) {
-          model.set("geneticEngineState", "translation-end");
+          set("geneticEngineState", "translation-end");
         }
       },
 
       jumpToPrevState: function () {
         if (api.stateAfter("intro-cells")) {
-          model.set("geneticEngineState", prevState(api.state()));
+          set("geneticEngineState", prevState(api.state()));
         }
       },
 
