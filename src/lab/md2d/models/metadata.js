@@ -111,7 +111,16 @@ define(function() {
         defaultValue: "dna"
       },
       DNA: {
-        defaultValue: ""
+        defaultValue: "",
+        validate: function (value) {
+          if (/[agtc]/.test(value)) {
+            value = value.toUpperCase();
+          }
+          if (/[^AGTC]/.test(value)) {
+            throw new Error("DNA code on sense strand can be defined using only A, G, T or C characters.");
+          }
+          return value;
+        }
       },
       useQuantumDynamics: {
         default: false,
