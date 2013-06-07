@@ -46,7 +46,7 @@
       "text": "Transcribe",
       "action": [
         "set('geneticEngineState', 'dna');",
-        "dnaAnimationTo('transcription-end');"
+        "animateToDNAState('transcription-end');"
       ]
     },
     {
@@ -61,7 +61,7 @@
       "text": "Translate",
       "action": [
         "set('geneticEngineState', 'transcription-end');",
-        "dnaAnimationTo('translation-end');"
+        "animateToDNAState('translation-end');"
       ]
     },
     {
