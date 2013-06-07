@@ -85,6 +85,9 @@ define(function (require) {
     // Viewport dragging behavior. It's used for DNA / mRNA backbones. So, in
     // fact grabbing backgones moves only viewport, not the backbone itself.
     var viewportDrag = d3.behavior.drag()
+          .on("dragstart", function () {
+            model.geneticEngine().stopTransition();
+          })
           .on("drag", function () {
             model.properties.viewPortX -= model2px.invert(d3.event.x);
           })
