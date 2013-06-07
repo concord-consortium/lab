@@ -453,10 +453,10 @@ define(function (require) {
        * Jumps to the next DNA state.
        *
        * Note that jumping between translation states is not supported!
-       * Please use dnaAnimateToNextState if you need to change state
+       * Please use animateToNextDNAState if you need to change state
        * from translation:x to translation:x+1.
        */
-      dnaJumpToNextState: function dnaJumpToNextState() {
+      jumpToNextDNAState: function jumpToNextDNAState() {
         model.geneticEngine().jumpToNextState();
       },
 
@@ -467,8 +467,30 @@ define(function (require) {
        * When current state is translation:x, where x > 0, this functions
        * will cause jump to translation:0 state.
        */
-      dnaJumpToPrevState: function dnaJumpToPrevState() {
+      jumpToPrevDNAState: function jumpToPrevDNAState() {
         model.geneticEngine().jumpToPrevState();
+      },
+
+      /**
+       * Tests whether *current* DNA state is before state
+       * passed as an argument.
+       * @param {String} state DNA state name, e.g. "translation:5".
+       * @return {boolean}     true if current state is before 'state',
+       *                       false otherwise.
+       */
+      DNAStateBefore: function DNAStateBefore(state) {
+        return model.geneticEngine().stateBefore(state);
+      },
+
+      /**
+       * Tests whether *current* DNA state is after state
+       * passed as an argument.
+       * @param {String} state DNA state name, e.g. "translation:5".
+       * @return {boolean}     true if current state is after 'state',
+       *                       false otherwise.
+       */
+      DNAStateAfter: function DNAStateAfter(state) {
+        return model.geneticEngine().stateAfter(state);
       },
 
       /**
@@ -478,17 +500,8 @@ define(function (require) {
        * from translation:x to translation:x+1. Jumping between
        * translation states is not supported!
        */
-      dnaAnimateToNextState: function dnaAnimateToNextState() {
+      animateToNextDNAState: function animateToNextDNAState() {
         model.geneticEngine().transitionToNextState();
-      },
-
-      /**
-       * Stops current DNA animation.
-       */
-      dnaStopAnimation: function dnaStopAnimation() {
-        // Jumping to previous state will cancel current animation
-        // and cleanup transitions queue.
-        model.geneticEngine().stopTransition();
       },
 
       /**
@@ -497,15 +510,24 @@ define(function (require) {
        * nothing happens.
        * e.g.
        * get('DNAState'); // transcription:0
-       * dnaAnimationTo("transcription-end") // triggers animation
+       * animateToDNAState("transcription-end") // triggers animation
        * However:
        * get('DNAState'); // translation-end
-       * dnaAnimateOrJumpTo("transcription-end") // nothing happens
+       * animateToDNAState("transcription-end") // nothing happens
        *
        * @param  {string} stateName name of the state.
        */
-      dnaAnimationTo: function dnaAnimationTo(stateName) {
+      animateToDNAState: function animateToDNAState(stateName) {
         model.geneticEngine().transitionTo(stateName);
+      },
+
+      /**
+       * Stops current DNA animation.
+       */
+      stopDNAAnimation: function stopDNAAnimation() {
+        // Jumping to previous state will cancel current animation
+        // and cleanup transitions queue.
+        model.geneticEngine().stopTransition();
       },
 
       /**
@@ -517,12 +539,12 @@ define(function (require) {
        * expected nucleotide code is wrong, this method does nothing.
        *
        * e.g.
-       * transcribeStep("A") will perform transcription step only
+       * transcribeDNAStep("A") will perform transcription step only
        * if "A" nucleotide should be added to mRNA in this step.
        *
-       * @param  {string} expectedNucleotide code of the expected nucleotide ("U", "C", "A" or "G").
+       * @param {string} expectedNucleotide code of the expected nucleotide ("U", "C", "A" or "G").
        */
-      transcribeStep: function transcribeStep(expectedNucleotide) {
+      transcribeDNAStep: function transcribeDNAStep(expectedNucleotide) {
         var ge = model.geneticEngine();
         if (ge.stateBefore("dna") || ge.stateAfter("transcription-end")) {
           // Jump to beginning of DNA transcription if current state is before
@@ -538,7 +560,7 @@ define(function (require) {
       /**
        * Triggers only one step of DNA translation.
        */
-      translateStep: function translateStep() {
+      translateDNAStep: function translateDNAStep() {
         var ge = model.geneticEngine();
         if (ge.stateBefore("transcription-end")) {
           // Ensure that we start from transcription-end.
