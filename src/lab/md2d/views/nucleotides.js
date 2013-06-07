@@ -125,8 +125,8 @@ define(function (require) {
           });
         nucleoShape = nucleoEnter.append("g")
           .classed("nucleo-shape", true)
-          .classed("coding-nucleo", function (d) {
-            return d.coding;
+          .classed("glowing-nucleo", function (d) {
+            return d.coding && glow;
           }).on("click", function () {
             // Mobile Safari will only produce mouse events when the user taps
             // on a clickable element, like a link. You can make an element

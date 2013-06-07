@@ -41,6 +41,9 @@ define(function (require) {
       // Play animation when there is a "transition" event.
       model.geneticEngine().on("transition", transition);
 
+      // When DNAMutations is changed, cleanup & render again.
+      model.addPropertiesListener(["DNAMutations"], setup);
+
       // Define animation states.
       defineStates();
     }

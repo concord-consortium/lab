@@ -98,8 +98,8 @@ define(function (require) {
     // Register mutation menus for DNA and DNA complement. Note that
     // jQuery.contextMenu uses event delegation, so it's fully enough to
     // register this menu only once, even before these elements exists.
-    mutationsContextMenu.register('[class~="dna"] [class~="coding-nucleo"]', model, false);
-    mutationsContextMenu.register('[class~="dna-comp"] [class~="coding-nucleo"]', model, true);
+    mutationsContextMenu.register('[class~="dna"] [class~="glowing-nucleo"]', model, false);
+    mutationsContextMenu.register('[class~="dna-comp"] [class~="glowing-nucleo"]', model, true);
 
     function scaleFunc(d) {
       return "scale(" + d.scale + ")";
@@ -239,7 +239,7 @@ define(function (require) {
 
         // DNA update:
         // Coding sequence.
-        n.glow(true);
+        n.glow(model.get("DNAMutations"));
         n.sequence(viewModel.DNA);
         dna.select(".coding-region").call(n);
 
@@ -300,7 +300,7 @@ define(function (require) {
 
         // DNA Comp update:
         // Coding sequence.
-        n.glow(true);
+        n.glow(model.get("DNAMutations"));
         n.sequence(viewModel.DNAComp);
         dnaComp.select(".coding-region").call(n);
 

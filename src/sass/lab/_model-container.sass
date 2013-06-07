@@ -17,18 +17,16 @@
   // Genetics renderer styles.
   .genetics
 
-    .coding-region
-      // Show glow only on hover.
+    .glow
+      display: none
+    // Enable :hover only on no-touch devices. Workaround for iOS :hover
+    // double-tap issue. Plase see:
+    // http://www.nczonline.net/blog/2012/07/05/ios-has-a-hover-problem/
+    // .no-touch will be added (or not) by Modernizer.
+    .no-touch & .glowing-nucleo:hover
+      cursor: pointer
       .glow
-        display: none
-      // Enable :hover only on no-touch devices. Workaround for iOS :hover
-      // double-tap issue. Plase see:
-      // http://www.nczonline.net/blog/2012/07/05/ios-has-a-hover-problem/
-      // .no-touch will be added (or not) by Modernizer.
-      .no-touch & .nucleo-shape:hover
-        cursor: pointer
-        .glow
-          display: inline
+        display: inline
 
     // Backbones are draggable.
     .backbone:hover
