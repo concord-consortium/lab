@@ -595,16 +595,16 @@ public/%.html: src/%.html
 public/%.css: src/%.css
 	cp $< $@
 
-public/index.css:
+public/index.css: src/index.sass
 	$(SASS_COMPILER) src/index.sass public/index.css
 
-public/application.js:
+public/application.js: src/application.js
 	cp src/application.js public/application.js
 
-public/embeddable-author.css:
+public/embeddable-author.css: src/embeddable.sass
 	$(SASS_COMPILER) src/embeddable.sass public/embeddable-author.css
 
-public/embeddable.css:
+public/embeddable.css: src/embeddable.sass
 	$(SASS_COMPILER) src/embeddable.sass public/embeddable.css
 
 public/grapher.css: src/grapher.sass \
