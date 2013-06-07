@@ -25,6 +25,9 @@ define (require) ->
       for own key, item of subsItems
         key = key.split(":")[1]
         item.$node.addClass "#{clickedNucleoType}-to-#{key}"
+      # Nucleotide should glow as long as menu is open. The trigger is SVG
+      # element, so use d3 to add class, jQuery won't work.
+      d3.select(options.$trigger[0]).classed "glowing", true
       # Ensure that this callback returns true (required to show menu).
       true
     onMenuHide = (options) ->
@@ -35,6 +38,9 @@ define (require) ->
       for own key, item of subsItems
         key = key.split(":")[1]
         item.$node.removeClass "#{clickedNucleoType}-to-#{key}"
+      # Make sure that clicked nucleotide is no longer glowing. The trigger is
+      # SVG element, so use d3 to remove class, jQuery won't work.
+      d3.select(options.$trigger[0]).classed "glowing", false
       # Ensure that this callback returns true (required to hide menu).
       true
 
