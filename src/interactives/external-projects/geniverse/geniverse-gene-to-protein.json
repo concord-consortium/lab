@@ -15,16 +15,16 @@
       },
       "modelOptions": {
         "DNA": "AAAAAAAAAAAAAAAAAAA",
-        "geneticEngineState": "intro-cells"
+        "DNAState": "intro-cells"
       },
       "onLoad": [
         "onPropertyChange('state', function(s) {",
         "  console.log('animating to '+s);",
-        "  dnaAnimationTo(s); ",
+        "  animateToDNAState(s); ",
         "});",
         "onPropertyChange('snapState', function(s) {",
         "  console.log('snapping to '+s);",
-        "  set('geneticEngineState', s); ",
+        "  set('DNAState', s); ",
         "});"
       ]
     }
