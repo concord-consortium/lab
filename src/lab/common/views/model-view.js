@@ -24,12 +24,20 @@ define(function (require) {
 
         // Basic scaling functions for positio, it transforms model units to "pixels".
         // Use it for positions of objects rendered inside the view.
-        model2px,
+        //
+        // This function is exposed in public API. Never ever recreated it, as
+        // renderers and sub-renders will loose reference to valid scale
+        // function.
+        model2px = d3.scale.linear(),
 
         // Inverted scaling function for position transforming model units to "pixels".
         // Use it for Y coordinates, as Y axis in model coordinate system increases
-        // from bottom to top, while but SVG has increases from top to bottom
-        model2pxInv,
+        // from bottom to top, while but SVG has increases from top to bottom.
+        //
+        // This function is exposed in public API. Never ever recreated it, as
+        // renderers and sub-renders will loose reference to valid scale
+        // function.
+        model2pxInv = d3.scale.linear(),
 
         // "Containers" - SVG g elements used to position layers of the final visualization.
         mainContainer,
@@ -146,14 +154,14 @@ define(function (require) {
       offsetLeft = node.offsetLeft + padding.left;
 
       // Basic model2px scaling function for position.
-      model2px = d3.scale.linear()
-          .domain([0, viewport.width])
-          .range([0, size.width]);
+      model2px
+        .domain([0, viewport.width])
+        .range([0, size.width]);
 
       // Inverted model2px scaling function for position (for y-coordinates, inverted domain).
-      model2pxInv = d3.scale.linear()
-          .domain([viewport.height, 0])
-          .range([0, size.height]);
+      model2pxInv
+        .domain([viewport.height, 0])
+        .range([0, size.height]);
 
       if (selectBrush) {
         // Update brush to use new scaling functions.
@@ -446,6 +454,8 @@ define(function (require) {
       node: null,
       update: null,
       containers: null,
+      model2px: model2px,
+      model2pxInv: model2pxInv,
       scale: scale,
       setFocus: setFocus,
       getFontSizeInPixels: getFontSizeInPixels,
@@ -468,17 +478,6 @@ define(function (require) {
         renderContainer();
         init();
         repaint();
-      },
-      model2px: function(val) {
-        // Note that we shouldn't just do:
-        // api.model2px = model2px;
-        // as model2px local variable can be reinitialized
-        // many times due container rescaling process.
-        return model2px(val);
-      },
-      model2pxInv: function(val) {
-        // See comments for model2px.
-        return model2pxInv(val);
       },
       pos: function() {
         // Add a pos() function so the model renderer can more easily
