@@ -53,7 +53,7 @@
       "type": "button",
       "id": "transcribe-step",
       "text": "Transcribe step by step",
-      "action": "transcribeStep();"
+      "action": "transcribeDNAStep();"
     },
     {
       "type": "button",
@@ -68,7 +68,7 @@
       "type": "button",
       "id": "translate-step",
       "text": "Translate step by step",
-      "action": "translateStep();"
+      "action": "translateDNAStep();"
     }
   ],
   "template": [
