@@ -20,6 +20,7 @@
   "polarAAEpsilon": -2,
   "DNAState": "dna",
   "DNA": "",
+  "DNAMutations": true,
   "viewOptions": {
     "viewPortWidth": 3.5,
     "viewPortHeight": 1.3,

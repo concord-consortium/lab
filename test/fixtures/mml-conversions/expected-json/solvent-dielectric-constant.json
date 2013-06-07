@@ -20,6 +20,7 @@
   "timeStepsPerTick": 50,
   "DNAState": "dna",
   "DNA": "",
+  "DNAMutations": true,
   "viewOptions": {
     "viewPortWidth": 3.5,
     "viewPortHeight": 2.5,
