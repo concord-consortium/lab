@@ -52,6 +52,7 @@ define(function (require) {
         stopCodonsHash = null,
         randomEnter = true,
         glow = false,
+        backboneDrag = null,
 
         xShift = 0,
         yShift = 0;
@@ -88,8 +89,8 @@ define(function (require) {
 
             seq = typeof sequence === "function" ? sequence(d, i) : sequence,
 
-            nucleo, nucleoEnter, nucleoShape, nucleoSVG, nucleoSVGUpdate, nucleoTrans,
-            targetScale;
+            nucleo, nucleoEnter, backboneEnter, nucleoShape,
+            nucleoSVG, nucleoSVGUpdate, nucleoTrans, targetScale;
 
         // seq is a string, generate data array. Change it to array of objects.
         // e.g. "AG" will be change to [{idx: 0, type: "A"}, {idx: 1, type: "G"}].
@@ -122,14 +123,17 @@ define(function (require) {
             "stroke-width": m2px(0.01),
             "stroke": "#fff"
           });
-        nucleoShape = nucleoEnter.append("g").attr("class", "nucleo-shape");
-        nucleoShape.on("click", function () {
-          // Mobile Safari will only produce mouse events when the user taps
-          // on a clickable element, like a link. You can make an element
-          // clickable by adding an onClick event handler to it, even if that
-          // handler does nothing. It's necessary, as nucleotides should be
-          // clickable, e.g. to show context menu.
-        });
+        nucleoShape = nucleoEnter.append("g")
+          .classed("nucleo-shape", true)
+          .classed("coding-nucleo", function (d) {
+            return d.coding;
+          }).on("click", function () {
+            // Mobile Safari will only produce mouse events when the user taps
+            // on a clickable element, like a link. You can make an element
+            // clickable by adding an onClick event handler to it, even if that
+            // handler does nothing. It's necessary, as nucleotides should be
+            // clickable, e.g. to show context menu.
+          });
         if (glow) {
           nucleoShape.append("image").attr({
             "class": "glow",
@@ -138,9 +142,8 @@ define(function (require) {
           });
         }
         nucleoSVG = nucleoShape.append("svg").attr({
-          "overflow": "visible", // glow on hover shouldn't be truncated
           "y": m2px(yOffset),
-          "preserveAspectRatio": "none"
+          "preserveAspectRatio": "none",
         });
         nucleoSVG.append("path").attr({
           "class": "outline",
@@ -157,10 +160,9 @@ define(function (require) {
           "fill-rule": "evenodd",
           "clip-rule": "evenodd",
           "d": function (d) { return nucleotidePaths.letter[d.type][direction]; }
-
         });
         if (backbone) {
-          nucleoEnter.append("image").attr({
+          backboneEnter = nucleoEnter.append("image").attr({
             "class": "backbone",
             "x": 0,
             "y": 0,
@@ -169,6 +171,9 @@ define(function (require) {
             "preserveAspectRatio": "none",
             "xlink:href": "resources/dna/Backbone_" + backbone + ".svg"
           });
+          if (backboneDrag) {
+            backboneEnter.call(backboneDrag);
+          }
         }
 
         // Update.
@@ -182,13 +187,13 @@ define(function (require) {
                    "M" + m2px(SCALE * 30) + " " + yStart + " L " + m2px(SCALE * 30) + " " + yEnd;
           }
         });
-        nucleo.select("g.nucleo-shape image.glow").attr({
+        nucleo.select(".glow").attr({
           "x": function (d) { return m2px(W.BACKB) / 2 - m2px(W[d.type + "_GLOW"]) / 2; },
           "width": function (d) { return m2px(W[d.type + "_GLOW"]); },
           "height": function (d) { return m2px(H[d.type + "_GLOW"]); },
           "xlink:href": function (d) { return "resources/dna/NucleotideGlow_" + d.type + ".svg"; }
         });
-        nucleoSVGUpdate = nucleo.select("g.nucleo-shape svg");
+        nucleoSVGUpdate = nucleo.select(".nucleo-shape > svg");
         nucleoSVGUpdate.attr({
           "class": function (d, i) {
             var className = "type-" + d.type;
@@ -287,6 +292,19 @@ define(function (require) {
     nucleo.glow = function (g) {
       if (!arguments.length) return glow;
       glow = g;
+      return nucleo;
+    };
+
+    /**
+     * Sets dragging behavior for backbones. d3.behavior.drag
+     * instance should be provided. Please see:
+     * https://github.com/mbostock/d3/wiki/Drag-Behavior
+     *
+     * @param  {function} bd
+     */
+    nucleo.backboneDrag = function (bd) {
+      if (!arguments.length) return backboneDrag;
+      backboneDrag = bd;
       return nucleo;
     };
 

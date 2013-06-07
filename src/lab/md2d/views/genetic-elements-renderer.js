@@ -3,6 +3,7 @@
 define(function (require) {
   var console              = require('common/console'),
       nucleotides          = require('md2d/views/nucleotides'),
+      mutationsContextMenu = require('cs!md2d/views/mutations-context-menu'),
 
       SCALE = 0.007,
       W = {
@@ -80,6 +81,22 @@ define(function (require) {
   }
 
   function GeneticElementsRenderer(svg, model2px, model2pxInv, model) {
+
+    // Viewport dragging behavior. It's used for DNA / mRNA backbones. So, in
+    // fact grabbing backgones moves only viewport, not the backbone itself.
+    var viewportDrag = d3.behavior.drag()
+          .on("drag", function () {
+            model.properties.viewPortX -= model2px.invert(d3.event.x);
+          })
+          .origin(function () {
+            return {x: 0, y: 0};
+          });
+
+    // Register mutation menus for DNA and DNA complement. Note that
+    // jQuery.contextMenu uses event delegation, so it's fully enough to
+    // register this menu only once, even before these elements exists.
+    mutationsContextMenu.register('[class~="dna"] [class~="coding-nucleo"]', model, false);
+    mutationsContextMenu.register('[class~="dna-comp"] [class~="coding-nucleo"]', model, true);
 
     function scaleFunc(d) {
       return "scale(" + d.scale + ")";
@@ -184,6 +201,9 @@ define(function (require) {
           return "translate(" + model2px(idx * nucleotides.WIDTH) + ")";
         }
 
+        // Enable backbones dragging bahavior.
+        n.backboneDrag(viewportDrag);
+
         // Note that first junk and promoter sequences are updated only during
         // enter operation. They cannot be changed by the user, while DNA can
         // (and because of that, following nucleotides have to be shifted).
@@ -245,6 +265,9 @@ define(function (require) {
           return "translate(" + model2px(idx * nucleotides.WIDTH) + ")";
         }
 
+        // Enable backbones dragging bahavior.
+        n.backboneDrag(viewportDrag);
+
         // Note that first junk and promoter sequences are updated only during
         // enter operation. They cannot be changed by the user, while DNA can
         // (and because of that, following nucleotides have to be shifted).
@@ -299,7 +322,15 @@ define(function (require) {
             stopCodons    = geneticEngine.stopCodonsHash(),
             bonds         = data.mrna[0] ? data.mrna[0].bonds : 0,
             dir           = data.mrna[0] ? data.mrna[0].direction : 1,
+            n             = nucleotides().model2px(model2px),
             mrna;
+
+        // Configure nucleotides.
+        n.sequence(mrnaSequence)
+         .backboneDrag(viewportDrag)
+         .backbone("RNA")
+         .direction(dir)
+         .stopCodonsHash(stopCodons);
 
         // mRNA enter:
         mrna = parent.select(".dna-layer").selectAll(".mrna").data(data.mrna);
@@ -310,7 +341,7 @@ define(function (require) {
         // mRNA update:
         // (note that there is significant difference between DNA enter/update - for mRNA we call nucleotides()
         // also during update operation, as it will constantly change).
-        mrna.call(nucleotides().model2px(model2px).sequence(mrnaSequence).backbone("RNA").direction(dir).stopCodonsHash(stopCodons));
+        mrna.call(n);
         d3.transition(mrna).attr("transform", translateFuncInv)
           .selectAll(".bonds").style("opacity", bonds);
         // mRNA exit:
