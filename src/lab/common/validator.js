@@ -9,8 +9,8 @@ define(function(require) {
   // Create a new object, that prototypically inherits from the Error constructor.
   // It provides a direct information which property of the input caused an error.
   function ValidationError(prop, message) {
-      this.prop = prop;
-      this.message = message;
+    this.prop = prop;
+    this.message = message;
   }
   ValidationError.prototype = new Error();
   ValidationError.prototype.constructor = ValidationError;
@@ -32,6 +32,8 @@ define(function(require) {
     if (!ignoreImmutable && propertyMetadata.immutable) {
       throw new ValidationError(prop, "Properties set tries to overwrite immutable property " + prop);
     }
+    // Use custom validate function defined in metadata if provided.
+    return propertyMetadata.validate ? propertyMetadata.validate(value) : value;
   }
 
   return {
@@ -56,7 +58,7 @@ define(function(require) {
           propMetadata = metadata[prop];
           // Continue only if the property is listed in meta-data.
           if (propMetadata !== undefined) {
-            validateSingleProperty(propMetadata, prop, input[prop], ignoreImmutable);
+            input[prop] = validateSingleProperty(propMetadata, prop, input[prop], ignoreImmutable);
             if (propMetadata.conflictsWith) {
               checkConflicts(input, prop, propMetadata.conflictsWith);
             }

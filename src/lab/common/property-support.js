@@ -121,8 +121,12 @@ define(function() {
       A function that will be called with the new, "raw" value of this property whenever the
       property is assigned to.
 
-      If the value is invalid, the validate function should throw an exception. The validate
-      function is *not* called when the property value is set via setRawValues.
+      This function *must* return input value if it is correct. If the value is invalid,
+      the validate function should throw an exception. Note that custom validate function
+      can be used to autmatically "fix" the value (e.g. change lower case to upper case or
+      do any other transformation related to notation of the value).
+
+      The validate function is *not* called when the property value is set via setRawValues.
     */
     validate: {
       defaultValue: undefined,
@@ -471,7 +475,7 @@ define(function() {
             value = info.descriptor.beforeSetTransform(value);
           }
           if (info.descriptor.validate) {
-            info.descriptor.validate(value);
+            value = info.descriptor.validate(value);
           }
 
           set(key, value);
@@ -660,6 +664,15 @@ define(function() {
         */
         target.getPropertyType = function(key) {
           return propertyInformation[key].descriptor.type;
+        };
+
+        /**
+          The 'getPropertyValidateFunc' method mixed into 'target' simply returns the 'validate' function
+          passed in as the 'validate' property of the descriptor passed to 'defineProperty' when the
+          property named 'key' was defined.
+        */
+        target.getPropertyValidateFunc = function(key) {
+          return propertyInformation[key].descriptor.validate;
         };
       },
 
