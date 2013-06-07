@@ -163,7 +163,7 @@ test: test/layout.html \
 	vendor/d3 \
 	public \
 	$(LAB_JS_FILES) \
-	$(JS_FILES:.js=.min.js) \
+	$(JS_FILES:.js=.min.js)
 	@echo
 	@echo 'Mocha tests ...'
 	@$(MOCHA)
