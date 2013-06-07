@@ -175,6 +175,89 @@ describe "GeneticEngine", ->
         geneticEngine.jumpToPrevState();
         model.get("geneticEngineState").should.eql "intro-cells"
 
+      it "should let user perform substitution mutation", ->
+        model.set "geneticEngineState", "transcription:0"
+        model.set "DNA", "ATGC"
+
+        geneticEngine.mutate 0, "C"
+        model.get("DNA").should.eql "CTGC"
+        geneticEngine.mutate 1, "G"
+        geneticEngine.mutate 2, "T"
+        geneticEngine.mutate 3, "A"
+        model.get("DNA").should.eql "CGTA"
+        # Mutation performed on DNA complement strand.
+        geneticEngine.mutate 0, "A", true
+        model.get("DNA").should.eql "TGTA"
+        # State should remain the same.
+        model.get("geneticEngineState").should.eql "transcription:0"
+
+      it "should let user perform insertion mutation", ->
+        model.set "DNA", "ATGC"
+
+        geneticEngine.insert 0, "A"
+        model.get("DNA").should.eql "AATGC"
+        geneticEngine.insert 4, "C"
+        model.get("DNA").should.eql "AATGCC"
+        # Mutation performed on DNA complement strand.
+        geneticEngine.insert 0, "T", true
+        model.get("DNA").should.eql "AAATGCC"
+        # State should remain the same.
+        model.get("geneticEngineState").should.eql "transcription:0"
+
+      it "should let user perform insertion mutation in the middle of transcription", ->
+        model.set "DNA", "ATGC"
+        model.set "geneticEngineState", "transcription:3" # ATG are transcribed
+
+        # Insert between transcribed nucleotides.
+        geneticEngine.insert 0, "A"
+        model.get("DNA").should.eql "AATGC"
+        # Step should be increased to make sure that now 4 nucleotides are transcribed.
+        model.get("geneticEngineState").should.eql "transcription:4"
+        geneticEngine.insert 3, "G"
+        model.get("DNA").should.eql "AATGGC"
+        model.get("geneticEngineState").should.eql "transcription:5"
+
+        # Insert after transcribed nucleotides.
+        geneticEngine.insert 5, "C"
+        model.get("DNA").should.eql "AATGGCC"
+        # State without changes.
+        model.get("geneticEngineState").should.eql "transcription:5"
+
+      it "should let user perform deletion mutation", ->
+        model.set "geneticEngineState", "transcription:0"
+        model.set "DNA", "ATGC"
+
+        geneticEngine.delete 0
+        model.get("DNA").should.eql "TGC"
+        geneticEngine.delete 2
+        model.get("DNA").should.eql "TG"
+        geneticEngine.delete 1
+        model.get("DNA").should.eql "T"
+        geneticEngine.delete 0
+        model.get("DNA").should.eql ""
+        # State should remain the same.
+        model.get("geneticEngineState").should.eql "transcription:0"
+
+      it "should let user perform deletion mutation in the middle of transcription", ->
+        model.set "DNA", "ATGC"
+        model.set "geneticEngineState", "transcription:3" # ATG are transcribed
+
+        # Insert delete one of the transcribed nucleotides.
+        geneticEngine.delete 0
+        model.get("DNA").should.eql "TGC"
+        # Step should be decreased to make sure that now only 2 nucleotides are transcribed.
+        model.get("geneticEngineState").should.eql "transcription:2"
+        geneticEngine.delete 1
+        model.get("DNA").should.eql "TC"
+        model.get("geneticEngineState").should.eql "transcription:1"
+
+        # Delete nucleotide which is not transcribed at the moment.
+        geneticEngine.delete 1
+        model.get("DNA").should.eql "T"
+        # State without changes.
+        model.get("geneticEngineState").should.eql "transcription:1"
+
+
       it "should provide state() helper methods", ->
         model.set "geneticEngineState", "transcription-end"
         state = geneticEngine.state()
