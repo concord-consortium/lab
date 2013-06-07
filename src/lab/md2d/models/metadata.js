@@ -122,6 +122,9 @@ define(function() {
           return value;
         }
       },
+      DNAMutations: {
+        defaultValue: true
+      },
       useQuantumDynamics: {
         default: false,
         serialize: false
