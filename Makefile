@@ -33,6 +33,8 @@ FONT_FOLDERS := $(shell find vendor/fonts -mindepth 1 -maxdepth 1)
 GLSL_TO_JS_CONVERTER := ./node-bin/glsl-to-js-converter
 LAB_GLSL_FILES := $(shell find src/lab -name '*.glsl' -print)
 
+SASS_LAB_LIBRARY_FILES := $(shell find src/sass/lab -name '*.sass')
+
 # targets
 
 INTERACTIVE_FILES := $(shell find src/models src/interactives -name '*.json' -exec echo {} \; | sed s'/src\/\(.*\)/public\/\1/' )
@@ -604,8 +606,13 @@ public/application.js: src/application.js
 public/embeddable-author.css: src/embeddable.sass
 	$(SASS_COMPILER) src/embeddable.sass public/embeddable-author.css
 
-public/embeddable.css: src/embeddable.sass
+public/embeddable.css: src/embeddable.sass \
+	$(SASS_LAB_LIBRARY_FILES)
 	$(SASS_COMPILER) src/embeddable.sass public/embeddable.css
+
+public/interactives.css: src/interactives.sass \
+	$(SASS_LAB_LIBRARY_FILES)
+	$(SASS_COMPILER) src/interactives.sass public/interactives.css
 
 public/grapher.css: src/grapher.sass \
 	src/sass/lab/_colors.sass \
