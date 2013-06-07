@@ -26,7 +26,7 @@
       },
       "modelOptions": {
         "DNA": "ATGCCAGGCGGCGAGAGCTTGCTAATTGGCTTATAG",
-        "geneticEngineState": "dna"
+        "DNAState": "dna"
       }
     }
   ],
@@ -36,7 +36,7 @@
       "id": "transcribe",
       "text": "transcribe",
       "action": [
-        "set('geneticEngineState', 'dna');",
+        "set('DNAState', 'dna');",
         "dnaAnimationTo('translation:0');"
       ]
     },
@@ -51,7 +51,7 @@
       "id": "translate",
       "text": "translate",
       "action": [
-        "set('geneticEngineState', 'transcription-end');",
+        "set('DNAState', 'transcription-end');",
         "dnaAnimationTo('translation-end');"
       ]
     },

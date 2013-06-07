@@ -2094,8 +2094,8 @@ define(function(require) {
           engine.setSolventForceType(value);
         },
 
-        geneticEngineState: function(value) {
-          engine.setGeneticEngineState(value);
+        DNAState: function(value) {
+          engine.setDNAState(value);
         },
 
         solventForceFactor: function(value) {

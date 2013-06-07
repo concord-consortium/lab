@@ -73,7 +73,7 @@ define(function (require) {
     var api,
         // Do not change this variable manually. It's changed in set() private
         // function. It decides what type of event should be dispatched when
-        // DNA or geneticEngineState is updated.
+        // DNA or DNAState is updated.
         eventMode = DEF_EVENT,
         // List of transitions, which are currently ongoing (index 0)
         // or scheduled (index > 0).
@@ -266,14 +266,14 @@ define(function (require) {
         },
 
         doStateTransition = function (name) {
-          set("geneticEngineState", name, "transition");
+          set("DNAState", name, "transition");
         },
 
         doDNATransition = function (newDNA) {
           set("DNA", newDNA, "transition");
         },
 
-        // Use this function if you want to change DNA or geneticEngineState
+        // Use this function if you want to change DNA or DNAState
         // and dispatch event different than "change" (which causes immediate
         // rendering). Options are:
         // - "change",
@@ -286,7 +286,7 @@ define(function (require) {
         },
 
         stateUpdated = function () {
-          var state = model.get("geneticEngineState");
+          var state = model.get("DNAState");
 
           if (eventMode === "suppress") {
             return;
@@ -306,7 +306,7 @@ define(function (require) {
               alert("'" + state + "' cannot be set explicitly. " +
                 "'translation:0' should be set and then animation to '" +
                 state + "' should be triggered.");
-              set("geneticEngineState", "translation:0");
+              set("DNAState", "translation:0");
               return;
             }
 
@@ -323,7 +323,7 @@ define(function (require) {
             // Reset translation if DNA is changed. This will remove all
             // existing amino acids and notify renderer (via stateUpdated
             // callback).
-            set("geneticEngineState", "translation:0");
+            set("DNAState", "translation:0");
             return;
           }
 
@@ -407,7 +407,7 @@ define(function (require) {
         DNA = DNA.substr(0, idx) + newDNANucleo.type + DNA.substr(idx);
 
         // Special case for transcription process (and state):
-        // If we keep the same geneticEngineState and we insert something
+        // If we keep the same DNAState and we insert something
         // before state.step position, it would cause that the last
         // transcribed nucleotide would be removed. Avoid that, as this can be
         // confusing for users.
@@ -415,7 +415,7 @@ define(function (require) {
           // Note that we can't use nextState(state), as in that case, as
           // state can be changed to transcription-end too fast (as DNA isn't
           // updated yet).
-          set("geneticEngineState", state.name + ":" + (state.step + 1), "suppress");
+          set("DNAState", state.name + ":" + (state.step + 1), "suppress");
         }
         doDNATransition(DNA);
       },
@@ -436,18 +436,18 @@ define(function (require) {
         DNA = DNA.substr(0, idx) + DNA.substr(idx + 1);
 
         // Special case for transcription process (and state):
-        // If we keep the same geneticEngineState and we delete something
+        // If we keep the same DNAState and we delete something
         // before state.step position, it would cause that new transcribed
         // mRNA nucleotide will be added. Avoid that, as this can be
         // confusing for users.
         if (state.name === "transcription" && idx < state.step) {
-          set("geneticEngineState", prevState(state), "suppress");
+          set("DNAState", prevState(state), "suppress");
         }
         doDNATransition(DNA);
       },
 
       /**
-       * Triggers transition to the next genetic engine state.
+       * Triggers transition to the next DNA state.
        *
        * If any transition was ongoing, it's canceled.
        */
@@ -472,20 +472,20 @@ define(function (require) {
 
       jumpToNextState: function () {
         if (api.stateBefore("translation:0")) {
-          set("geneticEngineState", nextState(api.state()));
+          set("DNAState", nextState(api.state()));
         } else if (api.stateBefore("translation-end")) {
-          set("geneticEngineState", "translation-end");
+          set("DNAState", "translation-end");
         }
       },
 
       jumpToPrevState: function () {
         if (api.stateAfter("intro-cells")) {
-          set("geneticEngineState", prevState(api.state()));
+          set("DNAState", prevState(api.state()));
         }
       },
 
       /**
-       * Triggers transition to the given genetic engine state.
+       * Triggers transition to the given DNA state.
        * e.g. transitionTo("transcription-end")
        *
        * @param  {string} stateName name of the state.
@@ -529,7 +529,7 @@ define(function (require) {
       // Helper methods used mainly by the genetic renderer.
 
       /**
-       * Returns parsed *current* state.
+       * Returns parsed *current* DNA state.
        * e.g.
        * {
        *   name: "translation",
@@ -539,19 +539,19 @@ define(function (require) {
        * @return {Object} current state object (see above).
        */
       state: function () {
-        return api.parseState(model.get("geneticEngineState"));
+        return api.parseState(model.get("DNAState"));
       },
 
       stateBefore: function (name) {
-        return stateComp(model.get("geneticEngineState"), name) === -1;
+        return stateComp(model.get("DNAState"), name) === -1;
       },
 
       stateEqual: function (name) {
-        return stateComp(model.get("geneticEngineState"), name) === 0;
+        return stateComp(model.get("DNAState"), name) === 0;
       },
 
       stateAfter: function (name) {
-        return stateComp(model.get("geneticEngineState"), name) === 1;
+        return stateComp(model.get("DNAState"), name) === 1;
       },
 
       /**
@@ -577,13 +577,13 @@ define(function (require) {
 
       lastStateBefore: function (name) {
         var queueLen = ongoingTransitions.length,
-            lastStateName = queueLen ? ongoingTransitions[queueLen - 1] : model.get("geneticEngineState");
+            lastStateName = queueLen ? ongoingTransitions[queueLen - 1] : model.get("DNAState");
         return stateComp(lastStateName, name) === -1 ? true : false;
       },
 
       lastStateAfter: function (name) {
         var queueLen = ongoingTransitions.length,
-            lastStateName = queueLen ? ongoingTransitions[queueLen - 1] : model.get("geneticEngineState");
+            lastStateName = queueLen ? ongoingTransitions[queueLen - 1] : model.get("DNAState");
         return stateComp(lastStateName, name) === 1 ? true : false;
       },
 
@@ -859,7 +859,7 @@ define(function (require) {
     };
 
     model.addPropertiesListener(["DNA"], DNAUpdated);
-    model.addPropertiesListener(["geneticEngineState"], stateUpdated);
+    model.addPropertiesListener(["DNAState"], stateUpdated);
     updateGeneticProperties();
     return api;
   };

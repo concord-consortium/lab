@@ -14,7 +14,7 @@
       },
       "modelOptions": {
         "DNA": "ATGCCAGGCGGCGAGAGCTTGCTAATTGGCTTATAG",
-        "geneticEngineState": "translation:0"
+        "DNAState": "translation:0"
       }
     }
   ],
@@ -34,61 +34,61 @@
       "label": "Jump to...",
       "options": [
         {
-          "text": "genetic engine state",
+          "text": "DNA state",
           "disabled": true,
           "selected": true
         },
         {
           "text": "intro-cells",
-          "action": "set('geneticEngineState', 'intro-cells');"
+          "action": "set('DNAState', 'intro-cells');"
         },
         {
           "text": "intro-zoom1",
-          "action": "set('geneticEngineState', 'intro-zoom1');"
+          "action": "set('DNAState', 'intro-zoom1');"
         },
         {
           "text": "intro-zoom2",
-          "action": "set('geneticEngineState', 'intro-zoom2');"
+          "action": "set('DNAState', 'intro-zoom2');"
         },
         {
           "text": "intro-zoom3",
-          "action": "set('geneticEngineState', 'intro-zoom3');"
+          "action": "set('DNAState', 'intro-zoom3');"
         },
         {
           "text": "intro-polymerase",
-          "action": "set('geneticEngineState', 'intro-polymerase');"
+          "action": "set('DNAState', 'intro-polymerase');"
         },
         {
           "text": "dna",
-          "action": "set('geneticEngineState', 'dna');"
+          "action": "set('DNAState', 'dna');"
         },
         {
           "text": "transcription:0",
-          "action": "set('geneticEngineState', 'transcription:0');"
+          "action": "set('DNAState', 'transcription:0');"
         },
         {
           "text": "transcription-end",
-          "action": "set('geneticEngineState', 'transcription-end');"
+          "action": "set('DNAState', 'transcription-end');"
         },
         {
           "text": "after-transcription",
-          "action": "set('geneticEngineState', 'after-transcription');"
+          "action": "set('DNAState', 'after-transcription');"
         },
         {
           "text": "before-translation",
-          "action": "set('geneticEngineState', 'before-translation');"
+          "action": "set('DNAState', 'before-translation');"
         },
         {
           "text": "translation:0",
-          "action": "set('geneticEngineState', 'translation:0');"
+          "action": "set('DNAState', 'translation:0');"
         },
         {
           "text": "translation:5 (!)",
-          "action": "set('geneticEngineState', 'translation:5');"
+          "action": "set('DNAState', 'translation:5');"
         },
         {
           "text": "translation-end",
-          "action": "set('geneticEngineState', 'translation-end');"
+          "action": "set('DNAState', 'translation-end');"
         }
       ]
     },
@@ -98,7 +98,7 @@
       "label": "Animate to...",
       "options": [
         {
-          "text": "genetic engine state",
+          "text": "DNA state",
           "disabled": true,
           "selected": true
         },
@@ -143,8 +143,8 @@
     {
       "id": "current-state",
       "type": "numericOutput",
-      "property": "geneticEngineState",
-      "label": "Current 'geneticEngineState'",
+      "property": "DNAState",
+      "label": "Current 'DNAState'",
       "displayValue": "return value"
     },
     {

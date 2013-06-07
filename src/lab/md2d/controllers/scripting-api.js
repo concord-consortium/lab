@@ -450,7 +450,7 @@ define(function (require) {
       },
 
       /**
-       * Jumps to the next genetic engine state.
+       * Jumps to the next DNA state.
        *
        * Note that jumping between translation states is not supported!
        * Please use dnaAnimateToNextState if you need to change state
@@ -461,7 +461,7 @@ define(function (require) {
       },
 
       /**
-       * Jumps to the next genetic engine state.
+       * Jumps to the next DNA state.
        *
        * Note that jumping between translation states is not supported!
        * When current state is translation:x, where x > 0, this functions
@@ -472,7 +472,7 @@ define(function (require) {
       },
 
       /**
-       * Triggers animation to the next genetic engine state.
+       * Triggers animation to the next DNA state.
        *
        * Note that this is the only possible way to change state
        * from translation:x to translation:x+1. Jumping between
@@ -492,14 +492,14 @@ define(function (require) {
       },
 
       /**
-       * Triggers animation to the given genetic engine state.
-       * If current genetic engine state is after the desired state,
+       * Triggers animation to the given DNA state.
+       * If current DNA state is after the desired state,
        * nothing happens.
        * e.g.
-       * get('geneticEngineState'); // transcription:0
+       * get('DNAState'); // transcription:0
        * dnaAnimationTo("transcription-end") // triggers animation
        * However:
-       * get('geneticEngineState'); // translation-end
+       * get('DNAState'); // translation-end
        * dnaAnimateOrJumpTo("transcription-end") // nothing happens
        *
        * @param  {string} stateName name of the state.
@@ -528,7 +528,7 @@ define(function (require) {
           // Jump to beginning of DNA transcription if current state is before
           // or after transcrption process (so, state is different from:
           // "dna", "transcription:0", ..., "transcription-end").
-          model.set("geneticEngineState", "dna");
+          model.set("DNAState", "dna");
         } else {
           // Proceed to the next step.
           ge.transcribeStep(expectedNucleotide);
@@ -542,7 +542,7 @@ define(function (require) {
         var ge = model.geneticEngine();
         if (ge.stateBefore("transcription-end")) {
           // Ensure that we start from transcription-end.
-          model.set("geneticEngineState", "transcription-end");
+          model.set("DNAState", "transcription-end");
         }
         if (ge.stateBefore("translation:0")) {
           // Animate directly to the translation:0, merge a few shorter

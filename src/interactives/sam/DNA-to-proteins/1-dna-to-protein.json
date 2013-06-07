@@ -22,7 +22,7 @@
       },
       "modelOptions": {
         "DNA": "ATGCCAGGCGGCGAGAGCTTGCTAATTGGCTTATAG",
-        "geneticEngineState": "intro-cells"
+        "DNAState": "intro-cells"
       }
     }
   ],
@@ -32,7 +32,7 @@
       "id": "zoom",
       "text": "prepare for transcription",
       "action": [
-        "set('geneticEngineState', 'intro-cells');",
+        "set('DNAState', 'intro-cells');",
         "dnaAnimationTo('dna');"
       ]
     },
@@ -41,7 +41,7 @@
       "id": "transcribe",
       "text": "transcribe",
       "action": [
-        "set('geneticEngineState', 'dna');",
+        "set('DNAState', 'dna');",
         "dnaAnimationTo('transcription-end');"
       ]
     },
@@ -56,7 +56,7 @@
       "id": "translate",
       "text": "translate",
       "action": [
-        "set('geneticEngineState', 'transcription-end');",
+        "set('DNAState', 'transcription-end');",
         "dnaAnimationTo('translation-end');"
       ]
     },

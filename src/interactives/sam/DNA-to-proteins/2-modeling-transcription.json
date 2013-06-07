@@ -24,7 +24,7 @@
       },
       "modelOptions": {
         "DNA": "ATGTTGACTCTAACTCGCATCCGCACTGTG",
-        "geneticEngineState": "dna"
+        "DNAState": "dna"
       }
     }
   ],

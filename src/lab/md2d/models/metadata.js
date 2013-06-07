@@ -107,7 +107,7 @@ define(function() {
         defaultValue: 50,
         storeInTickHistory: true
       },
-      geneticEngineState: {
+      DNAState: {
         defaultValue: "dna"
       },
       DNA: {

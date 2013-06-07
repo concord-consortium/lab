@@ -2052,10 +2052,10 @@ define(function (require, exports, module) {
         solventForceType = sft;
       },
 
-      setGeneticEngineState: function (ges) {
-        // Don't store geneticEngineState, it's not necessary. Just
+      setDNAState: function (s) {
+        // Don't store DNAState, it's not necessary. Just
         // information whether translation is in progress is useful.
-        dnaTranslationInProgress = ges.indexOf("translation:") === 0;
+        dnaTranslationInProgress = s.indexOf("translation:") === 0;
       },
 
       setSolventForceFactor: function(sff) {

@@ -37,7 +37,7 @@ define(function (require) {
         transitionFunction;
 
     function init() {
-      // Redraw DNA / mRNA when genetic engine state is changed.
+      // Redraw DNA / mRNA when DNA state is changed.
       model.geneticEngine().on("change", render);
       // Play animation when there is a "transition" event.
       model.geneticEngine().on("transition", transition);
@@ -632,13 +632,13 @@ define(function (require) {
     }
 
     /**
-     * Renders DNA-related graphics using "DNA" and "geneticEngineState"
+     * Renders DNA-related graphics using "DNA" and "DNAState"
      * options of the model.
      */
     function render(suppressViewportUpdate) {
       suppressViewport = suppressViewportUpdate;
 
-      // Update genetic engine state.
+      // Update DNA state.
       state = model.geneticEngine().state();
 
       cancelTransitions();
@@ -736,7 +736,7 @@ define(function (require) {
     function transition(transitionName, suppressViewportUpdate) {
       suppressViewport = suppressViewportUpdate;
 
-      // Update genetic engine state.
+      // Update DNA state.
       state = model.geneticEngine().state();
 
       if (Number(transitionName.split(":")[1]) > 0) {
