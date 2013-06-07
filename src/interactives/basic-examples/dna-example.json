@@ -104,15 +104,15 @@
         },
         {
           "text": "dna (play intro)",
-          "action": "dnaAnimationTo('dna');"
+          "action": "animateToDNAState('dna');"
         },
         {
           "text": "transcription-end",
-          "action": "dnaAnimationTo('transcription-end');"
+          "action": "animateToDNAState('transcription-end');"
         },
         {
           "text": "translation-end",
-          "action": "dnaAnimationTo('translation-end');"
+          "action": "animateToDNAState('translation-end');"
         }
       ]
     },
@@ -120,25 +120,25 @@
       "type": "button",
       "id": "stop-anim",
       "text": "Stop animation",
-      "action": "dnaStopAnimation();"
+      "action": "stopDNAAnimation();"
     },
     {
       "type": "button",
       "id": "next-state",
       "text": "Animate to next state",
-      "action": "dnaAnimateToNextState();"
+      "action": "animateToNextDNAState();"
     },
     {
       "type": "button",
       "id": "next-state-jump",
       "text": "Jump to next state",
-      "action": "dnaJumpToNextState();"
+      "action": "jumpToNextDNAState();"
     },
     {
       "type": "button",
       "id": "prev-state-jump",
       "text": "Jump to prev state",
-      "action": "dnaJumpToPrevState();"
+      "action": "jumpToPrevDNAState();"
     },
     {
       "id": "current-state",

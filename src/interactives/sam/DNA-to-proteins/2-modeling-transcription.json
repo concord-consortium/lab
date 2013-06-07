@@ -19,7 +19,7 @@
       "id": "page2$0",
       "url": "imports/legacy-mw-content/converted/sam-activities/DNA-to-proteins/page2/page2$0.json",
       "viewOptions": {
-        "controlButtons": "reset",
+        "controlButtons": "",
         "enableKeyboardHandlers": false
       },
       "modelOptions": {
@@ -33,31 +33,37 @@
       "type": "button",
       "id": "begin",
       "text": "prepare for transcription",
-      "action": "dnaAnimationTo('transcription:0');"
+      "action": "animateToDNAState('transcription:0');"
     },
     {
       "type": "button",
       "id": "transcribeA",
       "text": "A",
-      "action": "transcribeStep('A');"
+      "action": "transcribeDNAStep('A');"
     },
     {
       "type": "button",
       "id": "transcribeC",
       "text": "C",
-      "action": "transcribeStep('C');"
+      "action": "transcribeDNAStep('C');"
     },
     {
       "type": "button",
       "id": "transcribeG",
       "text": "G",
-      "action": "transcribeStep('G');"
+      "action": "transcribeDNAStep('G');"
     },
     {
       "type": "button",
       "id": "transcribeU",
       "text": "U",
-      "action": "transcribeStep('U');"
+      "action": "transcribeDNAStep('U');"
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": "reset();"
     },
     {
       "type": "text",
@@ -79,7 +85,7 @@
     "bottom": [
       ["label1A", "begin", "label1B"],
       ["label2"],
-      ["transcribeA", "transcribeU", "transcribeG", "transcribeC"]
+      ["transcribeA", "transcribeU", "transcribeG", "transcribeC", "reset"]
     ]
   }
 }

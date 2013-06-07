@@ -17,7 +17,7 @@
       "id": "page3$0",
       "url": "imports/legacy-mw-content/converted/sam-activities/DNA-to-proteins/page3/page3$0.json",
       "viewOptions": {
-        "controlButtons": "reset",
+        "controlButtons": "",
         "enableKeyboardHandlers": false
       },
       "modelOptions": {
@@ -33,7 +33,7 @@
       "text": "prepare for transcription",
       "action": [
         "set('DNAState', 'intro-cells');",
-        "dnaAnimationTo('dna');"
+        "animateToDNAState('dna');"
       ]
     },
     {
@@ -42,29 +42,30 @@
       "text": "transcribe",
       "action": [
         "set('DNAState', 'dna');",
-        "dnaAnimationTo('transcription-end');"
+        "animateToDNAState('transcription-end');"
       ]
     },
     {
       "type": "button",
       "id": "transcribe-step",
       "text": "transcribe step by step",
-      "action": "transcribeStep();"
+      "action": "transcribeDNAStep();"
     },
     {
       "type": "button",
       "id": "translate",
       "text": "translate",
       "action": [
-        "set('DNAState', 'transcription-end');",
-        "dnaAnimationTo('translation-end');"
+        "if (DNAStateBefore('transcription-end')) set('DNAState', 'transcription-end');",
+        "if (DNAStateAfter('translation:0')) set('DNAState', 'translation:0');",
+        "animateToDNAState('translation-end');"
       ]
     },
     {
       "type": "button",
       "id": "translate-step",
       "text": "translate step by step",
-      "action": "translateStep();"
+      "action": "translateDNAStep();"
     },
     {
       "type": "text",
@@ -100,25 +101,25 @@
       "type": "button",
       "id": "prev-state-jump",
       "text": "<<",
-      "action": "dnaJumpToPrevState();"
+      "action": "jumpToPrevDNAState();"
     },
     {
       "type": "button",
       "id": "stop-anim",
       "text": "stop animation",
-      "action": "dnaStopAnimation();"
+      "action": "stopDNAAnimation();"
     },
     {
       "type": "button",
       "id": "next-state",
       "text": "proceed one step",
-      "action": "dnaAnimateToNextState();"
+      "action": "animateToNextDNAState();"
     },
     {
       "type": "button",
       "id": "next-state-jump",
       "text": ">>",
-      "action": "dnaJumpToNextState();"
+      "action": "jumpToNextDNAState();"
     }
   ],
   "template": [
