@@ -24,7 +24,7 @@
       },
       "modelOptions": {
         "DNA": "ATGTTGACTCTAACTCGCATCCGCACTGTG",
-        "geneticEngineState": "intro-cells"
+        "DNAState": "dna"
       }
     }
   ],
@@ -32,59 +32,38 @@
     {
       "type": "button",
       "id": "begin",
-      "text": "Prepare for transcription",
-      "action": [
-        "set('geneticEngineState', 'intro-cells');",
-        "dnaAnimationTo('transcription:0');"
-      ]
+      "text": "prepare for transcription",
+      "action": "animateToDNAState('transcription:0');"
     },
     {
       "type": "button",
       "id": "transcribeA",
       "text": "A",
-      "action": "transcribeStep('A');"
+      "action": "transcribeDNAStep('A');"
     },
     {
       "type": "button",
       "id": "transcribeC",
       "text": "C",
-      "action": "transcribeStep('C');"
+      "action": "transcribeDNAStep('C');"
     },
     {
       "type": "button",
       "id": "transcribeG",
       "text": "G",
-      "action": "transcribeStep('G');"
+      "action": "transcribeDNAStep('G');"
     },
     {
       "type": "button",
       "id": "transcribeU",
       "text": "U",
-      "action": "transcribeStep('U');"
+      "action": "transcribeDNAStep('U');"
     },
     {
       "type": "button",
       "id": "reset",
       "text": "Reset",
       "action": "reset();"
-    },
-    {
-      "type": "button",
-      "id": "prev-state-jump",
-      "text": "<<",
-      "action": "dnaJumpToPrevState();"
-    },
-    {
-      "type": "button",
-      "id": "next-state",
-      "text": "Proceed one step",
-      "action": "dnaAnimateToNextState();"
-    },
-    {
-      "type": "button",
-      "id": "next-state-jump",
-      "text": ">>",
-      "action": "if (get('geneticEngineState') !== 'transcription-end') dnaJumpToNextState();"
     },
     {
       "type": "text",
@@ -94,7 +73,7 @@
     {
       "type": "text",
       "id": "label1B",
-      "text": "to zoom in to cell nucleus and separate DNA strands."
+      "text": "to separate DNA strands."
     },
     {
       "type": "text",
@@ -102,26 +81,11 @@
       "text": "Then click on the button representing the correct **complementary** RNA nucleotide to proceed transcription:"
     }
   ],
-  "template": [
-    {
-      "id": "bottom",
-      "top": "model.bottom",
-      "width": "interactive.width",
-      "padding-top": "0.5em"
-    },
-    {
-      "id": "bottom-2",
-      "top": "bottom.bottom",
-      "width": "interactive.width",
-      "padding-top": "1em"
-    }
-  ],
   "layout": {
     "bottom": [
       ["label1A", "begin", "label1B"],
       ["label2"],
-      ["transcribeA", "transcribeU", "transcribeG", "transcribeC"]
-    ],
-    "bottom-2": ["reset", "prev-state-jump", "next-state", "next-state-jump"]
+      ["transcribeA", "transcribeU", "transcribeG", "transcribeC", "reset"]
+    ]
   }
 }

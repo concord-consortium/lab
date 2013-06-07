@@ -183,15 +183,6 @@
   },
   "template": [
     {
-      "id": "bottom1",
-      "left": "model.left",
-      "top": "model.bottom",
-      "width": "model.width",
-      "padding-top": "1em",
-      "align": "center",
-      "fontScale": 0.8
-    },
-    {
       "id": "bottom2",
       "left": "model.left",
       "top": "model.bottom",
@@ -199,6 +190,15 @@
       "padding-top": "8em",
       "align": "center",
       "fontScale": 0.6
+    },
+    {
+      "id": "bottom1",
+      "left": "model.left",
+      "top": "model.bottom",
+      "width": "model.width",
+      "padding-top": "1em",
+      "align": "center",
+      "fontScale": 0.8
     },
     {
       "id": "right",

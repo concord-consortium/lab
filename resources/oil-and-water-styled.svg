@@ -1,0 +1,2632 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden" width="696" height="417.6" style="width: 696px; height: 417.6px;">
+  <style type="text/css" >
+    <![CDATA[
+    * {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box; }
+
+    @font-face {
+      font-family: "Lato";
+      font-style: normal;
+      font-weight: 300;
+      src: url("/vendor/fonts/lato-fontfacekit/Lato-Lig-webfont.eot"), url("/vendor/fonts/lato-fontfacekit/Lato-Lig-webfont.ttf") format("truetype"); }
+
+    @font-face {
+      font-family: "Lato";
+      font-style: italic;
+      font-weight: normal;
+      src: url("/vendor/fonts/lato-fontfacekit/Lato-LigIta-webfont.eot"), url("/vendor/fonts/lato-fontfacekit/Lato-LigIta-webfont.ttf") format("truetype"); }
+
+    @font-face {
+      font-family: "Lato";
+      font-style: normal;
+      font-weight: normal;
+      src: url("/vendor/fonts/lato-fontfacekit/Lato-Reg-webfont.eot"), url("/vendor/fonts/lato-fontfacekit/Lato-Reg-webfont.ttf") format("truetype"); }
+
+    @font-face {
+      font-family: "Lato";
+      font-style: italic;
+      font-weight: normal;
+      src: url("/vendor/fonts/lato-fontfacekit/Lato-RegIta-webfont.eot"), url("/vendor/fonts/lato-fontfacekit/Lato-RegIta-webfont.ttf") format("truetype"); }
+
+    @font-face {
+      font-family: "Lato";
+      font-style: normal;
+      font-weight: bold;
+      src: url("/vendor/fonts/lato-fontfacekit/Lato-Bol-webfont.eot"), url("/vendor/fonts/lato-fontfacekit/Lato-Bol-webfont.ttf") format("truetype"); }
+
+    @font-face {
+      font-family: "Lato";
+      font-style: italic;
+      font-weight: bold;
+      src: url("/vendor/fonts/lato-fontfacekit/Lato-BolIta-webfont.eot"), url("/vendor/fonts/lato-fontfacekit/Lato-BolIta-webfont.ttf") format("truetype"); }
+
+    html {
+      margin: 0em;
+      padding: 0em; }
+
+    body {
+      height: 100%;
+      min-height: 100%;
+      font-size: 1em;
+      font-family: 'Lato', Verdana, Geneva, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: white;
+      color: #3f3f3f; }
+
+    h1 {
+      color: white;
+      font-family: 'Lato', georgia, times, "times new roman", serif;
+      font-weight: 600;
+      font-size: 1.3em; }
+      h1 a {
+        text-decoration: none; }
+
+    h2 {
+      color: #5f5f5f;
+      font-family: 'Lato', georgia, times, "times new roman", serif;
+      font-weight: 600;
+      font-size: 1.17em;
+      margin-top: 0; }
+      h2 a {
+        text-decoration: none; }
+
+    h3 {
+      font-family: 'Lato', georgia, times, "times new roman", serif;
+      font-weight: 600;
+      font-size: 1.12em; }
+      h3 a {
+        text-decoration: none; }
+
+    a {
+      text-decoration: none; }
+
+    code {
+      font-size: 0.95em; }
+
+    .component_group {
+      display: inline-block; }
+
+    .draggable {
+      cursor: move; }
+
+    .playbacksvg .button-art {
+      border: none;
+      fill: #777777 !important;
+      stroke: transparent !important;
+      stroke-width: 0 !important; }
+    .playbacksvg .bg {
+      fill: #dddddd;
+      stroke: #aaaaaa;
+      stroke-width: 1px; }
+    .playbacksvg .highlight {
+      border: solid 1px #cccccc;
+      border-bottom: none;
+      fill: white;
+      opacity: 0.6;
+      stroke: transparent;
+      stroke-width: 0; }
+    .playbacksvg .pause-center {
+      border: none;
+      fill: #dddddd;
+      stroke: transparent;
+      stroke-width: 0; }
+
+    .playbacksvgbutton .button-art {
+      border: none;
+      fill: #777777 !important;
+      stroke: transparent !important;
+      stroke-width: 0 !important; }
+    .playbacksvgbutton .bg {
+      fill: #dddddd;
+      stroke: #aaaaaa;
+      stroke-width: 1px; }
+    .playbacksvgbutton .highlight {
+      border: solid 1px #cccccc;
+      border-bottom: none;
+      fill: white;
+      opacity: 0.6;
+      stroke: transparent;
+      stroke-width: 0; }
+    .playbacksvgbutton .pause-center {
+      border: none;
+      fill: #dddddd;
+      stroke: transparent;
+      stroke-width: 0; }
+
+    .playbacksvgbutton:hover .button-art {
+      fill: #777777 !important;
+      stroke: transparent !important;
+      stroke-width: 0 !important; }
+    .playbacksvgbutton:hover .bg {
+      fill: #bbbbbb; }
+    .playbacksvgbutton:hover .highlight {
+      opacity: 0.3; }
+    .playbacksvgbutton:hover .pause-center {
+      fill: #bbbbbb; }
+
+    .playbacksvgbutton:active .button-art {
+      fill: #666666 !important;
+      stroke: transparent !important;
+      stroke-width: 0 !important; }
+    .playbacksvgbutton:active .bg {
+      fill: #a5a5a5; }
+    .playbacksvgbutton:active .highlight {
+      opacity: 0.2; }
+    .playbacksvgbutton:active .pause-center {
+      fill: #a5a5a5; }
+
+    .markdown-typography * {
+      margin: 0.2em 0 !important; }
+    .markdown-typography img {
+      margin: 0 !important; }
+    .markdown-typography h1, .markdown-typography h2, .markdown-typography h3, .markdown-typography h4, .markdown-typography h5, .markdown-typography h6 {
+      color: #444444 !important;
+      font-weight: bold !important; }
+    .markdown-typography h1 {
+      font-size: 1.3em !important; }
+    .markdown-typography h2 {
+      font-size: 1.2em !important; }
+    .markdown-typography h3 {
+      font-size: 1.1em !important; }
+    .markdown-typography h4 {
+      font-size: 1em !important; }
+    .markdown-typography h5 {
+      font-size: 0.95em !important; }
+    .markdown-typography h6 {
+      font-size: 0.9em !important; }
+
+    .component {
+      display: inline-block;
+      vertical-align: middle;
+      white-space: normal;
+      margin: 0;
+      padding: 0;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -o-user-select: none;
+      user-select: none; }
+      .component.clickable {
+        cursor: pointer; }
+
+    button.component {
+      background-color: #eeeeee;
+      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fafafa), color-stop(100%, #c2c2c2));
+      background-image: -webkit-linear-gradient(top, #fafafa, #c2c2c2);
+      background-image: -moz-linear-gradient(top, #fafafa, #c2c2c2);
+      background-image: -ms-linear-gradient(top, #fafafa, #c2c2c2);
+      background-image: -o-linear-gradient(top, #fafafa, #c2c2c2);
+      background-image: linear-gradient(top, #fafafa, #c2c2c2);
+      font-size: 1em;
+      font-family: 'Lato', Verdana, Geneva, sans-serif;
+      height: 2em;
+      border: 1px solid #cccccc;
+      border-bottom: 1px solid #bbbbbb;
+      border-radius: 0.7em;
+      color: #333333;
+      padding-left: 1em;
+      padding-right: 1em;
+      text-align: center;
+      text-shadow: 0 1px 0 #eeeeee; }
+      button.component:hover {
+        background-color: #e6e6e6;
+        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #e6e6e6));
+        background-image: -webkit-linear-gradient(top, white, #e6e6e6);
+        background-image: -moz-linear-gradient(top, white, #e6e6e6);
+        background-image: -ms-linear-gradient(top, white, #e6e6e6);
+        background-image: -o-linear-gradient(top, white, #e6e6e6);
+        background-image: linear-gradient(top, white, #e6e6e6);
+        cursor: pointer; }
+      button.component:active {
+        background-color: white;
+        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e6e6e6), color-stop(100%, white));
+        background-image: -webkit-linear-gradient(top, #e6e6e6, white);
+        background-image: -moz-linear-gradient(top, #e6e6e6, white);
+        background-image: -ms-linear-gradient(top, #e6e6e6, white);
+        background-image: -o-linear-gradient(top, #e6e6e6, white);
+        background-image: linear-gradient(top, #e6e6e6, white);
+        border: 1px solid #aaaaaa;
+        border-bottom: 1px solid #888888; }
+
+    .interactive-text.clickable {
+      color: #004488; }
+
+    .interactive-radio {
+      font-size: 1em; }
+      .interactive-radio.horizontal .option + .option {
+        margin-left: 1em; }
+      .interactive-radio.vertical .option {
+        display: block; }
+      .interactive-radio .label {
+        vertical-align: middle; }
+        .interactive-radio .label.on-left {
+          margin-right: 0.5em; }
+        .interactive-radio .label.on-top {
+          display: block; }
+      .interactive-radio label {
+        vertical-align: middle; }
+      .interactive-radio input[type="radio"] {
+        display: none; }
+      .interactive-radio .fakeCheckable {
+        display: inline-block;
+        vertical-align: middle;
+        margin: 0 0.4em 0 0;
+        padding: 0;
+        width: 1.1em;
+        height: 1.1em;
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-image: url("/resources/upstatement/unchecked.svg"); }
+        .interactive-radio .fakeCheckable.checked {
+          background-repeat: no-repeat;
+          background-size: 100%;
+          background-image: url("/resources/upstatement/checked.svg"); }
+
+    .interactive-pulldown {
+      font-size: 1em; }
+      .interactive-pulldown .label, .interactive-pulldown .selectboxit-container {
+        vertical-align: middle; }
+      .interactive-pulldown .label.on-left {
+        margin-right: 0.5em; }
+      .interactive-pulldown .label.on-top {
+        margin-bottom: 0.1em;
+        display: block; }
+
+    .interactive-checkbox {
+      font-size: 1em; }
+      .interactive-checkbox label {
+        vertical-align: middle; }
+      .interactive-checkbox .fakeCheckable {
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+        width: 1em;
+        height: 1em;
+        margin: 0 0.4em 0 0;
+        padding: 0;
+        background: #e6e7e8; }
+        .interactive-checkbox .fakeCheckable.right {
+          margin: 0 0 0 0.4em; }
+        .interactive-checkbox .fakeCheckable.checked:before {
+          content: "";
+          background: #58595b;
+          position: absolute;
+          top: 0.22197em;
+          left: 0.22197em;
+          right: 0.22197em;
+          bottom: 0.22197em; }
+
+    .numeric-output {
+      padding: 0.3em 0.2em 0.3em 0.7em; }
+      .numeric-output span.output {
+        background-color: white;
+        border-radius: 0.4em;
+        padding: 0.15em 0 0.15em 0; }
+      .numeric-output span.label {
+        display: inline-block;
+        padding-right: 0.5em; }
+      .numeric-output span.value {
+        display: inline-block;
+        padding: 0em 0.2em 0em 0.5em;
+        min-width: 3em;
+        text-align: right;
+        font-weight: 600; }
+      .numeric-output span.units {
+        display: inline-block;
+        padding-left: 0.2em;
+        padding-right: 0.5em;
+        font-style: italic; }
+      .numeric-output.horizontal span.label {
+        display: inline-block; }
+      .numeric-output.vertical {
+        vertical-align: top; }
+        .numeric-output.vertical span.label {
+          padding-bottom: 0.2em;
+          display: block; }
+
+    .interactive-slider {
+      padding: 0 0.7em; }
+      .interactive-slider .ui-slider {
+        width: 94%;
+        height: 0;
+        left: 3%;
+        top: 0.5em;
+        border-color: #999999; }
+      .interactive-slider .ui-slider-handle {
+        top: -1em;
+        height: 1.75em;
+        font-size: 0.8em;
+        font-weight: normal;
+        text-align: center;
+        width: auto;
+        min-width: 2em;
+        min-height: 2em;
+        margin-left: -1em;
+        border-radius: 4em;
+        padding: 0.35em 0.5em 0em 0.5em;
+        background-color: #eeeeee;
+        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #cccccc));
+        background-image: -webkit-linear-gradient(top, white, #cccccc);
+        background-image: -moz-linear-gradient(top, white, #cccccc);
+        background-image: -ms-linear-gradient(top, white, #cccccc);
+        background-image: -o-linear-gradient(top, white, #cccccc);
+        background-image: linear-gradient(top, white, #cccccc);
+        border-bottom-color: #bbbbbb;
+        box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.4); }
+        .interactive-slider .ui-slider-handle:focus {
+          outline: #76d2b8 solid 0.2em; }
+      .interactive-slider .title {
+        display: inline-block;
+        font-size: 1em;
+        white-space: nowrap;
+        margin: 0 0 0.3em 0;
+        vertical-align: top; }
+      .interactive-slider .container {
+        height: 1.1em;
+        position: relative;
+        margin-bottom: 1em;
+        width: 100%;
+        background-color: rgba(134, 178, 180, 0.45);
+        border-radius: 0.4em; }
+        .interactive-slider .container .label {
+          position: absolute;
+          display: inline-block;
+          top: 100%;
+          width: 6em;
+          margin: 0.2em 0 0 -3em;
+          text-align: center;
+          font-size: 0.8em; }
+
+    .textBoxBody {
+      font-family: 'Lato', Verdana, Geneva, sans-serif;
+      background-color: rgba(0, 0, 0, 0);
+      padding: 0.5em; }
+      .textBoxBody p {
+        font-size: 2em;
+        margin: 0.5em 0 0 0.5em;
+        line-height: 1.3em; }
+
+    .interactive-thermometer {
+      white-space: nowrap; }
+      .interactive-thermometer .label {
+        margin: 0;
+        text-align: center;
+        font-size: 1em; }
+      .interactive-thermometer .value-label {
+        position: absolute;
+        white-space: nowrap;
+        margin-bottom: -0.75em; }
+      .interactive-thermometer .labels-container {
+        position: relative; }
+      .interactive-thermometer .thermometer-main-container, .interactive-thermometer .labels-container {
+        display: inline-block;
+        vertical-align: top; }
+      .interactive-thermometer .thermometer {
+        display: block;
+        margin: auto;
+        border: 2px solid #f4b626;
+        position: relative;
+        border-radius: 1.5em 1.5em 0.2em 0.2em;
+        background: white; }
+        .interactive-thermometer .thermometer div {
+          display: block;
+          position: relative;
+          margin: 0px;
+          padding: 0px; }
+        .interactive-thermometer .thermometer .thermometer-fill {
+          position: absolute;
+          width: 70%;
+          left: 15%;
+          bottom: 0;
+          background: #e16a3e;
+          border-radius: 0.75em 0.75em 0em 0em; }
+
+    .interactive-playback {
+      font-size: 1em;
+      border-bottom-left-radius: 0.7em;
+      border-bottom-right-radius: 0.7em;
+      box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.4);
+      height: 2em; }
+      .interactive-playback a {
+        display: inline-block;
+        vertical-align: middle;
+        font-family: 'Lato', Verdana, Geneva, sans-serif;
+        font-size: 1em;
+        height: 100%;
+        padding-top: 0.35em;
+        width: 2.7em;
+        margin: 0;
+        text-align: center;
+        border: none;
+        background-color: #bcbec0;
+        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fbfbfb), color-stop(100%, #bcbec0));
+        background-image: -webkit-linear-gradient(top, #fbfbfb, #bcbec0);
+        background-image: -moz-linear-gradient(top, #fbfbfb, #bcbec0);
+        background-image: -ms-linear-gradient(top, #fbfbfb, #bcbec0);
+        background-image: -o-linear-gradient(top, #fbfbfb, #bcbec0);
+        background-image: linear-gradient(top, #fbfbfb, #bcbec0); }
+        .interactive-playback a:hover {
+          background-color: #e6e6e6;
+          background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #e6e6e6));
+          background-image: -webkit-linear-gradient(top, white, #e6e6e6);
+          background-image: -moz-linear-gradient(top, white, #e6e6e6);
+          background-image: -ms-linear-gradient(top, white, #e6e6e6);
+          background-image: -o-linear-gradient(top, white, #e6e6e6);
+          background-image: linear-gradient(top, white, #e6e6e6);
+          cursor: pointer; }
+        .interactive-playback a:active {
+          background-color: #bbbbbb;
+          background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e6e6e6), color-stop(100%, white));
+          background-image: -webkit-linear-gradient(top, #e6e6e6, white);
+          background-image: -moz-linear-gradient(top, #e6e6e6, white);
+          background-image: -ms-linear-gradient(top, #e6e6e6, white);
+          background-image: -o-linear-gradient(top, #e6e6e6, white);
+          background-image: linear-gradient(top, #e6e6e6, white); }
+      .interactive-playback .hidden {
+        display: none !important; }
+      .interactive-playback .first {
+        border-bottom-left-radius: 0.7em; }
+      .interactive-playback .last {
+        border-bottom-right-radius: 0.7em; }
+      .interactive-playback .play-pause {
+        min-width: 2.7em; }
+        .interactive-playback .play-pause .icon-pause {
+          display: none; }
+        .interactive-playback .play-pause.playing .icon-pause {
+          display: inline-block; }
+        .interactive-playback .play-pause.playing .icon-play {
+          display: none; }
+        .interactive-playback .play-pause.disabled {
+          background-color: #e6e6e6;
+          background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #e6e6e6));
+          background-image: -webkit-linear-gradient(top, white, #e6e6e6);
+          background-image: -moz-linear-gradient(top, white, #e6e6e6);
+          background-image: -ms-linear-gradient(top, white, #e6e6e6);
+          background-image: -o-linear-gradient(top, white, #e6e6e6);
+          background-image: linear-gradient(top, white, #e6e6e6); }
+          .interactive-playback .play-pause.disabled:hover {
+            cursor: default; }
+          .interactive-playback .play-pause.disabled .icon-pause {
+            opacity: 0.5; }
+          .interactive-playback .play-pause.disabled .icon-play {
+            opacity: 0.5; }
+        .interactive-playback .play-pause .time-display {
+          font-size: 0.85em;
+          display: none; }
+        .interactive-playback .play-pause.with-clock {
+          width: 6.4em;
+          white-space: nowrap; }
+          .interactive-playback .play-pause.with-clock .time-display {
+            display: inline-block;
+            text-align: right;
+            vertical-align: middle;
+            width: 5em;
+            color: #939598;
+            background: #e6e7e8;
+            font-weight: bold;
+            border: 1px solid #bbbbbb;
+            border-bottom-color: #cccccc;
+            padding: 0.1em 0.2em 0.1em 0;
+            margin-left: 0.4em;
+            border-radius: 0.5em; }
+      .interactive-playback i {
+        color: #939598;
+        font-size: 1em;
+        vertical-align: middle; }
+      .interactive-playback .spacer {
+        vertical-align: middle;
+        display: inline-block;
+        height: 100%;
+        width: 2px;
+        background-color: #e6e6e6;
+        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fefefe), color-stop(100%, #aaacaf));
+        background-image: -webkit-linear-gradient(top, #fefefe, #aaacaf);
+        background-image: -moz-linear-gradient(top, #fefefe, #aaacaf);
+        background-image: -ms-linear-gradient(top, #fefefe, #aaacaf);
+        background-image: -o-linear-gradient(top, #fefefe, #aaacaf);
+        background-image: linear-gradient(top, #fefefe, #aaacaf); }
+
+    .graph {
+      position: relative;
+      background: rgba(255, 255, 255, 0); }
+      .graph:focus {
+        outline: #76d2b8 solid 0.2em; }
+      .graph div.background {
+        position: absolute;
+        background: #efefef; }
+      .graph div.button-layer {
+        position: absolute;
+        text-align: right; }
+        .graph div.button-layer a {
+          opacity: 0.3;
+          color: black;
+          font-size: 120%; }
+        .graph div.button-layer a:hover {
+          opacity: 1; }
+      .graph canvas.overlay {
+        position: absolute;
+        background: rgba(0, 255, 0, 0.05); }
+
+    svg.graph:focus {
+      outline: #76d2b8 solid 0.2em; }
+    svg.graph text.title {
+      font-size: 0.9em; }
+    svg.graph text.ylabel {
+      font-size: 0.8em; }
+    svg.graph text.xlabel {
+      font-size: 0.8em; }
+    svg.graph text.axis {
+      font-size: 0.8em; }
+      svg.graph text.axis:focus {
+        outline: #76d2b8 solid 0.2em; }
+    svg.graph rect.draggable-axis {
+      fill: rgba(255, 255, 255, 0); }
+      svg.graph rect.draggable-axis:hover {
+        fill: rgba(196, 196, 196, 0.2); }
+    svg.graph .ruler.hidden {
+      visibility: hidden; }
+    svg.graph circle {
+      fill: none;
+      fill-opacity: 0.2;
+      stroke: steelblue;
+      cursor: move; }
+      svg.graph circle.selected {
+        fill: #ff7f0e;
+        stroke: #ff7f0e; }
+      svg.graph circle:hover {
+        fill: #ff7f0e;
+        stroke: #707f0e; }
+      svg.graph circle.selected:hover {
+        fill: #ff7f0e;
+        stroke: #ff7f0e; }
+
+    .bar-graph {
+      text-align: center;
+      padding: 0.2em 0.4em;
+      border-radius: 0.6em;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2);
+      background-color: rgba(0, 0, 0, 0.05);
+      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0.08)), color-stop(100%, rgba(0, 0, 0, 0)));
+      background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0));
+      background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0));
+      background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0));
+      background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0));
+      background-image: linear-gradient(top, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0));
+      color: #555555; }
+      .bar-graph text {
+        fill: #555555; }
+      .bar-graph .top-area p, .bar-graph .bottom-area p {
+        padding-bottom: 0.2em; }
+      .bar-graph .hidden {
+        display: none; }
+      .bar-graph .triangle {
+        stroke: #555555;
+        stroke-width: 1px;
+        fill: #eeeeee; }
+      .bar-graph .grid-line {
+        stroke: white;
+        stroke-width: 1px;
+        opacity: 0.8; }
+      .bar-graph .tick text {
+        font-size: 0.8em; }
+      .bar-graph .title {
+        font-size: 1em;
+        text-anchor: middle;
+        margin: 0; }
+
+    * {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box; }
+
+    #responsive-content {
+      width: 100%;
+      font-size: 0.9em;
+      height: 100%;
+      padding: 0; }
+
+    #interactive-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      border-radius: 0.5em;
+      background-color: #c7e7de;
+      background-image: -webkit-radial-gradient(center, ellipse cover, #c7e7de 12%, #72c3c8 100%);
+      background-image: -moz-radial-gradient(center, ellipse cover, #c7e7de 12%, #72c3c8 100%);
+      background-image: -ms-radial-gradient(center, ellipse cover, #c7e7de 12%, #72c3c8 100%);
+      background-image: -o-radial-gradient(center, ellipse cover, #c7e7de 12%, #72c3c8 100%);
+      background-image: radial-gradient(center, ellipse cover, #c7e7de 12%, #72c3c8 100%); }
+      #interactive-container:focus {
+        outline: none; }
+
+    .component-spacing {
+      margin: 0.3em 0.5em; }
+
+    #top-bar {
+      background-color: white;
+      border-top: 1px lightgrey solid;
+      border-left: 1px lightgrey solid;
+      border-right: 1px lightgrey solid;
+      border-top-left-radius: 0.5em;
+      border-top-right-radius: 0.5em; }
+
+    #bottom-bar {
+      background-color: white;
+      border-bottom: 1px lightgrey solid;
+      border-left: 1px lightgrey solid;
+      border-right: 1px lightgrey solid;
+      border-bottom-left-radius: 0.5em;
+      border-bottom-right-radius: 0.5em; }
+
+    #credits-link {
+      padding: 0.2em 0 0.2em 0.8em; }
+
+    #about-link, #share-link {
+      color: gray; }
+      #about-link:hover, #share-link:hover {
+        color: black; }
+      #about-link p, #share-link p {
+        margin: 0em;
+        padding: 0em; }
+
+    .fullscreen {
+      background-repeat: no-repeat;
+      background-size: 90%;
+      background-image: url("/resources/layout/fullscreen.svg"); }
+      .fullscreen:hover {
+        background-repeat: no-repeat;
+        background-size: 90%;
+        background-image: url("/resources/layout/fullscreen-dark.svg"); }
+
+    body:-moz-full-screen .fullscreen {
+      background-repeat: no-repeat;
+      background-size: 90%;
+      background-image: url("/resources/layout/fullscreen-exit.svg"); }
+      body:-moz-full-screen .fullscreen:hover {
+        background-repeat: no-repeat;
+        background-size: 90%;
+        background-image: url("/resources/layout/fullscreen-exit-dark.svg"); }
+
+    body:-webkit-full-screen .fullscreen {
+      background-repeat: no-repeat;
+      background-size: 90%;
+      background-image: url("/resources/layout/fullscreen-exit.svg"); }
+      body:-webkit-full-screen .fullscreen:hover {
+        background-repeat: no-repeat;
+        background-size: 90%;
+        background-image: url("/resources/layout/fullscreen-exit-dark.svg"); }
+
+    body:fullscreen .fullscreen {
+      background-repeat: no-repeat;
+      background-size: 90%;
+      background-image: url("/resources/layout/fullscreen-exit.svg"); }
+      body:fullscreen .fullscreen:hover {
+        background-repeat: no-repeat;
+        background-size: 90%;
+        background-image: url("/resources/layout/fullscreen-exit-dark.svg"); }
+
+    .credits {
+      background: url("/resources/layout/cc-logo.png") no-repeat;
+      background-size: 80%;
+      background-position: 0.3em 0.2em; }
+      .credits:hover {
+        background-image: url("/resources/layout/cc-logo-dark.png"); }
+
+    #responsive-content .context-menu-list {
+      min-width: 5em;
+      max-width: 20em;
+      font-size: 0.9em;
+      font-family: inherit;
+      border: none; }
+      #responsive-content .context-menu-list .context-menu-list {
+        font-size: 1em; }
+    #responsive-content .context-menu-submenu:after {
+      top: 0.35em; }
+    #responsive-content .mutations-menu {
+      min-width: 11em;
+      border-radius: 0.7em; }
+      #responsive-content .mutations-menu .context-menu-list {
+        min-width: 6em;
+        border-radius: 0.7em; }
+      #responsive-content .mutations-menu .context-menu-item {
+        border-radius: 0.7em;
+        padding: 0.35em 1em; }
+      #responsive-content .mutations-menu .substitution-submenu .context-menu-item {
+        padding: 1.2em; }
+      #responsive-content .mutations-menu .substitution-submenu .A-to-A {
+        display: none; }
+      #responsive-content .mutations-menu .substitution-submenu .A-to-T {
+        background-repeat: no-repeat;
+        background-position: 50%;
+        background-size: auto 75%;
+        background-image: url("dna/A-to-T.svg"); }
+      #responsive-content .mutations-menu .substitution-submenu .A-to-G {
+        background-repeat: no-repeat;
+        background-position: 50%;
+        background-size: auto 75%;
+        background-image: url("dna/A-to-G.svg"); }
+      #responsive-content .mutations-menu .substitution-submenu .A-to-C {
+        background-repeat: no-repeat;
+        background-position: 50%;
+        background-size: auto 75%;
+        background-image: url("dna/A-to-C.svg"); }
+      #responsive-content .mutations-menu .substitution-submenu .C-to-C {
+        display: none; }
+      #responsive-content .mutations-menu .substitution-submenu .C-to-T {
+        background-repeat: no-repeat;
+        background-position: 50%;
+        background-size: auto 75%;
+        background-image: url("dna/C-to-T.svg"); }
+      #responsive-content .mutations-menu .substitution-submenu .C-to-G {
+        background-repeat: no-repeat;
+        background-position: 50%;
+        background-size: auto 75%;
+        background-image: url("dna/C-to-G.svg"); }
+      #responsive-content .mutations-menu .substitution-submenu .C-to-A {
+        background-repeat: no-repeat;
+        background-position: 50%;
+        background-size: auto 75%;
+        background-image: url("dna/C-to-A.svg"); }
+      #responsive-content .mutations-menu .substitution-submenu .G-to-G {
+        display: none; }
+      #responsive-content .mutations-menu .substitution-submenu .G-to-T {
+        background-repeat: no-repeat;
+        background-position: 50%;
+        background-size: auto 75%;
+        background-image: url("dna/G-to-T.svg"); }
+      #responsive-content .mutations-menu .substitution-submenu .G-to-C {
+        background-repeat: no-repeat;
+        background-position: 50%;
+        background-size: auto 75%;
+        background-image: url("dna/G-to-C.svg"); }
+      #responsive-content .mutations-menu .substitution-submenu .G-to-A {
+        background-repeat: no-repeat;
+        background-position: 50%;
+        background-size: auto 75%;
+        background-image: url("dna/G-to-A.svg"); }
+      #responsive-content .mutations-menu .substitution-submenu .T-to-T {
+        display: none; }
+      #responsive-content .mutations-menu .substitution-submenu .T-to-G {
+        background-repeat: no-repeat;
+        background-position: 50%;
+        background-size: auto 75%;
+        background-image: url("dna/T-to-G.svg"); }
+      #responsive-content .mutations-menu .substitution-submenu .T-to-C {
+        background-repeat: no-repeat;
+        background-position: 50%;
+        background-size: auto 75%;
+        background-image: url("dna/T-to-C.svg"); }
+      #responsive-content .mutations-menu .substitution-submenu .T-to-A {
+        background-repeat: no-repeat;
+        background-position: 50%;
+        background-size: auto 75%;
+        background-image: url("dna/T-to-A.svg"); }
+      #responsive-content .mutations-menu .insertion-submenu .context-menu-item {
+        padding: 0.6em 0.8em; }
+      #responsive-content .mutations-menu .insertion-submenu .A {
+        background-repeat: no-repeat;
+        background-position: 88%;
+        background-size: auto 85%;
+        background-image: url("dna/A.svg"); }
+      #responsive-content .mutations-menu .insertion-submenu .T {
+        background-repeat: no-repeat;
+        background-position: 88%;
+        background-size: auto 85%;
+        background-image: url("dna/T.svg"); }
+      #responsive-content .mutations-menu .insertion-submenu .G {
+        background-repeat: no-repeat;
+        background-position: 86%;
+        background-size: auto 85%;
+        background-image: url("dna/G.svg"); }
+      #responsive-content .mutations-menu .insertion-submenu .C {
+        background-repeat: no-repeat;
+        background-position: 86%;
+        background-size: auto 85%;
+        background-image: url("dna/C.svg"); }
+    #responsive-content .aminoacids-menu {
+      min-width: 9em; }
+      #responsive-content .aminoacids-menu .context-menu-item {
+        padding: 0 0 0 19%; }
+      #responsive-content .aminoacids-menu .context-menu-item:hover {
+        font-weight: bold; }
+      #responsive-content .aminoacids-menu .pos-charge {
+        background-repeat: no-repeat;
+        background-position: 2%;
+        background-size: auto 90%;
+        background-image: url("/resources/plus.svg"); }
+      #responsive-content .aminoacids-menu .neg-charge {
+        background-repeat: no-repeat;
+        background-position: 2%;
+        background-size: auto 90%;
+        background-image: url("/resources/minus.svg"); }
+      #responsive-content .aminoacids-menu .hydrophobic {
+        background-color: #f3c35d; }
+      #responsive-content .aminoacids-menu .hydrophobic.marked {
+        background-color: #ffe64b; }
+      #responsive-content .aminoacids-menu .hydrophilic {
+        background-color: #9dc278; }
+      #responsive-content .aminoacids-menu .hydrophilic.marked {
+        background-color: #bee299; }
+      #responsive-content .aminoacids-menu .hydrophobic-category {
+        font-size: 1.1em;
+        font-weight: bold;
+        padding: 2% 0 2% 14%;
+        background-color: #e0a21b;
+        background-repeat: no-repeat;
+        background-position: 4%;
+        background-size: auto 40%;
+        background-image: url("/resources/col.svg"); }
+      #responsive-content .aminoacids-menu .hydrophilic-category {
+        font-size: 1.1em;
+        font-weight: bold;
+        padding: 2% 0 2% 14%;
+        background-color: #75a643;
+        background-repeat: no-repeat;
+        background-position: 4%;
+        background-size: auto 40%;
+        background-image: url("/resources/col.svg"); }
+      #responsive-content .aminoacids-menu .expanded {
+        background-repeat: no-repeat;
+        background-position: 4%;
+        background-size: auto 40%;
+        background-image: url("/resources/exp.svg"); }
+
+    .dna-edit-dialog {
+      font-size: 0.9em; }
+      .dna-edit-dialog .error {
+        color: #cc0000; }
+
+    .particle-container-vis {
+      background: rgba(255, 255, 255, 0);
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none; }
+      .particle-container-vis:focus {
+        outline: #76d2b8 solid 0.2em; }
+      .particle-container-vis .radialbond1.disulphideBond, .particle-container-vis .radialbond2.disulphideBond {
+        stroke: #ffe95a !important; }
+      .particle-container-vis .genetics .coding-region .glow {
+        display: none; }
+      .particle-container-vis .genetics .coding-region .nucleo-shape:hover {
+        cursor: pointer; }
+        .particle-container-vis .genetics .coding-region .nucleo-shape:hover .glow {
+          display: inline; }
+      .particle-container-vis .genetics .nucleotide .bonds {
+        stroke: white; }
+      .particle-container-vis .genetics .nucleotide .letter {
+        fill: #4a3217; }
+      .particle-container-vis .genetics .nucleotide .type-A .outline {
+        fill: #278db0; }
+      .particle-container-vis .genetics .nucleotide .type-A .interior {
+        fill: #a2d6ff; }
+      .particle-container-vis .genetics .nucleotide .type-C .outline {
+        fill: #cc5b4c; }
+      .particle-container-vis .genetics .nucleotide .type-C .interior {
+        fill: #fbb394; }
+      .particle-container-vis .genetics .nucleotide .type-G .outline {
+        fill: #cc5b4c; }
+      .particle-container-vis .genetics .nucleotide .type-G .interior {
+        fill: #f9ceff; }
+      .particle-container-vis .genetics .nucleotide .type-T .outline {
+        fill: #278db0; }
+      .particle-container-vis .genetics .nucleotide .type-T .interior {
+        fill: #99f0e3; }
+      .particle-container-vis .genetics .nucleotide .type-U .outline {
+        fill: #278db0; }
+      .particle-container-vis .genetics .nucleotide .type-U .interior {
+        fill: #83feaf; }
+      .particle-container-vis .genetics .nucleotide .stop-codon .outline {
+        fill: #cc0000; }
+      .particle-container-vis .genetics .nucleotide .stop-codon .letter {
+        fill: #cc0000; }
+      .particle-container-vis .genetics .promoter-region .nucleotide .outline {
+        fill: #006600; }
+      .particle-container-vis .genetics .promoter-region .nucleotide .interior {
+        fill: #5db473; }
+      .particle-container-vis .genetics .promoter-region .nucleotide .letter {
+        fill: white; }
+      .particle-container-vis .genetics .terminator-region .nucleotide .outline {
+        fill: #9e0608; }
+      .particle-container-vis .genetics .terminator-region .nucleotide .interior {
+        fill: #dc4648; }
+      .particle-container-vis .genetics .terminator-region .nucleotide .letter {
+        fill: white; }
+      .particle-container-vis .genetics .junk-region .nucleotide .outline {
+        fill: #666666; }
+      .particle-container-vis .genetics .junk-region .nucleotide .interior {
+        fill: #adadad; }
+      .particle-container-vis .genetics .junk-region .nucleotide .letter {
+        fill: white; }
+      .particle-container-vis .genetics .polymerase-over, .particle-container-vis .genetics .polymerase-under, .particle-container-vis .genetics .dna3 {
+        pointer-events: none; }
+      .particle-container-vis line.attractionforce {
+        stroke: #aaaaaa;
+        stroke-width: 2.5;
+        stroke-dasharray: 3 2; }
+      .particle-container-vis text.modelTimeLabel {
+        font-size: 1em; }
+      .particle-container-vis text.title {
+        font-size: 1em; }
+      .particle-container-vis text.xlabel {
+        font-size: 0.85em; }
+      .particle-container-vis text.ylabel {
+        font-size: 0.85em; }
+      .particle-container-vis g.y {
+        font-size: 0.75em; }
+      .particle-container-vis g.x {
+        font-size: 0.75em; }
+      .particle-container-vis div.tooltip {
+        display: none;
+        position: fixed;
+        padding: 0.4em 0.6em;
+        font-size: 0.6em;
+        background: white;
+        border: solid 1px #aaaaaa;
+        border-radius: 0.8em;
+        pointer-events: none; }
+        .particle-container-vis div.tooltip pre {
+          margin: 0.2em; }
+      .particle-container-vis .extent {
+        stroke: white;
+        fill-opacity: 0.125;
+        shape-rendering: crispEdges; }
+      .particle-container-vis .opaque-on-hover {
+        opacity: 0.5; }
+        .particle-container-vis .opaque-on-hover:hover {
+          opacity: 1; }
+
+    * {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box; }
+
+    .credits-dialog p, .credits-dialog h2, .about-dialog p, .about-dialog h2, .share-dialog p, .share-dialog h2 {
+      margin: 0.5em 0; }
+    .credits-dialog h2, .about-dialog h2, .share-dialog h2 {
+      font-size: 1em;
+      font-weight: 600; }
+    .credits-dialog a, .credits-dialog a.opens-in-new-window, .about-dialog a, .about-dialog a.opens-in-new-window, .share-dialog a, .share-dialog a.opens-in-new-window {
+      color: #0000ee;
+      text-decoration: none;
+      padding: 0; }
+    .credits-dialog a:visited, .about-dialog a:visited, .share-dialog a:visited {
+      color: #551a8b; }
+
+    .share-dialog textarea {
+      display: block;
+      width: 99%;
+      font-size: 0.8em;
+      padding: 0.3em;
+      margin-bottom: 1em; }
+      .share-dialog textarea#share-iframe-content {
+        height: 5.5em; }
+
+    .copyright-section {
+      margin-top: 1em;
+      font-size: 0.8em; }
+
+    .warning-pane {
+      display: none;
+      position: absolute;
+      opacity: 0.8;
+      color: #d51607;
+      background-color: rgba(255, 204, 204, 0.8);
+      border-radius: 0.5em;
+      box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
+      z-index: -100;
+      margin: 0em;
+      padding: 0em; }
+      .warning-pane:hover {
+        opacity: 1; }
+
+    #firefox-warning-pane {
+      font-size: 1em;
+      width: auto; }
+      #firefox-warning-pane p {
+        margin: 0.2em 0.5em; }
+        #firefox-warning-pane p a {
+          color: #d51607; }
+          #firefox-warning-pane p a:hover {
+            color: #f72818;
+            font-weight: 600; }
+
+    #model-not-found-pane {
+      font-size: 1.2em;
+      width: 80%;
+      left: 10%;
+      padding: 0.5em; }
+
+    #applet-container {
+      display: inline-block;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0);
+      border-radius: 0.5em;
+      box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+      height: 100%;
+      width: 100%;
+      min-width: 20em;
+      min-height: 20em;
+      margin: 2px 1em 2px 0px;
+      padding: 0.8em; }
+
+    applet {
+      border: thin solid #eeeeee; }
+
+    .ui-widget {
+      font-size: 1em;
+      font-family: 'Lato', Verdana, Geneva, sans-serif; }
+
+    .ui-widget-header {
+      font-size: 1em;
+      font-weight: bold;
+      color: white;
+      background: #58b5b9;
+      border: none;
+      opacity: 0.7;
+      border-radius: 0.5em 0.5em 0 0; }
+
+    .ui-dialog {
+      border: white;
+      border-radius: 0.5em;
+      box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.5);
+      padding: 0; }
+
+    .ui-dialog-content {
+      color: #535455; }
+
+    .selectboxit-container * {
+      font-size: 1em;
+      font-family: 'Lato', Verdana, Geneva, sans-serif; }
+
+    .selectboxit-arrow-container {
+      border-left: 1px solid #cccccc; }
+
+    .selectboxit .selectboxit-arrow-container .selectboxit-arrow {
+      top: 39%; }
+
+    .selectboxit-arrow-container {
+      width: 2.14em; }
+
+    .selectboxit-default-arrow {
+      border-top: 0.45em solid #8c8c8c;
+      border-right: 0.45em solid transparent;
+      border-left: 0.45em solid transparent; }
+
+    .selectboxit-container span, .selectboxit-container .selectboxit-options a {
+      height: 2em;
+      line-height: 2em; }
+
+    .selectboxit-text {
+      text-indent: 0.5em;
+      overflow: visible; }
+
+    .selectboxit-option, .selectboxit-optgroup-header {
+      text-indent: 0.4em; }
+
+    .selectboxit-btn,
+    .selectboxit-btn:focus {
+      background-color: #f6f6f6;
+      background-position: 0 0;
+      background-color: #eeeeee;
+      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fafafa), color-stop(100%, #c2c2c2));
+      background-image: -webkit-linear-gradient(top, #fafafa, #c2c2c2);
+      background-image: -moz-linear-gradient(top, #fafafa, #c2c2c2);
+      background-image: -ms-linear-gradient(top, #fafafa, #c2c2c2);
+      background-image: -o-linear-gradient(top, #fafafa, #c2c2c2);
+      background-image: linear-gradient(top, #fafafa, #c2c2c2); }
+
+    .selectboxit-btn:hover,
+    .selectboxit-btn:active {
+      color: #333333;
+      background-color: white;
+      background-position: 0 0;
+      background-color: #e6e6e6;
+      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #e6e6e6));
+      background-image: -webkit-linear-gradient(top, white, #e6e6e6);
+      background-image: -moz-linear-gradient(top, white, #e6e6e6);
+      background-image: -ms-linear-gradient(top, white, #e6e6e6);
+      background-image: -o-linear-gradient(top, white, #e6e6e6);
+      background-image: linear-gradient(top, white, #e6e6e6); }
+
+    /*  Font Awesome 3.0.2
+     *  the iconic font designed for use with Twitter Bootstrap
+     *  -------------------------------------------------------
+     *  The full suite of pictographic icons, examples, and documentation
+     *  can be found at: http://fortawesome.github.com/Font-Awesome/
+     *
+     *  License
+     *  -------------------------------------------------------
+     *  - The Font Awesome font is licensed under the SIL Open Font License - http://scripts.sil.org/OFL
+     *  - Font Awesome CSS, LESS, and SASS files are licensed under the MIT License -
+     *    http://opensource.org/licenses/mit-license.html
+     *  - The Font Awesome pictograms are licensed under the CC BY 3.0 License - http://creativecommons.org/licenses/by/3.0/
+     *  - Attribution is no longer required in Font Awesome 3.0, but much appreciated:
+     *    "Font Awesome by Dave Gandy - http://fortawesome.github.com/Font-Awesome"
+     *
+     *  Contact
+     *  -------------------------------------------------------
+     *  Email: dave@davegandy.com
+     *  Twitter: http://twitter.com/fortaweso_me
+     *  Work: Lead Product Designer @ http://kyruus.com
+     */
+    @font-face {
+      font-family: "FontAwesome";
+      src: url("/vendor/fonts/Font-Awesome/font/fontawesome-webfont.eot?v=3.0.1");
+      src: url("/vendor/fonts/Font-Awesome/font/fontawesome-webfont.eot?#iefix&v=3.0.1") format("embedded-opentype"), url("/vendor/fonts/Font-Awesome/font/fontawesome-webfont.woff?v=3.0.1") format("woff"), url("/vendor/fonts/Font-Awesome/font/fontawesome-webfont.ttf?v=3.0.1") format("truetype");
+      font-weight: normal;
+      font-style: normal; }
+
+    /*  Font Awesome styles
+     *  ------------------------------------------------------- */
+    [class^="icon-"],
+    [class*=" icon-"] {
+      font-family: FontAwesome;
+      font-weight: normal;
+      font-style: normal;
+      text-decoration: inherit;
+      -webkit-font-smoothing: antialiased;
+      /* sprites.less reset */
+      display: inline;
+      width: auto;
+      height: auto;
+      line-height: normal;
+      vertical-align: baseline;
+      background-image: none;
+      background-position: 0% 0%;
+      background-repeat: repeat;
+      margin-top: 0; }
+
+    /* more sprites.less reset */
+    .icon-white,
+    .nav-pills > .active > a > [class^="icon-"],
+    .nav-pills > .active > a > [class*=" icon-"],
+    .nav-list > .active > a > [class^="icon-"],
+    .nav-list > .active > a > [class*=" icon-"],
+    .navbar-inverse .nav > .active > a > [class^="icon-"],
+    .navbar-inverse .nav > .active > a > [class*=" icon-"],
+    .dropdown-menu > li > a:hover > [class^="icon-"],
+    .dropdown-menu > li > a:hover > [class*=" icon-"],
+    .dropdown-menu > .active > a > [class^="icon-"],
+    .dropdown-menu > .active > a > [class*=" icon-"],
+    .dropdown-submenu:hover > a > [class^="icon-"],
+    .dropdown-submenu:hover > a > [class*=" icon-"] {
+      background-image: none; }
+
+    [class^="icon-"]:before,
+    [class*=" icon-"]:before {
+      text-decoration: inherit;
+      display: inline-block;
+      speak: none; }
+
+    /* makes sure icons active on rollover in links */
+    a [class^="icon-"],
+    a [class*=" icon-"] {
+      display: inline-block; }
+
+    /* makes the font 33% larger relative to the icon container */
+    .icon-large:before {
+      vertical-align: -10%;
+      font-size: 1.33333em; }
+
+    .btn [class^="icon-"],
+    .btn [class*=" icon-"], .nav [class^="icon-"],
+    .nav [class*=" icon-"] {
+      display: inline;
+      /* keeps button heights with and without icons the same */ }
+      .btn [class^="icon-"].icon-large,
+      .btn [class*=" icon-"].icon-large, .nav [class^="icon-"].icon-large,
+      .nav [class*=" icon-"].icon-large {
+        line-height: 0.9em; }
+      .btn [class^="icon-"].icon-spin,
+      .btn [class*=" icon-"].icon-spin, .nav [class^="icon-"].icon-spin,
+      .nav [class*=" icon-"].icon-spin {
+        display: inline-block; }
+
+    .nav-tabs [class^="icon-"],
+    .nav-tabs [class*=" icon-"], .nav-pills [class^="icon-"],
+    .nav-pills [class*=" icon-"] {
+      /* keeps button heights with and without icons the same */
+      line-height: 0.9em; }
+      .nav-tabs [class^="icon-"].icon-large,
+      .nav-tabs [class*=" icon-"].icon-large, .nav-pills [class^="icon-"].icon-large,
+      .nav-pills [class*=" icon-"].icon-large {
+        line-height: 0.9em; }
+
+    li [class^="icon-"],
+    li [class*=" icon-"], .nav li [class^="icon-"],
+    .nav li [class*=" icon-"] {
+      display: inline-block;
+      width: 1.25em;
+      text-align: center; }
+      li [class^="icon-"].icon-large,
+      li [class*=" icon-"].icon-large, .nav li [class^="icon-"].icon-large,
+      .nav li [class*=" icon-"].icon-large {
+        /* increased font size for icon-large */
+        width: 1.5625em; }
+
+    ul.icons {
+      list-style-type: none;
+      text-indent: -0.75em; }
+      ul.icons li [class^="icon-"],
+      ul.icons li [class*=" icon-"] {
+        width: 0.75em; }
+
+    .icon-muted {
+      color: #eeeeee; }
+
+    .icon-border {
+      border: solid 1px #eeeeee;
+      padding: 0.2em 0.25em 0.15em;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px; }
+
+    .icon-2x {
+      font-size: 2em; }
+      .icon-2x.icon-border {
+        border-width: 2px;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px; }
+
+    .icon-3x {
+      font-size: 3em; }
+      .icon-3x.icon-border {
+        border-width: 3px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px; }
+
+    .icon-4x {
+      font-size: 4em; }
+      .icon-4x.icon-border {
+        border-width: 4px;
+        -webkit-border-radius: 6px;
+        -moz-border-radius: 6px;
+        border-radius: 6px; }
+
+    .pull-right {
+      float: right; }
+
+    .pull-left {
+      float: left; }
+
+    [class^="icon-"].pull-left,
+    [class*=" icon-"].pull-left {
+      margin-right: 0.3em; }
+    [class^="icon-"].pull-right,
+    [class*=" icon-"].pull-right {
+      margin-left: 0.3em; }
+
+    .btn [class^="icon-"].pull-left.icon-2x, .btn [class^="icon-"].pull-right.icon-2x,
+    .btn [class*=" icon-"].pull-left.icon-2x,
+    .btn [class*=" icon-"].pull-right.icon-2x {
+      margin-top: 0.18em; }
+    .btn [class^="icon-"].icon-spin.icon-large,
+    .btn [class*=" icon-"].icon-spin.icon-large {
+      line-height: 0.8em; }
+
+    .btn.btn-small [class^="icon-"].pull-left.icon-2x, .btn.btn-small [class^="icon-"].pull-right.icon-2x,
+    .btn.btn-small [class*=" icon-"].pull-left.icon-2x,
+    .btn.btn-small [class*=" icon-"].pull-right.icon-2x {
+      margin-top: 0.25em; }
+
+    .btn.btn-large [class^="icon-"],
+    .btn.btn-large [class*=" icon-"] {
+      margin-top: 0; }
+      .btn.btn-large [class^="icon-"].pull-left.icon-2x, .btn.btn-large [class^="icon-"].pull-right.icon-2x,
+      .btn.btn-large [class*=" icon-"].pull-left.icon-2x,
+      .btn.btn-large [class*=" icon-"].pull-right.icon-2x {
+        margin-top: 0.05em; }
+      .btn.btn-large [class^="icon-"].pull-left.icon-2x,
+      .btn.btn-large [class*=" icon-"].pull-left.icon-2x {
+        margin-right: 0.2em; }
+      .btn.btn-large [class^="icon-"].pull-right.icon-2x,
+      .btn.btn-large [class*=" icon-"].pull-right.icon-2x {
+        margin-left: 0.2em; }
+
+    .icon-spin {
+      display: inline-block;
+      -moz-animation: spin 2s infinite linear;
+      -o-animation: spin 2s infinite linear;
+      -webkit-animation: spin 2s infinite linear;
+      animation: spin 2s infinite linear; }
+
+    @-moz-keyframes spin {
+      0% {
+        -moz-transform: rotate(0deg); }
+
+      100% {
+        -moz-transform: rotate(359deg); } }
+
+    @-webkit-keyframes spin {
+      0% {
+        -webkit-transform: rotate(0deg); }
+
+      100% {
+        -webkit-transform: rotate(359deg); } }
+
+    @-o-keyframes spin {
+      0% {
+        -o-transform: rotate(0deg); }
+
+      100% {
+        -o-transform: rotate(359deg); } }
+
+    @-ms-keyframes spin {
+      0% {
+        -ms-transform: rotate(0deg); }
+
+      100% {
+        -ms-transform: rotate(359deg); } }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg); }
+
+      100% {
+        transform: rotate(359deg); } }
+
+    @-moz-document url-prefix() {
+      .icon-spin {
+        height: 0.9em; }
+
+      .btn .icon-spin {
+        height: auto; }
+
+      .icon-spin.icon-large {
+        height: 1.25em; }
+
+      .btn .icon-spin.icon-large {
+        height: 0.75em; } }
+
+    /*  Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
+     *  readers do not read off random characters that represent icons */
+    .icon-glass:before {
+      content: "\f000"; }
+
+    .icon-music:before {
+      content: "\f001"; }
+
+    .icon-search:before {
+      content: "\f002"; }
+
+    .icon-envelope:before {
+      content: "\f003"; }
+
+    .icon-heart:before {
+      content: "\f004"; }
+
+    .icon-star:before {
+      content: "\f005"; }
+
+    .icon-star-empty:before {
+      content: "\f006"; }
+
+    .icon-user:before {
+      content: "\f007"; }
+
+    .icon-film:before {
+      content: "\f008"; }
+
+    .icon-th-large:before {
+      content: "\f009"; }
+
+    .icon-th:before {
+      content: "\f00a"; }
+
+    .icon-th-list:before {
+      content: "\f00b"; }
+
+    .icon-ok:before {
+      content: "\f00c"; }
+
+    .icon-remove:before {
+      content: "\f00d"; }
+
+    .icon-zoom-in:before {
+      content: "\f00e"; }
+
+    .icon-zoom-out:before {
+      content: "\f010"; }
+
+    .icon-off:before {
+      content: "\f011"; }
+
+    .icon-signal:before {
+      content: "\f012"; }
+
+    .icon-cog:before {
+      content: "\f013"; }
+
+    .icon-trash:before {
+      content: "\f014"; }
+
+    .icon-home:before {
+      content: "\f015"; }
+
+    .icon-file:before {
+      content: "\f016"; }
+
+    .icon-time:before {
+      content: "\f017"; }
+
+    .icon-road:before {
+      content: "\f018"; }
+
+    .icon-download-alt:before {
+      content: "\f019"; }
+
+    .icon-download:before {
+      content: "\f01a"; }
+
+    .icon-upload:before {
+      content: "\f01b"; }
+
+    .icon-inbox:before {
+      content: "\f01c"; }
+
+    .icon-play-circle:before {
+      content: "\f01d"; }
+
+    .icon-repeat:before {
+      content: "\f01e"; }
+
+    /* \f020 doesn't work in Safari. all shifted one down */
+    .icon-refresh:before {
+      content: "\f021"; }
+
+    .icon-list-alt:before {
+      content: "\f022"; }
+
+    .icon-lock:before {
+      content: "\f023"; }
+
+    .icon-flag:before {
+      content: "\f024"; }
+
+    .icon-headphones:before {
+      content: "\f025"; }
+
+    .icon-volume-off:before {
+      content: "\f026"; }
+
+    .icon-volume-down:before {
+      content: "\f027"; }
+
+    .icon-volume-up:before {
+      content: "\f028"; }
+
+    .icon-qrcode:before {
+      content: "\f029"; }
+
+    .icon-barcode:before {
+      content: "\f02a"; }
+
+    .icon-tag:before {
+      content: "\f02b"; }
+
+    .icon-tags:before {
+      content: "\f02c"; }
+
+    .icon-book:before {
+      content: "\f02d"; }
+
+    .icon-bookmark:before {
+      content: "\f02e"; }
+
+    .icon-print:before {
+      content: "\f02f"; }
+
+    .icon-camera:before {
+      content: "\f030"; }
+
+    .icon-font:before {
+      content: "\f031"; }
+
+    .icon-bold:before {
+      content: "\f032"; }
+
+    .icon-italic:before {
+      content: "\f033"; }
+
+    .icon-text-height:before {
+      content: "\f034"; }
+
+    .icon-text-width:before {
+      content: "\f035"; }
+
+    .icon-align-left:before {
+      content: "\f036"; }
+
+    .icon-align-center:before {
+      content: "\f037"; }
+
+    .icon-align-right:before {
+      content: "\f038"; }
+
+    .icon-align-justify:before {
+      content: "\f039"; }
+
+    .icon-list:before {
+      content: "\f03a"; }
+
+    .icon-indent-left:before {
+      content: "\f03b"; }
+
+    .icon-indent-right:before {
+      content: "\f03c"; }
+
+    .icon-facetime-video:before {
+      content: "\f03d"; }
+
+    .icon-picture:before {
+      content: "\f03e"; }
+
+    .icon-pencil:before {
+      content: "\f040"; }
+
+    .icon-map-marker:before {
+      content: "\f041"; }
+
+    .icon-adjust:before {
+      content: "\f042"; }
+
+    .icon-tint:before {
+      content: "\f043"; }
+
+    .icon-edit:before {
+      content: "\f044"; }
+
+    .icon-share:before {
+      content: "\f045"; }
+
+    .icon-check:before {
+      content: "\f046"; }
+
+    .icon-move:before {
+      content: "\f047"; }
+
+    .icon-step-backward:before {
+      content: "\f048"; }
+
+    .icon-fast-backward:before {
+      content: "\f049"; }
+
+    .icon-backward:before {
+      content: "\f04a"; }
+
+    .icon-play:before {
+      content: "\f04b"; }
+
+    .icon-pause:before {
+      content: "\f04c"; }
+
+    .icon-stop:before {
+      content: "\f04d"; }
+
+    .icon-forward:before {
+      content: "\f04e"; }
+
+    .icon-fast-forward:before {
+      content: "\f050"; }
+
+    .icon-step-forward:before {
+      content: "\f051"; }
+
+    .icon-eject:before {
+      content: "\f052"; }
+
+    .icon-chevron-left:before {
+      content: "\f053"; }
+
+    .icon-chevron-right:before {
+      content: "\f054"; }
+
+    .icon-plus-sign:before {
+      content: "\f055"; }
+
+    .icon-minus-sign:before {
+      content: "\f056"; }
+
+    .icon-remove-sign:before {
+      content: "\f057"; }
+
+    .icon-ok-sign:before {
+      content: "\f058"; }
+
+    .icon-question-sign:before {
+      content: "\f059"; }
+
+    .icon-info-sign:before {
+      content: "\f05a"; }
+
+    .icon-screenshot:before {
+      content: "\f05b"; }
+
+    .icon-remove-circle:before {
+      content: "\f05c"; }
+
+    .icon-ok-circle:before {
+      content: "\f05d"; }
+
+    .icon-ban-circle:before {
+      content: "\f05e"; }
+
+    .icon-arrow-left:before {
+      content: "\f060"; }
+
+    .icon-arrow-right:before {
+      content: "\f061"; }
+
+    .icon-arrow-up:before {
+      content: "\f062"; }
+
+    .icon-arrow-down:before {
+      content: "\f063"; }
+
+    .icon-share-alt:before {
+      content: "\f064"; }
+
+    .icon-resize-full:before {
+      content: "\f065"; }
+
+    .icon-resize-small:before {
+      content: "\f066"; }
+
+    .icon-plus:before {
+      content: "\f067"; }
+
+    .icon-minus:before {
+      content: "\f068"; }
+
+    .icon-asterisk:before {
+      content: "\f069"; }
+
+    .icon-exclamation-sign:before {
+      content: "\f06a"; }
+
+    .icon-gift:before {
+      content: "\f06b"; }
+
+    .icon-leaf:before {
+      content: "\f06c"; }
+
+    .icon-fire:before {
+      content: "\f06d"; }
+
+    .icon-eye-open:before {
+      content: "\f06e"; }
+
+    .icon-eye-close:before {
+      content: "\f070"; }
+
+    .icon-warning-sign:before {
+      content: "\f071"; }
+
+    .icon-plane:before {
+      content: "\f072"; }
+
+    .icon-calendar:before {
+      content: "\f073"; }
+
+    .icon-random:before {
+      content: "\f074"; }
+
+    .icon-comment:before {
+      content: "\f075"; }
+
+    .icon-magnet:before {
+      content: "\f076"; }
+
+    .icon-chevron-up:before {
+      content: "\f077"; }
+
+    .icon-chevron-down:before {
+      content: "\f078"; }
+
+    .icon-retweet:before {
+      content: "\f079"; }
+
+    .icon-shopping-cart:before {
+      content: "\f07a"; }
+
+    .icon-folder-close:before {
+      content: "\f07b"; }
+
+    .icon-folder-open:before {
+      content: "\f07c"; }
+
+    .icon-resize-vertical:before {
+      content: "\f07d"; }
+
+    .icon-resize-horizontal:before {
+      content: "\f07e"; }
+
+    .icon-bar-chart:before {
+      content: "\f080"; }
+
+    .icon-twitter-sign:before {
+      content: "\f081"; }
+
+    .icon-facebook-sign:before {
+      content: "\f082"; }
+
+    .icon-camera-retro:before {
+      content: "\f083"; }
+
+    .icon-key:before {
+      content: "\f084"; }
+
+    .icon-cogs:before {
+      content: "\f085"; }
+
+    .icon-comments:before {
+      content: "\f086"; }
+
+    .icon-thumbs-up:before {
+      content: "\f087"; }
+
+    .icon-thumbs-down:before {
+      content: "\f088"; }
+
+    .icon-star-half:before {
+      content: "\f089"; }
+
+    .icon-heart-empty:before {
+      content: "\f08a"; }
+
+    .icon-signout:before {
+      content: "\f08b"; }
+
+    .icon-linkedin-sign:before {
+      content: "\f08c"; }
+
+    .icon-pushpin:before {
+      content: "\f08d"; }
+
+    .icon-external-link:before {
+      content: "\f08e"; }
+
+    .icon-signin:before {
+      content: "\f090"; }
+
+    .icon-trophy:before {
+      content: "\f091"; }
+
+    .icon-github-sign:before {
+      content: "\f092"; }
+
+    .icon-upload-alt:before {
+      content: "\f093"; }
+
+    .icon-lemon:before {
+      content: "\f094"; }
+
+    .icon-phone:before {
+      content: "\f095"; }
+
+    .icon-check-empty:before {
+      content: "\f096"; }
+
+    .icon-bookmark-empty:before {
+      content: "\f097"; }
+
+    .icon-phone-sign:before {
+      content: "\f098"; }
+
+    .icon-twitter:before {
+      content: "\f099"; }
+
+    .icon-facebook:before {
+      content: "\f09a"; }
+
+    .icon-github:before {
+      content: "\f09b"; }
+
+    .icon-unlock:before {
+      content: "\f09c"; }
+
+    .icon-credit-card:before {
+      content: "\f09d"; }
+
+    .icon-rss:before {
+      content: "\f09e"; }
+
+    .icon-hdd:before {
+      content: "\f0a0"; }
+
+    .icon-bullhorn:before {
+      content: "\f0a1"; }
+
+    .icon-bell:before {
+      content: "\f0a2"; }
+
+    .icon-certificate:before {
+      content: "\f0a3"; }
+
+    .icon-hand-right:before {
+      content: "\f0a4"; }
+
+    .icon-hand-left:before {
+      content: "\f0a5"; }
+
+    .icon-hand-up:before {
+      content: "\f0a6"; }
+
+    .icon-hand-down:before {
+      content: "\f0a7"; }
+
+    .icon-circle-arrow-left:before {
+      content: "\f0a8"; }
+
+    .icon-circle-arrow-right:before {
+      content: "\f0a9"; }
+
+    .icon-circle-arrow-up:before {
+      content: "\f0aa"; }
+
+    .icon-circle-arrow-down:before {
+      content: "\f0ab"; }
+
+    .icon-globe:before {
+      content: "\f0ac"; }
+
+    .icon-wrench:before {
+      content: "\f0ad"; }
+
+    .icon-tasks:before {
+      content: "\f0ae"; }
+
+    .icon-filter:before {
+      content: "\f0b0"; }
+
+    .icon-briefcase:before {
+      content: "\f0b1"; }
+
+    .icon-fullscreen:before {
+      content: "\f0b2"; }
+
+    .icon-group:before {
+      content: "\f0c0"; }
+
+    .icon-link:before {
+      content: "\f0c1"; }
+
+    .icon-cloud:before {
+      content: "\f0c2"; }
+
+    .icon-beaker:before {
+      content: "\f0c3"; }
+
+    .icon-cut:before {
+      content: "\f0c4"; }
+
+    .icon-copy:before {
+      content: "\f0c5"; }
+
+    .icon-paper-clip:before {
+      content: "\f0c6"; }
+
+    .icon-save:before {
+      content: "\f0c7"; }
+
+    .icon-sign-blank:before {
+      content: "\f0c8"; }
+
+    .icon-reorder:before {
+      content: "\f0c9"; }
+
+    .icon-list-ul:before {
+      content: "\f0ca"; }
+
+    .icon-list-ol:before {
+      content: "\f0cb"; }
+
+    .icon-strikethrough:before {
+      content: "\f0cc"; }
+
+    .icon-underline:before {
+      content: "\f0cd"; }
+
+    .icon-table:before {
+      content: "\f0ce"; }
+
+    .icon-magic:before {
+      content: "\f0d0"; }
+
+    .icon-truck:before {
+      content: "\f0d1"; }
+
+    .icon-pinterest:before {
+      content: "\f0d2"; }
+
+    .icon-pinterest-sign:before {
+      content: "\f0d3"; }
+
+    .icon-google-plus-sign:before {
+      content: "\f0d4"; }
+
+    .icon-google-plus:before {
+      content: "\f0d5"; }
+
+    .icon-money:before {
+      content: "\f0d6"; }
+
+    .icon-caret-down:before {
+      content: "\f0d7"; }
+
+    .icon-caret-up:before {
+      content: "\f0d8"; }
+
+    .icon-caret-left:before {
+      content: "\f0d9"; }
+
+    .icon-caret-right:before {
+      content: "\f0da"; }
+
+    .icon-columns:before {
+      content: "\f0db"; }
+
+    .icon-sort:before {
+      content: "\f0dc"; }
+
+    .icon-sort-down:before {
+      content: "\f0dd"; }
+
+    .icon-sort-up:before {
+      content: "\f0de"; }
+
+    .icon-envelope-alt:before {
+      content: "\f0e0"; }
+
+    .icon-linkedin:before {
+      content: "\f0e1"; }
+
+    .icon-undo:before {
+      content: "\f0e2"; }
+
+    .icon-legal:before {
+      content: "\f0e3"; }
+
+    .icon-dashboard:before {
+      content: "\f0e4"; }
+
+    .icon-comment-alt:before {
+      content: "\f0e5"; }
+
+    .icon-comments-alt:before {
+      content: "\f0e6"; }
+
+    .icon-bolt:before {
+      content: "\f0e7"; }
+
+    .icon-sitemap:before {
+      content: "\f0e8"; }
+
+    .icon-umbrella:before {
+      content: "\f0e9"; }
+
+    .icon-paste:before {
+      content: "\f0ea"; }
+
+    .icon-lightbulb:before {
+      content: "\f0eb"; }
+
+    .icon-exchange:before {
+      content: "\f0ec"; }
+
+    .icon-cloud-download:before {
+      content: "\f0ed"; }
+
+    .icon-cloud-upload:before {
+      content: "\f0ee"; }
+
+    .icon-user-md:before {
+      content: "\f0f0"; }
+
+    .icon-stethoscope:before {
+      content: "\f0f1"; }
+
+    .icon-suitcase:before {
+      content: "\f0f2"; }
+
+    .icon-bell-alt:before {
+      content: "\f0f3"; }
+
+    .icon-coffee:before {
+      content: "\f0f4"; }
+
+    .icon-food:before {
+      content: "\f0f5"; }
+
+    .icon-file-alt:before {
+      content: "\f0f6"; }
+
+    .icon-building:before {
+      content: "\f0f7"; }
+
+    .icon-hospital:before {
+      content: "\f0f8"; }
+
+    .icon-ambulance:before {
+      content: "\f0f9"; }
+
+    .icon-medkit:before {
+      content: "\f0fa"; }
+
+    .icon-fighter-jet:before {
+      content: "\f0fb"; }
+
+    .icon-beer:before {
+      content: "\f0fc"; }
+
+    .icon-h-sign:before {
+      content: "\f0fd"; }
+
+    .icon-plus-sign-alt:before {
+      content: "\f0fe"; }
+
+    .icon-double-angle-left:before {
+      content: "\f100"; }
+
+    .icon-double-angle-right:before {
+      content: "\f101"; }
+
+    .icon-double-angle-up:before {
+      content: "\f102"; }
+
+    .icon-double-angle-down:before {
+      content: "\f103"; }
+
+    .icon-angle-left:before {
+      content: "\f104"; }
+
+    .icon-angle-right:before {
+      content: "\f105"; }
+
+    .icon-angle-up:before {
+      content: "\f106"; }
+
+    .icon-angle-down:before {
+      content: "\f107"; }
+
+    .icon-desktop:before {
+      content: "\f108"; }
+
+    .icon-laptop:before {
+      content: "\f109"; }
+
+    .icon-tablet:before {
+      content: "\f10a"; }
+
+    .icon-mobile-phone:before {
+      content: "\f10b"; }
+
+    .icon-circle-blank:before {
+      content: "\f10c"; }
+
+    .icon-quote-left:before {
+      content: "\f10d"; }
+
+    .icon-quote-right:before {
+      content: "\f10e"; }
+
+    .icon-spinner:before {
+      content: "\f110"; }
+
+    .icon-circle:before {
+      content: "\f111"; }
+
+    .icon-reply:before {
+      content: "\f112"; }
+
+    .icon-github-alt:before {
+      content: "\f113"; }
+
+    .icon-folder-close-alt:before {
+      content: "\f114"; }
+
+    .icon-folder-open-alt:before {
+      content: "\f115"; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden; }
+    ]]>
+  </style>
+  <g class="particle-container-vis" transform="translate(0,0)">
+    <rect class="plot" width="696" height="417.59999999999997" x="0" y="0" style="fill: #e1efde;"/>
+    <g class="grid-container">
+      <g class="x" transform="translate(0,0)"/>
+      <g class="x" transform="translate(198.85714285714283,0)"/>
+      <g class="x" transform="translate(397.71428571428567,0)"/>
+      <g class="x" transform="translate(596.5714285714286,0)"/>
+      <g class="y" transform="translate(0,417.6)" background-fill="#FFEEB6"/>
+      <g class="y" transform="translate(0,318.1714285714286)" background-fill="#FFEEB6"/>
+      <g class="y" transform="translate(0,218.74285714285716)" background-fill="#FFEEB6"/>
+      <g class="y" transform="translate(0,119.31428571428573)" background-fill="#FFEEB6"/>
+      <g class="y" transform="translate(0,19.885714285714304)" background-fill="#FFEEB6"/>
+    </g>
+    <svg class="viewport" viewBox="0 0 696 417.59999999999997" x="0" y="0" width="696" height="417.59999999999997">
+      <g class="image-container-below"/>
+      <g class="text-container-below"/>
+      <g class="radial-bonds-container">
+        <path d="M 332.33494785853793,195.8134077889579 L 312.50121525355746 , 180.75282521929063" stroke-width="14.914285936525888" stroke="#767fbf" fill="none" class="radialbond1"/>
+        <path d="M 543.2830467224121,312.7163508551462 L 554.2456389835902 , 334.5718260424478" stroke-width="14.914285936525888" stroke="#767fbf" fill="none" class="radialbond1"/>
+        <path d="M 164.0883015223912,328.2634201322283 L 159.8659930229187 , 303.87336093357635" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond1"/>
+        <path d="M 265.3489616938999,284.6315339224679 L 268.7383792059762 , 259.59923024858745" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond1"/>
+        <path d="M 430.23867906842906,251.56617834908624 L 452.4297932216099 , 261.30314863749913" stroke-width="14.914285936525888" stroke="#767fbf" fill="none" class="radialbond1"/>
+        <path d="M 563.4138581412178,249.39266943250385 L 542.8480723244802 , 263.6223345075335" stroke-width="14.914285936525888" stroke="#767fbf" fill="none" class="radialbond1"/>
+        <path d="M 602.5971597943987,327.67113524845666 L 589.3232934134347 , 306.32971343994143" stroke-width="14.914285936525888" stroke="#767fbf" fill="none" class="radialbond1"/>
+        <path d="M 323.6724169594901,140.38090013776508 L 342.1078025272914 , 156.1404784338815" stroke-width="14.914285936525888" stroke="#767fbf" fill="none" class="radialbond1"/>
+        <path d="M 585.4924654279437,187.4983064379011 L 601.1168150220599 , 205.78329170772008" stroke-width="14.914285936525888" stroke="#767fbf" fill="none" class="radialbond1"/>
+        <path d="M 387.52022961207797,273.82076429639545 L 381.54113919394354 , 249.34828658785142" stroke-width="14.914285936525888" stroke="#767fbf" fill="none" class="radialbond1"/>
+        <path d="M 502.27199445452004,233.88477369035996 L 521.4837390354701 , 219.1950062615531" stroke-width="14.914285936525888" stroke="#767fbf" fill="none" class="radialbond1"/>
+        <path d="M 89.79431758608136,150.08901476178852 L 86.58077205930437 , 175.2736625943865" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond1"/>
+        <path d="M 272.6858980996268,347.6203438486372 L 298.2857142857143 , 348.000001185281" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond1"/>
+        <path d="M 221.39547320774622,282.55681817190987 L 219.10343619755335 , 305.7903898715973" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond1"/>
+        <path d="M 46.913588353565764,211.83859569004605 L 60.991189292499 , 231.7125567299979" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond1"/>
+        <path d="M 321.312878199986,252.18743149893626 L 328.1142928259713 , 276.41142691203527" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond1"/>
+        <path d="M 249.82995986938477,175.04775990077428 L 237.74310493469238 , 195.3004419054304" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond1"/>
+        <path d="M 117.90789536067416,234.25748528071813 L 142.47644008908952 , 236.3782373428345" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond1"/>
+        <path d="M 237.0106724330357,134.4235596248082 L 221.85755498068673 , 155.66451702117922" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond1"/>
+        <path d="M 110.18888364519391,277.49982891082766 L 115.44703878675188 , 302.3249602930887" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond1"/>
+        <path d="M 489.35802677699496,188.86725850786485 L 492.6791128431048 , 164.81966253008164" stroke-width="14.914285936525888" stroke="#767fbf" fill="none" class="radialbond1"/>
+        <path d="M 430.38475309099465,173.32120857238772 L 442.55642672947477 , 193.06356787000385" stroke-width="14.914285936525888" stroke="#767fbf" fill="none" class="radialbond1"/>
+        <path d="M 312.50121525355746 , 180.75282521929063 L 292.667482648577,165.69224264962335" stroke-width="14.914285936525888" stroke="#e95e5e" fill="none" class="radialbond2"/>
+        <path d="M 554.2456389835902 , 334.5718260424478 L 565.2082312447684,356.42730122974945" stroke-width="14.914285936525888" stroke="#e95e5e" fill="none" class="radialbond2"/>
+        <path d="M 159.8659930229187 , 303.87336093357635 L 155.6436845234462,279.48330173492434" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond2"/>
+        <path d="M 268.7383792059762 , 259.59923024858745 L 272.1277967180524,234.56692657470703" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond2"/>
+        <path d="M 452.4297932216099 , 261.30314863749913 L 474.62090737479076,271.04011892591205" stroke-width="14.914285936525888" stroke="#e95e5e" fill="none" class="radialbond2"/>
+        <path d="M 542.8480723244802 , 263.6223345075335 L 522.2822865077427,277.8519995825631" stroke-width="14.914285936525888" stroke="#e95e5e" fill="none" class="radialbond2"/>
+        <path d="M 589.3232934134347 , 306.32971343994143 L 576.0494270324707,284.98829163142614" stroke-width="14.914285936525888" stroke="#e95e5e" fill="none" class="radialbond2"/>
+        <path d="M 342.1078025272914 , 156.1404784338815 L 360.5431880950928,171.9000567299979" stroke-width="14.914285936525888" stroke="#e95e5e" fill="none" class="radialbond2"/>
+        <path d="M 601.1168150220599 , 205.78329170772008 L 616.7411646161761,224.06827697753909" stroke-width="14.914285936525888" stroke="#e95e5e" fill="none" class="radialbond2"/>
+        <path d="M 381.54113919394354 , 249.34828658785142 L 375.5620487758091,224.87580887930739" stroke-width="14.914285936525888" stroke="#e95e5e" fill="none" class="radialbond2"/>
+        <path d="M 521.4837390354701 , 219.1950062615531 L 540.6954836164202,204.50523883274624" stroke-width="14.914285936525888" stroke="#e95e5e" fill="none" class="radialbond2"/>
+        <path d="M 86.58077205930437 , 175.2736625943865 L 83.36722653252738,200.45831042698453" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond2"/>
+        <path d="M 298.2857142857143 , 348.000001185281 L 323.88553047180176,348.37965852192474" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond2"/>
+        <path d="M 219.10343619755335 , 305.7903898715973 L 216.81139918736048,329.0239615712847" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond2"/>
+        <path d="M 60.991189292499 , 231.7125567299979 L 75.06879023143223,251.58651776994978" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond2"/>
+        <path d="M 328.1142928259713 , 276.41142691203527 L 334.91570745195656,300.6354223251343" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond2"/>
+        <path d="M 237.74310493469238 , 195.3004419054304 L 225.65625,215.55312391008653" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond2"/>
+        <path d="M 142.47644008908952 , 236.3782373428345 L 167.04498481750488,238.49898940495083" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond2"/>
+        <path d="M 221.85755498068673 , 155.66451702117922 L 206.70443752833776,176.90547441755024" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond2"/>
+        <path d="M 115.44703878675188 , 302.3249602930887 L 120.70519392830984,327.15009167534964" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond2"/>
+        <path d="M 492.6791128431048 , 164.81966253008164 L 496.0001989092146,140.7720665522984" stroke-width="14.914285936525888" stroke="#e95e5e" fill="none" class="radialbond2"/>
+        <path d="M 442.55642672947477 , 193.06356787000385 L 454.7281003679548,212.80592716762" stroke-width="14.914285936525888" stroke="#e95e5e" fill="none" class="radialbond2"/>
+      </g>
+      <g class="vdw-lines-container">
+        <line class="attractionforce" x1="332.33494785853793" y1="195.8134077889579" x2="360.5431880950928" y2="171.9000567299979" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="332.33494785853793" y1="195.8134077889579" x2="375.5620487758091" y2="224.87580887930739" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="332.33494785853793" y1="195.8134077889579" x2="321.312878199986" y2="252.18743149893626" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="292.667482648577" y1="165.69224264962335" x2="323.6724169594901" y2="140.38090013776508" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="292.667482648577" y1="165.69224264962335" x2="249.82995986938477" y2="175.04775990077428" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="292.667482648577" y1="165.69224264962335" x2="237.0106724330357" y2="134.4235596248082" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="543.2830467224121" y1="312.7163508551462" x2="522.2822865077427" y2="277.8519995825631" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="543.2830467224121" y1="312.7163508551462" x2="576.0494270324707" y2="284.98829163142614" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="565.2082312447684" y1="356.42730122974945" x2="602.5971597943987" y2="327.67113524845666" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="164.0883015223912" y1="328.2634201322283" x2="216.81139918736048" y2="329.0239615712847" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="164.0883015223912" y1="328.2634201322283" x2="120.70519392830984" y2="327.15009167534964" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="155.6436845234462" y1="279.48330173492434" x2="221.39547320774622" y2="282.55681817190987" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="155.6436845234462" y1="279.48330173492434" x2="117.90789536067416" y2="234.25748528071813" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="155.6436845234462" y1="279.48330173492434" x2="167.04498481750488" y2="238.49898940495083" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="155.6436845234462" y1="279.48330173492434" x2="110.18888364519391" y2="277.49982891082766" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="155.6436845234462" y1="279.48330173492434" x2="120.70519392830984" y2="327.15009167534964" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="265.3489616938999" y1="284.6315339224679" x2="272.6858980996268" y2="347.6203438486372" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="265.3489616938999" y1="284.6315339224679" x2="221.39547320774622" y2="282.55681817190987" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="265.3489616938999" y1="284.6315339224679" x2="216.81139918736048" y2="329.0239615712847" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="265.3489616938999" y1="284.6315339224679" x2="321.312878199986" y2="252.18743149893626" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="272.1277967180524" y1="234.56692657470703" x2="321.312878199986" y2="252.18743149893626" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="272.1277967180524" y1="234.56692657470703" x2="249.82995986938477" y2="175.04775990077428" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="272.1277967180524" y1="234.56692657470703" x2="225.65625" y2="215.55312391008653" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="430.23867906842906" y1="251.56617834908624" x2="375.5620487758091" y2="224.87580887930739" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="430.23867906842906" y1="251.56617834908624" x2="454.7281003679548" y2="212.80592716762" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="474.62090737479076" y1="271.04011892591205" x2="502.27199445452004" y2="233.88477369035996" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="563.4138581412178" y1="249.39266943250385" x2="576.0494270324707" y2="284.98829163142614" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="563.4138581412178" y1="249.39266943250385" x2="616.7411646161761" y2="224.06827697753909" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="563.4138581412178" y1="249.39266943250385" x2="540.6954836164202" y2="204.50523883274624" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="522.2822865077427" y1="277.8519995825631" x2="502.27199445452004" y2="233.88477369035996" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="585.4924654279437" y1="187.4983064379011" x2="540.6954836164202" y2="204.50523883274624" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="387.52022961207797" y1="273.82076429639545" x2="334.91570745195656" y2="300.6354223251343" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="375.5620487758091" y1="224.87580887930739" x2="321.312878199986" y2="252.18743149893626" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="502.27199445452004" y1="233.88477369035996" x2="454.7281003679548" y2="212.80592716762" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="540.6954836164202" y1="204.50523883274624" x2="489.35802677699496" y2="188.86725850786485" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="83.36722653252738" y1="200.45831042698453" x2="46.913588353565764" y2="211.83859569004605" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="83.36722653252738" y1="200.45831042698453" x2="75.06879023143223" y2="251.58651776994978" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="83.36722653252738" y1="200.45831042698453" x2="117.90789536067416" y2="234.25748528071813" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="272.6858980996268" y1="347.6203438486372" x2="216.81139918736048" y2="329.0239615712847" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="323.88553047180176" y1="348.37965852192474" x2="334.91570745195656" y2="300.6354223251343" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="75.06879023143223" y1="251.58651776994978" x2="117.90789536067416" y2="234.25748528071813" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="75.06879023143223" y1="251.58651776994978" x2="110.18888364519391" y2="277.49982891082766" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="249.82995986938477" y1="175.04775990077428" x2="237.0106724330357" y2="134.4235596248082" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="249.82995986938477" y1="175.04775990077428" x2="206.70443752833776" y2="176.90547441755024" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="225.65625" y1="215.55312391008653" x2="167.04498481750488" y2="238.49898940495083" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="225.65625" y1="215.55312391008653" x2="206.70443752833776" y2="176.90547441755024" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="117.90789536067416" y1="234.25748528071813" x2="110.18888364519391" y2="277.49982891082766" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="489.35802677699496" y1="188.86725850786485" x2="454.7281003679548" y2="212.80592716762" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+      </g>
+      <g class="main-container">
+        <defs>
+          <marker id="Triangle-velocity" viewBox="0 0 10 10" refX="0" refY="5" markerUnits="strokeWidth" markerWidth="4" markerHeight="3" orient="auto" stroke="#000" fill="#000">
+            <path d="M 0 0 L 10 5 L 0 10 z"/>
+          </marker>
+          <marker id="Triangle-force" viewBox="0 0 10 10" refX="0" refY="5" markerUnits="strokeWidth" markerWidth="4" markerHeight="3" orient="auto" stroke="#169C30" fill="#169C30">
+            <path d="M 0 0 L 10 5 L 0 10 z"/>
+          </marker>
+          <radialGradient id="ke-shading-0" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f2f2f2" offset="40%"/>
+            <stop stop-color="#a4a4a4" offset="80%"/>
+            <stop stop-color="#f2f2f2" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-1" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f3eded" offset="40%"/>
+            <stop stop-color="#a89f9f" offset="80%"/>
+            <stop stop-color="#f3eded" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-2" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f3e9e9" offset="40%"/>
+            <stop stop-color="#ab9999" offset="80%"/>
+            <stop stop-color="#f3e9e9" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-3" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f4e4e4" offset="40%"/>
+            <stop stop-color="#af9494" offset="80%"/>
+            <stop stop-color="#f4e4e4" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-4" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f4e0e0" offset="40%"/>
+            <stop stop-color="#b38f8f" offset="80%"/>
+            <stop stop-color="#f4e0e0" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-5" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f5dbdb" offset="40%"/>
+            <stop stop-color="#b68a8a" offset="80%"/>
+            <stop stop-color="#f5dbdb" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-6" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f5d7d7" offset="40%"/>
+            <stop stop-color="#ba8484" offset="80%"/>
+            <stop stop-color="#f5d7d7" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-7" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f6d2d2" offset="40%"/>
+            <stop stop-color="#bd7f7f" offset="80%"/>
+            <stop stop-color="#f6d2d2" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-8" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f6cece" offset="40%"/>
+            <stop stop-color="#c17a7a" offset="80%"/>
+            <stop stop-color="#f6cece" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-9" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f7c9c9" offset="40%"/>
+            <stop stop-color="#c57474" offset="80%"/>
+            <stop stop-color="#f7c9c9" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-10" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f7c4c4" offset="40%"/>
+            <stop stop-color="#c86f6f" offset="80%"/>
+            <stop stop-color="#f7c4c4" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-11" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f8c0c0" offset="40%"/>
+            <stop stop-color="#cc6a6a" offset="80%"/>
+            <stop stop-color="#f8c0c0" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-12" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f8bbbb" offset="40%"/>
+            <stop stop-color="#d06565" offset="80%"/>
+            <stop stop-color="#f8bbbb" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-13" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f9b7b7" offset="40%"/>
+            <stop stop-color="#d35f5f" offset="80%"/>
+            <stop stop-color="#f9b7b7" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-14" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f9b2b2" offset="40%"/>
+            <stop stop-color="#d75a5a" offset="80%"/>
+            <stop stop-color="#f9b2b2" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-15" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#faaeae" offset="40%"/>
+            <stop stop-color="#db5555" offset="80%"/>
+            <stop stop-color="#faaeae" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-16" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#faa9a9" offset="40%"/>
+            <stop stop-color="#de5050" offset="80%"/>
+            <stop stop-color="#faa9a9" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-17" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#fba4a4" offset="40%"/>
+            <stop stop-color="#e24a4a" offset="80%"/>
+            <stop stop-color="#fba4a4" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-18" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#fba0a0" offset="40%"/>
+            <stop stop-color="#e64545" offset="80%"/>
+            <stop stop-color="#fba0a0" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-19" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#fc9b9b" offset="40%"/>
+            <stop stop-color="#e94040" offset="80%"/>
+            <stop stop-color="#fc9b9b" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-20" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#fc9797" offset="40%"/>
+            <stop stop-color="#ed3a3a" offset="80%"/>
+            <stop stop-color="#fc9797" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-21" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#fd9292" offset="40%"/>
+            <stop stop-color="#f03535" offset="80%"/>
+            <stop stop-color="#fd9292" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-22" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#fd8e8e" offset="40%"/>
+            <stop stop-color="#f43030" offset="80%"/>
+            <stop stop-color="#fd8e8e" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-23" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#fe8989" offset="40%"/>
+            <stop stop-color="#f82b2b" offset="80%"/>
+            <stop stop-color="#fe8989" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-24" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#fe8585" offset="40%"/>
+            <stop stop-color="#fb2525" offset="80%"/>
+            <stop stop-color="#fe8585" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="neg-grad" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#ffefff" offset="0%"/>
+            <stop stop-color="#fdadad" offset="40%"/>
+            <stop stop-color="#e95e5e" offset="80%"/>
+            <stop stop-color="#fdadad" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="pos-grad" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#dfffff" offset="0%"/>
+            <stop stop-color="#9abeff" offset="40%"/>
+            <stop stop-color="#767fbf" offset="80%"/>
+            <stop stop-color="#9abeff" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="neutral-grad" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f2f2f2" offset="40%"/>
+            <stop stop-color="#A4A4A4" offset="80%"/>
+            <stop stop-color="#f2f2f2" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="green-grad" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#dfffef" offset="0%"/>
+            <stop stop-color="#75a643" offset="40%"/>
+            <stop stop-color="#2a7216" offset="80%"/>
+            <stop stop-color="#75a643" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="orange-grad" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#F0E6D1" offset="0%"/>
+            <stop stop-color="#E0A21B" offset="40%"/>
+            <stop stop-color="#AD7F1C" offset="80%"/>
+            <stop stop-color="#E0A21B" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="elem0-grad" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#ffd7d7" offset="0%"/>
+            <stop stop-color="#fc9797" offset="40%"/>
+            <stop stop-color="#b06969" offset="80%"/>
+            <stop stop-color="#fc9797" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="elem1-grad" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#ffffff" offset="0%"/>
+            <stop stop-color="#ffffff" offset="40%"/>
+            <stop stop-color="#b2b2b2" offset="80%"/>
+            <stop stop-color="#ffffff" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="elem2-grad" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#a75fed" offset="0%"/>
+            <stop stop-color="#7543a6" offset="40%"/>
+            <stop stop-color="#512e74" offset="80%"/>
+            <stop stop-color="#7543a6" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="elem3-grad" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#e6e6ff" offset="0%"/>
+            <stop stop-color="#a1a1ff" offset="40%"/>
+            <stop stop-color="#7070b2" offset="80%"/>
+            <stop stop-color="#a1a1ff" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="mark-grad" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#ffff00" offset="0%"/>
+            <stop stop-color="#f8b500" offset="40%"/>
+            <stop stop-color="#ad7e00" offset="80%"/>
+            <stop stop-color="#f8b500" offset="100%"/>
+          </radialGradient>
+        </defs>
+        <circle class="atom draggable" r="19.885714582034517" cx="332.33494785853793" cy="195.8134077889579" fill-opacity="1" fill="url(#pos-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="292.667482648577" cy="165.69224264962335" fill-opacity="1" fill="url(#neg-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="543.2830467224121" cy="312.7163508551462" fill-opacity="1" fill="url(#pos-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="565.2082312447684" cy="356.42730122974945" fill-opacity="1" fill="url(#neg-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="164.0883015223912" cy="328.2634201322283" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="155.6436845234462" cy="279.48330173492434" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="265.3489616938999" cy="284.6315339224679" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="272.1277967180524" cy="234.56692657470703" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="430.23867906842906" cy="251.56617834908624" fill-opacity="1" fill="url(#pos-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="474.62090737479076" cy="271.04011892591205" fill-opacity="1" fill="url(#neg-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="563.4138581412178" cy="249.39266943250385" fill-opacity="1" fill="url(#pos-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="522.2822865077427" cy="277.8519995825631" fill-opacity="1" fill="url(#neg-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="602.5971597943987" cy="327.67113524845666" fill-opacity="1" fill="url(#pos-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="576.0494270324707" cy="284.98829163142614" fill-opacity="1" fill="url(#neg-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="323.6724169594901" cy="140.38090013776508" fill-opacity="1" fill="url(#pos-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="360.5431880950928" cy="171.9000567299979" fill-opacity="1" fill="url(#neg-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="585.4924654279437" cy="187.4983064379011" fill-opacity="1" fill="url(#pos-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="616.7411646161761" cy="224.06827697753909" fill-opacity="1" fill="url(#neg-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="387.52022961207797" cy="273.82076429639545" fill-opacity="1" fill="url(#pos-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="375.5620487758091" cy="224.87580887930739" fill-opacity="1" fill="url(#neg-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="502.27199445452004" cy="233.88477369035996" fill-opacity="1" fill="url(#pos-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="540.6954836164202" cy="204.50523883274624" fill-opacity="1" fill="url(#neg-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="89.79431758608136" cy="150.08901476178852" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="83.36722653252738" cy="200.45831042698453" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="272.6858980996268" cy="347.6203438486372" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="323.88553047180176" cy="348.37965852192474" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="221.39547320774622" cy="282.55681817190987" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="216.81139918736048" cy="329.0239615712847" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="46.913588353565764" cy="211.83859569004605" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="75.06879023143223" cy="251.58651776994978" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="321.312878199986" cy="252.18743149893626" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="334.91570745195656" cy="300.6354223251343" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="249.82995986938477" cy="175.04775990077428" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="225.65625" cy="215.55312391008653" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="117.90789536067416" cy="234.25748528071813" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="167.04498481750488" cy="238.49898940495083" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="237.0106724330357" cy="134.4235596248082" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="206.70443752833776" cy="176.90547441755024" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="110.18888364519391" cy="277.49982891082766" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="120.70519392830984" cy="327.15009167534964" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="489.35802677699496" cy="188.86725850786485" fill-opacity="1" fill="url(#pos-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="496.0001989092146" cy="140.7720665522984" fill-opacity="1" fill="url(#neg-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="430.38475309099465" cy="173.32120857238772" fill-opacity="1" fill="url(#pos-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="454.7281003679548" cy="212.80592716762" fill-opacity="1" fill="url(#neg-grad)"/>
+        <g class="label" transform="translate(332.33494785853793,195.8134077889579)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-9.5" y="0.31em">+</text>
+        </g>
+        <g class="label" transform="translate(292.667482648577,165.69224264962335)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-5.5" y="0.31em">-</text>
+        </g>
+        <g class="label" transform="translate(543.2830467224121,312.7163508551462)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-9.5" y="0.31em">+</text>
+        </g>
+        <g class="label" transform="translate(565.2082312447684,356.42730122974945)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-5.5" y="0.31em">-</text>
+        </g>
+        <g class="label" transform="translate(164.0883015223912,328.2634201322283)"/>
+        <g class="label" transform="translate(155.6436845234462,279.48330173492434)"/>
+        <g class="label" transform="translate(265.3489616938999,284.6315339224679)"/>
+        <g class="label" transform="translate(272.1277967180524,234.56692657470703)"/>
+        <g class="label" transform="translate(430.23867906842906,251.56617834908624)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-9.5" y="0.31em">+</text>
+        </g>
+        <g class="label" transform="translate(474.62090737479076,271.04011892591205)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-5.5" y="0.31em">-</text>
+        </g>
+        <g class="label" transform="translate(563.4138581412178,249.39266943250385)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-9.5" y="0.31em">+</text>
+        </g>
+        <g class="label" transform="translate(522.2822865077427,277.8519995825631)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-5.5" y="0.31em">-</text>
+        </g>
+        <g class="label" transform="translate(602.5971597943987,327.67113524845666)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-9.5" y="0.31em">+</text>
+        </g>
+        <g class="label" transform="translate(576.0494270324707,284.98829163142614)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-5.5" y="0.31em">-</text>
+        </g>
+        <g class="label" transform="translate(323.6724169594901,140.38090013776508)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-9.5" y="0.31em">+</text>
+        </g>
+        <g class="label" transform="translate(360.5431880950928,171.9000567299979)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-5.5" y="0.31em">-</text>
+        </g>
+        <g class="label" transform="translate(585.4924654279437,187.4983064379011)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-9.5" y="0.31em">+</text>
+        </g>
+        <g class="label" transform="translate(616.7411646161761,224.06827697753909)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-5.5" y="0.31em">-</text>
+        </g>
+        <g class="label" transform="translate(387.52022961207797,273.82076429639545)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-9.5" y="0.31em">+</text>
+        </g>
+        <g class="label" transform="translate(375.5620487758091,224.87580887930739)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-5.5" y="0.31em">-</text>
+        </g>
+        <g class="label" transform="translate(502.27199445452004,233.88477369035996)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-9.5" y="0.31em">+</text>
+        </g>
+        <g class="label" transform="translate(540.6954836164202,204.50523883274624)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-5.5" y="0.31em">-</text>
+        </g>
+        <g class="label" transform="translate(89.79431758608136,150.08901476178852)"/>
+        <g class="label" transform="translate(83.36722653252738,200.45831042698453)"/>
+        <g class="label" transform="translate(272.6858980996268,347.6203438486372)"/>
+        <g class="label" transform="translate(323.88553047180176,348.37965852192474)"/>
+        <g class="label" transform="translate(221.39547320774622,282.55681817190987)"/>
+        <g class="label" transform="translate(216.81139918736048,329.0239615712847)"/>
+        <g class="label" transform="translate(46.913588353565764,211.83859569004605)"/>
+        <g class="label" transform="translate(75.06879023143223,251.58651776994978)"/>
+        <g class="label" transform="translate(321.312878199986,252.18743149893626)"/>
+        <g class="label" transform="translate(334.91570745195656,300.6354223251343)"/>
+        <g class="label" transform="translate(249.82995986938477,175.04775990077428)"/>
+        <g class="label" transform="translate(225.65625,215.55312391008653)"/>
+        <g class="label" transform="translate(117.90789536067416,234.25748528071813)"/>
+        <g class="label" transform="translate(167.04498481750488,238.49898940495083)"/>
+        <g class="label" transform="translate(237.0106724330357,134.4235596248082)"/>
+        <g class="label" transform="translate(206.70443752833776,176.90547441755024)"/>
+        <g class="label" transform="translate(110.18888364519391,277.49982891082766)"/>
+        <g class="label" transform="translate(120.70519392830984,327.15009167534964)"/>
+        <g class="label" transform="translate(489.35802677699496,188.86725850786485)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-9.5" y="0.31em">+</text>
+        </g>
+        <g class="label" transform="translate(496.0001989092146,140.7720665522984)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-5.5" y="0.31em">-</text>
+        </g>
+        <g class="label" transform="translate(430.38475309099465,173.32120857238772)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-9.5" y="0.31em">+</text>
+        </g>
+        <g class="label" transform="translate(454.7281003679548,212.80592716762)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-5.5" y="0.31em">-</text>
+        </g>
+      </g>
+      <g class="image-container-top"/>
+      <g class="text-container-top">
+        <g class="textBoxWrapper">
+          <rect class="textBoxFrame text-0" id="text-0" transform="rotate(0 230.56071428571425 45.157714285714306)" style="fill:rgb(245,245,245);opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:0.54;stroke-opacity:1" width="249.59" height="36.971999999999994" rx="6.4799999999999995" ry="8.1" x="214.76571428571427" y="19.885714285714304"/>
+          <text class="textBox" transform="rotate(0 230.56071428571425 45.157714285714306)" x-data="230.56071428571425" y="45.157714285714306" width="696" height="417.59999999999997" xml:space="preserve" font-family="'Lato', sans-serif" font-size="21.06px" fill="black" text-data="Separated oil and water" text-anchor="left" has-host="false">
+            <tspan x="230.56071428571425" dy="0">Separated oil and water </tspan>
+          </text>
+        </g>
+      </g>
+      <g class="brush-container"/>
+    </svg>
+    <g class="icon-container">
+      <image id="heat-bath" x="1%" width="36" height="36" preserveAspectRatio="xMinYMin" xlink:href="upstatement/heatbath.svg" class="opaque-on-hover" style="display: none;">
+        <title>Heatbath active</title>
+      </image>
+      <image id="ke-gradient" x="0" width="39.6" height="108" preserveAspectRatio="xMinYMin" xlink:href="upstatement/ke-gradient.svg" class="opaque-on-hover" style="display: none;">
+        <title>Kinetic energy gradient</title>
+      </image>
+    </g>
+  </g>
+</svg>

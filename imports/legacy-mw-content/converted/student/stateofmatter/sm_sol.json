@@ -19,7 +19,7 @@
   "polarAAEpsilon": -2,
   "viscosity": 1,
   "timeStepsPerTick": 20,
-  "geneticEngineState": "dna",
+  "DNAState": "dna",
   "DNA": "",
   "viewOptions": {
     "viewPortWidth": 4,

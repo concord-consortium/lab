@@ -889,9 +889,9 @@ body:fullscreen .fullscreen {
     stroke: #ffe95a !important; }
   #model-container .genetics .coding-region .glow {
     display: none; }
-  #model-container .genetics .coding-region .nucleo-shape:hover {
+  .no-touch #model-container .genetics .coding-region .nucleo-shape:hover {
     cursor: pointer; }
-    #model-container .genetics .coding-region .nucleo-shape:hover .glow {
+    .no-touch #model-container .genetics .coding-region .nucleo-shape:hover .glow {
       display: inline; }
   #model-container .genetics .nucleotide .bonds {
     stroke: white; }

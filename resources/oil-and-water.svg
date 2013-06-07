@@ -1,0 +1,487 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden" width="696" height="417.6" style="width: 696px; height: 417.6px;">
+  <g class="particle-container-vis" transform="translate(0,0)">
+    <rect class="plot" width="696" height="417.59999999999997" x="0" y="0" style="fill: #e1efde;"/>
+    <g class="grid-container">
+      <g class="x" transform="translate(0,0)"/>
+      <g class="x" transform="translate(198.85714285714283,0)"/>
+      <g class="x" transform="translate(397.71428571428567,0)"/>
+      <g class="x" transform="translate(596.5714285714286,0)"/>
+      <g class="y" transform="translate(0,417.6)" background-fill="#FFEEB6"/>
+      <g class="y" transform="translate(0,318.1714285714286)" background-fill="#FFEEB6"/>
+      <g class="y" transform="translate(0,218.74285714285716)" background-fill="#FFEEB6"/>
+      <g class="y" transform="translate(0,119.31428571428573)" background-fill="#FFEEB6"/>
+      <g class="y" transform="translate(0,19.885714285714304)" background-fill="#FFEEB6"/>
+    </g>
+    <svg class="viewport" viewBox="0 0 696 417.59999999999997" x="0" y="0" width="696" height="417.59999999999997">
+      <g class="image-container-below"/>
+      <g class="text-container-below"/>
+      <g class="radial-bonds-container">
+        <path d="M 332.33494785853793,195.8134077889579 L 312.50121525355746 , 180.75282521929063" stroke-width="14.914285936525888" stroke="#767fbf" fill="none" class="radialbond1"/>
+        <path d="M 543.2830467224121,312.7163508551462 L 554.2456389835902 , 334.5718260424478" stroke-width="14.914285936525888" stroke="#767fbf" fill="none" class="radialbond1"/>
+        <path d="M 164.0883015223912,328.2634201322283 L 159.8659930229187 , 303.87336093357635" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond1"/>
+        <path d="M 265.3489616938999,284.6315339224679 L 268.7383792059762 , 259.59923024858745" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond1"/>
+        <path d="M 430.23867906842906,251.56617834908624 L 452.4297932216099 , 261.30314863749913" stroke-width="14.914285936525888" stroke="#767fbf" fill="none" class="radialbond1"/>
+        <path d="M 563.4138581412178,249.39266943250385 L 542.8480723244802 , 263.6223345075335" stroke-width="14.914285936525888" stroke="#767fbf" fill="none" class="radialbond1"/>
+        <path d="M 602.5971597943987,327.67113524845666 L 589.3232934134347 , 306.32971343994143" stroke-width="14.914285936525888" stroke="#767fbf" fill="none" class="radialbond1"/>
+        <path d="M 323.6724169594901,140.38090013776508 L 342.1078025272914 , 156.1404784338815" stroke-width="14.914285936525888" stroke="#767fbf" fill="none" class="radialbond1"/>
+        <path d="M 585.4924654279437,187.4983064379011 L 601.1168150220599 , 205.78329170772008" stroke-width="14.914285936525888" stroke="#767fbf" fill="none" class="radialbond1"/>
+        <path d="M 387.52022961207797,273.82076429639545 L 381.54113919394354 , 249.34828658785142" stroke-width="14.914285936525888" stroke="#767fbf" fill="none" class="radialbond1"/>
+        <path d="M 502.27199445452004,233.88477369035996 L 521.4837390354701 , 219.1950062615531" stroke-width="14.914285936525888" stroke="#767fbf" fill="none" class="radialbond1"/>
+        <path d="M 89.79431758608136,150.08901476178852 L 86.58077205930437 , 175.2736625943865" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond1"/>
+        <path d="M 272.6858980996268,347.6203438486372 L 298.2857142857143 , 348.000001185281" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond1"/>
+        <path d="M 221.39547320774622,282.55681817190987 L 219.10343619755335 , 305.7903898715973" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond1"/>
+        <path d="M 46.913588353565764,211.83859569004605 L 60.991189292499 , 231.7125567299979" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond1"/>
+        <path d="M 321.312878199986,252.18743149893626 L 328.1142928259713 , 276.41142691203527" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond1"/>
+        <path d="M 249.82995986938477,175.04775990077428 L 237.74310493469238 , 195.3004419054304" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond1"/>
+        <path d="M 117.90789536067416,234.25748528071813 L 142.47644008908952 , 236.3782373428345" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond1"/>
+        <path d="M 237.0106724330357,134.4235596248082 L 221.85755498068673 , 155.66451702117922" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond1"/>
+        <path d="M 110.18888364519391,277.49982891082766 L 115.44703878675188 , 302.3249602930887" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond1"/>
+        <path d="M 489.35802677699496,188.86725850786485 L 492.6791128431048 , 164.81966253008164" stroke-width="14.914285936525888" stroke="#767fbf" fill="none" class="radialbond1"/>
+        <path d="M 430.38475309099465,173.32120857238772 L 442.55642672947477 , 193.06356787000385" stroke-width="14.914285936525888" stroke="#767fbf" fill="none" class="radialbond1"/>
+        <path d="M 312.50121525355746 , 180.75282521929063 L 292.667482648577,165.69224264962335" stroke-width="14.914285936525888" stroke="#e95e5e" fill="none" class="radialbond2"/>
+        <path d="M 554.2456389835902 , 334.5718260424478 L 565.2082312447684,356.42730122974945" stroke-width="14.914285936525888" stroke="#e95e5e" fill="none" class="radialbond2"/>
+        <path d="M 159.8659930229187 , 303.87336093357635 L 155.6436845234462,279.48330173492434" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond2"/>
+        <path d="M 268.7383792059762 , 259.59923024858745 L 272.1277967180524,234.56692657470703" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond2"/>
+        <path d="M 452.4297932216099 , 261.30314863749913 L 474.62090737479076,271.04011892591205" stroke-width="14.914285936525888" stroke="#e95e5e" fill="none" class="radialbond2"/>
+        <path d="M 542.8480723244802 , 263.6223345075335 L 522.2822865077427,277.8519995825631" stroke-width="14.914285936525888" stroke="#e95e5e" fill="none" class="radialbond2"/>
+        <path d="M 589.3232934134347 , 306.32971343994143 L 576.0494270324707,284.98829163142614" stroke-width="14.914285936525888" stroke="#e95e5e" fill="none" class="radialbond2"/>
+        <path d="M 342.1078025272914 , 156.1404784338815 L 360.5431880950928,171.9000567299979" stroke-width="14.914285936525888" stroke="#e95e5e" fill="none" class="radialbond2"/>
+        <path d="M 601.1168150220599 , 205.78329170772008 L 616.7411646161761,224.06827697753909" stroke-width="14.914285936525888" stroke="#e95e5e" fill="none" class="radialbond2"/>
+        <path d="M 381.54113919394354 , 249.34828658785142 L 375.5620487758091,224.87580887930739" stroke-width="14.914285936525888" stroke="#e95e5e" fill="none" class="radialbond2"/>
+        <path d="M 521.4837390354701 , 219.1950062615531 L 540.6954836164202,204.50523883274624" stroke-width="14.914285936525888" stroke="#e95e5e" fill="none" class="radialbond2"/>
+        <path d="M 86.58077205930437 , 175.2736625943865 L 83.36722653252738,200.45831042698453" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond2"/>
+        <path d="M 298.2857142857143 , 348.000001185281 L 323.88553047180176,348.37965852192474" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond2"/>
+        <path d="M 219.10343619755335 , 305.7903898715973 L 216.81139918736048,329.0239615712847" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond2"/>
+        <path d="M 60.991189292499 , 231.7125567299979 L 75.06879023143223,251.58651776994978" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond2"/>
+        <path d="M 328.1142928259713 , 276.41142691203527 L 334.91570745195656,300.6354223251343" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond2"/>
+        <path d="M 237.74310493469238 , 195.3004419054304 L 225.65625,215.55312391008653" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond2"/>
+        <path d="M 142.47644008908952 , 236.3782373428345 L 167.04498481750488,238.49898940495083" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond2"/>
+        <path d="M 221.85755498068673 , 155.66451702117922 L 206.70443752833776,176.90547441755024" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond2"/>
+        <path d="M 115.44703878675188 , 302.3249602930887 L 120.70519392830984,327.15009167534964" stroke-width="14.914285936525888" stroke="#A4A4A4" fill="none" class="radialbond2"/>
+        <path d="M 492.6791128431048 , 164.81966253008164 L 496.0001989092146,140.7720665522984" stroke-width="14.914285936525888" stroke="#e95e5e" fill="none" class="radialbond2"/>
+        <path d="M 442.55642672947477 , 193.06356787000385 L 454.7281003679548,212.80592716762" stroke-width="14.914285936525888" stroke="#e95e5e" fill="none" class="radialbond2"/>
+      </g>
+      <g class="vdw-lines-container">
+        <line class="attractionforce" x1="332.33494785853793" y1="195.8134077889579" x2="360.5431880950928" y2="171.9000567299979" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="332.33494785853793" y1="195.8134077889579" x2="375.5620487758091" y2="224.87580887930739" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="332.33494785853793" y1="195.8134077889579" x2="321.312878199986" y2="252.18743149893626" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="292.667482648577" y1="165.69224264962335" x2="323.6724169594901" y2="140.38090013776508" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="292.667482648577" y1="165.69224264962335" x2="249.82995986938477" y2="175.04775990077428" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="292.667482648577" y1="165.69224264962335" x2="237.0106724330357" y2="134.4235596248082" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="543.2830467224121" y1="312.7163508551462" x2="522.2822865077427" y2="277.8519995825631" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="543.2830467224121" y1="312.7163508551462" x2="576.0494270324707" y2="284.98829163142614" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="565.2082312447684" y1="356.42730122974945" x2="602.5971597943987" y2="327.67113524845666" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="164.0883015223912" y1="328.2634201322283" x2="216.81139918736048" y2="329.0239615712847" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="164.0883015223912" y1="328.2634201322283" x2="120.70519392830984" y2="327.15009167534964" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="155.6436845234462" y1="279.48330173492434" x2="221.39547320774622" y2="282.55681817190987" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="155.6436845234462" y1="279.48330173492434" x2="117.90789536067416" y2="234.25748528071813" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="155.6436845234462" y1="279.48330173492434" x2="167.04498481750488" y2="238.49898940495083" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="155.6436845234462" y1="279.48330173492434" x2="110.18888364519391" y2="277.49982891082766" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="155.6436845234462" y1="279.48330173492434" x2="120.70519392830984" y2="327.15009167534964" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="265.3489616938999" y1="284.6315339224679" x2="272.6858980996268" y2="347.6203438486372" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="265.3489616938999" y1="284.6315339224679" x2="221.39547320774622" y2="282.55681817190987" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="265.3489616938999" y1="284.6315339224679" x2="216.81139918736048" y2="329.0239615712847" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="265.3489616938999" y1="284.6315339224679" x2="321.312878199986" y2="252.18743149893626" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="272.1277967180524" y1="234.56692657470703" x2="321.312878199986" y2="252.18743149893626" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="272.1277967180524" y1="234.56692657470703" x2="249.82995986938477" y2="175.04775990077428" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="272.1277967180524" y1="234.56692657470703" x2="225.65625" y2="215.55312391008653" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="430.23867906842906" y1="251.56617834908624" x2="375.5620487758091" y2="224.87580887930739" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="430.23867906842906" y1="251.56617834908624" x2="454.7281003679548" y2="212.80592716762" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="474.62090737479076" y1="271.04011892591205" x2="502.27199445452004" y2="233.88477369035996" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="563.4138581412178" y1="249.39266943250385" x2="576.0494270324707" y2="284.98829163142614" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="563.4138581412178" y1="249.39266943250385" x2="616.7411646161761" y2="224.06827697753909" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="563.4138581412178" y1="249.39266943250385" x2="540.6954836164202" y2="204.50523883274624" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="522.2822865077427" y1="277.8519995825631" x2="502.27199445452004" y2="233.88477369035996" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="585.4924654279437" y1="187.4983064379011" x2="540.6954836164202" y2="204.50523883274624" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="387.52022961207797" y1="273.82076429639545" x2="334.91570745195656" y2="300.6354223251343" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="375.5620487758091" y1="224.87580887930739" x2="321.312878199986" y2="252.18743149893626" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="502.27199445452004" y1="233.88477369035996" x2="454.7281003679548" y2="212.80592716762" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="540.6954836164202" y1="204.50523883274624" x2="489.35802677699496" y2="188.86725850786485" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="83.36722653252738" y1="200.45831042698453" x2="46.913588353565764" y2="211.83859569004605" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="83.36722653252738" y1="200.45831042698453" x2="75.06879023143223" y2="251.58651776994978" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="83.36722653252738" y1="200.45831042698453" x2="117.90789536067416" y2="234.25748528071813" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="272.6858980996268" y1="347.6203438486372" x2="216.81139918736048" y2="329.0239615712847" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="323.88553047180176" y1="348.37965852192474" x2="334.91570745195656" y2="300.6354223251343" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="75.06879023143223" y1="251.58651776994978" x2="117.90789536067416" y2="234.25748528071813" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="75.06879023143223" y1="251.58651776994978" x2="110.18888364519391" y2="277.49982891082766" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="249.82995986938477" y1="175.04775990077428" x2="237.0106724330357" y2="134.4235596248082" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="249.82995986938477" y1="175.04775990077428" x2="206.70443752833776" y2="176.90547441755024" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="225.65625" y1="215.55312391008653" x2="167.04498481750488" y2="238.49898940495083" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="225.65625" y1="215.55312391008653" x2="206.70443752833776" y2="176.90547441755024" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="117.90789536067416" y1="234.25748528071813" x2="110.18888364519391" y2="277.49982891082766" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+        <line class="attractionforce" x1="489.35802677699496" y1="188.86725850786485" x2="454.7281003679548" y2="212.80592716762" style="stroke-width: 3.9771428571428573px; stroke-dasharray: 5.965714285714284px, 3.9771428571428573px;"/>
+      </g>
+      <g class="main-container">
+        <defs>
+          <marker id="Triangle-velocity" viewBox="0 0 10 10" refX="0" refY="5" markerUnits="strokeWidth" markerWidth="4" markerHeight="3" orient="auto" stroke="#000" fill="#000">
+            <path d="M 0 0 L 10 5 L 0 10 z"/>
+          </marker>
+          <marker id="Triangle-force" viewBox="0 0 10 10" refX="0" refY="5" markerUnits="strokeWidth" markerWidth="4" markerHeight="3" orient="auto" stroke="#169C30" fill="#169C30">
+            <path d="M 0 0 L 10 5 L 0 10 z"/>
+          </marker>
+          <radialGradient id="ke-shading-0" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f2f2f2" offset="40%"/>
+            <stop stop-color="#a4a4a4" offset="80%"/>
+            <stop stop-color="#f2f2f2" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-1" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f3eded" offset="40%"/>
+            <stop stop-color="#a89f9f" offset="80%"/>
+            <stop stop-color="#f3eded" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-2" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f3e9e9" offset="40%"/>
+            <stop stop-color="#ab9999" offset="80%"/>
+            <stop stop-color="#f3e9e9" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-3" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f4e4e4" offset="40%"/>
+            <stop stop-color="#af9494" offset="80%"/>
+            <stop stop-color="#f4e4e4" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-4" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f4e0e0" offset="40%"/>
+            <stop stop-color="#b38f8f" offset="80%"/>
+            <stop stop-color="#f4e0e0" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-5" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f5dbdb" offset="40%"/>
+            <stop stop-color="#b68a8a" offset="80%"/>
+            <stop stop-color="#f5dbdb" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-6" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f5d7d7" offset="40%"/>
+            <stop stop-color="#ba8484" offset="80%"/>
+            <stop stop-color="#f5d7d7" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-7" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f6d2d2" offset="40%"/>
+            <stop stop-color="#bd7f7f" offset="80%"/>
+            <stop stop-color="#f6d2d2" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-8" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f6cece" offset="40%"/>
+            <stop stop-color="#c17a7a" offset="80%"/>
+            <stop stop-color="#f6cece" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-9" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f7c9c9" offset="40%"/>
+            <stop stop-color="#c57474" offset="80%"/>
+            <stop stop-color="#f7c9c9" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-10" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f7c4c4" offset="40%"/>
+            <stop stop-color="#c86f6f" offset="80%"/>
+            <stop stop-color="#f7c4c4" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-11" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f8c0c0" offset="40%"/>
+            <stop stop-color="#cc6a6a" offset="80%"/>
+            <stop stop-color="#f8c0c0" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-12" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f8bbbb" offset="40%"/>
+            <stop stop-color="#d06565" offset="80%"/>
+            <stop stop-color="#f8bbbb" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-13" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f9b7b7" offset="40%"/>
+            <stop stop-color="#d35f5f" offset="80%"/>
+            <stop stop-color="#f9b7b7" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-14" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f9b2b2" offset="40%"/>
+            <stop stop-color="#d75a5a" offset="80%"/>
+            <stop stop-color="#f9b2b2" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-15" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#faaeae" offset="40%"/>
+            <stop stop-color="#db5555" offset="80%"/>
+            <stop stop-color="#faaeae" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-16" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#faa9a9" offset="40%"/>
+            <stop stop-color="#de5050" offset="80%"/>
+            <stop stop-color="#faa9a9" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-17" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#fba4a4" offset="40%"/>
+            <stop stop-color="#e24a4a" offset="80%"/>
+            <stop stop-color="#fba4a4" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-18" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#fba0a0" offset="40%"/>
+            <stop stop-color="#e64545" offset="80%"/>
+            <stop stop-color="#fba0a0" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-19" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#fc9b9b" offset="40%"/>
+            <stop stop-color="#e94040" offset="80%"/>
+            <stop stop-color="#fc9b9b" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-20" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#fc9797" offset="40%"/>
+            <stop stop-color="#ed3a3a" offset="80%"/>
+            <stop stop-color="#fc9797" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-21" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#fd9292" offset="40%"/>
+            <stop stop-color="#f03535" offset="80%"/>
+            <stop stop-color="#fd9292" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-22" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#fd8e8e" offset="40%"/>
+            <stop stop-color="#f43030" offset="80%"/>
+            <stop stop-color="#fd8e8e" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-23" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#fe8989" offset="40%"/>
+            <stop stop-color="#f82b2b" offset="80%"/>
+            <stop stop-color="#fe8989" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="ke-shading-24" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#fe8585" offset="40%"/>
+            <stop stop-color="#fb2525" offset="80%"/>
+            <stop stop-color="#fe8585" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="neg-grad" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#ffefff" offset="0%"/>
+            <stop stop-color="#fdadad" offset="40%"/>
+            <stop stop-color="#e95e5e" offset="80%"/>
+            <stop stop-color="#fdadad" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="pos-grad" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#dfffff" offset="0%"/>
+            <stop stop-color="#9abeff" offset="40%"/>
+            <stop stop-color="#767fbf" offset="80%"/>
+            <stop stop-color="#9abeff" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="neutral-grad" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#FFFFFF" offset="0%"/>
+            <stop stop-color="#f2f2f2" offset="40%"/>
+            <stop stop-color="#A4A4A4" offset="80%"/>
+            <stop stop-color="#f2f2f2" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="green-grad" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#dfffef" offset="0%"/>
+            <stop stop-color="#75a643" offset="40%"/>
+            <stop stop-color="#2a7216" offset="80%"/>
+            <stop stop-color="#75a643" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="orange-grad" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#F0E6D1" offset="0%"/>
+            <stop stop-color="#E0A21B" offset="40%"/>
+            <stop stop-color="#AD7F1C" offset="80%"/>
+            <stop stop-color="#E0A21B" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="elem0-grad" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#ffd7d7" offset="0%"/>
+            <stop stop-color="#fc9797" offset="40%"/>
+            <stop stop-color="#b06969" offset="80%"/>
+            <stop stop-color="#fc9797" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="elem1-grad" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#ffffff" offset="0%"/>
+            <stop stop-color="#ffffff" offset="40%"/>
+            <stop stop-color="#b2b2b2" offset="80%"/>
+            <stop stop-color="#ffffff" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="elem2-grad" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#a75fed" offset="0%"/>
+            <stop stop-color="#7543a6" offset="40%"/>
+            <stop stop-color="#512e74" offset="80%"/>
+            <stop stop-color="#7543a6" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="elem3-grad" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#e6e6ff" offset="0%"/>
+            <stop stop-color="#a1a1ff" offset="40%"/>
+            <stop stop-color="#7070b2" offset="80%"/>
+            <stop stop-color="#a1a1ff" offset="100%"/>
+          </radialGradient>
+          <radialGradient id="mark-grad" cx="50%" cy="47%" r="53%" fx="35%" fy="30%">
+            <stop stop-color="#ffff00" offset="0%"/>
+            <stop stop-color="#f8b500" offset="40%"/>
+            <stop stop-color="#ad7e00" offset="80%"/>
+            <stop stop-color="#f8b500" offset="100%"/>
+          </radialGradient>
+        </defs>
+        <circle class="atom draggable" r="19.885714582034517" cx="332.33494785853793" cy="195.8134077889579" fill-opacity="1" fill="url(#pos-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="292.667482648577" cy="165.69224264962335" fill-opacity="1" fill="url(#neg-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="543.2830467224121" cy="312.7163508551462" fill-opacity="1" fill="url(#pos-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="565.2082312447684" cy="356.42730122974945" fill-opacity="1" fill="url(#neg-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="164.0883015223912" cy="328.2634201322283" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="155.6436845234462" cy="279.48330173492434" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="265.3489616938999" cy="284.6315339224679" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="272.1277967180524" cy="234.56692657470703" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="430.23867906842906" cy="251.56617834908624" fill-opacity="1" fill="url(#pos-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="474.62090737479076" cy="271.04011892591205" fill-opacity="1" fill="url(#neg-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="563.4138581412178" cy="249.39266943250385" fill-opacity="1" fill="url(#pos-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="522.2822865077427" cy="277.8519995825631" fill-opacity="1" fill="url(#neg-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="602.5971597943987" cy="327.67113524845666" fill-opacity="1" fill="url(#pos-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="576.0494270324707" cy="284.98829163142614" fill-opacity="1" fill="url(#neg-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="323.6724169594901" cy="140.38090013776508" fill-opacity="1" fill="url(#pos-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="360.5431880950928" cy="171.9000567299979" fill-opacity="1" fill="url(#neg-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="585.4924654279437" cy="187.4983064379011" fill-opacity="1" fill="url(#pos-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="616.7411646161761" cy="224.06827697753909" fill-opacity="1" fill="url(#neg-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="387.52022961207797" cy="273.82076429639545" fill-opacity="1" fill="url(#pos-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="375.5620487758091" cy="224.87580887930739" fill-opacity="1" fill="url(#neg-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="502.27199445452004" cy="233.88477369035996" fill-opacity="1" fill="url(#pos-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="540.6954836164202" cy="204.50523883274624" fill-opacity="1" fill="url(#neg-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="89.79431758608136" cy="150.08901476178852" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="83.36722653252738" cy="200.45831042698453" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="272.6858980996268" cy="347.6203438486372" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="323.88553047180176" cy="348.37965852192474" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="221.39547320774622" cy="282.55681817190987" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="216.81139918736048" cy="329.0239615712847" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="46.913588353565764" cy="211.83859569004605" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="75.06879023143223" cy="251.58651776994978" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="321.312878199986" cy="252.18743149893626" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="334.91570745195656" cy="300.6354223251343" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="249.82995986938477" cy="175.04775990077428" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="225.65625" cy="215.55312391008653" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="117.90789536067416" cy="234.25748528071813" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="167.04498481750488" cy="238.49898940495083" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="237.0106724330357" cy="134.4235596248082" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="206.70443752833776" cy="176.90547441755024" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="110.18888364519391" cy="277.49982891082766" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="120.70519392830984" cy="327.15009167534964" fill-opacity="1" fill="url(#neutral-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="489.35802677699496" cy="188.86725850786485" fill-opacity="1" fill="url(#pos-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="496.0001989092146" cy="140.7720665522984" fill-opacity="1" fill="url(#neg-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="430.38475309099465" cy="173.32120857238772" fill-opacity="1" fill="url(#pos-grad)"/>
+        <circle class="atom draggable" r="19.885714582034517" cx="454.7281003679548" cy="212.80592716762" fill-opacity="1" fill="url(#neg-grad)"/>
+        <g class="label" transform="translate(332.33494785853793,195.8134077889579)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-9.5" y="0.31em">+</text>
+        </g>
+        <g class="label" transform="translate(292.667482648577,165.69224264962335)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-5.5" y="0.31em">-</text>
+        </g>
+        <g class="label" transform="translate(543.2830467224121,312.7163508551462)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-9.5" y="0.31em">+</text>
+        </g>
+        <g class="label" transform="translate(565.2082312447684,356.42730122974945)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-5.5" y="0.31em">-</text>
+        </g>
+        <g class="label" transform="translate(164.0883015223912,328.2634201322283)"/>
+        <g class="label" transform="translate(155.6436845234462,279.48330173492434)"/>
+        <g class="label" transform="translate(265.3489616938999,284.6315339224679)"/>
+        <g class="label" transform="translate(272.1277967180524,234.56692657470703)"/>
+        <g class="label" transform="translate(430.23867906842906,251.56617834908624)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-9.5" y="0.31em">+</text>
+        </g>
+        <g class="label" transform="translate(474.62090737479076,271.04011892591205)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-5.5" y="0.31em">-</text>
+        </g>
+        <g class="label" transform="translate(563.4138581412178,249.39266943250385)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-9.5" y="0.31em">+</text>
+        </g>
+        <g class="label" transform="translate(522.2822865077427,277.8519995825631)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-5.5" y="0.31em">-</text>
+        </g>
+        <g class="label" transform="translate(602.5971597943987,327.67113524845666)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-9.5" y="0.31em">+</text>
+        </g>
+        <g class="label" transform="translate(576.0494270324707,284.98829163142614)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-5.5" y="0.31em">-</text>
+        </g>
+        <g class="label" transform="translate(323.6724169594901,140.38090013776508)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-9.5" y="0.31em">+</text>
+        </g>
+        <g class="label" transform="translate(360.5431880950928,171.9000567299979)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-5.5" y="0.31em">-</text>
+        </g>
+        <g class="label" transform="translate(585.4924654279437,187.4983064379011)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-9.5" y="0.31em">+</text>
+        </g>
+        <g class="label" transform="translate(616.7411646161761,224.06827697753909)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-5.5" y="0.31em">-</text>
+        </g>
+        <g class="label" transform="translate(387.52022961207797,273.82076429639545)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-9.5" y="0.31em">+</text>
+        </g>
+        <g class="label" transform="translate(375.5620487758091,224.87580887930739)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-5.5" y="0.31em">-</text>
+        </g>
+        <g class="label" transform="translate(502.27199445452004,233.88477369035996)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-9.5" y="0.31em">+</text>
+        </g>
+        <g class="label" transform="translate(540.6954836164202,204.50523883274624)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-5.5" y="0.31em">-</text>
+        </g>
+        <g class="label" transform="translate(89.79431758608136,150.08901476178852)"/>
+        <g class="label" transform="translate(83.36722653252738,200.45831042698453)"/>
+        <g class="label" transform="translate(272.6858980996268,347.6203438486372)"/>
+        <g class="label" transform="translate(323.88553047180176,348.37965852192474)"/>
+        <g class="label" transform="translate(221.39547320774622,282.55681817190987)"/>
+        <g class="label" transform="translate(216.81139918736048,329.0239615712847)"/>
+        <g class="label" transform="translate(46.913588353565764,211.83859569004605)"/>
+        <g class="label" transform="translate(75.06879023143223,251.58651776994978)"/>
+        <g class="label" transform="translate(321.312878199986,252.18743149893626)"/>
+        <g class="label" transform="translate(334.91570745195656,300.6354223251343)"/>
+        <g class="label" transform="translate(249.82995986938477,175.04775990077428)"/>
+        <g class="label" transform="translate(225.65625,215.55312391008653)"/>
+        <g class="label" transform="translate(117.90789536067416,234.25748528071813)"/>
+        <g class="label" transform="translate(167.04498481750488,238.49898940495083)"/>
+        <g class="label" transform="translate(237.0106724330357,134.4235596248082)"/>
+        <g class="label" transform="translate(206.70443752833776,176.90547441755024)"/>
+        <g class="label" transform="translate(110.18888364519391,277.49982891082766)"/>
+        <g class="label" transform="translate(120.70519392830984,327.15009167534964)"/>
+        <g class="label" transform="translate(489.35802677699496,188.86725850786485)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-9.5" y="0.31em">+</text>
+        </g>
+        <g class="label" transform="translate(496.0001989092146,140.7720665522984)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-5.5" y="0.31em">-</text>
+        </g>
+        <g class="label" transform="translate(430.38475309099465,173.32120857238772)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-9.5" y="0.31em">+</text>
+        </g>
+        <g class="label" transform="translate(454.7281003679548,212.80592716762)">
+          <text style="font-size: 31.81714333125523px; font-weight: bold; opacity: 0.7;" pointer-events="none" x="-5.5" y="0.31em">-</text>
+        </g>
+      </g>
+      <g class="image-container-top"/>
+      <g class="text-container-top">
+        <g class="textBoxWrapper">
+          <rect class="textBoxFrame text-0" id="text-0" transform="rotate(0 230.56071428571425 45.157714285714306)" style="fill:rgb(245,245,245);opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:0.54;stroke-opacity:1" width="249.59" height="36.971999999999994" rx="6.4799999999999995" ry="8.1" x="214.76571428571427" y="19.885714285714304"/>
+          <text class="textBox" transform="rotate(0 230.56071428571425 45.157714285714306)" x-data="230.56071428571425" y="45.157714285714306" width="696" height="417.59999999999997" xml:space="preserve" font-family="'Lato', sans-serif" font-size="21.06px" fill="black" text-data="Separated oil and water" text-anchor="left" has-host="false">
+            <tspan x="230.56071428571425" dy="0">Separated oil and water </tspan>
+          </text>
+        </g>
+      </g>
+      <g class="brush-container"/>
+    </svg>
+    <g class="icon-container">
+      <image id="heat-bath" x="1%" width="36" height="36" preserveAspectRatio="xMinYMin" xlink:href="resources/upstatement/heatbath.svg" class="opaque-on-hover" style="display: none;">
+        <title>Heatbath active</title>
+      </image>
+      <image id="ke-gradient" x="0" width="39.6" height="108" preserveAspectRatio="xMinYMin" xlink:href="resources/upstatement/ke-gradient.svg" class="opaque-on-hover" style="display: none;">
+        <title>Kinetic energy gradient</title>
+      </image>
+    </g>
+  </g>
+</svg>

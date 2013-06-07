@@ -1195,6 +1195,22 @@
       "publicationStatus": "draft"
     },
     {
+      "title": "DNA to Protein",
+      "path": "interactives/sam/DNA-to-proteins/1-dna-to-protein.json",
+      "groupKey": "sam/DNA-to-proteins",
+      "subtitle": "",
+      "about": [
+        "Click **Prepare for transcription** to zoom in to cell nucleus and separate DNA strands.",
+        "",
+        "Then click on the **Transcribe** button to trigger complete DNA transcription.",
+        "",
+        "After that you can clikc **Translate** to see amino acids being linked together into a protein.",
+        "",
+        "**Reset** button will bring you back to the beginning."
+      ],
+      "publicationStatus": "draft"
+    },
+    {
       "title": "Modeling Transcription",
       "path": "interactives/sam/DNA-to-proteins/2-modeling-transcription.json",
       "groupKey": "sam/DNA-to-proteins",

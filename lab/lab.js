@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "6948547d9bcec05d5cb0427f1d01c21500fe6c7f",
-        "short_sha":      "6948547d",
-        "url":            "https://github.com/concord-consortium/lab/commit/6948547d",
-        "author":        "Piotr Janik",
-        "email":         "janikpiotrek@gmail.com",
-        "date":          "2013-06-03 15:28:54 -0400",
-        "short_message": "Fix a bug in substitution mutation context menu",
-        "message":       "Fix a bug in substitution mutation context menu\n\n[#41660503]\n\nDynamically added classes weren't removed correctly, so after a few\nsubstitution mutations submenu elements were invisible."
+        "sha":           "0c134c6361ce3034e50e076235c69084c53adafe",
+        "short_sha":      "0c134c63",
+        "url":            "https://github.com/concord-consortium/lab/commit/0c134c63",
+        "author":        "Stephen Bannasch",
+        "email":         "stephen.bannasch@gmail.com",
+        "date":          "2013-06-07 09:58:07 -0400",
+        "short_message": "Makefile: remove extra resources copied to public/lab",
+        "message":       "Makefile: remove extra resources copied to public/lab\n\nAlso cleanup and comments.\n\nThere is a new task: clean-public.\n\nRunning:\n\n  make clean-public; make public\n\nWill be faster and in some cases will be sufficient to replace:\n\n  make clean; make"
       },
       "dirty": false
     }
@@ -1615,8 +1615,8 @@ define('common/validator',['require','arrays'],function(require) {
   // Create a new object, that prototypically inherits from the Error constructor.
   // It provides a direct information which property of the input caused an error.
   function ValidationError(prop, message) {
-      this.prop = prop;
-      this.message = message;
+    this.prop = prop;
+    this.message = message;
   }
   ValidationError.prototype = new Error();
   ValidationError.prototype.constructor = ValidationError;
@@ -1638,6 +1638,8 @@ define('common/validator',['require','arrays'],function(require) {
     if (!ignoreImmutable && propertyMetadata.immutable) {
       throw new ValidationError(prop, "Properties set tries to overwrite immutable property " + prop);
     }
+    // Use custom validate function defined in metadata if provided.
+    return propertyMetadata.validate ? propertyMetadata.validate(value) : value;
   }
 
   return {
@@ -1662,7 +1664,7 @@ define('common/validator',['require','arrays'],function(require) {
           propMetadata = metadata[prop];
           // Continue only if the property is listed in meta-data.
           if (propMetadata !== undefined) {
-            validateSingleProperty(propMetadata, prop, input[prop], ignoreImmutable);
+            input[prop] = validateSingleProperty(propMetadata, prop, input[prop], ignoreImmutable);
             if (propMetadata.conflictsWith) {
               checkConflicts(input, prop, propMetadata.conflictsWith);
             }
@@ -11733,7 +11735,7 @@ define('common/controllers/parent-message-api',['require','common/parent-message
     });
 
     parentMessageController.addListener('play', function(message) {
-      model.resume();
+      model.start();
     });
 
     parentMessageController.initialize();
@@ -12965,13 +12967,16 @@ define('common/controllers/playback-controller',['require','common/inherit','com
     if (!mode) { // mode === "" || mode === null || mode === false
       this.$element.find(".step, .reset, .play-pause").addClass("hidden");
     } else if (mode === "play") {
-      this.$element.find(".step, .reset").addClass("hidden");
       this.$element.find(".play-pause").removeClass("hidden");
+      this.$element.find(".spacer, .step, .reset").addClass("hidden");
+    } else if (mode === "reset") {
+      this.$element.find(".reset").removeClass("hidden");
+      this.$element.find(".spacer, .play-pause, .step").addClass("hidden");
     } else if (mode === "play_reset") {
+      this.$element.find(".spacer, .play-pause, .reset").removeClass("hidden");
       this.$element.find(".step").addClass("hidden");
-      this.$element.find(".play-pause, .reset").removeClass("hidden");
     } else if (mode === "play_reset_step") {
-      this.$element.find(".step, .reset, .play-pause").removeClass("hidden");
+      this.$element.find(".spacer, .step, .reset, .play-pause").removeClass("hidden");
     }
     $buttons = this.$element.find("a");
     $buttons.removeClass("first");
@@ -16027,11 +16032,20 @@ define('md2d/models/metadata',[],function() {
         defaultValue: 50,
         storeInTickHistory: true
       },
-      geneticEngineState: {
+      DNAState: {
         defaultValue: "dna"
       },
       DNA: {
-        defaultValue: ""
+        defaultValue: "",
+        validate: function (value) {
+          if (/[agtc]/.test(value)) {
+            value = value.toUpperCase();
+          }
+          if (/[^AGTC]/.test(value)) {
+            throw new Error("DNA code on sense strand can be defined using only A, G, T or C characters.");
+          }
+          return value;
+        }
       },
       useQuantumDynamics: {
         default: false,
@@ -19030,10 +19044,10 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         solventForceType = sft;
       },
 
-      setGeneticEngineState: function (ges) {
-        // Don't store geneticEngineState, it's not necessary. Just
+      setDNAState: function (s) {
+        // Don't store DNAState, it's not necessary. Just
         // information whether translation is in progress is useful.
-        dnaTranslationInProgress = ges.indexOf("translation:") === 0;
+        dnaTranslationInProgress = s.indexOf("translation:") === 0;
       },
 
       setSolventForceFactor: function(sff) {
@@ -19801,118 +19815,6 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         // configuration.
         //
         adjustTemperature(temperature, true);
-      },
-
-      /**
-        Generates a protein. It returns a real number of created amino acids.
-
-        'aaSequence' parameter defines expected sequence of amino acids. Pass undefined
-        and provide 'expectedLength' if you want to generate a random protein.
-
-        'expectedLength' parameter controls the maximum (and expected) number of amino
-        acids of the resulting protein. Provide this parameter only when 'aaSequence'
-        is undefined. When expected length is too big (due to limited area of the model),
-        the protein will be truncated and its real length returned.
-      */
-      generateProtein: function (aaSequence, expectedLength) {
-        var width = size[0],
-            height = size[1],
-            xStep = 0,
-            yStep = 0,
-            aaCount = aminoacidsHelper.lastElementID - aminoacidsHelper.firstElementID + 1,
-            i, xPos, yPos, el, bondLen,
-
-            // This function controls how X coordinate is updated,
-            // using current Y coordinate as input.
-            turnHeight = 0.6,
-            xStepFunc = function(y) {
-              if (y > height - turnHeight || y < turnHeight) {
-                // Close to the boundary increase X step.
-                return 0.1;
-              }
-              return 0.02 - Math.random() * 0.04;
-            },
-
-            // This function controls how Y coordinate is updated,
-            // using current Y coordinate and previous result as input.
-            changeHeight = 0.3,
-            yStepFunc = function(y, prev) {
-              if (prev === 0) {
-                // When previously 0 was returned,
-                // now it's time to switch direction of Y step.
-                if (y > 0.5 * size[1]) {
-                  return -0.1;
-                }
-                return 0.1;
-              }
-              if (yPos > height - changeHeight || yPos < changeHeight) {
-                // Close to the boundary return 0 to make smoother turn.
-                return 0;
-              }
-              // In a typical situation, just return previous value.
-              return prev;
-            },
-
-            getRandomAA = function() {
-              return Math.floor(aaCount * Math.random()) + aminoacidsHelper.firstElementID;
-            };
-
-        // Process arguments.
-        if (aaSequence !== undefined) {
-          expectedLength = aaSequence.length;
-        }
-
-        // First, make sure that model is empty.
-        while(N > 0) {
-          engine.removeAtom(N - 1);
-        }
-
-        // Start from the lower-left corner, add first Amino Acid.
-        xPos = 0.1;
-        yPos = 0.1;
-        el = aaSequence ? aminoacidsHelper.abbrToElement(aaSequence[0]) : getRandomAA();
-        engine.addAtom({x: xPos, y: yPos, element: el, visible: true});
-        engine.minimizeEnergy();
-
-        // Add remaining amino acids.
-        for (i = 1; i < expectedLength; i++) {
-          xPos = x[N - 1];
-          yPos = y[N - 1];
-
-          // Update step.
-          xStep = xStepFunc(yPos);
-          yStep = yStepFunc(yPos, yStep);
-
-          // Update coordinates of new AA.
-          xPos += xStep;
-          yPos += yStep;
-
-          if (xPos > width - 0.1) {
-            // No space left for new AA. Stop here, return
-            // real number of created AAs.
-            return i;
-          }
-
-          el = aaSequence ? aminoacidsHelper.abbrToElement(aaSequence[i]) : getRandomAA();
-          engine.addAtom({x: xPos, y: yPos, element: el, visible: true});
-          // Length of bond is based on the radii of AAs.
-          bondLen = (radius[N - 1] + radius[N - 2]) * 1.25;
-          // 10000 is a typical strength for bonds between AAs.
-          engine.addRadialBond({atom1: N - 1, atom2: N - 2, length: bondLen, strength: 10000});
-
-          engine.minimizeEnergy();
-        }
-
-        // Center protein (X coords only).
-        // Use last X coordinate to calculate available space on the right.
-        xStep = (width - xPos) / 2;
-        // Shift all AAs.
-        for (i = 0; i < N; i++) {
-          x[i] += xStep;
-        }
-
-        // Return number of created AA.
-        return i;
       },
 
       getVdwPairsArray: function() {
@@ -21054,8 +20956,12 @@ define('common/property-support',[],function() {
       A function that will be called with the new, "raw" value of this property whenever the
       property is assigned to.
 
-      If the value is invalid, the validate function should throw an exception. The validate
-      function is *not* called when the property value is set via setRawValues.
+      This function *must* return input value if it is correct. If the value is invalid,
+      the validate function should throw an exception. Note that custom validate function
+      can be used to autmatically "fix" the value (e.g. change lower case to upper case or
+      do any other transformation related to notation of the value).
+
+      The validate function is *not* called when the property value is set via setRawValues.
     */
     validate: {
       defaultValue: undefined,
@@ -21404,10 +21310,10 @@ define('common/property-support',[],function() {
             value = info.descriptor.beforeSetTransform(value);
           }
           if (info.descriptor.validate) {
-            info.descriptor.validate(value);
+            value = info.descriptor.validate(value);
           }
+
           set(key, value);
-          notify(key);
 
           if (info.descriptor.set) {
             info.descriptor.set(value);
@@ -21416,6 +21322,8 @@ define('common/property-support',[],function() {
           if (info.descriptor.afterSetCallback) {
             info.descriptor.afterSetCallback();
           }
+
+          notify(key);
         }
       });
     }
@@ -21591,6 +21499,15 @@ define('common/property-support',[],function() {
         */
         target.getPropertyType = function(key) {
           return propertyInformation[key].descriptor.type;
+        };
+
+        /**
+          The 'getPropertyValidateFunc' method mixed into 'target' simply returns the 'validate' function
+          passed in as the 'validate' property of the descriptor passed to 'defineProperty' when the
+          property named 'key' was defined.
+        */
+        target.getPropertyValidateFunc = function(key) {
+          return propertyInformation[key].descriptor.validate;
         };
       },
 
@@ -22052,10 +21969,9 @@ define('common/serialize',['require','arrays'],function(require) {
 
 /*global d3, define */
 
-define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2d/models/aminoacids-helper','common/alert'],function (require) {
+define('md2d/models/engine/genetic-engine',['require','cs!md2d/models/aminoacids-helper','common/alert'],function (require) {
 
-  var ValidationError  = require('common/validator').ValidationError,
-      aminoacidsHelper = require('cs!md2d/models/aminoacids-helper'),
+  var aminoacidsHelper = require('cs!md2d/models/aminoacids-helper'),
       alert            = require('common/alert'),
 
       STATES = [
@@ -22079,7 +21995,9 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
 
       PROMOTER_SEQ   = "TGACCTCTCCGCGCCATCTATAAACCGAAGCGCTAGCTACA",
       TERMINATOR_SEQ = "ACCACAGGCCGCCAGTTCCGCTGGCGGCATTTT",
-      JUNK_SEQ;
+      JUNK_SEQ,
+
+      DEF_EVENT = "change";
 
   function complementarySequence(DNA) {
     // A-T (A-U)
@@ -22122,9 +22040,10 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
 
   return function GeneticProperties(model) {
     var api,
-        // Never change value of this variable outside
-        // the transitionToState() function!
-        stateTransition = false,
+        // Do not change this variable manually. It's changed in set() private
+        // function. It decides what type of event should be dispatched when
+        // DNA or DNAState is updated.
+        eventMode = DEF_EVENT,
         // List of transitions, which are currently ongoing (index 0)
         // or scheduled (index > 0).
         ongoingTransitions = [],
@@ -22183,20 +22102,9 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
           return array;
         },
 
-        validateDNA = function (DNA) {
-          // Allow user to use both lower and upper case.
-          DNA = DNA.toUpperCase();
-
-          if (DNA.search(/[^AGTC]/) !== -1) {
-            // Character other than A, G, T or C is found.
-            throw new ValidationError("DNA", "DNA code on sense strand can be defined using only A, G, T or C characters.");
-          }
-        },
-
         updateGeneticProperties = function () {
           var DNA = model.get("DNA");
 
-          validateDNA(DNA);
           generateViewArray(api.viewModel.DNA, DNA, true);
 
           DNAComp = complementarySequence(DNA);
@@ -22212,25 +22120,44 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
             // So, the first state which triggers it is "transcription-end".
             generateViewArray(api.viewModel.mRNA, mRNA);
           }
+
+          if (eventMode !== "transition") {
+            // While jumping between states, ensure that user can see a valid
+            // number of amino acids.
+            if (api.stateBefore("translation:1")) {
+              removeAminoAcids();
+            } else if (api.stateEqual("translation-end")) {
+              generateFinalProtein();
+            }
+          }
         },
 
         removeAminoAcids = function () {
-          var opt = {suppressEvent: true},
-              aaCount;
+          var aaCount;
 
           aaCount = model.getNumberOfAtoms();
           if (aaCount > 0) {
             model.startBatch();
-            while(aaCount > 1) {
-              model.removeAtom(aaCount - 1, opt);
+            while(aaCount > 0) {
+              model.removeAtom(aaCount - 1);
               aaCount--;
             }
-            // Remove the last one atom and make sure that events are dispatched!
-            // TODO: Should events be automatically suppressed during batch
-            // execution and then merged and dispatched during .endBatch() call?
-            model.removeAtom(0);
             model.endBatch();
           }
+          model.stop();
+        },
+
+        generateFinalProtein = function () {
+          var aaSequenece = [],
+              i = 0,
+              abbr = aminoacidsHelper.codonToAbbr(api.codon(0));
+
+          while(abbr !== "STOP") {
+            aaSequenece.push(abbr);
+            abbr = aminoacidsHelper.codonToAbbr(api.codon(++i));
+          }
+          api.generateProtein(aaSequenece, undefined, 2.3, 0.3);
+          model.start();
         },
 
         nextState = function (state) {
@@ -22277,11 +22204,6 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
           }
         },
 
-
-        stateEq = function (name) {
-          return model.get("geneticEngineState") === name;
-        },
-
         stateComp = function (stateA, stateB) {
           if (stateA === stateB) {
             return 0;
@@ -22300,6 +22222,7 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
         },
 
         transitionToState = function (name) {
+          if (typeof name === "undefined") return;
           if (ongoingTransitions.length > 0) {
             // Some transition are in progress, so only enqueue a new state.
             ongoingTransitions.push(name);
@@ -22312,47 +22235,73 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
         },
 
         doStateTransition = function (name) {
-          stateTransition = true;
-          model.set("geneticEngineState", name);
-          stateTransition = false;
+          set("DNAState", name, "transition");
         },
 
         doDNATransition = function (newDNA) {
-          stateTransition = true;
-          model.set("DNA", newDNA);
-          stateTransition = false;
+          set("DNA", newDNA, "transition");
+        },
+
+        // Use this function if you want to change DNA or DNAState
+        // and dispatch event different than "change" (which causes immediate
+        // rendering). Options are:
+        // - "change",
+        // - "transition",
+        // - "suppress".
+        set = function(name, value, eventType) {
+          eventMode = eventType || DEF_EVENT;
+          model.properties[name] = value;
+          eventMode = DEF_EVENT;
         },
 
         stateUpdated = function () {
-          var state = model.get("geneticEngineState");
+          var state = model.get("DNAState");
+
+          if (eventMode === "suppress") {
+            return;
+          }
 
           updateGeneticProperties();
 
-          if (stateTransition) {
+          if (eventMode === "transition") {
             dispatch.transition(state);
           } else {
+            // Cancel transitions when we are going to dispatch "change" event.
             ongoingTransitions = [];
-            removeAminoAcids();
-            if (api.stateBefore("translation:1")) {
-              dispatch.change();
-            } else {
+
+            if (api.stateAfter("translation:0") && api.stateBefore("translation-end")) {
               // It means that state was set to 'translation:x', where x > 0.
               // Use the last safe state ('translation:0') instead.
               alert("'" + state + "' cannot be set explicitly. " +
                 "'translation:0' should be set and then animation to '" +
                 state + "' should be triggered.");
-              model.set("geneticEngineState", "translation:0");
+              set("DNAState", "translation:0");
+              return;
             }
+
+            dispatch.change();
           }
         },
 
         DNAUpdated = function () {
+          if (eventMode === "suppress") {
+            return;
+          }
+
+          if (api.stateAfter("translation:0") && api.stateBefore("translation-end")) {
+            // Reset translation if DNA is changed. This will remove all
+            // existing amino acids and notify renderer (via stateUpdated
+            // callback).
+            set("DNAState", "translation:0");
+            return;
+          }
+
           updateGeneticProperties();
 
-          if (stateTransition) {
-            dispatch.transition("dna-updated");
+          if (eventMode === "transition") {
+            dispatch.transition("dna-updated", true);
           } else {
-            dispatch.change();
+            dispatch.change(true);
           }
         };
 
@@ -22384,29 +22333,6 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
         junkComp:       generateViewArray([], complementarySequence(JUNK_SEQ))
       },
 
-      // Convenient method for validation. It doesn't throw an exception,
-      // instead a special object with validation status is returned. It can
-      // be especially useful for UI classes to avoid try-catch sequences with
-      // "set". The returned status object always has a "valid" property,
-      // which contains result of the validation. When validation fails, also
-      // "error" message is provided.
-      // e.g. {
-      //   valid: false,
-      //   error: "DNA code on sense strand can be defined using only A, G, T or C characters."
-      // }
-      validate: function (DNA) {
-        var status = {
-          valid: true
-        };
-        try {
-          validateDNA(DNA);
-        } catch (e) {
-          status.valid = false;
-          status.error = e.message;
-        }
-        return status;
-      },
-
       on: function(type, listener) {
         dispatch.on(type, listener);
       },
@@ -22419,7 +22345,7 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
               DNA.substr(idx + 1);
         // Update DNA. This will also call updateGeneticProperties(), so
         // other, related properties will be also updated.
-        model.set("DNA", DNA);
+        set("DNA", DNA);
       },
 
       insert: function(idx, type, DNAComplement) {
@@ -22435,7 +22361,8 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
               type: DNAComplement ? complementarySequence(type) : type,
               id: getNucleoID()
             },
-            DNA = model.get("DNA");
+            DNA = model.get("DNA"),
+            state = api.state();
 
         // Update view model arrays. It isn't necessary, but as we update them
         // correctly, nucleotides will preserve their IDs and view will know
@@ -22447,11 +22374,24 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
         // Update DNA. This will also call updateGeneticProperties(), so
         // other, related properties will be also updated.
         DNA = DNA.substr(0, idx) + newDNANucleo.type + DNA.substr(idx);
+
+        // Special case for transcription process (and state):
+        // If we keep the same DNAState and we insert something
+        // before state.step position, it would cause that the last
+        // transcribed nucleotide would be removed. Avoid that, as this can be
+        // confusing for users.
+        if (state.name === "transcription" && idx < state.step) {
+          // Note that we can't use nextState(state), as in that case, as
+          // state can be changed to transcription-end too fast (as DNA isn't
+          // updated yet).
+          set("DNAState", state.name + ":" + (state.step + 1), "suppress");
+        }
         doDNATransition(DNA);
       },
 
       delete: function(idx) {
-        var DNA = model.get("DNA");
+        var DNA = model.get("DNA"),
+            state = api.state();
 
         // Update view model arrays. It isn't necessary, but as we update them
         // correctly, nucleotides will preserve their IDs and view will know
@@ -22463,37 +22403,65 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
         // Update DNA. This will also call updateGeneticProperties(), so
         // other, related properties will be also updated.
         DNA = DNA.substr(0, idx) + DNA.substr(idx + 1);
+
+        // Special case for transcription process (and state):
+        // If we keep the same DNAState and we delete something
+        // before state.step position, it would cause that new transcribed
+        // mRNA nucleotide will be added. Avoid that, as this can be
+        // confusing for users.
+        if (state.name === "transcription" && idx < state.step) {
+          set("DNAState", prevState(state), "suppress");
+        }
         doDNATransition(DNA);
       },
 
       /**
-       * Triggers transition to the next genetic engine state.
+       * Triggers transition to the next DNA state.
+       *
+       * If any transition was ongoing, it's canceled.
        */
       transitionToNextState: function () {
-        transitionToState(nextState(api.lastState()));
+        api.stopTransition();
+        if (ongoingTransitions.length === 0) {
+          transitionToState(nextState(api.lastState()));
+        }
+      },
+
+      /**
+       * Stops current animation.
+       * @return {boolean} true when some transitions are canceled, false otherwise.
+       */
+      stopTransition: function () {
+        if (ongoingTransitions.length > 1) {
+          // Cleanup queue of waiting transitions. ongoingTransitions[0] is
+          // the current transition, don't remove it.
+          ongoingTransitions.length = 1;
+        }
       },
 
       jumpToNextState: function () {
         if (api.stateBefore("translation:0")) {
-          model.set("geneticEngineState", nextState(api.state()));
+          set("DNAState", nextState(api.state()));
+        } else if (api.stateBefore("translation-end")) {
+          set("DNAState", "translation-end");
         }
       },
 
       jumpToPrevState: function () {
         if (api.stateAfter("intro-cells")) {
-          model.set("geneticEngineState", prevState(api.state()));
+          set("DNAState", prevState(api.state()));
         }
       },
 
       /**
-       * Triggers transition to the given genetic engine state.
+       * Triggers transition to the given DNA state.
        * e.g. transitionTo("transcription-end")
        *
        * @param  {string} stateName name of the state.
        */
       transitionTo: function (stateName) {
         while (api.lastStateBefore(stateName)) {
-          api.transitionToNextState();
+          transitionToState(nextState(api.lastState()));
         }
       },
 
@@ -22514,12 +22482,10 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
       transcribeStep: function (expectedNucleotide) {
         var state, newCode;
 
-        if (stateEq("dna")) {
+        state = api.state();
+        if (state.name === "dna" && typeof expectedNucleotide === "undefined") {
           api.transitionToNextState();
-          return;
-        }
-        state = api.lastState();
-        if (state.name === "transcription") {
+        } else if (state.name === "transcription") {
           newCode = mRNACode(state.step);
           if (expectedNucleotide && expectedNucleotide.toUpperCase() !== newCode) {
             // Expected nucleotide is wrong, so simply do nothing.
@@ -22532,7 +22498,7 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
       // Helper methods used mainly by the genetic renderer.
 
       /**
-       * Returns parsed *current* state.
+       * Returns parsed *current* DNA state.
        * e.g.
        * {
        *   name: "translation",
@@ -22542,15 +22508,19 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
        * @return {Object} current state object (see above).
        */
       state: function () {
-        return api.parseState(model.get("geneticEngineState"));
+        return api.parseState(model.get("DNAState"));
       },
 
       stateBefore: function (name) {
-        return stateComp(model.get("geneticEngineState"), name) === -1 ? true : false;
+        return stateComp(model.get("DNAState"), name) === -1;
+      },
+
+      stateEqual: function (name) {
+        return stateComp(model.get("DNAState"), name) === 0;
       },
 
       stateAfter: function (name) {
-        return stateComp(model.get("geneticEngineState"), name) === 1 ? true : false;
+        return stateComp(model.get("DNAState"), name) === 1;
       },
 
       /**
@@ -22576,13 +22546,13 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
 
       lastStateBefore: function (name) {
         var queueLen = ongoingTransitions.length,
-            lastStateName = queueLen ? ongoingTransitions[queueLen - 1] : model.get("geneticEngineState");
+            lastStateName = queueLen ? ongoingTransitions[queueLen - 1] : model.get("DNAState");
         return stateComp(lastStateName, name) === -1 ? true : false;
       },
 
       lastStateAfter: function (name) {
         var queueLen = ongoingTransitions.length,
-            lastStateName = queueLen ? ongoingTransitions[queueLen - 1] : model.get("geneticEngineState");
+            lastStateName = queueLen ? ongoingTransitions[queueLen - 1] : model.get("DNAState");
         return stateComp(lastStateName, name) === 1 ? true : false;
       },
 
@@ -22684,14 +22654,6 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
         return result;
       },
 
-      DNANucleotides: function () {
-        return DNANucleotides;
-      },
-
-      DNACompNucleotides: function () {
-        return DNACompNucleotides;
-      },
-
       /**
        * Returns center of mass coridantes of the whole protein.
        * When there are no amino acids, returns null.
@@ -22724,13 +22686,150 @@ define('md2d/models/engine/genetic-engine',['require','common/validator','cs!md2
           x: xcm,
           y: ycm
         };
+      },
+
+      /**
+       * Generates a new protein (and removes all existing atoms before).
+       *
+       * @param  {array} aaSequence      defines expected sequence of amino acids. Pass undefined and provide
+       *                                 'expectedLength' if you want to generate a random protein.
+       * @param  {Number} expectedLength controls the maximum (and expected) number of amino
+       *                                 acids of the resulting protein. Provide this parameter only when 'aaSequence'
+       *                                 is undefined. When expected length is too big (due to limited area of the model),
+       *                                 the protein will be truncated and its real length returned.
+       * @return {Number}                number of created amino acids (<= expectedLength).
+       */
+      generateProtein: function (aaSequence, expectedLength, paddingTop, paddingBottom) {
+        // Process arguments.
+        expectedLength = aaSequence ? aaSequence.length : expectedLength;
+        paddingTop = paddingTop || 0;
+        paddingBottom = paddingBottom || 0;
+
+        var minX = model.properties.minX,
+            minY = model.properties.minY + paddingBottom,
+            maxX = model.properties.maxX,
+            maxY = model.properties.maxY - paddingTop,
+            createdAA = 0;
+
+        // First, make sure that model is empty.
+        removeAminoAcids();
+
+        model.batch(function () {
+              // Options for .addAtom modeler's method.
+          var opt = {suppressCheck: true},
+              width   = maxX - minX,
+              height  = maxY - minY,
+              aaCount = aminoacidsHelper.lastElementID - aminoacidsHelper.firstElementID + 1,
+              xPos, yPos, xStep, yStep, el, props, radius, prevRadius, bondLen, i,
+
+              // This function controls how X coordinate is updated,
+              // using current Y coordinate as input.
+              turnHeight = 0.6,
+              xStepFunc = function(y) {
+                if (y > height - turnHeight || y < turnHeight) {
+                  // Close to the boundary increase X step.
+                  return 0.1;
+                }
+                return 0.02 - Math.random() * 0.04;
+              },
+
+              // This function controls how Y coordinate is updated,
+              // using current Y coordinate and previous result as input.
+              changeHeight = 0.3,
+              yStepFunc = function(y, prev) {
+                if (prev === 0) {
+                  // When previously 0 was returned,
+                  // now it's time to switch direction of Y step.
+                  if (y > 0.5 * maxY) {
+                    return -0.1;
+                  }
+                  return 0.1;
+                }
+                if (yPos > maxY - changeHeight || yPos < changeHeight) {
+                  // Close to the boundary return 0 to make smoother turn.
+                  return 0;
+                }
+                // In a typical situation, just return previous value.
+                return prev;
+              },
+
+              getRandomAA = function() {
+                return Math.floor(aaCount * Math.random()) + aminoacidsHelper.firstElementID;
+              };
+
+          // Add the first amino acid. Start from the lower-left corner of
+          // model area.
+          xPos = minX + 0.1;
+          yPos = minY + 0.1;
+          xStep  = 0;
+          yStep  = 0;
+          el     = aaSequence ? aminoacidsHelper.abbrToElement(aaSequence[0]) : getRandomAA();
+          radius = model.getElementProperties(el).radius;
+          props  = {x: xPos, y: yPos, element: el, visible: true};
+
+          model.addAtom(props, opt);
+          createdAA += 1;
+
+          // Add remaining amino acids.
+          for (i = 1; i < expectedLength; i++) {
+            xPos = props.x;
+            yPos = props.y;
+
+            // Update step.
+            xStep = xStepFunc(yPos);
+            yStep = yStepFunc(yPos, yStep);
+
+            // Update coordinates of new AA.
+            xPos += xStep * 1.7;
+            yPos += yStep * 1.7;
+
+            if (xPos > width - 0.1) {
+              // No space left for new AA.
+              return;
+            }
+
+            el = aaSequence ? aminoacidsHelper.abbrToElement(aaSequence[i]) : getRandomAA();
+            props = {x: xPos, y: yPos, element: el, visible: true};
+            model.addAtom(props, opt);
+            createdAA += 1;
+
+            // Length of bond is based on the radii of AAs.
+            prevRadius = radius;
+            radius = model.getElementProperties(el).radius;
+            bondLen = (radius + prevRadius) * 1.25;
+            // 10000 is a typical strength for bonds between AAs.
+            model.addRadialBond({atom1: i, atom2: i - 1, length: bondLen, strength: 10000});
+          }
+        });
+        // We have to use a new batch so atoms array will be updated and we
+        // can use getAtomProperties for recently added atoms.
+        model.batch(function () {
+          // Center protein (X coords only) in the viewport. Make sure
+          // that we don't exceed model boundaries.
+          var proteinsMaxX   = model.getAtomProperties(createdAA - 1).x,
+              proteinsCenter = (proteinsMaxX - minX) / 2,
+              viewPortCenter = model.properties.viewPortX + model.properties.viewPortWidth / 2,
+              spaceOnRight   = maxX - proteinsMaxX,
+              shift = Math.max(0, Math.min(viewPortCenter - proteinsCenter, spaceOnRight)),
+              i;
+
+          // Shift all AAs.
+          for (i = 0; i < expectedLength; i++) {
+            model.setAtomProperties(i, {x: model.getAtomProperties(i).x + shift});
+          }
+        });
+
+        // Minize energy so the protein will look better.
+        model.minimizeEnergy();
+
+        // Return number of created AA.
+        return createdAA;
       }
     };
 
     model.addPropertiesListener(["DNA"], DNAUpdated);
-    model.addPropertiesListener(["geneticEngineState"], stateUpdated);
+    model.addPropertiesListener(["DNAState"], stateUpdated);
     updateGeneticProperties();
-
     return api;
   };
 
@@ -22839,6 +22938,115 @@ define('common/property-description',['require','underscore'],function(require) 
   };
 
   return PropertyDescription;
+});
+
+/*global define: false, d3: false */
+/**
+ * This module provides event dispatch based on d3.dispatch:
+ * https://github.com/mbostock/d3/wiki/Internals#wiki-d3_dispatch
+ *
+ * The main improvement over raw d3.dispatch is that this wrapper provides
+ * event batching. You can start batch mode (.startBatch()) and while it is
+ * active events won't be dispatched immediately. They will be dispatched
+ * at the end of batch mode (.endBatch()) or when you call .flush() method.
+ *
+ * Note that there is one *significant limitation*: arguments passed during
+ * event dispatching will be lost! All events will be merged into single
+ * event without any argument. Please keep this in mind while using this module.
+ *
+ * e.g.
+ *   dispatch.on("someEvent", function(arg) { console.log(arg); });
+ *   dispatch.someEvent(123);     // console output: 123
+ *   dispatch.someEvent("test");  // console output: "test"
+ * However...
+ *   dispatch.startBatch();
+ *   dispatch.someEvent(123);
+ *   dispatch.someEvent("test");
+ *   dispatch.endBatch();         // console output: undefined (!)
+ *
+ * Rest of the interface is exactly the same like in d3.dispatch (.on()).
+ * Under the hood delegation to d3.dispatch instance is used.
+ */
+define('common/dispatch',[],function() {
+
+  return function Dispatch() {
+    var api,
+        d3dispatch = d3.dispatch.apply(null, arguments),
+
+        batchMode = false,
+        suppressedEvents = d3.set();
+
+    function init(types) {
+      var i, len;
+      // Provide wrapper around typical calls like dispatch.someEvent().
+      for (i = 0, len = types.length; i < len; i++) {
+        api[types[i]] = dispatchEvent(types[i]);
+      }
+    }
+
+    function dispatchEvent(name) {
+      return function () {
+        if (!batchMode) {
+          d3dispatch[name].apply(d3dispatch, arguments);
+        } else {
+          suppressedEvents.add(name);
+        }
+      };
+    }
+
+    function delegate(funcName) {
+      return function () {
+        d3dispatch[funcName].apply(d3dispatch, arguments);
+      };
+    }
+
+    // Public API.
+    api = {
+      // Copy d3.dispatch API:
+
+      /**
+       * Adds or removes an event listener for the specified type. Please see:
+       * https://github.com/mbostock/d3/wiki/Internals#wiki-dispatch_on
+       */
+      on: delegate("on"),
+
+      // New API specific for Lab Dispatch:
+
+      /**
+       * Starts batch mode. Events won't be dispatched immediately after call.
+       * They will be merged into single event and dispatched when .flush()
+       * or .endBatch() is called.
+       */
+      startBatch: function () {
+        batchMode = true;
+      },
+
+      /**
+       * Ends batch mode and dispatches suppressed events.
+       */
+      endBatch: function () {
+        batchMode = false;
+        api.flush();
+      },
+
+      /**
+       * Dispatches suppressed events.
+       * @return {[type]} [description]
+       */
+      flush: function () {
+        suppressedEvents.forEach(function (eventName) {
+          d3dispatch[eventName]();
+        });
+        // Reset suppressed events.
+        suppressedEvents = d3.set();
+      }
+    };
+
+    init(arguments);
+
+    return api;
+  };
+
 });
 
 /*global define: false */
@@ -23993,7 +24201,7 @@ define('md2d/models/engine/plugins/quantum-dynamics',['require','common/models/e
 
 /*global define: false, d3: false */
 
-define('md2d/models/modeler',['require','common/console','common/performance','md2d/models/engine/md2d','md2d/models/metadata','common/models/tick-history','common/property-support','cs!common/running-average-filter','cs!md2d/models/solvent','common/serialize','common/validator','md2d/models/aminoacids-props','cs!md2d/models/aminoacids-helper','md2d/models/engine/genetic-engine','md2d/models/engine/constants/units','common/property-description','md2d/models/unit-definitions/index','md2d/models/units-translation','md2d/models/performance-optimizer','md2d/models/atom-transition','underscore','md2d/models/engine/plugins/quantum-dynamics'],function(require) {
+define('md2d/models/modeler',['require','common/console','common/performance','md2d/models/engine/md2d','md2d/models/metadata','common/models/tick-history','common/property-support','cs!common/running-average-filter','cs!md2d/models/solvent','common/serialize','common/validator','md2d/models/aminoacids-props','cs!md2d/models/aminoacids-helper','md2d/models/engine/genetic-engine','md2d/models/engine/constants/units','common/property-description','common/dispatch','md2d/models/unit-definitions/index','md2d/models/units-translation','md2d/models/performance-optimizer','md2d/models/atom-transition','underscore','md2d/models/engine/plugins/quantum-dynamics'],function(require) {
   // Dependencies.
   var console              = require('common/console'),
       performance          = require('common/performance'),
@@ -24010,6 +24218,7 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       GeneticEngine        = require('md2d/models/engine/genetic-engine'),
       units                = require('md2d/models/engine/constants/units'),
       PropertyDescription  = require('common/property-description'),
+      Dispatch             = require('common/dispatch'),
       unitDefinitions      = require('md2d/models/unit-definitions/index'),
       UnitsTranslation     = require('md2d/models/units-translation'),
       PerformanceOptimizer = require('md2d/models/performance-optimizer'),
@@ -24025,9 +24234,9 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     this.constructor.type = "md2d";
 
     var model = {},
-        dispatch = d3.dispatch("tick", "play", "stop", "reset", "willReset", "stepForward", "stepBack",
-                               "seek", "addAtom", "removeAtom", "addRadialBond", "removeRadialBond",
-                               "removeAngularBond", "invalidation", "textBoxesChanged"),
+        dispatch = new Dispatch("tick", "play", "stop", "reset", "willReset", "stepForward", "stepBack",
+                                "seek", "addAtom", "removeAtom", "addRadialBond", "removeRadialBond",
+                                "removeAngularBond", "invalidation", "textBoxesChanged"),
 
         propertySupport = new PropertySupport({
           types: ["output", "parameter", "mainProperty", "viewOption"]
@@ -24040,7 +24249,8 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
         },
         defaultMaxTickHistory = 1000,
         stopped = true,
-        restart = false,
+        stopRequest = false,
+        restartRequest = false,
         newStep = false,
         lastSampleTime,
         sampleTimes = [],
@@ -25682,64 +25892,53 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       invalidatingChangePreHook();
       engine.minimizeEnergy();
       invalidatingChangePostHook();
+      // Positions of atoms could change, so
+      // dispatch tick event.
+      dispatch.tick();
+      return model;
+    };
+
+    model.stop = function() {
+      stopRequest = true;
+      dispatch.stop();
       return model;
     };
 
     /**
-      Generates a protein. It returns a real number of created amino acids.
-
-      'aaSequence' parameter defines expected sequence of amino acids. Pass undefined
-      and provide 'expectedLength' if you want to generate a random protein.
-
-      'expectedLength' parameter controls the maximum (and expected) number of amino
-      acids of the resulting protein. Provide this parameter only when 'aaSequence'
-      is undefined. When expected length is too big (due to limited area of the model),
-      the protein will be truncated and its real length returned.
-    */
-    model.generateProtein = function (aaSequence, expectedLength) {
-      var generatedAACount;
-
-      invalidatingChangePreHook();
-
-      generatedAACount = engine.generateProtein(aaSequence, expectedLength);
-      // Enforce modeler to recalculate viewAtoms array.
-      // TODO: it's a workaround, investigate the problem.
-      viewAtoms.length = 0;
-
-      invalidatingChangePostHook();
-
-      dispatch.addAtom();
-      dispatch.addRadialBond();
-
-      return generatedAACount;
-    };
-
-    model.start = function() {
-      if (!stopped) return model;
-      return model.resume();
-    };
-
-    /**
-      Restart the model (call model.resume()) after the next tick completes.
+      Restart the model (call model.start()) after the next tick completes.
 
       This is useful for changing the modelSampleRate interactively.
     */
     model.restart = function() {
-      restart = true;
+      restartRequest = true;
     };
 
-    model.resume = function() {
+    model.start = function() {
+      // Cleanup stop and restart requests.
+      stopRequest = false;
+      restartRequest = false;
 
-      console.time('gap between frames');
+      if (!stopped) {
+        // Do nothing, model is running.
+        return model;
+      }
+
+      stopped = false;
+      lastSampleTime = null;
+
       model.timer(function timerTick(elapsedTime) {
         console.timeEnd('gap between frames');
         // Cancel the timer and refuse to to step the model, if the model is stopped.
         // This is necessary because there is no direct way to cancel a d3 timer.
         // See: https://github.com/mbostock/d3/wiki/Transitions#wiki-d3_timer)
-        if (stopped) return true;
+        if (stopRequest) {
+          stopped = true;
+          return true;
+        }
 
-        if (restart) {
-          setTimeout(model.resume, 0);
+        if (restartRequest) {
+          setTimeout(model.start, 0);
+          stopped = true;
           return true;
         }
 
@@ -25749,13 +25948,8 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
         return false;
       });
 
-      restart = false;
-      lastSampleTime = null;
-      if (stopped) {
-        stopped = false;
-        dispatch.play();
-      }
-
+      dispatch.play();
+      console.time('gap between frames');
       return model;
     };
 
@@ -25784,12 +25978,6 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
           }
         }, 1000/sampleRate);
       }
-    };
-
-    model.stop = function() {
-      stopped = true;
-      dispatch.stop();
-      return model;
     };
 
     model.dimensions = function() {
@@ -25855,11 +26043,26 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     model.startBatch = function() {
       invalidatingChangePreHook();
       suppressInvalidatingChangeHooks = true;
+      // Suppress events dispatching. They will be dispatched during
+      // .endBatch() execution.
+      dispatch.startBatch();
     };
 
     model.endBatch = function() {
       suppressInvalidatingChangeHooks = false;
       invalidatingChangePostHook();
+      // All events will be dispatched now (but just once per event type).
+      dispatch.endBatch();
+    };
+
+    /**
+     * Executes function between .startBatch() and .endBatch() calls.
+     * @param  {Function} action function that should be executed.
+     */
+    model.batch = function(action) {
+      model.startBatch();
+      action();
+      model.endBatch();
     };
 
     // Convert array of hashes to a hash of arrays
@@ -26001,7 +26204,7 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     if (initialProperties.DNA) {
       // Overwrite width and height options.
       initialProperties.width = 100;
-      initialProperties.height = 10;
+      initialProperties.height = 5;
       // View options are optional, make sure that they are defined.
       initialProperties.viewOptions = initialProperties.viewOptions || {};
       initialProperties.viewOptions.viewPortX = 0;
@@ -26092,8 +26295,8 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
           engine.setSolventForceType(value);
         },
 
-        geneticEngineState: function(value) {
-          engine.setGeneticEngineState(value);
+        DNAState: function(value) {
+          engine.setDNAState(value);
         },
 
         solventForceFactor: function(value) {
@@ -28855,6 +29058,7 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
         state = null,
         prevAnimState = null,
         prevAnimStep = null,
+        suppressViewport = false,
 
         objectNames = [
           "viewPort", "background",
@@ -28872,7 +29076,7 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
         transitionFunction;
 
     function init() {
-      // Redraw DNA / mRNA when genetic engine state is changed.
+      // Redraw DNA / mRNA when DNA state is changed.
       model.geneticEngine().on("change", render);
       // Play animation when there is a "transition" event.
       model.geneticEngine().on("transition", transition);
@@ -29090,7 +29294,7 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
         }],
         viewPort: [{
           position: function () {
-            return Math.min(model.get("DNA").length - 10, Math.max(0, getStep() - 6)) - 2;
+            return Math.max(0, Math.min(model.get("DNA").length - 10, getStep() - 6)) - 2;
           },
           ease: "linear"
         }],
@@ -29445,7 +29649,7 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
       state = model.geneticEngine().state();
 
       // Cleanup.
-      canceltransitionFunction();
+      cancelTransitions();
       viewportG.selectAll("g.genetics").remove();
 
       if (!model.get("DNA") || state.name === "translation-end") {
@@ -29467,23 +29671,21 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
     }
 
     /**
-     * Renders DNA-related graphics using "DNA" and "geneticEngineState"
+     * Renders DNA-related graphics using "DNA" and "DNAState"
      * options of the model.
      */
-    function render() {
-      // Update genetic engine state.
+    function render(suppressViewportUpdate) {
+      suppressViewport = suppressViewportUpdate;
+
+      // Update DNA state.
       state = model.geneticEngine().state();
 
-      canceltransitionFunction();
+      cancelTransitions();
       renderState(g, state.name);
     }
 
     /**
      * Renders animation state. It updates all objects from previous and new state.
-     * When rendered state is different from previously rendered state, the viewport
-     * is moved to its default position for the new state. Otherwise, when the same
-     * state is rendered again (e.g. due to changes in model like DNA update),
-     * the viewport isn't modified.
      *
      * You can pass d3.selection or d3.transition as "parent" argument to decide whether
      * new state should be rendered immediately or using transition.
@@ -29498,17 +29700,14 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
 
       // TODO: make it simpler.
       function shouldRenderObj(name) {
-        var stateEql   = animState === prevAnimState && prevAnimStep === (state.step || 0), // NaN!
-            inData     = !!data[name].length,
+        var inData     = !!data[name].length,
             inPrevData = !!(prevAnimStateData && prevAnimStateData[name].length);
 
-        if (stateEql && inData && name !== "viewPort") {
-          // State hasn't been changed, so ensure that viewport won't be
-          // rendered again (as user could changed it in the meantime).
-          return true;
-        }
-        else if (!stateEql && (inData || inPrevData)) {
-          // State has been changed, so render all objects from current and previous states.
+        if (suppressViewport && name === "viewPort") {
+          // Viewport updat can be disabled using special variable.
+          return false;
+        } else if (inData || inPrevData) {
+          // Render all objects from current and previous states.
           return true;
         }
         return false;
@@ -29544,7 +29743,7 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
         // Some transition is currently in progress, chain a new transition.
         newTrans = currentTrans.transition();
       } else {
-        // All transitionFunction ended, just create a new one.
+        // All transitions ended, just create a new one.
         newTrans = g.transition();
       }
       currentTrans = newTrans;
@@ -29552,15 +29751,15 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
     }
 
     /**
-     * Trick to cancel all current transitionFunction. It isn't possible explicitly
-     * so we have to start new, fake transitionFunction, which will cancel previous
-     * ones. Note that some transitionFunction can be applied to elements that live
+     * Trick to cancel all current transitions. It isn't possible explicitly
+     * so we have to start new, fake transitions, which will cancel previous
+     * ones. Note that some transitions can be applied to elements that live
      * outside g.genetics element, e.g. viewport and background. So, it isn't
      * enough to use d3.selectAll("g.genetics *").
      *
      * @private
      */
-    function canceltransitionFunction() {
+    function cancelTransitions() {
       var g = svg.select("g.genetics");
       if (!g.empty() && g.node().__transition__) {
         svg.selectAll("g.genetics, g.genetics *").transition().delay(0);
@@ -29573,8 +29772,10 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
     /**
      * Triggers animation state transition.
      */
-    function transition(transitionName) {
-      // Update genetic engine state.
+    function transition(transitionName, suppressViewportUpdate) {
+      suppressViewport = suppressViewportUpdate;
+
+      // Update DNA state.
       state = model.geneticEngine().state();
 
       if (Number(transitionName.split(":")[1]) > 0) {
@@ -31918,13 +32119,13 @@ define('md2d/views/dna-edit-dialog',[],function () {
           // Dynamic validation on input.
           $submitButton = $(".dna-edit-dialog button:contains('Apply')");
           $dnaTextInput.on("input", function () {
-            var status = model.geneticEngine().validate($dnaTextInput.val());
-            if (status.valid === false) {
-              $submitButton.button("disable");
-              $errorMsg.text(status.error);
-            } else {
+            try {
+              model.getPropertyValidateFunc("DNA")($dnaTextInput.val());
               $submitButton.button("enable");
               $errorMsg.text("");
+            } catch (e) {
+              $submitButton.button("disable");
+              $errorMsg.text(e.message);
             }
           });
         };
@@ -32398,53 +32599,84 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
       },
 
       /**
-       * Jumps to the next genetic engine state.
+       * Jumps to the next DNA state.
        *
        * Note that jumping between translation states is not supported!
-       * Please use dnaAnimateToNextState if you need to change state
+       * Please use animateToNextDNAState if you need to change state
        * from translation:x to translation:x+1.
        */
-      dnaJumpToNextState: function dnaJumpToNextState() {
+      jumpToNextDNAState: function jumpToNextDNAState() {
         model.geneticEngine().jumpToNextState();
       },
 
       /**
-       * Jumps to the next genetic engine state.
+       * Jumps to the next DNA state.
        *
        * Note that jumping between translation states is not supported!
        * When current state is translation:x, where x > 0, this functions
        * will cause jump to translation:0 state.
        */
-      dnaJumpToPrevState: function dnaJumpToPrevState() {
+      jumpToPrevDNAState: function jumpToPrevDNAState() {
         model.geneticEngine().jumpToPrevState();
       },
 
       /**
-       * Triggers animation to the next genetic engine state.
+       * Tests whether *current* DNA state is before state
+       * passed as an argument.
+       * @param {String} state DNA state name, e.g. "translation:5".
+       * @return {boolean}     true if current state is before 'state',
+       *                       false otherwise.
+       */
+      DNAStateBefore: function DNAStateBefore(state) {
+        return model.geneticEngine().stateBefore(state);
+      },
+
+      /**
+       * Tests whether *current* DNA state is after state
+       * passed as an argument.
+       * @param {String} state DNA state name, e.g. "translation:5".
+       * @return {boolean}     true if current state is after 'state',
+       *                       false otherwise.
+       */
+      DNAStateAfter: function DNAStateAfter(state) {
+        return model.geneticEngine().stateAfter(state);
+      },
+
+      /**
+       * Triggers animation to the next DNA state.
        *
        * Note that this is the only possible way to change state
        * from translation:x to translation:x+1. Jumping between
        * translation states is not supported!
        */
-      dnaAnimateToNextState: function dnaAnimateToNextState() {
+      animateToNextDNAState: function animateToNextDNAState() {
         model.geneticEngine().transitionToNextState();
       },
 
       /**
-       * Triggers animation to the given genetic engine state.
-       * If current genetic engine state is after the desired state,
+       * Triggers animation to the given DNA state.
+       * If current DNA state is after the desired state,
        * nothing happens.
        * e.g.
-       * get('geneticEngineState'); // transcription:0
-       * dnaAnimationTo("transcription-end") // triggers animation
+       * get('DNAState'); // transcription:0
+       * animateToDNAState("transcription-end") // triggers animation
        * However:
-       * get('geneticEngineState'); // translation-end
-       * dnaAnimateOrJumpTo("transcription-end") // nothing happens
+       * get('DNAState'); // translation-end
+       * animateToDNAState("transcription-end") // nothing happens
        *
        * @param  {string} stateName name of the state.
        */
-      dnaAnimationTo: function dnaAnimationTo(stateName) {
+      animateToDNAState: function animateToDNAState(stateName) {
         model.geneticEngine().transitionTo(stateName);
+      },
+
+      /**
+       * Stops current DNA animation.
+       */
+      stopDNAAnimation: function stopDNAAnimation() {
+        // Jumping to previous state will cancel current animation
+        // and cleanup transitions queue.
+        model.geneticEngine().stopTransition();
       },
 
       /**
@@ -32456,24 +32688,53 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
        * expected nucleotide code is wrong, this method does nothing.
        *
        * e.g.
-       * transcribeStep("A") will perform transcription step only
+       * transcribeDNAStep("A") will perform transcription step only
        * if "A" nucleotide should be added to mRNA in this step.
        *
-       * @param  {string} expectedNucleotide code of the expected nucleotide ("U", "C", "A" or "G").
+       * @param {string} expectedNucleotide code of the expected nucleotide ("U", "C", "A" or "G").
        */
-      transcribeStep: function transcribeStep(expectedNucleotide) {
-        model.geneticEngine().transcribeStep(expectedNucleotide);
+      transcribeDNAStep: function transcribeDNAStep(expectedNucleotide) {
+        var ge = model.geneticEngine();
+        if (ge.stateBefore("dna") || ge.stateAfter("transcription-end")) {
+          // Jump to beginning of DNA transcription if current state is before
+          // or after transcrption process (so, state is different from:
+          // "dna", "transcription:0", ..., "transcription-end").
+          model.set("DNAState", "dna");
+        } else {
+          // Proceed to the next step.
+          ge.transcribeStep(expectedNucleotide);
+        }
       },
 
       /**
-        Generates a random protein.
+       * Triggers only one step of DNA translation.
+       */
+      translateDNAStep: function translateDNAStep() {
+        var ge = model.geneticEngine();
+        if (ge.stateBefore("transcription-end")) {
+          // Ensure that we start from transcription-end.
+          model.set("DNAState", "transcription-end");
+        }
+        if (ge.stateBefore("translation:0")) {
+          // Animate directly to the translation:0, merge a few shorter
+          // animations.
+          ge.transitionTo("translation:0");
+        } else {
+          // Proceed to the next step.
+          ge.transitionToNextState();
+        }
+      },
 
-        'expectedLength' parameter controls the maximum (and expected) number of amino
-        acids of the resulting protein. When expected length is too big (due to limited
-        area of the model), protein will be truncated and warning shown.
+     /**
+      * Generates a random protein. It removes all existing atoms before.
+      *
+      * @param  {[type]} expectedLength controls the maximum (and expected) number of amino acids of
+      *                                 the resulting protein. When expected length is too big
+      *                                 (due to limited area of the model), protein will be truncated
+      *                                 and warning shown.
       */
       generateRandomProtein: function (expectedLength) {
-        var realLength = model.generateProtein(undefined, expectedLength);
+        var realLength = model.geneticEngine().generateProtein(undefined, expectedLength);
 
         if (realLength !== expectedLength) {
           throw new Error("Generated protein was truncated due to limited area of the model. Only" +

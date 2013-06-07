@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "6948547d9bcec05d5cb0427f1d01c21500fe6c7f",
-        "short_sha":      "6948547d",
-        "url":            "https://github.com/concord-consortium/lab/commit/6948547d",
-        "author":        "Piotr Janik",
-        "email":         "janikpiotrek@gmail.com",
-        "date":          "2013-06-03 15:28:54 -0400",
-        "short_message": "Fix a bug in substitution mutation context menu",
-        "message":       "Fix a bug in substitution mutation context menu\n\n[#41660503]\n\nDynamically added classes weren't removed correctly, so after a few\nsubstitution mutations submenu elements were invisible."
+        "sha":           "0c134c6361ce3034e50e076235c69084c53adafe",
+        "short_sha":      "0c134c63",
+        "url":            "https://github.com/concord-consortium/lab/commit/0c134c63",
+        "author":        "Stephen Bannasch",
+        "email":         "stephen.bannasch@gmail.com",
+        "date":          "2013-06-07 09:58:07 -0400",
+        "short_message": "Makefile: remove extra resources copied to public/lab",
+        "message":       "Makefile: remove extra resources copied to public/lab\n\nAlso cleanup and comments.\n\nThere is a new task: clean-public.\n\nRunning:\n\n  make clean-public; make public\n\nWill be faster and in some cases will be sufficient to replace:\n\n  make clean; make"
       },
       "dirty": false
     }
