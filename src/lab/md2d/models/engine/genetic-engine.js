@@ -2,8 +2,7 @@
 
 define(function (require) {
 
-  var ValidationError  = require('common/validator').ValidationError,
-      aminoacidsHelper = require('cs!md2d/models/aminoacids-helper'),
+  var aminoacidsHelper = require('cs!md2d/models/aminoacids-helper'),
       alert            = require('common/alert'),
 
       STATES = [
@@ -29,7 +28,6 @@ define(function (require) {
       TERMINATOR_SEQ = "ACCACAGGCCGCCAGTTCCGCTGGCGGCATTTT",
       JUNK_SEQ,
 
-      LOWER_CASE_DNA = /[agtc]/,
       DEF_EVENT = "change";
 
   function complementarySequence(DNA) {
@@ -364,29 +362,6 @@ define(function (require) {
         terminatorComp: generateViewArray([], complementarySequence(TERMINATOR_SEQ)),
         junk:           generateViewArray([], JUNK_SEQ),
         junkComp:       generateViewArray([], complementarySequence(JUNK_SEQ))
-      },
-
-      // Convenient method for validation. It doesn't throw an exception,
-      // instead a special object with validation status is returned. It can
-      // be especially useful for UI classes to avoid try-catch sequences with
-      // "set". The returned status object always has a "valid" property,
-      // which contains result of the validation. When validation fails, also
-      // "error" message is provided.
-      // e.g. {
-      //   valid: false,
-      //   error: "DNA code on sense strand can be defined using only A, G, T or C characters."
-      // }
-      validate: function (DNA) {
-        var status = {
-          valid: true
-        };
-        try {
-          model.getPropertyValidateFunc("DNA")(DNA);
-        } catch (e) {
-          status.valid = false;
-          status.error = e.message;
-        }
-        return status;
       },
 
       on: function(type, listener) {

@@ -38,13 +38,13 @@ define(function () {
           // Dynamic validation on input.
           $submitButton = $(".dna-edit-dialog button:contains('Apply')");
           $dnaTextInput.on("input", function () {
-            var status = model.geneticEngine().validate($dnaTextInput.val());
-            if (status.valid === false) {
-              $submitButton.button("disable");
-              $errorMsg.text(status.error);
-            } else {
+            try {
+              model.getPropertyValidateFunc("DNA")($dnaTextInput.val());
               $submitButton.button("enable");
               $errorMsg.text("");
+            } catch (e) {
+              $submitButton.button("disable");
+              $errorMsg.text(e.message);
             }
           });
         };
