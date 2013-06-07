@@ -149,3 +149,7 @@
 - :path: solar-system
   :name: "Solar System Interactives"
   :category: Tests
+
+- :path: external-projects/geniverse
+  :name: "External Projects"
+  :category: Curriculum

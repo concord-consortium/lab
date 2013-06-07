@@ -1,0 +1,98 @@
+{
+  "title": "Geniverse Gene to Protein",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": [
+    "Geniverse Gene to Protein Genie"
+  ],
+  "fontScale": 0.75,
+  "models": [
+    {
+      "id": "page3$0",
+      "url": "imports/legacy-mw-content/converted/sam-activities/DNA-to-proteins/page3/page3$0.json",
+      "viewOptions": {
+        "enableKeyboardHandlers": false
+      },
+      "modelOptions": {
+        "DNA": "AAAAAAAAAAAAAAAAAAA",
+        "geneticEngineState": "intro-cells"
+      },
+      "onLoad": [
+        "onPropertyChange('state', function(s) {",
+        "  console.log('animating to '+s);",
+        "  dnaAnimationTo(s); ",
+        "});",
+        "onPropertyChange('snapState', function(s) {",
+        "  console.log('snapping to '+s);",
+        "  set('geneticEngineState', s); ",
+        "});"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "state",
+      "initialValue": "intro-cells"
+    },
+    {
+      "name": "snapState",
+      "initialValue": "intro-cells"
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "transcribe",
+      "text": "Transcribe",
+      "action": [
+        "set('geneticEngineState', 'dna');",
+        "dnaAnimationTo('transcription-end');"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "transcribe-step",
+      "text": "Transcribe step by step",
+      "action": "transcribeStep();"
+    },
+    {
+      "type": "button",
+      "id": "translate",
+      "text": "Translate",
+      "action": [
+        "set('geneticEngineState', 'transcription-end');",
+        "dnaAnimationTo('translation-end');"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "translate-step",
+      "text": "Translate step by step",
+      "action": "translateStep();"
+    }
+  ],
+  "template": [
+    {
+      "id": "right",
+      "left": "model.right",
+      "height": "interactive.height",
+      "padding-left": "0.5em"
+    }
+  ],
+  "layout": {
+    "right": [
+      [
+        "transcribe"
+      ],
+      [
+        "transcribe-step"
+      ],
+      [
+        "translate"
+      ],
+      [
+        "translate-step"
+      ]
+    ]
+  }
+}
