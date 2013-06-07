@@ -597,6 +597,7 @@ AUTHORING = false;
       // $selectInteractiveSize.attr('disabled', 'disabled');
       setupCodeEditor();
       setupModelCodeEditor();
+      setupCopySVGButton();
       setupBenchmarks();
       // pass in the model
       setupEnergyGraph(model);
@@ -629,6 +630,7 @@ AUTHORING = false;
       iframePhone = setupIframeListenerFor($iframe[0], function() {
         setupCodeEditor();
         setupModelCodeEditor();
+        setupCopySVGButton();
         setupBenchmarks();
         setupEnergyGraph(null, function() {
           $(".extras-item").disableSelection();
@@ -1135,6 +1137,51 @@ AUTHORING = false;
             $modelEditorContent.hide(100);
           }
         }).change();
+      }
+    });
+  }
+
+  function setupCopySVGButton() {
+    var doSendSVG = function(just_model) {
+      // for the whole interactive:
+      var html_content = $("#responsive-content").html();
+      // just the model
+      if (just_model) {
+        html_content = $("#model-container").html();
+        html_content = "<div id='model-container' tabindex='0'>" + html_content + "</div>";
+      }
+
+      $.ajax({
+        url: "/convert_svg/",
+        type: "POST",
+        data: {'content': html_content }
+      }).done(function(msg) {
+        $("#svg_output").html( msg );
+      });
+    };
+
+    $('#export_model').on('click', function() {
+      console.log("setupCopySVGButton");
+      if(isFullPage()) {
+        doSendSVG(true);
+      } else {
+        // TODO: Make this work...
+        iframePhone.post({ type:'getSvg' });
+        iframePhone.addListener('svg', function() {
+          doSendSVG();
+        });
+      }
+    });
+    $('#export_interactive').on('click', function() {
+      console.log("setupCopySVGButton");
+      if(isFullPage()) {
+        doSendSVG(false);
+      } else {
+        // TODO: Make this work...
+        iframePhone.post({ type:'getSvg' });
+        iframePhone.addListener('svg', function() {
+          doSendSVG();
+        });
       }
     });
   }
