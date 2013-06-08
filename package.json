@@ -37,7 +37,7 @@
     "node-inspector": "0.1.10",
     "jshint": "0.x",
     "cheerio": "0.x",
-    "jade": "*",
+    "jade": ">=0.31.2",
     "mkdirp": "0.3.2",
     "mocha": "1.8.x",
     "should": ">=1.2.2",
