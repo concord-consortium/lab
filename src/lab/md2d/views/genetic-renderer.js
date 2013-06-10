@@ -1,9 +1,10 @@
 /*global define, d3 */
 
 define(function (require) {
-  var nucleotides  = require('md2d/views/nucleotides'),
+  var nucleotides             = require('md2d/views/nucleotides'),
       GeneticElementsRenderer = require('md2d/views/genetic-elements-renderer'),
-      StateManager = require('common/views/state-manager'),
+      StateManager            = require('common/views/state-manager'),
+      mutationsContextMenu    = require('cs!md2d/views/mutations-context-menu'),
 
       H = GeneticElementsRenderer.H;
 
@@ -43,6 +44,12 @@ define(function (require) {
 
       // When DNAMutations is changed, cleanup & render again.
       model.addPropertiesListener(["DNAMutations"], setup);
+
+      // Register mutation menus for DNA and DNA complement. Note that
+      // jQuery.contextMenu uses event delegation, so it's fully enough to
+      // register this menu only once, even before these elements exists.
+      mutationsContextMenu.register('[class~="dna"] [class~="clickable-nucleo"]', model, false);
+      mutationsContextMenu.register('[class~="dna-comp"] [class~="clickable-nucleo"]', model, true);
 
       // Define animation states.
       defineStates();
@@ -85,7 +92,8 @@ define(function (require) {
         }],
         viewPort: [{
           position: 0,
-          ease: "cubic-in-out"
+          ease: "cubic-in-out",
+          drag: false
         }],
         background: [{
           color: "#8492ef"
@@ -224,7 +232,8 @@ define(function (require) {
           bonds: 1
         }],
         viewPort: [{
-          position: -2
+          position: -2,
+          drag: true
         }],
         background: [{
           color: "url(#transcription-bg)"
@@ -295,7 +304,9 @@ define(function (require) {
           opacity: 1
         }],
         viewPort: [{}],
-        background: [{}]
+        background: [{
+          color: "#8492ef"
+        }]
       });
       stateMgr.extendLastState("before-translation-s0", {
         dna: [{}],
@@ -309,9 +320,7 @@ define(function (require) {
           opacity: 0
         }],
         viewPort: [{}],
-        background: [{
-          color: "#8492ef"
-        }]
+        background: [{}]
       });
       stateMgr.extendLastState("before-translation-s1", {
         dna: [{}],

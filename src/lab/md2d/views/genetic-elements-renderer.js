@@ -3,7 +3,6 @@
 define(function (require) {
   var console              = require('common/console'),
       nucleotides          = require('md2d/views/nucleotides'),
-      mutationsContextMenu = require('cs!md2d/views/mutations-context-menu'),
 
       SCALE = 0.007,
       W = {
@@ -81,25 +80,6 @@ define(function (require) {
   }
 
   function GeneticElementsRenderer(svg, model2px, model2pxInv, model) {
-
-    // Viewport dragging behavior. It's used for DNA / mRNA backbones. So, in
-    // fact grabbing backgones moves only viewport, not the backbone itself.
-    var viewportDrag = d3.behavior.drag()
-          .on("dragstart", function () {
-            model.geneticEngine().stopTransition();
-          })
-          .on("drag", function () {
-            model.properties.viewPortX -= model2px.invert(d3.event.x);
-          })
-          .origin(function () {
-            return {x: 0, y: 0};
-          });
-
-    // Register mutation menus for DNA and DNA complement. Note that
-    // jQuery.contextMenu uses event delegation, so it's fully enough to
-    // register this menu only once, even before these elements exists.
-    mutationsContextMenu.register('[class~="dna"] [class~="clickable-nucleo"]', model, false);
-    mutationsContextMenu.register('[class~="dna-comp"] [class~="clickable-nucleo"]', model, true);
 
     function scaleFunc(d) {
       return "scale(" + d.scale + ")";
@@ -204,9 +184,6 @@ define(function (require) {
           return "translate(" + model2px(idx * nucleotides.WIDTH) + ")";
         }
 
-        // Enable backbones dragging bahavior.
-        n.backboneDrag(viewportDrag);
-
         // Note that first junk and promoter sequences are updated only during
         // enter operation. They cannot be changed by the user, while DNA can
         // (and because of that, following nucleotides have to be shifted).
@@ -268,9 +245,6 @@ define(function (require) {
           return "translate(" + model2px(idx * nucleotides.WIDTH) + ")";
         }
 
-        // Enable backbones dragging bahavior.
-        n.backboneDrag(viewportDrag);
-
         // Note that first junk and promoter sequences are updated only during
         // enter operation. They cannot be changed by the user, while DNA can
         // (and because of that, following nucleotides have to be shifted).
@@ -330,7 +304,6 @@ define(function (require) {
 
         // Configure nucleotides.
         n.sequence(mrnaSequence)
-         .backboneDrag(viewportDrag)
          .backbone("RNA")
          .direction(dir)
          .stopCodonsHash(stopCodons);
@@ -550,6 +523,7 @@ define(function (require) {
         var position   = data.viewPort[0].position,
             xy         = data.viewPort[0].xy || [],
             ease       = data.viewPort[0].ease,
+            drag       = data.viewPort[0].drag,
             height     = model.get("viewPortHeight"),
             viewport, viewBox;
 
@@ -561,6 +535,9 @@ define(function (require) {
             "viewPortY": xy[1] || 0
           });
         }
+
+        // Update dragging behavior. Limit dragging to X axis.
+        model.set("viewPortDrag", drag ? "x" : false);
 
         viewport = svg.select(".viewport");
         viewBox = viewport.attr("viewBox").split(" ");
