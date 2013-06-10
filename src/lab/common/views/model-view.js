@@ -7,6 +7,7 @@
 define(function (require) {
   // Dependencies.
   var labConfig             = require('lab.config'),
+      performance           = require('common/performance'),
       console               = require('common/console');
 
   return function ModelView(modelUrl, model, Renderer, getNextTabIndex) {
@@ -399,36 +400,96 @@ define(function (require) {
           y: 0
         });
 
-      // Support viewport dragging behavior.
-      switch(model.properties.viewPortDrag) {
-        case false:
-          // This causes that drag behavior will be removed and dragging of
-          // other nodes will work again. It's based on the d3 implementation,
-          // please see drag() function here:
-          // https://github.com/mbostock/d3/blob/master/src/behavior/drag.js
-          vis1.on("mousedown.drag", null)
-              .on("touchstart.drag", null)
-              .classed("draggable", false);
-          break;
-        case "x":
-          vis1.call(d3.behavior.drag().on("drag", function () {
-            model.properties.viewPortX -= model2px.invert(d3.event.dx);
-          })).classed("draggable", true);
-          break;
-        case "y":
-          vis1.call(d3.behavior.drag().on("drag", function () {
-            model.properties.viewPortY += model2px.invert(d3.event.dy);
-          })).classed("draggable", true);
-          break;
-        case true:
-          vis1.call(d3.behavior.drag().on("drag", function () {
-            model.properties.viewPortX -= model2px.invert(d3.event.dx);
-            model.properties.viewPortY += model2px.invert(d3.event.dy);
-          })).classed("draggable", true);
-          break;
+      redrawGridLinesAndLabels();
+    }
+
+    // Support viewport dragging behavior.
+    function viewportDragging() {
+      var xs = [],
+          ys = [],
+          ts = [],
+          samples = 8,
+          newDrag = false,
+          dragOpt = model.properties.viewPortDrag,
+          vx, vy, t,
+          dragBehavior;
+
+      if (dragOpt === false) {
+        // This causes that drag behavior will be removed and dragging of
+        // other nodes will work again. It's based on the d3 implementation,
+        // please see drag() function here:
+        // https://github.com/mbostock/d3/blob/master/src/behavior/drag.js
+        vis1.on("mousedown.drag", null)
+            .on("touchstart.drag", null)
+            .classed("draggable", false);
+        return;
       }
 
-      redrawGridLinesAndLabels();
+      dragBehavior = d3.behavior.drag();
+      dragBehavior.on("dragstart", function () {
+        newDrag = true;
+        xs.length = 0;
+        ys.length = 0;
+        ts.length = 0;
+        updateArrays();
+      }).on("drag", function () {
+        var dx = dragOpt === "y" ? 0 : model2px.invert(d3.event.dx),
+            dy = dragOpt === "x" ? 0 : model2px.invert(d3.event.dy);
+        model.properties.viewPortX -= dx;
+        model.properties.viewPortY += dy;
+        updateArrays();
+      }).on("dragend", function () {
+        updateArrays();
+        var last = xs.length - 1,
+            dt = ts[last] - ts[0];
+        // Prevent from division by 0.
+        if (dt < 1e-5) return;
+        // When time difference between last 'drag' and 'dragend' events is
+        // bigger than 100ms assume that there should be no interia (it means
+        // that pointer was staying in one place > 100ms just before 'mouseup').
+        if (ts[last] - ts[last - 1] > 100) return;
+        vx = (xs[last] - xs[0]) / dt;
+        vy = (ys[last] - ys[0]) / dt;
+        t  = ts[last];
+        newDrag = false;
+        d3.timer(step);
+      });
+
+      vis1.call(dragBehavior).classed("draggable", true);
+
+      function updateArrays() {
+        xs.push(model.properties.viewPortX);
+        ys.push(model.properties.viewPortY);
+        ts.push(performance.now());
+        if(xs.length > samples) {
+          xs.shift();
+          ys.shift();
+          ts.shift();
+        }
+      }
+
+      function step() {
+        if (newDrag) return true;
+
+        var now = performance.now(),
+            dt = now - t,
+            ax = -0.003 * vx,
+            ay = -0.003 * vy;
+
+        // Update positions.
+        model.properties.viewPortX += vx * dt + 0.5 * ax * dt * dt;
+        model.properties.viewPortY += vy * dt + 0.5 * ay * dt * dt;
+        // Update velocities.
+        vx += ax * dt;
+        vy += ay * dt;
+        // Update last time.
+        t = now;
+
+        if (Math.abs(vx) < 1e-5 && Math.abs(vy) < 1e-5) {
+          return true;
+        }
+        return false;
+      }
     }
 
     function removeClickHandlers() {
@@ -446,6 +507,9 @@ define(function (require) {
 
     function init() {
       // Setup model view state.
+      renderContainer();
+      viewportDragging();
+
       clickHandler = {};
 
       // dynamically add modelUrl as a model property so the renderer
@@ -463,8 +527,10 @@ define(function (require) {
       // Redraw container each time when some visual-related property is changed.
       model.addPropertiesListener([ "backgroundColor"], repaint);
       model.addPropertiesListener(["gridLines", "xunits", "yunits", "xlabel", "ylabel",
-                                   "viewPortX", "viewPortY", "viewPortZoom", "viewPortDrag"],
+                                   "viewPortX", "viewPortY", "viewPortZoom"],
                                    renderContainer);
+      model.addPropertiesListener(["viewPortDrag"],
+                                   viewportDragging);
     }
 
     //
@@ -504,7 +570,6 @@ define(function (require) {
         removeClickHandlers();
         api.setSelectHandler(null);
         processOptions(newModelUrl, newModel);
-        renderContainer();
         init();
         repaint();
       },
@@ -629,7 +694,6 @@ define(function (require) {
     node = $el[0];
 
     processOptions();
-    renderContainer();
     init();
 
     // Extend Public withExport initialized object to initialized objects

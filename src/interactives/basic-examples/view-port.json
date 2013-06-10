@@ -10,7 +10,8 @@
         "controlButtons": "play_reset",
         "gridLines": true,
         "xunits": true,
-        "yunits": true
+        "yunits": true,
+        "viewPortDrag": true
       }
     }
   ],
