@@ -399,6 +399,35 @@ define(function (require) {
           y: 0
         });
 
+      // Support viewport dragging behavior.
+      switch(model.properties.viewPortDrag) {
+        case false:
+          // This causes that drag behavior will be removed and dragging of
+          // other nodes will work again. It's based on the d3 implementation,
+          // please see drag() function here:
+          // https://github.com/mbostock/d3/blob/master/src/behavior/drag.js
+          vis1.on("mousedown.drag", null)
+              .on("touchstart.drag", null)
+              .classed("draggable", false);
+          break;
+        case "x":
+          vis1.call(d3.behavior.drag().on("drag", function () {
+            model.properties.viewPortX -= model2px.invert(d3.event.dx);
+          })).classed("draggable", true);
+          break;
+        case "y":
+          vis1.call(d3.behavior.drag().on("drag", function () {
+            model.properties.viewPortY += model2px.invert(d3.event.dy);
+          })).classed("draggable", true);
+          break;
+        case true:
+          vis1.call(d3.behavior.drag().on("drag", function () {
+            model.properties.viewPortX -= model2px.invert(d3.event.dx);
+            model.properties.viewPortY += model2px.invert(d3.event.dy);
+          })).classed("draggable", true);
+          break;
+      }
+
       redrawGridLinesAndLabels();
     }
 
@@ -434,7 +463,7 @@ define(function (require) {
       // Redraw container each time when some visual-related property is changed.
       model.addPropertiesListener([ "backgroundColor"], repaint);
       model.addPropertiesListener(["gridLines", "xunits", "yunits", "xlabel", "ylabel",
-                                   "viewPortX", "viewPortY", "viewPortZoom"],
+                                   "viewPortX", "viewPortY", "viewPortZoom", "viewPortDrag"],
                                    renderContainer);
     }
 

@@ -149,6 +149,14 @@ define(function() {
       viewPortY: {
         unitType: "length"
       },
+      viewPortDrag: {
+        // Supported values:
+        // - true  -> dragging is enabled.
+        // - "x"   -> dragging is limited only to X axis.
+        // - "y"   -> dragging is limited only yo Y axis.
+        // - false -> dragging is disabled.
+        defaultValue: false
+      },
       backgroundColor: {
         defaultValue: "#eeeeee"
       },

@@ -4,6 +4,8 @@
   background: $component-background-color
   &:focus
     outline: $focus-outline-color solid 0.2em
+  &.draggable:hover
+    cursor: move
   @include user-select(none)
   // Radial bonds.
   .radialbond1, .radialbond2
@@ -27,10 +29,6 @@
       cursor: pointer
       .glow
         display: inline
-
-    // Backbones are draggable.
-    .backbone:hover
-      cursor: move
 
     // Default style of nucleotides.
     .nucleotide
