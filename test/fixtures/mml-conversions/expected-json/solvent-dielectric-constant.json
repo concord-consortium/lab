@@ -27,6 +27,7 @@
     "viewPortZoom": 1,
     "viewPortX": 0,
     "viewPortY": 0,
+    "viewPortDrag": false,
     "backgroundColor": "#B8EBF0",
     "markColor": "#f8b500",
     "showClock": true,

@@ -27,6 +27,7 @@
     "viewPortZoom": 1,
     "viewPortX": 0,
     "viewPortY": 0,
+    "viewPortDrag": false,
     "backgroundColor": "rgba(225,239,222,255)",
     "markColor": "#f8b500",
     "keShading": false,
