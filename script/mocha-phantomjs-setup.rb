@@ -52,13 +52,13 @@ if @mocha_phantomjs
 <div id='mocha'></div>
 <script src='test/mocha.js'></script>
 <script src='test/chai.js'></script>
+<script src='test/test1.js'></script>
 <script>
   mocha.setup({globals: ['script','state', 'model']});
   mocha.ui('bdd');
   mocha.reporter('html');
   expect = chai.expect;
 </script>
-<script src='test/test1.js'></script>
 <script>
   if (window.mochaPhantomJS) { mochaPhantomJS.run(); }
   else { mocha.run(); }
