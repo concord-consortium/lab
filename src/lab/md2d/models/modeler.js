@@ -1576,7 +1576,7 @@ define(function(require) {
     };
 
     model.is_stopped = function() {
-      return stopped;
+      return stopped || stopRequest;
     };
 
     model.get_elements = function() {
