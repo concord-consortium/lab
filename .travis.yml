@@ -2,17 +2,14 @@
 branches:
   only:
     - master
-    - energy2d
 notifications:
-  irc: "irc.freenode.org#otrunk"
+  irc: "irc.freenode.org#ccdevs"
   email:
     recipients:
       - stephen.bannasch@gmail.com
       - sfentress@concord.org
       - rpk@pobox.com
       - janikpiotrek@gmail.com
-      - er.kamal.paul@gmail.com
-
 language: node_js
 node_js:
   - 0.10
