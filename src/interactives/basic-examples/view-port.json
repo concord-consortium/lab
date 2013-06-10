@@ -74,6 +74,12 @@
       "type": "checkbox",
       "text": "gridLines",
       "property": "gridLines"
+    },
+    {
+      "id": "drag",
+      "type": "checkbox",
+      "text": "viewPortDrag",
+      "property": "viewPortDrag"
     }
   ],
   "layout": {
@@ -85,7 +91,8 @@
       ["yunits"],
       ["xlabel"],
       ["ylabel"],
-      ["gridLines"]
+      ["gridLines"],
+      ["drag"]
     ]
   }
 }
