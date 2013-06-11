@@ -1,0 +1,105 @@
+{
+  "title": "Mutations",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": [
+    "Click nucleotide to open mutations menu. You can perform various kinds of mutations:",
+    "substitution, insertion or deletion. Then you can immediately see how this",
+    "affects the final protein using **Show complete protein**.",
+    "",
+    "You can also click **Transcribe** to see full mRNA strand created or",
+    "**Translate** to generate full protein from mRNA."
+  ],
+  "fontScale": 0.75,
+  "models": [
+    {
+      "id": "page3$0",
+      "url": "imports/legacy-mw-content/converted/sam-activities/DNA-to-proteins/page3/page3$0.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      },
+      "modelOptions": {
+        "DNA": "ATGCCAGGCGGCGAGAGCTTGCTAATTGGCTTATAG",
+        "DNAState": "dna"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "transcribe",
+      "text": "Transcribe",
+      "action": [
+        "if (DNAStateAfter('transcription-end'))",
+        "  set('DNAState', 'dna');",
+        "animateToDNAState('transcription-end');"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "translate",
+      "text": "Translate",
+      "action": [
+        "if (DNAStateBefore('translation:0') || get('DNAState') === 'translation-end')",
+        "  set('DNAState', 'translation:0');",
+        "animateToDNAState('translation-end');"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "reset",
+      "action": "reset();"
+    },
+    {
+      "type": "button",
+      "id": "stop",
+      "text": "stop",
+      "action": "stopDNAAnimation();"
+    },
+    {
+      "type": "button",
+      "id": "prev-state-jump",
+      "text": "<< jump",
+      "action": "jumpToPrevDNAState();"
+    },
+    {
+      "type": "button",
+      "id": "next-state",
+      "text": "continue one step",
+      "action": "animateToNextDNAState();"
+    },
+    {
+      "type": "button",
+      "id": "next-state-jump",
+      "text": "jump >>",
+      "action": "jumpToNextDNAState();"
+    },
+    {
+      "type": "button",
+      "id": "dna-dialog",
+      "text": "Edit DNA",
+      "action": "openDNADialog();"
+    },
+    {
+      "type": "button",
+      "id": "show-protein",
+      "text": "Show complete protein",
+      "action": "set('DNAState', 'translation-end');"
+    },
+    {
+      "type": "button",
+      "id": "show-dna",
+      "text": "Show DNA",
+      "action": "set('DNAState', 'dna');"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      ["dna-dialog", "show-dna", "show-protein"],
+      ["transcribe", "translate"],
+      ["prev-state-jump", "next-state", "next-state-jump", "stop", "reset"]
+    ]
+  }
+}
