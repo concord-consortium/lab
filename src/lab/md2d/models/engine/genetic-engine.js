@@ -118,7 +118,8 @@ define(function (require) {
             }
           }
           if (lastTranslationStep === null) {
-            lastTranslationStep = 0;
+            // No stop codon found.
+            lastTranslationStep = Math.floor(mRNA.length / 3);
           }
         },
 
@@ -178,6 +179,16 @@ define(function (require) {
             // So, the first state which triggers it is "transcription-end".
             generateViewArray(api.viewModel.mRNA, mRNA);
           }
+
+          if (eventMode !== "transition") {
+            // While jumping between states, ensure that user can see a valid
+            // number of amino acids.
+            if (api.stateBefore("translation:1")) {
+              removeAminoAcids();
+            } else if (api.stateEqual("translation-end")) {
+              generateFinalProtein();
+            }
+          }
         },
 
         removeAminoAcids = function () {
@@ -205,6 +216,7 @@ define(function (require) {
             abbr = aminoacidsHelper.codonToAbbr(api.codon(++i));
           }
           api.generateProtein(aaSequenece, undefined, 2.3, 0.3);
+          api.centerProtein();
           model.start();
         },
 
@@ -328,16 +340,6 @@ define(function (require) {
             }
 
             dispatch.change();
-
-            // While jumping between states, ensure that user can see a valid
-            // number of amino acids. Do it *after* dispatching change event,
-            // as generateFinalProtein() uses viewport position, which can be
-            // updated during rendering.
-            if (api.stateBefore("translation:1")) {
-              removeAminoAcids();
-            } else if (api.stateEqual("translation-end")) {
-              generateFinalProtein();
-            }
           }
         },
 
@@ -365,7 +367,8 @@ define(function (require) {
 
         // Center protein when user changes viewport after translation is completed.
         viewPortUpdated = function () {
-          if (api.stateEqual("translation-end") && model.getNumberOfAtoms() > 0) {
+          if (api.stateEqual("translation-end") && model.getNumberOfAtoms() > 0 &&
+              ongoingTransitions.length === 0) {
             api.centerProtein();
           }
         };

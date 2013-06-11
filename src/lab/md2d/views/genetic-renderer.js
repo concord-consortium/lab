@@ -614,10 +614,9 @@ define(function (require) {
       cancelTransitions();
       viewportG.selectAll("g.genetics").remove();
 
-      if (!model.get("DNA") || state.name === "translation-end") {
-        // When DNA is not defined (=== "", undefined or null) or
-        // translation is ended, genetic renderer doesn't have to do
-        // anything.
+      if (!model.get("DNA")) {
+        // When DNA is not defined (=== "", undefined or null) genetic
+        // renderer has nothing to do.
         return;
       }
 
