@@ -3,11 +3,9 @@
   "publicationStatus": "draft",
   "subtitle": "",
   "about": [
-    "Click **Prepare for transcription** to zoom in to cell nucleus and separate DNA strands.",
+    " Click **transcribe** to see full mRNA strand created or use **transcribe step by step** button.",
     "",
-    "Then click on the **Transcribe** button to trigger complete DNA transcription.",
-    "",
-    "After that you can clikc **Translate** to see amino acids being linked together into a protein.",
+    "Click **translate** to generate full protein from mRNA or use **translate step by step**.",
     "",
     "**Reset** button will bring you back to the beginning."
   ],
@@ -29,20 +27,12 @@
   "components": [
     {
       "type": "button",
-      "id": "zoom",
-      "text": "prepare for transcription",
-      "action": [
-        "set('DNAState', 'intro-cells');",
-        "animateToDNAState('dna');"
-      ]
-    },
-    {
-      "type": "button",
       "id": "transcribe",
       "text": "transcribe",
       "action": [
-        "set('DNAState', 'dna');",
-        "animateToDNAState('transcription-end');"
+        "if (DNAStateAfter('transcription-end'))",
+        "  set('DNAState', 'dna');",
+        "else animateToDNAState('transcription-end');"
       ]
     },
     {
@@ -56,9 +46,11 @@
       "id": "translate",
       "text": "translate",
       "action": [
-        "if (DNAStateBefore('transcription-end')) set('DNAState', 'transcription-end');",
-        "if (DNAStateAfter('translation:0')) set('DNAState', 'translation:0');",
-        "animateToDNAState('translation-end');"
+        "if (DNAStateBefore('transcription-end'))",
+        "  alert('Translation can only occur after transcription is complete.');",
+        "else if (get('DNAState') === 'translation-end')",
+        "  set('DNAState', 'translation:0');",
+        "else animateToDNAState('translation-end');"
       ]
     },
     {
@@ -69,79 +61,67 @@
     },
     {
       "type": "text",
-      "id": "label1A",
+      "id": "label1",
       "text": "Click"
     },
     {
       "type": "text",
-      "id": "label1",
-      "text": "to zoom into the cell nucleus."
-    },
-    {
-      "type": "text",
-      "id": "label2A",
-      "text": "Then click"
-    },
-    {
-      "type": "text",
       "id": "label2",
-      "text": "to trigger complete DNA transcription or"
-    },
-    {
-      "type": "text",
-      "id": "label3A",
-      "text": "Finally click"
+      "text": "to see full mRNA strand created or"
     },
     {
       "type": "text",
       "id": "label3",
-      "text": "to see amino acids being linked together into a protein or"
+      "text": "Click"
+    },
+    {
+      "type": "text",
+      "id": "label4",
+      "text": "to generate full protein from mRNA or"
     },
     {
       "type": "button",
-      "id": "prev-state-jump",
-      "text": "<<",
-      "action": "jumpToPrevDNAState();"
+      "id": "start",
+      "text": "start/continue model",
+      "action": "animateToDNAState('translation-end');"
     },
     {
       "type": "button",
-      "id": "stop-anim",
-      "text": "stop animation",
+      "id": "stop",
+      "text": "stop",
       "action": "stopDNAAnimation();"
     },
     {
       "type": "button",
+      "id": "reset",
+      "text": "reset",
+      "action": "reset();"
+    },
+    {
+      "type": "button",
+      "id": "prev-state-jump",
+      "text": "<< jump",
+      "action": "jumpToPrevDNAState();"
+    },
+    {
+      "type": "button",
       "id": "next-state",
-      "text": "proceed one step",
+      "text": "continue one step",
       "action": "animateToNextDNAState();"
     },
     {
       "type": "button",
       "id": "next-state-jump",
-      "text": ">>",
+      "text": "jump >>",
       "action": "jumpToNextDNAState();"
-    }
-  ],
-  "template": [
-    {
-      "id": "bottom",
-      "top": "model.bottom",
-      "width": "interactive.width",
-      "padding-top": "0.5em"
-    },
-    {
-      "id": "bottom-2",
-      "top": "bottom.bottom",
-      "width": "interactive.width",
-      "padding-top": "1em"
     }
   ],
   "layout": {
     "bottom": [
-      ["label1A", "zoom", "label1"],
-      ["label2A", "transcribe", "label2", "transcribe-step"],
-      ["label3A", "translate", "label3", "translate-step"]
-    ],
-    "bottom-2": ["prev-state-jump", "stop-anim", "next-state", "next-state-jump"]
+      ["label1", "transcribe", "label2", "transcribe-step"],
+      ["label3", "translate", "label4", "translate-step"],
+      ["start", "stop", "reset"],
+      ["prev-state-jump", "next-state", "next-state-jump"]
+    ]
   }
 }
