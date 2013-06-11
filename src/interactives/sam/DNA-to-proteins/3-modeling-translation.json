@@ -3,17 +3,7 @@
   "publicationStatus": "draft",
   "subtitle": "",
   "about": [
-    "Click **Prepare for transcription** to zoom in to cell nucleus and separate DNA strands.",
-    "",
-    "Then click on the **Transcribe** button to trigger complete DNA transcription.",
-    "",
-    "After that you can clikc **Translate** to see amino acids being linked together into a protein.",
-    "",
-    "You can also just proceed step by step using **Proceed one step** button.",
-    "",
-    "**<<** and **>>** buttons can be used to jump quickly between steps.",
-    "",
-    "**Reset** button will bring you back to the beginning."
+    "Click **translate** to generate full protein from mRNA or use **translate step by step**."
   ],
   "fontScale": 0.8,
   "models": [
@@ -26,32 +16,16 @@
       },
       "modelOptions": {
         "DNA": "ATGCCAGGCGGCGAGAGCTTGCTAATTGGCTTATAG",
-        "DNAState": "dna"
+        "DNAState": "translation:0"
       }
     }
   ],
   "components": [
     {
       "type": "button",
-      "id": "transcribe",
-      "text": "transcribe",
-      "action": [
-        "set('DNAState', 'dna');",
-        "animateToDNAState('translation:0');"
-      ]
-    },
-    {
-      "type": "button",
-      "id": "transcribe-step",
-      "text": "transcribe step by step",
-      "action": "transcribeDNAStep();"
-    },
-    {
-      "type": "button",
       "id": "translate",
       "text": "translate",
       "action": [
-        "if (DNAStateBefore('transcription-end')) set('DNAState', 'transcription-end');",
         "if (DNAStateAfter('translation:0')) set('DNAState', 'translation:0');",
         "animateToDNAState('translation-end');"
       ]
@@ -64,42 +38,37 @@
     },
     {
       "type": "text",
-      "id": "label2A",
+      "id": "label3",
       "text": "Click"
     },
     {
       "type": "text",
-      "id": "label2",
-      "text": "to trigger complete DNA transcription or"
+      "id": "label4",
+      "text": "to generate full protein from mRNA or"
     },
     {
-      "type": "text",
-      "id": "label3A",
-      "text": "Then click"
-    },
-    {
-      "type": "text",
-      "id": "label3",
-      "text": "to see amino acids being linked together into a protein or"
+      "type": "button",
+      "id": "start",
+      "text": "start/continue model",
+      "action": "animateToDNAState('translation-end');"
     },
     {
       "type": "button",
       "id": "stop",
-      "text": "Stop",
+      "text": "stop",
       "action": "stopDNAAnimation();"
     },
     {
       "type": "button",
       "id": "reset",
-      "text": "Reset",
+      "text": "reset",
       "action": "reset();"
     }
   ],
   "layout": {
     "bottom": [
-      ["label2A", "transcribe", "label2", "transcribe-step"],
-      ["label3A", "translate", "label3", "translate-step"],
-      ["stop", "reset"]
+      ["label3", "translate", "label4", "translate-step"],
+      ["start", "stop", "reset"]
     ]
   }
 }
