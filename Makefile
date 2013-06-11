@@ -652,6 +652,7 @@ public/interactives/%.json: src/interactives/%.json
 public/models/%.json: src/models/%.json
 	@cp $< $@
 
+.PHONY: public/interactives.json
 public/interactives.json: $(INTERACTIVE_FILES)
 	$(GENERATE_INTERACTIVE_INDEX)
 
