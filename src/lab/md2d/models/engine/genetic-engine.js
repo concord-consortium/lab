@@ -361,6 +361,13 @@ define(function (require) {
           } else {
             dispatch.change(true);
           }
+        },
+
+        // Center protein when user changes viewport after translation is completed.
+        viewPortUpdated = function () {
+          if (api.stateEqual("translation-end") && model.getNumberOfAtoms() > 0) {
+            api.centerProtein();
+          }
         };
 
     // Public API.
@@ -668,19 +675,38 @@ define(function (require) {
       },
 
       centerProtein: function (duration) {
-        var cm = api.proteinCenterOfMass(),
-            xDiff = model.properties.viewPortX +
-                    model.properties.viewPortWidth / 2 - cm.x,
-            yDiff = model.properties.viewPortY +
-                    model.properties.viewPortHeight / 2 - cm.y,
-            i, x, y, len;
+        model.batch(function () {
+          var cm = api.proteinCenterOfMass(),
+              xDiff = model.properties.viewPortX +
+                      model.properties.viewPortWidth / 2 - cm.x,
+              yDiff = model.properties.viewPortY +
+                      model.properties.viewPortHeight / 2 - cm.y,
+              minX = model.properties.minX + 0.1,
+              maxX = model.properties.maxX - 0.1,
+              minY = model.properties.minY + 0.1,
+              maxY = model.properties.maxY - 0.1,
+              len  = model.getNumberOfAtoms(),
+              i, x, y;
 
-        for (i = 0, len = model.getNumberOfAtoms(); i < len; i++) {
-          x = model.getAtomProperties(i).x + xDiff;
-          y = model.getAtomProperties(i).y + yDiff;
-          model.atomTransition().id(i).duration(duration).prop("x", x);
-          model.atomTransition().id(i).duration(duration).prop("y", y);
-        }
+          for (i = 0; i < len; i++) {
+            x = model.getAtomProperties(i).x;
+            y = model.getAtomProperties(i).y;
+            if (x + xDiff > maxX) xDiff = maxX - x;
+            if (x + xDiff < minX) xDiff = minX - x;
+            if (y + yDiff > maxY) yDiff = maxY - y;
+            if (y + yDiff < minY) yDiff = minY - y;
+          }
+          for (i = 0; i < len; i++) {
+            x = model.getAtomProperties(i).x + xDiff;
+            y = model.getAtomProperties(i).y + yDiff;
+            if (duration) {
+              model.atomTransition().id(i).duration(duration).prop("x", x);
+              model.atomTransition().id(i).duration(duration).prop("y", y);
+            } else {
+              model.setAtomProperties(i, {x: x, y: y});
+            }
+          }
+        });
       },
 
       connectAminoAcid: function (codonIdx) {
@@ -895,6 +921,7 @@ define(function (require) {
 
     model.addPropertiesListener(["DNA"], DNAUpdated);
     model.addPropertiesListener(["DNAState"], stateUpdated);
+    model.addPropertiesListener(["viewPortX"], viewPortUpdated);
     updateGeneticProperties();
     return api;
   };
