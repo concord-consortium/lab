@@ -67,6 +67,9 @@ define(function (require) {
 
           lastStep;
       function getStep() {
+        if (state.name === "translation-end") {
+          return model.geneticEngine().lastTranslationStep();
+        }
         var step = state.step;
         lastStep = !isNaN(step) ? step : lastStep;
         return lastStep;
@@ -579,9 +582,7 @@ define(function (require) {
         background: [{}]
       });
       stateMgr.extendLastState("translation-end-s5", {
-        mrna: [{
-          translateX: function () { return -(model.get("DNA").length + 8) * nucleotides.WIDTH; }
-        }],
+        mrna: [{}],
         ribosomeBottom: [{
           translateX: function () { return ribosomeX() + 8; },
           translateY: 1.75 * nucleotides.HEIGHT - 0.5,
@@ -594,13 +595,8 @@ define(function (require) {
         background: [{}]
       });
       stateMgr.extendLastState("translation-end", {
-        viewPort: [{
-          xy: function () {
-            var cm = model.geneticEngine().proteinCenterOfMass() || {x: vx, y: vy};
-            return [cm.x - vx, cm.y - vy];
-          },
-          ease: "cubic-in-out"
-        }],
+        mrna: [{}],
+        viewPort: [{}],
         background: [{}]
       });
     }
@@ -938,6 +934,9 @@ define(function (require) {
 
         t = nextTrans().duration(700);
         renderState(t, "translation-end");
+        t.each("start", function () {
+          geneticEngine.centerProtein(700);
+        });
       }
     };
 

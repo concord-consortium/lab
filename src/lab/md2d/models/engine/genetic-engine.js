@@ -83,6 +83,8 @@ define(function (require) {
         // Complete mRNA based on current DNA. Useful for codon() method,
         // which needs to know the whole sequence in advance.
         mRNA = "",
+        stopCodonsHash,
+        lastTranslationStep,
 
         dispatch = d3.dispatch("change", "transition"),
 
@@ -94,6 +96,30 @@ define(function (require) {
             newCode = mRNACode(mRNA.length);
           }
           return mRNA;
+        },
+
+        calculateStopCodonsHash = function () {
+          var codon, i, len;
+
+          stopCodonsHash = {};
+          lastTranslationStep = null;
+          for (i = 0, len = mRNA.length; i < len; i += 3) {
+            codon = mRNA.substr(i, 3);
+            if (aminoacidsHelper.codonToAbbr(codon) === "STOP") {
+              if (lastTranslationStep === null) {
+                lastTranslationStep = i / 3;
+              }
+              // Note that codonToAbbr returns "STOP" also when codon length is
+              // smaller than 3. In this case, we want to mark only codons which
+              // are a "real" STOP codons, so check their length.
+              if (codon.length === 3) {
+                stopCodonsHash[i] = stopCodonsHash[i + 1] = stopCodonsHash[i + 2] = true;
+              }
+            }
+          }
+          if (lastTranslationStep === null) {
+            lastTranslationStep = 0;
+          }
         },
 
         mRNACode = function (index) {
@@ -142,6 +168,7 @@ define(function (require) {
           generateViewArray(api.viewModel.DNAComp, DNAComp, true);
 
           mRNA = calculatemRNA();
+          calculateStopCodonsHash();
           // mRNA view array is also based on the current state.
           if (api.stateBefore("transcription:0")) {
             generateViewArray(api.viewModel.mRNA, "");
@@ -150,16 +177,6 @@ define(function (require) {
           } else if (api.stateAfter("transcription")) {
             // So, the first state which triggers it is "transcription-end".
             generateViewArray(api.viewModel.mRNA, mRNA);
-          }
-
-          if (eventMode !== "transition") {
-            // While jumping between states, ensure that user can see a valid
-            // number of amino acids.
-            if (api.stateBefore("translation:1")) {
-              removeAminoAcids();
-            } else if (api.stateEqual("translation-end")) {
-              generateFinalProtein();
-            }
           }
         },
 
@@ -311,6 +328,16 @@ define(function (require) {
             }
 
             dispatch.change();
+
+            // While jumping between states, ensure that user can see a valid
+            // number of amino acids. Do it *after* dispatching change event,
+            // as generateFinalProtein() uses viewport position, which can be
+            // updated during rendering.
+            if (api.stateBefore("translation:1")) {
+              removeAminoAcids();
+            } else if (api.stateEqual("translation-end")) {
+              generateFinalProtein();
+            }
           }
         },
 
@@ -640,6 +667,22 @@ define(function (require) {
         }
       },
 
+      centerProtein: function (duration) {
+        var cm = api.proteinCenterOfMass(),
+            xDiff = model.properties.viewPortX +
+                    model.properties.viewPortWidth / 2 - cm.x,
+            yDiff = model.properties.viewPortY +
+                    model.properties.viewPortHeight / 2 - cm.y,
+            i, x, y, len;
+
+        for (i = 0, len = model.getNumberOfAtoms(); i < len; i++) {
+          x = model.getAtomProperties(i).x + xDiff;
+          y = model.getAtomProperties(i).y + yDiff;
+          model.atomTransition().id(i).duration(duration).prop("x", x);
+          model.atomTransition().id(i).duration(duration).prop("y", y);
+        }
+      },
+
       connectAminoAcid: function (codonIdx) {
         if (codonIdx < 1) return;
         var r1 = model.getAtomProperties(codonIdx - 1).radius,
@@ -670,19 +713,11 @@ define(function (require) {
       },
 
       stopCodonsHash: function () {
-        var result = {},
-            codon, i, len;
+        return stopCodonsHash;
+      },
 
-        for (i = 0, len = mRNA.length; i < len; i += 3) {
-          codon = mRNA.substr(i, 3);
-          // Note that codonToAbbr returns "STOP" also when codon length is
-          // smaller than 3. In this case, we want to mark only codons which
-          // are a "real" STOP codons, so check their length.
-          if (codon.length === 3 && aminoacidsHelper.codonToAbbr(codon) === "STOP") {
-            result[i] = result[i + 1] = result[i + 2] = true;
-          }
-        }
-        return result;
+      lastTranslationStep: function () {
+        return lastTranslationStep;
       },
 
       /**
