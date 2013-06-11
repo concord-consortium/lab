@@ -67,6 +67,28 @@ define(function () {
         "width": "interactive.width",
         "padding-top": "0.5em"
       }
+    ],
+    "left-right-bottom": [
+      {
+        "id": "left",
+        "top": "model.top",
+        "height": "model.height",
+        "right": "model.left",
+        "padding-right": "0.5em"
+      },
+      {
+        "id": "right",
+        "top": "model.top",
+        "height": "model.height",
+        "left": "model.right",
+        "pading-left": "0.5em"
+      },
+      {
+        "id": "bottom",
+        "top": "model.bottom",
+        "left": "model.left",
+        "width": "model.width"
+      }
     ]
   };
 });

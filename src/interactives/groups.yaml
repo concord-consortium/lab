@@ -22,6 +22,10 @@
   :name: "Science of Atoms and Molecules: Diffusion"
   :category: Curriculum
 
+- :path: sam/light-matter
+  :name: "Science of Atoms and Molecules: Light and Matter"
+  :category: Curriculum
+
 - :path: inquiry-space/pendulum
   :name: "Inquiry Space: Pendulums"
   :category: Curriculum

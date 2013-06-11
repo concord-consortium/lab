@@ -1,0 +1,67 @@
+{
+  "title": "Light Matter Feature Test",
+  "publicationStatus": "draft",
+  "subtitle": "Testing of Light-Matter model features",
+  "about": "",
+  "models": [
+    {
+      "id": "blackbody$0",
+      "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/blackbody$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "temperature-slider",
+      "min": 0,
+      "max": 10000,
+      "labels": [
+        {
+          "value": 0,
+          "label": "Low"
+        },
+        {
+          "value": 10000,
+          "label": "High"
+        }
+      ],
+      "steps": 50,
+      "title": "Temperature",
+      "property": "targetTemperature"
+    },
+    {
+      "type": "barGraph",
+      "id": "thermometer",
+      "property": "temperature",
+      "title": "Temperature (K)",
+      "labels": 0,
+      "min": 0,
+      "max": 10000
+    },
+    {
+      "type": "checkbox",
+      "id": "enable-light-source",
+      "text": "Light source on",
+      "textOn": "right",
+      "property": "lightSourceEnabled"
+    },
+    {
+      "type": "checkbox",
+      "id": "ke-shading",
+      "text": "Display heat in molecules",
+      "property": "keShading"
+    }
+  ],
+  "layout": {
+    "right": [
+      "thermometer"
+    ],
+    "bottom": [
+      "enable-light-source", "ke-shading"
+    ]
+  },
+  "template": "left-right-bottom"
+}
