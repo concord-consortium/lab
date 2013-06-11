@@ -1830,6 +1830,13 @@ define(function(require) {
     };
 
     /**
+     * Cancels all transitions which are currently in progress.
+     */
+    model.cancelTransitions = function () {
+      transitions.length = 0;
+    };
+
+    /**
       Call before running a function that would otherwise trigger a number
       of invalidatingChangePre/PostHooks, which would slow down the model when
       each change causes a recalculation. This can be used whenever you can

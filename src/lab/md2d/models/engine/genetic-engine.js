@@ -302,6 +302,14 @@ define(function (require) {
           set("DNA", newDNA, "transition");
         },
 
+        dispatchChange = function (suppressViewportUpdate) {
+          // Cancel transitions when we are going to dispatch "change" event.
+          ongoingTransitions = [];
+          model.cancelTransitions();
+
+          dispatch.change(suppressViewportUpdate);
+        },
+
         // Use this function if you want to change DNA or DNAState
         // and dispatch event different than "change" (which causes immediate
         // rendering). Options are:
@@ -326,8 +334,6 @@ define(function (require) {
           if (eventMode === "transition") {
             dispatch.transition(state);
           } else {
-            // Cancel transitions when we are going to dispatch "change" event.
-            ongoingTransitions = [];
 
             if (api.stateAfter("translation:0") && api.stateBefore("translation-end")) {
               // It means that state was set to 'translation:x', where x > 0.
@@ -339,7 +345,7 @@ define(function (require) {
               return;
             }
 
-            dispatch.change();
+            dispatchChange();
           }
         },
 
@@ -361,7 +367,7 @@ define(function (require) {
           if (eventMode === "transition") {
             dispatch.transition("dna-updated", true);
           } else {
-            dispatch.change(true);
+            dispatchChange(true);
           }
         },
 
