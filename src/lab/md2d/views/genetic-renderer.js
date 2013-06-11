@@ -20,6 +20,7 @@ define(function (require) {
         prevAnimState = null,
         prevAnimStep = null,
         suppressViewport = false,
+        transitionInProgress = false,
 
         objectNames = [
           "viewPort", "background",
@@ -642,7 +643,14 @@ define(function (require) {
       state = model.geneticEngine().state();
 
       cancelTransitions();
-      renderState(g, state.name);
+
+      // Force rendering of all objects when render was called before previous
+      // transition ended. This means that we can be somewhere between states
+      // and it's impossible to detect which objects should be rendered using
+      // previous and current animation state.
+      renderState(g, state.name, transitionInProgress);
+
+      transitionInProgress = false;
     }
 
     /**
@@ -652,10 +660,11 @@ define(function (require) {
      * new state should be rendered immediately or using transition.
      *
      * @private
-     * @param  {d3.selection OR d3.transition} parent d3.selection or d3.transition object.
-     * @param  {String} animState  animation state name.
+     * @param {d3.selection OR d3.transition} parent d3.selection or d3.transition object.
+     * @param {String} animState  animation state name.
+     * @param {boolean} forceAll forces re-rendering of all scene objects.
      */
-    function renderState(parent, animState) {
+    function renderState(parent, animState, forceAll) {
       var data = stateMgr.getState(animState),
           prevAnimStateData = prevAnimState ? stateMgr.getState(prevAnimState) : null;
 
@@ -677,7 +686,7 @@ define(function (require) {
       parent.each(function() {
         var parent = d3.select(this);
         objectNames.forEach(function (name) {
-          if (shouldRenderObj(name)) {
+          if (forceAll || shouldRenderObj(name)) {
             objectRenderer[name](parent, data);
           }
         });
@@ -734,6 +743,7 @@ define(function (require) {
      * Triggers animation state transition.
      */
     function transition(transitionName, suppressViewportUpdate) {
+      transitionInProgress = true;
       suppressViewport = suppressViewportUpdate;
 
       // Update DNA state.
@@ -751,6 +761,7 @@ define(function (require) {
       transitionFunction[transitionName]();
 
       currentTrans.each("end.trans-end", function() {
+        transitionInProgress = false;
         // Notify engine that transition has ended.
         model.geneticEngine().transitionEnded();
       });
