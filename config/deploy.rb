@@ -37,6 +37,7 @@ namespace :deploy do
 
   desc "restart the Rack application"
   task :restart do
+    run "mkdir -p /var/www/app/tmp"
     run "touch /var/www/app/tmp/restart.txt"
   end
 
