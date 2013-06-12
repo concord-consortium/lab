@@ -1144,17 +1144,27 @@ AUTHORING = false;
   function setupCopySVGButton() {
     var doSendSVG = function(just_model) {
       // for the whole interactive:
-      var html_content = $("#responsive-content").html();
+      var element = $("#responsive-content");
+      var html_content = $('<div>').append(element.clone()).html();
+      var width  = element.width();
+      var height = element.height();
       // just the model
       if (just_model) {
-        html_content = $("#model-container").html();
+        element = $("#model-container");
+        html_content = element.wrap('<div></div>').html();
+        width  = element.width();
+        height = element.height();
         html_content = "<div id='model-container' tabindex='0'>" + html_content + "</div>";
       }
 
       $.ajax({
         url: "/convert_svg/",
         type: "POST",
-        data: {'content': html_content }
+        data: {
+          'content': html_content,
+          'width': width,
+          'height': height
+        }
       }).done(function(msg) {
         $("#svg_output").html( msg );
       });

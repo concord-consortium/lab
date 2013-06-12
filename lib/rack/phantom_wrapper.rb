@@ -34,19 +34,10 @@ module PhantomWrapper
           <meta content='text/html;charset=utf-8' http-equiv='Content-Type'>
           <title>SVG CONVERT</title>
           <link href='#{url_base}/embeddable.css' rel='stylesheet' type='text/css'>
-          <link href='#{url_base}/interactives.css' rel='stylesheet' type='text/css'>
           <link href='http://fonts.googleapis.com/css?family=Lato:300italic,700italic,300,400,400italic,700' rel='stylesheet' type='text/css'>
         </head>
         <body>
-          <!--
-            <div id='responsive-content'>
-              <div id='interactive-container' tabindex='0'>
-              </div>
-            </div>
-          -->
-          <div id='dynamic_content'>
-            #{html}
-          </div>
+          #{html}
         </body>
       </html>
       """
@@ -56,8 +47,17 @@ module PhantomWrapper
       @png_file_cache = {}
     end
 
+    def absolutify_images(html,base)
+      # see http://rubular.com/r/zIy49Q9102 for interactive testing
+      image_expression = /(src|href)\s*=\s*"(?!http:\/\/)([^"]+)"/ix
+      result = html.gsub(image_expression) do |s|
+        "#{$1}=\"#{base}/#{$2}\""
+      end
+      return result
+    end
 
-    def convert(html,base_url)
+    def convert(html,base_url,width=1000,height=700)
+      html = absolutify_images(html,base_url)
       html_content = document(html,base_url)
       signature = Digest::SHA1.hexdigest(html_content)[0..10]
       return signature if @png_file_cache[signature]
@@ -71,7 +71,7 @@ module PhantomWrapper
       begin
         infile.write(html_content)
         infile.rewind
-        %x[#{PROGRAM} #{RASTERIZE_JS} #{infile_name} #{outfile_name}]
+        %x[#{PROGRAM} #{RASTERIZE_JS} #{infile_name} #{outfile_name} #{width}*#{height}]
         @png_file_cache[signature] = PngFile.new(outfile)
       ensure
         infile.close

@@ -20,7 +20,11 @@ module Rack
       headers = {}
       base_url = "#{req.scheme}://#{req.host_with_port}"
       log base_url
-      signature = @wrapper.convert(req.POST()['content'],base_url)
+      html   = req.POST()['content']
+      width  = req.POST()['width'] || 1000
+      height = req.POST()['height']||  700
+
+      signature = @wrapper.convert(html,base_url,width,height)
       response_url = "/get_png/#{signature}"
       response_text = "<img src='#{response_url}' alt='#{signature}'>"
       headers['Content-Length'] = response_text.size.to_s
