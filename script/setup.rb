@@ -3,11 +3,6 @@ require 'fileutils'
 require 'yaml'
 require 'optparse'
 
-opts = OptionParser.new
-@mocha_phantomjs = false
-opts.on("--mocha-phantomjs")	{ |val| @mocha_phantomjs = true }
-opts.parse(ARGV)
-
 PROJECT_ROOT = File.expand_path('../..',  __FILE__)                if !defined? PROJECT_ROOT
 SRC_PATH  = File.join(PROJECT_ROOT, 'src')                         if !defined? SRC_PATH
 SRC_LAB_PATH  = File.join(PROJECT_ROOT, 'src', 'lab')              if !defined? SRC_LAB_PATH
