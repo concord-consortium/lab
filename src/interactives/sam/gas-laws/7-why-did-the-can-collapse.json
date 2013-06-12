@@ -115,7 +115,7 @@
     {
       "name": "volumeOutside",
       "unitType": "length",
-      "value": ["return 0.1 * get('height') * (get('width')-getObstacleProperties(0).x+getObstacleProperties(0).width);"]
+      "value": ["return 0.1 * get('height') * (get('width')-getObstacleProperties(0).x-getObstacleProperties(0).width);"]
     }
   ],
   "filteredOutputs": [
@@ -258,8 +258,8 @@
     {
       "type": "button",
       "id": "heat-inside",
-      "text": "Heat",
-      "width": "4em",
+      "text": "Higher",
+      "width": "5em",
       "action": [
         "if (get('purpleAtomTemperature') < 5000) {",
         "  set('purpleAtomTemperature', get('purpleAtomTemperature')*1.1);",
@@ -269,8 +269,8 @@
     {
       "type": "button",
       "id": "heat-outside",
-      "text": "Heat",
-      "width": "4em",
+      "text": "Higher",
+      "width": "5em",
       "action": [
         "if (get('yellowAtomTemperature') < 5000) {",
         "  set('yellowAtomTemperature', get('yellowAtomTemperature')*1.1);",
@@ -280,8 +280,8 @@
     {
       "type": "button",
       "id": "cool-inside",
-      "text": "Cool",
-      "width": "4em",
+      "text": "Lower",
+      "width": "5em",
       "action": [
         "if (get('purpleAtomTemperature') > 0) {",
         "  set('purpleAtomTemperature', get('purpleAtomTemperature')*0.9);",
@@ -291,8 +291,8 @@
     {
       "type": "button",
       "id": "cool-outside",
-      "text": "Cool",
-      "width": "4em",
+      "text": "Lower",
+      "width": "5em",
       "action": [
         "if (get('yellowAtomTemperature') > 0) {",
         "  set('yellowAtomTemperature', get('yellowAtomTemperature')*0.9);",
@@ -370,6 +370,16 @@
       "height": "10em",
       "titleOn": "top",
       "barWidth": "1.5em"
+    },
+    {
+      "type": "text",
+      "id": "text-inside-heat",
+      "text": "Set the temperature"
+    },
+    {
+      "type": "text",
+      "id": "text-outside-heat",
+      "text": "Set the temperature"
     }
   ],
   "layout": {
@@ -383,6 +393,9 @@
       ["remove-inside"],
       ["add-inside"]
     ],
+    "left-heat-label": [
+      "text-inside-heat"
+    ],
     "left-heat": [
       "heat-inside", "cool-inside"
     ],
@@ -395,6 +408,9 @@
     "right-spinner": [
       ["remove-outside"], 
       ["add-outside"]
+    ],
+    "right-heat-label": [
+      "text-outside-heat"
     ],
     "right-heat": [
       "heat-outside", "cool-outside"
@@ -423,10 +439,16 @@
       "fontScale": 0.6
     },
     {
-      "id": "left-heat",
+      "id": "left-heat-label",
       "top": "left-count.bottom",
       "left": "left-graphs.left",
       "fontScale": 0.8
+    },
+    {
+      "id": "left-heat",
+      "top": "left-heat-label.bottom",
+      "left": "left-graphs.left",
+      "fontScale": 0.6
     },
     {
       "id": "right-graphs",
@@ -437,10 +459,11 @@
     },
     {
       "id": "right-count",
-      "left": "model.right",
+      "left": "right-graphs.left",
       "top": "right-graphs.bottom",
       "height": "6em",
-      "fontScale": 0.8
+      "fontScale": 0.8,
+      "padding-left": "1em"
     },
     {
       "id": "right-spinner",
@@ -449,10 +472,19 @@
       "fontScale": 0.6
     },
     {
-      "id": "right-heat",
-      "left": "model.right",
+      "id": "right-heat-label",
+      "left": "right-graphs.left",
       "top": "right-count.bottom",
-      "fontScale": 0.8
+      "fontScale": 0.8,
+      "padding-left": "1em",
+      "padding-right": "1em"
+    },
+    {
+      "id": "right-heat",
+      "left": "right-graphs.left",
+      "top": "right-heat-label.bottom",
+      "fontScale": 0.6,
+      "padding-left": "1em"
     },
     {
       "id": "footer",
