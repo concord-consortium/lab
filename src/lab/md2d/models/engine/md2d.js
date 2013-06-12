@@ -1538,6 +1538,7 @@ define(function (require, exports, module) {
             diff = Math.min(1, 2.2 - y[i]);
             if (diff > 0) {
               ay[i] += 1e-4 * diff;
+              ax[i] -= 3e-6;
             }
           }
         },
