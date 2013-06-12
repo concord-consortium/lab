@@ -3,7 +3,9 @@ branches:
   only:
     - master
 notifications:
-  irc: "irc.freenode.org#ccdevs"
+  irc: 
+    channels:
+      - "irc.freenode.org#ccdevs"
     on_success: change
     on_failure: always
   email:
@@ -16,7 +18,7 @@ notifications:
     on_failure: always
 language: node_js
 node_js:
-  - 0.10
+  - "0.10"
 before_script:
   - cp config/config.sample.yml config/config.yml
   - bundle install --binstubs
