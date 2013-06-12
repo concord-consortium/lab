@@ -41,6 +41,11 @@
       "text": "**Select a model**"
     },
     {
+      "type": "text",
+      "id": "text-photon-key",
+      "text": "*Photons*"
+    },
+    {
       "type": "radio",
       "id": "select-model",
       "options": [
@@ -50,15 +55,15 @@
           "selected": true
         },
         {
-          "text": "Sun on CO2",
+          "text": "Sun on CO₂",
           "loadModel": "sun-on-co2"
         },
         {
-          "text": "Infrared on CO2",
+          "text": "Infrared on CO₂",
           "loadModel": "ir-on-co2"
         },
         {
-          "text": "Sun on ground and CO2",
+          "text": "Sun on ground and CO₂",
           "loadModel": "sun-on-ground-and-co2"
         }
       ]
@@ -88,13 +93,15 @@
     {
       "type": "image",
       "id": "key-photon",
-      "src": "photonKey.png"
+      "src": "photonKey.svg",
+      "width": "10em"
     }
   ],
   "layout": {
     "left": [
       ["text-select-model"],
       ["select-model"],
+      ["text-photon-key"],
       ["key-photon"]
     ],
     "right": [
