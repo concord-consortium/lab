@@ -551,10 +551,9 @@ define(function (require) {
           // or after transcrption process (so, state is different from:
           // "dna", "transcription:0", ..., "transcription-end").
           model.set("DNAState", "dna");
-        } else {
-          // Proceed to the next step.
-          ge.transcribeStep(expectedNucleotide);
         }
+        // Proceed to the next step.
+        ge.transcribeStep(expectedNucleotide);
       },
 
       /**
@@ -564,7 +563,8 @@ define(function (require) {
         var ge = model.geneticEngine();
         if (ge.stateBefore("transcription-end")) {
           // Ensure that we start from transcription-end.
-          model.set("DNAState", "transcription-end");
+          alert('Translation can only occur after transcription is complete.');
+          return;
         }
         if (ge.stateBefore("translation:0")) {
           // Animate directly to the translation:0, merge a few shorter

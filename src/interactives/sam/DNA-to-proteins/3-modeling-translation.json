@@ -24,16 +24,16 @@
     {
       "type": "button",
       "id": "translate",
-      "text": "translate",
+      "text": "Translate",
       "action": [
-        "if (DNAStateAfter('translation:0')) set('DNAState', 'translation:0');",
+        "if (get('DNAState') === 'translation-end') set('DNAState', 'translation:0');",
         "animateToDNAState('translation-end');"
       ]
     },
     {
       "type": "button",
       "id": "translate-step",
-      "text": "translate step by step",
+      "text": "Translate step by step",
       "action": "translateDNAStep();"
     },
     {
@@ -49,19 +49,25 @@
     {
       "type": "button",
       "id": "start",
-      "text": "start/continue model",
-      "action": "animateToDNAState('translation-end');"
+      "text": "Start/continue model",
+      "action": [
+        "if (DNAStateBefore('translation-end')) animateToDNAState('translation-end');",
+        "else start();"
+      ]
     },
     {
       "type": "button",
       "id": "stop",
-      "text": "stop",
-      "action": "stopDNAAnimation();"
+      "text": "Stop",
+      "action": [
+        "if (DNAStateBefore('translation-end')) stopDNAAnimation();",
+        "else stop();"
+      ]
     },
     {
       "type": "button",
       "id": "reset",
-      "text": "reset",
+      "text": "Reset",
       "action": "reset();"
     }
   ],

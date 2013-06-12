@@ -120,7 +120,19 @@
       "type": "button",
       "id": "stop-anim",
       "text": "Stop animation",
-      "action": "stopDNAAnimation();"
+      "action": [
+        "if (DNAStateBefore('translation-end')) stopDNAAnimation();",
+        "else stop();"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "start",
+      "text": "Start/continue model",
+      "action": [
+        "if (DNAStateBefore('translation-end')) animateToDNAState('translation-end');",
+        "else start();"
+      ]
     },
     {
       "type": "button",
@@ -177,6 +189,7 @@
       ["prev-state-jump"],
       ["animate-pulldown"],
       ["next-state"],
+      ["start"],
       ["stop-anim"]
     ]
   }

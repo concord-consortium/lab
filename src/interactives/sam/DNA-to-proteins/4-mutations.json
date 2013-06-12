@@ -49,31 +49,34 @@
     {
       "type": "button",
       "id": "reset",
-      "text": "reset",
+      "text": "Reset",
       "action": "reset();"
     },
     {
       "type": "button",
       "id": "stop",
-      "text": "stop",
-      "action": "stopDNAAnimation();"
+      "text": "Stop",
+      "action": [
+        "if (DNAStateBefore('translation-end')) stopDNAAnimation();",
+        "else stop();"
+      ]
     },
     {
       "type": "button",
       "id": "prev-state-jump",
-      "text": "<< jump",
+      "text": "<< Jump",
       "action": "jumpToPrevDNAState();"
     },
     {
       "type": "button",
       "id": "next-state",
-      "text": "continue one step",
+      "text": "Continue one step",
       "action": "animateToNextDNAState();"
     },
     {
       "type": "button",
       "id": "next-state-jump",
-      "text": "jump >>",
+      "text": "Jump >>",
       "action": "jumpToNextDNAState();"
     },
     {
@@ -93,13 +96,27 @@
       "id": "show-dna",
       "text": "Show DNA",
       "action": "set('DNAState', 'dna');"
+    },
+    {
+      "type": "button",
+      "id": "start",
+      "text": "Start/continue model",
+      "action": [
+        "if (DNAStateBefore('translation-end')) animateToDNAState('translation-end');",
+        "else start();"
+      ]
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "text": "Click on a nucleotide to perform a mutation"
     }
   ],
   "layout": {
     "bottom": [
-      ["dna-dialog", "show-dna", "show-protein"],
-      ["transcribe", "translate"],
-      ["prev-state-jump", "next-state", "next-state-jump", "stop", "reset"]
+      ["label", "dna-dialog", "show-dna"],
+      ["transcribe", "translate", "show-protein"],
+      ["prev-state-jump", "next-state", "next-state-jump", "start", "stop", "reset"]
     ]
   }
 }
