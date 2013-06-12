@@ -4,12 +4,16 @@ branches:
     - master
 notifications:
   irc: "irc.freenode.org#ccdevs"
+    on_success: change
+    on_failure: always
   email:
     recipients:
       - stephen.bannasch@gmail.com
       - sfentress@concord.org
       - rpk@pobox.com
       - janikpiotrek@gmail.com
+    on_success: change
+    on_failure: always
 language: node_js
 node_js:
   - 0.10
