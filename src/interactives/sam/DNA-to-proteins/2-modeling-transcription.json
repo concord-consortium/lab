@@ -3,9 +3,11 @@
   "publicationStatus": "public",
   "subtitle": "",
   "about": [
-    "Click **Prepare for transcription** to zoom in to cell nucleus and separate DNA strands.",
+    "One strand of the DNA is used as a template to create an mRNA copy. This process is called transcription.",
     "",
-    "Then click on the button representing the correct **complementary** RNA nucleotide to proceed transcription: A, U, G or C."
+    "Protein complexes help to separate the DNA strands and to allow the proper mRNA nucleotides to bind together to form an mRNA strand. Only specific mRNA nucleotides will match up with specific DNA nucleotides.",
+    "",
+    "Use the **A**, **U**, **G**, and **C** buttons to see if you can identify which mRNA nucleotide will match up with which DNA nucleotide."
   ],
   "fontScale": 0.8,
   "models": [

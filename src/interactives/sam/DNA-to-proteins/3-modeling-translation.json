@@ -3,7 +3,7 @@
   "publicationStatus": "public",
   "subtitle": "",
   "about": [
-    "Click **translate** to generate full protein from mRNA or use **translate step by step**."
+    "Use this model to see how different tRNA molecules, each carrying a specific amino acid, use the mRNA strand to create a specific protein (or chain of amino acids)."
   ],
   "fontScale": 0.8,
   "models": [

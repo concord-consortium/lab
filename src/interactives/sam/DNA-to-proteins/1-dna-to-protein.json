@@ -3,11 +3,11 @@
   "publicationStatus": "public",
   "subtitle": "",
   "about": [
-    " Click **transcribe** to see full mRNA strand created or use **transcribe step by step** button.",
+    "Zoom into the cell to explore the transcription and translation of DNA ->mRNA -> protein.",
     "",
-    "Click **translate** to generate full protein from mRNA or use **translate step by step**.",
+    "Customize the DNA strand to be transcribed and translated by using the **Edit DNA** button.",
     "",
-    "**Reset** button will bring you back to the beginning."
+    "Try mutating the DNA before or during transcription to see it's effect on the protein that gets produced. Click on a nucleotide to try various kinds of mutations that typically can occur."
   ],
   "fontScale": 0.75,
   "models": [

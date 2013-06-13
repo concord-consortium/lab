@@ -3,12 +3,11 @@
   "publicationStatus": "public",
   "subtitle": "",
   "about": [
-    "Click nucleotide to open mutations menu. You can perform various kinds of mutations:",
-    "substitution, insertion or deletion. Then you can immediately see how this",
-    "affects the final protein using **Show complete protein**.",
+    "Quickly jump back and forth between the DNA and the protein it codes for by using the **Show DNA** and **Show protein** buttons.",
     "",
-    "You can also click **Transcribe** to see full mRNA strand created or",
-    "**Translate** to generate full protein from mRNA."
+    "Try editing the entire DNA strand and entering in your own sequence by using the **Edit DNA** button, or click **Show DNA** and then mutate the strand by clicking on one of the nucleotides.",
+    "",
+    "What effect (if any) does your mutation have one the protein that gets produced? Are some types of mutations more serious than others?"
   ],
   "fontScale": 0.75,
   "models": [
