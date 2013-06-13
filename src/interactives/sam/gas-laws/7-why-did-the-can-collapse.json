@@ -429,13 +429,15 @@
       "id": "left-count",
       "top": "left-graphs.bottom",
       "left": "left-graphs.left",
-      "height": "6em",
+      "height": "4.5em",
+      "align": "right",
       "fontScale": 0.8
     },
     {
       "id": "left-spinner",
       "top": "left-graphs.bottom",
       "left": "left-count.right",
+      "align": "left",
       "fontScale": 0.6
     },
     {
@@ -461,14 +463,15 @@
       "id": "right-count",
       "left": "right-graphs.left",
       "top": "right-graphs.bottom",
-      "height": "6em",
-      "fontScale": 0.8,
-      "padding-left": "1em"
+      "height": "4.5em",
+      "align": "right",
+      "fontScale": 0.8
     },
     {
       "id": "right-spinner",
       "left": "right-count.right",
       "top": "right-graphs.bottom",
+      "align": "left",
       "fontScale": 0.6
     },
     {
