@@ -2,7 +2,8 @@
 
 define(function (require) {
 
-  var DNAEditDialog = require('md2d/views/dna-edit-dialog');
+  var alert = require('common/alert'),
+      DNAEditDialog = require('md2d/views/dna-edit-dialog');
 
   /**
     Define the model-specific MD2D scripting API used by 'action' scripts on interactive elements.
@@ -546,14 +547,18 @@ define(function (require) {
        */
       transcribeDNAStep: function transcribeDNAStep(expectedNucleotide) {
         var ge = model.geneticEngine();
-        if (ge.stateBefore("dna") || ge.stateAfter("transcription-end")) {
+        if (ge.stateAfter("transcription-end")) {
           // Jump to beginning of DNA transcription if current state is before
           // or after transcrption process (so, state is different from:
           // "dna", "transcription:0", ..., "transcription-end").
           model.set("DNAState", "dna");
         }
-        // Proceed to the next step.
-        ge.transcribeStep(expectedNucleotide);
+        if (ge.stateBefore("transcription:0")) {
+          ge.transitionTo("transcription:0");
+        } else {
+          // Proceed to the next step.
+          ge.transcribeStep(expectedNucleotide);
+        }
       },
 
       /**
