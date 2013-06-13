@@ -43,10 +43,16 @@ describe "GeneticEngine", ->
         mock.changeListener.restore()
         mock.transitionListener.restore()
 
-      checkViewModel = (array, sequence) ->
-        for nucleo, i in array
-          nucleo.idx.should.eql i
-          nucleo.type.should.eql sequence[i]
+      checkDNAArray = (array, sequence) ->
+        offset = geneticEngine.PRECODING_LEN
+        for i in [0...sequence.length]
+          array[i + offset].idx.should.eql i + offset
+          array[i + offset].type.should.eql sequence[i]
+
+      checkMRNAArray = (array, sequence) ->
+        for i in [0...sequence.length]
+          array[i].idx.should.eql i
+          array[i].type.should.eql sequence[i]
 
       it "should automatically change lower case DNA string to upper case", ->
           model.set "DNA", "atgc"
@@ -71,29 +77,29 @@ describe "GeneticEngine", ->
         mock.changeListener.callCount.should.eql 0
         model.set "DNAState", "dna"
         model.set "DNA", "ATGC"
-        checkViewModel geneticEngine.viewModel.DNA, "ATGC"
-        checkViewModel geneticEngine.viewModel.DNAComp, "TACG"
-        checkViewModel geneticEngine.viewModel.mRNA, ""
+        checkDNAArray geneticEngine.viewModel.DNAOpt, "ATGC"
+        checkDNAArray geneticEngine.viewModel.DNACompOpt, "TACG"
+        checkDNAArray geneticEngine.viewModel.mRNA, ""
         mock.changeListener.callCount.should.eql 2
         mock.transitionListener.callCount.should.eql 0
 
       it "should calculate mRNA when state is set to 'transcription-end' or 'translation'", ->
         model.set "DNAState", "transcription-end"
-        checkViewModel geneticEngine.viewModel.mRNA, "AUGC"
+        checkMRNAArray geneticEngine.viewModel.mRNA, "AUGC"
         mock.changeListener.callCount.should.eql 1
         mock.transitionListener.callCount.should.eql 0
 
       it "should perform single step of DNA to mRNA transcription", ->
         model.set "DNAState", "dna"
-        checkViewModel geneticEngine.viewModel.mRNA, ""
+        checkMRNAArray geneticEngine.viewModel.mRNA, ""
         geneticEngine.transcribeStep()
-        checkViewModel geneticEngine.viewModel.mRNA, ""   # DNA separated, mRNA prepared for transcription
+        checkMRNAArray geneticEngine.viewModel.mRNA, ""   # DNA separated, mRNA prepared for transcription
         geneticEngine.transcribeStep()
-        checkViewModel geneticEngine.viewModel.mRNA, "A"
+        checkMRNAArray geneticEngine.viewModel.mRNA, "A"
         geneticEngine.transcribeStep("A") # Wrong, "U" is expected!
-        checkViewModel geneticEngine.viewModel.mRNA, "A"  # Nothing happens, mRNA is still the same.
+        checkMRNAArray geneticEngine.viewModel.mRNA, "A"  # Nothing happens, mRNA is still the same.
         geneticEngine.transcribeStep("U") # This time expected nucleotide is correct,
-        checkViewModel geneticEngine.viewModel.mRNA, "AU" # so it's added to mRNA.
+        checkMRNAArray geneticEngine.viewModel.mRNA, "AU" # so it's added to mRNA.
 
       it "should transcribe mRNA from DNA and dispatch appropriate events", ->
         model.set "DNAState", "dna"
@@ -101,7 +107,7 @@ describe "GeneticEngine", ->
         geneticEngine.transitionTo("transcription-end")
         mock.transitionListener.callCount.should.eql 5 # separation + 4 x transcription
 
-        checkViewModel geneticEngine.viewModel.mRNA, "AUGC"
+        checkMRNAArray geneticEngine.viewModel.mRNA, "AUGC"
 
       it "shouldn't allow setting DNAState to translation:x, where x > 0", ->
         model.set "DNAState", "translation:15"
@@ -176,83 +182,93 @@ describe "GeneticEngine", ->
         model.get("DNAState").should.eql "intro-cells"
 
       it "should let user perform substitution mutation", ->
+        offset = geneticEngine.PRECODING_LEN
+
         model.set "DNAState", "transcription:0"
         model.set "DNA", "ATGC"
 
-        geneticEngine.mutate 0, "C"
+        geneticEngine.mutate 0 + offset, "C"
         model.get("DNA").should.eql "CTGC"
-        geneticEngine.mutate 1, "G"
-        geneticEngine.mutate 2, "T"
-        geneticEngine.mutate 3, "A"
+        geneticEngine.mutate 1 + offset, "G"
+        geneticEngine.mutate 2 + offset, "T"
+        geneticEngine.mutate 3 + offset, "A"
         model.get("DNA").should.eql "CGTA"
         # Mutation performed on DNA complement strand.
-        geneticEngine.mutate 0, "A", true
+        geneticEngine.mutate 0 + offset, "A", true
         model.get("DNA").should.eql "TGTA"
         # State should remain the same.
         model.get("DNAState").should.eql "transcription:0"
 
       it "should let user perform insertion mutation", ->
+        offset = geneticEngine.PRECODING_LEN
+
         model.set "DNA", "ATGC"
 
-        geneticEngine.insert 0, "A"
+        geneticEngine.insert 0 + offset, "A"
         model.get("DNA").should.eql "AATGC"
-        geneticEngine.insert 4, "C"
+        geneticEngine.insert 4 + offset, "C"
         model.get("DNA").should.eql "AATGCC"
         # Mutation performed on DNA complement strand.
-        geneticEngine.insert 0, "T", true
+        geneticEngine.insert 0 + offset, "T", true
         model.get("DNA").should.eql "AAATGCC"
         # State should remain the same.
         model.get("DNAState").should.eql "transcription:0"
 
       it "should let user perform insertion mutation in the middle of transcription", ->
+        offset = geneticEngine.PRECODING_LEN
+
         model.set "DNA", "ATGC"
         model.set "DNAState", "transcription:3" # ATG are transcribed
 
         # Insert between transcribed nucleotides.
-        geneticEngine.insert 0, "A"
+        geneticEngine.insert 0 + offset, "A"
         model.get("DNA").should.eql "AATGC"
         # Step should be increased to make sure that now 4 nucleotides are transcribed.
         model.get("DNAState").should.eql "transcription:4"
-        geneticEngine.insert 3, "G"
+        geneticEngine.insert 3 + offset, "G"
         model.get("DNA").should.eql "AATGGC"
         model.get("DNAState").should.eql "transcription:5"
 
         # Insert after transcribed nucleotides.
-        geneticEngine.insert 5, "C"
+        geneticEngine.insert 5 + offset, "C"
         model.get("DNA").should.eql "AATGGCC"
         # State without changes.
         model.get("DNAState").should.eql "transcription:5"
 
       it "should let user perform deletion mutation", ->
+        offset = geneticEngine.PRECODING_LEN
+
         model.set "DNAState", "transcription:0"
         model.set "DNA", "ATGC"
 
-        geneticEngine.delete 0
+        geneticEngine.delete 0 + offset
         model.get("DNA").should.eql "TGC"
-        geneticEngine.delete 2
+        geneticEngine.delete 2 + offset
         model.get("DNA").should.eql "TG"
-        geneticEngine.delete 1
+        geneticEngine.delete 1 + offset
         model.get("DNA").should.eql "T"
-        geneticEngine.delete 0
+        geneticEngine.delete 0 + offset
         model.get("DNA").should.eql ""
         # State should remain the same.
         model.get("DNAState").should.eql "transcription:0"
 
       it "should let user perform deletion mutation in the middle of transcription", ->
+        offset = geneticEngine.PRECODING_LEN
+
         model.set "DNA", "ATGC"
         model.set "DNAState", "transcription:3" # ATG are transcribed
 
         # Insert delete one of the transcribed nucleotides.
-        geneticEngine.delete 0
+        geneticEngine.delete 0 + offset
         model.get("DNA").should.eql "TGC"
         # Step should be decreased to make sure that now only 2 nucleotides are transcribed.
         model.get("DNAState").should.eql "transcription:2"
-        geneticEngine.delete 1
+        geneticEngine.delete 1 + offset
         model.get("DNA").should.eql "TC"
         model.get("DNAState").should.eql "transcription:1"
 
         # Delete nucleotide which is not transcribed at the moment.
-        geneticEngine.delete 1
+        geneticEngine.delete 1 + offset
         model.get("DNA").should.eql "T"
         # State without changes.
         model.get("DNAState").should.eql "transcription:1"
