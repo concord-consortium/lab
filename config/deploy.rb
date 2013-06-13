@@ -43,7 +43,7 @@ namespace :deploy do
 
   desc "checkout branch and force reset to origin/branch"
   task :checkout do
-    run "cd /var/www/app; git fetch --all"
+    run "cd /var/www/app; git fetch --all --tags"
     run "cd /var/www/app; git checkout #{branch}"
     run "cd /var/www/app; git reset --hard origin/#{branch}"
   end
@@ -58,6 +58,7 @@ namespace :deploy do
     checkout
     bundle_install
     run "cd /var/www/app; make clean-public; make"
+    run "cd /var/www/app; ./script/create-symbolic-links-to-archives.rb"
     restart
   end
 
@@ -66,6 +67,7 @@ namespace :deploy do
     checkout
     bundle_install
     run "cd /var/www/app; make clean; make"
+    run "cd /var/www/app; ./script/create-symbolic-links-to-archives.rb"
     restart
   end
 
@@ -88,6 +90,12 @@ namespace :deploy do
     run "cd /var/www/app; bundle install --binstubs"
     run "cd /var/www/app; cp config/config.sample.yml config/config.yml"
     clean_and_update_all
+  end
+
+  desc "create archive of public dir"
+  task :archive_public_dir do
+    run "cd /var/www/app; ./script/create-archived-public-dir.sh"
+    run "cd /var/www/app; ./script/create-symbolic-links-to-archives.rb"
   end
 
   desc "display last commit on deployed server"
