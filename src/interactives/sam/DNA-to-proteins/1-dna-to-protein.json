@@ -138,11 +138,20 @@
     }
   ],
   "layout": {
-    "bottom": [
+    "model-bottom": [
       ["label1", "transcribe", "label2", "transcribe-step"],
       ["label3", "translate", "label4", "translate-step"],
       ["start", "stop", "reset", "dna-dialog"],
       ["prev-state-jump", "next-state", "next-state-jump"]
     ]
-  }
+  },
+  "template": [
+    {
+      "id": "model-bottom",
+      "left": "model.left",
+      "top": "model.bottom",
+      "width": "model.width",
+      "align": "center"
+    }
+  ]
 }

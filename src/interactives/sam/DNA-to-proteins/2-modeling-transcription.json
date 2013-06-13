@@ -76,10 +76,19 @@
     }
   ],
   "layout": {
-    "bottom": [
+    "model-bottom": [
       ["label1A", "begin", "label1B"],
       ["label2"],
       ["transcribeA", "transcribeU", "transcribeG", "transcribeC", "reset"]
     ]
-  }
+  },
+  "template": [
+    {
+      "id": "model-bottom",
+      "left": "model.left",
+      "top": "model.bottom",
+      "width": "model.width",
+      "align": "center"
+    }
+  ]
 }

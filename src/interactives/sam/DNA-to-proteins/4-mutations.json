@@ -88,7 +88,7 @@
     {
       "type": "button",
       "id": "show-protein",
-      "text": "Show complete protein",
+      "text": "Show protein",
       "action": "set('DNAState', 'translation-end');"
     },
     {
@@ -109,14 +109,29 @@
     {
       "type": "text",
       "id": "label",
-      "text": "Click on a nucleotide to perform a mutation"
+      "text": "Click on a nucleotide to perform a mutation or "
+    },
+    {
+      "type": "text",
+      "id": "buffer",
+      "text": "|"
     }
   ],
   "layout": {
-    "bottom": [
-      ["label", "dna-dialog", "show-dna"],
-      ["transcribe", "translate", "show-protein"],
-      ["prev-state-jump", "next-state", "next-state-jump", "start", "stop", "reset"]
+    "model-bottom": [
+      ["label", "dna-dialog"],
+      ["show-dna", "transcribe", "buffer", "translate", "show-protein"],
+      ["prev-state-jump", "next-state", "next-state-jump"], 
+      ["start", "stop", "reset"]
     ]
-  }
+  },
+  "template": [
+    {
+      "id": "model-bottom",
+      "left": "model.left",
+      "top": "model.bottom",
+      "width": "model.width",
+      "align": "center"
+    }
+  ]
 }

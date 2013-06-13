@@ -44,7 +44,7 @@
     {
       "type": "text",
       "id": "label4",
-      "text": "to generate full protein from mRNA or"
+      "text": "to generate protein from mRNA or"
     },
     {
       "type": "button",
@@ -72,9 +72,18 @@
     }
   ],
   "layout": {
-    "bottom": [
+    "model-bottom": [
       ["label3", "translate", "label4", "translate-step"],
       ["start", "stop", "reset"]
     ]
-  }
+  },
+  "template": [
+    {
+      "id": "model-bottom",
+      "left": "model.left",
+      "top": "model.bottom",
+      "width": "model.width",
+      "align": "center"
+    }
+  ]
 }
