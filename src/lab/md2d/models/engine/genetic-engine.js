@@ -4,6 +4,7 @@ define(function (require) {
 
   var aminoacidsHelper = require('cs!md2d/models/aminoacids-helper'),
       alert            = require('common/alert'),
+      NUCLEO_WIDTH     = require('md2d/views/nucleotides').WIDTH,
 
       STATES = [
         "undefined",
@@ -26,7 +27,10 @@ define(function (require) {
 
       PROMOTER_SEQ   = "TGACCTCTCCGCGCCATCTATAAACCGAAGCGCTAGCTACA",
       TERMINATOR_SEQ = "ACCACAGGCCGCCAGTTCCGCTGGCGGCATTTT",
+      PROMOTER_COMP_SEQ   = complementarySequence(PROMOTER_SEQ),
+      TERMINATOR_COMP_SEQ = complementarySequence(TERMINATOR_SEQ),
       JUNK_SEQ,
+      JUNK_COMP_SEQ,
 
       DEF_EVENT = "change";
 
@@ -67,6 +71,7 @@ define(function (require) {
       STATE_INDEX[STATES[i]] = i;
     }
     JUNK_SEQ = junkSequence(50);
+    JUNK_COMP_SEQ = complementarySequence(JUNK_SEQ);
   }());
 
   return function GeneticProperties(model) {
@@ -136,15 +141,13 @@ define(function (require) {
           }
         },
 
-        generateViewArray = function (array, sequence, codingRegion) {
+        generateViewArray = function (array, sequence) {
           var i, len, nucleo;
-          codingRegion = codingRegion || false;
           // Set size of the existing array to the size of new DNA sequence.
           array.length = sequence.length;
           for (i = 0, len = sequence.length; i < len; i++) {
             nucleo = array[i] || {}; // reuse existing objects.
             nucleo.idx = i;
-            nucleo.coding = codingRegion;
             // Note that only nucleotides whose type doesn't match sequence
             // will receive new ID. It lets you to update this array manually,
             // so the ID as prevented in case of need (e.g. single insertion
@@ -160,13 +163,49 @@ define(function (require) {
           return array;
         },
 
+        generateOptArray = function (array, DNA, comp) {
+          var sequence = !comp ? JUNK_SEQ + PROMOTER_SEQ + DNA + TERMINATOR_SEQ + JUNK_SEQ :
+                         JUNK_COMP_SEQ + PROMOTER_COMP_SEQ + DNA + TERMINATOR_COMP_SEQ + JUNK_COMP_SEQ,
+              junkBound = JUNK_SEQ.length,
+              promoterBound = junkBound + PROMOTER_SEQ.length,
+              codingBound = promoterBound + DNA.length,
+              terminatorBound = codingBound + TERMINATOR_SEQ.length,
+              i, len, nucleo;
+
+          // Set size of the existing array to the size of new DNA sequence.
+          array.length = sequence.length;
+          for (i = 0, len = sequence.length; i < len; i++) {
+            nucleo = array[i] || {}; // reuse existing objects.
+            nucleo.idx = i;
+            // Note that only nucleotides whose type doesn't match sequence
+            // will receive new ID. It lets you to update this array manually,
+            // so the ID as prevented in case of need (e.g. single insertion
+            // or deletion during mutation).
+            if (nucleo.type !== sequence[i]) {
+              nucleo.type = sequence[i];
+              nucleo.id   = getNucleoID();
+
+              if (i < junkBound)            nucleo.region = "j";
+              else if (i < promoterBound)   nucleo.region = "p";
+              else if (i < codingBound)     nucleo.region = "c";
+              else if (i < terminatorBound) nucleo.region = "t";
+              else                          nucleo.region = "j";
+
+              // This block will be also executed when we insert objects for
+              // the first time so update the array[i] reference.
+              array[i] = nucleo;
+            }
+          }
+          return array;
+        },
+
         updateGeneticProperties = function () {
           var DNA = model.get("DNA");
 
-          generateViewArray(api.viewModel.DNA, DNA, true);
+          generateOptArray(api.viewModel.DNAOpt, DNA, false);
 
           DNAComp = complementarySequence(DNA);
-          generateViewArray(api.viewModel.DNAComp, DNAComp, true);
+          generateOptArray(api.viewModel.DNACompOpt, DNAComp, true);
 
           mRNA = calculatemRNA();
           calculateStopCodonsHash();
@@ -304,7 +343,7 @@ define(function (require) {
 
         dispatchChange = function (suppressViewportUpdate) {
           // Cancel transitions when we are going to dispatch "change" event.
-          ongoingTransitions = [];
+          ongoingTransitions.length = 0;
           model.cancelTransitions();
 
           dispatch.change(suppressViewportUpdate);
@@ -369,18 +408,12 @@ define(function (require) {
           } else {
             dispatchChange(true);
           }
-        },
-
-        // Center protein when user changes viewport after translation is completed.
-        viewPortUpdated = function () {
-          if (api.stateEqual("translation-end") && model.getNumberOfAtoms() > 0 &&
-              ongoingTransitions.length === 0) {
-            api.centerProtein();
-          }
         };
 
     // Public API.
     api = {
+      PRECODING_LEN: JUNK_SEQ.length + PROMOTER_SEQ.length,
+
       /**
        * Hash of arrays containing nucleotides objects. Each array can be
        * consumed by the view. References to arrays are guaranteed to be
@@ -394,17 +427,9 @@ define(function (require) {
        * coding - true if nucleotide is a part of coding region (not junk, terminator or promoter).
        */
       viewModel: {
-        DNA: [],
-        DNAComp: [],
         mRNA: [],
-        mRNAComp: [],
-        // These arrays are constant in fact, generate just once:
-        promoter:       generateViewArray([], PROMOTER_SEQ),
-        promoterComp:   generateViewArray([], complementarySequence(PROMOTER_SEQ)),
-        terminator:     generateViewArray([], TERMINATOR_SEQ),
-        terminatorComp: generateViewArray([], complementarySequence(TERMINATOR_SEQ)),
-        junk:           generateViewArray([], JUNK_SEQ),
-        junkComp:       generateViewArray([], complementarySequence(JUNK_SEQ))
+        DNAOpt: [],
+        DNACompOpt: []
       },
 
       on: function(type, listener) {
@@ -412,11 +437,12 @@ define(function (require) {
       },
 
       mutate: function(idx, newType, DNAComplement) {
-        var DNA = model.get("DNA");
+        var DNA = model.get("DNA"),
+            pos = idx - api.PRECODING_LEN;
 
-        DNA = DNA.substr(0, idx) +
+        DNA = DNA.substr(0, pos) +
               (DNAComplement ? complementarySequence(newType) : newType) +
-              DNA.substr(idx + 1);
+              DNA.substr(pos + 1);
         // Update DNA. This will also call updateGeneticProperties(), so
         // other, related properties will be also updated.
         set("DNA", DNA);
@@ -425,36 +451,40 @@ define(function (require) {
       insert: function(idx, type, DNAComplement) {
         var newDNANucleo = {
               type: DNAComplement ? complementarySequence(type) : type,
-              id: getNucleoID()
+              id: getNucleoID(),
+              region: "c"
             },
             newDNACompNucleo = {
               type: DNAComplement ? type : complementarySequence(type),
-              id: getNucleoID()
+              id: getNucleoID(),
+              region: "c"
             },
             newMRNANucleo = {
               type: DNAComplement ? complementarySequence(type) : type,
-              id: getNucleoID()
+              id: getNucleoID(),
+              region: "c"
             },
             DNA = model.get("DNA"),
-            state = api.state();
+            state = api.state(),
+            pos = idx - api.PRECODING_LEN;
 
         // Update view model arrays. It isn't necessary, but as we update them
         // correctly, nucleotides will preserve their IDs and view will know
         // exactly what part of DNA have been changed.
-        api.viewModel.DNA.splice(idx, 0, newDNANucleo);
-        api.viewModel.DNAComp.splice(idx, 0, newDNACompNucleo);
-        api.viewModel.mRNA.splice(idx, 0, newMRNANucleo);
+        api.viewModel.DNAOpt.splice(idx, 0, newDNANucleo);
+        api.viewModel.DNACompOpt.splice(idx, 0, newDNACompNucleo);
+        api.viewModel.mRNA.splice(pos, 0, newMRNANucleo);
 
         // Update DNA. This will also call updateGeneticProperties(), so
         // other, related properties will be also updated.
-        DNA = DNA.substr(0, idx) + newDNANucleo.type + DNA.substr(idx);
+        DNA = DNA.substr(0, pos) + newDNANucleo.type + DNA.substr(pos);
 
         // Special case for transcription process (and state):
         // If we keep the same DNAState and we insert something
         // before state.step position, it would cause that the last
         // transcribed nucleotide would be removed. Avoid that, as this can be
         // confusing for users.
-        if (state.name === "transcription" && idx < state.step) {
+        if (state.name === "transcription" && pos < state.step) {
           // Note that we can't use nextState(state), as in that case, as
           // state can be changed to transcription-end too fast (as DNA isn't
           // updated yet).
@@ -465,25 +495,26 @@ define(function (require) {
 
       delete: function(idx) {
         var DNA = model.get("DNA"),
-            state = api.state();
+            state = api.state(),
+            pos = idx - api.PRECODING_LEN;
 
         // Update view model arrays. It isn't necessary, but as we update them
         // correctly, nucleotides will preserve their IDs and view will know
         // exactly what part of DNA have been changed.
-        api.viewModel.DNA.splice(idx, 1);
-        api.viewModel.DNAComp.splice(idx, 1);
-        api.viewModel.mRNA.splice(idx, 1);
+        api.viewModel.DNAOpt.splice(idx, 1);
+        api.viewModel.DNACompOpt.splice(idx, 1);
+        api.viewModel.mRNA.splice(pos, 1);
 
         // Update DNA. This will also call updateGeneticProperties(), so
         // other, related properties will be also updated.
-        DNA = DNA.substr(0, idx) + DNA.substr(idx + 1);
+        DNA = DNA.substr(0, pos) + DNA.substr(pos + 1);
 
         // Special case for transcription process (and state):
         // If we keep the same DNAState and we delete something
         // before state.step position, it would cause that new transcribed
         // mRNA nucleotide will be added. Avoid that, as this can be
         // confusing for users.
-        if (state.name === "transcription" && idx < state.step) {
+        if (state.name === "transcription" && pos < state.step) {
           set("DNAState", prevState(state), "suppress");
         }
         doDNATransition(DNA);
@@ -935,7 +966,6 @@ define(function (require) {
 
     model.addPropertiesListener(["DNA"], DNAUpdated);
     model.addPropertiesListener(["DNAState"], stateUpdated);
-    model.addPropertiesListener(["viewPortX"], viewPortUpdated);
     updateGeneticProperties();
     return api;
   };

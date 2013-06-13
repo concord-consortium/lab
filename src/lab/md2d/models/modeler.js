@@ -174,6 +174,7 @@ define(function(require) {
 
     function processTransitions(timeDiff) {
       var i, len;
+      model.startBatch();
       for (i = 0, len = transitions.length; i < len; i++) {
         transitions[i].process(timeDiff);
       }
@@ -186,6 +187,7 @@ define(function(require) {
           i++;
         }
       }
+      model.endBatch();
     }
 
     function tick(elapsedTime, dontDispatchTickEvent) {
@@ -2009,7 +2011,7 @@ define(function(require) {
     // TODO: move this to better place.
     if (initialProperties.DNA) {
       // Overwrite width and height options.
-      initialProperties.width = 100;
+      initialProperties.width = 200;
       initialProperties.height = 5;
       // View options are optional, make sure that they are defined.
       initialProperties.viewOptions = initialProperties.viewOptions || {};

@@ -47,12 +47,14 @@ define(function (require) {
     var m2px = null,
         sequence = "",
         direction = 1,
+        bonds = 1,
         startingPos = 0,
         backbone = "DNA", // if enabled, "RNA" or "DNA" is expected.
         stopCodonsHash = null,
         randomEnter = true,
         glow = false,
         backboneDrag = null,
+        enterExitOnly = false,
 
         xShift = 0,
         yShift = 0;
@@ -75,8 +77,8 @@ define(function (require) {
       }
     }
 
-    function translate(d, i) {
-      return "translate(" + m2px(xShift + nucleotides.WIDTH * (startingPos + i)) + " " + m2px(yShift) + ")";
+    function translate(d) {
+      return "translate(" + m2px(xShift + nucleotides.WIDTH * (d.idx)) + " " + m2px(yShift) + ")";
     }
 
     function nucleo(g) {
@@ -89,7 +91,7 @@ define(function (require) {
 
             seq = typeof sequence === "function" ? sequence(d, i) : sequence,
 
-            nucleo, nucleoEnter, backboneEnter, nucleoShape,
+            nucleo, nucleoEnter, nucleoOrgEnter, nucleoExit, backboneEnter, nucleoShape,
             nucleoSVG, nucleoSVGUpdate, nucleoTrans, targetScale;
 
         // seq is a string, generate data array. Change it to array of objects.
@@ -101,19 +103,30 @@ define(function (require) {
           });
         }
         // Join by ID.
-        nucleo = g.selectAll("g.nucleotide").data(seq, function (d) { return d.id; });
+        nucleo = g.selectAll(".nucleotide").data(seq, function (d) { return d.id; });
+        nucleoOrgEnter = nucleo.enter();
+        nucleoExit = nucleo.exit();
         // Enter.
         // Enable random translation of the new mRNAs.
         shift(randomEnter);
-        nucleoEnter = nucleo.enter().append("g").attr({
-          "class": "nucleotide",
+        nucleoOrgEnter = nucleoOrgEnter.append("g").attr({
+          "class": function(d) {
+            var regionClass = "";
+            switch(d.region) {
+              case "c": regionClass = "coding-region"; break;
+              case "j": regionClass = "junk-region"; break;
+              case "p": regionClass = "promoter-region"; break;
+              case "t": regionClass = "terminator-region"; break;
+            }
+            return "nucleotide " + regionClass;
+          },
           "transform": translate
         }).style({
-          "opacity": 0
+          "opacity": randomEnter ? 0 : 1
         });
 
         // Additional container for scaling.
-        nucleoEnter = nucleoEnter.append("g").attr({
+        nucleoEnter = nucleoOrgEnter.append("g").attr({
           "class": "scale",
           "transform": "scale(1, " + (direction  === 1 ? 1 : -1) + ")",
         });
@@ -126,7 +139,7 @@ define(function (require) {
         nucleoShape = nucleoEnter.append("g")
           .classed("nucleo-shape", true)
           .classed("clickable-nucleo", function (d) {
-            return d.coding && glow;
+            return d.region === "c" && glow;
           }).on("click", function () {
             // Mobile Safari will only produce mouse events when the user taps
             // on a clickable element, like a link. You can make an element
@@ -177,6 +190,10 @@ define(function (require) {
         }
 
         // Update.
+        if (enterExitOnly) {
+          nucleo = nucleoOrgEnter;
+        }
+
         nucleo.select(".bonds").attr("d", function (d) {
           if (d.type === "C" || d.type === "G") {
             return "M" + m2px(SCALE * 20) + " " + yStart + " L " + m2px(SCALE * 20) + " " + yEnd +
@@ -195,9 +212,9 @@ define(function (require) {
         });
         nucleoSVGUpdate = nucleo.select(".nucleo-shape > svg");
         nucleoSVGUpdate.attr({
-          "class": function (d, i) {
+          "class": function (d) {
             var className = "type-" + d.type;
-            if (stopCodonsHash && stopCodonsHash[i]) {
+            if (stopCodonsHash && stopCodonsHash[d.idx]) {
               className += " stop-codon";
             }
             return className;
@@ -218,6 +235,9 @@ define(function (require) {
         nucleoTrans = d3.transition(nucleo)
           .attr("transform", translate)
           .style("opacity", 1);
+
+        // Animate also bonds opacity.
+        nucleoTrans.select(".bonds").style("opacity", bonds);
 
         // Duck test whether nucleoTrans is really translation. See D3 API
         // Reference - d3.transition(selection) returns  transition only when
@@ -248,7 +268,7 @@ define(function (require) {
 
         // Exit.
         shift(true);
-        d3.transition(nucleo.exit())
+        d3.transition(nucleoExit)
           .attr("transform", translate)
           .style("opacity", 0)
           .remove();
@@ -270,6 +290,12 @@ define(function (require) {
     nucleo.direction = function (d) {
       if (!arguments.length) return direction;
       direction = d;
+      return nucleo;
+    };
+
+    nucleo.bonds = function (b) {
+      if (!arguments.length) return bonds;
+      bonds = b;
       return nucleo;
     };
 
@@ -320,6 +346,12 @@ define(function (require) {
     nucleo.stopCodonsHash = function (s) {
       if (!arguments.length) return stopCodonsHash;
       stopCodonsHash = s;
+      return nucleo;
+    };
+
+    nucleo.enterExitOnly = function (ee) {
+      if (!arguments.length) return enterExitOnly;
+      enterExitOnly = ee;
       return nucleo;
     };
 

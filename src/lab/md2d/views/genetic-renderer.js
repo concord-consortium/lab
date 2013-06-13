@@ -8,11 +8,12 @@ define(function (require) {
 
       H = GeneticElementsRenderer.H;
 
-  function GeneticRenderer(svg, parent, model) {
+  function GeneticRenderer(modelView, model) {
     var api,
+        svg = modelView.containers.svg,
+        model2px = modelView.model2px,
+        model2pxInv = modelView.model2pxInv,
         viewportG = svg.select(".viewport"),
-        model2px = parent.model2px,
-        model2pxInv = parent.model2pxInv,
 
         g = null,
         currentTrans = null,
@@ -21,16 +22,17 @@ define(function (require) {
         prevAnimStep = null,
         suppressViewport = false,
         transitionInProgress = false,
+        animStateInProgress = null,
 
         objectNames = [
-          "viewPort", "background",
+          "background",
           "cells", "dna1", "dna2", "dna3",
           "polymeraseUnder", "polymeraseOver",
           "polymeraseUnder", "polymeraseOver",
           "dna", "dnaComp", "mrna", "nucleus",
           "ribosomeBottom", "ribosomeTop",
           "ribosomeUnder", "ribosomeOver",
-          "trna"
+          "trna", "viewPort"
         ],
         stateMgr = new StateManager(objectNames),
         objectRenderer = new GeneticElementsRenderer(svg, model2px, model2pxInv, model),
@@ -45,6 +47,22 @@ define(function (require) {
 
       // When DNAMutations is changed, cleanup & render again.
       model.addPropertiesListener(["DNAMutations"], setup);
+
+      // When viewPortX is changed render DNA and mRNA again. Also center
+      // protein while in 'translation-end' state.
+      model.addPropertiesListener(["viewPortX"], function() {
+        var data = stateMgr.getState(animStateInProgress || state.name);
+
+        objectRenderer.mrna(g, data, true);
+        objectRenderer.dna(g, data, true);
+        objectRenderer.dnaComp(g, data, true);
+
+        if (!transitionInProgress &&
+            state.name === "translation-end" &&
+            model.getNumberOfAtoms() > 0) {
+          model.geneticEngine().centerProtein();
+        }
+      });
 
       // Register mutation menus for DNA and DNA complement. Note that
       // jQuery.contextMenu uses event delegation, so it's fully enough to
@@ -228,10 +246,12 @@ define(function (require) {
           opacity: 0
         }],
         dna: [{
+          translateX: -model.geneticEngine().PRECODING_LEN * nucleotides.WIDTH,
           translateY: viewPortHeight / 2 + nucleotides.HEIGHT,
           bonds: 1
         }],
         dnaComp: [{
+          translateX: -model.geneticEngine().PRECODING_LEN * nucleotides.WIDTH,
           translateY: viewPortHeight / 2 - nucleotides.HEIGHT,
           bonds: 1
         }],
@@ -251,9 +271,9 @@ define(function (require) {
         dnaComp: [{
           translateY: viewPortHeight / 2 - 2.5 * nucleotides.HEIGHT,
           bonds: function () {
-            var limit = getStep();
+            var limit = getStep() + model.geneticEngine().PRECODING_LEN;
             return function (d) {
-              return d.coding && d.idx < limit ? 1 : 0;
+              return d.region === "c" && d.idx < limit ? 1 : 0;
             };
           }
         }],
@@ -275,7 +295,7 @@ define(function (require) {
         dnaComp: [{
           bonds: function () {
             return function (d) {
-              return d.coding ? 1 : 0;
+              return d.region === "c" ? 1 : 0;
             };
           }
         }],
@@ -308,9 +328,7 @@ define(function (require) {
           opacity: 1
         }],
         viewPort: [{}],
-        background: [{
-          color: "#8492ef"
-        }]
+        background: [{}]
       });
       stateMgr.extendLastState("before-translation-s0", {
         dna: [{}],
@@ -324,7 +342,9 @@ define(function (require) {
           opacity: 0
         }],
         viewPort: [{}],
-        background: [{}]
+        background: [{
+          color: "#8492ef"
+        }]
       });
       stateMgr.extendLastState("before-translation-s1", {
         dna: [{}],
@@ -441,8 +461,8 @@ define(function (require) {
         mrna: [{
           bonds: function () {
             var step = getStep();
-            return function (d, i) {
-              return i < 3 * (step - 2) || i >= 3 * step ? 0 : 1;
+            return function (d) {
+              return d.idx < 3 * (step - 2) || d.idx >= 3 * step ? 0 : 1;
             };
           }
         }],
@@ -476,8 +496,8 @@ define(function (require) {
         mrna: [{
           bonds: function () {
             var step = getStep();
-            return function (d, i) {
-              return i < 3 * (step - 3) || i >= 3 * step ? 0 : 1;
+            return function (d) {
+              return d.idx < 3 * (step - 3) || d.idx >= 3 * step ? 0 : 1;
             };
           }
         }],
@@ -534,8 +554,8 @@ define(function (require) {
         mrna: [{
           bonds: function () {
             var step = getStep();
-            return function (d, i) {
-              return i < 3 * (step - 1) || i >= 3 * step ? 0 : 1;
+            return function (d) {
+              return d.idx < 3 * (step - 1) || d.idx >= 3 * step ? 0 : 1;
             };
           }
         }],
@@ -648,7 +668,7 @@ define(function (require) {
       // transition ended. This means that we can be somewhere between states
       // and it's impossible to detect which objects should be rendered using
       // previous and current animation state.
-      renderState(g, state.name, transitionInProgress);
+      renderState(g, state.name, null, transitionInProgress);
 
       transitionInProgress = false;
     }
@@ -662,9 +682,11 @@ define(function (require) {
      * @private
      * @param {d3.selection OR d3.transition} parent d3.selection or d3.transition object.
      * @param {String} animState  animation state name.
-     * @param {boolean} forceAll forces re-rendering of all scene objects.
+     * @param {function} onStartCallback callback executed at the beginning of transition
+     *                                   or immediately if parent isn't a transition (optional).
+     * @param {boolean} forceAll forces re-rendering of all scene objects (optional).
      */
-    function renderState(parent, animState, forceAll) {
+    function renderState(parent, animState, onStartCallback, forceAll) {
       var data = stateMgr.getState(animState),
           prevAnimStateData = prevAnimState ? stateMgr.getState(prevAnimState) : null;
 
@@ -674,23 +696,43 @@ define(function (require) {
             inPrevData = !!(prevAnimStateData && prevAnimStateData[name].length);
 
         if (suppressViewport && name === "viewPort") {
-          // Viewport updat can be disabled using special variable.
+          // Viewport update can be disabled using special variable.
           return false;
-        } else if (inData || inPrevData) {
+        } else if (forceAll || inData || inPrevData) {
           // Render all objects from current and previous states.
           return true;
         }
         return false;
       }
 
-      parent.each(function() {
-        var parent = d3.select(this);
-        objectNames.forEach(function (name) {
-          if (forceAll || shouldRenderObj(name)) {
-            objectRenderer[name](parent, data);
-          }
+      function render() {
+        parent.each(function() {
+          var parent = d3.select(this);
+          objectNames.forEach(function (name) {
+            if (shouldRenderObj(name)) {
+              objectRenderer[name](parent, data);
+            }
+          });
         });
-      });
+        if (onStartCallback) onStartCallback(parent);
+      }
+
+      if (parent.duration) {
+        // Transition.
+        parent.each("start.transition-name", function () {
+          animStateInProgress = animState;
+          // ! Set delay to 0 to ensure that transitions deriving from this one
+          // will be executed immediately! This is important, as we call rendering
+          // inside the 'start' event listener.
+          parent.delay(0);
+          render();
+        });
+        parent.each("end.transition-name", function () {
+          animStateInProgress = null;
+        });
+      } else {
+        render();
+      }
 
       prevAnimState = animState;
       prevAnimStep = state.step || 0; // when undefined or NaN
@@ -736,6 +778,7 @@ define(function (require) {
         svg.select(".plot").transition().delay(0); // background changes
         viewportG.transition().delay(0);           // viewport scrolling
         currentTrans = null;
+        animStateInProgress = null;
       }
     }
 
@@ -777,7 +820,7 @@ define(function (require) {
         // Special state - render current animation state again,
         // as model was updated.
         var t = nextTrans().ease("cubic-in-out").duration(800);
-        renderState(t, state.name);
+        renderState(t, state.name, null, true);
       },
 
       "intro-zoom1": function introZoom1() {
@@ -812,32 +855,35 @@ define(function (require) {
 
 
         t = nextTrans().duration(1000);
-        renderState(t, "dna");
-        // Enter transition connected with new nucleotides,
-        // we don't want it this time.
-        t.selectAll(".nucleotide").duration(15);
-        t.selectAll(".plot").duration(15);
+        renderState(t, "dna", function (t) {
+          // Make some transitions almost immediate.
+          t.selectAll(".nucleotide").duration(5);
+          t.selectAll(".plot").duration(5);
+        });
       },
 
       "transcription:0": function transcription0() {
         var t = nextTrans().duration(1500);
-        renderState(t, "transcription");
-        // Reselect bonds transition, change duration to 250.
-        t.selectAll(".bonds").duration(250);
+        renderState(t, "transcription", function(t) {
+          // Reselect bonds transition, change duration to 250.
+          t.selectAll(".bonds").duration(250);
+        });
       },
 
       "transcription": function transcription() {
         var t = nextTrans().duration(500);
-        renderState(t, "transcription");
-        // Reselect bonds transition, change duration to ease to cubic.
-        t.selectAll(".bonds").ease("cubic");
+        renderState(t, "transcription", function (t) {
+          // Reselect bonds transition, change duration to ease to cubic.
+          t.selectAll(".bonds").ease("cubic");
+        });
       },
 
       "transcription-end": function transcriptionEnd() {
         var t = nextTrans().duration(500);
-        renderState(t, "transcription-end");
-        // Reselect bonds transition, change duration to ease to cubic.
-        t.selectAll(".bonds").ease("cubic");
+        renderState(t, "transcription-end", function (t) {
+          // Reselect bonds transition, change duration to ease to cubic.
+          t.selectAll(".bonds").ease("cubic");
+        });
       },
 
       "after-transcription": function afterTranscription() {
@@ -847,8 +893,9 @@ define(function (require) {
 
       "before-translation": function beforeTranslation() {
         var t = nextTrans().ease("cubic-in-out").duration(1000);
-        renderState(t, "before-translation-s0");
-        t.selectAll(".plot").duration(5);
+        renderState(t, "before-translation-s0", function (t) {
+          t.selectAll(".plot").duration(1);
+        });
 
         t = nextTrans().ease("cubic-in-out").duration(1500);
         renderState(t, "before-translation-s1");
@@ -857,9 +904,10 @@ define(function (require) {
         renderState(t, "before-translation-s2");
 
         t = nextTrans().ease("cubic").duration(1000);
-        renderState(t, "before-translation-s3");
-        t.selectAll(".bonds").duration(250);
-        t.selectAll(".plot").duration(1);
+        renderState(t, "before-translation-s3", function (t) {
+          t.selectAll(".bonds").duration(250);
+          t.selectAll(".plot").duration(1);
+        });
 
         t = nextTrans().ease("cubic-out").duration(1000);
         renderState(t, "before-translation-s4");
@@ -887,17 +935,15 @@ define(function (require) {
             t;
 
         t = nextTrans().duration(newAADuration);
-        renderState(t, "translation-step0");
-        t.selectAll(".bonds").ease("cubic");
-        t.each("start", function () {
+        renderState(t, "translation-step0", function (t) {
+          t.selectAll(".bonds").ease("cubic");
           geneticEngine.translationStepStarted(codonIdx, 1.45 + codonIdx * 3 * nucleotides.WIDTH, 3.95,
               0.53 + codonIdx * 3 * nucleotides.WIDTH, 1.57, newAADuration);
         });
 
         t = nextTrans().duration(shiftDuration);
-        renderState(t, "translation-step1");
-        t.selectAll(".trna-neck").duration(150);
-        t.each("start", function () {
+        renderState(t, "translation-step1", function (t) {
+          t.selectAll(".trna-neck").duration(150);
           geneticEngine.shiftAminoAcids(codonIdx, 2 * nucleotides.WIDTH, shiftDuration);
         });
         t.each("end", function () {
@@ -907,8 +953,9 @@ define(function (require) {
         // This will remove 3rd tRNA.
         if (codonIdx > 0) {
           t = nextTrans().duration(900);
-          renderState(t, "translation");
-          t.selectAll(".bonds").duration(150);
+          renderState(t, "translation", function (t) {
+            t.selectAll(".bonds").duration(150);
+          });
         }
       },
 
@@ -925,12 +972,14 @@ define(function (require) {
           });
 
           t = nextTrans().duration(800);
-          renderState(t, "translation-end-s1");
-          t.selectAll(".bonds").duration(150);
+          renderState(t, "translation-end-s1", function (t) {
+            t.selectAll(".bonds").duration(150);
+          });
 
           t = nextTrans().duration(800);
-          t.selectAll(".bonds").duration(150);
-          renderState(t, "translation-end-s2");
+          renderState(t, "translation-end-s2", function (t) {
+            t.selectAll(".bonds").duration(150);
+          });
         }
 
         t = nextTrans().duration(500);
@@ -943,8 +992,7 @@ define(function (require) {
         renderState(t, "translation-end-s5");
 
         t = nextTrans().duration(700);
-        renderState(t, "translation-end");
-        t.each("start", function () {
+        renderState(t, "translation-end", function () {
           geneticEngine.centerProtein(700);
         });
       }

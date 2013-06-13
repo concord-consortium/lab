@@ -1664,7 +1664,7 @@ define(function (require) {
       amniacidContextMenu.register(model, api, '[class~="amino-acid"]');
 
       // Initialize renderers.
-      geneticRenderer = new GeneticRenderer(modelView.containers.svg, api, model);
+      geneticRenderer = new GeneticRenderer(modelView, model);
     }
 
     function photonPath(d) {

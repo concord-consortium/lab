@@ -57,6 +57,8 @@ define(function (require) {
         // updated each time model2px and model2pxInv functions are changed!
         selectBrush,
 
+        dispatch = d3.dispatch("viewportDrag"),
+
         offsetLeft, offsetTop;
 
     function processOptions(newModelUrl, newModel) {
@@ -437,6 +439,7 @@ define(function (require) {
             dy = dragOpt === "x" ? 0 : model2px.invert(d3.event.dy);
         model.properties.viewPortX -= dx;
         model.properties.viewPortY += dy;
+        dispatch.viewportDrag();
         updateArrays();
       }).on("dragend", function () {
         updateArrays();
@@ -479,6 +482,7 @@ define(function (require) {
         // Update positions.
         model.properties.viewPortX += vx * dt + 0.5 * ax * dt * dt;
         model.properties.viewPortY += vy * dt + 0.5 * ay * dt * dt;
+        dispatch.viewportDrag();
         // Update velocities.
         vx += ax * dt;
         vy += ay * dt;
@@ -578,6 +582,9 @@ define(function (require) {
         // manipulate absolutely positioned dom elements it may create or
         // manage.
         return  mainContainer.node().parentElement.getBoundingClientRect();
+      },
+      on: function(type, listener) {
+        dispatch.on(type, listener);
       },
       /**
        * Sets custom click handler.

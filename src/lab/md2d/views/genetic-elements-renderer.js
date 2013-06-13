@@ -95,6 +95,12 @@ define(function (require) {
     function translateScaleFuncInv(d) {
       return translateFuncInv(d) + " " + scaleFunc(d);
     }
+    function getOptBoundaries(dna) {
+      var shift = dna ? model.geneticEngine().PRECODING_LEN : 0,
+          lowIdx = Math.floor(model.properties.viewPortX / nucleotides.WIDTH) - 2,
+          highIdx = Math.ceil((model.properties.viewPortX + model.properties.viewPortWidth) / nucleotides.WIDTH) + 2;
+      return [Math.max(0, lowIdx + shift), highIdx + shift];
+    }
 
     return {
       cells: function (parent, data) {
@@ -174,19 +180,22 @@ define(function (require) {
         d3.transition(dna3.exit()).remove();
       },
 
-      dna: function (parent, data) {
+      dna: function (parent, data, enterExitOnly) {
         var viewModel   = model.geneticEngine().viewModel,
+            boundaries  = getOptBoundaries(true),
             bonds       = data.dna[0] ? data.dna[0].bonds : 0,
             n           = nucleotides().model2px(model2px),
             dna, dnaEnter, dnaUpdateTrans;
 
-        function pos(idx) {
-          return "translate(" + model2px(idx * nucleotides.WIDTH) + ")";
+        if (enterExitOnly) {
+          dna = parent.select(".dna-layer").selectAll(".dna");
+          n.glow(model.get("DNAMutations"));
+          n.sequence(viewModel.DNAOpt.slice(boundaries[0], boundaries[1]));
+          n.enterExitOnly(enterExitOnly);
+          n.bonds(bonds);
+          dna.call(n);
+          return;
         }
-
-        // Note that first junk and promoter sequences are updated only during
-        // enter operation. They cannot be changed by the user, while DNA can
-        // (and because of that, following nucleotides have to be shifted).
 
         // DNA enter:
         dna = parent.select(".dna-layer").selectAll(".dna").data(data.dna);
@@ -195,59 +204,38 @@ define(function (require) {
           "class": "dna",
           "transform": translateFuncInv
         });
-        // Coding sequence.
-        dnaEnter.append("g").attr("class", "coding-region");
-        // Junk sequence.
-        n.sequence(viewModel.junk);
-        dnaEnter.append("g").attr("class", "junk-region").call(n)
-          .attr("transform", pos(-viewModel.promoter.length - viewModel.junk.length));
-        // Promoter sequence.
-        n.sequence(viewModel.promoter);
-        dnaEnter.append("g").attr("class", "promoter-region").call(n)
-          .attr("transform", pos(-viewModel.promoter.length));
-        // Terminator sequence.
-        n.sequence(viewModel.terminator);
-        dnaEnter.append("g").attr("class", "terminator-region").call(n);
-        // Junk sequence again.
-        n.sequence(viewModel.junk);
-        dnaEnter.append("g").attr("class", "junk-region junk-end").call(n);
-
-        console.timeEnd("[dna renderer] enter");
 
         // DNA update:
         // Coding sequence.
         n.glow(model.get("DNAMutations"));
-        n.sequence(viewModel.DNA);
-        dna.select(".coding-region").call(n);
+        n.bonds(bonds);
+        n.sequence(viewModel.DNAOpt.slice(boundaries[0], boundaries[1]));
+        dna.call(n);
 
         dnaUpdateTrans = d3.transition(dna);
         // Bonds.
-        dnaUpdateTrans.attr("transform", translateFuncInv)
-          .selectAll(".bonds").style("opacity", bonds);
-        // Shift terminator sequence.
-        dnaUpdateTrans.select(".terminator-region")
-          .attr("transform", pos(viewModel.DNA.length));
-        // Shift junk sequence.
-        dnaUpdateTrans.select(".junk-end")
-          .attr("transform", pos(viewModel.DNA.length + viewModel.terminator.length));
+        dnaUpdateTrans.attr("transform", translateFuncInv);
 
         // DNA exit:
         d3.transition(dna.exit()).remove();
       },
 
-      dnaComp: function (parent, data) {
+      dnaComp: function (parent, data, enterExitOnly) {
         var viewModel     = model.geneticEngine().viewModel,
+            boundaries    = getOptBoundaries(true),
             bonds         = data.dnaComp[0] ? data.dnaComp[0].bonds : 0,
             n             = nucleotides().model2px(model2px).direction(2),
             dnaComp, dnaCompEnter, dnaCompUpdateTrans;
 
-        function pos(idx) {
-          return "translate(" + model2px(idx * nucleotides.WIDTH) + ")";
+        if (enterExitOnly) {
+          dnaComp = parent.select(".dna-layer").selectAll(".dna-comp");
+          n.glow(model.get("DNAMutations"));
+          n.sequence(viewModel.DNACompOpt.slice(boundaries[0], boundaries[1]));
+          n.bonds(bonds);
+          n.enterExitOnly(enterExitOnly);
+          dnaComp.call(n);
+          return;
         }
-
-        // Note that first junk and promoter sequences are updated only during
-        // enter operation. They cannot be changed by the user, while DNA can
-        // (and because of that, following nucleotides have to be shifted).
 
         // DNA Comp enter:
         dnaComp = parent.select(".dna-layer").selectAll(".dna-comp").data(data.dnaComp);
@@ -255,57 +243,49 @@ define(function (require) {
           "class": "dna-comp",
           "transform": translateFuncInv
         });
-        // Coding sequence.
-        dnaCompEnter.append("g").attr("class", "coding-region");
-        // Junk sequence.
-        n.sequence(viewModel.junkComp);
-        dnaCompEnter.append("g").attr("class", "junk-region").call(n)
-          .attr("transform", pos(-viewModel.promoter.length - viewModel.junk.length));
-        // Promoter sequence.
-        n.sequence(viewModel.promoterComp);
-        dnaCompEnter.append("g").attr("class", "promoter-region").call(n)
-          .attr("transform", pos(-viewModel.promoter.length));
-        // Terminator sequence.
-        n.sequence(viewModel.terminatorComp);
-        dnaCompEnter.append("g").attr("class", "terminator-region").call(n);
-        // Junk sequence again.
-        n.sequence(viewModel.junkComp);
-        dnaCompEnter.append("g").attr("class", "junk-region junk-end").call(n);
 
         // DNA Comp update:
         // Coding sequence.
         n.glow(model.get("DNAMutations"));
-        n.sequence(viewModel.DNAComp);
-        dnaComp.select(".coding-region").call(n);
+        n.sequence(viewModel.DNACompOpt.slice(boundaries[0], boundaries[1]));
+        n.bonds(bonds);
+        dnaComp.call(n);
 
         dnaCompUpdateTrans = d3.transition(dnaComp);
         // Bonds.
-        dnaCompUpdateTrans.attr("transform", translateFuncInv)
-          .selectAll(".bonds").style("opacity", bonds);
-        // Shift terminator sequence.
-        dnaCompUpdateTrans.select(".terminator-region")
-          .attr("transform", pos(viewModel.DNA.length));
-        // Shift junk sequence.
-        dnaCompUpdateTrans.select(".junk-end")
-          .attr("transform", pos(viewModel.DNA.length + viewModel.terminator.length));
+        dnaCompUpdateTrans.attr("transform", translateFuncInv);
 
         // DNA Comp exit:
         d3.transition(dnaComp.exit()).remove();
       },
 
-      mrna: function (parent, data) {
+      mrna: function (parent, data, enterExitOnly) {
         var geneticEngine = model.geneticEngine(),
             mrnaSequence  = geneticEngine.viewModel.mRNA,
+            boundaries    = getOptBoundaries(),
             stopCodons    = geneticEngine.stopCodonsHash(),
             bonds         = data.mrna[0] ? data.mrna[0].bonds : 0,
             dir           = data.mrna[0] ? data.mrna[0].direction : 1,
             n             = nucleotides().model2px(model2px),
             mrna;
 
+        if (enterExitOnly) {
+          mrna = parent.select(".dna-layer").selectAll(".mrna");
+          n.sequence(mrnaSequence.slice(boundaries[0], boundaries[1]))
+           .backbone("RNA")
+           .direction(dir)
+           .bonds(bonds)
+           .enterExitOnly(enterExitOnly)
+           .stopCodonsHash(stopCodons);
+          mrna.call(n);
+          return;
+        }
+
         // Configure nucleotides.
-        n.sequence(mrnaSequence)
+        n.sequence(mrnaSequence.slice(boundaries[0], boundaries[1]))
          .backbone("RNA")
          .direction(dir)
+         .bonds(bonds)
          .stopCodonsHash(stopCodons);
 
         // mRNA enter:
@@ -318,8 +298,7 @@ define(function (require) {
         // (note that there is significant difference between DNA enter/update - for mRNA we call nucleotides()
         // also during update operation, as it will constantly change).
         mrna.call(n);
-        d3.transition(mrna).attr("transform", translateFuncInv)
-          .selectAll(".bonds").style("opacity", bonds);
+        d3.transition(mrna).attr("transform", translateFuncInv);
         // mRNA exit:
         d3.transition(mrna.exit()).remove();
       },
@@ -521,19 +500,12 @@ define(function (require) {
 
       viewPort: function (parent, data) {
         var position   = data.viewPort[0].position,
-            xy         = data.viewPort[0].xy || [],
             ease       = data.viewPort[0].ease,
             drag       = data.viewPort[0].drag,
-            height     = model.get("viewPortHeight"),
             viewport, viewBox;
 
         function updateModel() {
-          // TODO: this is slow as it triggers recalculation
-          // of the model state!
-          model.set({
-            "viewPortX": xy[0] || position * nucleotides.WIDTH,
-            "viewPortY": xy[1] || 0
-          });
+          model.set("viewPortX", position * nucleotides.WIDTH);
         }
 
         // Update dragging behavior. Limit dragging to X axis.
@@ -542,8 +514,7 @@ define(function (require) {
         viewport = svg.select(".viewport");
         viewBox = viewport.attr("viewBox").split(" ");
         // Update viewport X coordinate.
-        viewBox[0] = model2px(xy[0] ? xy[0] : position * nucleotides.WIDTH);
-        viewBox[1] = model2pxInv(xy[1] ? xy[1] + height : height);
+        viewBox[0] = model2px(position * nucleotides.WIDTH);
         viewport = d3.transition(viewport).attr("viewBox", viewBox.join(" "));
         // Duck test whether viewportUpdate is a transition or selection.
         // See D3 API Reference - d3.transition(selection) returns  transition
@@ -552,7 +523,16 @@ define(function (require) {
         if (typeof viewport.duration === "function") {
           // Transition!
           viewport.ease(ease);
-          viewport.each("end.viewport-update", updateModel);
+          // viewport.each("end.viewport-update", updateModel);
+          viewport.tween("model-update", function () {
+            var i = d3.interpolate(Number(model.properties.viewPortX), position * nucleotides.WIDTH);
+            return function (t) {
+              var newVal = i(t);
+              if (Math.abs(model.properties.viewPortX - newVal) > 1e-3) {
+                model.properties.viewPortX = newVal;
+              }
+            };
+          });
         } else {
           // Selection!
           updateModel();

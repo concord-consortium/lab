@@ -12,7 +12,7 @@ define(function () {
         init = function() {
           // Basic dialog elements.
           $dialogDiv = $('<div></div>');
-          $dnaTextInput = $('<input type="text" id="dna-sequence-input" size="45"></input>');
+          $dnaTextInput = $('<input type="text" id="dna-sequence-input" size="55"></input>');
           $dnaTextInput.appendTo($dialogDiv);
           $errorMsg = $('<p class="error"></p>');
           $errorMsg.appendTo($dialogDiv);
