@@ -9,7 +9,7 @@
     "",
     "Try mutating the DNA before or during transcription to see it's effect on the protein that gets produced. Click on a nucleotide to try various kinds of mutations that typically can occur."
   ],
-  "fontScale": 0.75,
+  "fontScale": 0.7,
   "models": [
     {
       "id": "page3$0",
