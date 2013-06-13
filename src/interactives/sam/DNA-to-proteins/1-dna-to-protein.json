@@ -39,8 +39,15 @@
       "type": "button",
       "id": "transcribe-step",
       "text": "Transcribe step by step",
-      "action": "transcribeDNAStep();"
-    },
+        "action": [
+        "if (DNAStateAfter('transcription-end'))",
+        "  set('DNAState', 'dna');",
+        "else if (DNAStateBefore('transcription:1'))",
+        "  animateToDNAState('transcription:1');",
+        "else",
+        "  transcribeDNAStep();"
+      ]
+  },
     {
       "type": "button",
       "id": "translate",
