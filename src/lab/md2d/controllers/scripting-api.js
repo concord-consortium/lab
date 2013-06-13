@@ -547,15 +547,13 @@ define(function (require) {
        */
       transcribeDNAStep: function transcribeDNAStep(expectedNucleotide) {
         var ge = model.geneticEngine();
-        if (ge.stateAfter("transcription-end")) {
+        if (ge.stateBefore("dna") || ge.stateAfter("transcription-end")) {
           // Jump to beginning of DNA transcription if current state is before
           // or after transcrption process (so, state is different from:
           // "dna", "transcription:0", ..., "transcription-end").
           model.set("DNAState", "dna");
-        }
-        if (ge.stateBefore("transcription:0")) {
-          ge.transitionTo("transcription:0");
-        } else {
+          ge.transitionTo("transcription:1");
+        } else if (model.get("DNAState") !== "transcription-end") {
           // Proceed to the next step.
           ge.transcribeStep(expectedNucleotide);
         }
@@ -566,16 +564,12 @@ define(function (require) {
        */
       translateDNAStep: function translateDNAStep() {
         var ge = model.geneticEngine();
-        if (ge.stateBefore("transcription-end")) {
-          // Ensure that we start from transcription-end.
-          alert('Translation can only occur after transcription is complete.');
-          return;
-        }
-        if (ge.stateBefore("translation:0")) {
+        if (ge.stateBefore("translation:0") || ge.stateAfter("translation-end")) {
           // Animate directly to the translation:0, merge a few shorter
           // animations.
-          ge.transitionTo("translation:0");
-        } else {
+          model.set("DNAState", "translation:0");
+          ge.transitionTo("translation:1");
+        } else if (model.get("DNAState") !== "translation-end") {
           // Proceed to the next step.
           ge.transitionToNextState();
         }

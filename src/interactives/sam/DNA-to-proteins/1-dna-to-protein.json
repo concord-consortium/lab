@@ -39,7 +39,13 @@
       "type": "button",
       "id": "transcribe-step",
       "text": "Transcribe step by step",
-      "action": "transcribeDNAStep();"
+      "action": [
+        "if (DNAStateBefore ('dna')) {",
+        "  animateToDNAState('transcription:1');",
+        "} else { ",
+        "  transcribeDNAStep();",
+        "}"
+      ]
   },
     {
       "type": "button",
@@ -59,8 +65,15 @@
       "type": "button",
       "id": "translate-step",
       "text": "Translate step by step",
-      "action": "translateDNAStep();"
-    },
+      "action": [
+        "if (DNAStateBefore('transcription-end')) {",
+        "  alert('Translation can only occur after transcription is complete.');",
+        "  return;",
+        "} else {",
+        "  translateDNAStep();",
+        "}"
+      ]
+  },
     {
       "type": "text",
       "id": "label1",
