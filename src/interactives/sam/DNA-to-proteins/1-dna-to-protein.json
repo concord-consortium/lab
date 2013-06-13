@@ -1,13 +1,13 @@
 {
   "title": "DNA to Protein",
   "publicationStatus": "public",
-  "subtitle": "",
+  "subtitle": "Explore how the code embedded in DNA is translated into a protein.",
   "about": [
-    "Zoom into the cell to explore the transcription and translation of DNA ->mRNA -> protein.",
+    "Click **Transcribe** to zoom into the cell nucleus and see the chromosome unravel to expose the strands of DNA. The DNA separates and an mRNA strand is created by matching complementary nucleotides.",
     "",
-    "Customize the DNA strand to be transcribed and translated by using the **Edit DNA** button.",
+    "Click **Translate** to watch the mRNA leave the nucleus for the cytoplasm and attach to a ribosome. tRNA molecules bring in amino acids and the amino acids are added in the correct order by matching complementary nucleotides.",
     "",
-    "Try mutating the DNA before or during transcription to see it's effect on the protein that gets produced. Click on a nucleotide to try various kinds of mutations that typically can occur."
+    "After translation, inspect the protein to see how the amino acid sequence folded."
   ],
   "fontScale": 0.65,
   "models": [

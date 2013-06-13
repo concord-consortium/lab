@@ -1,13 +1,13 @@
 {
   "title": "Mutations",
   "publicationStatus": "public",
-  "subtitle": "",
+  "subtitle": "Explore how changing the DNA sequence can change the amino acid sequence of a protein.",
   "about": [
-    "Quickly jump back and forth between the DNA and the protein it codes for by using the **Show DNA** and **Show protein** buttons.",
+    "Mutations are mistakes in the DNA sequence. Use the **Edit DNA** button to change the entire sequence or click on an individual nucleotide to make an insertion, deletion or substitution mutation. How does changing the DNA sequence change the resulting protein?",
     "",
-    "Try editing the entire DNA strand and entering in your own sequence by using the **Edit DNA** button, or click **Show DNA** and then mutate the strand by clicking on one of the nucleotides.",
+    "You can quickly jump between the DNA sequence and final protein by using the **Show DNA** and **Show protein** buttons.",
     "",
-    "What effect (if any) does your mutation have one the protein that gets produced? Are some types of mutations more serious than others?"
+    "Are some types of mutations more damaging than others?"
   ],
   "fontScale": 0.75,
   "models": [

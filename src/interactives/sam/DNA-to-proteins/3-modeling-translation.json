@@ -1,9 +1,13 @@
 {
   "title": "Modeling Translation",
   "publicationStatus": "public",
-  "subtitle": "",
+  "subtitle": "Explore how a protein is made from an mRNA sequence.",
   "about": [
-    "Use this model to see how different tRNA molecules, each carrying a specific amino acid, use the mRNA strand to create a specific protein (or chain of amino acids)."
+    "Translation, or making a protein from an mRNA sequence, occurs on ribosomes. The amino acids are brought to the ribosome by transfer RNAs (tRNAs).",
+    "",
+    "The tRNA pairs up with the mRNA by matching up complementary nucleotides. This ensures that the correct amino acid is added to the protein.",
+    "",
+    "Can you identify what the tRNA codon will be for each triplet of mRNA nucleotides?"
   ],
   "fontScale": 0.8,
   "models": [

@@ -1,13 +1,13 @@
 {
   "title": "Modeling Transcription",
   "publicationStatus": "public",
-  "subtitle": "",
+  "subtitle": "Explore how an mRNA copy is made of DNA.",
   "about": [
-    "One strand of the DNA is used as a template to create an mRNA copy. This process is called transcription.",
+    "One strand of the DNA is used as a template to create an mRNA copy. This process is called transcription. An mRNA copy needs to be made because DNA cannot leave the nucleus.",
     "",
-    "Protein complexes help to separate the DNA strands and to allow the proper mRNA nucleotides to bind together to form an mRNA strand. Only specific mRNA nucleotides will match up with specific DNA nucleotides.",
+    "Protein complexes separate the DNA helix to allow complementary mRNA nucleotides to bind to the DNA sequence. The pairing of nucleotides is very specific.",
     "",
-    "Use the **A**, **U**, **G**, and **C** buttons to see if you can identify which mRNA nucleotide will match up with which DNA nucleotide."
+    "Use the **A**, **U**, **G** and **C** buttons to place the correct mRNA nucleotide with each DNA nucleotide."
   ],
   "fontScale": 0.8,
   "models": [
