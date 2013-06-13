@@ -62,21 +62,9 @@
     },
     {
       "type": "button",
-      "id": "prev-state-jump",
-      "text": "<< Jump",
-      "action": "jumpToPrevDNAState();"
-    },
-    {
-      "type": "button",
       "id": "next-state",
       "text": "Continue one step",
       "action": "animateToNextDNAState();"
-    },
-    {
-      "type": "button",
-      "id": "next-state-jump",
-      "text": "Jump >>",
-      "action": "jumpToNextDNAState();"
     },
     {
       "type": "button",
@@ -120,8 +108,7 @@
     "model-bottom": [
       ["label", "dna-dialog"],
       ["show-dna", "transcribe", "buffer", "translate", "show-protein"],
-      ["prev-state-jump", "next-state", "next-state-jump"], 
-      ["start", "stop", "reset"]
+      ["next-state", "start", "stop", "reset"]
     ]
   },
   "template": [
