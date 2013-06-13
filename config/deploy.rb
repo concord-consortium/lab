@@ -58,7 +58,7 @@ namespace :deploy do
     checkout
     bundle_install
     run "cd /var/www/app; make clean-public; make"
-    run "cd /var/www/app; ./script/create-symbolic-links-to-archives.rb"
+    create_symbolic_links_to_archives
     restart
   end
 
@@ -67,7 +67,7 @@ namespace :deploy do
     checkout
     bundle_install
     run "cd /var/www/app; make clean; make"
-    run "cd /var/www/app; ./script/create-symbolic-links-to-archives.rb"
+    create_symbolic_links_to_archives
     restart
   end
 
@@ -92,10 +92,15 @@ namespace :deploy do
     clean_and_update_all
   end
 
+  desc "create symbolic links archives of public dir"
+  task :create_symbolic_links_to_archives do
+    run "cd /var/www/app; ./script/create-symbolic-links-to-archives.rb"
+  end
+
   desc "create archive of public dir"
   task :archive_public_dir do
     run "cd /var/www/app; ./script/create-archived-public-dir.sh"
-    run "cd /var/www/app; ./script/create-symbolic-links-to-archives.rb"
+    create_symbolic_links_to_archives
   end
 
   desc "display last commit on deployed server"
