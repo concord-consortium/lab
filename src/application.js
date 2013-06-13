@@ -1,4 +1,4 @@
-/*global Lab, _, $, d3, CodeMirror, controllers, alert, model, modelList, benchmark, DEVELOPMENT: true, AUTHORING: true */
+/*global Lab, _, $, jQuery, d3, CodeMirror, controllers, alert, model, modelList, benchmark, getDomSnapshot, _gaq, DEVELOPMENT: true, AUTHORING: true */
 /*jshint boss:true */
 
 DEVELOPMENT = true;
@@ -53,6 +53,9 @@ AUTHORING = false;
       $showBenchmarks = $("#show-benchmarks"),
       $benchmarksContent = $("#benchmarks-content"),
       $runBenchmarksButton = $("#run-benchmarks-button"),
+
+      $showSnapshot = $("#show-snapshot"),
+      $snapshotContent = $("#snapshot-content"),
 
       $showModelEnergyGraph = $("#show-model-energy-graph"),
       $modelEnergyGraphContent = $("#model-energy-graph-content"),
@@ -597,7 +600,7 @@ AUTHORING = false;
       // $selectInteractiveSize.attr('disabled', 'disabled');
       setupCodeEditor();
       setupModelCodeEditor();
-      setupCopySVGButton();
+      setupSnapshotButton();
       setupBenchmarks();
       // pass in the model
       setupEnergyGraph(model);
@@ -630,7 +633,7 @@ AUTHORING = false;
       iframePhone = setupIframeListenerFor($iframe[0], function() {
         setupCodeEditor();
         setupModelCodeEditor();
-        setupCopySVGButton();
+        setupSnapshotButton();
         setupBenchmarks();
         setupEnergyGraph(null, function() {
           $(".extras-item").disableSelection();
@@ -1141,56 +1144,36 @@ AUTHORING = false;
     });
   }
 
-  function setupCopySVGButton() {
-    var doSendSVG = function(just_model) {
-      // for the whole interactive:
-      var element = $("#responsive-content");
-      var html_content = $('<div>').append(element.clone()).html();
-      var width  = element.width();
-      var height = element.height();
-      // just the model
-      if (just_model) {
-        element = $("#model-container");
-        html_content = element.wrap('<div></div>').html();
-        width  = element.width();
-        height = element.height();
-        html_content = "<div id='model-container' tabindex='0'>" + html_content + "</div>";
+  function setupSnapshotButton() {
+    $showSnapshot.change(function() {
+      if (this.checked) {
+        $snapshotContent.show(100);
+      } else {
+        $snapshotContent.hide(100);
       }
+    }).change();
 
-      $.ajax({
-        url: "/convert_svg/",
-        type: "POST",
-        data: {
-          'content': html_content,
-          'width': width,
-          'height': height
-        }
-      }).done(function(msg) {
-        $("#svg_output").html( msg );
-      });
-    };
-
-    $('#export_model').on('click', function() {
-      console.log("setupCopySVGButton");
+    $('#export_model').on('click', function(e) {
+      e.preventDefault();
       if(isFullPage()) {
-        doSendSVG(true);
+        getDomSnapshot($("#model-container"),$("#image_output"));
       } else {
         // TODO: Make this work...
         iframePhone.post({ type:'getSvg' });
         iframePhone.addListener('svg', function() {
-          doSendSVG();
+          getDomSnapshot($("#model-container"),$("#image_output"));
         });
       }
     });
-    $('#export_interactive').on('click', function() {
-      console.log("setupCopySVGButton");
+    $('#export_interactive').on('click', function(e) {
+      e.preventDefault();
       if(isFullPage()) {
-        doSendSVG(false);
+        getDomSnapshot($("#responsive-content"),$("#image_output"));
       } else {
         // TODO: Make this work...
         iframePhone.post({ type:'getSvg' });
         iframePhone.addListener('svg', function() {
-          doSendSVG();
+          getDomSnapshot($("#responsive-content"),$("#image_output"));
         });
       }
     });

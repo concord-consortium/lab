@@ -1,6 +1,6 @@
 module PhantomWrapper
 
-  class PngFile
+  class StreamFile
     def initialize(file)
       @png_file = file
     end
@@ -17,24 +17,27 @@ module PhantomWrapper
     end
 
     def size
-      puts "Size is #{@png_file.size}"
       @png_file.size
     end
   end
+
+  class PngFile  < StreamFile; end
+  class HtmlFile < StreamFile; end
 
   class Base
     PROGRAM = 'phantomjs'
     RASTERIZE_JS = File.join(File.dirname(__FILE__),'rasterize.js')
 
-    def document(html,url_base)
+    def document(html, css, url_base)
+      date = Time.now.strftime("%Y-%m-%d (%I:%M%p)")
       """
       <!DOCTYPE html>
       <html>
         <head>
+          <base href='#{url_base}'>
           <meta content='text/html;charset=utf-8' http-equiv='Content-Type'>
-          <title>SVG CONVERT</title>
-          <link href='#{url_base}/embeddable.css' rel='stylesheet' type='text/css'>
-          <link href='http://fonts.googleapis.com/css?family=Lato:300italic,700italic,300,400,400italic,700' rel='stylesheet' type='text/css'>
+          <title>png from #{url_base} #{date}</title>
+          #{css}
         </head>
         <body>
           #{html}
@@ -44,23 +47,13 @@ module PhantomWrapper
     end
 
     def initialize
-      @png_file_cache = {}
+      @file_cache = {}
     end
 
-    def absolutify_images(html,base)
-      # see http://rubular.com/r/zIy49Q9102 for interactive testing
-      image_expression = /(src|href)\s*=\s*"(?!http:\/\/)([^"]+)"/ix
-      result = html.gsub(image_expression) do |s|
-        "#{$1}=\"#{base}/#{$2}\""
-      end
-      return result
-    end
-
-    def convert(html,base_url,width=1000,height=700)
-      html = absolutify_images(html,base_url)
-      html_content = document(html,base_url)
+    def convert(base_url, html, css="", width=1000, height=700)
+      html_content = document(html, css, base_url)
       signature = Digest::SHA1.hexdigest(html_content)[0..10]
-      return signature if @png_file_cache[signature]
+      return signature if @file_cache[signature]
 
       infile = Tempfile.new(['phantom_page','.html'])
       infile_name = infile.path
@@ -72,16 +65,22 @@ module PhantomWrapper
         infile.write(html_content)
         infile.rewind
         %x[#{PROGRAM} #{RASTERIZE_JS} #{infile_name} #{outfile_name} #{width}*#{height}]
-        @png_file_cache[signature] = PngFile.new(outfile)
+        @file_cache[signature] = {'png' => PngFile.new(outfile), 'html' => HtmlFile.new(infile) }
       ensure
         infile.close
-        infile.unlink
+        # infile.unlink
       end
       return signature
     end
 
     def get_png_file(sha)
-      file = @png_file_cache[sha]
+      file = @file_cache[sha]['png']
+      file.open
+      return file
+    end
+
+    def get_html_file(sha)
+      file = @file_cache[sha]['html']
       file.open
       return file
     end
