@@ -98,7 +98,7 @@ define(function (require) {
     function getOptBoundaries(dna) {
       var shift = dna ? model.geneticEngine().PRECODING_LEN : 0,
           lowIdx = Math.floor(model.properties.viewPortX / nucleotides.WIDTH) - 2,
-          highIdx = Math.ceil((model.properties.viewPortX + model.properties.viewPortWidth) / nucleotides.WIDTH) + 2;
+          highIdx = Math.ceil((model.properties.viewPortX + model.properties.viewPortWidth) / nucleotides.WIDTH) + 4;
       return [Math.max(0, lowIdx + shift), highIdx + shift];
     }
 

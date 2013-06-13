@@ -177,6 +177,11 @@ define(function (require) {
           for (i = 0, len = sequence.length; i < len; i++) {
             nucleo = array[i] || {}; // reuse existing objects.
             nucleo.idx = i;
+            if (i < junkBound)            nucleo.region = "j";
+            else if (i < promoterBound)   nucleo.region = "p";
+            else if (i < codingBound)     nucleo.region = "c";
+            else if (i < terminatorBound) nucleo.region = "t";
+            else                          nucleo.region = "j";
             // Note that only nucleotides whose type doesn't match sequence
             // will receive new ID. It lets you to update this array manually,
             // so the ID as prevented in case of need (e.g. single insertion
@@ -184,13 +189,6 @@ define(function (require) {
             if (nucleo.type !== sequence[i]) {
               nucleo.type = sequence[i];
               nucleo.id   = getNucleoID();
-
-              if (i < junkBound)            nucleo.region = "j";
-              else if (i < promoterBound)   nucleo.region = "p";
-              else if (i < codingBound)     nucleo.region = "c";
-              else if (i < terminatorBound) nucleo.region = "t";
-              else                          nucleo.region = "j";
-
               // This block will be also executed when we insert objects for
               // the first time so update the array[i] reference.
               array[i] = nucleo;

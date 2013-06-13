@@ -110,16 +110,6 @@ define(function (require) {
         // Enable random translation of the new mRNAs.
         shift(randomEnter);
         nucleoOrgEnter = nucleoOrgEnter.append("g").attr({
-          "class": function(d) {
-            var regionClass = "";
-            switch(d.region) {
-              case "c": regionClass = "coding-region"; break;
-              case "j": regionClass = "junk-region"; break;
-              case "p": regionClass = "promoter-region"; break;
-              case "t": regionClass = "terminator-region"; break;
-            }
-            return "nucleotide " + regionClass;
-          },
           "transform": translate
         }).style({
           "opacity": randomEnter ? 0 : 1
@@ -191,9 +181,22 @@ define(function (require) {
 
         // Update.
         if (enterExitOnly) {
+          // Special mode when we update ONLY nucleotides from enter and exit
+          // subselections. It's useful to add new nucleotides while other
+          // are being modified by transition at the same time.
           nucleo = nucleoOrgEnter;
         }
 
+        nucleo.attr("class", function(d) {
+          var regionClass = "";
+          switch(d.region) {
+            case "c": regionClass = "coding-region"; break;
+            case "j": regionClass = "junk-region"; break;
+            case "p": regionClass = "promoter-region"; break;
+            case "t": regionClass = "terminator-region"; break;
+          }
+          return "nucleotide " + regionClass;
+        });
         nucleo.select(".bonds").attr("d", function (d) {
           if (d.type === "C" || d.type === "G") {
             return "M" + m2px(SCALE * 20) + " " + yStart + " L " + m2px(SCALE * 20) + " " + yEnd +
