@@ -77,8 +77,8 @@ describe "GeneticEngine", ->
         mock.changeListener.callCount.should.eql 0
         model.set "DNAState", "dna"
         model.set "DNA", "ATGC"
-        checkDNAArray geneticEngine.viewModel.DNAOpt, "ATGC"
-        checkDNAArray geneticEngine.viewModel.DNACompOpt, "TACG"
+        checkDNAArray geneticEngine.viewModel.DNA, "ATGC"
+        checkDNAArray geneticEngine.viewModel.DNAComp, "TACG"
         checkDNAArray geneticEngine.viewModel.mRNA, ""
         mock.changeListener.callCount.should.eql 2
         mock.transitionListener.callCount.should.eql 0
@@ -273,6 +273,17 @@ describe "GeneticEngine", ->
         # State without changes.
         model.get("DNAState").should.eql "transcription:1"
 
+      it "shouldn't let the user perform any mutation outside the DNA coding region", ->
+        model.set "DNA", "ATGC"
+        DNALen = model.get("DNA").length
+        offset = geneticEngine.PRECODING_LEN
+        (-> geneticEngine.mutate offset - 1, "A").should.throw()
+        (-> geneticEngine.mutate DNALen + 1, "A").should.throw()
+        (-> geneticEngine.insert offset - 1, "T").should.throw()
+        (-> geneticEngine.insert DNALen + 1, "T").should.throw()
+        (-> geneticEngine.delete offset - 1).should.throw()
+        (-> geneticEngine.delete DNALen + 1).should.throw()
+        model.get("DNA").should.eql "ATGC"
 
       it "should provide state() helper methods", ->
         model.set "DNAState", "transcription-end"
