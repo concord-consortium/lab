@@ -581,7 +581,7 @@ define(function (require) {
         // Add a pos() function so the model renderer can more easily
         // manipulate absolutely positioned dom elements it may create or
         // manage.
-        return  mainContainer.node().parentElement.getBoundingClientRect();
+        return  mainContainer.node().parentElement.parentElement.parentElement.getBoundingClientRect();
       },
       on: function(type, listener) {
         dispatch.on(type, listener);
