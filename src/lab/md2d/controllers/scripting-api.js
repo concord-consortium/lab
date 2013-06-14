@@ -552,7 +552,8 @@ define(function (require) {
           // or after transcrption process (so, state is different from:
           // "dna", "transcription:0", ..., "transcription-end").
           model.set("DNAState", "dna");
-          ge.transitionTo("transcription:1");
+          ge.transitionTo("transcription:0");
+          ge.transcribeStep(expectedNucleotide);
         } else if (model.get("DNAState") !== "transcription-end") {
           // Proceed to the next step.
           ge.transcribeStep(expectedNucleotide);
