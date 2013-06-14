@@ -350,7 +350,7 @@ AUTHORING = false;
         dimensions = {
           "tiny":   {width: "350px",  height: "245px"},
           "small":  {width: "400px",  height: "280px"},
-          "medium": {width: "600px",  height: "420px"},
+          "medium": {width: "600px",  height: "480px"},
           "large":  {width: "1000px", height: "700px"}
         },
         dim = dimensions[selection];
