@@ -390,8 +390,8 @@
       "purple-atoms"
     ],
     "left-spinner": [
-      ["remove-inside"],
-      ["add-inside"]
+      ["add-inside"],
+      ["remove-inside"]
     ],
     "left-heat-label": [
       "text-inside-heat"
@@ -406,8 +406,8 @@
       "yellow-atoms"
     ],
     "right-spinner": [
-      ["remove-outside"], 
-      ["add-outside"]
+      ["add-outside"],
+      ["remove-outside"]
     ],
     "right-heat-label": [
       "text-outside-heat"
@@ -429,15 +429,13 @@
       "id": "left-count",
       "top": "left-graphs.bottom",
       "left": "left-graphs.left",
-      "height": "4.5em",
-      "align": "right",
+      "height": "6em",
       "fontScale": 0.8
     },
     {
       "id": "left-spinner",
       "top": "left-graphs.bottom",
       "left": "left-count.right",
-      "align": "left",
       "fontScale": 0.6
     },
     {
@@ -463,15 +461,14 @@
       "id": "right-count",
       "left": "right-graphs.left",
       "top": "right-graphs.bottom",
-      "height": "4.5em",
-      "align": "right",
-      "fontScale": 0.8
+      "height": "6em",
+      "fontScale": 0.8,
+      "padding-left": "1em"
     },
     {
       "id": "right-spinner",
       "left": "right-count.right",
       "top": "right-graphs.bottom",
-      "align": "left",
       "fontScale": 0.6
     },
     {
