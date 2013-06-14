@@ -34,7 +34,18 @@ define(function (require) {
         "TRNA": 67.9,
         "TRNA_NECK": 21.14,
         "A": 31.15
-      };
+      },
+
+      OBJECT_NAMES = [
+        "background",
+        "cells", "dna1", "dna2", "dna3",
+        "polymeraseUnder", "polymeraseOver",
+        "polymeraseUnder", "polymeraseOver",
+        "dna", "dnaComp", "mrna", "nucleus",
+        "ribosomeBottom", "ribosomeTop",
+        "ribosomeUnder", "ribosomeOver",
+        "trna", "viewPort"
+      ];
 
   (function () {
     var name;
@@ -528,6 +539,7 @@ define(function (require) {
 
   GeneticElementsRenderer.W = W;
   GeneticElementsRenderer.H = H;
+  GeneticElementsRenderer.OBJECT_NAMES = OBJECT_NAMES;
 
   return GeneticElementsRenderer;
 });
