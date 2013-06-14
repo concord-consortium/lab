@@ -1,8 +1,7 @@
 /*global define, d3 */
 
 define(function (require) {
-  var console              = require('common/console'),
-      nucleotides          = require('md2d/views/nucleotides'),
+  var nucleotides          = require('md2d/views/nucleotides'),
 
       SCALE = 0.007,
       W = {
@@ -95,6 +94,9 @@ define(function (require) {
     function translateScaleFuncInv(d) {
       return translateFuncInv(d) + " " + scaleFunc(d);
     }
+    // Returns optimal (minimal) boundaries of the DNA or mRNA view array.
+    // They are based on the current vieport position, size and knowledge
+    // about single nucleotide size.
     function getOptBoundaries(dna) {
       var shift = dna ? model.geneticEngine().PRECODING_LEN : 0,
           lowIdx = Math.floor(model.properties.viewPortX / nucleotides.WIDTH) - 2,
@@ -181,80 +183,66 @@ define(function (require) {
       },
 
       dna: function (parent, data, enterExitOnly) {
-        var viewModel   = model.geneticEngine().viewModel,
-            boundaries  = getOptBoundaries(true),
-            bonds       = data.dna[0] ? data.dna[0].bonds : 0,
-            n           = nucleotides().model2px(model2px),
-            dna, dnaEnter, dnaUpdateTrans;
+        var viewModel  = model.geneticEngine().viewModel,
+            boundaries = getOptBoundaries(true),
+            bonds      = data.dna[0] ? data.dna[0].bonds : 0,
+            n          = nucleotides(),
+            dna        = parent.select(".dna-layer").selectAll(".dna");
+
+        // Configure nucleotides.
+        n.model2px(model2px)
+         .sequence(viewModel.DNA.slice(boundaries[0], boundaries[1]))
+         .glow(model.get("DNAMutations"))
+         .bonds(bonds);
 
         if (enterExitOnly) {
-          dna = parent.select(".dna-layer").selectAll(".dna");
-          n.glow(model.get("DNAMutations"));
-          n.sequence(viewModel.DNAOpt.slice(boundaries[0], boundaries[1]));
-          n.enterExitOnly(enterExitOnly);
-          n.bonds(bonds);
-          dna.call(n);
+          dna.call(n.enterExitOnly(true));
           return;
         }
 
-        // DNA enter:
-        dna = parent.select(".dna-layer").selectAll(".dna").data(data.dna);
+        dna = dna.data(data.dna);
 
-        dnaEnter = dna.enter().append("g").attr({
+        // DNA enter:
+        dna.enter().append("g").attr({
           "class": "dna",
           "transform": translateFuncInv
         });
-
         // DNA update:
-        // Coding sequence.
-        n.glow(model.get("DNAMutations"));
-        n.bonds(bonds);
-        n.sequence(viewModel.DNAOpt.slice(boundaries[0], boundaries[1]));
         dna.call(n);
-
-        dnaUpdateTrans = d3.transition(dna);
-        // Bonds.
-        dnaUpdateTrans.attr("transform", translateFuncInv);
-
+        d3.transition(dna).attr("transform", translateFuncInv);
         // DNA exit:
         d3.transition(dna.exit()).remove();
       },
 
       dnaComp: function (parent, data, enterExitOnly) {
-        var viewModel     = model.geneticEngine().viewModel,
-            boundaries    = getOptBoundaries(true),
-            bonds         = data.dnaComp[0] ? data.dnaComp[0].bonds : 0,
-            n             = nucleotides().model2px(model2px).direction(2),
-            dnaComp, dnaCompEnter, dnaCompUpdateTrans;
+        var viewModel  = model.geneticEngine().viewModel,
+            boundaries = getOptBoundaries(true),
+            bonds      = data.dnaComp[0] ? data.dnaComp[0].bonds : 0,
+            n          = nucleotides(),
+            dnaComp    = parent.select(".dna-layer").selectAll(".dna-comp");
+
+        // Configure nucleotides.
+        n.model2px(model2px)
+         .sequence(viewModel.DNAComp.slice(boundaries[0], boundaries[1]))
+         .direction(2)
+         .glow(model.get("DNAMutations"))
+         .bonds(bonds);
 
         if (enterExitOnly) {
-          dnaComp = parent.select(".dna-layer").selectAll(".dna-comp");
-          n.glow(model.get("DNAMutations"));
-          n.sequence(viewModel.DNACompOpt.slice(boundaries[0], boundaries[1]));
-          n.bonds(bonds);
-          n.enterExitOnly(enterExitOnly);
-          dnaComp.call(n);
+          dnaComp.call(n.enterExitOnly(true));
           return;
         }
 
+        dnaComp = dnaComp.data(data.dnaComp);
+
         // DNA Comp enter:
-        dnaComp = parent.select(".dna-layer").selectAll(".dna-comp").data(data.dnaComp);
-        dnaCompEnter = dnaComp.enter().append("g").attr({
+        dnaComp.enter().append("g").attr({
           "class": "dna-comp",
           "transform": translateFuncInv
         });
-
         // DNA Comp update:
-        // Coding sequence.
-        n.glow(model.get("DNAMutations"));
-        n.sequence(viewModel.DNACompOpt.slice(boundaries[0], boundaries[1]));
-        n.bonds(bonds);
         dnaComp.call(n);
-
-        dnaCompUpdateTrans = d3.transition(dnaComp);
-        // Bonds.
-        dnaCompUpdateTrans.attr("transform", translateFuncInv);
-
+        d3.transition(dnaComp).attr("transform", translateFuncInv);
         // DNA Comp exit:
         d3.transition(dnaComp.exit()).remove();
       },
@@ -266,37 +254,30 @@ define(function (require) {
             stopCodons    = geneticEngine.stopCodonsHash(),
             bonds         = data.mrna[0] ? data.mrna[0].bonds : 0,
             dir           = data.mrna[0] ? data.mrna[0].direction : 1,
-            n             = nucleotides().model2px(model2px),
-            mrna;
-
-        if (enterExitOnly) {
-          mrna = parent.select(".dna-layer").selectAll(".mrna");
-          n.sequence(mrnaSequence.slice(boundaries[0], boundaries[1]))
-           .backbone("RNA")
-           .direction(dir)
-           .bonds(bonds)
-           .enterExitOnly(enterExitOnly)
-           .stopCodonsHash(stopCodons);
-          mrna.call(n);
-          return;
-        }
+            n             = nucleotides(),
+            mrna          = parent.select(".dna-layer").selectAll(".mrna");
 
         // Configure nucleotides.
-        n.sequence(mrnaSequence.slice(boundaries[0], boundaries[1]))
+        n.model2px(model2px)
+         .sequence(mrnaSequence.slice(boundaries[0], boundaries[1]))
          .backbone("RNA")
          .direction(dir)
          .bonds(bonds)
          .stopCodonsHash(stopCodons);
 
+        if (enterExitOnly) {
+          mrna.call(n.enterExitOnly(true));
+          return;
+        }
+
+        mrna = mrna.data(data.mrna);
+
         // mRNA enter:
-        mrna = parent.select(".dna-layer").selectAll(".mrna").data(data.mrna);
         mrna.enter().append("g").attr({
           "class": "mrna",
           "transform": translateFuncInv
         });
         // mRNA update:
-        // (note that there is significant difference between DNA enter/update - for mRNA we call nucleotides()
-        // also during update operation, as it will constantly change).
         mrna.call(n);
         d3.transition(mrna).attr("transform", translateFuncInv);
         // mRNA exit:
@@ -443,7 +424,8 @@ define(function (require) {
 
             selection, enter, update, exit;
 
-        selection = parent.select(".top-layer").selectAll(".trna").data(data.trna, function (d) { return d.index; });
+        selection = parent.select(".top-layer").selectAll(".trna")
+                      .data(data.trna, function (d) { return d.index; });
         // The most outer container can be used to set easily position offset.
         // While the inner g elements provides translation for "ideal" tRNA position
         // close to the mRNA and optional rotation.
@@ -499,31 +481,29 @@ define(function (require) {
       },
 
       viewPort: function (parent, data) {
-        var position   = data.viewPort[0].position,
-            ease       = data.viewPort[0].ease,
-            drag       = data.viewPort[0].drag,
-            viewport, viewBox;
+        var position = data.viewPort[0].position,
+            ease     = data.viewPort[0].ease,
+            drag     = data.viewPort[0].drag,
+            viewport = d3.transition(svg.select(".viewport"));
 
-        function updateModel() {
-          model.set("viewPortX", position * nucleotides.WIDTH);
-        }
+        // This is a bit hacky. In fact we use d3 transitions to modify model,
+        // not the SVG element! It could be implemented also as a MD2D modeler
+        // transition (see atom transitions), but this approach fits well our
+        // needs and we reuse a lot of nice d3.transition features. We could
+        // also consider removing atom transitions completely and use similar
+        // approach for them. As this is just one exception, leave it for now,
+        // but in the future it could be useful to chose only one approach
+        // (d3.transitions vs custom transitions handled by MD2D modeler).
 
         // Update dragging behavior. Limit dragging to X axis.
         model.set("viewPortDrag", drag ? "x" : false);
-
-        viewport = svg.select(".viewport");
-        viewBox = viewport.attr("viewBox").split(" ");
-        // Update viewport X coordinate.
-        viewBox[0] = model2px(position * nucleotides.WIDTH);
-        viewport = d3.transition(viewport).attr("viewBox", viewBox.join(" "));
         // Duck test whether viewportUpdate is a transition or selection.
-        // See D3 API Reference - d3.transition(selection) returns  transition
+        // See D3 API Reference - d3.transition(selection) returns transition
         // only when called in the context of other transition. Otherwise it
         // returns selection.
-        if (typeof viewport.duration === "function") {
+        if (viewport.duration) {
           // Transition!
           viewport.ease(ease);
-          // viewport.each("end.viewport-update", updateModel);
           viewport.tween("model-update", function () {
             var i = d3.interpolate(Number(model.properties.viewPortX), position * nucleotides.WIDTH);
             return function (t) {
@@ -534,8 +514,8 @@ define(function (require) {
             };
           });
         } else {
-          // Selection!
-          updateModel();
+          // Selection! Immediate update of the model.
+          model.set("viewPortX", position * nucleotides.WIDTH);
         }
       },
 

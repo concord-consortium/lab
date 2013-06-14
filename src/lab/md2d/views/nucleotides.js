@@ -48,12 +48,10 @@ define(function (require) {
         sequence = "",
         direction = 1,
         bonds = 1,
-        startingPos = 0,
         backbone = "DNA", // if enabled, "RNA" or "DNA" is expected.
         stopCodonsHash = null,
         randomEnter = true,
         glow = false,
-        backboneDrag = null,
         enterExitOnly = false,
 
         xShift = 0,
@@ -91,42 +89,44 @@ define(function (require) {
 
             seq = typeof sequence === "function" ? sequence(d, i) : sequence,
 
-            nucleo, nucleoEnter, nucleoOrgEnter, nucleoExit, backboneEnter, nucleoShape,
-            nucleoSVG, nucleoSVGUpdate, nucleoTrans, targetScale;
+            nucleo, nucleoEnter, nucleoExit, nucleoGEnter, backboneEnter,
+            nucleoShape, nucleoSVG, nucleoSVGUpdate, nucleoTrans, targetScale;
 
-        // seq is a string, generate data array. Change it to array of objects.
-        // e.g. "AG" will be change to [{idx: 0, type: "A"}, {idx: 1, type: "G"}].
         if (typeof seq === "string") {
+          // seq is a string, generate data array. Change it to array of objects.
+          // e.g. "AG" will be change to [{idx: 0, type: "A"}, {idx: 1, type: "G"}].
           seq = seq.split("");
           seq.forEach(function(val, i) {
             seq[i] = {id: i, idx: i, type: val};
           });
         }
-        // Join by ID.
+
+        // Join data by ID.
         nucleo = g.selectAll(".nucleotide").data(seq, function (d) { return d.id; });
-        nucleoOrgEnter = nucleo.enter();
+        nucleoEnter = nucleo.enter();
         nucleoExit = nucleo.exit();
+
         // Enter.
-        // Enable random translation of the new mRNAs.
+        // Random initial positions of the new mRNAs.
         shift(randomEnter);
-        nucleoOrgEnter = nucleoOrgEnter.append("g").attr({
+        nucleoEnter = nucleoEnter.append("g").attr({
           "transform": translate
         }).style({
           "opacity": randomEnter ? 0 : 1
         });
-
         // Additional container for scaling.
-        nucleoEnter = nucleoOrgEnter.append("g").attr({
+        nucleoGEnter = nucleoEnter.append("g").attr({
           "class": "scale",
           "transform": "scale(1, " + (direction  === 1 ? 1 : -1) + ")",
         });
-
-        nucleoEnter.append("path").attr("class", "bonds")
+        // Bonds.
+        nucleoGEnter.append("path").attr("class", "bonds")
           .style({
             "stroke-width": m2px(0.01),
             "stroke": "#fff"
           });
-        nucleoShape = nucleoEnter.append("g")
+        // Main shape.
+        nucleoShape = nucleoGEnter.append("g")
           .classed("nucleo-shape", true)
           .classed("clickable-nucleo", function (d) {
             return d.region === "c" && glow;
@@ -137,6 +137,7 @@ define(function (require) {
             // handler does nothing. It's necessary, as nucleotides should be
             // clickable, e.g. to show context menu.
           });
+        // Optional glow image.
         if (glow) {
           nucleoShape.append("image").attr({
             "class": "glow",
@@ -144,6 +145,7 @@ define(function (require) {
             "preserveAspectRatio": "none"
           });
         }
+        // Parts of nucleotide shape (outline, interior, letter).
         nucleoSVG = nucleoShape.append("svg").attr({
           "y": m2px(yOffset),
           "preserveAspectRatio": "none",
@@ -164,8 +166,9 @@ define(function (require) {
           "clip-rule": "evenodd",
           "d": function (d) { return nucleotidePaths.letter[d.type][direction]; }
         });
+        // Optional backbone.
         if (backbone) {
-          backboneEnter = nucleoEnter.append("image").attr({
+          backboneEnter = nucleoGEnter.append("image").attr({
             "class": "backbone",
             "x": 0,
             "y": 0,
@@ -174,19 +177,18 @@ define(function (require) {
             "preserveAspectRatio": "none",
             "xlink:href": "resources/dna/Backbone_" + backbone + ".svg"
           });
-          if (backboneDrag) {
-            backboneEnter.call(backboneDrag);
-          }
         }
 
         // Update.
         if (enterExitOnly) {
           // Special mode when we update ONLY nucleotides from enter and exit
           // subselections. It's useful to add new nucleotides while other
-          // are being modified by transition at the same time.
-          nucleo = nucleoOrgEnter;
+          // are being modified by transition at the same time, so it won't
+          // be affected.
+          nucleo = nucleoEnter;
         }
 
+        // Update without transition.
         nucleo.attr("class", function(d) {
           var regionClass = "";
           switch(d.region) {
@@ -234,6 +236,7 @@ define(function (require) {
           return nucleotidePaths.outline[d.type];
         });
 
+        // Update with transition.
         shift(false);
         nucleoTrans = d3.transition(nucleo)
           .attr("transform", translate)
@@ -243,7 +246,7 @@ define(function (require) {
         nucleoTrans.select(".bonds").style("opacity", bonds);
 
         // Duck test whether nucleoTrans is really translation. See D3 API
-        // Reference - d3.transition(selection) returns  transition only when
+        // Reference - d3.transition(selection) returns transition only when
         // called in the context of other transition. Otherwise it returns
         // selection.
         if (nucleoTrans.attrTween) {
@@ -302,12 +305,6 @@ define(function (require) {
       return nucleo;
     };
 
-    nucleo.startingPos = function (p) {
-      if (!arguments.length) return startingPos;
-      startingPos = p;
-      return nucleo;
-    };
-
     nucleo.randomEnter = function (r) {
       if (!arguments.length) return randomEnter;
       randomEnter = r;
@@ -321,19 +318,6 @@ define(function (require) {
     nucleo.glow = function (g) {
       if (!arguments.length) return glow;
       glow = g;
-      return nucleo;
-    };
-
-    /**
-     * Sets dragging behavior for backbones. d3.behavior.drag
-     * instance should be provided. Please see:
-     * https://github.com/mbostock/d3/wiki/Drag-Behavior
-     *
-     * @param  {function} bd
-     */
-    nucleo.backboneDrag = function (bd) {
-      if (!arguments.length) return backboneDrag;
-      backboneDrag = bd;
       return nucleo;
     };
 
@@ -352,6 +336,14 @@ define(function (require) {
       return nucleo;
     };
 
+    /**
+     * Special mode for quick update of rendered nucleotides number.
+     * When this option is set to true, only new nucleotides will be
+     * added and other possibly removed. None of existing
+     * nucleotides will be updated. It's useful to add new nucleotides
+     * while there is an ongoing transition on existing nucleoties.
+     * @param  {boolean} ee
+     */
     nucleo.enterExitOnly = function (ee) {
       if (!arguments.length) return enterExitOnly;
       enterExitOnly = ee;

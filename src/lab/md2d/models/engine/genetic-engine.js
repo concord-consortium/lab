@@ -88,7 +88,9 @@ define(function (require) {
         // Complete mRNA based on current DNA. Useful for codon() method,
         // which needs to know the whole sequence in advance.
         mRNA = "",
+        // Stop codons.
         stopCodonsHash,
+        // Index of the first stop codon.
         lastTranslationStep,
 
         dispatch = d3.dispatch("change", "transition"),
@@ -141,7 +143,7 @@ define(function (require) {
           }
         },
 
-        generateViewArray = function (array, sequence) {
+        generateMRNAViewModel = function (array, sequence) {
           var i, len, nucleo;
           // Set size of the existing array to the size of new DNA sequence.
           array.length = sequence.length;
@@ -163,7 +165,7 @@ define(function (require) {
           return array;
         },
 
-        generateOptArray = function (array, DNA, comp) {
+        generateDNAViewModel = function (array, DNA, comp) {
           var sequence = !comp ? JUNK_SEQ + PROMOTER_SEQ + DNA + TERMINATOR_SEQ + JUNK_SEQ :
                          JUNK_COMP_SEQ + PROMOTER_COMP_SEQ + DNA + TERMINATOR_COMP_SEQ + JUNK_COMP_SEQ,
               junkBound = JUNK_SEQ.length,
@@ -200,21 +202,21 @@ define(function (require) {
         updateGeneticProperties = function () {
           var DNA = model.get("DNA");
 
-          generateOptArray(api.viewModel.DNAOpt, DNA, false);
+          generateDNAViewModel(api.viewModel.DNA, DNA, false);
 
           DNAComp = complementarySequence(DNA);
-          generateOptArray(api.viewModel.DNACompOpt, DNAComp, true);
+          generateDNAViewModel(api.viewModel.DNAComp, DNAComp, true);
 
           mRNA = calculatemRNA();
           calculateStopCodonsHash();
           // mRNA view array is also based on the current state.
           if (api.stateBefore("transcription:0")) {
-            generateViewArray(api.viewModel.mRNA, "");
+            generateMRNAViewModel(api.viewModel.mRNA, "");
           } else if (api.state().name === "transcription") {
-            generateViewArray(api.viewModel.mRNA, mRNA.substr(0, api.state().step));
+            generateMRNAViewModel(api.viewModel.mRNA, mRNA.substr(0, api.state().step));
           } else if (api.stateAfter("transcription")) {
             // So, the first state which triggers it is "transcription-end".
-            generateViewArray(api.viewModel.mRNA, mRNA);
+            generateMRNAViewModel(api.viewModel.mRNA, mRNA);
           }
 
           if (eventMode !== "transition") {
@@ -301,6 +303,7 @@ define(function (require) {
           }
         },
 
+        // DNA states comparator.
         stateComp = function (stateA, stateB) {
           if (stateA === stateB) {
             return 0;
@@ -410,6 +413,10 @@ define(function (require) {
 
     // Public API.
     api = {
+      /**
+       * Number of nucleotides before coding region (so, in junk and promoter regions).
+       * @type {number}
+       */
       PRECODING_LEN: JUNK_SEQ.length + PROMOTER_SEQ.length,
 
       /**
@@ -426,17 +433,34 @@ define(function (require) {
        */
       viewModel: {
         mRNA: [],
-        DNAOpt: [],
-        DNACompOpt: []
+        DNA: [],
+        DNAComp: []
       },
 
+      /**
+       * Registers listener for given event type. Supported events
+       * are: "change" and "transition".
+       * @param  {string} type
+       * @param  {function} listener
+       */
       on: function(type, listener) {
         dispatch.on(type, listener);
       },
 
+      /**
+       * Performs substitution mutation on DNA coding region.
+       * @param  {number} idx            position in DNA.
+       * @param  {string} newType        "A", "T", "G" or "C".
+       * @param  {boolean} DNAComplement if true, mutation is performed
+       *                                 on DNA complementary strand.
+       */
       mutate: function(idx, newType, DNAComplement) {
         var DNA = model.get("DNA"),
             pos = idx - api.PRECODING_LEN;
+
+        if (pos < 0 || pos >= DNA.length) {
+          throw new Error("Mutation can be performed only on DNA coding region.");
+        }
 
         DNA = DNA.substr(0, pos) +
               (DNAComplement ? complementarySequence(newType) : newType) +
@@ -446,6 +470,13 @@ define(function (require) {
         set("DNA", DNA);
       },
 
+      /**
+       * Performs insertion mutation on DNA coding region.
+       * @param  {number} idx            position in DNA.
+       * @param  {string} type           "A", "T", "G" or "C".
+       * @param  {boolean} DNAComplement if true, mutation is performed
+       *                                 on DNA complementary strand.
+       */
       insert: function(idx, type, DNAComplement) {
         var newDNANucleo = {
               type: DNAComplement ? complementarySequence(type) : type,
@@ -466,11 +497,15 @@ define(function (require) {
             state = api.state(),
             pos = idx - api.PRECODING_LEN;
 
+        if (pos < 0 || pos >= DNA.length) {
+          throw new Error("Mutation can be performed only on DNA coding region.");
+        }
+
         // Update view model arrays. It isn't necessary, but as we update them
         // correctly, nucleotides will preserve their IDs and view will know
         // exactly what part of DNA have been changed.
-        api.viewModel.DNAOpt.splice(idx, 0, newDNANucleo);
-        api.viewModel.DNACompOpt.splice(idx, 0, newDNACompNucleo);
+        api.viewModel.DNA.splice(idx, 0, newDNANucleo);
+        api.viewModel.DNAComp.splice(idx, 0, newDNACompNucleo);
         api.viewModel.mRNA.splice(pos, 0, newMRNANucleo);
 
         // Update DNA. This will also call updateGeneticProperties(), so
@@ -491,16 +526,24 @@ define(function (require) {
         doDNATransition(DNA);
       },
 
+      /**
+       * Performs deletion mutation on DNA coding region.
+       * @param  {number} idx position in DNA.
+       */
       delete: function(idx) {
         var DNA = model.get("DNA"),
             state = api.state(),
             pos = idx - api.PRECODING_LEN;
 
+        if (pos < 0 || pos >= DNA.length) {
+          throw new Error("Mutation can be performed only on DNA coding region.");
+        }
+
         // Update view model arrays. It isn't necessary, but as we update them
         // correctly, nucleotides will preserve their IDs and view will know
         // exactly what part of DNA have been changed.
-        api.viewModel.DNAOpt.splice(idx, 1);
-        api.viewModel.DNACompOpt.splice(idx, 1);
+        api.viewModel.DNA.splice(idx, 1);
+        api.viewModel.DNAComp.splice(idx, 1);
         api.viewModel.mRNA.splice(pos, 1);
 
         // Update DNA. This will also call updateGeneticProperties(), so
