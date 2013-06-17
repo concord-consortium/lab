@@ -176,9 +176,7 @@ define(function (require) {
               "x": offset,
               "y": this.yScale(options.max),
               "rx": "0.5em",
-              "ry": "0.5em"
-            })
-            .attr({
+              "ry": "0.5em",
               "fill": this._getFillGradient(options.fillColor)
             });
 
@@ -188,9 +186,7 @@ define(function (require) {
               "width": options.barWidth,
               "x": offset,
               "rx": "0.5em",
-              "ry": "0.5em"
-            })
-            .style({
+              "ry": "0.5em",
               "fill": this._getBarGradient(options.barColor)
             });
 
