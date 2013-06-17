@@ -288,7 +288,7 @@ define(function (require) {
     // Setup background.
     function setupBackground() {
       // Just set the color.
-      plot.style("fill", model.get("backgroundColor"));
+      plot.attr("fill", model.get("backgroundColor"));
     }
 
     function mousedown() {
