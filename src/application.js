@@ -1152,28 +1152,32 @@ AUTHORING = false;
         $snapshotContent.hide(100);
       }
     }).change();
+    var getModelSnapshot = function() {
+      getDomSnapshot($("#model-container"),$("#image_output"));
+    };
+    var getInteractiveSnapshot = function() {
+      getDomSnapshot($("#responsive-content"),$("#image_output"));
+    };
 
     $('#export_model').on('click', function(e) {
       e.preventDefault();
       if(isFullPage()) {
-        getDomSnapshot($("#model-container"),$("#image_output"));
+        getModelSnapshot();
       } else {
-        // TODO: Make this work...
-        iframePhone.post({ type:'getSvg' });
-        iframePhone.addListener('svg', function() {
-          getDomSnapshot($("#model-container"),$("#image_output"));
+        iframePhone.post({ type:'getModelSnapshot' });
+        iframePhone.addListener('png', function(message) {
+          $('#image_output').html(message);
         });
       }
     });
     $('#export_interactive').on('click', function(e) {
       e.preventDefault();
       if(isFullPage()) {
-        getDomSnapshot($("#responsive-content"),$("#image_output"));
+        getInteractiveSnapshot();
       } else {
-        // TODO: Make this work...
-        iframePhone.post({ type:'getSvg' });
-        iframePhone.addListener('svg', function() {
-          getDomSnapshot($("#responsive-content"),$("#image_output"));
+        iframePhone.post({ type:'getInteractiveSnapshot' });
+        iframePhone.addListener('png', function(message) {
+          $('#image_output').html(message);
         });
       }
     });

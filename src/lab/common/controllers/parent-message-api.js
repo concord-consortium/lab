@@ -22,6 +22,35 @@ define(function(require) {
       }
     });
 
+    parentMessageController.addListener('getModelSnapshot', function() {
+      //TODO: find the dom element for the model....
+      var modelContainer = controller.modelController.modelContainer.$el;
+      if(typeof window.getDomSnapshot === 'function') {
+        window.getDomSnapshot(modelContainer,null, function(img) {
+          parentMessageController.post({
+            type: 'png',
+            values: img
+          });
+        });
+      } else {
+        // TODO: log that getDomSnapshot isn't defined -- include snapshot.js
+      }
+    });
+
+    parentMessageController.addListener('getInteractiveSnapshot', function() {
+      //controller.interactiveContainer
+      if(typeof window.getDomSnapshot === 'function') {
+        window.getDomSnapshot(controller.interactiveContainer.parent(),null, function(img) {
+          parentMessageController.post({
+            type: 'png',
+            values: img
+          });
+        });
+      } else {
+        // TODO: log that getDomSnapshot isn't defined -- include snapshot.js
+      }
+    });
+
    // on message 'loadInteractive' call controller.loadInteractive
     parentMessageController.addListener('loadInteractive', function(message) {
       if (controller && controller.loadInteractive) {
