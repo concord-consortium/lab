@@ -304,7 +304,7 @@ If it doesn't return anything install Bundler:
 
     $ gem install bundler
 
-#### nodejs and npm and couchdb
+#### nodejs and npm
 
 [nodejs](http://nodejs.org/) and [npm](http://npmjs.org/), the Node Package Manager are additional
 development dependencies.
@@ -312,16 +312,14 @@ development dependencies.
 [npm](http://npmjs.org/), the Node Package Manager has been included as part of [nodejs](http://nodejs.org/)
 since version 0.6.3.
 
-To install the latest stable versions of node and couchdb you first need to add these PPA repositories:
+To install the latest stable versions of node you first need to add this PPA repositories:
 
 1. [node PPA repo](https://launchpad.net/~chris-lea/+archive/node.js/)
-2. [couchdb PPA repo](https://launchpad.net/~longsleep/+archive/couchdb)
 
-For these to work as intended python software properties must also be installed.
+For this to work as intended python software properties must also be installed.
 
     $ sudo apt-get install python-software-properties
     $ sudo apt-add-repository ppa:chris-lea/node.js
-    $ sudo apt-add-repository ppa:longsleep/couchdb
     $ sudo apt-get update
 
 Now install node and npm:
@@ -341,7 +339,6 @@ Final note, before you `make everything` setup the project configurations files 
 configuration samples:
 
     cp config/config.sample.yml config/config.yml
-    cp config/couchdb.sample.yml config/couchdb.yml
 
 #### Known problems with Linux during Lab build process
 
