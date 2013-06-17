@@ -197,11 +197,11 @@ define(function (require) {
             "cx": function(d) {
               return model2px(d.x); },
             "cy": function(d) {
-              return model2pxInv(d.y); }
-          })
-          .style({
-            "fill-opacity": function(d) { return d.visible; },
-            "fill": function (d, i) { return gradientNameForBody[i]; }
+              return model2pxInv(d.y); },
+            "fill-opacity": function(d) {
+              return d.visible; },
+            "fill": function (d, i) {
+              return gradientNameForBody[i]; }
           })
           .on("mousedown", astromonicalBodyMouseDown)
           .on("mouseover", astromonicalBodyMouseOver)
