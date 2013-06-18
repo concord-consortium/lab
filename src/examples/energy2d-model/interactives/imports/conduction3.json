@@ -13,7 +13,7 @@
   "description": {
     "title": "Conduction",
     "tagline": "How does Temperature Difference Affect Conduction Rate?",
-    "content": "If the fire under a frying pan is more intense, will your hand feel hotter?The following model compares heat conduction through two identical test pieces but the temperature differences across \nthem are different.",
+    "content": "If the fire under a frying pan is more intense, will your hand feel hotter?\n\nThe following model compares heat conduction through two identical test pieces but the temperature differences across \nthem are different.",
     "footnote": ""
   },
   "layout": {

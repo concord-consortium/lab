@@ -1,29 +1,27 @@
 {
-  "model": {
-    "timestep": 100.0,
-    "measurement_interval": 100,
-    "viewupdate_interval": 10,
-    "sun_angle": 1.5707964,
-    "solar_power_density": 2000.0,
-    "solar_ray_count": 24,
-    "solar_ray_speed": 0.1,
-    "photon_emission_interval": 20,
-    "z_heat_diffusivity": 0.0,
-    "convective": false,
-    "background_conductivity": 0.25,
-    "thermal_buoyancy": 2.5E-4,
-    "buoyancy_approximation": 1,
-    "boundary": {
-      "temperature_at_border": {
-        "upper": 0.0,
-        "lower": 0.0,
-        "left": 0.0,
-        "right": 0.0
-      }
+  "type": "energy2d",
+  "timestep": 100.0,
+  "measurement_interval": 100,
+  "viewupdate_interval": 10,
+  "sun_angle": 1.5707964,
+  "solar_power_density": 2000.0,
+  "solar_ray_count": 24,
+  "solar_ray_speed": 0.1,
+  "photon_emission_interval": 20,
+  "z_heat_diffusivity": 0.0,
+  "convective": false,
+  "background_conductivity": 0.25,
+  "thermal_buoyancy": 2.5E-4,
+  "buoyancy_approximation": 1,
+  "boundary": {
+    "temperature_at_border": {
+      "upper": 0.0,
+      "lower": 0.0,
+      "left": 0.0,
+      "right": 0.0
     }
   },
-  "sensor": "\n",
-  "view": {
+  "viewOptions": {
     "grid": true,
     "grid_size": 10,
     "color_palette_type": 0,

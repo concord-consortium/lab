@@ -81,7 +81,9 @@ xml_files.each do |xml_file_path|
   basename = File.basename(xml_file_path).gsub(/\.e2d$/, '')
   xml_file = File.open(xml_file_path).read.to_s
   hash = Hash.from_xml(xml_file)
-  json_string = JSON.pretty_generate(hash['state'])
+  final_hash = { type: "energy2d" }.merge(hash['state']['model'])
+  final_hash['viewOptions'] = hash['state']['view']
+  json_string = JSON.pretty_generate(final_hash)
   # strings to values conversion
   # numbers
   json_string.gsub!(/"([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)"/, '\1')
