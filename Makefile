@@ -65,7 +65,7 @@ vpath %.scss src
 COFFEESCRIPT_EXAMPLE_FILES := $(shell find src/examples -name '*.coffee' -exec echo {} \; | sed s'/src\/\(.*\)\.coffee/public\/\1.js/' )
 vpath %.coffee src
 
-MARKDOWN_EXAMPLE_FILES := $(shell find src -type d -maxdepth 1 -name 'sass' -prune -o -name '*.md' -exec echo {} \; | grep -v vendor | sed s'/src\/\(.*\)\.md/public\/\1.html/' )
+MARKDOWN_EXAMPLE_FILES := $(shell find src -maxdepth 1 -type d -name 'sass' -prune -o -name '*.md' -exec echo {} \; | grep -v vendor | sed s'/src\/\(.*\)\.md/public\/\1.html/' )
 vpath %.md src
 
 LAB_JS_FILES = \
