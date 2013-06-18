@@ -282,10 +282,10 @@ public: \
 	public/jnlp
 	$(MAKE) src
 
+# copy everything (including symbolic links) except files that are
+# used to generate resources from src/ to public/
 .PHONY: copy-resources-to-public
 copy-resources-to-public:
-	# copy everything (including symbolic links) except files that are
-  # used to generate resources from src/ to public/
 	rsync -aq --exclude='helpers/' --exclude='layouts/' --exclude='modules/' --exclude='sass/' --exclude='vendor/' --exclude='lab/' --filter '+ */' --exclude='*.haml' --exclude='*.sass' --exclude='*.scss' --exclude='*.yaml' --exclude='*.coffee' --exclude='*.rb' --exclude='*.md' src/ public/
 
 public/examples:
