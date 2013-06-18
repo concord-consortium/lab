@@ -154,6 +154,10 @@
   :name: "Solar System Interactives"
   :category: Tests
 
+- :path: energy2d
+  :name: "Energy2D Interactives"
+  :category: Tests
+
 - :path: external-projects/geniverse
   :name: "External Projects"
   :category: Curriculum

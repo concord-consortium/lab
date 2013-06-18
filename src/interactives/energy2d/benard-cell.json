@@ -1,0 +1,15 @@
+{
+  "title": "Bénard Convection Cells",
+  "publicationStatus": "public",
+  "subtitle": "A Self-Organizing Pattern of Fluid Flow",
+  "about": "Rayleigh-Bénard convection is a type of natural convection, occurring in a plane of fluid heated from below, \nin which the fluid develops a regular pattern of convection cells known as the Bénard cells. The following model shows this.",
+  "models": [
+    {
+      "id": "benard-cell",
+      "url": "imports/energy2d/models-json/benard-cell.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ]
+}
