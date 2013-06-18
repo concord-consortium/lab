@@ -1,14 +1,14 @@
-require_relative 'phantom_wrapper'
+require_relative 'shutterbug'
 
-module Rack
-  class SvgConverter
+module Shutterbug
+  class Rackapp
     CONVERT_PATH     = /\/convert_svg\//
     GET_PNG_PATH     = /\/get_png\/([^\/]+)/
     GET_HTML_PATH    = /\/get_html\/([^\/]+)/
 
     def initialize app
       @app = app
-      @wrapper = PhantomWrapper::Base.new()
+      @wrapper = Shutterbug::Service.new()
       puts "initialized"
     end
 

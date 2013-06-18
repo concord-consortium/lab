@@ -5,12 +5,12 @@ PUBLIC_PATH =  File.join(Dir.pwd, 'public')
 JNLP_APP_PATH = PUBLIC_PATH
 
 require './lib/rack/jnlp.rb'
-require './lib/rack/svg_converter.rb'
+require './lib/shutterbug/rackapp.rb'
 
 use Rack::Jnlp
 use Rack::ConditionalGet
 use Rack::ContentLength
-use Rack::SvgConverter
+use Shutterbug::Rackapp
 
 Rack::Mime::MIME_TYPES.merge!({
   ".ttf" => "font/ttf",
