@@ -88,25 +88,7 @@ namespace :deploy do
   task :setup do
     checkout
     run "cd /var/www/app; bundle install --binstubs"
-    run "cd /var/www/app; cp config/config.sample.yml config/config.yml"
     clean_and_update_all
-    puts <<-HEREDOC
-
-Login to the new server and update the following default server hostnames in
-config/config.yml and restart the server:
-
-  cap <target> deploy:restart
-
-If you are intending to serve signed Java applets or Web Start application from this server
-consider replacing the default self-signed Java keystore certificate with a more globally
-valid one.
-
-After doing this update the java section of config/config.yml to specify the new location,
-alias, and password for the keystore.
-
-Then run the task: cap <target> deploy:update_jnlps
-
-    HEREDOC
   end
 
   desc "create symbolic links archives of public dir"

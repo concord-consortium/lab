@@ -122,7 +122,7 @@ file: ~/.fog
     add_new_host_key
     write_littlechef_node
     update_littlechef_node
-    new_server_prologue
+    new_server_prologue(hostname)
   end
 
   def delete(hostname)
@@ -158,14 +158,13 @@ file: ~/.fog
     if @options[:verbose]
       puts <<-HEREDOC
 
-If the server provisioning with littlechef was successful run:
+If the new server provisioning with littlechef was successful login to the server
+with ssh and update the server hostname settings in config/config.yml:
 
-    cap #{target[:name]} deploy:setup
+    ssh deploy@#{hostname}
 
-To finish deploying the application code and seting up #{@name}.
-
-If you wish to support the integration of the optional Java resources
-that are required to be signed to work:
+If you wish to support the integration of the optional signed Java resources
+for external users:
 
   - legacy Molecular Worbench and Energy2D Java Web Start applications
   - Java-based Vernier GoIO browser-sensor applet integration
@@ -174,8 +173,13 @@ You should put copy of a valid Java siging certificate keystore
 on #{target[:name]} and edit 'config/config.yml' to reference this
 keystore before running cap #{target[:name]} deploy:setup
 
-The one supplied with the repository is a sample self-signed certificate
-and end user will be warned that it is not valid.
+The keystore supplied with the repository is a sample self-signed certificate
+and end users will be warned that it is not valid.
+
+After finishing any further configuration of the server run the cap task
+deploy:setup to finish deploying the application code and seting up #{@name}.
+
+    cap #{target[:name]} deploy:setup
 
       HEREDOC
     end
@@ -350,7 +354,16 @@ Host #{@name}
 
       HEREDOC
     end
-    system(cmd)
+    success = system(cmd)
+    if !success
+      puts <<-HEREDOC
+
+*** trying again in 5s
+
+      HEREDOC
+      sleep(5)
+      success = system(cmd)
+    end
   end
 
   def setup_capistrano_deploy_scripts
