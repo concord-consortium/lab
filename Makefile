@@ -139,6 +139,12 @@ clean:
 clean-public:
 	bash -O extglob -c 'rm -rf public/!(.git|jnlp)'
 
+# versioned archives cleanup.
+.PHONY: clean-archives
+clean-archives:
+	rm -rf version
+	rm -rf public/version
+
 # separate tasks for building and cleaning Java resources since they do not get updated often
 .PHONY: jnlp-all
 jnlp-all: clean-jnlp \

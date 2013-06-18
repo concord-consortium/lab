@@ -17,8 +17,10 @@ npm-debug.log
 /config/deploy
 src/experiments/inquiry-space-importer/reference/Importer.js
 config/littlechef
-tarballs
-archived
 # ignore Java keystore files, except the sample one included with lab
 /config/*.jks
 !/config/lab-sample-keystore.jks
+
+# ignore resources generated and archived duriong a release
+version
+tarballs
