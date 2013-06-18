@@ -158,7 +158,7 @@ define(function (require) {
       },
 
       createModeler = function () {
-        modeler = Modeler(model_options.model);
+        modeler = Modeler(model_options);
         use_WebGL = modeler.isWebGLActive();
       },
 
@@ -217,7 +217,7 @@ define(function (require) {
       setupViewComponents = function () {
         var grid_x, grid_y;
 
-        energy2d_scene.setVisualizationOptions(model_options.view);
+        energy2d_scene.setVisualizationOptions(model_options.viewOptions);
         // TODO: move following configuration to energy2d scene.
         grid_x = modeler.getGridWidth();
         grid_y = modeler.getGridHeight();
