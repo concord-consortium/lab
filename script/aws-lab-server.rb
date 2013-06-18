@@ -150,10 +150,11 @@ file: ~/.fog
     add_new_host_key
     write_littlechef_node
     update_littlechef_node
-    new_server_prologue
+    new_server_prologue(hostname)
   end
 
-  def new_server_prologue
+  def new_server_prologue(hostname)
+    target = find_target(hostname.gsub(/\.$/, ""))
     if @options[:verbose]
       puts <<-HEREDOC
 
