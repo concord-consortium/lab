@@ -36,7 +36,8 @@ define(function (require) {
         'md2d':             require('md2d/controllers/controller'),
         'solar-system':     require('solar-system/controllers/controller'),
         'signal-generator': require('signal-generator/controller'),
-        'sensor':           require('sensor/controller')
+        'sensor':           require('sensor/controller'),
+        'energy2d':         require('energy2d/controllers/controller')
       },
 
       // Set of available components.

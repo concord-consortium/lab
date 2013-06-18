@@ -94,6 +94,8 @@ define(function (require) {
     this._showClock = model.get("showClock");
     if (this._showClock) {
       this._$playPause.addClass("with-clock");
+      // Update time units.
+      this._timeUnits = model.getPropertyDescription("displayTime").getUnitAbbreviation();
       // Update clock immediately.
       this._timeChanged();
     } else {
@@ -152,8 +154,6 @@ define(function (require) {
     model.on('stop.' + this.component.id, $.proxy(this._simulationStateChanged, this));
     model.addPropertiesListener(["isPlayable"], $.proxy(this._simulationStateChanged, this));
     this._simulationStateChanged();
-    // Update time units and set time.
-    this._timeUnits = model.getPropertyDescription("displayTime").getUnitAbbreviation();
     model.addPropertiesListener(["showClock"], $.proxy(this._showClockChanged, this));
     model.addPropertiesListener(["displayTime"], $.proxy(this._timeChanged, this));
     this._showClockChanged();
