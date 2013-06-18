@@ -1,4 +1,4 @@
-/*global define: false */
+/*global define: false, d3: false */
 /**
 
   This module provides support which Lab model types can use to implement observable properties that
@@ -291,6 +291,12 @@ define(function() {
         cachingIsEnabled = true,
         notificationsAreBatched = false,
 
+        dispatch = d3.dispatch("beforeInvalidatingChange",
+                               "afterInvalidatingChange",
+                               "afterInvalidatingChangeSequence"),
+
+        invalidatingChangeNestingLevel = 0,
+
         // all properties that were notified while notifications were batched
         changedPropertyKeys = [],
 
@@ -298,7 +304,10 @@ define(function() {
         computedPropertyKeys = [],
 
         // all properties for which includeInHistoryState is true
-        historyStatePropertyKeys = [];
+        historyStatePropertyKeys = [],
+
+        // public API
+        api;
 
 
     // observed properties with a getter
@@ -522,7 +531,7 @@ define(function() {
     }
 
     // The public methods and properties of the propertySupport object
-    return {
+    api = {
 
       /**
         Mixes a useful set of methods and properties into the target object. Lab models are expected
@@ -673,6 +682,28 @@ define(function() {
         */
         target.getPropertyValidateFunc = function(key) {
           return propertyInformation[key].descriptor.validate;
+        };
+
+        /**
+          The 'makeInvalidatingChange' method mixed into 'target' lets client code perform an action
+          that will invalidate all computed properties.
+         */
+        target.makeInvalidatingChange = function (closure) {
+          api.invalidatingChangePreHook();
+          closure();
+          api.invalidatingChangePostHook();
+        };
+
+        // TODO: probably it's unnecessary, addObserver can support multiple
+        // properties instead.
+        target.addPropertiesListener = function(properties, callback) {
+          if (typeof properties === 'string') {
+            target.addObserver(properties, callback);
+          } else {
+            properties.forEach(function(property) {
+              target.addObserver(property, callback);
+            });
+          }
         };
       },
 
@@ -867,7 +898,37 @@ define(function() {
             }
           });
         });
+      },
+
+      invalidatingChangePreHook: function() {
+        if (invalidatingChangeNestingLevel === 0) {
+          api.storeComputedProperties();
+          api.deleteComputedPropertyCachedValues();
+          api.enableCaching = false;
+        }
+        invalidatingChangeNestingLevel++;
+
+        dispatch.beforeInvalidatingChange();
+      },
+
+      invalidatingChangePostHook: function() {
+        invalidatingChangeNestingLevel--;
+
+        dispatch.afterInvalidatingChange();
+
+        if (invalidatingChangeNestingLevel === 0) {
+          api.enableCaching = true;
+          api.notifyChangedComputedProperties();
+
+          dispatch.afterInvalidatingChangeSequence();
+        }
+      },
+
+      on: function (type, listener) {
+        dispatch.on(type, listener);
       }
     };
+
+    return api;
   };
 });
