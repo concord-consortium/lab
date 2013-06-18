@@ -3,32 +3,42 @@ module Shutterbug
 
     class StreamFile
       def initialize(file)
-        @png_file = file
+        @stream_file = file
       end
 
       def open
-        @png_file.open
-        @png_file.rewind
+        @stream_file.open
+        @stream_file.rewind
       end
 
       def each(&blk)
-        @png_file.each(&blk)
+        @stream_file.each(&blk)
       ensure
-        @png_file.close
+        @stream_file.close
       end
 
       def size
-        @png_file.size
+        @stream_file.size
       end
     end
 
     class PngFile  < StreamFile; end
     class HtmlFile < StreamFile; end
-    class JSFile   < StreamFile; end
+    class JSFile   < StreamFile
+
+      def initialize(_filename)
+        @filename = _filename
+      end
+
+      def open
+        @stream_file = File.open(@filename)
+      end
+    end
 
     class Service
       PROGRAM = 'phantomjs'
-      RASTERIZE_JS = File.join(File.dirname(__FILE__),'rasterize.js')
+      RASTERIZE_JS  = File.join(File.dirname(__FILE__),'rasterize.js')
+      SHUTTERBUG_JS = File.join(File.dirname(__FILE__),'shutterbug.js')
 
       def document(html, css, url_base)
         date = Time.now.strftime("%Y-%m-%d (%I:%M%p)")
@@ -50,6 +60,7 @@ module Shutterbug
 
       def initialize
         @file_cache = {}
+        @js_file = JSFile.new(SHUTTERBUG_JS)
       end
 
       def convert(base_url, html, css="", width=1000, height=700)
@@ -87,6 +98,11 @@ module Shutterbug
         return file
       end
 
+      def get_shutterbug_file
+        file = @js_file
+        file.open
+        return file
+      end
     end
   end
 end
