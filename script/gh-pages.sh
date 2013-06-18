@@ -27,7 +27,7 @@ cd public
 git fetch
 git reset --hard origin/gh-pages
 cd ..; make clean; make; cd public
-git add .
+git add --all .
 git commit -am "generated from commit: `git --git-dir ../.git log -1 --format="%H%n%n%an <%ae>%n%cd%n%n    %s%n%n    %b"`"
 git push origin gh-pages
 cd ..
