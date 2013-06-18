@@ -360,6 +360,7 @@ public/lab/lab.js: \
 	public/lab/lab.grapher.js \
 	public/lab/lab.md2d.js \
 	public/lab/lab.solar-system.js \
+	$(ENERGY2D_SRC_FILES) \
 	$(SIGNAL_GENERATOR_SRC_FILES) \
 	$(SENSOR_SRC_FILES) \
 	src/lab/lab.version.js \

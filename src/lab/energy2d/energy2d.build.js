@@ -24,9 +24,20 @@
     }
   ],
 
+  // The shim config allows us to configure dependencies for
+  // scripts that do not call define() to register a module
+  shim: {
+    'underscore': {
+      exports: '_'
+    }
+  },
+
   paths: {
     // Plugin for loading plain text files (GLSL sources).
-    'text': '../../vendor/text/text'
+    'text': '../../vendor/text/text',
+    'cs' :'../../vendor/require-cs/cs',
+    'coffee-script': '../../vendor/coffee-script/extras/coffee-script',
+    'underscore': '../../vendor/underscore/underscore'
   },
 
   // Protect global namespace and call export of API.

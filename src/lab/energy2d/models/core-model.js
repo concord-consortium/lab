@@ -1,7 +1,6 @@
-/*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false, console: false*/
+/*globals define: false */
 
-define(function (require, exports, module) {
+define(function (require, exports) {
   'use strict';
 
   var
