@@ -22,7 +22,7 @@ class AwsLabServer
       :littlechef_path => File.join(CONFIG_PATH, 'littlechef'),
       :pem => { :name => PEM_NAME, :path => PEM_PATH },
       :server => {
-        :image_id => "ami-7a59f813",
+        :image_id => "ami-5556273c",
         :flavor_id => "c1.medium",
         :groups => ["lab.dev"],
         :tags => { "Name" => options[:name] }
@@ -78,7 +78,7 @@ file: ~/.fog
   def list
     @lab_servers = @compute.servers.all('group-name' => GROUP_NAME).reject { |ls| ls.state == 'terminated' }
     @lab_servers.sort! { |a,b| a.state <=> b.state }
-    @records = @zone.records.all
+    @records = @zone.records.all!
     puts
     puts sprintf(SERVER_FORMAT_STR, "target", "hostname", "state", "ipaddress", "ec2-id", "ec2-dns")
     puts "-" * 150
