@@ -137,7 +137,7 @@ clean:
 # public dir cleanup.
 .PHONY: clean-public
 clean-public:
-	bash -O extglob -c 'rm -rf public/!(.git|jnlp)'
+	bash -O extglob -c 'rm -rf public/!(.git|jnlp|version)'
 
 # versioned archives cleanup.
 .PHONY: clean-archives
