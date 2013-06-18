@@ -880,13 +880,15 @@ body:fullscreen .fullscreen {
   user-select: none; }
   #model-container:focus {
     outline: #76d2b8 solid 0.2em; }
+  #model-container.draggable:hover {
+    cursor: move; }
   #model-container .radialbond1.disulphideBond, #model-container .radialbond2.disulphideBond {
     stroke: #ffe95a !important; }
-  #model-container .genetics .coding-region .glow {
+  #model-container .genetics .glow {
     display: none; }
-  .no-touch #model-container .genetics .coding-region .nucleo-shape:hover {
+  .no-touch #model-container .genetics .clickable-nucleo:hover, #model-container .genetics .clickable-nucleo.glowing {
     cursor: pointer; }
-    .no-touch #model-container .genetics .coding-region .nucleo-shape:hover .glow {
+    .no-touch #model-container .genetics .clickable-nucleo:hover .glow, #model-container .genetics .clickable-nucleo.glowing .glow {
       display: inline; }
   #model-container .genetics .nucleotide .bonds {
     stroke: white; }
@@ -916,23 +918,23 @@ body:fullscreen .fullscreen {
     fill: #cc0000; }
   #model-container .genetics .nucleotide .stop-codon .letter {
     fill: #cc0000; }
-  #model-container .genetics .promoter-region .nucleotide .outline {
+  #model-container .genetics .nucleotide.promoter-region .outline {
     fill: #006600; }
-  #model-container .genetics .promoter-region .nucleotide .interior {
+  #model-container .genetics .nucleotide.promoter-region .interior {
     fill: #5db473; }
-  #model-container .genetics .promoter-region .nucleotide .letter {
+  #model-container .genetics .nucleotide.promoter-region .letter {
     fill: white; }
-  #model-container .genetics .terminator-region .nucleotide .outline {
+  #model-container .genetics .nucleotide.terminator-region .outline {
     fill: #9e0608; }
-  #model-container .genetics .terminator-region .nucleotide .interior {
+  #model-container .genetics .nucleotide.terminator-region .interior {
     fill: #dc4648; }
-  #model-container .genetics .terminator-region .nucleotide .letter {
+  #model-container .genetics .nucleotide.terminator-region .letter {
     fill: white; }
-  #model-container .genetics .junk-region .nucleotide .outline {
+  #model-container .genetics .nucleotide.junk-region .outline {
     fill: #666666; }
-  #model-container .genetics .junk-region .nucleotide .interior {
+  #model-container .genetics .nucleotide.junk-region .interior {
     fill: #adadad; }
-  #model-container .genetics .junk-region .nucleotide .letter {
+  #model-container .genetics .nucleotide.junk-region .letter {
     fill: white; }
   #model-container .genetics .polymerase-over, #model-container .genetics .polymerase-under, #model-container .genetics .dna3 {
     pointer-events: none; }

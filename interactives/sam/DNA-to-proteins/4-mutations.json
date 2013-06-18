@@ -1,0 +1,123 @@
+{
+  "title": "Mutations",
+  "publicationStatus": "public",
+  "subtitle": "Explore how changing the DNA sequence can change the amino acid sequence of a protein.",
+  "about": [
+    "Mutations are mistakes in the DNA sequence. Use the **Edit DNA** button to change the entire sequence or click on an individual nucleotide to make an insertion, deletion or substitution mutation. How does changing the DNA sequence change the resulting protein?",
+    "",
+    "You can quickly jump between the DNA sequence and final protein by using the **Show DNA** and **Show protein** buttons.",
+    "",
+    "Are some types of mutations more damaging than others?"
+  ],
+  "fontScale": 0.75,
+  "models": [
+    {
+      "id": "page3$0",
+      "url": "imports/legacy-mw-content/converted/sam-activities/DNA-to-proteins/page3/page3$0.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": false
+      },
+      "modelOptions": {
+        "DNA": "ATGCCAGGCGGCGAGAGCTTGCTAATTGGCTTATAG",
+        "DNAState": "dna"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "transcribe",
+      "text": "Transcribe",
+      "action": [
+        "if (DNAStateAfter('transcription-end'))",
+        "  set('DNAState', 'dna');",
+        "animateToDNAState('transcription-end');"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "translate",
+      "text": "Translate",
+      "action": [
+        "if (DNAStateBefore('translation:0') || get('DNAState') === 'translation-end')",
+        "  set('DNAState', 'translation:0');",
+        "animateToDNAState('translation-end');"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": "reset();"
+    },
+    {
+      "type": "button",
+      "id": "stop",
+      "text": "Stop",
+      "action": [
+        "if (DNAStateBefore('translation-end')) stopDNAAnimation();",
+        "else stop();"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "next-state",
+      "text": "Continue one step",
+      "action": "animateToNextDNAState();"
+    },
+    {
+      "type": "button",
+      "id": "dna-dialog",
+      "text": "Edit DNA",
+      "action": "openDNADialog();"
+    },
+    {
+      "type": "button",
+      "id": "show-protein",
+      "text": "Show protein",
+      "action": "set('DNAState', 'translation-end');"
+    },
+    {
+      "type": "button",
+      "id": "show-dna",
+      "text": "Show DNA",
+      "action": "set('DNAState', 'dna');"
+    },
+    {
+      "type": "button",
+      "id": "start",
+      "text": "Start/continue model",
+      "action": [
+        "if (DNAStateBefore('translation-end')) animateToDNAState('translation-end');",
+        "else start();"
+      ]
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "text": "Click on a nucleotide to perform a mutation or "
+    },
+    {
+      "type": "text",
+      "id": "buffer",
+      "text": "|"
+    }
+  ],
+  "layout": {
+    "model-bottom": [
+      ["label", "dna-dialog"],
+      ["show-dna", "transcribe", "buffer", "translate", "show-protein"],
+      ["next-state", "start", "stop", "reset"]
+    ]
+  },
+  "template": [
+    {
+      "id": "model-bottom",
+      "left": "model.left",
+      "top": "model.bottom",
+      "width": "model.width",
+      "align": "center"
+    }
+  ]
+}

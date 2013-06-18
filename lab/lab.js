@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "0c134c6361ce3034e50e076235c69084c53adafe",
-        "short_sha":      "0c134c63",
-        "url":            "https://github.com/concord-consortium/lab/commit/0c134c63",
+        "sha":           "1ac3790593ab99242f5c84d04c6b15f6a098dd74",
+        "short_sha":      "1ac37905",
+        "url":            "https://github.com/concord-consortium/lab/commit/1ac37905",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-06-07 09:58:07 -0400",
-        "short_message": "Makefile: remove extra resources copied to public/lab",
-        "message":       "Makefile: remove extra resources copied to public/lab\n\nAlso cleanup and comments.\n\nThere is a new task: clean-public.\n\nRunning:\n\n  make clean-public; make public\n\nWill be faster and in some cases will be sufficient to replace:\n\n  make clean; make"
+        "date":          "2013-06-18 10:57:18 -0400",
+        "short_message": "release archives now linked from public/version",
+        "message":       "release archives now linked from public/version"
       },
       "dirty": false
     }
@@ -4861,9 +4861,7 @@ define('grapher/bar-graph/bar-graph-view',['require','common/jquery-plugins','ba
               "x": offset,
               "y": this.yScale(options.max),
               "rx": "0.5em",
-              "ry": "0.5em"
-            })
-            .attr({
+              "ry": "0.5em",
               "fill": this._getFillGradient(options.fillColor)
             });
 
@@ -4873,9 +4871,7 @@ define('grapher/bar-graph/bar-graph-view',['require','common/jquery-plugins','ba
               "width": options.barWidth,
               "x": offset,
               "rx": "0.5em",
-              "ry": "0.5em"
-            })
-            .style({
+              "ry": "0.5em",
               "fill": this._getBarGradient(options.barColor)
             });
 
@@ -14255,6 +14251,29 @@ define('common/layout/templates',[],function () {
         "width": "interactive.width",
         "padding-top": "0.5em"
       }
+    ],
+    "left-right-bottom": [
+      {
+        "id": "left",
+        "top": "model.top",
+        "height": "model.height",
+        "right": "model.left",
+        "padding-right": "0.5em"
+      },
+      {
+        "id": "right",
+        "top": "model.top",
+        "height": "model.height",
+        "left": "model.right",
+        "padding-left": "1em",
+        "padding-right": "0.5em"
+      },
+      {
+        "id": "bottom",
+        "top": "model.bottom",
+        "left": "model.left",
+        "width": "model.width"
+      }
     ]
   };
 });
@@ -16047,6 +16066,9 @@ define('md2d/models/metadata',[],function() {
           return value;
         }
       },
+      DNAMutations: {
+        defaultValue: true
+      },
       useQuantumDynamics: {
         default: false,
         serialize: false
@@ -16070,6 +16092,14 @@ define('md2d/models/metadata',[],function() {
       },
       viewPortY: {
         unitType: "length"
+      },
+      viewPortDrag: {
+        // Supported values:
+        // - true  -> dragging is enabled.
+        // - "x"   -> dragging is limited only to X axis.
+        // - "y"   -> dragging is limited only yo Y axis.
+        // - false -> dragging is disabled.
+        defaultValue: false
       },
       backgroundColor: {
         defaultValue: "#eeeeee"
@@ -18530,6 +18560,7 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
             diff = Math.min(1, 2.2 - y[i]);
             if (diff > 0) {
               ay[i] += 1e-4 * diff;
+              ax[i] -= 3e-6;
             }
           }
         },
@@ -21967,12 +21998,504 @@ define('common/serialize',['require','arrays'],function(require) {
 
 });
 
+/*global define */
+/*jshint multistr: true */
+
+define('md2d/views/nucleotide-paths',[],function () {
+  return {
+    "outline": {
+      "A": "M20.7,0.4l-0.075-0.075C20.672,0.273,20.73,0.231,20.8,0.2 \
+            c0.122-0.049,0.247-0.058,0.375-0.025c0.031,0.002,0.064,0.011,0.1,0.025c0.151,0.054,0.26,0.154,0.325,0.3l6.35,14.15 \
+            c0.026,0.065,0.043,0.132,0.05,0.2c0.092,0.104,0.142,0.229,0.15,0.375c0.01,0.163-0.041,0.304-0.15,0.425l-9.025,9.85 \
+            c-1.65,1.667-3.292,3.55-4.925,5.65L0.2,15.65c-0.11-0.121-0.16-0.262-0.15-0.425c0.008-0.146,0.058-0.271,0.15-0.375 \
+            c0.005-0.068,0.021-0.134,0.05-0.2L6.6,0.5c0.074-0.146,0.19-0.246,0.35-0.3c0.151-0.064,0.301-0.064,0.45,0 \
+            c0.038,0.019,0.071,0.043,0.1,0.075C7.593,0.339,7.66,0.431,7.7,0.55c0.047,0.112-0.012,0.154-0.175,0.125 \
+            C7.461,0.656,7.386,0.63,7.3,0.6L1.65,15.125l12.4,13.625l12.6-13.725L20.7,0.4z",
+      "C": "M12.45,0c2.167,0.5,4.066,1.95,5.7,4.35 \
+            c2.033,2.967,3.05,6.533,3.05,10.7c0,3.8-0.867,7.117-2.6,9.95c-0.067,0.133-0.167,0.217-0.3,0.25c-0.133,0.067-0.267,0.067-0.4,0 \
+            c-0.133-0.033-0.233-0.117-0.3-0.25c-0.133-0.233-0.283-0.45-0.45-0.65V24.3c-1.8-2.667-3.983-4-6.55-4 \
+            c-2.567,0.034-4.767,1.383-6.6,4.05c-0.167,0.2-0.3,0.417-0.4,0.65c-0.1,0.133-0.217,0.217-0.35,0.25 \
+            c-0.133,0.067-0.267,0.067-0.4,0c-0.133-0.033-0.233-0.117-0.3-0.25C0.85,22.167,0,18.85,0,15.05c0-4.167,1-7.733,3-10.7 \
+            C4.633,1.95,6.55,0.5,8.75,0H12.45z M4,5.05V5C3.991,5.016,3.982,5.033,3.975,5.05C2.289,7.935,1.431,11.126,1.4,14.625 \
+            c-0.03,3.519,0.536,6.477,1.7,8.875c2.066-3.39,4.566-5.064,7.5-5.025c2.933,0.04,5.433,1.731,7.5,5.075 \
+            c1.088-2.518,1.605-5.559,1.55-9.125c-0.055-3.565-0.888-6.69-2.5-9.375V5c-1.8-2.397-3.983-3.589-6.55-3.575 \
+            C8.033,1.439,5.833,2.647,4,5.05z",
+      "G": "M8.75,0h3.675c2.191,0.504,4.1,1.963,5.725,4.375V4.35 \
+            c2.035,2.963,3.052,6.53,3.05,10.7c0.001,4.17-1.015,7.737-3.05,10.7v-0.025c-2.066,3.065-4.583,4.59-7.55,4.575 \
+            c-2.966,0.023-5.5-1.494-7.6-4.55v-0.025C0.999,22.77-0.001,19.211,0,15.05c-0.001-4.161,0.999-7.72,3-10.675V4.35 \
+            C4.647,1.953,6.564,0.503,8.75,0z M17.15,25.05c1.754-2.938,2.621-6.354,2.6-10.25c-0.022-3.895-0.889-7.145-2.6-9.75V5.025 \
+            c-1.8-2.269-3.984-3.402-6.55-3.4C8.033,1.63,5.833,2.771,4,5.05V5.025c-1.646,2.778-2.496,6.12-2.55,10.025 \
+            C1.396,18.955,2.246,22.297,4,25.075V25.05c1.583,2.593,3.667,3.985,6.25,4.175c2.583,0.189,4.883-1.194,6.9-4.15V25.05z",
+      "T": "M7.45,0.2H7.9C7.794,0.442,7.677,0.709,7.55,1 \
+            C6.388,3.721,4.504,8.396,1.9,15.025l6.9,8.35l1.025-1.35c1.258-1.424,2.55-2.816,3.875-4.175l0.025-0.025 \
+            c0.148-0.186,0.314-0.336,0.5-0.45c0.046-0.028,0.096-0.036,0.15-0.025c0.059,0.007,0.109,0.032,0.15,0.075l5.325,5.95l6.95-8.35 \
+            C24.252,8.584,22.369,3.909,21.15,1c-0.127-0.284-0.243-0.551-0.35-0.8h0.6h0.575c0.041,0.045,0.075,0.095,0.1,0.15l6.35,14.15 \
+            c0.028,0.066,0.053,0.133,0.075,0.2c0.087,0.129,0.137,0.279,0.15,0.45c0.01,0.238-0.065,0.447-0.225,0.625l-8.2,8.95 \
+            c-0.102,0.12-0.227,0.204-0.375,0.25c-0.167,0.043-0.334,0.043-0.5,0c-0.147-0.046-0.272-0.129-0.375-0.25l-4.675-5.1l-4.625,5.1 \
+            c-0.101,0.121-0.226,0.204-0.375,0.25c-0.167,0.043-0.334,0.043-0.5,0c-0.147-0.046-0.272-0.129-0.375-0.25l-8.15-8.95 \
+            c-0.16-0.178-0.235-0.387-0.225-0.625c0.014-0.168,0.063-0.318,0.15-0.45c0.019-0.066,0.044-0.133,0.075-0.2l6.35-14.15V0.325 \
+            C6.649,0.28,6.674,0.238,6.7,0.2H7.45z",
+      "U": "M20.8,0.2h0.6h0.575c0.041,0.045,0.075,0.095,0.1,0.15 \
+            l6.35,14.15c0.028,0.066,0.053,0.133,0.075,0.2c0.087,0.129,0.137,0.279,0.15,0.45c0.01,0.238-0.065,0.447-0.225,0.625l-8.2,8.95 \
+            c-0.102,0.12-0.227,0.204-0.375,0.25c-0.167,0.043-0.334,0.043-0.5,0c-0.147-0.046-0.272-0.129-0.375-0.25l-4.675-5.1l-4.625,5.1 \
+            c-0.101,0.121-0.226,0.204-0.375,0.25c-0.167,0.043-0.334,0.043-0.5,0c-0.147-0.046-0.272-0.129-0.375-0.25l-8.15-8.95 \
+            c-0.16-0.178-0.235-0.387-0.225-0.625c0.014-0.168,0.063-0.318,0.15-0.45c0.019-0.066,0.044-0.133,0.075-0.2l6.35-14.15V0.325 \
+            C6.649,0.28,6.674,0.238,6.7,0.2h0.75H7.9C7.794,0.442,7.677,0.709,7.55,1C6.388,3.721,4.504,8.396,1.9,15.025l6.9,8.35 \
+            l1.025-1.35c1.258-1.424,2.55-2.816,3.875-4.175l0.025-0.025c0.148-0.186,0.314-0.336,0.5-0.45 \
+            c0.046-0.028,0.096-0.036,0.15-0.025c0.059,0.007,0.109,0.032,0.15,0.075l5.325,5.95l6.95-8.35C24.252,8.584,22.369,3.909,21.15,1 \
+            C21.023,0.716,20.907,0.449,20.8,0.2z"
+    },
+    "interior": {
+      "A": "M21.175,0.175C21.046,0.143,20.921,0.151,20.8,0.2 \
+            c-0.069,0.031-0.128,0.073-0.175,0.125c-0.055,0.054-0.097,0.121-0.125,0.2c-0.063,0.16,0.003,0.118,0.2-0.125l5.95,14.625 \
+            L14.05,28.75L1.65,15.125L7.3,0.6c0.086,0.03,0.161,0.056,0.225,0.075C7.688,0.704,7.747,0.662,7.7,0.55 \
+            C7.66,0.431,7.593,0.339,7.5,0.275L7.6,0.2c4.8-0.067,7.283-0.1,7.45-0.1l6.1,0.05L21.175,0.175z",
+      "C": "M3.975,5.05H4c1.833-2.402,4.033-3.611,6.6-3.625 \
+            C13.167,1.411,15.35,2.603,17.15,5v0.05c1.612,2.685,2.445,5.81,2.5,9.375c0.055,3.566-0.461,6.607-1.55,9.125 \
+            c-2.067-3.344-4.567-5.035-7.5-5.075c-2.934-0.04-5.434,1.635-7.5,5.025c-1.164-2.398-1.73-5.356-1.7-8.875 \
+            C1.431,11.126,2.289,7.935,3.975,5.05z",
+      "G": "M17.15,25.05v0.025c-2.017,2.956-4.317,4.339-6.9,4.15 \
+            C7.667,29.035,5.583,27.643,4,25.05v0.025c-1.754-2.778-2.604-6.12-2.55-10.025C1.504,11.145,2.354,7.803,4,5.025V5.05 \
+            c1.833-2.278,4.033-3.42,6.6-3.425c2.566-0.002,4.75,1.131,6.55,3.4V5.05c1.711,2.605,2.578,5.855,2.6,9.75 \
+            C19.771,18.695,18.904,22.112,17.15,25.05z",
+      "T": "M21.4,0.2h-0.6c0.107,0.249,0.223,0.516,0.35,0.8 \
+            c1.219,2.909,3.103,7.584,5.65,14.025l-6.95,8.35l-5.325-5.95c-0.041-0.042-0.091-0.067-0.15-0.075 \
+            c-0.054-0.011-0.104-0.003-0.15,0.025c-0.186,0.114-0.352,0.264-0.5,0.45L13.7,17.85c-1.325,1.358-2.617,2.75-3.875,4.175 \
+            L8.8,23.375l-6.9-8.35C4.504,8.396,6.388,3.721,7.55,1C7.677,0.709,7.794,0.442,7.9,0.2H7.45c0.133-0.067,0.333-0.1,0.6-0.1 \
+            c0.406,0,1.606-0.008,3.6-0.025l-1.375,0.05C17.28,0.048,20.955,0.056,21.3,0.15C21.334,0.164,21.368,0.181,21.4,0.2z",
+      "U": "M7.9,0.2l0.15-0.1c0.406,0,1.606-0.008,3.6-0.025l-1.375,0.05 \
+            c6.009-0.066,9.568-0.066,10.675,0L20.8,0.2c0.107,0.249,0.223,0.516,0.35,0.8c1.219,2.909,3.103,7.584,5.65,14.025l-6.95,8.35 \
+            l-5.325-5.95c-0.041-0.042-0.091-0.067-0.15-0.075c-0.054-0.011-0.104-0.003-0.15,0.025c-0.186,0.114-0.352,0.264-0.5,0.45 \
+            L13.7,17.85c-1.325,1.358-2.617,2.75-3.875,4.175L8.8,23.375l-6.9-8.35C4.504,8.396,6.388,3.721,7.55,1 \
+            C7.677,0.709,7.794,0.442,7.9,0.2z"
+    },
+    "letter": {
+      "A": {
+        "1": "M12.85,12.55h2.6l-1.3-3.95L12.85,12.55z M13,6.25h2.4l3.55,10.1 \
+              h-2.3L16,14.3h-3.7l-0.7,2.05H9.4L13,6.25z",
+        "2": "M18.7,5.95l-3.55,10.1h-2.4l-3.6-10.1h2.2L12.05,8h3.7l0.65-2.05 \
+              H18.7z M12.6,9.75l1.3,3.95l1.3-3.95H12.6z"
+      },
+      "C": {
+        "1": "M10.45,6.4c1.667,0,2.883,0.55,3.65,1.65 \
+              c0.433,0.633,0.667,1.267,0.7,1.9h-2.1c-0.133-0.5-0.3-0.867-0.5-1.1c-0.4-0.434-0.967-0.65-1.7-0.65S9.183,8.5,8.75,9.1 \
+              C8.317,9.733,8.1,10.617,8.1,11.75c0,1.1,0.217,1.933,0.65,2.5c0.467,0.567,1.05,0.85,1.75,0.85c0.733,0,1.283-0.233,1.65-0.7 \
+              c0.233-0.267,0.417-0.667,0.55-1.2h2.05c-0.167,1.1-0.617,2-1.35,2.7c-0.733,0.7-1.683,1.05-2.85,1.05 \
+              c-1.433,0-2.566-0.467-3.4-1.4c-0.8-0.933-1.2-2.216-1.2-3.85c0-1.767,0.466-3.117,1.4-4.05C8.15,6.817,9.183,6.4,10.45,6.4z",
+        "2": "M15,12.35c-0.033,0.633-0.267,1.267-0.7,1.9 \
+              c-0.767,1.1-1.983,1.65-3.65,1.65c-1.267,0-2.3-0.417-3.1-1.25c-0.933-0.933-1.4-2.283-1.4-4.05c0-1.633,0.4-2.917,1.2-3.85 \
+              c0.833-0.933,1.967-1.4,3.4-1.4c1.167,0,2.117,0.35,2.85,1.05c0.733,0.7,1.183,1.6,1.35,2.7H12.9 \
+              c-0.133-0.533-0.316-0.934-0.55-1.2c-0.367-0.467-0.917-0.7-1.65-0.7c-0.7,0-1.284,0.283-1.75,0.85 \
+              c-0.434,0.567-0.65,1.4-0.65,2.5c0,1.133,0.217,2.017,0.65,2.65c0.433,0.6,1.017,0.9,1.75,0.9c0.733,0,1.3-0.217,1.7-0.65 \
+              c0.2-0.233,0.367-0.6,0.5-1.1H15z"
+      },
+      "G": {
+        "1": "M14.8,10.8h-2.05c-0.167-0.667-0.567-1.133-1.2-1.4 \
+              c-0.333-0.167-0.716-0.25-1.15-0.25c-0.8,0-1.467,0.3-2,0.9c-0.5,0.633-0.75,1.567-0.75,2.8s0.283,2.1,0.85,2.6 \
+              c0.567,0.533,1.2,0.8,1.9,0.8c0.7,0,1.283-0.217,1.75-0.65c0.434-0.4,0.717-0.934,0.85-1.6h-2.35v-1.65h4.2v5.4h-1.4l-0.2-1.25 \
+              c-0.4,0.467-0.767,0.8-1.1,1C11.583,17.833,10.9,18,10.1,18c-1.333,0-2.434-0.467-3.3-1.4c-0.867-0.9-1.3-2.167-1.3-3.8 \
+              s0.45-2.933,1.35-3.9c0.867-1,2.05-1.5,3.55-1.5c1.267,0,2.3,0.333,3.1,1C14.267,9.033,14.7,9.833,14.8,10.8z",
+        "2": "M10.65,9.65c-0.7,0-1.333,0.267-1.9,0.8 \
+              c-0.567,0.5-0.85,1.367-0.85,2.6c0,1.233,0.25,2.167,0.75,2.8c0.533,0.6,1.2,0.9,2,0.9c0.434,0,0.817-0.083,1.15-0.25 \
+              c0.633-0.267,1.034-0.733,1.2-1.4h2.05c-0.1,0.967-0.533,1.767-1.3,2.4c-0.8,0.667-1.833,1-3.1,1c-1.5,0-2.683-0.5-3.55-1.5 \
+              c-0.9-0.967-1.35-2.267-1.35-3.9s0.433-2.9,1.3-3.8c0.867-0.933,1.967-1.4,3.3-1.4c0.8,0,1.483,0.167,2.05,0.5 \
+              c0.333,0.2,0.7,0.533,1.1,1l0.2-1.25h1.4v5.4h-4.2V11.9h2.35c-0.133-0.667-0.417-1.2-0.85-1.6C11.933,9.867,11.35,9.65,10.65,9.65z"
+      },
+      "T": {
+        "1": "M10.3,5 L18.45,5 L18.45,6.8 L15.4,6.8 L15.4,15.1 L13.3,15.1 \
+              L13.3,6.8 L10.3,6.8z",
+        "2": "M10.2,14.65 L10.2,12.85 L13.2,12.85 L13.2,4.55 L15.3,4.55 \
+              L15.3,12.85 L18.35,12.85 L18.35,14.65z"
+      },
+      "U": {
+        "1": "M10.15,10.8V4.6h2.15v6.2c0,0.7,0.083,1.217,0.25,1.55 \
+              c0.267,0.566,0.817,0.85,1.65,0.85c0.867,0,1.417-0.284,1.65-0.85c0.167-0.333,0.25-0.85,0.25-1.55V4.6h2.15v6.2 \
+              c0,1.067-0.167,1.9-0.5,2.5c-0.633,1.1-1.817,1.65-3.55,1.65c-1.733,0-2.917-0.55-3.55-1.65C10.317,12.7,10.15,11.867,10.15,10.8z",
+        "2": "M12.45,8.4v6.2H10.3V8.4c0-1.066,0.167-1.9,0.5-2.5 \
+              c0.633-1.1,1.817-1.65,3.55-1.65S17.267,4.8,17.9,5.9c0.333,0.6,0.5,1.434,0.5,2.5v6.2h-2.15V8.4c0-0.7-0.083-1.217-0.25-1.55 \
+              C15.767,6.283,15.217,6,14.35,6c-0.833,0-1.383,0.283-1.65,0.85C12.533,7.183,12.45,7.7,12.45,8.4z"
+      }
+    }
+  };
+});
+
+/*global define, d3 */
+
+define('md2d/views/nucleotides',['require','md2d/views/nucleotide-paths'],function (require) {
+  var nucleotidePaths = require('md2d/views/nucleotide-paths'),
+
+      SCALE = 0.007,
+      W = {
+        "BACKB": 52,
+        "A": 28.151,
+        "C": 21.2,
+        "G": 21.2,
+        "T": 28.651,
+        "U": 28.651,
+        "A_GLOW": 44.125,
+        "C_GLOW": 37.2,
+        "G_GLOW": 36.2,
+        "T_GLOW": 45.566
+      },
+      H = {
+        "BACKB": 14,
+        "A": 31.15,
+        "C": 25.3,
+        "G": 30.3,
+        "T": 25.007,
+        "U": 25.007,
+        "A_GLOW": 44.55,
+        "C_GLOW": 41.417,
+        "G_GLOW": 45.3,
+        "T_GLOW": 40.65
+      };
+
+  (function () {
+    var name;
+    for (name in W) {
+      if (W.hasOwnProperty(name)) {
+        W[name] *= SCALE;
+      }
+    }
+    for (name in H) {
+      if (H.hasOwnProperty(name)) {
+        H[name] *= SCALE;
+      }
+    }
+  }());
+
+  function nucleotides() {
+    var m2px = null,
+        sequence = "",
+        direction = 1,
+        bonds = 1,
+        backbone = "DNA", // if enabled, "RNA" or "DNA" is expected.
+        stopCodonsHash = null,
+        randomEnter = true,
+        glow = false,
+        enterExitOnly = false,
+
+        xShift = 0,
+        yShift = 0;
+
+    function shift(enabled) {
+      var t, r;
+      if (enabled) {
+        // While adding a new mRNA segment, choose a random starting point along a
+        // circle with a certain radius that extends beyond the top DNA strand.
+        // Use parametric circle equation: x = r cos(t), y = r sin(t)
+        // Limit range of the "t" parameter to: [0.25 * PI, 0.75 * PI) and [1.25 * PI, 1.75 * PI),
+        // so new mRNA segments will come only from the top or bottom side of the container.
+        t = Math.random() >= 0.5 ? Math.PI * 0.25 : Math.PI * 1.25;
+        t += Math.random() * Math.PI * 0.5;
+        r = nucleotides.HEIGHT * 6;
+        xShift = r * Math.cos(t);
+        yShift = r * Math.sin(t);
+      } else {
+        xShift = yShift = 0;
+      }
+    }
+
+    function translate(d) {
+      return "translate(" + m2px(xShift + nucleotides.WIDTH * (d.idx)) + " " + m2px(yShift) + ")";
+    }
+
+    function nucleo(g) {
+      g.each(function(d, i) {
+        var g = d3.select(this),
+
+            yOffset = backbone ? 0.9 * H.BACKB : 0,
+            yStart = m2px(yOffset + 0.5 * H.A),
+            yEnd = m2px(yOffset + H.A * 0.97),
+
+            seq = typeof sequence === "function" ? sequence(d, i) : sequence,
+
+            nucleo, nucleoEnter, nucleoExit, nucleoGEnter, backboneEnter,
+            nucleoShape, nucleoSVG, nucleoSVGUpdate, nucleoTrans, targetScale;
+
+        if (typeof seq === "string") {
+          // seq is a string, generate data array. Change it to array of objects.
+          // e.g. "AG" will be change to [{idx: 0, type: "A"}, {idx: 1, type: "G"}].
+          seq = seq.split("");
+          seq.forEach(function(val, i) {
+            seq[i] = {id: i, idx: i, type: val};
+          });
+        }
+
+        // Join data by ID.
+        nucleo = g.selectAll(".nucleotide").data(seq, function (d) { return d.id; });
+        nucleoEnter = nucleo.enter();
+        nucleoExit = nucleo.exit();
+
+        // Enter.
+        // Random initial positions of the new mRNAs.
+        shift(randomEnter);
+        nucleoEnter = nucleoEnter.append("g").attr({
+          "transform": translate
+        }).style({
+          "opacity": randomEnter ? 0 : 1
+        });
+        // Additional container for scaling.
+        nucleoGEnter = nucleoEnter.append("g").attr({
+          "class": "scale",
+          "transform": "scale(1, " + (direction  === 1 ? 1 : -1) + ")",
+        });
+        // Bonds.
+        nucleoGEnter.append("path").attr("class", "bonds")
+          .style({
+            "stroke-width": m2px(0.01),
+            "stroke": "#fff"
+          });
+        // Main shape.
+        nucleoShape = nucleoGEnter.append("g")
+          .classed("nucleo-shape", true)
+          .classed("clickable-nucleo", function (d) {
+            return d.region === "c" && glow;
+          }).on("click", function () {
+            // Mobile Safari will only produce mouse events when the user taps
+            // on a clickable element, like a link. You can make an element
+            // clickable by adding an onClick event handler to it, even if that
+            // handler does nothing. It's necessary, as nucleotides should be
+            // clickable, e.g. to show context menu.
+          });
+        // Optional glow image.
+        if (glow) {
+          nucleoShape.append("image").attr({
+            "class": "glow",
+            "y": m2px(yOffset - 0.17 * W.G_GLOW),  // move glow closer to the backbone
+            "preserveAspectRatio": "none"
+          });
+        }
+        // Parts of nucleotide shape (outline, interior, letter).
+        nucleoSVG = nucleoShape.append("svg").attr({
+          "y": m2px(yOffset),
+          "preserveAspectRatio": "none",
+        });
+        nucleoSVG.append("path").attr({
+          "class": "outline",
+          "fill-rule": "evenodd",
+          "clip-rule": "evenodd"
+        });
+        nucleoSVG.append("path").attr({
+          "class": "interior",
+          "fill-rule": "evenodd",
+          "clip-rule": "evenodd"
+        });
+        nucleoSVG.append("path").attr({
+          "class": "letter",
+          "fill-rule": "evenodd",
+          "clip-rule": "evenodd",
+          "d": function (d) { return nucleotidePaths.letter[d.type][direction]; }
+        });
+        // Optional backbone.
+        if (backbone) {
+          backboneEnter = nucleoGEnter.append("image").attr({
+            "class": "backbone",
+            "x": 0,
+            "y": 0,
+            "width": m2px(W.BACKB),
+            "height": m2px(H.BACKB),
+            "preserveAspectRatio": "none",
+            "xlink:href": "resources/dna/Backbone_" + backbone + ".svg"
+          });
+        }
+
+        // Update.
+        if (enterExitOnly) {
+          // Special mode when we update ONLY nucleotides from enter and exit
+          // subselections. It's useful to add new nucleotides while other
+          // are being modified by transition at the same time, so it won't
+          // be affected.
+          nucleo = nucleoEnter;
+        }
+
+        // Update without transition.
+        nucleo.attr("class", function(d) {
+          var regionClass = "";
+          switch(d.region) {
+            case "c": regionClass = "coding-region"; break;
+            case "j": regionClass = "junk-region"; break;
+            case "p": regionClass = "promoter-region"; break;
+            case "t": regionClass = "terminator-region"; break;
+          }
+          return "nucleotide " + regionClass;
+        });
+        nucleo.select(".bonds").attr("d", function (d) {
+          if (d.type === "C" || d.type === "G") {
+            return "M" + m2px(SCALE * 20) + " " + yStart + " L " + m2px(SCALE * 20) + " " + yEnd +
+                   "M" + m2px(SCALE * 26) + " " + yStart + " L " + m2px(SCALE * 26) + " " + yEnd +
+                   "M" + m2px(SCALE * 32) + " " + yStart + " L " + m2px(SCALE * 32) + " " + yEnd;
+          } else {
+            return "M" + m2px(SCALE * 22) + " " + yStart + " L " + m2px(SCALE * 22) + " " + yEnd +
+                   "M" + m2px(SCALE * 30) + " " + yStart + " L " + m2px(SCALE * 30) + " " + yEnd;
+          }
+        });
+        nucleo.select(".glow").attr({
+          "x": function (d) { return m2px(W.BACKB) / 2 - m2px(W[d.type + "_GLOW"]) / 2; },
+          "width": function (d) { return m2px(W[d.type + "_GLOW"]); },
+          "height": function (d) { return m2px(H[d.type + "_GLOW"]); },
+          "xlink:href": function (d) { return "resources/dna/NucleotideGlow_" + d.type + ".svg"; }
+        });
+        nucleoSVGUpdate = nucleo.select(".nucleo-shape > svg");
+        nucleoSVGUpdate.attr({
+          "class": function (d) {
+            var className = "type-" + d.type;
+            if (stopCodonsHash && stopCodonsHash[d.idx]) {
+              className += " stop-codon";
+            }
+            return className;
+          },
+          "viewBox": function (d) { return "0 0 " + (W[d.type] / SCALE) + " " + (H[d.type] / SCALE); },
+          "x": function (d) { return m2px(W.BACKB) / 2 - m2px(W[d.type]) / 2; },
+          "width": function (d) { return m2px(W[d.type]); },
+          "height": function (d) { return m2px(H[d.type]); }
+        });
+        nucleoSVGUpdate.select("path.interior").attr("d", function (d) {
+          return nucleotidePaths.interior[d.type];
+        });
+        nucleoSVGUpdate.select("path.outline").attr("d", function (d) {
+          return nucleotidePaths.outline[d.type];
+        });
+
+        // Update with transition.
+        shift(false);
+        nucleoTrans = d3.transition(nucleo)
+          .attr("transform", translate)
+          .style("opacity", 1);
+
+        // Animate also bonds opacity.
+        nucleoTrans.select(".bonds").style("opacity", bonds);
+
+        // Duck test whether nucleoTrans is really translation. See D3 API
+        // Reference - d3.transition(selection) returns transition only when
+        // called in the context of other transition. Otherwise it returns
+        // selection.
+        if (nucleoTrans.attrTween) {
+          // Scale. We can't simply use .attr, as rotation is used (to make
+          // scale change fancier?). attrTween enforces simple change from
+          // scale(1,1) to scale(1,-1) without using rotation.
+          targetScale  = "scale(1, " + (direction  === 1 ? 1 : -1) + ")";
+          nucleoTrans.select("g.scale").attrTween("transform", function(d, i, a) {
+            return d3.interpolateString(a, targetScale);
+          });
+          // Letters. Default d3 interpolator creates some
+          // results which can't be parsed. Use custom interpolator,
+          // which changes letters in the middle of transition.
+          nucleoTrans.select("path.letter").attrTween("d", function (d, i, a) {
+            return function(t) {
+              return t < 0.5 ? a : nucleotidePaths.letter[d.type][direction];
+            };
+          });
+        } else {
+          // The same operations, but without using transition.
+          nucleo.select("g.scale").attr("transform", "scale(1, " + (direction  === 1 ? 1 : -1) + ")");
+          nucleo.select("path.letter")
+            .attr("d", function (d) { return nucleotidePaths.letter[d.type][direction]; });
+        }
+
+        // Exit.
+        shift(true);
+        d3.transition(nucleoExit)
+          .attr("transform", translate)
+          .style("opacity", 0)
+          .remove();
+      });
+    }
+
+    nucleo.sequence = function (s) {
+      if (!arguments.length) return sequence;
+      sequence = s;
+      return nucleo;
+    };
+
+    nucleo.model2px = function (m) {
+      if (!arguments.length) return m2px;
+      m2px = m;
+      return nucleo;
+    };
+
+    nucleo.direction = function (d) {
+      if (!arguments.length) return direction;
+      direction = d;
+      return nucleo;
+    };
+
+    nucleo.bonds = function (b) {
+      if (!arguments.length) return bonds;
+      bonds = b;
+      return nucleo;
+    };
+
+    nucleo.randomEnter = function (r) {
+      if (!arguments.length) return randomEnter;
+      randomEnter = r;
+      return nucleo;
+    };
+
+    /**
+     * Enables or disables nucleotide glowing on hover.
+     * @param  {boolean} g
+     */
+    nucleo.glow = function (g) {
+      if (!arguments.length) return glow;
+      glow = g;
+      return nucleo;
+    };
+
+    /**
+     * @param  {String} b "DNA" or "RNA".
+     */
+    nucleo.backbone = function (b) {
+      if (!arguments.length) return backbone;
+      backbone = b;
+      return nucleo;
+    };
+
+    nucleo.stopCodonsHash = function (s) {
+      if (!arguments.length) return stopCodonsHash;
+      stopCodonsHash = s;
+      return nucleo;
+    };
+
+    /**
+     * Special mode for quick update of rendered nucleotides number.
+     * When this option is set to true, only new nucleotides will be
+     * added and other possibly removed. None of existing
+     * nucleotides will be updated. It's useful to add new nucleotides
+     * while there is an ongoing transition on existing nucleoties.
+     * @param  {boolean} ee
+     */
+    nucleo.enterExitOnly = function (ee) {
+      if (!arguments.length) return enterExitOnly;
+      enterExitOnly = ee;
+      return nucleo;
+    };
+
+    return nucleo;
+  }
+
+  // Width of the nucleotide is width of the DNA backbone.
+  // * 0.92 to ensure that DNA backbone doesn't contain any visual discontinuities.
+  // There are two bugs connected with it. First is in Chrome, where preserveAspectRatio
+  // is ignored for images, the second one is in Safari, which has problems with correct
+  // width of the images. Please see:
+  // https://www.pivotaltracker.com/story/show/48453261
+  nucleotides.WIDTH  = W.BACKB * 0.92;
+  // Height of the nucleotide is height of the DNA backbone + A nucleotide (tallest one).
+  // * 0.96 because it simply... looks better. This value is used to determine distance
+  // between two strands of DNA and this multiplier causes that they are closer to each other.
+  nucleotides.HEIGHT = (H.BACKB * 0.9 + H.A) * 0.96;
+
+  return nucleotides;
+});
+
 /*global d3, define */
 
-define('md2d/models/engine/genetic-engine',['require','cs!md2d/models/aminoacids-helper','common/alert'],function (require) {
+define('md2d/models/engine/genetic-engine',['require','cs!md2d/models/aminoacids-helper','common/alert','md2d/views/nucleotides'],function (require) {
 
   var aminoacidsHelper = require('cs!md2d/models/aminoacids-helper'),
       alert            = require('common/alert'),
+      NUCLEO_WIDTH     = require('md2d/views/nucleotides').WIDTH,
 
       STATES = [
         "undefined",
@@ -21995,7 +22518,10 @@ define('md2d/models/engine/genetic-engine',['require','cs!md2d/models/aminoacids
 
       PROMOTER_SEQ   = "TGACCTCTCCGCGCCATCTATAAACCGAAGCGCTAGCTACA",
       TERMINATOR_SEQ = "ACCACAGGCCGCCAGTTCCGCTGGCGGCATTTT",
+      PROMOTER_COMP_SEQ   = complementarySequence(PROMOTER_SEQ),
+      TERMINATOR_COMP_SEQ = complementarySequence(TERMINATOR_SEQ),
       JUNK_SEQ,
+      JUNK_COMP_SEQ,
 
       DEF_EVENT = "change";
 
@@ -22036,6 +22562,7 @@ define('md2d/models/engine/genetic-engine',['require','cs!md2d/models/aminoacids
       STATE_INDEX[STATES[i]] = i;
     }
     JUNK_SEQ = junkSequence(50);
+    JUNK_COMP_SEQ = complementarySequence(JUNK_SEQ);
   }());
 
   return function GeneticProperties(model) {
@@ -22052,6 +22579,10 @@ define('md2d/models/engine/genetic-engine',['require','cs!md2d/models/aminoacids
         // Complete mRNA based on current DNA. Useful for codon() method,
         // which needs to know the whole sequence in advance.
         mRNA = "",
+        // Stop codons.
+        stopCodonsHash,
+        // Index of the first stop codon.
+        lastTranslationStep,
 
         dispatch = d3.dispatch("change", "transition"),
 
@@ -22063,6 +22594,31 @@ define('md2d/models/engine/genetic-engine',['require','cs!md2d/models/aminoacids
             newCode = mRNACode(mRNA.length);
           }
           return mRNA;
+        },
+
+        calculateStopCodonsHash = function () {
+          var codon, i, len;
+
+          stopCodonsHash = {};
+          lastTranslationStep = null;
+          for (i = 0, len = mRNA.length; i < len; i += 3) {
+            codon = mRNA.substr(i, 3);
+            if (aminoacidsHelper.codonToAbbr(codon) === "STOP") {
+              if (lastTranslationStep === null) {
+                lastTranslationStep = i / 3;
+              }
+              // Note that codonToAbbr returns "STOP" also when codon length is
+              // smaller than 3. In this case, we want to mark only codons which
+              // are a "real" STOP codons, so check their length.
+              if (codon.length === 3) {
+                stopCodonsHash[i] = stopCodonsHash[i + 1] = stopCodonsHash[i + 2] = true;
+              }
+            }
+          }
+          if (lastTranslationStep === null) {
+            // No stop codon found.
+            lastTranslationStep = Math.floor(mRNA.length / 3);
+          }
         },
 
         mRNACode = function (index) {
@@ -22078,15 +22634,47 @@ define('md2d/models/engine/genetic-engine',['require','cs!md2d/models/aminoacids
           }
         },
 
-        generateViewArray = function (array, sequence, codingRegion) {
+        generateMRNAViewModel = function (array, sequence) {
           var i, len, nucleo;
-          codingRegion = codingRegion || false;
           // Set size of the existing array to the size of new DNA sequence.
           array.length = sequence.length;
           for (i = 0, len = sequence.length; i < len; i++) {
             nucleo = array[i] || {}; // reuse existing objects.
             nucleo.idx = i;
-            nucleo.coding = codingRegion;
+            // Note that only nucleotides whose type doesn't match sequence
+            // will receive new ID. It lets you to update this array manually,
+            // so the ID as prevented in case of need (e.g. single insertion
+            // or deletion during mutation).
+            if (nucleo.type !== sequence[i]) {
+              nucleo.type = sequence[i];
+              nucleo.id   = getNucleoID();
+              // This block will be also executed when we insert objects for
+              // the first time so update the array[i] reference.
+              array[i] = nucleo;
+            }
+          }
+          return array;
+        },
+
+        generateDNAViewModel = function (array, DNA, comp) {
+          var sequence = !comp ? JUNK_SEQ + PROMOTER_SEQ + DNA + TERMINATOR_SEQ + JUNK_SEQ :
+                         JUNK_COMP_SEQ + PROMOTER_COMP_SEQ + DNA + TERMINATOR_COMP_SEQ + JUNK_COMP_SEQ,
+              junkBound = JUNK_SEQ.length,
+              promoterBound = junkBound + PROMOTER_SEQ.length,
+              codingBound = promoterBound + DNA.length,
+              terminatorBound = codingBound + TERMINATOR_SEQ.length,
+              i, len, nucleo;
+
+          // Set size of the existing array to the size of new DNA sequence.
+          array.length = sequence.length;
+          for (i = 0, len = sequence.length; i < len; i++) {
+            nucleo = array[i] || {}; // reuse existing objects.
+            nucleo.idx = i;
+            if (i < junkBound)            nucleo.region = "j";
+            else if (i < promoterBound)   nucleo.region = "p";
+            else if (i < codingBound)     nucleo.region = "c";
+            else if (i < terminatorBound) nucleo.region = "t";
+            else                          nucleo.region = "j";
             // Note that only nucleotides whose type doesn't match sequence
             // will receive new ID. It lets you to update this array manually,
             // so the ID as prevented in case of need (e.g. single insertion
@@ -22105,20 +22693,21 @@ define('md2d/models/engine/genetic-engine',['require','cs!md2d/models/aminoacids
         updateGeneticProperties = function () {
           var DNA = model.get("DNA");
 
-          generateViewArray(api.viewModel.DNA, DNA, true);
+          generateDNAViewModel(api.viewModel.DNA, DNA, false);
 
           DNAComp = complementarySequence(DNA);
-          generateViewArray(api.viewModel.DNAComp, DNAComp, true);
+          generateDNAViewModel(api.viewModel.DNAComp, DNAComp, true);
 
           mRNA = calculatemRNA();
+          calculateStopCodonsHash();
           // mRNA view array is also based on the current state.
           if (api.stateBefore("transcription:0")) {
-            generateViewArray(api.viewModel.mRNA, "");
+            generateMRNAViewModel(api.viewModel.mRNA, "");
           } else if (api.state().name === "transcription") {
-            generateViewArray(api.viewModel.mRNA, mRNA.substr(0, api.state().step));
+            generateMRNAViewModel(api.viewModel.mRNA, mRNA.substr(0, api.state().step));
           } else if (api.stateAfter("transcription")) {
             // So, the first state which triggers it is "transcription-end".
-            generateViewArray(api.viewModel.mRNA, mRNA);
+            generateMRNAViewModel(api.viewModel.mRNA, mRNA);
           }
 
           if (eventMode !== "transition") {
@@ -22157,6 +22746,7 @@ define('md2d/models/engine/genetic-engine',['require','cs!md2d/models/aminoacids
             abbr = aminoacidsHelper.codonToAbbr(api.codon(++i));
           }
           api.generateProtein(aaSequenece, undefined, 2.3, 0.3);
+          api.centerProtein();
           model.start();
         },
 
@@ -22204,6 +22794,7 @@ define('md2d/models/engine/genetic-engine',['require','cs!md2d/models/aminoacids
           }
         },
 
+        // DNA states comparator.
         stateComp = function (stateA, stateB) {
           if (stateA === stateB) {
             return 0;
@@ -22242,6 +22833,14 @@ define('md2d/models/engine/genetic-engine',['require','cs!md2d/models/aminoacids
           set("DNA", newDNA, "transition");
         },
 
+        dispatchChange = function (suppressViewportUpdate) {
+          // Cancel transitions when we are going to dispatch "change" event.
+          ongoingTransitions.length = 0;
+          model.cancelTransitions();
+
+          dispatch.change(suppressViewportUpdate);
+        },
+
         // Use this function if you want to change DNA or DNAState
         // and dispatch event different than "change" (which causes immediate
         // rendering). Options are:
@@ -22266,8 +22865,6 @@ define('md2d/models/engine/genetic-engine',['require','cs!md2d/models/aminoacids
           if (eventMode === "transition") {
             dispatch.transition(state);
           } else {
-            // Cancel transitions when we are going to dispatch "change" event.
-            ongoingTransitions = [];
 
             if (api.stateAfter("translation:0") && api.stateBefore("translation-end")) {
               // It means that state was set to 'translation:x', where x > 0.
@@ -22279,7 +22876,7 @@ define('md2d/models/engine/genetic-engine',['require','cs!md2d/models/aminoacids
               return;
             }
 
-            dispatch.change();
+            dispatchChange();
           }
         },
 
@@ -22301,12 +22898,18 @@ define('md2d/models/engine/genetic-engine',['require','cs!md2d/models/aminoacids
           if (eventMode === "transition") {
             dispatch.transition("dna-updated", true);
           } else {
-            dispatch.change(true);
+            dispatchChange(true);
           }
         };
 
     // Public API.
     api = {
+      /**
+       * Number of nucleotides before coding region (so, in junk and promoter regions).
+       * @type {number}
+       */
+      PRECODING_LEN: JUNK_SEQ.length + PROMOTER_SEQ.length,
+
       /**
        * Hash of arrays containing nucleotides objects. Each array can be
        * consumed by the view. References to arrays are guaranteed to be
@@ -22320,67 +22923,92 @@ define('md2d/models/engine/genetic-engine',['require','cs!md2d/models/aminoacids
        * coding - true if nucleotide is a part of coding region (not junk, terminator or promoter).
        */
       viewModel: {
-        DNA: [],
-        DNAComp: [],
         mRNA: [],
-        mRNAComp: [],
-        // These arrays are constant in fact, generate just once:
-        promoter:       generateViewArray([], PROMOTER_SEQ),
-        promoterComp:   generateViewArray([], complementarySequence(PROMOTER_SEQ)),
-        terminator:     generateViewArray([], TERMINATOR_SEQ),
-        terminatorComp: generateViewArray([], complementarySequence(TERMINATOR_SEQ)),
-        junk:           generateViewArray([], JUNK_SEQ),
-        junkComp:       generateViewArray([], complementarySequence(JUNK_SEQ))
+        DNA: [],
+        DNAComp: []
       },
 
+      /**
+       * Registers listener for given event type. Supported events
+       * are: "change" and "transition".
+       * @param  {string} type
+       * @param  {function} listener
+       */
       on: function(type, listener) {
         dispatch.on(type, listener);
       },
 
+      /**
+       * Performs substitution mutation on DNA coding region.
+       * @param  {number} idx            position in DNA.
+       * @param  {string} newType        "A", "T", "G" or "C".
+       * @param  {boolean} DNAComplement if true, mutation is performed
+       *                                 on DNA complementary strand.
+       */
       mutate: function(idx, newType, DNAComplement) {
-        var DNA = model.get("DNA");
+        var DNA = model.get("DNA"),
+            pos = idx - api.PRECODING_LEN;
 
-        DNA = DNA.substr(0, idx) +
+        if (pos < 0 || pos >= DNA.length) {
+          throw new Error("Mutation can be performed only on DNA coding region.");
+        }
+
+        DNA = DNA.substr(0, pos) +
               (DNAComplement ? complementarySequence(newType) : newType) +
-              DNA.substr(idx + 1);
+              DNA.substr(pos + 1);
         // Update DNA. This will also call updateGeneticProperties(), so
         // other, related properties will be also updated.
         set("DNA", DNA);
       },
 
+      /**
+       * Performs insertion mutation on DNA coding region.
+       * @param  {number} idx            position in DNA.
+       * @param  {string} type           "A", "T", "G" or "C".
+       * @param  {boolean} DNAComplement if true, mutation is performed
+       *                                 on DNA complementary strand.
+       */
       insert: function(idx, type, DNAComplement) {
         var newDNANucleo = {
               type: DNAComplement ? complementarySequence(type) : type,
-              id: getNucleoID()
+              id: getNucleoID(),
+              region: "c"
             },
             newDNACompNucleo = {
               type: DNAComplement ? type : complementarySequence(type),
-              id: getNucleoID()
+              id: getNucleoID(),
+              region: "c"
             },
             newMRNANucleo = {
               type: DNAComplement ? complementarySequence(type) : type,
-              id: getNucleoID()
+              id: getNucleoID(),
+              region: "c"
             },
             DNA = model.get("DNA"),
-            state = api.state();
+            state = api.state(),
+            pos = idx - api.PRECODING_LEN;
+
+        if (pos < 0 || pos >= DNA.length) {
+          throw new Error("Mutation can be performed only on DNA coding region.");
+        }
 
         // Update view model arrays. It isn't necessary, but as we update them
         // correctly, nucleotides will preserve their IDs and view will know
         // exactly what part of DNA have been changed.
         api.viewModel.DNA.splice(idx, 0, newDNANucleo);
         api.viewModel.DNAComp.splice(idx, 0, newDNACompNucleo);
-        api.viewModel.mRNA.splice(idx, 0, newMRNANucleo);
+        api.viewModel.mRNA.splice(pos, 0, newMRNANucleo);
 
         // Update DNA. This will also call updateGeneticProperties(), so
         // other, related properties will be also updated.
-        DNA = DNA.substr(0, idx) + newDNANucleo.type + DNA.substr(idx);
+        DNA = DNA.substr(0, pos) + newDNANucleo.type + DNA.substr(pos);
 
         // Special case for transcription process (and state):
         // If we keep the same DNAState and we insert something
         // before state.step position, it would cause that the last
         // transcribed nucleotide would be removed. Avoid that, as this can be
         // confusing for users.
-        if (state.name === "transcription" && idx < state.step) {
+        if (state.name === "transcription" && pos < state.step) {
           // Note that we can't use nextState(state), as in that case, as
           // state can be changed to transcription-end too fast (as DNA isn't
           // updated yet).
@@ -22389,27 +23017,36 @@ define('md2d/models/engine/genetic-engine',['require','cs!md2d/models/aminoacids
         doDNATransition(DNA);
       },
 
+      /**
+       * Performs deletion mutation on DNA coding region.
+       * @param  {number} idx position in DNA.
+       */
       delete: function(idx) {
         var DNA = model.get("DNA"),
-            state = api.state();
+            state = api.state(),
+            pos = idx - api.PRECODING_LEN;
+
+        if (pos < 0 || pos >= DNA.length) {
+          throw new Error("Mutation can be performed only on DNA coding region.");
+        }
 
         // Update view model arrays. It isn't necessary, but as we update them
         // correctly, nucleotides will preserve their IDs and view will know
         // exactly what part of DNA have been changed.
         api.viewModel.DNA.splice(idx, 1);
         api.viewModel.DNAComp.splice(idx, 1);
-        api.viewModel.mRNA.splice(idx, 1);
+        api.viewModel.mRNA.splice(pos, 1);
 
         // Update DNA. This will also call updateGeneticProperties(), so
         // other, related properties will be also updated.
-        DNA = DNA.substr(0, idx) + DNA.substr(idx + 1);
+        DNA = DNA.substr(0, pos) + DNA.substr(pos + 1);
 
         // Special case for transcription process (and state):
         // If we keep the same DNAState and we delete something
         // before state.step position, it would cause that new transcribed
         // mRNA nucleotide will be added. Avoid that, as this can be
         // confusing for users.
-        if (state.name === "transcription" && idx < state.step) {
+        if (state.name === "transcription" && pos < state.step) {
           set("DNAState", prevState(state), "suppress");
         }
         doDNATransition(DNA);
@@ -22609,6 +23246,46 @@ define('md2d/models/engine/genetic-engine',['require','cs!md2d/models/aminoacids
         }
       },
 
+      centerProtein: function (duration) {
+        model.batch(function () {
+          var cm = api.proteinCenterOfMass(),
+              xDiff = model.properties.viewPortX +
+                      model.properties.viewPortWidth / 2 - cm.x,
+              yDiff = model.properties.viewPortY +
+                      model.properties.viewPortHeight / 2 - cm.y,
+              minX = model.properties.minX + 0.1,
+              maxX = model.properties.maxX - 0.1,
+              minY = model.properties.minY + 0.1,
+              maxY = model.properties.maxY - 0.1,
+              len  = model.getNumberOfAtoms(),
+              i, x, y;
+
+          for (i = 0; i < len; i++) {
+            x = model.getAtomProperties(i).x;
+            y = model.getAtomProperties(i).y;
+            if (x + xDiff > maxX) xDiff = maxX - x;
+            if (x + xDiff < minX) xDiff = minX - x;
+            if (y + yDiff > maxY) yDiff = maxY - y;
+            if (y + yDiff < minY) yDiff = minY - y;
+          }
+          for (i = 0; i < len; i++) {
+            x = model.getAtomProperties(i).x + xDiff;
+            y = model.getAtomProperties(i).y + yDiff;
+            if (duration) {
+              model.atomTransition().id(i).duration(duration).prop("x", x);
+              model.atomTransition().id(i).duration(duration).prop("y", y);
+            } else {
+              model.setAtomProperties(i, {x: x, y: y});
+            }
+          }
+        });
+        if (model.is_stopped()) {
+          // FIXME: ugly workaround to update position, as setAtomProperties
+          // doesn't dispatch any events in contrast to minimize energy.
+          model.minimizeEnergy();
+        }
+      },
+
       connectAminoAcid: function (codonIdx) {
         if (codonIdx < 1) return;
         var r1 = model.getAtomProperties(codonIdx - 1).radius,
@@ -22639,19 +23316,11 @@ define('md2d/models/engine/genetic-engine',['require','cs!md2d/models/aminoacids
       },
 
       stopCodonsHash: function () {
-        var result = {},
-            codon, i, len;
+        return stopCodonsHash;
+      },
 
-        for (i = 0, len = mRNA.length; i < len; i += 3) {
-          codon = mRNA.substr(i, 3);
-          // Note that codonToAbbr returns "STOP" also when codon length is
-          // smaller than 3. In this case, we want to mark only codons which
-          // are a "real" STOP codons, so check their length.
-          if (codon.length === 3 && aminoacidsHelper.codonToAbbr(codon) === "STOP") {
-            result[i] = result[i + 1] = result[i + 2] = true;
-          }
-        }
-        return result;
+      lastTranslationStep: function () {
+        return lastTranslationStep;
       },
 
       /**
@@ -24375,6 +25044,7 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
 
     function processTransitions(timeDiff) {
       var i, len;
+      model.startBatch();
       for (i = 0, len = transitions.length; i < len; i++) {
         transitions[i].process(timeDiff);
       }
@@ -24387,6 +25057,7 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
           i++;
         }
       }
+      model.endBatch();
     }
 
     function tick(elapsedTime, dontDispatchTickEvent) {
@@ -25777,7 +26448,7 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     };
 
     model.is_stopped = function() {
-      return stopped;
+      return stopped || stopRequest;
     };
 
     model.get_elements = function() {
@@ -26031,6 +26702,13 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     };
 
     /**
+     * Cancels all transitions which are currently in progress.
+     */
+    model.cancelTransitions = function () {
+      transitions.length = 0;
+    };
+
+    /**
       Call before running a function that would otherwise trigger a number
       of invalidatingChangePre/PostHooks, which would slow down the model when
       each change causes a recalculation. This can be used whenever you can
@@ -26203,7 +26881,7 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     // TODO: move this to better place.
     if (initialProperties.DNA) {
       // Overwrite width and height options.
-      initialProperties.width = 100;
+      initialProperties.width = 200;
       initialProperties.height = 5;
       // View options are optional, make sure that they are defined.
       initialProperties.viewOptions = initialProperties.viewOptions || {};
@@ -26536,9 +27214,10 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
 //   PTA View Container
 //
 // ------------------------------------------------------------
-define('common/views/model-view',['require','lab.config','common/console'],function (require) {
+define('common/views/model-view',['require','lab.config','common/performance','common/console'],function (require) {
   // Dependencies.
   var labConfig             = require('lab.config'),
+      performance           = require('common/performance'),
       console               = require('common/console');
 
   return function ModelView(modelUrl, model, Renderer, getNextTabIndex) {
@@ -26556,12 +27235,20 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
 
         // Basic scaling functions for positio, it transforms model units to "pixels".
         // Use it for positions of objects rendered inside the view.
-        model2px,
+        //
+        // This function is exposed in public API. Never ever recreated it, as
+        // renderers and sub-renders will loose reference to valid scale
+        // function.
+        model2px = d3.scale.linear(),
 
         // Inverted scaling function for position transforming model units to "pixels".
         // Use it for Y coordinates, as Y axis in model coordinate system increases
-        // from bottom to top, while but SVG has increases from top to bottom
-        model2pxInv,
+        // from bottom to top, while but SVG has increases from top to bottom.
+        //
+        // This function is exposed in public API. Never ever recreated it, as
+        // renderers and sub-renders will loose reference to valid scale
+        // function.
+        model2pxInv = d3.scale.linear(),
 
         // "Containers" - SVG g elements used to position layers of the final visualization.
         mainContainer,
@@ -26579,6 +27266,8 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
         // d3.svg.brush object used to implement select action. It should be
         // updated each time model2px and model2pxInv functions are changed!
         selectBrush,
+
+        dispatch = d3.dispatch("viewportDrag"),
 
         offsetLeft, offsetTop;
 
@@ -26678,14 +27367,14 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
       offsetLeft = node.offsetLeft + padding.left;
 
       // Basic model2px scaling function for position.
-      model2px = d3.scale.linear()
-          .domain([0, viewport.width])
-          .range([0, size.width]);
+      model2px
+        .domain([0, viewport.width])
+        .range([0, size.width]);
 
       // Inverted model2px scaling function for position (for y-coordinates, inverted domain).
-      model2pxInv = d3.scale.linear()
-          .domain([viewport.height, 0])
-          .range([0, size.height]);
+      model2pxInv
+        .domain([viewport.height, 0])
+        .range([0, size.height]);
 
       if (selectBrush) {
         // Update brush to use new scaling functions.
@@ -26809,7 +27498,7 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
     // Setup background.
     function setupBackground() {
       // Just set the color.
-      plot.style("fill", model.get("backgroundColor"));
+      plot.attr("fill", model.get("backgroundColor"));
     }
 
     function mousedown() {
@@ -26926,6 +27615,97 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
       redrawGridLinesAndLabels();
     }
 
+    // Support viewport dragging behavior.
+    function viewportDragging() {
+      var xs = [],
+          ys = [],
+          ts = [],
+          samples = 8,
+          newDrag = false,
+          dragOpt = model.properties.viewPortDrag,
+          vx, vy, t,
+          dragBehavior;
+
+      if (dragOpt === false) {
+        // This causes that drag behavior will be removed and dragging of
+        // other nodes will work again. It's based on the d3 implementation,
+        // please see drag() function here:
+        // https://github.com/mbostock/d3/blob/master/src/behavior/drag.js
+        vis1.on("mousedown.drag", null)
+            .on("touchstart.drag", null)
+            .classed("draggable", false);
+        return;
+      }
+
+      dragBehavior = d3.behavior.drag();
+      dragBehavior.on("dragstart", function () {
+        newDrag = true;
+        xs.length = 0;
+        ys.length = 0;
+        ts.length = 0;
+        updateArrays();
+      }).on("drag", function () {
+        var dx = dragOpt === "y" ? 0 : model2px.invert(d3.event.dx),
+            dy = dragOpt === "x" ? 0 : model2px.invert(d3.event.dy);
+        model.properties.viewPortX -= dx;
+        model.properties.viewPortY += dy;
+        dispatch.viewportDrag();
+        updateArrays();
+      }).on("dragend", function () {
+        updateArrays();
+        var last = xs.length - 1,
+            dt = ts[last] - ts[0];
+        // Prevent from division by 0.
+        if (dt < 1e-5) return;
+        // When time difference between last 'drag' and 'dragend' events is
+        // bigger than 100ms assume that there should be no interia (it means
+        // that pointer was staying in one place > 100ms just before 'mouseup').
+        if (ts[last] - ts[last - 1] > 100) return;
+        vx = (xs[last] - xs[0]) / dt;
+        vy = (ys[last] - ys[0]) / dt;
+        t  = ts[last];
+        newDrag = false;
+        d3.timer(step);
+      });
+
+      vis1.call(dragBehavior).classed("draggable", true);
+
+      function updateArrays() {
+        xs.push(model.properties.viewPortX);
+        ys.push(model.properties.viewPortY);
+        ts.push(performance.now());
+        if(xs.length > samples) {
+          xs.shift();
+          ys.shift();
+          ts.shift();
+        }
+      }
+
+      function step() {
+        if (newDrag) return true;
+
+        var now = performance.now(),
+            dt = now - t,
+            ax = -0.003 * vx,
+            ay = -0.003 * vy;
+
+        // Update positions.
+        model.properties.viewPortX += vx * dt + 0.5 * ax * dt * dt;
+        model.properties.viewPortY += vy * dt + 0.5 * ay * dt * dt;
+        dispatch.viewportDrag();
+        // Update velocities.
+        vx += ax * dt;
+        vy += ay * dt;
+        // Update last time.
+        t = now;
+
+        if (Math.abs(vx) < 1e-5 && Math.abs(vy) < 1e-5) {
+          return true;
+        }
+        return false;
+      }
+    }
+
     function removeClickHandlers() {
       var selector;
       for (selector in clickHandler) {
@@ -26941,6 +27721,9 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
 
     function init() {
       // Setup model view state.
+      renderContainer();
+      viewportDragging();
+
       clickHandler = {};
 
       // dynamically add modelUrl as a model property so the renderer
@@ -26960,6 +27743,8 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
       model.addPropertiesListener(["gridLines", "xunits", "yunits", "xlabel", "ylabel",
                                    "viewPortX", "viewPortY", "viewPortZoom"],
                                    renderContainer);
+      model.addPropertiesListener(["viewPortDrag"],
+                                   viewportDragging);
     }
 
     //
@@ -26978,6 +27763,8 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
       node: null,
       update: null,
       containers: null,
+      model2px: model2px,
+      model2pxInv: model2pxInv,
       scale: scale,
       setFocus: setFocus,
       getFontSizeInPixels: getFontSizeInPixels,
@@ -26997,26 +27784,33 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
         removeClickHandlers();
         api.setSelectHandler(null);
         processOptions(newModelUrl, newModel);
-        renderContainer();
         init();
         repaint();
-      },
-      model2px: function(val) {
-        // Note that we shouldn't just do:
-        // api.model2px = model2px;
-        // as model2px local variable can be reinitialized
-        // many times due container rescaling process.
-        return model2px(val);
-      },
-      model2pxInv: function(val) {
-        // See comments for model2px.
-        return model2pxInv(val);
       },
       pos: function() {
         // Add a pos() function so the model renderer can more easily
         // manipulate absolutely positioned dom elements it may create or
         // manage.
-        return  mainContainer.node().parentElement.getBoundingClientRect();
+        var rect = {
+              bottom: 0,
+              top:    0,
+              height: 0,
+              left:   0,
+              right:  0,
+              width:  0
+            };
+        if ($el) {
+          rect.top = $el.position().top;
+          rect.left = $el.position().left;
+          rect.width = $el.width();
+          rect.height = $el.height();
+          rect.bottom = rect.top + rect.height;
+          rect.right = rect.left + rect.width;
+        }
+        return rect;
+      },
+      on: function(type, listener) {
+        dispatch.on(type, listener);
       },
       /**
        * Sets custom click handler.
@@ -27133,7 +27927,6 @@ define('common/views/model-view',['require','lab.config','common/console'],funct
     node = $el[0];
 
     processOptions();
-    renderContainer();
     init();
 
     // Extend Public withExport initialized object to initialized objects
@@ -27846,457 +28639,10 @@ CSS style definition: sass/lab/_context-menu.sass
 
 }).call(this);
 
-/*global define */
-/*jshint multistr: true */
-
-define('md2d/views/nucleotide-paths',[],function () {
-  return {
-    "outline": {
-      "A": "M20.7,0.4l-0.075-0.075C20.672,0.273,20.73,0.231,20.8,0.2 \
-            c0.122-0.049,0.247-0.058,0.375-0.025c0.031,0.002,0.064,0.011,0.1,0.025c0.151,0.054,0.26,0.154,0.325,0.3l6.35,14.15 \
-            c0.026,0.065,0.043,0.132,0.05,0.2c0.092,0.104,0.142,0.229,0.15,0.375c0.01,0.163-0.041,0.304-0.15,0.425l-9.025,9.85 \
-            c-1.65,1.667-3.292,3.55-4.925,5.65L0.2,15.65c-0.11-0.121-0.16-0.262-0.15-0.425c0.008-0.146,0.058-0.271,0.15-0.375 \
-            c0.005-0.068,0.021-0.134,0.05-0.2L6.6,0.5c0.074-0.146,0.19-0.246,0.35-0.3c0.151-0.064,0.301-0.064,0.45,0 \
-            c0.038,0.019,0.071,0.043,0.1,0.075C7.593,0.339,7.66,0.431,7.7,0.55c0.047,0.112-0.012,0.154-0.175,0.125 \
-            C7.461,0.656,7.386,0.63,7.3,0.6L1.65,15.125l12.4,13.625l12.6-13.725L20.7,0.4z",
-      "C": "M12.45,0c2.167,0.5,4.066,1.95,5.7,4.35 \
-            c2.033,2.967,3.05,6.533,3.05,10.7c0,3.8-0.867,7.117-2.6,9.95c-0.067,0.133-0.167,0.217-0.3,0.25c-0.133,0.067-0.267,0.067-0.4,0 \
-            c-0.133-0.033-0.233-0.117-0.3-0.25c-0.133-0.233-0.283-0.45-0.45-0.65V24.3c-1.8-2.667-3.983-4-6.55-4 \
-            c-2.567,0.034-4.767,1.383-6.6,4.05c-0.167,0.2-0.3,0.417-0.4,0.65c-0.1,0.133-0.217,0.217-0.35,0.25 \
-            c-0.133,0.067-0.267,0.067-0.4,0c-0.133-0.033-0.233-0.117-0.3-0.25C0.85,22.167,0,18.85,0,15.05c0-4.167,1-7.733,3-10.7 \
-            C4.633,1.95,6.55,0.5,8.75,0H12.45z M4,5.05V5C3.991,5.016,3.982,5.033,3.975,5.05C2.289,7.935,1.431,11.126,1.4,14.625 \
-            c-0.03,3.519,0.536,6.477,1.7,8.875c2.066-3.39,4.566-5.064,7.5-5.025c2.933,0.04,5.433,1.731,7.5,5.075 \
-            c1.088-2.518,1.605-5.559,1.55-9.125c-0.055-3.565-0.888-6.69-2.5-9.375V5c-1.8-2.397-3.983-3.589-6.55-3.575 \
-            C8.033,1.439,5.833,2.647,4,5.05z",
-      "G": "M8.75,0h3.675c2.191,0.504,4.1,1.963,5.725,4.375V4.35 \
-            c2.035,2.963,3.052,6.53,3.05,10.7c0.001,4.17-1.015,7.737-3.05,10.7v-0.025c-2.066,3.065-4.583,4.59-7.55,4.575 \
-            c-2.966,0.023-5.5-1.494-7.6-4.55v-0.025C0.999,22.77-0.001,19.211,0,15.05c-0.001-4.161,0.999-7.72,3-10.675V4.35 \
-            C4.647,1.953,6.564,0.503,8.75,0z M17.15,25.05c1.754-2.938,2.621-6.354,2.6-10.25c-0.022-3.895-0.889-7.145-2.6-9.75V5.025 \
-            c-1.8-2.269-3.984-3.402-6.55-3.4C8.033,1.63,5.833,2.771,4,5.05V5.025c-1.646,2.778-2.496,6.12-2.55,10.025 \
-            C1.396,18.955,2.246,22.297,4,25.075V25.05c1.583,2.593,3.667,3.985,6.25,4.175c2.583,0.189,4.883-1.194,6.9-4.15V25.05z",
-      "T": "M7.45,0.2H7.9C7.794,0.442,7.677,0.709,7.55,1 \
-            C6.388,3.721,4.504,8.396,1.9,15.025l6.9,8.35l1.025-1.35c1.258-1.424,2.55-2.816,3.875-4.175l0.025-0.025 \
-            c0.148-0.186,0.314-0.336,0.5-0.45c0.046-0.028,0.096-0.036,0.15-0.025c0.059,0.007,0.109,0.032,0.15,0.075l5.325,5.95l6.95-8.35 \
-            C24.252,8.584,22.369,3.909,21.15,1c-0.127-0.284-0.243-0.551-0.35-0.8h0.6h0.575c0.041,0.045,0.075,0.095,0.1,0.15l6.35,14.15 \
-            c0.028,0.066,0.053,0.133,0.075,0.2c0.087,0.129,0.137,0.279,0.15,0.45c0.01,0.238-0.065,0.447-0.225,0.625l-8.2,8.95 \
-            c-0.102,0.12-0.227,0.204-0.375,0.25c-0.167,0.043-0.334,0.043-0.5,0c-0.147-0.046-0.272-0.129-0.375-0.25l-4.675-5.1l-4.625,5.1 \
-            c-0.101,0.121-0.226,0.204-0.375,0.25c-0.167,0.043-0.334,0.043-0.5,0c-0.147-0.046-0.272-0.129-0.375-0.25l-8.15-8.95 \
-            c-0.16-0.178-0.235-0.387-0.225-0.625c0.014-0.168,0.063-0.318,0.15-0.45c0.019-0.066,0.044-0.133,0.075-0.2l6.35-14.15V0.325 \
-            C6.649,0.28,6.674,0.238,6.7,0.2H7.45z",
-      "U": "M20.8,0.2h0.6h0.575c0.041,0.045,0.075,0.095,0.1,0.15 \
-            l6.35,14.15c0.028,0.066,0.053,0.133,0.075,0.2c0.087,0.129,0.137,0.279,0.15,0.45c0.01,0.238-0.065,0.447-0.225,0.625l-8.2,8.95 \
-            c-0.102,0.12-0.227,0.204-0.375,0.25c-0.167,0.043-0.334,0.043-0.5,0c-0.147-0.046-0.272-0.129-0.375-0.25l-4.675-5.1l-4.625,5.1 \
-            c-0.101,0.121-0.226,0.204-0.375,0.25c-0.167,0.043-0.334,0.043-0.5,0c-0.147-0.046-0.272-0.129-0.375-0.25l-8.15-8.95 \
-            c-0.16-0.178-0.235-0.387-0.225-0.625c0.014-0.168,0.063-0.318,0.15-0.45c0.019-0.066,0.044-0.133,0.075-0.2l6.35-14.15V0.325 \
-            C6.649,0.28,6.674,0.238,6.7,0.2h0.75H7.9C7.794,0.442,7.677,0.709,7.55,1C6.388,3.721,4.504,8.396,1.9,15.025l6.9,8.35 \
-            l1.025-1.35c1.258-1.424,2.55-2.816,3.875-4.175l0.025-0.025c0.148-0.186,0.314-0.336,0.5-0.45 \
-            c0.046-0.028,0.096-0.036,0.15-0.025c0.059,0.007,0.109,0.032,0.15,0.075l5.325,5.95l6.95-8.35C24.252,8.584,22.369,3.909,21.15,1 \
-            C21.023,0.716,20.907,0.449,20.8,0.2z"
-    },
-    "interior": {
-      "A": "M21.175,0.175C21.046,0.143,20.921,0.151,20.8,0.2 \
-            c-0.069,0.031-0.128,0.073-0.175,0.125c-0.055,0.054-0.097,0.121-0.125,0.2c-0.063,0.16,0.003,0.118,0.2-0.125l5.95,14.625 \
-            L14.05,28.75L1.65,15.125L7.3,0.6c0.086,0.03,0.161,0.056,0.225,0.075C7.688,0.704,7.747,0.662,7.7,0.55 \
-            C7.66,0.431,7.593,0.339,7.5,0.275L7.6,0.2c4.8-0.067,7.283-0.1,7.45-0.1l6.1,0.05L21.175,0.175z",
-      "C": "M3.975,5.05H4c1.833-2.402,4.033-3.611,6.6-3.625 \
-            C13.167,1.411,15.35,2.603,17.15,5v0.05c1.612,2.685,2.445,5.81,2.5,9.375c0.055,3.566-0.461,6.607-1.55,9.125 \
-            c-2.067-3.344-4.567-5.035-7.5-5.075c-2.934-0.04-5.434,1.635-7.5,5.025c-1.164-2.398-1.73-5.356-1.7-8.875 \
-            C1.431,11.126,2.289,7.935,3.975,5.05z",
-      "G": "M17.15,25.05v0.025c-2.017,2.956-4.317,4.339-6.9,4.15 \
-            C7.667,29.035,5.583,27.643,4,25.05v0.025c-1.754-2.778-2.604-6.12-2.55-10.025C1.504,11.145,2.354,7.803,4,5.025V5.05 \
-            c1.833-2.278,4.033-3.42,6.6-3.425c2.566-0.002,4.75,1.131,6.55,3.4V5.05c1.711,2.605,2.578,5.855,2.6,9.75 \
-            C19.771,18.695,18.904,22.112,17.15,25.05z",
-      "T": "M21.4,0.2h-0.6c0.107,0.249,0.223,0.516,0.35,0.8 \
-            c1.219,2.909,3.103,7.584,5.65,14.025l-6.95,8.35l-5.325-5.95c-0.041-0.042-0.091-0.067-0.15-0.075 \
-            c-0.054-0.011-0.104-0.003-0.15,0.025c-0.186,0.114-0.352,0.264-0.5,0.45L13.7,17.85c-1.325,1.358-2.617,2.75-3.875,4.175 \
-            L8.8,23.375l-6.9-8.35C4.504,8.396,6.388,3.721,7.55,1C7.677,0.709,7.794,0.442,7.9,0.2H7.45c0.133-0.067,0.333-0.1,0.6-0.1 \
-            c0.406,0,1.606-0.008,3.6-0.025l-1.375,0.05C17.28,0.048,20.955,0.056,21.3,0.15C21.334,0.164,21.368,0.181,21.4,0.2z",
-      "U": "M7.9,0.2l0.15-0.1c0.406,0,1.606-0.008,3.6-0.025l-1.375,0.05 \
-            c6.009-0.066,9.568-0.066,10.675,0L20.8,0.2c0.107,0.249,0.223,0.516,0.35,0.8c1.219,2.909,3.103,7.584,5.65,14.025l-6.95,8.35 \
-            l-5.325-5.95c-0.041-0.042-0.091-0.067-0.15-0.075c-0.054-0.011-0.104-0.003-0.15,0.025c-0.186,0.114-0.352,0.264-0.5,0.45 \
-            L13.7,17.85c-1.325,1.358-2.617,2.75-3.875,4.175L8.8,23.375l-6.9-8.35C4.504,8.396,6.388,3.721,7.55,1 \
-            C7.677,0.709,7.794,0.442,7.9,0.2z"
-    },
-    "letter": {
-      "A": {
-        "1": "M12.85,12.55h2.6l-1.3-3.95L12.85,12.55z M13,6.25h2.4l3.55,10.1 \
-              h-2.3L16,14.3h-3.7l-0.7,2.05H9.4L13,6.25z",
-        "2": "M18.7,5.95l-3.55,10.1h-2.4l-3.6-10.1h2.2L12.05,8h3.7l0.65-2.05 \
-              H18.7z M12.6,9.75l1.3,3.95l1.3-3.95H12.6z"
-      },
-      "C": {
-        "1": "M10.45,6.4c1.667,0,2.883,0.55,3.65,1.65 \
-              c0.433,0.633,0.667,1.267,0.7,1.9h-2.1c-0.133-0.5-0.3-0.867-0.5-1.1c-0.4-0.434-0.967-0.65-1.7-0.65S9.183,8.5,8.75,9.1 \
-              C8.317,9.733,8.1,10.617,8.1,11.75c0,1.1,0.217,1.933,0.65,2.5c0.467,0.567,1.05,0.85,1.75,0.85c0.733,0,1.283-0.233,1.65-0.7 \
-              c0.233-0.267,0.417-0.667,0.55-1.2h2.05c-0.167,1.1-0.617,2-1.35,2.7c-0.733,0.7-1.683,1.05-2.85,1.05 \
-              c-1.433,0-2.566-0.467-3.4-1.4c-0.8-0.933-1.2-2.216-1.2-3.85c0-1.767,0.466-3.117,1.4-4.05C8.15,6.817,9.183,6.4,10.45,6.4z",
-        "2": "M15,12.35c-0.033,0.633-0.267,1.267-0.7,1.9 \
-              c-0.767,1.1-1.983,1.65-3.65,1.65c-1.267,0-2.3-0.417-3.1-1.25c-0.933-0.933-1.4-2.283-1.4-4.05c0-1.633,0.4-2.917,1.2-3.85 \
-              c0.833-0.933,1.967-1.4,3.4-1.4c1.167,0,2.117,0.35,2.85,1.05c0.733,0.7,1.183,1.6,1.35,2.7H12.9 \
-              c-0.133-0.533-0.316-0.934-0.55-1.2c-0.367-0.467-0.917-0.7-1.65-0.7c-0.7,0-1.284,0.283-1.75,0.85 \
-              c-0.434,0.567-0.65,1.4-0.65,2.5c0,1.133,0.217,2.017,0.65,2.65c0.433,0.6,1.017,0.9,1.75,0.9c0.733,0,1.3-0.217,1.7-0.65 \
-              c0.2-0.233,0.367-0.6,0.5-1.1H15z"
-      },
-      "G": {
-        "1": "M14.8,10.8h-2.05c-0.167-0.667-0.567-1.133-1.2-1.4 \
-              c-0.333-0.167-0.716-0.25-1.15-0.25c-0.8,0-1.467,0.3-2,0.9c-0.5,0.633-0.75,1.567-0.75,2.8s0.283,2.1,0.85,2.6 \
-              c0.567,0.533,1.2,0.8,1.9,0.8c0.7,0,1.283-0.217,1.75-0.65c0.434-0.4,0.717-0.934,0.85-1.6h-2.35v-1.65h4.2v5.4h-1.4l-0.2-1.25 \
-              c-0.4,0.467-0.767,0.8-1.1,1C11.583,17.833,10.9,18,10.1,18c-1.333,0-2.434-0.467-3.3-1.4c-0.867-0.9-1.3-2.167-1.3-3.8 \
-              s0.45-2.933,1.35-3.9c0.867-1,2.05-1.5,3.55-1.5c1.267,0,2.3,0.333,3.1,1C14.267,9.033,14.7,9.833,14.8,10.8z",
-        "2": "M10.65,9.65c-0.7,0-1.333,0.267-1.9,0.8 \
-              c-0.567,0.5-0.85,1.367-0.85,2.6c0,1.233,0.25,2.167,0.75,2.8c0.533,0.6,1.2,0.9,2,0.9c0.434,0,0.817-0.083,1.15-0.25 \
-              c0.633-0.267,1.034-0.733,1.2-1.4h2.05c-0.1,0.967-0.533,1.767-1.3,2.4c-0.8,0.667-1.833,1-3.1,1c-1.5,0-2.683-0.5-3.55-1.5 \
-              c-0.9-0.967-1.35-2.267-1.35-3.9s0.433-2.9,1.3-3.8c0.867-0.933,1.967-1.4,3.3-1.4c0.8,0,1.483,0.167,2.05,0.5 \
-              c0.333,0.2,0.7,0.533,1.1,1l0.2-1.25h1.4v5.4h-4.2V11.9h2.35c-0.133-0.667-0.417-1.2-0.85-1.6C11.933,9.867,11.35,9.65,10.65,9.65z"
-      },
-      "T": {
-        "1": "M10.3,5 L18.45,5 L18.45,6.8 L15.4,6.8 L15.4,15.1 L13.3,15.1 \
-              L13.3,6.8 L10.3,6.8z",
-        "2": "M10.2,14.65 L10.2,12.85 L13.2,12.85 L13.2,4.55 L15.3,4.55 \
-              L15.3,12.85 L18.35,12.85 L18.35,14.65z"
-      },
-      "U": {
-        "1": "M10.15,10.8V4.6h2.15v6.2c0,0.7,0.083,1.217,0.25,1.55 \
-              c0.267,0.566,0.817,0.85,1.65,0.85c0.867,0,1.417-0.284,1.65-0.85c0.167-0.333,0.25-0.85,0.25-1.55V4.6h2.15v6.2 \
-              c0,1.067-0.167,1.9-0.5,2.5c-0.633,1.1-1.817,1.65-3.55,1.65c-1.733,0-2.917-0.55-3.55-1.65C10.317,12.7,10.15,11.867,10.15,10.8z",
-        "2": "M12.45,8.4v6.2H10.3V8.4c0-1.066,0.167-1.9,0.5-2.5 \
-              c0.633-1.1,1.817-1.65,3.55-1.65S17.267,4.8,17.9,5.9c0.333,0.6,0.5,1.434,0.5,2.5v6.2h-2.15V8.4c0-0.7-0.083-1.217-0.25-1.55 \
-              C15.767,6.283,15.217,6,14.35,6c-0.833,0-1.383,0.283-1.65,0.85C12.533,7.183,12.45,7.7,12.45,8.4z"
-      }
-    }
-  };
-});
-
 /*global define, d3 */
 
-define('md2d/views/nucleotides',['require','md2d/views/nucleotide-paths'],function (require) {
-  var nucleotidePaths = require('md2d/views/nucleotide-paths'),
-
-      SCALE = 0.007,
-      W = {
-        "BACKB": 52,
-        "A": 28.151,
-        "C": 21.2,
-        "G": 21.2,
-        "T": 28.651,
-        "U": 28.651,
-        "A_GLOW": 44.125,
-        "C_GLOW": 37.2,
-        "G_GLOW": 36.2,
-        "T_GLOW": 45.566
-      },
-      H = {
-        "BACKB": 14,
-        "A": 31.15,
-        "C": 25.3,
-        "G": 30.3,
-        "T": 25.007,
-        "U": 25.007,
-        "A_GLOW": 44.55,
-        "C_GLOW": 41.417,
-        "G_GLOW": 45.3,
-        "T_GLOW": 40.65
-      };
-
-  (function () {
-    var name;
-    for (name in W) {
-      if (W.hasOwnProperty(name)) {
-        W[name] *= SCALE;
-      }
-    }
-    for (name in H) {
-      if (H.hasOwnProperty(name)) {
-        H[name] *= SCALE;
-      }
-    }
-  }());
-
-  function nucleotides() {
-    var m2px = null,
-        sequence = "",
-        direction = 1,
-        startingPos = 0,
-        backbone = "DNA", // if enabled, "RNA" or "DNA" is expected.
-        stopCodonsHash = null,
-        randomEnter = true,
-        glow = false,
-
-        xShift = 0,
-        yShift = 0;
-
-    function shift(enabled) {
-      var t, r;
-      if (enabled) {
-        // While adding a new mRNA segment, choose a random starting point along a
-        // circle with a certain radius that extends beyond the top DNA strand.
-        // Use parametric circle equation: x = r cos(t), y = r sin(t)
-        // Limit range of the "t" parameter to: [0.25 * PI, 0.75 * PI) and [1.25 * PI, 1.75 * PI),
-        // so new mRNA segments will come only from the top or bottom side of the container.
-        t = Math.random() >= 0.5 ? Math.PI * 0.25 : Math.PI * 1.25;
-        t += Math.random() * Math.PI * 0.5;
-        r = nucleotides.HEIGHT * 6;
-        xShift = r * Math.cos(t);
-        yShift = r * Math.sin(t);
-      } else {
-        xShift = yShift = 0;
-      }
-    }
-
-    function translate(d, i) {
-      return "translate(" + m2px(xShift + nucleotides.WIDTH * (startingPos + i)) + " " + m2px(yShift) + ")";
-    }
-
-    function nucleo(g) {
-      g.each(function(d, i) {
-        var g = d3.select(this),
-
-            yOffset = backbone ? 0.9 * H.BACKB : 0,
-            yStart = m2px(yOffset + 0.5 * H.A),
-            yEnd = m2px(yOffset + H.A * 0.97),
-
-            seq = typeof sequence === "function" ? sequence(d, i) : sequence,
-
-            nucleo, nucleoEnter, nucleoShape, nucleoSVG, nucleoSVGUpdate, nucleoTrans,
-            targetScale;
-
-        // seq is a string, generate data array. Change it to array of objects.
-        // e.g. "AG" will be change to [{idx: 0, type: "A"}, {idx: 1, type: "G"}].
-        if (typeof seq === "string") {
-          seq = seq.split("");
-          seq.forEach(function(val, i) {
-            seq[i] = {id: i, idx: i, type: val};
-          });
-        }
-        // Join by ID.
-        nucleo = g.selectAll("g.nucleotide").data(seq, function (d) { return d.id; });
-        // Enter.
-        // Enable random translation of the new mRNAs.
-        shift(randomEnter);
-        nucleoEnter = nucleo.enter().append("g").attr({
-          "class": "nucleotide",
-          "transform": translate
-        }).style({
-          "opacity": 0
-        });
-
-        // Additional container for scaling.
-        nucleoEnter = nucleoEnter.append("g").attr({
-          "class": "scale",
-          "transform": "scale(1, " + (direction  === 1 ? 1 : -1) + ")",
-        });
-
-        nucleoEnter.append("path").attr("class", "bonds")
-          .style({
-            "stroke-width": m2px(0.01),
-            "stroke": "#fff"
-          });
-        nucleoShape = nucleoEnter.append("g").attr("class", "nucleo-shape");
-        nucleoShape.on("click", function () {
-          // Mobile Safari will only produce mouse events when the user taps
-          // on a clickable element, like a link. You can make an element
-          // clickable by adding an onClick event handler to it, even if that
-          // handler does nothing. It's necessary, as nucleotides should be
-          // clickable, e.g. to show context menu.
-        });
-        if (glow) {
-          nucleoShape.append("image").attr({
-            "class": "glow",
-            "y": m2px(yOffset - 0.17 * W.G_GLOW),  // move glow closer to the backbone
-            "preserveAspectRatio": "none"
-          });
-        }
-        nucleoSVG = nucleoShape.append("svg").attr({
-          "overflow": "visible", // glow on hover shouldn't be truncated
-          "y": m2px(yOffset),
-          "preserveAspectRatio": "none"
-        });
-        nucleoSVG.append("path").attr({
-          "class": "outline",
-          "fill-rule": "evenodd",
-          "clip-rule": "evenodd"
-        });
-        nucleoSVG.append("path").attr({
-          "class": "interior",
-          "fill-rule": "evenodd",
-          "clip-rule": "evenodd"
-        });
-        nucleoSVG.append("path").attr({
-          "class": "letter",
-          "fill-rule": "evenodd",
-          "clip-rule": "evenodd",
-          "d": function (d) { return nucleotidePaths.letter[d.type][direction]; }
-
-        });
-        if (backbone) {
-          nucleoEnter.append("image").attr({
-            "class": "backbone",
-            "x": 0,
-            "y": 0,
-            "width": m2px(W.BACKB),
-            "height": m2px(H.BACKB),
-            "preserveAspectRatio": "none",
-            "xlink:href": "resources/dna/Backbone_" + backbone + ".svg"
-          });
-        }
-
-        // Update.
-        nucleo.select(".bonds").attr("d", function (d) {
-          if (d.type === "C" || d.type === "G") {
-            return "M" + m2px(SCALE * 20) + " " + yStart + " L " + m2px(SCALE * 20) + " " + yEnd +
-                   "M" + m2px(SCALE * 26) + " " + yStart + " L " + m2px(SCALE * 26) + " " + yEnd +
-                   "M" + m2px(SCALE * 32) + " " + yStart + " L " + m2px(SCALE * 32) + " " + yEnd;
-          } else {
-            return "M" + m2px(SCALE * 22) + " " + yStart + " L " + m2px(SCALE * 22) + " " + yEnd +
-                   "M" + m2px(SCALE * 30) + " " + yStart + " L " + m2px(SCALE * 30) + " " + yEnd;
-          }
-        });
-        nucleo.select("g.nucleo-shape image.glow").attr({
-          "x": function (d) { return m2px(W.BACKB) / 2 - m2px(W[d.type + "_GLOW"]) / 2; },
-          "width": function (d) { return m2px(W[d.type + "_GLOW"]); },
-          "height": function (d) { return m2px(H[d.type + "_GLOW"]); },
-          "xlink:href": function (d) { return "resources/dna/NucleotideGlow_" + d.type + ".svg"; }
-        });
-        nucleoSVGUpdate = nucleo.select("g.nucleo-shape svg");
-        nucleoSVGUpdate.attr({
-          "class": function (d, i) {
-            var className = "type-" + d.type;
-            if (stopCodonsHash && stopCodonsHash[i]) {
-              className += " stop-codon";
-            }
-            return className;
-          },
-          "viewBox": function (d) { return "0 0 " + (W[d.type] / SCALE) + " " + (H[d.type] / SCALE); },
-          "x": function (d) { return m2px(W.BACKB) / 2 - m2px(W[d.type]) / 2; },
-          "width": function (d) { return m2px(W[d.type]); },
-          "height": function (d) { return m2px(H[d.type]); }
-        });
-        nucleoSVGUpdate.select("path.interior").attr("d", function (d) {
-          return nucleotidePaths.interior[d.type];
-        });
-        nucleoSVGUpdate.select("path.outline").attr("d", function (d) {
-          return nucleotidePaths.outline[d.type];
-        });
-
-        shift(false);
-        nucleoTrans = d3.transition(nucleo)
-          .attr("transform", translate)
-          .style("opacity", 1);
-
-        // Duck test whether nucleoTrans is really translation. See D3 API
-        // Reference - d3.transition(selection) returns  transition only when
-        // called in the context of other transition. Otherwise it returns
-        // selection.
-        if (nucleoTrans.attrTween) {
-          // Scale. We can't simply use .attr, as rotation is used (to make
-          // scale change fancier?). attrTween enforces simple change from
-          // scale(1,1) to scale(1,-1) without using rotation.
-          targetScale  = "scale(1, " + (direction  === 1 ? 1 : -1) + ")";
-          nucleoTrans.select("g.scale").attrTween("transform", function(d, i, a) {
-            return d3.interpolateString(a, targetScale);
-          });
-          // Letters. Default d3 interpolator creates some
-          // results which can't be parsed. Use custom interpolator,
-          // which changes letters in the middle of transition.
-          nucleoTrans.select("path.letter").attrTween("d", function (d, i, a) {
-            return function(t) {
-              return t < 0.5 ? a : nucleotidePaths.letter[d.type][direction];
-            };
-          });
-        } else {
-          // The same operations, but without using transition.
-          nucleo.select("g.scale").attr("transform", "scale(1, " + (direction  === 1 ? 1 : -1) + ")");
-          nucleo.select("path.letter")
-            .attr("d", function (d) { return nucleotidePaths.letter[d.type][direction]; });
-        }
-
-        // Exit.
-        shift(true);
-        d3.transition(nucleo.exit())
-          .attr("transform", translate)
-          .style("opacity", 0)
-          .remove();
-      });
-    }
-
-    nucleo.sequence = function (s) {
-      if (!arguments.length) return sequence;
-      sequence = s;
-      return nucleo;
-    };
-
-    nucleo.model2px = function (m) {
-      if (!arguments.length) return m2px;
-      m2px = m;
-      return nucleo;
-    };
-
-    nucleo.direction = function (d) {
-      if (!arguments.length) return direction;
-      direction = d;
-      return nucleo;
-    };
-
-    nucleo.startingPos = function (p) {
-      if (!arguments.length) return startingPos;
-      startingPos = p;
-      return nucleo;
-    };
-
-    nucleo.randomEnter = function (r) {
-      if (!arguments.length) return randomEnter;
-      randomEnter = r;
-      return nucleo;
-    };
-
-    /**
-     * Enables or disables nucleotide glowing on hover.
-     * @param  {boolean} g
-     */
-    nucleo.glow = function (g) {
-      if (!arguments.length) return glow;
-      glow = g;
-      return nucleo;
-    };
-
-    /**
-     * @param  {String} b "DNA" or "RNA".
-     */
-    nucleo.backbone = function (b) {
-      if (!arguments.length) return backbone;
-      backbone = b;
-      return nucleo;
-    };
-
-    nucleo.stopCodonsHash = function (s) {
-      if (!arguments.length) return stopCodonsHash;
-      stopCodonsHash = s;
-      return nucleo;
-    };
-
-    return nucleo;
-  }
-
-  // Width of the nucleotide is width of the DNA backbone.
-  // * 0.92 to ensure that DNA backbone doesn't contain any visual discontinuities.
-  // There are two bugs connected with it. First is in Chrome, where preserveAspectRatio
-  // is ignored for images, the second one is in Safari, which has problems with correct
-  // width of the images. Please see:
-  // https://www.pivotaltracker.com/story/show/48453261
-  nucleotides.WIDTH  = W.BACKB * 0.92;
-  // Height of the nucleotide is height of the DNA backbone + A nucleotide (tallest one).
-  // * 0.96 because it simply... looks better. This value is used to determine distance
-  // between two strands of DNA and this multiplier causes that they are closer to each other.
-  nucleotides.HEIGHT = (H.BACKB * 0.9 + H.A) * 0.96;
-
-  return nucleotides;
-});
-
-/*global define, d3 */
-
-define('md2d/views/genetic-elements-renderer',['require','common/console','md2d/views/nucleotides'],function (require) {
-  var console              = require('common/console'),
-      nucleotides          = require('md2d/views/nucleotides'),
+define('md2d/views/genetic-elements-renderer',['require','md2d/views/nucleotides'],function (require) {
+  var nucleotides          = require('md2d/views/nucleotides'),
 
       SCALE = 0.007,
       W = {
@@ -28329,7 +28675,18 @@ define('md2d/views/genetic-elements-renderer',['require','common/console','md2d/
         "TRNA": 67.9,
         "TRNA_NECK": 21.14,
         "A": 31.15
-      };
+      },
+
+      OBJECT_NAMES = [
+        "background",
+        "cells", "dna1", "dna2", "dna3",
+        "polymeraseUnder", "polymeraseOver",
+        "polymeraseUnder", "polymeraseOver",
+        "dna", "dnaComp", "mrna", "nucleus",
+        "ribosomeBottom", "ribosomeTop",
+        "ribosomeUnder", "ribosomeOver",
+        "trna", "viewPort"
+      ];
 
   (function () {
     var name;
@@ -28388,6 +28745,15 @@ define('md2d/views/genetic-elements-renderer',['require','common/console','md2d/
     }
     function translateScaleFuncInv(d) {
       return translateFuncInv(d) + " " + scaleFunc(d);
+    }
+    // Returns optimal (minimal) boundaries of the DNA or mRNA view array.
+    // They are based on the current vieport position, size and knowledge
+    // about single nucleotide size.
+    function getOptBoundaries(dna) {
+      var shift = dna ? model.geneticEngine().PRECODING_LEN : 0,
+          lowIdx = Math.floor(model.properties.viewPortX / nucleotides.WIDTH) - 2,
+          highIdx = Math.ceil((model.properties.viewPortX + model.properties.viewPortWidth) / nucleotides.WIDTH) + 4;
+      return [Math.max(0, lowIdx + shift), highIdx + shift];
     }
 
     return {
@@ -28468,145 +28834,104 @@ define('md2d/views/genetic-elements-renderer',['require','common/console','md2d/
         d3.transition(dna3.exit()).remove();
       },
 
-      dna: function (parent, data) {
-        var viewModel   = model.geneticEngine().viewModel,
-            bonds       = data.dna[0] ? data.dna[0].bonds : 0,
-            n           = nucleotides().model2px(model2px),
-            dna, dnaEnter, dnaUpdateTrans;
+      dna: function (parent, data, enterExitOnly) {
+        var viewModel  = model.geneticEngine().viewModel,
+            boundaries = getOptBoundaries(true),
+            bonds      = data.dna[0] ? data.dna[0].bonds : 0,
+            n          = nucleotides(),
+            dna        = parent.select(".dna-layer").selectAll(".dna");
 
-        function pos(idx) {
-          return "translate(" + model2px(idx * nucleotides.WIDTH) + ")";
+        // Configure nucleotides.
+        n.model2px(model2px)
+         .sequence(viewModel.DNA.slice(boundaries[0], boundaries[1]))
+         .glow(model.get("DNAMutations"))
+         .bonds(bonds);
+
+        if (enterExitOnly) {
+          dna.call(n.enterExitOnly(true));
+          return;
         }
 
-        // Note that first junk and promoter sequences are updated only during
-        // enter operation. They cannot be changed by the user, while DNA can
-        // (and because of that, following nucleotides have to be shifted).
+        dna = dna.data(data.dna);
 
         // DNA enter:
-        dna = parent.select(".dna-layer").selectAll(".dna").data(data.dna);
-
-        dnaEnter = dna.enter().append("g").attr({
+        dna.enter().append("g").attr({
           "class": "dna",
           "transform": translateFuncInv
         });
-        // Coding sequence.
-        dnaEnter.append("g").attr("class", "coding-region");
-        // Junk sequence.
-        n.sequence(viewModel.junk);
-        dnaEnter.append("g").attr("class", "junk-region").call(n)
-          .attr("transform", pos(-viewModel.promoter.length - viewModel.junk.length));
-        // Promoter sequence.
-        n.sequence(viewModel.promoter);
-        dnaEnter.append("g").attr("class", "promoter-region").call(n)
-          .attr("transform", pos(-viewModel.promoter.length));
-        // Terminator sequence.
-        n.sequence(viewModel.terminator);
-        dnaEnter.append("g").attr("class", "terminator-region").call(n);
-        // Junk sequence again.
-        n.sequence(viewModel.junk);
-        dnaEnter.append("g").attr("class", "junk-region junk-end").call(n);
-
-        console.timeEnd("[dna renderer] enter");
-
         // DNA update:
-        // Coding sequence.
-        n.glow(true);
-        n.sequence(viewModel.DNA);
-        dna.select(".coding-region").call(n);
-
-        dnaUpdateTrans = d3.transition(dna);
-        // Bonds.
-        dnaUpdateTrans.attr("transform", translateFuncInv)
-          .selectAll(".bonds").style("opacity", bonds);
-        // Shift terminator sequence.
-        dnaUpdateTrans.select(".terminator-region")
-          .attr("transform", pos(viewModel.DNA.length));
-        // Shift junk sequence.
-        dnaUpdateTrans.select(".junk-end")
-          .attr("transform", pos(viewModel.DNA.length + viewModel.terminator.length));
-
+        dna.call(n);
+        d3.transition(dna).attr("transform", translateFuncInv);
         // DNA exit:
         d3.transition(dna.exit()).remove();
       },
 
-      dnaComp: function (parent, data) {
-        var viewModel     = model.geneticEngine().viewModel,
-            bonds         = data.dnaComp[0] ? data.dnaComp[0].bonds : 0,
-            n             = nucleotides().model2px(model2px).direction(2),
-            dnaComp, dnaCompEnter, dnaCompUpdateTrans;
+      dnaComp: function (parent, data, enterExitOnly) {
+        var viewModel  = model.geneticEngine().viewModel,
+            boundaries = getOptBoundaries(true),
+            bonds      = data.dnaComp[0] ? data.dnaComp[0].bonds : 0,
+            n          = nucleotides(),
+            dnaComp    = parent.select(".dna-layer").selectAll(".dna-comp");
 
-        function pos(idx) {
-          return "translate(" + model2px(idx * nucleotides.WIDTH) + ")";
+        // Configure nucleotides.
+        n.model2px(model2px)
+         .sequence(viewModel.DNAComp.slice(boundaries[0], boundaries[1]))
+         .direction(2)
+         .glow(model.get("DNAMutations"))
+         .bonds(bonds);
+
+        if (enterExitOnly) {
+          dnaComp.call(n.enterExitOnly(true));
+          return;
         }
 
-        // Note that first junk and promoter sequences are updated only during
-        // enter operation. They cannot be changed by the user, while DNA can
-        // (and because of that, following nucleotides have to be shifted).
+        dnaComp = dnaComp.data(data.dnaComp);
 
         // DNA Comp enter:
-        dnaComp = parent.select(".dna-layer").selectAll(".dna-comp").data(data.dnaComp);
-        dnaCompEnter = dnaComp.enter().append("g").attr({
+        dnaComp.enter().append("g").attr({
           "class": "dna-comp",
           "transform": translateFuncInv
         });
-        // Coding sequence.
-        dnaCompEnter.append("g").attr("class", "coding-region");
-        // Junk sequence.
-        n.sequence(viewModel.junkComp);
-        dnaCompEnter.append("g").attr("class", "junk-region").call(n)
-          .attr("transform", pos(-viewModel.promoter.length - viewModel.junk.length));
-        // Promoter sequence.
-        n.sequence(viewModel.promoterComp);
-        dnaCompEnter.append("g").attr("class", "promoter-region").call(n)
-          .attr("transform", pos(-viewModel.promoter.length));
-        // Terminator sequence.
-        n.sequence(viewModel.terminatorComp);
-        dnaCompEnter.append("g").attr("class", "terminator-region").call(n);
-        // Junk sequence again.
-        n.sequence(viewModel.junkComp);
-        dnaCompEnter.append("g").attr("class", "junk-region junk-end").call(n);
-
         // DNA Comp update:
-        // Coding sequence.
-        n.glow(true);
-        n.sequence(viewModel.DNAComp);
-        dnaComp.select(".coding-region").call(n);
-
-        dnaCompUpdateTrans = d3.transition(dnaComp);
-        // Bonds.
-        dnaCompUpdateTrans.attr("transform", translateFuncInv)
-          .selectAll(".bonds").style("opacity", bonds);
-        // Shift terminator sequence.
-        dnaCompUpdateTrans.select(".terminator-region")
-          .attr("transform", pos(viewModel.DNA.length));
-        // Shift junk sequence.
-        dnaCompUpdateTrans.select(".junk-end")
-          .attr("transform", pos(viewModel.DNA.length + viewModel.terminator.length));
-
+        dnaComp.call(n);
+        d3.transition(dnaComp).attr("transform", translateFuncInv);
         // DNA Comp exit:
         d3.transition(dnaComp.exit()).remove();
       },
 
-      mrna: function (parent, data) {
+      mrna: function (parent, data, enterExitOnly) {
         var geneticEngine = model.geneticEngine(),
             mrnaSequence  = geneticEngine.viewModel.mRNA,
+            boundaries    = getOptBoundaries(),
             stopCodons    = geneticEngine.stopCodonsHash(),
             bonds         = data.mrna[0] ? data.mrna[0].bonds : 0,
             dir           = data.mrna[0] ? data.mrna[0].direction : 1,
-            mrna;
+            n             = nucleotides(),
+            mrna          = parent.select(".dna-layer").selectAll(".mrna");
+
+        // Configure nucleotides.
+        n.model2px(model2px)
+         .sequence(mrnaSequence.slice(boundaries[0], boundaries[1]))
+         .backbone("RNA")
+         .direction(dir)
+         .bonds(bonds)
+         .stopCodonsHash(stopCodons);
+
+        if (enterExitOnly) {
+          mrna.call(n.enterExitOnly(true));
+          return;
+        }
+
+        mrna = mrna.data(data.mrna);
 
         // mRNA enter:
-        mrna = parent.select(".dna-layer").selectAll(".mrna").data(data.mrna);
         mrna.enter().append("g").attr({
           "class": "mrna",
           "transform": translateFuncInv
         });
         // mRNA update:
-        // (note that there is significant difference between DNA enter/update - for mRNA we call nucleotides()
-        // also during update operation, as it will constantly change).
-        mrna.call(nucleotides().model2px(model2px).sequence(mrnaSequence).backbone("RNA").direction(dir).stopCodonsHash(stopCodons));
-        d3.transition(mrna).attr("transform", translateFuncInv)
-          .selectAll(".bonds").style("opacity", bonds);
+        mrna.call(n);
+        d3.transition(mrna).attr("transform", translateFuncInv);
         // mRNA exit:
         d3.transition(mrna.exit()).remove();
       },
@@ -28751,7 +29076,8 @@ define('md2d/views/genetic-elements-renderer',['require','common/console','md2d/
 
             selection, enter, update, exit;
 
-        selection = parent.select(".top-layer").selectAll(".trna").data(data.trna, function (d) { return d.index; });
+        selection = parent.select(".top-layer").selectAll(".trna")
+                      .data(data.trna, function (d) { return d.index; });
         // The most outer container can be used to set easily position offset.
         // While the inner g elements provides translation for "ideal" tRNA position
         // close to the mRNA and optional rotation.
@@ -28807,38 +29133,41 @@ define('md2d/views/genetic-elements-renderer',['require','common/console','md2d/
       },
 
       viewPort: function (parent, data) {
-        var position   = data.viewPort[0].position,
-            xy         = data.viewPort[0].xy || [],
-            ease       = data.viewPort[0].ease,
-            height     = model.get("viewPortHeight"),
-            viewport, viewBox;
+        var position = data.viewPort[0].position,
+            ease     = data.viewPort[0].ease,
+            drag     = data.viewPort[0].drag,
+            viewport = d3.transition(svg.select(".viewport"));
 
-        function updateModel() {
-          // TODO: this is slow as it triggers recalculation
-          // of the model state!
-          model.set({
-            "viewPortX": xy[0] || position * nucleotides.WIDTH,
-            "viewPortY": xy[1] || 0
-          });
-        }
+        // This is a bit hacky. In fact we use d3 transitions to modify model,
+        // not the SVG element! It could be implemented also as a MD2D modeler
+        // transition (see atom transitions), but this approach fits well our
+        // needs and we reuse a lot of nice d3.transition features. We could
+        // also consider removing atom transitions completely and use similar
+        // approach for them. As this is just one exception, leave it for now,
+        // but in the future it could be useful to chose only one approach
+        // (d3.transitions vs custom transitions handled by MD2D modeler).
 
-        viewport = svg.select(".viewport");
-        viewBox = viewport.attr("viewBox").split(" ");
-        // Update viewport X coordinate.
-        viewBox[0] = model2px(xy[0] ? xy[0] : position * nucleotides.WIDTH);
-        viewBox[1] = model2pxInv(xy[1] ? xy[1] + height : height);
-        viewport = d3.transition(viewport).attr("viewBox", viewBox.join(" "));
+        // Update dragging behavior. Limit dragging to X axis.
+        model.set("viewPortDrag", drag ? "x" : false);
         // Duck test whether viewportUpdate is a transition or selection.
-        // See D3 API Reference - d3.transition(selection) returns  transition
+        // See D3 API Reference - d3.transition(selection) returns transition
         // only when called in the context of other transition. Otherwise it
         // returns selection.
-        if (typeof viewport.duration === "function") {
+        if (viewport.duration) {
           // Transition!
           viewport.ease(ease);
-          viewport.each("end.viewport-update", updateModel);
+          viewport.tween("model-update", function () {
+            var i = d3.interpolate(Number(model.properties.viewPortX), position * nucleotides.WIDTH);
+            return function (t) {
+              var newVal = i(t);
+              if (Math.abs(model.properties.viewPortX - newVal) > 1e-3) {
+                model.properties.viewPortX = newVal;
+              }
+            };
+          });
         } else {
-          // Selection!
-          updateModel();
+          // Selection! Immediate update of the model.
+          model.set("viewPortX", position * nucleotides.WIDTH);
         }
       },
 
@@ -28851,6 +29180,7 @@ define('md2d/views/genetic-elements-renderer',['require','common/console','md2d/
 
   GeneticElementsRenderer.W = W;
   GeneticElementsRenderer.H = H;
+  GeneticElementsRenderer.OBJECT_NAMES = OBJECT_NAMES;
 
   return GeneticElementsRenderer;
 });
@@ -28916,6 +29246,570 @@ define('common/views/state-manager',[],function () {
   };
 });
 
+/*global define */
+
+define('md2d/views/genetic-anim-states',['require','md2d/views/nucleotides','md2d/views/genetic-elements-renderer','common/views/state-manager'],function (require) {
+  var nucleotides             = require('md2d/views/nucleotides'),
+      GeneticElementsRenderer = require('md2d/views/genetic-elements-renderer'),
+      StateManager            = require('common/views/state-manager'),
+
+      H = GeneticElementsRenderer.H,
+      OBJECT_NAMES = GeneticElementsRenderer.OBJECT_NAMES;
+
+  /**
+   * Returns StateManager with definitions of DNA / genetic animations states.
+   */
+  return function geneticAnimStates(model) {
+    var stateMgr       = new StateManager(OBJECT_NAMES),
+        geneticEngine  = model.geneticEngine(),
+        // Viewport dimensions are immutable, so save them once.
+        viewPortWidth  = model.get("viewPortWidth"),
+        viewPortHeight = model.get("viewPortHeight"),
+        vx = viewPortWidth * 0.5,
+        vy = viewPortHeight * 0.5,
+
+        lastStep;
+
+    function getStep() {
+      var state = geneticEngine.state();
+      if (state.name === "translation-end") {
+        return model.geneticEngine().lastTranslationStep();
+      }
+      lastStep = !isNaN(state.step) ? state.step : lastStep;
+      return lastStep;
+    }
+    function ribosomeX() {
+      return (1.65 + Math.max(0, getStep() - 2) * 3) * nucleotides.WIDTH;
+    }
+    function trnaX() {
+      return this.index() * 3 * nucleotides.WIDTH;
+    }
+
+    stateMgr.newState("intro-cells", {
+      cells: [{
+        translateX: vx + 0.33,
+        translateY: vy,
+        scale: 1
+      }],
+      dna1: [{
+        translateX: vx + 0.33,
+        translateY: vy,
+        scale: 0.13,
+        opacity: 0
+      }],
+      viewPort: [{
+        position: 0,
+        ease: "cubic-in-out",
+        drag: false
+      }],
+      background: [{
+        color: "#8492ef"
+      }]
+    });
+    stateMgr.extendLastState("intro-zoom1", {
+      cells: [{
+        translateX: vx,
+        scale: 6
+      }],
+      dna1: [{
+        translateX: vx,
+        scale: 0.78,
+        opacity: 5
+      }],
+      dna2: [{
+        translateX: vx,
+        translateY: vy,
+        scale: 0.5,
+        opacity: 0
+      }],
+      viewPort: [{}],
+      background: [{}]
+    });
+    stateMgr.extendLastState("intro-zoom2", {
+      cells: [{
+        scale: 24
+      }],
+      dna1: [{
+        scale: 3.12,
+        opacity: 0
+      }],
+      dna2: [{
+        scale: 2,
+        opacity: 1
+      }],
+      dna3: [{
+        translateX: vx,
+        translateY: vy,
+        scale: 0.2,
+        opacity: 0
+      }],
+      viewPort: [{}],
+      background: [{}]
+    });
+    stateMgr.extendLastState("intro-zoom3-s0", {
+      cells: [{}],
+      dna2: [{
+        scale: 3.8,
+        opacity: 0
+      }],
+      dna3: [{
+        scale: 0.4,
+        opacity: 1
+      }],
+      viewPort: [{}],
+      background: [{}]
+    });
+    stateMgr.extendLastState("intro-zoom3", {
+      cells: [{}],
+      dna3: [{
+        scale: 0.6
+      }],
+      polymeraseUnder: [{
+        scale: 0.2,
+        translateX: -2,
+        translateY: 4,
+        opacity: 1
+      }],
+      viewPort: [{}],
+      background: [{}]
+    });
+    stateMgr.extendLastState("intro-polymerase-s0", {
+      cells: [{}],
+      dna3: [{}],
+      polymeraseUnder: [{
+        scale: 0.8,
+        translateX: vx,
+        translateY: vy,
+        opacity: 1
+      }],
+      polymeraseOver: [{
+        translateX: vx,
+        translateY: vy,
+        scale: 0.8,
+        opacity: 0
+      }],
+      viewPort: [{}],
+      background: [{}]
+    });
+    stateMgr.extendLastState("intro-polymerase", {
+      cells: [{}],
+      dna3: [{}],
+      polymeraseUnder: [{
+        scale: 1,
+      }],
+      polymeraseOver: [{
+        scale: 1,
+        opacity: 1
+      }],
+      viewPort: [{}],
+      background: [{}]
+    });
+    stateMgr.extendLastState("dna-s0", {
+      cells: [{
+        opacity: 0
+      }],
+      dna3: [{
+        scale: 1.5
+      }],
+      polymeraseUnder: [{
+        scale: 2.5
+      }],
+      polymeraseOver: [{
+        scale: 2.5
+      }],
+      viewPort: [{}],
+      background: [{}]
+    });
+    stateMgr.extendLastState("dna", {
+      polymeraseUnder: [{
+        opacity: 0
+      }],
+      polymeraseOver: [{
+        opacity: 0
+      }],
+      dna3: [{
+        opacity: 0
+      }],
+      dna: [{
+        translateX: -model.geneticEngine().PRECODING_LEN * nucleotides.WIDTH,
+        translateY: viewPortHeight / 2 + nucleotides.HEIGHT,
+        bonds: 1
+      }],
+      dnaComp: [{
+        translateX: -model.geneticEngine().PRECODING_LEN * nucleotides.WIDTH,
+        translateY: viewPortHeight / 2 - nucleotides.HEIGHT,
+        bonds: 1
+      }],
+      viewPort: [{
+        position: -2,
+        drag: true
+      }],
+      background: [{
+        color: "url(#transcription-bg)"
+      }]
+    });
+    stateMgr.extendLastState("transcription", {
+      dna: [{
+        translateY: viewPortHeight / 2 + 2.5 * nucleotides.HEIGHT,
+        bonds: 0
+      }],
+      dnaComp: [{
+        translateY: viewPortHeight / 2 - 2.5 * nucleotides.HEIGHT,
+        bonds: function () {
+          var limit = getStep() + model.geneticEngine().PRECODING_LEN;
+          return function (d) {
+            return d.region === "c" && d.idx < limit ? 1 : 0;
+          };
+        }
+      }],
+      mrna: [{
+        translateY: viewPortHeight / 2 - 0.5 * nucleotides.HEIGHT,
+        bonds: 1,
+        direction: 1
+      }],
+      viewPort: [{
+        position: function () {
+          return Math.max(0, Math.min(model.get("DNA").length - 10, getStep() - 6)) - 2;
+        },
+        ease: "linear"
+      }],
+      background: [{}]
+    });
+    stateMgr.extendLastState("transcription-end", {
+      dna: [{}],
+      dnaComp: [{
+        bonds: function () {
+          return function (d) {
+            return d.region === "c" ? 1 : 0;
+          };
+        }
+      }],
+      mrna: [{}],
+      polymeraseUnder: [{
+        translateX: function () { return model.get("DNA").length * nucleotides.WIDTH; },
+        translateY: 0.5 * viewPortHeight,
+        scale: 3.5,
+        opacity: 0
+      }],
+      polymeraseOver: [{
+        translateX: function () { return model.get("DNA").length * nucleotides.WIDTH; },
+        translateY: 0.5 * viewPortHeight,
+        scale: 3.5,
+        opacity: 0
+      }],
+      viewPort: [{
+        position: function () { return Math.max(0, model.get("DNA").length - 10) - 2; }
+      }],
+      background: [{}]
+    });
+    stateMgr.extendLastState("after-transcription", {
+      dna: [{}],
+      dnaComp: [{}],
+      mrna: [{}],
+      polymeraseUnder: [{
+        opacity: 1
+      }],
+      polymeraseOver: [{
+        opacity: 1
+      }],
+      viewPort: [{}],
+      background: [{}]
+    });
+    stateMgr.extendLastState("before-translation-s0", {
+      dna: [{}],
+      dnaComp: [{}],
+      mrna: [{}],
+      polymeraseUnder: [{
+        scale: 1.4
+      }],
+      polymeraseOver: [{
+        scale: 1.4,
+        opacity: 0
+      }],
+      viewPort: [{}],
+      background: [{
+        color: "#8492ef"
+      }]
+    });
+    stateMgr.extendLastState("before-translation-s1", {
+      dna: [{}],
+      dnaComp: [{}],
+      mrna: [{}],
+      polymeraseUnder: [{
+        translateX: function () { return model.get("viewPortX") + 0.5 * viewPortWidth + 5; }, // + 5!
+        translateY: 0.5 * viewPortHeight - 2,
+        scale: 0.7
+      }],
+      viewPort: [{}],
+      background: [{}]
+    });
+    stateMgr.extendLastState("before-translation-s2", {
+      dna: [{}],
+      dnaComp: [{}],
+      mrna: [{}],
+      nucleus: [{
+        translateX: 0.5 * viewPortWidth - 2 * nucleotides.WIDTH,
+        translateY: 0.5 * viewPortHeight
+      }],
+      viewPort: [{
+        position: -2,
+        ease: "cubic-in-out"
+      }],
+      background: [{}]
+    });
+    stateMgr.extendLastState("before-translation-s3", {
+      dna: [{
+        translateY: 4 * nucleotides.HEIGHT
+      }],
+      dnaComp: [{
+        translateY: 2 * nucleotides.HEIGHT,
+        bonds: 0
+      }],
+      mrna: [{
+        bonds: 0
+      }],
+      nucleus: [{
+        translateY: 0
+      }],
+      viewPort: [{}],
+      background: [{
+        color: function() { return model.get("backgroundColor"); }
+      }]
+    });
+    stateMgr.extendLastState("before-translation-s4", {
+      dna: [{
+        translateY: -1 * nucleotides.HEIGHT
+      }],
+      dnaComp: [{
+        translateY: -3 * nucleotides.HEIGHT,
+      }],
+      mrna: [{
+        translateY: 2.5 * nucleotides.HEIGHT
+      }],
+      nucleus: [{
+        translateY: H.NUCLEUS * -0.5
+      }],
+      viewPort: [{}],
+      background: [{}]
+    });
+    stateMgr.extendLastState("before-translation", {
+      mrna: [{
+        translateY: 1.5 * nucleotides.HEIGHT,
+        direction: 2,
+        bonds: 0
+      }],
+      ribosomeBottom: [{
+        translateX: -3,
+        translateY: vy,
+        opacity: 0
+      }],
+      viewPort: [{}],
+      background: [{}]
+    });
+    stateMgr.extendLastState("translation-s0", {
+      mrna: [{}],
+      ribosomeBottom: [{
+        translateX: ribosomeX,
+        translateY: 1.75 * nucleotides.HEIGHT,
+        opacity: 1
+      }],
+      ribosomeTop: [{
+        translateX: -3,
+        translateY: 6,
+        opacity: 0
+      }],
+      viewPort: [{}],
+      background: [{}]
+    });
+    stateMgr.extendLastState("translation-s1", {
+      mrna: [{}],
+      ribosomeBottom: [{}],
+      ribosomeTop: [{
+        translateX: ribosomeX,
+        translateY: 4.52 * nucleotides.HEIGHT,
+        opacity: 1
+      }],
+      ribosomeUnder: [{
+        translateX: ribosomeX,
+        translateY: 3.7 * nucleotides.HEIGHT,
+        opacity: 0
+      }],
+      ribosomeOver: [{
+        translateX: ribosomeX,
+        translateY: 3.7 * nucleotides.HEIGHT,
+        opacity: 0
+      }],
+      viewPort: [{}],
+      background: [{}]
+    });
+    stateMgr.extendLastState("translation", {
+      mrna: [{
+        bonds: function () {
+          var step = getStep();
+          return function (d) {
+            return d.idx < 3 * (step - 2) || d.idx >= 3 * step ? 0 : 1;
+          };
+        }
+      }],
+      ribosomeUnder: [{
+        opacity: 1
+      }],
+      ribosomeOver: [{
+        opacity: 1
+      }],
+      trna: [
+        {
+          index: function () { return getStep() - 2; },
+          translateX: trnaX,
+          translateY: 2.5 * nucleotides.HEIGHT,
+          neck: 0
+        },
+        {
+          index: function () { return getStep() - 1; },
+          translateX: trnaX,
+          translateY: 2.5 * nucleotides.HEIGHT,
+          neck: 1
+        }
+      ],
+      viewPort: [{
+        position: function () { return Math.max(0, 3 * (getStep() - 3)) - 2; },
+        ease: "linear"
+      }],
+      background: [{}]
+    });
+    stateMgr.extendLastState("translation-step0", {
+      mrna: [{
+        bonds: function () {
+          var step = getStep();
+          return function (d) {
+            return d.idx < 3 * (step - 3) || d.idx >= 3 * step ? 0 : 1;
+          };
+        }
+      }],
+      ribosomeUnder: [{}],
+      ribosomeOver: [{}],
+      trna: [
+        {
+          index: function () { return getStep() - 3; },
+        },
+        {
+          index: function () { return getStep() - 2; },
+        },
+        {
+          index: function () { return getStep() - 1; },
+          translateX: trnaX,
+          translateY: 2.5 * nucleotides.HEIGHT,
+          neck: 1
+        }
+      ],
+      viewPort: [{}],
+      background: [{}]
+    });
+    stateMgr.extendLastState("translation-step1", {
+      mrna: [{}],
+      ribosomeUnder: [{}],
+      ribosomeOver: [{}],
+      trna: [
+        {},
+        {
+          neck: 0
+        },
+        {}
+      ],
+      viewPort: [{}],
+      background: [{}]
+    });
+    stateMgr.extendLastState("translation-end-s0", {
+      mrna: [{}],
+      ribosomeUnder: [{}],
+      ribosomeOver: [{}],
+      trna: [
+        {
+          index: function () { return getStep() - 2; }
+        },
+        {
+          index: function () { return getStep() - 1; },
+          neck: 0
+        }
+      ],
+      viewPort: [{}],
+      background: [{}]
+    });
+    stateMgr.extendLastState("translation-end-s1", {
+      mrna: [{
+        bonds: function () {
+          var step = getStep();
+          return function (d) {
+            return d.idx < 3 * (step - 1) || d.idx >= 3 * step ? 0 : 1;
+          };
+        }
+      }],
+      ribosomeUnder: [{}],
+      ribosomeOver: [{}],
+      trna: [{
+        index: function () { return getStep() - 1; },
+      }],
+      viewPort: [{}],
+      background: [{}]
+    });
+    stateMgr.extendLastState("translation-end-s2", {
+      mrna: [{
+        bonds: 0
+      }],
+      ribosomeUnder: [{}],
+      ribosomeOver: [{}],
+      viewPort: [{}],
+      background: [{}]
+    });
+    stateMgr.extendLastState("translation-end-s3", {
+      mrna: [{}],
+      ribosomeBottom: [{
+        translateX: ribosomeX,
+        translateY: 1.75 * nucleotides.HEIGHT,
+        opacity: 1
+      }],
+      ribosomeTop: [{
+        translateX: ribosomeX,
+        translateY: 4.52 * nucleotides.HEIGHT,
+        opacity: 1
+      }],
+      viewPort: [{}],
+      background: [{}]
+    });
+    stateMgr.extendLastState("translation-end-s4", {
+      mrna: [{}],
+      ribosomeBottom: [{
+        translateY: 1.75 * nucleotides.HEIGHT - 0.3,
+      }],
+      ribosomeTop: [{
+        translateY: 4.52 * nucleotides.HEIGHT + 0.5,
+      }],
+      viewPort: [{}],
+      background: [{}]
+    });
+    stateMgr.extendLastState("translation-end-s5", {
+      mrna: [{}],
+      ribosomeBottom: [{
+        translateX: function () { return ribosomeX() + 8; },
+        translateY: 1.75 * nucleotides.HEIGHT - 0.5,
+      }],
+      ribosomeTop: [{
+        translateX: function () { return ribosomeX() + 8; },
+        translateY: 4.52 * nucleotides.HEIGHT + 5,
+      }],
+      viewPort: [{}],
+      background: [{}]
+    });
+    stateMgr.extendLastState("translation-end", {
+      mrna: [{}],
+      viewPort: [{}],
+      background: [{}]
+    });
+
+    return stateMgr;
+  };
+});
+
 
 /*
 Simple module which provides mutations context menu for DNA nucleotides.
@@ -28949,6 +29843,7 @@ CSS style definition: sass/lab/_context-menu.sass
             key = key.split(":")[1];
             item.$node.addClass("" + clickedNucleoType + "-to-" + key);
           }
+          d3.select(options.$trigger[0]).classed("glowing", true);
           return true;
         };
         onMenuHide = function(options) {
@@ -28960,6 +29855,7 @@ CSS style definition: sass/lab/_context-menu.sass
             key = key.split(":")[1];
             item.$node.removeClass("" + clickedNucleoType + "-to-" + key);
           }
+          d3.select(options.$trigger[0]).classed("glowing", false);
           return true;
         };
         $.contextMenu("destroy", selector);
@@ -29039,19 +29935,20 @@ CSS style definition: sass/lab/_context-menu.sass
 
 /*global define, d3 */
 
-define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/views/genetic-elements-renderer','common/views/state-manager','cs!md2d/views/mutations-context-menu'],function (require) {
-  var nucleotides  = require('md2d/views/nucleotides'),
+define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/views/genetic-elements-renderer','md2d/views/genetic-anim-states','cs!md2d/views/mutations-context-menu'],function (require) {
+  var nucleotides             = require('md2d/views/nucleotides'),
       GeneticElementsRenderer = require('md2d/views/genetic-elements-renderer'),
-      StateManager = require('common/views/state-manager'),
-      mutationsContextMenu = require('cs!md2d/views/mutations-context-menu'),
+      GeneticAnimStates       = require('md2d/views/genetic-anim-states'),
+      mutationsContextMenu    = require('cs!md2d/views/mutations-context-menu'),
 
-      H = GeneticElementsRenderer.H;
+      OBJECT_NAMES = GeneticElementsRenderer.OBJECT_NAMES;
 
-  function GeneticRenderer(svg, parent, model) {
+  function GeneticRenderer(modelView, model) {
     var api,
+        svg = modelView.containers.svg,
+        model2px = modelView.model2px,
+        model2pxInv = modelView.model2pxInv,
         viewportG = svg.select(".viewport"),
-        model2px = parent.model2px,
-        model2pxInv = parent.model2pxInv,
 
         g = null,
         currentTrans = null,
@@ -29059,18 +29956,10 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
         prevAnimState = null,
         prevAnimStep = null,
         suppressViewport = false,
+        transitionInProgress = false,
+        animStateInProgress = null,
 
-        objectNames = [
-          "viewPort", "background",
-          "cells", "dna1", "dna2", "dna3",
-          "polymeraseUnder", "polymeraseOver",
-          "polymeraseUnder", "polymeraseOver",
-          "dna", "dnaComp", "mrna", "nucleus",
-          "ribosomeBottom", "ribosomeTop",
-          "ribosomeUnder", "ribosomeOver",
-          "trna"
-        ],
-        stateMgr = new StateManager(objectNames),
+        stateMgr = new GeneticAnimStates(model),
         objectRenderer = new GeneticElementsRenderer(svg, model2px, model2pxInv, model),
 
         transitionFunction;
@@ -29081,562 +29970,33 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
       // Play animation when there is a "transition" event.
       model.geneticEngine().on("transition", transition);
 
+      // When DNAMutations is changed, cleanup & render again.
+      model.addPropertiesListener(["DNAMutations"], setup);
+
+      // When viewPortX is changed render DNA and mRNA again. Also center
+      // protein while in 'translation-end' state.
+      model.addPropertiesListener(["viewPortX"], function() {
+        // state.name values are subset of all animation states. We define
+        // more animation states than we publish for author / users
+        // (animations with -s0, -s1, (...) suffixes).
+        var data = stateMgr.getState(animStateInProgress || state.name);
+
+        objectRenderer.mrna(g, data, true);
+        objectRenderer.dna(g, data, true);
+        objectRenderer.dnaComp(g, data, true);
+
+        if (!transitionInProgress &&
+            state.name === "translation-end" &&
+            model.getNumberOfAtoms() > 0) {
+          model.geneticEngine().centerProtein();
+        }
+      });
+
       // Register mutation menus for DNA and DNA complement. Note that
       // jQuery.contextMenu uses event delegation, so it's fully enough to
       // register this menu only once, even before these elements exists.
-      mutationsContextMenu.register('[class~="dna"] [class~="coding-region"] [class~="nucleotide"]', model, false);
-      mutationsContextMenu.register('[class~="dna-comp"] [class~="coding-region"] [class~="nucleotide"]', model, true);
-
-      // Define animation states.
-      defineStates();
-    }
-
-    /**
-     * Defines all animations states.
-     * @private
-     */
-    function defineStates() {
-      var viewPortWidth  = model.get("viewPortWidth"),
-          viewPortHeight = model.get("viewPortHeight"),
-          vx = viewPortWidth * 0.5,
-          vy = viewPortHeight * 0.5,
-
-          lastStep;
-      function getStep() {
-        var step = state.step;
-        lastStep = !isNaN(step) ? step : lastStep;
-        return lastStep;
-      }
-      function ribosomeX() {
-        return (1.65 + Math.max(0, getStep() - 2) * 3) * nucleotides.WIDTH;
-      }
-      function trnaX() {
-        return this.index() * 3 * nucleotides.WIDTH;
-      }
-
-      stateMgr.newState("intro-cells", {
-        cells: [{
-          translateX: vx + 0.33,
-          translateY: vy,
-          scale: 1
-        }],
-        dna1: [{
-          translateX: vx + 0.33,
-          translateY: vy,
-          scale: 0.13,
-          opacity: 0
-        }],
-        viewPort: [{
-          position: 0,
-          ease: "cubic-in-out"
-        }],
-        background: [{
-          color: "#8492ef"
-        }]
-      });
-      stateMgr.extendLastState("intro-zoom1", {
-        cells: [{
-          translateX: vx,
-          scale: 6
-        }],
-        dna1: [{
-          translateX: vx,
-          scale: 0.78,
-          opacity: 5
-        }],
-        dna2: [{
-          translateX: vx,
-          translateY: vy,
-          scale: 0.5,
-          opacity: 0
-        }],
-        viewPort: [{}],
-        background: [{}]
-      });
-      stateMgr.extendLastState("intro-zoom2", {
-        cells: [{
-          scale: 24
-        }],
-        dna1: [{
-          scale: 3.12,
-          opacity: 0
-        }],
-        dna2: [{
-          scale: 2,
-          opacity: 1
-        }],
-        dna3: [{
-          translateX: vx,
-          translateY: vy,
-          scale: 0.2,
-          opacity: 0
-        }],
-        viewPort: [{}],
-        background: [{}]
-      });
-      stateMgr.extendLastState("intro-zoom3-s0", {
-        cells: [{}],
-        dna2: [{
-          scale: 3.8,
-          opacity: 0
-        }],
-        dna3: [{
-          scale: 0.4,
-          opacity: 1
-        }],
-        viewPort: [{}],
-        background: [{}]
-      });
-      stateMgr.extendLastState("intro-zoom3", {
-        cells: [{}],
-        dna3: [{
-          scale: 0.6
-        }],
-        polymeraseUnder: [{
-          scale: 0.2,
-          translateX: -2,
-          translateY: 4,
-          opacity: 1
-        }],
-        viewPort: [{}],
-        background: [{}]
-      });
-      stateMgr.extendLastState("intro-polymerase-s0", {
-        cells: [{}],
-        dna3: [{}],
-        polymeraseUnder: [{
-          scale: 0.8,
-          translateX: vx,
-          translateY: vy,
-          opacity: 1
-        }],
-        polymeraseOver: [{
-          translateX: vx,
-          translateY: vy,
-          scale: 0.8,
-          opacity: 0
-        }],
-        viewPort: [{}],
-        background: [{}]
-      });
-      stateMgr.extendLastState("intro-polymerase", {
-        cells: [{}],
-        dna3: [{}],
-        polymeraseUnder: [{
-          scale: 1,
-        }],
-        polymeraseOver: [{
-          scale: 1,
-          opacity: 1
-        }],
-        viewPort: [{}],
-        background: [{}]
-      });
-      stateMgr.extendLastState("dna-s0", {
-        cells: [{
-          opacity: 0
-        }],
-        dna3: [{
-          scale: 1.5
-        }],
-        polymeraseUnder: [{
-          scale: 2.5
-        }],
-        polymeraseOver: [{
-          scale: 2.5
-        }],
-        viewPort: [{}],
-        background: [{}]
-      });
-      stateMgr.extendLastState("dna", {
-        polymeraseUnder: [{
-          opacity: 0
-        }],
-        polymeraseOver: [{
-          opacity: 0
-        }],
-        dna3: [{
-          opacity: 0
-        }],
-        dna: [{
-          translateY: viewPortHeight / 2 + nucleotides.HEIGHT,
-          bonds: 1
-        }],
-        dnaComp: [{
-          translateY: viewPortHeight / 2 - nucleotides.HEIGHT,
-          bonds: 1
-        }],
-        viewPort: [{
-          position: -2
-        }],
-        background: [{
-          color: "url(#transcription-bg)"
-        }]
-      });
-      stateMgr.extendLastState("transcription", {
-        dna: [{
-          translateY: viewPortHeight / 2 + 2.5 * nucleotides.HEIGHT,
-          bonds: 0
-        }],
-        dnaComp: [{
-          translateY: viewPortHeight / 2 - 2.5 * nucleotides.HEIGHT,
-          bonds: function () {
-            var limit = getStep();
-            return function (d) {
-              return d.coding && d.idx < limit ? 1 : 0;
-            };
-          }
-        }],
-        mrna: [{
-          translateY: viewPortHeight / 2 - 0.5 * nucleotides.HEIGHT,
-          bonds: 1,
-          direction: 1
-        }],
-        viewPort: [{
-          position: function () {
-            return Math.max(0, Math.min(model.get("DNA").length - 10, getStep() - 6)) - 2;
-          },
-          ease: "linear"
-        }],
-        background: [{}]
-      });
-      stateMgr.extendLastState("transcription-end", {
-        dna: [{}],
-        dnaComp: [{
-          bonds: function () {
-            return function (d) {
-              return d.coding ? 1 : 0;
-            };
-          }
-        }],
-        mrna: [{}],
-        polymeraseUnder: [{
-          translateX: function () { return model.get("DNA").length * nucleotides.WIDTH; },
-          translateY: 0.5 * viewPortHeight,
-          scale: 3.5,
-          opacity: 0
-        }],
-        polymeraseOver: [{
-          translateX: function () { return model.get("DNA").length * nucleotides.WIDTH; },
-          translateY: 0.5 * viewPortHeight,
-          scale: 3.5,
-          opacity: 0
-        }],
-        viewPort: [{
-          position: function () { return Math.max(0, model.get("DNA").length - 10) - 2; }
-        }],
-        background: [{}]
-      });
-      stateMgr.extendLastState("after-transcription", {
-        dna: [{}],
-        dnaComp: [{}],
-        mrna: [{}],
-        polymeraseUnder: [{
-          opacity: 1
-        }],
-        polymeraseOver: [{
-          opacity: 1
-        }],
-        viewPort: [{}],
-        background: [{}]
-      });
-      stateMgr.extendLastState("before-translation-s0", {
-        dna: [{}],
-        dnaComp: [{}],
-        mrna: [{}],
-        polymeraseUnder: [{
-          scale: 1.4
-        }],
-        polymeraseOver: [{
-          scale: 1.4,
-          opacity: 0
-        }],
-        viewPort: [{}],
-        background: [{
-          color: "#8492ef"
-        }]
-      });
-      stateMgr.extendLastState("before-translation-s1", {
-        dna: [{}],
-        dnaComp: [{}],
-        mrna: [{}],
-        polymeraseUnder: [{
-          translateX: function () { return model.get("viewPortX") + 0.5 * viewPortWidth + 5; }, // + 5!
-          translateY: 0.5 * viewPortHeight - 2,
-          scale: 0.7
-        }],
-        viewPort: [{}],
-        background: [{}]
-      });
-      stateMgr.extendLastState("before-translation-s2", {
-        dna: [{}],
-        dnaComp: [{}],
-        mrna: [{}],
-        nucleus: [{
-          translateX: 0.5 * viewPortWidth - 2 * nucleotides.WIDTH,
-          translateY: 0.5 * viewPortHeight
-        }],
-        viewPort: [{
-          position: -2,
-          ease: "cubic-in-out"
-        }],
-        background: [{}]
-      });
-      stateMgr.extendLastState("before-translation-s3", {
-        dna: [{
-          translateY: 4 * nucleotides.HEIGHT
-        }],
-        dnaComp: [{
-          translateY: 2 * nucleotides.HEIGHT,
-          bonds: 0
-        }],
-        mrna: [{
-          bonds: 0
-        }],
-        nucleus: [{
-          translateY: 0
-        }],
-        viewPort: [{}],
-        background: [{
-          color: function() { return model.get("backgroundColor"); }
-        }]
-      });
-      stateMgr.extendLastState("before-translation-s4", {
-        dna: [{
-          translateY: -1 * nucleotides.HEIGHT
-        }],
-        dnaComp: [{
-          translateY: -3 * nucleotides.HEIGHT,
-        }],
-        mrna: [{
-          translateY: 2.5 * nucleotides.HEIGHT
-        }],
-        nucleus: [{
-          translateY: H.NUCLEUS * -0.5
-        }],
-        viewPort: [{}],
-        background: [{}]
-      });
-      stateMgr.extendLastState("before-translation", {
-        mrna: [{
-          translateY: 1.5 * nucleotides.HEIGHT,
-          direction: 2,
-          bonds: 0
-        }],
-        ribosomeBottom: [{
-          translateX: -3,
-          translateY: vy,
-          opacity: 0
-        }],
-        viewPort: [{}],
-        background: [{}]
-      });
-      stateMgr.extendLastState("translation-s0", {
-        mrna: [{}],
-        ribosomeBottom: [{
-          translateX: ribosomeX,
-          translateY: 1.75 * nucleotides.HEIGHT,
-          opacity: 1
-        }],
-        ribosomeTop: [{
-          translateX: -3,
-          translateY: 6,
-          opacity: 0
-        }],
-        viewPort: [{}],
-        background: [{}]
-      });
-      stateMgr.extendLastState("translation-s1", {
-        mrna: [{}],
-        ribosomeBottom: [{}],
-        ribosomeTop: [{
-          translateX: ribosomeX,
-          translateY: 4.52 * nucleotides.HEIGHT,
-          opacity: 1
-        }],
-        ribosomeUnder: [{
-          translateX: ribosomeX,
-          translateY: 3.7 * nucleotides.HEIGHT,
-          opacity: 0
-        }],
-        ribosomeOver: [{
-          translateX: ribosomeX,
-          translateY: 3.7 * nucleotides.HEIGHT,
-          opacity: 0
-        }],
-        viewPort: [{}],
-        background: [{}]
-      });
-      stateMgr.extendLastState("translation", {
-        mrna: [{
-          bonds: function () {
-            var step = getStep();
-            return function (d, i) {
-              return i < 3 * (step - 2) || i >= 3 * step ? 0 : 1;
-            };
-          }
-        }],
-        ribosomeUnder: [{
-          opacity: 1
-        }],
-        ribosomeOver: [{
-          opacity: 1
-        }],
-        trna: [
-          {
-            index: function () { return getStep() - 2; },
-            translateX: trnaX,
-            translateY: 2.5 * nucleotides.HEIGHT,
-            neck: 0
-          },
-          {
-            index: function () { return getStep() - 1; },
-            translateX: trnaX,
-            translateY: 2.5 * nucleotides.HEIGHT,
-            neck: 1
-          }
-        ],
-        viewPort: [{
-          position: function () { return Math.max(0, 3 * (getStep() - 3)) - 2; },
-          ease: "linear"
-        }],
-        background: [{}]
-      });
-      stateMgr.extendLastState("translation-step0", {
-        mrna: [{
-          bonds: function () {
-            var step = getStep();
-            return function (d, i) {
-              return i < 3 * (step - 3) || i >= 3 * step ? 0 : 1;
-            };
-          }
-        }],
-        ribosomeUnder: [{}],
-        ribosomeOver: [{}],
-        trna: [
-          {
-            index: function () { return getStep() - 3; },
-          },
-          {
-            index: function () { return getStep() - 2; },
-          },
-          {
-            index: function () { return getStep() - 1; },
-            translateX: trnaX,
-            translateY: 2.5 * nucleotides.HEIGHT,
-            neck: 1
-          }
-        ],
-        viewPort: [{}],
-        background: [{}]
-      });
-      stateMgr.extendLastState("translation-step1", {
-        mrna: [{}],
-        ribosomeUnder: [{}],
-        ribosomeOver: [{}],
-        trna: [
-          {},
-          {
-            neck: 0
-          },
-          {}
-        ],
-        viewPort: [{}],
-        background: [{}]
-      });
-      stateMgr.extendLastState("translation-end-s0", {
-        mrna: [{}],
-        ribosomeUnder: [{}],
-        ribosomeOver: [{}],
-        trna: [
-          {
-            index: function () { return getStep() - 2; }
-          },
-          {
-            index: function () { return getStep() - 1; },
-            neck: 0
-          }
-        ],
-        viewPort: [{}],
-        background: [{}]
-      });
-      stateMgr.extendLastState("translation-end-s1", {
-        mrna: [{
-          bonds: function () {
-            var step = getStep();
-            return function (d, i) {
-              return i < 3 * (step - 1) || i >= 3 * step ? 0 : 1;
-            };
-          }
-        }],
-        ribosomeUnder: [{}],
-        ribosomeOver: [{}],
-        trna: [{
-          index: function () { return getStep() - 1; },
-        }],
-        viewPort: [{}],
-        background: [{}]
-      });
-      stateMgr.extendLastState("translation-end-s2", {
-        mrna: [{
-          bonds: 0
-        }],
-        ribosomeUnder: [{}],
-        ribosomeOver: [{}],
-        viewPort: [{}],
-        background: [{}]
-      });
-      stateMgr.extendLastState("translation-end-s3", {
-        mrna: [{}],
-        ribosomeBottom: [{
-          translateX: ribosomeX,
-          translateY: 1.75 * nucleotides.HEIGHT,
-          opacity: 1
-        }],
-        ribosomeTop: [{
-          translateX: ribosomeX,
-          translateY: 4.52 * nucleotides.HEIGHT,
-          opacity: 1
-        }],
-        viewPort: [{}],
-        background: [{}]
-      });
-      stateMgr.extendLastState("translation-end-s4", {
-        mrna: [{}],
-        ribosomeBottom: [{
-          translateY: 1.75 * nucleotides.HEIGHT - 0.3,
-        }],
-        ribosomeTop: [{
-          translateY: 4.52 * nucleotides.HEIGHT + 0.5,
-        }],
-        viewPort: [{}],
-        background: [{}]
-      });
-      stateMgr.extendLastState("translation-end-s5", {
-        mrna: [{
-          translateX: function () { return -(model.get("DNA").length + 8) * nucleotides.WIDTH; }
-        }],
-        ribosomeBottom: [{
-          translateX: function () { return ribosomeX() + 8; },
-          translateY: 1.75 * nucleotides.HEIGHT - 0.5,
-        }],
-        ribosomeTop: [{
-          translateX: function () { return ribosomeX() + 8; },
-          translateY: 4.52 * nucleotides.HEIGHT + 5,
-        }],
-        viewPort: [{}],
-        background: [{}]
-      });
-      stateMgr.extendLastState("translation-end", {
-        viewPort: [{
-          xy: function () {
-            var cm = model.geneticEngine().proteinCenterOfMass() || {x: vx, y: vy};
-            return [cm.x - vx, cm.y - vy];
-          },
-          ease: "cubic-in-out"
-        }],
-        background: [{}]
-      });
+      mutationsContextMenu.register('[class~="dna"] [class~="clickable-nucleo"]', model, false);
+      mutationsContextMenu.register('[class~="dna-comp"] [class~="clickable-nucleo"]', model, true);
     }
 
     /**
@@ -29652,10 +30012,9 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
       cancelTransitions();
       viewportG.selectAll("g.genetics").remove();
 
-      if (!model.get("DNA") || state.name === "translation-end") {
-        // When DNA is not defined (=== "", undefined or null) or
-        // translation is ended, genetic renderer doesn't have to do
-        // anything.
+      if (!model.get("DNA")) {
+        // When DNA is not defined (=== "", undefined or null) genetic
+        // renderer has nothing to do.
         return;
       }
 
@@ -29681,7 +30040,14 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
       state = model.geneticEngine().state();
 
       cancelTransitions();
-      renderState(g, state.name);
+
+      // Force rendering of all objects when render was called before previous
+      // transition ended. This means that we can be somewhere between states
+      // and it's impossible to detect which objects should be rendered using
+      // previous and current animation state.
+      renderState(g, state.name, null, transitionInProgress);
+
+      transitionInProgress = false;
     }
 
     /**
@@ -29691,10 +30057,13 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
      * new state should be rendered immediately or using transition.
      *
      * @private
-     * @param  {d3.selection OR d3.transition} parent d3.selection or d3.transition object.
-     * @param  {String} animState  animation state name.
+     * @param {d3.selection OR d3.transition} parent d3.selection or d3.transition object.
+     * @param {String} animState  animation state name.
+     * @param {function} onStartCallback callback executed at the beginning of transition
+     *                                   or immediately if parent isn't a transition (optional).
+     * @param {boolean} forceAll forces re-rendering of all scene objects (optional).
      */
-    function renderState(parent, animState) {
+    function renderState(parent, animState, onStartCallback, forceAll) {
       var data = stateMgr.getState(animState),
           prevAnimStateData = prevAnimState ? stateMgr.getState(prevAnimState) : null;
 
@@ -29704,23 +30073,43 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
             inPrevData = !!(prevAnimStateData && prevAnimStateData[name].length);
 
         if (suppressViewport && name === "viewPort") {
-          // Viewport updat can be disabled using special variable.
+          // Viewport update can be disabled using special variable.
           return false;
-        } else if (inData || inPrevData) {
+        } else if (forceAll || inData || inPrevData) {
           // Render all objects from current and previous states.
           return true;
         }
         return false;
       }
 
-      parent.each(function() {
-        var parent = d3.select(this);
-        objectNames.forEach(function (name) {
-          if (shouldRenderObj(name)) {
-            objectRenderer[name](parent, data);
-          }
+      function render() {
+        parent.each(function() {
+          var parent = d3.select(this);
+          OBJECT_NAMES.forEach(function (name) {
+            if (shouldRenderObj(name)) {
+              objectRenderer[name](parent, data);
+            }
+          });
         });
-      });
+        if (onStartCallback) onStartCallback(parent);
+      }
+
+      if (parent.duration) {
+        // Transition.
+        parent.each("start.transition-name", function () {
+          animStateInProgress = animState;
+          // ! Set delay to 0 to ensure that transitions deriving from this one
+          // will be executed immediately! This is important, as we call rendering
+          // inside the 'start' event listener.
+          parent.delay(0);
+          render();
+        });
+        parent.each("end.transition-name", function () {
+          animStateInProgress = null;
+        });
+      } else {
+        render();
+      }
 
       prevAnimState = animState;
       prevAnimStep = state.step || 0; // when undefined or NaN
@@ -29766,6 +30155,7 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
         svg.select(".plot").transition().delay(0); // background changes
         viewportG.transition().delay(0);           // viewport scrolling
         currentTrans = null;
+        animStateInProgress = null;
       }
     }
 
@@ -29773,6 +30163,7 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
      * Triggers animation state transition.
      */
     function transition(transitionName, suppressViewportUpdate) {
+      transitionInProgress = true;
       suppressViewport = suppressViewportUpdate;
 
       // Update DNA state.
@@ -29790,6 +30181,7 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
       transitionFunction[transitionName]();
 
       currentTrans.each("end.trans-end", function() {
+        transitionInProgress = false;
         // Notify engine that transition has ended.
         model.geneticEngine().transitionEnded();
       });
@@ -29805,7 +30197,7 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
         // Special state - render current animation state again,
         // as model was updated.
         var t = nextTrans().ease("cubic-in-out").duration(800);
-        renderState(t, state.name);
+        renderState(t, state.name, null, true);
       },
 
       "intro-zoom1": function introZoom1() {
@@ -29840,32 +30232,35 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
 
 
         t = nextTrans().duration(1000);
-        renderState(t, "dna");
-        // Enter transition connected with new nucleotides,
-        // we don't want it this time.
-        t.selectAll(".nucleotide").duration(15);
-        t.selectAll(".plot").duration(15);
+        renderState(t, "dna", function (t) {
+          // Make some transitions almost immediate.
+          t.selectAll(".nucleotide").duration(5);
+          t.selectAll(".plot").duration(5);
+        });
       },
 
       "transcription:0": function transcription0() {
         var t = nextTrans().duration(1500);
-        renderState(t, "transcription");
-        // Reselect bonds transition, change duration to 250.
-        t.selectAll(".bonds").duration(250);
+        renderState(t, "transcription", function(t) {
+          // Reselect bonds transition, change duration to 250.
+          t.selectAll(".bonds").duration(250);
+        });
       },
 
       "transcription": function transcription() {
         var t = nextTrans().duration(500);
-        renderState(t, "transcription");
-        // Reselect bonds transition, change duration to ease to cubic.
-        t.selectAll(".bonds").ease("cubic");
+        renderState(t, "transcription", function (t) {
+          // Reselect bonds transition, change duration to ease to cubic.
+          t.selectAll(".bonds").ease("cubic");
+        });
       },
 
       "transcription-end": function transcriptionEnd() {
         var t = nextTrans().duration(500);
-        renderState(t, "transcription-end");
-        // Reselect bonds transition, change duration to ease to cubic.
-        t.selectAll(".bonds").ease("cubic");
+        renderState(t, "transcription-end", function (t) {
+          // Reselect bonds transition, change duration to ease to cubic.
+          t.selectAll(".bonds").ease("cubic");
+        });
       },
 
       "after-transcription": function afterTranscription() {
@@ -29875,8 +30270,9 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
 
       "before-translation": function beforeTranslation() {
         var t = nextTrans().ease("cubic-in-out").duration(1000);
-        renderState(t, "before-translation-s0");
-        t.selectAll(".plot").duration(5);
+        renderState(t, "before-translation-s0", function (t) {
+          t.selectAll(".plot").duration(1);
+        });
 
         t = nextTrans().ease("cubic-in-out").duration(1500);
         renderState(t, "before-translation-s1");
@@ -29885,9 +30281,10 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
         renderState(t, "before-translation-s2");
 
         t = nextTrans().ease("cubic").duration(1000);
-        renderState(t, "before-translation-s3");
-        t.selectAll(".bonds").duration(250);
-        t.selectAll(".plot").duration(1);
+        renderState(t, "before-translation-s3", function (t) {
+          t.selectAll(".bonds").duration(250);
+          t.selectAll(".plot").duration(1);
+        });
 
         t = nextTrans().ease("cubic-out").duration(1000);
         renderState(t, "before-translation-s4");
@@ -29915,17 +30312,15 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
             t;
 
         t = nextTrans().duration(newAADuration);
-        renderState(t, "translation-step0");
-        t.selectAll(".bonds").ease("cubic");
-        t.each("start", function () {
+        renderState(t, "translation-step0", function (t) {
+          t.selectAll(".bonds").ease("cubic");
           geneticEngine.translationStepStarted(codonIdx, 1.45 + codonIdx * 3 * nucleotides.WIDTH, 3.95,
               0.53 + codonIdx * 3 * nucleotides.WIDTH, 1.57, newAADuration);
         });
 
         t = nextTrans().duration(shiftDuration);
-        renderState(t, "translation-step1");
-        t.selectAll(".trna-neck").duration(150);
-        t.each("start", function () {
+        renderState(t, "translation-step1", function (t) {
+          t.selectAll(".trna-neck").duration(150);
           geneticEngine.shiftAminoAcids(codonIdx, 2 * nucleotides.WIDTH, shiftDuration);
         });
         t.each("end", function () {
@@ -29935,8 +30330,9 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
         // This will remove 3rd tRNA.
         if (codonIdx > 0) {
           t = nextTrans().duration(900);
-          renderState(t, "translation");
-          t.selectAll(".bonds").duration(150);
+          renderState(t, "translation", function (t) {
+            t.selectAll(".bonds").duration(150);
+          });
         }
       },
 
@@ -29953,12 +30349,14 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
           });
 
           t = nextTrans().duration(800);
-          renderState(t, "translation-end-s1");
-          t.selectAll(".bonds").duration(150);
+          renderState(t, "translation-end-s1", function (t) {
+            t.selectAll(".bonds").duration(150);
+          });
 
           t = nextTrans().duration(800);
-          t.selectAll(".bonds").duration(150);
-          renderState(t, "translation-end-s2");
+          renderState(t, "translation-end-s2", function (t) {
+            t.selectAll(".bonds").duration(150);
+          });
         }
 
         t = nextTrans().duration(500);
@@ -29971,7 +30369,9 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
         renderState(t, "translation-end-s5");
 
         t = nextTrans().duration(700);
-        renderState(t, "translation-end");
+        renderState(t, "translation-end", function () {
+          geneticEngine.centerProtein(700);
+        });
       }
     };
 
@@ -31837,7 +32237,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       amniacidContextMenu.register(model, api, '[class~="amino-acid"]');
 
       // Initialize renderers.
-      geneticRenderer = new GeneticRenderer(modelView.containers.svg, api, model);
+      geneticRenderer = new GeneticRenderer(modelView, model);
     }
 
     function photonPath(d) {
@@ -32093,7 +32493,7 @@ define('md2d/views/dna-edit-dialog',[],function () {
         init = function() {
           // Basic dialog elements.
           $dialogDiv = $('<div></div>');
-          $dnaTextInput = $('<input type="text" id="dna-sequence-input" size="45"></input>');
+          $dnaTextInput = $('<input type="text" id="dna-sequence-input" size="55"></input>');
           $dnaTextInput.appendTo($dialogDiv);
           $errorMsg = $('<p class="error"></p>');
           $errorMsg.appendTo($dialogDiv);
@@ -32149,9 +32549,10 @@ define('md2d/views/dna-edit-dialog',[],function () {
 
 /*global define, model */
 
-define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog'],function (require) {
+define('md2d/controllers/scripting-api',['require','common/alert','md2d/views/dna-edit-dialog'],function (require) {
 
-  var DNAEditDialog = require('md2d/views/dna-edit-dialog');
+  var alert = require('common/alert'),
+      DNAEditDialog = require('md2d/views/dna-edit-dialog');
 
   /**
     Define the model-specific MD2D scripting API used by 'action' scripts on interactive elements.
@@ -32700,7 +33101,9 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
           // or after transcrption process (so, state is different from:
           // "dna", "transcription:0", ..., "transcription-end").
           model.set("DNAState", "dna");
-        } else {
+          ge.transitionTo("transcription:0");
+          ge.transcribeStep(expectedNucleotide);
+        } else if (model.get("DNAState") !== "transcription-end") {
           // Proceed to the next step.
           ge.transcribeStep(expectedNucleotide);
         }
@@ -32711,15 +33114,12 @@ define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog']
        */
       translateDNAStep: function translateDNAStep() {
         var ge = model.geneticEngine();
-        if (ge.stateBefore("transcription-end")) {
-          // Ensure that we start from transcription-end.
-          model.set("DNAState", "transcription-end");
-        }
-        if (ge.stateBefore("translation:0")) {
+        if (ge.stateBefore("translation:0") || ge.stateAfter("translation-end")) {
           // Animate directly to the translation:0, merge a few shorter
           // animations.
-          ge.transitionTo("translation:0");
-        } else {
+          model.set("DNAState", "translation:0");
+          ge.transitionTo("translation:1");
+        } else if (model.get("DNAState") !== "translation-end") {
           // Proceed to the next step.
           ge.transitionToNextState();
         }
@@ -33841,6 +34241,14 @@ define('solar-system/models/metadata',[],function() {
       },
       viewPortY: {
         unitType: "length"
+      },
+      viewPortDrag: {
+        // Supported values:
+        // - true  -> dragging is enabled.
+        // - "x"   -> dragging is limited only to X axis.
+        // - "y"   -> dragging is limited only yo Y axis.
+        // - false -> dragging is disabled.
+        defaultValue: false
       },
       showClock: {
         defaultValue: true,
@@ -35481,11 +35889,11 @@ define('solar-system/views/renderer',['require','lab.config','common/console','c
             "cx": function(d) {
               return model2px(d.x); },
             "cy": function(d) {
-              return model2pxInv(d.y); }
-          })
-          .style({
-            "fill-opacity": function(d) { return d.visible; },
-            "fill": function (d, i) { return gradientNameForBody[i]; }
+              return model2pxInv(d.y); },
+            "fill-opacity": function(d) {
+              return d.visible; },
+            "fill": function (d, i) {
+              return gradientNameForBody[i]; }
           })
           .on("mousedown", astromonicalBodyMouseDown)
           .on("mouseover", astromonicalBodyMouseOver)

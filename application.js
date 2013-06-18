@@ -347,14 +347,20 @@ AUTHORING = false;
 
   function selectInteractiveSizeHandler() {
     var selection = $selectInteractiveSize.val(),
+        dim,
+        aspectRatio = 1.3,
         dimensions = {
-          "tiny":   {width: "350px",  height: "245px"},
-          "small":  {width: "400px",  height: "280px"},
-          "medium": {width: "600px",  height: "420px"},
-          "large":  {width: "1000px", height: "700px"}
-        },
-        dim = dimensions[selection];
+          "tiny":   { height: "245px" },
+          "small":  { height: "280px" },
+          "medium": { height: "450px" },
+          "large":  { height: "700px" }
+        };
 
+    dimensions.tiny.width   = parseInt(dimensions.tiny.height  ) * aspectRatio + "px";
+    dimensions.small.width  = parseInt(dimensions.small.height ) * aspectRatio + "px";
+    dimensions.medium.width = parseInt(dimensions.medium.height) * aspectRatio + "px";
+    dimensions.large.width  = parseInt(dimensions.large.height ) * aspectRatio + "px";
+    dim = dimensions[selection];
     saveOptionsToCookie();
     if (isFullPage()) {
       $content.width(dim.width).height(dim.height);

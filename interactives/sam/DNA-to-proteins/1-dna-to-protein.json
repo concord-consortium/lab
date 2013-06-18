@@ -1,17 +1,15 @@
 {
   "title": "DNA to Protein",
-  "publicationStatus": "draft",
-  "subtitle": "",
+  "publicationStatus": "public",
+  "subtitle": "Explore how the code embedded in DNA is translated into a protein.",
   "about": [
-    "Click **Prepare for transcription** to zoom in to cell nucleus and separate DNA strands.",
+    "Click **Transcribe** to zoom into the cell nucleus and see the chromosome unravel to expose the strands of DNA. The DNA separates and an mRNA strand is created by matching complementary nucleotides.",
     "",
-    "Then click on the **Transcribe** button to trigger complete DNA transcription.",
+    "Click **Translate** to watch the mRNA leave the nucleus for the cytoplasm and attach to a ribosome. tRNA molecules bring in amino acids and the amino acids are added in the correct order by matching complementary nucleotides.",
     "",
-    "After that you can clikc **Translate** to see amino acids being linked together into a protein.",
-    "",
-    "**Reset** button will bring you back to the beginning."
+    "After translation, inspect the protein to see how the amino acid sequence folded."
   ],
-  "fontScale": 0.75,
+  "fontScale": 0.65,
   "models": [
     {
       "id": "page3$0",
@@ -29,119 +27,137 @@
   "components": [
     {
       "type": "button",
-      "id": "zoom",
-      "text": "prepare for transcription",
-      "action": [
-        "set('DNAState', 'intro-cells');",
-        "animateToDNAState('dna');"
-      ]
-    },
-    {
-      "type": "button",
       "id": "transcribe",
-      "text": "transcribe",
+      "text": "Transcribe",
       "action": [
-        "set('DNAState', 'dna');",
+        "if (DNAStateAfter('transcription-end'))",
+        "  set('DNAState', 'dna');",
         "animateToDNAState('transcription-end');"
       ]
     },
     {
       "type": "button",
       "id": "transcribe-step",
-      "text": "transcribe step by step",
-      "action": "transcribeDNAStep();"
-    },
+      "text": "Transcribe step by step",
+      "action": [
+        "if (DNAStateBefore ('dna')) {",
+        "  animateToDNAState('transcription:1');",
+        "} else { ",
+        "  transcribeDNAStep();",
+        "}"
+      ]
+  },
     {
       "type": "button",
       "id": "translate",
-      "text": "translate",
+      "text": "Translate",
       "action": [
-        "if (DNAStateBefore('transcription-end')) set('DNAState', 'transcription-end');",
-        "if (DNAStateAfter('translation:0')) set('DNAState', 'translation:0');",
+        "if (DNAStateBefore('transcription-end')) {",
+        "  alert('Translation can only occur after transcription is complete.');",
+        "  return;",
+        "}",
+        "if (get('DNAState') === 'translation-end')",
+        "  set('DNAState', 'translation:0');",
         "animateToDNAState('translation-end');"
       ]
     },
     {
       "type": "button",
       "id": "translate-step",
-      "text": "translate step by step",
-      "action": "translateDNAStep();"
-    },
+      "text": "Translate step by step",
+      "action": [
+        "if (DNAStateBefore('transcription-end')) {",
+        "  alert('Translation can only occur after transcription is complete.');",
+        "  return;",
+        "} else {",
+        "  translateDNAStep();",
+        "}"
+      ]
+  },
     {
       "type": "text",
-      "id": "label1A",
+      "id": "label1",
       "text": "Click"
     },
     {
       "type": "text",
-      "id": "label1",
-      "text": "to zoom into the cell nucleus."
-    },
-    {
-      "type": "text",
-      "id": "label2A",
-      "text": "Then click"
-    },
-    {
-      "type": "text",
       "id": "label2",
-      "text": "to trigger complete DNA transcription or"
-    },
-    {
-      "type": "text",
-      "id": "label3A",
-      "text": "Finally click"
+      "text": "to see full mRNA strand created or"
     },
     {
       "type": "text",
       "id": "label3",
-      "text": "to see amino acids being linked together into a protein or"
+      "text": "Click"
+    },
+    {
+      "type": "text",
+      "id": "label4",
+      "text": "to generate full protein from mRNA or"
+    },
+    {
+      "type": "button",
+      "id": "start",
+      "text": "Start/continue model",
+      "action": [
+        "if (DNAStateBefore('translation-end')) animateToDNAState('translation-end');",
+        "else start();"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "stop",
+      "text": "Stop",
+      "action": [
+        "if (DNAStateBefore('translation-end')) stopDNAAnimation();",
+        "else stop();"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": "reset();"
     },
     {
       "type": "button",
       "id": "prev-state-jump",
-      "text": "<<",
+      "text": "<< Jump",
       "action": "jumpToPrevDNAState();"
     },
     {
       "type": "button",
-      "id": "stop-anim",
-      "text": "stop animation",
-      "action": "stopDNAAnimation();"
-    },
-    {
-      "type": "button",
       "id": "next-state",
-      "text": "proceed one step",
+      "text": "Continue one step",
       "action": "animateToNextDNAState();"
     },
     {
       "type": "button",
       "id": "next-state-jump",
-      "text": ">>",
+      "text": "Jump >>",
       "action": "jumpToNextDNAState();"
-    }
-  ],
-  "template": [
-    {
-      "id": "bottom",
-      "top": "model.bottom",
-      "width": "interactive.width",
-      "padding-top": "0.5em"
     },
     {
-      "id": "bottom-2",
-      "top": "bottom.bottom",
-      "width": "interactive.width",
-      "padding-top": "1em"
+      "type": "button",
+      "id": "dna-dialog",
+      "text": "Edit DNA",
+      "action": "openDNADialog();"
     }
   ],
   "layout": {
-    "bottom": [
-      ["label1A", "zoom", "label1"],
-      ["label2A", "transcribe", "label2", "transcribe-step"],
-      ["label3A", "translate", "label3", "translate-step"]
-    ],
-    "bottom-2": ["prev-state-jump", "stop-anim", "next-state", "next-state-jump"]
-  }
+    "model-bottom": [
+      ["label1", "transcribe", "label2", "transcribe-step"],
+      ["label3", "translate", "label4", "translate-step"],
+      ["start", "stop", "reset", "dna-dialog"],
+      ["prev-state-jump", "next-state", "next-state-jump"]
+    ]
+  },
+  "template": [
+    {
+      "id": "model-bottom",
+      "left": "model.left",
+      "top": "model.bottom",
+      "width": "model.width",
+      "align": "center"
+    }
+  ]
 }

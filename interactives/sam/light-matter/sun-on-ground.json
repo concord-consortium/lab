@@ -1,0 +1,116 @@
+{
+  "title": "Sunlight, Infrared, CO2 and the Ground",
+  "publicationStatus": "draft",
+  "subtitle": "Explore how light interacts with both the ground and CO2",
+  "about": "",
+  "fontScale": 0.8,
+  "models": [
+    {
+      "id": "sun-on-ground",
+      "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/sunOnGround.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "id": "sun-on-co2",
+      "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/sunOnCO2.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "id": "sun-on-ground-and-co2",
+      "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/sunOnGroundAndCO2.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "id": "ir-on-co2",
+      "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/IROnCO2.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "text",
+      "id": "text-select-model",
+      "text": "**Select a model**"
+    },
+    {
+      "type": "text",
+      "id": "text-photon-key",
+      "text": "*Photons*"
+    },
+    {
+      "type": "radio",
+      "id": "select-model",
+      "options": [
+        {
+          "text": "Sun on ground",
+          "loadModel": "sun-on-ground",
+          "selected": true
+        },
+        {
+          "text": "Sun on CO₂",
+          "loadModel": "sun-on-co2"
+        },
+        {
+          "text": "Infrared on CO₂",
+          "loadModel": "ir-on-co2"
+        },
+        {
+          "text": "Sun on ground and CO₂",
+          "loadModel": "sun-on-ground-and-co2"
+        }
+      ]
+    },
+    {
+      "type": "barGraph",
+      "id": "thermometer",
+      "property": "temperature",
+      "title": "Temperature",
+      "labels": 0,
+      "min": 0,
+      "max": 350
+    },
+    {
+      "type": "checkbox",
+      "id": "enable-light-source",
+      "text": "Light source on",
+      "textOn": "right",
+      "property": "lightSourceEnabled"
+    },
+    {
+      "type": "checkbox",
+      "id": "ke-shading",
+      "text": "Display heat in molecules",
+      "property": "keShading"
+    },
+    {
+      "type": "image",
+      "id": "key-photon",
+      "src": "photonKey.svg",
+      "width": "10em"
+    }
+  ],
+  "layout": {
+    "left": [
+      ["text-select-model"],
+      ["select-model"],
+      ["text-photon-key"],
+      ["key-photon"]
+    ],
+    "right": [
+      "thermometer"
+    ],
+    "bottom": [
+      ["enable-light-source"],
+      ["ke-shading"]
+    ]
+  },
+  "template": "left-right-bottom"
+}

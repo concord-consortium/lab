@@ -10,7 +10,8 @@
         "controlButtons": "play_reset",
         "gridLines": true,
         "xunits": true,
-        "yunits": true
+        "yunits": true,
+        "viewPortDrag": true
       }
     }
   ],
@@ -74,6 +75,12 @@
       "type": "checkbox",
       "text": "gridLines",
       "property": "gridLines"
+    },
+    {
+      "id": "drag",
+      "type": "checkbox",
+      "text": "viewPortDrag",
+      "property": "viewPortDrag"
     }
   ],
   "layout": {
@@ -85,7 +92,8 @@
       ["yunits"],
       ["xlabel"],
       ["ylabel"],
-      ["gridLines"]
+      ["gridLines"],
+      ["drag"]
     ]
   }
 }

@@ -1,0 +1,60 @@
+{
+  "title": "Blackbody Heat and Emission",
+  "publicationStatus": "draft",
+  "subtitle": "Blackbody radiation at different temperatures",
+  "about": "",
+  "models": [
+    {
+      "id": "blackbody$0",
+      "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/blackbody$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "image",
+      "id": "img-photons",
+      "src": "photons.png",
+      "width": "8em"
+    },
+    {
+      "type": "slider",
+      "id": "temperature-slider",
+      "min": 0,
+      "max": 10000,
+      "labels": [
+        {
+          "value": 0,
+          "label": "Low"
+        },
+        {
+          "value": 10000,
+          "label": "High"
+        }
+      ],
+      "steps": 50,
+      "title": "Temperature",
+      "property": "targetTemperature"
+    },
+    {
+      "type": "barGraph",
+      "id": "thermometer",
+      "property": "temperature",
+      "title": "Temperature (K)",
+      "labels": 0,
+      "min": 0,
+      "max": 10000
+    }
+  ],
+  "layout": {
+    "left": [
+      "img-photons"
+    ],
+    "right": [
+      "thermometer"
+    ]
+  },
+  "template": "left-right-bottom"
+}

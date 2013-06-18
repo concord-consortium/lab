@@ -743,6 +743,16 @@
       "publicationStatus": "public"
     },
     {
+      "title": "Geniverse Gene to Protein",
+      "path": "interactives/external-projects/geniverse/geniverse-gene-to-protein.json",
+      "groupKey": "external-projects/geniverse",
+      "subtitle": "",
+      "about": [
+        "Geniverse Gene to Protein Genie"
+      ],
+      "publicationStatus": "public"
+    },
+    {
       "title": "Pendulum",
       "path": "interactives/inquiry-space/pendulum/1-pendulum.json",
       "groupKey": "inquiry-space/pendulum",
@@ -1198,71 +1208,57 @@
       "title": "DNA to Protein",
       "path": "interactives/sam/DNA-to-proteins/1-dna-to-protein.json",
       "groupKey": "sam/DNA-to-proteins",
-      "subtitle": "",
+      "subtitle": "Explore how the code embedded in DNA is translated into a protein.",
       "about": [
-        "Click **Prepare for transcription** to zoom in to cell nucleus and separate DNA strands.",
+        "Click **Transcribe** to zoom into the cell nucleus and see the chromosome unravel to expose the strands of DNA. The DNA separates and an mRNA strand is created by matching complementary nucleotides.",
         "",
-        "Then click on the **Transcribe** button to trigger complete DNA transcription.",
+        "Click **Translate** to watch the mRNA leave the nucleus for the cytoplasm and attach to a ribosome. tRNA molecules bring in amino acids and the amino acids are added in the correct order by matching complementary nucleotides.",
         "",
-        "After that you can clikc **Translate** to see amino acids being linked together into a protein.",
-        "",
-        "**Reset** button will bring you back to the beginning."
+        "After translation, inspect the protein to see how the amino acid sequence folded."
       ],
-      "publicationStatus": "draft"
+      "publicationStatus": "public"
     },
     {
       "title": "Modeling Transcription",
       "path": "interactives/sam/DNA-to-proteins/2-modeling-transcription.json",
       "groupKey": "sam/DNA-to-proteins",
-      "subtitle": "",
+      "subtitle": "Explore how an mRNA copy is made of DNA.",
       "about": [
-        "Click **Prepare for transcription** to zoom in to cell nucleus and separate DNA strands.",
+        "One strand of the DNA is used as a template to create an mRNA copy. This process is called transcription. An mRNA copy needs to be made because DNA cannot leave the nucleus.",
         "",
-        "Then click on the button representing the correct **complementary** RNA nucleotide to proceed transcription: A, U, G or C.",
+        "Protein complexes separate the DNA helix to allow complementary mRNA nucleotides to bind to the DNA sequence. The pairing of nucleotides is very specific.",
         "",
-        "You can also just proceed step by step using **Proceed one step** button.",
-        "",
-        "**<<** and **>>** buttons can be used to jump quickly between steps.",
-        "",
-        "**Reset** button will bring you back to the beginning."
+        "Use the **A**, **U**, **G** and **C** buttons to place the correct mRNA nucleotide with each DNA nucleotide."
       ],
-      "publicationStatus": "draft"
+      "publicationStatus": "public"
     },
     {
       "title": "Modeling Translation",
       "path": "interactives/sam/DNA-to-proteins/3-modeling-translation.json",
       "groupKey": "sam/DNA-to-proteins",
-      "subtitle": "",
+      "subtitle": "Explore how a protein is made from an mRNA sequence.",
       "about": [
-        "Click **Prepare for transcription** to zoom in to cell nucleus and separate DNA strands.",
+        "Translation, or making a protein from an mRNA sequence, occurs on ribosomes. The amino acids are brought to the ribosome by transfer RNAs (tRNAs).",
         "",
-        "Then click on the **Transcribe** button to trigger complete DNA transcription.",
+        "The tRNA pairs up with the mRNA by matching up complementary nucleotides. This ensures that the correct amino acid is added to the protein.",
         "",
-        "After that you can clikc **Translate** to see amino acids being linked together into a protein.",
-        "",
-        "You can also just proceed step by step using **Proceed one step** button.",
-        "",
-        "**<<** and **>>** buttons can be used to jump quickly between steps.",
-        "",
-        "**Reset** button will bring you back to the beginning."
+        "Can you identify what the tRNA codon will be for each triplet of mRNA nucleotides?"
       ],
-      "publicationStatus": "draft"
-    },
-    {
-      "title": "Being a Ribosome",
-      "path": "interactives/sam/DNA-to-proteins/4-being-a-ribosome.json",
-      "groupKey": "sam/DNA-to-proteins",
-      "subtitle": "",
-      "about": "",
-      "publicationStatus": "draft"
+      "publicationStatus": "public"
     },
     {
       "title": "Mutations",
-      "path": "interactives/sam/DNA-to-proteins/6-mutations.json",
+      "path": "interactives/sam/DNA-to-proteins/4-mutations.json",
       "groupKey": "sam/DNA-to-proteins",
-      "subtitle": "",
-      "about": "",
-      "publicationStatus": "draft"
+      "subtitle": "Explore how changing the DNA sequence can change the amino acid sequence of a protein.",
+      "about": [
+        "Mutations are mistakes in the DNA sequence. Use the **Edit DNA** button to change the entire sequence or click on an individual nucleotide to make an insertion, deletion or substitution mutation. How does changing the DNA sequence change the resulting protein?",
+        "",
+        "You can quickly jump between the DNA sequence and final protein by using the **Show DNA** and **Show protein** buttons.",
+        "",
+        "Are some types of mutations more damaging than others?"
+      ],
+      "publicationStatus": "public"
     },
     {
       "title": "Diffusion of a Drop",
@@ -1564,6 +1560,30 @@
       "path": "interactives/sam/intermolecular-attractions/8-your-immune-system.json",
       "groupKey": "sam/intermolecular-attractions",
       "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Blackbody Heat and Emission",
+      "path": "interactives/sam/light-matter/blackbody-emission.json",
+      "groupKey": "sam/light-matter",
+      "subtitle": "Blackbody radiation at different temperatures",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Light Matter Feature Test",
+      "path": "interactives/sam/light-matter/light-matter-feature-test.json",
+      "groupKey": "sam/light-matter",
+      "subtitle": "Testing of Light-Matter model features",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Sunlight, Infrared, CO2 and the Ground",
+      "path": "interactives/sam/light-matter/sun-on-ground.json",
+      "groupKey": "sam/light-matter",
+      "subtitle": "Explore how light interacts with both the ground and CO2",
       "about": "",
       "publicationStatus": "draft"
     },
@@ -5774,6 +5794,11 @@
       "category": "Curriculum"
     },
     {
+      "path": "sam/light-matter",
+      "name": "Science of Atoms and Molecules: Light and Matter",
+      "category": "Curriculum"
+    },
+    {
       "path": "inquiry-space/pendulum",
       "name": "Inquiry Space: Pendulums",
       "category": "Curriculum"
@@ -5932,6 +5957,11 @@
       "path": "solar-system",
       "name": "Solar System Interactives",
       "category": "Tests"
+    },
+    {
+      "path": "external-projects/geniverse",
+      "name": "External Projects",
+      "category": "Curriculum"
     }
   ]
 }

@@ -1,17 +1,13 @@
 {
   "title": "Modeling Transcription",
-  "publicationStatus": "draft",
-  "subtitle": "",
+  "publicationStatus": "public",
+  "subtitle": "Explore how an mRNA copy is made of DNA.",
   "about": [
-    "Click **Prepare for transcription** to zoom in to cell nucleus and separate DNA strands.",
+    "One strand of the DNA is used as a template to create an mRNA copy. This process is called transcription. An mRNA copy needs to be made because DNA cannot leave the nucleus.",
     "",
-    "Then click on the button representing the correct **complementary** RNA nucleotide to proceed transcription: A, U, G or C.",
+    "Protein complexes separate the DNA helix to allow complementary mRNA nucleotides to bind to the DNA sequence. The pairing of nucleotides is very specific.",
     "",
-    "You can also just proceed step by step using **Proceed one step** button.",
-    "",
-    "**<<** and **>>** buttons can be used to jump quickly between steps.",
-    "",
-    "**Reset** button will bring you back to the beginning."
+    "Use the **A**, **U**, **G** and **C** buttons to place the correct mRNA nucleotide with each DNA nucleotide."
   ],
   "fontScale": 0.8,
   "models": [
@@ -32,7 +28,7 @@
     {
       "type": "button",
       "id": "begin",
-      "text": "prepare for transcription",
+      "text": "Prepare for transcription",
       "action": "animateToDNAState('transcription:0');"
     },
     {
@@ -78,14 +74,23 @@
     {
       "type": "text",
       "id": "label2",
-      "text": "Then click on the button representing the correct **complementary** RNA nucleotide to proceed transcription:"
+      "text": "Then click on the button representing the correct **complementary** RNA nucleotide to proceed to the next step in the transcription process:"
     }
   ],
   "layout": {
-    "bottom": [
+    "model-bottom": [
       ["label1A", "begin", "label1B"],
       ["label2"],
       ["transcribeA", "transcribeU", "transcribeG", "transcribeC", "reset"]
     ]
-  }
+  },
+  "template": [
+    {
+      "id": "model-bottom",
+      "left": "model.left",
+      "top": "model.bottom",
+      "width": "model.width",
+      "align": "center"
+    }
+  ]
 }

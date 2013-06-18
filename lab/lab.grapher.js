@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "0c134c6361ce3034e50e076235c69084c53adafe",
-        "short_sha":      "0c134c63",
-        "url":            "https://github.com/concord-consortium/lab/commit/0c134c63",
+        "sha":           "1ac3790593ab99242f5c84d04c6b15f6a098dd74",
+        "short_sha":      "1ac37905",
+        "url":            "https://github.com/concord-consortium/lab/commit/1ac37905",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-06-07 09:58:07 -0400",
-        "short_message": "Makefile: remove extra resources copied to public/lab",
-        "message":       "Makefile: remove extra resources copied to public/lab\n\nAlso cleanup and comments.\n\nThere is a new task: clean-public.\n\nRunning:\n\n  make clean-public; make public\n\nWill be faster and in some cases will be sufficient to replace:\n\n  make clean; make"
+        "date":          "2013-06-18 10:57:18 -0400",
+        "short_message": "release archives now linked from public/version",
+        "message":       "release archives now linked from public/version"
       },
       "dirty": false
     }
@@ -6036,9 +6036,7 @@ define('grapher/bar-graph/bar-graph-view',['require','common/jquery-plugins','ba
               "x": offset,
               "y": this.yScale(options.max),
               "rx": "0.5em",
-              "ry": "0.5em"
-            })
-            .attr({
+              "ry": "0.5em",
               "fill": this._getFillGradient(options.fillColor)
             });
 
@@ -6048,9 +6046,7 @@ define('grapher/bar-graph/bar-graph-view',['require','common/jquery-plugins','ba
               "width": options.barWidth,
               "x": offset,
               "rx": "0.5em",
-              "ry": "0.5em"
-            })
-            .style({
+              "ry": "0.5em",
               "fill": this._getBarGradient(options.barColor)
             });
 
