@@ -22,7 +22,7 @@ class AwsLabServer
       :littlechef_path => File.join(CONFIG_PATH, 'littlechef'),
       :pem => { :name => PEM_NAME, :path => PEM_PATH },
       :server => {
-        :image_id => "ami-5556273c",
+        :image_id => "ami-41493828",
         :flavor_id => "c1.medium",
         :groups => ["lab.dev"],
         :tags => { "Name" => options[:name] }
@@ -69,7 +69,7 @@ file: ~/.fog
       unless run_local_command("ssh ubuntu@#{@name} exit")
         # setup ssh communicatiopnb
         add_hostname_to_ssh_config
-        erase_existing_host_key
+        erase_existing_host_key(@name)
         add_new_host_key
       end
     end
@@ -118,7 +118,7 @@ file: ~/.fog
       new_dns_record(@name, @ipaddress)
     end
     add_hostname_to_ssh_config
-    erase_existing_host_key
+    erase_existing_host_key(@name)
     add_new_host_key
     write_littlechef_node
     update_littlechef_node
@@ -132,6 +132,8 @@ file: ~/.fog
     if @server
       puts "\n*** terminating server: #{@server.id}, #{@server.dns_name}"  if @options[:verbose]
       @server.destroy
+      erase_existing_host_key(@ipaddress)
+      erase_existing_host_key(@name)
     end
   end
 
@@ -139,6 +141,9 @@ file: ~/.fog
     @name = @options[:name] = hostname
     @options[:server][:tags]["Name"] = @name
     self.delete(@name)
+    old_IP_address = @ipaddress
+    erase_existing_host_key(old_IP_address)
+    erase_existing_host_key(@name)
     puts "\n*** re-creating server: #{@name}" if @options[:verbose]
     @server = @compute.servers.create(@options[:server])
     puts "\n*** waiting for server: #{@server.id} to be ready ..." if @options[:verbose]
@@ -146,7 +151,6 @@ file: ~/.fog
     @server.reload
     puts "\n*** associating server: #{@server.id}, #{@server.dns_name} with ipaddress: #{@ipaddress}"  if @options[:verbose]
     @compute.associate_address(@server.id, @ipaddress)
-    erase_existing_host_key
     add_new_host_key
     write_littlechef_node
     update_littlechef_node
@@ -258,8 +262,8 @@ Host #{@name}
   end
 
   # Erase any existing RSA host key in your local ~/.ssh/known_hosts
-  def erase_existing_host_key
-    run_local_command("ssh-keygen -R #{@name}")
+  def erase_existing_host_key(key)
+    run_local_command("ssh-keygen -R #{key}")
   end
 
   # Connect once with StrictHostKeyChecking off to add the new host key
