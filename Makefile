@@ -148,7 +148,8 @@ clean-archives:
 # separate tasks for building and cleaning Java resources since they do not get updated often
 .PHONY: jnlp-all
 jnlp-all: clean-jnlp \
-	public/jnlp
+	public/jnlp \
+	copy-resources-to-public
 	script/build-and-deploy-jars.rb --maven-update
 
 .PHONY: clean-jnlp
