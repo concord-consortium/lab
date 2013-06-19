@@ -1,0 +1,19 @@
+{
+  "title": "Ray Optics*",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "* no further description available",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "ray-optics",
+      "url": "imports/energy2d/models-json/ray-optics.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

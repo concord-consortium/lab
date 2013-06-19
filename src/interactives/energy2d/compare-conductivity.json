@@ -1,0 +1,19 @@
+{
+  "title": "Heat Race",
+  "publicationStatus": "draft",
+  "subtitle": "Heat Flow through Materials of Different Conductivities",
+  "about": "",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "compare-conductivity",
+      "url": "imports/energy2d/models-json/compare-conductivity.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

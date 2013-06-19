@@ -1,0 +1,19 @@
+{
+  "title": "Series Conductors",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "series-conductors",
+      "url": "imports/energy2d/models-json/series-conductors.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

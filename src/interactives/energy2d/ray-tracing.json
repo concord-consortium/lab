@@ -1,0 +1,19 @@
+{
+  "title": "Ray Optics",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "ray-tracing",
+      "url": "imports/energy2d/models-json/ray-tracing.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

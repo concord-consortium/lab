@@ -1,0 +1,19 @@
+{
+  "title": "Focusing Heat?",
+  "publicationStatus": "draft",
+  "subtitle": "Can Heat be Focused through Forced Convection?",
+  "about": "",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "heat-concentration",
+      "url": "imports/energy2d/models-json/heat-concentration.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "title": "Infiltration",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "infiltration",
+      "url": "imports/energy2d/models-json/infiltration.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

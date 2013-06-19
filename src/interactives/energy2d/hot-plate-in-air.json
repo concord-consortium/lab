@@ -1,0 +1,19 @@
+{
+  "title": "A Hot Plate in the Air",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "hot-plate-in-air",
+      "url": "imports/energy2d/models-json/hot-plate-in-air.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

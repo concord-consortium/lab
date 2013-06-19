@@ -1,0 +1,19 @@
+{
+  "title": "Heat Race",
+  "publicationStatus": "draft",
+  "subtitle": "Heat Flow through Materials of Different Heat Capacities",
+  "about": "",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "compare-capacity",
+      "url": "imports/energy2d/models-json/compare-capacity.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

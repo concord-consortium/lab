@@ -1,0 +1,58 @@
+{
+  "title": "Two Blocks",
+  "publicationStatus": "draft",
+  "subtitle": "What Really Makes the Sense of Warmth or Coldness?",
+  "about": "The amount of heat transferred from an object to your hand or vice versa determines what you really feel when you touch it.\nThe model uses two contacting objects at different temperatures to simulate the heat transfer of touch. \nThe amount of heat transferred between them depends on a number of factors that you will explore with this simulation.",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "two-blocks",
+      "url": "imports/energy2d/models-json/two-blocks.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "sun-angle-slider",
+      "min": 0,
+      "max": 180,
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": 0,
+          "label": "Dawn"
+        },
+        {
+          "value": 180,
+          "label": "Dusk"
+        }
+      ],
+      "steps": 90,
+      "title": "Sun Angle",
+      "property": "sun_angle"
+    },
+    {
+      "type": "slider",
+      "id": "sun-angle-slider",
+      "min": 0,
+      "max": 180,
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": 0,
+          "label": "Dawn"
+        },
+        {
+          "value": 180,
+          "label": "Dusk"
+        }
+      ],
+      "steps": 90,
+      "title": "Sun Angle",
+      "property": "sun_angle"
+    }
+  ]
+}

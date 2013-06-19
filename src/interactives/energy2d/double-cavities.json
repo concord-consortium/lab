@@ -1,0 +1,19 @@
+{
+  "title": "Double Cavity Flows",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "double-cavities",
+      "url": "imports/energy2d/models-json/double-cavities.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

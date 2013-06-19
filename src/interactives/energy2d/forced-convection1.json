@@ -1,0 +1,19 @@
+{
+  "title": "Convection",
+  "publicationStatus": "draft",
+  "subtitle": "Forced Convection: Fluid Motion Driven by External Sources",
+  "about": "The following model shows how forced convection depends on the wind speed and the temperature of the heat/cool source\n(how the wind blows away heat of your food or defrost the side windows of your car).",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "forced-convection1",
+      "url": "imports/energy2d/models-json/forced-convection1.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

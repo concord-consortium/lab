@@ -1,0 +1,19 @@
+{
+  "title": "Natural Convection Temperature*",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "* no further description available",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "natural-convection-temperature",
+      "url": "imports/energy2d/models-json/natural-convection-temperature.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

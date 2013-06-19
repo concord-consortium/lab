@@ -1,0 +1,19 @@
+{
+  "title": "Internal Heater*",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "* no further description available",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "internal-heater",
+      "url": "imports/energy2d/models-json/internal-heater.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

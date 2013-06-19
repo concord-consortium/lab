@@ -1,0 +1,19 @@
+{
+  "title": "Different Specific Heat2*",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "* no further description available",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "different-specific-heat2",
+      "url": "imports/energy2d/models-json/different-specific-heat2.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "title": "A Heat Shield",
+  "publicationStatus": "draft",
+  "subtitle": "Protecting a Spaceship During Re-Entry",
+  "about": "",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "heatshield",
+      "url": "imports/energy2d/models-json/heatshield.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "title": "Convective Heat Flow",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "forced-convection2",
+      "url": "imports/energy2d/models-json/forced-convection2.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

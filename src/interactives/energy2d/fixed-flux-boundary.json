@@ -1,0 +1,19 @@
+{
+  "title": "Fixed Flux Boundary*",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "* no further description available",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "fixed-flux-boundary",
+      "url": "imports/energy2d/models-json/fixed-flux-boundary.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

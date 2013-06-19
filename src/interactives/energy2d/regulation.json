@@ -1,0 +1,19 @@
+{
+  "title": "Regulating Temperature",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "Two closed boxes have identical heaters but the heat capacity of the left-hand box is much greater than \nthe heat capacity of the right-hand box. The power switch controls both heaters.",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "regulation",
+      "url": "imports/energy2d/models-json/regulation.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

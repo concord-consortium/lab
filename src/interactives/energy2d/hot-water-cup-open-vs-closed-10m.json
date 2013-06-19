@@ -1,0 +1,19 @@
+{
+  "title": "Hot Water Cup Open Vs Closed 10m*",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "* no further description available",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "hot-water-cup-open-vs-closed-10m",
+      "url": "imports/energy2d/models-json/hot-water-cup-open-vs-closed-10m.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}
