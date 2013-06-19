@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# ./create-versioned-public-dir.sh [name-of-versioned-dir]
+# script/create-archived-public-dir.sh [name-of-versioned-dir]
 #
 if ps aux | grep -v grep | grep 'ruby bin/guard' > /dev/null
 then
