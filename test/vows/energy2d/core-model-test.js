@@ -5,8 +5,9 @@ var vows      = require("vows"),
     assert    = require("assert"),
     requirejs = helpers.getRequireJS(),
 
+    validator = requirejs('common/validator'),
+    metadata  = requirejs('energy2d/metadata'),
     core   = requirejs('energy2d/models/core-model'),
-    config = requirejs('energy2d/models/default-config'),
     photon = requirejs('energy2d/models/photon'),
     Photon = photon.Photon,
 
@@ -16,10 +17,8 @@ suite.addBatch({
   'Core model': {
     '(initialized with empty options)': {
       topic: function () {
-        return core.makeCoreModel({});
-      },
-      'should have default options': function (model) {
-        assert.deepEqual(model.getModelOptions(), config.DEFAULT_VALUES.model);
+        var mainProperties = validator.validateCompleteness(metadata.mainProperties, {});
+        return core.makeCoreModel(mainProperties);
       },
       'should start at the step 0': function (model) {
         assert.equal(model.getIndexOfStep(), 0);

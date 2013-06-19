@@ -5,6 +5,8 @@ var vows      = require("vows"),
     assert    = require("assert"),
     requirejs = helpers.getRequireJS(),
 
+    validator = requirejs('common/validator'),
+    metadata  = requirejs('energy2d/metadata'),
     core      = requirejs('energy2d/models/core-model'),
     part      = requirejs('energy2d/models/part'),
     shape     = requirejs('energy2d/models/shape'),
@@ -77,7 +79,7 @@ suite.addBatch({
     },
     'created in context of the simulation model, which is emmisive': {
       topic: function () {
-        var options = {
+        var mainProperties = validator.validateCompleteness(metadata.mainProperties, {
           structure: {
             part: [
               {
@@ -89,8 +91,8 @@ suite.addBatch({
               }
             ]
           }
-        };
-        return new core.makeCoreModel(options);
+        });
+        return new core.makeCoreModel(mainProperties);
       },
       'should radiate': function (model) {
         var part = model.getPartsArray()[0];
