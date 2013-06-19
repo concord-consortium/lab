@@ -28,7 +28,6 @@ define(function (require) {
       model_options,
       // Parameters.
       use_WebGL,
-      steps_per_frame = 4,
 
       // TODO: refactor views support, probably using events and more general approach.
       // Required views.
@@ -137,12 +136,11 @@ define(function (require) {
       },
 
       nextStep = function () {
-        var i, len;
         performance_tools.stop('Gap between frames');
-        performance_tools.start('Frame (inc. ' + steps_per_frame + ' model steps)');
-        for (i = 0, len = steps_per_frame; i < len; i += 1) {
-          modeler.nextStep();
-        }
+        performance_tools.start('Frame');
+
+        modeler.nextStep();
+
         // Uncomment to enable velocity visualization:
         // modeler.updateVelocityArrays();
 
@@ -151,7 +149,7 @@ define(function (require) {
         updateDynamicViews();
         performance_tools.stop('Views update');
 
-        performance_tools.stop('Frame (inc. ' + steps_per_frame + ' model steps)');
+        performance_tools.stop('Frame');
         performance_tools.start('Gap between frames');
 
         performance_tools.updateFPS('Model update and rendering');
@@ -215,33 +213,18 @@ define(function (require) {
       },
 
       setupViewComponents = function () {
-        var grid_x, grid_y;
+        var props = modeler.properties;
 
-        energy2d_scene.setVisualizationOptions(model_options.viewOptions);
-        // TODO: move following configuration to energy2d scene.
-        grid_x = modeler.getGridWidth();
-        grid_y = modeler.getGridHeight();
-        parts_view.bindPartsArray(modeler.getPartsArray(), modeler.getWidth(), modeler.getHeight());
-        photons_view.bindPhotonsArray(modeler.getPhotonsArray(), modeler.getWidth(), modeler.getHeight());
+        energy2d_scene.setVisualizationOptions(props);
+        parts_view.bindPartsArray(modeler.getPartsArray(), props.model_width, props.model_height);
+        photons_view.bindPhotonsArray(modeler.getPhotonsArray(), props.model_width, props.model_height);
 
         if (use_WebGL) {
           heatmap_view.bindHeatmapTexture(modeler.getTemperatureTexture());
-          velocity_view.bindVectormapTexture(modeler.getVelocityTexture(), grid_x, grid_y, 25);
+          velocity_view.bindVectormapTexture(modeler.getVelocityTexture(), props.grid_width, props.grid_height, 25);
         } else {
-          heatmap_view.bindHeatmap(modeler.getTemperatureArray(), grid_x, grid_y);
-          velocity_view.bindVectormap(modeler.getUVelocityArray(), modeler.getVVelocityArray(), grid_x, grid_y, 25);
-        }
-
-        // Bind performance tools model.
-        if (performance_view) {
-          performance_tools = PerformanceMonitor();
-          performance_view.bindModel(performance_tools);
-          modeler.setPerformanceTools(performance_tools);
-        }
-
-        if (WebGL_status_view) {
-          WebGL_status_view.bindModel(modeler);
-          WebGL_status_view.updateAndRender();
+          heatmap_view.bindHeatmap(modeler.getTemperatureArray(), props.grid_width, props.grid_height);
+          velocity_view.bindVectormap(modeler.getUVelocityArray(), modeler.getVVelocityArray(), props.grid_width, props.grid_height, 25);
         }
 
         updateDynamicViews();

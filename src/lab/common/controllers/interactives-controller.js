@@ -281,10 +281,12 @@ define(function (require) {
       }
 
       function finishWithLoadedModel(modelUrl, modelConfig) {
+        var modelOptions = processOptions(modelConfig, interactiveModelOptions, interactiveViewOptions);
+
         if (modelController) {
-          modelController.reload(modelUrl, processOptions(modelConfig, interactiveModelOptions, interactiveViewOptions));
+          modelController.reload(modelUrl, modelOptions);
         } else {
-          createModelController(modelConfig.type, modelUrl, modelConfig);
+          createModelController(modelConfig.type, modelUrl, modelOptions);
           // also be sure to get notified when the underlying model changes
           modelController.on('modelLoaded', modelLoaded);
           controller.modelController = modelController;
@@ -300,10 +302,9 @@ define(function (require) {
         semanticLayout.layoutInteractive();
       }
 
-      function createModelController(type, modelUrl, modelConfig) {
+      function createModelController(type, modelUrl, modelOptions) {
         // set default model type to "md2d"
-        var modelType = type || "md2d",
-            modelOptions = processOptions(modelConfig, interactiveModelOptions, interactiveViewOptions);
+        var modelType = type || "md2d";
 
         if (ModelControllerFor[modelType] == null) {
           throw new Error("Couldn't understand modelType '" + modelType + "'!");
