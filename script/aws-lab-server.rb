@@ -141,9 +141,6 @@ file: ~/.fog
     @name = @options[:name] = hostname
     @options[:server][:tags]["Name"] = @name
     self.delete(@name)
-    old_IP_address = @ipaddress
-    erase_existing_host_key(old_IP_address)
-    erase_existing_host_key(@name)
     puts "\n*** re-creating server: #{@name}" if @options[:verbose]
     @server = @compute.servers.create(@options[:server])
     puts "\n*** waiting for server: #{@server.id} to be ready ..." if @options[:verbose]
