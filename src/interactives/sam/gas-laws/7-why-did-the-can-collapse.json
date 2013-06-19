@@ -397,7 +397,7 @@
       "text-inside-heat"
     ],
     "left-heat": [
-      "heat-inside", "cool-inside"
+      "cool-inside", "heat-inside" 
     ],
     "right-graphs": [
       "temperature-outside", "pressure-outside", "volume-outside"
@@ -413,7 +413,7 @@
       "text-outside-heat"
     ],
     "right-heat": [
-      "heat-outside", "cool-outside"
+      "cool-outside", "heat-outside" 
     ],
     "footer": [ "show-velocity" ]
   },
@@ -450,7 +450,7 @@
       "id": "left-heat",
       "top": "left-heat-label.bottom",
       "left": "left-graphs.left",
-      "fontScale": 0.6
+      "fontScale": 0.65
     },
     {
       "id": "right-graphs",
@@ -482,12 +482,13 @@
       "fontScale": 0.8,
       "padding-left": "1em",
       "padding-right": "1em"
+
     },
     {
       "id": "right-heat",
       "left": "right-graphs.left",
       "top": "right-heat-label.bottom",
-      "fontScale": 0.6,
+      "fontScale": 0.65,
       "padding-left": "1em"
     },
     {
