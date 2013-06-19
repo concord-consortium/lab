@@ -236,10 +236,10 @@ define(function (require) {
         } else {
           createModelController(modelConfig.type, modelUrl, modelConfig);
           // also be sure to get notified when the underlying model changes
-          modelController.on('modelReset', modelLoaded);
+          modelController.on('modelLoaded', modelLoaded);
           controller.modelController = modelController;
           // Setup model and notify observers that model was loaded.
-          modelLoaded(modelConfig);
+          modelLoaded();
         }
         // and setup model player keyboard handlers (if enabled)
         setupModelPlayerKeyboardHandler();

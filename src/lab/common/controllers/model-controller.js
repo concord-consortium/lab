@@ -9,7 +9,7 @@ define(function (require) {
     var controller = {},
 
         // event dispatcher
-        dispatch = d3.dispatch('modelReset'),
+        dispatch = d3.dispatch('modelLoaded'),
 
         // Options after processing performed by processOptions().
         modelOptions,
@@ -130,7 +130,7 @@ define(function (require) {
         interactiveModelConfig = newInteractiveModelConfig || interactiveModelConfig;
         setupModel();
         resetModelPlayer();
-        dispatch.modelReset();
+        dispatch.modelLoaded();
       }
 
       function repaint() {
@@ -202,7 +202,6 @@ define(function (require) {
 
       setupBenchmarks();
       setupModelPlayer();
-      dispatch.modelReset();
 
       return controller;
   };
