@@ -119,13 +119,6 @@ define(function (require) {
         },
 
         setVisualizationOptions: function (options) {
-          var name;
-          // Fill options with default values if there is such need.
-          for (name in DEFAULT_VISUALIZATION_OPTIONS) {
-            if (DEFAULT_VISUALIZATION_OPTIONS.hasOwnProperty(name) && options[name] === undefined) {
-              options[name] = DEFAULT_VISUALIZATION_OPTIONS[name];
-            }
-          }
           // Configure "subviews".
           heatmap_view.setMinTemperature(options.minimum_temperature);
           heatmap_view.setMaxTemperature(options.maximum_temperature);

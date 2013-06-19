@@ -47,7 +47,7 @@ define(function () {
         canvas_ctx.lineCap = "round";
         canvas_ctx.lineJoin = "round";
         canvas_ctx.lineWidth = 1;
-        canvas_ctx.font = "12px sans-serif";
+        canvas_ctx.font = "1em Lato";
         canvas_ctx.textBaseline = "middle";
       },
 
