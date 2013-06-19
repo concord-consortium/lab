@@ -230,9 +230,59 @@ define(function (require) {
         }
       }
 
+      function processOptions(modelConfig, interactiveModelConfig, interactiveViewConfig) {
+        var modelOptions,
+            viewOptions;
+
+        function meldOptions (base, overlay) {
+          var p;
+          for(p in base) {
+            if (overlay[p] === undefined) {
+              if (arrays.isArray(base[p])) {
+                // Array.
+                overlay[p] = $.extend(true, [], base[p]);
+              } else if (typeof base[p] === "object") {
+                // Object.
+                overlay[p] = $.extend(true, {}, base[p]);
+              } else {
+                // Basic type.
+                overlay[p] = base[p];
+              }
+            } else if (typeof overlay[p] === "object" && !(overlay[p] instanceof Array)) {
+              overlay[p] = meldOptions(base[p], overlay[p]);
+            }
+          }
+          return overlay;
+        }
+
+        // 1. Process view options.
+        // Do not modify initial configuration.
+        viewOptions = $.extend(true, {}, interactiveViewConfig);
+        // Merge view options defined in interactive (interactiveViewConfig)
+        // with view options defined in the basic model description.
+        viewOptions = meldOptions(modelConfig.viewOptions || {}, viewOptions);
+
+        // 2. Process model options.
+        // Do not modify initial configuration.
+        modelOptions = $.extend(true, {}, interactiveModelConfig);
+        // Merge model options defined in interactive (interactiveModelConfig)
+        // with the basic model description.
+        modelOptions = meldOptions(modelConfig || {}, modelOptions);
+
+        // Update view options in the basic model description after merge.
+        // Note that many unnecessary options can be passed to Model constructor
+        // because of that (e.g. view-only options defined in the interactive).
+        // However, all options which are unknown for Model will be discarded
+        // during options validation, so this is not a problem
+        // (but significantly simplifies configuration).
+        modelOptions.viewOptions = viewOptions;
+
+        return modelOptions;
+      }
+
       function finishWithLoadedModel(modelUrl, modelConfig) {
         if (modelController) {
-          modelController.reload(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions);
+          modelController.reload(modelUrl, processOptions(modelConfig, interactiveModelOptions, interactiveViewOptions));
         } else {
           createModelController(modelConfig.type, modelUrl, modelConfig);
           // also be sure to get notified when the underlying model changes
@@ -252,13 +302,14 @@ define(function (require) {
 
       function createModelController(type, modelUrl, modelConfig) {
         // set default model type to "md2d"
-        var modelType = type || "md2d";
+        var modelType = type || "md2d",
+            modelOptions = processOptions(modelConfig, interactiveModelOptions, interactiveViewOptions);
 
         if (ModelControllerFor[modelType] == null) {
           throw new Error("Couldn't understand modelType '" + modelType + "'!");
         }
 
-        modelController = new ModelControllerFor[modelType](modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions, controller);
+        modelController = new ModelControllerFor[modelType](modelUrl, modelOptions, controller);
 
         // Extending universal Interactive scriptingAPI with model-specific scripting API
         if (modelController.ScriptingAPI) {

@@ -8,8 +8,8 @@ define(function (require) {
       ScriptingAPI      = function() {},
       Benchmarks        = function() {};
 
-  return function (modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, interactiveController) {
-    return new ModelController(modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, interactiveController,
+  return function (modelUrl, modelOptions, interactiveController) {
+    return new ModelController(modelUrl, modelOptions, interactiveController,
                                Model, ModelContainer, ScriptingAPI, Benchmarks);
   };
 });

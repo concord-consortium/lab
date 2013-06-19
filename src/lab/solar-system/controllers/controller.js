@@ -10,8 +10,8 @@ define(function (require) {
       ScriptingAPI      = require('solar-system/controllers/scripting-api'),
       Benchmarks        = require('solar-system/benchmarks/benchmarks');
 
-  return function (modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, interactiveController) {
-    return new ModelController(modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, interactiveController,
+  return function (modelUrl, modelOptions, interactiveController) {
+    return new ModelController(modelUrl, modelOptions, interactiveController,
                                      Model, ModelContainer, ScriptingAPI, Benchmarks);
   }
 });
