@@ -16,8 +16,8 @@
     {
       "type": "image",
       "id": "img-photons",
-      "src": "photons.png",
-      "width": "8em"
+      "src": "photons.svg",
+      "width": "7em"
     },
     {
       "type": "slider",
