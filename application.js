@@ -550,7 +550,7 @@ AUTHORING = false;
     }
     if (contentItems.length > 0) {
       javaMWhref = "/jnlp/jnlps/org/concord/modeler/mw.jnlp?version-id=1.0&jnlp-args=remote," +
-                      origin + Lab.config.actualRoot + "/imports/legacy-mw-content/" + contentItems[0].cml;
+                      origin + Lab.config.actualRoot + "imports/legacy-mw-content/" + contentItems[0].cml;
       $javaMWlink.attr("href", javaMWhref);
       $javaMWlink.attr("title", "View original Java Molecular Workbench content using Java Web Start");
       $mmlModelLink.attr("href", origin + Lab.config.actualRoot + mmlPath);

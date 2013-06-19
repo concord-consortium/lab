@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "fe3a289aeddbf08b53d28a1805d710cd4db57d11",
-        "short_sha":      "fe3a289a",
-        "url":            "https://github.com/concord-consortium/lab/commit/fe3a289a",
+        "sha":           "9145860d66f046e44367c4a2cc4e3e9e26196cee",
+        "short_sha":      "9145860d",
+        "url":            "https://github.com/concord-consortium/lab/commit/9145860d",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-06-18 11:14:25 -0400",
-        "short_message": "use --all option for git add for gh-pages generation",
-        "message":       "use --all option for git add for gh-pages generation"
+        "date":          "2013-06-19 03:08:42 -0400",
+        "short_message": "corrected program invocation comment",
+        "message":       "corrected program invocation comment"
       },
       "dirty": false
     }
@@ -20864,7 +20864,7 @@ define('common/models/tick-history',[],function() {
   };
 });
 
-/*global define: false */
+/*global define: false, d3: false */
 /**
 
   This module provides support which Lab model types can use to implement observable properties that
@@ -21157,6 +21157,12 @@ define('common/property-support',[],function() {
         cachingIsEnabled = true,
         notificationsAreBatched = false,
 
+        dispatch = d3.dispatch("beforeInvalidatingChange",
+                               "afterInvalidatingChange",
+                               "afterInvalidatingChangeSequence"),
+
+        invalidatingChangeNestingLevel = 0,
+
         // all properties that were notified while notifications were batched
         changedPropertyKeys = [],
 
@@ -21164,7 +21170,10 @@ define('common/property-support',[],function() {
         computedPropertyKeys = [],
 
         // all properties for which includeInHistoryState is true
-        historyStatePropertyKeys = [];
+        historyStatePropertyKeys = [],
+
+        // public API
+        api;
 
 
     // observed properties with a getter
@@ -21388,7 +21397,7 @@ define('common/property-support',[],function() {
     }
 
     // The public methods and properties of the propertySupport object
-    return {
+    api = {
 
       /**
         Mixes a useful set of methods and properties into the target object. Lab models are expected
@@ -21539,6 +21548,28 @@ define('common/property-support',[],function() {
         */
         target.getPropertyValidateFunc = function(key) {
           return propertyInformation[key].descriptor.validate;
+        };
+
+        /**
+          The 'makeInvalidatingChange' method mixed into 'target' lets client code perform an action
+          that will invalidate all computed properties.
+         */
+        target.makeInvalidatingChange = function (closure) {
+          api.invalidatingChangePreHook();
+          closure();
+          api.invalidatingChangePostHook();
+        };
+
+        // TODO: probably it's unnecessary, addObserver can support multiple
+        // properties instead.
+        target.addPropertiesListener = function(properties, callback) {
+          if (typeof properties === 'string') {
+            target.addObserver(properties, callback);
+          } else {
+            properties.forEach(function(property) {
+              target.addObserver(property, callback);
+            });
+          }
         };
       },
 
@@ -21733,8 +21764,38 @@ define('common/property-support',[],function() {
             }
           });
         });
+      },
+
+      invalidatingChangePreHook: function() {
+        if (invalidatingChangeNestingLevel === 0) {
+          api.storeComputedProperties();
+          api.deleteComputedPropertyCachedValues();
+          api.enableCaching = false;
+        }
+        invalidatingChangeNestingLevel++;
+
+        dispatch.beforeInvalidatingChange();
+      },
+
+      invalidatingChangePostHook: function() {
+        invalidatingChangeNestingLevel--;
+
+        dispatch.afterInvalidatingChange();
+
+        if (invalidatingChangeNestingLevel === 0) {
+          api.enableCaching = true;
+          api.notifyChangedComputedProperties();
+
+          dispatch.afterInvalidatingChangeSequence();
+        }
+      },
+
+      on: function (type, listener) {
+        dispatch.on(type, listener);
       }
     };
+
+    return api;
   };
 });
 
@@ -29173,7 +29234,7 @@ define('md2d/views/genetic-elements-renderer',['require','md2d/views/nucleotides
 
       background: function (parent, data) {
         appendTranscriptionBg(parent);
-        d3.transition(svg.select(".plot")).style("fill", data.background[0].color);
+        d3.transition(svg.select(".plot")).attr("fill", data.background[0].color);
       }
     };
   }
@@ -36464,6 +36525,224 @@ define('solar-system/controllers/controller',['require','common/controllers/mode
 
 /*global define: false */
 
+define('common/parameter-support',['require','common/property-description'],function (require) {
+
+  var PropertyDescription  = require('common/property-description');
+
+  return function ParameterSupport(propertySupport, unitsDefinition) {
+    unitsDefinition = unitsDefinition || {};
+
+    return {
+      mixInto: function(target) {
+
+        target.defineParameter = function(key, descriptionHash, setter) {
+          var descriptor = {
+                type: 'parameter',
+                includeInHistoryState: true,
+                invokeSetterAfterBulkRestore: false,
+                description: new PropertyDescription(unitsDefinition, descriptionHash),
+                beforeSetCallback: propertySupport.invalidatingChangePreHook,
+                afterSetCallback: propertySupport.invalidatingChangePostHook
+              };
+
+          // In practice, some parameters are meant only to be observed, and have no setter
+          if (setter) {
+            descriptor.set = function(value) {
+              setter.call(target, value);
+            };
+          }
+          propertySupport.defineProperty(key, descriptor);
+        };
+      }
+    };
+  };
+});
+
+/*global define: false */
+
+define('common/output-support',['require','common/property-description','cs!common/running-average-filter'],function (require) {
+
+  var PropertyDescription  = require('common/property-description'),
+      RunningAverageFilter = require('cs!common/running-average-filter');
+
+  return function OutputSupport(propertySupport, unitsDefinition) {
+    var filteredOutputs = [];
+
+    function updateFilteredOutputs() {
+      filteredOutputs.forEach(function(output) {
+        output.addSample();
+      });
+    }
+
+    // TODO: is it necessary? It follows the old solution.
+    // In theory filtered outputs could be updated only on time change
+    // or on filtered property value change. Check it!
+    propertySupport.on("afterInvalidatingChange", updateFilteredOutputs);
+
+    return {
+      mixInto: function(target) {
+
+        target.defineOutput = function(key, descriptionHash, getter) {
+          propertySupport.defineProperty(key, {
+            type: 'output',
+            writable: false,
+            get: getter,
+            includeInHistoryState: false,
+            description: new PropertyDescription(unitsDefinition, descriptionHash)
+          });
+        };
+
+        target.defineFilteredOutput = function(key, description, filteredPropertyKey, type, period) {
+          var filter, initialValue;
+
+          if (type === "RunningAverage") {
+            filter = new RunningAverageFilter(period);
+          } else {
+            throw new Error("FilteredOutput: unknown filter type " + type + ".");
+          }
+
+          // Add initial sample
+          initialValue = target.properties[filteredPropertyKey];
+          if (initialValue === undefined || isNaN(Number(initialValue))) {
+            throw new Error("FilteredOutput: property is not a valid numeric value or it is undefined.");
+          }
+          filter.addSample(target.properties.time, initialValue);
+
+          filteredOutputs.push({
+            addSample: function() {
+              filter.addSample(target.properties.time, target.properties[filteredPropertyKey]);
+            }
+          });
+
+          // Extend description to contain information about filter
+          description.property = filteredPropertyKey;
+          description.type = type;
+          description.period = period;
+
+          target.defineOutput(key, description, function () {
+            return filter.calculate();
+          });
+        };
+
+        target.updateAllOutputProperties = function () {
+          propertySupport.deleteComputedPropertyCachedValues();
+          propertySupport.notifyAllComputedProperties();
+          updateFilteredOutputs();
+        };
+      }
+    };
+  };
+});
+
+/*global define: false */
+
+define('common/define-builtin-properties',['require','common/validator','common/property-description'],function (require) {
+
+  var validator            = require('common/validator'),
+      PropertyDescription  = require('common/property-description');
+
+  return function defineBuiltinProperties(propertySupport, unitsDefinition, metadata, customSetters) {
+    customSetters = customSetters || {}; // optional
+
+    function defineBuiltinProperty(key, type, setter) {
+      var metadataForType,
+          descriptor,
+          propertyChangeInvalidates,
+          unitType;
+
+      if (type === 'mainProperty') {
+        metadataForType = metadata.mainProperties;
+      } else if (type === 'viewOption') {
+        metadataForType = metadata.viewOptions;
+      } else {
+        throw new Error(type + " is not a supported built-in property type");
+      }
+
+      propertyChangeInvalidates = validator.propertyChangeInvalidates(metadataForType[key]);
+
+      descriptor = {
+        type: type,
+        writable: validator.propertyIsWritable(metadataForType[key]),
+        set: setter,
+        includeInHistoryState: !!metadataForType[key].storeInTickHistory,
+        validate: function(value) {
+          return validator.validateSingleProperty(metadataForType[key], key, value, false);
+        },
+        beforeSetCallback: propertyChangeInvalidates ? propertySupport.invalidatingChangePreHook : undefined,
+        afterSetCallback: propertyChangeInvalidates ? propertySupport.invalidatingChangePostHook : undefined
+      };
+
+      unitType = metadataForType[key].unitType;
+      if (unitType) {
+        descriptor.description = new PropertyDescription(unitsDefinition, { unitType: unitType });
+      }
+
+      propertySupport.defineProperty(key, descriptor);
+    }
+
+    // Define built-in properties using provided metadata.
+    Object.keys(metadata.mainProperties).forEach(function (key) {
+      defineBuiltinProperty(key, 'mainProperty', customSetters[key]);
+    });
+    Object.keys(metadata.viewOptions).forEach(function (key) {
+      defineBuiltinProperty(key, 'viewOption', customSetters[key]);
+    });
+  };
+});
+
+/*global define: false */
+
+define('common/lab-modeler-mixin',['require','common/property-support','common/parameter-support','common/output-support','common/define-builtin-properties'],function (require) {
+
+  var PropertySupport         = require('common/property-support'),
+      ParameterSupport        = require('common/parameter-support'),
+      OutputSupport           = require('common/output-support'),
+      defineBuiltinProperties = require('common/define-builtin-properties');
+
+  return function LabModelerMixin(args) {
+
+    var api,
+
+        metadata        = args.metadata || null,
+        setters         = args.setters || {},
+        unitsDefinition = args.unitsDefinition || {},
+
+        propertySupport = new PropertySupport({
+          types: ["output", "parameter", "mainProperty", "viewOption"]
+        }),
+        parameterSupport = new ParameterSupport(propertySupport, unitsDefinition),
+        outputSupport = new OutputSupport(propertySupport, unitsDefinition);
+
+    if (metadata) {
+      defineBuiltinProperties(propertySupport, unitsDefinition, metadata, setters);
+    }
+
+    api = {
+      mixInto: function(target) {
+        propertySupport.mixInto(target);
+        parameterSupport.mixInto(target);
+        outputSupport.mixInto(target);
+      },
+
+      get propertySupport() {
+        return propertySupport;
+      },
+
+      get parameterSupport() {
+        return parameterSupport;
+      },
+
+      get outputSupport() {
+        return outputSupport;
+      }
+    };
+
+    return api;
+  };
+});
+
+/*global define: false */
+
 define('signal-generator/metadata',[],function() {
 
   return {
@@ -36496,16 +36775,13 @@ define('signal-generator/metadata',[],function() {
   };
 });
 
-/*global define: false d3: false*/
+/*global define: false, d3: false*/
 
-define('signal-generator/modeler',['require','common/property-support','common/property-description','cs!common/running-average-filter','common/validator','signal-generator/metadata'],function(require) {
+define('signal-generator/modeler',['require','common/lab-modeler-mixin','common/validator','signal-generator/metadata'],function(require) {
 
-  var PropertySupport      = require('common/property-support'),
-      PropertyDescription  = require('common/property-description'),
-      RunningAverageFilter = require('cs!common/running-average-filter'),
-      validator            = require('common/validator'),
-
-      metadata             = require('signal-generator/metadata'),
+  var LabModelerMixin         = require('common/lab-modeler-mixin'),
+      validator               = require('common/validator'),
+      metadata                = require('signal-generator/metadata'),
 
       unitsDefinition = {
         units: {
@@ -36528,9 +36804,23 @@ define('signal-generator/modeler',['require','common/property-support','common/p
       };
 
   return function Model(initialProperties) {
-    var propertySupport = new PropertySupport({
-          types: ['mainProperty', 'viewOption', 'parameter', 'output']
+    var customSetters = {
+          // Ensure that phase + (time * angular frequency) remains unchanged when the frequency changes.
+          // This makes for continuous signals.
+          frequency: function (newFrequency) {
+            if (lastFrequency !== undefined) {
+              phase = constrain(phase + 2 * Math.PI * (lastFrequency - newFrequency) * model.properties.time);
+            }
+            lastFrequency = newFrequency;
+          }
+        },
+
+        labModelerMixin = new LabModelerMixin({
+          metadata: metadata,
+          setters: customSetters,
+          unitsDefinition: unitsDefinition
         }),
+        propertySupport = labModelerMixin.propertySupport,
 
         viewOptions,
         mainProperties,
@@ -36542,88 +36832,13 @@ define('signal-generator/modeler',['require','common/property-support','common/p
         phase = 0,
         time = 0,
         stepCounter = 0,
-        invalidatingChangeNestingLevel = 0,
-        filteredOutputs = [],
-        customSetters,
         model;
-
-    //
-    // The following function is essentially copied from MD2D modeler, and should moved to a common
-    // module
-    //
-    function defineBuiltinProperty(key, type, setter) {
-      var metadataForType,
-          descriptor,
-          propertyChangeInvalidates,
-          unitType;
-
-      if (type === 'mainProperty') {
-        metadataForType = metadata.mainProperties;
-      } else if (type === 'viewOption') {
-        metadataForType = metadata.viewOptions;
-      } else {
-        throw new Error(type + " is not a supported built-in property type");
-      }
-
-      propertyChangeInvalidates = validator.propertyChangeInvalidates(metadataForType[key]);
-
-      descriptor = {
-        type: type,
-        writable: validator.propertyIsWritable(metadataForType[key]),
-        set: setter,
-        includeInHistoryState: !!metadataForType[key].storeInTickHistory,
-        validate: function(value) {
-          return validator.validateSingleProperty(metadataForType[key], key, value, false);
-        },
-        beforeSetCallback: propertyChangeInvalidates ? invalidatingChangePreHook : undefined,
-        afterSetCallback: propertyChangeInvalidates ? invalidatingChangePostHook : undefined
-      };
-
-      unitType = metadataForType[key].unitType;
-      if (unitType) {
-        descriptor.description = new PropertyDescription(unitsDefinition, { unitType: unitType });
-      }
-
-      propertySupport.defineProperty(key, descriptor);
-    }
-
-    function invalidatingChangePreHook() {
-      if (invalidatingChangeNestingLevel === 0) {
-        propertySupport.storeComputedProperties();
-        propertySupport.deleteComputedPropertyCachedValues();
-        propertySupport.enableCaching = false;
-      }
-      invalidatingChangeNestingLevel++;
-    }
-
-    function invalidatingChangePostHook() {
-      invalidatingChangeNestingLevel--;
-      updateFilteredOutputs();
-      if (invalidatingChangeNestingLevel === 0) {
-        propertySupport.enableCaching = true;
-        propertySupport.notifyChangedComputedProperties();
-      }
-    }
-
-    function makeInvalidatingChange(closure) {
-      invalidatingChangePreHook();
-      closure();
-      invalidatingChangePostHook();
-    }
-
-    function updateFilteredOutputs() {
-      filteredOutputs.forEach(function(output) {
-        output.addSample();
-      });
-    }
 
     function tick() {
       stepCounter++;
       time += (0.001 * intervalLength * model.properties.timeScale);
 
-      propertySupport.deleteComputedPropertyCachedValues();
-      propertySupport.notifyAllComputedProperties();
-      updateFilteredOutputs();
+      model.updateAllOutputProperties();
 
       dispatch.tick();
     }
@@ -36634,7 +36849,7 @@ define('signal-generator/modeler',['require','common/property-support','common/p
 
     model = {
       resetTime: function() {
-        makeInvalidatingChange(function() {
+        model.makeInvalidatingChange(function() {
           time = 0;
         });
       },
@@ -36661,107 +36876,15 @@ define('signal-generator/modeler',['require','common/property-support','common/p
 
       stepCounter: function() {
         return stepCounter;
-      },
-
-      //
-      // The following are essentially copied from MD2D modeler, and should moved to a common module
-      //
-
-      addPropertiesListener: function(properties, callback) {
-        if (typeof properties === 'string') {
-          model.addObserver(properties, callback);
-        } else {
-          properties.forEach(function(property) {
-            model.addObserver(property, callback);
-          });
-        }
-      },
-
-      defineParameter: function(key, descriptionHash, setter) {
-        var descriptor = {
-              type: 'parameter',
-              includeInHistoryState: true,
-              invokeSetterAfterBulkRestore: false,
-              description: new PropertyDescription(unitsDefinition, descriptionHash),
-              beforeSetCallback: invalidatingChangePreHook,
-              afterSetCallback: invalidatingChangePostHook
-            };
-
-        // In practice, some parameters are meant only to be observed, and have no setter
-        if (setter) {
-          descriptor.set = function(value) {
-            setter.call(model, value);
-          };
-        }
-        propertySupport.defineProperty(key, descriptor);
-      },
-
-      defineOutput: function(key, descriptionHash, getter) {
-        propertySupport.defineProperty(key, {
-          type: 'output',
-          writable: false,
-          get: getter,
-          includeInHistoryState: false,
-          description: new PropertyDescription(unitsDefinition, descriptionHash)
-        });
-      },
-
-      defineFilteredOutput: function(key, description, filteredPropertyKey, type, period) {
-        var filter, initialValue;
-
-        if (type === "RunningAverage") {
-          filter = new RunningAverageFilter(period);
-        } else {
-          throw new Error("FilteredOutput: unknown filter type " + type + ".");
-        }
-
-        // Add initial sample
-        initialValue = model.properties[key];
-        if (initialValue === undefined || isNaN(Number(initialValue))) {
-          throw new Error("FilteredOutput: property is not a valid numeric value or it is undefined.");
-        }
-        filter.addSample(model.properties.time, initialValue);
-
-        filteredOutputs.push({
-          addSample: function() {
-            filter.addSample(model.properties.time, model.properties[filteredPropertyKey]);
-          }
-        });
-
-        // Extend description to contain information about filter
-        description.property = filteredPropertyKey;
-        description.type = type;
-        description.period = period;
-
-        model.defineOutput(key, description, function () {
-          return filter.calculate();
-        });
       }
     };
 
-    propertySupport.mixInto(model);
-
-    // Ensure that phase + (time * angular frequency) remains unchanged when the frequency changes.
-    // This makes for continuous signals.
-    customSetters = {
-      frequency: function(newFrequency) {
-        if (lastFrequency !== undefined) {
-          phase = constrain(phase + 2 * Math.PI * (lastFrequency - newFrequency) * model.properties.time);
-        }
-        lastFrequency = newFrequency;
-      }
-    };
+    labModelerMixin.mixInto(model);
 
     mainProperties = validator.validateCompleteness(metadata.mainProperties, initialProperties);
-    Object.keys(mainProperties).forEach(function(key) {
-      defineBuiltinProperty(key, 'mainProperty', customSetters[key]);
-    });
     propertySupport.setRawValues(mainProperties);
 
     viewOptions = validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {});
-    Object.keys(viewOptions).forEach(function(key) {
-      defineBuiltinProperty(key, 'viewOption');
-    });
     propertySupport.setRawValues(viewOptions);
 
     model.defineOutput('time', {

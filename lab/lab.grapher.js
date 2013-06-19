@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "fe3a289aeddbf08b53d28a1805d710cd4db57d11",
-        "short_sha":      "fe3a289a",
-        "url":            "https://github.com/concord-consortium/lab/commit/fe3a289a",
+        "sha":           "9145860d66f046e44367c4a2cc4e3e9e26196cee",
+        "short_sha":      "9145860d",
+        "url":            "https://github.com/concord-consortium/lab/commit/9145860d",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-06-18 11:14:25 -0400",
-        "short_message": "use --all option for git add for gh-pages generation",
-        "message":       "use --all option for git add for gh-pages generation"
+        "date":          "2013-06-19 03:08:42 -0400",
+        "short_message": "corrected program invocation comment",
+        "message":       "corrected program invocation comment"
       },
       "dirty": false
     }
