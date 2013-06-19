@@ -27,6 +27,9 @@ define(function(require) {
       timestep: {
         defaultValue: 1
       },
+      timeStepsPerTick: {
+        defaultValue: 4
+      },
       convective: {
         defaultValue: true
       },

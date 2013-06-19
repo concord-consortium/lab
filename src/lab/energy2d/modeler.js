@@ -59,7 +59,11 @@ define(function (require) {
 
       // Custom API:
       nextStep: function () {
-        core_model.nextStep();
+        var i, len;
+
+        for (i = 0, len = model.properties.timeStepsPerTick; i < len; i++) {
+          core_model.nextStep();
+        }
         model.updateAllOutputProperties();
         dispatch.tick();
       },
