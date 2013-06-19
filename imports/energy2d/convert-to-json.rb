@@ -20,6 +20,8 @@ interactives_path =       File.join(PROJECT_ROOT, "src/examples/energy2d-model",
 interactives_index_path = File.join(PROJECT_ROOT, "src/examples/energy2d-model/interactives-index.js")
 FileUtils.mkdir_p interactives_path
 
+lab_interactives_path =   File.join(PROJECT_ROOT, "src", "interactives", "energy2d")
+
 models_dir =              "models-json"
 models_path =             File.join(HERE, models_dir)
 models_index_path =       File.join(HERE, "models-index.js")
@@ -28,6 +30,8 @@ models_file = File.open(models_index_path, 'w');
 models_file.write("var models_library = {};\nvar models_index = {\n");
 
 interactive_template = JSON.load(File.read(File.join(HERE, "interactive-template.json")))
+lab_interactive_template = JSON.load(File.read(File.join(HERE, "lab-interactive-template.json")))
+lab_solar_angle_slider_template = JSON.load(File.read(File.join(HERE, "lab-solar-angle-slider-template.json")))
 
 #
 # The hash objects from which the index files are generated
@@ -42,7 +46,7 @@ models = {}
 # from a legacy Java Energy2D page
 #
 class E2dPage
-  attr_reader :e2d, :basename, :title, :tagline, :content
+  attr_reader :e2d, :basename, :title, :tagline, :content, :sun_angle_slider
   def initialize(path)
     @name = File.basename(path)
     @doc = Nokogiri::HTML(File.read(path))
@@ -55,9 +59,11 @@ class E2dPage
     @basename = @e2d.gsub(/\.e2d;$/, '')
     @title = @doc.css('a[id="cc-link"] + h1').text
     @tagline = @doc.css('p[id="tagline"]').text
-    @content = @doc.css('div[id="content"] p').text
+    @content = @doc.css('div[id="content"] p').collect { |p| p.text }.join("\n")
     @content.gsub!(/(Right-click to download this model|Download this model)/, "")
+    @content.gsub!(/\n\n/, "\n")
     @content.strip!
+    @sun_angle_slider = @doc.css('div[id="sun-angle-slider"]').length > 0
   end
 end
 
@@ -96,10 +102,12 @@ xml_files.each do |xml_file_path|
   File.open(model_file_path, 'w') do |f|
     f.write(json_string)
   end
-  #
-  # create and write out the new json interactive
-  #
+
   page = e2d_pages[basename]
+
+  #
+  # create and write out the legacy json interactive
+  #
   interactive = interactive_template.clone
   interactive["model"] = File.join("/imports/energy2d/", models_dir, json_filename)
   if page
@@ -117,6 +125,32 @@ xml_files.each do |xml_file_path|
   File.open("#{interactives_path}/#{json_filename}", 'w') do |f|
     f.write(JSON.pretty_generate(interactive))
   end
+
+
+  #
+  # create and write out the json structure for the Lab Interactive form
+  #
+  interactive = lab_interactive_template.clone
+  interactive["models"][0]["id"] = basename
+  interactive["models"][0]["url"] = File.join("imports", "energy2d", models_dir, json_filename)
+  if page
+    interactive["title"] = page.title
+    interactive["subtitle"] = page.tagline
+    interactive["about"] = page.content
+    interactive["publicationStatus"] = "draft"
+    if page.sun_angle_slider
+      interactive["components"] << lab_solar_angle_slider_template
+    end
+  else
+    interactive["title"] = capitalized_name
+    interactive["subtitle"] = ""
+    interactive["about"] = "* no further description available"
+    interactive["publicationStatus"] = "draft"
+  end
+  File.open("#{lab_interactives_path}/#{json_filename}", 'w') do |f|
+    f.write(JSON.pretty_generate(interactive))
+  end
+
   #
   # add another object to the index of models
   #

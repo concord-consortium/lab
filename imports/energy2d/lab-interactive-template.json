@@ -1,0 +1,18 @@
+{
+  "title": "",
+  "publicationStatus": "",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "",
+      "url": "",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "components": [
+  ]
+}
