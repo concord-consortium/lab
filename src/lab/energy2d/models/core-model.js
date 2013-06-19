@@ -12,7 +12,6 @@ define(function (require, exports) {
     fluidsolver_GPU = require('energy2d/models/physics-solvers-gpu/fluid-solver-gpu'),
     raysolver       = require('energy2d/models/physics-solvers/ray-solver'),
     part            = require('energy2d/models/part'),
-    default_config  = require('energy2d/models/default-config'),
     gpgpu           = require('energy2d/gpu/gpgpu'),
 
     array_type = (function () {
@@ -33,10 +32,6 @@ define(function (require, exports) {
       opt = (function () {
         var boundary;
 
-        model_options = default_config.fillWithDefaultValues(model_options, default_config.DEFAULT_VALUES.model);
-
-        // Validation.
-        //
         // Check boundary settings, as they have complex structure.
         boundary = model_options.boundary.temperature_at_border || model_options.boundary.flux_at_border;
         if (!boundary) {
