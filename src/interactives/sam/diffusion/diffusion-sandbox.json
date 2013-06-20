@@ -6,7 +6,7 @@
   "models": [
     {
       "id": "diffusion-sandbox$0",
-      "url": "interactives/models/sam/diffusion/diffusion-sandbox-mml.json",
+      "url": "models/md2d/sam/diffusion/diffusion-sandbox-mml.json",
       "viewOptions": {
         "controlButtons": "play_reset",
         "showVelocityVectors": false
