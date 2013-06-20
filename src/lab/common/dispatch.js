@@ -27,15 +27,26 @@
  */
 define(function() {
 
+  // Converts arguments object to regular array.
+  function argsToArray(args) {
+    return [].slice.call(args);
+  }
+
   return function Dispatch() {
     var api,
-        d3dispatch = d3.dispatch.apply(null, arguments),
+        d3dispatch,
+        types,
 
         batchMode = false,
         suppressedEvents = d3.set();
 
-    function init(types) {
+    function init(newTypes) {
       var i, len;
+
+      types = newTypes;
+
+      d3dispatch = d3.dispatch.apply(null, types);
+
       // Provide wrapper around typical calls like dispatch.someEvent().
       for (i = 0, len = types.length; i < len; i++) {
         api[types[i]] = dispatchEvent(types[i]);
@@ -71,6 +82,18 @@ define(function() {
       // New API specific for Lab Dispatch:
 
       /**
+       * Adds new event types. Old event types are still supported, but
+       * all previously registered listeners will be removed!
+       *
+       * e.g. dispatch.addEventTypes("newEvent", "anotherEvent")
+       */
+      addEventTypes: function () {
+        if (arguments.length) {
+          init(types.concat(argsToArray(arguments)));
+        }
+      },
+
+      /**
        * Starts batch mode. Events won't be dispatched immediately after call.
        * They will be merged into single event and dispatched when .flush()
        * or .endBatch() is called.
@@ -100,9 +123,8 @@ define(function() {
       }
     };
 
-    init(arguments);
+    init(argsToArray(arguments));
 
     return api;
   };
-
 });

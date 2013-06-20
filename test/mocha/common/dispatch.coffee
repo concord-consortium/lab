@@ -15,6 +15,8 @@ describe "Dispatch", ->
     l =
       l1: ->
       l2: ->
+      l3: ->
+      l4: ->
 
     before ->
       d = new Dispatch "e1", "e2"
@@ -112,3 +114,32 @@ describe "Dispatch", ->
       d.e2()
       d.endBatch()
       l.l2.callCount.should.eql 5
+
+    it "should let user register new events after initialization", ->
+      (-> d.e3()).should.throw()
+      (-> d.e4()).should.throw()
+
+      d.addEventTypes("e3", "e4");
+      sinon.spy l, "l3"
+      sinon.spy l, "l4"
+      d.on "e3", l.l3
+      d.on "e4", l.l4
+
+      d.e3()
+      l.l3.callCount.should.eql 1
+      d.e4()
+      l.l4.callCount.should.eql 1
+
+      # Note that old listeners were unregistered!
+      d.e1()
+      d.e2()
+      l.l1.callCount.should.eql 0
+      l.l2.callCount.should.eql 0
+
+      # We have to register them again!
+      d.on "e1", l.l1
+      d.on "e2", l.l2
+      d.e1()
+      d.e2()
+      l.l1.callCount.should.eql 1
+      l.l2.callCount.should.eql 1
