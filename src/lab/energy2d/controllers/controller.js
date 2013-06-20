@@ -41,7 +41,7 @@ define(function (require) {
       },
 
       enableKeyboardHandlers: function () {
-        return false;
+        return true;
       },
 
       reload: function (newModelUrl, newModelOptions) {

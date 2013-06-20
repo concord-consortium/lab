@@ -154,6 +154,8 @@ define(function (require) {
     // Append all views to the scene view DIV.
     initHTMLelement();
 
+    $scene_view_div.attr("tabindex", 0);
+
     // Return Public API object.
     return visualization_container;
   };

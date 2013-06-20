@@ -43,6 +43,12 @@ define(function() {
         photons_view.renderPhotons();
       },
 
+      setFocus: function () {
+        if (model.get("enableKeyboardHandlers")) {
+          this.$el.focus();
+        }
+      },
+
       bindModel: function(newModel) {
         model = newModel;
         model.on('tick.view-update', api.update);

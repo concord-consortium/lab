@@ -131,6 +131,9 @@ define(function(require) {
       },
       maximum_temperature: {
         defaultValue: 40.0
+      },
+      enableKeyboardHandlers: {
+        defaultValue: true
       }
     },
 
