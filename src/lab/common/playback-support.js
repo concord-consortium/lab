@@ -1,0 +1,119 @@
+/*global define: false, d3: false */
+
+define(function (require) {
+  var console = require('common/console');
+
+  return function PlaybackSupport(args) {
+        // DispatchSupport instance or compatible module.
+    var dispatch = args && args.dispatch || null,
+        // Properties object - it can be used to define 'modelSampleRate'. It
+        // can be simple plain object or more sophisticated object returned by
+        // PropertiesSupport module.
+        properties = args && args.properties || null,
+
+        eventsSupported = (function() {
+          // Events support is optional. It should be provided by the
+          // DispatchSupport (common/dispatch-support) or another compatible
+          // module.
+          if (dispatch) {
+            if (dispatch.on && dispatch.addEventTypes) {
+              dispatch.addEventTypes("play", "stop");
+              return true;
+            } else {
+              throw new Error("[PlaybackSupport] Provided Dispatch object doesn't implement required interface!");
+            }
+          } else {
+            return false;
+          }
+        }()),
+
+        stopped = true,
+        stopRequest = false,
+        restartRequest = false;
+
+    function timer(f) {
+      var intervalID,
+          // When target support properties and it defines
+          // 'modelSampleRate', it will be used.
+          sampleRate = properties && properties.modelSampleRate || 'default';
+
+      if (sampleRate === 'default') {
+        // use requestAnimationFrame via d3.timer
+        d3.timer(f);
+      } else {
+        // set an interval to run the model more slowly.
+        intervalID = window.setInterval(function() {
+          if (f()) {
+            window.clearInterval(intervalID);
+          }
+        }, 1000/sampleRate);
+      }
+    }
+
+    return {
+      mixInto: function(target) {
+
+        if (typeof target.tick !== "function") {
+          target.tick = function () {
+            console.warn("[PlaybackSupport] .tick() method should be overwritten by target!");
+          };
+        }
+
+        target.start = function() {
+          // Cleanup stop and restart requests.
+          stopRequest = false;
+          restartRequest = false;
+
+          if (!stopped) {
+            // Do nothing, model is running.
+            return target;
+          }
+
+          stopped = false;
+
+          timer(function timerTick(elapsedTime) {
+            console.timeEnd('gap between frames');
+            // Cancel the timer and refuse to to step the model, if the model is stopped.
+            // This is necessary because there is no direct way to cancel a d3 timer.
+            // See: https://github.com/mbostock/d3/wiki/Transitions#wiki-d3_timer)
+            if (stopRequest) {
+              stopped = true;
+              return true;
+            }
+
+            if (restartRequest) {
+              setTimeout(target.start, 0);
+              stopped = true;
+              return true;
+            }
+
+            target.tick(elapsedTime);
+
+            console.time('gap between frames');
+            return false;
+          });
+
+          if (eventsSupported) dispatch.play();
+
+          console.time('gap between frames');
+          return target;
+        };
+
+        target.restart = function() {
+          restartRequest = true;
+          return target;
+        };
+
+        target.stop = function() {
+          stopRequest = true;
+          if (eventsSupported) dispatch.stop();
+          return target;
+        };
+
+        target.isStopped = function () {
+          return stopped || stopRequest;
+        };
+      }
+    };
+  };
+});
