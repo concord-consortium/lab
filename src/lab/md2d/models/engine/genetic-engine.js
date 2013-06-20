@@ -788,7 +788,7 @@ define(function (require) {
             }
           }
         });
-        if (model.is_stopped()) {
+        if (model.isStopped()) {
           // FIXME: ugly workaround to update position, as setAtomProperties
           // doesn't dispatch any events in contrast to minimize energy.
           model.minimizeEnergy();

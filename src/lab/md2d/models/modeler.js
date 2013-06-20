@@ -691,7 +691,7 @@ define(function(require) {
 
     model.seek = function(location) {
       if (!arguments.length) { location = 0; }
-      if (!model.is_stopped()) {
+      if (!model.isStopped()) {
         model.stop();
       }
       newStep = false;
@@ -705,7 +705,7 @@ define(function(require) {
 
     model.stepBack = function(num) {
       if (!arguments.length) { num = 1; }
-      if (!model.is_stopped()) {
+      if (!model.isStopped()) {
         model.stop();
       }
       newStep = false;
@@ -725,7 +725,7 @@ define(function(require) {
 
     model.stepForward = function(num) {
       if (!arguments.length) { num = 1; }
-      if (!model.is_stopped()) {
+      if (!model.isStopped()) {
         model.stop();
       }
       runAndDispatchObjectNumberChanges(function() {
@@ -1577,7 +1577,7 @@ define(function(require) {
       return model.getFPS() * model.get('timeStep') * model.get('timeStepsPerTick');
     };
 
-    model.is_stopped = function() {
+    model.isStopped = function() {
       return stopped || stopRequest;
     };
 

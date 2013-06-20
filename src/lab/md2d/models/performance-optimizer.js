@@ -21,7 +21,7 @@ define(function() {
   }
 
   PerformanceOptimizer.prototype._assessPerformance = function() {
-    if (!this.enabled || this._model.is_stopped()) {
+    if (!this.enabled || this._model.isStopped()) {
       return;
     }
 

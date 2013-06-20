@@ -274,7 +274,7 @@ define(function (require) {
           },
 
           isStopped: function isStopped() {
-            return model.is_stopped();
+            return model.isStopped();
           },
 
           getTime: function getTime() {

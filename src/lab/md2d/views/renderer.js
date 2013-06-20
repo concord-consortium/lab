@@ -1511,7 +1511,7 @@ define(function (require) {
     }
 
     function nodeDragStart(d, i) {
-      if (model.is_stopped()) {
+      if (model.isStopped()) {
         // cache the *original* atom position so we can go back to it if drag is disallowed
         dragOrigin = [d.x, d.y];
       }
@@ -1552,7 +1552,7 @@ define(function (require) {
           dragY = model2pxInv.invert(d3.event.y),
           drag;
 
-      if (model.is_stopped()) {
+      if (model.isStopped()) {
         drag = dragBoundingBox(dragX, dragY, model.getMoleculeBoundingBox(i));
         setAtomPosition(i, drag.x, drag.y, false, true);
         update();
@@ -1567,7 +1567,7 @@ define(function (require) {
       var dragDx = model2px.invert(d3.event.dx),
           dragDy = model2px.invert(d3.event.dy);
 
-      if (!(AUTHORING && model.is_stopped())) {
+      if (!(AUTHORING && model.isStopped())) {
       // for now we don't have user-draggable textBoxes
         return;
       }
@@ -1579,7 +1579,7 @@ define(function (require) {
     }
 
     function nodeDragEnd(d, i) {
-      if (model.is_stopped()) {
+      if (model.isStopped()) {
 
         if (!setAtomPosition(i, d.x, d.y, true, true)) {
           alert("You can't drop the atom there");     // should be changed to a nice Lab alert box

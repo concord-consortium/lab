@@ -93,7 +93,7 @@ define(function(require) {
         dispatch.stop();
       },
 
-      is_stopped: function() {
+      isStopped: function() {
         return isStopped;
       },
 

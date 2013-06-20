@@ -70,7 +70,7 @@ define(function (require) {
    * @private
    */
   PlaybackController.prototype._simulationStateChanged = function () {
-    this._modelStopped = model.is_stopped();
+    this._modelStopped = model.isStopped();
     if (this._modelStopped) {
       this._$playPause.removeClass("playing");
     } else {

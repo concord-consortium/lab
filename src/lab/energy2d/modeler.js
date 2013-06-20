@@ -38,7 +38,7 @@ define(function (require) {
         dispatch.on(type, listener);
       },
       // Required by playback controller.
-      is_stopped: function () {
+      isStopped: function () {
         return !interval_id;
       },
 

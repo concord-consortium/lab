@@ -269,7 +269,7 @@ define(function(require) {
         });
       },
 
-      is_stopped: function() {
+      isStopped: function() {
         return isStopped;
       },
 
