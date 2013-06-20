@@ -4,6 +4,7 @@ define(function (require) {
   // Dependencies.
   var Model          = require('energy2d/modeler'),
       ModelContainer = require('energy2d/views/model-container'),
+      Benchmarks     = require('energy2d/benchmarks/benchmarks');
       arrays         = require('arrays');
 
   return function (modelUrl, modelOptions) {
@@ -60,6 +61,8 @@ define(function (require) {
 
       ScriptingAPI: function () {}
     };
+
+    api.benchmarks = new Benchmarks(api);
 
     // Export 'model' to global namespace.
     model = new Model(modelOptions);

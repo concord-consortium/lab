@@ -7,6 +7,7 @@ define(function (require) {
   var
     config  = require('../lab.config'),
     InteractiveController = require('energy2d/controllers/interactive'),
+    benchmark = require('common/benchmark/benchmark'),
     // Object to be returned.
     public_api;
 
