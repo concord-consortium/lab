@@ -80,7 +80,7 @@ define(function (require, exports, module) {
       ny = model.getGridHeight(),
 
       model_options          = model.getModelOptions(),
-      timestep               = model_options.timestep,
+      timeStep               = model_options.timeStep,
       thermal_buoyancy       = model_options.thermal_buoyancy,
       buoyancy_approximation = model_options.buoyancy_approximation,
       viscosity              = model_options.background_viscosity,
@@ -98,12 +98,12 @@ define(function (require, exports, module) {
       idysq = 1.0 / (delta_y * delta_y),
       s     = 0.5 / (idxsq + idysq),
 
-      hx = timestep * viscosity * idxsq,
-      hy = timestep * viscosity * idysq,
+      hx = timeStep * viscosity * idxsq,
+      hy = timeStep * viscosity * idysq,
       dn = 1.0 / (1 + 2 * (hx + hy)),
 
-      g = gravity * timestep,
-      b = thermal_buoyancy * timestep,
+      g = gravity * timeStep,
+      b = thermal_buoyancy * timeStep,
 
       grid_vec = [1 / ny, 1 / nx],
 
@@ -123,8 +123,8 @@ define(function (require, exports, module) {
           data2_tex: 1,
           // Uniforms.
           grid: grid_vec,
-          tx: 0.5 * timestep / delta_x,
-          ty: 0.5 * timestep / delta_y
+          tx: 0.5 * timeStep / delta_x,
+          ty: 0.5 * timeStep / delta_y
         };
         maccormack_step1_program.uniforms(uniforms);
         maccormack_step2_program.uniforms(uniforms);

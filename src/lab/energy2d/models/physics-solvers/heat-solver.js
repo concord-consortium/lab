@@ -15,7 +15,7 @@ define(function (require, exports, module) {
 
       // Basic simulation parameters.
       model_options = model.getModelOptions(),
-      timeStep = model_options.timestep,
+      timeStep = model_options.timeStep,
       boundary = model_options.boundary,
 
       deltaX = model_options.model_width / model.getGridWidth(),

@@ -19,7 +19,7 @@ define(function (require, exports, module) {
 
       // Basic simulation parameters.
       model_options         = model.getModelOptions(),
-      timeStep              = model_options.timestep,
+      timeStep              = model_options.timeStep,
       thermalBuoyancy       = model_options.thermal_buoyancy,
       buoyancyApproximation = model_options.buoyancy_approximation,
       viscosity             = model_options.background_viscosity,

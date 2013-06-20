@@ -24,7 +24,7 @@ define(function(require) {
       model_height: {
         defaultValue: 10
       },
-      timestep: {
+      timeStep: {
         defaultValue: 1
       },
       timeStepsPerTick: {

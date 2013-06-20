@@ -43,7 +43,7 @@ define(function (require, exports, module) {
       ny = model.getGridHeight(),
 
       model_options = model.getModelOptions(),
-      timestep = model_options.timestep,
+      timeStep = model_options.timeStep,
       boundary = model_options.boundary,
 
       delta_x = model_options.model_width / model.getGridWidth(),
@@ -90,7 +90,7 @@ define(function (require, exports, module) {
           enforce_temp: 0.0,
           hx: 0.5 / (delta_x * delta_x),
           hy: 0.5 / (delta_y * delta_y),
-          inv_timestep: 1.0 / timestep
+          inv_timeStep: 1.0 / timeStep
         };
         solver_program.uniforms(uniforms);
 
@@ -103,8 +103,8 @@ define(function (require, exports, module) {
           // Uniforms.
           grid: grid_vec,
           enforce_temp: 0.0,
-          tx: 0.5 * timestep / delta_x,
-          ty: 0.5 * timestep / delta_y
+          tx: 0.5 * timeStep / delta_x,
+          ty: 0.5 * timeStep / delta_y
         };
         maccormack_step1_program.uniforms(uniforms);
         maccormack_step2_program.uniforms(uniforms);

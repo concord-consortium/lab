@@ -15,7 +15,7 @@ define(function (require, exports, module) {
       model_options = model.getModelOptions(),
       lx = model_options.model_width,
       ly = model_options.model_height,
-      timestep = model_options.timestep,
+      timeStep = model_options.timeStep,
       sun_angle = Math.PI - model_options.sun_angle,
       ray_count = model_options.solar_ray_count,
       solar_power_density = model_options.solar_power_density,
@@ -145,7 +145,7 @@ define(function (require, exports, module) {
     return {
       solve: function () {
         var
-          factor = 1.0 / (timestep * photon_emission_interval),
+          factor = 1.0 / (timeStep * photon_emission_interval),
           idx = 1.0 / delta_x,
           idy = 1.0 / delta_y,
           photon, part, x, y,
@@ -153,11 +153,11 @@ define(function (require, exports, module) {
 
         for (i = 0, photons_len = photons.length; i < photons_len; i += 1) {
           photon = photons[i];
-          photon.move(timestep);
+          photon.move(timeStep);
 
           for (j = 0, parts_len = parts.length; j < parts_len; j += 1) {
             part = parts[j];
-            if (part.reflect(photon, timestep)) {
+            if (part.reflect(photon, timeStep)) {
               break;
             } else if (part.absorb(photon)) {
               x = Math.max(Math.min(Math.round(photon.x * idx), nx1), 0);

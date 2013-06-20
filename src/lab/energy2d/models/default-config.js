@@ -18,7 +18,7 @@ define(function (require, exports, module) {
 
       "model_width": 10,
       "model_height": 10,
-      "timestep": 1,
+      "timeStep": 1,
       "convective": true,
 
       "background_temperature": 0,

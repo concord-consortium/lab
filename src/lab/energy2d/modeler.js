@@ -40,7 +40,7 @@ define(function (require) {
       },
 
       getTime: function () {
-        return model.properties.timestep * core_model.getIndexOfStep();
+        return model.properties.timeStep * core_model.getIndexOfStep();
       },
       isWebGLActive: function () {
         return core_model.isWebGLActive();
