@@ -1,4 +1,4 @@
-/*global define: false, d3: false*/
+/*global define: false */
 
 define(function(require) {
 
@@ -44,27 +44,15 @@ define(function(require) {
           unitsDefinition: unitsDefinition
         }),
         propertySupport = labModelerMixin.propertySupport,
+        dispatch = labModelerMixin.dispatchSupport,
 
         viewOptions,
         mainProperties,
-        isStopped = true,
-        dispatch = d3.dispatch('play', 'stop', 'tick', 'reset', 'stepForward', 'stepBack', 'seek', 'invalidation'),
-        interval,
-        intervalLength = 16, // ms
         lastFrequency,
         phase = 0,
         time = 0,
         stepCounter = 0,
         model;
-
-    function tick() {
-      stepCounter++;
-      time += (0.001 * intervalLength * model.properties.timeScale);
-
-      model.updateAllOutputProperties();
-
-      dispatch.tick();
-    }
 
     function constrain(angle) {
       return angle - 2 * Math.PI * Math.floor(angle / (2 * Math.PI));
@@ -77,24 +65,15 @@ define(function(require) {
         });
       },
 
-      on: function(type, listener) {
-        dispatch.on(type, listener);
-      },
+      tick: function () {
+        var intervalLength = 1000 / model.properties.modelSampleRate;
 
-      start: function() {
-        isStopped = false;
-        interval = setInterval(tick, intervalLength);
-        dispatch.play();
-      },
+        stepCounter++;
+        time += (0.001 * intervalLength * model.properties.timeScale);
 
-      stop: function() {
-        isStopped = true;
-        clearInterval(interval);
-        dispatch.stop();
-      },
+        model.updateAllOutputProperties();
 
-      isStopped: function() {
-        return isStopped;
+        dispatch.tick();
       },
 
       stepCounter: function() {
@@ -103,6 +82,7 @@ define(function(require) {
     };
 
     labModelerMixin.mixInto(model);
+    dispatch.addEventTypes("tick");
 
     mainProperties = validator.validateCompleteness(metadata.mainProperties, initialProperties);
     propertySupport.setRawValues(mainProperties);

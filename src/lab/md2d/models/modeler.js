@@ -17,7 +17,7 @@ define(function(require) {
       GeneticEngine        = require('md2d/models/engine/genetic-engine'),
       units                = require('md2d/models/engine/constants/units'),
       PropertyDescription  = require('common/property-description'),
-      Dispatch             = require('common/dispatch'),
+      Dispatch             = require('common/dispatch-support'),
       unitDefinitions      = require('md2d/models/unit-definitions/index'),
       UnitsTranslation     = require('md2d/models/units-translation'),
       PerformanceOptimizer = require('md2d/models/performance-optimizer'),

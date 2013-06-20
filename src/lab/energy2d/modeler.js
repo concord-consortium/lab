@@ -1,4 +1,4 @@
-/*global define: false, d3: false */
+/*global define: false */
 
 define(function (require) {
   'use strict';
@@ -21,44 +21,18 @@ define(function (require) {
     var model,
         core_model,
 
-        interval_id,
-
-        dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack"),
-
         labModelerMixin = new LabModelerMixin({
           metadata: metadata,
           unitsDefinition: unitsDefinition
         }),
-        propertySupport = labModelerMixin.propertySupport;
+        propertySupport = labModelerMixin.propertySupport,
+        dispatch = labModelerMixin.dispatchSupport;
 
     model = {
       // API required by the Lab framework:
       resetTime: function () {},
-      on: function (type, listener) {
-        dispatch.on(type, listener);
-      },
-      // Required by playback controller.
-      isStopped: function () {
-        return !interval_id;
-      },
 
-      start: function () {
-        if (!interval_id) {
-          interval_id = setInterval(model.nextStep, 0);
-          dispatch.play();
-        }
-      },
-
-      stop: function () {
-        if (interval_id !== undefined) {
-          clearInterval(interval_id);
-          interval_id = undefined;
-          dispatch.stop();
-        }
-      },
-
-      // Custom API:
-      nextStep: function () {
+      tick: function () {
         var i, len;
 
         for (i = 0, len = model.properties.timeStepsPerTick; i < len; i++) {
@@ -67,6 +41,7 @@ define(function (require) {
         model.updateAllOutputProperties();
         dispatch.tick();
       },
+
       getTime: function () {
         return model.properties.timestep * core_model.getIndexOfStep();
       },
@@ -116,8 +91,8 @@ define(function (require) {
       var viewOptions,
           mainProperties;
 
-      // Adds model.properties, model.set, model.get, model.addObserver, model.removeObserver...
       labModelerMixin.mixInto(model);
+      dispatch.addEventTypes("tick");
 
       mainProperties = validator.validateCompleteness(metadata.mainProperties, initialProperties);
       propertySupport.setRawValues(mainProperties);

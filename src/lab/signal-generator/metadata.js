@@ -13,6 +13,10 @@ define(function() {
         unitType: "frequency",
         propertyChangeInvalidates: true
       },
+      modelSampleRate: {
+        defaultValue: 60,
+        propertyChangeInvalidates: true
+      },
       timeScale: {
         defaultValue: 1,
         unitType: "time",
