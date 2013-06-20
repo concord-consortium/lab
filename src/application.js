@@ -1289,7 +1289,7 @@ AUTHORING = false;
     function removeEventHook(name) {
       var privateName = name + '.modelEnergyGraph';
       if (_model) {
-        _model.on(privateName); // for now
+        _model.on(privateName, null); // for now
       } else if (iframePhone) {
         iframePhone.removeDispatchListener(privateName);
       }
@@ -1639,12 +1639,12 @@ AUTHORING = false;
     }
 
     function removeEventListeners() {
-      model.on("tick.dataTable");
-      model.on('play.dataTable');
-      model.on('reset.dataTable');
-      model.on('seek.dataTable');
-      model.on('stepForward.dataTable');
-      model.on('stepBack.dataTable');
+      model.on("tick.dataTable", null);
+      model.on('play.dataTable', null);
+      model.on('reset.dataTable', null);
+      model.on('seek.dataTable', null);
+      model.on('stepForward.dataTable', null);
+      model.on('stepBack.dataTable', null);
     }
 
     // Initialization

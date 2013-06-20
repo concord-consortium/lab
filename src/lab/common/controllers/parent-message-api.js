@@ -133,7 +133,7 @@ define(function(require) {
           i            = 0,
           propertyName = null;
 
-      model.on(eventName);
+      model.on(eventName, null);
     });
 
     // on message 'get' propertyName: return a 'propertyValue' message
