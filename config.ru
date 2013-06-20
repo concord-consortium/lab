@@ -1,15 +1,18 @@
 gem 'rack-rewrite', '~> 1.3.3'
 require 'rack/rewrite'
+require 'shutterbug'
 
 PUBLIC_PATH =  File.join(Dir.pwd, 'public')
 JNLP_APP_PATH = PUBLIC_PATH
 
 require './lib/rack/jnlp.rb'
-require './lib/shutterbug/rackapp.rb'
 
 use Rack::Jnlp
 use Rack::ConditionalGet
 use Rack::ContentLength
+
+# Shutterbug adds these:
+# shutterbug/shutterbug.js shutterbug/get_png/SHA1
 use Shutterbug::Rackapp
 
 Rack::Mime::MIME_TYPES.merge!({

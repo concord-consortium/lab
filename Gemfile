@@ -18,6 +18,8 @@ gem "grit",               "~> 2.5.0"
 
 gem "mustache",           "~> 0.99.4"
 
+gem "shutterbug", :github  => 'concord-consortium/shutterbug'
+
 def darwin_only(require_as)
   RbConfig::CONFIG['host_os'] =~ /darwin/ && require_as
 end
