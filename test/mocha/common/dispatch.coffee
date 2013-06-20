@@ -1,7 +1,7 @@
 helpers = require '../../helpers'
 helpers.setupBrowserEnvironment()
 
-Dispatch = requirejs 'common/dispatch'
+Dispatch = requirejs 'common/dispatch-support'
 
 describe "Dispatch", ->
   describe "Dispatch constructor", ->
@@ -119,7 +119,7 @@ describe "Dispatch", ->
       (-> d.e3()).should.throw()
       (-> d.e4()).should.throw()
 
-      d.addEventTypes("e3", "e4");
+      d.addEventTypes "e3", "e4"
       sinon.spy l, "l3"
       sinon.spy l, "l4"
       d.on "e3", l.l3
@@ -143,3 +143,13 @@ describe "Dispatch", ->
       d.e2()
       l.l1.callCount.should.eql 1
       l.l2.callCount.should.eql 1
+
+    it "should provide mixInto method injecting .on() method to target", ->
+      target = {}
+      d.mixInto target
+
+      d.addEventTypes "e3"
+      target.on "e3"
+
+      d.e3()
+      l.l3.callCount.should.eql 1

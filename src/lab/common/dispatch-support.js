@@ -32,7 +32,7 @@ define(function() {
     return [].slice.call(args);
   }
 
-  return function Dispatch() {
+  return function DispatchSupport() {
     var api,
         d3dispatch,
         types,
@@ -79,7 +79,11 @@ define(function() {
        */
       on: delegate("on"),
 
-      // New API specific for Lab Dispatch:
+      // New API specific for Lab DispatchSupport:
+
+      mixInto: function(target) {
+        target.on = api.on;
+      },
 
       /**
        * Adds new event types. Old event types are still supported, but
