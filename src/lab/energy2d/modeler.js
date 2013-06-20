@@ -29,9 +29,6 @@ define(function (require) {
         dispatch = labModelerMixin.dispatchSupport;
 
     model = {
-      // API required by the Lab framework:
-      resetTime: function () {},
-
       tick: function () {
         var i, len;
 
@@ -45,7 +42,6 @@ define(function (require) {
       getTime: function () {
         return model.properties.timestep * core_model.getIndexOfStep();
       },
-
       isWebGLActive: function () {
         return core_model.isWebGLActive();
       },

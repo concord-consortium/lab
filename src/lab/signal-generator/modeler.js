@@ -57,11 +57,6 @@ define(function(require) {
     }
 
     model = {
-      resetTime: function() {
-        model.makeInvalidatingChange(function() {
-          time = 0;
-        });
-      },
 
       tick: function () {
         var intervalLength = 1000 / model.properties.modelSampleRate;

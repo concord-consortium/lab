@@ -964,14 +964,10 @@ define(function(require) {
     model.reset = function() {
       dispatch.willReset();
       invalidatingChangePreHook();
-      model.resetTime();
+      engine.setTime(0);
       tickHistory.restoreInitialState();
       invalidatingChangePostHook();
       dispatch.reset();
-    };
-
-    model.resetTime = function() {
-      engine.setTime(0);
     };
 
     model.getTotalMass = function() {

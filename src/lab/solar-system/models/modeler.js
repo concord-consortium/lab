@@ -675,14 +675,11 @@ define(function(require) {
     };
 
     model.reset = function() {
-      model.resetTime();
+      engine.setTime(0);
       tickHistory.restoreInitialState();
       dispatch.reset();
     };
 
-    model.resetTime = function() {
-      engine.setTime(0);
-    };
 
     /**
       Attempts to add a body to a random location.

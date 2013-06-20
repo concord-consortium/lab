@@ -34,7 +34,6 @@ define(function () {
     // ------------------------------------------------------------
     function setupModel() {
       model = new Model(modelOptions);
-      model.resetTime();
       model.on('tick', tickHandler);
     }
 

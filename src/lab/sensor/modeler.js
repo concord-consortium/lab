@@ -233,11 +233,6 @@ define(function(require) {
     }
 
     model = {
-      resetTime: function() {
-        makeInvalidatingChange(function() {
-          time = 0;
-        });
-      },
 
       on: function(type, listener) {
         dispatch.on(type, listener);
