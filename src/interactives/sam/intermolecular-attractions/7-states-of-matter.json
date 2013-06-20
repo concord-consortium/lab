@@ -8,6 +8,7 @@
   ],
   "models": [
     {
+      "type": "md2d",
       "id": "100-atoms-charged",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/100-atoms$0.json",
       "viewOptions": {
@@ -23,7 +24,7 @@
       "type": "slider",
       "id": "epsilon-slider",
       "min": 0.05,
-      "max": 0.500,
+      "max": 0.5,
       "initialValue": 0.275,
       "labels": [
         {
@@ -35,7 +36,7 @@
           "label": "medium"
         },
         {
-          "value": 0.500,
+          "value": 0.5,
           "label": "strong"
         }
       ],
@@ -95,7 +96,10 @@
       "thermometer"
     ],
     "bottom": [
-      ["epsilon-slider", "temperature-slider"]
+      [
+        "epsilon-slider",
+        "temperature-slider"
+      ]
     ]
   }
 }

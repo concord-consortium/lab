@@ -12,10 +12,10 @@
     "- modify strength of the force produced by the solvent",
     "- switch on or off _realistic dielectric effect_",
     "- experiment with advanced proteins engine settings like additional solvent force or polar amino acids attraction"
-
   ],
   "models": [
     {
+      "type": "md2d",
       "id": "amino-acids$0",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/amino-acids$0.json",
       "viewOptions": {
@@ -176,10 +176,10 @@
         "var opt = {suppressRepaint: true};",
         "var phobicAA = [5,9,12,14,15,17,18,19,22,23,24];",
         "for (var i = 0; i < getNumberOfAtoms(); i++) {",
-          "setAtomProperties(i, {element: phobicAA[Math.round(Math.random()*(phobicAA.length-1))]}, false, false, opt);",
+        "setAtomProperties(i, {element: phobicAA[Math.round(Math.random()*(phobicAA.length-1))]}, false, false, opt);",
         "}",
         "repaint();"
-        ]
+      ]
     },
     {
       "type": "button",
@@ -190,10 +190,10 @@
         "var opt = {suppressRepaint: true};",
         "var philicAA = [6,7,8,10,11,13,16,20,21];",
         "for (var i = 0; i < getNumberOfAtoms(); i++) {",
-          "setAtomProperties(i, {element: philicAA[Math.round(Math.random()*(philicAA.length-1))]}, false, false, opt);",
+        "setAtomProperties(i, {element: philicAA[Math.round(Math.random()*(philicAA.length-1))]}, false, false, opt);",
         "}",
         "repaint();"
-        ]
+      ]
     },
     {
       "type": "button",
@@ -206,12 +206,12 @@
         "var philicAA = [6,7,8,10,11,13,16,20,21];",
         "var phobic,philic;",
         "for (var i = 0; i < getNumberOfAtoms(); i++) {",
-          "phobic = phobicAA[Math.round(Math.random()*(phobicAA.length-1))];",
-          "philic = philicAA[Math.round(Math.random()*(philicAA.length-1))];",
-          "setAtomProperties(i, {element: (Math.random() > 0.2 ? phobic : philic) }, false, false, opt);",
+        "phobic = phobicAA[Math.round(Math.random()*(phobicAA.length-1))];",
+        "philic = philicAA[Math.round(Math.random()*(philicAA.length-1))];",
+        "setAtomProperties(i, {element: (Math.random() > 0.2 ? phobic : philic) }, false, false, opt);",
         "}",
         "repaint();"
-        ]
+      ]
     },
     {
       "type": "button",
@@ -224,12 +224,12 @@
         "var philicAA = [6,7,8,10,11,13,16,20,21];",
         "var phobic,philic;",
         "for (var i = 0; i < getNumberOfAtoms(); i++) {",
-          "phobic = phobicAA[Math.round(Math.random()*(phobicAA.length-1))];",
-          "philic = philicAA[Math.round(Math.random()*(philicAA.length-1))];",
-          "setAtomProperties(i, {element: (Math.random() < 0.2 ? phobic : philic) }, false, false, opt);",
+        "phobic = phobicAA[Math.round(Math.random()*(phobicAA.length-1))];",
+        "philic = philicAA[Math.round(Math.random()*(philicAA.length-1))];",
+        "setAtomProperties(i, {element: (Math.random() < 0.2 ? phobic : philic) }, false, false, opt);",
         "}",
         "repaint();"
-        ]
+      ]
     },
     {
       "type": "button",
@@ -239,10 +239,10 @@
       "action": [
         "var opt = {suppressRepaint: true};",
         "for (var i = 0; i < getNumberOfAtoms(); i++) {",
-          "setAtomProperties(i, {element: (Math.floor(Math.random() * 20) + 5)}, false, false, opt);",
+        "setAtomProperties(i, {element: (Math.floor(Math.random() * 20) + 5)}, false, false, opt);",
         "}",
         "repaint();"
-        ]
+      ]
     },
     {
       "type": "button",
@@ -254,18 +254,42 @@
   ],
   "layout": {
     "bottom": [
-      ["show-labels", "select-color-scheme"],
-      ["select-solvent", "solvent-force-factor-slider", "realistic-dielectric-effect"],
-      ["add-solvent-force-mult-slider", "add-solvent-force-threshold-slider"],
-      ["epsilon-slider"]
+      [
+        "show-labels",
+        "select-color-scheme"
+      ],
+      [
+        "select-solvent",
+        "solvent-force-factor-slider",
+        "realistic-dielectric-effect"
+      ],
+      [
+        "add-solvent-force-mult-slider",
+        "add-solvent-force-threshold-slider"
+      ],
+      [
+        "epsilon-slider"
+      ]
     ],
     "right": [
-      ["random-protein-button"],
-      ["phobic-button"],
-      ["philic-button"],
-      ["mostly-phobic-button"],
-      ["mostly-philic-button"],
-      ["random-button"]
+      [
+        "random-protein-button"
+      ],
+      [
+        "phobic-button"
+      ],
+      [
+        "philic-button"
+      ],
+      [
+        "mostly-phobic-button"
+      ],
+      [
+        "mostly-philic-button"
+      ],
+      [
+        "random-button"
+      ]
     ]
   },
   "template": [

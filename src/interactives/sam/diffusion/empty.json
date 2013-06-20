@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "model1",
       "url": "imports/legacy-mw-content/converted/sam-activities/diffusion/original/empty.json"
     }

@@ -11,6 +11,7 @@
   ],
   "models": [
     {
+      "type": "md2d",
       "id": "instructions",
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/instructions.json",
       "viewOptions": {
@@ -27,7 +28,7 @@
           },
           {
             "text": "Choose a pair of molecules from the menu below.",
-            "x": 0.40,
+            "x": 0.4,
             "y": 0.4,
             "fontScale": 1.4,
             "width": 3,
@@ -37,6 +38,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "npPulling",
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/npPulling.json",
       "viewOptions": {
@@ -58,6 +60,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "polarPulling",
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarPulling.json",
       "viewOptions": {
@@ -79,6 +82,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "polarNpPulling",
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/polarNpPulling.json",
       "viewOptions": {
@@ -90,7 +94,7 @@
         "textBoxes": [
           {
             "text": "Non-polar and polar molecules: induced dipole attraction",
-            "x": 0.90,
+            "x": 0.9,
             "y": 1.7,
             "width": 2,
             "layer": 1,

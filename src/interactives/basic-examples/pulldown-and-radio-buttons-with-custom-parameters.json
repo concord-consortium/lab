@@ -6,6 +6,7 @@
   "fontScale": 0.8,
   "models": [
     {
+      "type": "md2d",
       "id": "pendulum1$0",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/pendulum1$0.json",
       "viewOptions": {

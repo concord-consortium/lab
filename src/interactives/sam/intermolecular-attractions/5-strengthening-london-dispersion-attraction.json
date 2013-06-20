@@ -9,6 +9,7 @@
   ],
   "models": [
     {
+      "type": "md2d",
       "id": "instructions",
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/instructions.json",
       "viewOptions": {
@@ -21,7 +22,6 @@
             "y": 1.85,
             "width": 2.7,
             "fontScale": 1.4,
-            "width": 2.7,
             "layer": 1
           },
           {
@@ -36,6 +36,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "npSmallStraight",
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npSmallStraight.json",
       "viewOptions": {
@@ -54,6 +55,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "npLargeStraight",
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npLargeStraight.json",
       "viewOptions": {
@@ -72,6 +74,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "npStraightJagged",
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npStraightJagged.json",
       "viewOptions": {
@@ -90,6 +93,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "npStraightRound",
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npStraightRound.json",
       "viewOptions": {
@@ -108,6 +112,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "npCurvedRound",
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page5/npCurvedRound.json",
       "viewOptions": {

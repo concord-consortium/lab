@@ -5,8 +5,8 @@
   "about": "",
   "models": [
     {
-      "id": "one-atom",
       "type": "md2d",
+      "id": "one-atom",
       "url": "models/md2d/one-atom.json",
       "viewOptions": {
         "controlButtons": "play_reset",
@@ -78,14 +78,29 @@
   ],
   "layout": {
     "left": [
-      [ "axes-label" ],
-      [ "show-gridlines" ],
-      [ "show-xunits" ],
-      [ "show-yunits" ],
-      [ "show-xlabel" ],
-      [ "show-ylabel" ]
+      [
+        "axes-label"
+      ],
+      [
+        "show-gridlines"
+      ],
+      [
+        "show-xunits"
+      ],
+      [
+        "show-yunits"
+      ],
+      [
+        "show-xlabel"
+      ],
+      [
+        "show-ylabel"
+      ]
     ],
-    "bottom": [ "current-obstacles", "kick-atom"]
+    "bottom": [
+      "current-obstacles",
+      "kick-atom"
+    ]
   },
   "template": [
     {

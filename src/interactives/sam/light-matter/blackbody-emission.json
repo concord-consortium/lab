@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "blackbody$0",
       "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/blackbody$0.json",
       "viewOptions": {

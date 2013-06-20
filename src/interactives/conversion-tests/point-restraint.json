@@ -5,6 +5,7 @@
   "about": "Using point restraints",
   "models": [
     {
+      "type": "md2d",
       "id": "point-restraint$0",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/point-restraint$0.json",
       "viewOptions": {
@@ -13,6 +14,9 @@
       }
     }
   ],
-  "components": [],
-  "layout": {}
+  "components": [
+
+  ],
+  "layout": {
+  }
 }

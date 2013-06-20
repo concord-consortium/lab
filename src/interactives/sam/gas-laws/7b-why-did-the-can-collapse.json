@@ -12,6 +12,7 @@
   ],
   "models": [
     {
+      "type": "md2d",
       "id": "page7$0",
       "url": "imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page7/page7$0.json",
       "viewOptions": {
@@ -60,7 +61,7 @@
         "  }",
         "}",
         "return count;"
-     ]
+      ]
     },
     {
       "name": "yellowAtoms",
@@ -73,7 +74,7 @@
         "  }",
         "}",
         "return count;"
-     ]
+      ]
     },
     {
       "name": "vxMean",
@@ -85,7 +86,7 @@
         "  vxSum += Math.abs(getAtomProperties(i).vx);",
         "}",
         "return vxSum / atomNum;"
-     ]
+      ]
     },
     {
       "name": "vyMean",
@@ -97,7 +98,7 @@
         "  vySum += Math.abs(getAtomProperties(i).vy);",
         "}",
         "return vySum / atomNum;"
-     ]
+      ]
     }
   ],
   "components": [
@@ -254,22 +255,48 @@
   ],
   "layout": {
     "left": [
-      ["purple-label"],
-      ["purple-atoms"],
-      ["add-inside"],
-      ["remove-inside"],
-      ["heat-inside"],
-      ["cool-inside"]
+      [
+        "purple-label"
+      ],
+      [
+        "purple-atoms"
+      ],
+      [
+        "add-inside"
+      ],
+      [
+        "remove-inside"
+      ],
+      [
+        "heat-inside"
+      ],
+      [
+        "cool-inside"
+      ]
     ],
     "right": [
-      ["yellow-label"],
-      ["yellow-atoms"],
-      ["add-outside"],
-      ["remove-outside"],
-      ["heat-outside"],
-      ["cool-outside"]
+      [
+        "yellow-label"
+      ],
+      [
+        "yellow-atoms"
+      ],
+      [
+        "add-outside"
+      ],
+      [
+        "remove-outside"
+      ],
+      [
+        "heat-outside"
+      ],
+      [
+        "cool-outside"
+      ]
     ],
-    "bottom": [ "show-velocity" ]
+    "bottom": [
+      "show-velocity"
+    ]
   },
   "template": [
     {

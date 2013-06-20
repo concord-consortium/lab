@@ -6,6 +6,7 @@
   "fontScale": 0.8,
   "models": [
     {
+      "type": "md2d",
       "id": "sun-on-ground",
       "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/sunOnGround.json",
       "viewOptions": {
@@ -13,6 +14,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "sun-on-co2",
       "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/sunOnCO2.json",
       "viewOptions": {
@@ -20,6 +22,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "sun-on-ground-and-co2",
       "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/sunOnGroundAndCO2.json",
       "viewOptions": {
@@ -27,6 +30,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "ir-on-co2",
       "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/IROnCO2.json",
       "viewOptions": {
@@ -99,17 +103,29 @@
   ],
   "layout": {
     "left": [
-      ["text-select-model"],
-      ["select-model"],
-      ["text-photon-key"],
-      ["key-photon"]
+      [
+        "text-select-model"
+      ],
+      [
+        "select-model"
+      ],
+      [
+        "text-photon-key"
+      ],
+      [
+        "key-photon"
+      ]
     ],
     "right": [
       "thermometer"
     ],
     "bottom": [
-      ["enable-light-source"],
-      ["ke-shading"]
+      [
+        "enable-light-source"
+      ],
+      [
+        "ke-shading"
+      ]
     ]
   },
   "template": "left-right-bottom"

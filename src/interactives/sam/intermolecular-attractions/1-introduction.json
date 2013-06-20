@@ -2,7 +2,7 @@
   "title": "Seeing Intermolecular Attractions",
   "publicationStatus": "public",
   "subtitle": "A very simple interactive with polar molecules on the left and non-polar molecules on the right.",
-  "about":  [
+  "about": [
     "All matter is attracted to all other matter. How does this work?",
     "",
     "This interactive shows polar molecules (with charges) and non-polar molecules in a",
@@ -11,6 +11,7 @@
   ],
   "models": [
     {
+      "type": "md2d",
       "id": "page1$0",
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page1/page1$0.json",
       "viewOptions": {
@@ -31,5 +32,7 @@
       }
     }
   ],
-  "components": []
+  "components": [
+
+  ]
 }

@@ -6,6 +6,7 @@
   "fontScale": 0.8,
   "models": [
     {
+      "type": "md2d",
       "id": "main-model",
       "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/area-versus-applied-pressure$0.json",
       "viewOptions": {
@@ -32,11 +33,13 @@
       "name": "pressure",
       "label": "Pressure",
       "unitAbbreviation": "pN/nm",
-      "onChange": ["var MW_FORCE_UNITS_PER_PICONEWTON = 6.02e-7,",
-                   "    height = getObstacleProperties(0).height,",
-                   "    mass   = getObstacleProperties(0).mass,",
-                   "    ax     = value * height * MW_FORCE_UNITS_PER_PICONEWTON / mass;",
-                   "setObstacleProperties(0, { externalAx: -ax });"],
+      "onChange": [
+        "var MW_FORCE_UNITS_PER_PICONEWTON = 6.02e-7,",
+        "    height = getObstacleProperties(0).height,",
+        "    mass   = getObstacleProperties(0).mass,",
+        "    ax     = value * height * MW_FORCE_UNITS_PER_PICONEWTON / mass;",
+        "setObstacleProperties(0, { externalAx: -ax });"
+      ],
       "initialValue": 60
     }
   ],

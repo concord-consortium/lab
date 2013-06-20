@@ -10,6 +10,7 @@
   "fontScale": 0.8,
   "models": [
     {
+      "type": "md2d",
       "id": "model1",
       "url": "imports/legacy-mw-content/converted/sam-activities/diffusion/page2/page2mw5$0.json",
       "viewOptions": {
@@ -39,7 +40,8 @@
     }
   ],
   "parameters": [
-    { "name": "initialLeftCO2",
+    {
+      "name": "initialLeftCO2",
       "initialValue": 0,
       "onChange": [
         "var x,y,vx,vy,w,h,i,nAtomsToAdd;",
@@ -89,7 +91,8 @@
         "repaint();"
       ]
     },
-    { "name": "initialLeftO2",
+    {
+      "name": "initialLeftO2",
       "initialValue": 0,
       "onChange": [
         "var x,y,vx,vy,w,h,i,nAtomsToAdd;",
@@ -139,7 +142,8 @@
         "repaint();"
       ]
     },
-    { "name": "initialRightCO2",
+    {
+      "name": "initialRightCO2",
       "initialValue": 0,
       "onChange": [
         "var x,y,vx,vy,w,h,i,nAtomsToAdd;",
@@ -189,7 +193,8 @@
         "repaint();"
       ]
     },
-    { "name": "initialRightO2",
+    {
+      "name": "initialRightO2",
       "initialValue": 0,
       "onChange": [
         "var x,y,vx,vy,w,h,i,nAtomsToAdd;",
@@ -239,10 +244,22 @@
         "repaint();"
       ]
     },
-    { "name": "leftConcentrationCO2", "initialValue": 0 },
-    { "name": "leftConcentrationO2", "initialValue": 0 },
-    { "name": "rightConcentrationCO2", "initialValue": 0 },
-    { "name": "rightConcentrationO2", "initialValue": 0 },
+    {
+      "name": "leftConcentrationCO2",
+      "initialValue": 0
+    },
+    {
+      "name": "leftConcentrationO2",
+      "initialValue": 0
+    },
+    {
+      "name": "rightConcentrationCO2",
+      "initialValue": 0
+    },
+    {
+      "name": "rightConcentrationO2",
+      "initialValue": 0
+    },
     {
       "name": "markingAtoms",
       "initialValue": false,
@@ -256,16 +273,32 @@
     }
   ],
   "components": [
-    { 
+    {
       "type": "checkbox",
       "id": "toggle-select",
       "text": "Highlight atoms by dragging",
       "property": "markingAtoms"
     },
-    { "type": "text", "id": "inside-above-label", "text": "Inside cell" },
-    { "type": "text", "id": "outside-above-label", "text": "Outside cell" },
-    { "type": "text", "id": "inside-right-label", "text": "Inside cell" },
-    { "type": "text", "id": "outside-right-label", "text": "Outside cell" },
+    {
+      "type": "text",
+      "id": "inside-above-label",
+      "text": "Inside cell"
+    },
+    {
+      "type": "text",
+      "id": "outside-above-label",
+      "text": "Outside cell"
+    },
+    {
+      "type": "text",
+      "id": "inside-right-label",
+      "text": "Inside cell"
+    },
+    {
+      "type": "text",
+      "id": "outside-right-label",
+      "text": "Outside cell"
+    },
     {
       "type": "barGraph",
       "id": "left-concentration-CO2",
@@ -330,9 +363,9 @@
       "label": "CO₂",
       "labelOn": "right",
       "options": [
-        { 
+        {
           "text": "None",
-          "value": 0 
+          "value": 0
         },
         {
           "text": "Low",
@@ -374,7 +407,7 @@
       "options": [
         {
           "text": "None",
-          "value": 0 
+          "value": 0
         },
         {
           "text": "Low",
@@ -393,9 +426,10 @@
       "label": "O₂",
       "labelOn": "left",
       "options": [
-        { 
+        {
           "text": "None",
-          "value": 0 },
+          "value": 0
+        },
         {
           "text": "Low",
           "value": 10
@@ -409,20 +443,38 @@
   ],
   "layout": {
     "right-inside": [
-      ["inside-right-label"],
-      ["left-concentration-O2", "left-concentration-CO2"]
+      [
+        "inside-right-label"
+      ],
+      [
+        "left-concentration-O2",
+        "left-concentration-CO2"
+      ]
     ],
     "right-outside": [
-      ["outside-right-label"],
-      ["right-concentration-O2", "right-concentration-CO2"]
+      [
+        "outside-right-label"
+      ],
+      [
+        "right-concentration-O2",
+        "right-concentration-CO2"
+      ]
     ],
-    "bottom-left":  [
-      [ "select-left-concentration-o2" ],
-      [ "select-left-concentration-co2" ]
+    "bottom-left": [
+      [
+        "select-left-concentration-o2"
+      ],
+      [
+        "select-left-concentration-co2"
+      ]
     ],
     "bottom-right": [
-      [ "select-right-concentration-o2" ],
-      [ "select-right-concentration-co2" ]
+      [
+        "select-right-concentration-o2"
+      ],
+      [
+        "select-right-concentration-co2"
+      ]
     ],
     "below": [
       "toggle-select"

@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "boiling-point-with-clock$0",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/boiling-point-with-clock$0.json",
       "viewOptions": {

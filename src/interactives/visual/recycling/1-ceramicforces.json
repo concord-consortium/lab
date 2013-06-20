@@ -13,6 +13,7 @@
   ],
   "models": [
     {
+      "type": "md2d",
       "id": "ceramicforcesimple$0",
       "url": "imports/legacy-mw-content/converted/visual/Recycling/ceramicforcesimple$0.json",
       "viewOptions": {
@@ -33,15 +34,15 @@
         },
         {
           "text": "Small force",
-          "value": 8e-8
+          "value": 8.0e-08
         },
         {
           "text": "Medium force",
-          "value": 1.2e-7
+          "value": 1.2e-07
         },
         {
           "text": "Large force",
-          "value": 3.2e-7
+          "value": 3.2e-07
         }
       ]
     }
@@ -51,7 +52,7 @@
       "force-buttons"
     ]
   },
-  "template":[
+  "template": [
     {
       "id": "bottom",
       "top": "model.bottom",

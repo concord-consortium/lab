@@ -12,6 +12,7 @@
   "fontScale": 0.8,
   "models": [
     {
+      "type": "md2d",
       "id": "page2$0",
       "url": "imports/legacy-mw-content/converted/sam-activities/DNA-to-proteins/page2/page2$0.json",
       "viewOptions": {
@@ -79,9 +80,21 @@
   ],
   "layout": {
     "model-bottom": [
-      ["label1A", "begin", "label1B"],
-      ["label2"],
-      ["transcribeA", "transcribeU", "transcribeG", "transcribeC", "reset"]
+      [
+        "label1A",
+        "begin",
+        "label1B"
+      ],
+      [
+        "label2"
+      ],
+      [
+        "transcribeA",
+        "transcribeU",
+        "transcribeG",
+        "transcribeC",
+        "reset"
+      ]
     ]
   },
   "template": [

@@ -13,6 +13,7 @@
   ],
   "models": [
     {
+      "type": "md2d",
       "id": "page5$0",
       "url": "imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page6/page6noScale$0.json",
       "viewOptions": {

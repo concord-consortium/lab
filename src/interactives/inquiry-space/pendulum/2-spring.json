@@ -13,6 +13,7 @@
   "fontScale": 0.8,
   "models": [
     {
+      "type": "md2d",
       "id": "spring-mass",
       "url": "imports/legacy-mw-content/converted/inquiry-space/pendulum/spring-mass$0.json",
       "viewOptions": {
@@ -57,12 +58,19 @@
       "unitType": "length",
       "label": "Equilibrium spring length",
       "value": "return getRadialBondProperties(0).length + ((get('ballMass')/1000) * get('gravitationalField') / get('springConstant'));"
-
     }
   ],
   "exports": {
-    "perRun": ["gravity", "springConstant", "startingDisplacement", "ballMass", "damping"],
-    "perTick": ["currentDisplacement"]
+    "perRun": [
+      "gravity",
+      "springConstant",
+      "startingDisplacement",
+      "ballMass",
+      "damping"
+    ],
+    "perTick": [
+      "currentDisplacement"
+    ]
   },
   "parameters": [
     {
@@ -232,10 +240,9 @@
       "ymin": -0.6,
       "ymax": 0.6,
       "xmax": 10,
-      "yFormatter": "1.1f",
+      "yFormatter": "2s",
       "xTickCount": 5,
       "xFormatter": "2s",
-      "yFormatter": "2s",
       "properties": [
         "currentDisplacement"
       ]

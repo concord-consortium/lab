@@ -12,6 +12,7 @@
   "fontScale": 0.8,
   "models": [
     {
+      "type": "md2d",
       "id": "page3$0",
       "url": "imports/legacy-mw-content/converted/sam-activities/DNA-to-proteins/page3/page3$0.json",
       "viewOptions": {
@@ -77,8 +78,17 @@
   ],
   "layout": {
     "model-bottom": [
-      ["label3", "translate", "label4", "translate-step"],
-      ["start", "stop", "reset"]
+      [
+        "label3",
+        "translate",
+        "label4",
+        "translate-step"
+      ],
+      [
+        "start",
+        "stop",
+        "reset"
+      ]
     ]
   },
   "template": [

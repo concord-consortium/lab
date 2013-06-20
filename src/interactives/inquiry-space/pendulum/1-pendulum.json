@@ -12,6 +12,7 @@
   "fontScale": 0.8,
   "models": [
     {
+      "type": "md2d",
       "id": "pendulum1$0",
       "url": "imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
       "viewOptions": {
@@ -94,8 +95,16 @@
     }
   ],
   "exports": {
-    "perRun": ["gravity", "rodLength", "startingAngle", "ballMass", "damping"],
-    "perTick": ["currentAngle"]
+    "perRun": [
+      "gravity",
+      "rodLength",
+      "startingAngle",
+      "ballMass",
+      "damping"
+    ],
+    "perTick": [
+      "currentAngle"
+    ]
   },
   "components": [
     {

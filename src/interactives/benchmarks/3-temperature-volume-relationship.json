@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "page4$0",
       "url": "imports/legacy-mw-content/converted/benchmarks/gas-laws-temperature-volume/page4$0.json",
       "viewOptions": {

@@ -6,6 +6,7 @@
   "fontScale": 0.7,
   "models": [
     {
+      "type": "md2d",
       "id": "100-atoms-charged",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/100-atoms$0.json",
       "viewOptions": {
@@ -131,15 +132,28 @@
       "temperature-slider"
     ],
     "bottom-left": [
-      ["button-a", "button-b"],
-      ["button-c", "button-d"]
+      [
+        "button-a",
+        "button-b"
+      ],
+      [
+        "button-c",
+        "button-d"
+      ]
     ],
     "bottom-graph": [
-      ["button-graph-1"],
-      ["button-graph-2"]
+      [
+        "button-graph-1"
+      ],
+      [
+        "button-graph-2"
+      ]
     ],
     "bottom-right": [
-      ["button-add-atom", "button-rm-atom"]
+      [
+        "button-add-atom",
+        "button-rm-atom"
+      ]
     ]
   },
   "template": [

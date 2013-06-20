@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "one-radial-bond_different_elements$0",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/one-radial-bond_different_elements$0.json",
       "viewOptions": {

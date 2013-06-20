@@ -12,6 +12,7 @@
   "fontScale": 0.65,
   "models": [
     {
+      "type": "md2d",
       "id": "page3$0",
       "url": "imports/legacy-mw-content/converted/sam-activities/DNA-to-proteins/page3/page3$0.json",
       "viewOptions": {
@@ -46,7 +47,7 @@
         "  transcribeDNAStep();",
         "}"
       ]
-  },
+    },
     {
       "type": "button",
       "id": "translate",
@@ -73,7 +74,7 @@
         "  translateDNAStep();",
         "}"
       ]
-  },
+    },
     {
       "type": "text",
       "id": "label1",
@@ -145,10 +146,29 @@
   ],
   "layout": {
     "model-bottom": [
-      ["label1", "transcribe", "label2", "transcribe-step"],
-      ["label3", "translate", "label4", "translate-step"],
-      ["start", "stop", "reset", "dna-dialog"],
-      ["prev-state-jump", "next-state", "next-state-jump"]
+      [
+        "label1",
+        "transcribe",
+        "label2",
+        "transcribe-step"
+      ],
+      [
+        "label3",
+        "translate",
+        "label4",
+        "translate-step"
+      ],
+      [
+        "start",
+        "stop",
+        "reset",
+        "dna-dialog"
+      ],
+      [
+        "prev-state-jump",
+        "next-state",
+        "next-state-jump"
+      ]
     ]
   },
   "template": [

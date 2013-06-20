@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "energy-minimization$0",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/energy-minimization$0.json",
       "viewOptions": {
@@ -72,5 +73,6 @@
       "action": "minimizeEnergy();"
     }
   ],
-  "layout": {}
+  "layout": {
+  }
 }

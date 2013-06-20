@@ -11,6 +11,7 @@
   ],
   "models": [
     {
+      "type": "md2d",
       "id": "100-atoms-charged",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/100-atoms$0.json",
       "viewOptions": {
@@ -27,18 +28,18 @@
       "property": "chargeShading",
       "onClick": [
         "if (value) {",
-          "var chargeVal = 1.5;",
-          "for (var i=0; i < getNumberOfAtoms(); i++) {",
-            "setAtomProperties(i, {charge: chargeVal}, false, false, {suppressRepaint: true});",
-            "chargeVal *= -1;",
-          "}",
-          "set({chargeShading: true});",
+        "var chargeVal = 1.5;",
+        "for (var i=0; i < getNumberOfAtoms(); i++) {",
+        "setAtomProperties(i, {charge: chargeVal}, false, false, {suppressRepaint: true});",
+        "chargeVal *= -1;",
+        "}",
+        "set({chargeShading: true});",
         "}",
         "else {",
-          "for (var i=0; i < getNumberOfAtoms(); i++) {",
-            "setAtomProperties(i, { charge: 0}, false, false, {suppressRepaint: true});",
-          "}",
-          "set({chargeShading: false});",
+        "for (var i=0; i < getNumberOfAtoms(); i++) {",
+        "setAtomProperties(i, { charge: 0}, false, false, {suppressRepaint: true});",
+        "}",
+        "set({chargeShading: false});",
         "}"
       ]
     },
@@ -46,7 +47,7 @@
       "type": "slider",
       "id": "epsilon-slider",
       "min": 0.075,
-      "max": 0.300,
+      "max": 0.3,
       "initialValue": 0.14,
       "displayValue": "return format('1.3f')(value)",
       "labels": [
@@ -55,7 +56,7 @@
           "label": "Weak"
         },
         {
-          "value": 0.300,
+          "value": 0.3,
           "label": "Strong"
         }
       ],
@@ -99,7 +100,11 @@
       "thermometer"
     ],
     "bottom": [
-      ["charged-box", "epsilon-slider", "temperature-slider"]
+      [
+        "charged-box",
+        "epsilon-slider",
+        "temperature-slider"
+      ]
     ]
   }
 }

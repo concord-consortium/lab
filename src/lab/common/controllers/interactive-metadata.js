@@ -70,6 +70,9 @@ define(function() {
     model: {
       // Definition of a model.
       // Can include either a URL to model definition or model options hash..
+      type: {
+        required: true
+      },
       id: {
         required: true
       },

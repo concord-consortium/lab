@@ -5,8 +5,8 @@
   "about": "",
   "models": [
     {
-      "id": "earth",
       "type": "solar-system",
+      "id": "earth",
       "url": "models/solar-system/earth.json",
       "viewOptions": {
         "controlButtons": "play_reset_step"
@@ -20,12 +20,12 @@
   ],
   "outputs": [
     {
-      "name":  "earthOrbitalDistance",
+      "name": "earthOrbitalDistance",
       "label": "Current orbital distance",
       "units": "length",
       "value": [
-          "var e = getBodyProperties(1);",
-          "return Math.sqrt(e.x * e.x + e.y * e.y)"
+        "var e = getBodyProperties(1);",
+        "return Math.sqrt(e.x * e.x + e.y * e.y)"
       ]
     }
   ],
@@ -33,7 +33,7 @@
     {
       "name": "orbitShape",
       "label": "Orbit Shape",
-      "onChange":[
+      "onChange": [
         "switch(get('month')) {",
         "  case 1:",
         "  switch(value) {",
@@ -95,7 +95,7 @@
     {
       "name": "month",
       "label": "Month",
-      "onChange":[
+      "onChange": [
         "switch(get('orbitShape')) {",
         "  case 1:",
         "  switch(value) {",
@@ -149,7 +149,6 @@
       ],
       "initialValue": 1
     }
-
   ],
   "components": [
     {
@@ -232,8 +231,12 @@
   ],
   "layout": {
     "right-upper": [
-      [ "select-orbit-shape" ],
-      [ "select-month" ]
+      [
+        "select-orbit-shape"
+      ],
+      [
+        "select-month"
+      ]
     ],
     "right-middle": [
       "orbit-distance-graph"

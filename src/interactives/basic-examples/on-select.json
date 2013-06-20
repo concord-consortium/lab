@@ -4,6 +4,7 @@
   "subtitle": "Use onSelect() to attach an event handler function for select action.",
   "models": [
     {
+      "type": "md2d",
       "id": "simple-gas$0",
       "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
       "viewOptions": {
@@ -31,6 +32,8 @@
     }
   ],
   "layout": {
-    "bottom": [ "select-action" ]
+    "bottom": [
+      "select-action"
+    ]
   }
 }

@@ -6,6 +6,7 @@
   "fontScale": 0.7,
   "models": [
     {
+      "type": "md2d",
       "id": "100-atoms-charged",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/100-atoms$0.json",
       "viewOptions": {

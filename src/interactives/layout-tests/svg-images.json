@@ -27,6 +27,7 @@
   ],
   "models": [
     {
+      "type": "md2d",
       "id": "png",
       "url": "imports/legacy-mw-content/converted/layout-tests/svg-images/page1$0.json",
       "viewOptions": {
@@ -35,6 +36,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "svg1",
       "url": "imports/legacy-mw-content/converted/layout-tests/svg-images/page1$0.json",
       "viewOptions": {
@@ -46,6 +48,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "svg2",
       "url": "imports/legacy-mw-content/converted/layout-tests/svg-images/page1$0.json",
       "viewOptions": {
@@ -57,6 +60,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "svg3",
       "url": "imports/legacy-mw-content/converted/layout-tests/svg-images/page1$0.json",
       "viewOptions": {

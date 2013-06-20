@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "static-non-coulomb-test$0",
       "url": "imports/legacy-mw-content/converted/potential-tests/static-non-coulomb-test/static-non-coulomb-test$0.json",
       "viewOptions": {

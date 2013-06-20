@@ -34,6 +34,7 @@
   ],
   "models": [
     {
+      "type": "md2d",
       "id": "dielectric-constant$0",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/dielectric-constant$0.json",
       "viewOptions": {
@@ -115,9 +116,9 @@
       "type": "graph",
       "id": "propertiesGraph",
       "title": [
-                  "Effective Dielectric Constant vs",
-                  "Distance Between Particles"
-                ],
+        "Effective Dielectric Constant vs",
+        "Distance Between Particles"
+      ],
       "xlabel": "time [ps]",
       "ylabel": "RED: distance [nm], GREEN: dielectric constant",
       "xmin": 0,

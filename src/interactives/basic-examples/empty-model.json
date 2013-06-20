@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "empty-atom",
       "url": "models/md2d/empty-model.json",
       "viewOptions": {
@@ -21,7 +22,9 @@
     }
   ],
   "layout": {
-    "right": [ "add-atom" ]
+    "right": [
+      "add-atom"
+    ]
   },
   "template": [
     {

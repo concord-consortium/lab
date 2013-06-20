@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "page6$0",
       "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/spectroscopy/page6$0.json",
       "viewOptions": {
@@ -60,14 +61,20 @@
   ],
   "layout": {
     "left": [
-      ["label-energy-levels"]
+      [
+        "label-energy-levels"
+      ]
     ],
     "right": [
       "thermometer"
     ],
     "bottom": [
-      ["label-spectrometer"],
-      ["temperature-slider"]
+      [
+        "label-spectrometer"
+      ],
+      [
+        "temperature-slider"
+      ]
     ]
   },
   "template": [

@@ -8,6 +8,7 @@
   ],
   "models": [
     {
+      "type": "md2d",
       "id": "model1",
       "url": "imports/legacy-mw-content/converted/sam-activities/diffusion/page1/page1$0.json",
       "viewOptions": {
@@ -51,7 +52,7 @@
         "var atomID = randomAtoms(1);",
         "var tracedAtomID = get('tracedAtom');",
         "if (tracedAtomID != -99) {",
-          "setAtomProperties(tracedAtomID, {element: 0, marked: get('wasMarked')}, false, false, opt);",
+        "setAtomProperties(tracedAtomID, {element: 0, marked: get('wasMarked')}, false, false, opt);",
         "}",
         "setAtomProperties(atomID, {element: 1}, false, false, opt);",
         "set({tracedAtom: atomID});",

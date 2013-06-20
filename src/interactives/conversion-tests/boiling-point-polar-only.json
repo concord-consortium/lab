@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "boiling-point-polar-only$0",
       "url": "imports/legacy-mw-content/converted/potential-tests/boiling-point-polar-only/boiling-point-polar-only$0.json",
       "viewOptions": {

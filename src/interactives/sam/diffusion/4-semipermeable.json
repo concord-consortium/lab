@@ -5,6 +5,7 @@
   "about": "Biological membranes are selectively permeable; some molecules can cross while others cannot. One way to affect this is through pore size. Change the pore size with the slider to change the permeability of the membrane to the different types of molecules. Trace an individual molecule to see the path it takes.",
   "models": [
     {
+      "type": "md2d",
       "id": "model1",
       "url": "imports/legacy-mw-content/converted/sam-activities/diffusion/semipermeable/semipermeable$0.json",
       "viewOptions": {
@@ -13,7 +14,8 @@
       "modelOptions": {
         "unitsScheme": "mks"
       },
-      "onLoad": [ 
+      "onLoad": [
+
       ]
     }
   ],
@@ -37,7 +39,7 @@
     {
       "name": "tracingAtom",
       "initialValue": false,
-      "onChange" : [
+      "onChange": [
         "if (!value) {",
         "  untraceAtom();",
         "} else {",
@@ -66,7 +68,12 @@
     }
   ],
   "layout": {
-    "bottom": [ "barrier-height", "trace-atom" ],
-    "right": [  ]
+    "bottom": [
+      "barrier-height",
+      "trace-atom"
+    ],
+    "right": [
+
+    ]
   }
 }

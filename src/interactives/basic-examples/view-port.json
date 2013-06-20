@@ -4,6 +4,7 @@
   "subtitle": "Change viewport options to render different areas of the model",
   "models": [
     {
+      "type": "md2d",
       "id": "simple-gas$0",
       "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
       "viewOptions": {
@@ -85,15 +86,29 @@
   ],
   "layout": {
     "bottom": [
-      "viewPortX", "viewPortY", "viewPortZoom"
+      "viewPortX",
+      "viewPortY",
+      "viewPortZoom"
     ],
     "right": [
-      ["xunits"],
-      ["yunits"],
-      ["xlabel"],
-      ["ylabel"],
-      ["gridLines"],
-      ["drag"]
+      [
+        "xunits"
+      ],
+      [
+        "yunits"
+      ],
+      [
+        "xlabel"
+      ],
+      [
+        "ylabel"
+      ],
+      [
+        "gridLines"
+      ],
+      [
+        "drag"
+      ]
     ]
   }
 }

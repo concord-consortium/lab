@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "DissolveCompare$0",
       "url": "imports/legacy-mw-content/converted/visual/Detergents/DissolveCompare$0.json",
       "viewOptions": {
@@ -12,6 +13,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "DissolveCompare$1",
       "url": "imports/legacy-mw-content/converted/visual/Detergents/DissolveCompare$1.json",
       "viewOptions": {

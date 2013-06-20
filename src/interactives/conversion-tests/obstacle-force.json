@@ -5,6 +5,7 @@
   "about": "External force test: the obstacle should reach an atom after ~5 000 fs when default setup is used.",
   "models": [
     {
+      "type": "md2d",
       "id": "obstacle-force$0",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/obstacle-force$0.json",
       "viewOptions": {
@@ -13,7 +14,6 @@
       }
     }
   ],
-
   "components": [
     {
       "type": "button",
@@ -34,5 +34,6 @@
       ]
     }
   ],
-  "layout": {}
+  "layout": {
+  }
 }

@@ -13,6 +13,7 @@
   ],
   "models": [
     {
+      "type": "md2d",
       "id": "plasticforcesimple$0",
       "url": "imports/legacy-mw-content/converted/visual/Recycling/plasticforcesimple$0.json",
       "viewOptions": {
@@ -33,15 +34,15 @@
         },
         {
           "text": "Small force",
-          "value": 8e-8
+          "value": 8.0e-08
         },
         {
           "text": "Medium force",
-          "value": 2.4e-7
+          "value": 2.4e-07
         },
         {
           "text": "Large force",
-          "value": 4e-7
+          "value": 4.0e-07
         }
       ]
     }
@@ -51,7 +52,7 @@
       "force-buttons"
     ]
   },
-  "template":[
+  "template": [
     {
       "id": "bottom",
       "top": "model.bottom",

@@ -5,8 +5,8 @@
   "about": "",
   "models": [
     {
-      "id": "signal1",
       "type": "sensor",
+      "id": "signal1",
       "url": "models/sensor/sensor.json",
       "modelOptions": {
         "sensorType": "goMotion"

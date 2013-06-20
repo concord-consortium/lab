@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "obstacle-friction$0",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/obstacle-friction$0.json",
       "viewOptions": {
@@ -13,6 +14,9 @@
       }
     }
   ],
-  "components": [],
-  "layout": {}
+  "components": [
+
+  ],
+  "layout": {
+  }
 }

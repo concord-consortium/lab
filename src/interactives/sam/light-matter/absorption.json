@@ -6,6 +6,7 @@
   "fontScale": 0.8,
   "models": [
     {
+      "type": "md2d",
       "id": "emission-spec",
       "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/absorption/emissionSpc$0.json",
       "viewOptions": {
@@ -13,6 +14,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "elementA",
       "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/absorption/elementA.json",
       "viewOptions": {
@@ -20,6 +22,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "elementB",
       "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/absorption/elementB.json",
       "viewOptions": {
@@ -27,6 +30,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "elementC",
       "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/absorption/elementC.json",
       "viewOptions": {
@@ -69,8 +73,12 @@
   ],
   "layout": {
     "left": [
-      ["text-select-model"],
-      ["select-model"]
+      [
+        "text-select-model"
+      ],
+      [
+        "select-model"
+      ]
     ],
     "bottom": [
       "enable-light-source"

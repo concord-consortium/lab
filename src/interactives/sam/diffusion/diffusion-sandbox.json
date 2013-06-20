@@ -5,6 +5,7 @@
   "about": "Modify the model by adding and arranging molecules in order to explore how diffusion works.",
   "models": [
     {
+      "type": "md2d",
       "id": "diffusion-sandbox$0",
       "url": "models/md2d/sam/diffusion/diffusion-sandbox-mml.json",
       "viewOptions": {
@@ -24,7 +25,7 @@
         "  vxSum += Math.abs(getAtomProperties(i).vx);",
         "}",
         "return vxSum / atomNum;"
-     ]
+      ]
     },
     {
       "name": "vyMean",
@@ -36,7 +37,7 @@
         "  vySum += Math.abs(getAtomProperties(i).vy);",
         "}",
         "return vySum / atomNum;"
-     ]
+      ]
     }
   ],
   "components": [
@@ -175,10 +176,23 @@
     }
   ],
   "layout": {
-    "bottom1": ["temperature-slider"],
+    "bottom1": [
+      "temperature-slider"
+    ],
     "bottom2": [
-      ["elem3-label","elem1-label","elem2-label"],
-      ["add-elem-3","remove-elem-3","add-elem-1","remove-elem-1","add-elem-2","remove-elem-2"]
+      [
+        "elem3-label",
+        "elem1-label",
+        "elem2-label"
+      ],
+      [
+        "add-elem-3",
+        "remove-elem-3",
+        "add-elem-1",
+        "remove-elem-1",
+        "add-elem-2",
+        "remove-elem-2"
+      ]
     ]
   },
   "template": [

@@ -5,12 +5,14 @@
   "about": "",
   "models": [
     {
+      "type": "solar-system",
       "id": "four-bodies",
       "url": "models/solar-system/inner-four-planets.json",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       },
       "onLoad": [
+
       ]
     }
   ],
@@ -65,12 +67,21 @@
   ],
   "layout": {
     "right": [
-      [ "wrapping-label" ],
-      [ "horizontal-wrapping" ],
-      [ "vertical-wrapping" ],
-      [ "trace-buttons" ]
+      [
+        "wrapping-label"
+      ],
+      [
+        "horizontal-wrapping"
+      ],
+      [
+        "vertical-wrapping"
+      ],
+      [
+        "trace-buttons"
+      ]
     ],
     "bottom": [
+
     ]
   },
   "template": [

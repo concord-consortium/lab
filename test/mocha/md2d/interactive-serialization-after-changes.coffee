@@ -12,6 +12,7 @@ interactive =
   "subtitle": "Subtitle",
   "about": "Description",
   "models": [
+      "type": "generic-model",
       "id": "model1",
       "url": "model1",
       "parameters": [
@@ -20,6 +21,7 @@ interactive =
         "onChange": []
       ]
     ,
+      "type": "generic-model",
       "id": "model2",
       "url": "model2",
       "parameters": [

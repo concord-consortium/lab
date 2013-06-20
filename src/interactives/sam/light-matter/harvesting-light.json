@@ -5,6 +5,7 @@
   "about": "Different colored leaves absorb, reflect, and transmit different photons. Is the light that a leaf absorbs the same color as the leaf?",
   "models": [
     {
+      "type": "md2d",
       "id": "blackbody$0",
       "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/photosynthesis/page2$0.json",
       "viewOptions": {
@@ -20,7 +21,9 @@
     {
       "name": "lightSourceAngularFrequency",
       "initialValue": 0,
-      "onChange": []
+      "onChange": [
+
+      ]
     }
   ],
   "components": [
@@ -44,6 +47,7 @@
       "property": "lightSourceAngularFrequency"
     }
   ],
-  "layout": {},
+  "layout": {
+  },
   "template": "left-right-bottom"
 }

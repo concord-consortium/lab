@@ -6,6 +6,7 @@
   "fontScale": 0.9,
   "models": [
     {
+      "type": "md2d",
       "id": "three-atoms-three-elements$0",
       "url": "imports/legacy-mw-content/converted/potential-tests/three-atoms-three-elements/three-atoms-three-elements$0.json",
       "viewOptions": {
@@ -15,10 +16,10 @@
   ],
   "outputs": [
     {
-      "name":  "numObstacles",
+      "name": "numObstacles",
       "label": "Number of Obstacles",
       "value": [
-          "return getNumberOfObstacles();"
+        "return getNumberOfObstacles();"
       ]
     }
   ],

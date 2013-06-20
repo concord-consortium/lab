@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "page8$0",
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page8/page8$0.json",
       "viewOptions": {
@@ -12,6 +13,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "antibodyDesign1",
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page8/antibodyDesign1.json",
       "viewOptions": {
@@ -19,6 +21,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "antibodyDesign2",
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page8/antibodyDesign2.json",
       "viewOptions": {
@@ -26,6 +29,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "antibodyDesign3",
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page8/antibodyDesign3.json",
       "viewOptions": {
@@ -33,6 +37,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "antibodyDesign4",
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page8/antibodyDesign4.json",
       "viewOptions": {

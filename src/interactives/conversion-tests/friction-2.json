@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "friction-2",
       "url": "imports/legacy-mw-content/converted/potential-tests/friction/friction-2.json",
       "viewOptions": {

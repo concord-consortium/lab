@@ -5,8 +5,8 @@
   "about": "",
   "models": [
     {
-      "id": "signal1",
       "type": "signal-generator",
+      "id": "signal1",
       "url": "models/signal-generator/signal-generator.json",
       "viewOptions": {
         "controlButtons": "play_reset",

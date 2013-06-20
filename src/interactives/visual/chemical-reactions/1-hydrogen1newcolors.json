@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "hydrogen1newcolors$0",
       "url": "imports/legacy-mw-content/converted/visual/ChemicalReactions/hydrogen1newcolors$0.json",
       "viewOptions": {
@@ -17,7 +18,7 @@
   ],
   "outputs": [
     {
-      "name":  "simplifiedTemperature",
+      "name": "simplifiedTemperature",
       "label": "Temperature",
       "units": "°",
       "value": "return get('temperature')/200;"

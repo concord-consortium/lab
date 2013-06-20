@@ -5,8 +5,8 @@
   "about": "",
   "models": [
     {
-      "id": "two-bodies",
       "type": "solar-system",
+      "id": "two-bodies",
       "url": "models/solar-system/two-planets.json",
       "viewOptions": {
         "controlButtons": "play_reset_step"
@@ -15,11 +15,11 @@
   ],
   "outputs": [
     {
-      "name":  "numBodies",
+      "name": "numBodies",
       "label": "Bodies",
       "units": "count",
       "value": [
-          "return getNumberOfBodies();"
+        "return getNumberOfBodies();"
       ]
     }
   ],
@@ -66,12 +66,21 @@
   ],
   "layout": {
     "right": [
-      [ "wrapping-label" ],
-      [ "horizontal-wrapping" ],
-      [ "vertical-wrapping" ],
-      [ "trace-buttons" ]
+      [
+        "wrapping-label"
+      ],
+      [
+        "horizontal-wrapping"
+      ],
+      [
+        "vertical-wrapping"
+      ],
+      [
+        "trace-buttons"
+      ]
     ],
     "bottom": [
+
     ]
   },
   "template": [
