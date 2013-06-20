@@ -153,3 +153,11 @@ describe "Dispatch", ->
 
       d.e3()
       l.l3.callCount.should.eql 1
+
+    it "should let remove the listener", ->
+      d.on "e1", null
+
+      d.e1()
+      d.e2()
+      l.l1.callCount.should.eql 0
+      l.l2.callCount.should.eql 1
