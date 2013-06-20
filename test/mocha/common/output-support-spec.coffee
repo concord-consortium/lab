@@ -12,7 +12,8 @@ describe "Lab outputs mixin", ->
 
       propertySupport = new PropertySupport
         types: ["output"]
-      outputSupport = new OutputSupport propertySupport
+      outputSupport = new OutputSupport
+        propertySupport: propertySupport
 
       propertySupport.mixInto model
       outputSupport.mixInto model
@@ -48,7 +49,8 @@ describe "property caching", ->
 
     propertySupport = new PropertySupport
       types: ["output"]
-    outputSupport = new OutputSupport propertySupport
+    outputSupport = new OutputSupport
+      propertySupport: propertySupport
 
     propertySupport.mixInto model
     outputSupport.mixInto model
@@ -186,7 +188,8 @@ describe "property observing", ->
 
     propertySupport = new PropertySupport
       types: ["output"]
-    outputSupport = new OutputSupport propertySupport
+    outputSupport = new OutputSupport
+      propertySupport: propertySupport
 
     propertySupport.mixInto model
     outputSupport.mixInto model

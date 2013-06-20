@@ -13,25 +13,37 @@ define(function (require) {
 
     var api,
 
-        metadata        = args.metadata || null,
-        setters         = args.setters || {},
-        unitsDefinition = args.unitsDefinition || {},
+        metadata          = args.metadata,
+        setters           = args.setters,
+        unitsDefinition   = args.unitsDefinition,
+        initialProperties = args.initialProperties,
 
         propertySupport = new PropertySupport({
           types: ["output", "parameter", "mainProperty", "viewOption"]
         }),
-        parameterSupport = new ParameterSupport(propertySupport, unitsDefinition),
-        outputSupport = new OutputSupport(propertySupport, unitsDefinition),
-
+        parameterSupport = new ParameterSupport({
+          propertySupport: propertySupport,
+          unitsDefinition: unitsDefinition
+        }),
+        outputSupport = new OutputSupport({
+          propertySupport: propertySupport,
+          unitsDefinition: unitsDefinition
+        }),
         dispatchSupport = new DispatchSupport(),
-
         playbackSupport = new PlaybackSupport({
           dispatch: dispatchSupport,
           properties: propertySupport.properties
         });
 
     if (metadata) {
-      defineBuiltinProperties(propertySupport, unitsDefinition, metadata, setters);
+      defineBuiltinProperties({
+        propertySupport: propertySupport,
+        metadata: metadata,
+
+        unitsDefinition: unitsDefinition,
+        setters: setters,
+        initialProperties: initialProperties
+      });
     }
 
     // FIXME: These events have to be available as some other modules try to

@@ -4,8 +4,9 @@ define(function (require) {
 
   var PropertyDescription  = require('common/property-description');
 
-  return function ParameterSupport(propertySupport, unitsDefinition) {
-    unitsDefinition = unitsDefinition || {};
+  return function ParameterSupport(args) {
+    var propertySupport = args.propertySupport,
+        unitsDefinition = args.unitsDefinition || {};
 
     return {
       mixInto: function(target) {

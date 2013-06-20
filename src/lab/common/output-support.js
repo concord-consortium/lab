@@ -5,8 +5,11 @@ define(function (require) {
   var PropertyDescription  = require('common/property-description'),
       RunningAverageFilter = require('cs!common/running-average-filter');
 
-  return function OutputSupport(propertySupport, unitsDefinition) {
-    var filteredOutputs = [];
+  return function OutputSupport(args) {
+    var propertySupport = args.propertySupport,
+        unitsDefinition = args.unitsDefinition || {},
+
+        filteredOutputs = [];
 
     function updateFilteredOutputs() {
       filteredOutputs.forEach(function(output) {

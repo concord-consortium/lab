@@ -41,13 +41,11 @@ define(function(require) {
         labModelerMixin = new LabModelerMixin({
           metadata: metadata,
           setters: customSetters,
-          unitsDefinition: unitsDefinition
+          unitsDefinition: unitsDefinition,
+          initialProperties: initialProperties
         }),
-        propertySupport = labModelerMixin.propertySupport,
         dispatch = labModelerMixin.dispatchSupport,
 
-        viewOptions,
-        mainProperties,
         lastFrequency,
         phase = 0,
         time = 0,
@@ -83,12 +81,6 @@ define(function(require) {
 
     labModelerMixin.mixInto(model);
     dispatch.addEventTypes("tick");
-
-    mainProperties = validator.validateCompleteness(metadata.mainProperties, initialProperties);
-    propertySupport.setRawValues(mainProperties);
-
-    viewOptions = validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {});
-    propertySupport.setRawValues(viewOptions);
 
     model.defineOutput('time', {
       label: "Time",

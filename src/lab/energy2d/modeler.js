@@ -23,9 +23,9 @@ define(function (require) {
 
         labModelerMixin = new LabModelerMixin({
           metadata: metadata,
-          unitsDefinition: unitsDefinition
+          unitsDefinition: unitsDefinition,
+          initialProperties: initialProperties
         }),
-        propertySupport = labModelerMixin.propertySupport,
         dispatch = labModelerMixin.dispatchSupport;
 
     model = {
@@ -88,17 +88,8 @@ define(function (require) {
     };
 
     (function () {
-      var viewOptions,
-          mainProperties;
-
       labModelerMixin.mixInto(model);
       dispatch.addEventTypes("tick");
-
-      mainProperties = validator.validateCompleteness(metadata.mainProperties, initialProperties);
-      propertySupport.setRawValues(mainProperties);
-
-      viewOptions = validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {});
-      propertySupport.setRawValues(viewOptions);
 
       core_model = coremodel.makeCoreModel(model.properties);
 

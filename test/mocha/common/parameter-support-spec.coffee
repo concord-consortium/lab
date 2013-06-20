@@ -14,7 +14,8 @@ describe "Lab parameters mixin", ->
 
     propertySupport = new PropertySupport
       types: ["parameter"]
-    parameterSupport = new ParameterSupport propertySupport
+    parameterSupport = new ParameterSupport
+      propertySupport: propertySupport
 
     propertySupport.mixInto model
     parameterSupport.mixInto model

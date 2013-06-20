@@ -5,8 +5,13 @@ define(function (require) {
   var validator            = require('common/validator'),
       PropertyDescription  = require('common/property-description');
 
-  return function defineBuiltinProperties(propertySupport, unitsDefinition, metadata, customSetters) {
-    customSetters = customSetters || {}; // optional
+  return function defineBuiltinProperties(args) {
+    var propertySupport   = args.propertySupport,
+        metadata          = args.metadata,
+        // Optional:
+        unitsDefinition   = args.unitsDefinition || {},
+        setters           = args.setters || {},
+        initialProperties = args.initialProperties || null;
 
     function defineBuiltinProperty(key, type, setter) {
       var metadataForType,
@@ -44,12 +49,25 @@ define(function (require) {
       propertySupport.defineProperty(key, descriptor);
     }
 
-    // Define built-in properties using provided metadata.
-    Object.keys(metadata.mainProperties).forEach(function (key) {
-      defineBuiltinProperty(key, 'mainProperty', customSetters[key]);
-    });
-    Object.keys(metadata.viewOptions).forEach(function (key) {
-      defineBuiltinProperty(key, 'viewOption', customSetters[key]);
-    });
+    (function() {
+      var mainProperties,
+          viewOptions;
+
+      // Define built-in properties using provided metadata.
+      Object.keys(metadata.mainProperties).forEach(function (key) {
+        defineBuiltinProperty(key, 'mainProperty', setters[key]);
+      });
+      Object.keys(metadata.viewOptions).forEach(function (key) {
+        defineBuiltinProperty(key, 'viewOption', setters[key]);
+      });
+
+      if (initialProperties) {
+        mainProperties = validator.validateCompleteness(metadata.mainProperties, initialProperties);
+        propertySupport.setRawValues(mainProperties);
+
+        viewOptions = validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {});
+        propertySupport.setRawValues(viewOptions);
+      }
+    }());
   };
 });
