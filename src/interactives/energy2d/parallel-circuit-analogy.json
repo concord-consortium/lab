@@ -8,6 +8,7 @@
       "type": "energy2d",
       "id": "parallel-circuit-analogy",
       "url": "imports/energy2d/models-json/parallel-circuit-analogy.json",
+      "importedFrom": "imports/energy2d/models-xml/parallel-circuit-analogy.e2d",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       }

@@ -3,11 +3,13 @@
   "publicationStatus": "draft",
   "subtitle": "Defining the Values on the Boundary of the Problem Domain",
   "about": "The Dirichlet boundary condition is the first type of boundary condition that defines the values on the border of the problem\ndomain. In the following simulation, you can set temperatures of different borders and see how this boundary condition will\naffect the temperature distribution inside the box.",
+  "importedFrom": "imports/energy2d/content/dirichlet.html",
   "models": [
     {
       "type": "energy2d",
       "id": "dirichlet",
       "url": "imports/energy2d/models-json/dirichlet.json",
+      "importedFrom": "imports/energy2d/content/dirichlet.e2d",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       }

@@ -8,6 +8,7 @@
       "type": "energy2d",
       "id": "skillion-solar",
       "url": "imports/energy2d/models-json/skillion-solar.json",
+      "importedFrom": "imports/energy2d/models-xml/skillion-solar.e2d",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       }

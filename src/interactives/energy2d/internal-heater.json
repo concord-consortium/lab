@@ -8,6 +8,7 @@
       "type": "energy2d",
       "id": "internal-heater",
       "url": "imports/energy2d/models-json/internal-heater.json",
+      "importedFrom": "imports/energy2d/models-xml/internal-heater.e2d",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       }

@@ -3,11 +3,13 @@
   "publicationStatus": "draft",
   "subtitle": "Comparing Heat Flow in a Room With or Without a Ceiling",
   "about": "In building science, the border heat can flow to easily is called thermal boundary or thermal envelope. \nIt may differ from the shape of the house. \nWith this model, you can investigate if the ceiling is a thermal boundary. \nTo remove the ceiling, simply click on it and then press the DELETE key.",
+  "importedFrom": "imports/energy2d/content/house-ceiling.html",
   "models": [
     {
       "type": "energy2d",
       "id": "house-ceiling",
       "url": "imports/energy2d/models-json/house-ceiling.json",
+      "importedFrom": "imports/energy2d/content/house-ceiling.e2d",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       }

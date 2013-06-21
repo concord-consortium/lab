@@ -3,11 +3,13 @@
   "publicationStatus": "draft",
   "subtitle": "",
   "about": "",
+  "importedFrom": "imports/energy2d/content/solar-heating-convection.html",
   "models": [
     {
       "type": "energy2d",
       "id": "solar-heating-convection",
       "url": "imports/energy2d/models-json/solar-heating-convection.json",
+      "importedFrom": "imports/energy2d/content/solar-heating-convection.e2d",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       }

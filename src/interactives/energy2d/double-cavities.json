@@ -3,11 +3,13 @@
   "publicationStatus": "draft",
   "subtitle": "",
   "about": "",
+  "importedFrom": "imports/energy2d/content/double-cavities.html",
   "models": [
     {
       "type": "energy2d",
       "id": "double-cavities",
       "url": "imports/energy2d/models-json/double-cavities.json",
+      "importedFrom": "imports/energy2d/content/double-cavities.e2d",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       }

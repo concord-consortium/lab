@@ -8,6 +8,7 @@
       "type": "energy2d",
       "id": "series-circuit-analogy",
       "url": "imports/energy2d/models-json/series-circuit-analogy.json",
+      "importedFrom": "imports/energy2d/models-xml/series-circuit-analogy.e2d",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       }

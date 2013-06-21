@@ -8,6 +8,7 @@
       "type": "energy2d",
       "id": "solar-heating-two-story",
       "url": "imports/energy2d/models-json/solar-heating-two-story.json",
+      "importedFrom": "imports/energy2d/models-xml/solar-heating-two-story.e2d",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       }

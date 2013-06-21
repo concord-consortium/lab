@@ -8,6 +8,7 @@
       "type": "energy2d",
       "id": "conduction_plate",
       "url": "imports/energy2d/models-json/conduction_plate.json",
+      "importedFrom": "imports/energy2d/models-xml/conduction_plate.e2d",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       }

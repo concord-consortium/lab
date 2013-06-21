@@ -8,6 +8,7 @@
       "type": "energy2d",
       "id": "eee-conduction1",
       "url": "imports/energy2d/models-json/eee-conduction1.json",
+      "importedFrom": "imports/energy2d/models-xml/eee-conduction1.e2d",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       }

@@ -546,6 +546,7 @@ AUTHORING = false;
     // construct link to JSON version of model
     jsonModelPath = interactive.models[0].url;
     $jsonModelLink.attr("href", origin + Lab.config.actualRoot + jsonModelPath);
+    $jsonModelLink.attr("title", "View model JSON in another window");
 
     // construct link to DataGames embeddable version of Interactive
     $dataGamesLink.attr("href", function() {
@@ -595,21 +596,25 @@ AUTHORING = false;
         $originalImportLink.attr("href", javaMWhref);
         $originalImportLink.attr("title", "View original Java Molecular Workbench content using Java Web Start");
         $originalModelLink.attr("href", origin + Lab.config.actualRoot + mmlPath);
-        $originalModelLink.attr("title", "View original Java Molecular Workbench MML file");
+        $originalModelLink.attr("title", "View original Java Molecular Workbench MML file in another window");
       } else {
         disableOriginalImportLink();
         disableOriginalModelLink();
       }
       break;
       case "energy2d":
-      // Construct link to original HTML: page for Energy2D
-      // convert interactiveUrl:
-      //   interactives/energy2d/solar-radiation.json
-      // into
-      //   imports/energy2d/content/solar-radiation.html
-      $originalImportLink.attr("href", interactiveUrl.replace(/.*?(\/energy2d\/)(.*?)\.json/, "imports$1content/$2.html"));
-      $originalImportLink.attr("title", "View original html page with Java Energy2D applet");
-      disableOriginalModelLink();
+      if (interactive.importedFrom) {
+        $originalImportLink.attr("href", interactive.importedFrom);
+        $originalImportLink.attr("title", "View original html page with Java Energy2D applet in another window");
+      } else {
+        disableOriginalImportLink();
+      }
+      if (interactive.models[0].importedFrom) {
+        $originalModelLink.attr("href", origin + Lab.config.actualRoot + interactive.models[0].importedFrom);
+        $originalModelLink.attr("title", "View original Java Energy2D applet e2d model file in another window");
+      } else {
+        disableOriginalModelLink();
+      }
       break;
       default:
       disableOriginalImportLink();
