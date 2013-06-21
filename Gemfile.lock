@@ -1,8 +1,9 @@
 GIT
   remote: git://github.com/concord-consortium/shutterbug.git
-  revision: 663f34ec4f2e8c9a270483dde9b0f12fe95488b3
+  revision: 7c645f2a707c7891778c461aee0096e890e55d00
+  tag: v0.0.4
   specs:
-    shutterbug (0.0.1)
+    shutterbug (0.0.4)
       rack
 
 GEM
