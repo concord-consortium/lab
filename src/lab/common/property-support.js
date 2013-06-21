@@ -296,6 +296,7 @@ define(function() {
                                "afterInvalidatingChangeSequence"),
 
         invalidatingChangeNestingLevel = 0,
+        suppressInvalidatingChangeHooks = false,
 
         // all properties that were notified while notifications were batched
         changedPropertyKeys = [],
@@ -901,6 +902,8 @@ define(function() {
       },
 
       invalidatingChangePreHook: function() {
+        if (suppressInvalidatingChangeHooks) return;
+
         if (invalidatingChangeNestingLevel === 0) {
           api.storeComputedProperties();
           api.deleteComputedPropertyCachedValues();
@@ -912,6 +915,8 @@ define(function() {
       },
 
       invalidatingChangePostHook: function() {
+        if (suppressInvalidatingChangeHooks) return;
+
         invalidatingChangeNestingLevel--;
 
         dispatch.afterInvalidatingChange();
@@ -922,6 +927,16 @@ define(function() {
 
           dispatch.afterInvalidatingChangeSequence();
         }
+      },
+
+      startBatch: function() {
+        api.invalidatingChangePreHook();
+        suppressInvalidatingChangeHooks = true;
+      },
+
+      endBatch: function() {
+        suppressInvalidatingChangeHooks = false;
+        api.invalidatingChangePostHook();
       },
 
       on: function (type, listener) {
