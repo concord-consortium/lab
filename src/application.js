@@ -88,7 +88,9 @@ AUTHORING = false;
       contentItems = [],
       mmlPath,
       $jsonModelLink = $("#json-model-link"),
-      $mmlModelLink = $("#mml-model-link"),
+
+      $originalImportLink = $("#original-import-link"),
+      $originalModelLink = $("#original-model-link"),
 
       interactivesPromise,
       buttonHandlersAdded = false,
@@ -529,7 +531,7 @@ AUTHORING = false;
   function finishSetupFullPage() {
     var javaMWhref,
         $embeddableLink = $("#embeddable-link"),
-        $javaMWlink = $("#java-mw-link"),
+        $originalImportLink = $("#legacy-import-link"),
         $dataGamesLink = $("#datagames-link"),
         origin;
 
@@ -541,31 +543,9 @@ AUTHORING = false;
     $embeddableLink.attr("href", function(i, href) { return href + hash; });
     $embeddableLink.attr("title", "Open this Interactive in a new page suitable for embedding.");
 
+    // construct link to JSON version of model
     jsonModelPath = interactive.models[0].url;
     $jsonModelLink.attr("href", origin + Lab.config.actualRoot + jsonModelPath);
-
-    // construct Java MW link for running Interactive via jnlp
-    // uses generated resource list: /imports/legacy-mw-content/model-list.js
-    // also updates link to original MML in Model Editor
-    mmlPath = jsonModelPath.replace("imports/legacy-mw-content/converted/", "imports/legacy-mw-content/").replace(".json", ".mml");
-    if (typeof modelList !== 'undefined') {
-      contentItems = getObjects(modelList, "mml", mmlPath.replace("imports/legacy-mw-content/", ""));
-    }
-    if (contentItems.length > 0) {
-      javaMWhref = "/jnlp/jnlps/org/concord/modeler/mw.jnlp?version-id=1.0&jnlp-args=remote," +
-                      origin + Lab.config.actualRoot + "imports/legacy-mw-content/" + contentItems[0].cml;
-      $javaMWlink.attr("href", javaMWhref);
-      $javaMWlink.attr("title", "View original Java Molecular Workbench content using Java Web Start");
-      $mmlModelLink.attr("href", origin + Lab.config.actualRoot + mmlPath);
-      $mmlModelLink.attr("title", "View original Java Molecular Workbench MML file");
-    } else {
-      $javaMWlink.removeAttr("href");
-      $javaMWlink.attr("title", "Java Web Start link not available for this interactive");
-      $javaMWlink.addClass("na");
-      $mmlModelLink.removeAttr("href");
-      $mmlModelLink.attr("title", "Java Molecular Workbench MML file not available for this model");
-      $javaMWlink.addClass("na");
-    }
 
     // construct link to DataGames embeddable version of Interactive
     $dataGamesLink.attr("href", function() {
@@ -581,7 +561,61 @@ AUTHORING = false;
       return encodeURI(dgUrl);
     });
     $dataGamesLink.attr("title", "Run this Interactive inside DataGames");
+
+    setupOriginalImportLinks();
     setupExtras();
+  }
+
+  function setupOriginalImportLinks() {
+    var javaMWhref;
+
+    function disableOriginalImportLink() {
+      $originalImportLink.removeAttr("href");
+      $originalImportLink.attr("title", "link to original model not available for this interactive");
+      $originalImportLink.addClass("na");
+    }
+    function disableOriginalModelLink() {
+      $originalModelLink.removeAttr("href");
+      $originalModelLink.attr("title", "original import model file not available for this model");
+      $originalModelLink.addClass("na");
+    }
+    switch(interactive.models[0].type) {
+      case "md2d":
+      // construct Java MW link for running Interactive via jnlp
+      // uses generated resource list: /imports/legacy-mw-content/model-list.js
+      // also updates link to original MML in Model Editor
+      mmlPath = jsonModelPath.replace("imports/legacy-mw-content/converted/", "imports/legacy-mw-content/").replace(".json", ".mml");
+      if (typeof modelList !== 'undefined') {
+        contentItems = getObjects(modelList, "mml", mmlPath.replace("imports/legacy-mw-content/", ""));
+      }
+      if (contentItems.length > 0) {
+        javaMWhref = "/jnlp/jnlps/org/concord/modeler/mw.jnlp?version-id=1.0&jnlp-args=remote," +
+                        origin + Lab.config.actualRoot + "imports/legacy-mw-content/" + contentItems[0].cml;
+
+        $originalImportLink.attr("href", javaMWhref);
+        $originalImportLink.attr("title", "View original Java Molecular Workbench content using Java Web Start");
+        $originalModelLink.attr("href", origin + Lab.config.actualRoot + mmlPath);
+        $originalModelLink.attr("title", "View original Java Molecular Workbench MML file");
+      } else {
+        disableOriginalImportLink();
+        disableOriginalModelLink();
+      }
+      break;
+      case "energy2d":
+      // Construct link to original HTML: page for Energy2D
+      // convert interactiveUrl:
+      //   interactives/energy2d/solar-radiation.json
+      // into
+      //   imports/energy2d/content/solar-radiation.html
+      $originalImportLink.attr("href", interactiveUrl.replace(/.*?(\/energy2d\/)(.*?)\.json/, "imports$1content/$2.html"));
+      $originalImportLink.attr("title", "View original html page with Java Energy2D applet");
+      disableOriginalModelLink();
+      break;
+      default:
+      disableOriginalImportLink();
+      disableOriginalModelLink();
+      break;
+    }
   }
 
   //
