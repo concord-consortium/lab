@@ -10,6 +10,7 @@ define(function (require) {
         metadata          = args.metadata,
         // Optional:
         unitsDefinition   = args.unitsDefinition || {},
+        unitsTranslation  = args.unitsTranslation || null,
         setters           = args.setters || {},
         initialProperties = args.initialProperties || null;
 
@@ -44,6 +45,14 @@ define(function (require) {
       unitType = metadataForType[key].unitType;
       if (unitType) {
         descriptor.description = new PropertyDescription(unitsDefinition, { unitType: unitType });
+        if (unitsTranslation) {
+          descriptor.beforeSetTransform = function(value) {
+            return unitsTranslation.translateToModelUnits(value, unitType);
+          };
+          descriptor.afterGetTransform = function(value) {
+            return unitsTranslation.translateFromModelUnits(value, unitType);
+          };
+        }
       }
 
       propertySupport.defineProperty(key, descriptor);
