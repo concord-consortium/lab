@@ -361,10 +361,10 @@ AUTHORING = false;
           "large":  { height: "700px" }
         };
 
-    dimensions.tiny.width   = parseInt(dimensions.tiny.height  ) * aspectRatio + "px";
-    dimensions.small.width  = parseInt(dimensions.small.height ) * aspectRatio + "px";
-    dimensions.medium.width = parseInt(dimensions.medium.height) * aspectRatio + "px";
-    dimensions.large.width  = parseInt(dimensions.large.height ) * aspectRatio + "px";
+    dimensions.tiny.width   = parseInt(dimensions.tiny.height, 10)   * aspectRatio + "px";
+    dimensions.small.width  = parseInt(dimensions.small.height, 10)  * aspectRatio + "px";
+    dimensions.medium.width = parseInt(dimensions.medium.height, 10) * aspectRatio + "px";
+    dimensions.large.width  = parseInt(dimensions.large.height, 10)  * aspectRatio + "px";
     dim = dimensions[selection];
     saveOptionsToCookie();
     if (isFullPage()) {
@@ -568,7 +568,8 @@ AUTHORING = false;
   }
 
   function setupOriginalImportLinks() {
-    var javaMWhref;
+    var javaMWhref,
+        e2dModelPath;
 
     function disableOriginalImportLink() {
       $originalImportLink.removeAttr("href");
@@ -603,13 +604,23 @@ AUTHORING = false;
       }
       break;
       case "energy2d":
+      e2dModelPath = interactive.models[0].importedFrom;
       if (interactive.importedFrom) {
+        // The Energy2D model exist on a separate HTML page
         $originalImportLink.attr("href", interactive.importedFrom);
         $originalImportLink.attr("title", "View original html page with Java Energy2D applet in another window");
+      } else if (e2dModelPath) {
+        // The Energy2D model exists only as an e2d file, there is no associated HTML page,
+        // use Generic Energy2D applet page instead:
+        //    /imports/energy2d/energy2d-applet.html?e2dPath=content/compare-capacity.e2d
+        $originalImportLink.attr("href", origin + Lab.config.actualRoot +
+          "/imports/energy2d/energy2d-applet.html?" +
+          encodeURI("e2dPath=" + e2dModelPath.replace("imports/energy2d/", "") + "&title=" + interactive.title));
+        $originalImportLink.attr("title", "View original Java Energy2D applet in generic HTML page in another window");
       } else {
         disableOriginalImportLink();
       }
-      if (interactive.models[0].importedFrom) {
+      if (e2dModelPath) {
         $originalModelLink.attr("href", origin + Lab.config.actualRoot + interactive.models[0].importedFrom);
         $originalModelLink.attr("title", "View original Java Energy2D applet e2d model file in another window");
       } else {
