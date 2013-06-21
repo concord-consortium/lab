@@ -201,7 +201,9 @@ describe "MD2D filters", ->
           model.get("filteredTime").should.equal 2
 
         it "should follow changes of the current model step", ->
-          model.tick 3
+          model.tick()
+          model.tick()
+          model.tick()
           model.get("time").should.equal 3
           model.get("filteredTime").should.equal 2
 
@@ -263,7 +265,8 @@ describe "MD2D filters", ->
           # Change viscosity at step 1.
           model.set viscosity: 4
 
-          model.tick 2
+          model.tick()
+          model.tick()
           model.stepCounter().should.equal 3
           model.get("viscosity").should.equal 4
           model.get("filteredViscosity").should.equal 3.25

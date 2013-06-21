@@ -119,12 +119,12 @@ describe "UnitsTranslation module", ->
 
     for unitType, value of expectedMD2DUnitValueInMKSUnits
       it "should translate #{unitType} correctly into MD2D units", ->
-        translation.translateToMD2DUnits(value, unitType).should.be.approximately(1, 1e-3)
+        translation.translateToModelUnits(value, unitType).should.be.approximately(1, 1e-3)
 
       it "should translated #{unitType} correctly from MD2D units", ->
-        translation.translateFromMD2DUnits(1, unitType).should.be.approximately(value, value * 1e-3)
+        translation.translateFromModelUnits(1, unitType).should.be.approximately(value, value * 1e-3)
 
     it "should return an untranslated value for unit types it does not convert", ->
-      translation.translateToMD2DUnits(1, 'made up unit type').should.eql 1
-      translation.translateFromMD2DUnits(1, 'made up unit type').should.eql 1
+      translation.translateToModelUnits(1, 'made up unit type').should.eql 1
+      translation.translateFromModelUnits(1, 'made up unit type').should.eql 1
 

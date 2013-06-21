@@ -19,7 +19,6 @@ describe "MD2D modeler", ->
         y: [1, 4]
 
     model.createAtoms data
-
     model.getNumberOfAtoms().should.equal 2
     atomData = model.getAtomProperties 0
     atomData.x.should.equal data.x[0]
