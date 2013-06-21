@@ -13,10 +13,15 @@ define(function (require) {
 
     var api,
 
+        /**
+         * Accepted arguments:
+         */
         metadata          = args.metadata,
         setters           = args.setters,
         unitsDefinition   = args.unitsDefinition,
+        unitsTranslation  = args.unitsTranslation,
         initialProperties = args.initialProperties,
+        tickHistory       = args.tickHistory,
 
         propertySupport = new PropertySupport({
           types: ["output", "parameter", "mainProperty", "viewOption"]
@@ -27,24 +32,14 @@ define(function (require) {
         }),
         outputSupport = new OutputSupport({
           propertySupport: propertySupport,
-          unitsDefinition: unitsDefinition
+          unitsDefinition: unitsDefinition,
+          tickHistory: tickHistory
         }),
         dispatchSupport = new DispatchSupport(),
         playbackSupport = new PlaybackSupport({
           dispatch: dispatchSupport,
           properties: propertySupport.properties
         });
-
-    if (metadata) {
-      defineBuiltinProperties({
-        propertySupport: propertySupport,
-        metadata: metadata,
-
-        unitsDefinition: unitsDefinition,
-        setters: setters,
-        initialProperties: initialProperties
-      });
-    }
 
     // FIXME: These events have to be available as some other modules try to
     // add listeners. Probably they aren't necessary, trace it and fix.
@@ -57,6 +52,18 @@ define(function (require) {
         outputSupport.mixInto(target);
         dispatchSupport.mixInto(target);
         playbackSupport.mixInto(target);
+
+        if (metadata) {
+          defineBuiltinProperties({
+            propertySupport: propertySupport,
+            metadata: metadata,
+
+            unitsDefinition: unitsDefinition,
+            unitsTranslation: unitsTranslation,
+            setters: setters,
+            initialProperties: initialProperties
+          });
+        }
       },
 
       get propertySupport() {

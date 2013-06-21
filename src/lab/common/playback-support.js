@@ -31,6 +31,16 @@ define(function (require) {
         stopRequest = false,
         restartRequest = false;
 
+    /**
+      Repeatedly calls `f` at an interval defined by the modelSampleRate property, until f returns
+      true. (This is the same signature as d3.timer.)
+
+      If modelSampleRate === 'default', try to run at the "requestAnimationFrame rate"
+      (i.e., using d3.timer(), after running f, also request to run f at the next animation frame)
+
+      If modelSampleRate !== 'default', instead uses setInterval to schedule regular calls of f with
+      period (1000 / sampleRate) ms, corresponding to sampleRate calls/s
+    */
     function timer(f) {
       var intervalID,
           // When target support properties and it defines
