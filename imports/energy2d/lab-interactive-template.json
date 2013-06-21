@@ -3,11 +3,13 @@
   "publicationStatus": "",
   "subtitle": "",
   "about": "",
+  "importedFrom": "",
   "models": [
     {
       "type": "energy2d",
       "id": "",
       "url": "",
+      "importedFrom": "",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       }

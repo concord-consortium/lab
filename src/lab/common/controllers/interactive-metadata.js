@@ -23,6 +23,9 @@ define(function() {
         defaultValue: ""
       },
 
+      // optional: holds path of html or cml page this Interactive was imported from
+      importedFrom: {},
+
       fontScale: {
         defaultValue: 1
       },
@@ -79,6 +82,8 @@ define(function() {
       url: {
         conflictsWith: ["model"]
       },
+      // optional: holds path of html or cml page this Interactive was imported from
+      importedFrom: {},
       model: {
         conflictsWith: ["url"]
       },

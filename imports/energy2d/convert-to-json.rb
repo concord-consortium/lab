@@ -46,17 +46,20 @@ models = {}
 # from a legacy Java Energy2D page
 #
 class E2dPage
-  attr_reader :e2d, :basename, :title, :tagline, :content, :sun_angle_slider
+  attr_reader :e2d, :e2d_path, :path, :basename, :title, :tagline, :content, :sun_angle_slider
   def initialize(path)
-    @name = File.basename(path)
-    @doc = Nokogiri::HTML(File.read(path))
+    @path = path.gsub(PROJECT_ROOT+"/", "")
+    @name = File.basename(@path)
+    @doc = Nokogiri::HTML(File.read(@path))
     @applet = @doc.css('applet')
     if @applet.empty?
       @e2d = false
       return
     end
     @e2d = @applet.css('param[name=script]').attr('value').to_s.split(" ").last
-    @basename = @e2d.gsub(/\.e2d;$/, '')
+    @e2d.gsub!(/;$/, '')
+    @e2d_path = File.join(File.dirname(@path), @e2d)
+    @basename = @e2d.gsub(/\.e2d$/, '')
     @title = @doc.css('a[id="cc-link"] + h1').text
     @tagline = @doc.css('p[id="tagline"]').text
     @content = @doc.css('div[id="content"] p').collect { |p| p.text }.join("\n")
@@ -138,6 +141,8 @@ xml_files.each do |xml_file_path|
     interactive["subtitle"] = page.tagline
     interactive["about"] = page.content
     interactive["publicationStatus"] = "draft"
+    interactive["importedFrom"] = page.path
+    interactive["models"][0]["importedFrom"] = page.e2d_path
     if page.sun_angle_slider
       interactive["components"] << lab_solar_angle_slider_template
     end
@@ -146,6 +151,8 @@ xml_files.each do |xml_file_path|
     interactive["subtitle"] = ""
     interactive["about"] = "* no further description available"
     interactive["publicationStatus"] = "draft"
+    interactive.delete("importedFrom")
+    interactive["models"][0]["importedFrom"] = xml_file_path.gsub(PROJECT_ROOT+"/", "")
   end
   File.open("#{lab_interactives_path}/#{json_filename}", 'w') do |f|
     f.write(JSON.pretty_generate(interactive))
