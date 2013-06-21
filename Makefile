@@ -470,6 +470,7 @@ public/vendor/jquery/jquery.min.js: \
 	vendor/jquery/dist/jquery.min.js \
 	public/vendor/jquery
 	cp vendor/jquery/dist/jquery*.js public/vendor/jquery
+	cp vendor/jquery/dist/jquery.min.map public/vendor/jquery
 	cp vendor/jquery/MIT-LICENSE.txt public/vendor/jquery
 	cp vendor/jquery/README.md public/vendor/jquery
 
