@@ -9,6 +9,9 @@ GIT
 GEM
   remote: http://rubygems.org/
   specs:
+    active_support (3.0.0)
+      activesupport (= 3.0.0)
+    activesupport (3.0.0)
     archive-tar-minitar (0.5.2)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
@@ -176,6 +179,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_support (~> 3)
   bourbon (~> 3.1.1)
   capistrano (~> 2.14.2)
   fog (~> 1.12.1)

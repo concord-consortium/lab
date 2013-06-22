@@ -14,6 +14,9 @@ gem 'bourbon',            "~> 3.1.1"
 gem 'neat',               "~> 1.2.0"
 gem 'kramdown',           "~> 0.13.8"
 
+# Adds Hash.from_xml method used in Energy2D importer
+gem 'active_support',     "~> 3"
+
 gem "grit",               "~> 2.5.0"
 
 gem "mustache",           "~> 0.99.4"
