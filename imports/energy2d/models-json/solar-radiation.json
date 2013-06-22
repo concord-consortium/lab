@@ -207,6 +207,22 @@
       }
     ]
   },
+  "sensor": {
+    "thermometer": [
+      {
+        "x": 0.75,
+        "y": 6.0
+      },
+      {
+        "x": 1.75,
+        "y": 6.0
+      },
+      {
+        "x": 8.0,
+        "y": 6.0
+      }
+    ]
+  },
   "viewOptions": {
     "grid_size": 10,
     "ruler": true,

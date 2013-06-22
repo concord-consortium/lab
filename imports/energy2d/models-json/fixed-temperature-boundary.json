@@ -40,6 +40,18 @@
       "constant_temperature": true
     }
   },
+  "sensor": {
+    "thermometer": [
+      {
+        "x": 4.866667,
+        "y": 3.25
+      },
+      {
+        "x": 4.9666667,
+        "y": 8.433333
+      }
+    ]
+  },
   "viewOptions": {
     "grid_size": 10,
     "isotherm": true,

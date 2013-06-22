@@ -122,6 +122,18 @@
       }
     ]
   },
+  "sensor": {
+    "thermometer": [
+      {
+        "x": 5.5,
+        "y": 5.0
+      },
+      {
+        "x": 4.5,
+        "y": 5.0
+      }
+    ]
+  },
   "viewOptions": {
     "rainbow_x": 0.0,
     "rainbow_y": 0.0,

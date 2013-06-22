@@ -63,6 +63,20 @@
       }
     ]
   },
+  "sensor": {
+    "thermometer": [
+      {
+        "label": "T2",
+        "x": 0.65,
+        "y": 0.5
+      },
+      {
+        "label": "T1",
+        "x": 0.35,
+        "y": 0.5
+      }
+    ]
+  },
   "viewOptions": {
     "grid": true,
     "grid_size": 10,

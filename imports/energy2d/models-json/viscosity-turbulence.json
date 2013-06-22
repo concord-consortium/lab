@@ -41,6 +41,18 @@
       "wind_speed": 0.1
     }
   },
+  "sensor": {
+    "thermometer": [
+      {
+        "x": 4.0,
+        "y": 5.0
+      },
+      {
+        "x": 8.0,
+        "y": 5.0
+      }
+    ]
+  },
   "viewOptions": {
     "grid_size": 10,
     "color_palette_type": 1,

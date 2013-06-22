@@ -80,6 +80,12 @@
       }
     ]
   },
+  "sensor": {
+    "thermometer": {
+      "x": 0.5,
+      "y": 0.44166663
+    }
+  },
   "viewOptions": {
     "grid_size": 10,
     "color_palette": true,

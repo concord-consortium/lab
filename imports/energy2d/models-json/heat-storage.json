@@ -99,6 +99,18 @@
       }
     ]
   },
+  "sensor": {
+    "thermometer": [
+      {
+        "x": 2.625,
+        "y": 5.25
+      },
+      {
+        "x": 7.625,
+        "y": 5.25
+      }
+    ]
+  },
   "viewOptions": {
     "grid_size": 10,
     "color_palette_type": 1,
