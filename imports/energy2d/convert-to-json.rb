@@ -91,6 +91,9 @@ xml_files.each do |xml_file_path|
   xml_file = File.open(xml_file_path).read.to_s
   hash = Hash.from_xml(xml_file)
   final_hash = { type: "energy2d" }.merge(hash['state']['model'])
+  if hash['state']['sensor']
+    final_hash['sensor'] = hash['state']['sensor']
+  end
   final_hash['viewOptions'] = hash['state']['view']
   json_string = JSON.pretty_generate(final_hash)
   # strings to values conversion
