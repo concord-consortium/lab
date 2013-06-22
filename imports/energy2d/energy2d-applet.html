@@ -148,7 +148,7 @@
       <div id="applet-container"></div>
     </div>
     <p>
-      This generic page is used to show Energy2D models which aren't referenced from a specific html page.
+      <i>This page is used to show Energy2D models which aren't referenced from a specific html page.</i>
     </p>
 
     <script type="text/javascript">
@@ -161,7 +161,8 @@
       if (!titleStr) {
         titleStr = "Bénard Convection Cells";
       }
-      title.innerText = titleStr + " Energy2D Applet";
+      title.innerText = titleStr + ": Energy2D Applet";
+      document.title = title.innerText;
       var applet_string =
             ['<applet id="applet1", code="org.concord.energy2d.system.System2D"',
              '     width="500" height="500" MAYSCRIPT="true"',
