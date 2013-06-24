@@ -1,4 +1,4 @@
-/* global define, $ */
+/*global define */
 
 define(function() {
   var VisualizationContainer = require('energy2d/views/visualization-container'),
@@ -21,6 +21,10 @@ define(function() {
       parts_view = energy2d_scene.getPartsView();
 
       return energy2d_scene;
+    }
+
+    function setVisOptions () {
+      energy2d_scene.setVisualizationOptions(model.properties);
     }
 
     api = {
@@ -53,9 +57,10 @@ define(function() {
         model = newModel;
         model.on('tick.view-update', api.update);
 
-        var props = model.properties;
+        model.addPropertiesListener(["color_palette_type", "minimum_temperature", "maximum_temperature"], setVisOptions);
+        setVisOptions();
 
-        energy2d_scene.setVisualizationOptions(props);
+        var props = model.properties;
         parts_view.bindPartsArray(model.getPartsArray(), props.model_width, props.model_height);
         photons_view.bindPhotonsArray(model.getPhotonsArray(), props.model_width, props.model_height);
 
