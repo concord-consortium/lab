@@ -2,15 +2,14 @@
   "type": "slider",
   "id": "sun-angle-slider",
   "min": 0,
-  "max": 180,
-  "displayValue": "return format('f')(value)",
+  "max": 3.1415,
   "labels": [
     {
       "value": 0,
       "label": "Dawn"
     },
     {
-      "value": 180,
+      "value": 3.1415,
       "label": "Dusk"
     }
   ],
