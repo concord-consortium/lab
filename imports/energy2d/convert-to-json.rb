@@ -90,12 +90,39 @@ xml_files.each do |xml_file_path|
   basename = File.basename(xml_file_path).gsub(/\.e2d$/, '')
   xml_file = File.open(xml_file_path).read.to_s
   hash = Hash.from_xml(xml_file)
+
+  # process initial hash and do some changes in its structure
   final_hash = { type: "energy2d" }.merge(hash['state']['model'])
+
+  # boundary options
+  # change structure to simpler form with 'type' property.
+  boundary = hash['state']['model']['boundary']
+  if boundary
+    if boundary['flux_at_border']
+      boundary_opts = boundary['flux_at_border']
+      boundary_opts['type'] = 'flux'
+      final_hash['boundary'].delete('flux_at_border')
+    else
+      boundary_opts = boundary['temperature_at_border']
+      boundary_opts['type'] = 'temperature'
+      final_hash['boundary'].delete('temperature_at_border')
+    end
+    boundary_opts.each do |key, value|
+      final_hash['boundary'][key] = value
+    end
+  end
+
+  # state
   if hash['state']['sensor']
     final_hash['sensor'] = hash['state']['sensor']
   end
+
+  # view options
   final_hash['viewOptions'] = hash['state']['view']
+
+
   json_string = JSON.pretty_generate(final_hash)
+
   # strings to values conversion
   # numbers
   json_string.gsub!(/"([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)"/, '\1')

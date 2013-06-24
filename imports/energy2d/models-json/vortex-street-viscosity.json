@@ -14,12 +14,11 @@
   "thermal_buoyancy": 0.0,
   "buoyancy_approximation": 1,
   "boundary": {
-    "flux_at_border": {
-      "upper": -10.0,
-      "lower": 10.0,
-      "left": 10.0,
-      "right": -10.0
-    }
+    "upper": -10.0,
+    "lower": 10.0,
+    "left": 10.0,
+    "right": -10.0,
+    "type": "flux"
   },
   "structure": {
     "part": [

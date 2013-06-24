@@ -15,12 +15,11 @@
   "thermal_buoyancy": 2.5E-4,
   "buoyancy_approximation": 1,
   "boundary": {
-    "temperature_at_border": {
-      "upper": 20.0,
-      "lower": 20.0,
-      "left": 20.0,
-      "right": 20.0
-    }
+    "upper": 20.0,
+    "lower": 20.0,
+    "left": 20.0,
+    "right": 20.0,
+    "type": "temperature"
   },
   "structure": {
     "part": [
