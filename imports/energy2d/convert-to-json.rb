@@ -20,7 +20,7 @@ interactives_path =       File.join(PROJECT_ROOT, "src/examples/energy2d-model",
 interactives_index_path = File.join(PROJECT_ROOT, "src/examples/energy2d-model/interactives-index.js")
 FileUtils.mkdir_p interactives_path
 
-lab_interactives_path =   File.join(PROJECT_ROOT, "src", "interactives", "energy2d")
+lab_interactives_path =   File.join(PROJECT_ROOT, "src", "interactives", "energy2d", "imported")
 
 models_dir =              "models-json"
 models_path =             File.join(HERE, models_dir)
@@ -119,7 +119,6 @@ xml_files.each do |xml_file_path|
 
   # view options
   final_hash['viewOptions'] = hash['state']['view']
-
 
   json_string = JSON.pretty_generate(final_hash)
 
