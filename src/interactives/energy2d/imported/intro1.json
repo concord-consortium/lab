@@ -1,0 +1,21 @@
+{
+  "title": "What is Modeling?",
+  "publicationStatus": "draft",
+  "subtitle": "Simulating Natural Phenomena with Computers",
+  "about": "Most phenomena involved in physical systems are governed by well-defined scientific laws.\nThese laws correlate different properties and provide insights to the states of a system and \nprocesses it undergoes. Mathematical models can therefore be derived based \non the laws, allowing scientists and engineers to explain what has happened and \npredict what will happen.\nIf a mathematical model is too complicated to be solved, a computer will be needed. \nThus, we have a computational model that approximates the solution using some\nalgorithms. Computational models are now increasingly important parts of \ncomputer-aided design (CAD) packages, which are in the tool box of almost every engineer \nwhose job involves research and development (R&D). Computational models are often called\nsimulations. So we will use the two terms interchangably.\nToday's students need to have a fundamental understanding of what computational models\nare and how they can be used to accelerate R&D processes.\nThe following is a simple model of solar heating of a house. Use the controls to play with it and explore how such a model contributes to \ndeveloping an understanding of the physical variables and processes involved in designing solar houses.\n\nReload the entire page to reset the model and the buttons.",
+  "importedFrom": "imports/energy2d/content/whatismodeling.html",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "intro1",
+      "url": "imports/energy2d/models-json/intro1.json",
+      "importedFrom": "imports/energy2d/content/intro1.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

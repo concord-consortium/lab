@@ -1,0 +1,21 @@
+{
+  "title": "Conduction",
+  "publicationStatus": "draft",
+  "subtitle": "How does Specific Heat Affect Conduction Rate?",
+  "about": "The following model compares heat conduction through two test pieces that differ ONLY in specific heat. Choosing\n\"Thermal energy\" in the \"Heat map\" drop-down list will provide an explanation of the dependence of\n heat conduction rate on specific heat.",
+  "importedFrom": "imports/energy2d/content/specific-heat.html",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "conduction5",
+      "url": "imports/energy2d/models-json/conduction5.json",
+      "importedFrom": "imports/energy2d/content/conduction5.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

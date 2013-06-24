@@ -1,0 +1,60 @@
+{
+  "title": "Solar Radiation",
+  "publicationStatus": "draft",
+  "subtitle": "Heat from the Sun",
+  "about": "Note: Convection is not considered in the above model.",
+  "importedFrom": "imports/energy2d/content/solar-radiation.html",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "solar-radiation",
+      "url": "imports/energy2d/models-json/solar-radiation.json",
+      "importedFrom": "imports/energy2d/content/solar-radiation.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "sun-angle-slider",
+      "min": 0,
+      "max": 180,
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": 0,
+          "label": "Dawn"
+        },
+        {
+          "value": 180,
+          "label": "Dusk"
+        }
+      ],
+      "steps": 90,
+      "title": "Sun Angle",
+      "property": "sun_angle"
+    },
+    {
+      "type": "slider",
+      "id": "sun-angle-slider",
+      "min": 0,
+      "max": 180,
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": 0,
+          "label": "Dawn"
+        },
+        {
+          "value": 180,
+          "label": "Dusk"
+        }
+      ],
+      "steps": 90,
+      "title": "Sun Angle",
+      "property": "sun_angle"
+    }
+  ]
+}
