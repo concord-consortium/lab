@@ -13,16 +13,20 @@ define(function(require) {
         defaultValue: false
       },
       grid_width: {
-        defaultValue: 100
+        defaultValue: 100,
+        immutable: true
       },
       grid_height: {
-        defaultValue: 100
+        defaultValue: 100,
+        immutable: true
       },
       model_width: {
-        defaultValue: 10
+        defaultValue: 10,
+        immutable: true
       },
       model_height: {
-        defaultValue: 10
+        defaultValue: 10,
+        immutable: true
       },
       timeStep: {
         defaultValue: 1
@@ -33,7 +37,6 @@ define(function(require) {
       convective: {
         defaultValue: true
       },
-
       background_temperature: {
         defaultValue: 0
       },
@@ -49,14 +52,12 @@ define(function(require) {
       background_viscosity: {
         defaultValue: constants.AIR_VISCOSITY
       },
-
       thermal_buoyancy: {
         defaultValue: 0.00025
       },
       buoyancy_approximation: {
         defaultValue: 1
       },
-
       boundary: {
         defaultValue: {
           type: "temperature",
@@ -66,7 +67,6 @@ define(function(require) {
           right: 0
         }
       },
-
       measurement_interval: {
         // unnecessary
         defaultValue: 500

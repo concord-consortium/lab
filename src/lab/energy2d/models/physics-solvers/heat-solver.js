@@ -1,7 +1,6 @@
-/*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false*/
+/*global define: false*/
 
-define(function (require, exports, module) {
+define(function (require, exports) {
   'use strict';
   var
     arrays = require('arrays'),
@@ -10,16 +9,10 @@ define(function (require, exports, module) {
 
   exports.makeHeatSolver = function (model) {
     var
-      nx = model.getGridWidth(),
-      ny = model.getGridHeight(),
-
       // Basic simulation parameters.
-      model_options = model.getModelOptions(),
-      timeStep = model_options.timeStep,
-      boundary = model_options.boundary,
-
-      deltaX = model_options.model_width / model.getGridWidth(),
-      deltaY = model_options.model_height / model.getGridHeight(),
+      props = model.getModelOptions(),
+      nx = props.grid_width,
+      ny = props.grid_height,
 
       relaxationSteps = RELAXATION_STEPS,
 
@@ -41,11 +34,16 @@ define(function (require, exports, module) {
       nx2 = nx - 2,
       ny2 = ny - 2,
 
+      deltaX = props.model_width / props.grid_width,
+      deltaY = props.model_height / props.grid_height,
+
       //
       // Private methods
       //
+
       applyBoundary  = function (t) {
         var
+          boundary = props.boundary,
           vN = boundary.upper,
           vS = boundary.lower,
           vW = boundary.left,
@@ -73,13 +71,12 @@ define(function (require, exports, module) {
             t[j] = t[nx + j] - vW * deltaX / conductivity[j];
             t[nx1 * nx + j] = t[nx2 * nx + j] + vE * deltaX / conductivity[nx1 * nx + j];
           }
-        } else {
-          throw new Error("Heat solver: wrong boundary settings definition.");
         }
       },
 
       macCormack  = function (t) {
         var
+          timeStep = props.timeStep,
           tx = 0.5 * timeStep / deltaX,
           ty = 0.5 * timeStep / deltaY,
           i, j, inx, jinx, jinx_plus_nx, jinx_minus_nx, jinx_plus_1, jinx_minus_1;
@@ -123,6 +120,7 @@ define(function (require, exports, module) {
     return {
       solve: function (convective, t, q) {
         var
+          timeStep = props.timeStep,
           hx = 0.5 / (deltaX * deltaX),
           hy = 0.5 / (deltaY * deltaY),
           invTimeStep = 1.0 / timeStep,

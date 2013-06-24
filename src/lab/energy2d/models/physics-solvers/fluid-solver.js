@@ -1,7 +1,6 @@
-/*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false*/
+/*global define: false*/
 
-define(function (require, exports, module) {
+define(function (require, exports) {
   'use strict';
   var
     arrays = require('arrays'),
@@ -14,18 +13,10 @@ define(function (require, exports, module) {
 
   exports.makeFluidSolver = function (model) {
     var
-      nx = model.getGridWidth(),
-      ny = model.getGridHeight(),
-
       // Basic simulation parameters.
-      model_options         = model.getModelOptions(),
-      timeStep              = model_options.timeStep,
-      thermalBuoyancy       = model_options.thermal_buoyancy,
-      buoyancyApproximation = model_options.buoyancy_approximation,
-      viscosity             = model_options.background_viscosity,
-
-      deltaX = model_options.model_width / model.getGridWidth(),
-      deltaY = model_options.model_height / model.getGridHeight(),
+      props = model.getModelOptions(),
+      nx = props.grid_width,
+      ny = props.grid_height,
 
       relaxationSteps = RELAXATION_STEPS,
       gravity = GRAVITY,
@@ -42,15 +33,18 @@ define(function (require, exports, module) {
       v0         = arrays.create(nx * ny, 0, array_type),
 
       // Convenience variables.
-      i2dx  = 0.5 / deltaX,
-      i2dy  = 0.5 / deltaY,
-      idxsq = 1.0 / (deltaX * deltaX),
-      idysq = 1.0 / (deltaY * deltaY),
-
       nx1 = nx - 1,
       ny1 = ny - 1,
       nx2 = nx - 2,
       ny2 = ny - 2,
+
+      deltaX = props.model_width / props.grid_width,
+      deltaY = props.model_height / props.grid_height,
+
+      i2dx  = 0.5 / deltaX,
+      i2dy  = 0.5 / deltaY,
+      idxsq = 1.0 / (deltaX * deltaX),
+      idysq = 1.0 / (deltaY * deltaY),
 
       //
       // Private methods
@@ -202,12 +196,12 @@ define(function (require, exports, module) {
 
       applyBuoyancy = function (f) {
         var
-          g = gravity * timeStep,
-          b = thermalBuoyancy * timeStep,
+          g = gravity * props.timeStep,
+          b = props.thermal_buoyancy * props.timeStep,
           t0,
           i, j, inx, jinx;
 
-        switch (buoyancyApproximation) {
+        switch (props.buoyancy_approximation) {
         case BUOYANCY_AVERAGE_ALL:
           t0 = (function (array) {
             // Returns average value of an array.
@@ -310,6 +304,8 @@ define(function (require, exports, module) {
 
       diffuse = function (b, f0, f) {
         var
+          timeStep = props.timeStep,
+          viscosity = props.background_viscosity,
           hx = timeStep * viscosity * idxsq,
           hy = timeStep * viscosity * idysq,
           dn = 1.0 / (1 + 2 * (hx + hy)),
@@ -340,6 +336,7 @@ define(function (require, exports, module) {
       // MacCormack
       macCormack = function (b, f0, f) {
         var
+          timeStep = props.timeStep,
           tx = 0.5 * timeStep / deltaX,
           ty = 0.5 * timeStep / deltaY,
           i, j, inx, jinx, jinx_plus_nx, jinx_minus_nx, jinx_plus_1, jinx_minus_1;
@@ -396,11 +393,11 @@ define(function (require, exports, module) {
     return {
       // TODO: swap the two arrays instead of copying them every time?
       solve: function (u, v) {
-        if (thermalBuoyancy !== 0) {
+        if (props.thermal_buoyancy !== 0) {
           applyBuoyancy(v);
         }
         setObstacleVelocity(u, v);
-        if (viscosity > 0) {
+        if (props.background_viscosity > 0) {
           // inviscid case
           diffuse(1, u0, u);
           diffuse(2, v0, v);

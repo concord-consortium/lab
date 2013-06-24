@@ -1,30 +1,14 @@
-/*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false*/
+/*global define: false*/
 
-define(function (require, exports, module) {
+define(function (require, exports) {
   'use strict';
   var
     Photon = require('energy2d/models/photon').Photon;
 
   exports.makeRaySolver = function (model) {
     var
-      nx = model.getGridWidth(),
-      ny = model.getGridHeight(),
-
       // Basic simulation parameters.
-      model_options = model.getModelOptions(),
-      lx = model_options.model_width,
-      ly = model_options.model_height,
-      timeStep = model_options.timeStep,
-      sun_angle = Math.PI - model_options.sun_angle,
-      ray_count = model_options.solar_ray_count,
-      solar_power_density = model_options.solar_power_density,
-      ray_power = model_options.solar_power_density,
-      ray_speed = model_options.solar_ray_speed,
-      photon_emission_interval = model_options.photon_emission_interval,
-
-      delta_x = model_options.model_width / model.getGridWidth(),
-      delta_y = model_options.model_height / model.getGridHeight(),
+      props = model.getModelOptions(),
 
       // Simulation arrays provided by model.
       q       = model.getPowerArray(),
@@ -32,14 +16,24 @@ define(function (require, exports, module) {
       photons = model.getPhotonsArray(),
 
       // Convenience variables.
+      lx = props.model_width,
+      ly = props.model_height,
+
+      nx = props.grid_width,
+      ny = props.grid_height,
       nx1 = nx - 1,
       ny1 = ny - 1,
-      nx2 = nx - 2,
-      ny2 = ny - 2,
+
+      delta_x = props.model_width / props.grid_width,
+      delta_y = props.model_height / props.grid_height,
 
       //
       // Private methods
       //
+
+      sunAngle = function () {
+        return Math.PI - props.sun_angle;
+      },
 
       // TODO: implement something efficient. Linked list?
       cleanupPhotonsArray = function () {
@@ -54,7 +48,7 @@ define(function (require, exports, module) {
       },
 
       applyBoundary = function () {
-        var i, len, photon;
+        var i, len;
         for (i = 0, len = photons.length; i < len; i += 1) {
           if (!photons[i].isContained(0, lx, 0, ly)) {
             photons[i] = undefined;
@@ -64,8 +58,7 @@ define(function (require, exports, module) {
       },
 
       isContained = function (x, y) {
-        var
-          i, len, part;
+        var i, len;
         for (i = 0, len = parts.length; i < len; i += 1) {
           if (parts[i].contains(x, y)) {
             return true;
@@ -76,6 +69,9 @@ define(function (require, exports, module) {
 
       shootAtAngle = function (dx, dy) {
         var
+          sun_angle = sunAngle(),
+          ray_power = props.solar_power_density,
+          ray_speed = props.solar_ray_speed,
           m = Math.floor(lx / dx),
           n = Math.floor(ly / dy),
           x, y, i;
@@ -145,6 +141,9 @@ define(function (require, exports, module) {
     return {
       solve: function () {
         var
+          timeStep = props.timeStep,
+          photon_emission_interval = props.photon_emission_interval,
+
           factor = 1.0 / (timeStep * photon_emission_interval),
           idx = 1.0 / delta_x,
           idy = 1.0 / delta_y,
@@ -186,14 +185,17 @@ define(function (require, exports, module) {
       },
 
       sunShine: function () {
-        var s, c, spacing;
+        var
+          sun_angle = sunAngle(),
+          s, c, spacing;
+
         if (sun_angle < 0) {
           return;
         }
         s = Math.abs(Math.sin(sun_angle));
         c = Math.abs(Math.cos(sun_angle));
         spacing = s * ly < c * lx ? ly / c : lx / s;
-        spacing /= ray_count;
+        spacing /= props.solar_ray_count;
         shootAtAngle(spacing / s, spacing / c);
       }
     };
