@@ -3,7 +3,6 @@
 define(function (require) {
   'use strict';
   var metadata        = require('energy2d/metadata'),
-      validator       = require('common/validator'),
       coremodel       = require('energy2d/models/core-model'),
       LabModelerMixin = require('common/lab-modeler-mixin'),
 

@@ -59,12 +59,11 @@ define(function(require) {
 
       boundary: {
         defaultValue: {
-          temperature_at_border: {
-            upper: 0,
-            lower: 0,
-            left: 0,
-            right: 0
-          }
+          type: "temperature",
+          upper: 0,
+          lower: 0,
+          left: 0,
+          right: 0
         }
       },
 

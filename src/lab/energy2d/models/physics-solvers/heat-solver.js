@@ -46,14 +46,13 @@ define(function (require, exports, module) {
       //
       applyBoundary  = function (t) {
         var
-          vN, vS, vW, vE,
+          vN = boundary.upper,
+          vS = boundary.lower,
+          vW = boundary.left,
+          vE = boundary.right,
           i, j, inx, inx_ny1;
 
-        if (boundary.temperature_at_border) {
-          vN = boundary.temperature_at_border.upper;
-          vS = boundary.temperature_at_border.lower;
-          vW = boundary.temperature_at_border.left;
-          vE = boundary.temperature_at_border.right;
+        if (boundary.type === "temperature") {
           for (i = 0; i < nx; i += 1) {
             inx = i * nx;
             t[inx] = vN;
@@ -63,11 +62,7 @@ define(function (require, exports, module) {
             t[j] = vW;
             t[nx1 * nx + j] = vE;
           }
-        } else if (boundary.flux_at_border) {
-          vN = boundary.flux_at_border.upper;
-          vS = boundary.flux_at_border.lower;
-          vW = boundary.flux_at_border.left;
-          vE = boundary.flux_at_border.right;
+        } else if (boundary.type === "flux") {
           for (i = 0; i < nx; i += 1) {
             inx = i * nx;
             inx_ny1 = inx + ny1;

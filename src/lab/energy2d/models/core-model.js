@@ -26,26 +26,8 @@ define(function (require, exports) {
   // Core Energy2D model.
   //
   // It creates and manages all the data and parameters used for calculations.
-  exports.makeCoreModel = function (model_options) {
+  exports.makeCoreModel = function (opt) {
     var
-      // Validate provided options.
-      opt = (function () {
-        var boundary;
-
-        // Check boundary settings, as they have complex structure.
-        boundary = model_options.boundary.temperature_at_border || model_options.boundary.flux_at_border;
-        if (!boundary) {
-          throw new Error("Core model: missing boundary settings.");
-        } else if (boundary.upper === undefined ||
-                   boundary.right === undefined ||
-                   boundary.lower === undefined ||
-                   boundary.left  === undefined) {
-          throw new Error("Core model: incomplete boundary settings.");
-        }
-
-        return model_options;
-      }()),
-
       // WebGL GPGPU optimization.
       use_WebGL = opt.use_WebGL,
       // This variable holds possible error message connected with WebGL.
