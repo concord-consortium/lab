@@ -2,7 +2,7 @@
   "type": "energy2d",
   "model_width": 0.5,
   "model_height": 0.5,
-  "timestep": 0.05,
+  "timeStep": 0.05,
   "measurement_interval": 100,
   "viewupdate_interval": 10,
   "sun_angle": 1.5707964,

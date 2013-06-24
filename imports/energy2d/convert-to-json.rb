@@ -101,6 +101,8 @@ xml_files.each do |xml_file_path|
   json_string.gsub!(/"([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)"/, '\1')
   # boolean
   json_string.gsub!(/"(true|false)"/, '\1')
+  # timestep -> timeStep
+  json_string.gsub!(/timestep/, 'timeStep')
   var_name = basename.gsub('-', '_')
   capitalized_name = var_name.gsub('_', ' ').split.collect {|w| w.capitalize }.join(" ")
   json_filename = "#{basename}.json"

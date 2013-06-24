@@ -1,6 +1,6 @@
 {
   "type": "energy2d",
-  "timestep": 0.1,
+  "timeStep": 0.1,
   "measurement_interval": 100,
   "viewupdate_interval": 20,
   "sun_angle": 1.5707964,

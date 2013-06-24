@@ -1,6 +1,6 @@
 {
   "type": "energy2d",
-  "timestep": 10.0,
+  "timeStep": 10.0,
   "measurement_interval": 100,
   "viewupdate_interval": 20,
   "sunny": true,
