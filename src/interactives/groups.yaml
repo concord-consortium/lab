@@ -154,7 +154,7 @@
   :name: "Solar System Interactives"
   :category: Tests
 
-- :path: energy2d
+- :path: energy2d/imported
   :name: "Energy2D Interactives"
   :category: Tests
 
