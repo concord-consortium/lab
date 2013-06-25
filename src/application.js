@@ -588,6 +588,7 @@ AUTHORING = false;
       // uses generated resource list: /imports/legacy-mw-content/model-list.js
       // also updates link to original MML in Model Editor
       mmlPath = jsonModelPath.replace("imports/legacy-mw-content/converted/", "imports/legacy-mw-content/").replace(".json", ".mml");
+      $originalImportLink.attr("target", "");
       if (typeof modelList !== 'undefined') {
         contentItems = getObjects(modelList, "mml", mmlPath.replace("imports/legacy-mw-content/", ""));
       }
@@ -604,6 +605,7 @@ AUTHORING = false;
       break;
       case "energy2d":
       e2dModelPath = interactive.models[0].importedFrom;
+      $originalImportLink.attr("target", "_blank");
       if (interactive.importedFrom) {
         // The Energy2D model exist on a separate HTML page
         $originalImportLink.attr("href", interactive.importedFrom);
