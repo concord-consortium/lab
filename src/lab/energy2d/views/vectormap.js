@@ -7,7 +7,7 @@
 // getHTMLElement() returns jQuery object with canvas used for rendering.
 // Before use, this view should be bound with the vector map using bindVectormap(vectormap_u, vectormap_v, width, height, spacing).
 // To render vector map use renderVectormap() method.
-// Set size of the vectormap using CSS rules. The view fits canvas dimensions to the real 
+// Set size of the vectormap using CSS rules. The view fits canvas dimensions to the real
 // size of the HTML element to avoid low quality CSS scaling.
 
 define(function () {
@@ -34,7 +34,9 @@ define(function () {
       grid_height,
       spacing,
 
-      // 
+      enabled = true,
+
+      //
       // Private methods.
       //
       initHTMLelement = function () {
@@ -74,6 +76,8 @@ define(function () {
       vectormap_view = {
         // Render vectormap on the canvas.
         renderVectormap: function () {
+          if (!enabled) return;
+
           var
             dx, dy, x0, y0, uij, vij,
             i, j, iny, ijny;
@@ -106,6 +110,22 @@ define(function () {
                 drawVector(x0, y0, uij, vij);
               }
             }
+          }
+        },
+
+        clear: function () {
+          canvas_ctx.clearRect(0, 0, canvas_width, canvas_height);
+        },
+
+        get enabled() {
+          return enabled;
+        },
+
+        set enabled(v) {
+          if (enabled !== v) {
+            if (v) vectormap_view.renderVectormap();
+            else vectormap_view.clear();
+            enabled = v;
           }
         },
 

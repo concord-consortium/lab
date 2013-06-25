@@ -125,6 +125,9 @@ define(function(require) {
       color_palette_type: {
         defaultValue: 0
       },
+      velocity: {
+        defaultValue: false
+      },
       minimum_temperature: {
         defaultValue: 0
       },
