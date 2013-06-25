@@ -23,27 +23,14 @@ define(function (require) {
     VectormapView      = require('energy2d/views/vectormap'),
     VectormapWebGLView = require('energy2d/views/vectormap-webgl'),
     PartsView          = require('energy2d/views/parts'),
-    PhotonsView        = require('energy2d/views/photons'),
-    TimeView           = require('energy2d/views/time');
+    PhotonsView        = require('energy2d/views/photons');
 
-  return function VisualizationContainer(html_id, use_WebGL) {
+  return function VisualizationContainer($scene_view_div, use_WebGL) {
     var
-      DEFAULT_ID = 'energy2d-scene-view',
-      DEFAULT_CLASS = 'energy2d-scene-view',
-
-      DEFAULT_VISUALIZATION_OPTIONS = {
-        "color_palette_type": 0,
-        "minimum_temperature": 0.0,
-        "maximum_temperature": 40.0
-      },
-
       heatmap_view,
       velocity_view,
       parts_view,
       photons_view,
-      time_view,
-
-      $scene_view_div,
 
       layers_count = 0,
 
@@ -51,17 +38,13 @@ define(function (require) {
       // Private methods.
       //
       initHTMLelement = function () {
-        $scene_view_div = $('<div />');
-        $scene_view_div.attr('id', html_id || DEFAULT_ID);
-        $scene_view_div.addClass(DEFAULT_CLASS);
-
-        $scene_view_div.css('position', 'relative');
-
+        // Cleanup.
+        $scene_view_div.empty();
+        // Add sub-views.
         $scene_view_div.append(heatmap_view.getHTMLElement());
         $scene_view_div.append(velocity_view.getHTMLElement());
         $scene_view_div.append(photons_view.getHTMLElement());
         $scene_view_div.append(parts_view.getHTMLElement());
-        $scene_view_div.append(time_view.getHTMLElement());
       },
 
       setAsNextLayer = function (view) {
@@ -71,23 +54,6 @@ define(function (require) {
         $layer.css('height', '100%');
         $layer.css('position', 'absolute');
         $layer.css('left', '0');
-        $layer.css('top', '0');
-        $layer.css('z-index', layers_count);
-        layers_count += 1;
-      },
-
-      setAsTimeLayer = function (view) {
-        var $layer = view.getHTMLElement();
-
-        // Style time view to make it visible and sharp
-        // as it is displayed on the heatmap (often dark blue color).
-        $layer.css('color', 'white');
-        $layer.css('font-weight', 'bold');
-        // Keep constant width of time display to avoid
-        // oscillation of its position.
-        $layer.css('font-family', 'Monospace');
-        $layer.css('position', 'absolute');
-        $layer.css('right', '0');
         $layer.css('top', '0');
         $layer.css('z-index', layers_count);
         layers_count += 1;
@@ -108,10 +74,6 @@ define(function (require) {
 
         getPhotonsView: function () {
           return photons_view;
-        },
-
-        getTimeView: function () {
-          return time_view;
         },
 
         getHTMLElement: function () {
@@ -147,9 +109,6 @@ define(function (require) {
 
     parts_view = PartsView();
     setAsNextLayer(parts_view);
-
-    time_view = TimeView();
-    setAsTimeLayer(time_view);
 
     // Append all views to the scene view DIV.
     initHTMLelement();

@@ -1,7 +1,6 @@
-/*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false*/
+/*global define: false*/
 
-define(function (require, exports, module) {
+define(function (require, exports) {
   'use strict';
   var
     // Dependencies.
@@ -39,15 +38,15 @@ define(function (require, exports, module) {
       // ========================================================================
 
       // Basic simulation parameters.
-      nx = model.getGridWidth(),
-      ny = model.getGridHeight(),
+      props = model.getModelOptions(),
+      nx = props.grid_width,
+      ny = props.grid_height,
 
-      model_options = model.getModelOptions(),
-      timeStep = model_options.timeStep,
-      boundary = model_options.boundary,
+      timeStep = props.timeStep,
+      boundary = props.boundary,
 
-      delta_x = model_options.model_width / model.getGridWidth(),
-      delta_y = model_options.model_height / model.getGridHeight(),
+      delta_x = props.model_width / props.grid_width,
+      delta_y = props.model_height / props.grid_height,
 
       relaxation_steps = RELAXATION_STEPS,
 
@@ -109,30 +108,30 @@ define(function (require, exports, module) {
         maccormack_step1_program.uniforms(uniforms);
         maccormack_step2_program.uniforms(uniforms);
 
-        if (boundary.temperature_at_border) {
+        if (boundary.type === "temperature") {
           uniforms = {
             // Additional uniforms.
             enforce_temp: 1.0,
-            vN:  boundary.temperature_at_border.upper,
-            vS:  boundary.temperature_at_border.lower,
-            vW:  boundary.temperature_at_border.left,
-            vE:  boundary.temperature_at_border.right
+            vN:  boundary.upper,
+            vS:  boundary.lower,
+            vW:  boundary.left,
+            vE:  boundary.right
           };
           // Integrate boundary conditions with other programs.
           // This is optimization that allows to limit render-to-texture calls.
           solver_program.uniforms(uniforms);
           maccormack_step1_program.uniforms(uniforms);
           maccormack_step2_program.uniforms(uniforms);
-        } else if (boundary.flux_at_border) {
+        } else if (boundary.type === "flux") {
           uniforms = {
             // Texture units.
             data0_tex: 0,
             // Uniforms.
             grid: grid_vec,
-            vN: boundary.flux_at_border.upper,
-            vS: boundary.flux_at_border.lower,
-            vW: boundary.flux_at_border.left,
-            vE: boundary.flux_at_border.right,
+            vN: boundary.upper,
+            vS: boundary.lower,
+            vW: boundary.left,
+            vE: boundary.right,
             delta_x: delta_x,
             delta_y: delta_y
           };
@@ -150,7 +149,7 @@ define(function (require, exports, module) {
           data_0_1_2_array,
           data0_tex
         );
-        if (boundary.flux_at_border) {
+        if (boundary.type === "flux") {
           // Additional program for boundary conditions
           // is required only for "flux at border" option.
           // If "temperature at border" is used, boundary
@@ -167,7 +166,7 @@ define(function (require, exports, module) {
           data_0_1_2_array,
           data0_tex
         );
-        if (boundary.flux_at_border) {
+        if (boundary.type === "flux") {
           // Additional program for boundary conditions
           // is required only for "flux at border" option.
           // If "temperature at border" is used, boundary
@@ -195,7 +194,7 @@ define(function (require, exports, module) {
               data_0_1_array,
               data0_tex
             );
-            if (boundary.flux_at_border) {
+            if (boundary.type === "flux") {
               // Additional program for boundary conditions
               // is required only for "flux at border" option.
               // If "temperature at border" is used, boundary
@@ -210,9 +209,6 @@ define(function (require, exports, module) {
           if (convective) {
             macCormack();
           }
-          // Synchronize. It's not required but it
-          // allows to measure time (for optimization).
-          gpgpu.tryFinish();
         }
       };
     // One-off initialization.

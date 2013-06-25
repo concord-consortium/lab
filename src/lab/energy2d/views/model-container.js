@@ -1,8 +1,7 @@
-/*global define */
+/*global define: false, $: false */
 
 define(function() {
-  var VisualizationContainer = require('energy2d/views/visualization-container'),
-      use_WebGL = false;
+  var VisualizationContainer = require('energy2d/views/visualization-container');
 
   return function View() {
     var api,
@@ -13,8 +12,8 @@ define(function() {
         parts_view,
         photons_view;
 
-    function createEnergy2DScene () {
-      energy2d_scene = new VisualizationContainer('model-container', use_WebGL);
+    function createEnergy2DScene (use_WebGL) {
+      energy2d_scene = new VisualizationContainer(api.$el, use_WebGL);
       heatmap_view = energy2d_scene.getHeatmapView();
       velocity_view = energy2d_scene.getVelocityView();
       photons_view = energy2d_scene.getPhotonsView();
@@ -28,7 +27,7 @@ define(function() {
     }
 
     api = {
-      $el: null,
+      $el: $("<div>"),
 
       getHeightForWidth: function(width) {
         return width * model.properties.grid_height / model.properties.grid_width;
@@ -57,14 +56,17 @@ define(function() {
         model = newModel;
         model.on('tick.view-update', api.update);
 
+        var props = model.properties;
+
+        energy2d_scene = createEnergy2DScene(props.use_WebGL);
+
         model.addPropertiesListener(["color_palette_type", "minimum_temperature", "maximum_temperature"], setVisOptions);
         setVisOptions();
 
-        var props = model.properties;
         parts_view.bindPartsArray(model.getPartsArray(), props.model_width, props.model_height);
         photons_view.bindPhotonsArray(model.getPhotonsArray(), props.model_width, props.model_height);
 
-        if (use_WebGL) {
+        if (props.use_WebGL) {
           heatmap_view.bindHeatmapTexture(model.getTemperatureTexture());
           velocity_view.bindVectormapTexture(model.getVelocityTexture(), props.grid_width, props.grid_height, 25);
         } else {
@@ -77,8 +79,7 @@ define(function() {
       }
     };
 
-    energy2d_scene = createEnergy2DScene();
-    api.$el = energy2d_scene.getHTMLElement();
+
 
     return api;
   };

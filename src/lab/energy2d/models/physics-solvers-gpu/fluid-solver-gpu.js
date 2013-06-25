@@ -1,7 +1,6 @@
-/*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false*/
+/*global define: false*/
 
-define(function (require, exports, module) {
+define(function (require, exports) {
   'use strict';
   var
     // Dependencies.
@@ -25,10 +24,7 @@ define(function (require, exports, module) {
     apply_buoyancy_fs        = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-buoyancy.fs.glsl'),
 
     RELAXATION_STEPS = 10,
-    GRAVITY = 0,
-
-    BUOYANCY_AVERAGE_ALL = 0,
-    BUOYANCY_AVERAGE_COLUMN = 1;
+    GRAVITY = 0;
 
   exports.makeFluidSolverGPU = function (model) {
     var
@@ -76,17 +72,16 @@ define(function (require, exports, module) {
       data3_tex = model.getSimulationTexture(3),
 
       // Basic simulation parameters.
-      nx = model.getGridWidth(),
-      ny = model.getGridHeight(),
+      props = model.getModelOptions(),
+      nx = props.grid_width,
+      ny = props.grid_height,
 
-      model_options          = model.getModelOptions(),
-      timeStep               = model_options.timeStep,
-      thermal_buoyancy       = model_options.thermal_buoyancy,
-      buoyancy_approximation = model_options.buoyancy_approximation,
-      viscosity              = model_options.background_viscosity,
+      timeStep         = props.timeStep,
+      thermal_buoyancy = props.thermal_buoyancy,
+      viscosity        = props.background_viscosity,
 
-      delta_x = model_options.model_width / model.getGridWidth(),
-      delta_y = model_options.model_height / model.getGridHeight(),
+      delta_x = props.model_width / props.grid_width,
+      delta_y = props.model_height / props.grid_height,
 
       relaxation_steps = RELAXATION_STEPS,
       gravity = GRAVITY,
@@ -348,9 +343,6 @@ define(function (require, exports, module) {
           macCormack();
           conserve();
           setObstacleVelocity();
-          // Synchronize. It's not required but it
-          // allows to measure time (for optimization).
-          gpgpu.tryFinish();
         }
       };
 
