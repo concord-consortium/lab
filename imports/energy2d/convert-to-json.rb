@@ -12,32 +12,14 @@ require 'nokogiri'
 require 'script/setup.rb'
 
 e2d_models_path =         File.join(HERE, "models-xml")
-
 original_content_path =   File.join(HERE, "content")
-
-interactives_dir =        "interactives/imports"
-interactives_path =       File.join(PROJECT_ROOT, "src/examples/energy2d-model", interactives_dir)
-interactives_index_path = File.join(PROJECT_ROOT, "src/examples/energy2d-model/interactives-index.js")
-FileUtils.mkdir_p interactives_path
-
 lab_interactives_path =   File.join(PROJECT_ROOT, "src", "interactives", "energy2d", "imported")
-
 models_dir =              "models-json"
 models_path =             File.join(HERE, models_dir)
-models_index_path =       File.join(HERE, "models-index.js")
-
-models_file = File.open(models_index_path, 'w');
-models_file.write("var models_library = {};\nvar models_index = {\n");
 
 interactive_template = JSON.load(File.read(File.join(HERE, "interactive-template.json")))
 lab_interactive_template = JSON.load(File.read(File.join(HERE, "lab-interactive-template.json")))
 lab_solar_angle_slider_template = JSON.load(File.read(File.join(HERE, "lab-solar-angle-slider-template.json")))
-
-#
-# The hash objects from which the index files are generated
-#
-interactives = {}
-models = {}
 
 #
 # E2dPage
@@ -140,28 +122,6 @@ xml_files.each do |xml_file_path|
   page = e2d_pages[basename]
 
   #
-  # create and write out the legacy json interactive
-  #
-  interactive = interactive_template.clone
-  interactive["model"] = File.join("/imports/energy2d/", models_dir, json_filename)
-  if page
-    interactive["description"]["title"] = page.title
-    interactive["description"]["tagline"] = page.tagline
-    interactive["description"]["content"] = page.content
-    interactive["description"]["footnote"] = ""
-  else
-    interactive["description"]["title"] = capitalized_name
-    interactive["description"]["tagline"] = ""
-    interactive["description"]["content"] = ""
-    interactive["description"]["footnote"] = "* no further description available"
-    capitalized_name << "*"
-  end
-  File.open("#{interactives_path}/#{json_filename}", 'w') do |f|
-    f.write(JSON.pretty_generate(interactive))
-  end
-
-
-  #
   # create and write out the json structure for the Lab Interactive form
   #
   interactive = Marshal.load( Marshal.dump(lab_interactive_template))
@@ -188,39 +148,4 @@ xml_files.each do |xml_file_path|
   File.open("#{lab_interactives_path}/#{json_filename}", 'w') do |f|
     f.write(JSON.pretty_generate(interactive))
   end
-
-  #
-  # add another object to the index of models
-  #
-  models[var_name] = {
-    "name" => capitalized_name,
-    "path" => File.join(models_dir, json_filename)
-  }
-  #
-  # add another object to the index of interactives
-  #
-  interactives[var_name] = {
-    "name" => capitalized_name,
-    "path" => File.join(interactives_dir, json_filename)
-  }
 end
-
-#
-# Write out the models index file
-#
-models_file = File.open(models_index_path, 'w');
-models_file.write("var modelsIndex = ");
-puts "writing: #{models_index_path} ..."
-models_file.write JSON.pretty_generate(models)
-models_file.write(";\n")
-models_file.close()
-
-#
-# Write out the interactives index file
-#
-interactives_file = File.open(interactives_index_path, 'w');
-interactives_file.write("var interactivesIndex = ");
-puts "writing: #{interactives_index_path} ..."
-interactives_file.write JSON.pretty_generate(interactives)
-interactives_file.write(";\n")
-interactives_file.close()
