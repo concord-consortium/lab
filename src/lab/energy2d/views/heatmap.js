@@ -75,7 +75,7 @@ define(function (require) {
           // TODO: is it really necessary?
           canvas_ctx.fillStyle = "rgb(0,0,0)";
 
-          scale = max_rgb_idx / (max_temp - min_temp);
+          scale = max_rgb_idx / Math.max(1, max_temp - min_temp);
           image_data = canvas_ctx.getImageData(0, 0, grid_width / backing_scale, grid_height / backing_scale);
           data = image_data.data;
 
