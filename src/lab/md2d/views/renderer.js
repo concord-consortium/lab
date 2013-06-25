@@ -231,24 +231,25 @@ define(function (require) {
       }
 
 	  // Scales used for Charge Shading gradients.
+	  // Originally Positive:(ffefff,9abeff,767fbf) and Negative:(dfffff,fdadad,e95e5e)
       var posLightColorScale = d3.scale.linear()
         .interpolate(d3.interpolateRgb)
         .range(["#FFFFFF", "#ffefff"]),
       posMedColorScale = d3.scale.linear()
         .interpolate(d3.interpolateRgb)
-        .range(["#f2f2f2", "#9abeff"]),
+        .range(["#f2f2f2", "#9090FF"]),
       posDarkColorScale = d3.scale.linear()
         .interpolate(d3.interpolateRgb)
-        .range(["#A4A4A4", "#767fbf"]),
+        .range(["#A4A4A4", "#3030FF"]),
       negLightColorScale = d3.scale.linear()
         .interpolate(d3.interpolateRgb)
         .range(["#FFFFFF", "#dfffff"]),
       negMedColorScale = d3.scale.linear()
         .interpolate(d3.interpolateRgb)
-        .range(["#f2f2f2", "#fdadad"]),
+        .range(["#f2f2f2", "#FF8080"]),
       negDarkColorScale = d3.scale.linear()
         .interpolate(d3.interpolateRgb)
-        .range(["#A4A4A4", "#e95e5e"]),
+        .range(["#A4A4A4", "#FF2020"]),
       ChargeLevel;
 
       // Charge Shading gradients
@@ -352,8 +353,8 @@ define(function (require) {
 
         if (chargeShadingMode) {
           charge = d.charge;
-		  console.log('charge',charge)
-          chargeIndex = Math.min(0.3 * Math.abs(charge), 1)
+		  // Convert Charge to [0, 1] range
+          chargeIndex = Math.min(0.6 * Math.abs(charge), 1)
 
        	  return (charge >= 0 ? gradientNameForPositiveChargeLevel : gradientNameForNegativeChargeLevel)[Math.round(chargeIndex * (CHARGE_SHADING_STEPS - 1))];
         }
