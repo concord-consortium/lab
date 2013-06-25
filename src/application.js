@@ -614,7 +614,7 @@ AUTHORING = false;
         // use Generic Energy2D applet page instead:
         //    /imports/energy2d/energy2d-applet.html?e2dPath=content/compare-capacity.e2d&title=Compare%20Capacity
         $originalImportLink.attr("href", origin + Lab.config.actualRoot +
-          "/imports/energy2d/energy2d-applet.html?" +
+          "imports/energy2d/energy2d-applet.html?" +
           encodeURI("e2dPath=" + e2dModelPath.replace("imports/energy2d/", "") + "&title=" + interactive.title.replace(/\*+$/, '')));
         $originalImportLink.attr("title", "View original Java Energy2D applet in generic HTML page in another window");
       } else {
