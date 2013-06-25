@@ -2,7 +2,7 @@
   "title": "Conduction",
   "publicationStatus": "draft",
   "subtitle": "How does Temperature Difference Affect Conduction Rate?",
-  "about": "If the fire under a frying pan is more intense, will your hand feel hotter?\nThe following model compares heat conduction through two identical test pieces but the temperature differences across \nthem are different.",
+  "about": "If the fire under a frying pan is more intense, will your hand feel hotter?\n\nThe following model compares heat conduction through two identical test pieces but the temperature differences across \nthem are different.",
   "importedFrom": "imports/energy2d/content/temperature-difference.html",
   "models": [
     {
