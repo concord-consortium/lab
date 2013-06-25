@@ -70,7 +70,6 @@ vpath %.md src
 
 LAB_JS_FILES = \
 	public/lab/lab.grapher.js \
-	public/lab/lab.energy2d.js \
 	public/lab/lab.md2d.js \
 	public/lab/lab.import-export.js \
 	public/lab/lab.solar-system.js \
@@ -374,11 +373,6 @@ src/lab/lab.config.js: \
 	script/generate-js-config.rb \
 	config/config.yml
 	./script/generate-js-config.rb
-
-public/lab/lab.energy2d.js: \
-	$(ENERGY2D_SRC_FILES) \
-	$(COMMON_SRC_FILES)
-	$(R_OPTIMIZER) -o src/lab/energy2d/energy2d.build.js
 
 public/lab/lab.grapher.js: \
 	$(GRAPHER_SRC_FILES) \
