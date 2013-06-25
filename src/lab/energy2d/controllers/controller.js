@@ -1,18 +1,15 @@
-/*global define: false, $: false, d3: false, model: true */
+/*global define: false, d3: false, model: true */
 
 define(function (require) {
   // Dependencies.
   var Model          = require('energy2d/modeler'),
       ModelContainer = require('energy2d/views/model-container'),
-      Benchmarks     = require('energy2d/benchmarks/benchmarks');
-      arrays         = require('arrays');
+      Benchmarks     = require('energy2d/benchmarks/benchmarks'),
+      ScriptingAPI   = require('energy2d/controllers/scripting-api');
 
   return function (modelUrl, modelOptions) {
 
     var api = {},
-        // Options after processing performed by processOptions().
-        modelOptions,
-
         dispatch = d3.dispatch('modelLoaded');
 
     api = {
@@ -59,7 +56,7 @@ define(function (require) {
         return null;
       },
 
-      ScriptingAPI: function () {}
+      ScriptingAPI: ScriptingAPI
     };
 
     api.benchmarks = new Benchmarks(api);

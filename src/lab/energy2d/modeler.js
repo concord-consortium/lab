@@ -54,6 +54,12 @@ define(function (require) {
       getIndexOfStep: function () {
         return coreModel.getIndexOfStep();
       },
+      getTemperatureAt: function (x, y) {
+        return coreModel.getTemperatureAt(x, y);
+      },
+      getAverageTemperatureAt: function (x, y) {
+        return coreModel.getAverageTemperatureAt(x, y);
+      },
       getTemperatureArray: function () {
         return coreModel.getTemperatureArray();
       },
