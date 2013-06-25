@@ -18,12 +18,17 @@ define(function (require) {
 
   return function Modeler(initialProperties) {
     var model,
-        core_model,
+        coreModel,
 
         labModelerMixin = new LabModelerMixin({
           metadata: metadata,
           unitsDefinition: unitsDefinition,
-          initialProperties: initialProperties
+          initialProperties: initialProperties,
+          setters: {
+            use_WebGL: function (v) {
+              if (coreModel) coreModel.useWebGL = v;
+            }
+          }
         }),
         dispatch = labModelerMixin.dispatchSupport;
 
@@ -31,53 +36,53 @@ define(function (require) {
       tick: function () {
         var i, len;
         for (i = 0, len = model.properties.timeStepsPerTick; i < len; i++) {
-          core_model.nextStep();
+          coreModel.nextStep();
         }
         model.updateAllOutputProperties();
         dispatch.tick();
       },
 
       getTime: function () {
-        return model.properties.timeStep * core_model.getIndexOfStep();
+        return model.properties.timeStep * coreModel.getIndexOfStep();
       },
       isWebGLActive: function () {
-        return core_model.isWebGLActive();
+        return coreModel.isWebGLActive();
       },
       getWebGLError: function () {
-        return core_model.getWebGLError();
+        return coreModel.getWebGLError();
       },
       getIndexOfStep: function () {
-        return core_model.getIndexOfStep();
+        return coreModel.getIndexOfStep();
       },
       getTemperatureArray: function () {
-        return core_model.getTemperatureArray();
+        return coreModel.getTemperatureArray();
       },
       getTemperatureTexture: function () {
-        return core_model.getTemperatureTexture();
+        return coreModel.getTemperatureTexture();
       },
       getUVelocityArray: function () {
-        return core_model.getUVelocityArray();
+        return coreModel.getUVelocityArray();
       },
       getVVelocityArray: function () {
-        return core_model.getVVelocityArray();
+        return coreModel.getVVelocityArray();
       },
       getVelocityTexture: function () {
-        return core_model.getVelocityTexture();
+        return coreModel.getVelocityTexture();
       },
       getPhotonsArray: function () {
-        return core_model.getPhotonsArray();
+        return coreModel.getPhotonsArray();
       },
       getPartsArray: function () {
-        return core_model.getPartsArray();
+        return coreModel.getPartsArray();
       },
       updateTemperatureArray: function () {
-        return core_model.updateTemperatureArray();
+        return coreModel.updateTemperatureArray();
       },
       updateVelocityArrays: function () {
-        return core_model.updateVelocityArrays();
+        return coreModel.updateVelocityArrays();
       },
       setPerformanceTools: function () {
-        return core_model.setPerformanceTools();
+        return coreModel.setPerformanceTools();
       }
     };
 
@@ -85,7 +90,7 @@ define(function (require) {
       labModelerMixin.mixInto(model);
       dispatch.addEventTypes("tick");
 
-      core_model = coremodel.makeCoreModel(model);
+      coreModel = coremodel.makeCoreModel(model.properties);
 
       model.defineOutput('time', {
         label: "Time",

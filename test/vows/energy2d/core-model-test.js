@@ -11,22 +11,23 @@ var vows      = require("vows"),
     photon = requirejs('energy2d/models/photon'),
     Photon = photon.Photon,
 
-    suite = vows.describe("energy2d/models/core-model");
+    suite = vows.describe("energy2d/models/core-model"),
+
+    OPTIONS = validator.validateCompleteness(metadata.mainProperties, {});
 
 suite.addBatch({
   'Core model': {
     '(initialized with empty options)': {
       topic: function () {
-        var mainProperties = validator.validateCompleteness(metadata.mainProperties, {});
-        return core.makeCoreModel(mainProperties);
+        return core.makeCoreModel(OPTIONS);
       },
       'should start at the step 0': function (model) {
         assert.equal(model.getIndexOfStep(), 0);
       },
       'should have all simulation arrays initialized': function (model) {
         var
-          nx = model.getGridWidth(),
-          ny = model.getGridHeight(),
+          nx = OPTIONS.grid_width,
+          ny = OPTIONS.grid_height,
           array_size = nx * ny;
 
         assert.equal(model.getTemperatureArray().length, array_size);

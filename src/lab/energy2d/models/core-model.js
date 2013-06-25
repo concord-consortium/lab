@@ -26,15 +26,8 @@ define(function (require, exports) {
   // Core Energy2D model.
   //
   // It creates and manages all the data and parameters used for calculations.
-  exports.makeCoreModel = function (model) {
+  exports.makeCoreModel = function (opt) {
     var
-      opt = model.properties,
-
-      // WebGL GPGPU optimization.
-      use_WebGL = opt.use_WebGL,
-      // This variable holds possible error message connected with WebGL.
-      WebGL_error,
-
       // Simulation grid dimensions.
       nx = opt.grid_width,
       ny = opt.grid_height,
@@ -60,6 +53,11 @@ define(function (require, exports) {
       // Optimization flags.
       radiative,
       has_part_power,
+
+      // WebGL GPGPU optimization.
+      use_WebGL = false,
+      // This variable holds possible error message connected with WebGL.
+      WebGL_error,
 
       // Performance model.
       // By default, mock this object.
@@ -319,6 +317,24 @@ define(function (require, exports) {
           perf = perf_tools;
         },
 
+        set useWebGL(v) {
+          if (use_WebGL === v) return;
+          // Update closure variable.
+          use_WebGL = v;
+          if (use_WebGL) {
+            // Initialize GPGPU, this will also copy current temperature
+            // and velocity arrays into textures.
+            initGPGPU();
+          } else {
+            // Copy data back from GPU to main memory.
+            core_model.updateTemperatureArray();
+            core_model.updateVelocityArrays();
+          }
+        },
+        get useWebGL() {
+          return use_WebGL;
+        },
+
         isWebGLActive: function () {
           return use_WebGL;
         },
@@ -531,24 +547,9 @@ define(function (require, exports) {
     fluidSolver = fluidsolver.makeFluidSolver(core_model);
     ray_solver = raysolver.makeRaySolver(core_model);
 
-    if (use_WebGL) {
-      initGPGPU();
-    }
-
-    model.addPropertiesListener("use_WebGL", function () {
-      if (use_WebGL === opt.use_WebGL) return;
-      // Update closure variable.
-      use_WebGL = opt.use_WebGL;
-      if (use_WebGL) {
-        // Initialize GPGPU, this will also copy current temperature
-        // and velocity arrays into textures.
-        initGPGPU();
-      } else {
-        // Copy data back from GPU to main memory.
-        core_model.updateTemperatureArray();
-        core_model.updateVelocityArrays();
-      }
-    });
+    // This will trigger initialization of GPGPU structures if option is set
+    // to true.
+    core_model.useWebGL = opt.use_WebGL;
 
     // Finally, return public API object.
     return core_model;
