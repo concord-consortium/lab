@@ -136,7 +136,7 @@ xml_files.each do |xml_file_path|
   #
   # create and write out the json structure for the Lab Interactive form
   #
-  interactive = lab_interactive_template.clone
+  interactive = Marshal.load( Marshal.dump(lab_interactive_template))
   interactive["models"][0]["id"] = basename
   interactive["models"][0]["url"] = File.join("imports", "energy2d", models_dir, json_filename)
   if page
