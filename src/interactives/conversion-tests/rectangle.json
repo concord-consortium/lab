@@ -1,0 +1,21 @@
+{
+  "title": "Rectangles",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "rectangle$0",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/rectangle$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "modelTimeLabel": true
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+  }
+}

@@ -102,6 +102,9 @@ define(function (require) {
         obstacle,
         obstacles,
         mockObstaclesArray = [],
+        rectangle,
+        rectangles,
+        mockRectanglesArray = [],
         radialBond1, radialBond2,
         vdwPairs = [],
         vdwLines,
@@ -158,6 +161,22 @@ define(function (require) {
         obstacles.colorR[i] + "," +
         obstacles.colorG[i] + "," +
         obstacles.colorB[i] + ")";
+    }
+    
+    function getRectangleColor(i) {
+      return "rgba(" +
+        rectangles.colorR[i] + "," +
+        rectangles.colorG[i] + "," +
+        rectangles.colorB[i] + "," +
+        (rectangles.alpha[i]/255) + ")";
+    }
+    
+    function getRectangleLineColor(i) {
+      //Note that transparent lines were not supported in the Java MW
+      return "rgb(" +
+        rectangles.lineColorR[i] + "," +
+        rectangles.lineColorG[i] + "," +
+        rectangles.lineColorB[i] + ")";
     }
 
     // Pass in the signed 24-bit Integer used for Java MW elementColors
@@ -639,6 +658,38 @@ define(function (require) {
             "fill": "none"
           });
       });
+    }
+
+    function rectangleEnter() {
+      var rectangleGroup = rectangle.enter().append("g");
+
+      rectangleGroup
+        .attr("class", "rectangle")
+        .attr("transform",
+          function (d, i) {
+            return "translate(" + model2px(rectangles.x[i]) + " " + model2pxInv(rectangles.y[i] + rectangles.height[i]) + ")";
+          }
+        );
+      rectangleGroup.append("rect")
+        .attr({
+          "class": "rectangle-shape",
+          "x": 0,
+          "y": 0,
+          "width": function(d, i) {return model2px(rectangles.width[i]); },
+          "height": function(d, i) {return model2px(rectangles.height[i]); },
+          "fill": function(d, i) { return rectangles.visible[i] ? getRectangleColor(i) : "rgba(128,128,128, 0)"; },
+          "stroke-width": function(d, i) { return Math.max(1,rectangles.lineWeight[i]/24)},
+          "stroke-dasharray": function(d, i) {
+          	switch(rectangles.lineStyle[i]){
+          		case 1:	return '2,2';
+          		case 2: return '4,4';
+          		case 3: return '6,6';
+          		case 4: return '2,4,8,4';
+          		default: return 'none';
+          	}
+          },
+          "stroke": function(d, i) { return rectangles.visible[i] ? getRectangleLineColor(i) : "rgba(128,128,128, 0)"; }
+        });
     }
 
     function radialBondEnter() {
@@ -1281,6 +1332,16 @@ define(function (require) {
         obstacleEnter();
       }
     }
+    
+    function setupRectangles() {
+      rectangles = model.get_rectangles();
+      mainContainer.selectAll("g.rectangle").remove();
+      if (rectangles) {
+        mockRectanglesArray.length = rectangles.x.length;
+        rectangle = mainContainer.selectAll("g.rectangle").data(mockRectanglesArray);
+        rectangleEnter();
+      }
+    }
 
     function setupRadialBonds() {
       radialBondsContainer.selectAll("path.radialbond1").remove();
@@ -1838,6 +1899,8 @@ define(function (require) {
       setupParticles();
       // Always setup radial bonds *after* particles to use correct atoms
       // color table.
+      setupRectangles();
+      //Rectangles are ON TOP of particles
       setupRadialBonds();
       geneticRenderer.setup();
       setupVectors();
@@ -1863,6 +1926,12 @@ define(function (require) {
       if (obstacles) {
         obstacle.attr("transform", function (d, i) {
           return "translate(" + model2px(obstacles.x[i]) + " " + model2pxInv(obstacles.y[i] + obstacles.height[i]) + ")";
+        });
+      }
+
+      if (rectangles) {
+        rectangle.attr("transform", function (d, i) {
+          return "translate(" + model2px(rectangles.x[i]) + " " + model2pxInv(rectangles.y[i] + rectangles.height[i]) + ")";
         });
       }
 

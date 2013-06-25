@@ -194,6 +194,9 @@ define(function(require) {
         // A hash of arrays consisting of arrays of obstacle property values
         obstacles,
 
+        // A hash of arrays consisting of arrays of rectangle property values
+        rectangles,
+
         // A hash of arrays consisting of arrays of radial bond property values
         radialBonds,
 
@@ -561,6 +564,7 @@ define(function(require) {
       angularBonds = engine.angularBonds;
       restraints = engine.restraints;
       obstacles = engine.obstacles;
+      rectangles = engine.rectangles;
     }
 
     model.createElements = function(_elements) {
@@ -728,6 +732,23 @@ define(function(require) {
           }
         }
         model.addObstacle(obstacleProps);
+      }
+
+      return model;
+    };
+    model.createRectangles = function(_rectangles) {
+      var numRectangles = _rectangles.x.length,
+          i, prop, rectangleProps;
+
+      // See function above
+      for (i = 0; i < numRectangles; i++) {
+        rectangleProps = {};
+        for (prop in _rectangles) {
+          if (_rectangles.hasOwnProperty(prop)) {
+            rectangleProps[prop] = _rectangles[prop][i];
+          }
+        }
+        model.addRectangle(rectangleProps);
       }
 
       return model;
@@ -900,13 +921,42 @@ define(function(require) {
       engine.addObstacle(validatedProps);
       propertySupport.invalidatingChangePostHook();
     };
+    
+    model.addRectangle = function(props) {
+      var validatedProps;
 
+      if (props.color !== undefined && props.colorR === undefined) {
+        // See above
+        props.colorR = props.color[0];
+        props.colorG = props.color[1];
+        props.colorB = props.color[2];
+      }
+      if (props.lineColor !== undefined && props.lineColorR === undefined) {
+        // See above
+        props.lineColorR = props.lineColor[0];
+        props.lineColorG = props.lineColor[1];
+        props.lineColorB = props.lineColor[2];
+      }
+      // Validate properties, use default values if there is such need.
+      validatedProps = validator.validateCompleteness(metadata.rectangle, props);
+      // Finally, add rectangle.
+      propertySupport.invalidatingChangePreHook();
+      engine.addRectangle(validatedProps);
+      propertySupport.invalidatingChangePostHook();
+    };
+    
     model.removeObstacle = function (idx) {
       propertySupport.invalidatingChangePreHook();
       engine.removeObstacle(idx);
       propertySupport.invalidatingChangePostHook();
     };
 
+	model.removeRectangle = function (idx) {
+      propertySupport.invalidatingChangePreHook();
+      engine.removeRectangle(idx);
+      propertySupport.invalidatingChangePostHook();
+    };
+    
     model.addRadialBond = function(props, options) {
       // Validate properties, use default values if there is such need.
       props = validator.validateCompleteness(metadata.radialBond, props);
@@ -1138,6 +1188,26 @@ define(function(require) {
         }
       }
       return translateFromMD2DUnits(props, obstacleMetaData);
+    };
+    
+    model.setRectangleProperties = function(i, props) {
+      // Validate properties.
+      props = validator.validate(metadata.rectangle, props);
+      invalidatingChangePreHook();
+      engine.setRectangleProperties(i, translateToMD2DUnits(props, metadata.rectangle));
+      invalidatingChangePostHook();
+    };
+
+    model.getRectangleProperties = function(i) {
+      var rectangleMetaData = metadata.rectangle,
+          props = {},
+          propName;
+      for (propName in rectangleMetaData) {
+        if (rectangleMetaData.hasOwnProperty(propName)) {
+          props[propName] = rectangles[propName][i];
+        }
+      }
+      return translateFromMD2DUnits(props, rectangleMetaData);
     };
 
     model.setRadialBondProperties = function(i, props) {
@@ -1385,6 +1455,13 @@ define(function(require) {
     model.get_obstacles = function() {
       return obstacles;
     };
+    model.get_rectangles = function() {
+      return rectangles;
+    };
+    
+    model.get_rectangles = function() {
+      return rectangles;
+    };
 
     // FIXME. Should be an output property.
     model.getNumberOfElements = function () {
@@ -1394,6 +1471,10 @@ define(function(require) {
     // FIXME. Should be an output property.
     model.getNumberOfObstacles = function () {
       return engine.getNumberOfObstacles();
+    };
+    
+    model.getNumberOfRectangles = function () {
+      return engine.getNumberOfRectangles();
     };
 
     // FIXME. Should be an output property.
@@ -1664,6 +1745,31 @@ define(function(require) {
         delete propCopy.obstacles.colorG;
         delete propCopy.obstacles.colorB;
       }
+      if (engine.getNumberOfRectangles()) {
+        propCopy.rectangles = serialize(metadata.rectangle, rectangles, engine.getNumberOfRectangles());
+
+        propCopy.rectangles.color = [];
+        propCopy.rectangles.lineColor = [];
+        // Convert color from internal representation to one expected for serialization.
+        for (i = 0, len = propCopy.rectangles.colorR.length; i < len; i++) {
+          propCopy.rectangles.color.push([
+            propCopy.rectangles.colorR[i],
+            propCopy.rectangles.colorG[i],
+            propCopy.rectangles.colorB[i]
+          ]);
+          propCopy.rectangles.lineColor.push([
+            propCopy.rectangles.lineColorR[i],
+            propCopy.rectangles.lineColorG[i],
+            propCopy.rectangles.lineColorB[i]
+          ]);
+        }
+        delete propCopy.rectangles.colorR;
+        delete propCopy.rectangles.colorG;
+        delete propCopy.rectangles.colorB;
+        delete propCopy.rectangles.lineColorR;
+        delete propCopy.rectangles.lineColorR;
+        delete propCopy.rectangles.lineColorR;
+      }
       if (engine.getNumberOfRestraints() > 0) {
         propCopy.restraints = serialize(metadata.restraint, restraints, engine.getNumberOfRestraints());
       }
@@ -1800,6 +1906,7 @@ define(function(require) {
     if (initialProperties.angularBonds) model.createAngularBonds(initialProperties.angularBonds);
     if (initialProperties.restraints)   model.createRestraints(initialProperties.restraints);
     if (initialProperties.obstacles)    model.createObstacles(initialProperties.obstacles);
+    if (initialProperties.rectangles)    model.createRectangles(initialProperties.rectangles);
     // Basically, this #deserialize method is more or less similar to other #create... methods used
     // above. However, this is the first step to delegate some functionality from modeler to smaller classes.
     if (initialProperties.pairwiseLJProperties)

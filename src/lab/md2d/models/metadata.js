@@ -482,6 +482,61 @@ define(function() {
         defaultValue: true
       }
     },
+    
+    rectangle: {
+      // Required properties:
+      width: {
+        unitType: "length",
+        required: true
+      },
+      height: {
+        unitType: "length",
+        required: true
+      },
+      // Optional properties:
+      x: {
+        defaultValue: 0,
+        unitType: "length"
+      },
+      y: {
+        defaultValue: 0,
+        unitType: "length"
+      },
+      angle: {
+        defaultValue: 0
+      },
+      // View options.
+      colorR: {
+        defaultValue: 128
+      },
+      colorG: {
+        defaultValue: 128
+      },
+      colorB: {
+        defaultValue: 128
+      },
+      lineColorR: {
+        defaultValue: 128
+      },
+      lineColorG: {
+        defaultValue: 128
+      },
+      lineColorB: {
+        defaultValue: 128
+      },
+      lineWeight: {
+        defaultValue: 128
+      },
+      lineStyle: {
+        defaultValue: 0
+      },
+      alpha: {
+        defaultValue: 128
+      },
+      visible: {
+        defaultValue: true
+      }
+    },
 
     radialBond: {
       atom1: {

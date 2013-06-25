@@ -217,7 +217,78 @@ parseMML = (mmlString) ->
         obstacles.push validatedData
 
       obstacles
+    
+    ### Find and parse mml nodes representing rectangles ###
+    parseRectangles = ->
+      rectangles = []
+      rectangleNodes = $mml "[property=rectangles] array .org-concord-mw2d-models-RectangleComponent-Delegate"
+      for node in rectangleNodes
+        $node = getNode cheerio node
 
+        height     = getFloatProperty $node, 'height'
+        width      = getFloatProperty $node, 'width'
+        x          = getFloatProperty $node, 'x'
+        y          = getFloatProperty $node, 'y'
+        alpha      = getFloatProperty $node, 'alpha'
+        angle      = getFloatProperty $node, 'angle'
+        lineStyle      = getFloatProperty $node, 'lineStyle'
+        lineWeight      = getFloatProperty $node, 'lineStyle'
+        # layer      = getFloatProperty $node, 'layer'
+        visible    = getBooleanProperty $node, 'visible'
+
+        color  = $node.find "[property=color] .java-awt-Color>int"
+        if color and color.length > 0
+          colorR = parseInt cheerio(color[0]).text()
+          colorG = parseInt cheerio(color[1]).text()
+          colorB = parseInt cheerio(color[2]).text()
+        
+        lineColor  = $node.find "[property=lineColor] .java-awt-Color>int"
+        if lineColor and lineColor.length > 0
+          lineColorR = parseInt cheerio(lineColor[0]).text()
+          lineColorG = parseInt cheerio(lineColor[1]).text()
+          lineColorB = parseInt cheerio(lineColor[2]).text()
+
+        # Unit conversion.
+        [x, y]          = toNextgenCoordinates x, y
+        [height, width] = toNextgenLengths height, width
+        y               = y - height     # flip to lower-left coordinate system
+
+        rawData = {
+          x, y,
+          height, width,
+          angle,
+          colorR, colorB, colorG,
+          lineColorR, lineColorB, lineColorG,
+          lineWeight,
+          lineStyle,
+          alpha,
+          visible
+        }
+
+        # Unit conversion performed on undefined values can convert them to NaN.
+        # Revert back all NaNs to undefined, as we do not expect any NaN
+        # as property. Undefined values will be replaced by default values by validator.
+        removeNaNProperties rawData
+
+        # Validate all properties and provides default values for undefined values.
+        validatedData = validator.validateCompleteness metadata.rectangle, rawData
+
+        # Change colorR, colorB, colorG to array...
+        # TODO: ugly, use just one convention. colorR/G/B should be easier.
+        validatedData.color = []
+        validatedData.color[0] = validatedData.colorR
+        validatedData.color[1] = validatedData.colorG
+        validatedData.color[2] = validatedData.colorB
+        
+        validatedData.lineColor = []
+        validatedData.lineColor[0] = validatedData.lineColorR
+        validatedData.lineColor[1] = validatedData.lineColorG
+        validatedData.lineColor[2] = validatedData.lineColorB
+
+        rectangles.push validatedData
+
+      rectangles
+    
     ###
       Find the container size
     ###
@@ -483,7 +554,12 @@ parseMML = (mmlString) ->
       Find obstacles
     ###
     obstacles = parseObstacles()
-
+    
+    ###
+      Find rectangles
+    ###
+    rectangles = parseRectangles()
+    
     ###
       Find all elements. Results in:
       "elements": {
@@ -950,6 +1026,11 @@ parseMML = (mmlString) ->
     if obstacles.length > 0
       json.obstacles = unroll obstacles, 'x', 'y', 'vx', 'vy', 'externalAx', 'externalAy', 'friction',
         'height', 'width', 'mass', 'westProbe', 'northProbe', 'eastProbe', 'southProbe', 'color', 'visible'
+    
+    if rectangles.length > 0
+      json.rectangles = unroll rectangles, 'x', 'y', 'height', 'width', 'angle',
+        'color', 'lineColor', 'lineWeight', 'lineStyle',
+        'alpha', 'visible'
 
     if useQuantumDynamics
       json.quantumDynamics = quantumDynamics

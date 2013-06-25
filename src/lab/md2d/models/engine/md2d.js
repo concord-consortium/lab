@@ -311,6 +311,33 @@ define(function (require, exports, module) {
         N_obstacles = 0,
 
         // ####################################################################
+        //                      Rectangle Properties
+
+        // Individual properties for the rectangles
+        rectangleX,
+        rectangleY,
+        rectangleWidth,
+        rectangleHeight,
+        rectangleAngle,
+        rectangleColorR,
+        rectangleColorG,
+        rectangleColorB,
+        rectangleLineColorR,
+        rectangleLineColorG,
+        rectangleLineColorB,
+        rectangleLineStyle,
+        rectangleLineWeight,
+        rectangleAlpha,
+        rectangleVisible,
+
+        // An object that contains references to the above rectangle-property arrays.
+        // Left undefined if there are no rectangles.
+        rectangles,
+
+        // Number of actual rectangles
+        N_rectangles = 0,
+
+        // ####################################################################
         //                      Misc Properties
         // Hash of arrays containing VdW pairs
         vdwPairs,
@@ -400,6 +427,7 @@ define(function (require, exports, module) {
           createVdwPairsArray(0);
           createSpringForcesArray(0);
           createObstaclesArray(0);
+          createRectanglesArray(0);
 
           // Custom pairwise properties.
           pairwiseLJProperties = new PairwiseLJProperties(engine);
@@ -635,6 +663,24 @@ define(function (require, exports, module) {
             obstacleColorB      = obstacles.colorB;
             obstacleVisible     = obstacles.visible;
           },
+          
+          rectangles: function() {
+            rectangleX           = rectangles.x;
+            rectangleY           = rectangles.y;
+            rectangleWidth       = rectangles.width;
+            rectangleHeight      = rectangles.height;
+            rectangleAngle       = rectangles.angle;
+            rectangleColorR      = rectangles.colorR;
+            rectangleColorG      = rectangles.colorG;
+            rectangleColorB      = rectangles.colorB;
+            rectangleLineColorR  = rectangles.lineColorR;
+            rectangleLineColorG  = rectangles.lineColorG;
+            rectangleLineColorB  = rectangles.lineColorB;
+            rectangleLineWeight  = rectangles.lineWeight;
+            rectangleLineStyle   = rectangles.lineStyle;
+            rectangleAlpha       = rectangles.alpha;
+            rectangleVisible     = rectangles.visible;
+          },
 
           springForces: function() {
             springForceAtomIndex = springForces[0];
@@ -778,7 +824,29 @@ define(function (require, exports, module) {
 
           assignShortcutReferences.obstacles();
         },
+		
+		createRectanglesArray = function(num) {
+          rectangles = engine.rectangles = {};
 
+          rectangles.x           = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.y           = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.width       = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.height      = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.angle      = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.colorR      = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.colorG      = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.colorB      = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.lineColorR  = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.lineColorG  = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.lineColorB  = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.lineWeight   = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.lineStyle   = arrays.create(num, 0, arrayTypes.uint8Type);
+          rectangles.alpha      = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.visible     = arrays.create(num, 0, arrayTypes.uint8Type);
+
+          assignShortcutReferences.rectangles();
+        },
+        
         // Function that accepts a value T and returns an average of the last n values of T (for some n).
         getTWindowed,
 
@@ -1008,7 +1076,7 @@ define(function (require, exports, module) {
             py[i] *= -1;
           }
         },
-
+		//TODO: Extend particles bouncing off obstacles to rectangles
         bounceParticleOffObstacles = function(i, x_prev, y_prev, updatePressure) {
           // fast path if no obstacles
           if (N_obstacles < 1) return;
@@ -2292,6 +2360,16 @@ define(function (require, exports, module) {
           }
         }
       },
+      
+      setRectangleProperties: function (i, props) {
+        var key;
+        // Set properties from props hash.
+        for (key in props) {
+          if (props.hasOwnProperty(key)) {
+            rectangles[key][i] = props[key];
+          }
+        }
+      },
 
       /**
         The canonical method for adding an atom to the collections of atoms.
@@ -2660,6 +2738,47 @@ define(function (require, exports, module) {
         // (e.g. views) use obstacles.x.length as the real number of obstacles.
         utils.extendArrays(obstacles, N_obstacles);
         assignShortcutReferences.obstacles();
+      },
+      
+      addRectangle: function(props) {
+        if (N_rectangles + 1 > rectangles.x.length) {
+          // Extend arrays each time (as there are only
+          // a few rectangles in typical model).
+          utils.extendArrays(rectangles, N_rectangles + 1);
+          assignShortcutReferences.rectangles();
+        }
+
+        N_rectangles++;
+
+        // Set properties of new rectangle.
+        engine.setRectangleProperties(N_rectangles - 1, props);
+      },
+
+      removeRectangle: function(idx) {
+        var i, prop;
+
+        if (idx >= N_rectangles) {
+          throw new Error("Rectangle " + idx + " doesn't exist, so it can't be removed.");
+        }
+
+        N_rectangles--;
+
+        // Shift rectangles properties.
+        // It can be optimized by just replacing the last
+        // rectangle with rectangle 'i', however this approach
+        //  preserves more expectable rectangles indexing.
+        for (i = idx; i < N_rectangles; i++) {
+          for (prop in rectangles) {
+            if (rectangles.hasOwnProperty(prop)) {
+              rectangles[prop][i] = rectangles[prop][i + 1];
+            }
+          }
+        }
+
+        // FIXME: This shouldn't be necessary, however various modules
+        // (e.g. views) use rectangles.x.length as the real number of rectangles.
+        utils.extendArrays(rectangles, N_rectangles);
+        assignShortcutReferences.rectangles();
       },
 
       atomInBounds: function(_x, _y, i) {
@@ -3107,6 +3226,10 @@ define(function (require, exports, module) {
       getNumberOfObstacles: function() {
         return N_obstacles;
       },
+      
+	  getNumberOfRectangles: function() {
+        return N_rectangles;
+      },
 
       getNumberOfRadialBonds: function() {
         return N_radialBonds;
@@ -3498,6 +3621,7 @@ define(function (require, exports, module) {
           new CloneRestoreWrapper(elements),
           new CloneRestoreWrapper(atoms),
           new CloneRestoreWrapper(obstacles),
+          new CloneRestoreWrapper(rectangles),
           new CloneRestoreWrapper(radialBonds),
           new CloneRestoreWrapper(angularBonds),
           new CloneRestoreWrapper(restraints),
@@ -3513,6 +3637,7 @@ define(function (require, exports, module) {
                 N             : N,
                 N_elements    : N_elements,
                 N_obstacles   : N_obstacles,
+                N_rectangles  : N_rectangles,
                 N_radialBonds : N_radialBonds,
                 N_angularBonds: N_angularBonds,
                 N_restraints  : N_restraints,
@@ -3523,7 +3648,7 @@ define(function (require, exports, module) {
               time           = state.time;
               N              = state.N;
               N_elements     = state.N_elements;
-              N_obstacles    = state.N_obstacles;
+              N_rectangles   = state.N_rectangles;
               N_radialBonds  = state.N_radialBonds;
               N_angularBonds = state.N_angularBonds;
               N_restraints   = state.N_restraints;
