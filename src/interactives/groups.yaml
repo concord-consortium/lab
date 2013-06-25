@@ -154,8 +154,12 @@
   :name: "Solar System Interactives"
   :category: Tests
 
-- :path: energy2d/imported
+- :path: energy2d/examples
   :name: "Energy2D Interactives"
+  :category: Tests
+
+- :path: energy2d/imported
+  :name: "Energy2D Interactives (imported)"
   :category: Tests
 
 - :path: external-projects/geniverse
