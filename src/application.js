@@ -568,7 +568,8 @@ AUTHORING = false;
   }
 
   function setupOriginalImportLinks() {
-    var javaMWhref,
+    var javaMW = "http://mw2.concord.org/tmp.jnlp?address=",
+        javaMWhref,
         e2dModelPath;
 
     function disableOriginalImportLink() {
@@ -591,9 +592,7 @@ AUTHORING = false;
         contentItems = getObjects(modelList, "mml", mmlPath.replace("imports/legacy-mw-content/", ""));
       }
       if (contentItems.length > 0) {
-        javaMWhref = "/jnlp/jnlps/org/concord/modeler/mw.jnlp?version-id=1.0&jnlp-args=remote," +
-                        origin + Lab.config.actualRoot + "imports/legacy-mw-content/" + contentItems[0].cml;
-
+        javaMWhref = javaMW + origin + Lab.config.actualRoot + "imports/legacy-mw-content/" + contentItems[0].cml;
         $originalImportLink.attr("href", javaMWhref);
         $originalImportLink.attr("title", "View original Java Molecular Workbench content using Java Web Start");
         $originalModelLink.attr("href", origin + Lab.config.actualRoot + mmlPath);
