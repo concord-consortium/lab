@@ -26,8 +26,10 @@ define(function (require, exports) {
   // Core Energy2D model.
   //
   // It creates and manages all the data and parameters used for calculations.
-  exports.makeCoreModel = function (opt) {
+  exports.makeCoreModel = function (model) {
     var
+      opt = model.properties,
+
       // WebGL GPGPU optimization.
       use_WebGL = opt.use_WebGL,
       // This variable holds possible error message connected with WebGL.
@@ -158,7 +160,7 @@ define(function (require, exports) {
         try {
           gpgpu.init(ny, nx);
         } catch (e) {
-          // If WebGL initialization fails, just use CPU.
+          // If WebGL initialization fails, use CPU instead.
           use_WebGL = false;
           // Set error message.
           WebGL_error = e.message;
@@ -326,20 +328,12 @@ define(function (require, exports) {
         },
 
         updateTemperatureArray: function () {
-          if (use_WebGL) {
-            perf.start('Read temperature texture');
-            gpgpu.readTexture(texture[0], t);
-            perf.stop('Read temperature texture');
-          }
+          gpgpu.readTexture(texture[0], t);
         },
 
         updateVelocityArrays: function () {
-          if (use_WebGL) {
-            perf.start('Read velocity texture');
-            gpgpu.readTexture(texture[2], u, 0);
-            gpgpu.readTexture(texture[2], v, 1);
-            perf.stop('Read velocity texture');
-          }
+          gpgpu.readTexture(texture[2], u, 0);
+          gpgpu.readTexture(texture[2], v, 1);
         },
 
         getIndexOfStep: function () {
@@ -442,24 +436,10 @@ define(function (require, exports) {
           }
         },
 
-        copyTextureToArray: function (tex, array) {
-          gpgpu.readTexture(tex, array);
-        },
-
-        copyArrayToTexture: function (array, tex) {
-          gpgpu.writeTexture(tex, array);
-        },
-
         // Simple getters.
         getArrayType: function () {
           // return module variable
           return array_type;
-        },
-        getGridWidth: function () {
-          return nx;
-        },
-        getGridHeight: function () {
-          return ny;
         },
         getPerformanceModel: function () {
           return perf;
@@ -554,6 +534,21 @@ define(function (require, exports) {
     if (use_WebGL) {
       initGPGPU();
     }
+
+    model.addPropertiesListener("use_WebGL", function () {
+      if (use_WebGL === opt.use_WebGL) return;
+      // Update closure variable.
+      use_WebGL = opt.use_WebGL;
+      if (use_WebGL) {
+        // Initialize GPGPU, this will also copy current temperature
+        // and velocity arrays into textures.
+        initGPGPU();
+      } else {
+        // Copy data back from GPU to main memory.
+        core_model.updateTemperatureArray();
+        core_model.updateVelocityArrays();
+      }
+    });
 
     // Finally, return public API object.
     return core_model;

@@ -30,7 +30,6 @@ define(function (require) {
     model = {
       tick: function () {
         var i, len;
-
         for (i = 0, len = model.properties.timeStepsPerTick; i < len; i++) {
           core_model.nextStep();
         }
@@ -86,7 +85,7 @@ define(function (require) {
       labModelerMixin.mixInto(model);
       dispatch.addEventTypes("tick");
 
-      core_model = coremodel.makeCoreModel(model.properties);
+      core_model = coremodel.makeCoreModel(model);
 
       model.defineOutput('time', {
         label: "Time",
