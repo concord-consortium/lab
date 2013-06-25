@@ -43,11 +43,13 @@ define(function (require) {
       grid_height,
       spacing,
 
+      enabled = true,
+
       //
       // Private methods.
       //
       initGeometry = function () {
-        var i, j, h, idx, origin, coord,
+        var i, j, idx, origin, coord,
           gdx = 2.0 / grid_width,
           gdy = 2.0 / grid_height,
           tdx = 1.0 / grid_width,
@@ -100,6 +102,7 @@ define(function (require) {
       vectormap_view = {
         // Render heat map on the canvas.
         renderVectormap: function () {
+          if (!enabled) return;
 
           if (!vectormap_tex) {
             throw new Error("Vectormap: bind heatmap texture before rendering.");
@@ -114,6 +117,13 @@ define(function (require) {
           vectormap_tex.bind(0);
           render_program.draw(arrows, gl.LINES);
           vectormap_tex.unbind(0);
+        },
+
+        get enabled() {
+          return enabled;
+        },
+        set enabled(v) {
+          enabled = v;
         },
 
         updateCanvasSize: function () {

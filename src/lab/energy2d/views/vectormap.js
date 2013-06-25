@@ -120,13 +120,10 @@ define(function () {
         get enabled() {
           return enabled;
         },
-
         set enabled(v) {
-          if (enabled !== v) {
-            if (v) vectormap_view.renderVectormap();
-            else vectormap_view.clear();
-            enabled = v;
-          }
+          enabled = v;
+          // Clear vectormap, as .renderVectormap() call won't do it.
+          if (!enabled) vectormap_view.clear();
         },
 
         // Bind vector map to the view.
