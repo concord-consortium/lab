@@ -1,10 +1,10 @@
-// texture 0: 
+// texture 0:
 // - R: t
 // - G: t0
 // - B: tb
 // - A: conductivity
 uniform sampler2D data0_tex;
-// texture 1: 
+// texture 1:
 // - R: q
 // - G: capacity
 // - B: density
@@ -14,7 +14,7 @@ uniform sampler2D data1_tex;
 uniform vec2 grid;
 uniform float hx;
 uniform float hy;
-uniform float inv_timestep;
+uniform float inv_timeStep;
 
 // Boundary conditions uniforms
 uniform float enforce_temp;
@@ -43,7 +43,7 @@ void main() {
       vec4 data0_p_dy = texture2D(data0_tex, coord + dy);
       vec4 data0_m_dx = texture2D(data0_tex, coord - dx);
       vec4 data0_p_dx = texture2D(data0_tex, coord + dx);
-      float sij = data1.g * data1.b * inv_timestep;
+      float sij = data1.g * data1.b * inv_timeStep;
       float rij = data0.a;
       float axij = hx * (rij + data0_m_dy.a);
       float bxij = hx * (rij + data0_p_dy.a);
