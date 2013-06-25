@@ -24,6 +24,7 @@ define(function (require) {
           var elapsed, start, i;
 
           model.stop();
+          model.properties.use_WebGL = false;
           start = +Date.now();
           i = -1;
           while (i++ < 100) {
@@ -41,6 +42,7 @@ define(function (require) {
           var elapsed, start, i;
 
           model.stop();
+          model.properties.use_WebGL = false;
           start = +Date.now();
           i = -1;
           while (i++ < 100) {
@@ -59,6 +61,25 @@ define(function (require) {
           var start, elapsed, i;
 
           model.stop();
+          model.properties.use_WebGL = false;
+          start = +Date.now();
+          i = -1;
+          while (i++ < 100) {
+            model.tick();
+          }
+          elapsed = Date.now() - start;
+          done(100/elapsed*1000);
+        }
+      },
+      {
+        name: "model+graphics-webgl(steps/s)",
+        numeric: true,
+        formatter: d3.format("5.1f"),
+        run: function(done) {
+          var start, elapsed, i;
+
+          model.stop();
+          model.properties.use_WebGL = true;
           start = +Date.now();
           i = -1;
           while (i++ < 100) {
@@ -74,6 +95,30 @@ define(function (require) {
         formatter: d3.format("5.1f"),
         run: function(done) {
           // warmup
+          model.properties.use_WebGL = false;
+          model.start();
+          setTimeout(function() {
+            model.stop();
+            var start = model.get('time');
+            setTimeout(function() {
+              // actual fps calculation
+              model.start();
+              setTimeout(function() {
+                model.stop();
+                var elapsedModelTime = model.get('time') - start;
+                done( elapsedModelTime / (model.get('timeStepsPerTick') * model.get('timeStep')) / 2 );
+              }, 2000);
+            }, 100);
+          }, 1000);
+        }
+      },
+      {
+        name: "fps-webgl",
+        numeric: true,
+        formatter: d3.format("5.1f"),
+        run: function(done) {
+          // warmup
+          model.properties.use_WebGL = true;
           model.start();
           setTimeout(function() {
             model.stop();
