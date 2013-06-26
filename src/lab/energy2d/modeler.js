@@ -30,14 +30,24 @@ define(function (require) {
               ticksToGPUSync = model.properties.ticksPerGPUSync;
             },
             ticksPerGPUSync: function (v) {
-              if (coreModel) model.syncGPU();
-              ticksToGPUSync = v;
+              if (coreModel) syncGPU();
+              ticksToGPUSync = Number(v); // support "Infinity" value
             }
           }
         }),
+        propertySupport = labModelerMixin.propertySupport,
         dispatch = labModelerMixin.dispatchSupport,
 
         ticksToGPUSync = 0;
+
+    function syncGPU() {
+      // In theory we should also call:
+      // coreModel.syncVelocity();
+      // However velocity array isn't used by any CPU-only visualization
+      // (velocity arrows can be rendered using WebGL) and it isn't exposed
+      // to the Scripting API. So for now there is no need to sync it.
+      coreModel.syncTemperature();
+    }
 
     model = {
       tick: function () {
@@ -49,27 +59,23 @@ define(function (require) {
           if (ticksToGPUSync > 0) {
             ticksToGPUSync--;
           } else {
-            model.syncGPU();
-            ticksToGPUSync = model.properties.ticksPerGPUSync;
+            syncGPU();
+            ticksToGPUSync = Number(model.properties.ticksPerGPUSync); // support "Infinity" value
           }
         }
         model.updateAllOutputProperties();
         dispatch.tick();
       },
 
-      syncGPU: function () {
-        model.syncTemperature();
-        // In theory we should also call:
-        // model.syncVelocity();
-        // However velocity array isn't used by any CPU-only visualization
-        // (velocity arrows can be rendered using WebGL) and it isn't exposed
-        // to the Scripting API. So for now there is no need to sync it.
-      },
       syncTemperature: function () {
+        propertySupport.invalidatingChangePreHook();
         coreModel.syncTemperature();
+        propertySupport.invalidatingChangePostHook();
       },
       syncVelocity: function () {
+        propertySupport.invalidatingChangePreHook();
         coreModel.syncVelocity();
+        propertySupport.invalidatingChangePostHook();
       },
 
       getTime: function () {
