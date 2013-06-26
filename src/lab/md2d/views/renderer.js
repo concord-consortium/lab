@@ -354,7 +354,7 @@ define(function (require) {
         if (chargeShadingMode) {
           charge = d.charge;
 		  // Convert Charge to [0, 1] range
-          chargeIndex = Math.min(0.6 * Math.abs(charge), 1)
+          chargeIndex = Math.min(Math.abs(charge) / 3, 1)
 
        	  return (charge >= 0 ? gradientNameForPositiveChargeLevel : gradientNameForNegativeChargeLevel)[Math.round(chargeIndex * (CHARGE_SHADING_STEPS - 1))];
         }
