@@ -107,12 +107,23 @@ define(function (require) {
       });
 
       model.defineOutput('displayTime', {
-        label: "Time",
-        unitType: 'time',
-        format: '.2f'
-      }, function() {
-        return model.getTime();
-      });
+        label: "Time"
+      }, (function() {
+        var f = d3.format("02d");
+        return function() {
+          var time = model.getTime(),
+              seconds, minutes, hours, days;
+          time = Math.floor(time);
+          seconds = time % 60;
+          time = Math.floor(time / 60);
+          minutes = time % 60;
+          time = Math.floor(time / 60);
+          hours = time % 24;
+          time = Math.floor(time / 24);
+          days = time;
+          return days + ':' + f(hours) + ':' + f(minutes)  + ':' + f(seconds);
+        };
+      }()));
     }());
 
     return model;

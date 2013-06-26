@@ -26,7 +26,7 @@ define(function (require) {
     /** @private */
     this._showClock = true;
     /** @private */
-    this._timeUnits = "";
+    this._timeDesc = null;
     /** @private */
     this._$reset = $('<a class="reset"><i class="icon-step-backward"></i></a>').appendTo(this.$element);
     /** @private */
@@ -94,8 +94,8 @@ define(function (require) {
     this._showClock = model.get("showClock");
     if (this._showClock) {
       this._$playPause.addClass("with-clock");
-      // Update time units.
-      this._timeUnits = model.getPropertyDescription("displayTime").getUnitAbbreviation();
+      // Update 'displayTime' description (used for formatting).
+      this._timeDesc =  model.getPropertyDescription("displayTime");
       // Update clock immediately.
       this._timeChanged();
     } else {
@@ -111,8 +111,7 @@ define(function (require) {
     if (!this._showClock) {
       return;
     }
-    var time = model.get("displayTime").toFixed(1);
-    this._$timeDisplay.html(time + " " + this._timeUnits);
+    this._$timeDisplay.html(this._timeDesc.format(model.get("displayTime")));
   };
 
   /**

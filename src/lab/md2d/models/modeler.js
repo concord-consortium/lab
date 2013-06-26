@@ -1868,7 +1868,7 @@ define(function(require) {
         unitName:         displayTimeUnits.name,
         unitPluralName:   displayTimeUnits.pluralName,
         unitAbbreviation: displayTimeUnits.symbol,
-        format: '.3f'
+        format: '.1f'
       }, function() {
         return model.get('time') * displayTimeUnits.unitsPerBaseUnit;
       });
