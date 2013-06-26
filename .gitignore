@@ -24,3 +24,4 @@ config/littlechef
 # ignore resources generated and archived duriong a release
 version
 tarballs
+.project

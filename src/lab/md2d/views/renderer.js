@@ -77,6 +77,11 @@ define(function (require) {
         gradientNameForKELevel = [],
         // Number of gradients used for Kinetic Energy Shading.
         KE_SHADING_STEPS = 25,
+        // Set of gradients used for Charge Energy Shading.
+        gradientNameForPositiveChargeLevel = [],
+        gradientNameForNegativeChargeLevel = [],
+        // Number of gradients used for Charge Shading (for both positive and negative charges).
+        CHARGE_SHADING_STEPS = 25,
         // Array which defines a gradient assigned to a given particle.
         gradientNameForParticle = [],
 
@@ -225,10 +230,46 @@ define(function (require) {
         gradientNameForKELevel[i] = gradientUrl;
       }
 
-      // "Charge" gradients.
-      gradients.createRadialGradient("neg-grad", "#ffefff", "#fdadad", "#e95e5e", mainContainer);
-      gradients.createRadialGradient("pos-grad", "#dfffff", "#9abeff", "#767fbf", mainContainer);
-      gradients.createRadialGradient("neutral-grad", "#FFFFFF", "#f2f2f2", "#A4A4A4", mainContainer);
+	  // Scales used for Charge Shading gradients.
+	  // Originally Positive:(ffefff,9abeff,767fbf) and Negative:(dfffff,fdadad,e95e5e)
+      var posLightColorScale = d3.scale.linear()
+        .interpolate(d3.interpolateRgb)
+        .range(["#FFFFFF", "#ffefff"]),
+      posMedColorScale = d3.scale.linear()
+        .interpolate(d3.interpolateRgb)
+        .range(["#f2f2f2", "#9090FF"]),
+      posDarkColorScale = d3.scale.linear()
+        .interpolate(d3.interpolateRgb)
+        .range(["#A4A4A4", "#3030FF"]),
+      negLightColorScale = d3.scale.linear()
+        .interpolate(d3.interpolateRgb)
+        .range(["#FFFFFF", "#dfffff"]),
+      negMedColorScale = d3.scale.linear()
+        .interpolate(d3.interpolateRgb)
+        .range(["#f2f2f2", "#FF8080"]),
+      negDarkColorScale = d3.scale.linear()
+        .interpolate(d3.interpolateRgb)
+        .range(["#A4A4A4", "#FF2020"]),
+      ChargeLevel;
+
+      // Charge Shading gradients
+      for (i = 0; i < CHARGE_SHADING_STEPS; i++) {
+        gradientName = "pos-charge-shading-" + i;
+        ChargeLevel = i / CHARGE_SHADING_STEPS;
+        gradientUrl = gradients.createRadialGradient(gradientName,
+        	posLightColorScale(ChargeLevel),
+        	posMedColorScale(ChargeLevel),
+            posDarkColorScale(ChargeLevel), mainContainer);
+        gradientNameForPositiveChargeLevel[i] = gradientUrl;
+
+        gradientName = "neg-charge-shading-" + i;
+        ChargeLevel = i / CHARGE_SHADING_STEPS;
+        gradientUrl = gradients.createRadialGradient(gradientName, 
+        	negLightColorScale(ChargeLevel),
+        	negMedColorScale(ChargeLevel),
+            negDarkColorScale(ChargeLevel), mainContainer);
+        gradientNameForNegativeChargeLevel[i] = gradientUrl;
+      }	
 
       // Colored gradients, used for amino acids.
       gradients.createRadialGradient("green-grad", "#dfffef", "#75a643", "#2a7216", mainContainer);
@@ -296,7 +337,7 @@ define(function (require) {
     // Returns gradient appropriate for a given atom.
     // d - atom data.
     function getParticleGradient(d) {
-        var ke, keIndex, charge;
+        var ke, keIndex, charge, chargeIndex;
 
         if (d.marked) return "url(#mark-grad)";
 
@@ -312,9 +353,10 @@ define(function (require) {
 
         if (chargeShadingMode) {
           charge = d.charge;
+		  // Convert Charge to [0, 1] range
+          chargeIndex = Math.min(0.6 * Math.abs(charge), 1)
 
-          if (charge === 0) return "url(#neutral-grad)";
-          return charge > 0 ? "url(#pos-grad)" : "url(#neg-grad)";
+       	  return (charge >= 0 ? gradientNameForPositiveChargeLevel : gradientNameForNegativeChargeLevel)[Math.round(chargeIndex * (CHARGE_SHADING_STEPS - 1))];
         }
 
         if (!d.isAminoAcid()) {
@@ -1381,8 +1423,8 @@ define(function (require) {
         "cy": function(d) { return model2pxInv(d.y); }
       });
 
-      if (keShadingMode) {
-        // When Kinetic Energy Shading is enabled, update style of atoms
+      if (keShadingMode || chargeShadingMode) {
+        // When Kinetic Energy Shading or Charge Shading is enabled, update style of atoms
         // during each frame.
         setupColorsOfParticles();
         // Update particles "fill" attribute. Array of colors is already updated.
@@ -1467,8 +1509,8 @@ define(function (require) {
       radialBond1.attr("d", function (d) { return findPoints(d, 1); });
       radialBond2.attr("d", function (d) { return findPoints(d, 2); });
 
-      if (keShadingMode) {
-        // Update also radial bonds color when keShading is on.
+      if (keShadingMode || chargeShadingMode) {
+        // Update also radial bonds color when keShading or chargeShading is on.
         radialBond1.attr("stroke", getBondAtom1Color);
         radialBond2.attr("stroke", getBondAtom2Color);
       }
