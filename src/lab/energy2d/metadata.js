@@ -34,6 +34,9 @@ define(function(require) {
       timeStepsPerTick: {
         defaultValue: 4
       },
+      ticksPerGPUSync: {
+        defaultValue: 30
+      },
       convective: {
         defaultValue: true
       },

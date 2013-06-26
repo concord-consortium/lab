@@ -1,4 +1,4 @@
-/*global define: false */
+/*global define: false, d3: false */
 
 define(function (require) {
   'use strict';
@@ -27,10 +27,17 @@ define(function (require) {
           setters: {
             use_WebGL: function (v) {
               if (coreModel) coreModel.useWebGL = v;
+              ticksToGPUSync = model.properties.ticksPerGPUSync;
+            },
+            ticksPerGPUSync: function (v) {
+              if (coreModel) model.syncGPU();
+              ticksToGPUSync = v;
             }
           }
         }),
-        dispatch = labModelerMixin.dispatchSupport;
+        dispatch = labModelerMixin.dispatchSupport,
+
+        ticksToGPUSync = 0;
 
     model = {
       tick: function () {
@@ -38,8 +45,31 @@ define(function (require) {
         for (i = 0, len = model.properties.timeStepsPerTick; i < len; i++) {
           coreModel.nextStep();
         }
+        if (coreModel.isWebGLActive()) {
+          if (ticksToGPUSync > 0) {
+            ticksToGPUSync--;
+          } else {
+            model.syncGPU();
+            ticksToGPUSync = model.properties.ticksPerGPUSync;
+          }
+        }
         model.updateAllOutputProperties();
         dispatch.tick();
+      },
+
+      syncGPU: function () {
+        model.syncTemperature();
+        // In theory we should also call:
+        // model.syncVelocity();
+        // However velocity array isn't used by any CPU-only visualization
+        // (velocity arrows can be rendered using WebGL) and it isn't exposed
+        // to the Scripting API. So for now there is no need to sync it.
+      },
+      syncTemperature: function () {
+        coreModel.syncTemperature();
+      },
+      syncVelocity: function () {
+        coreModel.syncVelocity();
       },
 
       getTime: function () {
@@ -80,12 +110,6 @@ define(function (require) {
       },
       getPartsArray: function () {
         return coreModel.getPartsArray();
-      },
-      updateTemperatureArray: function () {
-        return coreModel.updateTemperatureArray();
-      },
-      updateVelocityArrays: function () {
-        return coreModel.updateVelocityArrays();
       },
       setPerformanceTools: function () {
         return coreModel.setPerformanceTools();

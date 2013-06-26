@@ -11,6 +11,10 @@ define(function () {
 
       getAverageTemperatureAt: function getAverageTemperatureAt(x, y) {
         return model.getAverageTemperatureAt(x, y);
+      },
+
+      syncTemperature: function syncTemperature() {
+        model.syncTemperature();
       }
     };
   };

@@ -327,8 +327,8 @@ define(function (require, exports) {
             initGPGPU();
           } else {
             // Copy data back from GPU to main memory.
-            core_model.updateTemperatureArray();
-            core_model.updateVelocityArrays();
+            core_model.syncTemperature();
+            core_model.syncVelocity();
           }
         },
         get useWebGL() {
@@ -343,13 +343,17 @@ define(function (require, exports) {
           return WebGL_error;
         },
 
-        updateTemperatureArray: function () {
-          gpgpu.readTexture(texture[0], t);
+        syncTemperature: function () {
+          if (use_WebGL) {
+            gpgpu.readTexture(texture[0], t);
+          }
         },
 
-        updateVelocityArrays: function () {
-          gpgpu.readTexture(texture[2], u, 0);
-          gpgpu.readTexture(texture[2], v, 1);
+        syncVelocity: function () {
+          if (use_WebGL) {
+            gpgpu.readTexture(texture[2], u, 0);
+            gpgpu.readTexture(texture[2], v, 1);
+          }
         },
 
         getIndexOfStep: function () {
