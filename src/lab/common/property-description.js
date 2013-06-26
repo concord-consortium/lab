@@ -1,4 +1,4 @@
-/*global define d3 */
+/*global define, d3 */
 /*jshint eqnull:true boss:true */
 
 define(function(require) {
@@ -6,7 +6,7 @@ define(function(require) {
   var _ = require('underscore');
 
   function isUndefined(val) {
-    return typeof val === 'undefined';
+    return val === "";
   }
 
   function PropertyDescription(unitDefinition, descriptionHash) {
@@ -14,6 +14,10 @@ define(function(require) {
 
     this._descriptionHash = descriptionHash;
     this._label = descriptionHash.label || "";
+
+    this._unitName         = "";
+    this._unitPluralName   = "";
+    this._unitAbbreviation = "";
 
     if (descriptionHash.unitType) {
       if ( !(u = unitDefinition.units[descriptionHash.unitType]) ) {
@@ -31,7 +35,7 @@ define(function(require) {
     if (descriptionHash.unitPluralName) this._unitPluralName = descriptionHash.unitPluralName;
     if (descriptionHash.unitAbbreviation) this._unitAbbreviation = descriptionHash.unitAbbreviation;
 
-    this.setFormat(descriptionHash.format || 'g');
+    this.setFormat(descriptionHash.format);
   }
 
   PropertyDescription.prototype.getHash = function() {
@@ -65,7 +69,8 @@ define(function(require) {
   };
 
   PropertyDescription.prototype.setFormat = function(s) {
-    this._formatter = d3.format(s);
+    if (s) this._formatter = d3.format(s);
+    else   this._formatter = function (val) { return val; };
   };
 
   PropertyDescription.prototype.format = function(val, opts) {
