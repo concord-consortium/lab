@@ -1,7 +1,7 @@
 {
-  "title": "WebGL - Automatic Data Synchronization",
+  "title": "WebGL - Manual Data Synchronization",
   "publicationStatus": "public",
-  "subtitle": "CPU-GPU data synchronization is controlled by the 'ticksPerGPUSync' option - change it and observe how it affects temperature graph.",
+  "subtitle": "Set 'ticksPerGPUSync' to 'Infinity' to disable automatic CPU-GPU data synchronization. Use Scripting API to manually synchronize data whenever you need it.",
   "models": [
     {
       "type": "energy2d",
@@ -10,6 +10,7 @@
       "importedFrom": "imports/energy2d/content/hot-water-cup-open-vs-closed.e2d",
       "modelOptions": {
         "timeStep": 0.05,
+        "ticksPerGPUSync": "Infinity",
         "use_WebGL": true
       },
       "viewOptions": {
@@ -39,28 +40,14 @@
       "property": "use_WebGL"
     },
     {
-      "type": "slider",
-      "id": "gpu-sync",
-      "title": "ticksPerGPUSync",
-      "property": "ticksPerGPUSync",
-      "min": 0,
-      "max": 300,
-      "displayValue": "return format('1f')(value)",
-      "steps": 300
-    },
-    {
-      "type": "slider",
-      "id": "timesteps",
-      "title": "timeStepsPerTick",
-      "property": "timeStepsPerTick",
-      "min": 1,
-      "max": 50,
-      "displayValue": "return format('1f')(value)",
-      "steps": 50
+      "type": "button",
+      "id": "sync",
+      "action": "syncTemperature();",
+      "text": "Sync Temperature Data"
     }
   ],
   "layout": {
     "right": ["bar-graph"],
-    "bottom": ["webgl", "gpu-sync", "timesteps"]
+    "bottom": ["webgl", "sync"]
   }
 }
