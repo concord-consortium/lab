@@ -23,8 +23,10 @@ template = ERB.new <<-HEREDOC
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "<%= @model_name %>",
       "url": "<%= @model_path %>",
+      "importedFrom": "<%= @mml_model_path %>",
       "viewOptions": {
         "controlButtons": "play_reset"
       }
@@ -40,7 +42,7 @@ template = ERB.new <<-HEREDOC
 HEREDOC
 
 
-@model_path = @mml_model_path.gsub("imports/legacy-mw-content", "/imports/legacy-mw-content/converted").gsub(/\.mml$/, "")
+@model_path = @mml_model_path.gsub("imports/legacy-mw-content", "imports/legacy-mw-content/converted").gsub(/\.mml$/, "")
 @model_name = File.basename(@model_path)
 @model_path += ".json"
 @title = @model_name.gsub("$0", "")
