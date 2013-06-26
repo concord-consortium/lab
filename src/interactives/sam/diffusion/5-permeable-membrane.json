@@ -121,8 +121,7 @@
         "    if (addAtom({x: w/2+x, y: y, vx: vx, vy: vy, element: 1})) nAtomsToAdd--;",
         "  }",
         "});",
-        "set('targetTemperature',500);",
-        "tick();"
+        "set('targetTemperature',500);"
       ]
     },
     {
