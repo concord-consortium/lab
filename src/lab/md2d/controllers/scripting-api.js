@@ -402,7 +402,7 @@ define(function (require) {
         model.setObstacleProperties(i, props);
         api.repaintIfReady();
       },
-
+      
       /**
         Returns obstacle properties as a human-readable hash.
         e.g. getObstacleProperties(0) --> {x: 1, y: 0.5, externalAx: 0.00001, ... }
@@ -422,6 +422,30 @@ define(function (require) {
             throw e;
         }
 
+        api.repaintIfReady();
+      },
+
+      setRectangleProperties: function setRectangleProperties(i, props) {
+        model.setRectangleProperties(i, props);
+        api.repaintIfReady();
+      },
+
+      getRectangleProperties: function getRectangleProperties(i) {
+        return model.getRectangleProperties(i);
+      },
+
+      getAtomsWithinRectangle: function getAtomsInsideRectangle(i) {
+        var props=model.getRectangleProperties(i);
+        return this.atomsWithinRect(props.x,props.y,props.width,props.height)
+      },
+      
+      removeRectangle: function removeRectangle(i, options) {
+        try {
+          model.removeRectangle(i);
+        } catch (e) {
+          if (!options || !options.silent)
+            throw e;
+        }
         api.repaintIfReady();
       },
 

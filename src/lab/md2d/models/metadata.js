@@ -516,22 +516,22 @@ define(function() {
         defaultValue: 128
       },
       lineColorR: {
-        defaultValue: 128
+        defaultValue: 0
       },
       lineColorG: {
-        defaultValue: 128
+        defaultValue: 0
       },
       lineColorB: {
-        defaultValue: 128
+        defaultValue: 0
       },
       lineWeight: {
-        defaultValue: 128
+        defaultValue: 1
       },
       lineStyle: {
         defaultValue: 0
       },
       alpha: {
-        defaultValue: 128
+        defaultValue: 255
       },
       visible: {
         defaultValue: true

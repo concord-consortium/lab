@@ -1193,9 +1193,9 @@ define(function(require) {
     model.setRectangleProperties = function(i, props) {
       // Validate properties.
       props = validator.validate(metadata.rectangle, props);
-      invalidatingChangePreHook();
+      propertySupport.invalidatingChangePreHook();
       engine.setRectangleProperties(i, translateToMD2DUnits(props, metadata.rectangle));
-      invalidatingChangePostHook();
+      propertySupport.invalidatingChangePostHook();
     };
 
     model.getRectangleProperties = function(i) {

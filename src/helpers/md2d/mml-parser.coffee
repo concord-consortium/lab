@@ -232,7 +232,7 @@ parseMML = (mmlString) ->
         alpha      = getFloatProperty $node, 'alpha'
         angle      = getFloatProperty $node, 'angle'
         lineStyle      = getFloatProperty $node, 'lineStyle'
-        lineWeight      = getFloatProperty $node, 'lineStyle'
+        lineWeight      = getFloatProperty $node, 'lineWeight'
         # layer      = getFloatProperty $node, 'layer'
         visible    = getBooleanProperty $node, 'visible'
 
@@ -247,7 +247,11 @@ parseMML = (mmlString) ->
           lineColorR = parseInt cheerio(lineColor[0]).text()
           lineColorG = parseInt cheerio(lineColor[1]).text()
           lineColorB = parseInt cheerio(lineColor[2]).text()
-
+        
+        if not x?
+          x=20
+        if not y?
+          y=20
         # Unit conversion.
         [x, y]          = toNextgenCoordinates x, y
         [height, width] = toNextgenLengths height, width

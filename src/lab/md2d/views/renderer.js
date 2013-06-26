@@ -678,7 +678,7 @@ define(function (require) {
           "width": function(d, i) {return model2px(rectangles.width[i]); },
           "height": function(d, i) {return model2px(rectangles.height[i]); },
           "fill": function(d, i) { return rectangles.visible[i] ? getRectangleColor(i) : "rgba(128,128,128, 0)"; },
-          "stroke-width": function(d, i) { return Math.max(1,rectangles.lineWeight[i]/24)},
+          "stroke-width": function(d, i) { return Math.max(1,rectangles.lineWeight[i])},
           "stroke-dasharray": function(d, i) {
           	switch(rectangles.lineStyle[i]){
           		case 1:	return '2,2';
