@@ -30,6 +30,10 @@
   :name: "Inquiry Space: Pendulums"
   :category: Curriculum
 
+- :path: rites
+  :name: "RITES"
+  :category: Curriculum
+
 - :path: visual/recycling
   :name: "VISUAL: Recycling"
   :category: Curriculum

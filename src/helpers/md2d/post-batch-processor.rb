@@ -147,6 +147,7 @@ class MD2DImports
       @model_list.push(MD2DDirectory.new("student/stateofmatter").section)
       @model_list.push(MD2DDirectory.new("student/wave").section)
 
+      @model_list.push(MD2DDirectory.new("rites").section)
 
       @model_list.push(MD2DDirectory.new("visual/Recycling").section)
       @model_list.push(MD2DDirectory.new("visual/Detergents").section)
