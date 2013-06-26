@@ -23,11 +23,7 @@
         }
       },
       "onLoad": [
-        "onSelect(function (x, y, w, h) { markAtoms(atomsWithinRect(x, y, w, h)); });",
-        "set('initialLeftO2',0);",
-        "set('initialLeftCO2',0);",
-        "set('initialRightO2',0);",
-        "set('initialRightCO2',0);"
+        "onSelect(function (x, y, w, h) { markAtoms(atomsWithinRect(x, y, w, h)); });"
       ]
     }
   ],
@@ -392,7 +388,7 @@
     },
     {
       "id": "below",
-      "top": "model.bottom",
+      "top": "bottom-left.bottom",
       "left": "model.left",
       "width": "model.width",
       "align": "center"
