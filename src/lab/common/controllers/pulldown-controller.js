@@ -62,7 +62,8 @@ define(function () {
         if (option.selected) {
           $option.prop("selected", option.selected);
         }
-        if (option.value) {
+        // allow pulldowns to have "falsy" values (e.g. "0")
+        if (typeof option.value !== 'undefined') {
           $option.prop("value", option.value);
         }
         $pulldown.append($option);
