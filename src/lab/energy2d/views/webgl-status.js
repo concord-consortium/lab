@@ -59,7 +59,7 @@ define(function (require) {
 
         $checkbox.appendTo($status_wrapper);
 
-        $webgl_icon = $('<a id="show-webgl-status" class="button" title="Click to show WebGL status"><i class="icon-bolt"></i></a>');
+        $webgl_icon = $('<a id="show-webgl-status" class="button"><i class="icon-bolt"></i></a>');
         $webgl_icon.on('click', show);
         $webgl_icon.appendTo($div);
 
@@ -129,6 +129,8 @@ define(function (require) {
               content;
 
           $status.empty();
+
+          // WebGL + extensions availably message.
           if (WebGLContext && extensions) {
             $status.append('<p>Your browser <span class="happy">supports</span> WebGL and all required extensions!</p>');
           } else if (WebGLContext && !extensions) {
@@ -143,6 +145,7 @@ define(function (require) {
             $status.append(GET_WEBGL);
           }
 
+          // Model compatibility message.
           if (modelCompatible) {
             content = 'This model is <span class="happy">compatible</span> with WebGL-accelerated physics solvers';
             if (energy2d_modeler.isWebGLActive()) {
@@ -159,11 +162,27 @@ define(function (require) {
                            'with WebGL-accelerated physics solvers.</p>');
           }
 
+          // WebGL solvers checkbox.
           if (!WebGLContext || !extensions || !modelCompatible) {
             // If any test failed hide the checkbox.
             $checkbox.hide();
           }
 
+          // WebGL icon tooltip message and color.
+          if (!WebGLContext || !extensions || !modelCompatible) {
+            content = 'WebGL unavailable.';
+            $webgl_icon.addClass("sad");
+          } else if (!energy2d_modeler.isWebGLActive()) {
+            content = 'WebGL available, but inactive.';
+          } else {
+            content = 'WebGL available and active.';
+            $webgl_icon.addClass("happy");
+          }
+          content += ' Click for detailed information.';
+          $webgl_icon.attr('title', content);
+
+
+          // Whole panel.
           if (energy2d_modeler.properties.use_WebGL && !energy2d_modeler.isWebGLActive()) {
             // Display panel when user requested WebGL, but it wasn't
             // initialized correctly.

@@ -50,7 +50,6 @@ define(function (require) {
         console.warn("WebGL initialization failed. CPU solvers and rendering will be used.");
         console.warn(e.message);
       }
-      dispatch.WebGLStatusChanged();
     }
 
     function syncGPU() {
@@ -140,7 +139,7 @@ define(function (require) {
 
     (function () {
       labModelerMixin.mixInto(model);
-      dispatch.addEventTypes("tick", "WebGLStatusChanged");
+      dispatch.addEventTypes("tick");
 
       coreModel = coremodel.makeCoreModel(model.properties);
       setWebGLEnabled(model.properties.use_WebGL);
