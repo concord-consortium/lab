@@ -53,9 +53,12 @@ define(function () {
 
     $label = $('<label>').append('<span>' + component.text + '</span>');
     $label.attr('for', component.id);
-    $checkbox = $('<input type="checkbox">')
-        .attr('tabindex', interactivesController.getNextTabIndex())
-        .attr('id', component.id);
+    $checkbox = $('<input type="checkbox">').attr('id', component.id);
+
+    if (interactivesController) {
+      $checkbox.attr('tabindex', interactivesController.getNextTabIndex());
+    }
+
     $fakeCheckable = $('<div class="fakeCheckable">');
     // Hide native input, use fake checkable.
     $checkbox.css("display", "none");
