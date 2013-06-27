@@ -1,10 +1,9 @@
-/*globals define: false */
+/*global define: false */
 
 define(function (require, exports) {
   'use strict';
 
   var
-    console         = require('common/console'),
     arrays          = require('arrays'),
     heatsolver      = require('energy2d/models/physics-solvers/heat-solver'),
     heatsolver_GPU  = require('energy2d/models/physics-solvers-gpu/heat-solver-gpu'),
@@ -55,7 +54,7 @@ define(function (require, exports) {
       has_part_power,
 
       // WebGL GPGPU optimization.
-      use_WebGL = false,
+      WebGL_active = false,
       // This variable holds possible error message connected with WebGL.
       WebGL_error,
 
@@ -149,23 +148,16 @@ define(function (require, exports) {
       // Private methods
       //
       initGPGPU = function () {
+        WebGL_active = false;
+
         // Make sure that environment is a browser.
         if (typeof window === 'undefined') {
           throw new Error("Core model: WebGL GPGPU unavailable in the node.js environment.");
         }
         // Init module.
         // Width is ny, height is nx (due to data organization).
-        try {
-          gpgpu.init(ny, nx);
-        } catch (e) {
-          // If WebGL initialization fails, use CPU instead.
-          use_WebGL = false;
-          // Set error message.
-          WebGL_error = e.message;
-          // TODO: inform better.
-          console.warn("WebGL initialization failed. Energy2D will use CPU solvers.");
-          return;
-        }
+        gpgpu.init(ny, nx);
+
         // Create simulation textures.
         texture[0] = gpgpu.createTexture();
         texture[1] = gpgpu.createTexture();
@@ -203,6 +195,8 @@ define(function (require, exports) {
         heat_solver_gpu = heatsolver_GPU.makeHeatSolverGPU(core_model);
         // GPU version of fluid solver.
         fluid_solver_gpu = fluidsolver_GPU.makeFluidSolverGPU(core_model);
+
+        WebGL_active = true;
       },
 
       setupMaterialProperties = function () {
@@ -273,7 +267,7 @@ define(function (require, exports) {
         // !!!
         nextStep: function () {
           perf.start('Core model step');
-          if (use_WebGL) {
+          if (WebGL_active) {
             // GPU solvers.
             if (opt.convective) {
               perf.start('Fluid solver GPU');
@@ -317,11 +311,9 @@ define(function (require, exports) {
           perf = perf_tools;
         },
 
-        set useWebGL(v) {
-          if (use_WebGL === v) return;
-          // Update closure variable.
-          use_WebGL = v;
-          if (use_WebGL) {
+        useWebGL: function (v) {
+          if (WebGL_active === v) return;
+          if (v) {
             // Initialize GPGPU, this will also copy current temperature
             // and velocity arrays into textures.
             initGPGPU();
@@ -329,14 +321,12 @@ define(function (require, exports) {
             // Copy data back from GPU to main memory.
             core_model.syncTemperature();
             core_model.syncVelocity();
+            WebGL_active = false;
           }
-        },
-        get useWebGL() {
-          return use_WebGL;
         },
 
         isWebGLActive: function () {
-          return use_WebGL;
+          return WebGL_active;
         },
 
         getWebGLError: function () {
@@ -344,13 +334,13 @@ define(function (require, exports) {
         },
 
         syncTemperature: function () {
-          if (use_WebGL) {
+          if (WebGL_active) {
             gpgpu.readTexture(texture[0], t);
           }
         },
 
         syncVelocity: function () {
-          if (use_WebGL) {
+          if (WebGL_active) {
             gpgpu.readTexture(texture[2], u, 0);
             gpgpu.readTexture(texture[2], v, 1);
           }
@@ -550,10 +540,6 @@ define(function (require, exports) {
     heatSolver = heatsolver.makeHeatSolver(core_model);
     fluidSolver = fluidsolver.makeFluidSolver(core_model);
     ray_solver = raysolver.makeRaySolver(core_model);
-
-    // This will trigger initialization of GPGPU structures if option is set
-    // to true.
-    core_model.useWebGL = opt.use_WebGL;
 
     // Finally, return public API object.
     return core_model;

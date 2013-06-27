@@ -3,6 +3,7 @@
 define(function(require) {
   var HeatmapView        = require('energy2d/views/heatmap'),
       HeatmapWebGLView   = require('energy2d/views/heatmap-webgl'),
+      WebGLStatus        = require('energy2d/views/webgl-status'),
       VectormapView      = require('energy2d/views/vectormap'),
       VectormapWebGLView = require('energy2d/views/vectormap-webgl'),
       PartsView          = require('energy2d/views/parts'),
@@ -16,14 +17,15 @@ define(function(require) {
         velocity_view,
         parts_view,
         photons_view,
+        webgl_status,
 
         layers_count = 0;
 
-    function setAsNextLayer (view) {
+    function setAsNextLayer (view, customHeight) {
       var $layer = view.getHTMLElement();
 
       $layer.css('width', '100%');
-      $layer.css('height', '100%');
+      if (!customHeight) $layer.css('height', '100%');
       $layer.css('position', 'absolute');
       $layer.css('left', '0');
       $layer.css('top', '0');
@@ -38,7 +40,10 @@ define(function(require) {
       layers_count = 0;
 
       // Instantiate views.
-      if (props.use_WebGL) {
+      // Use isWebGLActive() method, not use_WebGL property. The fact that
+      // use_WebGL option is set to true doesn't mean that WebGL can be
+      // initialized. It's only a preference.
+      if (model.isWebGLActive()) {
         heatmap_view = new HeatmapWebGLView();
         velocity_view = new VectormapWebGLView();
         // Both VectormapWebGL and HeatmapWebGL use common canvas,
@@ -54,15 +59,18 @@ define(function(require) {
       setAsNextLayer(photons_view);
       parts_view = new PartsView();
       setAsNextLayer(parts_view);
+      webgl_status = new WebGLStatus();
+      setAsNextLayer(webgl_status, true);
 
       // Append containers.
       api.$el.append(heatmap_view.getHTMLElement());
       api.$el.append(velocity_view.getHTMLElement());
       api.$el.append(photons_view.getHTMLElement());
       api.$el.append(parts_view.getHTMLElement());
+      api.$el.append(webgl_status.getHTMLElement());
 
-      // Bind data.
-      if (props.use_WebGL) {
+      // Bind models to freshly created views.
+      if (model.isWebGLActive()) {
         heatmap_view.bindHeatmapTexture(model.getTemperatureTexture());
         velocity_view.bindVectormapTexture(model.getVelocityTexture(), props.grid_width, props.grid_height, 25);
       } else {
@@ -71,9 +79,12 @@ define(function(require) {
       }
       parts_view.bindPartsArray(model.getPartsArray(), props.model_width, props.model_height);
       photons_view.bindPhotonsArray(model.getPhotonsArray(), props.model_width, props.model_height);
+      webgl_status.bindModel(model);
 
       // It's enough to render parts only once, they don't move.
       parts_view.renderParts();
+      // WebGL status also doesn't change during typical 'tick'.
+      webgl_status.render();
     }
 
     function setVisOptions () {

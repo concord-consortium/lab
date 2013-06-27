@@ -2,7 +2,8 @@
 
 define(function (require) {
   'use strict';
-  var metadata        = require('energy2d/metadata'),
+  var console         = require('common/console'),
+      metadata        = require('energy2d/metadata'),
       coremodel       = require('energy2d/models/core-model'),
       LabModelerMixin = require('common/lab-modeler-mixin'),
 
@@ -26,7 +27,9 @@ define(function (require) {
           initialProperties: initialProperties,
           setters: {
             use_WebGL: function (v) {
-              if (coreModel) coreModel.useWebGL = v;
+              if (coreModel) {
+                setWebGLEnabled(v);
+              }
               ticksToGPUSync = model.properties.ticksPerGPUSync;
             },
             ticksPerGPUSync: function (v) {
@@ -39,6 +42,16 @@ define(function (require) {
         dispatch = labModelerMixin.dispatchSupport,
 
         ticksToGPUSync = 0;
+
+    function setWebGLEnabled(v) {
+      try {
+        coreModel.useWebGL(v);
+      } catch (e) {
+        console.warn("WebGL initialization failed. CPU solvers and rendering will be used.");
+        console.warn(e.message);
+      }
+      dispatch.WebGLStatusChanged();
+    }
 
     function syncGPU() {
       // In theory we should also call:
@@ -124,9 +137,10 @@ define(function (require) {
 
     (function () {
       labModelerMixin.mixInto(model);
-      dispatch.addEventTypes("tick");
+      dispatch.addEventTypes("tick", "WebGLStatusChanged");
 
       coreModel = coremodel.makeCoreModel(model.properties);
+      setWebGLEnabled(model.properties.use_WebGL);
 
       model.defineOutput('time', {
         label: "Time",

@@ -1,11 +1,10 @@
-/*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false*/
+/*global define: false*/
 
 // WebGL Context Manager module.
 //
 // It provides access to one, global WebGL context.
 // All clients interested in WebGL context should call:
-// getWebGLContext() function. If WebGL is not available, 
+// getWebGLContext() function. If WebGL is not available,
 // an appropriate error will be thrown.
 define(function () {
   'use strict';
@@ -14,7 +13,7 @@ define(function () {
 
   return {
     getWebGLContext: function () {
-      if (gl === undefined) {
+      if (!gl) {
         var canvas = document.createElement('canvas');
         try {
           gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
@@ -24,6 +23,12 @@ define(function () {
         }
       }
       return gl;
+    },
+
+    get error() {
+      if (!gl) return "WebGL unavailable";
+      var error = gl.getError();
+      return error === gl.NO_ERROR ? undefined : error;
     }
   };
 });
