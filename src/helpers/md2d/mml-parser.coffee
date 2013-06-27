@@ -232,9 +232,9 @@ parseMML = (mmlString) ->
         lineStyle     = getFloatProperty $node, 'lineStyle'
         lineWeight    = getFloatProperty $node, 'lineWeight'
         layer         = getFloatProperty $node, 'layer'
-        layerPosition = getFloatProperty $node, 'layerPosition'
         alpha         = getFloatProperty $node, 'alpha'
         visible       = getBooleanProperty $node, 'visible'
+        fence         = getBooleanProperty $node, 'reflection'
         
         colorNodes  = $node.find "[property=fillMode] .java-awt-Color>int"
         if colorNodes and colorNodes.length > 0
@@ -271,11 +271,10 @@ parseMML = (mmlString) ->
         rawData = {
           x, y,
           height, width,
-          color,
-          lineColor,
-          lineWeight,
-          lineDashes,
-          layer, layerPosition,
+          fence,
+          color,lineColor,
+          lineWeight,lineDashes,
+          layer,
           visible
         }
 
@@ -1030,7 +1029,7 @@ parseMML = (mmlString) ->
         'height', 'width', 'mass', 'westProbe', 'northProbe', 'eastProbe', 'southProbe', 'color', 'visible'
     
     if rectangles.length > 0
-      json.rectangles = unroll rectangles, 'x', 'y', 'height', 'width',
+      json.rectangles = unroll rectangles, 'x', 'y', 'height', 'width', 'fence',
         'color', 'lineColor', 'lineWeight', 'lineDashes',
         'layer', 'visible'
 

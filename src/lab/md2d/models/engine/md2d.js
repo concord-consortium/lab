@@ -318,6 +318,7 @@ define(function (require, exports, module) {
         rectangleY,
         rectangleWidth,
         rectangleHeight,
+        rectangleFence,
         rectangleColor,
         rectangleLineColor,
         rectangleLineDashes,
@@ -664,6 +665,7 @@ define(function (require, exports, module) {
             rectangleY             = rectangles.y;
             rectangleWidth         = rectangles.width;
             rectangleHeight        = rectangles.height;
+            rectangleFence         = rectangles.fence;
             rectangleColor         = rectangles.color;
             rectangleLineColor     = rectangles.lineColor;
             rectangleLineDashes    = rectangles.lineDashes;
@@ -822,6 +824,7 @@ define(function (require, exports, module) {
           rectangles.y             = arrays.create(num, 0, arrayTypes.floatType);
           rectangles.width         = arrays.create(num, 0, arrayTypes.floatType);
           rectangles.height        = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.fence         = [];
           rectangles.color         = [];
           rectangles.lineColor     = [];
           rectangles.lineDashes    = [];
@@ -1061,7 +1064,6 @@ define(function (require, exports, module) {
             py[i] *= -1;
           }
         },
-		//TODO: Extend particles bouncing off obstacles to rectangles
         bounceParticleOffObstacles = function(i, x_prev, y_prev, updatePressure) {
           // fast path if no obstacles
           if (N_obstacles < 1) return;
@@ -1170,6 +1172,78 @@ define(function (require, exports, module) {
                 }
               }
 
+            }
+          }
+        },
+        
+        bounceParticleOffRectangles = function(i, x_prev, y_prev) {
+          // fast path if no rectangles
+          if (N_rectangles < 1) return;
+
+          var r,
+              xi,
+              yi,
+
+              j,
+
+              x_inside_left,
+              x_inside_right,
+              y_inside_top,
+              y_inside_bottom,
+              x_outside_left,
+              x_outside_right,
+              y_outside_top,
+              y_outside_bottom
+          
+          r = radius[i];
+          xi = x[i];
+          yi = y[i];
+
+          for (j = 0; j < N_rectangles; j++) {
+          	
+          	if(!rectangleFence[j]){continue}
+          	
+            x_outside_left = rectangleX[j] - r;
+            x_outside_right = rectangleX[j] + rectangleWidth[j] + r;
+            y_outside_top = rectangleY[j] + rectangleHeight[j] + r;
+            y_outside_bottom = rectangleY[j] - r;
+            
+            x_inside_left = rectangleX[j] + r;
+            x_inside_right = rectangleX[j] + rectangleWidth[j] - r;
+            y_inside_top = rectangleY[j] + rectangleHeight[j] - r;
+            y_inside_bottom = rectangleY[j] + r;
+            
+            // Check all outside collisions
+            if (xi > x_outside_left && xi < x_outside_right && yi > y_outside_bottom && yi < y_outside_top) {
+              if (x_prev <= x_outside_left) {
+                x[i] = x_outside_left - (xi - x_outside_left);
+                vx[i] *= -1;
+              } else if (x_prev >= x_outside_right) {
+                x[i] = x_outside_right + (x_outside_right - xi);
+                vx[i] *= -1;
+              } else if (y_prev <= y_outside_bottom) {
+                y[i] = y_outside_bottom - (yi - y_outside_bottom);
+                vy[i] *= -1;
+              } else if (y_prev >= y_outside_top) {
+                y[i] = y_outside_top  + (y_outside_top - yi);
+                vy[i] *= -1;
+              }
+            }
+            //Check all inside collisions
+            if (x_prev > x_inside_left && x_prev < x_inside_right && y_prev > y_inside_bottom && y_prev < y_inside_top) {
+              if (xi <= x_inside_left) {
+                x[i] = x_inside_left + (x_inside_left - xi);
+                vx[i] *= -1;
+              } else if (xi >= x_inside_right) {
+                x[i] = x_inside_right - (xi - x_inside_right);
+                vx[i] *= -1;
+              } else if (yi <= y_inside_bottom) {
+                y[i] = y_inside_bottom + (y_inside_bottom - yi);
+                vy[i] *= -1;
+              } else if (yi >= y_inside_top) {
+                y[i] = y_inside_top - (yi - y_inside_top);
+                vy[i] *= -1;
+              }
             }
           }
         },
@@ -1748,6 +1822,8 @@ define(function (require, exports, module) {
             bounceParticleOffWalls(i);
             // Bounce off obstacles, update pressure probes.
             bounceParticleOffObstacles(i, xPrev, yPrev, true);
+            // Bounce off rectangles
+            bounceParticleOffRectangles(i, xPrev, yPrev);
           }
         },
 
@@ -3137,6 +3213,8 @@ define(function (require, exports, module) {
             bounceParticleOffWalls(i);
             // Bounce off obstacles, but DO NOT update pressure probes.
             bounceParticleOffObstacles(i, xPrev, yPrev, false);
+            // Bounce off rectangles
+            bounceParticleOffRectangles(i, xPrev, yPrev);
           }
 
           // Calculate accelerations.

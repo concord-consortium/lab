@@ -135,6 +135,13 @@
       "labelOn":"left"
     },
     {
+      "type": "checkbox",
+      "id": "isfence",
+      "initialValue":true,
+      "text": "Yellow rectangle is fence",
+      "onClick": "setRectangleProperties(4,{fence:value});"
+    },
+    {
       "type": "barGraph",
       "id": "average-ke",
       "title": "Average KE in rectangle",
@@ -166,7 +173,8 @@
         "wslider",
         "yslider",
         "hslider",
-	    "atoms-within"
+	    "atoms-within",
+	    "isfence"
       ]
     ]
   }

@@ -502,6 +502,9 @@ define(function() {
         defaultValue: 0,
         unitType: "length"
       },
+      fence: {
+        defaultValue: false,
+      },
       // View options.
       color: {
         defaultValue: "rgb(128,128,128)"
