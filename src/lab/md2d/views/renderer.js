@@ -232,6 +232,9 @@ define(function (require) {
 
 	  // Scales used for Charge Shading gradients.
 	  // Originally Positive:(ffefff,9abeff,767fbf) and Negative:(dfffff,fdadad,e95e5e)
+	  
+	  gradients.createRadialGradient("neutral-grad","#FFFFFF","#f2f2f2","#A4A4A4",mainContainer)
+	  
       var posLightColorScale = d3.scale.linear()
         .interpolate(d3.interpolateRgb)
         .range(["#FFFFFF", "#ffefff"]),
@@ -253,7 +256,7 @@ define(function (require) {
       ChargeLevel;
 
       // Charge Shading gradients
-      for (i = 0; i < CHARGE_SHADING_STEPS; i++) {
+      for (i = 1; i < CHARGE_SHADING_STEPS; i++) {
         gradientName = "pos-charge-shading-" + i;
         ChargeLevel = i / CHARGE_SHADING_STEPS;
         gradientUrl = gradients.createRadialGradient(gradientName,
@@ -337,9 +340,12 @@ define(function (require) {
     // Returns gradient appropriate for a given atom.
     // d - atom data.
     function getParticleGradient(d) {
-        var ke, keIndex, charge, chargeIndex;
+        var ke, keIndex, charge, chargeIndex, chargeColor, 
+        	aminoAcidColorScheme = model.get("aminoAcidColorScheme");
 
-        if (d.marked) return "url(#mark-grad)";
+        if (d.marked) {
+        	return "url(#mark-grad)";
+        }
 
         if (keShadingMode) {
           ke  = model.getAtomKineticEnergy(d.idx),
@@ -351,31 +357,27 @@ define(function (require) {
           return gradientNameForKELevel[Math.round(keIndex * (KE_SHADING_STEPS - 1))];
         }
 
-        if (chargeShadingMode) {
+        if (chargeShadingMode || aminoAcidColorScheme==="charge" || aminoAcidColorScheme==="chargeAndHydro") {
           charge = d.charge;
-		  // Convert Charge to [0, 1] range
-          chargeIndex = Math.min(Math.abs(charge) / 3, 1)
-
-       	  return (charge >= 0 ? gradientNameForPositiveChargeLevel : gradientNameForNegativeChargeLevel)[Math.round(chargeIndex * (CHARGE_SHADING_STEPS - 1))];
+          chargeIndex = Math.round(Math.min(Math.abs(charge) / 3, 1) * (CHARGE_SHADING_STEPS - 1))
+       	  chargeColor = chargeIndex==0?"url(#neutral-grad)":(charge >= 0 ? gradientNameForPositiveChargeLevel : gradientNameForNegativeChargeLevel)[chargeIndex];
+        }
+        
+        if (chargeShadingMode || aminoAcidColorScheme==="charge" || aminoAcidColorScheme==="chargeAndHydro" && chargeIndex!=0) {
+        	return chargeColor
         }
 
         if (!d.isAminoAcid()) {
           return gradientNameForElement[d.element % 4];
         }
         // Particle represents amino acid.
-        switch (model.get("aminoAcidColorScheme")) {
+        // Note that if charge shading were on, the charge color would have been returned above
+        switch (aminoAcidColorScheme) {
           case "none":
+          case "charge":
             return "url(#neutral-grad)";
           case "hydrophobicity":
-            return d.hydrophobicity > 0 ? "url(#orange-grad)" : "url(#green-grad)";
-          case "charge":
-            if (d.charge === 0) return "url(#neutral-grad)";
-            return d.charge > 0 ? "url(#pos-grad)" : "url(#neg-grad)";
           case "chargeAndHydro":
-            if (d.charge < -0.000001)
-              return "url(#neg-grad)";
-            if (d.charge > 0.000001)
-              return "url(#pos-grad)";
             return d.hydrophobicity > 0 ? "url(#orange-grad)" : "url(#green-grad)";
           default:
             throw new Error("ModelContainer: unknown amino acid color scheme.");
