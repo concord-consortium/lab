@@ -28,7 +28,7 @@ define(function (require) {
       webgl_checkbox = new CheckboxController({
         "type": "checkbox",
         "id": "webgl-status-checkbox",
-        "text": "WebGL-accelerated solvers",
+        "text": "WebGL-accelerated physics engine",
         "property": "use_WebGL"
       }),
       $checkbox = webgl_checkbox.getViewContainer(),
@@ -147,19 +147,19 @@ define(function (require) {
 
           // Model compatibility message.
           if (modelCompatible) {
-            content = 'This model is <span class="happy">compatible</span> with WebGL-accelerated physics solvers';
+            content = 'This model is <span class="happy">compatible</span> with WebGL-accelerated physics engine';
             if (energy2d_modeler.isWebGLActive()) {
-              content += ' and they are <span class="happy">active</span>.';
+              content += ' and it is <span class="happy">active</span>.';
             } else {
-              content += ', but they are <span class="sad">inactive</span>.';
+              content += ', but it is <span class="sad">inactive</span>.';
               if (WebGLContext && extensions) {
-                content += ' Enable them to speed up simulation:';
+                content += ' Enable it to speed up simulation:';
               }
             }
             $status.append('<p>' + content + '</p>');
           } else {
             $status.append('<p>Unfortunately, some features used in this model are <span class="sad">incompatible</span> ' +
-                           'with WebGL-accelerated physics solvers.</p>');
+                           'with WebGL-accelerated physics engine.</p>');
           }
 
           // WebGL solvers checkbox.
