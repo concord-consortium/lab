@@ -313,6 +313,12 @@ define(function (require, exports) {
 
         useWebGL: function (v) {
           if (WebGL_active === v) return;
+          if (!core_model.isWebGLCompatible()) {
+            // Some models are incompatible with WebGL.
+            WebGL_active = false;
+            return;
+          }
+
           if (v) {
             // Initialize GPGPU, this will also copy current temperature
             // and velocity arrays into textures.
@@ -327,6 +333,10 @@ define(function (require, exports) {
 
         isWebGLActive: function () {
           return WebGL_active;
+        },
+
+        isWebGLCompatible: function () {
+          return !radiative;
         },
 
         getWebGLError: function () {

@@ -97,6 +97,9 @@ define(function (require) {
       isWebGLActive: function () {
         return coreModel.isWebGLActive();
       },
+      isWebGLCompatible: function() {
+        return coreModel.isWebGLCompatible();
+      },
       getWebGLError: function () {
         return coreModel.getWebGLError();
       },
