@@ -10,8 +10,9 @@ define(function (require) {
   'use strict';
   var
     // Dependencies.
-    context = require('energy2d/gpu/context'),
-    Texture = require('energy2d/gpu/texture'),
+    CheckboxController = require('common/controllers/checkbox-controller'),
+    context            = require('energy2d/gpu/context'),
+    Texture            = require('energy2d/gpu/texture'),
 
     GET_WEBGL = '<p><a href="http://get.webgl.org" target="_blank">Click to learn more about WebGL.</a></p>';
 
@@ -24,12 +25,20 @@ define(function (require) {
       $status_wrapper,
       $status,
 
+      webgl_checkbox = new CheckboxController({
+        "type": "checkbox",
+        "id": "webgl-status-checkbox",
+        "text": "WebGL-accelerated solvers",
+        "property": "use_WebGL"
+      }),
+      $checkbox = webgl_checkbox.getViewContainer(),
+
       // Energy2D modeler.
       energy2d_modeler,
       // List of WebGL features.
       features,
-      WebGLAvailable,
-      extensionsAvailable,
+      WebGLContext,
+      extensions,
 
       //
       // Private methods.
@@ -47,6 +56,8 @@ define(function (require) {
         $closeBtn = $('<a id="hide-webgl-status" class="button"><i class="icon-remove"></i></a>');
         $closeBtn.on('click', hide);
         $closeBtn.appendTo($status_wrapper);
+
+        $checkbox.appendTo($status_wrapper);
 
         $webgl_icon = $('<a id="show-webgl-status" class="button" title="Click to show WebGL status"><i class="icon-bolt"></i></a>');
         $webgl_icon.on('click', show);
@@ -67,25 +78,25 @@ define(function (require) {
 
       testFeatures = function () {
         var gl, temp_texture;
-        WebGLAvailable = false;
-        extensionsAvailable = false;
+        WebGLContext = false;
+        extensions = false;
         features = {};
         // 1. WebGL main tests.
         try {
           gl = context.getWebGLContext();
-          WebGLAvailable = true;
+          WebGLContext = true;
         } catch (e) {
           // WebGL is not available, so don't test other features.
           return;
         }
 
-        extensionsAvailable = true;
+        extensions = true;
         // 2. OES_texture_float.
         if (gl.getExtension('OES_texture_float')) {
           features['OES_texture_float'] = true;
         } else {
           features['OES_texture_float'] = false;
-          extensionsAvailable = false;
+          extensions = false;
         }
 
         // 3. Float texture as render target.
@@ -97,7 +108,7 @@ define(function (require) {
             features['OES_texture_float as render target'] = true;
           } else {
             features['OES_texture_float as render target'] = false;
-            extensionsAvailable = false;
+            extensions = false;
           }
           gl.bindFramebuffer(gl.FRAMEBUFFER, null);
         }
@@ -109,34 +120,53 @@ define(function (require) {
       WebGL_status_view = {
         bindModel: function (model) {
           energy2d_modeler = model;
+          // Actually this function should be named 'bindModel(model)'.
+          webgl_checkbox.modelLoadedCallback();
         },
 
         render: function () {
+          var modelCompatible = energy2d_modeler.isWebGLCompatible(),
+              content;
+
           $status.empty();
-          if (WebGLAvailable && extensionsAvailable) {
+          if (WebGLContext && extensions) {
             $status.append('<p>Your browser <span class="happy">supports</span> WebGL and all required extensions!</p>');
-          } else if (WebGLAvailable && !extensionsAvailable) {
+          } else if (WebGLContext && !extensions) {
             $status.append('<p>Your browser <span class="happy">supports</span> WebGL, however not all required extensions are available:</p>');
             Object.keys(features).forEach(function (key) {
               var ext = features[key] ? '<span class="happy"><i class="icon-ok"></i></span>' : '<span class="sad"><i class="icon-remove"></i></span>';
               $status.append('<p class="extension">' + ext + ' ' + key + '</p>');
             });
-          } else if (!WebGLAvailable) {
+            $status.append(GET_WEBGL);
+          } else if (!WebGLContext) {
             $status.append('<p>Sorry, your browser <span class="sad">does not support</span> WebGL.');
-          }
-          if (energy2d_modeler.isWebGLActive()) {
-            $status.append('<p>Energy2D WebGL-accelerated solvers are <span class="happy">enabled</span>.');
-          } else {
-            $status.append('<p>Energy2D WebGL-accelerated solvers are <span class="sad">disabled</span>.');
-            if (WebGLAvailable && extensionsAvailable) {
-              $status.append('<p>Toggle <b>use_WebGL</b> model option to speed up simulation.');
-            }
-          }
-          if (!WebGLAvailable || !extensionsAvailable) {
             $status.append(GET_WEBGL);
           }
 
+          if (modelCompatible) {
+            content = 'This model is <span class="happy">compatible</span> with WebGL-accelerated physics solvers';
+            if (energy2d_modeler.isWebGLActive()) {
+              content += ' and they are <span class="happy">active</span>.';
+            } else {
+              content += ', but they are <span class="sad">inactive</span>.';
+              if (WebGLContext && extensions) {
+                content += ' Enable them to speed up simulation:';
+              }
+            }
+            $status.append('<p>' + content + '</p>');
+          } else {
+            $status.append('<p>Unfortunately, some features used in this model are <span class="sad">incompatible</span> ' +
+                           'with WebGL-accelerated physics solvers.</p>');
+          }
+
+          if (!WebGLContext || !extensions || !modelCompatible) {
+            // If any test failed hide the checkbox.
+            $checkbox.hide();
+          }
+
           if (energy2d_modeler.properties.use_WebGL && !energy2d_modeler.isWebGLActive()) {
+            // Display panel when user requested WebGL, but it wasn't
+            // initialized correctly.
             show();
           }
         },
