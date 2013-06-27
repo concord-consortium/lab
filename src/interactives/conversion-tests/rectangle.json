@@ -20,7 +20,7 @@
       "unitType": "",
       "label": "Atoms within",
       "value": [
-        "return getAtomsWithinRectangle(2).length;"
+        "return getAtomsWithinRectangle(1).length;"
       ]
     },
     {
@@ -28,7 +28,7 @@
       "unitType": "temperature",
       "label": "Temperature within",
       "value": [
-        "var within=getAtomsWithinRectangle(2);",
+        "var within=getAtomsWithinRectangle(1);",
         "return atomsKe(within)/within.length;"
       ]
     },
@@ -61,7 +61,7 @@
       ],
       "steps": 199,
       "title": "Rectangle Distance to left",
-      "action": "setRectangleProperties(2, { x: value });"
+      "action": "setRectangleProperties(1, { x: value });"
     },
     {
       "type": "slider",
@@ -82,7 +82,7 @@
       ],
       "steps": 199,
       "title": "Rectangle Width",
-      "action": "setRectangleProperties(2, { width: value });"
+      "action": "setRectangleProperties(1, { width: value });"
     },
     {
       "type": "slider",
@@ -103,7 +103,7 @@
       ],
       "steps": 199,
       "title": "Rectangle Distance to bottom",
-      "action": "setRectangleProperties(2, { y: value });"
+      "action": "setRectangleProperties(1, { y: value });"
     },
     {
       "type": "slider",
@@ -124,7 +124,7 @@
       ],
       "steps": 199,
       "title": "Rectangle Height",
-      "action": "setRectangleProperties(2, { height: value });"
+      "action": "setRectangleProperties(1, { height: value });"
     },
     {
       "type": "numericOutput",

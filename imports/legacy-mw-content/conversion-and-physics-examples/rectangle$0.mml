@@ -826,7 +826,7 @@
    <void method="put">
     <string>date</string>
     <object class="java.util.Date">
-     <long>1372276195000</long>
+     <long>1372348042000</long>
     </object>
    </void>
    <void method="put">
@@ -835,7 +835,7 @@
    </void>
    <void method="put">
     <string>size</string>
-    <long>71117</long>
+    <long>71125</long>
    </void>
    <void method="put">
     <string>codebase</string>
@@ -926,40 +926,6 @@ store 0 %t;</string>
    <array class="org.concord.mw2d.models.RectangleComponent$Delegate" length="5">
     <void index="0">
      <object class="org.concord.mw2d.models.RectangleComponent$Delegate">
-      <void property="fillMode">
-       <object class="org.concord.modeler.draw.FillMode$ColorFill">
-        <void property="color">
-         <object class="java.awt.Color">
-          <int>255</int>
-          <int>255</int>
-          <int>0</int>
-          <int>255</int>
-         </object>
-        </void>
-       </object>
-      </void>
-      <void property="height">
-       <float>215.0</float>
-      </void>
-      <void property="layer">
-       <int>1</int>
-      </void>
-      <void property="lineStyle">
-       <int>2</int>
-      </void>
-      <void property="width">
-       <float>92.0</float>
-      </void>
-      <void property="x">
-       <double>233.0</double>
-      </void>
-      <void property="y">
-       <double>27.0</double>
-      </void>
-     </object>
-    </void>
-    <void index="1">
-     <object class="org.concord.mw2d.models.RectangleComponent$Delegate">
       <void property="alpha">
        <int>180</int>
       </void>
@@ -980,9 +946,6 @@ store 0 %t;</string>
       </void>
       <void property="layer">
        <int>1</int>
-      </void>
-      <void property="layerPosition">
-       <byte>1</byte>
       </void>
       <void property="lineColor">
        <object class="java.awt.Color">
@@ -1006,7 +969,7 @@ store 0 %t;</string>
       </void>
      </object>
     </void>
-    <void index="2">
+    <void index="1">
      <object class="org.concord.mw2d.models.RectangleComponent$Delegate">
       <void property="alpha">
        <int>40</int>
@@ -1030,7 +993,7 @@ store 0 %t;</string>
        <int>1</int>
       </void>
       <void property="layerPosition">
-       <byte>2</byte>
+       <byte>1</byte>
       </void>
       <void property="lineColor">
        <object class="java.awt.Color">
@@ -1057,7 +1020,7 @@ store 0 %t;</string>
       </void>
      </object>
     </void>
-    <void index="3">
+    <void index="2">
      <object class="org.concord.mw2d.models.RectangleComponent$Delegate">
       <void property="fillMode">
        <object class="org.concord.modeler.draw.FillMode$ColorFill">
@@ -1078,7 +1041,7 @@ store 0 %t;</string>
        <int>1</int>
       </void>
       <void property="layerPosition">
-       <byte>3</byte>
+       <byte>2</byte>
       </void>
       <void property="lineColor">
        <object class="java.awt.Color">
@@ -1102,7 +1065,7 @@ store 0 %t;</string>
       </void>
      </object>
     </void>
-    <void index="4">
+    <void index="3">
      <object class="org.concord.mw2d.models.RectangleComponent$Delegate">
       <void property="alpha">
        <int>185</int>
@@ -1137,10 +1100,10 @@ store 0 %t;</string>
        <float>69.0</float>
       </void>
       <void property="layer">
-       <int>1</int>
+       <int>2</int>
       </void>
       <void property="layerPosition">
-       <byte>4</byte>
+       <byte>3</byte>
       </void>
       <void property="lineColor">
        <object class="java.awt.Color">
@@ -1161,6 +1124,43 @@ store 0 %t;</string>
       </void>
       <void property="y">
        <double>171.5</double>
+      </void>
+     </object>
+    </void>
+    <void index="4">
+     <object class="org.concord.mw2d.models.RectangleComponent$Delegate">
+      <void property="fillMode">
+       <object class="org.concord.modeler.draw.FillMode$ColorFill">
+        <void property="color">
+         <object class="java.awt.Color">
+          <int>255</int>
+          <int>255</int>
+          <int>0</int>
+          <int>255</int>
+         </object>
+        </void>
+       </object>
+      </void>
+      <void property="height">
+       <float>215.0</float>
+      </void>
+      <void property="layer">
+       <int>2</int>
+      </void>
+      <void property="layerPosition">
+       <byte>4</byte>
+      </void>
+      <void property="lineStyle">
+       <int>2</int>
+      </void>
+      <void property="width">
+       <float>92.0</float>
+      </void>
+      <void property="x">
+       <double>233.0</double>
+      </void>
+      <void property="y">
+       <double>27.0</double>
       </void>
      </object>
     </void>

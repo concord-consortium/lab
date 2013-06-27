@@ -502,36 +502,21 @@ define(function() {
         defaultValue: 0,
         unitType: "length"
       },
-      angle: {
-        defaultValue: 0
-      },
       // View options.
-      colorR: {
-        defaultValue: 128
+      color: {
+        defaultValue: "rgb(128,128,128)"
       },
-      colorG: {
-        defaultValue: 128
+      lineColor: {
+        defaultValue: "black"
       },
-      colorB: {
-        defaultValue: 128
-      },
-      lineColorR: {
-        defaultValue: 0
-      },
-      lineColorG: {
-        defaultValue: 0
-      },
-      lineColorB: {
-        defaultValue: 0
+      lineDashes: {
+        defaultValue: "none"
       },
       lineWeight: {
         defaultValue: 1
       },
-      lineStyle: {
-        defaultValue: 0
-      },
-      alpha: {
-        defaultValue: 255
+      layer: {
+        defaultValue: 1
       },
       visible: {
         defaultValue: true

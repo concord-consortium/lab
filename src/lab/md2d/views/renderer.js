@@ -51,14 +51,16 @@ define(function (require) {
         model2pxInv,
 
         // "Containers" - SVG g elements used to position layers of the final visualization.
-        imageContainerBelow  = modelView.viewport.append("g").attr("class", "image-container-below"),
-        textContainerBelow   = modelView.viewport.append("g").attr("class", "text-container-below"),
-        radialBondsContainer = modelView.viewport.append("g").attr("class", "radial-bonds-container"),
-        VDWLinesContainer    = modelView.viewport.append("g").attr("class", "vdw-lines-container"),
-        mainContainer        = modelView.viewport.append("g").attr("class", "main-container"),
-        imageContainerTop    = modelView.viewport.append("g").attr("class", "image-container-top"),
-        textContainerTop     = modelView.viewport.append("g").attr("class", "text-container-top"),
-        iconContainer        = modelView.vis.append("g").attr("class", "icon-container"),
+        rectangleContainerBelow = modelView.viewport.append("g").attr("class", "rectangle-container-below");
+        imageContainerBelow     = modelView.viewport.append("g").attr("class", "image-container-below"),
+        textContainerBelow      = modelView.viewport.append("g").attr("class", "text-container-below"),
+        radialBondsContainer    = modelView.viewport.append("g").attr("class", "radial-bonds-container"),
+        VDWLinesContainer       = modelView.viewport.append("g").attr("class", "vdw-lines-container"),
+        mainContainer           = modelView.viewport.append("g").attr("class", "main-container"),
+        rectangleContainerTop   = modelView.viewport.append("g").attr("class", "rectangle-container-top");
+        imageContainerTop       = modelView.viewport.append("g").attr("class", "image-container-top"),
+        textContainerTop        = modelView.viewport.append("g").attr("class", "text-container-top"),
+        iconContainer           = modelView.vis.append("g").attr("class", "icon-container"),
 
         dragOrigin,
 
@@ -102,9 +104,11 @@ define(function (require) {
         obstacle,
         obstacles,
         mockObstaclesArray = [],
-        rectangle,
         rectangles,
-        mockRectanglesArray = [],
+        rectangleTop,
+        rectangleBelow,
+        mockRectanglesTop= [],
+        mockRectanglesBottom = [],
         radialBond1, radialBond2,
         vdwPairs = [],
         vdwLines,
@@ -163,22 +167,6 @@ define(function (require) {
         obstacles.colorB[i] + ")";
     }
     
-    function getRectangleColor(i) {
-      return "rgba(" +
-        rectangles.colorR[i] + "," +
-        rectangles.colorG[i] + "," +
-        rectangles.colorB[i] + "," +
-        (rectangles.alpha[i]/255) + ")";
-    }
-    
-    function getRectangleLineColor(i) {
-      //Note that transparent lines were not supported in the Java MW
-      return "rgb(" +
-        rectangles.lineColorR[i] + "," +
-        rectangles.lineColorG[i] + "," +
-        rectangles.lineColorB[i] + ")";
-    }
-
     // Pass in the signed 24-bit Integer used for Java MW elementColors
     // See: https://github.com/mbostock/d3/wiki/Colors
     function createElementColorGradient(id, signedInt, mainContainer) {
@@ -661,35 +649,29 @@ define(function (require) {
     }
 
     function rectangleEnter() {
-      var rectangleGroup = rectangle.enter().append("g");
-
-      rectangleGroup
-        .attr("class", "rectangle")
-        .attr("transform",
-          function (d, i) {
-            return "translate(" + model2px(rectangles.x[i]) + " " + model2pxInv(rectangles.y[i] + rectangles.height[i]) + ")";
-          }
-        );
-      rectangleGroup.append("rect")
-        .attr({
-          "class": "rectangle-shape",
-          "x": 0,
-          "y": 0,
-          "width": function(d, i) {return model2px(rectangles.width[i]); },
-          "height": function(d, i) {return model2px(rectangles.height[i]); },
-          "fill": function(d, i) { return rectangles.visible[i] ? getRectangleColor(i) : "rgba(128,128,128, 0)"; },
-          "stroke-width": function(d, i) { return Math.max(1,rectangles.lineWeight[i])},
-          "stroke-dasharray": function(d, i) {
-          	switch(rectangles.lineStyle[i]){
-          		case 1:	return '2,2';
-          		case 2: return '4,4';
-          		case 3: return '6,6';
-          		case 4: return '2,4,8,4';
-          		default: return 'none';
-          	}
-          },
-          "stroke": function(d, i) { return rectangles.visible[i] ? getRectangleLineColor(i) : "rgba(128,128,128, 0)"; }
-        });
+      var layers=[rectangleTop,rectangleBelow]
+      for(i = 0; i < layers.length; i++){
+      	  var rectangleGroup = layers[i].enter().append("g");
+	      rectangleGroup
+	        .attr("class", "rectangle")
+	        .attr("transform",
+	          function (d, i) {
+	            return "translate(" + model2px(rectangles.x[d]) + " " + model2pxInv(rectangles.y[d] + rectangles.height[d]) + ")";
+	          }
+	        );
+	      rectangleGroup.append("rect")
+	        .attr({
+	          "class": "rectangle-shape",
+	          "x": 0,
+	          "y": 0,
+	          "width": function(d, i) {return model2px(rectangles.width[d]); },
+	          "height": function(d, i) {return model2px(rectangles.height[d]); },
+	          "fill": function(d, i) { return rectangles.visible[d] ? rectangles.color[d] : "rgba(128,128,128, 0)"; },
+	          "stroke-width": function(d, i) { return rectangles.lineWeight[d]},
+	          "stroke-dasharray": function(d, i) { return rectangles.lineDashes[d] },
+	          "stroke": function(d, i) { return rectangles.visible[d] ? rectangles.lineColor[d] : "rgba(128,128,128, 0)"; }
+	        });
+       }
     }
 
     function radialBondEnter() {
@@ -1335,10 +1317,21 @@ define(function (require) {
     
     function setupRectangles() {
       rectangles = model.get_rectangles();
-      mainContainer.selectAll("g.rectangle").remove();
+      rectangleContainerTop.selectAll(".rectangle").remove();
+      rectangleContainerBelow.selectAll(".rectangle").remove();
       if (rectangles) {
-        mockRectanglesArray.length = rectangles.x.length;
-        rectangle = mainContainer.selectAll("g.rectangle").data(mockRectanglesArray);
+      	mockRectanglesTop=[]
+      	mockRectanglesBelow=[]
+      	for(i = 0; i < rectangles.x.length ; i++){
+      		if(rectangles.layer[i]===1){
+      			mockRectanglesTop.push(i)
+      		}
+      		else{
+      			mockRectanglesBelow.push(i)
+      		}
+      	}
+        rectangleTop = rectangleContainerTop.selectAll(".rectangle").data(mockRectanglesTop);
+        rectangleBelow = rectangleContainerBelow.selectAll(".rectangle").data(mockRectanglesBelow);
         rectangleEnter();
       }
     }
@@ -1930,8 +1923,11 @@ define(function (require) {
       }
 
       if (rectangles) {
-        rectangle.attr("transform", function (d, i) {
-          return "translate(" + model2px(rectangles.x[i]) + " " + model2pxInv(rectangles.y[i] + rectangles.height[i]) + ")";
+        rectangleTop.attr("transform", function (d, i) {
+          return "translate(" + model2px(rectangles.x[d]) + " " + model2pxInv(rectangles.y[d] + rectangles.height[d]) + ")";
+        });
+        rectangleBelow.attr("transform", function (d, i) {
+          return "translate(" + model2px(rectangles.x[d]) + " " + model2pxInv(rectangles.y[d] + rectangles.height[d]) + ")";
         });
       }
 

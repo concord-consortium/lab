@@ -924,19 +924,6 @@ define(function(require) {
     
     model.addRectangle = function(props) {
       var validatedProps;
-
-      if (props.color !== undefined && props.colorR === undefined) {
-        // See above
-        props.colorR = props.color[0];
-        props.colorG = props.color[1];
-        props.colorB = props.color[2];
-      }
-      if (props.lineColor !== undefined && props.lineColorR === undefined) {
-        // See above
-        props.lineColorR = props.lineColor[0];
-        props.lineColorG = props.lineColor[1];
-        props.lineColorB = props.lineColor[2];
-      }
       // Validate properties, use default values if there is such need.
       validatedProps = validator.validateCompleteness(metadata.rectangle, props);
       // Finally, add rectangle.

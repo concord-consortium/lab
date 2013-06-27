@@ -221,32 +221,43 @@ parseMML = (mmlString) ->
     ### Find and parse mml nodes representing rectangles ###
     parseRectangles = ->
       rectangles = []
-      rectangleNodes = $mml "[property=rectangles] array .org-concord-mw2d-models-RectangleComponent-Delegate"
+      rectangleNodes = $mml "[property=rectangles] object.org-concord-mw2d-models-RectangleComponent-Delegate"
       for node in rectangleNodes
         $node = getNode cheerio node
 
-        height     = getFloatProperty $node, 'height'
-        width      = getFloatProperty $node, 'width'
-        x          = getFloatProperty $node, 'x'
-        y          = getFloatProperty $node, 'y'
-        alpha      = getFloatProperty $node, 'alpha'
-        angle      = getFloatProperty $node, 'angle'
-        lineStyle      = getFloatProperty $node, 'lineStyle'
-        lineWeight      = getFloatProperty $node, 'lineWeight'
-        # layer      = getFloatProperty $node, 'layer'
-        visible    = getBooleanProperty $node, 'visible'
-
-        color  = $node.find "[property=color] .java-awt-Color>int"
-        if color and color.length > 0
-          colorR = parseInt cheerio(color[0]).text()
-          colorG = parseInt cheerio(color[1]).text()
-          colorB = parseInt cheerio(color[2]).text()
+        height        = getFloatProperty $node, 'height'
+        width         = getFloatProperty $node, 'width'
+        x             = getFloatProperty $node, 'x'
+        y             = getFloatProperty $node, 'y'
+        lineStyle     = getFloatProperty $node, 'lineStyle'
+        lineWeight    = getFloatProperty $node, 'lineWeight'
+        layer         = getFloatProperty $node, 'layer'
+        layerPosition = getFloatProperty $node, 'layerPosition'
+        alpha         = getFloatProperty $node, 'alpha'
+        visible       = getBooleanProperty $node, 'visible'
         
-        lineColor  = $node.find "[property=lineColor] .java-awt-Color>int"
-        if lineColor and lineColor.length > 0
-          lineColorR = parseInt cheerio(lineColor[0]).text()
-          lineColorG = parseInt cheerio(lineColor[1]).text()
-          lineColorB = parseInt cheerio(lineColor[2]).text()
+        colorNodes  = $node.find "[property=fillMode] .java-awt-Color>int"
+        if colorNodes and colorNodes.length > 0
+          corecolor=(parseInt cheerio(colorNodes[0]).text())+","+
+                  (parseInt cheerio(colorNodes[1]).text())+","+
+                  (parseInt cheerio(colorNodes[2]).text())
+          if alpha
+            color = "rgba("+corecolor+","+alpha/255+")"
+          else
+            color = "rgb("+corecolor+")"
+        
+        lineColorNodes  = $node.find "[property=lineColor] .java-awt-Color>int"
+        if lineColorNodes and lineColorNodes.length > 0
+          lineColor = "rgb("+(parseInt cheerio(lineColorNodes[0]).text())+","+
+                  (parseInt cheerio(lineColorNodes[1]).text())+","+
+                  (parseInt cheerio(lineColorNodes[2]).text())+")"
+                  
+        lineDashes = switch
+              when lineStyle is 1 then '2,2'
+              when lineStyle is 2 then '4,4'
+              when lineStyle is 3 then '6,6'
+              when lineStyle is 4 then '2,4,8,4'
+              else 'none'
         
         if not x?
           x=20
@@ -260,12 +271,11 @@ parseMML = (mmlString) ->
         rawData = {
           x, y,
           height, width,
-          angle,
-          colorR, colorB, colorG,
-          lineColorR, lineColorB, lineColorG,
+          color,
+          lineColor,
           lineWeight,
-          lineStyle,
-          alpha,
+          lineDashes,
+          layer, layerPosition,
           visible
         }
 
@@ -276,18 +286,6 @@ parseMML = (mmlString) ->
 
         # Validate all properties and provides default values for undefined values.
         validatedData = validator.validateCompleteness metadata.rectangle, rawData
-
-        # Change colorR, colorB, colorG to array...
-        # TODO: ugly, use just one convention. colorR/G/B should be easier.
-        validatedData.color = []
-        validatedData.color[0] = validatedData.colorR
-        validatedData.color[1] = validatedData.colorG
-        validatedData.color[2] = validatedData.colorB
-        
-        validatedData.lineColor = []
-        validatedData.lineColor[0] = validatedData.lineColorR
-        validatedData.lineColor[1] = validatedData.lineColorG
-        validatedData.lineColor[2] = validatedData.lineColorB
 
         rectangles.push validatedData
 
@@ -1032,9 +1030,9 @@ parseMML = (mmlString) ->
         'height', 'width', 'mass', 'westProbe', 'northProbe', 'eastProbe', 'southProbe', 'color', 'visible'
     
     if rectangles.length > 0
-      json.rectangles = unroll rectangles, 'x', 'y', 'height', 'width', 'angle',
-        'color', 'lineColor', 'lineWeight', 'lineStyle',
-        'alpha', 'visible'
+      json.rectangles = unroll rectangles, 'x', 'y', 'height', 'width',
+        'color', 'lineColor', 'lineWeight', 'lineDashes',
+        'layer', 'visible'
 
     if useQuantumDynamics
       json.quantumDynamics = quantumDynamics

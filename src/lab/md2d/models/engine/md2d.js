@@ -318,16 +318,11 @@ define(function (require, exports, module) {
         rectangleY,
         rectangleWidth,
         rectangleHeight,
-        rectangleAngle,
-        rectangleColorR,
-        rectangleColorG,
-        rectangleColorB,
-        rectangleLineColorR,
-        rectangleLineColorG,
-        rectangleLineColorB,
-        rectangleLineStyle,
+        rectangleColor,
+        rectangleLineColor,
+        rectangleLineDashes,
         rectangleLineWeight,
-        rectangleAlpha,
+        rectangleLayer,
         rectangleVisible,
 
         // An object that contains references to the above rectangle-property arrays.
@@ -665,21 +660,16 @@ define(function (require, exports, module) {
           },
           
           rectangles: function() {
-            rectangleX           = rectangles.x;
-            rectangleY           = rectangles.y;
-            rectangleWidth       = rectangles.width;
-            rectangleHeight      = rectangles.height;
-            rectangleAngle       = rectangles.angle;
-            rectangleColorR      = rectangles.colorR;
-            rectangleColorG      = rectangles.colorG;
-            rectangleColorB      = rectangles.colorB;
-            rectangleLineColorR  = rectangles.lineColorR;
-            rectangleLineColorG  = rectangles.lineColorG;
-            rectangleLineColorB  = rectangles.lineColorB;
-            rectangleLineWeight  = rectangles.lineWeight;
-            rectangleLineStyle   = rectangles.lineStyle;
-            rectangleAlpha       = rectangles.alpha;
-            rectangleVisible     = rectangles.visible;
+            rectangleX             = rectangles.x;
+            rectangleY             = rectangles.y;
+            rectangleWidth         = rectangles.width;
+            rectangleHeight        = rectangles.height;
+            rectangleColor         = rectangles.color;
+            rectangleLineColor     = rectangles.lineColor;
+            rectangleLineDashes    = rectangles.lineDashes;
+            rectangleLineWeight    = rectangles.lineWeight;
+            rectangleLayer         = rectangles.layer;
+            rectangleVisible       = rectangles.visible;
           },
 
           springForces: function() {
@@ -828,21 +818,16 @@ define(function (require, exports, module) {
 		createRectanglesArray = function(num) {
           rectangles = engine.rectangles = {};
 
-          rectangles.x           = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.y           = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.width       = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.height      = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.angle      = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.colorR      = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.colorG      = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.colorB      = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.lineColorR  = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.lineColorG  = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.lineColorB  = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.lineWeight   = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.lineStyle   = arrays.create(num, 0, arrayTypes.uint8Type);
-          rectangles.alpha      = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.visible     = arrays.create(num, 0, arrayTypes.uint8Type);
+          rectangles.x             = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.y             = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.width         = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.height        = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.color         = [];
+          rectangles.lineColor     = [];
+          rectangles.lineDashes    = [];
+          rectangles.lineWeight    = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.layer         = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.visible       = arrays.create(num, 0, arrayTypes.uint8Type);
 
           assignShortcutReferences.rectangles();
         },
