@@ -662,7 +662,6 @@ AUTHORING = false;
         helper: "ui-resizable-helper",
         resize: controller.resize
       });
-      $(".extras-item").disableSelection();
     } else {
       // Interactive Browser with Interactive embedding in iframe
 
@@ -687,7 +686,6 @@ AUTHORING = false;
         setupSnapshotButton();
         setupBenchmarks();
         setupEnergyGraph(null, function() {
-          $(".extras-item").disableSelection();
         });
       });
     }
