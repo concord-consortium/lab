@@ -1,5 +1,4 @@
-/*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false, $: false*/
+/*global define: false, $: false*/
 
 // WebGL Status.
 // Presents available WebGL features.
@@ -11,8 +10,7 @@ define(function (require) {
   var
     // Dependencies.
     CheckboxController = require('common/controllers/checkbox-controller'),
-    context            = require('energy2d/gpu/context'),
-    Texture            = require('energy2d/gpu/texture'),
+    gpgpu              = require('energy2d/gpu/gpgpu'),
 
     GET_WEBGL = '<p><a href="http://get.webgl.org" target="_blank">Click to learn more about WebGL.</a></p>';
 
@@ -35,10 +33,6 @@ define(function (require) {
 
       // Energy2D modeler.
       energy2d_modeler,
-      // List of WebGL features.
-      features,
-      WebGLContext,
-      extensions,
 
       //
       // Private methods.
@@ -76,53 +70,6 @@ define(function (require) {
         $status_wrapper.fadeOut();
       },
 
-      testFeatures = function () {
-        var gl, temp_texture;
-        WebGLContext = false;
-        extensions = false;
-        features = {};
-        // 1. WebGL main tests.
-        try {
-          gl = context.getWebGLContext();
-          WebGLContext = true;
-        } catch (e) {
-          // WebGL is not available, so don't test other features.
-          return;
-        }
-
-        extensions = true;
-        // 2. OES_texture_float.
-        if (gl.getExtension('OES_texture_float')) {
-          features['OES_texture_float'] = true;
-        } else {
-          features['OES_texture_float'] = false;
-          extensions = false;
-        }
-
-        // 3. Float texture as render target.
-        //    Test it only if float textures are available.
-        if (features['OES_texture_float']) {
-          temp_texture = new Texture(1, 1, { type: gl.FLOAT, format: gl.RGBA, filter: gl.LINEAR });
-          temp_texture.setAsRenderTarget();
-          if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE) {
-            features['OES_texture_float as render target'] = true;
-          } else {
-            features['OES_texture_float as render target'] = false;
-            extensions = false;
-          }
-          gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-        }
-
-        // 4. OES_texture_float_linear.
-        // In theory it could be optional (but it isn't for now).
-        if (gl.getExtension('OES_texture_float_linear')) {
-          features['OES_texture_float_linear'] = true;
-        } else {
-          features['OES_texture_float_linear'] = false;
-          extensions = false;
-        }
-      },
-
       //
       // Public API.
       //
@@ -135,21 +82,50 @@ define(function (require) {
 
         render: function () {
           var modelCompatible = energy2d_modeler.isWebGLCompatible(),
+              feature = gpgpu.featuresInfo,
+              requiredFeatures = true,
+              optionalFeatures = true,
               content;
 
           $status.empty();
 
-          // WebGL + extensions availably message.
-          if (WebGLContext && extensions) {
-            $status.append('<p>Your browser <span class="happy">supports</span> WebGL and all required extensions!</p>');
-          } else if (WebGLContext && !extensions) {
+          Object.keys(feature).forEach(function (name) {
+            var f = feature[name];
+            if (f.required && !f.available) {
+              requiredFeatures = false;
+            }
+            if (!f.required && !f.available) {
+              optionalFeatures = false;
+            }
+          });
+
+          // WebGL + required extensions availability message.
+          if (requiredFeatures && optionalFeatures) {
+            $status.append('<p>Your browser <span class="happy">supports</span> WebGL as well as all required and optional extensions!</p>');
+          } else if (requiredFeatures) {
+            $status.append('<p>Your browser <span class="happy">supports</span> WebGL and all required extensions! However some ' +
+                           'optional extensions are unavailable:</p>');
+            Object.keys(feature).forEach(function (name) {
+              var f = feature[name],
+                  supported;
+              if (!f.required) {
+                supported = f.available ? '<span class="happy"><i class="icon-ok"></i></span>' : '<span class="sad"><i class="icon-remove"></i></span>';
+                $status.append('<p class="extension">' + supported + ' ' + name + '</p>');
+              }
+            });
+            $status.append('<p>WebGL-accelerated solvers will work fine, but rendering quality can be affected.</p>');
+          } else if (feature['WebGL']) {
             $status.append('<p>Your browser <span class="happy">supports</span> WebGL, however not all required extensions are available:</p>');
-            Object.keys(features).forEach(function (key) {
-              var ext = features[key] ? '<span class="happy"><i class="icon-ok"></i></span>' : '<span class="sad"><i class="icon-remove"></i></span>';
-              $status.append('<p class="extension">' + ext + ' ' + key + '</p>');
+            Object.keys(feature).forEach(function (name) {
+              var f = feature[name],
+                  supported;
+              if (f.required) {
+                supported = f.available ? '<span class="happy"><i class="icon-ok"></i></span>' : '<span class="sad"><i class="icon-remove"></i></span>';
+                $status.append('<p class="extension">' + supported + ' ' + name + '</p>');
+              }
             });
             $status.append(GET_WEBGL);
-          } else if (!WebGLContext) {
+          } else {
             $status.append('<p>Sorry, your browser <span class="sad">does not support</span> WebGL.');
             $status.append(GET_WEBGL);
           }
@@ -161,7 +137,7 @@ define(function (require) {
               content += ' and it is <span class="happy">active</span>.';
             } else {
               content += ', but it is <span class="sad">inactive</span>.';
-              if (WebGLContext && extensions) {
+              if (requiredFeatures) {
                 content += ' Enable it to speed up simulation:';
               }
             }
@@ -172,13 +148,13 @@ define(function (require) {
           }
 
           // WebGL solvers checkbox.
-          if (!WebGLContext || !extensions || !modelCompatible) {
+          if (!requiredFeatures || !modelCompatible) {
             // If any test failed hide the checkbox.
             $checkbox.hide();
           }
 
           // WebGL icon tooltip message and color.
-          if (!WebGLContext || !extensions || !modelCompatible) {
+          if (!requiredFeatures || !modelCompatible) {
             content = 'WebGL unavailable.';
             $webgl_icon.addClass("sad");
           } else if (!energy2d_modeler.isWebGLActive()) {
@@ -206,7 +182,6 @@ define(function (require) {
 
     // One-off initialization.
     initHTMLelement();
-    testFeatures();
 
     return WebGL_status_view;
   };

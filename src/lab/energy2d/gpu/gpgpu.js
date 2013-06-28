@@ -14,9 +14,6 @@ define(function (require) {
     // The internal `gl` variable holds the current WebGL context.
     gl,
 
-    // Available extensions.
-    ext,
-
     // GPGPU utils must know dimensions of data (grid).
     // This assumption that all the textures will have the same dimensions is
     // caused by performance reasons (helps avoiding recreating data structures).
@@ -116,36 +113,67 @@ define(function (require) {
     // Common error messages.
     INIT_ERR = 'GPGPU: call init(grid_width, grid_height) with proper dimensions first!',
 
+    // Features and extensions. Their availability will be updated during initialization.
+    feature = {
+      'WebGLContext': {
+        required: true,
+        available: false
+      },
+      'OES_texture_float': {
+        required: true,
+        available: false
+      },
+      'FLOAT texture as render target': {
+        required: true,
+        available: false
+      },
+      'OES_texture_float_linear': {
+        required: false,
+        available: false
+      }
+    },
+
     //
     // Private methods.
     //
     initWebGL = function () {
       // Setup WebGL context.
       gl = context.getWebGLContext();
-      ext = {};
+      if (gl) {
+        feature['WebGLContext'].available = true;
+      } else {
+        feature['WebGLContext'].available = false;
+        throw new Error("GPGPU: WebGL is not supported!");
+      }
+
       // Check if OES_texture_float is available.
       if (gl.getExtension('OES_texture_float')) {
-        ext['OES_texture_float'] = true;
+        feature['OES_texture_float'].available = true;
       } else {
-        ext['OES_texture_float'] = false;
+        feature['OES_texture_float'].available = false;
         throw new Error("GPGPU: OES_texture_float is not supported!");
       }
 
+      // Optional extension check.
       if (gl.getExtension('OES_texture_float_linear')) {
-        ext['OES_texture_float_linear'] = true;
+        feature['OES_texture_float_linear'].available = true;
       } else {
-        ext['OES_texture_float_linear'] = false;
+        feature['OES_texture_float_linear'].available = false;
         console.warn("GPGPU: OES_texture_float_linear is not supported. Renering quality will be affected.");
       }
 
       // Check if rendering to FLOAT textures is supported.
-      temp_texture = new Texture(1, 1, { type: gl.FLOAT, format: gl.RGBA, filter: gl.LINEAR });
+      temp_texture = new Texture(1, 1, {
+        type: gl.FLOAT,
+        format: gl.RGBA,
+        filter: feature['OES_texture_float_linear'].available ? gl.LINEAR : gl.NEAREST
+      });
       temp_texture.setAsRenderTarget();
       if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE) {
-        ext['FLOAT texture as render target'] = true;
+        feature['FLOAT texture as render target'].available = true;
       } else {
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-        ext['FLOAT texture as render target'] = false;
+        feature['FLOAT texture as render target'].available = false;
         throw new Error("GPGPU: FLOAT texture as render target is not supported!");
       }
       gl.bindFramebuffer(gl.FRAMEBUFFER, null);
@@ -190,7 +218,7 @@ define(function (require) {
       grid_width = width;
       grid_height = height;
 
-      filter = ext['OES_texture_float_linear'] ? gl.LINEAR : gl.NEAREST;
+      filter = feature['OES_texture_float_linear'].available ? gl.LINEAR : gl.NEAREST;
 
       // Setup storage for given dimensions.
       temp_texture   = new Texture(grid_width, grid_height, { type: gl.FLOAT, format: gl.RGBA, filter: filter });
@@ -198,14 +226,15 @@ define(function (require) {
       temp_storage   = new Float32Array(grid_width * grid_height * 4);
     },
 
-    get extensionsInfo() {
+    get featuresInfo() {
       if (!WebGL_initialized) {
         try {
-          // While testing extensions, we don't want to throw exceptions.
+          // While testing features / extensions, we don't want to throw
+          // exceptions.
           initWebGL();
         } catch (e) {}
       }
-      return ext;
+      return feature;
     },
 
     getWebGLContext: function () {
@@ -225,7 +254,7 @@ define(function (require) {
       return new Texture(grid_width, grid_height, {
         type: gl.FLOAT,
         format: gl.RGBA,
-        filter: ext['OES_texture_float_linear'] ? gl.LINEAR : gl.NEAREST
+        filter: feature['OES_texture_float_linear'].available ? gl.LINEAR : gl.NEAREST
       });
     },
 
