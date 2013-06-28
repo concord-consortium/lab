@@ -2,6 +2,10 @@
   :name: "Samples"
   :category: Samples
 
+- :path: interactions-project
+  :name: "Interactions Project"
+  :category: Curriculum
+
 - :path: sam/intermolecular-attractions
   :name: "Science of Atoms and Molecules: Intermolecular Attractions"
   :category: Curriculum
