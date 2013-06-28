@@ -91,9 +91,9 @@ guard 'shell' do
     command("make")
   end
 
-  watch(/^src\/(.+\.sass)$/) do |match|
-    puts match[0]
-    command("bin/sass -I src --require ./src/helpers/sass/lab_fontface.rb src/#{match[0]} public/#{match[0]}.css")
+  watch(/^src\/(.+)\.sass$/) do |match|
+    puts match[1]
+    command("bin/sass -I src --require ./src/helpers/sass/lab_fontface.rb src/#{match[1]}.sass public/#{match[1]}.css")
   end
 
   watch "src/readme.scss" do
