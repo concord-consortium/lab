@@ -125,6 +125,13 @@ define(function (require) {
       if (!gl.getExtension('OES_texture_float')) {
         throw new Error("GPGPU: OES_texture_float is not supported!");
       }
+      if (!gl.getExtension('OES_texture_float_linear')) {
+        // TODO: Note that in theory we could use textures without linear
+        // filtering. If this extension is missing on many devices /
+        // configurations, we should consider handling situation when it's
+        // unavailable.
+        throw new Error("GPGPU: OES_texture_float_linear is not supported!");
+      }
       // Check if rendering to FLOAT textures is supported.
       temp_texture = new Texture(1, 1, { type: gl.FLOAT, format: gl.RGBA, filter: gl.LINEAR });
       temp_texture.setAsRenderTarget();

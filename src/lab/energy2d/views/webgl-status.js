@@ -112,6 +112,15 @@ define(function (require) {
           }
           gl.bindFramebuffer(gl.FRAMEBUFFER, null);
         }
+
+        // 4. OES_texture_float_linear.
+        // In theory it could be optional (but it isn't for now).
+        if (gl.getExtension('OES_texture_float_linear')) {
+          features['OES_texture_float_linear'] = true;
+        } else {
+          features['OES_texture_float_linear'] = false;
+          extensions = false;
+        }
       },
 
       //
