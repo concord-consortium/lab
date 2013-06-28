@@ -1,4 +1,4 @@
-/*globals define: false, d3: false */
+/*global define: false, d3: false */
 /*jshint loopfunc: true*/
 
 /*
@@ -120,7 +120,7 @@
 
 */
 
-define(function (require) {
+define(function () {
 
   var version = "0.0.1",
       windows_platform_token = {
@@ -268,11 +268,9 @@ define(function (require) {
 
   function renderToTable(benchmarks_table, benchmarksThatWereRun, results) {
     var i = 0,
-        browser_info,
-        averaged_row,
+        average_row,
         results_row,
         result,
-        formatter,
         col_number = 0,
         col_numbers = {},
         title_row,
@@ -322,12 +320,11 @@ define(function (require) {
           average_elements = average_row.getElementsByTagName("td"),
           total,
           average,
-          samples,
           genericDecimalFormatter = d3.format("5.1f"),
           genericIntegerFormatter = d3.format("f");
 
       function isInteger(i) {
-        return Math.floor(i) == i;
+        return Math.floor(i) === i;
       }
 
       for (i = 0; i < benchmarksThatWereRun.length; i++) {
@@ -395,8 +392,7 @@ define(function (require) {
   }
 
   function bench(benchmarks_to_run, resultsCallback, start_callback, end_callback) {
-    var i,
-        benchmarks_completed,
+    var bencharks_queue = benchmarks_to_run.slice(),
         results = [],
         browser_info = what_browser(),
         formatter = d3.time.format("%Y-%m-%d %H:%M");
@@ -406,29 +402,29 @@ define(function (require) {
     results.push([ "cpu/os", browser_info.oscpu]);
     results.push([ "date", formatter(new Date())]);
 
-    benchmarks_completed = 0;
     if (start_callback) start_callback();
-    for (i = 0; i < benchmarks_to_run.length; i++) {
-      (function(b) {
-        b.run(function(result) {
-          if (b.formatter) {
-            results.push([ b.name, b.formatter(result) ]);
-          } else {
-            results.push([ b.name, result ]);
-          }
-         if (++benchmarks_completed === benchmarks_to_run.length) {
-           if (end_callback) {
-             end_callback();
-           }
-           if (resultsCallback) {
-             resultsCallback(results);
-           }
-         }
-        });
-      }(benchmarks_to_run[i]));
-      if (end_callback === undefined) {
+
+    runBenchmark(bencharks_queue.shift());
+
+    function runBenchmark(b) {
+      b.run(doneCallback);
+
+      function doneCallback(result) {
+        if (b.formatter) {
+          results.push([ b.name, b.formatter(result) ]);
+        } else {
+          results.push([ b.name, result ]);
+        }
+
+        if (bencharks_queue.length > 0) {
+          runBenchmark(bencharks_queue.shift());
+        } else {
+          if (end_callback) end_callback();
+          if (resultsCallback) resultsCallback(results);
+        }
       }
     }
+
     return results;
   }
 
