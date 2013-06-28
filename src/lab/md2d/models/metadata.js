@@ -507,7 +507,7 @@ define(function() {
       },
       // View options.
       color: {
-        defaultValue: "rgb(128,128,128)"
+        defaultValue: "transparent"
       },
       lineColor: {
         defaultValue: "black"

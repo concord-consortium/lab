@@ -51,13 +51,13 @@ define(function (require) {
         model2pxInv,
 
         // "Containers" - SVG g elements used to position layers of the final visualization.
-        rectangleContainerBelow = modelView.viewport.append("g").attr("class", "rectangle-container-below");
+        rectangleContainerBelow = modelView.viewport.append("g").attr("class", "rectangle-container-below"),
         imageContainerBelow     = modelView.viewport.append("g").attr("class", "image-container-below"),
         textContainerBelow      = modelView.viewport.append("g").attr("class", "text-container-below"),
         radialBondsContainer    = modelView.viewport.append("g").attr("class", "radial-bonds-container"),
         VDWLinesContainer       = modelView.viewport.append("g").attr("class", "vdw-lines-container"),
         mainContainer           = modelView.viewport.append("g").attr("class", "main-container"),
-        rectangleContainerTop   = modelView.viewport.append("g").attr("class", "rectangle-container-top");
+        rectangleContainerTop   = modelView.viewport.append("g").attr("class", "rectangle-container-top"),
         imageContainerTop       = modelView.viewport.append("g").attr("class", "image-container-top"),
         textContainerTop        = modelView.viewport.append("g").attr("class", "text-container-top"),
         iconContainer           = modelView.vis.append("g").attr("class", "icon-container"),
@@ -108,7 +108,7 @@ define(function (require) {
         rectangleTop,
         rectangleBelow,
         mockRectanglesTop= [],
-        mockRectanglesBottom = [],
+        mockRectanglesBelow = [],
         radialBond1, radialBond2,
         vdwPairs = [],
         vdwLines,
@@ -267,16 +267,16 @@ define(function (require) {
         gradientName = "pos-charge-shading-" + i;
         ChargeLevel = i / CHARGE_SHADING_STEPS;
         gradientUrl = gradients.createRadialGradient(gradientName,
-        	posLightColorScale(ChargeLevel),
-        	posMedColorScale(ChargeLevel),
+          posLightColorScale(ChargeLevel),
+          posMedColorScale(ChargeLevel),
             posDarkColorScale(ChargeLevel), mainContainer);
         gradientNameForPositiveChargeLevel[i] = gradientUrl;
 
         gradientName = "neg-charge-shading-" + i;
         ChargeLevel = i / CHARGE_SHADING_STEPS;
         gradientUrl = gradients.createRadialGradient(gradientName,
-        	negLightColorScale(ChargeLevel),
-        	negMedColorScale(ChargeLevel),
+          negLightColorScale(ChargeLevel),
+          negMedColorScale(ChargeLevel),
             negDarkColorScale(ChargeLevel), mainContainer);
         gradientNameForNegativeChargeLevel[i] = gradientUrl;
       }
@@ -348,10 +348,10 @@ define(function (require) {
     // d - atom data.
     function getParticleGradient(d) {
         var ke, keIndex, charge, chargeIndex, chargeColor,
-        	aminoAcidColorScheme = model.get("aminoAcidColorScheme");
+          aminoAcidColorScheme = model.get("aminoAcidColorScheme");
 
         if (d.marked) {
-        	return "url(#mark-grad)";
+          return "url(#mark-grad)";
         }
 
         if (keShadingMode) {
@@ -366,12 +366,12 @@ define(function (require) {
 
         if (chargeShadingMode || aminoAcidColorScheme==="charge" || aminoAcidColorScheme==="chargeAndHydro") {
           charge = d.charge;
-          chargeIndex = Math.round(Math.min(Math.abs(charge) / 3, 1) * (CHARGE_SHADING_STEPS - 1))
-       	  chargeColor = chargeIndex==0?"url(#neutral-grad)":(charge >= 0 ? gradientNameForPositiveChargeLevel : gradientNameForNegativeChargeLevel)[chargeIndex];
+          chargeIndex = Math.round(Math.min(Math.abs(charge) / 3, 1) * (CHARGE_SHADING_STEPS - 1));
+          chargeColor = chargeIndex === 0 ? "url(#neutral-grad)" : (charge >= 0 ? gradientNameForPositiveChargeLevel : gradientNameForNegativeChargeLevel)[chargeIndex];
         }
 
-        if (chargeShadingMode || aminoAcidColorScheme==="charge" || aminoAcidColorScheme==="chargeAndHydro" && chargeIndex!=0) {
-        	return chargeColor
+        if (chargeShadingMode || aminoAcidColorScheme==="charge" || aminoAcidColorScheme==="chargeAndHydro" && chargeIndex !== 0) {
+          return chargeColor;
         }
 
         if (!d.isAminoAcid()) {
@@ -471,11 +471,11 @@ define(function (require) {
               .attr({
                 "y": yPos,
                 "width": fSize*2,
-                "height": fSize*2,
+                "height": fSize*2
               })
               .style("display", "");
 
-            imageHeight = parseInt(imageSelect.attr("height"));
+            imageHeight = parseInt(imageSelect.attr("height"), 10);
             yPos += imageHeight;
         } else {
             iconContainer.select("#heat-bath").style("display","none");
@@ -489,7 +489,7 @@ define(function (require) {
               .attr({
                 "y": yPos,
                 "width": fSize*2.2,
-                "height": fSize*6,
+                "height": fSize*6
               })
               .style("display", "");
         } else {
@@ -649,28 +649,28 @@ define(function (require) {
     }
 
     function rectangleEnter() {
-      var layers=[rectangleTop,rectangleBelow]
+      var layers=[rectangleTop,rectangleBelow];
       for(i = 0; i < layers.length; i++){
-      	  var rectangleGroup = layers[i].enter().append("g");
-	      rectangleGroup
-	        .attr("class", "rectangle")
-	        .attr("transform",
-	          function (d, i) {
-	            return "translate(" + model2px(rectangles.x[d]) + " " + model2pxInv(rectangles.y[d] + rectangles.height[d]) + ")";
-	          }
-	        );
-	      rectangleGroup.append("rect")
-	        .attr({
-	          "class": "rectangle-shape",
-	          "x": 0,
-	          "y": 0,
-	          "width": function(d, i) {return model2px(rectangles.width[d]); },
-	          "height": function(d, i) {return model2px(rectangles.height[d]); },
-	          "fill": function(d, i) { return rectangles.visible[d] ? rectangles.color[d] : "rgba(128,128,128, 0)"; },
-	          "stroke-width": function(d, i) { return rectangles.lineWeight[d]},
-	          "stroke-dasharray": function(d, i) { return rectangles.lineDashes[d] },
-	          "stroke": function(d, i) { return rectangles.visible[d] ? rectangles.lineColor[d] : "rgba(128,128,128, 0)"; }
-	        });
+          var rectangleGroup = layers[i].enter().append("g");
+        rectangleGroup
+          .attr("class", "rectangle")
+          .attr("transform",
+            function (d, i) {
+              return "translate(" + model2px(rectangles.x[d]) + " " + model2pxInv(rectangles.y[d] + rectangles.height[d]) + ")";
+            }
+          );
+        rectangleGroup.append("rect")
+          .attr({
+            "class": "rectangle-shape",
+            "x": 0,
+            "y": 0,
+            "width": function(d, i) {return model2px(rectangles.width[d]); },
+            "height": function(d, i) {return model2px(rectangles.height[d]); },
+            "fill": function(d, i) { return rectangles.visible[d] ? rectangles.color[d] : "rgba(128,128,128, 0)"; },
+            "stroke-width": function(d, i) { return rectangles.lineWeight[d]; },
+            "stroke-dasharray": function(d, i) { return rectangles.lineDashes[d]; },
+            "stroke": function(d, i) { return rectangles.visible[d] ? rectangles.lineColor[d] : "rgba(128,128,128, 0)"; }
+          });
        }
     }
 
@@ -1314,22 +1314,22 @@ define(function (require) {
         obstacleEnter();
       }
     }
-    
+
     function setupRectangles() {
       rectangles = model.get_rectangles();
       rectangleContainerTop.selectAll(".rectangle").remove();
       rectangleContainerBelow.selectAll(".rectangle").remove();
       if (rectangles) {
-      	mockRectanglesTop=[]
-      	mockRectanglesBelow=[]
-      	for(i = 0; i < rectangles.x.length ; i++){
-      		if(rectangles.layer[i]===1){
-      			mockRectanglesTop.push(i)
-      		}
-      		else{
-      			mockRectanglesBelow.push(i)
-      		}
-      	}
+        mockRectanglesTop=[];
+        mockRectanglesBelow=[];
+        for(var i = 0; i < rectangles.x.length ; i++){
+          if(rectangles.layer[i]===1){
+            mockRectanglesTop.push(i)
+          }
+          else{
+            mockRectanglesBelow.push(i);
+          }
+        }
         rectangleTop = rectangleContainerTop.selectAll(".rectangle").data(mockRectanglesTop);
         rectangleBelow = rectangleContainerBelow.selectAll(".rectangle").data(mockRectanglesBelow);
         rectangleEnter();
@@ -1488,7 +1488,7 @@ define(function (require) {
       }
 
       if (useQuantumDynamics) {
-        particle.attr("filter", function (d) { if (d.excitation) {return "url(#glow)";} return null; })
+        particle.attr("filter", function (d) { if (d.excitation) {return "url(#glow)";} return null; });
       }
 
       label.attr("transform", function (d) {
