@@ -137,7 +137,8 @@ define(function () {
         "WOW64":       "64/32",
         "Win64; IA64": "64",
         "Win64; x64":  "64"
-      };
+      },
+      average_row;
 
   function what_browser() {
     var chromematch  = / (Chrome)\/(.*?) /,
@@ -268,7 +269,6 @@ define(function () {
 
   function renderToTable(benchmarks_table, benchmarksThatWereRun, results) {
     var i = 0,
-        average_row,
         results_row,
         result,
         col_number = 0,
