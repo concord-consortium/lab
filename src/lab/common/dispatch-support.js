@@ -83,6 +83,7 @@ define(function() {
 
       mixInto: function(target) {
         target.on = api.on;
+        target.suppressEvents = api.suppressEvents;
       },
 
       /**
@@ -123,6 +124,18 @@ define(function() {
           d3dispatch[eventName]();
         });
         // Reset suppressed events.
+        suppressedEvents = d3.set();
+      },
+
+      /**
+       * Allows to execute some action without dispatching any events.
+       * @param {function} action
+       */
+      suppressEvents: function(action) {
+        batchMode = true;
+        action();
+        batchMode = false;
+        // Reset suppressed events without dispatching them.
         suppressedEvents = d3.set();
       }
     };

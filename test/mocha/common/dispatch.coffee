@@ -115,6 +115,15 @@ describe "Dispatch", ->
       d.endBatch()
       l.l2.callCount.should.eql 5
 
+    it "should let client code suppress event dsipatching", ->
+      d.suppressEvents ->
+        d.e1()
+        d.e2()
+
+      l.l1.callCount.should.eql 0
+      l.l2.callCount.should.eql 0
+
+
     it "should let user register new events after initialization", ->
       (-> d.e3()).should.throw()
       (-> d.e4()).should.throw()
@@ -144,16 +153,6 @@ describe "Dispatch", ->
       l.l1.callCount.should.eql 1
       l.l2.callCount.should.eql 1
 
-    it "should provide mixInto method injecting .on() method to target", ->
-      target = {}
-      d.mixInto target
-
-      d.addEventTypes "e3"
-      target.on "e3"
-
-      d.e3()
-      l.l3.callCount.should.eql 1
-
     it "should let remove the listener", ->
       d.on "e1", null
 
@@ -161,3 +160,10 @@ describe "Dispatch", ->
       d.e2()
       l.l1.callCount.should.eql 0
       l.l2.callCount.should.eql 1
+
+    it "should provide mixInto method injecting .on() and .suppressEvents() methods to target", ->
+      target = {}
+      d.mixInto target
+
+      should.exist(target.on)
+      should.exist(target.suppressEvents)
