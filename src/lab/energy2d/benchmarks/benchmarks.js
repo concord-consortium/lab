@@ -1,6 +1,6 @@
-/*global define model */
+/*global define: false, Lab: false, model: false, d3: false */
 
-define(function (require) {
+define(function () {
 
   return function Benchmarks(controller) {
 
@@ -22,11 +22,10 @@ define(function (require) {
         formatter: d3.format("5.1f"),
         run: function(done) {
           var elapsed, start, i;
-
           model.stop();
           model.properties.use_WebGL = false;
           start = +Date.now();
-          i = -1;
+          i = 0;
           while (i++ < 100) {
             controller.modelContainer.update();
           }
@@ -39,18 +38,17 @@ define(function (require) {
         numeric: true,
         formatter: d3.format("5.1f"),
         run: function(done) {
-          var elapsed, start, i;
-
+          var start, elapsed;
           model.stop();
-          model.properties.use_WebGL = false;
           start = +Date.now();
-          i = -1;
-          while (i++ < 100) {
-            // advance model 1 tick, but don't paint the display
-            model.tick(1, { dontDispatchTickEvent: true });
-          }
+          model.suppressEvents(function () {
+            var i = 0;
+            while (i++ < 50) {
+              model.tick();
+            }
+          });
           elapsed = Date.now() - start;
-          done(100/elapsed*1000);
+          done(50/elapsed*1000);
         }
       },
       {
@@ -59,16 +57,15 @@ define(function (require) {
         formatter: d3.format("5.1f"),
         run: function(done) {
           var start, elapsed, i;
-
           model.stop();
           model.properties.use_WebGL = false;
           start = +Date.now();
-          i = -1;
-          while (i++ < 100) {
+          i = 0;
+          while (i++ < 50) {
             model.tick();
           }
           elapsed = Date.now() - start;
-          done(100/elapsed*1000);
+          done(50/elapsed*1000);
         }
       },
       {
@@ -77,16 +74,15 @@ define(function (require) {
         formatter: d3.format("5.1f"),
         run: function(done) {
           var start, elapsed, i;
-
           model.stop();
           model.properties.use_WebGL = true;
           start = +Date.now();
-          i = -1;
-          while (i++ < 100) {
+          i = 0;
+          while (i++ < 50) {
             model.tick();
           }
           elapsed = Date.now() - start;
-          done(100/elapsed*1000);
+          done(50/elapsed*1000);
         }
       },
       {
@@ -146,6 +142,5 @@ define(function (require) {
 
     return benchmarks;
 
-  }
-
+  };
 });
