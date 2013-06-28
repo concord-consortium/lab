@@ -1,5 +1,5 @@
-/*jslint indent: 2, browser: true, newcap: true, es5: true */
-/*globals define: false, Float32Array: false, Uint8Array: false*/
+/*jshint indent: 2, browser: true, newcap: true, multistr: true, es5: true */
+/*global define: false, Float32Array: false, Uint8Array: false*/
 
 // GPGPU Utils (singleton, one instance in the environment).
 define(function (require) {
@@ -14,6 +14,9 @@ define(function (require) {
     // The internal `gl` variable holds the current WebGL context.
     gl,
 
+    // Available extensions.
+    ext,
+
     // GPGPU utils must know dimensions of data (grid).
     // This assumption that all the textures will have the same dimensions is
     // caused by performance reasons (helps avoiding recreating data structures).
@@ -21,8 +24,6 @@ define(function (require) {
     grid_width,
     grid_height,
 
-    // Framebuffer object.
-    framebuffer,
     // Texture used as a temporary storage (Float, RGBA).
     temp_texture,
     // Texture used for Float to RGBA conversion (Unsigned Byte, RGBA).
@@ -121,25 +122,34 @@ define(function (require) {
     initWebGL = function () {
       // Setup WebGL context.
       gl = context.getWebGLContext();
+      ext = {};
       // Check if OES_texture_float is available.
-      if (!gl.getExtension('OES_texture_float')) {
+      if (gl.getExtension('OES_texture_float')) {
+        ext['OES_texture_float'] = true;
+      } else {
+        ext['OES_texture_float'] = false;
         throw new Error("GPGPU: OES_texture_float is not supported!");
       }
-      if (!gl.getExtension('OES_texture_float_linear')) {
-        // TODO: Note that in theory we could use textures without linear
-        // filtering. If this extension is missing on many devices /
-        // configurations, we should consider handling situation when it's
-        // unavailable.
-        throw new Error("GPGPU: OES_texture_float_linear is not supported!");
+
+      if (gl.getExtension('OES_texture_float_linear')) {
+        ext['OES_texture_float_linear'] = true;
+      } else {
+        ext['OES_texture_float_linear'] = false;
+        console.warn("GPGPU: OES_texture_float_linear is not supported. Renering quality will be affected.");
       }
+
       // Check if rendering to FLOAT textures is supported.
       temp_texture = new Texture(1, 1, { type: gl.FLOAT, format: gl.RGBA, filter: gl.LINEAR });
       temp_texture.setAsRenderTarget();
-      if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) {
+      if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE) {
+        ext['FLOAT texture as render target'] = true;
+      } else {
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        ext['FLOAT texture as render target'] = false;
         throw new Error("GPGPU: FLOAT texture as render target is not supported!");
       }
       gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+
       // Configure WebGL context and create necessary objects and structures.
       gl.disable(gl.DEPTH_TEST);
       plane = Mesh.plane();
@@ -150,7 +160,7 @@ define(function (require) {
     },
 
     packRGBAData = function (R, G, B, A, storage) {
-      var res, i, i4, len;
+      var i, i4, len;
 
       if (R.length !== G.length || R.length !== B.length || R.length !== A.length ||
           storage.length !== R.length * 4) {
@@ -171,6 +181,8 @@ define(function (require) {
   return {
     // Setups rendering context (only during first call) and necessary storage (texture, array).
     init: function (width, height) {
+      var filter;
+
       if (!WebGL_initialized) {
         initWebGL();
       }
@@ -178,10 +190,22 @@ define(function (require) {
       grid_width = width;
       grid_height = height;
 
+      filter = ext['OES_texture_float_linear'] ? gl.LINEAR : gl.NEAREST;
+
       // Setup storage for given dimensions.
-      temp_texture   = new Texture(grid_width, grid_height, { type: gl.FLOAT, format: gl.RGBA, filter: gl.LINEAR });
-      output_texture = new Texture(grid_width, grid_height, { type: gl.UNSIGNED_BYTE, format: gl.RGBA, filter: gl.LINEAR });
+      temp_texture   = new Texture(grid_width, grid_height, { type: gl.FLOAT, format: gl.RGBA, filter: filter });
+      output_texture = new Texture(grid_width, grid_height, { type: gl.UNSIGNED_BYTE, format: gl.RGBA, filter: filter });
       temp_storage   = new Float32Array(grid_width * grid_height * 4);
+    },
+
+    get extensionsInfo() {
+      if (!WebGL_initialized) {
+        try {
+          // While testing extensions, we don't want to throw exceptions.
+          initWebGL();
+        } catch (e) {}
+      }
+      return ext;
     },
 
     getWebGLContext: function () {
@@ -193,15 +217,16 @@ define(function (require) {
 
     // Creates a floating point texture with proper parameters.
     createTexture: function () {
-      var tex;
       if (!grid_width || !grid_height) {
         return new Error(INIT_ERR);
       }
       // Use RGBA format as this is the safest option. Single channel textures aren't well supported
       // as render targets attached to FBO.
-      tex = new Texture(grid_width, grid_height, { type: gl.FLOAT, format: gl.RGBA, filter: gl.LINEAR });
-
-      return tex;
+      return new Texture(grid_width, grid_height, {
+        type: gl.FLOAT,
+        format: gl.RGBA,
+        filter: ext['OES_texture_float_linear'] ? gl.LINEAR : gl.NEAREST
+      });
     },
 
     // Convert given array to the RGBA FLoat32Array (which can be used
@@ -252,7 +277,7 @@ define(function (require) {
     // Read a floating point texture.
     // Returns Float32Array.
     readTexture: function (tex, output, channel) {
-      var output_storage, i, j;
+      var output_storage;
       if (!gl || tex.width !== grid_width || tex.height !== grid_height) {
         return new Error(INIT_ERR);
       }
