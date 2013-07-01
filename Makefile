@@ -43,29 +43,17 @@ vpath %.json src
 HAML_FILES := $(shell find src -name '*.haml' -exec echo {} \; | sed s'/src\/\(.*\)\.haml/public\/\1/' )
 vpath %.haml src
 
-SASS_TOP_LEVEL_FILES := $(shell find src -maxdepth 1 -name '*.sass' -exec echo {} \; | sed s'/src\/\(.*\)\.sass/public\/\1.css/' )
+SASS_FILES := $(shell find src -name '*.sass' -and -not -path "src/sass/*" -exec echo {} \; | sed s'/src\/\(.*\)\.sass/public\/\1.css/' )
+SASS_FILES += $(shell find src -name '*.scss' -and -not -path "src/sass/*" -exec echo {} \; | sed s'/src\/\(.*\)\.scss/public\/\1.css/' )
 vpath %.sass src
-
-SASS_EXAMPLE_FILES := $(shell find src/examples -name '*.sass' -exec echo {} \; | sed s'/src\/\(.*\)\.sass/public\/\1.css/' )
-vpath %.sass src/examples
-
-SASS_DOC_FILES := $(shell find src/doc -name '*.sass' -exec echo {} \; | sed s'/src\/\(.*\)\.sass/public\/\1.css/' )
-DOC_FILES := $(SASS_DOC_FILES)
-vpath %.sass src/doc
-
-DOC_FILES += $(shell find src/doc -name '*.html' -print | sed s'/src\/\(.*\)\.html/public\/\1.html/')
-vpath %.html src/doc
-
-DOC_FILES += $(shell find src/doc -name '*.css' -print | sed s'/src\/\(.*\)\.css/public\/\1.css/')
-vpath %.css src/doc
-
-SCSS_EXAMPLE_FILES := $(shell find src -type d -name 'sass' -prune -o -name '*.scss' -exec echo {} \; | grep -v bourbon | sed s'/src\/\(.*\)\.scss/public\/\1.css/' )
 vpath %.scss src
 
-COFFEESCRIPT_EXAMPLE_FILES := $(shell find src/examples -name '*.coffee' -exec echo {} \; | sed s'/src\/\(.*\)\.coffee/public\/\1.js/' )
+COFFEESCRIPT_FILES := $(shell find src/doc -name '*.coffee' -exec echo {} \; | sed s'/src\/\(.*\)\.coffee/public\/\1.js/' )
+COFFEESCRIPT_FILES += $(shell find src/examples -name '*.coffee' -exec echo {} \; | sed s'/src\/\(.*\)\.coffee/public\/\1.js/' )
+COFFEESCRIPT_FILES += $(shell find src/experiments -name '*.coffee' -exec echo {} \; | sed s'/src\/\(.*\)\.coffee/public\/\1.js/' )
 vpath %.coffee src
 
-MARKDOWN_EXAMPLE_FILES := $(shell find src -maxdepth 1 -type d -name 'sass' -prune -o -name '*.md' -exec echo {} \; | grep -v vendor | sed s'/src\/\(.*\)\.md/public\/\1.html/' )
+MARKDOWN_FILES := $(shell find src -name '*.md' -and -not -path "src/sass/*" -exec echo {} \; | grep -v vendor | sed s'/src\/\(.*\)\.md/public\/\1.html/' )
 vpath %.md src
 
 LAB_JS_FILES = \
@@ -75,7 +63,7 @@ LAB_JS_FILES = \
 	public/lab/lab.solar-system.js \
 	public/lab/lab.js
 
-# default target executed when running just: make
+# default target executed when running make
 .PHONY: all
 all: \
 	vendor/d3/d3.js \
@@ -83,9 +71,10 @@ all: \
 	bin \
 	public
 
-# Ruby Gems
+# install Ruby Gem development dependencies
+.PHONY: bin
 bin:
-	bundle install --binstubs
+	bundle install --binstubs --quiet
 
 # clean, make ... and also build and deploy the Java resources
 .PHONY: everything
@@ -96,24 +85,17 @@ everything:
 
 .PHONY: src
 src: \
-	$(MARKDOWN_EXAMPLE_FILES) \
+	$(MARKDOWN_FILES) \
 	$(LAB_JS_FILES) \
 	$(LAB_JS_FILES:.js=.min.js) \
 	$(HAML_FILES) \
-	$(SASS_TOP_LEVEL_FILES) \
-	$(SASS_EXAMPLE_FILES) \
-	$(DOC_FILES) \
-	$(SCSS_EXAMPLE_FILES) \
-	$(COFFEESCRIPT_EXAMPLE_FILES) \
+	$(SASS_FILES) \
+	$(COFFEESCRIPT_FILES) \
 	$(INTERACTIVE_FILES) \
 	public/interactives.html \
 	public/embeddable.html \
 	public/browser-check.html \
 	public/interactives.json \
-	public/index.css \
-	public/grapher.css \
-	public/interactives.css \
-	public/embeddable.css \
 	public/application.js
 
 .PHONY: clean
@@ -527,7 +509,10 @@ public/vendor/mathjax:
 public/vendor/fonts: $(FONT_FOLDERS)
 	mkdir -p public/vendor/fonts
 	cp -R vendor/fonts public/vendor/
-	rm -rf public/vendor/fonts/Font-Awesome/.git
+	rm -rf public/vendor/fonts/Font-Awesome/.git*
+	rm -f public/vendor/fonts/Font-Awesome/.gitignore
+	rm -rf public/vendor/fonts/Font-Awesome/less
+	rm -rf public/vendor/fonts/Font-Awesome/sass
 
 public/vendor/requirejs:
 	mkdir -p public/vendor/requirejs
@@ -600,39 +585,10 @@ public/%.html: src/%.html
 public/%.css: src/%.css
 	cp $< $@
 
-public/index.css: src/index.sass
-	$(SASS_COMPILER) src/index.sass public/index.css
-
-public/application.js: src/application.js
-	cp src/application.js public/application.js
-
-public/embeddable-author.css: src/embeddable.sass
-	$(SASS_COMPILER) src/embeddable.sass public/embeddable-author.css
-
-public/embeddable.css: src/embeddable.sass \
-	$(SASS_LAB_LIBRARY_FILES)
-	$(SASS_COMPILER) src/embeddable.sass public/embeddable.css
-
-public/interactives.css: src/interactives.sass \
-	$(SASS_LAB_LIBRARY_FILES)
-	$(SASS_COMPILER) src/interactives.sass public/interactives.css
-
 public/grapher.css: src/grapher.sass \
 	src/sass/lab/_colors.sass \
 	src/sass/lab/_grapher.sass
 	$(SASS_COMPILER) src/grapher.sass public/grapher.css
-
-public/examples/%.css: %.sass
-	$(SASS_COMPILER) $< $@
-
-public/doc/%.css: %.sass
-	$(SASS_COMPILER) $< $@
-
-public/lab/%.css: %.sass
-	$(SASS_COMPILER) $< $@
-
-lab/%.css: %.sass
-	$(SASS_COMPILER) $< $@
 
 public/%.css: %.scss
 	$(SASS_COMPILER) $< $@
@@ -669,33 +625,25 @@ public/interactives.json: $(INTERACTIVE_FILES)
 h:
 	@echo $(HAML_FILES)
 
-.PHONY: se
-se:
-	@echo $(SASS_EXAMPLE_FILES)
-
-.PHONY: sce
-sce:
-	@echo $(SCSS_EXAMPLE_FILES)
-
-.PHONY: sd
-sd:
-	@echo $(DOC_FILES)
+.PHONY: s
+s:
+	@echo $(SASS_FILES)
 
 .PHONY: s1
 sl:
 	@echo $(SASS_LIBRARY_FILES)
 
+.PHONY: m
+m:
+	@echo $(MARKDOWN_FILES)
+
 .PHONY: c
 c:
-	@echo $(COFFEESCRIPT_EXAMPLE_FILES)
+	@echo $(COFFEESCRIPT_FILES)
 
 .PHONY: cm
 cm:
 	@echo $(COMMON_SRC_FILES)
-
-.PHONY: m
-m:
-	@echo $(MARKDOWN_EXAMPLE_FILES)
 
 .PHONY: md2
 md2:
@@ -720,18 +668,6 @@ gr:
 int:
 	@echo $(INTERACTIVE_FILES)
 
-.PHONY: cdb
-cdb:
-	@echo $(COUCHDB_RUNNING)
-
 .PHONY: sources
 sources:
 	@echo $(LAB_SRC_FILES)
-
-.PHONY: cdb-status
-cdb-status:
-ifeq ($(COUCHDB_RUNNING),couch)
-	@echo "couchdb running"
-else
-	@echo "couchdb not running"
-endif
