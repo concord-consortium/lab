@@ -85,15 +85,15 @@ guard 'shell' do
     command("make public/imports")
   end
 
-  watch(/(^src\/sass\/.+)/) do |match|
-    puts match[0]
-    delete_css
-    command("make")
-  end
-
   watch(/^src\/(.+)\.sass$/) do |match|
-    puts match[1]
-    command("bin/sass -I src --require ./src/helpers/sass/lab_fontface.rb src/#{match[1]}.sass public/#{match[1]}.css")
+    path = match[1]
+    puts path
+    if path =~ /^sass\//
+      delete_css
+      command("make")
+    else
+      command("bin/sass -I src --require ./src/helpers/sass/lab_fontface.rb src/#{path}.sass public/#{path}.css")
+    end
   end
 
   watch "src/readme.scss" do
