@@ -232,6 +232,7 @@ AUTHORING = false;
         "fontScale": 1.3,
         "models": [
           {
+            "type": "md2d",
             "id": "empty-model",
             "model": {
               "type": "md2d",
