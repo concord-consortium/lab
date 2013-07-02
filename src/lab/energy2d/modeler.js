@@ -13,6 +13,11 @@ define(function (require) {
             name: "second",
             pluralName: "seconds",
             symbol: "s"
+          },
+          length: {
+            name: "meter",
+            pluralName: "meters",
+            symbol: "m"
           }
         }
       };
@@ -143,6 +148,21 @@ define(function (require) {
 
       coreModel = coremodel.makeCoreModel(model.properties);
       setWebGLEnabled(model.properties.use_WebGL);
+
+      // Temporal workaround. In fact width and height should
+      // be outputs based on min / max.
+      model.defineOutput('minX', {}, function() {
+        return 0;
+      });
+      model.defineOutput('minY', {}, function() {
+        return 0;
+      });
+      model.defineOutput('maxX', {}, function() {
+        return model.properties.model_width;
+      });
+      model.defineOutput('maxY', {}, function() {
+        return model.properties.model_height;
+      });
 
       model.defineOutput('time', {
         label: "Time",
