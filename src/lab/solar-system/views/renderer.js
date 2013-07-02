@@ -11,7 +11,7 @@ define(function (require) {
       wrapSVGText           = require('cs!common/layout/wrap-svg-text'),
       gradients             = require('common/views/gradients');
 
-  return function SolarSystemView(modelView, model) {
+  return function SolarSystemView(SVGContainer, model) {
     // Public API object to be returned.
     var api = {},
 
@@ -39,13 +39,11 @@ define(function (require) {
         modelResults,
 
         // "Containers" - SVG g elements used to position layers of the final visualization.
-        mainContainer,
-        radialBondsContainer,
-        VDWLinesContainer,
-        imageContainerBelow,
-        imageContainerTop,
-        textContainerBelow,
-        textContainerTop,
+        imageContainerBelow  = SVGContainer.viewport.append("g").attr("class", "image-container-below"),
+        textContainerBelow   = SVGContainer.viewport.append("g").attr("class", "text-container-below"),
+        mainContainer        = SVGContainer.viewport.append("g").attr("class", "main-container"),
+        imageContainerTop    = SVGContainer.viewport.append("g").attr("class", "image-container-top"),
+        textContainerTop     = SVGContainer.viewport.append("g").attr("class", "text-container-top"),
 
         // Array which defines a gradient assigned to a given astromonicalBody.
         gradientNameForBody = [],
@@ -230,7 +228,7 @@ define(function (require) {
     }
 
     function astromonicalBodyMouseDown(d, i) {
-      modelView.node.focus();
+      SVGContainer.node.focus();
       if (model.get("enableBodyTooltips")) {
         if (astromonicalBodyTooltipOn !== false) {
           astromonicalBodyDiv.style("opacity", 1e-6);
@@ -334,12 +332,11 @@ define(function (require) {
       if (modelImagePath) {
         imagePath = labConfig.actualRoot + modelImagePath;
       }
-      else if (model.url) {
-        imagePath = labConfig.actualRoot + model.url.slice(0, model.url.lastIndexOf("/") + 1);
+      else if (SVGContainer.url) {
+        imagePath = labConfig.actualRoot + SVGContainer.url.slice(0, SVGContainer.url.lastIndexOf("/") + 1);
       }
 
       bodyTraceColor = model.get("bodyTraceColor");
-
     }
 
     //
@@ -348,18 +345,10 @@ define(function (require) {
     // Called when Renderer is created.
     //
     function init() {
-      // Assign shortcuts, as these variables / functions shouldn't
-      // change.
-      mainContainer        = modelView.containers.mainContainer,
-      imageContainerBelow  = modelView.containers.imageContainerBelow,
-      imageContainerTop    = modelView.containers.imageContainerTop,
-      textContainerBelow   = modelView.containers.textContainerBelow,
-      textContainerTop     = modelView.containers.textContainerTop,
+      model2px = SVGContainer.model2px;
+      model2pxInv = SVGContainer.model2pxInv;
 
-      model2px = modelView.model2px;
-      model2pxInv = modelView.model2pxInv;
-
-      fontSizeInPixels = modelView.getFontSizeInPixels();
+      fontSizeInPixels = SVGContainer.getFontSizeInPixels();
       textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
       traceBodyStrokeWidth = fontSizeInPixels/12;
 
@@ -382,7 +371,7 @@ define(function (require) {
           redrawOperation();
           // All objects where repainted (probably removed and added again), so
           // it's necessary to apply click handlers again.
-          modelView.updateClickHandlers();
+          SVGContainer.updateClickHandlers();
         };
       }
 
@@ -397,12 +386,8 @@ define(function (require) {
       model.on('removeBody', redrawClickableObjects(repaint));
     }
 
-    //
-    // SolarSystem Renderer: reset
-    //
     // Call when model is reset or reloaded.
-    //
-    function reset(newModel) {
+    function bindModel(newModel) {
       model = newModel;
       init();
     }
@@ -421,7 +406,7 @@ define(function (require) {
         model2px = m2px;
         model2pxInv = m2pxInv;
       }
-      fontSizeInPixels = modelView.getFontSizeInPixels();
+      fontSizeInPixels = SVGContainer.getFontSizeInPixels();
       textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
 
       setupDynamicGradients();
@@ -456,13 +441,10 @@ define(function (require) {
       // Expose private methods.
       update: update,
       repaint: repaint,
-      reset: reset,
-      model2px: modelView.model2px,
-      model2pxInv: modelView.model2pxInv
+      bindModel: bindModel,
+      model2px: SVGContainer.model2px,
+      model2pxInv: SVGContainer.model2pxInv
     };
-
-    // Initialization.
-    init();
 
     return api;
   };

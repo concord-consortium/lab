@@ -12,7 +12,7 @@ define(function() {
       $el: $("<div id='model-container' class='container'/>"),
       getHeightForWidth: function() { return 0; },
       resize: function() {},
-      reset: function() {},
+      bindModel: function() {},
       update: function() {}
     };
   };
