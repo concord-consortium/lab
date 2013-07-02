@@ -188,7 +188,7 @@ define(function () {
 
           // Follow size of the canvas defined by CSS rules.
           if (canvas_width !== $parts_canvas.width() || canvas_height !== $parts_canvas.height()) {
-            this.updateCanvasSize();
+            parts_view.updateCanvasSize();
           }
 
           canvas_ctx.clearRect(0, 0, canvas_width, canvas_height);

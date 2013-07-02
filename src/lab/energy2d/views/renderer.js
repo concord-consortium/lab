@@ -134,7 +134,6 @@ define(function(require) {
 
       bindModel: function(newModel) {
         model = newModel;
-        model.on('tick.view-update', api.update);
         model.addPropertiesListener("use_WebGL", function() {
           createEnergy2DScene();
           setVisOptions();
@@ -148,6 +147,10 @@ define(function(require) {
 
         createEnergy2DScene();
         setVisOptions();
+
+        model.on('tick.view-update', api.update);
+        model.on('partsChanged.view-update', parts_view.renderParts);
+
         api.update();
       }
     };
