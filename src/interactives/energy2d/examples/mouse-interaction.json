@@ -1,0 +1,40 @@
+{
+  "title": "Mouse Interaction",
+  "publicationStatus": "public",
+  "subtitle": "Click any point in the model to read its current temperature.",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "benard-cell",
+      "url": "imports/energy2d/models-json/benard-cell.json",
+      "importedFrom": "imports/energy2d/content/benard-cell.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "onLoad": [
+        "onClick('plot', function(x, y) {",
+        "  set('temp', getTemperatureAt(x, y));",
+        "});"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "temp",
+      "initialValue": 0
+    }
+  ],
+  "components": [
+    {
+      "type": "barGraph",
+      "id": "bar-graph-right",
+      "min": 0,
+      "max": 50,
+      "title": "Temperature (°C)",
+      "property": "temp"
+    }
+  ],
+  "layout": {
+    "right": ["bar-graph-right"]
+  }
+}
