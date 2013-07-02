@@ -561,6 +561,9 @@ define(function (require) {
       resize: function() {
         renderContainer();
         repaint();
+        if (selectBrush) {
+          brushContainer.select("g.select-area").call(selectBrush);
+        }
       },
       getHeightForWidth: function (width) {
         var aspectRatio = viewport.width / viewport.height;
@@ -668,6 +671,7 @@ define(function (require) {
         // Remove previous select handler.
         brushContainer.select("g.select-area").remove();
         if (handler === null) {
+          selectBrush = null;
           // Previous handler removed, so just return.
           return;
         }
