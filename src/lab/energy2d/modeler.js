@@ -95,6 +95,48 @@ define(function (require) {
         propertySupport.invalidatingChangePostHook();
       },
 
+      getPart: (function () {
+        function PartWrapper(rawPart) {
+          Object.defineProperty(this, 'rawPart', {
+            enumerable: false,
+            get: function () {
+              return rawPart;
+            }
+          });
+        }
+        Object.keys(metadata.part).forEach(function (key) {
+          Object.defineProperty(PartWrapper.prototype, key, {
+            enumerable: true,
+            get: function () {
+              return this.rawPart[key];
+            },
+            set: function (v) {
+              var WebGLOrg = model.properties.use_WebGL;
+              // This will update CPU array.
+              model.properties.use_WebGL = false;
+
+              propertySupport.invalidatingChangePreHook();
+
+              // Update raw part object.
+              this.rawPart[key] = v;
+              // Update core model arrays based on part's properties.
+              coreModel.partsChanged();
+
+              propertySupport.invalidatingChangePostHook();
+
+              // Restore original WebGL option value. It will
+              // copy CPU arrays to GPU in case of need.
+              model.properties.use_WebGL = WebGLOrg;
+              dispatch.partsChanged();
+            }
+          });
+        });
+
+        return function (i) {
+          return new PartWrapper(coreModel.getPartsArray()[i]);
+        };
+      }()),
+
       getTime: function () {
         return model.properties.timeStep * coreModel.getIndexOfStep();
       },
@@ -144,7 +186,7 @@ define(function (require) {
 
     (function () {
       labModelerMixin.mixInto(model);
-      dispatch.addEventTypes("tick");
+      dispatch.addEventTypes("tick", "partsChanged");
 
       coreModel = coremodel.makeCoreModel(model.properties);
       setWebGLEnabled(model.properties.use_WebGL);

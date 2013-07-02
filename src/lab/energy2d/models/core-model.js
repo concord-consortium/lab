@@ -199,6 +199,31 @@ define(function (require, exports) {
         WebGL_active = true;
       },
 
+      setupOptimizationFlags = function () {
+        radiative = (function () {
+          var i, len;
+          if (opt.sunny) {
+            return true;
+          }
+          for (i = 0, len = parts.length; i < len; i += 1) {
+            if (parts[i].emissivity > 0) {
+              return true;
+            }
+          }
+          return false;
+        }());
+
+        has_part_power = (function () {
+          var i, len;
+          for (i = 0, len = parts.length; i < len; i += 1) {
+            if (parts[i].power > 0) {
+              return true;
+            }
+          }
+          return false;
+        }());
+      },
+
       setupMaterialProperties = function () {
         var
           lx = opt.model_width,
@@ -309,6 +334,12 @@ define(function (require, exports) {
         // energy2d.utils.performance.makePerformanceTools
         setPerformanceTools: function (perf_tools) {
           perf = perf_tools;
+        },
+
+        partsChanged: function () {
+          setupOptimizationFlags();
+          setupMaterialProperties();
+          refreshPowerArray();
         },
 
         useWebGL: function (v) {
@@ -519,31 +550,7 @@ define(function (require, exports) {
     //
     // One-off initialization.
     //
-
-    // Setup optimization flags.
-    radiative = (function () {
-      var i, len;
-      if (opt.sunny) {
-        return true;
-      }
-      for (i = 0, len = parts.length; i < len; i += 1) {
-        if (parts[i].emissivity > 0) {
-          return true;
-        }
-      }
-      return false;
-    }());
-
-    has_part_power = (function () {
-      var i, len;
-      for (i = 0, len = parts.length; i < len; i += 1) {
-        if (parts[i].power > 0) {
-          return true;
-        }
-      }
-      return false;
-    }());
-
+    setupOptimizationFlags();
     setupMaterialProperties();
 
     // CPU version of solvers.
