@@ -29,6 +29,17 @@ cp ../script/dot-gitignore-for-public .gitignore
 git add --all .
 git commit -am "generated from commit: `git --git-dir ../.git log -1 --format="%H%n%n%an <%ae>%n%cd%n%n    %s%n%n    %b"`"
 cd ..
+else
+cat <<heredoc
+
+*** updating separate branch named 'public to track generated content
+
+heredoc
+cd public
+git checkout -b public
+git add --all .
+git commit -am "generated from commit: `git --git-dir ../.git log -1 --format="%H%n%n%an <%ae>%n%cd%n%n    %s%n%n    %b"`"
+cd ..
 fi
 
 # if no arg then use short SHA from commit as version name
