@@ -114,13 +114,6 @@ define(function(require) {
       },
 
       resize: function() {
-        var parentWidth = SVGContainer.$el.width();
-        $canvasCont.css({
-          'width': parentWidth,
-          'height': SVGContainer.$el.height()
-        });
-        $status.css('width', parentWidth);
-
         api.update();
         parts_view.renderParts();
       },
@@ -164,11 +157,13 @@ define(function(require) {
       SVGContainer.$el.append($canvasCont);
       setPos($canvasCont, -1); // underneath SVG view.
       SVGContainer.$el.append($status);
-      setPos($status, 1); // on top of SVG view.
+      setPos($status, 1, true); // on top of SVG view.
 
-      function setPos($el, zIndex) {
+      function setPos($el, zIndex, customHeight) {
         $el.css({
           'position': 'absolute',
+          'width': '100%',
+          'height': customHeight ? undefined : '100%',
           'top': 0,
           'left': 0,
           'z-index': zIndex

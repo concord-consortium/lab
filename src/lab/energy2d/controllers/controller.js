@@ -14,7 +14,7 @@ define(function (require) {
 
     var api,
         dispatch = d3.dispatch('modelLoaded'),
-        modelContainer = new SVGContainer(model, modelUrl, Renderer),
+        modelContainer = new SVGContainer(model, modelUrl, Renderer, {origin: 'top-left'}),
         benchmarks = new Benchmarks(api);
 
     api = {

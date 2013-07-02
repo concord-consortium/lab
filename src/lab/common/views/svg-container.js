@@ -10,9 +10,12 @@ define(function (require) {
       getNextTabIndex       = require('common/views/tab-index'),
       console               = require('common/console');
 
-  return function SVGContainer(model, modelUrl, Renderer) {
+  return function SVGContainer(model, modelUrl, Renderer, opt) {
         // Public API object to be returned.
     var api,
+
+        // Coordinate system origin. Supported values are 'bottom-left' and 'top-left'.
+        origin = opt && opt.origin || 'bottom-left',
 
         $el,
         node,
@@ -145,10 +148,10 @@ define(function (require) {
         .domain([0, viewport.width])
         .range([0, size.width]);
 
-      // Inverted model2px scaling function for position (for y-coordinates, inverted domain).
+      // Inverted model2px scaling function for position (for y-coordinates, domain can be inverted).
       model2pxInv
         .domain([viewport.height, 0])
-        .range([0, size.height]);
+        .range(origin === 'bottom-left' ? [0, size.height] : [size.height, 0]);
 
       if (selectBrush) {
         // Update brush to use new scaling functions.
@@ -373,7 +376,7 @@ define(function (require) {
           ts = [],
           samples = 8,
           newDrag = false,
-          dragOpt = model.properties.viewPortDrag,
+          dragOpt = model.properties.viewPortDrag || false,
           vx, vy, t,
           dragBehavior;
 
