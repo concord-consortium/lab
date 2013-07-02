@@ -49,17 +49,7 @@ define(function () {
       // Create container view for model
       //
       // ------------------------------------------------------------
-      controller.modelContainer = new ModelContainer(controller.modelUrl, model, interactivesController.getNextTabIndex);
-    }
-
-    function resetModelPlayer() {
-
-      // ------------------------------------------------------------
-      //
-      // reset player and container view for model
-      //
-      // ------------------------------------------------------------
-      controller.modelContainer.reset(controller.modelUrl, model);
+      controller.modelContainer = new ModelContainer(model, controller.modelUrl);
     }
 
     /**
@@ -70,7 +60,7 @@ define(function () {
       controller.modelUrl = newModelUrl || controller.modelUrl;
       modelOptions = newModelOptions || modelOptions;
       setupModel();
-      resetModelPlayer();
+      controller.modelContainer.bindModel(model, controller.modelUrl);
       dispatch.modelLoaded();
     }
 

@@ -51,14 +51,14 @@ define(function (require) {
         model2pxInv,
 
         // "Containers" - SVG g elements used to position layers of the final visualization.
-        mainContainer,
-        radialBondsContainer,
-        VDWLinesContainer,
-        imageContainerBelow,
-        imageContainerTop,
-        textContainerBelow,
-        textContainerTop,
-        iconContainer,
+        imageContainerBelow  = modelView.viewport.append("g").attr("class", "image-container-below"),
+        textContainerBelow   = modelView.viewport.append("g").attr("class", "text-container-below"),
+        radialBondsContainer = modelView.viewport.append("g").attr("class", "radial-bonds-container"),
+        VDWLinesContainer    = modelView.viewport.append("g").attr("class", "vdw-lines-container"),
+        mainContainer        = modelView.viewport.append("g").attr("class", "main-container"),
+        imageContainerTop    = modelView.viewport.append("g").attr("class", "image-container-top"),
+        textContainerTop     = modelView.viewport.append("g").attr("class", "text-container-top"),
+        iconContainer        = modelView.vis.append("g").attr("class", "icon-container"),
 
         dragOrigin,
 
@@ -95,7 +95,7 @@ define(function (require) {
 
         modelTimeFormatter = d3.format("5.1f"),
         timePrefix = "",
-        timeSuffix = " (" + model.getPropertyDescription('displayTime').getUnitAbbreviation() + ")",
+        timeSuffix = "",
 
         radialBonds,
         radialBondResults,
@@ -230,11 +230,11 @@ define(function (require) {
         gradientNameForKELevel[i] = gradientUrl;
       }
 
-	  // Scales used for Charge Shading gradients.
-	  // Originally Positive:(ffefff,9abeff,767fbf) and Negative:(dfffff,fdadad,e95e5e)
-	  
-	  gradients.createRadialGradient("neutral-grad","#FFFFFF","#f2f2f2","#A4A4A4",mainContainer)
-	  
+      // Scales used for Charge Shading gradients.
+      // Originally Positive:(ffefff,9abeff,767fbf) and Negative:(dfffff,fdadad,e95e5e)
+
+      gradients.createRadialGradient("neutral-grad","#FFFFFF","#f2f2f2","#A4A4A4",mainContainer);
+
       var posLightColorScale = d3.scale.linear()
         .interpolate(d3.interpolateRgb)
         .range(["#FFFFFF", "#ffefff"]),
@@ -267,12 +267,12 @@ define(function (require) {
 
         gradientName = "neg-charge-shading-" + i;
         ChargeLevel = i / CHARGE_SHADING_STEPS;
-        gradientUrl = gradients.createRadialGradient(gradientName, 
+        gradientUrl = gradients.createRadialGradient(gradientName,
         	negLightColorScale(ChargeLevel),
         	negMedColorScale(ChargeLevel),
             negDarkColorScale(ChargeLevel), mainContainer);
         gradientNameForNegativeChargeLevel[i] = gradientUrl;
-      }	
+      }
 
       // Colored gradients, used for amino acids.
       gradients.createRadialGradient("green-grad", "#dfffef", "#75a643", "#2a7216", mainContainer);
@@ -340,7 +340,7 @@ define(function (require) {
     // Returns gradient appropriate for a given atom.
     // d - atom data.
     function getParticleGradient(d) {
-        var ke, keIndex, charge, chargeIndex, chargeColor, 
+        var ke, keIndex, charge, chargeIndex, chargeColor,
         	aminoAcidColorScheme = model.get("aminoAcidColorScheme");
 
         if (d.marked) {
@@ -362,7 +362,7 @@ define(function (require) {
           chargeIndex = Math.round(Math.min(Math.abs(charge) / 3, 1) * (CHARGE_SHADING_STEPS - 1))
        	  chargeColor = chargeIndex==0?"url(#neutral-grad)":(charge >= 0 ? gradientNameForPositiveChargeLevel : gradientNameForNegativeChargeLevel)[chargeIndex];
         }
-        
+
         if (chargeShadingMode || aminoAcidColorScheme==="charge" || aminoAcidColorScheme==="chargeAndHydro" && chargeIndex!=0) {
         	return chargeColor
         }
@@ -1676,8 +1676,8 @@ define(function (require) {
       if (modelImagePath) {
         imagePath = labConfig.actualRoot + modelImagePath;
       }
-      else if (model.url) {
-        imagePath = labConfig.actualRoot + model.url.slice(0, model.url.lastIndexOf("/") + 1);
+      else if (modelView.url) {
+        imagePath = labConfig.actualRoot + modelView.url.slice(0, modelView.url.lastIndexOf("/") + 1);
       }
 
       velocityVectorColor = model.get("velocityVectors").color;
@@ -1762,19 +1762,8 @@ define(function (require) {
     //
     // MD2D Renderer: init
     //
-    // Called when Renderer is created.
-    //
     function init() {
-      // Assign shortcuts, as these variables / functions shouldn't
-      // change.
-      mainContainer        = modelView.containers.mainContainer,
-      radialBondsContainer = modelView.containers.radialBondsContainer,
-      VDWLinesContainer    = modelView.containers.VDWLinesContainer,
-      imageContainerBelow  = modelView.containers.imageContainerBelow,
-      imageContainerTop    = modelView.containers.imageContainerTop,
-      textContainerBelow   = modelView.containers.textContainerBelow,
-      textContainerTop     = modelView.containers.textContainerTop,
-      iconContainer        = modelView.containers.iconContainer,
+      timeSuffix = " (" + model.getPropertyDescription('displayTime').getUnitAbbreviation() + ")";
 
       model2px = modelView.model2px;
       model2pxInv = modelView.model2pxInv;
@@ -1820,12 +1809,8 @@ define(function (require) {
       setupFirefoxWarning();
     }
 
-    //
-    // MD2D Renderer: reset
-    //
     // Call when model is reset or reloaded.
-    //
-    function reset(newModel) {
+    function bindModel(newModel) {
       model = newModel;
       init();
     }
@@ -1921,13 +1906,10 @@ define(function (require) {
       // Expose private methods.
       update: update,
       repaint: repaint,
-      reset: reset,
+      bindModel: bindModel,
       model2px: modelView.model2px,
       model2pxInv: modelView.model2pxInv
     };
-
-    // Initialization.
-    init();
 
     return api;
   };

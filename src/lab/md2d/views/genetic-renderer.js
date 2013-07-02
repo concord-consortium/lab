@@ -10,7 +10,7 @@ define(function (require) {
 
   function GeneticRenderer(modelView, model) {
     var api,
-        svg = modelView.containers.svg,
+        svg = modelView.svg,
         model2px = modelView.model2px,
         model2pxInv = modelView.model2pxInv,
         viewportG = svg.select(".viewport"),

@@ -478,7 +478,7 @@ define(function (require) {
 
       // Register listeners.
       // Redraw container each time when some visual-related property is changed.
-      model.addPropertiesListener([ "backgroundColor"], repaint);
+      model.addPropertiesListener([ "backgroundColor"], api.repaint);
       model.addPropertiesListener(["gridLines", "xunits", "yunits", "xlabel", "ylabel",
                                    "viewPortX", "viewPortY", "viewPortZoom"],
                                    renderContainer);
@@ -486,19 +486,18 @@ define(function (require) {
                                    viewportDragging);
     }
 
-    //
-    // repaint
-    //
-    // Call when container changes size.
-    //
-    function repaint() {
-      setupBackground();
-      api.updateClickHandlers();
-    }
-
     api = {
       get $el() {
         return $el;
+      },
+      get node() {
+        return node;
+      },
+      get svg() {
+        return vis1;
+      },
+      get vis() {
+        return vis;
       },
       get viewport() {
         return viewportG;
@@ -520,13 +519,15 @@ define(function (require) {
       },
 
       repaint: function() {
-        repaint();
+        setupBackground();
+        api.updateClickHandlers();
 
         if (renderer.repaint) renderer.repaint();
       },
       resize: function() {
         renderContainer();
-        repaint();
+        api.repaint();
+
         if (selectBrush) {
           brushContainer.select("g.select-area").call(selectBrush);
         }
@@ -549,10 +550,12 @@ define(function (require) {
         removeClickHandlers();
         api.setSelectHandler(null);
         init();
-        repaint();
 
         if (renderer.bindModel) renderer.bindModel(newModel, newModelUrl);
+
+        api.repaint();
       },
+
       pos: function() {
         // Add a pos() function so the model renderer can more easily
         // manipulate absolutely positioned dom elements it may create or
