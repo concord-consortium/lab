@@ -3,20 +3,33 @@
 define(function (require) {
   // Dependencies.
   var Model          = require('energy2d/modeler'),
-      ModelContainer = require('energy2d/views/model-container'),
+      SVGContainer   = require('common/views/svg-container'),
+      Renderer       = require('energy2d/views/renderer'),
       Benchmarks     = require('energy2d/benchmarks/benchmarks'),
       ScriptingAPI   = require('energy2d/controllers/scripting-api');
 
   return function (modelUrl, modelOptions) {
+    // Export model to global namespace;
+    model = new Model(modelOptions);
 
-    var api = {},
-        dispatch = d3.dispatch('modelLoaded');
+    var api,
+        dispatch = d3.dispatch('modelLoaded'),
+        modelContainer = new SVGContainer(model, modelUrl, Renderer),
+        benchmarks = new Benchmarks(api);
 
     api = {
-      type: "energy2d",
-      benchmarks: null,
-      modelUrl: modelUrl,
-      modelContainer: new ModelContainer(),
+      get type() {
+        return "energy2d";
+      },
+      get benchmarks() {
+        return benchmarks;
+      },
+      get modelUrl() {
+        return modelUrl;
+      },
+      get modelContainer() {
+        return modelContainer;
+      },
 
       on: function(type, listener) {
         dispatch.on(type, listener);
@@ -58,12 +71,6 @@ define(function (require) {
 
       ScriptingAPI: ScriptingAPI
     };
-
-    api.benchmarks = new Benchmarks(api);
-
-    // Export 'model' to global namespace.
-    model = new Model(modelOptions);
-    api.modelContainer.bindModel(model);
 
     return api;
   };

@@ -156,11 +156,15 @@ define(function (require) {
           // WebGL icon tooltip message and color.
           if (!requiredFeatures || !modelCompatible) {
             content = 'WebGL unavailable.';
+            $webgl_icon.removeClass("happy");
             $webgl_icon.addClass("sad");
           } else if (!energy2d_modeler.isWebGLActive()) {
             content = 'WebGL available, but inactive.';
+            $webgl_icon.removeClass("happy");
+            $webgl_icon.removeClass("sad");
           } else {
             content = 'WebGL available and active.';
+            $webgl_icon.removeClass("sad");
             $webgl_icon.addClass("happy");
           }
           content += ' Click for detailed information.';

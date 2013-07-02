@@ -10,34 +10,55 @@ define(function(require) {
       PhotonsView        = require('energy2d/views/photons');
 
 
-  return function View() {
+  return function Renderer(SVGContainer) {
     var api,
         model,
+
         heatmap_view,
         velocity_view,
         parts_view,
         photons_view,
-        webgl_status,
+        webgl_status = new WebGLStatus(),
+        $status = webgl_status.getHTMLElement(),
+        $canvasCont = $("<div>"),
+        cavasCount = 0;
 
-        layers_count = 0;
-
-    function setAsNextLayer (view, customHeight) {
+    function setAsNextLayer (view) {
       var $layer = view.getHTMLElement();
 
       $layer.css('width', '100%');
-      if (!customHeight) $layer.css('height', '100%');
+      $layer.css('height', '100%');
       $layer.css('position', 'absolute');
-      $layer.css('left', '0');
-      $layer.css('top', '0');
-      $layer.css('z-index', layers_count);
-      layers_count += 1;
+      $layer.css('top', 0);
+      $layer.css('left', 0);
+      $layer.css('z-index', cavasCount);
+      cavasCount += 1;
+
+      $canvasCont.append($layer);
+
+      // Note that we SHOULD implement it in the following way:
+      //
+      // var $layer = view.getHTMLElement(),
+      //     fo = g.append("foreignObject").attr({
+      //       width: "100%",
+      //       height: "100%"
+      //     }).style({
+      //       width: "100%",
+      //       height: "100%"
+      //     });
+      // $layer.css('width', '100%');
+      // if (!customHeight) $layer.css('height', '100%');
+      // $layer.appendTo(fo);
+      //
+      // but foreignObject support is completely broken in Chrome (works fine in Firefox).
+      // TODO: check if new version (30+?) fixes that.
     }
 
     function createEnergy2DScene () {
       var props = model.properties;
 
-      api.$el.empty();
-      layers_count = 0;
+      $canvasCont.empty();
+      cavasCount = 0;
 
       // Instantiate views.
       // Use isWebGLActive() method, not use_WebGL property. The fact that
@@ -59,15 +80,7 @@ define(function(require) {
       setAsNextLayer(photons_view);
       parts_view = new PartsView();
       setAsNextLayer(parts_view);
-      webgl_status = new WebGLStatus();
-      setAsNextLayer(webgl_status, true);
 
-      // Append containers.
-      api.$el.append(heatmap_view.getHTMLElement());
-      api.$el.append(velocity_view.getHTMLElement());
-      api.$el.append(photons_view.getHTMLElement());
-      api.$el.append(parts_view.getHTMLElement());
-      api.$el.append(webgl_status.getHTMLElement());
 
       // Bind models to freshly created views.
       if (model.isWebGLActive()) {
@@ -96,13 +109,18 @@ define(function(require) {
     }
 
     api = {
-      $el: $("<div>").attr("tabindex", 0),
-
       getHeightForWidth: function(width) {
         return width * model.properties.grid_height / model.properties.grid_width;
       },
 
       resize: function() {
+        var parentWidth = SVGContainer.$el.width();
+        $canvasCont.css({
+          'width': parentWidth,
+          'height': SVGContainer.$el.height()
+        });
+        $status.css('width', parentWidth);
+
         api.update();
         parts_view.renderParts();
       },
@@ -140,6 +158,23 @@ define(function(require) {
         api.update();
       }
     };
+
+    (function() {
+      // Initialize.
+      SVGContainer.$el.append($canvasCont);
+      setPos($canvasCont, -1); // underneath SVG view.
+      SVGContainer.$el.append($status);
+      setPos($status, 1); // on top of SVG view.
+
+      function setPos($el, zIndex) {
+        $el.css({
+          'position': 'absolute',
+          'top': 0,
+          'left': 0,
+          'z-index': zIndex
+        });
+      }
+    }());
 
     return api;
   };
