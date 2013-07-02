@@ -41,6 +41,8 @@ define(function (require) {
       // When viewPortX is changed render DNA and mRNA again. Also center
       // protein while in 'translation-end' state.
       model.addPropertiesListener(["viewPortX"], function() {
+        if (!g || !model.get("DNA")) return;
+
         // state.name values are subset of all animation states. We define
         // more animation states than we publish for author / users
         // (animations with -s0, -s1, (...) suffixes).
@@ -76,6 +78,7 @@ define(function (require) {
       // Cleanup.
       cancelTransitions();
       viewportG.selectAll("g.genetics").remove();
+      g = null;
 
       if (!model.get("DNA")) {
         // When DNA is not defined (=== "", undefined or null) genetic
