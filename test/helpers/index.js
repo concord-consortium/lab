@@ -142,7 +142,7 @@ exports.withIsolatedRequireJSAndViewsMocked = function(continuation) {
         return {
           update: function() {},
           repaint: function() {},
-          reset: function() {},
+          bindModel: function() {},
           model2px: function() {},
           model2pxInv: function() {}
         };
