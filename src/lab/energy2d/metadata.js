@@ -175,6 +175,34 @@ define(function(require) {
         // vertices: 1, 1, 2, 2, 3, 3   // String with coordinates.
       },
 
+      // Special shortcut properties which let user access shape properties
+      // faster and more convenient. They can be used both to get and set
+      // value. They are not serialized.
+      x: {
+        serialize: false
+      },
+      y: {
+        serialize: false
+      },
+      width: {
+        serialize: false
+      },
+      height: {
+        serialize: false
+      },
+      a: {
+        serialize: false
+      },
+      b: {
+        serialize: false
+      },
+      inner: {
+        serialize: false
+      },
+      outer: {
+        serialize: false
+      },
+
       thermal_conductivity: {
         defaultValue: 1
       },

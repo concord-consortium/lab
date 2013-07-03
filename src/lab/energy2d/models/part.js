@@ -86,6 +86,22 @@ define(function (require, exports, module) {
       this.label = options.label;
     };
 
+  ["x", "y", "width", "height", "inner", "outer", "a", "b"].forEach(function (key) {
+    Object.defineProperty(Part.prototype, key, {
+      get: function () {
+        return this.shape[key];
+      },
+      set: function (v) {
+        if (typeof this.shape[key] !== "undefined") {
+          // Update only properties which were present in shape. So if user
+          // tries to set "a" property of rectangle, it will be ignored.
+          this.shape[key] = v;
+          this.polygon_cache = undefined;
+        }
+      }
+    });
+  });
+
   Part.prototype.getLabel = function () {
     var label = this.label, s;
 
@@ -267,13 +283,13 @@ define(function (require, exports, module) {
       };
 
     if (this.rectangle) {
-      return rectangleIndices(this.rectangle);
+      return rectangleIndices(this.shape);
     }
     if (this.ellipse) {
-      return ellipseIndices(this.ellipse);
+      return ellipseIndices(this.shape);
     }
     if (this.ring) {
-      return ringIndices(this.ring);
+      return ringIndices(this.shape);
     }
     if (this.polygon) {
       return polygonIndices(this.polygon);
