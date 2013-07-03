@@ -96,7 +96,8 @@ src: \
 	public/embeddable.html \
 	public/browser-check.html \
 	public/interactives.json \
-	public/application.js
+	public/application.js \
+	public/lab/lab.json
 
 .PHONY: clean
 clean:
