@@ -82,8 +82,15 @@ define(function (require, exports, module) {
           throw new Error("arrays: couldn't understand array type \"" + array_type + "\".");
       }
     }
-    i=-1; while(++i < size) { a[i] = fill; }
+    arrays.fill(a, fill);
     return a;
+  };
+
+  arrays.fill = function(array, value) {
+    var i = -1, size = array.length;
+    while(++i < size) {
+      array[i] = value;
+    }
   };
 
   arrays.constructor_function = function(source) {
