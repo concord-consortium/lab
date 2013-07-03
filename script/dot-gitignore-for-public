@@ -12,6 +12,7 @@
 !/imports/energy2d/models-index.js
 !/imports/energy2d/models-json
 !/imports/legacy-mw-content/converted
+!/imports/legacy-mw-content/model-list.js
 
 # ignore versioned copies of framework
 /version
