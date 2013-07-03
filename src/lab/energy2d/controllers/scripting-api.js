@@ -17,6 +17,10 @@ define(function () {
         return model.getPart(i);
       },
 
+      addPart: function addPart(props) {
+        model.addPart(props);
+      },
+
       syncTemperature: function syncTemperature() {
         model.syncTemperature();
       }

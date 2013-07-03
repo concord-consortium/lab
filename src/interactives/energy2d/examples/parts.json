@@ -1,7 +1,7 @@
 {
   "title": "Parts",
   "publicationStatus": "public",
-  "subtitle": "Use sliders to change properties of the heater.",
+  "subtitle": "Use sliders to change properties of the heater. Select an area to create a new part.",
   "models": [
     {
       "type": "energy2d",
@@ -10,7 +10,13 @@
       "importedFrom": "imports/energy2d/content/benard-cell.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
-      }
+      },
+      "onLoad": [
+        "getPart(2).color = '#ff4444';",
+        "onSelect(function (x, y, w, h) {",
+        "  addPart({rectangle: {x: x, y: y, width: w, height: h}, temperature: 5, filled: false});",
+        "});"
+      ]
     }
   ],
   "parameters": [
