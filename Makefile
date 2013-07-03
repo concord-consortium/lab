@@ -337,6 +337,15 @@ public/resources:
 public/lab:
 	mkdir -p public/lab
 
+public/lab/lab.json: \
+	src/lab/common/controllers/interactive-metadata.js \
+	src/lab/energy2d/metadata.js \
+	src/lab/md2d/models/metadata.js \
+	src/lab/sensor/metadata.js \
+	src/lab/signal-generator/metadata.js \
+	src/lab/solar-system/models/metadata.js
+	node src/helpers/lab.json.js
+
 public/lab/lab.js: \
 	public/lab/lab.grapher.js \
 	public/lab/lab.md2d.js \
