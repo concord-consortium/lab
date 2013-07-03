@@ -85,6 +85,7 @@ define(function (require) {
               feature = gpgpu.featuresInfo,
               requiredFeatures = true,
               optionalFeatures = true,
+              initError = energy2d_modeler.properties.use_WebGL && !energy2d_modeler.isWebGLActive(),
               content;
 
           $status.empty();
@@ -113,7 +114,7 @@ define(function (require) {
                 $status.append('<p class="extension">' + supported + ' ' + name + '</p>');
               }
             });
-            $status.append('<p>WebGL-accelerated solvers will work fine, but rendering quality can be affected.</p>');
+            $status.append('<p>WebGL rendering quality can be affected.</p>');
           } else if (feature['WebGL']) {
             $status.append('<p>Your browser <span class="happy">supports</span> WebGL, however not all required extensions are available:</p>');
             Object.keys(feature).forEach(function (name) {
@@ -137,7 +138,9 @@ define(function (require) {
               content += ' and it is <span class="happy">active</span>.';
             } else {
               content += ', but it is <span class="sad">inactive</span>.';
-              if (requiredFeatures) {
+              if (initError) {
+                content += ' Unfortunately, its initialization <span class="sad">failed</span>. Check the browser console for details.';
+              } else if (requiredFeatures) {
                 content += ' Enable it to speed up simulation:';
               }
             }
@@ -148,13 +151,19 @@ define(function (require) {
           }
 
           // WebGL solvers checkbox.
-          if (!requiredFeatures || !modelCompatible) {
+          if (!requiredFeatures || !modelCompatible || initError) {
             // If any test failed hide the checkbox.
             $checkbox.hide();
+          } else {
+            $checkbox.show();
           }
 
           // WebGL icon tooltip message and color.
-          if (!requiredFeatures || !modelCompatible) {
+          if (initError) {
+            content = 'WebGL initialization failed.';
+            $webgl_icon.removeClass("happy");
+            $webgl_icon.addClass("sad");
+          } else if (!requiredFeatures || !modelCompatible) {
             content = 'WebGL unavailable.';
             $webgl_icon.removeClass("happy");
             $webgl_icon.addClass("sad");
@@ -170,9 +179,7 @@ define(function (require) {
           content += ' Click for detailed information.';
           $webgl_icon.attr('title', content);
 
-
-          // Whole panel.
-          if (energy2d_modeler.properties.use_WebGL && !energy2d_modeler.isWebGLActive()) {
+          if (initError) {
             // Display panel when user requested WebGL, but it wasn't
             // initialized correctly.
             show();
