@@ -21,6 +21,14 @@ define(function () {
         model.addPart(props);
       },
 
+      removePart: function removePart(i) {
+        model.removePart(i);
+      },
+
+      getNumberOfParts: function getNumberOfParts() {
+        return model.getPartsArray().length;
+      },
+
       syncTemperature: function syncTemperature() {
         model.syncTemperature();
       }

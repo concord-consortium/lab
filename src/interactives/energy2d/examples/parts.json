@@ -14,7 +14,7 @@
       "onLoad": [
         "getPart(2).color = '#ff4444';",
         "onSelect(function (x, y, w, h) {",
-        "  addPart({rectangle: {x: x, y: y, width: w, height: h}, temperature: 5, filled: false});",
+        "  addPart({rectangle: {x: x, y: y, width: w, height: h}, temperature: get('new-part-temp'), filled: false});",
         "});"
       ]
     }
@@ -22,24 +22,28 @@
   "parameters": [
     {
       "name": "part-y",
-      "label": "Heater Position",
+      "label": "Heater position",
       "unitType": "length",
       "onChange": "getPart(2).y = value;",
       "initialValue": 6.8
     },
     {
       "name": "part-temp",
-      "label": "Heater Temperature",
+      "label": "Heater temperature",
       "unitAbbreviation": "C",
       "onChange": "getPart(2).temperature = value;",
       "initialValue": 20
+    },
+    {
+      "name": "new-part-temp",
+      "initialValue": 15
     }
   ],
   "components": [
     {
       "type": "slider",
       "id": "part-y",
-      "title": "Heater Position",
+      "title": "Heater position",
       "property": "part-y",
       "min": 4.4,
       "max": 6.8,
@@ -49,14 +53,34 @@
     {
       "type": "slider",
       "id": "part-temp",
-      "title": "Heater Temperature",
+      "title": "Heater temperature",
       "property": "part-temp",
       "min": 0,
       "max": 40,
       "displayValue": "return format('1.1f')(value)",
       "steps": 80
+    },
+    {
+      "type": "slider",
+      "id": "new-part-temp",
+      "title": "Temperature of new parts",
+      "property": "new-part-temp",
+      "min": 0,
+      "max": 40,
+      "displayValue": "return format('1.1f')(value)",
+      "steps": 80
+    },
+    {
+      "type": "button",
+      "id": "rm-part",
+      "text": "Remove recently added part",
+      "action": "var last = getNumberOfParts() - 1; if (last > 2) removePart(last);"
     }
   ],
   "layout": {
+    "right": [
+      ["new-part-temp"],
+      ["rm-part"]
+    ]
   }
 }

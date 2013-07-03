@@ -370,6 +370,11 @@ define(function (require, exports) {
           setupPart(part);
         },
 
+        removePart: function (i) {
+          parts.splice(i, 1);
+          core_model.partsChanged();
+        },
+
         useWebGL: function (v) {
           if (WebGL_active === v) return;
           if (!core_model.isWebGLCompatible()) {

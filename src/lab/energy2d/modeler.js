@@ -161,6 +161,25 @@ define(function (require) {
         dispatch.partsChanged();
       },
 
+      removePart: function (i) {
+        var WebGLOrg = model.properties.use_WebGL,
+            part;
+
+        // This will update CPU array.
+        model.properties.use_WebGL = false;
+
+        propertySupport.invalidatingChangePreHook();
+
+        coreModel.removePart(i);
+
+        propertySupport.invalidatingChangePostHook();
+
+        // Restore original WebGL option value. It will
+        // copy CPU arrays to GPU in case of need.
+        model.properties.use_WebGL = WebGLOrg;
+        dispatch.partsChanged();
+      },
+
       getTime: function () {
         return model.properties.timeStep * coreModel.getIndexOfStep();
       },
