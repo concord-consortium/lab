@@ -7,6 +7,7 @@ define(function (require) {
       LabModelerMixin = require('common/lab-modeler-mixin'),
       metadata        = require('energy2d/metadata'),
       coremodel       = require('energy2d/models/core-model'),
+      Part            = require('energy2d/models/part').Part,
 
       unitsDefinition = {
         units: {
@@ -121,7 +122,7 @@ define(function (require) {
               // Update raw part object.
               this.rawPart[key] = validator.validateSingleProperty(metadata.part[key], key, v);
               // Update core model arrays based on part's properties.
-              coreModel.partsChanged();
+              coreModel.partsChanged(this.rawPart, key);
 
               propertySupport.invalidatingChangePostHook();
 
@@ -137,6 +138,28 @@ define(function (require) {
           return new PartWrapper(coreModel.getPartsArray()[i]);
         };
       }()),
+
+      addPart: function (props) {
+        var WebGLOrg = model.properties.use_WebGL,
+            part;
+
+        // This will update CPU array.
+        model.properties.use_WebGL = false;
+
+        props = validator.validateCompleteness(metadata.part, props);
+        part = new Part(props);
+
+        propertySupport.invalidatingChangePreHook();
+
+        coreModel.addPart(part);
+
+        propertySupport.invalidatingChangePostHook();
+
+        // Restore original WebGL option value. It will
+        // copy CPU arrays to GPU in case of need.
+        model.properties.use_WebGL = WebGLOrg;
+        dispatch.partsChanged();
+      },
 
       getTime: function () {
         return model.properties.timeStep * coreModel.getIndexOfStep();

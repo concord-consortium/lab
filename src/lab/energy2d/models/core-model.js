@@ -237,40 +237,43 @@ define(function (require, exports) {
         arrays.fill(fluidity, true);
       },
 
-      setupMaterialProperties = function () {
+      setupPart = function (part, updateOnly) {
         var
           lx = opt.model_width,
           ly = opt.model_height,
-          part, indices, idx,
-          i, ii, len;
+          indices, idx,
+          ii, len;
 
-        if (!parts || parts.length === 0) {
-          return;
-        }
+        indices = part.getGridCells(nx, ny, lx, ly);
+        for (ii = 0, len = indices.length; ii < len; ii += 1) {
+          idx = indices[ii];
 
-        // workaround, to treat overlapping parts as original Energy2D
-        for (i = parts.length - 1; i >= 0; i -= 1) {
-          part = parts[i];
-          indices = part.getGridCells(nx, ny, lx, ly);
-          for (ii = 0, len = indices.length; ii < len; ii += 1) {
-            idx = indices[ii];
-
-            fluidity[idx] = false;
+          if (!updateOnly) {
             t[idx] = part.temperature;
-            q[idx] = part.power;
-            conductivity[idx] = part.thermal_conductivity;
-            capacity[idx] = part.specific_heat;
-            density[idx] = part.density;
-
-            if (part.wind_speed !== 0) {
-              uWind[idx] = part.wind_speed * Math.cos(part.wind_angle);
-              vWind[idx] = part.wind_speed * Math.sin(part.wind_angle);
-            }
-
-            if (part.constant_temperature) {
-              tb[idx] = part.temperature;
-            }
           }
+          fluidity[idx] = false;
+          q[idx] = part.power;
+          conductivity[idx] = part.thermal_conductivity;
+          capacity[idx] = part.specific_heat;
+          density[idx] = part.density;
+
+          if (part.wind_speed !== 0) {
+            uWind[idx] = part.wind_speed * Math.cos(part.wind_angle);
+            vWind[idx] = part.wind_speed * Math.sin(part.wind_angle);
+          }
+
+          if (part.constant_temperature) {
+            tb[idx] = part.temperature;
+          }
+        }
+      },
+
+      setupMaterialProperties = function (updateOnly) {
+        if (!parts || parts.length === 0) return;
+        var i;
+        // Treat overlapping parts as original Energy2D.
+        for (i = parts.length - 1; i >= 0; i -= 1) {
+          setupPart(parts[i], updateOnly);
         }
       },
 
@@ -349,11 +352,22 @@ define(function (require, exports) {
           perf = perf_tools;
         },
 
-        partsChanged: function () {
+        partsChanged: function (part, propChanged) {
+          // TODO: in theory we don't have to process all parts.
+          // If needed implement something tricker.
           resetArrays();
           setupOptimizationFlags();
-          setupMaterialProperties();
+          setupMaterialProperties(true);
           refreshPowerArray();
+
+          if (propChanged === "temperature") {
+            setupPart(part);
+          }
+        },
+
+        addPart: function (part) {
+          parts.push(part);
+          setupPart(part);
         },
 
         useWebGL: function (v) {
