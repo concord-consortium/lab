@@ -224,6 +224,19 @@ define(function (require, exports) {
         }());
       },
 
+      resetArrays = function () {
+        // Note that temperature and velocity aren't reset to provide
+        // better interactivity.
+        arrays.fill(tb, NaN);
+        arrays.fill(q, 0);
+        arrays.fill(uWind, 0);
+        arrays.fill(vWind, 0);
+        arrays.fill(conductivity, opt.background_conductivity);
+        arrays.fill(capacity, opt.background_specific_heat);
+        arrays.fill(density, opt.background_density);
+        arrays.fill(fluidity, true);
+      },
+
       setupMaterialProperties = function () {
         var
           lx = opt.model_width,
@@ -337,6 +350,7 @@ define(function (require, exports) {
         },
 
         partsChanged: function () {
+          resetArrays();
           setupOptimizationFlags();
           setupMaterialProperties();
           refreshPowerArray();

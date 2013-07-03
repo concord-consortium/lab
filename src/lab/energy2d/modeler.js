@@ -3,9 +3,10 @@
 define(function (require) {
   'use strict';
   var console         = require('common/console'),
+      validator       = require('common/validator'),
+      LabModelerMixin = require('common/lab-modeler-mixin'),
       metadata        = require('energy2d/metadata'),
       coremodel       = require('energy2d/models/core-model'),
-      LabModelerMixin = require('common/lab-modeler-mixin'),
 
       unitsDefinition = {
         units: {
@@ -118,7 +119,7 @@ define(function (require) {
               propertySupport.invalidatingChangePreHook();
 
               // Update raw part object.
-              this.rawPart[key] = v;
+              this.rawPart[key] = validator.validateSingleProperty(metadata.part[key], key, v);
               // Update core model arrays based on part's properties.
               coreModel.partsChanged();
 
