@@ -48,7 +48,9 @@ define(function (require) {
         propertySupport = labModelerMixin.propertySupport,
         dispatch = labModelerMixin.dispatchSupport,
 
-        ticksToGPUSync = 0;
+        ticksToGPUSync = 0,
+
+        cache = {};
 
     function setWebGLEnabled(v) {
       try {
@@ -97,48 +99,6 @@ define(function (require) {
         propertySupport.invalidatingChangePostHook();
       },
 
-      getPart: (function () {
-        function PartWrapper(rawPart) {
-          Object.defineProperty(this, 'rawPart', {
-            enumerable: false,
-            get: function () {
-              return rawPart;
-            }
-          });
-        }
-        Object.keys(metadata.part).forEach(function (key) {
-          Object.defineProperty(PartWrapper.prototype, key, {
-            enumerable: true,
-            get: function () {
-              return this.rawPart[key];
-            },
-            set: function (v) {
-              var WebGLOrg = model.properties.use_WebGL;
-              // This will update CPU array.
-              model.properties.use_WebGL = false;
-
-              propertySupport.invalidatingChangePreHook();
-
-              // Update raw part object.
-              this.rawPart[key] = validator.validateSingleProperty(metadata.part[key], key, v);
-              // Update core model arrays based on part's properties.
-              coreModel.partsChanged(this.rawPart, key);
-
-              propertySupport.invalidatingChangePostHook();
-
-              // Restore original WebGL option value. It will
-              // copy CPU arrays to GPU in case of need.
-              model.properties.use_WebGL = WebGLOrg;
-              dispatch.partsChanged();
-            }
-          });
-        });
-
-        return function (i) {
-          return new PartWrapper(coreModel.getPartsArray()[i]);
-        };
-      }()),
-
       addPart: function (props) {
         var WebGLOrg = model.properties.use_WebGL,
             part;
@@ -152,6 +112,7 @@ define(function (require) {
         propertySupport.invalidatingChangePreHook();
 
         coreModel.addPart(part);
+        cache.parts = null;
 
         propertySupport.invalidatingChangePostHook();
 
@@ -162,8 +123,7 @@ define(function (require) {
       },
 
       removePart: function (i) {
-        var WebGLOrg = model.properties.use_WebGL,
-            part;
+        var WebGLOrg = model.properties.use_WebGL;
 
         // This will update CPU array.
         model.properties.use_WebGL = false;
@@ -219,9 +179,59 @@ define(function (require) {
       getPhotonsArray: function () {
         return coreModel.getPhotonsArray();
       },
-      getPartsArray: function () {
-        return coreModel.getPartsArray();
-      },
+
+      getPartsArray: (function () {
+        function PartWrapper(rawPart) {
+          Object.defineProperty(this, 'rawPart', {
+            enumerable: false,
+            get: function () {
+              return rawPart;
+            }
+          });
+        }
+        Object.keys(metadata.part).forEach(function (key) {
+          Object.defineProperty(PartWrapper.prototype, key, {
+            enumerable: true,
+            get: function () {
+              return this.rawPart[key];
+            },
+            set: function (v) {
+              var WebGLOrg = model.properties.use_WebGL;
+              // This will update CPU array.
+              model.properties.use_WebGL = false;
+
+              propertySupport.invalidatingChangePreHook();
+
+              // Update raw part object.
+              this.rawPart[key] = validator.validateSingleProperty(metadata.part[key], key, v);
+              // Update core model arrays based on part's properties.
+              coreModel.partsChanged(this.rawPart, key);
+              cache.parts = null;
+
+              propertySupport.invalidatingChangePostHook();
+
+              // Restore original WebGL option value. It will
+              // copy CPU arrays to GPU in case of need.
+              model.properties.use_WebGL = WebGLOrg;
+              dispatch.partsChanged();
+            }
+          });
+        });
+
+        return function () {
+          if (!cache.parts) {
+            var rawParts = coreModel.getPartsArray(),
+                result = [],
+                i, len;
+            for (i = 0, len = rawParts.length; i < len; i++) {
+              result.push(new PartWrapper(rawParts[i]));
+            }
+            cache.parts = result;
+          }
+          return cache.parts;
+        };
+      }()),
+
       setPerformanceTools: function () {
         return coreModel.setPerformanceTools();
       }

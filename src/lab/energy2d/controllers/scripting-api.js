@@ -14,7 +14,7 @@ define(function () {
       },
 
       getPart: function getPart(i) {
-        return model.getPart(i);
+        return model.getPartsArray()[i];
       },
 
       addPart: function addPart(props) {
