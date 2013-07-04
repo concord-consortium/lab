@@ -177,7 +177,11 @@ define(function(require) {
 
       // Special shortcut properties which let user access shape properties
       // faster and more convenient. They can be used both to get and set
-      // value. They are not serialized.
+      // value (except 'shapeType' which is read-only). They are not serialized.
+      shapeType: {
+        readOnly: true,
+        serialize: false
+      },
       x: {
         serialize: false
       },

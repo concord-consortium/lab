@@ -86,6 +86,16 @@ define(function (require, exports, module) {
       this.label = options.label;
     };
 
+  Object.defineProperty(Part.prototype, 'shapeType', {
+    get: function () {
+      return this.rectangle ? "rectangle" :
+             this.ellipse   ? "ellipse" :
+             this.ring      ? "ring" :
+             this.polygon   ? "polygon" :
+             null;
+    }
+  });
+
   ["x", "y", "width", "height", "inner", "outer", "a", "b"].forEach(function (key) {
     Object.defineProperty(Part.prototype, key, {
       get: function () {
