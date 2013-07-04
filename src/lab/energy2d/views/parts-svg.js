@@ -12,15 +12,20 @@ define(function () {
         parts,
 
         m2px = SVGContainer.model2px,
-        m2pxInv = SVGContainer.model2pxInv;
+        m2pxInv = SVGContainer.model2pxInv,
 
-    function rectTest(d) { return d.shapeType === "rectangle" ? this : null; }
+        shapeTest = {
+          "rect":    function (d) { return d.shapeType === "rectangle" ? this : null; },
+          "ellipse": function (d) { return d.shapeType === "ellipse" ? this : null; }
+        };
     function labelTest(d) { return d.label ? this : null; }
     function textureTest(d) { return d.texture ? this : null; }
 
     function transform(d) { return "translate(" + m2px(d.x || 0) + "," + m2pxInv(d.y || 0) + ")"; }
     function width(d) { return m2px(d.width) + E2D_DIM_SHIFT; }
     function height(d) { return m2px(d.height) + E2D_DIM_SHIFT; }
+    function rx(d) { return m2px(d.a * 0.5); }
+    function ry(d) { return m2px(d.b * 0.5); }
     function display(d) { return d.visible ? undefined : "none"; }
     function label(d) { return d.computeLabel(); }
     function dx() { return -this.getBBox().width / 2; }
@@ -66,17 +71,27 @@ define(function () {
           .attr("d", "M0,0 L8,8");
     }
 
-    function renderRectangles(enter, update) {
-      var rectEnter = enter.select(rectTest);
-      rectEnter.append("rect")
+    function renderShape(shape, enter, update) {
+      enter = enter.select(shapeTest[shape]);
+      enter.append(shape)
           .attr("class", "e2d-part-shape");
-      rectEnter.select(textureTest).append("rect")
+      enter.select(textureTest).append(shape)
           .attr("fill", "url(#texture-1)");
-      update.selectAll("rect")
-          .attr("x", E2D_XY_SHIFT)
-          .attr("y", E2D_XY_SHIFT)
-          .attr("width", width)
-          .attr("height", height);
+
+      switch(shape) {
+      case "rect":
+        update.selectAll("rect")
+            .attr("x", E2D_XY_SHIFT)
+            .attr("y", E2D_XY_SHIFT)
+            .attr("width", width)
+            .attr("height", height);
+        break;
+      case "ellipse":
+        update.selectAll("ellipse")
+            .attr("rx", rx)
+            .attr("ry", ry);
+        break;
+      }
     }
 
     function renderLabels(enter, update) {
@@ -101,7 +116,8 @@ define(function () {
         partEnter = part.enter().append("g")
             .attr("class", "e2d-part");
 
-        renderRectangles(partEnter, part);
+        renderShape("rect", partEnter, part);
+        renderShape("ellipse", partEnter, part);
         renderLabels(partEnter, part);
 
         part
