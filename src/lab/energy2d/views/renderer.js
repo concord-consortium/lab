@@ -6,7 +6,7 @@ define(function(require) {
       WebGLStatus        = require('energy2d/views/webgl-status'),
       VectormapView      = require('energy2d/views/vectormap'),
       VectormapWebGLView = require('energy2d/views/vectormap-webgl'),
-      PartsView          = require('energy2d/views/parts'),
+      PartsView          = require('energy2d/views/parts-svg'),
       PhotonsView        = require('energy2d/views/photons');
 
 
@@ -16,8 +16,8 @@ define(function(require) {
 
         heatmap_view,
         velocity_view,
-        parts_view,
         photons_view,
+        parts_view,
         webgl_status = new WebGLStatus(),
         $status = webgl_status.getHTMLElement(),
         $canvasCont = $("<div>"),
@@ -78,9 +78,6 @@ define(function(require) {
       }
       photons_view = new PhotonsView();
       setAsNextLayer(photons_view);
-      parts_view = new PartsView();
-      setAsNextLayer(parts_view);
-
 
       // Bind models to freshly created views.
       if (model.isWebGLActive()) {
@@ -156,7 +153,9 @@ define(function(require) {
     };
 
     (function() {
-      // Initialize.
+      var partsLayer = SVGContainer.viewport.append("g").attr("class", "parts-layer");
+      parts_view = new PartsView(SVGContainer, partsLayer);
+
       SVGContainer.$el.append($canvasCont);
       setPos($canvasCont, -1); // underneath SVG view.
       SVGContainer.$el.append($status);
