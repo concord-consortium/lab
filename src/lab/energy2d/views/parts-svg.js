@@ -1,4 +1,4 @@
-/*global define: false */
+/*global define: false, d3: false */
 
 define(function () {
 
@@ -17,8 +17,15 @@ define(function () {
         shapeTest = {
           "rect":    function (d) { return d.shapeType === "rectangle" ? this : null; },
           "ellipse": function (d) { return d.shapeType === "ellipse" ? this : null; },
-          "path": function (d) { return d.shapeType === "polygon" ? this : null; }
-        };
+          "path": function (d) { return d.shapeType === "polygon" || d.shapeType === "ring" ? this : null; }
+        },
+
+        ringPathSpec = d3.svg.arc()
+            .innerRadius(function (d) { return m2px(d.inner * 0.5); })
+            .outerRadius(function (d) { return m2px(d.outer * 0.5); })
+            .startAngle(0)
+            .endAngle(Math.PI * 2);
+
     function labelTest(d) { return d.label ? this : null; }
     function textureTest(d) { return d.texture ? this : null; }
 
@@ -57,7 +64,7 @@ define(function () {
       }
       return color;
     }
-    function pathSpec(d) {
+    function polygonPathSpec(d) {
       var res = [],
           x = d.x_coords,
           y = d.y_coords,
@@ -67,6 +74,14 @@ define(function () {
         res.push(m2pxInv(y[i]));
       }
       return "M" + res.join(",") + "Z";
+    }
+    function pathSpec(d) {
+      switch (d.shapeType ) {
+      case "polygon":
+        return polygonPathSpec(d);
+      case "ring":
+        return ringPathSpec(d);
+      }
     }
     function xLabel (d) {
       var s = d.shapeType;
