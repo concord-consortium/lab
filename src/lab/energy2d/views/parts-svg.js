@@ -42,16 +42,14 @@ define(function () {
 
       var color;
       if (d.color) {
-        if (typeof d.color === 'string') {
-          color = d.color;
-        } else {
-          color = d.color.toString();
-          while (d.length < 6) {
+        color = d.color;
+        // TODO: this should be done during XML->JSON conversion.
+        if (!isNaN(parseInt(color, 16))) {
+          while (color.length < 6) {
             color = '0' + color;
           }
+          color = '#' + color;
         }
-        // TODO: this should be done during XML->JSON conversion.
-        if (!isNaN(parseInt(color, 16))) color = '#' + color;
       } else if (d.power > 0) {
         color = '#FFFF00';
       } else if (d.power < 0) {
