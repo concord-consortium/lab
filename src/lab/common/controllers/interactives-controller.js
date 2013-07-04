@@ -691,8 +691,32 @@ define(function (require) {
       // But ... there is a performance issue, it makes sense to start the ajax request
       // for the model definition as soon as the Interactive Controller can.
       //
-      // Load first model
-      loadModel(models[0].id);
+      // Load first model in models array
+      if (models && models.length > 0) {
+        loadModel(models[0].id);
+      } else {
+        // Setup proxy modelController object with a 0x0 px view for semantic layout system
+        semanticLayout.setupModel({
+          getViewContainer: function() {
+            var $el = $("<div>")
+              .attr({
+                "id": "model-container",
+                "class": "container",
+                "tabindex": getNextTabIndex
+              })
+              // Set initial dimensions.
+              .css({
+                "width": "0px",
+                "height": "0px"
+              });
+            return $el;
+          },
+          getHeightForWidth: function() { return 0; },
+          resize: function() {}
+        });
+        // and layout a 'no-model' interactive
+        semanticLayout.layoutInteractive();
+      }
     }
 
     /**
