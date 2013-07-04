@@ -182,7 +182,7 @@ define(function (require) {
 
       getPartsArray: (function () {
         function PartWrapper(rawPart) {
-          Object.defineProperty(this, 'rawPart', {
+          Object.defineProperty(this, '_rawPart', {
             enumerable: false,
             get: function () {
               return rawPart;
@@ -193,7 +193,7 @@ define(function (require) {
           Object.defineProperty(PartWrapper.prototype, key, {
             enumerable: true,
             get: function () {
-              return this.rawPart[key];
+              return this._rawPart[key];
             },
             set: function (v) {
               var WebGLOrg = model.properties.use_WebGL;
@@ -203,9 +203,9 @@ define(function (require) {
               propertySupport.invalidatingChangePreHook();
 
               // Update raw part object.
-              this.rawPart[key] = validator.validateSingleProperty(metadata.part[key], key, v);
+              this._rawPart[key] = validator.validateSingleProperty(metadata.part[key], key, v);
               // Update core model arrays based on part's properties.
-              coreModel.partsChanged(this.rawPart, key);
+              coreModel.partsChanged(this._rawPart, key);
               cache.parts = null;
 
               propertySupport.invalidatingChangePostHook();
@@ -217,6 +217,9 @@ define(function (require) {
             }
           });
         });
+        PartWrapper.prototype.computeLabel = function() {
+          return this._rawPart.getLabel();
+        };
 
         return function () {
           if (!cache.parts) {
