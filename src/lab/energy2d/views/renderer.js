@@ -6,8 +6,8 @@ define(function(require) {
       WebGLStatus        = require('energy2d/views/webgl-status'),
       VectormapView      = require('energy2d/views/vectormap'),
       VectormapWebGLView = require('energy2d/views/vectormap-webgl'),
-      PartsView          = require('energy2d/views/parts-svg'),
-      PhotonsView        = require('energy2d/views/photons');
+      PhotonsView        = require('energy2d/views/photons'),
+      PartsView          = require('energy2d/views/parts');
 
 
   return function Renderer(SVGContainer) {
