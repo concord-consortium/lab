@@ -117,7 +117,9 @@ define(function (require) {
 
       viewport.scaledWidth  = viewport.width / viewPortZoom;
       viewport.scaledHeight = viewport.height / viewPortZoom;
-      viewport.y += viewport.scaledHeight;
+      if (origin === 'bottom-left') {
+        viewport.y += viewport.scaledHeight;
+      }
 
       aspectRatio = viewport.width / viewport.height;
 
