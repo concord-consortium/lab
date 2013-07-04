@@ -206,6 +206,12 @@ define(function(require) {
       outer: {
         serialize: false
       },
+      x_coords: {
+        serialize: false
+      },
+      y_coords: {
+        serialize: false
+      },
 
       thermal_conductivity: {
         defaultValue: 1

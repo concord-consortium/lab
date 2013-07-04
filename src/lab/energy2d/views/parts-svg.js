@@ -16,7 +16,8 @@ define(function () {
 
         shapeTest = {
           "rect":    function (d) { return d.shapeType === "rectangle" ? this : null; },
-          "ellipse": function (d) { return d.shapeType === "ellipse" ? this : null; }
+          "ellipse": function (d) { return d.shapeType === "ellipse" ? this : null; },
+          "path": function (d) { return d.shapeType === "polygon" ? this : null; }
         };
     function labelTest(d) { return d.label ? this : null; }
     function textureTest(d) { return d.texture ? this : null; }
@@ -56,8 +57,25 @@ define(function () {
       }
       return color;
     }
-    function xLabel () { return this.parentNode.firstElementChild.getBBox().width / 2; }
-    function yLabel () { return this.parentNode.firstElementChild.getBBox().height / 2; }
+    function pathSpec(d) {
+      var res = [],
+          x = d.x_coords,
+          y = d.y_coords,
+          i, len;
+      for (i = 0, len = x.length; i < len; i++) {
+        res.push(m2px(x[i]));
+        res.push(m2pxInv(y[i]));
+      }
+      return "M" + res.join(",") + "Z";
+    }
+    function xLabel (d) {
+      var s = d.shapeType;
+      return s === "rectangle" || s === "polygon" ? this.parentNode.firstElementChild.getBBox().width / 2 : 0;
+    }
+    function yLabel (d) {
+      var s = d.shapeType;
+      return s === "rectangle" || s === "polygon" ? this.parentNode.firstElementChild.getBBox().height / 2 : 0;
+    }
 
     function generateTextures() {
       g.append("defs").append("pattern")
@@ -91,6 +109,10 @@ define(function () {
             .attr("rx", rx)
             .attr("ry", ry);
         break;
+      case "path":
+        update.selectAll("path")
+            .attr("d", pathSpec);
+        break;
       }
     }
 
@@ -118,6 +140,7 @@ define(function () {
 
         renderShape("rect", partEnter, part);
         renderShape("ellipse", partEnter, part);
+        renderShape("path", partEnter, part);
         renderLabels(partEnter, part);
 
         part

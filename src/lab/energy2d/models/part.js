@@ -96,7 +96,7 @@ define(function (require, exports, module) {
     }
   });
 
-  ["x", "y", "width", "height", "inner", "outer", "a", "b"].forEach(function (key) {
+  ["x", "y", "width", "height", "inner", "outer", "a", "b", "x_coords", "y_coords"].forEach(function (key) {
     Object.defineProperty(Part.prototype, key, {
       get: function () {
         return this.shape[key];
