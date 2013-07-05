@@ -1,0 +1,21 @@
+{
+  "title": "Conduction",
+  "publicationStatus": "draft",
+  "subtitle": "How does Conducting Distance Affect Conduction Rate?",
+  "about": "If your hand holds in the middle of the handle as opposed to the end, will your hand feel hotter?\n\nThe following model compares heat conduction through two test pieces made of identical material but their lengths are\ndifferent.",
+  "importedFrom": "imports/energy2d/content/conducting-distance.html",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "conduction4",
+      "url": "imports/energy2d/models-json/conduction4.json",
+      "importedFrom": "imports/energy2d/content/conduction4.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

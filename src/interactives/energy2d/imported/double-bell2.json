@@ -1,0 +1,20 @@
+{
+  "title": "Double Bell2",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "* no further description available",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "double-bell2",
+      "url": "imports/energy2d/models-json/double-bell2.json",
+      "importedFrom": "imports/energy2d/models-xml/double-bell2.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

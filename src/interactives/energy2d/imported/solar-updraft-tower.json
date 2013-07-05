@@ -1,0 +1,20 @@
+{
+  "title": "Solar Updraft Tower",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "* no further description available",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "solar-updraft-tower",
+      "url": "imports/energy2d/models-json/solar-updraft-tower.json",
+      "importedFrom": "imports/energy2d/models-xml/solar-updraft-tower.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

@@ -1,0 +1,250 @@
+{
+  "type": "energy2d",
+  "model_width": 1.0,
+  "model_height": 1.0,
+  "timeStep": 0.2,
+  "sun_angle": 1.5707964,
+  "solar_power_density": 2000.0,
+  "solar_ray_count": 24,
+  "solar_ray_speed": 0.1,
+  "photon_emission_interval": 20,
+  "z_heat_diffusivity": 0.0,
+  "background_conductivity": 0.001,
+  "background_density": 0.5,
+  "background_specific_heat": 1000.0,
+  "background_temperature": 20.0,
+  "background_viscosity": 1.0E-6,
+  "thermal_buoyancy": 1.0E-5,
+  "buoyancy_approximation": 1,
+  "boundary": {
+    "upper": 0.0,
+    "lower": 0.0,
+    "left": 0.0,
+    "right": 0.0,
+    "type": "flux"
+  },
+  "structure": {
+    "part": [
+      {
+        "rectangle": {
+          "x": 0.0,
+          "y": 0.79999995,
+          "width": 0.48,
+          "height": 0.2
+        },
+        "thermal_conductivity": 0.1,
+        "specific_heat": 1000.0,
+        "density": 1.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "power": 100.0,
+        "filled": false
+      },
+      {
+        "rectangle": {
+          "x": 0.0,
+          "y": 0.705,
+          "width": 0.48,
+          "height": 0.09
+        },
+        "thermal_conductivity": 1.0,
+        "specific_heat": 1000.0,
+        "density": 1.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "filled": false
+      },
+      {
+        "rectangle": {
+          "x": 0.69,
+          "y": 0.28000003,
+          "width": 0.02,
+          "height": 0.42
+        },
+        "thermal_conductivity": 10.0,
+        "specific_heat": 1000.0,
+        "density": 1.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "filled": false,
+        "label": "Fin"
+      },
+      {
+        "rectangle": {
+          "x": 0.59000003,
+          "y": 0.28000003,
+          "width": 0.02,
+          "height": 0.42
+        },
+        "thermal_conductivity": 10.0,
+        "specific_heat": 1000.0,
+        "density": 1.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "filled": false,
+        "label": "Fin"
+      },
+      {
+        "rectangle": {
+          "x": 0.48,
+          "y": 0.0,
+          "width": 0.04,
+          "height": 1.0
+        },
+        "thermal_conductivity": 1.0E-9,
+        "specific_heat": 1000.0,
+        "density": 100.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 10,
+          "texture_width": 8,
+          "texture_height": 8
+        }
+      },
+      {
+        "rectangle": {
+          "x": 0.52,
+          "y": 0.79999995,
+          "width": 0.5,
+          "height": 0.2
+        },
+        "thermal_conductivity": 0.1,
+        "specific_heat": 1000.0,
+        "density": 1.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "power": 100.0,
+        "uid": "13c5e9308fc",
+        "filled": false
+      },
+      {
+        "rectangle": {
+          "x": 0.52,
+          "y": 0.705,
+          "width": 0.48,
+          "height": 0.089999996
+        },
+        "thermal_conductivity": 1.0,
+        "specific_heat": 1000.0,
+        "density": 1.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "filled": false
+      },
+      {
+        "rectangle": {
+          "x": 0.79,
+          "y": 0.28000003,
+          "width": 0.02,
+          "height": 0.42
+        },
+        "thermal_conductivity": 10.0,
+        "specific_heat": 1000.0,
+        "density": 1.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "filled": false,
+        "label": "Fin"
+      },
+      {
+        "rectangle": {
+          "x": 0.89,
+          "y": 0.28000003,
+          "width": 0.02,
+          "height": 0.42
+        },
+        "thermal_conductivity": 10.0,
+        "specific_heat": 1000.0,
+        "density": 1.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "filled": false,
+        "label": "Fin"
+      }
+    ]
+  },
+  "thermometers": [
+    {
+      "x": 0.25,
+      "y": 0.74
+    },
+    {
+      "x": 0.75,
+      "y": 0.74
+    }
+  ],
+  "viewOptions": {
+    "grid": true,
+    "snap_to_grid": true,
+    "grid_size": 10,
+    "ruler": true,
+    "color_palette_type": 0,
+    "color_palette_x": 0.0,
+    "color_palette_y": 0.0,
+    "color_palette_w": 0.0,
+    "color_palette_h": 0.0,
+    "minimum_temperature": 20.0,
+    "maximum_temperature": 120.0,
+    "graph_xlabel": "Time",
+    "graph_ylabel": "Temperature (℃)",
+    "text": [
+      {
+        "string": "Heat source A",
+        "face": "Arial",
+        "size": 14,
+        "style": 1,
+        "color": "ffffff",
+        "x": 0.17500001,
+        "y": 0.120000005
+      },
+      {
+        "string": "Heat source B",
+        "face": "Arial",
+        "size": 14,
+        "style": 1,
+        "color": "ffffff",
+        "x": 0.705,
+        "y": 0.120000005
+      }
+    ]
+  }
+}

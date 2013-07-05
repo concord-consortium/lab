@@ -1,0 +1,240 @@
+{
+  "type": "energy2d",
+  "model_width": 1.0,
+  "model_height": 1.0,
+  "timeStep": 0.01,
+  "viewupdate_interval": 10,
+  "sun_angle": 1.5707964,
+  "solar_power_density": 2000.0,
+  "solar_ray_count": 24,
+  "solar_ray_speed": 0.1,
+  "photon_emission_interval": 20,
+  "z_heat_diffusivity": 0.0,
+  "convective": false,
+  "background_conductivity": 1.0E-9,
+  "background_specific_heat": 100.0,
+  "thermal_buoyancy": 2.5E-4,
+  "buoyancy_approximation": 1,
+  "boundary": {
+    "upper": 0.0,
+    "lower": 0.0,
+    "left": 0.0,
+    "right": 0.0,
+    "type": "flux"
+  },
+  "structure": {
+    "part": [
+      {
+        "rectangle": {
+          "x": 0.39999998,
+          "y": 0.13306901,
+          "width": 0.5,
+          "height": 0.2
+        },
+        "thermal_conductivity": 1.0,
+        "specific_heat": 1000.0,
+        "density": 5.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 40.0,
+        "constant_temperature": false,
+        "uid": "BlockA",
+        "filled": false,
+        "label": "A"
+      },
+      {
+        "rectangle": {
+          "x": 0.20000002,
+          "y": 0.13999997,
+          "width": 0.2,
+          "height": 0.4
+        },
+        "thermal_conductivity": 5.0,
+        "specific_heat": 1000.0,
+        "density": 10.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": -10.0,
+        "constant_temperature": false,
+        "uid": "BlockC",
+        "filled": false
+      },
+      {
+        "rectangle": {
+          "x": 0.39999998,
+          "y": 0.73968196,
+          "width": 0.5,
+          "height": 0.2
+        },
+        "thermal_conductivity": 1.0,
+        "specific_heat": 1000.0,
+        "density": 10.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": -20.0,
+        "constant_temperature": false,
+        "uid": "BlockB",
+        "filled": false,
+        "label": "B"
+      },
+      {
+        "rectangle": {
+          "x": 0.563545,
+          "y": 0.33306903,
+          "width": 0.02,
+          "height": 0.4
+        },
+        "thermal_conductivity": 0.1,
+        "specific_heat": 1000.0,
+        "density": 1.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": -5.0,
+        "constant_temperature": false,
+        "filled": false
+      },
+      {
+        "rectangle": {
+          "x": 0.74,
+          "y": 0.33306882,
+          "width": 0.02,
+          "height": 0.4
+        },
+        "thermal_conductivity": 0.1,
+        "specific_heat": 1000.0,
+        "density": 1.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": -10.0,
+        "constant_temperature": false,
+        "filled": false
+      },
+      {
+        "rectangle": {
+          "x": 0.20000002,
+          "y": 0.54,
+          "width": 0.2,
+          "height": 0.4
+        },
+        "thermal_conductivity": 5.0,
+        "specific_heat": 1000.0,
+        "density": 10.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 10.0,
+        "constant_temperature": false,
+        "filled": false
+      },
+      {
+        "rectangle": {
+          "x": 0.400132,
+          "y": 0.52968264,
+          "width": 0.5,
+          "height": 0.02
+        },
+        "thermal_conductivity": 5.0,
+        "specific_heat": 1000.0,
+        "density": 10.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 5.0,
+        "constant_temperature": false,
+        "filled": false
+      },
+      {
+        "rectangle": {
+          "x": 0.402116,
+          "y": 0.65269804,
+          "width": 0.5,
+          "height": 0.02
+        },
+        "thermal_conductivity": 5.0,
+        "specific_heat": 1000.0,
+        "density": 10.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 15.0,
+        "constant_temperature": false,
+        "filled": false
+      },
+      {
+        "rectangle": {
+          "x": 0.402116,
+          "y": 0.41724902,
+          "width": 0.5,
+          "height": 0.02
+        },
+        "thermal_conductivity": 5.0,
+        "specific_heat": 1000.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 15.0,
+        "constant_temperature": false,
+        "filled": false
+      }
+    ]
+  },
+  "thermometers": [
+    {
+      "label": "T2",
+      "x": 0.5470902,
+      "y": 0.84629613
+    },
+    {
+      "label": "T1",
+      "x": 0.5470902,
+      "y": 0.25291008
+    }
+  ],
+  "viewOptions": {
+    "grid": true,
+    "grid_size": 10,
+    "color_palette_type": 0,
+    "color_palette_x": 0.0,
+    "color_palette_y": 0.0,
+    "color_palette_w": 0.0,
+    "color_palette_h": 0.0,
+    "minimum_temperature": -20.0,
+    "maximum_temperature": 40.0,
+    "graph_xlabel": "Time",
+    "text": [
+      {
+        "string": "Total thermal energy = %thermal_energy J",
+        "face": "SansSerif",
+        "size": 16,
+        "style": 1,
+        "color": "ffffff",
+        "x": 0.0205,
+        "y": 0.9788
+      },
+      {
+        "string": "The degree of conservation of energy illustrates the degree of simulation precision.",
+        "face": "Arial",
+        "size": 12,
+        "style": 2,
+        "color": "ffffff",
+        "x": 0.0231,
+        "y": 0.9332137
+      }
+    ]
+  }
+}

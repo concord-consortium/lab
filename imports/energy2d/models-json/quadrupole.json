@@ -1,0 +1,78 @@
+{
+  "type": "energy2d",
+  "timeStep": 10.0,
+  "sun_angle": 1.5707964,
+  "solar_power_density": 2000.0,
+  "solar_ray_count": 24,
+  "solar_ray_speed": 0.1,
+  "photon_emission_interval": 20,
+  "z_heat_diffusivity": 0.0,
+  "convective": false,
+  "background_conductivity": 0.1,
+  "background_viscosity": 1.568E-4,
+  "thermal_buoyancy": 2.5E-4,
+  "buoyancy_approximation": 0,
+  "boundary": {
+    "upper": 0.0,
+    "lower": 0.0,
+    "left": 0.0,
+    "right": 0.0,
+    "type": "flux"
+  },
+  "structure": {
+    "part": [
+      {
+        "rectangle": {
+          "x": 4.0,
+          "y": 4.5,
+          "width": 2.0,
+          "height": 1.0
+        },
+        "thermal_conductivity": 1.0,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": -10.0,
+        "constant_temperature": true,
+        "uid": "P2",
+        "filled": false
+      },
+      {
+        "rectangle": {
+          "x": 4.5,
+          "y": 4.0,
+          "width": 1.0,
+          "height": 2.0
+        },
+        "thermal_conductivity": 1.0,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 10.0,
+        "constant_temperature": true,
+        "uid": "P1",
+        "filled": false
+      }
+    ]
+  },
+  "viewOptions": {
+    "grid": true,
+    "grid_size": 10,
+    "isotherm": true,
+    "color_palette_type": 0,
+    "color_palette_x": 0.0,
+    "color_palette_y": 0.0,
+    "color_palette_w": 0.0,
+    "color_palette_h": 0.0,
+    "minimum_temperature": -25.0,
+    "maximum_temperature": 25.0,
+    "heat_flux_line": true,
+    "clock": false
+  }
+}

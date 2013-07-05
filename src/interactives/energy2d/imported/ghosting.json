@@ -1,0 +1,20 @@
+{
+  "title": "Ghosting",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "* no further description available",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "ghosting",
+      "url": "imports/energy2d/models-json/ghosting.json",
+      "importedFrom": "imports/energy2d/models-xml/ghosting.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

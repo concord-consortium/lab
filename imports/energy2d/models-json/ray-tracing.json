@@ -1,0 +1,142 @@
+{
+  "type": "energy2d",
+  "timeStep": 10.0,
+  "sunny": true,
+  "sun_angle": 1.5707964,
+  "solar_power_density": 20000.0,
+  "solar_ray_count": 24,
+  "solar_ray_speed": 0.002,
+  "photon_emission_interval": 10,
+  "z_heat_diffusivity": 0.0,
+  "convective": false,
+  "thermal_buoyancy": 2.5E-4,
+  "buoyancy_approximation": 1,
+  "boundary": {
+    "upper": 0.0,
+    "lower": 0.0,
+    "left": 0.0,
+    "right": 0.0,
+    "type": "temperature"
+  },
+  "structure": {
+    "part": [
+      {
+        "rectangle": {
+          "x": -0.099999905,
+          "y": 8.0,
+          "width": 10.2,
+          "height": 2.0
+        },
+        "thermal_conductivity": 0.001,
+        "specific_heat": 1000.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 0.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 23,
+          "texture_width": 36,
+          "texture_height": 36
+        }
+      },
+      {
+        "ellipse": {
+          "x": 3.1000001430511475,
+          "y": 2.700000047683716,
+          "a": 4.0,
+          "b": 2.0
+        },
+        "thermal_conductivity": 0.001,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 1.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 0.0,
+        "constant_temperature": false
+      },
+      {
+        "ellipse": {
+          "x": 5.5,
+          "y": 5.700000286102295,
+          "a": 2.0,
+          "b": 2.0
+        },
+        "thermal_conductivity": 0.001,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 1.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 0.0,
+        "constant_temperature": false
+      },
+      {
+        "polygon": {
+          "count": 4,
+          "vertices": "2.3000002, 7.3, 1.3000001, 6.3, 1.3000001, 5.3, 2.3000002, 4.3"
+        },
+        "thermal_conductivity": 0.001,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 1.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 0.0,
+        "constant_temperature": false
+      },
+      {
+        "blob": {
+          "count": 12,
+          "points": "8.400002, 3.541668, 9.300001, 4.641668, 9.300001, 6.141668, 7.0000005, 6.2416677, 7.3000007, 5.641668, 8.799999, 5.7416677, 8.799999, 4.941668, 7.100001, 5.141668, 7.0000005, 4.7416677, 8.300001, 4.641668, 8.300001, 4.441668, 7.600001, 4.141668"
+        },
+        "thermal_conductivity": 1.0,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 1.0,
+        "absorption": 0.0,
+        "emissivity": 0.0,
+        "temperature": 0.0,
+        "constant_temperature": false
+      }
+    ]
+  },
+  "thermometers": [
+    {
+      "x": 5.0,
+      "y": 7.2999997
+    }
+  ],
+  "viewOptions": {
+    "snap_to_grid": true,
+    "grid_size": 10,
+    "ruler": true,
+    "color_palette_type": 1,
+    "color_palette_x": 0.0,
+    "color_palette_y": 0.0,
+    "color_palette_w": 0.0,
+    "color_palette_h": 0.0,
+    "minimum_temperature": 0.0,
+    "maximum_temperature": 50.0,
+    "graph_xlabel": "Time",
+    "graph_ylabel": "Temperature (℃)",
+    "text": {
+      "string": "Press 'Q' or 'W' to change the sun angle",
+      "face": "Arial",
+      "size": 9,
+      "style": 0,
+      "color": "ffffff",
+      "x": 0.5,
+      "y": 9.5
+    }
+  }
+}

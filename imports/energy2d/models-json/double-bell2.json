@@ -1,0 +1,379 @@
+{
+  "type": "energy2d",
+  "model_width": 2.0,
+  "model_height": 2.0,
+  "timeStep": 0.03,
+  "sun_angle": 1.5707964,
+  "solar_power_density": 2000.0,
+  "solar_ray_count": 24,
+  "solar_ray_speed": 0.1,
+  "photon_emission_interval": 20,
+  "z_heat_diffusivity": 0.0,
+  "background_conductivity": 0.25,
+  "background_temperature": 20.0,
+  "background_viscosity": 1.568E-4,
+  "thermal_buoyancy": 2.5E-4,
+  "buoyancy_approximation": 1,
+  "boundary": {
+    "upper": 0.0,
+    "lower": 0.0,
+    "left": 0.0,
+    "right": 0.0,
+    "type": "temperature"
+  },
+  "structure": {
+    "part": [
+      {
+        "rectangle": {
+          "x": 0.0,
+          "y": 1.6999999,
+          "width": 2.0,
+          "height": 0.099999994
+        },
+        "thermal_conductivity": 0.01,
+        "specific_heat": 800.0,
+        "density": 500.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "scattering": false,
+        "scattering_visible": false,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 15,
+          "texture_width": 36,
+          "texture_height": 36
+        }
+      },
+      {
+        "rectangle": {
+          "x": 0.815,
+          "y": 1.01,
+          "width": 0.05,
+          "height": 0.5
+        },
+        "thermal_conductivity": 1.5,
+        "specific_heat": 1500.0,
+        "density": 1400.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "scattering": false,
+        "scattering_visible": false,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 12,
+          "texture_width": 8,
+          "texture_height": 8
+        }
+      },
+      {
+        "rectangle": {
+          "x": 0.14,
+          "y": 1.02,
+          "width": 0.06,
+          "height": 0.42
+        },
+        "thermal_conductivity": 0.75,
+        "specific_heat": 1500.0,
+        "density": 1400.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "scattering": false,
+        "scattering_visible": false,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 12,
+          "texture_width": 8,
+          "texture_height": 8
+        }
+      },
+      {
+        "rectangle": {
+          "x": 0.14,
+          "y": 0.97999996,
+          "width": 1.66,
+          "height": 0.06
+        },
+        "thermal_conductivity": 1.5,
+        "specific_heat": 1500.0,
+        "density": 1400.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "scattering": false,
+        "scattering_visible": false,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 12,
+          "texture_width": 8,
+          "texture_height": 8
+        }
+      },
+      {
+        "rectangle": {
+          "x": 0.0,
+          "y": 1.4399999,
+          "width": 0.19999999,
+          "height": 0.06
+        },
+        "thermal_conductivity": 0.5,
+        "specific_heat": 1500.0,
+        "density": 1400.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "scattering": false,
+        "scattering_visible": false,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 12,
+          "texture_width": 8,
+          "texture_height": 8
+        }
+      },
+      {
+        "rectangle": {
+          "x": -0.050000004,
+          "y": 1.6550001,
+          "width": 0.3,
+          "height": 0.05
+        },
+        "thermal_conductivity": 0.01,
+        "specific_heat": 1500.0,
+        "density": 1400.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "scattering": false,
+        "scattering_visible": false,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 12,
+          "texture_width": 8,
+          "texture_height": 8
+        }
+      },
+      {
+        "rectangle": {
+          "x": 0.0,
+          "y": 1.5,
+          "width": 0.06,
+          "height": 0.16
+        },
+        "thermal_conductivity": 0.25,
+        "specific_heat": 1012.0,
+        "density": 1.2,
+        "transmission": 0.0,
+        "reflection": 1.0,
+        "scattering": true,
+        "scattering_visible": false,
+        "absorption": 0.0,
+        "emissivity": 0.0,
+        "temperature": 600.0,
+        "constant_temperature": true,
+        "wind_speed": 0.15
+      },
+      {
+        "rectangle": {
+          "x": 1.77,
+          "y": 0.37,
+          "width": 0.06,
+          "height": 1.14
+        },
+        "thermal_conductivity": 0.01,
+        "specific_heat": 1500.0,
+        "density": 1400.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "scattering": false,
+        "scattering_visible": false,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 12,
+          "texture_width": 8,
+          "texture_height": 8
+        }
+      },
+      {
+        "rectangle": {
+          "x": 1.9599999,
+          "y": 0.06,
+          "width": 0.04,
+          "height": 1.64
+        },
+        "thermal_conductivity": 1.0E-6,
+        "specific_heat": 1500.0,
+        "density": 1400.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "scattering": false,
+        "scattering_visible": false,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 12,
+          "texture_width": 8,
+          "texture_height": 8
+        }
+      },
+      {
+        "rectangle": {
+          "x": 0.0,
+          "y": -2.7939677E-8,
+          "width": 2.0,
+          "height": 0.06
+        },
+        "thermal_conductivity": 1.0E-6,
+        "specific_heat": 1500.0,
+        "density": 1400.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "scattering": false,
+        "scattering_visible": false,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 12,
+          "texture_width": 8,
+          "texture_height": 8
+        }
+      },
+      {
+        "rectangle": {
+          "x": 0.0,
+          "y": 0.06,
+          "width": 0.04,
+          "height": 1.38
+        },
+        "thermal_conductivity": 1.0E-6,
+        "specific_heat": 1500.0,
+        "density": 1400.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "scattering": false,
+        "scattering_visible": false,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 12,
+          "texture_width": 8,
+          "texture_height": 8
+        }
+      },
+      {
+        "rectangle": {
+          "x": 0.0,
+          "y": 1.8,
+          "width": 2.0,
+          "height": 0.24
+        },
+        "thermal_conductivity": 1.0E-6,
+        "specific_heat": 1500.0,
+        "density": 1400.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "scattering": false,
+        "scattering_visible": false,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 9,
+          "texture_width": 8,
+          "texture_height": 8
+        }
+      }
+    ]
+  },
+  "thermometers": [
+    {
+      "label": "T4",
+      "x": 1.9,
+      "y": 1.4
+    },
+    {
+      "label": "T1",
+      "x": 0.48,
+      "y": 0.96000004
+    },
+    {
+      "label": "T2",
+      "x": 1.24,
+      "y": 0.96000004
+    },
+    {
+      "label": "T3",
+      "x": 1.9,
+      "y": 0.37999997
+    }
+  ],
+  "viewOptions": {
+    "snap_to_grid": true,
+    "grid_size": 10,
+    "color_palette_type": 0,
+    "color_palette_x": 0.0,
+    "color_palette_y": 0.0,
+    "color_palette_w": 0.0,
+    "color_palette_h": 0.0,
+    "minimum_temperature": 20.0,
+    "maximum_temperature": 150.0,
+    "velocity": true,
+    "graph_xlabel": "Time (hr)",
+    "graph_ylabel": "Temperature (℃)",
+    "text": {
+      "string": "Double-bell rocket stove-linebreak-",
+      "face": "Arial",
+      "size": 14,
+      "style": 0,
+      "color": "ffffff",
+      "x": 0.08,
+      "y": 1.92
+    }
+  }
+}

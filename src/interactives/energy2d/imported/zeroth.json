@@ -1,0 +1,20 @@
+{
+  "title": "Zeroth",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "* no further description available",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "zeroth",
+      "url": "imports/energy2d/models-json/zeroth.json",
+      "importedFrom": "imports/energy2d/models-xml/zeroth.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

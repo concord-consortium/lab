@@ -1,0 +1,20 @@
+{
+  "title": "Mantle",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "* no further description available",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "mantle",
+      "url": "imports/energy2d/models-json/mantle.json",
+      "importedFrom": "imports/energy2d/models-xml/mantle.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

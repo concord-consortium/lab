@@ -1,0 +1,20 @@
+{
+  "title": "Village1",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "* no further description available",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "village1",
+      "url": "imports/energy2d/models-json/village1.json",
+      "importedFrom": "imports/energy2d/models-xml/village1.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

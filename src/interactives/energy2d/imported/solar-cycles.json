@@ -1,0 +1,20 @@
+{
+  "title": "Solar Cycles",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "* no further description available",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "solar-cycles",
+      "url": "imports/energy2d/models-json/solar-cycles.json",
+      "importedFrom": "imports/energy2d/models-xml/solar-cycles.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

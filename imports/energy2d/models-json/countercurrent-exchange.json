@@ -1,0 +1,186 @@
+{
+  "type": "energy2d",
+  "model_width": 1.0,
+  "model_height": 1.0,
+  "timeStep": 0.1,
+  "measurement_interval": 50,
+  "viewupdate_interval": 10,
+  "sun_angle": 1.5707964,
+  "solar_power_density": 2000.0,
+  "solar_ray_count": 24,
+  "solar_ray_speed": 0.1,
+  "photon_emission_interval": 20,
+  "z_heat_diffusivity": 0.0,
+  "background_conductivity": 10.0,
+  "background_density": 10.0,
+  "background_specific_heat": 1000.0,
+  "background_viscosity": 1.0,
+  "thermal_buoyancy": 0.0,
+  "buoyancy_approximation": 1,
+  "boundary": {
+    "upper": 0.0,
+    "lower": 0.0,
+    "left": 0.0,
+    "right": 0.0,
+    "type": "temperature"
+  },
+  "structure": {
+    "part": [
+      {
+        "rectangle": {
+          "x": 0.0,
+          "y": 0.15,
+          "width": 0.02,
+          "height": 0.2
+        },
+        "thermal_conductivity": 0.08,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 80.0,
+        "constant_temperature": true,
+        "wind_speed": 0.05,
+        "draggable": false
+      },
+      {
+        "rectangle": {
+          "x": 0.0,
+          "y": 0.49000004,
+          "width": 0.02,
+          "height": 0.2
+        },
+        "thermal_conductivity": 0.08,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": true,
+        "wind_speed": -0.05
+      },
+      {
+        "rectangle": {
+          "x": 0.0,
+          "y": 0.35000002,
+          "width": 1.0,
+          "height": 0.02
+        },
+        "thermal_conductivity": 1.0E-9,
+        "specific_heat": 100.0,
+        "density": 10.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false
+      },
+      {
+        "rectangle": {
+          "x": 0.0,
+          "y": 0.12999998,
+          "width": 1.0,
+          "height": 0.02
+        },
+        "thermal_conductivity": 1.0E-9,
+        "specific_heat": 1000.0,
+        "density": 100.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false
+      },
+      {
+        "rectangle": {
+          "x": 0.0,
+          "y": 0.47000003,
+          "width": 1.0,
+          "height": 0.02
+        },
+        "thermal_conductivity": 1.0E-9,
+        "specific_heat": 100.0,
+        "density": 10.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false
+      },
+      {
+        "rectangle": {
+          "x": 0.0,
+          "y": 0.69,
+          "width": 1.0,
+          "height": 0.02
+        },
+        "thermal_conductivity": 1.0E-9,
+        "specific_heat": 1000.0,
+        "density": 100.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false
+      },
+      {
+        "rectangle": {
+          "x": 0.04,
+          "y": 0.35,
+          "width": 0.91999996,
+          "height": 0.14
+        },
+        "thermal_conductivity": 100.0,
+        "specific_heat": 1.0,
+        "density": 1.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false
+      }
+    ]
+  },
+  "thermometers": [
+    {
+      "x": 0.11,
+      "y": 0.58
+    },
+    {
+      "x": 0.11,
+      "y": 0.25
+    },
+    {
+      "x": 0.94,
+      "y": 0.59
+    },
+    {
+      "x": 0.94,
+      "y": 0.26
+    }
+  ],
+  "viewOptions": {
+    "grid": true,
+    "snap_to_grid": true,
+    "grid_size": 10,
+    "color_palette_type": 1,
+    "color_palette_x": 0.0,
+    "color_palette_y": 0.0,
+    "color_palette_w": 0.0,
+    "color_palette_h": 0.0,
+    "minimum_temperature": 0.0,
+    "maximum_temperature": 100.0,
+    "streamline": true,
+    "graph_xlabel": "Time",
+    "graph_ylabel": "Temperature (℃)"
+  }
+}

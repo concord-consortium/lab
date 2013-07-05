@@ -1,0 +1,20 @@
+{
+  "title": "Bolometer",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "* no further description available",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "bolometer",
+      "url": "imports/energy2d/models-json/bolometer.json",
+      "importedFrom": "imports/energy2d/models-xml/bolometer.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

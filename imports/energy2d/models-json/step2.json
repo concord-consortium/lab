@@ -1,0 +1,192 @@
+{
+  "type": "energy2d",
+  "model_width": 1.0,
+  "model_height": 1.0,
+  "timeStep": 1.0,
+  "sun_angle": 1.5707964,
+  "solar_power_density": 2000.0,
+  "solar_ray_count": 24,
+  "solar_ray_speed": 0.1,
+  "photon_emission_interval": 20,
+  "z_heat_diffusivity": 0.0,
+  "convective": false,
+  "background_conductivity": 1.0,
+  "background_temperature": 20.0,
+  "thermal_buoyancy": 2.5E-4,
+  "buoyancy_approximation": 1,
+  "boundary": {
+    "upper": 0.0,
+    "lower": 0.0,
+    "left": 0.0,
+    "right": 0.0,
+    "type": "flux"
+  },
+  "structure": {
+    "part": [
+      {
+        "rectangle": {
+          "x": 0.0,
+          "y": 0.52,
+          "width": 0.02,
+          "height": 0.48
+        },
+        "thermal_conductivity": 1.0,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": true,
+        "uid": "LOWER_SINK",
+        "texture": {
+          "texture_fg": "-7f7f80",
+          "texture_bg": -1000000,
+          "texture_style": 22,
+          "texture_width": 8,
+          "texture_height": 8
+        },
+        "label": "%temperature",
+        "draggable": false
+      },
+      {
+        "rectangle": {
+          "x": 0.0,
+          "y": 0.48,
+          "width": 1.0,
+          "height": 0.04
+        },
+        "thermal_conductivity": 1.0E-9,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "label": "Insulation",
+        "draggable": false
+      },
+      {
+        "rectangle": {
+          "x": 0.0,
+          "y": 1.4901161E-8,
+          "width": 0.02,
+          "height": 0.48
+        },
+        "thermal_conductivity": 1.0,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": true,
+        "uid": "UPPER_SINK",
+        "texture": {
+          "texture_fg": "-7f7f80",
+          "texture_bg": -1000000,
+          "texture_style": 22,
+          "texture_width": 8,
+          "texture_height": 8
+        },
+        "label": "%temperature",
+        "draggable": false
+      },
+      {
+        "rectangle": {
+          "x": 0.975,
+          "y": 1.4901161E-8,
+          "width": 0.025,
+          "height": 0.48
+        },
+        "thermal_conductivity": 1.0,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 50.0,
+        "constant_temperature": true,
+        "uid": "UPPER_HEATER",
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 9,
+          "texture_width": 8,
+          "texture_height": 8
+        },
+        "label": "%temperature",
+        "draggable": false
+      },
+      {
+        "ellipse": {
+          "x": 1.000000024214387,
+          "y": 0.7500000242143869,
+          "a": 0.05,
+          "b": 0.05
+        },
+        "thermal_conductivity": 1.0,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 50.0,
+        "constant_temperature": true,
+        "uid": "LOWER_HEATER",
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 9,
+          "texture_width": 8,
+          "texture_height": 8
+        },
+        "label": "%temperature",
+        "draggable": false
+      }
+    ]
+  },
+  "thermometers": [
+    {
+      "x": 0.5,
+      "y": 0.25
+    },
+    {
+      "x": 0.5,
+      "y": 0.75
+    }
+  ],
+  "viewOptions": {
+    "grid": true,
+    "snap_to_grid": true,
+    "grid_size": 10,
+    "isotherm": true,
+    "color_palette_type": 0,
+    "control_panel": true,
+    "color_palette_x": 0.0,
+    "color_palette_y": 0.0,
+    "color_palette_w": 0.0,
+    "color_palette_h": 0.0,
+    "minimum_temperature": 0.0,
+    "maximum_temperature": 60.0,
+    "heat_flux_arrow": true,
+    "graph_xlabel": "Time",
+    "graph_ylabel": "Temperature (℃)",
+    "clock": false,
+    "text": {
+      "string": "Heat & Temperature: Investigation 2",
+      "face": "Arial",
+      "size": 16,
+      "style": 1,
+      "color": "ffffff",
+      "x": 0.0562,
+      "y": 0.9769
+    }
+  }
+}

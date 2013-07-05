@@ -1,0 +1,20 @@
+{
+  "title": "Fin1",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "* no further description available",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "fin1",
+      "url": "imports/energy2d/models-json/fin1.json",
+      "importedFrom": "imports/energy2d/models-xml/fin1.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

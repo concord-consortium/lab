@@ -1,0 +1,255 @@
+{
+  "type": "energy2d",
+  "model_width": 20.0,
+  "model_height": 20.0,
+  "timeStep": 0.5,
+  "sunny": true,
+  "sun_angle": 0.78539824,
+  "solar_power_density": 20000.0,
+  "solar_ray_count": 36,
+  "solar_ray_speed": 0.2,
+  "photon_emission_interval": 5,
+  "z_heat_diffusivity": 0.0,
+  "background_conductivity": 5.0,
+  "background_temperature": 20.0,
+  "background_viscosity": 0.01,
+  "thermal_buoyancy": 1.0E-4,
+  "buoyancy_approximation": 0,
+  "boundary": {
+    "upper": 20.0,
+    "lower": 20.0,
+    "left": 20.0,
+    "right": 20.0,
+    "type": "temperature"
+  },
+  "structure": {
+    "part": [
+      {
+        "rectangle": {
+          "x": 9.399996,
+          "y": 14.999998,
+          "width": 0.5,
+          "height": 1.0
+        },
+        "thermal_conductivity": 0.001,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "scattering": false,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 23,
+          "texture_width": 36,
+          "texture_height": 36
+        }
+      },
+      {
+        "rectangle": {
+          "x": 9.399996,
+          "y": 9.000002,
+          "width": 0.5,
+          "height": 1.0
+        },
+        "thermal_conductivity": 0.001,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 1.0,
+        "scattering": true,
+        "scattering_visible": false,
+        "absorption": 0.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 23,
+          "texture_width": 36,
+          "texture_height": 36
+        }
+      },
+      {
+        "rectangle": {
+          "x": 0.0,
+          "y": 16.0,
+          "width": 20.0,
+          "height": 4.0
+        },
+        "thermal_conductivity": 0.001,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 1.0,
+        "scattering": true,
+        "scattering_visible": false,
+        "absorption": 0.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-cccccd",
+          "texture_style": 10,
+          "texture_width": 12,
+          "texture_height": 12
+        }
+      },
+      {
+        "rectangle": {
+          "x": 15.8,
+          "y": 12.0,
+          "width": 0.4,
+          "height": 4.0
+        },
+        "thermal_conductivity": 1.0E-9,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 1.0,
+        "reflection": 0.0,
+        "scattering": false,
+        "scattering_visible": false,
+        "absorption": 0.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "color": "ffffff"
+      },
+      {
+        "rectangle": {
+          "x": 9.6,
+          "y": 10.8,
+          "width": 0.2,
+          "height": 4.2000003
+        },
+        "thermal_conductivity": 0.001,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 1.0,
+        "reflection": 0.0,
+        "scattering": false,
+        "absorption": 0.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "color": "ffffff"
+      },
+      {
+        "polygon": {
+          "count": 4,
+          "vertices": "9.8, 9.0, 16.0, 12.0, 16.0, 12.400001, 9.8, 9.400001"
+        },
+        "thermal_conductivity": 1.0E-9,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 1.0,
+        "reflection": 0.0,
+        "scattering": false,
+        "scattering_visible": false,
+        "absorption": 0.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false,
+        "color": "ffffff"
+      },
+      {
+        "polygon": {
+          "count": 6,
+          "vertices": "-1.1999978, 8.874999, 4.8000016, 5.125002, 10.800003, 8.874999, 9.300003, 8.874999, 4.8000016, 6.1000004, 0.3000021, 8.874999"
+        },
+        "thermal_conductivity": 0.001,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 1.0,
+        "scattering": true,
+        "scattering_visible": false,
+        "absorption": 0.0,
+        "emissivity": 0.0,
+        "temperature": 0.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 16,
+          "texture_width": 12,
+          "texture_height": 12
+        }
+      },
+      {
+        "rectangle": {
+          "x": 9.9,
+          "y": 15.6,
+          "width": 5.6,
+          "height": 0.4
+        },
+        "thermal_conductivity": 1.0E-4,
+        "specific_heat": 1000.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "scattering": false,
+        "scattering_visible": false,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 20.0,
+        "constant_temperature": false
+      }
+    ]
+  },
+  "thermometers": [
+    {
+      "x": 9.074997,
+      "y": 14.500002
+    },
+    {
+      "x": 10.574995,
+      "y": 14.500002
+    },
+    {
+      "x": 14.400001,
+      "y": 7.0
+    }
+  ],
+  "viewOptions": {
+    "grid": true,
+    "snap_to_grid": true,
+    "grid_size": 10,
+    "ruler": true,
+    "color_palette_type": 0,
+    "color_palette_x": 0.0,
+    "color_palette_y": 0.0,
+    "color_palette_w": 0.0,
+    "color_palette_h": 0.0,
+    "minimum_temperature": 20.0,
+    "maximum_temperature": 50.0,
+    "graph_xlabel": "Time",
+    "graph_ylabel": "Temperature (℃)",
+    "text": [
+      {
+        "string": "Sunspace",
+        "face": "Arial",
+        "size": 14,
+        "style": 0,
+        "color": "ffffff",
+        "x": 1.5,
+        "y": 18.3
+      },
+      {
+        "string": "Press 'Q' or 'W' to change the sun angle",
+        "face": "Arial",
+        "size": 9,
+        "style": 0,
+        "color": "ffffff",
+        "x": 1.3999999,
+        "y": 19.4
+      }
+    ]
+  }
+}

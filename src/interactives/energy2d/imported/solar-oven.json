@@ -1,0 +1,20 @@
+{
+  "title": "Solar Oven",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "* no further description available",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "solar-oven",
+      "url": "imports/energy2d/models-json/solar-oven.json",
+      "importedFrom": "imports/energy2d/models-xml/solar-oven.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}
