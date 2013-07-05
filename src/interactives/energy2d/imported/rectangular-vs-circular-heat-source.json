@@ -9,7 +9,7 @@
       "type": "energy2d",
       "id": "rectangular-vs-circular-heat-source",
       "url": "imports/energy2d/models-json/rectangular-vs-circular-heat-source.json",
-      "importedFrom": "imports/energy2d/content/e2d/rectangular-vs-circular-heat-source.e2d",
+      "importedFrom": "imports/energy2d/models-xml/rectangular-vs-circular-heat-source.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

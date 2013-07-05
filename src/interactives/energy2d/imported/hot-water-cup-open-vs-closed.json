@@ -9,7 +9,7 @@
       "type": "energy2d",
       "id": "hot-water-cup-open-vs-closed",
       "url": "imports/energy2d/models-json/hot-water-cup-open-vs-closed.json",
-      "importedFrom": "imports/energy2d/content/e2d/hot-water-cup-open-vs-closed.e2d",
+      "importedFrom": "imports/energy2d/models-xml/hot-water-cup-open-vs-closed.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

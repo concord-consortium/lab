@@ -9,7 +9,7 @@
       "type": "energy2d",
       "id": "natural-convection2",
       "url": "imports/energy2d/models-json/natural-convection2.json",
-      "importedFrom": "imports/energy2d/content/e2d/natural-convection2.e2d",
+      "importedFrom": "imports/energy2d/models-xml/natural-convection2.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

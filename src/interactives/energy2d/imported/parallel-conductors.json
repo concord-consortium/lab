@@ -9,7 +9,7 @@
       "type": "energy2d",
       "id": "parallel-conductors",
       "url": "imports/energy2d/models-json/parallel-conductors.json",
-      "importedFrom": "imports/energy2d/content/e2d/parallel-conductors.e2d",
+      "importedFrom": "imports/energy2d/models-xml/parallel-conductors.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

@@ -9,7 +9,7 @@
       "type": "energy2d",
       "id": "reynolds",
       "url": "imports/energy2d/models-json/reynolds.json",
-      "importedFrom": "imports/energy2d/content/e2d/reynolds.e2d",
+      "importedFrom": "imports/energy2d/models-xml/reynolds.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

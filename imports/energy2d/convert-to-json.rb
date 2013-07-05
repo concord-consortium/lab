@@ -152,7 +152,7 @@ xml_files.each do |xml_file_path|
     interactive["about"] = page.content
     interactive["publicationStatus"] = "draft"
     interactive["importedFrom"] = page.path
-    interactive["models"][0]["importedFrom"] = page.e2d_path
+    interactive["models"][0]["importedFrom"] = "imports/energy2d/models-xml/#{page.basename}.e2d"
     if page.sun_angle_slider
       interactive["components"] << lab_solar_angle_slider_template
     end

@@ -9,7 +9,7 @@
       "type": "energy2d",
       "id": "fin1",
       "url": "imports/energy2d/models-json/fin1.json",
-      "importedFrom": "imports/energy2d/content/e2d/fin1.e2d",
+      "importedFrom": "imports/energy2d/models-xml/fin1.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

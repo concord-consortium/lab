@@ -9,7 +9,7 @@
       "type": "energy2d",
       "id": "solar-oven",
       "url": "imports/energy2d/models-json/solar-oven.json",
-      "importedFrom": "imports/energy2d/content/e2d/solar-oven.e2d",
+      "importedFrom": "imports/energy2d/models-xml/solar-oven.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

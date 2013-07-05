@@ -9,7 +9,7 @@
       "type": "energy2d",
       "id": "thermal-bridge",
       "url": "imports/energy2d/models-json/thermal-bridge.json",
-      "importedFrom": "imports/energy2d/content/e2d/thermal-bridge.e2d",
+      "importedFrom": "imports/energy2d/models-xml/thermal-bridge.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

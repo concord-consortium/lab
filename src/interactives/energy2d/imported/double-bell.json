@@ -9,7 +9,7 @@
       "type": "energy2d",
       "id": "double-bell",
       "url": "imports/energy2d/models-json/double-bell.json",
-      "importedFrom": "imports/energy2d/content/e2d/double-bell.e2d",
+      "importedFrom": "imports/energy2d/models-xml/double-bell.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

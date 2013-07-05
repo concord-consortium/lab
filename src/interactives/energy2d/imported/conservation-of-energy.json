@@ -9,7 +9,7 @@
       "type": "energy2d",
       "id": "conservation-of-energy",
       "url": "imports/energy2d/models-json/conservation-of-energy.json",
-      "importedFrom": "imports/energy2d/content/e2d/conservation-of-energy.e2d",
+      "importedFrom": "imports/energy2d/models-xml/conservation-of-energy.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

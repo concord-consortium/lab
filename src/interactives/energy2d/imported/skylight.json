@@ -9,7 +9,7 @@
       "type": "energy2d",
       "id": "skylight",
       "url": "imports/energy2d/models-json/skylight.json",
-      "importedFrom": "imports/energy2d/content/e2d/skylight.e2d",
+      "importedFrom": "imports/energy2d/models-xml/skylight.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

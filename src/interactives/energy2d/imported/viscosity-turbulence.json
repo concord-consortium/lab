@@ -9,7 +9,7 @@
       "type": "energy2d",
       "id": "viscosity-turbulence",
       "url": "imports/energy2d/models-json/viscosity-turbulence.json",
-      "importedFrom": "imports/energy2d/content/e2d/viscosity-turbulence.e2d",
+      "importedFrom": "imports/energy2d/models-xml/viscosity-turbulence.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

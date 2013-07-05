@@ -9,7 +9,7 @@
       "type": "energy2d",
       "id": "zeroth",
       "url": "imports/energy2d/models-json/zeroth.json",
-      "importedFrom": "imports/energy2d/content/e2d/zeroth.e2d",
+      "importedFrom": "imports/energy2d/models-xml/zeroth.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

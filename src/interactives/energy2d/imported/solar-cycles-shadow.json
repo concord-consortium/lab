@@ -9,7 +9,7 @@
       "type": "energy2d",
       "id": "solar-cycles-shadow",
       "url": "imports/energy2d/models-json/solar-cycles-shadow.json",
-      "importedFrom": "imports/energy2d/content/e2d/solar-cycles-shadow.e2d",
+      "importedFrom": "imports/energy2d/models-xml/solar-cycles-shadow.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

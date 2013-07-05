@@ -9,7 +9,7 @@
       "type": "energy2d",
       "id": "benard-cell",
       "url": "imports/energy2d/models-json/benard-cell.json",
-      "importedFrom": "imports/energy2d/content/e2d/benard-cell.e2d",
+      "importedFrom": "imports/energy2d/models-xml/benard-cell.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

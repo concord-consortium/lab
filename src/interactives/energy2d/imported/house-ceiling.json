@@ -9,7 +9,7 @@
       "type": "energy2d",
       "id": "house-ceiling",
       "url": "imports/energy2d/models-json/house-ceiling.json",
-      "importedFrom": "imports/energy2d/content/e2d/house-ceiling.e2d",
+      "importedFrom": "imports/energy2d/models-xml/house-ceiling.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }
