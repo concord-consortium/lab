@@ -41,7 +41,7 @@ class E2dPage
     @e2d = @applet.css('param[name=script]').attr('value').to_s.split(" ").last
     @e2d.gsub!(/;$/, '')
     @e2d_path = File.join(File.dirname(@path), @e2d)
-    @basename = @e2d.gsub(/\.e2d$/, '')
+    @basename = File.basename(@e2d).gsub(/\.e2d$/, '')
     @title = @doc.css('a[id="cc-link"] + h1').text
     @tagline = @doc.css('p[id="tagline"]').text
     @content = @doc.css('div[id="content"] p').collect { |p| p.text }.join("\n")
@@ -55,10 +55,13 @@ end
 #
 # Create a hash object with all the html pages that reference the
 # Energy2D Java applet. The key for each E2dPage object is the basename
-# of the mode file.
+# of the model file.
 #
 e2d_pages = {}
-Dir["#{original_content_path}/*.html"].collect {|path| E2dPage.new(path) }.find_all { |page| page.e2d }.each { |page| e2d_pages[page.basename] = page }
+pages = Dir["#{original_content_path}/*.html"].collect {|path| E2dPage.new(path) }.find_all { |page| page.e2d }
+pages.each do |page|
+  e2d_pages[page.basename] = page
+end
 
 #
 # Process the Energy2D model state xml files
