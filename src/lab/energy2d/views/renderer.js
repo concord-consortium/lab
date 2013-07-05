@@ -7,7 +7,8 @@ define(function(require) {
       VectormapView      = require('energy2d/views/vectormap'),
       VectormapWebGLView = require('energy2d/views/vectormap-webgl'),
       PhotonsView        = require('energy2d/views/photons'),
-      PartsView          = require('energy2d/views/parts');
+      PartsView          = require('energy2d/views/parts'),
+      ThermometersView   = require('energy2d/views/thermometers');
 
 
   return function Renderer(SVGContainer) {
@@ -18,6 +19,7 @@ define(function(require) {
         velocity_view,
         photons_view,
         parts_view,
+        thermometers_view,
         webgl_status = new WebGLStatus(),
         $status = webgl_status.getHTMLElement(),
         $canvasCont = $("<div>"),
@@ -88,11 +90,13 @@ define(function(require) {
         velocity_view.bindVectormap(model.getUVelocityArray(), model.getVVelocityArray(), props.grid_width, props.grid_height, 25);
       }
       parts_view.bindPartsArray(model.getPartsArray(), props.model_width, props.model_height);
+      thermometers_view.bindThermometersArray(model.getThermometersArray());
       photons_view.bindPhotonsArray(model.getPhotonsArray(), props.model_width, props.model_height);
       webgl_status.bindModel(model);
 
       // It's enough to render parts only once, they don't move.
       parts_view.renderParts();
+      thermometers_view.renderThermometers();
       // WebGL status also doesn't change during typical 'tick'.
       webgl_status.render();
     }
@@ -113,6 +117,7 @@ define(function(require) {
       resize: function() {
         api.update();
         parts_view.renderParts();
+        thermometers_view.renderThermometers();
       },
 
       reset: function() {},
@@ -121,6 +126,7 @@ define(function(require) {
         heatmap_view.renderHeatmap();
         velocity_view.renderVectormap();
         photons_view.renderPhotons();
+        thermometers_view.update();
       },
 
       setFocus: function () {
@@ -153,8 +159,9 @@ define(function(require) {
     };
 
     (function() {
-      var partsLayer = SVGContainer.viewport.append("g").attr("class", "parts-layer");
-      parts_view = new PartsView(SVGContainer, partsLayer);
+      var vp = SVGContainer.viewport;
+      parts_view = new PartsView(SVGContainer, vp.append("g").attr("class", "parts-layer"));
+      thermometers_view = new ThermometersView(SVGContainer, vp.append("g").attr("class", "thermometers-layer"));
 
       SVGContainer.$el.append($canvasCont);
       setPos($canvasCont, -1); // underneath SVG view.
