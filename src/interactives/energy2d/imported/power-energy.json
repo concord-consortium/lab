@@ -1,15 +1,14 @@
 {
-  "title": "Power and Energy",
+  "title": "Power Energy",
   "publicationStatus": "draft",
-  "subtitle": "A More Powerful Heater Warms up a Room More Quickly",
-  "about": "Energy (Q) and power (P) are related by Q = Pt.\nThis means the longer (t) you turn on a heater, the more heat (Q) it will produce. \nAnd the higher the power (P) is, the more heat (Q) it will produce.\n\nTwo identical, closed boxes each have a round heater at the center, with the power output as labeled.\nInstructions: 1) Run the model and turn the graph on to monitor the temperatures; \n2) Use the buttons at the upper-right corner of the graph window to rescale the curves if necessary;\n3) Calculate the ratio of the temperatures measured by the two thermometers in the two boxes \nand compare it with the ratio of the heating powers.",
-  "importedFrom": "imports/energy2d/content/power-energy.html",
+  "subtitle": "",
+  "about": "* no further description available",
   "models": [
     {
       "type": "energy2d",
       "id": "power-energy",
       "url": "imports/energy2d/models-json/power-energy.json",
-      "importedFrom": "imports/energy2d/content/power-energy.e2d",
+      "importedFrom": "imports/energy2d/models-xml/power-energy.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

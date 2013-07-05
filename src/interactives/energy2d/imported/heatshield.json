@@ -1,15 +1,14 @@
 {
-  "title": "A Heat Shield",
+  "title": "Heatshield",
   "publicationStatus": "draft",
-  "subtitle": "Protecting a Spaceship During Re-Entry",
-  "about": "",
-  "importedFrom": "imports/energy2d/content/heatshield.html",
+  "subtitle": "",
+  "about": "* no further description available",
   "models": [
     {
       "type": "energy2d",
       "id": "heatshield",
       "url": "imports/energy2d/models-json/heatshield.json",
-      "importedFrom": "imports/energy2d/content/heatshield.e2d",
+      "importedFrom": "imports/energy2d/models-xml/heatshield.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

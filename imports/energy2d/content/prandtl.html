@@ -7,10 +7,24 @@
 <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="http://use.typekit.com/hdw8ayt.js"></script>
 <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
-<script type="text/javascript" src="library.js"></script>
+<script type="text/javascript" src="energy2d.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18500972-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
 </head>
+
 <body>
 <div id="wrapper">
   <div id="header">
@@ -20,8 +34,8 @@
       <li><a href="models.html" title="A Colleciton of Energy2D Simulations">Models</a></li>
       <li><a href="manual.html" title="Energy2D Manual">Manual</a></li>
       <li><a href="about.html" title="About Energy2D">About</a></li>
-      <li><a href="testimonials.html" title="Testimonials for Energy2D">Testimonials</a></li>
       <li><a href="contact.html" title="Contact us">Contact</a></li>
+      <li><a href="http://www.youtube.com/user/energy2d" title="Energy2D YouTube Channel">YouTube</a></li>
       <li><a href="http://molecularworkbench.blogspot.com/" title="The Advanced Educational Modeling Laboratory">Blog</a></li>
     </ul>
     <a id="cc-link" href="http://www.concord.org/" title="The Concord Consortium Web Site">The Concord Consortium</a>
@@ -35,19 +49,20 @@
 <p>Both conduction and convection happen in fluids. As heat transfer through both processes reduces 
 the temperature difference, they can be considered as competing against each other in transferring heat.
 There are many different types of fluids, such as air, water, oil, or mercury.
-The rates of conduction and convection may be different in different fluids. 
+The rates of conduction and convection vary in different fluids. 
 Sometimes, conduction dominates. Other times, convection dominates. The Prandtl number is a parameter
 that can be used to roughly determine which process will "win":
 
 <p class="formula">Pr=&nu;/&alpha;</p>
 
-<p>where <i>&nu;</i> is the kinematic viscosity and <i>&alpha;</i> is the thermal diffusivity.
+<p>where <i>&nu;</i> is the kinematic viscosity and <i>&alpha;</i> is the thermal diffusivity. If a fluid is more
+viscous (sticky), the Prandtl number is greater and the heat transfer will be more conductive. 
 
 <p>The following simulation shows how fluids with different Prandtl numbers transfer heat.
 <div class="simulation">
 <center>
-<applet id="applet1" archive="/jnlp/org/concord/energy2d/energy2d.jar"  code="org.concord.energy2d.system.System2D" width="500" height="500">
-<param name="script" value="load prandtl.e2d;"/>
+<applet id="applet1" archive="/jnlp/org/concord/energy2d/energy2d.jar" code="org.concord.energy2d.system.System2D" width="500" height="500">
+<param name="script" value="load e2d/prandtl.e2d;"/>
 </applet>
 <br>
 <form autocomplete="off">
@@ -83,7 +98,7 @@ Choose a kinematic viscosity (m<sup>2</sup>/s):<br>
 <input type="radio" name="applet1-group2" onclick="runScript('applet1', 'set background_viscosity 0.01;')"/>0.01
 </form>
 <br>
-<p align=center><a href="prandtl.e2d">Right-click to download this model</a></p>
+<p align=center><a href="e2d/prandtl.e2d">Right-click to download this model</a></p>
 </center>
 </div>
 <br style="clear: both;" />
@@ -98,10 +113,12 @@ Choose a kinematic viscosity (m<sup>2</sup>/s):<br>
           	<ul>
 		<li class="active">Prandtl Number</li>
 		<li><a href="reynolds.html">Reynolds Number</a></li>
+		<li><a href="vortex-street.html">Vortex Street</a></li>
 		<li><a href="bernard-cells.html">B&eacute;nard Cells</a></li>
 		<li><a href="lid-driven-cavity.html">Lid-Driven Cavity</a></li>
 		</ul>
 
+	<p><a href="index.html">Return to Energy2D Home</a>
 
       </div>
       <iframe src="applet-instructions.html" width="100%" height="500" frameborder="0">
@@ -119,11 +136,12 @@ Choose a kinematic viscosity (m<sup>2</sup>/s):<br>
 	<li><a href="models.html">Models</a></li>
 	<li><a href="manual.html" title="Energy2D Manual">Manual</a></li>
 	<li><a href="about.html" title="About Energy2D">About</a></li>
-	<li><a href="testimonials.html" title="Testimonials for Energy2D">Testimonials</a></li>
-      <li><a href="contact.html" title="Contact us">Contact</a></li>
+        <li><a href="contact.html" title="Contact us">Contact</a></li>
+        <li><a href="http://www.youtube.com/user/energy2d" title="Energy2D YouTube Channel">YouTube</a></li>
     	<li><a href="http://molecularworkbench.blogspot.com/" title="The Advanced Educational Modeling Laboratory">Blog</a></li>
     </ul>
-    <p class="tk-museo">&copy; Copyright 2010-2012 <a href="http://www.concord.org/" title="The Concord Consortium Website">The Concord Consortium</a>.</p>
+    <p class="tk-museo">Developed by <a href="http://www.concord.org/~qxie">Charles Xie</a>.
+	&copy; 2010-2013 <a href="http://www.concord.org/">The Concord Consortium</a>.</p>
   </div>
 </div>
 <div id="footer">

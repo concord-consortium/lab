@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<state>
+<links>
+</links>
+<model>
+<timestep>500.0</timestep>
+<sunny>true</sunny><sun_angle>1.5707964</sun_angle>
+<solar_power_density>1000000.0</solar_power_density>
+<solar_ray_count>49</solar_ray_count>
+<solar_ray_speed>2.0E-4</solar_ray_speed>
+<photon_emission_interval>1</photon_emission_interval>
+<z_heat_diffusivity>0.0</z_heat_diffusivity><convective>false</convective>
+<background_conductivity>1.0</background_conductivity>
+<background_viscosity>1.568E-4</background_viscosity>
+<thermal_buoyancy>2.5E-4</thermal_buoyancy>
+<buoyancy_approximation>1</buoyancy_approximation>
+<boundary>
+<temperature_at_border upper="0.0" lower="0.0" left="0.0" right="0.0"/>
+<mass_flow_at_border upper="0" lower="0" left="0" right="0"/>
+</boundary>
+<structure>
+<part><ellipse x="2.5" y="5.0" a="4.0" b="4.0"/><thermal_conductivity>10.0</thermal_conductivity>
+<specific_heat>1300.0</specific_heat>
+<density>1000.0</density>
+<transmission>0.0</transmission>
+<reflection>0.0</reflection>
+<absorption>1.0</absorption>
+<emissivity>0.0</emissivity>
+<temperature>0.0</temperature>
+<constant_temperature>false</constant_temperature>
+<texture><texture_fg>-1</texture_fg>
+<texture_bg>-7f7f80</texture_bg>
+<texture_style>9</texture_style>
+<texture_width>12</texture_width>
+<texture_height>12</texture_height>
+</texture>
+</part>
+<part><ellipse x="7.5" y="5.0" a="4.0" b="4.0"/><thermal_conductivity>10.0</thermal_conductivity>
+<specific_heat>1300.0</specific_heat>
+<density>10.0</density>
+<transmission>0.0</transmission>
+<reflection>0.0</reflection>
+<absorption>1.0</absorption>
+<emissivity>0.0</emissivity>
+<temperature>0.0</temperature>
+<constant_temperature>false</constant_temperature>
+<texture><texture_fg>-1</texture_fg>
+<texture_bg>-7f7f80</texture_bg>
+<texture_style>10</texture_style>
+<texture_width>12</texture_width>
+<texture_height>12</texture_height>
+</texture>
+</part>
+<part><rectangle x="4.8" y="0.0" width="0.4" height="10.0"/><thermal_conductivity>1.0E-10</thermal_conductivity>
+<specific_heat>1300.0</specific_heat>
+<density>25.0</density>
+<transmission>0.0</transmission>
+<reflection>0.0</reflection>
+<absorption>1.0</absorption>
+<emissivity>0.0</emissivity>
+<temperature>0.0</temperature>
+<constant_temperature>false</constant_temperature>
+<texture><texture_fg>-1000000</texture_fg>
+<texture_bg>-1</texture_bg>
+<texture_style>5</texture_style>
+<texture_width>12</texture_width>
+<texture_height>12</texture_height>
+</texture>
+</part>
+</structure>
+<environment>
+</environment>
+<sensor>
+<thermometer x="2.625" y="4.919311"/>
+<thermometer x="7.625" y="4.919311"/>
+</sensor>
+<controller>
+</controller>
+</model>
+<view>
+<grid_size>10</grid_size>
+<color_palette_type>1</color_palette_type>
+<color_palette_x>0.0</color_palette_x><color_palette_y>0.0</color_palette_y><color_palette_w>0.0</color_palette_w><color_palette_h>0.0</color_palette_h><minimum_temperature>0.0</minimum_temperature>
+<maximum_temperature>50.0</maximum_temperature>
+<graph_xlabel>Time</graph_xlabel><clock>false</clock>
+<text string="Large thermal mass" face="Arial" size="14" style="0" color="ffffff" x="40.0" y="320.0"/>
+<text string="Small thermal mass" face="Arial" size="14" style="0" color="ffffff" x="240.0" y="320.0"/>
+</view>
+</state>

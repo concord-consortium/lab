@@ -1,15 +1,14 @@
 {
   "title": "Vortex Street",
   "publicationStatus": "draft",
-  "subtitle": "The Effect of Obstacle Size",
-  "about": "This simulation shows that the formation of a vortex street depends on the diameter of the obstacle.",
-  "importedFrom": "imports/energy2d/content/vortex-street.html",
+  "subtitle": "",
+  "about": "* no further description available",
   "models": [
     {
       "type": "energy2d",
       "id": "vortex-street",
       "url": "imports/energy2d/models-json/vortex-street.json",
-      "importedFrom": "imports/energy2d/content/vortex-street.e2d",
+      "importedFrom": "imports/energy2d/models-xml/vortex-street.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

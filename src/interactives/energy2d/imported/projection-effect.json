@@ -1,15 +1,14 @@
 {
-  "title": "The Projection Effect",
+  "title": "Projection Effect",
   "publicationStatus": "draft",
   "subtitle": "",
-  "about": "",
-  "importedFrom": "imports/energy2d/content/projection-effect.html",
+  "about": "* no further description available",
   "models": [
     {
       "type": "energy2d",
       "id": "projection-effect",
       "url": "imports/energy2d/models-json/projection-effect.json",
-      "importedFrom": "imports/energy2d/content/projection-effect.e2d",
+      "importedFrom": "imports/energy2d/models-xml/projection-effect.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

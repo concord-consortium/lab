@@ -165,7 +165,7 @@ button, .button {
 /* PAGE BACKGROUND
 ---------------------------------------------------------------------------*/
 #page {
-	background: url(../img/css/top-bg.png) no-repeat center top;
+	background: url(../img/css/top-bg-1.png) no-repeat center top;
 	}
 
 /* HEADER
@@ -191,9 +191,9 @@ button, .button {
 	#header img#cclogo {
 		border: none;
 		float: right;
-		height: 58px;
-		margin: 12px 25px 0 0;
-		width: 185px;
+		height: 52px;
+		margin: 18px 55px 0 0;
+		width: 167px;
 		}
 	#header ul#nav {
 		background: transparent;
@@ -822,7 +822,7 @@ img.placeholder {
 /* FOOTER
 ---------------------------------------------------------------------------*/
 #bubble {
-	background: url(../img/css/footer.png) no-repeat center top;
+	background: url(../img/css/footer-1.png) no-repeat center top;
 	height: 70px;
 	margin: 0;
 	padding-top: 90px;

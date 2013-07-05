@@ -1,15 +1,14 @@
 {
-  "title": "Ray Optics",
+  "title": "Ray Tracing",
   "publicationStatus": "draft",
   "subtitle": "",
-  "about": "",
-  "importedFrom": "imports/energy2d/content/ray-tracing.html",
+  "about": "* no further description available",
   "models": [
     {
       "type": "energy2d",
       "id": "ray-tracing",
       "url": "imports/energy2d/models-json/ray-tracing.json",
-      "importedFrom": "imports/energy2d/content/ray-tracing.e2d",
+      "importedFrom": "imports/energy2d/models-xml/ray-tracing.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

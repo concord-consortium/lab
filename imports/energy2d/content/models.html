@@ -3,10 +3,23 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Computational Fluid Dynamics at Your Fingertips</title>
-<link href="_assets/css/product-page.css" rel="stylesheet" type="text/css" media="screen,projection" />
+<link href="../_assets/css/e2d-page.css" rel="stylesheet" type="text/css" media="screen,projection" />
 <script type="text/javascript" src="http://use.typekit.com/hdw8ayt.js"></script>
 <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
-<script type="text/javascript" src="library.js"></script>
+<script type="text/javascript" src="energy2d.js"></script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18500972-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
 </head>
 <body>
 <div id="wrapper">
@@ -15,10 +28,10 @@
       <li><a href="index.html" title="Energy2D Home">Home</a></li>
       <li><a href="download.html" title="Download Energy2D">Download</a></li>
       <li><a id="current" href="models.html" title="A Colleciton of Energy2D Simulations">Models</a></li>
-      <li><a href="manual.html" title="Energy2D Manual">Manual</a></li>
+      <li><a href="manual/index.html" title="Energy2D Manual">Manual</a></li>
       <li><a href="about.html" title="About Energy2D">About</a></li>
-      <li><a href="testimonials.html" title="Testimonials for Energy2D">Testimonials</a></li>
       <li><a href="contact.html" title="Contact us">Contact</a></li>
+      <li><a href="http://www.youtube.com/user/energy2d" title="Energy2D YouTube Channel">YouTube</a></li>
       <li><a href="http://molecularworkbench.blogspot.com/" title="The Advanced Educational Modeling Laboratory">Blog</a></li>
     </ul>
     <a id="cc-link" href="http://www.concord.org/" title="The Concord Consortium Web Site">The Concord Consortium</a>
@@ -32,27 +45,63 @@
 <div class="entry">
 
 <p>The following are additional models that are not included in the categories to the left.
-Click an image to open the model (Java is required). These models can be downloaded and edited with
-the Energy2D application, too.
+Click an image to open the model (Java is required). These models can be loaded and edited with
+the Energy2D app, too.
 
 <table width="100%">
+
+
+<tr>
+
+
+
+
+<td>
+<center>
+<a href="trombe-wall.html" title="Trombe wall">
+<img src="_assets/img/trombe-wall.png" alt="Trombe wall"></a>
+<br>Trombe wall<br><br>
+</center>
+</td>
+
+
+
+<td>
+<center>
+<a href="solar-updraft-tower.html" title="Solar updraft tower">
+<img src="_assets/img/solar-updraft-tower.png" alt="Solar updraft tower"></a>
+<br>Solar updraft tower<br><br>
+</center>
+</td>
+
+
+
+<td>
+<center>
+<a href="stack-effect.html" title="Stack effect">
+<img src="_assets/img/stack-effect.png" alt="Stack effect"></a>
+<br>Stack effect<br><br>
+</center>
+</td>
+
+
+
+
+</tr>
+
+
+
+
+
 
 <tr>
 
 
 <td>
 <center>
-<a href="forced-convection4.html" title="Four fans">
-<img src="_assets/img/forced-convection4.png" alt="When four fans blow..."></a>
-<br>When four fans blow...<br><br>
-</center>
-</td>
-
-<td>
-<center>
-<a href="forced-convection3.html" title="Four convection cells">
-<img src="_assets/img/forced-convection3.png" alt="When hot air and cold air meet..."></a>
-<br>When hot and cold air meet...<br><br>
+<a href="thermoregulation.html" title="Thermoregulation">
+<img src="_assets/img/thermoregulation.png" alt="Thermoregulation"></a>
+<br>Thermoregulation<br><br>
 </center>
 </td>
 
@@ -60,9 +109,17 @@ the Energy2D application, too.
 
 <td>
 <center>
-<a href="forced-convection2.html" title="Convective heat flow">
-<img src="_assets/img/forced-convection2.png" alt="Convective heat flow"></a>
-<br>Convective heat flow<br><br>
+<a href="spoon.html" title="Metal spoon vs. wood spoon">
+<img src="_assets/img/spoon.png" alt="Metal spoon vs. wood spoon"></a>
+<br>Metal spoon vs. wood spoon<br><br>
+</center>
+</td>
+
+<td>
+<center>
+<a href="hand.html" title="Heat transfer to a hand">
+<img src="_assets/img/hand.png" alt="Heat transfer to a hand"></a>
+<br>Heat transfer to a hand<br><br>
 </center>
 </td>
 
@@ -70,6 +127,46 @@ the Energy2D application, too.
 
 </tr>
 
+
+
+
+
+
+
+<tr>
+
+
+<td>
+<center>
+<a href="solar-cycles.html" title="Solar heating cycles">
+<img src="_assets/img/solar-cycles.png" alt="Solar heating cycles"></a>
+<br>Solar heating cycles<br><br>
+</center>
+</td>
+
+
+<td>
+<center>
+<a href="thermostat.html" title="Thermostat">
+<img src="_assets/img/thermostat.png" alt="Thermostat"></a>
+<br>How the sun affects<br>a thermostat<br>
+</center>
+</td>
+
+
+
+<td>
+<center>
+<a href="ghosting.html" title="Thermal ghosting">
+<img src="_assets/img/ghosting.png" alt="Thermal ghosting"></a>
+<br>Thermal ghosting<br><br>
+</center>
+</td>
+
+
+
+
+</tr>
 
 
 <tr>
@@ -122,9 +219,9 @@ the Energy2D application, too.
 
 <td>
 <center>
-<a href="vortex-street.html" title="Vortex street">
-<img src="_assets/img/vortex-street.png" alt="Vortex street"></a>
-<br>Vortex street: obstacle size<br><br>
+<a href="thermal-bridge.html" title="Thermal bridge">
+<img src="_assets/img/thermal-bridge.png" alt="Thermal bridge"></a>
+<br>Thermal bridge<br><br>
 </center>
 </td>
 
@@ -379,11 +476,282 @@ the Energy2D application, too.
 </td>
 
 
+</tr>
+
+
+
+
+
+<tr>
+
+
+<td>
+<center>
+<a href="zeroth.html" title="The Zeroth Law of Thermodynamics">
+<img src="_assets/img/zeroth.png" alt="The Zeroth Law of Thermodynamics"></a>
+<br>The Zeroth Law<br>of Thermodynamics<br>
+</center>
+</td>
+
+<td>
+<center>
+<a href="touch-convect.html" title="Convection under your fingertips">
+<img src="_assets/img/touch-convect.png" alt="Convection under your fingertips..."></a>
+<br>Convection under your fingertips...<br><br>
+</center>
+</td>
+
+<td>
+<center>
+<a href="touch.html" title="Touch to heat">
+<img src="_assets/img/touch.png" alt="Touch to heat"></a>
+<br>Touch to heat...<br><br>
+</center>
+</td>
+
+
+
+</tr>
+
+
+
+
+
+<tr>
+
+<td>
+<center>
+<a href="rectangular-vs-circular-heat-source.html" title="Rectangular vs. round heat source">
+<img src="_assets/img/rectangular-vs-circular-heat-source.png" alt="Rectangular vs. round heat source"></a>
+<br>Rectangular vs. round<br>heat source<br>
+</center>
+</td>
+
+
+<td>
+<center>
+<a href="field-of-bar.html" title="Temperature field of a bar">
+<img src="_assets/img/field-of-bar.png" alt="Temperature field of a bar"></a>
+<br>Temperature field of a bar<br><br>
+</center>
+</td>
+
+
+<td>
+<center>
+<a href="forced-convection2.html" title="Convective heat flow">
+<img src="_assets/img/forced-convection2.png" alt="Convective heat flow"></a>
+<br>Convective heat flow<br><br>
+</center>
+</td>
+
+
+
+</tr>
+
+
+
+
+<tr>
+
+
+<td>
+<center>
+<a href="bolometer.html" title="Bolometer">
+<img src="_assets/img/bolometer.png" alt="Bolometer"></a>
+<br>Bolometer<br><br>
+</center>
+</td>
+
+
+<td>
+<center>
+<a href="solar-oven.html" title="Solar oven">
+<img src="_assets/img/solar-oven.png" alt="Solar oven"></a>
+<br>Solar oven<br><br>
+</center>
+</td>
+
+
+<td>
+<center>
+<a href="shelter.html" title="Thermal shelter">
+<img src="_assets/img/shelter.png" alt="Thermal shelter"></a>
+<br>Thermal shelter<br><br>
+</center>
+</td>
+
+
+</tr>
+
+
+
+
+
+<tr>
+
+
+<td>
+<center>
+<a href="coaxial-cable.html" title="Coaxial cable">
+<img src="_assets/img/cable.png" alt="Coaxial cable"></a>
+<br>Heating of a coaxial cable<br><br>
+</center>
+</td>
+
+
+<td>
+<center>
+<a href="fin1.html" title="Heat fins">
+<img src="_assets/img/fin1.png" alt="Heat fins"></a>
+<br>Heat fins<br><br>
+</center>
+</td>
+
+
+<td>
+<center>
+<a href="village1.html" title="Multiple buildings">
+<img src="_assets/img/village1.png" alt="Multiple buildings"></a>
+<br>Multiple buildings<br><br>
+</center>
+</td>
+
+</tr>
+
+
+
+
+
+
+
+<tr>
+
+
+<td>
+<center>
+<a href="quadrupole.html" title="Thermal quadrupole">
+<img src="_assets/img/quadrupole.png" alt="Thermal quadropole"></a>
+<br>Thermal quadrupole<br><br>
+</center>
+</td>
+
+
+<td>
+<center>
+<a href="forced-convection3.html" title="Four convection cells">
+<img src="_assets/img/forced-convection3.png" alt="When hot air and cold air meet..."></a>
+<br>When hot and cold air meet...<br><br>
+</center>
+</td>
+
+
+<td>
+<center>
+<a href="forced-convection4.html" title="Four fans">
+<img src="_assets/img/forced-convection4.png" alt="When four fans blow..."></a>
+<br>When four fans blow...<br><br>
+</center>
+</td>
+
+
+
+</tr>
+
+
+
+
+
+
+
+
+<tr>
+
+
+<td>
+<center>
+<a href="natural-daylighting.html" title="Natural daylighting">
+<img src="_assets/img/natural-daylighting.png" alt="Natural daylighting"></a>
+<br>Natural daylighting<br><br>
+</center>
+</td>
+
+
+<td>
+<center>
+<a href="double-bell.html" title="Double bell rocket stove">
+<img src="_assets/img/double-bell.png" alt="Double bell rocket stove"></a>
+<br>Double bell rocket stove<br><br>
+</center>
+</td>
+
+
+<td>
+<center>
+<a href="barrel.html" title="Barrel rocket stove">
+<img src="_assets/img/barrel.png" alt="Barrel rocket stove"></a>
+<br>Barrel rocket stove<br><br>
+</center>
+</td>
+
+
+
+</tr>
+
+
+
+
+
+
+
+
+
+
+
+<tr>
+
+
+
+<td>
+<center>
+<a href="double-bell2.html" title="Double bell rocket stove">
+<img src="_assets/img/double-bell2.png" alt="Double bell rocket stove"></a>
+<br>Double bell rocket stove<br><br>
+</center>
+</td>
+
+
+<td>
+<center>
+<a href="cross-section-venturi.html" title="Venturi stove">
+<img src="_assets/img/cross-section-venturi.png" alt="Venturi stove"></a>
+<br>Venturi stove<br><br>
+</center>
+</td>
 
 <td>
 </td>
 
+
 </tr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </table>
@@ -395,6 +763,18 @@ the Energy2D application, too.
 </div>
     </div>
     <div id="sidebar">
+
+      <div id="download">
+        <h2>NSF-Funded Free App</h2>
+        <ul>
+        <li><a href="energy2d.jnlp" onclick="_gaq.push(['_trackEvent', 'Software', 'Download', 'energy2d.jnlp']);" title="Energy2D Java Webstart">Web Installer for the App</a></li>
+        <li><a href="energy2d.jar" onclick="_gaq.push(['_trackEvent', 'Software', 'Download', 'energy2d.jar']);" title="Energy2D Java Executable">Download the App (energy2d.jar)</a></li>
+ 	<li><a href="e2d.zip" title="Download all the simulations used on this website">Get All Simulations</a></li>
+        </ul>
+	<br><b>For Windows, Mac OS X, & Linux</b><br><br>
+	Note on recent Java security issues: If you have disabled Java in the browser, Energy2D can be run as a desktop app outside a browser.
+      </div><!-- end #download -->
+
       <div id="nav">
 
 	<h2>Heat Transfer</h2>
@@ -405,10 +785,26 @@ the Energy2D application, too.
 		<li><a href="radiation.html">Radiation</a></li>
 		</ul>
 
+        <h2>Engineering</h2>
+          	<ul>
+		<li><a href="solar-oven.html">Solar Oven</a></li>
+		<li><a href="solar-cycles-shadow.html">Solar Heating Cycles</a></li>
+		<li><a href="thermostat2.html">Duty Cycles (Heating)</a></li>
+		<li><a href="thermostat-cooling.html">Duty Cycles (Cooling)</a></li>
+		<li><a href="thermostat1.html">Solar Heating & Duty Cycles</a></li>
+		</ul>
+
+        <h2>Earth Science</h2>
+          	<ul>
+		<li><a href="mantle.html">Mantle Convection</a></li>
+		<li><a href="usa-isotherm.html">What's an Isotherm?</a></li>
+		</ul>
+
         <h2>Fluid Dynamics</h2>
           	<ul>
 		<li><a href="prandtl.html">Prandtl Number</a></li>
 		<li><a href="reynolds.html">Reynolds Number</a></li>
+		<li><a href="vortex-street.html">Vortex Street</a></li>
 		<li><a href="bernard-cells.html">B&eacute;nard Cells</a></li>
 		<li><a href="lid-driven-cavity.html">Lid-Driven Cavity</a></li>
 		</ul>
@@ -416,13 +812,17 @@ the Energy2D application, too.
         <h2>Miscellaneous</h2>
           	<ul>
 		<li><a href="boundary.html">Boundary Conditions</a></li>
-		<li><a href="e2dmr1.html">Mixed Reality</a></li>
+		<li><a href="touch.html">Touch-to-Heat</a></li>
 		<li class="active">All Others</li>
 		</ul>
 
 
       </div>
     </div>
+
+
+
+
     <br style="clear: both;" />
   </div>
 </div>
@@ -432,13 +832,14 @@ the Energy2D application, too.
 	<li><a href="index.html" title="Energy2D Home">Home</a></li>
 	<li><a href="download.html" title="Download Energy2D">Download</a></li>
 	<li><a href="models.html">Models</a></li>
-	<li><a href="manual.html" title="Energy2D Manual">Manual</a></li>
+	<li><a href="manual/index.html" title="Energy2D Manual">Manual</a></li>
 	<li><a href="about.html" title="About Energy2D">About</a></li>
-	<li><a href="testimonials.html" title="Testimonials for Energy2D">Testimonials</a></li>
-      <li><a href="contact.html" title="Contact us">Contact</a></li>
-    <li><a href="http://molecularworkbench.blogspot.com/" title="The Advanced Educational Modeling Laboratory">Blog</a></li>
+        <li><a href="contact.html" title="Contact us">Contact</a></li>
+        <li><a href="http://www.youtube.com/user/energy2d" title="Energy2D YouTube Channel">YouTube</a></li>
+        <li><a href="http://molecularworkbench.blogspot.com/" title="The Advanced Educational Modeling Laboratory">Blog</a></li>
     </ul>
-    <p class="tk-museo">&copy; Copyright 2010-2012 <a href="http://www.concord.org/" title="The Concord Consortium Website">The Concord Consortium</a>.</p>
+    <p class="tk-museo">Developed by <a href="http://www.concord.org/~qxie">Charles Xie</a>.
+	&copy; 2010-2013 <a href="http://www.concord.org/">The Concord Consortium</a>.</p>
   </div>
 </div>
 <div id="footer">

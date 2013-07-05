@@ -2,14 +2,13 @@
   "title": "Streamlines",
   "publicationStatus": "draft",
   "subtitle": "",
-  "about": "",
-  "importedFrom": "imports/energy2d/content/streamlines.html",
+  "about": "* no further description available",
   "models": [
     {
       "type": "energy2d",
       "id": "streamlines",
       "url": "imports/energy2d/models-json/streamlines.json",
-      "importedFrom": "imports/energy2d/content/streamlines.e2d",
+      "importedFrom": "imports/energy2d/models-xml/streamlines.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

@@ -1,15 +1,14 @@
 {
-  "title": "The Reynolds Number",
+  "title": "Reynolds",
   "publicationStatus": "draft",
-  "subtitle": "Laminar Flow vs. Turbulent Flow",
-  "about": "In fluid mechanics, the Reynolds number Re is a dimensionless number that gives a measure of the ratio of inertial forces \nto viscous forces and consequently quantifies the relative importance of these two types of forces for given flow conditions:\n\nRe=VLc/ν\nwhere ν is the kinematic viscosity, V is the mean velocity of the fluid, \nand Lc is the characteristic length of the geometry.\nThe following simulation shows how fluids with different Reynolds numbers flow. Only the velocity is changed \nfor the four conditions compared in this simulation.",
-  "importedFrom": "imports/energy2d/content/reynolds.html",
+  "subtitle": "",
+  "about": "* no further description available",
   "models": [
     {
       "type": "energy2d",
       "id": "reynolds",
       "url": "imports/energy2d/models-json/reynolds.json",
-      "importedFrom": "imports/energy2d/content/reynolds.e2d",
+      "importedFrom": "imports/energy2d/models-xml/reynolds.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

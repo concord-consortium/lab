@@ -1,15 +1,14 @@
 {
-  "title": "Temperature, Viscosity, & Conductivity",
+  "title": "Convection Exploration",
   "publicationStatus": "draft",
-  "subtitle": "Exploring Factors that Affect Thermal Convection",
-  "about": "",
-  "importedFrom": "imports/energy2d/content/convection-exploration.html",
+  "subtitle": "",
+  "about": "* no further description available",
   "models": [
     {
       "type": "energy2d",
       "id": "convection-exploration",
       "url": "imports/energy2d/models-json/convection-exploration.json",
-      "importedFrom": "imports/energy2d/content/convection-exploration.e2d",
+      "importedFrom": "imports/energy2d/models-xml/convection-exploration.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

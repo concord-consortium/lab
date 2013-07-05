@@ -30,7 +30,7 @@ $content = <<<HTML
 HTML;
 } else {
 $content = <<<HTML
-<p>Use this form to send us your questions and comments. All fields are required.</p>
+<p>Use this form to send us your questions, comments, and feature requests. All fields are required.</p>
 HTML;
 
 if (!($errors[0] == '')) {
@@ -62,8 +62,7 @@ HTML;
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Contact Us - Energy2D</title>
-<link href="_assets/css/product-page.css" rel="stylesheet" type="text/css" media="screen,projection" />
-<link href="../_assets/css/ir.css" rel="stylesheet" type="text/css" media="screen,projection" />
+<link href="../_assets/css/e2d-page.css" rel="stylesheet" type="text/css" media="screen,projection" />
 <style type="text/css">
 dt { font-weight: bold; }
 dd { margin-bottom: 1em; }
@@ -102,30 +101,48 @@ function checkForm(the_form) {
       <li><a href="index.html" title="Energy2D Home">Home</a></li>
       <li><a href="download.html" title="Download Energy2D">Download</a></li>
       <li><a href="models.html" title="A Colleciton of Energy2D Simulations">Models</a></li>
-      <li><a href="manual.html" title="Energy2D Manual">Manual</a></li>
+      <li><a href="manual/index.html" title="Energy2D Manual">Manual</a></li>
       <li><a href="about.html" title="About Energy2D">About</a></li>
-      <li><a href="testimonials.html" title="Testimonials for Energy2D">Testimonials</a></li>
       <li><a id="current" href="contact.html" title="Contact us">Contact</a></li>
+      <li><a href="http://www.youtube.com/user/energy2d" title="Energy2D YouTube Channel">YouTube</a></li>
       <li><a href="http://molecularworkbench.blogspot.com/" title="The Advanced Educational Modeling Laboratory">Blog</a></li>
     </ul>
     <a id="cc-link" href="http://www.concord.org/" title="The Concord Consortium Web Site">The Concord Consortium</a>
     <h1>Energy2D</h1>
-    <p id="tagline">Interactive Heat Transfer Simulations for Everyone</p>
+    <p id="tagline">Drop Us a Line If You Have a Question or You Like Our Website</p>
   </div>
   <div id="main">
     <div id="content">
 			<h1>Contact Us</h1>
 			<?php echo $content; ?>
+
+
 		</div>
     <div id="sidebar">
       <div id="download">
-        <h2>Free Download</h2>
+        <h2>NSF-Funded Free App</h2>
         <ul>
-        <li><a href="energy2d.jnlp" onclick="_gaq.push(['_trackEvent', 'Software', 'Download', 'energy2d.jnlp']);" title="Energy2D Java Webstart for Windows and Linux">Java Webstart for Windows &amp; Linux</a></li>
-        <li><a href="energy2d-mac.jnlp" onclick="_gaq.push(['_trackEvent', 'Software', 'Download', 'energy2d-mac.jnlp']);" title="Energy2D Java Webstart for Mac OS X">Java Webstart for Mac OS X</a></li>
-        <li><a href="energy2d.jar" onclick="_gaq.push(['_trackEvent', 'Software', 'Download', 'energy2d.jar']);" title="Energy2D Java Executable for All Operating Systems">Java Executable for all OS</a></li>
+        <li><a href="energy2d.jnlp" onclick="_gaq.push(['_trackEvent', 'Software', 'Download', 'energy2d.jnlp']);" title="Energy2D Java Webstart">Web Installer for the App</a></li>
+        <li><a href="energy2d.jar" onclick="_gaq.push(['_trackEvent', 'Software', 'Download', 'energy2d.jar']);" title="Energy2D Java Executable">Download the App (energy2d.jar)</a></li>
+ 	<li><a href="e2d.zip" title="Download all the simulations used on this website">Get All Simulations</a></li>
         </ul>
+	<br><b>For Windows, Mac OS X, & Linux</b><br><br>
+	Note on recent Java security issues: If you have disabled Java in the browser, Energy2D can be run as a desktop app outside a browser.
       </div><!-- end #download -->
+
+	<br><br>
+	<p>Phone: 978-405-3226
+	<br><br>
+	<p>Fax: 978-405-2076
+	<br><br>
+	<p>Mailing Address:<br><br>	
+
+	Charles Xie<br>
+	The Concord Consortium<br>
+	25 Love Lane<br>
+	Concord, MA 01742<br>
+	USA
+
     </div>
       <br />
 
@@ -140,13 +157,14 @@ function checkForm(the_form) {
 	<li><a href="index.html" title="Energy2D Home">Home</a></li>
 	<li><a href="download.html" title="Download Energy2D">Download</a></li>
 	<li><a href="models.html">Models</a></li>
-	<li><a href="manual.html" title="Energy2D Manual">Manual</a></li>
+	<li><a href="manual/index.html" title="Energy2D Manual">Manual</a></li>
 	<li><a href="about.html" title="About Energy2D">About</a></li>
-	<li><a href="testimonials.html" title="Testimonials for Energy2D">Testimonials</a></li>
-      <li><a href="contact.html" title="Contact us">Contact</a></li>
-    <li><a href="http://molecularworkbench.blogspot.com/" title="The Advanced Educational Modeling Laboratory">Blog</a></li>
+        <li><a href="contact.html" title="Contact us">Contact</a></li>
+        <li><a href="http://www.youtube.com/user/energy2d" title="Energy2D YouTube Channel">YouTube</a></li>
+        <li><a href="http://molecularworkbench.blogspot.com/" title="The Advanced Educational Modeling Laboratory">Blog</a></li>
     </ul>
-    <p class="tk-museo">&copy; Copyright 2010-2012 <a href="http://www.concord.org/" title="The Concord Consortium Website">The Concord Consortium</a>.</p>
+    <p class="tk-museo">Developed by <a href="http://www.concord.org/~qxie">Charles Xie</a>.
+	&copy; 2010-2013 <a href="http://www.concord.org/">The Concord Consortium</a>.</p>
   </div>
 </div>
 <div id="footer">
@@ -156,8 +174,5 @@ function checkForm(the_form) {
   </div>
 </div>
 <!-- end #footer -->
-<a id="home-link" href="/" title="Energy. Engineering. Education.">Return to<br />
-<strong>ENERGY</strong><br />
-<span>.concord.org</span></a>
 </body>
 </html>
