@@ -91,7 +91,7 @@ define(function (require) {
         });
         thermometers.push(t);
 
-        model.defineOutput(t.label || ("thermometer-" + idx), {
+        model.defineOutput("thermometer-" + idx, {
           label: "Temperature",
           unitType: 'temperature',
           format: '.1f'
@@ -309,7 +309,7 @@ define(function (require) {
 
     (function () {
       labModelerMixin.mixInto(model);
-      dispatch.addEventTypes("tick", "partsChanged");
+      dispatch.addEventTypes("tick", "partsChanged", "thermometersChanged");
 
       coreModel = coremodel.makeCoreModel(model.properties);
       setWebGLEnabled(model.properties.use_WebGL);

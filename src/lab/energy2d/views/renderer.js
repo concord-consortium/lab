@@ -154,6 +154,7 @@ define(function(require) {
 
         model.on('tick.view-update', api.update);
         model.on('partsChanged.view-update', parts_view.renderParts);
+        model.on('thermometersChanged.view-update', thermometers_view.renderThermometers);
 
         api.update();
       }
