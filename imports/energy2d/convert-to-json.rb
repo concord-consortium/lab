@@ -95,8 +95,10 @@ xml_files.each do |xml_file_path|
   end
 
   # state
-  if hash['state']['sensor']
-    final_hash['sensor'] = hash['state']['sensor']
+  if hash['state']['sensor'] && hash['state']['sensor']['thermometer']
+    t = hash['state']['sensor']['thermometer']
+    t = [t] if t.is_a?(Hash)
+    final_hash['thermometers'] = t
   end
 
   # view options
