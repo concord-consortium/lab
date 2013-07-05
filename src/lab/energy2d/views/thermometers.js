@@ -1,4 +1,4 @@
-/*global define: false */
+/*global define: false, d3: false */
 
 define(function () {
   var W = 0.3,
@@ -11,13 +11,12 @@ define(function () {
         m2pxInv = SVGContainer.model2pxInv,
 
         thermometers,
-        minTemp = 0,
-        maxTemp = 50,
 
-        thermBg; // d3.selection
+        thermBg, // d3.selection
+        thermValScale = d3.scale.linear().clamp(true).domain([0, 50]).range([H, 0]);
 
-    function transform(d) { return "translate(" + m2px(d.x || 0) + "," + m2pxInv(d.y || 0) + ")"; }
-    function bgHeight(d) { return m2px(H * (1 - (d.value - minTemp) / (maxTemp - minTemp))); }
+    function transform(d) { return "translate(" + m2px(d.x) + "," + m2pxInv(d.y) + ")"; }
+    function bgHeight(d) { return m2px(thermValScale(d.value)); }
 
     // Public API.
     api = {
@@ -60,8 +59,7 @@ define(function () {
       },
 
       setMinMaxTemp: function (min, max) {
-        minTemp = min;
-        maxTemp = max;
+        thermValScale.domain([min, max]);
       }
     };
 
