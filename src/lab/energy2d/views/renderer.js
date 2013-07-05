@@ -107,6 +107,7 @@ define(function(require) {
       heatmap_view.setMinTemperature(props.minimum_temperature);
       heatmap_view.setMaxTemperature(props.maximum_temperature);
       heatmap_view.setColorPalette(props.color_palette_type);
+      thermometers_view.setMinMaxTemp(props.minimum_temperature, props.maximum_temperature);
     }
 
     api = {
