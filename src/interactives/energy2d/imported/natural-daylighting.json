@@ -1,14 +1,15 @@
 {
   "title": "Natural Daylighting",
   "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "* no further description available",
+  "subtitle": "Using Natural Light in Sustainable Buildings",
+  "about": "Sustainable buildings use windows or other openings and reflective surfaces to provides effective internal lighting using sunlight.\nEnergy use can be reduced by using less electric lights. You can compare a regular window and a reflector window in the following simulation.\n\nRight-click the link to download the model:\nnatural-daylighting.e2d",
+  "importedFrom": "imports/energy2d/content/natural-daylighting.html",
   "models": [
     {
       "type": "energy2d",
       "id": "natural-daylighting",
       "url": "imports/energy2d/models-json/natural-daylighting.json",
-      "importedFrom": "imports/energy2d/models-xml/natural-daylighting.e2d",
+      "importedFrom": "imports/energy2d/content/e2d/natural-daylighting.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

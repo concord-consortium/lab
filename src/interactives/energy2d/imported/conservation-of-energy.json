@@ -1,14 +1,15 @@
 {
-  "title": "Conservation Of Energy",
+  "title": "Conservation of Energy",
   "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "* no further description available",
+  "subtitle": "How Accurate are Our Conduction Calculation?",
+  "about": "This simulation illustrates the accuracy of our heat solver by testing how well it observes the Law of Conservation of Energy (aka the First Law of Thermodynamics).\nThe following model simulates a completely insulative system (i.e., no heat in, no heat out) using a thermal boundary of zero heat flux. As you can see, as the time step\nincreases, the precision decreases. But a small time step (0.01s) is capable of maintaining the total thermal energy at a level as accurate as 99.99% for as long as\nthe simulation runs, regardless of the complexity of the structures in the system!",
+  "importedFrom": "imports/energy2d/content/conservation-of-energy.html",
   "models": [
     {
       "type": "energy2d",
       "id": "conservation-of-energy",
       "url": "imports/energy2d/models-json/conservation-of-energy.json",
-      "importedFrom": "imports/energy2d/models-xml/conservation-of-energy.e2d",
+      "importedFrom": "imports/energy2d/content/e2d/conservation-of-energy.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

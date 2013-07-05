@@ -1,14 +1,15 @@
 {
-  "title": "Forced Convection4",
+  "title": "Four Fans",
   "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "* no further description available",
+  "subtitle": "When Four Fans Blow...",
+  "about": "",
+  "importedFrom": "imports/energy2d/content/forced-convection4.html",
   "models": [
     {
       "type": "energy2d",
       "id": "forced-convection4",
       "url": "imports/energy2d/models-json/forced-convection4.json",
-      "importedFrom": "imports/energy2d/models-xml/forced-convection4.e2d",
+      "importedFrom": "imports/energy2d/content/e2d/forced-convection4.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

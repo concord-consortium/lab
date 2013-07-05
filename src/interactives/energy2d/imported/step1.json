@@ -1,14 +1,15 @@
 {
-  "title": "Step1",
+  "title": "Test Links",
   "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "* no further description available",
+  "subtitle": "Multiple Simulations Can Be Linked Together in Energy2D",
+  "about": "To support the full screen mode, Energy2D provides a small control panel on which you can define links to the previous simulation\nand the next simulation. With this functionality, you can load a new simulation into Energy2D without leaving the page and\nprovide a sequence of linked simulations that are related to a topic.",
+  "importedFrom": "imports/energy2d/content/linktest.html",
   "models": [
     {
       "type": "energy2d",
       "id": "step1",
       "url": "imports/energy2d/models-json/step1.json",
-      "importedFrom": "imports/energy2d/models-xml/step1.e2d",
+      "importedFrom": "imports/energy2d/content/e2d/step1.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

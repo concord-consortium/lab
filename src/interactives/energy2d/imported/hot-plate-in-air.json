@@ -1,14 +1,15 @@
 {
-  "title": "Hot Plate In Air",
+  "title": "A Hot Plate in the Air",
   "publicationStatus": "draft",
   "subtitle": "",
-  "about": "* no further description available",
+  "about": "",
+  "importedFrom": "imports/energy2d/content/hot-plate-in-air.html",
   "models": [
     {
       "type": "energy2d",
       "id": "hot-plate-in-air",
       "url": "imports/energy2d/models-json/hot-plate-in-air.json",
-      "importedFrom": "imports/energy2d/models-xml/hot-plate-in-air.e2d",
+      "importedFrom": "imports/energy2d/content/e2d/hot-plate-in-air.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

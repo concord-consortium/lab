@@ -1,14 +1,15 @@
 {
   "title": "Constant Temperature Sources",
   "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "* no further description available",
+  "subtitle": "Energy Sources that Maintain Constant Temperatures",
+  "about": "",
+  "importedFrom": "imports/energy2d/content/constant-temperature-sources.html",
   "models": [
     {
       "type": "energy2d",
       "id": "constant-temperature-sources",
       "url": "imports/energy2d/models-json/constant-temperature-sources.json",
-      "importedFrom": "imports/energy2d/models-xml/constant-temperature-sources.e2d",
+      "importedFrom": "imports/energy2d/content/e2d/constant-temperature-sources.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

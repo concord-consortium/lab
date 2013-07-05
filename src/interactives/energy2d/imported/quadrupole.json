@@ -1,14 +1,15 @@
 {
-  "title": "Quadrupole",
+  "title": "Thermal Quadrupole",
   "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "* no further description available",
+  "subtitle": "Heat Flow from Four Sources in an Insulated Box",
+  "about": "",
+  "importedFrom": "imports/energy2d/content/quadrupole.html",
   "models": [
     {
       "type": "energy2d",
       "id": "quadrupole",
       "url": "imports/energy2d/models-json/quadrupole.json",
-      "importedFrom": "imports/energy2d/models-xml/quadrupole.e2d",
+      "importedFrom": "imports/energy2d/content/e2d/quadrupole.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

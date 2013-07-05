@@ -1,14 +1,15 @@
 {
-  "title": "Thermostat2",
+  "title": "Multiple Thermostats (Heating)",
   "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "* no further description available",
+  "subtitle": "Different Heating Zones",
+  "about": "In Energy2D, you can create as multiple thermostats and a single temperature sensor can be connected to multiple power sources.",
+  "importedFrom": "imports/energy2d/content/thermostat2.html",
   "models": [
     {
       "type": "energy2d",
       "id": "thermostat2",
       "url": "imports/energy2d/models-json/thermostat2.json",
-      "importedFrom": "imports/energy2d/models-xml/thermostat2.e2d",
+      "importedFrom": "imports/energy2d/content/e2d/thermostat2.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

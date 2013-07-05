@@ -1,14 +1,15 @@
 {
-  "title": "Thermostat Cooling",
+  "title": "Multiple Thermostats (Cooling)",
   "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "* no further description available",
+  "subtitle": "Different Cooling Zones",
+  "about": "In Energy2D, you can create as multiple thermostats and a single temperature sensor can be connected to multiple power sources.",
+  "importedFrom": "imports/energy2d/content/thermostat-cooling.html",
   "models": [
     {
       "type": "energy2d",
       "id": "thermostat-cooling",
       "url": "imports/energy2d/models-json/thermostat-cooling.json",
-      "importedFrom": "imports/energy2d/models-xml/thermostat-cooling.e2d",
+      "importedFrom": "imports/energy2d/content/e2d/thermostat-cooling.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

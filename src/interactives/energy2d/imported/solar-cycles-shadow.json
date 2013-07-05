@@ -1,14 +1,15 @@
 {
-  "title": "Solar Cycles Shadow",
+  "title": "Under the Sun or in the Shade",
   "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "* no further description available",
+  "subtitle": "Two-Four Hours Solar Cycles of Heating and Cooling",
+  "about": "This simulation compares the solar heating under the sun and in the shade using two temperature sensors.\nThe simulation starts at 12am and assumes that the sun rises at 4am and sets at 20pm. \nNote that in the first few seconds you may not see any sun beams. Just wait for a while until the sun shines in.",
+  "importedFrom": "imports/energy2d/content/solar-cycles-shadow.html",
   "models": [
     {
       "type": "energy2d",
       "id": "solar-cycles-shadow",
       "url": "imports/energy2d/models-json/solar-cycles-shadow.json",
-      "importedFrom": "imports/energy2d/models-xml/solar-cycles-shadow.e2d",
+      "importedFrom": "imports/energy2d/content/e2d/solar-cycles-shadow.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

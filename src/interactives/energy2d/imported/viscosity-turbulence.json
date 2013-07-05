@@ -1,14 +1,15 @@
 {
-  "title": "Viscosity Turbulence",
+  "title": "Viscosity and Turbulence",
   "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "* no further description available",
+  "subtitle": "Laminar and Turbulent Heat Flows",
+  "about": "",
+  "importedFrom": "imports/energy2d/content/viscosity-turbulence.html",
   "models": [
     {
       "type": "energy2d",
       "id": "viscosity-turbulence",
       "url": "imports/energy2d/models-json/viscosity-turbulence.json",
-      "importedFrom": "imports/energy2d/models-xml/viscosity-turbulence.e2d",
+      "importedFrom": "imports/energy2d/content/e2d/viscosity-turbulence.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

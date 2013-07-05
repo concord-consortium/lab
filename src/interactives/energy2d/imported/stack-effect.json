@@ -1,14 +1,15 @@
 {
   "title": "Stack Effect",
   "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "* no further description available",
+  "subtitle": "How does Infilstration Cause Buildings to Lose Energy due to Convection?",
+  "about": "Also known as the chimney effect, the stack effect is the movement of air in and out a structure driven by natural thermal convection (i.e., hot air rises and cool air sinks).\nThe effect usually causes the system to lose energy more quickly, as the following simulation shows.",
+  "importedFrom": "imports/energy2d/content/stack-effect.html",
   "models": [
     {
       "type": "energy2d",
       "id": "stack-effect",
       "url": "imports/energy2d/models-json/stack-effect.json",
-      "importedFrom": "imports/energy2d/models-xml/stack-effect.e2d",
+      "importedFrom": "imports/energy2d/content/e2d/stack-effect.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

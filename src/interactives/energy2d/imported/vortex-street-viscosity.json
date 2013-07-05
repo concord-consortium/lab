@@ -1,14 +1,15 @@
 {
-  "title": "Vortex Street Viscosity",
+  "title": "Vortex Street",
   "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "* no further description available",
+  "subtitle": "The Effect of Viscosity",
+  "about": "This simulation shows that the formation of a vortex street depends on the viscosity of the fluid.",
+  "importedFrom": "imports/energy2d/content/vortex-street-viscosity.html",
   "models": [
     {
       "type": "energy2d",
       "id": "vortex-street-viscosity",
       "url": "imports/energy2d/models-json/vortex-street-viscosity.json",
-      "importedFrom": "imports/energy2d/models-xml/vortex-street-viscosity.e2d",
+      "importedFrom": "imports/energy2d/content/e2d/vortex-street-viscosity.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

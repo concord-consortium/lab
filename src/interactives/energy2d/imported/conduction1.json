@@ -1,14 +1,15 @@
 {
-  "title": "Conduction1",
+  "title": "Conduction",
   "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "* no further description available",
+  "subtitle": "Thermal Conductivity: The Ability to Conduct Heat",
+  "about": "Which conducts heat more quickly from a frying pan to your hand, a wood handle or a metal one?\nThe following model compares heat conduction through two materials of different thermal conductivities.",
+  "importedFrom": "imports/energy2d/content/thermal-conductivity.html",
   "models": [
     {
       "type": "energy2d",
       "id": "conduction1",
       "url": "imports/energy2d/models-json/conduction1.json",
-      "importedFrom": "imports/energy2d/models-xml/conduction1.e2d",
+      "importedFrom": "imports/energy2d/content/e2d/conduction1.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

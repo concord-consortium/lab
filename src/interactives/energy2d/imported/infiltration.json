@@ -2,13 +2,14 @@
   "title": "Infiltration",
   "publicationStatus": "draft",
   "subtitle": "",
-  "about": "* no further description available",
+  "about": "",
+  "importedFrom": "imports/energy2d/content/infiltration.html",
   "models": [
     {
       "type": "energy2d",
       "id": "infiltration",
       "url": "imports/energy2d/models-json/infiltration.json",
-      "importedFrom": "imports/energy2d/models-xml/infiltration.e2d",
+      "importedFrom": "imports/energy2d/content/e2d/infiltration.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

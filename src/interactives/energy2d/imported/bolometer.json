@@ -1,14 +1,15 @@
 {
-  "title": "Bolometer",
+  "title": "How does a Bolometer Work?",
   "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "* no further description available",
+  "subtitle": "Measuring the Power of Incident Electromagnetic Radiation Through the Heating of a Material",
+  "about": "A bolometer consists of a radiation absorber connected to a thermal reservoir (a body of constant temperature) through a thermal conductor. \nThe radiation on the absorber raises its temperature above that of the reservoir: The greater the radiation intensity, the more energy the absorber absorbs, \nand the higher its temperature rises. Hence, a bolometer can be used to measure radiation intensity.",
+  "importedFrom": "imports/energy2d/content/bolometer.html",
   "models": [
     {
       "type": "energy2d",
       "id": "bolometer",
       "url": "imports/energy2d/models-json/bolometer.json",
-      "importedFrom": "imports/energy2d/models-xml/bolometer.e2d",
+      "importedFrom": "imports/energy2d/content/e2d/bolometer.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }
