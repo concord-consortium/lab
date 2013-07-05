@@ -80,12 +80,8 @@ xml_files.each do |xml_file_path|
   end
 
   # Delete unnecessary things.
-  if hash['state']['model']['controller']
-    hash['state']['model'].delete('controller')
-  end
-  if hash['state']['model']['environment']
-    hash['state']['model'].delete('environment')
-  end
+  hash['state']['model'].delete('controller')
+  hash['state']['model'].delete('environment')
 
   # process initial hash and do some changes in its structure
   final_hash = { type: "energy2d" }.merge(hash['state']['model'])
