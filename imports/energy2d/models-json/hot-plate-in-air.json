@@ -91,20 +91,18 @@
       }
     ]
   },
-  "sensor": {
-    "thermometer": [
-      {
-        "label": "T2",
-        "x": 5.0,
-        "y": 9.25
-      },
-      {
-        "label": "T1",
-        "x": 5.0,
-        "y": 0.75
-      }
-    ]
-  },
+  "thermometers": [
+    {
+      "label": "T2",
+      "x": 5.0,
+      "y": 9.25
+    },
+    {
+      "label": "T1",
+      "x": 5.0,
+      "y": 0.75
+    }
+  ],
   "viewOptions": {
     "grid_size": 10,
     "color_palette_type": 0,

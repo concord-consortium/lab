@@ -47,12 +47,12 @@
       "label": "Surface"
     }
   },
-  "sensor": {
-    "thermometer": {
+  "thermometers": [
+    {
       "x": 5.0,
       "y": 7.0
     }
-  },
+  ],
   "viewOptions": {
     "grid_size": 10,
     "ruler": true,

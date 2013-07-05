@@ -105,12 +105,12 @@
       }
     ]
   },
-  "sensor": {
-    "thermometer": {
+  "thermometers": [
+    {
       "x": 0.25083333,
       "y": 0.25166667
     }
-  },
+  ],
   "viewOptions": {
     "grid": true,
     "grid_size": 10,

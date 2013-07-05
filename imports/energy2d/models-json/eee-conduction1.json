@@ -62,20 +62,18 @@
       }
     ]
   },
-  "sensor": {
-    "thermometer": [
-      {
-        "stencil": 9,
-        "x": 4.9666667,
-        "y": 5.3
-      },
-      {
-        "stencil": 9,
-        "x": 4.95,
-        "y": 6.7
-      }
-    ]
-  },
+  "thermometers": [
+    {
+      "stencil": 9,
+      "x": 4.9666667,
+      "y": 5.3
+    },
+    {
+      "stencil": 9,
+      "x": 4.95,
+      "y": 6.7
+    }
+  ],
   "viewOptions": {
     "grid": true,
     "grid_size": 10,

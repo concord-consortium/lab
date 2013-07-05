@@ -52,18 +52,16 @@
       "filled": false
     }
   },
-  "sensor": {
-    "thermometer": [
-      {
-        "x": 0.5125,
-        "y": 0.525
-      },
-      {
-        "x": 0.112500004,
-        "y": 0.525
-      }
-    ]
-  },
+  "thermometers": [
+    {
+      "x": 0.5125,
+      "y": 0.525
+    },
+    {
+      "x": 0.112500004,
+      "y": 0.525
+    }
+  ],
   "viewOptions": {
     "grid": true,
     "grid_size": 10,

@@ -194,20 +194,18 @@
       }
     ]
   },
-  "sensor": {
-    "thermometer": [
-      {
-        "label": "T1",
-        "x": 2.5,
-        "y": 1.75
-      },
-      {
-        "label": "T2",
-        "x": 7.5,
-        "y": 1.75
-      }
-    ]
-  },
+  "thermometers": [
+    {
+      "label": "T1",
+      "x": 2.5,
+      "y": 1.75
+    },
+    {
+      "label": "T2",
+      "x": 7.5,
+      "y": 1.75
+    }
+  ],
   "viewOptions": {
     "grid_size": 10,
     "ruler": true,
