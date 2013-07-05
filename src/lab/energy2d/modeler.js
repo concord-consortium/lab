@@ -82,15 +82,21 @@ define(function (require) {
     function createThermometers(thermometersSpec) {
       thermometers = [];
       thermometersSpec.forEach(function (t, idx) {
-        var props = validator.validateCompleteness(metadata.thermometer, t);
-        thermometers.push(props);
+        t = validator.validateCompleteness(metadata.thermometer, t);
+        Object.defineProperty(t, "value", {
+          enumerable: true,
+          get: function() {
+            return model.getTemperatureAt(this.x, this.y);
+          }
+        });
+        thermometers.push(t);
 
         model.defineOutput(t.label || ("thermometer-" + idx), {
           label: "Temperature",
           unitType: 'temperature',
           format: '.1f'
         }, function() {
-          return model.getTemperatureAt(thermometers[idx].x, thermometers[idx].y);
+          return t.value;
         });
       });
     }

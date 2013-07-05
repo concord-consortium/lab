@@ -290,6 +290,10 @@ define(function(require) {
       },
       label: {
         defaultValue: ""
+      },
+      value: {
+        readOnly: true,
+        serialize: false
       }
     }
   };
