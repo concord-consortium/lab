@@ -1,8 +1,8 @@
 /*global define: false, d3: false */
 
 define(function () {
-  var W = 0.3,
-      H = 0.8;
+  var W = 0.8,
+      H = 1.8;
 
   return function ThermometersView(SVGContainer, g) {
     var api,
@@ -22,11 +22,12 @@ define(function () {
               d.y = m2pxInv.invert(d3.event.y);
             });
 
+    function em(val) { return val + "em"; }
     function transform(d) { return "translate(" + m2px(d.x) + "," + m2pxInv(d.y) + ")"; }
     function labelDx() { return -this.getBBox().width / 2; }
     function labelText(d) { return d.label; }
     function readingText(d) { return d.value.toFixed(1) + " °C"; }
-    function bgHeight(d) { return m2px(thermValScale(d.value)); }
+    function bgHeight(d) { return em(thermValScale(d.value)); }
 
     // Public API.
     api = {
@@ -57,24 +58,24 @@ define(function () {
 
         therm.attr("transform", transform);
         therm.select(".e2d-thermometer-fill")
-          .attr("x", m2px(-0.5 * W))
-          .attr("y", m2px(-0.5 * H))
-          .attr("width", m2px(W))
-          .attr("height", m2px(H));
+          .attr("x", em(-0.5 * W))
+          .attr("y", em(-0.5 * H))
+          .attr("width", em(W))
+          .attr("height", em(H));
         thermBg = therm.select(".e2d-thermometer-background")
-          .attr("x", m2px(-0.5 * W))
-          .attr("y", m2px(-0.5 * H))
-          .attr("width", m2px(W))
+          .attr("x", em(-0.5 * W))
+          .attr("y", em(-0.5 * H))
+          .attr("width", em(W))
           .attr("height", bgHeight);
         therm.select(".e2d-thermometer-label")
           .text(labelText)
-          .attr("y", m2px(0.5 * H))
-          .attr("dy", "1em")
+          .attr("y", em(0.5 * H))
+          .attr("dy", "1.1em")
           .attr("dx", labelDx);
         thermReading = therm.select(".e2d-thermometer-reading")
           .text(readingText)
-          .attr("y", m2px(-0.5 * H))
-          .attr("dy", "-.25em")
+          .attr("y", em(-0.5 * H))
+          .attr("dy", "-.35em")
           .attr("dx", "-.7em");
 
         therm.exit().remove();
