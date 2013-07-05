@@ -252,8 +252,7 @@
       <anemometer label="A1" x="8.399999" y="5.7999988"/>
       <anemometer label="A2" x="15.421163" y="7.3968234"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <snap_to_grid>false</snap_to_grid>

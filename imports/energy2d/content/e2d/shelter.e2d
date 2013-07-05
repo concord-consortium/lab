@@ -134,8 +134,7 @@
         <label>Shelter</label>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <thermometer uid="T2" label="T2" x="6.0" y="6.808201"/>
       <thermometer uid="T1" label="T1" x="6.0" y="2.808201"/>

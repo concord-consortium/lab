@@ -55,14 +55,12 @@
         </texture>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <thermometer x="5.0" y="6.5370355"/>
       <anemometer x="5.026455" y="4.0608463"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <grid>true</grid>

@@ -74,15 +74,13 @@
         <constant_temperature>true</constant_temperature>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <thermometer x="5.0" y="6.5"/>
       <thermometer x="5.0" y="1.75"/>
       <anemometer x="5.0" y="4.7619047"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <snap_to_grid>true</snap_to_grid>

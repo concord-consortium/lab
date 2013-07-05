@@ -30,12 +30,10 @@
         <constant_temperature>true</constant_temperature>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
 </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <grid>true</grid>

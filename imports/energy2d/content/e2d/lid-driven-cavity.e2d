@@ -37,8 +37,7 @@
         <visible>false</visible>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <anemometer label="A1" x="0.7407407" y="0.27777767"/>
       <anemometer label="A2" x="5.0" y="5.0"/>
@@ -46,8 +45,7 @@
       <anemometer label="A4" x="5.0" y="9.5"/>
       <anemometer label="A5" x="0.5" y="5.0"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <snap_to_grid>true</snap_to_grid>

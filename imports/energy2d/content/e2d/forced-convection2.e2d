@@ -58,14 +58,12 @@
         <draggable>false</draggable>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <anemometer label="A1" x="0.07804233" y="0.25"/>
       <anemometer label="A2" x="0.34920636" y="0.25"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <grid>true</grid>

@@ -40,13 +40,11 @@
         <label>Surface</label>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <thermometer x="5.0" y="7.0"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <snap_to_grid>true</snap_to_grid>

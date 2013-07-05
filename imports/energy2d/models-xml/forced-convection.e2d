@@ -120,8 +120,7 @@
         <filled>false</filled>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <thermometer label="T2" x="2.525" y="7.285449"/>
       <thermometer label="T1" x="2.525" y="2.3177252"/>
@@ -129,8 +128,7 @@
       <anemometer label="A3" x="0.93915343" y="7.5793653"/>
       <anemometer label="A2" x="3.3730159" y="2.4867725"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <snap_to_grid>true</snap_to_grid>

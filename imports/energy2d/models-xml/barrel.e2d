@@ -227,8 +227,7 @@
         </texture>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <heat_flux_sensor label="F3" angle="0.0" x="0.5" y="0.16250002"/>
       <heat_flux_sensor label="F4" angle="1.5707964" x="0.76250005" y="0.25000006"/>
@@ -242,8 +241,7 @@
       <anemometer label="A3" x="0.3125" y="0.8875"/>
       <anemometer label="A1" x="0.4625" y="0.47500002"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <grid>true</grid>

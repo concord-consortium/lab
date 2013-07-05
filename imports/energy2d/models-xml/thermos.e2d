@@ -47,14 +47,12 @@
         <filled>false</filled>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <thermometer x="0.5" y="0.48015872"/>
       <thermometer x="0.20100503" y="0.80889446"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <grid>true</grid>

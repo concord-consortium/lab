@@ -312,8 +312,7 @@
     </environment>
     <sensor>
 </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <grid>true</grid>

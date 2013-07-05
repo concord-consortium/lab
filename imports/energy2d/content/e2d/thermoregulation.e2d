@@ -69,8 +69,7 @@
         <filled>false</filled>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <thermometer uid="CONTROL2" x="0.37301588" y="0.3042328"/>
       <thermometer uid="CONTROL1" x="0.14219576" y="0.31084657"/>

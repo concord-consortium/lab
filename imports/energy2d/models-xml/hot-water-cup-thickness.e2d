@@ -86,8 +86,7 @@
         <filled>false</filled>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <thermometer stencil="9" x="2.0" y="6.2"/>
       <thermometer stencil="9" x="8.0" y="6.68545"/>
@@ -96,8 +95,7 @@
       <anemometer x="1.9973545" y="5.0"/>
       <anemometer x="8.0026455" y="4.973545"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <grid>true</grid>

@@ -269,8 +269,7 @@
         </texture>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <thermometer label="T4" x="1.9" y="1.4"/>
       <thermometer label="T1" x="0.48" y="0.96000004"/>
@@ -284,8 +283,7 @@
       <heat_flux_sensor label="F2" angle="0.0" x="0.28" y="1.0"/>
       <heat_flux_sensor label="F7" angle="0.0" x="1.12" y="1.74"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <snap_to_grid>true</snap_to_grid>

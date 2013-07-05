@@ -32,16 +32,14 @@
         <wind_speed>0.1</wind_speed>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <thermometer x="4.0" y="5.0"/>
       <thermometer x="8.0" y="5.0"/>
       <anemometer x="6.137566" y="4.9206347"/>
       <anemometer x="2.0238094" y="4.94709"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <grid_size>10</grid_size>

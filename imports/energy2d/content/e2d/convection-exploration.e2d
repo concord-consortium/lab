@@ -68,15 +68,13 @@
         <label>%temperature</label>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <thermometer x="0.5" y="0.40859783"/>
       <anemometer label="A1" x="0.5" y="0.55"/>
       <anemometer label="A2" x="0.5" y="0.25"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <snap_to_grid>true</snap_to_grid>

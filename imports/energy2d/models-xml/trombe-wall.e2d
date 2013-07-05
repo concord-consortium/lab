@@ -227,8 +227,7 @@
         <draggable>false</draggable>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <thermometer label="T1" x="3.2" y="6.700001"/>
       <thermometer label="T2" x="2.8" y="4.5"/>
@@ -237,8 +236,7 @@
       <anemometer label="A2" x="2.2000003" y="5.1"/>
       <anemometer label="A3" x="5.5" y="5.2"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <snap_to_grid>true</snap_to_grid>

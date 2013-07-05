@@ -73,13 +73,11 @@
         <label>%temperature</label>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <anemometer x="5.026455" y="7.5132275"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <grid_size>10</grid_size>

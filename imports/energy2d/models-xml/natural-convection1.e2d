@@ -152,16 +152,14 @@
         <label>Insulator</label>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <thermometer label="T1" x="2.5" y="1.6838624"/>
       <thermometer label="T2" x="7.5" y="1.6838624"/>
       <anemometer label="A2" x="7.5" y="4.0"/>
       <anemometer label="A1" x="2.5" y="4.0"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <snap_to_grid>true</snap_to_grid>

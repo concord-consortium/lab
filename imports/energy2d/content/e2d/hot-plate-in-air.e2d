@@ -73,16 +73,14 @@
         <filled>false</filled>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <thermometer label="T2" x="5.0" y="8.919313"/>
       <thermometer label="T1" x="5.0" y="0.68386245"/>
       <anemometer label="A1" x="5.0" y="3.0"/>
       <anemometer label="A2" x="5.0" y="7.0"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <grid_size>10</grid_size>

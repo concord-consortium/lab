@@ -125,14 +125,12 @@
         <label>%power_density</label>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <thermometer label="T1" x="0.1" y="0.08896648"/>
       <thermometer label="T2" x="0.02" y="0.095949724"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <grid>true</grid>

@@ -79,14 +79,12 @@
         </texture>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <thermometer x="2.625" y="4.919311"/>
       <thermometer x="7.625" y="4.919311"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <grid_size>10</grid_size>

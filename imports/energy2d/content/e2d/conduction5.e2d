@@ -141,8 +141,7 @@
         <draggable>false</draggable>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <thermometer label="T2" x="0.09" y="0.08"/>
       <thermometer label="T1" x="0.09" y="0.020000003"/>
@@ -151,8 +150,7 @@
       <heat_flux_sensor label="F3" angle="1.5707964" x="0.03" y="0.020000003"/>
       <heat_flux_sensor label="F4" angle="1.5707964" x="0.03" y="0.08"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <grid>true</grid>

@@ -269,14 +269,12 @@
         <label>Window</label>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <anemometer label="A1" x="3.1084657" y="1.8121691"/>
       <anemometer label="A2" x="9.563492" y="2.857143"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <grid>true</grid>

@@ -121,14 +121,12 @@
         <filled>false</filled>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <anemometer label="A1" x="7.0" y="2.5"/>
       <anemometer label="A2" x="7.0" y="7.5"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <snap_to_grid>true</snap_to_grid>

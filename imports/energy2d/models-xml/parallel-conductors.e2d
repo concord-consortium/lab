@@ -143,8 +143,7 @@
         <label>R2</label>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <thermometer x="0.09" y="0.047354493"/>
       <thermometer label="T1" x="0.062" y="0.029354502"/>
@@ -152,8 +151,7 @@
       <thermometer label="T3" x="0.062" y="0.052693114"/>
       <thermometer label="T4" x="0.062000003" y="0.06452647"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <grid>true</grid>

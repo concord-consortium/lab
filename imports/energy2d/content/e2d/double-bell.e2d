@@ -327,8 +327,7 @@
         <constant_temperature>false</constant_temperature>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <thermometer label="T1" x="0.52" y="1.4"/>
       <thermometer label="T2" x="1.4399999" y="1.66"/>
@@ -348,8 +347,7 @@
       <anemometer label="A3" x="0.28" y="1.64"/>
       <anemometer label="A9" x="1.76" y="1.8399999"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <grid>true</grid>

@@ -69,15 +69,13 @@
         <label>B</label>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <thermometer x="0.24735449" y="0.1415344"/>
       <thermometer x="0.12500001" y="0.3048942"/>
       <thermometer x="0.24140212" y="0.34589946"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <grid>true</grid>

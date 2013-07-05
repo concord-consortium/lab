@@ -91,14 +91,12 @@
         <draggable>false</draggable>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <thermometer x="0.25" y="0.25"/>
       <thermometer x="0.25" y="0.75"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <grid>true</grid>

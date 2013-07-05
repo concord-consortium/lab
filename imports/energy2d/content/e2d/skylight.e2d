@@ -182,8 +182,7 @@
       <thermometer x="3.125" y="6.25"/>
       <thermometer x="8.125" y="6.25"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <snap_to_grid>true</snap_to_grid>

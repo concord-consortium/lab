@@ -141,14 +141,12 @@
         <draggable>false</draggable>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <thermometer label="T2" x="0.06" y="0.07801588"/>
       <thermometer label="T1" x="0.09" y="0.018015878"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <grid>true</grid>

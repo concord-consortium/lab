@@ -193,8 +193,7 @@
       <anemometer x="2.8042328" y="7.420635"/>
       <anemometer x="7.7380953" y="7.4206347"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <grid_size>10</grid_size>

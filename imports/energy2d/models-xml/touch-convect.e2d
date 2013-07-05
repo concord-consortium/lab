@@ -19,14 +19,12 @@
     </boundary>
     <structure>
 </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <anemometer x="5.0132275" y="6.4814816"/>
       <anemometer x="4.9867725" y="3.5978837"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <grid_size>10</grid_size>

@@ -382,15 +382,13 @@
         </texture>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <thermometer x="0.051" y="0.13799998"/>
       <thermometer x="0.234" y="0.14699998"/>
       <thermometer x="0.294" y="0.14699998"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <grid>true</grid>

@@ -227,8 +227,7 @@
         </texture>
       </part>
     </structure>
-    <environment>
-</environment>
+    <environment></environment>
     <sensor>
       <thermometer label="T2" x="2.75" y="1.5999998"/>
       <thermometer label="T3" x="2.75" y="2.4"/>
@@ -236,8 +235,7 @@
       <thermometer label="T5" x="2.7500002" y="3.9"/>
       <thermometer label="T4" x="2.75" y="3.15"/>
     </sensor>
-    <controller>
-</controller>
+    <controller></controller>
   </model>
   <view>
     <grid>true</grid>
