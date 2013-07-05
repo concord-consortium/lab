@@ -57,7 +57,7 @@ define(function (require) {
 
         // Thermometers are modeler-level objects, they only define outputs
         // and have nothing to do with physics calculations.
-        thermometers,
+        thermometers = [],
 
         cache = {};
 

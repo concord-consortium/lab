@@ -42,7 +42,8 @@ define(function () {
 
         therm = g.selectAll(".e2d-thermometer").data(thermometers);
         thermEnter = therm.enter().append("g")
-            .attr("class", "e2d-thermometer");
+            // "therometer" class can be useful for onClick handlers.
+            .attr("class", "e2d-thermometer thermometer");
 
         // Note that background and fill are inverted (background covers
         // fill). It's easier to change only height of background instead of
