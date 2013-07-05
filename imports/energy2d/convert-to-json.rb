@@ -73,6 +73,20 @@ xml_files.each do |xml_file_path|
   xml_file = File.open(xml_file_path).read.to_s
   hash = Hash.from_xml(xml_file)
 
+  # Two versions of Classic E2D specify sensors in different places in hash.
+  if hash['state']['model']['sensor']
+    sensorFromModel = hash['state']['model']['sensor']
+    hash['state']['model'].delete('sensor')
+  end
+
+  # Delete unnecessary things.
+  if hash['state']['model']['controller']
+    hash['state']['model'].delete('controller')
+  end
+  if hash['state']['model']['environment']
+    hash['state']['model'].delete('environment')
+  end
+
   # process initial hash and do some changes in its structure
   final_hash = { type: "energy2d" }.merge(hash['state']['model'])
 
@@ -92,11 +106,15 @@ xml_files.each do |xml_file_path|
     boundary_opts.each do |key, value|
       final_hash['boundary'][key] = value
     end
+    # This is not (yet?) supported, delete it.
+    final_hash['boundary'].delete('mass_flow_at_border')
   end
 
+  sensor = sensorFromModel || hash['state']['sensor']
+
   # state
-  if hash['state']['sensor'] && hash['state']['sensor']['thermometer']
-    t = hash['state']['sensor']['thermometer']
+  if sensor && sensor['thermometer']
+    t = sensor['thermometer']
     t = [t] if t.is_a?(Hash)
     final_hash['thermometers'] = t
   end
