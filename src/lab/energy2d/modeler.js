@@ -16,6 +16,11 @@ define(function (require) {
             pluralName: "seconds",
             symbol: "s"
           },
+          temperature: {
+            name: "degree Celsius",
+            pluralName: "degrees Celsius",
+            symbol: "°C"
+          },
           length: {
             name: "meter",
             pluralName: "meters",
@@ -50,6 +55,10 @@ define(function (require) {
 
         ticksToGPUSync = 0,
 
+        // Thermometers are modeler-level objects, they only define outputs
+        // and have nothing to do with physics calculations.
+        thermometers,
+
         cache = {};
 
     function setWebGLEnabled(v) {
@@ -68,6 +77,22 @@ define(function (require) {
       // (velocity arrows can be rendered using WebGL) and it isn't exposed
       // to the Scripting API. So for now there is no need to sync it.
       coreModel.syncTemperature();
+    }
+
+    function createThermometers(thermometersSpec) {
+      thermometers = [];
+      thermometersSpec.forEach(function (t, idx) {
+        var props = validator.validateCompleteness(metadata.thermometer, t);
+        thermometers.push(props);
+
+        model.defineOutput(t.label || ("thermometer-" + idx), {
+          label: "Temperature",
+          unitType: 'temperature',
+          format: '.1f'
+        }, function() {
+          return model.getTemperatureAt(thermometers[idx].x, thermometers[idx].y);
+        });
+      });
     }
 
     model = {
@@ -206,7 +231,6 @@ define(function (require) {
               this._rawPart[key] = validator.validateSingleProperty(metadata.part[key], key, v);
               // Update core model arrays based on part's properties.
               coreModel.partsChanged(this._rawPart, key);
-              cache.parts = null;
 
               propertySupport.invalidatingChangePostHook();
 
@@ -235,6 +259,43 @@ define(function (require) {
         };
       }()),
 
+      getThermometersArray: (function () {
+        function ThermometerWrapper(rawObj) {
+          Object.defineProperty(this, '_rawObj', {
+            enumerable: false,
+            get: function () {
+              return rawObj;
+            }
+          });
+        }
+        Object.keys(metadata.thermometer).forEach(function (key) {
+          Object.defineProperty(ThermometerWrapper.prototype, key, {
+            enumerable: true,
+            get: function () {
+              return this._rawObj[key];
+            },
+            set: function (v) {
+              propertySupport.invalidatingChangePreHook();
+              this._rawObj[key] = validator.validateSingleProperty(metadata.thermometer[key], key, v);
+              propertySupport.invalidatingChangePostHook();
+              dispatch.thermometersChanged();
+            }
+          });
+        });
+
+        return function () {
+          if (!cache.thermometers) {
+            var result = [],
+                i, len;
+            for (i = 0, len = thermometers.length; i < len; i++) {
+              result.push(new ThermometerWrapper(thermometers[i]));
+            }
+            cache.thermometers = result;
+          }
+          return cache.thermometers;
+        };
+      }()),
+
       setPerformanceTools: function () {
         return coreModel.setPerformanceTools();
       }
@@ -246,6 +307,10 @@ define(function (require) {
 
       coreModel = coremodel.makeCoreModel(model.properties);
       setWebGLEnabled(model.properties.use_WebGL);
+
+      if (initialProperties.thermometers) {
+        createThermometers(initialProperties.thermometers);
+      }
 
       // Temporal workaround. In fact width and height should
       // be outputs based on min / max.

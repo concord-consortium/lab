@@ -277,6 +277,20 @@ define(function(require) {
         // unnecessary (not yet implemented)
         defaultValue: true
       }
+    },
+
+    thermometer: {
+      x: {
+        required: true,
+        unitType: "length"
+      },
+      y: {
+        required: true,
+        unitType: "length"
+      },
+      label: {
+        defaultValue: ""
+      }
     }
   };
 });
