@@ -14,7 +14,13 @@ define(function () {
 
         thermBg, // d3.selection
         thermReading, // d3.selection
-        thermValScale = d3.scale.linear().clamp(true).domain([0, 50]).range([H, 0]);
+        thermValScale = d3.scale.linear().clamp(true).domain([0, 50]).range([H, 0]),
+
+        dragBehavior = d3.behavior.drag()
+            .on("drag", function (d) {
+              d.x = m2px.invert(d3.event.x);
+              d.y = m2pxInv.invert(d3.event.y);
+            });
 
     function transform(d) { return "translate(" + m2px(d.x) + "," + m2pxInv(d.y) + ")"; }
     function labelDx() { return -this.getBBox().width / 2; }
@@ -45,6 +51,8 @@ define(function () {
         thermEnter.append("rect").attr("class", "e2d-thermometer-background");
         thermEnter.append("text").attr("class", "e2d-thermometer-label");
         thermEnter.append("text").attr("class", "e2d-thermometer-reading");
+
+        thermEnter.call(dragBehavior);
 
         therm.attr("transform", transform);
         therm.select(".e2d-thermometer-fill")
