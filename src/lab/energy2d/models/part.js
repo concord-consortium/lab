@@ -84,6 +84,7 @@ define(function (require, exports, module) {
       this.color = options.color;
       this.texture = options.texture;
       this.label = options.label;
+      this.draggable = options.draggable;
     };
 
   Object.defineProperty(Part.prototype, 'shapeType', {

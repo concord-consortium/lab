@@ -24,7 +24,40 @@ define(function () {
             .innerRadius(function (d) { return m2px(d.inner * 0.5); })
             .outerRadius(function (d) { return m2px(d.outer * 0.5); })
             .startAngle(0)
-            .endAngle(Math.PI * 2);
+            .endAngle(Math.PI * 2),
+
+        dragBehavior = (function () {
+          var lastX, lastY;
+          return d3.behavior.drag()
+              .origin(function (d) {
+                return {
+                  x: m2px(d.x),
+                  y: m2pxInv(d.y)
+                };
+              })
+              .on("dragstart", function (d) {
+                if (d.draggable) {
+                  d3.select(this)
+                      .style("opacity", 0.7);
+                }
+              })
+              .on("drag", function (d) {
+                if (d.draggable) {
+                  lastX = d3.event.x;
+                  lastY = d3.event.y;
+                  d3.select(this)
+                      .attr("transform", "translate(" + lastX + "," + lastY + ")");
+                }
+              })
+              .on("dragend", function (d) {
+                if (d.draggable) {
+                  d.x = m2px.invert(lastX);
+                  d.y = m2pxInv.invert(lastY);
+                  d3.select(this)
+                      .style("opacity", 1);
+                }
+              });
+        }());
 
     function labelTest(d) { return d.label ? this : null; }
     function textureTest(d) { return d.texture ? this : null; }
@@ -155,6 +188,8 @@ define(function () {
         renderShape("ellipse", partEnter, part);
         renderShape("path", partEnter, part);
         renderLabels(partEnter, part);
+
+        partEnter.call(dragBehavior);
 
         part
             .attr("transform", transform);

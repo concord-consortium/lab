@@ -274,7 +274,6 @@ define(function(require) {
         // unnecessary (not yet implemented)
       },
       draggable: {
-        // unnecessary (not yet implemented)
         defaultValue: true
       }
     },
