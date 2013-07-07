@@ -274,6 +274,10 @@ define(function (require) {
             }
           });
         }
+        var constraint = {
+          x: function (v) { return Math.max(0, Math.min(model.properties.model_width, v)); },
+          y: function (v) { return Math.max(0, Math.min(model.properties.model_height, v)); }
+        };
         Object.keys(metadata.thermometer).forEach(function (key) {
           Object.defineProperty(ThermometerWrapper.prototype, key, {
             enumerable: true,
@@ -282,6 +286,7 @@ define(function (require) {
             },
             set: function (v) {
               propertySupport.invalidatingChangePreHook();
+              v = constraint[key] ? constraint[key](v) : v;
               this._rawObj[key] = validator.validateSingleProperty(metadata.thermometer[key], key, v);
               propertySupport.invalidatingChangePostHook();
               dispatch.thermometersChanged();

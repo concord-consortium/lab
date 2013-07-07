@@ -17,6 +17,12 @@ define(function () {
         thermValScale = d3.scale.linear().clamp(true).domain([0, 50]).range([H, 0]),
 
         dragBehavior = d3.behavior.drag()
+            .origin(function (d) {
+                return {
+                  x: m2px(d.x),
+                  y: m2pxInv(d.y)
+                };
+              })
             .on("drag", function (d) {
               d.x = m2px.invert(d3.event.x);
               d.y = m2pxInv.invert(d3.event.y);
