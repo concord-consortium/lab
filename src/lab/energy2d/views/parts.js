@@ -27,7 +27,7 @@ define(function () {
             .endAngle(Math.PI * 2),
 
         dragBehavior = (function () {
-          var lastX, lastY, minX, maxX, minY, maxY;
+          var x, y, minX, maxX, minY, maxY, bbox;
           return d3.behavior.drag()
               .origin(function (d) {
                 return {
@@ -38,29 +38,33 @@ define(function () {
               .on("dragstart", function (d) {
                 var rx, ry;
                 if (d.draggable) {
-                  d3.select(this).style("opacity", 0.7);
                   rx = m2px.range();
                   ry = m2pxInv.range();
                   minX = Math.min(rx[0], rx[1]);
                   maxX = Math.max(rx[0], rx[1]);
                   minY = Math.min(ry[0], ry[1]);
                   maxY = Math.max(ry[0], ry[1]);
+                  bbox = this.getBBox();
+                  bbox.x0 = bbox.x + 10;
+                  bbox.y0 = bbox.y + 10;
+                  bbox.x1 = bbox.x + bbox.width - 10;
+                  bbox.y1 = bbox.y + bbox.height - 10;
+                  d3.select(this).style("opacity", 0.7);
                 }
               })
               .on("drag", function (d) {
-                var p;
                 if (d.draggable) {
-                  p = d3.mouse(this.parentNode);
-                  if (p[0] < minX || p[0] > maxX || p[1] < minY || p[1] > maxY) return;
-                  lastX = d3.event.x;
-                  lastY = d3.event.y;
-                  d3.select(this).attr("transform", "translate(" + lastX + "," + lastY + ")");
+                  x = d3.event.x;
+                  y = d3.event.y;
+                  x -= Math.max(0, bbox.x0 + x - maxX) + Math.min(0, bbox.x1 + x - minX);
+                  y -= Math.max(0, bbox.y0 + y - maxY) + Math.min(0, bbox.y1 + y - minY);
+                  d3.select(this).attr("transform", "translate(" + x + "," + y + ")");
                 }
               })
               .on("dragend", function (d) {
                 if (d.draggable) {
-                  d.x = m2px.invert(lastX);
-                  d.y = m2pxInv.invert(lastY);
+                  d.x = m2px.invert(x);
+                  d.y = m2pxInv.invert(y);
                   d3.select(this).style("opacity", 1);
                 }
               });
