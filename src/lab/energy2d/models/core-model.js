@@ -290,7 +290,7 @@ define(function (require, exports) {
                 part = parts[k];
                 if (part.power !== 0 && part.shape.contains(x, y)) {
                   // No overlap of parts will be allowed.
-                  q[iny + j] = part.getPower();
+                  q[iny + j] = part.power;
                   break;
                 }
               }
