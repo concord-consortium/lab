@@ -2,7 +2,8 @@
 
 define(function (require) {
   'use strict';
-  var console         = require('common/console'),
+  var alert           = require('common/alert'),
+      console         = require('common/console'),
       validator       = require('common/validator'),
       LabModelerMixin = require('common/lab-modeler-mixin'),
       metadata        = require('energy2d/metadata'),
@@ -79,6 +80,20 @@ define(function (require) {
       coreModel.syncTemperature();
     }
 
+    function hasDiverged() {
+      var t = model.getTemperatureArray(),
+          i, len;
+
+      for (i = 0, len = t.length; i < len; i++) {
+        if (isNaN(t[i]) || Math.abs(t[i]) > 1e10) {
+          model.stop();
+          coreModel.reset();
+          return true;
+        }
+      }
+      return false;
+    }
+
     function createThermometers(thermometersSpec) {
       thermometers = [];
       thermometersSpec.forEach(function (t, idx) {
@@ -103,7 +118,7 @@ define(function (require) {
 
     model = {
       tick: function () {
-        var i, len;
+        var i, len, diverged;
         for (i = 0, len = model.properties.timeStepsPerTick; i < len; i++) {
           coreModel.nextStep();
         }
@@ -113,10 +128,18 @@ define(function (require) {
           } else {
             syncGPU();
             ticksToGPUSync = Number(model.properties.ticksPerGPUSync); // support "Infinity" value
+            diverged = hasDiverged();
           }
+        } else {
+          diverged = hasDiverged();
         }
         model.updateAllOutputProperties();
         dispatch.tick();
+
+        if (diverged) {
+          alert("The model has diverged and has been reset!\n\nTry changing its parameters " +
+                "(e.g. 'timeStep', positions of parts etc.) or reload it to restore the initial configuration.");
+        }
       },
 
       syncTemperature: function () {
