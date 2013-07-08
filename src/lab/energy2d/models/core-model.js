@@ -165,6 +165,18 @@ define(function (require, exports) {
         texture[3] = gpgpu.createTexture();
 
         // Update textures as material properties should be already set.
+        fillGPGPUTextures();
+
+        // Create GPU solvers.
+        // GPU version of heat solver.
+        heat_solver_gpu = heatsolver_GPU.makeHeatSolverGPU(core_model);
+        // GPU version of fluid solver.
+        fluid_solver_gpu = fluidsolver_GPU.makeFluidSolverGPU(core_model);
+
+        WebGL_active = true;
+      },
+
+      fillGPGPUTextures = function () {
         // texture 0:
         // - R: t
         // - G: t0
@@ -189,14 +201,6 @@ define(function (require, exports) {
         // - B: undefined
         // - A: undefined
         gpgpu.writeRGBATexture(texture[3], uWind, vWind, uWind, vWind);
-
-        // Create GPU solvers.
-        // GPU version of heat solver.
-        heat_solver_gpu = heatsolver_GPU.makeHeatSolverGPU(core_model);
-        // GPU version of fluid solver.
-        fluid_solver_gpu = fluidsolver_GPU.makeFluidSolverGPU(core_model);
-
-        WebGL_active = true;
       },
 
       setupOptimizationFlags = function () {
@@ -222,19 +226,6 @@ define(function (require, exports) {
           }
           return false;
         }());
-      },
-
-      resetArrays = function () {
-        // Note that temperature and velocity aren't reset to provide
-        // better interactivity.
-        arrays.fill(tb, NaN);
-        arrays.fill(q, 0);
-        arrays.fill(uWind, 0);
-        arrays.fill(vWind, 0);
-        arrays.fill(conductivity, opt.background_conductivity);
-        arrays.fill(capacity, opt.background_specific_heat);
-        arrays.fill(density, opt.background_density);
-        arrays.fill(fluidity, true);
       },
 
       setupPart = function (part, updateOnly) {
@@ -266,6 +257,22 @@ define(function (require, exports) {
             tb[idx] = part.temperature;
           }
         }
+      },
+
+      resetArrays = function (skipTempAndVelocity) {
+        if (!skipTempAndVelocity) {
+          arrays.fill(t, opt.background_temperature);
+          arrays.fill(u, 0);
+          arrays.fill(v, 0);
+        }
+        arrays.fill(tb, NaN);
+        arrays.fill(q, 0);
+        arrays.fill(uWind, 0);
+        arrays.fill(vWind, 0);
+        arrays.fill(conductivity, opt.background_conductivity);
+        arrays.fill(capacity, opt.background_specific_heat);
+        arrays.fill(density, opt.background_density);
+        arrays.fill(fluidity, true);
       },
 
       setupMaterialProperties = function (updateOnly) {
@@ -352,10 +359,22 @@ define(function (require, exports) {
           perf = perf_tools;
         },
 
-        partsChanged: function (part, propChanged) {
-          // TODO: in theory we don't have to process all parts.
-          // If needed implement something tricker.
+        reset: function () {
+          indexOfStep = 0;
           resetArrays();
+          setupOptimizationFlags();
+          setupMaterialProperties();
+          if (WebGL_active) {
+            fillGPGPUTextures();
+          }
+        },
+
+        partsChanged: function (part, propChanged) {
+          // TODO: in theory we don't have to process all parts. If needed
+          // implement something tricker.
+          // Note that temperature and velocity aren't reset to provide better
+          // interactivity.
+          resetArrays(true);
           setupOptimizationFlags();
           setupMaterialProperties(true);
           refreshPowerArray();
