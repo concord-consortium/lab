@@ -278,7 +278,11 @@ define(function(require) {
       }
     },
 
-    thermometer: {
+    sensor: {
+      type: {
+        required: true,
+        immutable: true
+      },
       x: {
         required: true,
         unitType: "length"

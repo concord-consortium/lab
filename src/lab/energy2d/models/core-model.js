@@ -12,6 +12,7 @@ define(function (require, exports) {
     raysolver       = require('energy2d/models/physics-solvers/ray-solver'),
     part            = require('energy2d/models/part'),
     gpgpu           = require('energy2d/gpu/gpgpu'),
+    hypot           = require('energy2d/models/helpers').hypot,
 
     array_type = (function () {
       try {
@@ -553,6 +554,14 @@ define(function (require, exports) {
           vor += getVorticityAt(i + 1, j - 1);
           vor += getVorticityAt(i + 1, j + 1);
           return vor / 9;
+        },
+
+        getSpeedAt: function (x, y) {
+          var
+            i = Math.max(Math.min(nx - 1, Math.round(x / delta_x)), 0),
+            j = Math.max(Math.min(ny - 1, Math.round(y / delta_y)), 0);
+
+          return hypot(u[i * ny + j], v[i * ny + j]);
         },
 
         addPhoton: function (photon) {

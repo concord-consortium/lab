@@ -26,6 +26,11 @@ define(function (require) {
             name: "meter",
             pluralName: "meters",
             symbol: "m"
+          },
+          velocity: {
+            name: "meter per second",
+            pluralName: "meters per second",
+            symbol: "m/s"
           }
         }
       };
@@ -56,9 +61,9 @@ define(function (require) {
 
         ticksToGPUSync = 0,
 
-        // Thermometers are modeler-level objects, they only define outputs
+        // Sensors are modeler-level objects, they only define outputs
         // and have nothing to do with physics calculations.
-        thermometers = [],
+        sensors = [],
 
         cache = {};
 
@@ -94,24 +99,38 @@ define(function (require) {
       return false;
     }
 
-    function createThermometers(thermometersSpec) {
-      thermometers = [];
-      thermometersSpec.forEach(function (t, idx) {
-        t = validator.validateCompleteness(metadata.thermometer, t);
-        Object.defineProperty(t, "value", {
-          enumerable: true,
-          get: function() {
-            return model.getTemperatureAt(this.x, this.y);
-          }
-        });
-        thermometers.push(t);
+    function createSensors(sensorsSpec) {
+      var sensorValue = {
+            thermometer: function () {
+              return model.getTemperatureAt(this.x, this.y);
+            },
+            anemometer: function () {
+              return model.getSpeedAt(this.x, this.y) * (model.getVorticityAt(this.x, this.y) < 0 ? -1 : 1);
+            }
+          },
+          sensorOutputDesc = {
+            thermometer: {
+              label: "Temperature",
+              unitType: 'temperature',
+              format: '.1f'
+            },
+            anemometer: {
+              label: "Fluid Speed x Vorticity Signum",
+              format: '.1f'
+            }
+          };
 
-        model.defineOutput("thermometer-" + idx, {
-          label: "Temperature",
-          unitType: 'temperature',
-          format: '.1f'
-        }, function() {
-          return t.value;
+      sensors = [];
+      sensorsSpec.forEach(function (s, idx) {
+        s = validator.validateCompleteness(metadata.sensor, s);
+        Object.defineProperty(s, "value", {
+          enumerable: true,
+          get: sensorValue[s.type]
+        });
+        sensors.push(s);
+
+        model.defineOutput("sensor-" + idx, sensorOutputDesc[s.type], function() {
+          return s.value;
         });
       });
     }
@@ -215,6 +234,15 @@ define(function (require) {
       getAverageTemperatureAt: function (x, y) {
         return coreModel.getAverageTemperatureAt(x, y);
       },
+      getVorticityAt: function (x, y) {
+        return coreModel.getVorticityAt(x, y);
+      },
+      getAverageVorticityAt: function (x, y) {
+        return coreModel.getAverageVorticityAt(x, y);
+      },
+      getSpeedAt: function (x, y) {
+        return coreModel.getSpeedAt(x, y);
+      },
       getTemperatureArray: function () {
         return coreModel.getTemperatureArray();
       },
@@ -288,8 +316,8 @@ define(function (require) {
         };
       }()),
 
-      getThermometersArray: (function () {
-        function ThermometerWrapper(rawObj) {
+      getSensorsArray: (function () {
+        function SensorWrapper(rawObj) {
           Object.defineProperty(this, '_rawObj', {
             enumerable: false,
             get: function () {
@@ -301,8 +329,8 @@ define(function (require) {
           x: function (v) { return Math.max(0, Math.min(model.properties.model_width, v)); },
           y: function (v) { return Math.max(0, Math.min(model.properties.model_height, v)); }
         };
-        Object.keys(metadata.thermometer).forEach(function (key) {
-          Object.defineProperty(ThermometerWrapper.prototype, key, {
+        Object.keys(metadata.sensor).forEach(function (key) {
+          Object.defineProperty(SensorWrapper.prototype, key, {
             enumerable: true,
             get: function () {
               return this._rawObj[key];
@@ -310,7 +338,7 @@ define(function (require) {
             set: function (v) {
               propertySupport.invalidatingChangePreHook();
               v = constraint[key] ? constraint[key](v) : v;
-              this._rawObj[key] = validator.validateSingleProperty(metadata.thermometer[key], key, v);
+              this._rawObj[key] = validator.validateSingleProperty(metadata.sensor[key], key, v);
               propertySupport.invalidatingChangePostHook();
               dispatch.thermometersChanged();
             }
@@ -318,15 +346,15 @@ define(function (require) {
         });
 
         return function () {
-          if (!cache.thermometers) {
+          if (!cache.sensors) {
             var result = [],
                 i, len;
-            for (i = 0, len = thermometers.length; i < len; i++) {
-              result.push(new ThermometerWrapper(thermometers[i]));
+            for (i = 0, len = sensors.length; i < len; i++) {
+              result.push(new SensorWrapper(sensors[i]));
             }
-            cache.thermometers = result;
+            cache.sensors = result;
           }
-          return cache.thermometers;
+          return cache.sensors;
         };
       }()),
 
@@ -342,8 +370,8 @@ define(function (require) {
       coreModel = coremodel.makeCoreModel(model.properties);
       setWebGLEnabled(model.properties.use_WebGL);
 
-      if (initialProperties.thermometers) {
-        createThermometers(initialProperties.thermometers);
+      if (initialProperties.sensors) {
+        createSensors(initialProperties.sensors);
       }
 
       // Temporal workaround. In fact width and height should

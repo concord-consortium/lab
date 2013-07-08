@@ -8,7 +8,7 @@ define(function(require) {
       VectormapWebGLView = require('energy2d/views/vectormap-webgl'),
       PhotonsView        = require('energy2d/views/photons'),
       PartsView          = require('energy2d/views/parts'),
-      ThermometersView   = require('energy2d/views/thermometers');
+      SensorsView        = require('energy2d/views/sensors');
 
 
   return function Renderer(SVGContainer) {
@@ -19,7 +19,7 @@ define(function(require) {
         velocity_view,
         photons_view,
         parts_view,
-        thermometers_view,
+        sensors_view,
         webgl_status = new WebGLStatus(),
         $status = webgl_status.getHTMLElement(),
         $canvasCont = $("<div>"),
@@ -92,13 +92,13 @@ define(function(require) {
         velocity_view.bindVectormap(model.getUVelocityArray(), model.getVVelocityArray(), props.grid_width, props.grid_height, 25);
       }
       parts_view.bindPartsArray(model.getPartsArray(), props.model_width, props.model_height);
-      thermometers_view.bindThermometersArray(model.getThermometersArray());
+      sensors_view.bindSensorsArray(model.getSensorsArray());
       photons_view.bindPhotonsArray(model.getPhotonsArray(), props.model_width, props.model_height);
       webgl_status.bindModel(model);
 
       // It's enough to render parts only once, they don't move.
       parts_view.renderParts();
-      thermometers_view.renderThermometers();
+      sensors_view.renderSensors();
       // WebGL status also doesn't change during typical 'tick'.
       webgl_status.render();
     }
@@ -109,7 +109,7 @@ define(function(require) {
       heatmap_view.setMinTemperature(props.minimum_temperature);
       heatmap_view.setMaxTemperature(props.maximum_temperature);
       heatmap_view.setColorPalette(props.color_palette_type);
-      thermometers_view.setMinMaxTemp(props.minimum_temperature, props.maximum_temperature);
+      sensors_view.setMinMaxTemp(props.minimum_temperature, props.maximum_temperature);
     }
 
     api = {
@@ -122,7 +122,7 @@ define(function(require) {
         if (beforeSetup) return;
         api.update();
         parts_view.renderParts();
-        thermometers_view.renderThermometers();
+        sensors_view.renderSensors();
       },
 
       reset: function() {},
@@ -138,7 +138,7 @@ define(function(require) {
         heatmap_view.renderHeatmap();
         velocity_view.renderVectormap();
         photons_view.renderPhotons();
-        thermometers_view.update();
+        sensors_view.update();
       },
 
       setFocus: function () {
@@ -161,14 +161,14 @@ define(function(require) {
         });
         model.on('tick.view-update', api.update);
         model.on('partsChanged.view-update', parts_view.renderParts);
-        model.on('thermometersChanged.view-update', thermometers_view.renderThermometers);
+        model.on('thermometersChanged.view-update', sensors_view.renderSensors);
       }
     };
 
     (function() {
       var vp = SVGContainer.viewport;
       parts_view = new PartsView(SVGContainer, vp.append("g").attr("class", "parts-layer"));
-      thermometers_view = new ThermometersView(SVGContainer, vp.append("g").attr("class", "thermometers-layer"));
+      sensors_view = new SensorsView(SVGContainer, vp.append("g").attr("class", "sensors-layer"));
 
       SVGContainer.$el.append($canvasCont);
       setPos($canvasCont, -1); // underneath SVG view.
