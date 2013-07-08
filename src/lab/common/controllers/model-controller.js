@@ -56,12 +56,13 @@ define(function () {
       Note: newModelConfig, newinteractiveViewConfig are optional. Calling this without
       arguments will simply reload the current model.
     */
-    function reload(newModelUrl, newModelOptions) {
+    function reload(newModelUrl, newModelOptions, suppressEvents) {
       controller.modelUrl = newModelUrl || controller.modelUrl;
       modelOptions = newModelOptions || modelOptions;
       setupModel();
       controller.modelContainer.bindModel(model, controller.modelUrl);
-      dispatch.modelLoaded();
+
+      if (!suppressEvents) dispatch.modelLoaded();
     }
 
     function repaint() {
@@ -96,6 +97,10 @@ define(function () {
 
     controller.enableKeyboardHandlers = function () {
       return model.get("enableKeyboardHandlers");
+    };
+
+    controller.modelInDOM = function () {
+      controller.modelContainer.setup();
     };
 
     controller.reload = reload;

@@ -284,21 +284,21 @@ define(function (require) {
         var modelOptions = processOptions(modelConfig, interactiveModelOptions, interactiveViewOptions);
 
         if (modelController) {
-          modelController.reload(modelUrl, modelOptions);
+          modelController.reload(modelUrl, modelOptions, true);
         } else {
           createModelController(modelConfig.type, modelUrl, modelOptions);
           // also be sure to get notified when the underlying model changes
           modelController.on('modelLoaded', modelLoaded);
           controller.modelController = modelController;
-          // Setup model and notify observers that model was loaded.
-          modelLoaded();
         }
-        // and setup model player keyboard handlers (if enabled)
-        setupModelPlayerKeyboardHandler();
-
-        // Setup model in layout.
+        // This will attach model container to DOM.
         semanticLayout.setupModel(modelController);
-        // Finally, layout interactive.
+
+        setupModelPlayerKeyboardHandler();
+        // Setup model and notify observers that model was loaded.
+        modelLoaded();
+
+        // Layout interactive after modelLoaded() callback!
         semanticLayout.layoutInteractive();
       }
 
@@ -488,6 +488,7 @@ define(function (require) {
       // to exist during its definition.
       setupCustomOutputs("filtered", controller.currentModel.filteredOutputs, interactive.filteredOutputs);
 
+      modelController.modelInDOM();
       // Call component callbacks *when* the layout is created.
       // Some callbacks require that their views are already attached to the DOM, e.g. (bar graph uses
       //getBBox() which in Firefox works only when element is visible and rendered).

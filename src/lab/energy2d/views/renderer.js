@@ -23,7 +23,9 @@ define(function(require) {
         webgl_status = new WebGLStatus(),
         $status = webgl_status.getHTMLElement(),
         $canvasCont = $("<div>"),
-        cavasCount = 0;
+        cavasCount = 0,
+
+        beforeSetup = true;
 
     function setAsNextLayer (view) {
       var $layer = view.getHTMLElement();
@@ -116,12 +118,21 @@ define(function(require) {
       },
 
       resize: function() {
+        // Ignore all resize() callbacks if view isn't already set up.
+        if (beforeSetup) return;
         api.update();
         parts_view.renderParts();
         thermometers_view.renderThermometers();
       },
 
       reset: function() {},
+
+      setup: function () {
+        createEnergy2DScene();
+        setVisOptions();
+        api.update();
+        beforeSetup = false;
+      },
 
       update: function () {
         heatmap_view.renderHeatmap();
@@ -148,15 +159,9 @@ define(function(require) {
           setVisOptions();
           api.update();
         });
-
-        createEnergy2DScene();
-        setVisOptions();
-
         model.on('tick.view-update', api.update);
         model.on('partsChanged.view-update', parts_view.renderParts);
         model.on('thermometersChanged.view-update', thermometers_view.renderThermometers);
-
-        api.update();
       }
     };
 

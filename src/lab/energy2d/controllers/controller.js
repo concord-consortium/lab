@@ -55,14 +55,18 @@ define(function (require) {
         return true;
       },
 
-      reload: function (newModelUrl, newModelOptions) {
+      reload: function (newModelUrl, newModelOptions, suppressEvents) {
         api.modelUrl = newModelUrl || api.modelUrl;
         modelOptions = newModelOptions || modelOptions;
 
         model = new Model(modelOptions);
         api.modelContainer.bindModel(model);
 
-        dispatch.modelLoaded();
+        if (!suppressEvents) dispatch.modelLoaded();
+      },
+
+      modelInDOM: function () {
+        api.modelContainer.setup();
       },
 
       state: function () {

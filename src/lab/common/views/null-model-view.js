@@ -13,6 +13,7 @@ define(function() {
       getHeightForWidth: function() { return 0; },
       resize: function() {},
       bindModel: function() {},
+      setup: function() {},
       update: function() {}
     };
   };

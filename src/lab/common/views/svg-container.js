@@ -536,6 +536,11 @@ define(function (require) {
 
         if (renderer.resize) renderer.resize();
       },
+
+      setup: function() {
+        if (renderer.setup) renderer.setup();
+      },
+
       update: function() {
         if (renderer.update) renderer.update();
       },
