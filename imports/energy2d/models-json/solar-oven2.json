@@ -87,10 +87,16 @@
       }
     ]
   },
-  "thermometers": [
+  "sensors": [
     {
       "x": 5.0,
-      "y": 5.80952
+      "y": 5.80952,
+      "type": "thermometer"
+    },
+    {
+      "x": 5.026455,
+      "y": 4.0608463,
+      "type": "anemometer"
     }
   ],
   "viewOptions": {

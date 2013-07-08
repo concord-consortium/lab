@@ -42,6 +42,38 @@
       "visible": false
     }
   },
+  "sensors": [
+    {
+      "label": "A1",
+      "x": 0.7407407,
+      "y": 0.27777767,
+      "type": "anemometer"
+    },
+    {
+      "label": "A2",
+      "x": 5.0,
+      "y": 5.0,
+      "type": "anemometer"
+    },
+    {
+      "label": "A3",
+      "x": 9.5,
+      "y": 5.0,
+      "type": "anemometer"
+    },
+    {
+      "label": "A4",
+      "x": 5.0,
+      "y": 9.5,
+      "type": "anemometer"
+    },
+    {
+      "label": "A5",
+      "x": 0.5,
+      "y": 5.0,
+      "type": "anemometer"
+    }
+  ],
   "viewOptions": {
     "snap_to_grid": true,
     "grid_size": 10,

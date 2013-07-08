@@ -194,18 +194,36 @@
       }
     ]
   },
-  "thermometers": [
+  "sensors": [
     {
       "x": 4.125,
-      "y": 7.683862
+      "y": 7.683862,
+      "type": "thermometer"
     },
     {
       "x": 5.058862,
-      "y": 3.9870362
+      "y": 3.9870362,
+      "type": "thermometer"
     },
     {
       "x": 6.125,
-      "y": 6.25
+      "y": 6.25,
+      "type": "thermometer"
+    },
+    {
+      "x": 5.05291,
+      "y": 5.542328,
+      "type": "anemometer"
+    },
+    {
+      "x": 2.7645502,
+      "y": 5.542328,
+      "type": "anemometer"
+    },
+    {
+      "x": 7.3280425,
+      "y": 5.5026455,
+      "type": "anemometer"
     }
   ],
   "viewOptions": {

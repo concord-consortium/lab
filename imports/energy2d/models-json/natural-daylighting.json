@@ -393,6 +393,9 @@
       }
     ]
   },
+  "sensors": [
+
+  ],
   "viewOptions": {
     "grid": true,
     "snap_to_grid": true,

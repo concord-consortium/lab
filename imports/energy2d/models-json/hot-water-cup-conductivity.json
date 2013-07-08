@@ -114,24 +114,28 @@
       }
     ]
   },
-  "thermometers": [
+  "sensors": [
     {
       "stencil": 9,
       "x": 2.0,
-      "y": 6.2
+      "y": 6.2,
+      "type": "thermometer"
     },
     {
       "stencil": 9,
       "x": 8.0,
-      "y": 6.2
+      "y": 6.2,
+      "type": "thermometer"
     },
     {
       "x": 8.0,
-      "y": 9.0
+      "y": 9.0,
+      "type": "thermometer"
     },
     {
       "x": 2.0,
-      "y": 9.0
+      "y": 9.0,
+      "type": "thermometer"
     }
   ],
   "viewOptions": {

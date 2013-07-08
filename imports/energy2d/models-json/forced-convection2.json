@@ -70,6 +70,20 @@
       }
     ]
   },
+  "sensors": [
+    {
+      "label": "A1",
+      "x": 0.07804233,
+      "y": 0.25,
+      "type": "anemometer"
+    },
+    {
+      "label": "A2",
+      "x": 0.34920636,
+      "y": 0.25,
+      "type": "anemometer"
+    }
+  ],
   "viewOptions": {
     "grid": true,
     "snap_to_grid": true,

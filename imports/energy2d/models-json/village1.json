@@ -761,36 +761,41 @@
       }
     ]
   },
-  "thermometers": [
+  "sensors": [
     {
       "uid": "T1",
       "label": "T1",
       "x": 3.1424582,
-      "y": 23.547485
+      "y": 23.547485,
+      "type": "thermometer"
     },
     {
       "uid": "T2",
       "label": "T2",
       "x": 7.2486033,
-      "y": 23.589386
+      "y": 23.589386,
+      "type": "thermometer"
     },
     {
       "uid": "T3",
       "label": "T3",
       "x": 3.1424582,
-      "y": 19.818436
+      "y": 19.818436,
+      "type": "thermometer"
     },
     {
       "uid": "T4",
       "label": "T4",
       "x": 6.9553075,
-      "y": 19.734636
+      "y": 19.734636,
+      "type": "thermometer"
     },
     {
       "uid": "T5",
       "label": "T5",
       "x": 13.7011175,
-      "y": 26.857542
+      "y": 26.857542,
+      "type": "thermometer"
     }
   ],
   "viewOptions": {

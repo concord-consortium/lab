@@ -148,6 +148,20 @@
       }
     ]
   },
+  "sensors": [
+    {
+      "label": "A1",
+      "x": 7.0,
+      "y": 2.5,
+      "type": "anemometer"
+    },
+    {
+      "label": "A2",
+      "x": 7.0,
+      "y": 7.5,
+      "type": "anemometer"
+    }
+  ],
   "viewOptions": {
     "snap_to_grid": true,
     "grid_size": 10,

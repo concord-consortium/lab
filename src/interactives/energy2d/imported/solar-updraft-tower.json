@@ -2,7 +2,7 @@
   "title": "Solar Updraft Tower",
   "publicationStatus": "draft",
   "subtitle": "A New Solar Power Technology",
-  "about": "The solar updraft tower is a clean energy power plant for generating electricity from the sun. Sunshine falling on a greenhouse collector structure around \nthe base of a tall chimney heats the air within it. The resulting convection causes air to rise up in the tower, driving wind turbines to produce electricity. \nIn December 2011, Hyperion Energy announced that it would build a solar updraft tower in Arizona that would rival the height of the tallest building in the world!\n\nRight-click these links to download the models:solar-updraft-tower.e2d,\nsolar-updraft-tower2.e2d,\nsolar-updraft-tower3.e2d",
+  "about": "The solar updraft tower is a clean energy power plant for generating electricity from the sun. Sunshine falling on a greenhouse collector structure around \nthe base of a tall chimney heats the air within it. The resulting convection causes air to rise up in the tower, driving wind turbines to produce electricity. \nIn December 2011, Hyperion Energy announced that it would build a solar updraft tower in Arizona that would rival the height of the tallest building in the world!\n\nRight-click these links to download the models: \nsolar-updraft-tower.e2d,\nsolar-updraft-tower2.e2d,\nsolar-updraft-tower3.e2d",
   "importedFrom": "imports/energy2d/content/solar-updraft-tower.html",
   "models": [
     {

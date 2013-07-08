@@ -111,11 +111,21 @@ xml_files.each do |xml_file_path|
 
   sensor = sensorFromModel || hash['state']['sensor']
 
-  # state
+  # sensors
+  final_hash['sensors'] = []
+
   if sensor && sensor['thermometer']
     t = sensor['thermometer']
     t = [t] if t.is_a?(Hash)
-    final_hash['thermometers'] = t
+    t.each {|x| x['type'] = 'thermometer' }
+    final_hash['sensors'].concat(t)
+  end
+
+  if sensor && sensor['anemometer']
+    t = sensor['anemometer']
+    t = [t] if t.is_a?(Hash)
+    t.each {|x| x['type'] = 'anemometer' }
+    final_hash['sensors'].concat(t)
   end
 
   # view options

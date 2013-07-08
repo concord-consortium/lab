@@ -90,6 +90,9 @@
       }
     ]
   },
+  "sensors": [
+
+  ],
   "viewOptions": {
     "snap_to_grid": true,
     "grid_size": 10,

@@ -52,6 +52,9 @@
       "label": "%thermal_conductivity"
     }
   },
+  "sensors": [
+
+  ],
   "viewOptions": {
     "grid_size": 10,
     "color_palette_type": 1,

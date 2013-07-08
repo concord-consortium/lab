@@ -2,7 +2,7 @@
   "title": "Trombe Wall",
   "publicationStatus": "draft",
   "subtitle": "An Air Convective Loop that Circulates Solar Energy",
-  "about": "A Trombe wall is a sun-facing wall separated from the outdoors by glass and an air space, which absorbs solar energy and releases it into the house through a \nconvective air loop. It consists a solar absorber (often painted black) and two vents for air to circulate and carry the solar heat. The following simulation\nshows this.\n\nRight-click these links to download the models:trombe-wall.e2d, trombe-wall-closeup.e2d",
+  "about": "A Trombe wall is a sun-facing wall separated from the outdoors by glass and an air space, which absorbs solar energy and releases it into the house through a \nconvective air loop. It consists a solar absorber (often painted black) and two vents for air to circulate and carry the solar heat. The following simulation\nshows this.\n\nRight-click these links to download the models:\ntrombe-wall.e2d, trombe-wall-closeup.e2d",
   "importedFrom": "imports/energy2d/content/trombe-wall.html",
   "models": [
     {

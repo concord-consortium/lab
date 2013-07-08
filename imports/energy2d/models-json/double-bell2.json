@@ -331,26 +331,30 @@
       }
     ]
   },
-  "thermometers": [
+  "sensors": [
     {
       "label": "T4",
       "x": 1.9,
-      "y": 1.4
+      "y": 1.4,
+      "type": "thermometer"
     },
     {
       "label": "T1",
       "x": 0.48,
-      "y": 0.96000004
+      "y": 0.96000004,
+      "type": "thermometer"
     },
     {
       "label": "T2",
       "x": 1.24,
-      "y": 0.96000004
+      "y": 0.96000004,
+      "type": "thermometer"
     },
     {
       "label": "T3",
       "x": 1.9,
-      "y": 0.37999997
+      "y": 0.37999997,
+      "type": "thermometer"
     }
   ],
   "viewOptions": {

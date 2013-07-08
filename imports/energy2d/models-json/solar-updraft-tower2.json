@@ -191,16 +191,36 @@
       }
     ]
   },
-  "thermometers": [
+  "sensors": [
     {
       "label": "T1",
       "x": 9.6,
-      "y": 7.6
+      "y": 7.6,
+      "type": "thermometer"
     },
     {
       "label": "T2",
       "x": 5.0,
-      "y": 6.500001
+      "y": 6.500001,
+      "type": "thermometer"
+    },
+    {
+      "label": "A1",
+      "x": 5.0,
+      "y": 4.9999976,
+      "type": "anemometer"
+    },
+    {
+      "label": "A3",
+      "x": 4.0,
+      "y": 7.6,
+      "type": "anemometer"
+    },
+    {
+      "label": "A2",
+      "x": 6.0,
+      "y": 7.6,
+      "type": "anemometer"
     }
   ],
   "viewOptions": {

@@ -20,6 +20,18 @@
     "type": "flux"
   },
   "structure": "\n",
+  "sensors": [
+    {
+      "x": 5.0132275,
+      "y": 6.4814816,
+      "type": "anemometer"
+    },
+    {
+      "x": 4.9867725,
+      "y": 3.5978837,
+      "type": "anemometer"
+    }
+  ],
   "viewOptions": {
     "grid_size": 10,
     "color_palette_type": 1,

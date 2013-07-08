@@ -117,6 +117,13 @@
       }
     ]
   },
+  "sensors": [
+    {
+      "x": 0.25,
+      "y": 0.25,
+      "type": "anemometer"
+    }
+  ],
   "viewOptions": {
     "grid": true,
     "snap_to_grid": true,

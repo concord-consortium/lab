@@ -37,6 +37,9 @@
       "constant_temperature": true
     }
   },
+  "sensors": [
+
+  ],
   "viewOptions": {
     "grid": true,
     "grid_size": 10,

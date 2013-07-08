@@ -82,20 +82,23 @@
       }
     ]
   },
-  "thermometers": [
+  "sensors": [
     {
       "uid": "CONTROL2",
       "x": 0.37301588,
-      "y": 0.3042328
+      "y": 0.3042328,
+      "type": "thermometer"
     },
     {
       "uid": "CONTROL1",
       "x": 0.14219576,
-      "y": 0.31084657
+      "y": 0.31084657,
+      "type": "thermometer"
     },
     {
       "x": 0.24933863,
-      "y": 0.14285713
+      "y": 0.14285713,
+      "type": "thermometer"
     }
   ],
   "viewOptions": {

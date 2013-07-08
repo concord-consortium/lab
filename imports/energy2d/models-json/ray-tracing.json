@@ -110,10 +110,11 @@
       }
     ]
   },
-  "thermometers": [
+  "sensors": [
     {
       "x": 5.0,
-      "y": 7.2999997
+      "y": 7.2999997,
+      "type": "thermometer"
     }
   ],
   "viewOptions": {

@@ -97,6 +97,13 @@
       }
     ]
   },
+  "sensors": [
+    {
+      "x": 5.026455,
+      "y": 7.5132275,
+      "type": "anemometer"
+    }
+  ],
   "viewOptions": {
     "grid_size": 10,
     "color_palette_type": 0,

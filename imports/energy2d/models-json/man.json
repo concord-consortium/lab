@@ -42,19 +42,22 @@
       "filled": false
     }
   },
-  "thermometers": [
+  "sensors": [
     {
       "x": 0.24867725,
-      "y": 0.47619048
+      "y": 0.47619048,
+      "type": "thermometer"
     },
     {
       "uid": "C1",
       "x": 1.0026455,
-      "y": 0.76719576
+      "y": 0.76719576,
+      "type": "thermometer"
     },
     {
       "x": 1.7751323,
-      "y": 0.52910054
+      "y": 0.52910054,
+      "type": "thermometer"
     }
   ],
   "viewOptions": {

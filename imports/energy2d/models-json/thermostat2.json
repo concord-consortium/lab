@@ -292,24 +292,27 @@
       }
     ]
   },
-  "thermometers": [
+  "sensors": [
     {
       "uid": "T2",
       "label": "T2",
       "x": 5.0,
-      "y": 6.0
+      "y": 6.0,
+      "type": "thermometer"
     },
     {
       "uid": "T1",
       "label": "T1",
       "x": 1.6141976,
-      "y": 6.0
+      "y": 6.0,
+      "type": "thermometer"
     },
     {
       "uid": "T3",
       "label": "T3",
       "x": 8.231482,
-      "y": 6.0
+      "y": 6.0,
+      "type": "thermometer"
     }
   ],
   "viewOptions": {

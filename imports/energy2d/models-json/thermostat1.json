@@ -284,12 +284,13 @@
       }
     ]
   },
-  "thermometers": [
+  "sensors": [
     {
       "uid": "T2",
       "label": "Thermostat",
       "x": 5.3908796,
-      "y": 5.9934855
+      "y": 5.9934855,
+      "type": "thermometer"
     }
   ],
   "viewOptions": {

@@ -54,10 +54,11 @@
       "label": "Ground"
     }
   },
-  "thermometers": [
+  "sensors": [
     {
       "x": 5.0,
-      "y": 7.0
+      "y": 7.0,
+      "type": "thermometer"
     }
   ],
   "viewOptions": {

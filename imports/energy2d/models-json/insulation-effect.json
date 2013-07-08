@@ -190,20 +190,23 @@
       }
     ]
   },
-  "thermometers": [
+  "sensors": [
     {
       "label": "T1",
       "x": 8.233334,
-      "y": 5.983333
+      "y": 5.983333,
+      "type": "thermometer"
     },
     {
       "label": "T2",
       "x": 1.65,
-      "y": 6.0
+      "y": 6.0,
+      "type": "thermometer"
     },
     {
       "x": 0.2,
-      "y": 6.0
+      "y": 6.0,
+      "type": "thermometer"
     }
   ],
   "viewOptions": {

@@ -38,14 +38,16 @@
       "constant_temperature": true
     }
   },
-  "thermometers": [
+  "sensors": [
     {
       "x": 4.866667,
-      "y": 3.25
+      "y": 3.25,
+      "type": "thermometer"
     },
     {
       "x": 4.9666667,
-      "y": 8.433333
+      "y": 8.433333,
+      "type": "thermometer"
     }
   ],
   "viewOptions": {

@@ -39,18 +39,31 @@
       "wind_speed": 0.1
     }
   },
-  "thermometers": [
+  "sensors": [
     {
       "x": 2.0,
-      "y": 5.0
+      "y": 5.0,
+      "type": "thermometer"
     },
     {
       "x": 4.0,
-      "y": 5.0
+      "y": 5.0,
+      "type": "thermometer"
     },
     {
       "x": 8.0,
-      "y": 5.0
+      "y": 5.0,
+      "type": "thermometer"
+    },
+    {
+      "x": 6.0449734,
+      "y": 4.94709,
+      "type": "anemometer"
+    },
+    {
+      "x": 1.1904762,
+      "y": 5.0132275,
+      "type": "anemometer"
     }
   ],
   "viewOptions": {

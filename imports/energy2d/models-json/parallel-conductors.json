@@ -175,30 +175,35 @@
       }
     ]
   },
-  "thermometers": [
+  "sensors": [
     {
       "x": 0.09,
-      "y": 0.047354493
+      "y": 0.047354493,
+      "type": "thermometer"
     },
     {
       "label": "T1",
       "x": 0.062,
-      "y": 0.029354502
+      "y": 0.029354502,
+      "type": "thermometer"
     },
     {
       "label": "T2",
       "x": 0.062,
-      "y": 0.040693115
+      "y": 0.040693115,
+      "type": "thermometer"
     },
     {
       "label": "T3",
       "x": 0.062,
-      "y": 0.052693114
+      "y": 0.052693114,
+      "type": "thermometer"
     },
     {
       "label": "T4",
       "x": 0.062000003,
-      "y": 0.06452647
+      "y": 0.06452647,
+      "type": "thermometer"
     }
   ],
   "viewOptions": {

@@ -2,7 +2,7 @@
   "title": "Solar Oven",
   "publicationStatus": "draft",
   "subtitle": "Focusing Sunlight to Cook Up Your Dinner",
-  "about": "Right-click these links to download the models:solar-oven.e2d,\nsolar-oven2.e2d",
+  "about": "Right-click these links to download the models:\nsolar-oven.e2d,\nsolar-oven2.e2d",
   "importedFrom": "imports/energy2d/content/solar-oven.html",
   "models": [
     {
