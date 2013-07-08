@@ -38,6 +38,7 @@ define(function () {
               .on("dragstart", function (d) {
                 var rx, ry;
                 if (d.draggable) {
+                  x = y = null;
                   rx = m2px.range();
                   ry = m2pxInv.range();
                   minX = Math.min(rx[0], rx[1]);
@@ -63,9 +64,11 @@ define(function () {
               })
               .on("dragend", function (d) {
                 if (d.draggable) {
-                  d.x = m2px.invert(x);
-                  d.y = m2pxInv.invert(y);
                   d3.select(this).style("opacity", 1);
+                  if (x !== null) { // no need to check 'y' too
+                    d.x = m2px.invert(x);
+                    d.y = m2pxInv.invert(y);
+                  }
                 }
               });
         }());
@@ -108,8 +111,8 @@ define(function () {
     }
     function polygonPathSpec(d) {
       var res = [],
-          x = d.x_coords,
-          y = d.y_coords,
+          x = d.raw_x_coords,
+          y = d.raw_y_coords,
           i, len;
       for (i = 0, len = x.length; i < len; i++) {
         res.push(m2px(x[i]));

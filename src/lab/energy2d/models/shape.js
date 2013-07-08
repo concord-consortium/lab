@@ -19,7 +19,7 @@ define(function (require, exports, module) {
 
   //
   // Line in 2D.
-  // 
+  //
   // It is defined by two points - (x1, y1) and (x2, y2).
   var Line = exports.Line = function (x1, y1, x2, y2) {
     this.x1 = x1;
@@ -67,9 +67,40 @@ define(function (require, exports, module) {
   // - contains(x, y)
   var Polygon = exports.Polygon = function (count, x_coords, y_coords) {
     this.count = count;
-    this.x_coords = x_coords;
-    this.y_coords = y_coords;
+    this.raw_x_coords = x_coords;
+    this.raw_y_coords = y_coords;
+    this.x_coords = new Array(count);
+    this.y_coords = new Array(count);
+    // x_coords and y_coors will be updated now:
+    this.x = 0;
+    this.y = 0;
   };
+
+  Object.defineProperty(Polygon.prototype, 'x', {
+    get: function() {
+      return this._x;
+    },
+    set: function(v) {
+      var i, len;
+      for (i = 0, len = this.count; i < len; i++) {
+        this.x_coords[i] = this.raw_x_coords[i] + v;
+      }
+      this._x = v;
+    }
+  });
+
+  Object.defineProperty(Polygon.prototype, 'y', {
+    get: function() {
+      return this._y;
+    },
+    set: function(v) {
+      var i, len;
+      for (i = 0, len = this.count; i < len; i++) {
+        this.y_coords[i] = this.raw_y_coords[i] + v;
+      }
+      this._y = v;
+    }
+  });
 
   Polygon.prototype.polygonize = function () {
     return this;

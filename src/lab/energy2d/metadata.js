@@ -206,10 +206,10 @@ define(function(require) {
       outer: {
         serialize: false
       },
-      x_coords: {
+      raw_x_coords: {
         serialize: false
       },
-      y_coords: {
+      raw_y_coords: {
         serialize: false
       },
 
