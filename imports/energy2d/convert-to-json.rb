@@ -8,12 +8,16 @@ require 'fileutils'
 require 'json'                       # http://flori.github.com/json/doc/index.html
 require 'active_support/core_ext'    # http://guides.rubyonrails.org/active_support_core_extensions.html
 require 'nokogiri'
+require 'kramdown'
 
 require 'script/setup.rb'
 
 e2d_models_path =         File.join(HERE, "models-xml")
 original_content_path =   File.join(HERE, "content")
-lab_interactives_path =   File.join(PROJECT_ROOT, "src", "interactives", "energy2d", "imported")
+original_content_htb_path =   File.join(HERE, "content-htb")
+lab_interactives_imported_path = File.join(PROJECT_ROOT, "src", "interactives", "energy2d", "imported")
+lab_interactives_imported_htb_path = File.join(PROJECT_ROOT, "src", "interactives", "energy2d", "imported-htb")
+
 models_dir =              "models-json"
 models_path =             File.join(HERE, models_dir)
 
@@ -28,9 +32,10 @@ lab_solar_angle_slider_template = JSON.load(File.read(File.join(HERE, "lab-solar
 # from a legacy Java Energy2D page
 #
 class E2dPage
-  attr_reader :e2d, :e2d_path, :path, :basename, :title, :tagline, :content, :sun_angle_slider
+  attr_reader :e2d, :e2d_path, :path, :htb, :basename, :title, :tagline, :content, :sun_angle_slider
   def initialize(path)
     @path = path.gsub(PROJECT_ROOT+"/", "")
+    @htb = @path[/content-htb/]
     @name = File.basename(@path)
     @doc = Nokogiri::HTML(File.read(@path))
     @applet = @doc.css('applet')
@@ -42,13 +47,26 @@ class E2dPage
     @e2d.gsub!(/;$/, '')
     @e2d_path = File.join(File.dirname(@path), @e2d)
     @basename = File.basename(@e2d).gsub(/\.e2d$/, '')
-    @title = @doc.css('a[id="cc-link"] + h1').text
-    @tagline = @doc.css('p[id="tagline"]').text
-    @content = @doc.css('div[id="content"] p').collect { |p| p.text }.join("\n")
-    @content.gsub!(/(Right-click to download this model|Download this model)/, "")
-    @content.gsub!(/\n\n/, "\n")
-    @content.strip!
-    @sun_angle_slider = @doc.css('div[id="sun-angle-slider"]').length > 0
+    if @htb
+      puts @path
+      @title = @doc.css('h1').first.text
+      if @doc.css('h2').first
+        @tagline = @doc.css('h2').first.text
+      end
+      td = @doc.css('table td')[0]
+      html_content = td.children[2..-1].to_html.strip
+      html_content.gsub!(/<font.*?>/, '')
+      html_content.gsub!(/<\/font.*?>/, '')
+      @content = Kramdown::Document.new(html_content, :input => 'html').to_kramdown
+    else
+      @title = @doc.css('a[id="cc-link"] + h1').text
+      @tagline = @doc.css('p[id="tagline"]').text
+      @content = @doc.css('div[id="content"] p').collect { |p| p.text }.join("\n")
+      @content.gsub!(/(Right-click to download this model|Download this model)/, "")
+      @content.gsub!(/\n\n/, "\n")
+      @content.strip!
+      @sun_angle_slider = @doc.css('div[id="sun-angle-slider"]').length > 0
+    end
   end
 end
 
@@ -59,6 +77,11 @@ end
 #
 e2d_pages = {}
 pages = Dir["#{original_content_path}/*.html"].collect {|path| E2dPage.new(path) }.find_all { |page| page.e2d }
+pages.each do |page|
+  e2d_pages[page.basename] = page
+end
+
+pages = Dir["#{original_content_htb_path}/*.html"].collect {|path| E2dPage.new(path) }.find_all { |page| page.e2d }
 pages.each do |page|
   e2d_pages[page.basename] = page
 end
@@ -156,6 +179,7 @@ xml_files.each do |xml_file_path|
   interactive = Marshal.load( Marshal.dump(lab_interactive_template))
   interactive["models"][0]["id"] = basename
   interactive["models"][0]["url"] = File.join("imports", "energy2d", models_dir, json_filename)
+  path = lab_interactives_imported_path
   if page
     interactive["title"] = page.title
     interactive["subtitle"] = page.tagline
@@ -166,6 +190,9 @@ xml_files.each do |xml_file_path|
     if page.sun_angle_slider
       interactive["components"] << lab_solar_angle_slider_template
     end
+    if page.htb
+      path = lab_interactives_imported_htb_path
+    end
   else
     interactive["title"] = capitalized_name
     interactive["subtitle"] = ""
@@ -174,7 +201,7 @@ xml_files.each do |xml_file_path|
     interactive.delete("importedFrom")
     interactive["models"][0]["importedFrom"] = xml_file_path.gsub(PROJECT_ROOT+"/", "")
   end
-  File.open("#{lab_interactives_path}/#{json_filename}", 'w') do |f|
+  File.open("#{path}/#{json_filename}", 'w') do |f|
     f.write(JSON.pretty_generate(interactive))
   end
 end

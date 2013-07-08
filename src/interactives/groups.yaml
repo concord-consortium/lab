@@ -159,15 +159,19 @@
   :category: Benchmarks
 
 - :path: solar-system
-  :name: "Solar System Interactives"
+  :name: "Solar System"
   :category: Tests
 
 - :path: energy2d/examples
-  :name: "Energy2D Interactives"
+  :name: "Energy2D"
+  :category: Tests
+
+- :path: energy2d/imported-htb
+  :name: "Energy2D: Heat Transfer (imported)"
   :category: Tests
 
 - :path: energy2d/imported
-  :name: "Energy2D Interactives (imported)"
+  :name: "Energy2D (imported)"
   :category: Tests
 
 - :path: external-projects/geniverse
