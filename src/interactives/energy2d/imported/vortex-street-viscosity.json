@@ -2,7 +2,7 @@
   "title": "Vortex Street",
   "publicationStatus": "draft",
   "subtitle": "The Effect of Viscosity",
-  "about": "This simulation shows that the formation of a vortex street depends on the viscosity of the fluid.",
+  "about": "This simulation shows that the formation of a vortex street depends on\nthe viscosity of the fluid.\n\n[Download this model](e2d/vortex-street-viscosity.e2d)\n{: align=\"center\"}",
   "importedFrom": "imports/energy2d/content/vortex-street-viscosity.html",
   "models": [
     {

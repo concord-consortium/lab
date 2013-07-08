@@ -1,0 +1,21 @@
+{
+  "title": "Conduction 3H: Build your own layered wall (Optional)",
+  "publicationStatus": "draft",
+  "subtitle": null,
+  "about": "",
+  "importedFrom": "imports/energy2d/content-htb/S3H.html",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "S3H1",
+      "url": "imports/energy2d/models-json/S3H1.json",
+      "importedFrom": "imports/energy2d/models-xml/S3H1.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

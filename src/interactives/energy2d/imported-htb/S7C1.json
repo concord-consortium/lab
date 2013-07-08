@@ -1,0 +1,21 @@
+{
+  "title": "Energy Detective 7C: Discover a vertical temperature gradient",
+  "publicationStatus": "draft",
+  "subtitle": null,
+  "about": "",
+  "importedFrom": "imports/energy2d/content-htb/S7C.html",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "S7C1",
+      "url": "imports/energy2d/models-json/S7C1.json",
+      "importedFrom": "imports/energy2d/models-xml/S7C1.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

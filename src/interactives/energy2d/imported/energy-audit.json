@@ -2,7 +2,7 @@
   "title": "Energy Audit",
   "publicationStatus": "draft",
   "subtitle": "Where does the House Lose Heat?",
-  "about": "Pretend that you were an energy audit whose job is to inspect the energy efficiency of someone's house. You are\ngiven two temperature data loggers (sensors that record temperature data over time). Your task is to identify where\nthe following model house loses most heat and recommend countermeasures.",
+  "about": "Pretend that you were an energy audit whose job is to inspect the energy\nefficiency of someone\\'s house. You are given two temperature data\nloggers (sensors that record temperature data over time). Your task is\nto identify where the following model house loses most heat and\nrecommend countermeasures.",
   "importedFrom": "imports/energy2d/content/energy-audit.html",
   "models": [
     {

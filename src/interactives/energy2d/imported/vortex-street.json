@@ -2,7 +2,7 @@
   "title": "Vortex Street",
   "publicationStatus": "draft",
   "subtitle": "The Effect of Obstacle Size",
-  "about": "The term vortex street (also known as von Kármán vortex street) is used in fluid dynamics to describe a repeating pattern of swirling vortices caused by \nthe unsteady separation of flow over obstacles. This simulation shows that the formation of a vortex street depends on the diameter of the obstacle.",
+  "about": "The term vortex street (also known as von Kármán vortex street) is used\nin fluid dynamics to describe a repeating pattern of swirling vortices\ncaused by the unsteady separation of flow over obstacles. This\nsimulation shows that the formation of a vortex street depends on the\ndiameter of the obstacle.",
   "importedFrom": "imports/energy2d/content/vortex-street.html",
   "models": [
     {

@@ -2,7 +2,7 @@
   "title": "A Metal Spoon vs. a Wood Spoon",
   "publicationStatus": "draft",
   "subtitle": "Which One Feels Hotter?",
-  "about": "Acknowledgement:Katie Armstrong created the models of the hand and the spoon in this simulation.",
+  "about": "",
   "importedFrom": "imports/energy2d/content/spoon.html",
   "models": [
     {

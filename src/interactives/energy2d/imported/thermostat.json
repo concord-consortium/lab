@@ -2,7 +2,7 @@
   "title": "How the Sun Affects a Thermostat",
   "publicationStatus": "draft",
   "subtitle": "How Much Energy Can be Saved for Heating When the Sun Shines?",
-  "about": "A thermostat is a controller that maintains a system's temperature near a fixed point. \nThe simplest thermostat does this by switching a heater or AC on and off to maintain the desired temperature. \nThe following model simulates a thermostat that uses a temperature sensor to control a heater. Turn on the temperature graph.\nLet the simulation run for a few cycles and then turn on the sunlight. Compare the behavior of the temperature graph. You\ncan also try to move the temperature sensor to examine how the on/off time of the thermostat depends on its location.",
+  "about": "A thermostat is a controller that maintains a system\\'s temperature near\na fixed point. The simplest thermostat does this by switching a heater\nor AC on and off to maintain the desired temperature. The following\nmodel simulates a thermostat that uses a temperature sensor to control a\nheater. Turn on the temperature graph. Let the simulation run for a few\ncycles and then turn on the sunlight. Compare the behavior of the\ntemperature graph. You can also try to move the temperature sensor to\nexamine how the on/off time of the thermostat depends on its location.",
   "importedFrom": "imports/energy2d/content/thermostat.html",
   "models": [
     {

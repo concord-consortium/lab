@@ -2,7 +2,7 @@
   "title": "Skylight",
   "publicationStatus": "draft",
   "subtitle": "Heat from the Sun",
-  "about": "Note: Convection is not considered in the above model.",
+  "about": "Note: Convection is not considered in the above model.   \n{: style=\"clear: both;\"}",
   "importedFrom": "imports/energy2d/content/skylight.html",
   "models": [
     {

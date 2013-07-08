@@ -2,7 +2,7 @@
   "title": "Mantle Convection",
   "publicationStatus": "draft",
   "subtitle": "Moving Heat from Earth's Core to the Surface",
-  "about": "Mantle convection is the slow creeping motion of Earth's rocky mantle caused by convection currents carrying heat from the interior of the Earth to the surface.",
+  "about": "Mantle convection is the slow creeping motion of Earth\\'s rocky mantle\ncaused by convection currents carrying heat from the interior of the\nEarth to the surface.",
   "importedFrom": "imports/energy2d/content/mantle.html",
   "models": [
     {

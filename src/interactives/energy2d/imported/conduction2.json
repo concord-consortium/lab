@@ -2,7 +2,7 @@
   "title": "Conduction",
   "publicationStatus": "draft",
   "subtitle": "How does Conducting Area Affect Conduction Rate?",
-  "about": "The following model compares heat conduction through two test pieces made of identical material but their conducting areas\nare different.",
+  "about": "The following model compares heat conduction through two test pieces\nmade of identical material but their conducting areas are different.",
   "importedFrom": "imports/energy2d/content/conduction-area.html",
   "models": [
     {

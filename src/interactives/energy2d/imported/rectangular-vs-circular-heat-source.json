@@ -2,7 +2,7 @@
   "title": "Rectangular vs. Round Heat Source",
   "publicationStatus": "draft",
   "subtitle": "Why does Temperature Drop Faster near a Round Heat Source?",
-  "about": "A rectangular heat source (that is almost as long as the edge of the upper compartment) \nand a round heat source are both at 80°C. At the left side there are two heat sinks set at 20°C.\nThe entire boundary is insulative.\nThe heat flux vectors (the rates of heat flow at given locations) appear\nto be much greater near the round heat source than near the rectangular one, indicating that\ntemperature drops faster in the former case. The heat flux field in the case of the rectangular heat\nsource appears to be uniform, with the temperature drops one degree at approximately the same distance away from the heat source.\nCan you figure out why there is such a difference? (Hint: Think about conservation of energy during heat flow.)",
+  "about": "A rectangular heat source (that is almost as long as the edge of the\nupper compartment) and a round heat source are both at 80°C. At the left\nside there are two heat sinks set at 20°C. The entire boundary is\ninsulative. The heat flux vectors (the rates of heat flow at given\nlocations) appear to be much greater near the round heat source than\nnear the rectangular one, indicating that temperature drops faster in\nthe former case. The heat flux field in the case of the rectangular heat\nsource appears to be uniform, with the temperature drops one degree at\napproximately the same distance away from the heat source. Can you\nfigure out why there is such a difference? (Hint: Think about\nconservation of energy during heat flow.)",
   "importedFrom": "imports/energy2d/content/rectangular-vs-circular-heat-source.html",
   "models": [
     {

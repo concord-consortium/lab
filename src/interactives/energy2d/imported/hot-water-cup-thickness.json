@@ -2,7 +2,7 @@
   "title": "Energy Loss from Hot Water",
   "publicationStatus": "draft",
   "subtitle": "The Effect of the Cover Thickness",
-  "about": "This model simulates the heat losses from two cups of hot water covered by two sheets of identical materials that have\ndifferent thickness. Only a part of the cups is modeled. Convection in water is not considered.",
+  "about": "This model simulates the heat losses from two cups of hot water covered\nby two sheets of identical materials that have different thickness. Only\na part of the cups is modeled. Convection in water is not considered.",
   "importedFrom": "imports/energy2d/content/hot-water-cup-thickness.html",
   "models": [
     {

@@ -1,0 +1,21 @@
+{
+  "title": "Energy Detective 7A: A well-insulated house vs. a poorly-insulated house",
+  "publicationStatus": "draft",
+  "subtitle": null,
+  "about": "",
+  "importedFrom": "imports/energy2d/content-htb/S7A.html",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "S7A1",
+      "url": "imports/energy2d/models-json/S7A1.json",
+      "importedFrom": "imports/energy2d/models-xml/S7A1.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

@@ -2,7 +2,7 @@
   "title": "Exploring Forced Convection",
   "publicationStatus": "draft",
   "subtitle": "Heat Flow Rates with Different Temperatures and Speeds",
-  "about": "The following model shows how forced convection depends on the wind speed and the temperature of the hot/cold source\n(how the wind blows away heat of your food or defrost the side windows of your car).",
+  "about": "The following model shows how forced convection depends on the wind\nspeed and the temperature of the hot/cold source (how the wind blows\naway heat of your food or defrost the side windows of your car).",
   "importedFrom": "imports/energy2d/content/forced-convection1.html",
   "models": [
     {
