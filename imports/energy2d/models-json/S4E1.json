@@ -1,0 +1,278 @@
+{
+  "type": "energy2d",
+  "timeStep": 0.1,
+  "measurement_interval": 100,
+  "viewupdate_interval": 10,
+  "sun_angle": 1.5707964,
+  "solar_power_density": 2000.0,
+  "solar_ray_count": 24,
+  "solar_ray_speed": 0.1,
+  "photon_emission_interval": 20,
+  "background_conductivity": 1.0,
+  "background_density": 1.0,
+  "background_specific_heat": 1000.0,
+  "background_viscosity": 2.0E-4,
+  "thermal_buoyancy": 1.0E-4,
+  "buoyancy_approximation": 0,
+  "boundary": {
+    "upper": 0.0,
+    "lower": 0.0,
+    "left": 0.0,
+    "right": 0.0,
+    "type": "temperature"
+  },
+  "structure": {
+    "part": [
+      {
+        "rectangle": {
+          "x": 0.5166665,
+          "y": 0.68333364,
+          "width": 0.183333,
+          "height": 7.683333
+        },
+        "thermal_conductivity": 0.08,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 0.0,
+        "constant_temperature": false,
+        "wind_speed": 0.05,
+        "uid": "fan",
+        "visible": false,
+        "draggable": false
+      },
+      {
+        "rectangle": {
+          "x": 0.0,
+          "y": 8.3,
+          "width": 10.0,
+          "height": 1.6
+        },
+        "thermal_conductivity": 0.0010,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 0.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": "-7f7f80",
+          "texture_bg": "-cccccd",
+          "texture_style": 10,
+          "texture_width": 8,
+          "texture_height": 8
+        },
+        "label": "Ground",
+        "draggable": false
+      },
+      {
+        "rectangle": {
+          "x": 1.925,
+          "y": 6.4,
+          "width": 0.4,
+          "height": 2.0
+        },
+        "thermal_conductivity": 1.0,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 0.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 12,
+          "texture_width": 12,
+          "texture_height": 12
+        },
+        "label": "Wall"
+      },
+      {
+        "rectangle": {
+          "x": 7.425,
+          "y": 6.4,
+          "width": 0.4,
+          "height": 2.0
+        },
+        "thermal_conductivity": 1.0,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 0.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 12,
+          "texture_width": 12,
+          "texture_height": 12
+        },
+        "label": "Wall"
+      },
+      {
+        "rectangle": {
+          "x": 1.6999998,
+          "y": 2.55,
+          "width": 6.3,
+          "height": 0.4
+        },
+        "thermal_conductivity": 5.0,
+        "specific_heat": 100.0,
+        "density": 1.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 0.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 7,
+          "texture_width": 4,
+          "texture_height": 4
+        },
+        "label": "Roof"
+      },
+      {
+        "rectangle": {
+          "x": 1.925,
+          "y": 3.000001,
+          "width": 0.4,
+          "height": 1.0
+        },
+        "thermal_conductivity": 1.0,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 0.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 12,
+          "texture_width": 12,
+          "texture_height": 12
+        }
+      },
+      {
+        "rectangle": {
+          "x": 7.425,
+          "y": 3.0,
+          "width": 0.4,
+          "height": 1.0
+        },
+        "thermal_conductivity": 1.0,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 0.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 12,
+          "texture_width": 12,
+          "texture_height": 12
+        }
+      },
+      {
+        "rectangle": {
+          "x": 3.1333332,
+          "y": 7.883333,
+          "width": 3.466667,
+          "height": 0.366667
+        },
+        "thermal_conductivity": 1.0,
+        "specific_heat": 1000.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 50.0,
+        "constant_temperature": true,
+        "label": "Heating board"
+      },
+      {
+        "rectangle": {
+          "x": 2.1000001,
+          "y": 3.9499998,
+          "width": 0.1,
+          "height": 2.5
+        },
+        "thermal_conductivity": 0.01,
+        "specific_heat": 1000.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 0.0,
+        "constant_temperature": false,
+        "uid": "left_window",
+        "color": "ccccff",
+        "label": "Window"
+      },
+      {
+        "rectangle": {
+          "x": 7.5499997,
+          "y": 3.9499998,
+          "width": 0.1,
+          "height": 2.5
+        },
+        "thermal_conductivity": 0.01,
+        "specific_heat": 1000.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 0.0,
+        "constant_temperature": false,
+        "uid": "right_window",
+        "color": "ccccff",
+        "label": "Window"
+      }
+    ]
+  },
+  "sensors": [
+
+  ],
+  "viewOptions": {
+    "grid_size": 10,
+    "rainbow_x": 0.0,
+    "rainbow_y": 0.0,
+    "rainbow_w": 0.0,
+    "rainbow_h": 0.0,
+    "minimum_temperature": 0.0,
+    "maximum_temperature": 50.0,
+    "velocity": true,
+    "text": {
+      "string": "Wind >>>",
+      "name": "Arial",
+      "size": 14,
+      "style": 0,
+      "color": "ffffff",
+      "x": 1.0,
+      "y": 9.0
+    }
+  }
+}

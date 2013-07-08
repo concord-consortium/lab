@@ -1,0 +1,221 @@
+{
+  "type": "energy2d",
+  "model_width": 0.1,
+  "model_height": 0.1,
+  "timeStep": 0.1,
+  "measurement_interval": 100,
+  "viewupdate_interval": 10,
+  "sun_angle": 1.5707964,
+  "solar_power_density": 2000.0,
+  "solar_ray_count": 24,
+  "solar_ray_speed": 0.1,
+  "photon_emission_interval": 20,
+  "z_heat_diffusivity": 0.0,
+  "convective": false,
+  "background_conductivity": 1.0E-9,
+  "thermal_buoyancy": 2.5E-4,
+  "buoyancy_approximation": 1,
+  "boundary": {
+    "upper": 0.0,
+    "lower": 0.0,
+    "left": 0.0,
+    "right": 0.0,
+    "type": "flux"
+  },
+  "structure": {
+    "part": [
+      {
+        "rectangle": {
+          "x": 0.0,
+          "y": 0.009,
+          "width": 0.02,
+          "height": 0.08
+        },
+        "thermal_conductivity": 0.08,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 50.0,
+        "constant_temperature": true,
+        "filled": false,
+        "label": "%temperature",
+        "draggable": false
+      },
+      {
+        "rectangle": {
+          "x": 0.080000006,
+          "y": 0.009,
+          "width": 0.02,
+          "height": 0.08
+        },
+        "thermal_conductivity": 0.08,
+        "specific_heat": 1300.0,
+        "density": 25.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 0.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 16,
+          "texture_width": 12,
+          "texture_height": 12
+        },
+        "filled": false,
+        "draggable": false
+      },
+      {
+        "rectangle": {
+          "x": 0.020000001,
+          "y": 0.014999999,
+          "width": 0.06,
+          "height": 0.01
+        },
+        "thermal_conductivity": 40.0,
+        "specific_heat": 450.0,
+        "density": 7900.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 0.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 9,
+          "texture_width": 12,
+          "texture_height": 12
+        },
+        "filled": false,
+        "label": "Metal",
+        "draggable": false
+      },
+      {
+        "rectangle": {
+          "x": 0.020000001,
+          "y": 0.035000004,
+          "width": 0.06,
+          "height": 0.01
+        },
+        "thermal_conductivity": 1.7,
+        "specific_heat": 750.0,
+        "density": 2400.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 0.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 9,
+          "texture_width": 12,
+          "texture_height": 12
+        },
+        "filled": false,
+        "label": "Stone",
+        "draggable": false
+      },
+      {
+        "rectangle": {
+          "x": 0.020000001,
+          "y": 0.055,
+          "width": 0.06,
+          "height": 0.01
+        },
+        "thermal_conductivity": 0.03,
+        "specific_heat": 1300.0,
+        "density": 100.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 0.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 9,
+          "texture_width": 12,
+          "texture_height": 12
+        },
+        "filled": false,
+        "label": "Fiberglass",
+        "draggable": false
+      },
+      {
+        "rectangle": {
+          "x": 0.020000001,
+          "y": 0.075000025,
+          "width": 0.06,
+          "height": 0.01
+        },
+        "thermal_conductivity": 0.12,
+        "specific_heat": 1400.0,
+        "density": 500.0,
+        "transmission": 0.0,
+        "reflection": 0.0,
+        "absorption": 1.0,
+        "emissivity": 0.0,
+        "temperature": 0.0,
+        "constant_temperature": false,
+        "texture": {
+          "texture_fg": -1000000,
+          "texture_bg": "-7f7f80",
+          "texture_style": 9,
+          "texture_width": 12,
+          "texture_height": 12
+        },
+        "filled": false,
+        "label": "Wood",
+        "draggable": false
+      }
+    ]
+  },
+  "sensors": [
+    {
+      "label": "T3",
+      "x": 0.04,
+      "y": 0.060000002,
+      "type": "thermometer"
+    },
+    {
+      "label": "T4",
+      "x": 0.04,
+      "y": 0.08,
+      "type": "thermometer"
+    },
+    {
+      "label": "T1",
+      "x": 0.04,
+      "y": 0.020000003,
+      "type": "thermometer"
+    },
+    {
+      "label": "T2",
+      "x": 0.04,
+      "y": 0.040000003,
+      "type": "thermometer"
+    }
+  ],
+  "viewOptions": {
+    "grid": true,
+    "grid_size": 10,
+    "color_palette_type": 0,
+    "color_palette_x": 0.0,
+    "color_palette_y": 0.0,
+    "color_palette_w": 0.0,
+    "color_palette_h": 0.0,
+    "minimum_temperature": 0.0,
+    "maximum_temperature": 100.0,
+    "clock": false
+  }
+}
