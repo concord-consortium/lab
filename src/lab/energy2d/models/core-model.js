@@ -306,6 +306,12 @@ define(function (require, exports) {
         }
       },
 
+      getVorticityAt = function (i, j) {
+        var du_dy = (u[i * ny + j + 1] - u[i * ny + j - 1]) / delta_x,
+            dv_dx = (v[(i + 1) * ny + j] - v[(i - 1) * ny + j]) / delta_y;
+        return 0.5 * (du_dy - dv_dx);
+      },
+
       //
       // Public API
       //
@@ -526,6 +532,27 @@ define(function (require, exports) {
           if (i >= 0 && j >= 0) {
             t[i * ny + j] += increment;
           }
+        },
+
+        getVorticityAt: function (x, y) {
+          var i = Math.max(Math.min(nx - 1, Math.round(x / delta_x)), 0),
+              j = Math.max(Math.min(ny - 1, Math.round(y / delta_y)), 0);
+          return getVorticityAt(i, j);
+        },
+
+        getAverageVorticityAt: function (x, y) {
+          var i = Math.max(Math.min(nx - 1, Math.round(x / delta_x)), 0),
+              j = Math.max(Math.min(ny - 1, Math.round(y / delta_y)), 0),
+              vor = getVorticityAt(i, j);
+          vor += getVorticityAt(i - 1, j);
+          vor += getVorticityAt(i + 1, j);
+          vor += getVorticityAt(i, j - 1);
+          vor += getVorticityAt(i, j + 1);
+          vor += getVorticityAt(i - 1, j - 1);
+          vor += getVorticityAt(i - 1, j + 1);
+          vor += getVorticityAt(i + 1, j - 1);
+          vor += getVorticityAt(i + 1, j + 1);
+          return vor / 9;
         },
 
         addPhoton: function (photon) {
