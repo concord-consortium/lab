@@ -2,7 +2,7 @@
   "title": "Rocket Stove",
   "publicationStatus": "draft",
   "subtitle": "Barrel (Designed by Martin Karl Waldenburg, Germany)",
-  "about": "A [rocket stove][1] mass heater is an innovative and efficient space\nheating system. The following simulation is a barrel model designed by\nMartin Karl Waldenburg from Germany. The volume reduction of the fluid\ndue to the heat loss by the barrel causes an under pressure like a tall\nchimney.\n\n\n\n[1]: http://en.wikipedia.org/wiki/Rocket_stove",
+  "about": "A [rocket stove][1] mass heater is an innovative and efficient space\nheating system. The following simulation is a barrel model designed by\nMartin Karl Waldenburg from Germany. The volume reduction of the fluid\ndue to the heat loss by the barrel causes an under pressure like a tall\nchimney.\n\n\n\n[1]: http://en.wikipedia.org/wiki/Rocket_stove\n",
   "importedFrom": "imports/energy2d/content/barrel.html",
   "models": [
     {

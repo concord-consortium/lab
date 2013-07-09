@@ -2,7 +2,7 @@
   "title": "Solar Radiation",
   "publicationStatus": "draft",
   "subtitle": "Heat from the Sun",
-  "about": "Note: Convection is not considered in the above model.   \n{: style=\"clear: both;\"}",
+  "about": "Note: Convection is not considered in the above model.   \n{: style=\"clear: both;\"}\n\n",
   "importedFrom": "imports/energy2d/content/solar-radiation.html",
   "models": [
     {

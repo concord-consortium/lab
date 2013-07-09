@@ -2,7 +2,7 @@
   "title": "The Effect of Convection",
   "publicationStatus": "draft",
   "subtitle": "Discover a Vertical Temperature Gradient in a House",
-  "about": "This simulation shows there exists a vertical temperature gradient in a\nhouse caused by natural thermal convection.",
+  "about": "This simulation shows there exists a vertical temperature gradient in a\nhouse caused by natural thermal convection.\n\n",
   "importedFrom": "imports/energy2d/content/vertical-temperature-gradient-in-house.html",
   "models": [
     {

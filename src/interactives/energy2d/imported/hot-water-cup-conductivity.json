@@ -2,7 +2,7 @@
   "title": "Energy Loss from Hot Water",
   "publicationStatus": "draft",
   "subtitle": "The Effect of Thermal Conductivity of the Cover",
-  "about": "This model simulates the heat losses from two cups of hot water covered\nby two sheets of materials that have different thermal conductivities.\nOnly a part of the cups is modeled. Convection in water is not\nconsidered.",
+  "about": "This model simulates the heat losses from two cups of hot water covered\nby two sheets of materials that have different thermal conductivities.\nOnly a part of the cups is modeled. Convection in water is not\nconsidered.\n\n",
   "importedFrom": "imports/energy2d/content/hot-water-cup-conductivity.html",
   "models": [
     {

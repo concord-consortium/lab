@@ -2,7 +2,7 @@
   "title": "The Effect of Insulation",
   "publicationStatus": "draft",
   "subtitle": "Which House is More Energy-Efficient?",
-  "about": "This simulation shows the effect of insulation in warming or cooling a\nhouse. The environment temperature is set to be 20 °C. Which house is\nmore energy-efficient, House A or House B?",
+  "about": "This simulation shows the effect of insulation in warming or cooling a\nhouse. The environment temperature is set to be 20 °C. Which house is\nmore energy-efficient, House A or House B?\n\n",
   "importedFrom": "imports/energy2d/content/insulation-effect.html",
   "models": [
     {

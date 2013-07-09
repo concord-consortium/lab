@@ -2,7 +2,7 @@
   "title": "Test Links",
   "publicationStatus": "draft",
   "subtitle": "Multiple Simulations Can Be Linked Together in Energy2D",
-  "about": "To support the full screen mode, Energy2D provides a small control panel\non which you can define links to the previous simulation and the next\nsimulation. With this functionality, you can load a new simulation into\nEnergy2D without leaving the page and provide a sequence of linked\nsimulations that are related to a topic.",
+  "about": "To support the full screen mode, Energy2D provides a small control panel\non which you can define links to the previous simulation and the next\nsimulation. With this functionality, you can load a new simulation into\nEnergy2D without leaving the page and provide a sequence of linked\nsimulations that are related to a topic.\n\n",
   "importedFrom": "imports/energy2d/content/linktest.html",
   "models": [
     {
