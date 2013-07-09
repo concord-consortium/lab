@@ -27,131 +27,156 @@ def delete_css
   command("find public \! -path 'public/vendor*' -name '*.css' | xargs rm -f")
 end
 
-guard 'sass', :input => 'src/examples', :output => 'public/examples', :all_on_start => false, :load_paths => ['src']
-guard 'sass', :input => 'src/doc',      :output => 'public/doc',      :all_on_start => false, :load_paths => ['src']
+group :build do
 
-require "./src/helpers/sass/lab_fontface.rb"
+  guard 'sass', :input => 'src/examples', :output => 'public/examples', :all_on_start => false, :load_paths => ['src']
+  guard 'sass', :input => 'src/doc',      :output => 'public/doc',      :all_on_start => false, :load_paths => ['src']
 
-guard 'coffeescript', :input => 'src/examples', :output => 'public/examples', :all_on_start => false
-guard 'coffeescript', :input => 'src/doc',      :output => 'public/doc', :all_on_start => false
+  require "./src/helpers/sass/lab_fontface.rb"
 
-guard 'haml',         :input => 'src', :output => 'public', :all_on_start => false do
-  watch %r{^src.+(\.html\.haml)}
-end
+  guard 'coffeescript', :input => 'src/examples', :output => 'public/examples', :all_on_start => false
+  guard 'coffeescript', :input => 'src/doc',      :output => 'public/doc', :all_on_start => false
 
-guard 'haml',         :input => 'test', :output => 'test', :all_on_start => false do
-  watch %r{^test.+(\.html\.haml)}
-end
-
-guard 'shell' do
-
-  watch(/(script\/(generate.*|setup.rb))|(config\/config\.yml)/) do |match|
-    puts "re-generating version and config information ..."
-    delete_css
-    command("make")
+  guard 'haml',         :input => 'src', :output => 'public', :all_on_start => false do
+    watch %r{^src.+(\.html\.haml)}
   end
 
-  watch(/(^src\/lab\/.+)|(^src\/modules\/.+)/) do |match|
-    file = match[0]
-    unless file =~ /(lab.config.js)|(lab.version.js)/
-      puts "***" + file
-      puts "re-generating javascript libraries and css resources for these libraries ..."
-      command("make src")
-      command("make test-src")
-    end
+  guard 'haml',         :input => 'test', :output => 'test', :all_on_start => false do
+    watch %r{^test.+(\.html\.haml)}
   end
 
-  watch(/(^src\/helpers\/.+)/) do |match|
-    file = match[0]
-    case match[0]
-    when /\/md2d\/mml-parser/
-      if system("./node_modules/.bin/vows --isolate test/vows/mml-conversions/conversion-test.js")
-        puts "*** mml conversion tests passed, mml conversions started ..."
-        command("make convert-all-mml")
-      else
-        puts "*** error running mml conversion tests, mml conversions not started."
-      end
-    when /\/md2d\/(mw-batch-converter.+)|(post-batch-processor.+)/
-      command("make convert-mml")
-    else
-      puts "***" + file
-      puts "re-generating javascript libraries and css resources for these libraries ..."
-      command("make src")
-      command("make test-src")
-    end
-  end
+  guard 'shell' do
 
-  watch(/^imports\/.+/) do |match|
-    command("make public/imports")
-  end
-
-  watch(/^src\/(.+)\.sass$/) do |match|
-    path = match[1]
-    puts path
-    if path =~ /^sass\//
+    watch(/(script\/(generate.*|setup.rb))|(config\/config\.yml)/) do |match|
+      puts "re-generating version and config information ..."
       delete_css
       command("make")
-    else
-      command("bin/sass -I src --require ./src/helpers/sass/lab_fontface.rb src/#{path}.sass public/#{path}.css")
     end
-  end
 
-  watch "src/readme.scss" do
-    command("make")
-  end
+    watch(/(^src\/lab\/.+)|(^src\/modules\/.+)/) do |match|
+      file = match[0]
+      unless file =~ /(lab.config.js)|(lab.version.js)/
+        puts "***" + file
+        puts "re-generating javascript libraries and css resources for these libraries ..."
+        command("make src")
+      end
+    end
 
-  watch(/(^src\/doc\/.+)/) do |match|
-    puts "running make because of change to src/doc file #{match[0]}"
-    command("make")
-  end
+    watch(/(^src\/helpers\/.+)/) do |match|
+      file = match[0]
+      case match[0]
+      when /\/md2d\/mml-parser/
+        if system("./node_modules/.bin/vows --isolate test/vows/mml-conversions/conversion-test.js")
+          puts "*** mml conversion tests passed, mml conversions started ..."
+          command("make convert-all-mml")
+        else
+          puts "*** error running mml conversion tests, mml conversions not started."
+        end
+      when /\/md2d\/(mw-batch-converter.+)|(post-batch-processor.+)/
+        command("make convert-mml")
+      else
+        puts "***" + file
+        puts "re-generating javascript libraries and css resources for these libraries ..."
+        command("make src")
+      end
+    end
 
-  watch(/(^test\/vows\/.+\.js)$/) do |match|
-    command("./node_modules/.bin/vows --isolate --no-color #{match[0]}")
-  end
+    watch(/^imports\/.+/) do |match|
+      command("make public/imports")
+    end
 
-  watch(/^test\/vows\/mml-conversions\/(input-mml|expected-json)\/.+/) do
-    command("./node_modules/.bin/vows --no-color test/vows/mml-conversions/conversion-test.js")
-  end
+    watch(/^src\/(.+)\.sass$/) do |match|
+      path = match[1]
+      puts path
+      if path =~ /^sass\//
+        delete_css
+        command("make")
+      else
+        command("bin/sass -I src --require ./src/helpers/sass/lab_fontface.rb src/#{path}.sass public/#{path}.css")
+      end
+    end
 
-  watch(/(^test\/mocha\/.+)/) do |match|
-    command("./node_modules/.bin/mocha #{match[0]}")
-  end
+    watch "src/readme.scss" do
+      command("make")
+    end
 
-  watch(/(^src\/(?!sass).+)$/) do |match|
-    unless match[0][/(\.haml)|(\.sass)|(\.scss)|(\.coffee)(\.yaml)|(^\..+)$/]
-      puts match[0]
+    watch(/(^src\/doc\/.+)/) do |match|
+      puts "running make because of change to src/doc file #{match[0]}"
+      command("make")
+    end
+
+    watch(/(^test\/vows\/.+\.js)$/) do |match|
+      command("./node_modules/.bin/vows --isolate --no-color #{match[0]}")
+    end
+
+    watch(/^test\/vows\/mml-conversions\/(input-mml|expected-json)\/.+/) do
+      command("./node_modules/.bin/vows --no-color test/vows/mml-conversions/conversion-test.js")
+    end
+
+    watch(/(^test\/mocha\/.+)/) do |match|
+      command("./node_modules/.bin/mocha #{match[0]}")
+    end
+
+    watch(/(^src\/(?!sass).+)$/) do |match|
+      unless match[0][/(\.haml)|(\.sass)|(\.scss)|(\.coffee)(\.yaml)|(^\..+)$/]
+        puts match[0]
+        source_path = match[0]
+        destination_path = 'public/' + source_path[/src\/(.+?)$/, 1]
+        destination_dir = destination_path[/(^.*)\//, 1]
+        command("mkdir -p #{destination_dir}")
+        command("cp -f #{source_path} #{destination_path}")
+        command("ruby src/helpers/process-interactives.rb")
+      end
+    end
+
+    watch(/^(src\/resources\/[^.].+)$/) do |match|
       source_path = match[0]
       destination_path = 'public/' + source_path[/src\/(.+?)$/, 1]
-      destination_dir = destination_path[/(^.*)\//, 1]
-      command("mkdir -p #{destination_dir}")
       command("cp -f #{source_path} #{destination_path}")
-      command("ruby src/helpers/process-interactives.rb")
+    end
+
+    watch(/^src\/(experiments\/.+)$/) do |match|
+      source_path = match[0]
+      destination_path = "public/#{match[1]}"
+      command("cp -f #{source_path} #{destination_path}")
     end
   end
 
-  watch(/^(src\/resources\/[^.].+)$/) do |match|
-    source_path = match[0]
-    destination_path = 'public/' + source_path[/src\/(.+?)$/, 1]
-    command("cp -f #{source_path} #{destination_path}")
+  # , :api_version => '1.6', :port => '35728'
+  guard 'livereload' do
+    watch(/^(server\/public\/).+\.(css|js|html)/)
   end
 
-  watch(/^src\/(experiments\/.+)$/) do |match|
-    source_path = match[0]
-    destination_path = "public/#{match[1]}"
-    command("cp -f #{source_path} #{destination_path}")
+  guard 'markdown', :kram_ops => { :toc_levels => [2,3,4,5] } do
+    watch "readme.md" do |m|
+      "readme.md|public/readme.html|src/layouts/readme.html.erb"
+    end
+    watch "license.md" do |m|
+      "license.md|public/license.html|src/layouts/license.html.erb"
+    end
   end
 end
 
-# , :api_version => '1.6', :port => '35728'
-guard 'livereload' do
-  watch(/^(server\/public\/).+\.(css|js|html)/)
-end
+group :test do
 
-guard 'markdown', :kram_ops => { :toc_levels => [2,3,4,5] } do
-  watch "readme.md" do |m|
-    "readme.md|public/readme.html|src/layouts/readme.html.erb"
-  end
-  watch "license.md" do |m|
-    "license.md|public/license.html|src/layouts/license.html.erb"
+  guard 'shell' do
+
+    watch(/(^src\/lab\/.+)|(^src\/modules\/.+)/) do |match|
+      file = match[0]
+      unless file =~ /(lab.config.js)|(lab.version.js)/
+        command("make test-src")
+      end
+    end
+
+    watch(/(^src\/helpers\/.+)/) do |match|
+      file = match[0]
+      case match[0]
+      when /\/md2d\/mml-parser/
+      when /\/md2d\/(mw-batch-converter.+)|(post-batch-processor.+)/
+      else
+        command("make test-src")
+      end
+    end
+
   end
 end
