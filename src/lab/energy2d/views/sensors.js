@@ -1,8 +1,8 @@
 /*global define: false, d3: false */
 
 define(function () {
-  var W = 0.8,
-      H = 1.8;
+  var W = 2,
+      H = 5;
 
   return function SensorsView(SVGContainer, g) {
     var api,
@@ -33,7 +33,7 @@ define(function () {
     function thermometerTest(d) { return d.type === "thermometer" ? this : null; }
     function anemometerTest(d) { return d.type === "anemometer" ? this : null; }
 
-    function em(val) { return val + "em"; }
+    function em(val) { return val + "%"; }
     function transform(d) { return "translate(" + m2px(d.x) + "," + m2pxInv(d.y) + ")"; }
     function labelDx() { return -this.getBBox().width / 2; }
     function labelText(d) { return d.label; }
@@ -50,7 +50,6 @@ define(function () {
       // manipulating both Y coordinate and height of fill.
       enter.append("rect").attr("class", "e2d-thermometer-fill");
       enter.append("rect").attr("class", "e2d-thermometer-background");
-      enter.append("text").attr("class", "e2d-thermometer-label");
       enter.append("text").attr("class", "e2d-thermometer-reading");
 
       update = update.select(thermometerTest);
@@ -64,16 +63,14 @@ define(function () {
         .attr("y", em(-0.5 * H))
         .attr("width", em(W))
         .attr("height", bgHeight);
-      update.select(".e2d-thermometer-label")
-        .text(labelText)
-        .attr("y", em(0.5 * H))
-        .attr("dy", "1.1em")
-        .attr("dx", labelDx);
       thermReading = update.select(".e2d-thermometer-reading")
         .text(readingText)
         .attr("y", em(-0.5 * H))
-        .attr("dy", "-.35em")
+        .attr("dy", "-.2em")
         .attr("dx", "-.7em");
+      update.select(".e2d-sensor-label")
+        .attr("dy", "1em")
+        .attr("y", em(0.5 * H));
     }
 
     function renderAnemometer(enter, update) {
@@ -105,6 +102,10 @@ define(function () {
       update = update.select(anemometerTest);
       anemoRot = update.select(".e2d-anemometer-rot")
           .attr("transform", anemometerRotation);
+
+      update.select(".e2d-sensor-label")
+        .attr("dy", "0.7em")
+        .attr("y", "3%");
     }
 
     // Public API.
@@ -126,11 +127,17 @@ define(function () {
             // "sensor" class can be useful for onClick handlers.
             .attr("class", "e2d-sensor sensor");
 
+        sensorEnter.append("text").attr("class", "e2d-sensor-label");
+
         renderThermometers(sensorEnter, sensor);
         renderAnemometer(sensorEnter, sensor);
 
         sensorEnter.call(dragBehavior);
+
         sensor.attr("transform", transform);
+        sensor.select(".e2d-sensor-label")
+            .text(labelText)
+            .attr("dx", labelDx);
 
         sensor.exit().remove();
       },
