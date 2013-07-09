@@ -150,6 +150,16 @@ xml_files.each do |xml_file_path|
     final_hash['sensors'].concat(t)
   end
 
+  if sensor && sensor['heat_flux_sensor']
+    t = sensor['heat_flux_sensor']
+    t = [t] if t.is_a?(Hash)
+    t.each do |x|
+      x['type'] = 'heatFlux'
+      x['angle'] = (x['angle'].to_f * 180 / Math::PI).round(2) if x['angle']
+    end
+    final_hash['sensors'].concat(t)
+  end
+
   # view options
   final_hash['viewOptions'] = hash['state']['view']
 
