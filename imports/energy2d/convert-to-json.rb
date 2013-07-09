@@ -61,10 +61,10 @@ class E2dPage
     else
       @title = @doc.css('a[id="cc-link"] + h1').text
       @tagline = @doc.css('p[id="tagline"]').text
-      @content = @doc.css('div[id="content"] p').collect { |p| p.text }.join("\n")
-      @content.gsub!(/(Right-click to download this model|Download this model)/, "")
-      @content.gsub!(/\n\n/, "\n")
-      @content.strip!
+      html_content = @doc.xpath("//div[@id='content']//p[not(.//*[contains(text(), 'Right-click')])]").to_html
+      html_content.gsub!(/\n{3,}/m, "\n\n")
+      html_content.gsub!(/(?<!\n)\n(?!\n)/, " ")
+      @content = Kramdown::Document.new(html_content, :input => 'html').to_kramdown.strip
       @sun_angle_slider = @doc.css('div[id="sun-angle-slider"]').length > 0
     end
   end
