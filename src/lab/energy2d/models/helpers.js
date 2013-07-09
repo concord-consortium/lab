@@ -10,7 +10,8 @@ define(function (require, exports, module) {
     y = Math.abs(y);
     t = Math.min(x, y);
     x = Math.max(x, y);
-    y = t;
-    return x * Math.sqrt(1 + (y / x) * (y / x));
+    if (x === 0) return 0;
+    t = t / x;
+    return x * Math.sqrt(1 + t * t);
   };
 });

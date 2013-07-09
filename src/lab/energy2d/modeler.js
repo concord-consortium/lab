@@ -64,6 +64,7 @@ define(function (require) {
         // Sensors are modeler-level objects, they only define outputs
         // and have nothing to do with physics calculations.
         sensors = [],
+        anemometers = [],
 
         cache = {};
 
@@ -77,12 +78,8 @@ define(function (require) {
     }
 
     function syncGPU() {
-      // In theory we should also call:
-      // coreModel.syncVelocity();
-      // However velocity array isn't used by any CPU-only visualization
-      // (velocity arrows can be rendered using WebGL) and it isn't exposed
-      // to the Scripting API. So for now there is no need to sync it.
       coreModel.syncTemperature();
+      coreModel.syncVelocity();
     }
 
     function hasDiverged() {
@@ -102,10 +99,14 @@ define(function (require) {
     function createSensors(sensorsSpec) {
       var sensorValue = {
             thermometer: function () {
-              return model.getTemperatureAt(this.x, this.y);
+              return function() {
+                return model.getTemperatureAt(this.x, this.y);
+              };
             },
             anemometer: function () {
-              return model.getSpeedAt(this.x, this.y) * (model.getVorticityAt(this.x, this.y) < 0 ? -1 : 1);
+              return function () {
+                return this._rot;
+              };
             }
           },
           sensorOutputDesc = {
@@ -123,9 +124,13 @@ define(function (require) {
       sensors = [];
       sensorsSpec.forEach(function (s, idx) {
         s = validator.validateCompleteness(metadata.sensor, s);
+        if (s.type === "anemometer") {
+          s._rot = 0;
+          anemometers.push(s);
+        }
         Object.defineProperty(s, "value", {
           enumerable: true,
-          get: sensorValue[s.type]
+          get: sensorValue[s.type]()
         });
         sensors.push(s);
 
@@ -133,6 +138,16 @@ define(function (require) {
           return s.value;
         });
       });
+    }
+
+    function updateAnemometers() {
+      var a, i, len;
+      for (i = 0, len = anemometers.length; i < len; i++) {
+        a = anemometers[i];
+        a._rot += model.getSpeedAt(a.x, a.y) * (model.getVorticityAt(a.x, a.y) < 0 ? -1 : 1) *
+                  model.properties.timeStep * 700;
+        a._rot = a._rot % 360;
+      }
     }
 
     model = {
@@ -152,6 +167,7 @@ define(function (require) {
         } else {
           diverged = hasDiverged();
         }
+        updateAnemometers();
         model.updateAllOutputProperties();
         dispatch.tick();
 
@@ -340,7 +356,7 @@ define(function (require) {
               v = constraint[key] ? constraint[key](v) : v;
               this._rawObj[key] = validator.validateSingleProperty(metadata.sensor[key], key, v);
               propertySupport.invalidatingChangePostHook();
-              dispatch.thermometersChanged();
+              dispatch.sensorsChanged();
             }
           });
         });
@@ -365,7 +381,7 @@ define(function (require) {
 
     (function () {
       labModelerMixin.mixInto(model);
-      dispatch.addEventTypes("tick", "partsChanged", "thermometersChanged");
+      dispatch.addEventTypes("tick", "partsChanged", "sensorsChanged");
 
       coreModel = coremodel.makeCoreModel(model.properties);
       setWebGLEnabled(model.properties.use_WebGL);
