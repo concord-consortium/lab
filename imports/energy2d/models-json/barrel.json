@@ -309,6 +309,48 @@
       "x": 0.4625,
       "y": 0.47500002,
       "type": "anemometer"
+    },
+    {
+      "label": "F3",
+      "angle": 0.0,
+      "x": 0.5,
+      "y": 0.16250002,
+      "type": "heatFlux"
+    },
+    {
+      "label": "F4",
+      "angle": 90.0,
+      "x": 0.76250005,
+      "y": 0.25000006,
+      "type": "heatFlux"
+    },
+    {
+      "label": "F2",
+      "angle": -90.0,
+      "x": 0.23749998,
+      "y": 0.62499994,
+      "type": "heatFlux"
+    },
+    {
+      "label": "F5",
+      "angle": 90.0,
+      "x": 0.76250005,
+      "y": 0.8125,
+      "type": "heatFlux"
+    },
+    {
+      "label": "F6",
+      "angle": 90.0,
+      "x": 0.85,
+      "y": 1.025,
+      "type": "heatFlux"
+    },
+    {
+      "label": "F1",
+      "angle": -90.0,
+      "x": 0.23749998,
+      "y": 0.25,
+      "type": "heatFlux"
     }
   ],
   "viewOptions": {

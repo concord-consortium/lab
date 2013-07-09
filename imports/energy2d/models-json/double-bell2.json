@@ -355,6 +355,55 @@
       "x": 1.9,
       "y": 0.37999997,
       "type": "thermometer"
+    },
+    {
+      "label": "F4",
+      "angle": 0.0,
+      "x": 0.88,
+      "y": 1.0,
+      "type": "heatFlux"
+    },
+    {
+      "label": "F1",
+      "angle": 90.0,
+      "x": 0.17999999,
+      "y": 1.24,
+      "type": "heatFlux"
+    },
+    {
+      "label": "F6",
+      "angle": 90.0,
+      "x": 0.86,
+      "y": 1.26,
+      "type": "heatFlux"
+    },
+    {
+      "label": "F5",
+      "angle": 0.0,
+      "x": 1.3199999,
+      "y": 1.0,
+      "type": "heatFlux"
+    },
+    {
+      "label": "F3",
+      "angle": 0.0,
+      "x": 0.59999996,
+      "y": 1.0,
+      "type": "heatFlux"
+    },
+    {
+      "label": "F2",
+      "angle": 0.0,
+      "x": 0.28,
+      "y": 1.0,
+      "type": "heatFlux"
+    },
+    {
+      "label": "F7",
+      "angle": 0.0,
+      "x": 1.12,
+      "y": 1.74,
+      "type": "heatFlux"
     }
   ],
   "viewOptions": {
