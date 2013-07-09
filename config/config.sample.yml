@@ -1,4 +1,13 @@
 ---
+# environment can be 'development' or 'production'
+# production:
+#  - delivers minimized javascript resources
+#  - sets JavaScript variable: Lab.config.environment = 'production'
+# development:
+#  - delivers un-minimized javascript resources
+#  - sets JavaScript variable: Lab.config.environment = 'development'
+#  - enables rack-livereload
+:environment: development
 :server:
   development:
     :hostname: localhost:9292

@@ -1,10 +1,8 @@
-gem 'rack-rewrite', '~> 1.3.3'
-require 'rack/rewrite'
+require 'rack-livereload'
 require 'shutterbug'
 
-PUBLIC_PATH =  File.join(Dir.pwd, 'public')
+require "./script/setup"
 JNLP_APP_PATH = PUBLIC_PATH
-
 require './lib/rack/jnlp.rb'
 
 use Rack::Jnlp
@@ -15,18 +13,17 @@ use Rack::ContentLength
 # shutterbug/shutterbug.js shutterbug/get_png/SHA1
 use Shutterbug::Rackapp
 
+# see: https://github.com/johnbintz/rack-livereload
+if CONFIG[:environment] == 'development'
+  use Rack::LiveReload, :min_delay => 200
+end
+
 Rack::Mime::MIME_TYPES.merge!({
   ".ttf" => "font/ttf",
   ".mml" => "application/xml",
   ".cml" => "application/xml",
   ".e2d" => "application/xml"
 })
-
-# use Rack::Rewrite do
-#   r301   '/examples/interactives/interactives.html',  '/interactives.html'
-#   r301   '/examples/interactives/embeddable.html',    '/embeddable.html'
-#   r301   '/examples/interactives/interactives.json',  '/interactives.json'
-# end
 
 app = Rack::Directory.new PUBLIC_PATH
 

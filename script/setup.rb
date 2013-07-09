@@ -82,3 +82,62 @@ else          # default is "Open Sans"
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&amp;subset=latin,greek,latin-ext' rel='stylesheet' type='text/css'>
   HEREDOC
 end
+
+# setup partials for 'production' (minimized resources) or 'development'
+
+LAB_JS_DEPENDENCIES = case CONFIG[:environment]
+when 'production'
+  <<-HEREDOC
+<script src="vendor/d3/d3.min.js" type="text/javascript"></script>
+<script src="vendor/jquery/jquery.min.js" type="text/javascript"></script>
+<script src="vendor/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+<script src="vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js" type="text/javascript"></script>
+<script src="vendor/jquery-context-menu/jquery.contextMenu.js" type="text/javascript"></script>
+<script src="vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js" type="text/javascript"></script>
+  HEREDOC
+else
+  <<-HEREDOC
+<script src="vendor/d3/d3.js" type="text/javascript"></script>
+<script src="vendor/jquery/jquery.min.js" type="text/javascript"></script>
+<script src="vendor/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+<script src="vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js" type="text/javascript"></script>
+<script src="vendor/jquery-context-menu/jquery.contextMenu.js" type="text/javascript"></script>
+<script src="vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js" type="text/javascript"></script>
+  HEREDOC
+end
+
+LAB_JS_ADDITIONAL_DEPENDENCIES = case CONFIG[:environment]
+when 'production'
+  <<-HEREDOC
+<script src='vendor/tinysort/jquery.tinysort.min.js' type='text/javascript'></script>
+<script src='vendor/codemirror/lib/codemirror.js' type='text/javascript'></script>
+<script src='vendor/codemirror/mode/javascript/javascript.js' type='text/javascript'></script>
+<script src='vendor/codemirror/addon/fold/foldcode.js' type='text/javascript'></script>
+<script src='vendor/codemirror/addon/fold/collapserange.js' type='text/javascript'></script>
+<script src='vendor/codemirror/addon/format/formatting.js' type='text/javascript'></script>
+<script src='vendor/codemirror/addon/edit/matchbrackets.js' type='text/javascript'></script>
+<script src='vendor/codemirror/addon/edit/closebrackets.js' type='text/javascript'></script>
+  HEREDOC
+else
+  <<-HEREDOC
+<script src='vendor/tinysort/jquery.tinysort.js' type='text/javascript'></script>
+<script src='vendor/codemirror/lib/codemirror.js' type='text/javascript'></script>
+<script src='vendor/codemirror/mode/javascript/javascript.js' type='text/javascript'></script>
+<script src='vendor/codemirror/addon/fold/foldcode.js' type='text/javascript'></script>
+<script src='vendor/codemirror/addon/fold/collapserange.js' type='text/javascript'></script>
+<script src='vendor/codemirror/addon/format/formatting.js' type='text/javascript'></script>
+<script src='vendor/codemirror/addon/edit/matchbrackets.js' type='text/javascript'></script>
+<script src='vendor/codemirror/addon/edit/closebrackets.js' type='text/javascript'></script>
+  HEREDOC
+end
+
+LAB_JS = case CONFIG[:environment]
+when 'production'
+  <<-HEREDOC
+<script src='lab/lab.min.js'></script>
+  HEREDOC
+else
+  <<-HEREDOC
+<script src='lab/lab.js'></script>
+  HEREDOC
+end

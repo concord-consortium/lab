@@ -2,8 +2,8 @@
 
 require 'json'
 
-@required_ruby_version = "1.9.3"
-@required_ruby_patchlevel = 392
+@required_ruby_version = "2.0.0"
+@required_ruby_patchlevel = 247
 @minimum_node_version = "v0.10.0"
 
 def macosx

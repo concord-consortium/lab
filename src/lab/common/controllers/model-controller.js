@@ -1,4 +1,4 @@
-/*global define, DEVELOPMENT, d3, alert, model: true */
+/*global define, d3, alert, model: true */
 
 define(function () {
 
@@ -125,7 +125,7 @@ define(function () {
     //
     // ------------------------------------------------------------
 
-    if (typeof DEVELOPMENT === 'undefined') {
+    if (Lab.config.environment === 'production') {
       try {
         setupModel();
       } catch(e) {

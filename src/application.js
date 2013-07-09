@@ -1,7 +1,5 @@
-/*global Lab, _, $, jQuery, d3, CodeMirror, controllers, alert, model, modelList, benchmark, getDomSnapshot, _gaq, DEVELOPMENT: true, AUTHORING: true */
+/*global Lab, _, $, jQuery, d3, CodeMirror, controllers, alert, model, modelList, benchmark, getDomSnapshot, _gaq, AUTHORING: true */
 /*jshint boss:true */
-
-DEVELOPMENT = true;
 
 // Strawman setting for telling the interactive to be in "author mode",
 // allowing things like positioning textBoxes by hand.
