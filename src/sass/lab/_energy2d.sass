@@ -59,6 +59,11 @@
   stroke: #000
   stroke-width: 1px
 
+// Sensors
+.e2d-thermometer-reading, .e2d-sensor-label, .e2d-heatflux-reading
+  fill: #eee
+  font-size: 0.7em
+
 // Thermometers
 .e2d-thermometer-background
   fill: #fff
@@ -70,10 +75,6 @@
   stroke: #333
   stroke-width: 0.5px
 
-.e2d-thermometer-reading, .e2d-sensor-label
-  fill: #eee
-  font-size: 0.7em
-
 // Anemometers
 .e2d-anemometer-shape path
   fill: #eee
@@ -83,3 +84,13 @@
   fill: #ff4411
   stroke: #000
   stroke-width: 2px
+
+// Heat flux sensors
+.e2d-heatflux-shape
+  fill: #eee
+  stroke: #333
+  stroke-width: 1.5px
+.e2d-heatflux-pattern
+  fill: none
+  stroke: #333
+  stroke-width: 0.2px // note it's affected by the viewBox transformation

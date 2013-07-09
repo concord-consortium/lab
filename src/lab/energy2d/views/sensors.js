@@ -1,8 +1,8 @@
 /*global define: false, d3: false */
 
 define(function () {
-  var W = 2,
-      H = 5;
+  var TH_W = 2,
+      TH_H = 5;
 
   return function SensorsView(SVGContainer, g) {
     var api,
@@ -14,9 +14,11 @@ define(function () {
 
         thermBg, // d3.selection
         thermReading, // d3.selection
-        thermValScale = d3.scale.linear().clamp(true).domain([0, 50]).range([H, 0]),
+        thermValScale = d3.scale.linear().clamp(true).domain([0, 50]).range([TH_H, 0]),
 
         anemoRot, // d3.selection
+
+        heatFluxReading, // d3.selection
 
         dragBehavior = d3.behavior.drag()
             .origin(function (d) {
@@ -32,6 +34,7 @@ define(function () {
 
     function thermometerTest(d) { return d.type === "thermometer" ? this : null; }
     function anemometerTest(d) { return d.type === "anemometer" ? this : null; }
+    function heatFluxTest(d) { return d.type === "heatFlux" ? this : null; }
 
     function em(val) { return val + "%"; }
     function transform(d) { return "translate(" + m2px(d.x) + "," + m2pxInv(d.y) + ")"; }
@@ -42,6 +45,9 @@ define(function () {
 
     function anemometerRotation(d) { return "rotate(" + d.value + ")"; }
 
+    function heatFluxReadingText(d) { return d.value.toFixed(1) + " W/m²"; }
+    function heatFluxRot(d) { return "rotate(" + d.angle + ")"; }
+
     function renderThermometers(enter, update) {
       enter = enter.select(thermometerTest);
 
@@ -51,30 +57,35 @@ define(function () {
       enter.append("rect").attr("class", "e2d-thermometer-fill");
       enter.append("rect").attr("class", "e2d-thermometer-background");
       enter.append("text").attr("class", "e2d-thermometer-reading");
+      enter.append("text").attr("class", "e2d-sensor-label");
 
       update = update.select(thermometerTest);
       update.select(".e2d-thermometer-fill")
-        .attr("x", em(-0.5 * W))
-        .attr("y", em(-0.5 * H))
-        .attr("width", em(W))
-        .attr("height", em(H));
+        .attr("x", em(-0.5 * TH_W))
+        .attr("y", em(-0.5 * TH_H))
+        .attr("width", em(TH_W))
+        .attr("height", em(TH_H));
       thermBg = update.select(".e2d-thermometer-background")
-        .attr("x", em(-0.5 * W))
-        .attr("y", em(-0.5 * H))
-        .attr("width", em(W))
+        .attr("x", em(-0.5 * TH_W))
+        .attr("y", em(-0.5 * TH_H))
+        .attr("width", em(TH_W))
         .attr("height", bgHeight);
       thermReading = update.select(".e2d-thermometer-reading")
         .text(readingText)
-        .attr("y", em(-0.5 * H))
+        .attr("y", em(-0.5 * TH_H))
         .attr("dy", "-.2em")
         .attr("dx", "-.7em");
       update.select(".e2d-sensor-label")
+        .text(labelText)
+        .attr("dx", labelDx)
         .attr("dy", "1em")
-        .attr("y", em(0.5 * H));
+        .attr("y", em(0.5 * TH_H));
     }
 
     function renderAnemometer(enter, update) {
       enter = enter.select(anemometerTest);
+
+      enter.append("text").attr("class", "e2d-sensor-label");
 
       var g = enter
         .append("svg")
@@ -104,8 +115,48 @@ define(function () {
           .attr("transform", anemometerRotation);
 
       update.select(".e2d-sensor-label")
+        .text(labelText)
+        .attr("dx", labelDx)
         .attr("dy", "0.7em")
         .attr("y", "3%");
+    }
+
+    function renderHeatFluxSensors(enter, update) {
+      enter = enter.select(heatFluxTest);
+
+      var g = enter.append("g")
+          .attr("transform", heatFluxRot);
+
+      g.append("rect")
+          .attr("class", "e2d-heatflux-shape")
+          .attr("x", "-3%")
+          .attr("y", "-1%")
+          .attr("width", "6%")
+          .attr("height", "2%");
+      g.append("svg")
+          .attr("viewBox", "0 0 6 1")
+          .attr("x", "-3%")
+          .attr("y", "-1%")
+          .attr("width", "6%")
+          .attr("height", "2%")
+        .append("path")
+          .attr("class", "e2d-heatflux-pattern")
+          .attr("d", "M0,0L1,1L2,0L3,1L4,0L5,1L6,0");
+      g.append("text").attr("class", "e2d-heatflux-reading");
+      g.append("text").attr("class", "e2d-sensor-label");
+
+      update = update.select(heatFluxTest);
+      heatFluxReading = update.select(".e2d-heatflux-reading")
+        .text(heatFluxReadingText)
+        .attr("y", "-1%")
+        .attr("dy", "-.2em")
+        .attr("dx", "-1.8em");
+
+      update.select(".e2d-sensor-label")
+        .text(labelText)
+        .attr("dx", labelDx)
+        .attr("dy", "0.9em")
+        .attr("y", "1%");
     }
 
     // Public API.
@@ -115,6 +166,8 @@ define(function () {
         thermReading.text(readingText);
 
         anemoRot.attr("transform", anemometerRotation);
+
+        heatFluxReading.text(heatFluxReadingText);
       },
 
       renderSensors: function () {
@@ -127,17 +180,13 @@ define(function () {
             // "sensor" class can be useful for onClick handlers.
             .attr("class", "e2d-sensor sensor");
 
-        sensorEnter.append("text").attr("class", "e2d-sensor-label");
-
         renderThermometers(sensorEnter, sensor);
         renderAnemometer(sensorEnter, sensor);
+        renderHeatFluxSensors(sensorEnter, sensor);
 
         sensorEnter.call(dragBehavior);
 
         sensor.attr("transform", transform);
-        sensor.select(".e2d-sensor-label")
-            .text(labelText)
-            .attr("dx", labelDx);
 
         sensor.exit().remove();
       },
