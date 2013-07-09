@@ -253,6 +253,9 @@ define(function (require) {
       getVorticityAt: function (x, y) {
         return coreModel.getVorticityAt(x, y);
       },
+      getHeatFluxAt: function (x, y) {
+        return coreModel.getHeatFluxAt(x, y);
+      },
       getAverageVorticityAt: function (x, y) {
         return coreModel.getAverageVorticityAt(x, y);
       },
