@@ -53,20 +53,19 @@ class E2dPage
       if @doc.css('h2').first
         @tagline = @doc.css('h2').first.text
       end
-      td = @doc.css('table td')[0]
-      html_content = td.children[2..-1].to_html.strip
-      html_content.gsub!(/<font.*?>/, '')
-      html_content.gsub!(/<\/font.*?>/, '')
-      @content = Kramdown::Document.new(html_content, :input => 'html').to_kramdown
+      html_content = @doc.xpath("//td")[0].xpath('*[not(self::h2)]').to_html
     else
       @title = @doc.css('a[id="cc-link"] + h1').text
       @tagline = @doc.css('p[id="tagline"]').text
       html_content = @doc.xpath("//div[@id='content']//p[not(.//*[contains(text(), 'Right-click')])]").to_html
-      html_content.gsub!(/\n{3,}/m, "\n\n")
-      html_content.gsub!(/(?<!\n)\n(?!\n)/, " ")
-      @content = Kramdown::Document.new(html_content, :input => 'html').to_kramdown.strip
-      @sun_angle_slider = @doc.css('div[id="sun-angle-slider"]').length > 0
     end
+    html_content.gsub!(/<center.*?>(.*?)<\/center.*?>/m, '\1')
+    html_content.gsub!(/<font.*?>(.*?)<\/font.*?>/m, '\1')
+    html_content.gsub!(/\n{3,}/m, "\n\n")
+    html_content.gsub!(/(?<!\n)\n(?!\n)/, " ")
+    html_content.strip!
+    @content = Kramdown::Document.new(html_content, :input => 'html').to_kramdown
+    @sun_angle_slider = @doc.css('div[id="sun-angle-slider"]').length > 0
   end
 end
 
