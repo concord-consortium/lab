@@ -16,6 +16,8 @@ define(function () {
         thermReading, // d3.selection
         thermValScale = d3.scale.linear().clamp(true).domain([0, 50]).range([H, 0]),
 
+        anemoRot, // d3.selection
+
         dragBehavior = d3.behavior.drag()
             .origin(function (d) {
                 return {
@@ -37,6 +39,8 @@ define(function () {
     function labelText(d) { return d.label; }
     function readingText(d) { return d.value.toFixed(1) + " °C"; }
     function bgHeight(d) { return em(thermValScale(d.value)); }
+
+    function anemometerRotation(d) { return "rotate(" + d.value + ")"; }
 
     function renderThermometers(enter, update) {
       enter = enter.select(thermometerTest);
@@ -72,11 +76,44 @@ define(function () {
         .attr("dx", "-.7em");
     }
 
+    function renderAnemometer(enter, update) {
+      enter = enter.select(anemometerTest);
+
+      var g = enter
+        .append("svg")
+          .attr("class", "e2d-anemometer-shape")
+          .attr("viewBox", "-50 -50 100 100")
+          .attr("x", "-3%")
+          .attr("y", "-3%")
+          .attr("width", "6%")
+          .attr("height", "6%")
+        .append("g")
+          .attr("class", "e2d-anemometer-rot");
+
+      g.append("path")
+          .attr("d", "M-10,10 L0,50 L10,10 Z")
+          .attr("transform", "rotate(0)");
+      g.append("path")
+          .attr("d", "M-10,10 L0,50 L10,10 Z")
+          .attr("transform", "rotate(120)");
+      g.append("path")
+          .attr("d", "M-10,10 L0,50 L10,10 Z")
+          .attr("transform", "rotate(240)");
+      g.append("circle")
+          .attr("r", 12);
+
+      update = update.select(anemometerTest);
+      anemoRot = update.select(".e2d-anemometer-rot")
+          .attr("transform", anemometerRotation);
+    }
+
     // Public API.
     api = {
       update: function () {
         thermBg.attr("height", bgHeight);
         thermReading.text(readingText);
+
+        anemoRot.attr("transform", anemometerRotation);
       },
 
       renderSensors: function () {
@@ -90,6 +127,7 @@ define(function () {
             .attr("class", "e2d-sensor sensor");
 
         renderThermometers(sensorEnter, sensor);
+        renderAnemometer(sensorEnter, sensor);
 
         sensorEnter.call(dragBehavior);
         sensor.attr("transform", transform);
