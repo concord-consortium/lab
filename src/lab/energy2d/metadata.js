@@ -291,6 +291,10 @@ define(function(require) {
         required: true,
         unitType: "length"
       },
+      angle: {
+        // Optional, defined only for heat flux sensors.
+        immutable: true
+      },
       label: {
         defaultValue: ""
       },

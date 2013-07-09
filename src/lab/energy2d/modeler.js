@@ -99,14 +99,14 @@ define(function (require) {
     function createSensors(sensorsSpec) {
       var sensorValue = {
             thermometer: function () {
-              return function() {
-                return model.getTemperatureAt(this.x, this.y);
-              };
+              return model.getTemperatureAt(this.x, this.y);
             },
             anemometer: function () {
-              return function () {
-                return this._rot;
-              };
+              return this._rot;
+            },
+            heatFlux: function () {
+              var flux = model.getHeatFluxAt(this.x, this.y);
+              return flux[0] * this._sin + flux[1] * this._cos;
             }
           },
           sensorOutputDesc = {
@@ -116,7 +116,12 @@ define(function (require) {
               format: '.1f'
             },
             anemometer: {
-              label: "Fluid Speed x Vorticity Signum",
+            },
+            heatFlux: {
+              label: "Heat Flux",
+              unitName: "Watt Per Square Meter",
+              unitPluralName: "Watts Per Square Meter",
+              unitAbbreviation: "W/m²",
               format: '.1f'
             }
           };
@@ -128,9 +133,13 @@ define(function (require) {
           s._rot = 0;
           anemometers.push(s);
         }
+        if (s.type === "heatFlux") {
+          s._sin = Math.sin(s.angle * Math.PI / 180);
+          s._cos = Math.cos(s.angle * Math.PI / 180);
+        }
         Object.defineProperty(s, "value", {
           enumerable: true,
-          get: sensorValue[s.type]()
+          get: sensorValue[s.type]
         });
         sensors.push(s);
 
