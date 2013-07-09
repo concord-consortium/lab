@@ -7,7 +7,7 @@
       "type": "energy2d",
       "id": "compare-capacity",
       "url": "imports/energy2d/models-json/compare-capacity.json",
-      "importedFrom": "imports/energy2d/content/compare-capacity.e2d",
+      "importedFrom": "imports/energy2d/models-xml/compare-capacity.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
       }
