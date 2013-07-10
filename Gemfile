@@ -39,6 +39,9 @@ end
 
 group :development do
 
+  # http://about.travis-ci.org/docs/user/travis-lint/
+  gem "travis-lint"
+
   # guard related ...
   gem "guard",              "~> 1.8.1"
   gem "guard-haml",         "~> 0.4"
