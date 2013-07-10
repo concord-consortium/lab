@@ -1,4 +1,4 @@
-/*global Lab, _, $, jQuery, d3, CodeMirror, controllers, alert, model, modelList, benchmark, getDomSnapshot, _gaq, AUTHORING: true */
+/*global Lab, _, $, jQuery, d3, Shutterbug, CodeMirror, controllers, alert, model, modelList, benchmark, _gaq, DEVELOPMENT: true, AUTHORING: true */
 /*jshint boss:true */
 
 // Strawman setting for telling the interactive to be in "author mode",
@@ -16,6 +16,7 @@ AUTHORING = false;
       interactives,
       groups,
       iframePhone,
+      shutterbug,
 
       $content = $("#content"),
 
@@ -661,6 +662,7 @@ AUTHORING = false;
         helper: "ui-resizable-helper",
         resize: controller.resize
       });
+      shutterbug = new Shutterbug('#responsive-content','#image_output');
     } else {
       // Interactive Browser with Interactive embedding in iframe
 
@@ -677,7 +679,7 @@ AUTHORING = false;
       $iframeWrapper.append($iframe);
       $iframeWrapper.resizable({ helper: "ui-resizable-helper" });
       $content.css("border", "none");
-
+      shutterbug = new Shutterbug("#iframe-interactive","#image_output");
       // initiate communication with Interactive in iframe and setup callback
       iframePhone = setupIframeListenerFor($iframe[0], function() {
         setupCodeEditor();
@@ -1200,34 +1202,10 @@ AUTHORING = false;
         $snapshotContent.hide(100);
       }
     }).change();
-    var getModelSnapshot = function() {
-      getDomSnapshot($("#model-container"),$("#image_output"));
-    };
-    var getInteractiveSnapshot = function() {
-      getDomSnapshot($("#responsive-content"),$("#image_output"));
-    };
 
-    $('#export_model').on('click', function(e) {
-      e.preventDefault();
-      if(isFullPage()) {
-        getModelSnapshot();
-      } else {
-        iframePhone.post({ type:'getModelSnapshot' });
-        iframePhone.addListener('png', function(message) {
-          $('#image_output').html(message);
-        });
-      }
-    });
     $('#export_interactive').on('click', function(e) {
       e.preventDefault();
-      if(isFullPage()) {
-        getInteractiveSnapshot();
-      } else {
-        iframePhone.post({ type:'getInteractiveSnapshot' });
-        iframePhone.addListener('png', function(message) {
-          $('#image_output').html(message);
-        });
-      }
+      shutterbug.getDomSnapshot();
     });
   }
 
