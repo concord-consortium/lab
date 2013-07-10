@@ -69,10 +69,6 @@ define(function (require) {
           if (!heatmap_tex) {
             throw new Error("Heatmap: bind heatmap texture before rendering.");
           }
-          // Follow size of the canvas defined by CSS rules.
-          if (canvas_width !== $heatmap_canvas.width() || canvas_height !== $heatmap_canvas.height()) {
-            this.updateCanvasSize();
-          }
 
           setupRenderTarget();
 
@@ -84,11 +80,12 @@ define(function (require) {
           heatmap_tex.unbind(0);
         },
 
-        updateCanvasSize: function () {
+        resize: function () {
           canvas_width = $heatmap_canvas.width();
           canvas_height = $heatmap_canvas.height();
           $heatmap_canvas.attr('width', canvas_width);
           $heatmap_canvas.attr('height', canvas_height);
+          heatmap_view.renderHeatmap();
         },
 
         // Bind heatmap to the view.

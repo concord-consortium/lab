@@ -86,11 +86,6 @@ define(function () {
             throw new Error("Vectormap: bind vectormap before rendering.");
           }
 
-          // Follow size of the canvas defined by CSS rules.
-          if (canvas_width !== $vectormap_canvas.width() || canvas_height !== $vectormap_canvas.height()) {
-            this.updateCanvasSize();
-          }
-
           dx = canvas_width / grid_width;
           dy = canvas_height / grid_height;
 
@@ -145,11 +140,12 @@ define(function () {
           return $vectormap_canvas;
         },
 
-        updateCanvasSize: function () {
+        resize: function () {
           canvas_width = $vectormap_canvas.width();
           canvas_height = $vectormap_canvas.height();
           $vectormap_canvas.attr('width', canvas_width);
           $vectormap_canvas.attr('height', canvas_height);
+          vectormap_view.renderVectormap();
         }
       };
 

@@ -107,10 +107,6 @@ define(function (require) {
           if (!vectormap_tex) {
             throw new Error("Vectormap: bind heatmap texture before rendering.");
           }
-          // Follow size of the canvas defined by CSS rules.
-          if (canvas_width !== $vectormap_canvas.width() || canvas_height !== $vectormap_canvas.height()) {
-            this.updateCanvasSize();
-          }
 
           setupRenderTarget();
 
@@ -126,7 +122,7 @@ define(function (require) {
           enabled = v;
         },
 
-        updateCanvasSize: function () {
+        resize: function () {
           canvas_width = $vectormap_canvas.width();
           canvas_height = $vectormap_canvas.height();
           $vectormap_canvas.attr('width', canvas_width);
@@ -135,6 +131,7 @@ define(function (require) {
           render_program.uniforms({
             scale: [2.0 / canvas_width, 2.0 / canvas_height]
           });
+          vectormap_view.renderVectormap();
         },
 
         // Bind vectormap to the view.

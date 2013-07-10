@@ -123,12 +123,15 @@ define(function (require) {
           return $heatmap_canvas;
         },
 
+        resize: function () {},
+
         updateCanvasSize: function () {
           canvas_width = $heatmap_canvas.width();
           canvas_height = $heatmap_canvas.height();
           if (hq_rendering) {
             $heatmap_canvas.attr('width', canvas_width);
             $heatmap_canvas.attr('height', canvas_height);
+            heatmap_view.renderHeatmap();
           } else {
             this.setCanvasSize(grid_width, grid_height);
           }

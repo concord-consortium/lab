@@ -120,7 +120,9 @@ define(function(require) {
       resize: function() {
         // Ignore all resize() callbacks if view isn't already set up.
         if (beforeSetup) return;
-        api.update();
+        heatmap_view.resize();
+        velocity_view.resize();
+        photons_view.resize();
         parts_view.renderParts();
         sensors_view.renderSensors();
       },

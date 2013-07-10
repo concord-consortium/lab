@@ -61,11 +61,6 @@ define(function () {
             throw new Error("Photons view: bind parts array before rendering.");
           }
 
-          // Follow size of the canvas defined by CSS rules.
-          if (canvas_width !== $photons_canvas.width() || canvas_height !== $photons_canvas.height()) {
-            this.updateCanvasSize();
-          }
-
           canvas_ctx.clearRect(0, 0, canvas_width, canvas_height);
           for (i = 0, len = photons.length; i < len; i += 1) {
             photon = photons[i];
@@ -94,7 +89,7 @@ define(function () {
           return $photons_canvas;
         },
 
-        updateCanvasSize: function () {
+        resize: function () {
           canvas_width = $photons_canvas.width();
           canvas_height = $photons_canvas.height();
           scale_x = canvas_width / scene_width;
@@ -103,6 +98,8 @@ define(function () {
           $photons_canvas.attr('height', canvas_height);
 
           setCanvasStyle();
+
+          photons_view.renderPhotons();
         }
       };
 
