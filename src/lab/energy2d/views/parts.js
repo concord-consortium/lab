@@ -86,9 +86,20 @@ define(function () {
     function dx() { return -this.getBBox().width / 2; }
     function fill(d) {
       if (!d.filled) return 'rgba(0, 0, 0, 0)';
-
       var color;
-      if (d.color) {
+      if (d.color === "auto") {
+        if (d.power > 0) {
+          color = '#FFFF00';
+        } else if (d.power < 0) {
+          color = '#B0C4DE';
+        } else if (d.constant_temperature) {
+          // Heatmap will be visible.
+          color = 'rgba(0, 0, 0, 0)';
+        } else {
+          color = "#999";
+        }
+      } else {
+        // Typical color definition.
         color = d.color;
         // TODO: this should be done during XML->JSON conversion.
         if (!isNaN(parseInt(color, 16))) {
@@ -97,15 +108,6 @@ define(function () {
           }
           color = '#' + color;
         }
-      } else if (d.power > 0) {
-        color = '#FFFF00';
-      } else if (d.power < 0) {
-        color = '#B0C4DE';
-      } else if (d.constant_temperature) {
-        // Heatmap will be visible.
-        color = 'rgba(0, 0, 0, 0)';
-      } else {
-        color = "gray";
       }
       return color;
     }
@@ -143,14 +145,15 @@ define(function () {
           .attr("patternUnits", "userSpaceOnUse")
           .attr("x", 0)
           .attr("y", 0)
-          .attr("width", 16)
-          .attr("height", 16);
+          .attr("width", "0.7em")
+          .attr("height", "0.7em")
+          .attr("viewBox", "0 0 16 16");
       p.append("path")
           .attr("class", "e2d-texture-path-shadow")
           .attr("d", "M0,0 L16,16 M-1,15 L1,17 M15,-1 L17,1");
       p.append("path")
           .attr("class", "e2d-texture-path")
-          .attr("d", "M0,0 L16,16");
+          .attr("d", "M0,0 L16,16 M-1,15 L1,17 M15,-1 L17,1");
     }
 
     function renderShape(shape, enter, update) {

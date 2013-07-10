@@ -256,7 +256,9 @@ define(function(require) {
         defaultValue: true
       },
       color: {
-        defaultValue: "gray"
+        // Auto color means that part will use color matching its power or temperature
+        // (when it has constant temperature) or gray color otherwise.
+        defaultValue: "auto"
       },
       label: {},
       texture: {
