@@ -162,10 +162,9 @@ test: test/layout.html \
 	@$(VOWS)
 	@echo
 
+# run all test WITHOUT trying to build Lab JS first. Run 'make test' to build & test.
 .PHONY: test-src
-test-src: test/layout.html \
-	$(LAB_JS_FILES) \
-	$(JS_FILES:.js=.min.js)
+test-src: test/layout.html
 	@echo 'Running Mocha tests ...'
 	@$(MOCHA)
 	@echo 'Running Vows tests ...'
