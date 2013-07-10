@@ -16,7 +16,7 @@ notifications:
       - janikpiotrek@gmail.com
     on_success: change
     on_failure: always
-install: apt-get install libicu-dev
+install: sudo apt-get install libicu-dev
 language: ruby
 rvm:
   - "2.0.0"
