@@ -3,7 +3,8 @@
 require 'json'
 
 @required_ruby_version = "2.0.0"
-@required_ruby_patchlevel = 247
+@minimum_ruby_patchlevel = 195
+@recommended_ruby_patchlevel = 247
 @minimum_node_version = "v0.10.0"
 
 def macosx
@@ -15,10 +16,19 @@ def linux
 end
 
 def ruby_check
-  requirement = "= #{@required_ruby_version}-p#{@required_ruby_patchlevel}"
-  if RUBY_VERSION != @required_ruby_version || RUBY_PATCHLEVEL != @required_ruby_patchlevel
+  minimum = "= #{@required_ruby_version}-p#{@minimum_ruby_patchlevel}"
+  recommended = "= #{@required_ruby_version}-p#{@recommended_ruby_patchlevel}"
+  if RUBY_VERSION != @required_ruby_version && RUBY_PATCHLEVEL >= @minimum_ruby_patchlevel
     @errors["Ruby"] = {
-      "requirement" => requirement,
+      "requirement" => "#{minimum} to #{recommended}",
+      "details" => <<-HEREDOC
+  ==> Ruby #{RUBY_VERSION}-p#{RUBY_PATCHLEVEL} installed
+      HEREDOC
+    }
+  end
+  if RUBY_VERSION != @required_ruby_version && RUBY_PATCHLEVEL == @recommended_ruby_patchlevel
+    @recommendations["Ruby"] = {
+      "suggest" => recommended,
       "details" => <<-HEREDOC
   ==> Ruby #{RUBY_VERSION}-p#{RUBY_PATCHLEVEL} installed
       HEREDOC
@@ -97,6 +107,8 @@ end
 
 @warnings = {}
 @errors = {}
+@recommendations = {}
+
 ruby_check
 nodejs_check
 xcode_check if macosx
@@ -130,4 +142,19 @@ unless @errors.empty?
     HEREDOC
   }
   exit 1
+end
+
+unless @recommendations.empty?
+  puts <<-HEREDOC
+
+*** Recommendation: recommended development dependencies:
+
+  HEREDOC
+  @recommendations.each { |k, v|
+    puts <<-HEREDOC
+#{k} #{v["suggest"]}
+
+#{v["details"]}
+    HEREDOC
+  }
 end
