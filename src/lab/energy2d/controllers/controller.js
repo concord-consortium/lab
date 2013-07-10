@@ -15,7 +15,7 @@ define(function (require) {
     var api,
         dispatch = d3.dispatch('modelLoaded'),
         modelContainer = new SVGContainer(model, modelUrl, Renderer, {origin: 'top-left'}),
-        benchmarks = new Benchmarks(api);
+        benchmarks;
 
     api = {
       get type() {
@@ -75,6 +75,8 @@ define(function (require) {
 
       ScriptingAPI: ScriptingAPI
     };
+
+    benchmarks = new Benchmarks(api);
 
     return api;
   };
