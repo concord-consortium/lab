@@ -5,7 +5,7 @@ gem "rack",               "~> 1.5.2"
 gem "rake",               "~> 10.1.0"
 
 gem "fog",                "~> 1.12.1"
-gem "librarian",          "~> 0.1.0"
+gem "librarian-chef",     "~> 0.0.1"
 
 gem "haml",               "~> 4.0.0"
 gem "sass",               "~> 3.2.5"
