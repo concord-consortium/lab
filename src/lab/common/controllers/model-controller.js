@@ -1,6 +1,8 @@
 /*global define, d3, alert, model: true */
 
-define(function () {
+define(function (require) {
+
+  var labConfig = require('lab.config');
 
   return function ModelController(modelUrl, modelOptions, interactivesController,
                                   Model, ModelContainer, ScriptingAPI, Benchmarks) {
@@ -125,7 +127,7 @@ define(function () {
     //
     // ------------------------------------------------------------
 
-    if (Lab.config.environment === 'production') {
+    if (labConfig.environment === 'production') {
       try {
         setupModel();
       } catch(e) {
