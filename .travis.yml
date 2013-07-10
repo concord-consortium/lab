@@ -16,11 +16,9 @@ notifications:
       - janikpiotrek@gmail.com
     on_success: change
     on_failure: always
+language: ruby
 rvm:
-  - "2.0.0-p247"
-language: node_js
-node_js:
-  - "0.10"
+  - "2.0.0"
 before_script:
   - cp config/config.sample.yml config/config.yml
   - bundle install --binstubs
