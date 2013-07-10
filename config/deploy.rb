@@ -86,8 +86,6 @@ namespace :deploy do
 
   desc "setup server"
   task :setup do
-    checkout
-    run "cd /var/www/app; bundle install --binstubs"
     clean_and_update_all
   end
 
