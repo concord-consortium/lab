@@ -20,6 +20,7 @@ language: ruby
 rvm:
   - "2.0.0"
 before_script:
+  - apt-get install libicu-dev
   - cp config/config.sample.yml config/config.yml
   - bundle install --binstubs
   - make clean; make
