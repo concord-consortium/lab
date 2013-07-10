@@ -74,7 +74,6 @@ define(function () {
         }());
 
     function labelTest(d) { return d.label ? this : null; }
-    function textureTest(d) { return d.texture ? this : null; }
 
     function transform(d) { return "translate(" + m2px(d.x || 0) + "," + m2pxInv(d.y || 0) + ")"; }
     function width(d) { return m2px(d.width) + E2D_DIM_SHIFT; }
@@ -82,6 +81,7 @@ define(function () {
     function rx(d) { return m2px(d.a * 0.5); }
     function ry(d) { return m2px(d.b * 0.5); }
     function display(d) { return d.visible ? undefined : "none"; }
+    function textureFill(d) { return d.texture ? "url(#texture-1)" : "none"; }
     function label(d) { return d.computeLabel(); }
     function dx() { return -this.getBBox().width / 2; }
     function fill(d) {
@@ -138,23 +138,28 @@ define(function () {
     }
 
     function generateTextures() {
-      g.append("defs").append("pattern")
+      var p = g.append("defs").append("pattern")
           .attr("id", "texture-1")
           .attr("patternUnits", "userSpaceOnUse")
           .attr("x", 0)
           .attr("y", 0)
-          .attr("width", 8)
-          .attr("height", 8)
-        .append("path")
-          .attr("d", "M0,0 L8,8");
+          .attr("width", 16)
+          .attr("height", 16);
+      p.append("path")
+          .attr("class", "e2d-texture-path-shadow")
+          .attr("d", "M0,0 L16,16 M-1,15 L1,17 M15,-1 L17,1");
+      p.append("path")
+          .attr("class", "e2d-texture-path")
+          .attr("d", "M0,0 L16,16");
     }
 
     function renderShape(shape, enter, update) {
       enter = enter.select(shapeTest[shape]);
       enter.append(shape)
           .attr("class", "e2d-part-shape");
-      enter.select(textureTest).append(shape)
-          .attr("fill", "url(#texture-1)");
+      enter.append(shape)
+          .attr("class", "e2d-part-shape-outline")
+          .attr("fill", textureFill);
 
       switch(shape) {
       case "rect":
@@ -177,10 +182,15 @@ define(function () {
     }
 
     function renderLabels(enter, update) {
-      enter.select(labelTest).append("text")
+      enter = enter.select(labelTest);
+      enter.append("text")
+          .attr("class", "e2d-part-label-shadow")
+          .attr("dy", ".35em");
+      enter.append("text")
           .attr("class", "e2d-part-label")
           .attr("dy", ".35em");
-      update.select("text")
+
+      update.selectAll(".e2d-part-label, .e2d-part-label-shadow")
           .text(label)
           .attr("dx", dx)
           .attr("x", xLabel)
