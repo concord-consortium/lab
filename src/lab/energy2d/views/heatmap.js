@@ -36,6 +36,9 @@ define(function (require) {
       grid_height,
       min_temp = 0,
       max_temp = 50,
+      
+      devicePixelRatio,
+      backingStoreRatio,
 
       //
       // Private methods.
@@ -48,9 +51,18 @@ define(function (require) {
         // we need to make the actual canvas half the requested size;
         // Google: window.devicePixelRatio webkitBackingStorePixelRatio
         // See: https://www.khronos.org/webgl/public-mailing-list/archives/1206/msg00193.html
-        if (window.devicePixelRatio > 1 &&
-            (canvas_ctx.webkitBackingStorePixelRatio > 1 || (typeof canvas_ctx.webkitBackingStorePixelRatio === "undefined"))) {
-          backing_scale = window.devicePixelRatio;
+        // and: http://www.html5rocks.com/en/tutorials/canvas/hidpi/
+        backing_scale = 1;
+        devicePixelRatio = window.devicePixelRatio || 1;
+        backingStoreRatio = canvas_ctx.webkitBackingStorePixelRatio ||
+                            canvas_ctx.mozBackingStorePixelRatio ||
+                            canvas_ctx.msBackingStorePixelRatio ||
+                            canvas_ctx.oBackingStorePixelRatio ||
+                            canvas_ctx.backingStorePixelRatio || 1;
+        if (devicePixelRatio > 1 && backingStoreRatio > 1) {
+          // backing_scale = devicePixelRatio;
+          // force it to 1
+          backing_scale = 1;
         } else {
           backing_scale = 1;
         }
