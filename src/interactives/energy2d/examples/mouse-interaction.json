@@ -14,6 +14,9 @@
       "onLoad": [
         "onClick('plot', function(x, y) {",
         "  set('temp', getTemperatureAt(x, y));",
+        "});",
+        "onClick('part', function(x, y, d, i) {",
+        "  var p = getPart(i); p.filled = true; p.color = '#' + ('000000' + Math.round(Math.random() * 0xffffff).toString(16)).substr(-6);",
         "});"
       ]
     }

@@ -196,7 +196,9 @@ define(function () {
 
         part = g.selectAll(".e2d-part").data(parts);
         partEnter = part.enter().append("g")
-            .attr("class", "e2d-part");
+            // "part" class is useful for onClick handles, so author
+            // can call: onClick("part", function () { ... }).
+            .attr("class", "e2d-part part");
 
         renderShape("rect", partEnter, part);
         renderShape("ellipse", partEnter, part);
