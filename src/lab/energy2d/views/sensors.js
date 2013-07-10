@@ -48,6 +48,22 @@ define(function () {
     function heatFluxReadingText(d) { return d.value.toFixed(1) + " W/m²"; }
     function heatFluxRot(d) { return "rotate(" + d.angle + ")"; }
 
+    function measuringPoint(g) {
+      g = g.append("g").attr("class", "e2d-measuring-point");
+      g.append("line")
+          .attr("x1", 0)
+          .attr("y1", "-0.8%")
+          .attr("x2", 0)
+          .attr("y2", "0.8%");
+      g.append("line")
+          .attr("x1", "-0.8%")
+          .attr("y1", 0)
+          .attr("x2", "0.8%")
+          .attr("y2", 0);
+      g.append("circle")
+          .attr("r", "0.8%");
+    }
+
     function renderThermometers(enter, update) {
       enter = enter.select(thermometerTest);
 
@@ -56,8 +72,12 @@ define(function () {
       // manipulating both Y coordinate and height of fill.
       enter.append("rect").attr("class", "e2d-thermometer-fill");
       enter.append("rect").attr("class", "e2d-thermometer-background");
-      enter.append("text").attr("class", "e2d-thermometer-reading");
+      enter.append("text").attr("class", "e2d-sensor-reading-shadow");
+      enter.append("text").attr("class", "e2d-sensor-reading");
+      enter.append("text").attr("class", "e2d-sensor-label-shadow");
       enter.append("text").attr("class", "e2d-sensor-label");
+
+      enter.call(measuringPoint);
 
       update = update.select(thermometerTest);
       update.select(".e2d-thermometer-fill")
@@ -70,12 +90,17 @@ define(function () {
         .attr("y", em(-0.5 * TH_H))
         .attr("width", em(TH_W))
         .attr("height", bgHeight);
-      thermReading = update.select(".e2d-thermometer-reading")
+
+      // Looks strange, but it propagates data from partent to labels.
+      // .selectAll() doesn't do it.
+      update.select(".e2d-sensor-reading");
+      update.select(".e2d-sensor-reading-shadow");
+      thermReading = update.selectAll(".e2d-sensor-reading, .e2d-sensor-reading-shadow")
         .text(readingText)
         .attr("y", em(-0.5 * TH_H))
         .attr("dy", "-.2em")
         .attr("dx", "-.7em");
-      update.select(".e2d-sensor-label")
+      update.selectAll(".e2d-sensor-label, .e2d-sensor-label-shadow")
         .text(labelText)
         .attr("dx", labelDx)
         .attr("dy", "1em")
@@ -85,6 +110,7 @@ define(function () {
     function renderAnemometer(enter, update) {
       enter = enter.select(anemometerTest);
 
+      enter.append("text").attr("class", "e2d-sensor-label-shadow");
       enter.append("text").attr("class", "e2d-sensor-label");
 
       var g = enter
@@ -114,7 +140,7 @@ define(function () {
       anemoRot = update.select(".e2d-anemometer-rot")
           .attr("transform", anemometerRotation);
 
-      update.select(".e2d-sensor-label")
+      update.selectAll(".e2d-sensor-label, .e2d-sensor-label-shadow")
         .text(labelText)
         .attr("dx", labelDx)
         .attr("dy", "0.7em")
@@ -142,17 +168,26 @@ define(function () {
         .append("path")
           .attr("class", "e2d-heatflux-pattern")
           .attr("d", "M0,0L1,1L2,0L3,1L4,0L5,1L6,0");
-      g.append("text").attr("class", "e2d-heatflux-reading");
+      g.append("text").attr("class", "e2d-sensor-reading-shadow");
+      g.append("text").attr("class", "e2d-sensor-reading");
+      g.append("text").attr("class", "e2d-sensor-label-shadow");
       g.append("text").attr("class", "e2d-sensor-label");
 
+      g.call(measuringPoint);
+
       update = update.select(heatFluxTest);
-      heatFluxReading = update.select(".e2d-heatflux-reading")
+
+      // Looks strange, but it propagates data from partent to labels.
+      // .selectAll() doesn't do it.
+      update.select(".e2d-sensor-reading");
+      update.select(".e2d-sensor-reading-shadow");
+      heatFluxReading = update.selectAll(".e2d-sensor-reading, .e2d-sensor-reading-shadow")
         .text(heatFluxReadingText)
         .attr("y", "-1%")
         .attr("dy", "-.2em")
         .attr("dx", "-1.8em");
 
-      update.select(".e2d-sensor-label")
+      update.selectAll(".e2d-sensor-label, .e2d-sensor-label-shadow")
         .text(labelText)
         .attr("dx", labelDx)
         .attr("dy", "0.9em")
