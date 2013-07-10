@@ -16,6 +16,8 @@ notifications:
       - janikpiotrek@gmail.com
     on_success: change
     on_failure: always
+rvm:
+  - "2.0.0-p247"
 language: node_js
 node_js:
   - "0.10"
