@@ -1,5 +1,4 @@
-/*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false, $: false*/
+/*global define: false, $: false*/
 
 // Heatmap view.
 //
@@ -23,7 +22,6 @@ define(function (require) {
 
       $heatmap_canvas,
       canvas_ctx,
-      backing_scale,
       canvas_width,
       canvas_height,
       hq_rendering,
@@ -36,9 +34,6 @@ define(function (require) {
       grid_height,
       min_temp = 0,
       max_temp = 50,
-      
-      devicePixelRatio,
-      backingStoreRatio,
 
       //
       // Private methods.
@@ -47,25 +42,6 @@ define(function (require) {
         $heatmap_canvas = $('<canvas />');
         $heatmap_canvas.attr('id', html_id || DEFAULT_ID);
         canvas_ctx = $heatmap_canvas[0].getContext('2d');
-        // If we are being rendered on a retina display with doubled pixels
-        // we need to make the actual canvas half the requested size;
-        // Google: window.devicePixelRatio webkitBackingStorePixelRatio
-        // See: https://www.khronos.org/webgl/public-mailing-list/archives/1206/msg00193.html
-        // and: http://www.html5rocks.com/en/tutorials/canvas/hidpi/
-        backing_scale = 1;
-        devicePixelRatio = window.devicePixelRatio || 1;
-        backingStoreRatio = canvas_ctx.webkitBackingStorePixelRatio ||
-                            canvas_ctx.mozBackingStorePixelRatio ||
-                            canvas_ctx.msBackingStorePixelRatio ||
-                            canvas_ctx.oBackingStorePixelRatio ||
-                            canvas_ctx.backingStorePixelRatio || 1;
-        if (devicePixelRatio > 1 && backingStoreRatio > 1) {
-          // backing_scale = devicePixelRatio;
-          // force it to 1
-          backing_scale = 1;
-        } else {
-          backing_scale = 1;
-        }
       },
 
       //
@@ -88,7 +64,7 @@ define(function (require) {
           canvas_ctx.fillStyle = "rgb(0,0,0)";
 
           scale = max_rgb_idx / Math.max(1, max_temp - min_temp);
-          image_data = canvas_ctx.getImageData(0, 0, grid_width / backing_scale, grid_height / backing_scale);
+          image_data = canvas_ctx.getImageData(0, 0, grid_width, grid_height);
           data = image_data.data;
 
           pix_index = 0;
@@ -150,8 +126,8 @@ define(function (require) {
         },
 
         setCanvasSize: function (w, h) {
-          $heatmap_canvas.attr('width',  w / backing_scale);
-          $heatmap_canvas.attr('height', h / backing_scale);
+          $heatmap_canvas.attr('width',  w);
+          $heatmap_canvas.attr('height', h);
         },
 
         setHQRenderingEnabled: function (v) {
