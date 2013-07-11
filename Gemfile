@@ -21,7 +21,7 @@ gem "gitlab-grit",        "~> 2.6.0"
 
 gem "mustache",           "~> 0.99.4"
 
-gem "shutterbug",         "~> 0.0.8"
+gem "shutterbug",         "~> 0.0.9"
 
 gem "rack-livereload",    "~> 0.3.15"
 
