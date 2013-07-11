@@ -1,6 +1,6 @@
 #energy2d-webgl-status
-  font-size: 0.8em
-  color: #EEE
+  font-size: 0.7em
+  color: #222
   padding: 0
 
   p, .component
@@ -11,10 +11,10 @@
 
   .happy
     font-weight: 600
-    color: #9FDF4F
+    color: #294900
   .sad
     font-weight: 600
-    color: #cc0063
+    color: #6D0035
 
   .extension
     margin-left: 0.5em
@@ -28,23 +28,31 @@
     opacity: 1
     cursor: pointer
 
+  .fakeCheckable
+    box-shadow: inset 2px 2px 2px rgba(0, 0, 0, 0.3)
+
 #status-wrapper
   padding: 0.3em 1.8em 0.1em 0.5em
   border-radius: 0 0 0.5em 0.5em
   box-shadow: rgba(0, 0, 0, 0.3) 0 0.2em 0.2em
-  background: rgba(110, 110, 110, 0.4)
+  background: rgba(255, 255, 255, 0.95)
 
 #hide-webgl-status
-  color: white
+  color: #222
   position: absolute
   top: 0.1em
   right: 0.35em
 
 #show-webgl-status
-  color: white
+  color: #fff
   position: absolute
   top: 0.25em
   left: 0.5em
+
+  &.happy
+    color: #8FFF00
+  &.sad
+    color: #FF0000
 
 // Parts
 .e2d-part-shape
