@@ -2,6 +2,10 @@ require 'rack-livereload'
 require 'shutterbug'
 
 require "./script/setup"
+
+ENVIRONMENT = CONFIG[:environment]
+puts "environment: #{ENVIRONMENT}"
+
 JNLP_APP_PATH = PUBLIC_PATH
 require './lib/rack/jnlp.rb'
 
@@ -14,8 +18,9 @@ use Rack::ContentLength
 use Shutterbug::Rackapp
 
 # see: https://github.com/johnbintz/rack-livereload
-if CONFIG[:environment] == 'development'
-  use Rack::LiveReload, :min_delay => 200
+if ENVIRONMENT == 'development'
+  puts "using rack-live-reload"
+  use Rack::LiveReload
 end
 
 Rack::Mime::MIME_TYPES.merge!({
