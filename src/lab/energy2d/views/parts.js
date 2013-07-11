@@ -80,7 +80,7 @@ define(function () {
     function height(d) { return m2px(d.height) + E2D_DIM_SHIFT; }
     function rx(d) { return m2px(d.a * 0.5); }
     function ry(d) { return m2px(d.b * 0.5); }
-    function display(d) { return d.visible ? undefined : "none"; }
+    function visibility(d) { return d.visible ? "visible" : "hidden"; }
     function textureFill(d) { return d.texture ? "url(#texture-1)" : "none"; }
     function label(d) { return d.computeLabel(); }
     function dx() { return -this.getBBox().width / 2; }
@@ -224,7 +224,7 @@ define(function () {
             .attr("transform", transform);
         part.select(".e2d-part-shape")
             .attr("fill", fill)
-            .style("display", display);
+            .style("visibility", visibility);
 
         part.exit().remove();
       },
