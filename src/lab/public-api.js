@@ -3,20 +3,22 @@
 define(function (require) {
   var version = require('lab.version'),
       config  = require('lab.config'),
-      structuredClone = require('common/structured-clone');
+      interactivesController  = require('common/controllers/interactives-controller'),
+      benchmark               = require('common/benchmark/benchmark'),
+      structuredClone         = require('common/structured-clone');
 
-  // Require public-api modules
-  // defining other global variables.
-  require('md2d/public-api');
-  require('solar-system/public-api');
+  // Require public-api modules.
   require('grapher/public-api');
   require('import-export/public-api');
 
-  // ###
   // Create or get 'Lab' global object (namespace).
   window.Lab = window.Lab || {};
-  // Export config and version modules.
   window.Lab.version = version;
   window.Lab.config = config;
   window.Lab.structuredClone = structuredClone;
+  // TODO: this should be under Lab namespace too!
+  window.controllers = {
+    interactivesController: interactivesController
+  };
+  window.benchmark = benchmark;
 });
