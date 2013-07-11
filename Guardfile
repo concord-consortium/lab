@@ -144,7 +144,7 @@ group :build do
 
   # , :api_version => '1.6', :port => '35728'
   guard 'livereload' do
-    watch(/^(public\/).+\.(css|js|html)/)
+    watch(/^(public\/).+\.(css|js|html|json)/)
   end
 
   guard 'markdown', :kram_ops => { :toc_levels => [2,3,4,5] } do
