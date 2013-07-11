@@ -91,6 +91,10 @@ src: \
 	public/application.js \
 	public/lab/lab.json
 
+# rebuild html files that use partials based on settings in project configuration
+public/interactives.html: config/config.yml
+public/embeddable.html: config/config.yml
+
 .PHONY: clean
 clean:
 	ruby script/check-development-dependencies.rb
