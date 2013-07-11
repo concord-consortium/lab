@@ -32,10 +32,6 @@ define(function () {
               d.y = m2pxInv.invert(d3.event.y);
             });
 
-    function thermometerTest(d) { return d.type === "thermometer" ? this : null; }
-    function anemometerTest(d) { return d.type === "anemometer" ? this : null; }
-    function heatFluxTest(d) { return d.type === "heatFlux" ? this : null; }
-
     function em(val) { return val + "%"; }
     function transform(d) { return "translate(" + m2px(d.x) + "," + m2pxInv(d.y) + ")"; }
     function labelDx() { return -this.getBBox().width / 2; }
@@ -64,22 +60,39 @@ define(function () {
           .attr("r", "0.8%");
     }
 
-    function renderThermometers(enter, update) {
-      enter = enter.select(thermometerTest);
+    function supportLabels(enter, update) {
+      enter.append("text").attr("class", "e2d-sensor-reading-shadow");
+      enter.append("text").attr("class", "e2d-sensor-reading");
+      enter.append("text").attr("class", "e2d-sensor-label-shadow");
+      enter.append("text").attr("class", "e2d-sensor-label");
+
+      // Looks strange, but it propagates data from parent to labels.
+      // .selectAll() doesn't do it. We can do it here, before rendering.
+      // If labels don't exist yet, enter will propagate data. If they
+      // exist, data binding will be updated.
+      update.select(".e2d-sensor-label");
+      update.select(".e2d-sensor-label-shadow");
+      update.select(".e2d-sensor-reading");
+      update.select(".e2d-sensor-reading-shadow");
+    }
+
+    function renderThermometers(data) {
+      var update = g.selectAll(".e2d-sensor.thermometer").data(data.filter(function (d) {
+            return d.type === "thermometer";
+          })),
+          enter = update.enter().append("g")
+              .attr("class", "e2d-sensor sensor thermometer")
+              .call(dragBehavior);
+      supportLabels(enter, update);
 
       // Note that background and fill are inverted (background covers
       // fill). It's easier to change only height of background instead of
       // manipulating both Y coordinate and height of fill.
       enter.append("rect").attr("class", "e2d-thermometer-fill");
       enter.append("rect").attr("class", "e2d-thermometer-background");
-      enter.append("text").attr("class", "e2d-sensor-reading-shadow");
-      enter.append("text").attr("class", "e2d-sensor-reading");
-      enter.append("text").attr("class", "e2d-sensor-label-shadow");
-      enter.append("text").attr("class", "e2d-sensor-label");
-
       enter.call(measuringPoint);
 
-      update = update.select(thermometerTest);
+      update.attr("transform", transform);
       update.select(".e2d-thermometer-fill")
         .attr("x", em(-0.5 * TH_W))
         .attr("y", em(-0.5 * TH_H))
@@ -100,15 +113,20 @@ define(function () {
         .attr("dx", labelDx)
         .attr("dy", "1em")
         .attr("y", em(0.5 * TH_H));
+
+      update.exit().remove();
     }
 
-    function renderAnemometer(enter, update) {
-      enter = enter.select(anemometerTest);
+    function renderAnemometer(data) {
+      var update = g.selectAll(".e2d-sensor.anemometer").data(data.filter(function (d) {
+            return d.type === "anemometer";
+          })),
+          enter = update.enter().append("g")
+              .attr("class", "e2d-sensor sensor anemometer")
+              .call(dragBehavior);
+      supportLabels(enter, update);
 
-      enter.append("text").attr("class", "e2d-sensor-label-shadow");
-      enter.append("text").attr("class", "e2d-sensor-label");
-
-      var g = enter
+      enter = enter
         .append("svg")
           .attr("class", "e2d-anemometer-shape")
           .attr("viewBox", "-50 -50 100 100")
@@ -119,19 +137,19 @@ define(function () {
         .append("g")
           .attr("class", "e2d-anemometer-rot");
 
-      g.append("path")
+      enter.append("path")
           .attr("d", "M-10,10 L0,50 L10,10 Z")
           .attr("transform", "rotate(0)");
-      g.append("path")
+      enter.append("path")
           .attr("d", "M-10,10 L0,50 L10,10 Z")
           .attr("transform", "rotate(120)");
-      g.append("path")
+      enter.append("path")
           .attr("d", "M-10,10 L0,50 L10,10 Z")
           .attr("transform", "rotate(240)");
-      g.append("circle")
+      enter.append("circle")
           .attr("r", 12);
 
-      update = update.select(anemometerTest);
+      update.attr("transform", transform);
       anemoRot = update.select(".e2d-anemometer-rot")
           .attr("transform", anemometerRotation);
       update.selectAll(".e2d-sensor-label, .e2d-sensor-label-shadow")
@@ -139,21 +157,27 @@ define(function () {
         .attr("dx", labelDx)
         .attr("dy", "0.7em")
         .attr("y", "3%");
+
+      update.exit().remove();
     }
 
-    function renderHeatFluxSensors(enter, update) {
-      enter = enter.select(heatFluxTest);
+    function renderHeatFluxSensors(data) {
+      var update = g.selectAll(".e2d-sensor.heatFlux").data(data.filter(function (d) {
+            return d.type === "heatFlux";
+          })),
+          enter = update.enter().append("g")
+              .attr("class", "e2d-sensor sensor heatFlux")
+              .call(dragBehavior);
 
-      var g = enter.append("g")
+      enter = enter.append("g")
           .attr("transform", heatFluxRot);
-
-      g.append("rect")
+      enter.append("rect")
           .attr("class", "e2d-heatflux-shape")
           .attr("x", "-3%")
           .attr("y", "-1%")
           .attr("width", "6%")
           .attr("height", "2%");
-      g.append("svg")
+      enter.append("svg")
           .attr("viewBox", "0 0 6 1")
           .attr("x", "-3%")
           .attr("y", "-1%")
@@ -162,14 +186,11 @@ define(function () {
         .append("path")
           .attr("class", "e2d-heatflux-pattern")
           .attr("d", "M0,0L1,1L2,0L3,1L4,0L5,1L6,0");
-      g.append("text").attr("class", "e2d-sensor-reading-shadow");
-      g.append("text").attr("class", "e2d-sensor-reading");
-      g.append("text").attr("class", "e2d-sensor-label-shadow");
-      g.append("text").attr("class", "e2d-sensor-label");
+      enter.call(measuringPoint);
 
-      g.call(measuringPoint);
+      supportLabels(enter, update);
 
-      update = update.select(heatFluxTest);
+      update.attr("transform", transform);
       heatFluxReading = update.selectAll(".e2d-sensor-reading, .e2d-sensor-reading-shadow")
         .text(heatFluxReadingText)
         .attr("y", "-1%")
@@ -180,6 +201,8 @@ define(function () {
         .attr("dx", labelDx)
         .attr("dy", "0.9em")
         .attr("y", "1%");
+
+      update.exit().remove();
     }
 
     // Public API.
@@ -187,41 +210,16 @@ define(function () {
       update: function () {
         thermBg.attr("height", bgHeight);
         thermReading.text(readingText);
-
         anemoRot.attr("transform", anemometerRotation);
-
         heatFluxReading.text(heatFluxReadingText);
       },
 
       renderSensors: function () {
         if (!sensors) return;
 
-        var sensor, sensorEnter;
-
-        sensor = g.selectAll(".e2d-sensor").data(sensors);
-        sensorEnter = sensor.enter().append("g")
-            // "sensor" class can be useful for onClick handlers.
-            .attr("class", "e2d-sensor sensor");
-
-
-        // Looks strange, but it propagates data from parent to labels.
-        // .selectAll() doesn't do it. We can do it here, before rendering.
-        // If labels don't exist yet, enter will propagate data. If they
-        // exist, data binding will be updated.
-        sensor.select(".e2d-sensor-label");
-        sensor.select(".e2d-sensor-label-shadow");
-        sensor.select(".e2d-sensor-reading");
-        sensor.select(".e2d-sensor-reading-shadow");
-
-        renderThermometers(sensorEnter, sensor);
-        renderAnemometer(sensorEnter, sensor);
-        renderHeatFluxSensors(sensorEnter, sensor);
-
-        sensorEnter.call(dragBehavior);
-
-        sensor.attr("transform", transform);
-
-        sensor.exit().remove();
+        renderThermometers(sensors);
+        renderAnemometer(sensors);
+        renderHeatFluxSensors(sensors);
       },
 
       bindSensorsArray: function (newSensors) {

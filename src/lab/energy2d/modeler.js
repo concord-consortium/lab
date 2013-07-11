@@ -66,7 +66,100 @@ define(function (require) {
         sensors = [],
         anemometers = [],
 
-        cache = {};
+        viewModel = {
+          parts: [],
+          sensors: []
+        },
+
+        updatePartsViewModel = (function () {
+          function PartWrapper(rawPart) {
+            Object.defineProperty(this, '_rawPart', {
+              enumerable: false,
+              get: function () {
+                return rawPart;
+              }
+            });
+          }
+          Object.keys(metadata.part).forEach(function (key) {
+            Object.defineProperty(PartWrapper.prototype, key, {
+              enumerable: true,
+              get: function () {
+                return this._rawPart[key];
+              },
+              set: function (v) {
+                var WebGLOrg = model.properties.use_WebGL;
+                // This will update CPU array.
+                model.properties.use_WebGL = false;
+
+                propertySupport.invalidatingChangePreHook();
+
+                // Update raw part object.
+                this._rawPart[key] = validator.validateSingleProperty(metadata.part[key], key, v);
+                // Update core model arrays based on part's properties.
+                coreModel.partsChanged(this._rawPart, key);
+
+                propertySupport.invalidatingChangePostHook();
+
+                // Restore original WebGL option value. It will
+                // copy CPU arrays to GPU in case of need.
+                model.properties.use_WebGL = WebGLOrg;
+                dispatch.partsChanged();
+              }
+            });
+          });
+          PartWrapper.prototype.computeLabel = function() {
+            return this._rawPart.getLabel();
+          };
+
+          return function () {
+            var rawParts = coreModel.getPartsArray(),
+                viewParts = viewModel.parts,
+                i, len;
+            viewParts.length = 0;
+            for (i = 0, len = rawParts.length; i < len; i++) {
+              viewParts.push(new PartWrapper(rawParts[i]));
+            }
+          };
+        }()),
+
+        updateSensorViewModel = (function () {
+          function SensorWrapper(rawObj) {
+            Object.defineProperty(this, '_rawObj', {
+              enumerable: false,
+              get: function () {
+                return rawObj;
+              }
+            });
+          }
+          var constraint = {
+            x: function (v) { return Math.max(0, Math.min(model.properties.model_width, v)); },
+            y: function (v) { return Math.max(0, Math.min(model.properties.model_height, v)); }
+          };
+          Object.keys(metadata.sensor).forEach(function (key) {
+            Object.defineProperty(SensorWrapper.prototype, key, {
+              enumerable: true,
+              get: function () {
+                return this._rawObj[key];
+              },
+              set: function (v) {
+                propertySupport.invalidatingChangePreHook();
+                v = constraint[key] ? constraint[key](v) : v;
+                this._rawObj[key] = validator.validateSingleProperty(metadata.sensor[key], key, v);
+                propertySupport.invalidatingChangePostHook();
+                dispatch.sensorsChanged();
+              }
+            });
+          });
+
+          return function () {
+            var viewSensors = viewModel.sensors,
+                i, len;
+            viewSensors.length = 0;
+            for (i = 0, len = sensors.length; i < len; i++) {
+              viewSensors.push(new SensorWrapper(sensors[i]));
+            }
+          };
+        }());
 
     function setWebGLEnabled(v) {
       try {
@@ -216,7 +309,7 @@ define(function (require) {
         propertySupport.invalidatingChangePreHook();
 
         coreModel.addPart(part);
-        cache.parts = null;
+        updatePartsViewModel();
 
         propertySupport.invalidatingChangePostHook();
 
@@ -235,7 +328,7 @@ define(function (require) {
         propertySupport.invalidatingChangePreHook();
 
         coreModel.removePart(i);
-        cache.parts = null;
+        updatePartsViewModel();
 
         propertySupport.invalidatingChangePostHook();
 
@@ -297,101 +390,13 @@ define(function (require) {
         return coreModel.getPhotonsArray();
       },
 
-      getPartsArray: (function () {
-        function PartWrapper(rawPart) {
-          Object.defineProperty(this, '_rawPart', {
-            enumerable: false,
-            get: function () {
-              return rawPart;
-            }
-          });
-        }
-        Object.keys(metadata.part).forEach(function (key) {
-          Object.defineProperty(PartWrapper.prototype, key, {
-            enumerable: true,
-            get: function () {
-              return this._rawPart[key];
-            },
-            set: function (v) {
-              var WebGLOrg = model.properties.use_WebGL;
-              // This will update CPU array.
-              model.properties.use_WebGL = false;
+      getPartsArray: function () {
+        return viewModel.parts;
+      },
 
-              propertySupport.invalidatingChangePreHook();
-
-              // Update raw part object.
-              this._rawPart[key] = validator.validateSingleProperty(metadata.part[key], key, v);
-              // Update core model arrays based on part's properties.
-              coreModel.partsChanged(this._rawPart, key);
-
-              propertySupport.invalidatingChangePostHook();
-
-              // Restore original WebGL option value. It will
-              // copy CPU arrays to GPU in case of need.
-              model.properties.use_WebGL = WebGLOrg;
-              dispatch.partsChanged();
-            }
-          });
-        });
-        PartWrapper.prototype.computeLabel = function() {
-          return this._rawPart.getLabel();
-        };
-
-        return function () {
-          if (!cache.parts) {
-            var rawParts = coreModel.getPartsArray(),
-                result = [],
-                i, len;
-            for (i = 0, len = rawParts.length; i < len; i++) {
-              result.push(new PartWrapper(rawParts[i]));
-            }
-            cache.parts = result;
-          }
-          return cache.parts;
-        };
-      }()),
-
-      getSensorsArray: (function () {
-        function SensorWrapper(rawObj) {
-          Object.defineProperty(this, '_rawObj', {
-            enumerable: false,
-            get: function () {
-              return rawObj;
-            }
-          });
-        }
-        var constraint = {
-          x: function (v) { return Math.max(0, Math.min(model.properties.model_width, v)); },
-          y: function (v) { return Math.max(0, Math.min(model.properties.model_height, v)); }
-        };
-        Object.keys(metadata.sensor).forEach(function (key) {
-          Object.defineProperty(SensorWrapper.prototype, key, {
-            enumerable: true,
-            get: function () {
-              return this._rawObj[key];
-            },
-            set: function (v) {
-              propertySupport.invalidatingChangePreHook();
-              v = constraint[key] ? constraint[key](v) : v;
-              this._rawObj[key] = validator.validateSingleProperty(metadata.sensor[key], key, v);
-              propertySupport.invalidatingChangePostHook();
-              dispatch.sensorsChanged();
-            }
-          });
-        });
-
-        return function () {
-          if (!cache.sensors) {
-            var result = [],
-                i, len;
-            for (i = 0, len = sensors.length; i < len; i++) {
-              result.push(new SensorWrapper(sensors[i]));
-            }
-            cache.sensors = result;
-          }
-          return cache.sensors;
-        };
-      }()),
+      getSensorsArray: function () {
+        return viewModel.sensors;
+      },
 
       setPerformanceTools: function () {
         return coreModel.setPerformanceTools();
@@ -413,6 +418,9 @@ define(function (require) {
       if (initialProperties.sensors) {
         createSensors(initialProperties.sensors);
       }
+
+      updatePartsViewModel();
+      updateSensorViewModel();
 
       // Temporal workaround. In fact width and height should
       // be outputs based on min / max.
