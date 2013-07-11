@@ -27,7 +27,7 @@ define(function(require) {
 
         beforeSetup = true;
 
-    function setAsNextLayer (view) {
+    function setAsNextLayer(view) {
       var $layer = view.getHTMLElement();
 
       $layer.css('width', '100%');
@@ -58,8 +58,9 @@ define(function(require) {
       // TODO: check if new version (30+?) fixes that.
     }
 
-    function createEnergy2DScene () {
-      var props = model.properties;
+    function createEnergy2DScene() {
+      var props = model.properties,
+          vp;
 
       $canvasCont.empty();
       cavasCount = 0;
@@ -83,6 +84,18 @@ define(function(require) {
       photons_view = new PhotonsView();
       setAsNextLayer(photons_view);
 
+      // SVG views.
+      vp = SVGContainer.viewport;
+      vp.selectAll(".parts-layer").remove();
+      parts_view = new PartsView(SVGContainer, vp.append("g").attr("class", "parts-layer"));
+      vp.selectAll(".sensors-layer").remove();
+      sensors_view = new SensorsView(SVGContainer, vp.append("g").attr("class", "sensors-layer"));
+
+      // It must be called after attaching to parent node.
+      heatmap_view.resize();
+      velocity_view.resize();
+      photons_view.resize();
+
       // Bind models to freshly created views.
       if (model.isWebGLActive()) {
         heatmap_view.bindHeatmapTexture(model.getTemperatureTexture());
@@ -91,18 +104,18 @@ define(function(require) {
         heatmap_view.bindHeatmap(model.getTemperatureArray(), props.grid_width, props.grid_height);
         velocity_view.bindVectormap(model.getUVelocityArray(), model.getVVelocityArray(), props.grid_width, props.grid_height, 25);
       }
-      parts_view.bindPartsArray(model.getPartsArray(), props.model_width, props.model_height);
+      parts_view.bindPartsArray(model.getPartsArray());
       sensors_view.bindSensorsArray(model.getSensorsArray());
       photons_view.bindPhotonsArray(model.getPhotonsArray(), props.model_width, props.model_height);
       webgl_status.bindModel(model);
 
 
-      // WebGL status also doesn't change during typical 'tick', it also
+      // WebGL status doesn't change during typical 'tick', it also
       // doesn't need to react to resize event, as it's a dimple DIV that uses
       // % to define its dimensions.
       webgl_status.render();
-      // Call this to setup dimensions of various views.
-      api.resize();
+      parts_view.renderParts();
+      sensors_view.renderSensors();
     }
 
     function setVisOptions () {
@@ -119,7 +132,22 @@ define(function(require) {
         return width * model.properties.grid_height / model.properties.grid_width;
       },
 
-      resize: function() {
+      setup: function () {
+        beforeSetup = false;
+        createEnergy2DScene();
+        setVisOptions();
+        api.update();
+      },
+
+      update: function () {
+        if (beforeSetup) return;
+        heatmap_view.renderHeatmap();
+        velocity_view.renderVectormap();
+        photons_view.renderPhotons();
+        sensors_view.update();
+      },
+
+      resize: function () {
         // Ignore all resize() callbacks if view isn't already set up.
         if (beforeSetup) return;
         heatmap_view.resize();
@@ -130,20 +158,7 @@ define(function(require) {
         api.update();
       },
 
-      reset: function() {},
-
-      setup: function () {
-        beforeSetup = false;
-        createEnergy2DScene();
-        setVisOptions();
-      },
-
-      update: function () {
-        heatmap_view.renderHeatmap();
-        velocity_view.renderVectormap();
-        photons_view.renderPhotons();
-        sensors_view.update();
-      },
+      reset: function () {},
 
       setFocus: function () {
         if (model.get("enableKeyboardHandlers")) {
@@ -159,21 +174,24 @@ define(function(require) {
           api.update();
         });
         model.addPropertiesListener(["color_palette_type", "velocity",
-                                     "minimum_temperature", "maximum_temperature"], function() {
+                                     "minimum_temperature", "maximum_temperature"], function () {
           setVisOptions();
           api.update();
         });
         model.on('tick.view-update', api.update);
-        model.on('partsChanged.view-update', parts_view.renderParts);
-        model.on('sensorsChanged.view-update', sensors_view.renderSensors);
+        model.on('partsChanged.view-update', function () {
+          if (parts_view) {
+            parts_view.bindPartsArray(model.getPartsArray());
+            parts_view.renderParts();
+          }
+        });
+        model.on('sensorsChanged.view-update', function () {
+          if (sensors_view) sensors_view.renderSensors();
+        });
       }
     };
 
     (function() {
-      var vp = SVGContainer.viewport;
-      parts_view = new PartsView(SVGContainer, vp.append("g").attr("class", "parts-layer"));
-      sensors_view = new SensorsView(SVGContainer, vp.append("g").attr("class", "sensors-layer"));
-
       SVGContainer.$el.append($canvasCont);
       setPos($canvasCont, -1); // underneath SVG view.
       SVGContainer.$el.append($status);

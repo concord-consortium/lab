@@ -73,8 +73,6 @@ define(function () {
               });
         }());
 
-    function labelTest(d) { return d.label ? this : null; }
-
     function transform(d) { return "translate(" + m2px(d.x || 0) + "," + m2pxInv(d.y || 0) + ")"; }
     function width(d) { return m2px(d.width) + E2D_DIM_SHIFT; }
     function height(d) { return m2px(d.height) + E2D_DIM_SHIFT; }
@@ -164,6 +162,10 @@ define(function () {
           .attr("class", "e2d-part-shape-outline")
           .attr("fill", textureFill);
 
+      // Propagate data.
+      update.select(".e2d-part-shape");
+      update.select(".e2d-part-shape-outline");
+
       switch(shape) {
       case "rect":
         update.selectAll("rect")
@@ -185,7 +187,6 @@ define(function () {
     }
 
     function renderLabels(enter, update) {
-      enter = enter.select(labelTest);
       enter.append("text")
           .attr("class", "e2d-part-label-shadow")
           .attr("dy", ".35em");
@@ -193,6 +194,9 @@ define(function () {
           .attr("class", "e2d-part-label")
           .attr("dy", ".35em");
 
+      // Propagate data.
+      update.select(".e2d-part-label");
+      update.select(".e2d-part-label-shadow");
       update.selectAll(".e2d-part-label, .e2d-part-label-shadow")
           .text(label)
           .attr("dx", dx)

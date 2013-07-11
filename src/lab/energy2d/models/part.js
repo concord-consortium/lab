@@ -4,7 +4,6 @@
 define(function (require, exports, module) {
   'use strict';
   var
-    default_config = require('energy2d/models/default-config'),
     constants      = require('energy2d/models/constants'),
     hypot          = require('energy2d/models/helpers').hypot,
     Photon         = require('energy2d/models/photon').Photon,
@@ -28,11 +27,7 @@ define(function (require, exports, module) {
     Part = exports.Part = function (options) {
       var count, i, s;
 
-      options = default_config.fillWithDefaultValues(options, default_config.DEFAULT_VALUES.part);
-
       // Validate and process options.
-
-      // Check shape
       if (options.rectangle) {
         s = this.rectangle = options.rectangle;
         this.shape = new Rectangle(s.x, s.y, s.width, s.height);
@@ -103,12 +98,8 @@ define(function (require, exports, module) {
         return this.shape[key];
       },
       set: function (v) {
-        if (typeof this.shape[key] !== "undefined") {
-          // Update only properties which were present in shape. So if user
-          // tries to set "a" property of rectangle, it will be ignored.
-          this.shape[key] = v;
-          this.polygon_cache = undefined;
-        }
+        this.shape[key] = v;
+        this.polygon_cache = undefined;
       }
     });
   });

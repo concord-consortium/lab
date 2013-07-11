@@ -260,7 +260,9 @@ define(function(require) {
         // (when it has constant temperature) or gray color otherwise.
         defaultValue: "auto"
       },
-      label: {},
+      label: {
+        defaultValue: ""
+      },
       texture: {
       // Texture can be undefined.
       // However, its desired form is (contains example values):
@@ -295,6 +297,7 @@ define(function(require) {
       },
       angle: {
         // Optional, defined only for heat flux sensors.
+        defaultValue: 0,
         immutable: true
       },
       label: {

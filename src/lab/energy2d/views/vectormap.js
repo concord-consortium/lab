@@ -145,7 +145,6 @@ define(function () {
           canvas_height = $vectormap_canvas.height();
           $vectormap_canvas.attr('width', canvas_width);
           $vectormap_canvas.attr('height', canvas_height);
-          vectormap_view.renderVectormap();
         }
       };
 

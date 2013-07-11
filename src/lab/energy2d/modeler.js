@@ -96,6 +96,12 @@ define(function (require) {
       return false;
     }
 
+    function validateParts(partsArray) {
+      partsArray.forEach(function (v, i, a) {
+        a[i] = validator.validateCompleteness(metadata.part, v);
+      });
+    }
+
     function createSensors(sensorsSpec) {
       var sensorValue = {
             thermometer: function () {
@@ -229,6 +235,7 @@ define(function (require) {
         propertySupport.invalidatingChangePreHook();
 
         coreModel.removePart(i);
+        cache.parts = null;
 
         propertySupport.invalidatingChangePostHook();
 
@@ -394,6 +401,11 @@ define(function (require) {
     (function () {
       labModelerMixin.mixInto(model);
       dispatch.addEventTypes("tick", "partsChanged", "sensorsChanged");
+
+      // Validate parts before passing options to coreModel.
+      if (model.properties.structure && model.properties.structure.part) {
+        validateParts(model.properties.structure.part);
+      }
 
       coreModel = coremodel.makeCoreModel(model.properties);
       setWebGLEnabled(model.properties.use_WebGL);

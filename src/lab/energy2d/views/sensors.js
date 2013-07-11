@@ -90,11 +90,6 @@ define(function () {
         .attr("y", em(-0.5 * TH_H))
         .attr("width", em(TH_W))
         .attr("height", bgHeight);
-
-      // Looks strange, but it propagates data from partent to labels.
-      // .selectAll() doesn't do it.
-      update.select(".e2d-sensor-reading");
-      update.select(".e2d-sensor-reading-shadow");
       thermReading = update.selectAll(".e2d-sensor-reading, .e2d-sensor-reading-shadow")
         .text(readingText)
         .attr("y", em(-0.5 * TH_H))
@@ -139,7 +134,6 @@ define(function () {
       update = update.select(anemometerTest);
       anemoRot = update.select(".e2d-anemometer-rot")
           .attr("transform", anemometerRotation);
-
       update.selectAll(".e2d-sensor-label, .e2d-sensor-label-shadow")
         .text(labelText)
         .attr("dx", labelDx)
@@ -176,17 +170,11 @@ define(function () {
       g.call(measuringPoint);
 
       update = update.select(heatFluxTest);
-
-      // Looks strange, but it propagates data from partent to labels.
-      // .selectAll() doesn't do it.
-      update.select(".e2d-sensor-reading");
-      update.select(".e2d-sensor-reading-shadow");
       heatFluxReading = update.selectAll(".e2d-sensor-reading, .e2d-sensor-reading-shadow")
         .text(heatFluxReadingText)
         .attr("y", "-1%")
         .attr("dy", "-.2em")
         .attr("dx", "-1.8em");
-
       update.selectAll(".e2d-sensor-label, .e2d-sensor-label-shadow")
         .text(labelText)
         .attr("dx", labelDx)
@@ -214,6 +202,16 @@ define(function () {
         sensorEnter = sensor.enter().append("g")
             // "sensor" class can be useful for onClick handlers.
             .attr("class", "e2d-sensor sensor");
+
+
+        // Looks strange, but it propagates data from parent to labels.
+        // .selectAll() doesn't do it. We can do it here, before rendering.
+        // If labels don't exist yet, enter will propagate data. If they
+        // exist, data binding will be updated.
+        sensor.select(".e2d-sensor-label");
+        sensor.select(".e2d-sensor-label-shadow");
+        sensor.select(".e2d-sensor-reading");
+        sensor.select(".e2d-sensor-reading-shadow");
 
         renderThermometers(sensorEnter, sensor);
         renderAnemometer(sensorEnter, sensor);
