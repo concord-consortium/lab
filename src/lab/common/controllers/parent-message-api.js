@@ -1,7 +1,8 @@
 /*global define:false*/
 
 define(function(require) {
-  var parentMessageController = require('common/parent-message-controller');
+  var parentMessageController = require('common/parent-message-controller'),
+      benchmark               = require('common/benchmark/benchmark');
 
   // Defines the default postMessage API used to communicate with parent window (i.e., an embedder)
   return function(model, view, controller) {

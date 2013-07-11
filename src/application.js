@@ -148,7 +148,7 @@ AUTHORING = false;
     interactivesPromise.fail(function(){
       // TODO: need a better way to display errors
       var mesg = "Failed to retrieve interactives.json";
-      if (benchmark.what_browser().browser === "Chrome") {
+      if (Lab.benchmark.what_browser().browser === "Chrome") {
         mesg += "\n";
         mesg += "\nNote: Chrome prevents loading content directly";
         mesg += "\nfrom the file system.";
@@ -325,7 +325,7 @@ AUTHORING = false;
     } else {
       // On all the other versions of this page we need to create an
       // instance of the Interactive now.
-      controller = controllers.interactivesController(interactive, '#interactive-container');
+      controller = new Lab.InteractivesController(interactive, '#interactive-container');
       if (_.isArray(applicationCallbacks) && applicationCallbacks.length > 0) {
         controller.on("modelLoaded", applicationCallbacks);
       }
@@ -1263,7 +1263,7 @@ AUTHORING = false;
 
       if(isFullPage()) {
         modelController = controller.getModelController();
-        benchmark.run(modelController.benchmarks,
+        Lab.benchmark.run(modelController.benchmarks,
           benchmarksTable,
           function(results) { console.log(results); },
           function() { $runBenchmarksButton.attr('disabled', true); },
@@ -1271,7 +1271,7 @@ AUTHORING = false;
       } else {
         iframePhone.post({ type:'runBenchmarks' });
         iframePhone.addListener('returnBenchmarks', function(message) {
-          benchmark.renderToTable(benchmarksTable, message.benchmarks, message.results);
+          Lab.benchmark.renderToTable(benchmarksTable, message.benchmarks, message.results);
         });
       }
     });

@@ -84,7 +84,7 @@ define(function (require) {
         'playback':      PlaybackController
       };
 
-  return function interactivesController(interactive, viewSelector) {
+  return function InteractivesController(interactive, viewSelector) {
 
     var controller = {},
         modelController,

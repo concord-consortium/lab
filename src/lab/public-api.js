@@ -3,7 +3,7 @@
 define(function (require) {
   var version = require('lab.version'),
       config  = require('lab.config'),
-      interactivesController  = require('common/controllers/interactives-controller'),
+      InteractivesController  = require('common/controllers/interactives-controller'),
       benchmark               = require('common/benchmark/benchmark'),
       structuredClone         = require('common/structured-clone');
 
@@ -16,9 +16,6 @@ define(function (require) {
   window.Lab.version = version;
   window.Lab.config = config;
   window.Lab.structuredClone = structuredClone;
-  // TODO: this should be under Lab namespace too!
-  window.controllers = {
-    interactivesController: interactivesController
-  };
-  window.benchmark = benchmark;
+  window.Lab.InteractivesController = InteractivesController;
+  window.Lab.benchmark = benchmark;
 });
