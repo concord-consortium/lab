@@ -85,7 +85,6 @@ define(function (require) {
           canvas_height = $heatmap_canvas.height();
           $heatmap_canvas.attr('width', canvas_width);
           $heatmap_canvas.attr('height', canvas_height);
-          heatmap_view.renderHeatmap();
         },
 
         // Bind heatmap to the view.

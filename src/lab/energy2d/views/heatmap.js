@@ -22,9 +22,6 @@ define(function (require) {
 
       $heatmap_canvas,
       canvas_ctx,
-      canvas_width,
-      canvas_height,
-      hq_rendering,
 
       rgb_array,
       max_rgb_idx,
@@ -111,28 +108,16 @@ define(function (require) {
           return $heatmap_canvas;
         },
 
-        resize: function () {},
-
-        updateCanvasSize: function () {
-          canvas_width = $heatmap_canvas.width();
-          canvas_height = $heatmap_canvas.height();
-          if (hq_rendering) {
-            $heatmap_canvas.attr('width', canvas_width);
-            $heatmap_canvas.attr('height', canvas_height);
-            heatmap_view.renderHeatmap();
-          } else {
-            this.setCanvasSize(grid_width, grid_height);
-          }
+        resize: function () {
+          // Don't do anything, canvas width and height depend on  grid
+          // dimensions, not CSS dimensions of canvas itself.
+          // If grid is 100x100, but CSS dimensions are 500x500, CSS scaling
+          // will be used.
         },
 
         setCanvasSize: function (w, h) {
           $heatmap_canvas.attr('width',  w);
           $heatmap_canvas.attr('height', h);
-        },
-
-        setHQRenderingEnabled: function (v) {
-          hq_rendering = v;
-          this.updateCanvasSize();
         },
 
         setMinTemperature: function (v) {

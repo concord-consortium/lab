@@ -1,5 +1,4 @@
-/*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false, $: false*/
+/*global define: false, $: false*/
 
 // Vectormap WebGL view.
 //
@@ -131,7 +130,6 @@ define(function (require) {
           render_program.uniforms({
             scale: [2.0 / canvas_width, 2.0 / canvas_height]
           });
-          vectormap_view.renderVectormap();
         },
 
         // Bind vectormap to the view.

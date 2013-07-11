@@ -96,11 +96,13 @@ define(function(require) {
       photons_view.bindPhotonsArray(model.getPhotonsArray(), props.model_width, props.model_height);
       webgl_status.bindModel(model);
 
-      // It's enough to render parts only once, they don't move.
-      parts_view.renderParts();
-      sensors_view.renderSensors();
-      // WebGL status also doesn't change during typical 'tick'.
+
+      // WebGL status also doesn't change during typical 'tick', it also
+      // doesn't need to react to resize event, as it's a dimple DIV that uses
+      // % to define its dimensions.
       webgl_status.render();
+      // Call this to setup dimensions of various views.
+      api.resize();
     }
 
     function setVisOptions () {
@@ -125,15 +127,15 @@ define(function(require) {
         photons_view.resize();
         parts_view.renderParts();
         sensors_view.renderSensors();
+        api.update();
       },
 
       reset: function() {},
 
       setup: function () {
+        beforeSetup = false;
         createEnergy2DScene();
         setVisOptions();
-        api.update();
-        beforeSetup = false;
       },
 
       update: function () {

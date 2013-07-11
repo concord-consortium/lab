@@ -1,5 +1,4 @@
-/*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false, $: false*/
+/*global define: false, $: false*/
 
 // Energy2D photons view.
 //
@@ -96,10 +95,7 @@ define(function () {
           scale_y = canvas_height / scene_height;
           $photons_canvas.attr('width', canvas_width);
           $photons_canvas.attr('height', canvas_height);
-
           setCanvasStyle();
-
-          photons_view.renderPhotons();
         }
       };
 
