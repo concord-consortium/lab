@@ -339,6 +339,9 @@ define(function (require) {
         dispatch.partsChanged();
       },
 
+      stepCounter: function() {
+        return coreModel.getIndexOfStep();
+      },
       getTime: function () {
         return model.properties.timeStep * coreModel.getIndexOfStep();
       },
