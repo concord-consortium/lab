@@ -1,0 +1,109 @@
+{
+  "type": "energy2d",
+  "use_WebGL": false,
+  "grid_width": 100,
+  "grid_height": 100,
+  "model_width": 1,
+  "model_height": 1,
+  "timeStep": 0.05,
+  "timeStepsPerTick": 4,
+  "ticksPerGPUSync": 30,
+  "convective": false,
+  "background_temperature": 0,
+  "background_conductivity": 1e-9,
+  "background_specific_heat": 1,
+  "background_density": 1.204,
+  "background_viscosity": 0.00001568,
+  "thermal_buoyancy": 0.00025,
+  "buoyancy_approximation": 1,
+  "boundary": {
+    "type": "flux",
+    "upper": 0,
+    "lower": 0,
+    "left": 0,
+    "right": 0
+  },
+  "sunny": false,
+  "sun_angle": 1.5707964,
+  "solar_power_density": 2000,
+  "solar_ray_count": 24,
+  "solar_ray_speed": 0.1,
+  "photon_emission_interval": 20,
+  "viewOptions": {
+    "showClock": true,
+    "controlButtons": "play_reset",
+    "color_palette_type": 0,
+    "velocity": false,
+    "minimum_temperature": 0,
+    "maximum_temperature": 50,
+    "enableKeyboardHandlers": true
+  },
+  "structure": {
+    "part": [
+      {
+        "shapeType": "rectangle",
+        "x": 0.19999999,
+        "y": 0.3,
+        "width": 0.3,
+        "height": 0.4,
+        "thermal_conductivity": 1,
+        "specific_heat": 1000,
+        "density": 1.204,
+        "transmission": 0,
+        "reflection": 0,
+        "absorption": 1,
+        "emissivity": 0,
+        "temperature": 40,
+        "constant_temperature": false,
+        "power": 0,
+        "wind_speed": 0,
+        "wind_angle": 0,
+        "visible": true,
+        "filled": false,
+        "color": "auto",
+        "label": "",
+        "texture": false,
+        "draggable": false
+      },
+      {
+        "shapeType": "rectangle",
+        "x": 0.49999997,
+        "y": 0.3,
+        "width": 0.3,
+        "height": 0.4,
+        "thermal_conductivity": 1,
+        "specific_heat": 1000,
+        "density": 1.204,
+        "transmission": 0,
+        "reflection": 0,
+        "absorption": 1,
+        "emissivity": 0,
+        "temperature": 10,
+        "constant_temperature": false,
+        "power": 0,
+        "wind_speed": 0,
+        "wind_angle": 0,
+        "visible": true,
+        "filled": false,
+        "color": "auto",
+        "label": "",
+        "texture": false,
+        "draggable": false
+      }
+    ]
+  },
+  "sensors": [
+    {
+      "type": "thermometer",
+      "x": 0.65,
+      "y": 0.5,
+      "label": "T2"
+    },
+    {
+      "type": "thermometer",
+      "x": 0.35,
+      "y": 0.5,
+      "label": "T1"
+    }
+  ]
+}
