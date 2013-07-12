@@ -79,20 +79,15 @@ suite.addBatch({
     },
     'created in context of the simulation model, which is emmisive': {
       topic: function () {
-        var mainProperties = validator.validateCompleteness(metadata.mainProperties, {
-          structure: {
-            part: [
-              {
-                rectangle: {
-                  x: 4, y: 4, width: 2, height: 2
-                },
-                emissivity: 1,
-                temperature: 50 // greater than MINIMAL_RADIATING_TEMPERATURE = 20
-              }
-            ]
-          }
-        });
-        return new core.makeCoreModel(mainProperties);
+        var mainProperties = validator.validateCompleteness(metadata.mainProperties, {}),
+            part = validator.validateCompleteness(metadata.part, {
+              rectangle: {
+                x: 4, y: 4, width: 2, height: 2
+              },
+              emissivity: 1,
+              temperature: 50 // greater than MINIMAL_RADIATING_TEMPERATURE = 20
+            });
+        return new core.makeCoreModel(mainProperties, [part]);
       },
       'should radiate': function (model) {
         var part = model.getPartsArray()[0];
