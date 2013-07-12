@@ -16,7 +16,7 @@ define(function (require) {
 
   return function WebGLStatusView(html_id) {
     var
-      DEFAULT_ID = 'energy2d-webgl-status',
+      DEFAULT_ID = 'e2d-webgl-status',
 
       $div,
       $webgl_icon,

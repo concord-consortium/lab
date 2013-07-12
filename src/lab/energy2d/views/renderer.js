@@ -22,7 +22,7 @@ define(function(require) {
         sensors_view,
         webgl_status = new WebGLStatus(),
         $status = webgl_status.getHTMLElement(),
-        $canvasCont = $("<div>"),
+        $canvasCont = $("<div id='e2d-canvas-views'>"),
         cavasCount = 0,
 
         beforeSetup = true;
@@ -180,22 +180,8 @@ define(function(require) {
       // Instantiate SVG views.
       parts_view = new PartsView(SVGContainer, SVGContainer.viewport.append("g"));
       sensors_view = new SensorsView(SVGContainer, SVGContainer.viewport.append("g"));
-
       SVGContainer.$el.append($canvasCont);
-      setPos($canvasCont, -1); // underneath SVG view.
       SVGContainer.$el.append($status);
-      setPos($status, 1, true); // on top of SVG view.
-
-      function setPos($el, zIndex, customHeight) {
-        $el.css({
-          'position': 'absolute',
-          'width': '100%',
-          'height': customHeight ? undefined : '100%',
-          'top': 0,
-          'left': 0,
-          'z-index': zIndex
-        });
-      }
     }());
 
     return api;
