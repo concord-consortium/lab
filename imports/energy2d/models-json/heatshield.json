@@ -41,12 +41,11 @@
   "structure": {
     "part": [
       {
-        "ring": {
-          "x": 5,
-          "y": 5,
-          "inner": 5.4,
-          "outer": 6
-        },
+        "shapeType": "ring",
+        "x": 5,
+        "y": 5,
+        "inner": 5.4,
+        "outer": 6,
         "thermal_conductivity": 0.00001,
         "specific_heat": 1300,
         "density": 25,

@@ -41,12 +41,11 @@
   "structure": {
     "part": [
       {
-        "rectangle": {
-          "x": 0,
-          "y": 0,
-          "width": 0.02,
-          "height": 0.04
-        },
+        "shapeType": "rectangle",
+        "x": 0,
+        "y": 0,
+        "width": 0.02,
+        "height": 0.04,
         "thermal_conductivity": 0.08,
         "specific_heat": 1300,
         "density": 900,
@@ -67,12 +66,11 @@
         "draggable": false
       },
       {
-        "rectangle": {
-          "x": 0.080000006,
-          "y": 0,
-          "width": 0.02,
-          "height": 0.04
-        },
+        "shapeType": "rectangle",
+        "x": 0.080000006,
+        "y": 0,
+        "width": 0.02,
+        "height": 0.04,
         "thermal_conductivity": 0.08,
         "specific_heat": 1300,
         "density": 25,
@@ -93,12 +91,11 @@
         "draggable": false
       },
       {
-        "rectangle": {
-          "x": 0.020000001,
-          "y": 0.015,
-          "width": 0.06,
-          "height": 0.01
-        },
+        "shapeType": "rectangle",
+        "x": 0.020000001,
+        "y": 0.015,
+        "width": 0.06,
+        "height": 0.01,
         "thermal_conductivity": 1,
         "specific_heat": 1000,
         "density": 900,
@@ -119,12 +116,11 @@
         "draggable": false
       },
       {
-        "rectangle": {
-          "x": 0,
-          "y": 0.06,
-          "width": 0.02,
-          "height": 0.04
-        },
+        "shapeType": "rectangle",
+        "x": 0,
+        "y": 0.06,
+        "width": 0.02,
+        "height": 0.04,
         "thermal_conductivity": 0.08,
         "specific_heat": 1300,
         "density": 900,
@@ -145,12 +141,11 @@
         "draggable": false
       },
       {
-        "rectangle": {
-          "x": 0.049999997,
-          "y": 0.06,
-          "width": 0.02,
-          "height": 0.04
-        },
+        "shapeType": "rectangle",
+        "x": 0.049999997,
+        "y": 0.06,
+        "width": 0.02,
+        "height": 0.04,
         "thermal_conductivity": 0.08,
         "specific_heat": 1300,
         "density": 25,
@@ -171,12 +166,11 @@
         "draggable": false
       },
       {
-        "rectangle": {
-          "x": 0.02,
-          "y": 0.074999996,
-          "width": 0.03,
-          "height": 0.01
-        },
+        "shapeType": "rectangle",
+        "x": 0.02,
+        "y": 0.074999996,
+        "width": 0.03,
+        "height": 0.01,
         "thermal_conductivity": 1,
         "specific_heat": 1000,
         "density": 900,

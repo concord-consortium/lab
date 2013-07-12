@@ -41,12 +41,11 @@
   "structure": {
     "part": [
       {
-        "rectangle": {
-          "x": 3,
-          "y": 3.5,
-          "width": 4,
-          "height": 3
-        },
+        "shapeType": "rectangle",
+        "x": 3,
+        "y": 3.5,
+        "width": 4,
+        "height": 3,
         "thermal_conductivity": 0.5,
         "specific_heat": 1000,
         "density": 1,

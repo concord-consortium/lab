@@ -41,12 +41,11 @@
   "structure": {
     "part": [
       {
-        "rectangle": {
-          "x": 0.11,
-          "y": 0.31,
-          "width": 0.28,
-          "height": 0.38
-        },
+        "shapeType": "rectangle",
+        "x": 0.11,
+        "y": 0.31,
+        "width": 0.28,
+        "height": 0.38,
         "thermal_conductivity": 1,
         "specific_heat": 1000,
         "density": 1.204,
@@ -67,12 +66,11 @@
         "draggable": false
       },
       {
-        "rectangle": {
-          "x": 0.61,
-          "y": 0.31,
-          "width": 0.28,
-          "height": 0.38
-        },
+        "shapeType": "rectangle",
+        "x": 0.61,
+        "y": 0.31,
+        "width": 0.28,
+        "height": 0.38,
         "thermal_conductivity": 1,
         "specific_heat": 1000,
         "density": 1.204,
@@ -93,12 +91,11 @@
         "draggable": false
       },
       {
-        "ellipse": {
-          "x": 0.24999999441206455,
-          "y": 0.49999999441206455,
-          "a": 0.05,
-          "b": 0.05
-        },
+        "shapeType": "ellipse",
+        "x": 0.24999999441206455,
+        "y": 0.49999999441206455,
+        "a": 0.05,
+        "b": 0.05,
         "thermal_conductivity": 0.08,
         "specific_heat": 1300,
         "density": 25,
@@ -119,12 +116,11 @@
         "draggable": true
       },
       {
-        "ellipse": {
-          "x": 0.7500000242143869,
-          "y": 0.49999999441206455,
-          "a": 0.05,
-          "b": 0.05
-        },
+        "shapeType": "ellipse",
+        "x": 0.7500000242143869,
+        "y": 0.49999999441206455,
+        "a": 0.05,
+        "b": 0.05,
         "thermal_conductivity": 0.08,
         "specific_heat": 1300,
         "density": 25,
@@ -145,12 +141,11 @@
         "draggable": true
       },
       {
-        "rectangle": {
-          "x": 0.099999994,
-          "y": 0.29500002,
-          "width": 0.3,
-          "height": 0.01
-        },
+        "shapeType": "rectangle",
+        "x": 0.099999994,
+        "y": 0.29500002,
+        "width": 0.3,
+        "height": 0.01,
         "thermal_conductivity": 1,
         "specific_heat": 1300,
         "density": 25,
@@ -171,12 +166,11 @@
         "draggable": false
       },
       {
-        "rectangle": {
-          "x": 0.6,
-          "y": 0.29500002,
-          "width": 0.3,
-          "height": 0.01
-        },
+        "shapeType": "rectangle",
+        "x": 0.6,
+        "y": 0.29500002,
+        "width": 0.3,
+        "height": 0.01,
         "thermal_conductivity": 1,
         "specific_heat": 1300,
         "density": 25,
@@ -197,12 +191,11 @@
         "draggable": false
       },
       {
-        "rectangle": {
-          "x": 0.099999994,
-          "y": 0.695,
-          "width": 0.3,
-          "height": 0.01
-        },
+        "shapeType": "rectangle",
+        "x": 0.099999994,
+        "y": 0.695,
+        "width": 0.3,
+        "height": 0.01,
         "thermal_conductivity": 1,
         "specific_heat": 1300,
         "density": 25,
@@ -223,12 +216,11 @@
         "draggable": false
       },
       {
-        "rectangle": {
-          "x": 0.6,
-          "y": 0.695,
-          "width": 0.3,
-          "height": 0.01
-        },
+        "shapeType": "rectangle",
+        "x": 0.6,
+        "y": 0.695,
+        "width": 0.3,
+        "height": 0.01,
         "thermal_conductivity": 1,
         "specific_heat": 1300,
         "density": 25,
@@ -249,12 +241,11 @@
         "draggable": false
       },
       {
-        "rectangle": {
-          "x": 0.395,
-          "y": 0.29500002,
-          "width": 0.01,
-          "height": 0.41
-        },
+        "shapeType": "rectangle",
+        "x": 0.395,
+        "y": 0.29500002,
+        "width": 0.01,
+        "height": 0.41,
         "thermal_conductivity": 1,
         "specific_heat": 1300,
         "density": 25,
@@ -275,12 +266,11 @@
         "draggable": false
       },
       {
-        "rectangle": {
-          "x": 0.595,
-          "y": 0.29500002,
-          "width": 0.01,
-          "height": 0.41
-        },
+        "shapeType": "rectangle",
+        "x": 0.595,
+        "y": 0.29500002,
+        "width": 0.01,
+        "height": 0.41,
         "thermal_conductivity": 1,
         "specific_heat": 1300,
         "density": 25,
@@ -301,12 +291,11 @@
         "draggable": false
       },
       {
-        "rectangle": {
-          "x": 0.895,
-          "y": 0.29500002,
-          "width": 0.01,
-          "height": 0.41
-        },
+        "shapeType": "rectangle",
+        "x": 0.895,
+        "y": 0.29500002,
+        "width": 0.01,
+        "height": 0.41,
         "thermal_conductivity": 1,
         "specific_heat": 1300,
         "density": 25,
@@ -327,12 +316,11 @@
         "draggable": false
       },
       {
-        "rectangle": {
-          "x": 0.095,
-          "y": 0.29500002,
-          "width": 0.01,
-          "height": 0.41
-        },
+        "shapeType": "rectangle",
+        "x": 0.095,
+        "y": 0.29500002,
+        "width": 0.01,
+        "height": 0.41,
         "thermal_conductivity": 1,
         "specific_heat": 1300,
         "density": 25,

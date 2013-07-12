@@ -41,12 +41,11 @@
   "structure": {
     "part": [
       {
-        "rectangle": {
-          "x": 0,
-          "y": 0,
-          "width": 0.2,
-          "height": 5
-        },
+        "shapeType": "rectangle",
+        "x": 0,
+        "y": 0,
+        "width": 0.2,
+        "height": 5,
         "thermal_conductivity": 0.08,
         "specific_heat": 1300,
         "density": 25,
@@ -67,12 +66,11 @@
         "draggable": true
       },
       {
-        "ellipse": {
-          "x": 5,
-          "y": 6,
-          "a": 0.5,
-          "b": 0.5
-        },
+        "shapeType": "ellipse",
+        "x": 5,
+        "y": 6,
+        "a": 0.5,
+        "b": 0.5,
         "thermal_conductivity": 0.08,
         "specific_heat": 1300,
         "density": 25,
