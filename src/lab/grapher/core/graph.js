@@ -1989,10 +1989,10 @@ define(function (require) {
 
     // Add an array (or arrays) of points.
     function addDataPoints(datapoints) {
-      if (Object.prototype.toString.call(datapoints[0][0]) === "[object Array]") {
+      if (Object.prototype.toString.call(datapoints[0]) === "[object Array]") {
         for (var i = 0; i < datapoints.length; i++) {
           points = pointArray[i];
-          points.push.apply(points, datapoints[i]);
+          points.push.apply(points, [datapoints[i]]);
           pointArray[i] = points;
         }
         points = pointArray[0];
@@ -2041,7 +2041,7 @@ define(function (require) {
         pointArray = [points];
         return;
       }
-      if (Object.prototype.toString.call(datapoints[0][0]) === "[object Array]") {
+      if (Object.prototype.toString.call(datapoints[0]) === "[object Array]") {
         for (var i = 0; i < datapoints.length; i++) {
           pointArray.push(copy(datapoints[i]));
         }
