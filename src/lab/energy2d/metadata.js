@@ -117,69 +117,28 @@ define(function(require) {
     },
 
     part: {
-      // Part should declare *ONE* of available shapes:
-      rectangle: {
-        conflictsWith: ["ellipse", "ring", "polygon"]
-        // available properties with example values:
-        // x: 5,
-        // y: 5,
-        // width: 2,
-        // height: 2
-      },
-      ellipse: {
-        conflictsWith: ["rectangle", "ring", "polygon"]
-        // available properties with example values:
-        // x: 5,
-        // y: 5,
-        // a: 3,
-        // b: 3
-      },
-      ring: {
-        conflictsWith: ["rectangle", "ellipse", "polygon"]
-        // available properties with example values:
-        // x: 5,
-        // y: 5,
-        // inner: 1,
-        // outer: 2
-      },
-      polygon: {
-        conflictsWith: ["rectangle", "ellipse", "ring"]
-        // available properties with example values:
-        // count: 3,                    // Vertices count.
-        // vertices: 1, 1, 2, 2, 3, 3   // String with coordinates.
-      },
-
-      // Special shortcut properties which let user access shape properties
-      // faster and more convenient. They can be used both to get and set
-      // value (except 'shapeType' which is read-only). They are not serialized.
       shapeType: {
-        readOnly: true,
-        serialize: false
+        // Available options: "rectangle", "ellipse", "ring" or "polygon".
+        required: true,
+        immutable: true
       },
       x: {
-        serialize: false
+        defaultValue: 0
       },
       y: {
-        serialize: false
+        defaultValue: 0
       },
-      width: {
-        serialize: false
-      },
-      height: {
-        serialize: false
-      },
-      a: {
-        serialize: false
-      },
-      b: {
-        serialize: false
-      },
-      inner: {
-        serialize: false
-      },
-      outer: {
-        serialize: false
-      },
+      width: {},
+      height: {},
+      a: {},
+      b: {},
+      inner: {},
+      outer: {},
+      vertices: {},
+
+      // Special shortcut properties which let user access polygon properties
+      // faster and more convenient. They can be used both to get and set
+      // value. They are not serialized.
       raw_x_coords: {
         serialize: false
       },

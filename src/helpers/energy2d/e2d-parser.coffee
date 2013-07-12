@@ -90,6 +90,27 @@ exports.parse = (xmlString) ->
   $('part').each (idx, element) ->
     $p = cheerio(element)
     p = {}
+    do () ->
+      if $p.find('rectangle').length > 0
+        p.shapeType = 'rectangle'
+        $props = $p.find('rectangle')
+      else if $p.find('ellipse').length > 0
+        p.shapeType = 'ellipse'
+        $props = $p.find('ellipse')
+      else if $p.find('ring').length > 0
+        p.shapeType = 'ring'
+        $props = $p.find('ring')
+      else if $p.find('polygon').length > 0
+        p.shapeType = 'polygon'
+        $props = $p.find('polygon')
+      else if $p.find('blob').length > 0
+        p.shapeType = 'blob'
+        $props = $p.find('blob')
+      if $props?
+        ['x', 'y', 'width', 'height', 'a', 'b', 'inner', 'outer', 'vertices'].forEach (key) ->
+          readAttr $props, p, key
+          return
+      return
     read $p, p, 'thermal_conductivity'
     read $p, p, 'specific_heat'
     read $p, p, 'density'
@@ -106,27 +127,8 @@ exports.parse = (xmlString) ->
     read $p, p, 'filled'
     read $p, p, 'color'
     read $p, p, 'label'
-    read $p, p, 'texture'
     read $p, p, 'draggable'
-    do () ->
-      shape = {}
-      if $p.find('rectangle').length > 0
-        p.rectangle = shape
-        $props = $p.find('rectangle')
-      else if $p.find('ellipse').length > 0
-        p.ellipse = shape
-        $props = $p.find('ellipse')
-      else if $p.find('ring').length > 0
-        p.ring = shape
-        $props = $p.find('ring')
-      else if $p.find('polygon').length > 0
-        p.polygon = shape
-        $props = $p.find('polygon')
-      if $props?
-        ['x', 'y', 'width', 'height', 'a', 'b', 'inner', 'outer', 'count', 'vertices'].forEach (key) ->
-          readAttr $props, shape, key
-          return
-      return
+    read $p, p, 'texture'
     # simplify texture definition
     if p.texture?
       p.texture = true
