@@ -26,9 +26,11 @@ suite.addBatch({
       topic: function () {
         var
           options = {
-            rectangle: {
-              x: 1, y: 2, width: 3, height: 4
-            },
+            shapeType: "rectangle",
+            x: 1,
+            y: 2,
+            width: 3,
+            height: 4,
             thermal_conductivity: 5,
             specific_heat: 6,
             density: 7,
@@ -54,7 +56,6 @@ suite.addBatch({
         return { part: part, options: options };
       },
       'should have properties set': function (pair) {
-        assert.deepEqual(pair.part.rectangle, pair.options.rectangle);
         assert.instanceOf(pair.part.shape, Rectangle);
         assert.equal(pair.part.thermal_conductivity, pair.options.thermal_conductivity);
         assert.equal(pair.part.specific_heat, pair.options.specific_heat);
@@ -81,9 +82,8 @@ suite.addBatch({
       topic: function () {
         var mainProperties = validator.validateCompleteness(metadata.mainProperties, {}),
             part = validator.validateCompleteness(metadata.part, {
-              rectangle: {
-                x: 4, y: 4, width: 2, height: 2
-              },
+              shapeType: "rectangle",
+              x: 4, y: 4, width: 2, height: 2,
               emissivity: 1,
               temperature: 50 // greater than MINIMAL_RADIATING_TEMPERATURE = 20
             });

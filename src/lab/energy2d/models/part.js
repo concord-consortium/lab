@@ -25,70 +25,33 @@ define(function (require, exports, module) {
 
     // Constructor function.
     Part = exports.Part = function (options) {
-      var count, i, s;
+      var vertices, count, i;
+      this._options = options;
 
       // Validate and process options.
-      if (options.rectangle) {
-        s = this.rectangle = options.rectangle;
-        this.shape = new Rectangle(s.x, s.y, s.width, s.height);
-      } else if (options.ellipse) {
-        s = this.ellipse = options.ellipse;
-        this.shape = new Ellipse(s.x, s.y, s.a, s.b);
-      } else if (options.ring) {
-        s = this.ring = options.ring;
-        this.shape = new Ring(s.x, s.y, s.inner, s.outer);
-      } else if (options.polygon) {
-        this.polygon = options.polygon;
-        if (typeof (this.polygon.vertices) === "string") {
-          count = this.polygon.count;
-          this.polygon.vertices = this.polygon.vertices.split(', ');
-          this.polygon.x_coords = [];
-          this.polygon.y_coords = [];
-          if (count * 2 !== this.polygon.vertices.length) {
-            throw new Error("Part: polygon contains different vertices count than declared in the count parameter.");
-          }
-          for (i = 0; i < count; i += 1) {
-            this.polygon.x_coords[i] = this.polygon.vertices[2 * i]     = Number(this.polygon.vertices[2 * i]);
-            this.polygon.y_coords[i] = this.polygon.vertices[2 * i + 1] = Number(this.polygon.vertices[2 * i + 1]);
-          }
-          this.shape = new Polygon(count, this.polygon.x_coords, this.polygon.y_coords);
+      if (options.shapeType === "rectangle") {
+        this.shape = new Rectangle(options.x, options.y, options.width, options.height);
+      } else if (options.shapeType === "ellipse") {
+        this.shape = new Ellipse(options.x, options.y, options.a, options.b);
+      } else if (options.shapeType === "ring") {
+        this.shape = new Ring(options.x, options.y, options.inner, options.outer);
+      } else if (options.shapeType === "polygon") {
+        vertices = options.vertices.split(', ');
+        this.x_coords = [];
+        this.y_coords = [];
+        for (i = 0, count = vertices.length * 0.5; i < count; i += 1) {
+          this.x_coords[i] = Number(vertices[2 * i]);
+          this.y_coords[i] = Number(vertices[2 * i + 1]);
         }
+        this.shape = new Polygon(count, this.x_coords, this.y_coords, options.x, options.y);
       } else {
-        throw new Error("Part: shape not defined.");
+        throw new Error("Part: shape not defined or not supported.");
       }
-
-      // source properties
-      this.thermal_conductivity = options.thermal_conductivity;
-      this.specific_heat = options.specific_heat;
-      this.density = options.density;
-      this.temperature = options.temperature;
-      this.constant_temperature = options.constant_temperature;
-      this.power = options.power;
-      this.wind_speed = options.wind_speed;
-      this.wind_angle = options.wind_angle;
-
-      // optics properties
-      this.transmission = options.transmission;
-      this.reflection = options.reflection;
-      this.absorption = options.absorption;
-      this.emissivity = options.emissivity;
-
-      // visual properties
-      this.visible = options.visible;
-      this.filled = options.filled;
-      this.color = options.color;
-      this.texture = options.texture;
-      this.label = options.label;
-      this.draggable = options.draggable;
     };
 
-  Object.defineProperty(Part.prototype, 'shapeType', {
+  Object.defineProperty(Part.prototype, "shapeType", {
     get: function () {
-      return this.rectangle ? "rectangle" :
-             this.ellipse   ? "ellipse" :
-             this.ring      ? "ring" :
-             this.polygon   ? "polygon" :
-             null;
+      return this._options.shapeType;
     }
   });
 
@@ -100,6 +63,33 @@ define(function (require, exports, module) {
       set: function (v) {
         this.shape[key] = v;
         this.polygon_cache = undefined;
+      }
+    });
+  });
+
+  Object.defineProperty(Part.prototype, "vertices", {
+    get: function () {
+      if (this.shapeType !== "polygon") return undefined;
+      var x = this.shape.raw_x_coords,
+          y = this.shape.raw_y_coords,
+          r = [], i, len;
+      for (i = 0, len = x.length; i < len; i++) {
+        r.push(x[i]);
+        r.push(y[i]);
+      }
+      return r.join(", ");
+    }
+  });
+
+  ["thermal_conductivity", "specific_heat", "density", "temperature", "constant_temperature", "power", "wind_speed", "wind_angle",
+   "transmission", "reflection", "absorption", "emissivity",
+   "visible", "filled", "color", "texture", "label", "draggable"].forEach(function (key) {
+    Object.defineProperty(Part.prototype, key, {
+      get: function () {
+        return this._options[key];
+      },
+      set: function (v) {
+        this._options[key] = v;
       }
     });
   });
@@ -118,22 +108,22 @@ define(function (require, exports, module) {
     } else if (label === "%power_density") {
       s = this.power + " W/m\u00b3";
     } else if (label === "%area") {
-      if (this.rectangle) {
-        s = (this.rectangle.width * this.rectangle.height) + " m\u00b2";
-      } else if (this.ellipse) {
-        s = (this.ellipse.width * this.ellipse.height * 0.25 * Math.PI) + " m\u00b2";
+      if (this.shapeType === "rectangle") {
+        s = (this.width * this.height) + " m\u00b2";
+      } else if (this.shapeType === "ellipse") {
+        s = (this.a * this.b * 0.25 * Math.PI) + " m\u00b2";
       }
     } else if (label === "%width") {
-      if (this.rectangle) {
-        s = this.rectangle.width + " m";
-      } else if (this.ellipse) {
-        s = this.ellipse.width + " m";
+      if (this.shapeType === "rectangle") {
+        s = this.width + " m";
+      } else if (this.shapeType === "ellipse") {
+        s = this.a + " m";
       }
     } else if (label === "%height") {
-      if (this.rectangle) {
-        s = this.rectangle.height + " m";
-      } else if (this.ellipse) {
-        s = this.ellipse.height + " m";
+      if (this.shapeType === "rectangle") {
+        s = this.height + " m";
+      } else if (this.shapeType === "ellipse") {
+        s = this.b + " m";
       }
     } else {
       s = label;
@@ -242,8 +232,7 @@ define(function (require, exports, module) {
 
       polygonIndices = function (polygon) {
         var
-          count = polygon.count,
-          verts = polygon.vertices,
+          count = polygon.x_coords.length,
           x_coords = new Array(count),
           y_coords = new Array(count),
           x_min = Number.MAX_VALUE, x_max = Number.MIN_VALUE,
@@ -252,8 +241,8 @@ define(function (require, exports, module) {
           idx, indices = [];
 
         for (i = 0; i < count; i += 1) {
-          x_coords[i] = verts[i * 2] * dx;
-          y_coords[i] = verts[i * 2 + 1] * dy;
+          x_coords[i] = polygon.x_coords[i] * dx;
+          y_coords[i] = polygon.y_coords[i] * dy;
           if (x_coords[i] < x_min) {
             x_min = x_coords[i];
           }
@@ -284,17 +273,17 @@ define(function (require, exports, module) {
         return indices;
       };
 
-    if (this.rectangle) {
+    if (this.shapeType === "rectangle") {
       return rectangleIndices(this.shape);
     }
-    if (this.ellipse) {
+    if (this.shapeType === "ellipse") {
       return ellipseIndices(this.shape);
     }
-    if (this.ring) {
+    if (this.shapeType === "ring") {
       return ringIndices(this.shape);
     }
-    if (this.polygon) {
-      return polygonIndices(this.polygon);
+    if (this.shapeType === "polygon") {
+      return polygonIndices(this.shape);
     }
     throw new Error("Part: unknown shape.");
   };

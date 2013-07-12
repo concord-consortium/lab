@@ -65,15 +65,15 @@ define(function (require, exports, module) {
   // Implements Shape2D interface:
   // - polygonize()
   // - contains(x, y)
-  var Polygon = exports.Polygon = function (count, x_coords, y_coords) {
+  var Polygon = exports.Polygon = function (count, x_coords, y_coords, x, y) {
     this.count = count;
     this.raw_x_coords = x_coords;
     this.raw_y_coords = y_coords;
     this.x_coords = new Array(count);
     this.y_coords = new Array(count);
     // x_coords and y_coors will be updated now:
-    this.x = 0;
-    this.y = 0;
+    this.x = x || 0;
+    this.y = y || 0;
   };
 
   Object.defineProperty(Polygon.prototype, 'x', {
@@ -234,16 +234,6 @@ define(function (require, exports, module) {
       this.polygon_cache = polygonizeEllipse(this.x, this.y, this.outer * 0.5, this.outer * 0.5, this.POLYGON_SEGMENTS);
     }
     return this.polygon_cache;
-  };
-
-  // Returns INNER circle polygonization.
-  Ring.prototype.polygonizeInner = function () {
-    var x, y, r, vx, vy, line, delta, theta, i, len;
-
-    if (!this.polygon_cache_inner) {
-      this.polygon_cache_inner = polygonizeEllipse(this.x, this.y, this.inner * 0.5, this.inner * 0.5, this.POLYGON_SEGMENTS);
-    }
-    return this.polygon_cache_inner;
   };
 
   Ring.prototype.contains = function (x, y) {

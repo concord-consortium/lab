@@ -14,7 +14,7 @@
       "onLoad": [
         "getPart(2).color = '#ff4444';",
         "onSelect(function (x, y, w, h) {",
-        "  addPart({rectangle: {x: x, y: y, width: w, height: h}, temperature: get('new-part-temp'), filled: false});",
+        "  addPart({shapeType: 'rectangle', x: x, y: y, width: w, height: h, temperature: get('new-part-temp'), filled: false});",
         "});"
       ]
     }
