@@ -90,97 +90,12 @@ end
 #
 xml_files = Dir["#{e2d_models_path}/*.e2d"]
 xml_files.each do |xml_file_path|
-  #
-  #  create and write out the new json model
-  #
-  puts "converting: " + xml_file_path
+  puts "Generating interactive for: " + xml_file_path
   basename = File.basename(xml_file_path).gsub(/\.e2d$/, '')
-  xml_file = File.open(xml_file_path).read.to_s
-  hash = Hash.from_xml(xml_file)
-
-  # Two versions of Classic E2D specify sensors in different places in hash.
-  if hash['state']['model']['sensor']
-    sensorFromModel = hash['state']['model']['sensor']
-    hash['state']['model'].delete('sensor')
-  end
-
-  # Delete unnecessary things.
-  hash['state']['model'].delete('controller')
-  hash['state']['model'].delete('environment')
-
-  # process initial hash and do some changes in its structure
-  final_hash = { type: "energy2d" }.merge(hash['state']['model'])
-
-  # boundary options
-  # change structure to simpler form with 'type' property.
-  boundary = hash['state']['model']['boundary']
-  if boundary
-    if boundary['flux_at_border']
-      boundary_opts = boundary['flux_at_border']
-      boundary_opts['type'] = 'flux'
-      final_hash['boundary'].delete('flux_at_border')
-    else
-      boundary_opts = boundary['temperature_at_border']
-      boundary_opts['type'] = 'temperature'
-      final_hash['boundary'].delete('temperature_at_border')
-    end
-    boundary_opts.each do |key, value|
-      final_hash['boundary'][key] = value
-    end
-    # This is not (yet?) supported, delete it.
-    final_hash['boundary'].delete('mass_flow_at_border')
-  end
-
-  sensor = sensorFromModel || hash['state']['sensor']
-
-  # sensors
-  final_hash['sensors'] = []
-
-  if sensor && sensor['thermometer']
-    t = sensor['thermometer']
-    t = [t] if t.is_a?(Hash)
-    t.each {|x| x['type'] = 'thermometer' }
-    final_hash['sensors'].concat(t)
-  end
-
-  if sensor && sensor['anemometer']
-    t = sensor['anemometer']
-    t = [t] if t.is_a?(Hash)
-    t.each {|x| x['type'] = 'anemometer' }
-    final_hash['sensors'].concat(t)
-  end
-
-  if sensor && sensor['heat_flux_sensor']
-    t = sensor['heat_flux_sensor']
-    t = [t] if t.is_a?(Hash)
-    t.each do |x|
-      x['type'] = 'heatFlux'
-      x['angle'] = (x['angle'].to_f * 180 / Math::PI).round(2) if x['angle']
-    end
-    final_hash['sensors'].concat(t)
-  end
-
-  # view options
-  final_hash['viewOptions'] = hash['state']['view']
-
-  json_string = JSON.pretty_generate(final_hash)
-
-  # strings to values conversion
-  # numbers
-  json_string.gsub!(/"([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)"/, '\1')
-  # boolean
-  json_string.gsub!(/"(true|false)"/, '\1')
-  # timestep -> timeStep
-  json_string.gsub!(/timestep/, 'timeStep')
+  page = e2d_pages[basename]
   var_name = basename.gsub('-', '_')
   capitalized_name = var_name.gsub('_', ' ').split.collect {|w| w.capitalize }.join(" ")
   json_filename = "#{basename}.json"
-  model_file_path = File.join(models_path, json_filename)
-  File.open(model_file_path, 'w') do |f|
-    f.write(json_string)
-  end
-
-  page = e2d_pages[basename]
 
   #
   # create and write out the json structure for the Lab Interactive form
