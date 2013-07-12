@@ -7,6 +7,7 @@ define(function (require) {
       alert                   = require('common/alert'),
       metadata                = require('common/controllers/interactive-metadata'),
       validator               = require('common/validator'),
+      interactiveNotFound     = require('common/interactive-not-found'),
       BarGraphController      = require('common/controllers/bar-graph-controller'),
       GraphController         = require('common/controllers/graph-controller'),
       ExportController        = require('common/controllers/export-controller'),
@@ -84,9 +85,10 @@ define(function (require) {
         'playback':      PlaybackController
       };
 
-  return function InteractivesController(interactive, viewSelector) {
+  return function InteractivesController(interactiveReference, viewSelector) {
 
-    var controller = {},
+    var interactive = {},
+        controller = {},
         modelController,
         $interactiveContainer,
         models = [],
@@ -306,7 +308,7 @@ define(function (require) {
         // set default model type to "md2d"
         var modelType = type || "md2d";
 
-        if (ModelControllerFor[modelType] == null) {
+        if (ModelControllerFor[modelType] === null) {
           throw new Error("Couldn't understand modelType '" + modelType + "'!");
         }
 
@@ -610,16 +612,40 @@ define(function (require) {
       definition, and
 
       @param newInteractive
-        hash representing the interactive specification
+        hash representing the interactive specification or string representing path or full url
     */
     function loadInteractive(newInteractive) {
+      if (typeof newInteractive === "string") {
+        $.get(newInteractive).done(function(results) {
+          if (typeof results === 'string') results = JSON.parse(results);
+          controller.interactive = results;
+
+          if (interactive.title) {
+            document.title = interactive.title;
+          }
+          finishLoadingInteractive(interactive);
+        })
+        .fail(function() {
+          document.title = "Interactive not found";
+          controller.interactive = interactiveNotFound(newInteractive);
+          finishLoadingInteractive(interactive);
+        });
+      } else {
+        // we were passed an interactive object
+        controller.interactive = newInteractive
+        finishLoadingInteractive(newInteractive);
+      }
+    }
+
+    function finishLoadingInteractive() {
       var componentJsons,
           i, len;
 
       componentCallbacks = [];
 
       // Validate interactive.
-      interactive = validateInteractive(newInteractive);
+      controller.interactive = validateInteractive(controller.interactive);
+      interactive = controller.interactive;
 
       // Set up the list of possible models.
       models = interactive.models;
@@ -902,9 +928,11 @@ define(function (require) {
         return result;
       },
       // Make these private variables and functions available
+      interactive: interactive,
       loadInteractive: loadInteractive,
       validateInteractive: validateInteractive,
-      loadModel: loadModel
+      loadModel: loadModel,
+      interactiveNotFound: interactiveNotFound
     };
 
     //
@@ -927,7 +955,7 @@ define(function (require) {
     shareDialog = new ShareDialog();
     controller.on("resize", $.proxy(shareDialog.updateIframeSize, shareDialog));
     // Run this when controller is created.
-    loadInteractive(interactive, viewSelector);
+    loadInteractive(interactiveReference, viewSelector);
 
     return controller;
   };
