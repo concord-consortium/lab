@@ -1,24 +1,42 @@
 {
   "type": "energy2d",
-  "model_width": 1.0,
-  "model_height": 1.0,
-  "timeStep": 20.0,
-  "measurement_interval": 20,
+  "use_WebGL": false,
+  "grid_width": 100,
+  "grid_height": 100,
+  "model_width": 1,
+  "model_height": 1,
+  "timeStep": 20,
+  "timeStepsPerTick": 4,
+  "ticksPerGPUSync": 30,
+  "convective": false,
+  "background_temperature": 0,
+  "background_conductivity": 0.025,
+  "background_specific_heat": 1012,
+  "background_density": 1.204,
+  "background_viscosity": 0.00001568,
+  "thermal_buoyancy": 0.00025,
+  "buoyancy_approximation": 1,
+  "boundary": {
+    "type": "temperature",
+    "upper": 0,
+    "lower": 0,
+    "left": 0,
+    "right": 0
+  },
+  "sunny": false,
   "sun_angle": 1.5707964,
-  "solar_power_density": 2000.0,
+  "solar_power_density": 2000,
   "solar_ray_count": 24,
   "solar_ray_speed": 0.1,
   "photon_emission_interval": 20,
-  "z_heat_diffusivity": 0.0,
-  "convective": false,
-  "thermal_buoyancy": 2.5E-4,
-  "buoyancy_approximation": 1,
-  "boundary": {
-    "upper": 0.0,
-    "lower": 0.0,
-    "left": 0.0,
-    "right": 0.0,
-    "type": "temperature"
+  "viewOptions": {
+    "showClock": true,
+    "controlButtons": "play_reset",
+    "color_palette_type": 1,
+    "velocity": false,
+    "minimum_temperature": 0,
+    "maximum_temperature": 40,
+    "enableKeyboardHandlers": true
   },
   "structure": {
     "part": [
@@ -30,14 +48,23 @@
           "outer": 0.6
         },
         "thermal_conductivity": 0.01,
-        "specific_heat": 1300.0,
-        "density": 25.0,
-        "transmission": 0.0,
-        "reflection": 0.0,
-        "absorption": 1.0,
-        "emissivity": 0.0,
-        "temperature": 0.0,
-        "constant_temperature": false
+        "specific_heat": 1300,
+        "density": 25,
+        "transmission": 0,
+        "reflection": 0,
+        "absorption": 1,
+        "emissivity": 0,
+        "temperature": 0,
+        "constant_temperature": false,
+        "power": 0,
+        "wind_speed": 0,
+        "wind_angle": 0,
+        "visible": true,
+        "filled": true,
+        "color": "auto",
+        "label": "",
+        "texture": false,
+        "draggable": true
       },
       {
         "ellipse": {
@@ -47,41 +74,38 @@
           "b": 0.5
         },
         "thermal_conductivity": 0.08,
-        "specific_heat": 1300.0,
-        "density": 25.0,
-        "transmission": 0.0,
-        "reflection": 0.0,
-        "absorption": 1.0,
-        "emissivity": 0.0,
-        "temperature": 30.0,
+        "specific_heat": 1300,
+        "density": 25,
+        "transmission": 0,
+        "reflection": 0,
+        "absorption": 1,
+        "emissivity": 0,
+        "temperature": 30,
         "constant_temperature": false,
-        "filled": false
+        "power": 0,
+        "wind_speed": 0,
+        "wind_angle": 0,
+        "visible": true,
+        "filled": false,
+        "color": "auto",
+        "label": "",
+        "texture": false,
+        "draggable": true
       }
     ]
   },
   "sensors": [
     {
+      "type": "thermometer",
       "x": 0.5,
       "y": 0.48015872,
-      "type": "thermometer"
+      "label": ""
     },
     {
+      "type": "thermometer",
       "x": 0.20100503,
       "y": 0.80889446,
-      "type": "thermometer"
+      "label": ""
     }
-  ],
-  "viewOptions": {
-    "grid": true,
-    "grid_size": 10,
-    "ruler": true,
-    "color_palette_type": 1,
-    "color_palette_x": 0.0,
-    "color_palette_y": 0.0,
-    "color_palette_w": 0.0,
-    "color_palette_h": 0.0,
-    "minimum_temperature": 0.0,
-    "maximum_temperature": 40.0,
-    "graph_xlabel": "Time"
-  }
+  ]
 }

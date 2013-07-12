@@ -1,50 +1,70 @@
 {
   "type": "energy2d",
+  "use_WebGL": false,
+  "grid_width": 100,
+  "grid_height": 100,
+  "model_width": 10,
+  "model_height": 10,
   "timeStep": 0.5,
-  "viewupdate_interval": 10,
+  "timeStepsPerTick": 4,
+  "ticksPerGPUSync": 30,
+  "convective": true,
+  "background_temperature": 0,
+  "background_conductivity": 1,
+  "background_specific_heat": 1012,
+  "background_density": 1.204,
+  "background_viscosity": 0.01,
+  "thermal_buoyancy": 0.00025,
+  "buoyancy_approximation": 0,
+  "boundary": {
+    "type": "temperature",
+    "upper": 0,
+    "lower": 0,
+    "left": 0,
+    "right": 0
+  },
+  "sunny": false,
   "sun_angle": 1.5533433,
-  "solar_power_density": 20000.0,
+  "solar_power_density": 20000,
   "solar_ray_count": 48,
   "solar_ray_speed": 0.08,
   "photon_emission_interval": 5,
-  "z_heat_diffusivity": 0.0,
-  "background_conductivity": 1.0,
-  "background_viscosity": 0.01,
-  "thermal_buoyancy": 2.5E-4,
-  "buoyancy_approximation": 0,
-  "boundary": {
-    "upper": 0.0,
-    "lower": 0.0,
-    "left": 0.0,
-    "right": 0.0,
-    "type": "temperature"
+  "viewOptions": {
+    "showClock": true,
+    "controlButtons": "play_reset",
+    "color_palette_type": 0,
+    "velocity": false,
+    "minimum_temperature": 0,
+    "maximum_temperature": 100,
+    "enableKeyboardHandlers": true
   },
   "structure": {
     "part": [
       {
         "rectangle": {
           "x": -0.099999905,
-          "y": 8.0,
+          "y": 8,
           "width": 10.2,
-          "height": 2.0
+          "height": 2
         },
         "thermal_conductivity": 0.001,
-        "specific_heat": 1300.0,
-        "density": 25.0,
-        "transmission": 0.0,
-        "reflection": 1.0,
-        "absorption": 1.0,
-        "emissivity": 0.0,
-        "temperature": 0.0,
+        "specific_heat": 1300,
+        "density": 25,
+        "transmission": 0,
+        "reflection": 1,
+        "absorption": 1,
+        "emissivity": 0,
+        "temperature": 0,
         "constant_temperature": false,
-        "texture": {
-          "texture_fg": "-7f7f80",
-          "texture_bg": -1000000,
-          "texture_style": 10,
-          "texture_width": 10,
-          "texture_height": 10
-        },
-        "label": "Ground"
+        "power": 0,
+        "wind_speed": 0,
+        "wind_angle": 0,
+        "visible": true,
+        "filled": true,
+        "color": "auto",
+        "label": "Ground",
+        "texture": true,
+        "draggable": true
       },
       {
         "rectangle": {
@@ -54,21 +74,23 @@
           "height": 6.6
         },
         "thermal_conductivity": 0.001,
-        "specific_heat": 1300.0,
-        "density": 25.0,
-        "transmission": 0.0,
-        "reflection": 1.0,
-        "absorption": 0.0,
-        "emissivity": 0.0,
-        "temperature": 0.0,
+        "specific_heat": 1300,
+        "density": 25,
+        "transmission": 0,
+        "reflection": 1,
+        "absorption": 0,
+        "emissivity": 0,
+        "temperature": 0,
         "constant_temperature": false,
-        "texture": {
-          "texture_fg": -1000000,
-          "texture_bg": "-7f7f80",
-          "texture_style": 12,
-          "texture_width": 10,
-          "texture_height": 10
-        }
+        "power": 0,
+        "wind_speed": 0,
+        "wind_angle": 0,
+        "visible": true,
+        "filled": true,
+        "color": "auto",
+        "label": "",
+        "texture": true,
+        "draggable": true
       },
       {
         "rectangle": {
@@ -78,22 +100,23 @@
           "height": 0.2
         },
         "thermal_conductivity": 0.1,
-        "specific_heat": 1000.0,
-        "density": 100.0,
-        "transmission": 0.0,
-        "reflection": 0.0,
-        "absorption": 1.0,
-        "emissivity": 0.0,
-        "temperature": 100.0,
+        "specific_heat": 1000,
+        "density": 100,
+        "transmission": 0,
+        "reflection": 0,
+        "absorption": 1,
+        "emissivity": 0,
+        "temperature": 100,
         "constant_temperature": true,
-        "texture": {
-          "texture_fg": -1000000,
-          "texture_bg": -1,
-          "texture_style": 9,
-          "texture_width": 8,
-          "texture_height": 8
-        },
-        "label": "%temperature"
+        "power": 0,
+        "wind_speed": 0,
+        "wind_angle": 0,
+        "visible": true,
+        "filled": true,
+        "color": "auto",
+        "label": "%temperature",
+        "texture": true,
+        "draggable": true
       },
       {
         "rectangle": {
@@ -103,69 +126,75 @@
           "height": 6.6
         },
         "thermal_conductivity": 0.001,
-        "specific_heat": 1300.0,
-        "density": 25.0,
-        "transmission": 0.0,
-        "reflection": 1.0,
-        "absorption": 0.0,
-        "emissivity": 0.0,
-        "temperature": 0.0,
+        "specific_heat": 1300,
+        "density": 25,
+        "transmission": 0,
+        "reflection": 1,
+        "absorption": 0,
+        "emissivity": 0,
+        "temperature": 0,
         "constant_temperature": false,
-        "texture": {
-          "texture_fg": -1000000,
-          "texture_bg": "-7f7f80",
-          "texture_style": 12,
-          "texture_width": 10,
-          "texture_height": 10
-        }
+        "power": 0,
+        "wind_speed": 0,
+        "wind_angle": 0,
+        "visible": true,
+        "filled": true,
+        "color": "auto",
+        "label": "",
+        "texture": true,
+        "draggable": true
       },
       {
         "rectangle": {
           "x": 1.9,
           "y": 1.5,
           "width": 0.2,
-          "height": 6.0
+          "height": 6
         },
         "thermal_conductivity": 0.001,
-        "specific_heat": 1300.0,
-        "density": 25.0,
-        "transmission": 0.0,
-        "reflection": 1.0,
-        "absorption": 0.0,
-        "emissivity": 0.0,
-        "temperature": 0.0,
+        "specific_heat": 1300,
+        "density": 25,
+        "transmission": 0,
+        "reflection": 1,
+        "absorption": 0,
+        "emissivity": 0,
+        "temperature": 0,
         "constant_temperature": false,
-        "texture": {
-          "texture_fg": -1000000,
-          "texture_bg": "-7f7f80",
-          "texture_style": 12,
-          "texture_width": 10,
-          "texture_height": 10
-        }
+        "power": 0,
+        "wind_speed": 0,
+        "wind_angle": 0,
+        "visible": true,
+        "filled": true,
+        "color": "auto",
+        "label": "",
+        "texture": true,
+        "draggable": true
       },
       {
         "rectangle": {
           "x": 2.9,
           "y": 1.5,
           "width": 0.2,
-          "height": 6.0
+          "height": 6
         },
         "thermal_conductivity": 0.001,
-        "specific_heat": 1300.0,
-        "density": 25.0,
-        "transmission": 0.0,
-        "reflection": 1.0,
-        "absorption": 0.0,
-        "emissivity": 0.0,
-        "temperature": 0.0,
+        "specific_heat": 1300,
+        "density": 25,
+        "transmission": 0,
+        "reflection": 1,
+        "absorption": 0,
+        "emissivity": 0,
+        "temperature": 0,
         "constant_temperature": false,
-        "texture": {
-          "texture_fg": -1000000,
-          "texture_bg": "-7f7f80",
-          "texture_style": 12,
-          "texture_width": 10,
-          "texture_height": 10
-        }
+        "power": 0,
+        "wind_speed": 0,
+        "wind_angle": 0,
+        "visible": true,
+        "filled": true,
+        "color": "auto",
+        "label": "",
+        "texture": true,
+        "draggable": true
       },
       {
         "rectangle": {
@@ -175,22 +204,23 @@
           "height": 0.2
         },
         "thermal_conductivity": 0.1,
-        "specific_heat": 1000.0,
-        "density": 100.0,
-        "transmission": 0.0,
-        "reflection": 0.0,
-        "absorption": 1.0,
-        "emissivity": 0.0,
-        "temperature": 100.0,
+        "specific_heat": 1000,
+        "density": 100,
+        "transmission": 0,
+        "reflection": 0,
+        "absorption": 1,
+        "emissivity": 0,
+        "temperature": 100,
         "constant_temperature": true,
-        "texture": {
-          "texture_fg": -1000000,
-          "texture_bg": -1,
-          "texture_style": 9,
-          "texture_width": 8,
-          "texture_height": 8
-        },
-        "label": "%temperature"
+        "power": 0,
+        "wind_speed": 0,
+        "wind_angle": 0,
+        "visible": true,
+        "filled": true,
+        "color": "auto",
+        "label": "%temperature",
+        "texture": true,
+        "draggable": true
       },
       {
         "rectangle": {
@@ -200,21 +230,23 @@
           "height": 0.4
         },
         "thermal_conductivity": 0.001,
-        "specific_heat": 1300.0,
-        "density": 25.0,
-        "transmission": 0.0,
-        "reflection": 1.0,
-        "absorption": 0.0,
-        "emissivity": 0.0,
-        "temperature": 0.0,
+        "specific_heat": 1300,
+        "density": 25,
+        "transmission": 0,
+        "reflection": 1,
+        "absorption": 0,
+        "emissivity": 0,
+        "temperature": 0,
         "constant_temperature": false,
-        "texture": {
-          "texture_fg": -1000000,
-          "texture_bg": "-7f7f80",
-          "texture_style": 12,
-          "texture_width": 10,
-          "texture_height": 10
-        }
+        "power": 0,
+        "wind_speed": 0,
+        "wind_angle": 0,
+        "visible": true,
+        "filled": true,
+        "color": "auto",
+        "label": "",
+        "texture": true,
+        "draggable": true
       },
       {
         "rectangle": {
@@ -224,101 +256,56 @@
           "height": 0.4
         },
         "thermal_conductivity": 0.001,
-        "specific_heat": 1300.0,
-        "density": 25.0,
-        "transmission": 0.0,
-        "reflection": 1.0,
-        "absorption": 0.0,
-        "emissivity": 0.0,
-        "temperature": 0.0,
+        "specific_heat": 1300,
+        "density": 25,
+        "transmission": 0,
+        "reflection": 1,
+        "absorption": 0,
+        "emissivity": 0,
+        "temperature": 0,
         "constant_temperature": false,
-        "texture": {
-          "texture_fg": -1000000,
-          "texture_bg": "-7f7f80",
-          "texture_style": 12,
-          "texture_width": 10,
-          "texture_height": 10
-        }
+        "power": 0,
+        "wind_speed": 0,
+        "wind_angle": 0,
+        "visible": true,
+        "filled": true,
+        "color": "auto",
+        "label": "",
+        "texture": true,
+        "draggable": true
       }
     ]
   },
   "sensors": [
     {
-      "label": "T1",
+      "type": "thermometer",
       "x": 2.5,
       "y": 1.8,
-      "type": "thermometer"
+      "label": "T1"
     },
     {
-      "label": "T3",
-      "x": 5.0,
+      "type": "thermometer",
+      "x": 5,
       "y": 6.8,
-      "type": "thermometer"
+      "label": "T3"
     },
     {
-      "label": "T2",
+      "type": "thermometer",
       "x": 7.5,
       "y": 1.8,
-      "type": "thermometer"
+      "label": "T2"
     },
     {
-      "label": "A1",
+      "type": "anemometer",
       "x": 2.5,
-      "y": 3.0,
-      "type": "anemometer"
+      "y": 3,
+      "label": "A1"
     },
     {
-      "label": "A2",
+      "type": "anemometer",
       "x": 7.5,
       "y": 3.0000005,
-      "type": "anemometer"
+      "label": "A2"
     }
-  ],
-  "viewOptions": {
-    "grid": true,
-    "snap_to_grid": true,
-    "grid_size": 10,
-    "graph_data_type": 2,
-    "ruler": true,
-    "color_palette_type": 0,
-    "color_palette_x": 0.0,
-    "color_palette_y": 0.0,
-    "color_palette_w": 0.0,
-    "color_palette_h": 0.0,
-    "minimum_temperature": 0.0,
-    "maximum_temperature": 100.0,
-    "graph_xlabel": "Time",
-    "graph_ylabel": "Wind speed (m/s)",
-    "text": [
-      {
-        "string": "Stack effect",
-        "face": "Arial",
-        "size": 18,
-        "style": 0,
-        "color": "ffffff",
-        "x": 4.25,
-        "y": 9.7
-      },
-      {
-        "string": "Heater A",
-        "face": "Arial",
-        "size": 12,
-        "style": 1,
-        "color": "ffffff",
-        "border": true,
-        "x": 2.1499999,
-        "y": 1.749999
-      },
-      {
-        "string": "Heater B",
-        "face": "Arial",
-        "size": 12,
-        "style": 1,
-        "color": "ffffff",
-        "border": true,
-        "x": 7.15,
-        "y": 1.8499994
-      }
-    ]
-  }
+  ]
 }

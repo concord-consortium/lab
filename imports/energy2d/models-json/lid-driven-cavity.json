@@ -1,104 +1,103 @@
 {
   "type": "energy2d",
+  "use_WebGL": false,
+  "grid_width": 100,
+  "grid_height": 100,
+  "model_width": 10,
+  "model_height": 10,
   "timeStep": 0.1,
-  "viewupdate_interval": 10,
+  "timeStepsPerTick": 4,
+  "ticksPerGPUSync": 30,
+  "convective": true,
+  "background_temperature": 0,
+  "background_conductivity": 1,
+  "background_specific_heat": 1012,
+  "background_density": 1.204,
+  "background_viscosity": 0.0001,
+  "thermal_buoyancy": 0,
+  "buoyancy_approximation": 1,
+  "boundary": {
+    "type": "temperature",
+    "upper": 0,
+    "lower": 0,
+    "left": 0,
+    "right": 0
+  },
+  "sunny": false,
   "sun_angle": 1.5707964,
-  "solar_power_density": 2000.0,
+  "solar_power_density": 2000,
   "solar_ray_count": 24,
   "solar_ray_speed": 0.1,
   "photon_emission_interval": 20,
-  "z_heat_diffusivity": 0.0,
-  "background_conductivity": 1.0,
-  "background_viscosity": 1.0E-4,
-  "thermal_buoyancy": 0.0,
-  "buoyancy_approximation": 1,
-  "boundary": {
-    "upper": 0.0,
-    "lower": 0.0,
-    "left": 0.0,
-    "right": 0.0,
-    "type": "temperature"
+  "viewOptions": {
+    "showClock": true,
+    "controlButtons": "play_reset",
+    "color_palette_type": 0,
+    "velocity": false,
+    "minimum_temperature": 0,
+    "maximum_temperature": 40,
+    "enableKeyboardHandlers": true
   },
   "structure": {
-    "part": {
-      "rectangle": {
-        "x": 0.0,
-        "y": 0.0,
-        "width": 0.2,
-        "height": 0.5
-      },
-      "thermal_conductivity": 0.08,
-      "specific_heat": 1300.0,
-      "density": 25.0,
-      "transmission": 0.0,
-      "reflection": 0.0,
-      "scattering": false,
-      "absorption": 1.0,
-      "emissivity": 0.0,
-      "temperature": 50.0,
-      "constant_temperature": true,
-      "wind_speed": 0.5,
-      "color": "c0ff00",
-      "visible": false
-    }
+    "part": [
+      {
+        "rectangle": {
+          "x": 0,
+          "y": 0,
+          "width": 0.2,
+          "height": 0.5
+        },
+        "thermal_conductivity": 0.08,
+        "specific_heat": 1300,
+        "density": 25,
+        "transmission": 0,
+        "reflection": 0,
+        "absorption": 1,
+        "emissivity": 0,
+        "temperature": 50,
+        "constant_temperature": true,
+        "power": 0,
+        "wind_speed": 0.5,
+        "wind_angle": 0,
+        "visible": false,
+        "filled": true,
+        "color": "c0ff00",
+        "label": "",
+        "texture": false,
+        "draggable": true
+      }
+    ]
   },
   "sensors": [
     {
-      "label": "A1",
+      "type": "anemometer",
       "x": 0.7407407,
       "y": 0.27777767,
-      "type": "anemometer"
+      "label": "A1"
     },
     {
-      "label": "A2",
-      "x": 5.0,
-      "y": 5.0,
-      "type": "anemometer"
+      "type": "anemometer",
+      "x": 5,
+      "y": 5,
+      "label": "A2"
     },
     {
-      "label": "A3",
+      "type": "anemometer",
       "x": 9.5,
-      "y": 5.0,
-      "type": "anemometer"
+      "y": 5,
+      "label": "A3"
     },
     {
-      "label": "A4",
-      "x": 5.0,
+      "type": "anemometer",
+      "x": 5,
       "y": 9.5,
-      "type": "anemometer"
+      "label": "A4"
     },
     {
-      "label": "A5",
+      "type": "anemometer",
       "x": 0.5,
-      "y": 5.0,
-      "type": "anemometer"
+      "y": 5,
+      "label": "A5"
     }
-  ],
-  "viewOptions": {
-    "snap_to_grid": true,
-    "grid_size": 10,
-    "graph_data_type": 3,
-    "fahrenheit_used": true,
-    "color_palette_type": 0,
-    "color_palette_x": 0.0,
-    "color_palette_y": 0.0,
-    "color_palette_w": 0.0,
-    "color_palette_h": 0.0,
-    "minimum_temperature": 0.0,
-    "maximum_temperature": 40.0,
-    "graph_xlabel": "Time",
-    "graph_ylabel": "Wind speed (m/s)",
-    "graph_ymin": 9.835458E-6,
-    "graph_ymax": 0.65933096,
-    "text": {
-      "string": "Lid-driven cavity",
-      "face": "Arial",
-      "size": 14,
-      "style": 0,
-      "color": "ffffff",
-      "border": true,
-      "x": 4.2659,
-      "y": 5.5688
-    }
-  }
+  ]
 }

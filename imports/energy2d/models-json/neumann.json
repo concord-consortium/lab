@@ -1,54 +1,52 @@
 {
   "type": "energy2d",
-  "timeStep": 100.0,
-  "viewupdate_interval": 10,
+  "use_WebGL": false,
+  "grid_width": 100,
+  "grid_height": 100,
+  "model_width": 10,
+  "model_height": 10,
+  "timeStep": 100,
+  "timeStepsPerTick": 4,
+  "ticksPerGPUSync": 30,
+  "convective": false,
+  "background_temperature": 0,
+  "background_conductivity": 0.25,
+  "background_specific_heat": 1012,
+  "background_density": 1.204,
+  "background_viscosity": 0.00001568,
+  "thermal_buoyancy": 0.00025,
+  "buoyancy_approximation": 1,
+  "boundary": {
+    "type": "flux",
+    "upper": 0,
+    "lower": 0,
+    "left": 0,
+    "right": 0
+  },
+  "sunny": false,
   "sun_angle": 1.5707964,
-  "solar_power_density": 2000.0,
+  "solar_power_density": 2000,
   "solar_ray_count": 24,
   "solar_ray_speed": 0.1,
   "photon_emission_interval": 20,
-  "z_heat_diffusivity": 0.0,
-  "convective": false,
-  "background_conductivity": 0.25,
-  "thermal_buoyancy": 2.5E-4,
-  "buoyancy_approximation": 1,
-  "boundary": {
-    "upper": 0.0,
-    "lower": 0.0,
-    "left": 0.0,
-    "right": 0.0,
-    "type": "flux"
+  "viewOptions": {
+    "showClock": true,
+    "controlButtons": "play_reset",
+    "color_palette_type": 0,
+    "velocity": false,
+    "minimum_temperature": 0,
+    "maximum_temperature": 100,
+    "enableKeyboardHandlers": true
   },
-  "structure": "\n",
+  "structure": {
+    "part": []
+  },
   "sensors": [
     {
-      "x": 5.0,
+      "type": "thermometer",
+      "x": 5,
       "y": 4.9,
-      "type": "thermometer"
+      "label": ""
     }
-  ],
-  "viewOptions": {
-    "grid": true,
-    "snap_to_grid": true,
-    "grid_size": 10,
-    "color_palette_type": 0,
-    "color_palette_x": 0.0,
-    "color_palette_y": 0.0,
-    "color_palette_w": 0.0,
-    "color_palette_h": 0.0,
-    "minimum_temperature": 0.0,
-    "maximum_temperature": 100.0,
-    "graph_xlabel": "Time",
-    "graph_ylabel": "Temperature (℃)",
-    "clock": false,
-    "text": {
-      "string": "Neumann boundary condition",
-      "face": "Book Antiqua",
-      "size": 16,
-      "style": 1,
-      "color": "ffffff",
-      "x": 0.7672,
-      "y": 9.2923
-    }
-  }
+  ]
 }

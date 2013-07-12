@@ -1,96 +1,105 @@
 {
   "type": "energy2d",
+  "use_WebGL": false,
+  "grid_width": 100,
+  "grid_height": 100,
+  "model_width": 10,
+  "model_height": 10,
   "timeStep": 0.5,
-  "measurement_interval": 100,
-  "viewupdate_interval": 10,
+  "timeStepsPerTick": 4,
+  "ticksPerGPUSync": 30,
+  "convective": true,
+  "background_temperature": 0,
+  "background_conductivity": 0.5,
+  "background_specific_heat": 1012,
+  "background_density": 1.204,
+  "background_viscosity": 0.0005,
+  "thermal_buoyancy": 0,
+  "buoyancy_approximation": 1,
+  "boundary": {
+    "type": "flux",
+    "upper": -10,
+    "lower": 10,
+    "left": 10,
+    "right": -10
+  },
+  "sunny": false,
   "sun_angle": 1.5707964,
-  "solar_power_density": 2000.0,
+  "solar_power_density": 2000,
   "solar_ray_count": 24,
   "solar_ray_speed": 0.1,
   "photon_emission_interval": 20,
-  "z_heat_diffusivity": 0.0,
-  "background_conductivity": 0.5,
-  "background_viscosity": 5.0E-4,
-  "thermal_buoyancy": 0.0,
-  "buoyancy_approximation": 1,
-  "boundary": {
-    "upper": -10.0,
-    "lower": 10.0,
-    "left": 10.0,
-    "right": -10.0,
-    "type": "flux"
+  "viewOptions": {
+    "showClock": true,
+    "controlButtons": "play_reset",
+    "color_palette_type": 1,
+    "velocity": false,
+    "minimum_temperature": 0,
+    "maximum_temperature": 40,
+    "enableKeyboardHandlers": true
   },
   "structure": {
     "part": [
       {
         "rectangle": {
-          "x": 0.0,
-          "y": 4.0,
+          "x": 0,
+          "y": 4,
           "width": 0.5,
-          "height": 2.0
+          "height": 2
         },
         "thermal_conductivity": 0.08,
-        "specific_heat": 1300.0,
-        "density": 25.0,
-        "transmission": 0.0,
-        "reflection": 0.0,
-        "absorption": 1.0,
-        "emissivity": 0.0,
-        "temperature": 20.0,
+        "specific_heat": 1300,
+        "density": 25,
+        "transmission": 0,
+        "reflection": 0,
+        "absorption": 1,
+        "emissivity": 0,
+        "temperature": 20,
         "constant_temperature": true,
+        "power": 0,
         "wind_speed": 0.1,
-        "texture": {
-          "texture_fg": -1,
-          "texture_bg": "-99999a",
-          "texture_style": 7,
-          "texture_width": 8,
-          "texture_height": 8
-        },
-        "label": "Fan"
+        "wind_angle": 0,
+        "visible": true,
+        "filled": true,
+        "color": "auto",
+        "label": "Fan",
+        "texture": true,
+        "draggable": true
       },
       {
         "ellipse": {
-          "x": 2.0,
+          "x": 2,
           "y": 4.949999690055847,
           "a": 1.8,
           "b": 1.8
         },
         "thermal_conductivity": 0.08,
-        "specific_heat": 1300.0,
-        "density": 25.0,
-        "transmission": 0.0,
-        "reflection": 0.0,
-        "absorption": 1.0,
-        "emissivity": 0.0,
-        "temperature": 0.0,
+        "specific_heat": 1300,
+        "density": 25,
+        "transmission": 0,
+        "reflection": 0,
+        "absorption": 1,
+        "emissivity": 0,
+        "temperature": 0,
         "constant_temperature": false,
-        "texture": {
-          "texture_fg": -1,
-          "texture_bg": "-7f7f80",
-          "texture_style": 10,
-          "texture_width": 8,
-          "texture_height": 8
-        },
-        "label": "Obstacle"
+        "power": 0,
+        "wind_speed": 0,
+        "wind_angle": 0,
+        "visible": true,
+        "filled": true,
+        "color": "auto",
+        "label": "Obstacle",
+        "texture": true,
+        "draggable": true
       }
     ]
   },
   "sensors": [
     {
-      "x": 8.0,
-      "y": 5.0,
-      "type": "thermometer"
+      "type": "thermometer",
+      "x": 8,
+      "y": 5,
+      "label": ""
     }
-  ],
-  "viewOptions": {
-    "grid_size": 10,
-    "color_palette_type": 1,
-    "color_palette_x": 0.0,
-    "color_palette_y": 0.0,
-    "color_palette_w": 0.0,
-    "color_palette_h": 0.0,
-    "minimum_temperature": 0.0,
-    "maximum_temperature": 40.0,
-    "graph_xlabel": "Time"
-  }
+  ]
 }

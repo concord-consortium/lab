@@ -1,60 +1,70 @@
 {
   "type": "energy2d",
-  "timeStep": 10.0,
-  "tasks": {
-    "task": {
-      "uid": "MOVE_SUN",
-      "script": "set sunny true;-linebreak-movesun 4 20;",
-      "description": "Move the sun.",
-      "interval": 100
-    }
+  "use_WebGL": false,
+  "grid_width": 100,
+  "grid_height": 100,
+  "model_width": 10,
+  "model_height": 10,
+  "timeStep": 10,
+  "timeStepsPerTick": 4,
+  "ticksPerGPUSync": 30,
+  "convective": false,
+  "background_temperature": 0,
+  "background_conductivity": 1,
+  "background_specific_heat": 1000,
+  "background_density": 1,
+  "background_viscosity": 0.00001568,
+  "thermal_buoyancy": 0.00025,
+  "buoyancy_approximation": 1,
+  "boundary": {
+    "type": "flux",
+    "upper": 0,
+    "lower": 0,
+    "left": 0,
+    "right": 0
   },
   "sunny": true,
-  "sun_angle": 0.0,
-  "solar_power_density": 50000.0,
+  "sun_angle": 0,
+  "solar_power_density": 50000,
   "solar_ray_count": 24,
   "solar_ray_speed": 0.005,
   "photon_emission_interval": 5,
-  "z_heat_diffusivity": 1.0E-5,
-  "convective": false,
-  "background_conductivity": 1.0,
-  "background_density": 1.0,
-  "background_specific_heat": 1000.0,
-  "thermal_buoyancy": 2.5E-4,
-  "buoyancy_approximation": 1,
-  "boundary": {
-    "upper": 0.0,
-    "lower": 0.0,
-    "left": 0.0,
-    "right": 0.0,
-    "type": "flux"
+  "viewOptions": {
+    "showClock": true,
+    "controlButtons": "play_reset",
+    "color_palette_type": 0,
+    "velocity": false,
+    "minimum_temperature": 0,
+    "maximum_temperature": 20,
+    "enableKeyboardHandlers": true
   },
   "structure": {
     "part": [
       {
         "rectangle": {
           "x": -0.099999905,
-          "y": 8.0,
+          "y": 8,
           "width": 10.2,
-          "height": 2.0
+          "height": 2
         },
         "thermal_conductivity": 0.001,
-        "specific_heat": 1000.0,
-        "density": 50.0,
-        "transmission": 0.0,
-        "reflection": 0.0,
-        "absorption": 1.0,
-        "emissivity": 0.0,
-        "temperature": 0.0,
+        "specific_heat": 1000,
+        "density": 50,
+        "transmission": 0,
+        "reflection": 0,
+        "absorption": 1,
+        "emissivity": 0,
+        "temperature": 0,
         "constant_temperature": false,
-        "texture": {
-          "texture_fg": -1000000,
-          "texture_bg": "-7f7f80",
-          "texture_style": 9,
-          "texture_width": 12,
-          "texture_height": 12
-        },
-        "label": "Ground"
+        "power": 0,
+        "wind_speed": 0,
+        "wind_angle": 0,
+        "visible": true,
+        "filled": true,
+        "color": "auto",
+        "label": "Ground",
+        "texture": true,
+        "draggable": true
       },
       {
         "rectangle": {
@@ -64,14 +74,23 @@
           "height": 0.07716049
         },
         "thermal_conductivity": 0.001,
-        "specific_heat": 1000.0,
-        "density": 25.0,
-        "transmission": 0.0,
-        "reflection": 1.0,
-        "absorption": 0.0,
-        "emissivity": 0.0,
-        "temperature": 0.0,
-        "constant_temperature": false
+        "specific_heat": 1000,
+        "density": 25,
+        "transmission": 0,
+        "reflection": 1,
+        "absorption": 0,
+        "emissivity": 0,
+        "temperature": 0,
+        "constant_temperature": false,
+        "power": 0,
+        "wind_speed": 0,
+        "wind_angle": 0,
+        "visible": true,
+        "filled": true,
+        "color": "auto",
+        "label": "",
+        "texture": false,
+        "draggable": true
       },
       {
         "rectangle": {
@@ -80,55 +99,39 @@
           "width": 0.046296,
           "height": 1.54321
         },
-        "thermal_conductivity": 1.0,
-        "specific_heat": 1000.0,
-        "density": 1.0,
-        "transmission": 1.0,
-        "reflection": 0.0,
-        "absorption": 0.0,
-        "emissivity": 0.0,
-        "temperature": 0.0,
-        "constant_temperature": false
+        "thermal_conductivity": 1,
+        "specific_heat": 1000,
+        "density": 1,
+        "transmission": 1,
+        "reflection": 0,
+        "absorption": 0,
+        "emissivity": 0,
+        "temperature": 0,
+        "constant_temperature": false,
+        "power": 0,
+        "wind_speed": 0,
+        "wind_angle": 0,
+        "visible": true,
+        "filled": true,
+        "color": "auto",
+        "label": "",
+        "texture": false,
+        "draggable": true
       }
     ]
   },
   "sensors": [
     {
-      "uid": "T2",
-      "label": "T2",
+      "type": "thermometer",
       "x": 7.5,
       "y": 7.2,
-      "type": "thermometer"
+      "label": "T2"
     },
     {
-      "uid": "T1",
-      "label": "T1",
+      "type": "thermometer",
       "x": 2.5,
       "y": 7.2,
-      "type": "thermometer"
+      "label": "T1"
     }
-  ],
-  "viewOptions": {
-    "grid_size": 10,
-    "ruler": true,
-    "isotherm": true,
-    "color_palette_type": 0,
-    "color_palette_x": 0.0,
-    "color_palette_y": 0.0,
-    "color_palette_w": 0.0,
-    "color_palette_h": 0.0,
-    "minimum_temperature": 0.0,
-    "maximum_temperature": 20.0,
-    "graph": true,
-    "graph_xlabel": "Time",
-    "text": {
-      "string": "Pavilion",
-      "face": "Arial",
-      "size": 14,
-      "style": 0,
-      "color": "ffffff",
-      "x": 7.4650836,
-      "y": 4.071229
-    }
-  }
+  ]
 }
