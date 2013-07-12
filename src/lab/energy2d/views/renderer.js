@@ -128,6 +128,7 @@ define(function(require) {
         model.addPropertiesListener("use_WebGL", function() {
           setupCavnasViews();
           setVisOptions();
+          webgl_status.render();
           api.update();
         });
         model.addPropertiesListener(["color_palette_type", "velocity",
