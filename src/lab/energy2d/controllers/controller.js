@@ -70,7 +70,7 @@ define(function (require) {
       },
 
       state: function () {
-        return null;
+        return model.serialize();
       },
 
       ScriptingAPI: ScriptingAPI

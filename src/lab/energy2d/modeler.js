@@ -5,10 +5,10 @@ define(function (require) {
   var alert           = require('common/alert'),
       console         = require('common/console'),
       validator       = require('common/validator'),
+      serialize       = require('common/serialize'),
       LabModelerMixin = require('common/lab-modeler-mixin'),
       metadata        = require('energy2d/metadata'),
       coremodel       = require('energy2d/models/core-model'),
-      Part            = require('energy2d/models/part').Part,
 
       unitsDefinition = {
         units: {
@@ -190,9 +190,11 @@ define(function (require) {
     }
 
     function validateParts(partsArray) {
-      partsArray.forEach(function (v, i, a) {
-        a[i] = validator.validateCompleteness(metadata.part, v);
+      var result = [];
+      partsArray.forEach(function (v) {
+        result.push(validator.validateCompleteness(metadata.part, v));
       });
+      return result;
     }
 
     function createSensors(sensorsSpec) {
@@ -233,6 +235,7 @@ define(function (require) {
           anemometers.push(s);
         }
         if (s.type === "heatFlux") {
+          s.angle = s.angle || 0;
           s._sin = Math.sin(s.angle * Math.PI / 180);
           s._cos = Math.cos(s.angle * Math.PI / 180);
         }
@@ -297,18 +300,16 @@ define(function (require) {
       },
 
       addPart: function (props) {
-        var WebGLOrg = model.properties.use_WebGL,
-            part;
+        var WebGLOrg = model.properties.use_WebGL;
 
         // This will update CPU array.
         model.properties.use_WebGL = false;
 
         props = validator.validateCompleteness(metadata.part, props);
-        part = new Part(props);
 
         propertySupport.invalidatingChangePreHook();
 
-        coreModel.addPart(part);
+        coreModel.addPart(props);
         updatePartsViewModel();
 
         propertySupport.invalidatingChangePostHook();
@@ -400,19 +401,43 @@ define(function (require) {
 
       setPerformanceTools: function () {
         return coreModel.setPerformanceTools();
+      },
+
+      serialize: function () {
+        var propCopy = {},
+            rawProperties = propertySupport.rawValues;
+
+        propCopy = serialize(metadata.mainProperties, rawProperties);
+        propCopy.viewOptions = serialize(metadata.viewOptions, rawProperties);
+
+        propCopy.structure = {
+          part: []
+        };
+        viewModel.parts.forEach(function (p) {
+          propCopy.structure.part.push(serialize(metadata.part, p));
+        });
+
+        propCopy.sensors = [];
+        viewModel.sensors.forEach(function (s) {
+          propCopy.sensors.push(serialize(metadata.sensor, s));
+        });
+
+        return propCopy;
       }
     };
 
     (function () {
+      var parts;
+
       labModelerMixin.mixInto(model);
       dispatch.addEventTypes("tick", "partsChanged", "sensorsChanged");
 
       // Validate parts before passing options to coreModel.
-      if (model.properties.structure && model.properties.structure.part) {
-        validateParts(model.properties.structure.part);
+      if (initialProperties.structure && initialProperties.structure.part) {
+        parts = validateParts(initialProperties.structure.part);
       }
 
-      coreModel = coremodel.makeCoreModel(model.properties);
+      coreModel = coremodel.makeCoreModel(model.properties, parts);
       setWebGLEnabled(model.properties.use_WebGL);
 
       if (initialProperties.sensors) {

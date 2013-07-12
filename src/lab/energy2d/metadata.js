@@ -98,21 +98,6 @@ define(function(require) {
       },
       photon_emission_interval: {
         defaultValue: 20
-      },
-
-      structure: {
-        // Structure can be undefined.
-        // However, its desired form is:
-        // "structure": {
-        //   "part": [
-        //     {
-        //       ... part definition (see part fallback values below)
-        //     },
-        //     {
-        //       ... second part definition
-        //     },
-        //   ]
-        // }
       }
     },
 
@@ -297,7 +282,6 @@ define(function(require) {
       },
       angle: {
         // Optional, defined only for heat flux sensors.
-        defaultValue: 0,
         immutable: true
       },
       label: {

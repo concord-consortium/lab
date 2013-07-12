@@ -10,7 +10,7 @@ define(function (require, exports) {
     fluidsolver     = require('energy2d/models/physics-solvers/fluid-solver'),
     fluidsolver_GPU = require('energy2d/models/physics-solvers-gpu/fluid-solver-gpu'),
     raysolver       = require('energy2d/models/physics-solvers/ray-solver'),
-    part            = require('energy2d/models/part'),
+    Part            = require('energy2d/models/part').Part,
     gpgpu           = require('energy2d/gpu/gpgpu'),
     hypot           = require('energy2d/models/helpers').hypot,
 
@@ -26,7 +26,7 @@ define(function (require, exports) {
   // Core Energy2D model.
   //
   // It creates and manages all the data and parameters used for calculations.
-  exports.makeCoreModel = function (opt) {
+  exports.makeCoreModel = function (opt, partsOpt) {
     var
       // Simulation grid dimensions.
       nx = opt.grid_width,
@@ -123,23 +123,18 @@ define(function (require, exports) {
       // - A: undefined
       texture = [],
 
-
       // Generate parts array.
       parts = (function () {
-        var
-          result = [],
-          parts_options,
-          i, len;
+        var result = [],
+            i, len;
 
-        if (opt.structure && opt.structure.part) {
-          parts_options = opt.structure.part;
-          if (parts_options.constructor !== Array) {
-            parts_options = [parts_options];
+        if (partsOpt) {
+          if (!arrays.isArray(partsOpt)) {
+            partsOpt = [partsOpt];
           }
-
-          result = new Array(parts_options.length);
-          for (i = 0, len = parts_options.length; i < len; i += 1) {
-            result[i] = new part.Part(parts_options[i]);
+          result = new Array(partsOpt.length);
+          for (i = 0, len = partsOpt.length; i < len; i += 1) {
+            result[i] = new Part(partsOpt[i]);
           }
         }
         return result;
@@ -391,7 +386,8 @@ define(function (require, exports) {
           }
         },
 
-        addPart: function (part) {
+        addPart: function (props) {
+          var part = new Part(props);
           parts.push(part);
           setupPart(part);
         },
