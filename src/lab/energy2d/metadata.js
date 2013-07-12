@@ -70,17 +70,6 @@ define(function(require) {
           right: 0
         }
       },
-      measurement_interval: {
-        // unnecessary
-        defaultValue: 500
-      },
-      viewupdate_interval: {
-        // unnecessary
-        defaultValue: 100
-      },
-      stoptime: {
-        // unnecessary
-      },
       sunny: {
         defaultValue: false
       },
@@ -249,18 +238,7 @@ define(function(require) {
         defaultValue: ""
       },
       texture: {
-      // Texture can be undefined.
-      // However, its desired form is (contains example values):
-      // {
-      //   texture_fg: -0x1000000,
-      //   texture_bg: -0x7f7f80,
-      //   texture_style: 12,
-      //   texture_width: 12,
-      //   texture_height: 12
-      // },
-      },
-      uid: {
-        // unnecessary (not yet implemented)
+        defaultValue: false
       },
       draggable: {
         defaultValue: true
