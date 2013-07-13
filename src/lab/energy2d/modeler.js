@@ -342,6 +342,22 @@ define(function (require) {
       stepCounter: function() {
         return coreModel.getIndexOfStep();
       },
+      isNewStep: function() {
+        return true;
+      },
+      stepBack: function(num) {
+        return coreModel.getIndexOfStep();
+      },
+      stepForward: function(num) {
+        if (!arguments.length) { num = 1; }
+        if (!this.isStopped()) {
+          this.stop();
+        }
+        var i=-1; while(++i < num) {
+          this.tick();
+        }
+        return coreModel.getIndexOfStep();
+      },
       getTime: function () {
         return model.properties.timeStep * coreModel.getIndexOfStep();
       },
