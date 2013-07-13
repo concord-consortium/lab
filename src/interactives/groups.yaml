@@ -162,6 +162,10 @@
   :name: "Solar System"
   :category: Tests
 
+- :path: energy2d/htb
+  :name: "Energy2D: Heat Transfer"
+  :category: Curriculum
+
 - :path: energy2d/examples
   :name: "Energy2D"
   :category: Tests

@@ -31,12 +31,37 @@
       "properties": [
         "sensor-1", "sensor-0"
       ]
+    },
+    {
+      "type": "checkbox",
+      "id": "webgl",
+      "text": "Use WebGL",
+      "property": "use_WebGL"
+    },
+    {
+      "type": "slider",
+      "id": "gpu-sync",
+      "title": "ticksPerGPUSync",
+      "property": "ticksPerGPUSync",
+      "min": 0,
+      "max": 300,
+      "displayValue": "return format('1f')(value)",
+      "steps": 300
+    },
+    {
+      "type": "slider",
+      "id": "timesteps",
+      "title": "timeStepsPerTick",
+      "property": "timeStepsPerTick",
+      "min": 1,
+      "max": 50,
+      "displayValue": "return format('1f')(value)",
+      "steps": 50
     }
   ],
   "layout": {
-    "right": [
-      "graph"
-    ]
+    "right": [ "graph" ],
+    "bottom": ["webgl", "gpu-sync", "timesteps"]
   },
   "template": "wide-right"
 }
