@@ -684,7 +684,7 @@ AUTHORING = false;
                                       .text(group.name));
 
     });
-    $selectInteractiveGroups.val(interactiveRemote.groupKey).attr('selected', true);
+    $selectInteractiveGroups.val(interactive.groupKey).attr('selected', true);
   }
 
   //
