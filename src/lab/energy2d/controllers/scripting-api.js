@@ -13,6 +13,10 @@ define(function () {
         return model.getAverageTemperatureAt(x, y);
       },
 
+      getSensor: function getSensor(i) {
+        return model.getSensorsArray()[i];
+      },
+
       getPart: function getPart(i) {
         return model.getPartsArray()[i];
       },
