@@ -3,7 +3,7 @@
   %head
     %meta{:content => "text/html;charset=utf-8", "http-equiv" => "Content-Type"}/
     %meta{:content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
-    %title Interactive Browser
+    %title Lab Interactive Browser
     = FONTFACE_LINK
     %link{:href => "vendor/codemirror/lib/codemirror.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "vendor/jquery-ui/jquery-ui.css", :rel => "stylesheet", :type => "text/css"}/
@@ -96,16 +96,6 @@
             %label{:for => "show-editor"} Interactive Editor
           #editor-content.extras-item-content
             .extras-item-controls
-              .save-interactive-form
-                %form
-                  %p
-                    %label{:for => "save-interactive-title"} Interactive Title
-                    %input.save-interactive-title#text#ui-widget-content#ui-corner-all{:type => "text"}
-                  %p
-                    %label{:for => "select-interactive-groups"} Select the Interactive Group
-                    %select#select-interactive-groups
-              %button#save-interactive-button Save
-              %button#save-as-interactive-button Save As
               %button#update-interactive-button Update Interactive
               %button#update-json-from-interactive-button Update JSON from Interactive
               %button.right#autoformat-interactive-json-button AutoFormat
@@ -117,7 +107,6 @@
             %label{:for => "show-model-editor"} Model Editor
           #model-editor-content.extras-item-content
             .extras-item-controls
-              %button#save-model-button Save
               %button#update-model-button Update Model
               %button#update-json-from-model-button Update JSON from Model
               %a#json-model-link{:href => "", :class => "opens-in-new-window", :target => "_blank"} Model JSON

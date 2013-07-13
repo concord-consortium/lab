@@ -224,7 +224,7 @@ AUTHORING = false;
 
   function setupFullPage() {
     interactivesPromise.done(function() {
-
+      document.title = "Lab Interactive Browser: " + interactive.title;
       restoreOptionsFromCookie();
       setupSelectList();
       $("#select-filters input").click(setupSelectList);

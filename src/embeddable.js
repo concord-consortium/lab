@@ -29,7 +29,11 @@ AUTHORING = false;
   if (hash) {
     interactiveUrl = hash.substr(1, hash.length);
     controller = new Lab.InteractivesController(interactiveUrl, '#interactive-container');
-    sendGAPageview();
+    controller.on("modelLoaded", function() {
+      interactive = controller.interactive;
+      document.title = "Lab Interactive: " + interactive.title;
+      sendGAPageview();
+    });
   }
 
   $(window).bind('hashchange', function() {
