@@ -511,56 +511,67 @@ AUTHORING = false;
       $originalModelLink.attr("title", "original import model file not available for this model");
       $originalModelLink.addClass("na");
     }
-    switch(interactive.models[0].type) {
-      case "md2d":
-      // construct Java MW link for running Interactive via jnlp
-      // uses generated resource list: /imports/legacy-mw-content/model-list.js
-      // also updates link to original MML in Model Editor
-      mmlPath = jsonModelPath.replace("imports/legacy-mw-content/converted/", "imports/legacy-mw-content/").replace(".json", ".mml");
-      $originalImportLink.attr("target", "");
-      if (typeof modelList !== 'undefined') {
-        contentItems = getObjects(modelList, "mml", mmlPath.replace("imports/legacy-mw-content/", ""));
-      }
-      if (contentItems.length > 0) {
-        javaMWhref = javaMW + origin + Lab.config.actualRoot + "imports/legacy-mw-content/" + contentItems[0].cml;
-        $originalImportLink.attr("href", javaMWhref);
-        $originalImportLink.attr("title", "View original Java Molecular Workbench content using Java Web Start");
-        $originalModelLink.attr("href", origin + Lab.config.actualRoot + mmlPath);
-        $originalModelLink.attr("title", "View original Java Molecular Workbench MML file in another window");
-      } else {
+    function disableJsonModelLink() {
+      $jsonModelLink.removeAttr("href");
+      $jsonModelLink.attr("title", "link to JSON model not available for this interactive");
+      $jsonModelLink.addClass("na");
+    }
+    if (jsonModelPath) {
+      switch(interactive.models[0].type) {
+        case "md2d":
+        // construct Java MW link for running Interactive via jnlp
+        // uses generated resource list: /imports/legacy-mw-content/model-list.js
+        // also updates link to original MML in Model Editor
+        mmlPath = jsonModelPath.replace("imports/legacy-mw-content/converted/", "imports/legacy-mw-content/").replace(".json", ".mml");
+        $originalImportLink.attr("target", "");
+        if (typeof modelList !== 'undefined') {
+          contentItems = getObjects(modelList, "mml", mmlPath.replace("imports/legacy-mw-content/", ""));
+        }
+        if (contentItems.length > 0) {
+          javaMWhref = javaMW + origin + Lab.config.actualRoot + "imports/legacy-mw-content/" + contentItems[0].cml;
+          $originalImportLink.attr("href", javaMWhref);
+          $originalImportLink.attr("title", "View original Java Molecular Workbench content using Java Web Start");
+          $originalModelLink.attr("href", origin + Lab.config.actualRoot + mmlPath);
+          $originalModelLink.attr("title", "View original Java Molecular Workbench MML file in another window");
+        } else {
+          disableOriginalImportLink();
+          disableOriginalModelLink();
+        }
+        break;
+        case "energy2d":
+        e2dModelPath = interactive.models[0].importedFrom;
+        $originalImportLink.attr("target", "_blank");
+        if (interactive.importedFrom) {
+          // The Energy2D model exist on a separate HTML page
+          $originalImportLink.attr("href", interactive.importedFrom);
+          $originalImportLink.attr("title", "View original html page with Java Energy2D applet in another window");
+        } else if (e2dModelPath) {
+          // The Energy2D model exists only as an e2d file, there is no associated HTML page,
+          // use Generic Energy2D applet page instead:
+          //    /imports/energy2d/energy2d-applet.html?e2dPath=content/compare-capacity.e2d&title=Compare%20Capacity
+          $originalImportLink.attr("href", origin + Lab.config.actualRoot +
+            "imports/energy2d/energy2d-applet.html?" +
+            encodeURI("e2dPath=" + e2dModelPath.replace("imports/energy2d/", "") + "&title=" + interactive.title.replace(/\*+$/, '')));
+          $originalImportLink.attr("title", "View original Java Energy2D applet in generic HTML page in another window");
+        } else {
+          disableOriginalImportLink();
+        }
+        if (e2dModelPath) {
+          $originalModelLink.attr("href", origin + Lab.config.actualRoot + interactive.models[0].importedFrom);
+          $originalModelLink.attr("title", "View original Java Energy2D applet e2d model file in another window");
+        } else {
+          disableOriginalModelLink();
+        }
+        break;
+        default:
         disableOriginalImportLink();
         disableOriginalModelLink();
+        break;
       }
-      break;
-      case "energy2d":
-      e2dModelPath = interactive.models[0].importedFrom;
-      $originalImportLink.attr("target", "_blank");
-      if (interactive.importedFrom) {
-        // The Energy2D model exist on a separate HTML page
-        $originalImportLink.attr("href", interactive.importedFrom);
-        $originalImportLink.attr("title", "View original html page with Java Energy2D applet in another window");
-      } else if (e2dModelPath) {
-        // The Energy2D model exists only as an e2d file, there is no associated HTML page,
-        // use Generic Energy2D applet page instead:
-        //    /imports/energy2d/energy2d-applet.html?e2dPath=content/compare-capacity.e2d&title=Compare%20Capacity
-        $originalImportLink.attr("href", origin + Lab.config.actualRoot +
-          "imports/energy2d/energy2d-applet.html?" +
-          encodeURI("e2dPath=" + e2dModelPath.replace("imports/energy2d/", "") + "&title=" + interactive.title.replace(/\*+$/, '')));
-        $originalImportLink.attr("title", "View original Java Energy2D applet in generic HTML page in another window");
-      } else {
-        disableOriginalImportLink();
-      }
-      if (e2dModelPath) {
-        $originalModelLink.attr("href", origin + Lab.config.actualRoot + interactive.models[0].importedFrom);
-        $originalModelLink.attr("title", "View original Java Energy2D applet e2d model file in another window");
-      } else {
-        disableOriginalModelLink();
-      }
-      break;
-      default:
+    } else {
       disableOriginalImportLink();
       disableOriginalModelLink();
-      break;
+      disableJsonModelLink();
     }
   }
 
