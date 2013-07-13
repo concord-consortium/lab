@@ -619,21 +619,17 @@ define(function (require) {
         $.get(newInteractive).done(function(results) {
           if (typeof results === 'string') results = JSON.parse(results);
           controller.interactive = results;
-
-          if (interactive.title) {
-            document.title = interactive.title;
-          }
-          finishLoadingInteractive(interactive);
+          finishLoadingInteractive();
         })
         .fail(function() {
           document.title = "Interactive not found";
           controller.interactive = interactiveNotFound(newInteractive);
-          finishLoadingInteractive(interactive);
+          finishLoadingInteractive();
         });
       } else {
         // we were passed an interactive object
         controller.interactive = newInteractive
-        finishLoadingInteractive(newInteractive);
+        finishLoadingInteractive();
       }
     }
 
