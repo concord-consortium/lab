@@ -339,16 +339,16 @@ define(function (require) {
         dispatch.partsChanged();
       },
 
-      stepCounter: function() {
+      stepCounter: function () {
         return coreModel.getIndexOfStep();
       },
-      isNewStep: function() {
+      isNewStep: function () {
         return true;
       },
-      stepBack: function(num) {
+      stepBack: function (num) {
         return coreModel.getIndexOfStep();
       },
-      stepForward: function(num) {
+      stepForward: function (num) {
         if (!arguments.length) { num = 1; }
         if (!this.isStopped()) {
           this.stop();
