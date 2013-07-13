@@ -61,6 +61,85 @@
       ]
     },
     {
+      "type": "text",
+      "id": "part-size-label",
+      "text": "**Size**:"
+    },
+    {
+      "type": "radio",
+      "id": "left-part-buttons",
+      "label": "Left",
+      "labelOn": "left",
+      "orientation": "horizontal",
+      "options": [
+        {
+          "text": "50%",
+          "action": [
+            "var part = getPart(0), sensor = getSensor(0)",
+            "part.width = 0.15;",
+            "part.x = 0.35;",
+            "sensor.x = 0.425;"
+          ]
+        },
+        {
+          "text": "100%",
+          "action": [
+            "var part = getPart(0), sensor = getSensor(0)",
+            "part.width = 0.3;",
+            "part.x = 0.2;",
+            "sensor.x = 0.35;"
+          ],
+          "selected": true
+        },
+        {
+          "text": "150%",
+          "action": [
+            "var part = getPart(0), sensor = getSensor(0)",
+            "part.width = 0.45;",
+            "part.x = 0.05;",
+            "sensor.x = 0.275;"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "radio",
+      "id": "right-part-buttons",
+      "label": "Right",
+      "labelOn": "left",
+      "orientation": "horizontal",
+      "options": [
+        {
+          "text": "50%",
+          "action": [
+            "var part = getPart(1), sensor = getSensor(1)",
+            "part.width = 0.15;",
+            "part.x = 0.5;",
+            "sensor.x = 0.575;"
+          ]
+        },
+        {
+          "text": "100%",
+          "action": [
+            "var part = getPart(1), sensor = getSensor(1)",
+            "part.width = 0.3;",
+            "part.x = 0.5;",
+            "sensor.x = 0.65;"
+          ],
+          "selected": true
+        },
+        {
+          "text": "150%",
+          "action": [
+            "var part = getPart(1), sensor = getSensor(1)",
+            "part.width = 0.45;",
+            "part.x = 0.5;",
+            "sensor.x = 0.725;"
+          ]
+        }
+      ]
+    },
+    {
       "type": "graph",
       "id": "graph",
       "title": "Temperature Probes: T1, T2",
@@ -78,7 +157,10 @@
     }
   ],
   "layout": {
-    "bottom": [ "cases-pulldown" ],
+    "bottom": [
+      [ "cases-pulldown" ],
+      [ "part-size-label", "left-part-buttons", "right-part-buttons" ]
+    ],
     "right": [ "graph" ]
   },
   "template": "wide-right"
