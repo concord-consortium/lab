@@ -83,7 +83,6 @@ AUTHORING = false;
       contentItems = [],
       mmlPath,
       $jsonModelLink = $("#json-model-link"),
-
       $originalImportLink = $("#original-import-link"),
       $originalModelLink = $("#original-model-link"),
 
@@ -191,7 +190,7 @@ AUTHORING = false;
       // instance of the Interactive now.
       controller = new Lab.InteractivesController(interactiveUrl, '#interactive-container');
       controller.on("modelLoaded", function() {
-        interactive = controller.interactive;
+        interactive = controller.serialize();
         setupFullPage();
       });
     }

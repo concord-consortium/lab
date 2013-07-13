@@ -889,11 +889,14 @@ define(function (require) {
         }
 
         // Copy basic properties from the initial definition, as they are immutable.
+        // FIXME: this should be based on enumerating properties in the metadata. The issue is properties
+        // added to the metadata like "importedFrom" have to be then manually added here.
         result = {
           title: interactive.title,
           publicationStatus: interactive.publicationStatus,
           subtitle: interactive.subtitle,
           fontScale: interactive.fontScale,
+          importedFrom: interactive.importedFrom,
           about: arrays.isArray(interactive.about) ? $.extend(true, [], interactive.about) : interactive.about,
           // Node that models section can also contain custom parameters definition. However, their initial values
           // should be already updated (take a look at the beginning of this function), so we can just serialize whole array.
@@ -924,7 +927,6 @@ define(function (require) {
         return result;
       },
       // Make these private variables and functions available
-      interactive: interactive,
       loadInteractive: loadInteractive,
       validateInteractive: validateInteractive,
       loadModel: loadModel,
