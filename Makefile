@@ -99,7 +99,21 @@ public/embeddable.html: config/config.yml
 clean:
 	ruby script/check-development-dependencies.rb
 	# install/update Ruby Gems
-	bundle install --binstubs
+	bundle install --binstubs --without
+	$(MAKE) clean-finish
+
+# like clean without installing development-related Ruby Gems
+# intended to make testing faster on continuous integration server
+.PHONY: clean-for-tests
+clean-for-tests:
+	ruby script/check-development-dependencies.rb
+	# install/update Ruby Gems
+	bundle install --binstubs --without development
+	$(MAKE) clean-finish
+
+# public dir cleanup.
+.PHONY: clean-finish
+clean-finish:
 	mkdir -p public
 	$(MAKE) clean-public
 	# Remove Lab auto-generated files.
@@ -160,7 +174,11 @@ test: test/layout.html \
 
 # run all test WITHOUT trying to build Lab JS first. Run 'make test' to build & test.
 .PHONY: test-src
-test-src: test/layout.html
+test-src: test/layout.html \
+	vendor/d3/d3.js \
+	node_modules \
+	vendor/d3 \
+	public/vendor/jquery/jquery.min.js
 	@echo 'Running Mocha tests ...'
 	@$(MOCHA)
 	@echo 'Running Vows tests ...'

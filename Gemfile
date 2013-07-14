@@ -4,9 +4,6 @@ gem "rack",               "~> 1.5.2"
 
 gem "rake",               "~> 10.1.0"
 
-gem "fog",                "~> 1.12.1"
-gem "librarian-chef",     "~> 0.0.1"
-
 gem "haml",               "~> 4.0.0"
 gem "sass",               "~> 3.2.5"
 gem 'bourbon',            "~> 3.1.1"
@@ -38,6 +35,9 @@ def windows_only(require_as)
 end
 
 group :development do
+
+  gem "fog",                "~> 1.12.1"
+  gem "librarian-chef",     "~> 0.0.1"
 
   # http://about.travis-ci.org/docs/user/travis-lint/
   gem "travis-lint"
