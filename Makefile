@@ -175,10 +175,17 @@ test: test/layout.html \
 # run all test WITHOUT trying to build Lab JS first. Run 'make test' to build & test.
 .PHONY: test-src
 test-src: test/layout.html \
+	vendor/d3 \
 	vendor/d3/d3.js \
 	node_modules \
-	vendor/d3 \
-	public/vendor/jquery/jquery.min.js
+	public/vendor/d3 \
+	public/vendor/d3-plugins \
+	public/vendor/jquery/jquery.min.js \
+	public/vendor/jquery-ui/jquery-ui.min.js \
+	public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js \
+	public/vendor/jquery-selectBoxIt \
+	public/vendor/jquery-context-menu \
+	public/imports
 	@echo 'Running Mocha tests ...'
 	@$(MOCHA)
 	@echo 'Running Vows tests ...'
