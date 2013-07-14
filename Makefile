@@ -102,13 +102,14 @@ clean:
 	bundle install --binstubs --without
 	$(MAKE) clean-finish
 
-# like clean without installing development-related Ruby Gems
-# intended to make testing faster on continuous integration server
+# Like clean without installing development-related Ruby Gems,intended
+# to make testing faster on a continuous integration server.
+# Minimal project build and run tests: make clean-for-tests; make test-src
 .PHONY: clean-for-tests
 clean-for-tests:
 	ruby script/check-development-dependencies.rb
 	# install/update Ruby Gems
-	bundle install --binstubs --without development
+	bundle install --binstubs --without development app
 	$(MAKE) clean-finish
 
 # public dir cleanup.
@@ -172,7 +173,8 @@ test: test/layout.html \
 	@$(VOWS)
 	@echo
 
-# run all test WITHOUT trying to build Lab JS first. Run 'make test' to build & test.
+# Run all tests WITHOUT trying to build Lab JS first. Run 'make test' to build & test.
+# Minimal project build and run tests: make clean-for-tests; make test-src
 .PHONY: test-src
 test-src: test/layout.html \
 	vendor/d3 \

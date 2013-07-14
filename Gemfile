@@ -1,26 +1,22 @@
 source "http://rubygems.org"
 
-gem "rack",               "~> 1.5.2"
-
-gem "rake",               "~> 10.1.0"
-
-gem "haml",               "~> 4.0.0"
-gem "sass",               "~> 3.2.5"
-gem 'bourbon',            "~> 3.1.1"
-gem 'neat',               "~> 1.2.0"
-gem 'kramdown',           "~> 0.13.8"
-
 # Adds Hash.from_xml method used in Energy2D importer
 gem 'active_support',     "~> 3"
 gem 'i18n',               "~> 0.6.4"
 
-gem "gitlab-grit",        "~> 2.6.0"
-
-gem "mustache",           "~> 0.99.4"
-
-gem "shutterbug",         "~> 0.0.9"
-
-gem "rack-livereload",    "~> 0.3.15"
+group :app do
+  gem "rack",               "~> 1.5.2"
+  gem "rake",               "~> 10.1.0"
+  gem "haml",               "~> 4.0.0"
+  gem "sass",               "~> 3.2.5"
+  gem 'bourbon',            "~> 3.1.1"
+  gem 'neat',               "~> 1.2.0"
+  gem 'kramdown',           "~> 0.13.8"
+  gem "gitlab-grit",        "~> 2.6.0"
+  gem "mustache",           "~> 0.99.4"
+  gem "shutterbug",         "~> 0.0.9"
+  gem "rack-livereload",    "~> 0.3.15"
+end
 
 def darwin_only(require_as)
   RbConfig::CONFIG['host_os'] =~ /darwin/ && require_as
