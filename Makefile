@@ -98,8 +98,13 @@ public/embeddable.html: config/config.yml
 .PHONY: clean
 clean:
 	ruby script/check-development-dependencies.rb
+	# remove the .bundle dir in case we are running this after running: make clean-for-tests
+	# which creates a persistent bundle grouping after installing just the minimum
+	# necessary set of gems for running tests using the arguments: --without development app
+	# Would be nice if bundle install had a --withall option to cancel this persistence.
+	rm -rf .bundle
 	# install/update Ruby Gems
-	bundle install --binstubs --without
+	bundle install --binstubs
 	$(MAKE) clean-finish
 
 # Like clean without installing development-related Ruby Gems,intended
