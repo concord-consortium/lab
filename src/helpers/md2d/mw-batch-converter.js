@@ -37,7 +37,7 @@ var parseMML = require('./mml-parser').parseMML,
   @returns true if a conversion was made, false otherwise
   @throws Error if the input file could not be found, or could not be converted.
 */
-function convertMMLFile(inputBaseDir, mmlPath, outputBaseDir, onlyOutdated) {
+function convertMMLFile(inputBaseDir, mmlPath, outputBaseDir, onlyOutdated, verbose) {
 
   var inputPath  = path.normalize( path.join(inputBaseDir, mmlPath) ),
       outputPath = path.normalize( path.join(outputBaseDir, mmlPath) ).replace(/mml$/, 'json'),
@@ -64,6 +64,8 @@ function convertMMLFile(inputBaseDir, mmlPath, outputBaseDir, onlyOutdated) {
   }
 
   // if we got this far, convert the mml file
+  if (verbose) { sys.puts(inputPath) }
+
   mml = fs.readFileSync(inputPath).toString();
   conversion = parseMML(mml);
 
@@ -72,6 +74,8 @@ function convertMMLFile(inputBaseDir, mmlPath, outputBaseDir, onlyOutdated) {
   }
 
   // and write the ouptut
+  if (verbose) { sys.puts(outputPath + "\n") }
+
   mkdirp.sync( path.dirname(outputPath) );
   fs.writeFileSync( outputPath, JSON.stringify(conversion.json, null, 2) );
   return true;
@@ -124,20 +128,44 @@ function collectAllMMLFiles(searchPath, baseDir) {
   @param onlyOutdated
     Whether to only convert outdated MML files, or convert them all
 
+  @param showProgress
+    Whether to print a '.' as each group of 10 files are processed
+
+  @param folderPath
+    optional: alternate folder path for processing MML files
+
+  @param verbose
+    optional: display input and out filenames as they are being processed
+
+    example: imports/legacy-mw-content/conversion-and-physics-examples/
+
   @returns The number of files converted.
 */
-function convertMMLFolder(onlyOutdated, showProgress) {
+function convertMMLFolder(onlyOutdated, showProgress, folderPath, verbose) {
 
-  var mmlFiles = collectAllMMLFiles(legacyFolderPath),
+  var mmlFiles,
       converted,
       nConverted = 0,
       i;
 
-  for (i=0; i < mmlFiles.length; i++) {
-    converted = convertMMLFile(legacyFolderPath, mmlFiles[i], convertedFolderPath, !!onlyOutdated);
-    if (converted) nConverted++;
-    if (showProgress && nConverted > 0 && nConverted % 10 === 0) sys.print('.');
+  if (folderPath) {
+    legacyFolderPath = folderPath;
+    convertedFolderPath = legacyFolderPath.replace(/imports\/legacy-mw-content/, 'public/imports/legacy-mw-content/converted');
   }
+
+  mmlFiles = collectAllMMLFiles(legacyFolderPath);
+
+  if (verbose) { sys.puts("\n"); }
+
+  for (i=0; i < mmlFiles.length; i++) {
+    converted = convertMMLFile(folderPath, mmlFiles[i], convertedFolderPath, !!onlyOutdated, verbose);
+    if (converted) nConverted++;
+    if (!verbose) {
+      if (showProgress && nConverted > 0 && nConverted % 10 === 0) sys.print('.');
+    }
+  }
+
+  sys.puts("\n");
 
   return nConverted;
 }
