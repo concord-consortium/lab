@@ -1,5 +1,7 @@
 source "http://rubygems.org"
 
+gem "haml",               "~> 4.0.0"
+
 # Adds Hash.from_xml method used in Energy2D importer
 gem 'active_support',     "~> 3"
 gem 'i18n',               "~> 0.6.4"
@@ -7,7 +9,6 @@ gem 'i18n',               "~> 0.6.4"
 group :app do
   gem "rack",               "~> 1.5.2"
   gem "rake",               "~> 10.1.0"
-  gem "haml",               "~> 4.0.0"
   gem "sass",               "~> 3.2.5"
   gem 'bourbon',            "~> 3.1.1"
   gem 'neat',               "~> 1.2.0"
