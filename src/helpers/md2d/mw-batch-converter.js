@@ -158,7 +158,7 @@ function convertMMLFolder(onlyOutdated, showProgress, folderPath, verbose) {
   if (verbose) { sys.puts("\n"); }
 
   for (i=0; i < mmlFiles.length; i++) {
-    converted = convertMMLFile(folderPath, mmlFiles[i], convertedFolderPath, !!onlyOutdated, verbose);
+    converted = convertMMLFile(legacyFolderPath, mmlFiles[i], convertedFolderPath, !!onlyOutdated, verbose);
     if (converted) nConverted++;
     if (!verbose) {
       if (showProgress && nConverted > 0 && nConverted % 10 === 0) sys.print('.');
