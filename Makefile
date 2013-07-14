@@ -184,8 +184,9 @@ test-src: test/layout.html \
 	public/vendor/jquery-ui/jquery-ui.min.js \
 	public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js \
 	public/vendor/jquery-selectBoxIt \
-	public/vendor/jquery-context-menu \
-	public/imports
+	public/vendor/jquery-context-menu
+	mkdir -p public/imports/legacy-mw-content/converted/conversion-and-physics-examples
+	./node-bin/convert-mml-files --path=imports/legacy-mw-content/conversion-and-physics-examples/
 	@echo 'Running Mocha tests ...'
 	@$(MOCHA)
 	@echo 'Running Vows tests ...'
