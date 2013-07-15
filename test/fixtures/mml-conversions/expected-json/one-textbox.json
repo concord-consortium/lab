@@ -40,6 +40,7 @@
     "showClock": false,
     "showVelocityVectors": false,
     "showForceVectors": false,
+    "showElectricForceField": false,
     "showAtomTrace": false,
     "images": [],
     "imageMapping": {},

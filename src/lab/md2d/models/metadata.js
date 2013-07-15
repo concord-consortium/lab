@@ -199,6 +199,10 @@ define(function() {
         defaultValue: false,
         storeInTickHistory: true
       },
+      showElectricForceField: {
+        defaultValue: false,
+        storeInTickHistory: true
+      },
       showAtomTrace: {
         defaultValue: false
       },
@@ -482,7 +486,7 @@ define(function() {
         defaultValue: true
       }
     },
-    
+
     rectangle: {
       // Required properties:
       width: {
