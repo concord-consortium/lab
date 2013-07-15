@@ -921,7 +921,7 @@ define(function(require) {
       engine.addObstacle(validatedProps);
       propertySupport.invalidatingChangePostHook();
     };
-    
+
     model.addRectangle = function(props) {
       var validatedProps;
       // Validate properties, use default values if there is such need.
@@ -931,7 +931,7 @@ define(function(require) {
       engine.addRectangle(validatedProps);
       propertySupport.invalidatingChangePostHook();
     };
-    
+
     model.removeObstacle = function (idx) {
       propertySupport.invalidatingChangePreHook();
       engine.removeObstacle(idx);
@@ -943,7 +943,7 @@ define(function(require) {
       engine.removeRectangle(idx);
       propertySupport.invalidatingChangePostHook();
     };
-    
+
     model.addRadialBond = function(props, options) {
       // Validate properties, use default values if there is such need.
       props = validator.validateCompleteness(metadata.radialBond, props);
@@ -1176,7 +1176,7 @@ define(function(require) {
       }
       return translateFromMD2DUnits(props, obstacleMetaData);
     };
-    
+
     model.setRectangleProperties = function(i, props) {
       // Validate properties.
       props = validator.validate(metadata.rectangle, props);
@@ -1445,7 +1445,7 @@ define(function(require) {
     model.get_rectangles = function() {
       return rectangles;
     };
-    
+
     model.get_rectangles = function() {
       return rectangles;
     };
@@ -1459,7 +1459,7 @@ define(function(require) {
     model.getNumberOfObstacles = function () {
       return engine.getNumberOfObstacles();
     };
-    
+
     model.getNumberOfRectangles = function () {
       return engine.getNumberOfRectangles();
     };
@@ -2041,6 +2041,35 @@ define(function(require) {
       }
       return value;
     });
+
+    model.defineOutput('electricForceField', {}, (function () {
+      var ef = [],
+          minX = model.properties.minX,
+          minY = model.properties.minY,
+          maxX = model.properties.maxX,
+          maxY = model.properties.maxY,
+          diff = model.properties.width / 10,
+          y = minY + diff,
+          x;
+      // Generate array of points.
+      while(y < maxY) {
+        x = minX + diff;
+        while(x < maxX) {
+          ef.push({x: x, y: y});
+          x += diff;
+        }
+        y += diff;
+      }
+      return function () {
+        // Update forces at specified points.
+        var i, len, p;
+        for (i = 0, len = ef.length; i < len; i++) {
+          p = ef[i];
+          engine.getCoulombForceAt(p.x, p.y, 1, p);
+        }
+        return ef;
+      };
+    })());
 
     readModelState();
     model.updateAllOutputProperties();
