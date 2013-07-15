@@ -442,10 +442,8 @@ define(function (require) {
 
     function scale(w, h) {
       if (!w && !h) {
-        // cx = Math.max($node.width(), 120);
-        // cy = Math.max($node.height(), 62);
         cx = Math.max(elem.property("clientWidth"), 120);
-        cy = Math.max(elem.property("clientHeight"), 62);
+        cy = Math.max(elem.property("clientHeight"),120);
       } else {
         cx = w;
         node.style.width =  cx +"px";
