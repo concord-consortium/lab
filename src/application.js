@@ -7,8 +7,7 @@ AUTHORING = false;
 
 (function() {
 
-  var interactiveDefinitionLoaded = $.Deferred(),
-      origin,
+  var origin,
       embeddablePath,
       embeddableUrl,
       interactiveDescriptions,
@@ -18,50 +17,15 @@ AUTHORING = false;
       shutterbug,
 
       $content = $("#content"),
-
-      $interactiveHeader = $("#interactive-header"),
       $interactiveTitle = $("#interactive-title"),
-
       $selectInteractive = $("#select-interactive"),
       $selectInteractiveGroups = $("#select-interactive-groups"),
-
       $selectInteractiveSize = $("#select-interactive-size"),
 
-      $updateInteractiveButton = $("#update-interactive-button"),
-      $updateJsonFromInteractiveButton = $("#update-json-from-interactive-button"),
-      $autoFormatInteractiveJsonButton = $("#autoformat-interactive-json-button"),
-      $interactiveTextArea = $("#interactive-text-area"),
-      $interactiveErrorDialog = $("#interactive-error-dialog"),
-
-      $updateModelButton = $("#update-model-button"),
-      $updateJsonFromModelButton = $("#update-json-from-model-button"),
-      $autoFormatModelJsonButton = $("#autoformat-model-json-button"),
-      $modelTextArea = $("#model-text-area"),
-
-      $editor = $("#editor"),
       $showEditor = $("#show-editor"),
-      $editorContent = $("#editor-content"),
-
       $showModelEditor = $("#show-model-editor"),
-      $modelEditorContent = $("#model-editor-content"),
-
-      $showBenchmarks = $("#show-benchmarks"),
-      $benchmarksContent = $("#benchmarks-content"),
-      $runBenchmarksButton = $("#run-benchmarks-button"),
-
-      $showSnapshot = $("#show-snapshot"),
-      $snapshotContent = $("#snapshot-content"),
-
       $showModelEnergyGraph = $("#show-model-energy-graph"),
-      $modelEnergyGraphContent = $("#model-energy-graph-content"),
-      energyGraphSamplePeriod,
-      modelEnergyGraph,
-      modelEnergyData = [],
-
       $showModelDatatable = $("#show-model-datatable"),
-      $modelDatatableContent = $("#model-datatable-content"),
-      $modelDatatableResults = $("#model-datatable-results"),
-      $modelDatatableStats = $("#model-datatable-stats"),
 
       $previousInteractive = $("#previous-interactive"),
       $nextInteractive = $("#next-interactive"),
@@ -69,28 +33,21 @@ AUTHORING = false;
       $serializedControls = $("#header *.serialize"),
 
       applicationCallbacks,
-      editor,
-      modelEditor,
+
       controller,
       indent = 2,
+
       interactiveUrl,
       interactive,
-      interactiveRemote,
-      modelRemote,
       hash,
 
-      jsonModelPath,
-      contentItems = [],
-      mmlPath,
-      $jsonModelLink = $("#json-model-link"),
-      $originalImportLink = $("#original-import-link"),
-      $originalModelLink = $("#original-model-link"),
+      editor,
+      modelEditor,
 
-      interactivesPromise,
-      buttonHandlersAdded = false,
-      interactiveRemoteKeys = ['id', 'from_import', 'groupKey', 'path'],
-      modelRemoteKeys = ['id', 'from_import', 'location'],
-      modelButtonHandlersAdded = false;
+      jsonModelPath,
+      $jsonModelLink = $("#json-model-link"),
+
+      interactivesPromise;
 
   function sendGAPageview(){
     // send the pageview to GA
@@ -222,6 +179,8 @@ AUTHORING = false;
   }
 
   function setupFullPage() {
+    var $interactiveHeader = $("#interactive-header");
+
     interactivesPromise.done(function() {
       document.title = "Lab Interactive Browser: " + interactive.title;
       restoreOptionsFromCookie();
@@ -247,7 +206,6 @@ AUTHORING = false;
   function finishSetupFullPage() {
     var javaMWhref,
         $embeddableLink = $("#embeddable-link"),
-        $originalImportLink = $("#legacy-import-link"),
         $dataGamesLink = $("#datagames-link"),
         origin;
 
@@ -496,9 +454,13 @@ AUTHORING = false;
   }
 
   function setupOriginalImportLinks() {
-    var javaMW = "http://mw2.concord.org/tmp.jnlp?address=",
+    var $originalImportLink = $("#original-import-link"),
+        $originalModelLink = $("#original-model-link"),
+        javaMW = "http://mw2.concord.org/tmp.jnlp?address=",
         javaMWhref,
-        e2dModelPath;
+        mmlPath,
+        e2dModelPath,
+        contentItems = [];
 
     function disableOriginalImportLink() {
       $originalImportLink.removeAttr("href");
@@ -750,7 +712,15 @@ AUTHORING = false;
   // Interactive Code Editor
   //
   function setupCodeEditor() {
-    var foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
+    var $updateInteractiveButton = $("#update-interactive-button"),
+        $updateJsonFromInteractiveButton = $("#update-json-from-interactive-button"),
+        $autoFormatInteractiveJsonButton = $("#autoformat-interactive-json-button"),
+        $interactiveTextArea = $("#interactive-text-area"),
+        $editor = $("#editor"),
+        $editorContent = $("#editor-content"),
+        buttonHandlersAdded,
+        foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
+
     $interactiveTextArea.text(JSON.stringify(interactive, null, indent));
 
     if (!editor) {
@@ -815,11 +785,18 @@ AUTHORING = false;
   // Model Code Editor
   //
   function setupModelCodeEditor() {
-    var foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
+    var $updateModelButton = $("#update-model-button"),
+        $updateJsonFromModelButton = $("#update-json-from-model-button"),
+        $autoFormatModelJsonButton = $("#autoformat-model-json-button"),
+        $modelTextArea = $("#model-text-area"),
+        $modelEditorContent = $("#model-editor-content"),
+        md2dModel,
+        modelButtonHandlersAdded,
+        foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
+
     $.get(Lab.config.actualRoot + interactive.models[0].url).done(function(results) {
       if (typeof results === 'string') results = JSON.parse(results);
-      modelRemote = results;
-      var md2dModel = _.omit(modelRemote, modelRemoteKeys);
+      md2dModel = results;
       $modelTextArea.text(JSON.stringify(md2dModel, null, indent));
       if (!modelEditor) {
         modelEditor = CodeMirror.fromTextArea($modelTextArea.get(0), {
@@ -829,6 +806,8 @@ AUTHORING = false;
           lineWrapping: false,
           onGutterClick: foldFunc
         });
+      } else {
+        modelEditor.setValue(JSON.stringify(md2dModel, null, indent));
       }
       if (!modelButtonHandlersAdded) {
         modelButtonHandlersAdded = true;
@@ -876,6 +855,9 @@ AUTHORING = false;
   }
 
   function setupSnapshotButton() {
+    var $showSnapshot = $("#show-snapshot"),
+        $snapshotContent = $("#snapshot-content");
+
     $showSnapshot.change(function() {
       if (this.checked) {
         $snapshotContent.show(100);
@@ -905,6 +887,10 @@ AUTHORING = false;
   // Benchmarks
   //
   function setupBenchmarks() {
+    var $showBenchmarks = $("#show-benchmarks"),
+        $benchmarksContent = $("#benchmarks-content"),
+        $runBenchmarksButton = $("#run-benchmarks-button");
+
     $showBenchmarks.change(function() {
       if (this.checked) {
         $benchmarksContent.show(100);
@@ -942,6 +928,10 @@ AUTHORING = false;
   // otherwize we'll assume the Interactive is embedded in an iframe.
   //
   function setupEnergyGraph(_model, callback) {
+    var $modelEnergyGraphContent = $("#model-energy-graph-content"),
+        energyGraphSamplePeriod,
+        modelEnergyGraph,
+        modelEnergyData = [];
 
     // private functions
     function modelStepCounter() {
@@ -1183,6 +1173,9 @@ AUTHORING = false;
   // Atom Data Table
   //
   function setupAtomDataTable() {
+    var $modelDatatableContent = $("#model-datatable-content"),
+        $modelDatatableResults = $("#model-datatable-results"),
+        $modelDatatableStats = $("#model-datatable-stats");
 
     // private functions
     function renderModelDatatable(reset) {
