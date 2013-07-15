@@ -51,6 +51,7 @@ define(function (require) {
         model2pxInv,
 
         // "Containers" - SVG g elements used to position layers of the final visualization.
+        fieldVisualization      = modelView.viewport.append("g").attr("class", "field-visualization"),
         rectangleContainerBelow = modelView.viewport.append("g").attr("class", "rectangle-container-below"),
         imageContainerBelow     = modelView.viewport.append("g").attr("class", "image-container-below"),
         textContainerBelow      = modelView.viewport.append("g").attr("class", "text-container-below"),
@@ -117,6 +118,7 @@ define(function (require) {
         useQuantumDynamics,
         drawVdwLines,
         drawVelocityVectors,
+        drawElectricForceField,
         velocityVectorColor,
         velocityVectorWidth,
         velocityVectorLength,
@@ -126,6 +128,7 @@ define(function (require) {
         forceVectorLength,
         velVector,
         forceVector,
+        efVector,
         imageProp,
         imageMapping,
         modelImagePath,
@@ -166,7 +169,7 @@ define(function (require) {
         obstacles.colorG[i] + "," +
         obstacles.colorB[i] + ")";
     }
-    
+
     // Pass in the signed 24-bit Integer used for Java MW elementColors
     // See: https://github.com/mbostock/d3/wiki/Colors
     function createElementColorGradient(id, signedInt, mainContainer) {
@@ -1386,6 +1389,52 @@ define(function (require) {
       }
     }
 
+    function setupElectricField() {
+      fieldVisualization.selectAll(".vector-electric-field").remove();
+
+      drawElectricForceField = model.get("showElectricForceField");
+      if (drawElectricForceField) {
+        efVector = fieldVisualization.selectAll("path.vector-electric-field").data(model.get("electricForceField"));
+        efVector.enter()
+          .append("g")
+            .attr("class", "vector-electric-field")
+            .attr("transform", function (d) {
+              return "translate(" + model2px(d.x) + ", " + model2pxInv(d.y) + ")";
+            })
+          .append("g")
+            .attr("class", "rot-g")
+          .append("svg")
+            .attr({
+              "viewBox": "-5 -10 10 12",
+              "x": "-0.5em",
+              "y": "-1em",
+              "width": "1em",
+              "height": "1em"
+            })
+          .append("path")
+            .attr("d", "M0,0 L0,-8 L1,-8 L0,-10 L-1,-8, L0,-8");
+        efVector = efVector.select(".rot-g");
+        updateElectricForceField();
+      }
+    }
+
+    function updateElectricForceField() {
+      // This will ensure that electric force field array is up to date.
+      // In theory we should call:
+      //   efVector.data(model.get("electricForceField"));
+      // However we use the knowledge that this array reference is always
+      // valid and only .fx and .fy properties are updated, so there is no
+      // need to bind it again to the selection (performance).
+      model.get("electricForceField");
+      efVector
+          .attr("transform", function(d) {
+            return "rotate(" + (Math.atan2(d.fx, d.fy) * 180 / Math.PI) + ")";
+          })
+          .attr("display", function(d) {
+            return d.fx * d.fx + d.fy * d.fy ? "inline" : "none";
+          });
+    }
+
     function setupAtomTrace() {
       mainContainer.selectAll("path.atomTrace").remove();
       atomTracePath = "";
@@ -1897,6 +1946,7 @@ define(function (require) {
       setupRadialBonds();
       geneticRenderer.setup();
       setupVectors();
+      setupElectricField();
       setupAtomTrace();
       drawImageAttachment();
       drawTextBoxes();
@@ -1948,6 +1998,9 @@ define(function (require) {
       }
       if (drawForceVectors) {
         updateVectors(forceVector, getForceVectorPath, getForceVectorWidth);
+      }
+      if (drawElectricForceField) {
+        updateElectricForceField();
       }
       if (drawAtomTrace) {
         updateAtomTrace();

@@ -2048,12 +2048,12 @@ define(function(require) {
           minY = model.properties.minY,
           maxX = model.properties.maxX,
           maxY = model.properties.maxY,
-          diff = model.properties.width / 10,
-          y = minY + diff,
+          diff = model.properties.width / 15,
+          y = minY + 0.5 * diff,
           x;
       // Generate array of points.
       while(y < maxY) {
-        x = minX + diff;
+        x = minX + 0.5 * diff;
         while(x < maxX) {
           ef.push({x: x, y: y});
           x += diff;
