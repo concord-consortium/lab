@@ -659,7 +659,7 @@ define(function (require, exports, module) {
             obstacleColorB      = obstacles.colorB;
             obstacleVisible     = obstacles.visible;
           },
-          
+
           rectangles: function() {
             rectangleX             = rectangles.x;
             rectangleY             = rectangles.y;
@@ -816,7 +816,7 @@ define(function (require, exports, module) {
 
           assignShortcutReferences.obstacles();
         },
-		
+
 		createRectanglesArray = function(num) {
           rectangles = engine.rectangles = {};
 
@@ -834,7 +834,7 @@ define(function (require, exports, module) {
 
           assignShortcutReferences.rectangles();
         },
-        
+
         // Function that accepts a value T and returns an average of the last n values of T (for some n).
         getTWindowed,
 
@@ -1175,7 +1175,7 @@ define(function (require, exports, module) {
             }
           }
         },
-        
+
         bounceParticleOffRectangles = function(i, x_prev, y_prev) {
           // fast path if no rectangles
           if (N_rectangles < 1) return;
@@ -1194,25 +1194,25 @@ define(function (require, exports, module) {
               x_outside_right,
               y_outside_top,
               y_outside_bottom
-          
+
           r = radius[i];
           xi = x[i];
           yi = y[i];
 
           for (j = 0; j < N_rectangles; j++) {
-          	
+
           	if(!rectangleFence[j]){continue}
-          	
+
             x_outside_left = rectangleX[j] - r;
             x_outside_right = rectangleX[j] + rectangleWidth[j] + r;
             y_outside_top = rectangleY[j] + rectangleHeight[j] + r;
             y_outside_bottom = rectangleY[j] - r;
-            
+
             x_inside_left = rectangleX[j] + r;
             x_inside_right = rectangleX[j] + rectangleWidth[j] - r;
             y_inside_top = rectangleY[j] + rectangleHeight[j] - r;
             y_inside_bottom = rectangleY[j] + r;
-            
+
             // Check all outside collisions
             if (xi > x_outside_left && xi < x_outside_right && yi > y_outside_bottom && yi < y_outside_top) {
               if (x_prev <= x_outside_left) {
@@ -2421,7 +2421,7 @@ define(function (require, exports, module) {
           }
         }
       },
-      
+
       setRectangleProperties: function (i, props) {
         var key;
         // Set properties from props hash.
@@ -2800,7 +2800,7 @@ define(function (require, exports, module) {
         utils.extendArrays(obstacles, N_obstacles);
         assignShortcutReferences.obstacles();
       },
-      
+
       addRectangle: function(props) {
         if (N_rectangles + 1 > rectangles.x.length) {
           // Extend arrays each time (as there are only
@@ -3289,7 +3289,7 @@ define(function (require, exports, module) {
       getNumberOfObstacles: function() {
         return N_obstacles;
       },
-      
+
 	  getNumberOfRectangles: function() {
         return N_rectangles;
       },
@@ -3640,6 +3640,37 @@ define(function (require, exports, module) {
           }
         }
         return bondedAtoms;
+      },
+
+      getCoulombForceAt: function(testX, testY, testCharge, resultObj) {
+        // Let client code reuse objects.
+        resultObj = resultObj || {};
+        // Fast path if Coulomb interaction is disabled or there are no charged atoms.
+        if (!useCoulombInteraction || !hasChargedAtoms) {
+          resultObj.fx = resultObj.fy = 0;
+          return resultObj;
+        }
+
+        var fx = 0, fy = 0,
+            i, len, dx, dy, rSq, fOverR, atomCharge, atomIdx;
+
+        for (i = 0, len = chargedAtomsList.length; i < len; i++) {
+          atomIdx = chargedAtomsList[i];
+          atomCharge = charge[atomIdx];
+
+          dx = testX - x[atomIdx];
+          dy = testY - y[atomIdx];
+          rSq = dx * dx + dy * dy;
+
+          fOverR = coulomb.forceOverDistanceFromSquaredDistance(rSq, testCharge, atomCharge,
+            dielectricConst, realisticDielectricEffect);
+
+          fx += fOverR * dx;
+          fy += fOverR * dy;
+        }
+        resultObj.fx = constants.convert(fx, { from: unit.MW_FORCE_UNIT, to: unit.EV_PER_NM });
+        resultObj.fy = constants.convert(fy, { from: unit.MW_FORCE_UNIT, to: unit.EV_PER_NM });
+        return resultObj;
       },
 
       /**
