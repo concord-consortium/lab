@@ -9,13 +9,14 @@
       "id": "mark-atoms$0",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/amount-charge$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset",
-        "modelTimeLabel": true
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true,
+        "showElectricForceField": true
       }
     }
   ],
   "parameters":[
-  	{
+    {
       "name": "chargeLeft",
       "label": "Left Atom Charge",
       "unitAbbreviation": "",
@@ -32,44 +33,44 @@
   ],
   "components":[
     {
-	  "type": "slider",
-	  "id": "left-slider",
-	  "min": -3,
-	  "max": 3,
-	  "displayValue": "return format('1.1f')(value)",
-	  "labels": [
-	    {
-	      "value": -3,
-	      "label": "-3"
-	    },
-	    {
-	      "value": 3.0,
-	      "label": "3"
-	    }
-	  ],
-	  "steps": 12,
-	  "title": "Left Atom Charge",
-	  "property": "chargeLeft"
-	},
-	{
-	  "type": "slider",
-	  "id": "right-slider",
-	  "min": -3,
-	  "max": 3,
-	  "displayValue": "return format('1.1f')(value)",
-	  "labels": [
-	    {
-	      "value": -3,
-	      "label": "-3"
-	    },
-	    {
-	      "value": 3.0,
-	      "label": "3"
-	    }
-	  ],
-	  "steps": 12,
-	  "title": "Right Atom Charge",
-	  "property": "chargeRight"
-	}
+    "type": "slider",
+    "id": "left-slider",
+    "min": -3,
+    "max": 3,
+    "displayValue": "return format('1.1f')(value)",
+    "labels": [
+      {
+        "value": -3,
+        "label": "-3"
+      },
+      {
+        "value": 3.0,
+        "label": "3"
+      }
+    ],
+    "steps": 12,
+    "title": "Left Atom Charge",
+    "property": "chargeLeft"
+  },
+  {
+    "type": "slider",
+    "id": "right-slider",
+    "min": -3,
+    "max": 3,
+    "displayValue": "return format('1.1f')(value)",
+    "labels": [
+      {
+        "value": -3,
+        "label": "-3"
+      },
+      {
+        "value": 3.0,
+        "label": "3"
+      }
+    ],
+    "steps": 12,
+    "title": "Right Atom Charge",
+    "property": "chargeRight"
+  }
   ]
 }
