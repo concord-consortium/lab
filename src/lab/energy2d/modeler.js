@@ -95,8 +95,14 @@ define(function (require) {
 
                 // Update raw part object.
                 this._rawPart[key] = validator.validateSingleProperty(metadata.part[key], key, v);
-                // Update core model arrays based on part's properties.
-                coreModel.partsChanged(this._rawPart, key);
+
+                if (model.isStopped()) {
+                  // Recalculate all arrays, "authoring" mode.
+                  coreModel.reset();
+                } else {
+                  // Update core model arrays based on part's properties.
+                  coreModel.partsChanged(this._rawPart, key);
+                }
 
                 propertySupport.invalidatingChangePostHook();
 
