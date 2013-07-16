@@ -21,24 +21,24 @@
       "label": "Left Atom Charge",
       "unitAbbreviation": "",
       "onChange": "setAtomProperties(1, {charge:value});",
-      "initialValue": 2
+      "initialValue": -2
     },
     {
       "name": "chargeRight",
       "label": "Right Atom Charge",
       "unitAbbreviation": "",
       "onChange": "setAtomProperties(0, {charge:value});",
-      "initialValue": -2
+      "initialValue": 2
     }
   ],
   "components":[
     {
-    "type": "slider",
-    "id": "left-slider",
-    "min": -3,
-    "max": 3,
-    "displayValue": "return format('1.1f')(value)",
-    "labels": [
+      "type": "slider",
+      "id": "left-slider",
+      "min": -3,
+      "max": 3,
+      "displayValue": "return format('1.1f')(value)",
+      "labels": [
       {
         "value": -3,
         "label": "-3"
@@ -47,30 +47,78 @@
         "value": 3.0,
         "label": "3"
       }
-    ],
-    "steps": 12,
-    "title": "Left Atom Charge",
-    "property": "chargeLeft"
+      ],
+      "steps": 12,
+      "title": "Left Atom Charge",
+      "property": "chargeLeft"
+    },
+    {
+      "type": "slider",
+      "id": "right-slider",
+      "min": -3,
+      "max": 3,
+      "displayValue": "return format('1.1f')(value)",
+      "labels": [
+      {
+        "value": -3,
+        "label": "-3"
+      },
+      {
+        "value": 3.0,
+        "label": "3"
+      }
+      ],
+      "steps": 12,
+      "title": "Right Atom Charge",
+      "property": "chargeRight"
+    },
+    {
+      "type": "checkbox",
+      "id": "force_vectors",
+      "text": "Show forces",
+      "property": "showForceVectors"
+    },
+    {
+      "type": "slider",
+      "id": "electric-field-density-slider",
+      "min": 0,
+      "max": 20,
+      "displayValue": "return format('1f')(value)",
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 20,
+          "label": "20"
+        }
+      ],
+      "steps": 20,
+      "title": "Electric field density",
+      "property": "electricFieldDensity"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      [ "left-slider", "right-slider"],
+      [ "force_vectors", "electric-field-density-slider" ]
+    ]
   },
-  {
-    "type": "slider",
-    "id": "right-slider",
-    "min": -3,
-    "max": 3,
-    "displayValue": "return format('1.1f')(value)",
-    "labels": [
-      {
-        "value": -3,
-        "label": "-3"
-      },
-      {
-        "value": 3.0,
-        "label": "3"
-      }
-    ],
-    "steps": 12,
-    "title": "Right Atom Charge",
-    "property": "chargeRight"
-  }
+  "template": [
+    {
+      "id": "right",
+      "top": "2em",
+      "left": "model.right",
+      "align": "left"
+    },
+    {
+      "id": "bottom",
+      "left": "model.left",
+      "top": "model.bottom",
+      "padding-top": "0.5em",
+      "width": "model.width",
+      "align": "center"
+    }
   ]
 }

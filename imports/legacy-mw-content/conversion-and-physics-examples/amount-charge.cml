@@ -42,7 +42,7 @@
 <component><class>org.concord.modeler.PageSlider</class>
 <modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
 <model>0</model>
-<value>2.0</value>
+<value>-2.0</value>
 <minimum>-3.0</minimum>
 <maximum>3.0</maximum>
 <nstep>12</nstep>
@@ -51,7 +51,7 @@
 <height>60</height>
 <opaque>false</opaque>
 <tick>true</tick>
-<labeltable>{value=&quot;-2.0&quot;, label=&quot;-2&quot;}{value=&quot;-3.0&quot;, label=&quot;-3&quot;}{value=&quot;3.0&quot;, label=&quot;3&quot;}{value=&quot;2.0&quot;, label=&quot;2&quot;}{value=&quot;1.0&quot;, label=&quot;1&quot;}{value=&quot;-1.0&quot;, label=&quot;-1&quot;}{value=&quot;0.0&quot;, label=&quot;0&quot;}</labeltable>
+<labeltable>{value=&quot;-2.0&quot;, label=&quot;-2&quot;}{value=&quot;-3.0&quot;, label=&quot;-3&quot;}{value=&quot;3.0&quot;, label=&quot;3&quot;}{value=&quot;2.0&quot;, label=&quot;2&quot;}{value=&quot;1.0&quot;, label=&quot;1&quot;}{value=&quot;0.0&quot;, label=&quot;0&quot;}{value=&quot;-1.0&quot;, label=&quot;-1&quot;}</labeltable>
 <script>set atom[1].charge %val;
 paint;
 </script>
@@ -62,7 +62,7 @@ paint;
 <component><class>org.concord.modeler.PageSlider</class>
 <modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
 <model>0</model>
-<value>-2.0</value>
+<value>2.0</value>
 <minimum>-3.0</minimum>
 <maximum>3.0</maximum>
 <nstep>12</nstep>
@@ -71,7 +71,7 @@ paint;
 <height>60</height>
 <opaque>false</opaque>
 <tick>true</tick>
-<labeltable>{value=&quot;-2.0&quot;, label=&quot;-2&quot;}{value=&quot;-3.0&quot;, label=&quot;-3&quot;}{value=&quot;3.0&quot;, label=&quot;3&quot;}{value=&quot;2.0&quot;, label=&quot;2&quot;}{value=&quot;1.0&quot;, label=&quot;1&quot;}{value=&quot;0.0&quot;, label=&quot;0&quot;}{value=&quot;-1.0&quot;, label=&quot;-1&quot;}</labeltable>
+<labeltable>{value=&quot;-2.0&quot;, label=&quot;-2&quot;}{value=&quot;-3.0&quot;, label=&quot;-3&quot;}{value=&quot;3.0&quot;, label=&quot;3&quot;}{value=&quot;2.0&quot;, label=&quot;2&quot;}{value=&quot;1.0&quot;, label=&quot;1&quot;}{value=&quot;-1.0&quot;, label=&quot;-1&quot;}{value=&quot;0.0&quot;, label=&quot;0&quot;}</labeltable>
 <script>set atom[0].charge %val;
 paint;
 </script>
