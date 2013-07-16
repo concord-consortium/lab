@@ -24,7 +24,10 @@
       "viewOptions": {
         "controlButtons": "play_reset"
       },
-      "onLoad": "set({power: true});"
+      "onLoad": [
+        "getPart(2).power = 5000;",
+        "getPart(3).power = 5000;"
+      ]
     }
   ],
   "parameters": [
@@ -33,7 +36,7 @@
       "label": "power",
       "value": "getPart(2).power > 0;",
       "onChange": [
-        "if (getPart(2).power > 0) {",
+        "if (value) {",
         "  getPart(2).power = 0;",
         "  getPart(3).power = 0;",
         "} else {",
