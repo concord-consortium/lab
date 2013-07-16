@@ -1894,6 +1894,7 @@ define(function (require) {
         "showAtomTrace", "atomTraceId", "aminoAcidColorScheme",
         "backgroundColor", "markColor"],
           redrawClickableObjects(repaint));
+      model.addPropertiesListener("electricFieldDensity", setupElectricField);
 
       model.on('addAtom', redrawClickableObjects(setupParticles));
       model.on('removeAtom', redrawClickableObjects(repaint));
