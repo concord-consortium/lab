@@ -1,7 +1,6 @@
 /*global define: true */
-/*jslint eqnull: true, boss: true, loopfunc: true*/
 
-define(function (require, exports, module) {
+define(function (require, exports) {
 
   var arrays               = require('arrays'),
       arrayTypes           = require('common/array-types'),
@@ -1193,7 +1192,7 @@ define(function (require, exports, module) {
               x_outside_left,
               x_outside_right,
               y_outside_top,
-              y_outside_bottom
+              y_outside_bottom;
 
           r = radius[i];
           xi = x[i];
@@ -1201,7 +1200,7 @@ define(function (require, exports, module) {
 
           for (j = 0; j < N_rectangles; j++) {
 
-          	if(!rectangleFence[j]){continue}
+            if(!rectangleFence[j]) continue;
 
             x_outside_left = rectangleX[j] - r;
             x_outside_right = rectangleX[j] + rectangleWidth[j] + r;
@@ -2869,6 +2868,7 @@ define(function (require, exports, module) {
         var orig_x,
             orig_y,
             PEAtLocation,
+            testX, testY, testXMax, testYMax,
             j;
 
         // first do the simpler check to see if we're outside the walls
@@ -3240,7 +3240,7 @@ define(function (require, exports, module) {
         for (i = 0; i < N_radialBonds; i++) {
           i1 = radialBondAtom1Index[i];
           i2 = radialBondAtom2Index[i];
-          if (index == i1 || index == i2) {
+          if (index === i1 || index === i2) {
             rbonds.push(i);
           }
         }
@@ -3258,7 +3258,7 @@ define(function (require, exports, module) {
           i1 = angularBondAtom1Index[i];
           i2 = angularBondAtom2Index[i];
           i3 = angularBondAtom3Index[i];
-          if (index == i1 || index == i2 || index == i3) {
+          if (index === i1 || index === i2 || index === i3) {
             abonds.push(i);
           }
         }
@@ -3290,7 +3290,7 @@ define(function (require, exports, module) {
         return N_obstacles;
       },
 
-	  getNumberOfRectangles: function() {
+			getNumberOfRectangles: function() {
         return N_rectangles;
       },
 
