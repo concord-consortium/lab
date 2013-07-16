@@ -34,11 +34,11 @@
       "value": "getPart(2).power > 0;",
       "onChange": [
         "if (getPart(2).power > 0) {",
-        "  getPart(2).power = 5000;",
-        "  getPart(3).power = 5000;",
-        "} else {",
         "  getPart(2).power = 0;",
         "  getPart(3).power = 0;",
+        "} else {",
+        "  getPart(2).power = 5000;",
+        "  getPart(3).power = 5000;",
         "};"
       ],
       "initialValue": true
