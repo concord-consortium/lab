@@ -2,7 +2,7 @@
 
 define(function () {
   var TH_W = 2,
-      TH_H = 5;
+      TH_H = 4;
 
   return function SensorsView(SVGContainer, g) {
     var api,
