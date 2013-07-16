@@ -6,14 +6,15 @@
 // ------------------------------------------------------------
 define(function (require) {
   // Dependencies.
-  var labConfig             = require('lab.config'),
-      alert                 = require('common/alert'),
-      console               = require('common/console'),
-      benchmark             = require('common/benchmark/benchmark'),
-      amniacidContextMenu   = require('cs!md2d/views/aminoacid-context-menu'),
-      GeneticRenderer       = require('md2d/views/genetic-renderer'),
-      wrapSVGText           = require('cs!common/layout/wrap-svg-text'),
-      gradients             = require('common/views/gradients'),
+  var labConfig           = require('lab.config'),
+      alert               = require('common/alert'),
+      console             = require('common/console'),
+      benchmark           = require('common/benchmark/benchmark'),
+      amniacidContextMenu = require('cs!md2d/views/aminoacid-context-menu'),
+      GeneticRenderer     = require('md2d/views/genetic-renderer'),
+      wrapSVGText         = require('cs!common/layout/wrap-svg-text'),
+      gradients           = require('common/views/gradients'),
+      color               = require('common/views/color'),
 
       RADIAL_BOND_TYPES = {
         STANDARD_STICK  : 101,
@@ -1390,17 +1391,21 @@ define(function (require) {
     }
 
     function setupElectricField() {
+      var col;
       fieldVisualization.selectAll(".vector-electric-field").remove();
-
       drawElectricForceField = model.get("electricFieldDensity") > 0;
+
       if (drawElectricForceField) {
         efVector = fieldVisualization.selectAll("path.vector-electric-field").data(model.getElectricField());
+        col = color.contrastingColor(model.get("backgroundColor"))
         efVector.enter()
           .append("g")
             .attr("class", "vector-electric-field")
             .attr("transform", function (d) {
               return "translate(" + model2px(d.x) + ", " + model2pxInv(d.y) + ")";
             })
+            .style("fill", col)
+            .style("stroke", col)
           .append("g")
             .attr("class", "rot-g")
           .append("svg")
