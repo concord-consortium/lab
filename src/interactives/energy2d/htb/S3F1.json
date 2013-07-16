@@ -1,7 +1,8 @@
 {
   "title": "Conduction 3F: Temperatures inside walls",
-  "publicationStatus": "draft",
-  "subtitle": [
+  "publicationStatus": "public",
+  "subtitle": "How should you configure different layers for a wall for better insulation?",
+  "about": [
     "In this model, three layers (labeled as **A**, **B**, and **C**) that have different thermal conductivities",
     "fill the space between the heater and an object.",
     "",
@@ -22,9 +23,93 @@
       "viewOptions": {
         "controlButtons": "play_reset"
       }
+    },
+    {
+      "type": "energy2d",
+      "id": "S3F2",
+      "url": "imports/energy2d/models-json/S3F2.json",
+      "importedFrom": "imports/energy2d/models-xml/S3F2.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "energy2d",
+      "id": "S3F3",
+      "url": "imports/energy2d/models-json/S3F3.json",
+      "importedFrom": "imports/energy2d/models-xml/S3F3.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "energy2d",
+      "id": "S3F4",
+      "url": "imports/energy2d/models-json/S3F4.json",
+      "importedFrom": "imports/energy2d/models-xml/S3F4.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "energy2d",
+      "id": "S3F5",
+      "url": "imports/energy2d/models-json/S3F5.json",
+      "importedFrom": "imports/energy2d/models-xml/S3F5.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
     }
   ],
   "components": [
-
-  ]
+    {
+      "type": "pulldown",
+      "id": "alternate-wall-design-pulldown",
+      "label": "Three layer configurations:",
+      "labelOn": "left",
+      "options": [
+        {
+          "text": "A-B-C",
+          "loadModel": "S3F1"
+        },
+        {
+          "text": "B-A-C",
+          "loadModel": "S3F2"
+        },
+        {
+          "text": "B-C-A",
+          "loadModel": "S3F3"
+        },
+        {
+          "text": "C-B-A",
+          "loadModel": "S3F4"
+        },
+        {
+          "text": "C-A-B",
+          "loadModel": "S3F5"
+        }
+      ]
+    },
+    {
+      "type": "graph",
+      "id": "graph",
+      "title": "Temperature Probes: T1, T2, T3, T4",
+      "xlabel": "Time (s)",
+      "ylabel": "Temperature (°C)",
+      "ymin": -5,
+      "ymax": 50,
+      "xmax": 3600,
+      "xTickCount": 5,
+      "xFormatter": "2s",
+      "yFormatter": "2s",
+      "properties": [
+        "sensor-2", "sensor-1", "sensor-0", "sensor-3"
+      ]
+    }
+  ],
+  "layout": {
+    "bottom": [ "alternate-wall-design-pulldown" ],
+    "right": [ "graph" ]
+  },
+  "template": "wide-right"
 }
