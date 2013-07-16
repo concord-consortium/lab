@@ -360,7 +360,7 @@ define(function (require) {
           this.stop();
         }
         var i=-1; while(++i < num) {
-          this.tick();
+          model.tick();
         }
         return coreModel.getIndexOfStep();
       },
