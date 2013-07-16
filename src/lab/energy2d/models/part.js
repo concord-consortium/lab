@@ -97,33 +97,45 @@ define(function (require, exports, module) {
   Part.prototype.getLabel = function () {
     var label = this.label, s;
 
+    function formatLabel(value, suffix) {
+      var valueStr;
+      if (value > 100) {
+        valueStr = value.toFixed();
+      } else if (value > 10) {
+        valueStr = value.toFixed(1);
+      } else {
+        valueStr = value.toFixed(2);
+      }
+      return valueStr + suffix;
+    }
+
     if (label === "%temperature") {
-      s = this.temperature + " \u00b0C";
+      s = formatLabel(this.temperature, " \u00b0C");
     } else if (label === "%density") {
-      s = this.density + " kg/m\u00b3";
+      s = formatLabel(this.density, " kg/m\u00b3");
     } else if (label === "%specific_heat") {
-      s = this.specific_heat + " J/(kg\u00d7\u00b0C)";
+      s = formatLabel(this.specific_heat, " J/(kg\u00d7\u00b0C)");
     } else if (label === "%thermal_conductivity") {
-      s = this.thermal_conductivity + " W/(m\u00d7\u00b0C)";
+      s = formatLabel(this.thermal_conductivity, " W/(m\u00d7\u00b0C)");
     } else if (label === "%power_density") {
-      s = this.power + " W/m\u00b3";
+      s = formatLabel(this.power, " W/m\u00b3");
     } else if (label === "%area") {
       if (this.shapeType === "rectangle") {
-        s = (this.width * this.height) + " m\u00b2";
+        s = formatLabel(this.width * this.height, " m\u00b2");
       } else if (this.shapeType === "ellipse") {
-        s = (this.a * this.b * 0.25 * Math.PI) + " m\u00b2";
+        s = formatLabel(this.a * this.b * 0.25 * Math.PI, " m\u00b2");
       }
     } else if (label === "%width") {
       if (this.shapeType === "rectangle") {
-        s = this.width + " m";
+        s = formatLabel(this.width, " m");
       } else if (this.shapeType === "ellipse") {
-        s = this.a + " m";
+        s = formatLabel(this.a, " m");
       }
     } else if (label === "%height") {
       if (this.shapeType === "rectangle") {
-        s = this.height + " m";
+        s = formatLabel(this.height, " m");
       } else if (this.shapeType === "ellipse") {
-        s = this.b + " m";
+        s = formatLabel(this.b, " m");
       }
     } else {
       s = label;
