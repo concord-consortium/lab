@@ -99,9 +99,9 @@ define(function (require, exports, module) {
 
     function formatLabel(value, suffix) {
       var valueStr;
-      if (value > 100) {
+      if (value >= 100) {
         valueStr = value.toFixed();
-      } else if (value > 10) {
+      } else if (value >= 10) {
         valueStr = value.toFixed(1);
       } else {
         valueStr = value.toFixed(2);
