@@ -281,22 +281,23 @@ define(function (require, exports) {
       },
 
       refreshPowerArray = function () {
-        var part, x, y, i, iny, j, k, len;
+        var part, x, y, i, iny, j, k, len, count;
         for (i = 0; i < nx; i += 1) {
           x = i * delta_x;
           iny = i * ny;
           for (j = 0; j < ny; j += 1) {
             y = j * delta_y;
             q[iny + j] = 0;
+            count = 0;
             if (has_part_power) {
               for (k = 0, len = parts.length; k < len; k += 1) {
                 part = parts[k];
-                if (part.power !== 0 && part.shape.contains(x, y)) {
-                  // No overlap of parts will be allowed.
-                  q[iny + j] = part.power;
-                  break;
+                if (part.shape.contains(x, y)) {
+                  q[iny + j] += part.power;
+                  count++;
                 }
               }
+              if (count > 0) q[iny + j] /= count;
             }
           }
         }
@@ -645,6 +646,7 @@ define(function (require, exports) {
     //
     setupOptimizationFlags();
     setupMaterialProperties();
+    refreshPowerArray();
 
     // CPU version of solvers.
     heatSolver = heatsolver.makeHeatSolver(core_model);
