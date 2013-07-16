@@ -1392,20 +1392,15 @@ define(function (require) {
 
     function setupElectricField() {
       var col;
-      fieldVisualization.selectAll(".vector-electric-field").remove();
       drawElectricForceField = model.get("electricFieldDensity") > 0;
-
+      // Do full enter-update-remove cycle to reuse DOM elements.
+      efVector = fieldVisualization.selectAll(".vector-electric-field").data(model.getElectricField());
+      efVector.exit().remove();
       if (drawElectricForceField) {
-        efVector = fieldVisualization.selectAll("path.vector-electric-field").data(model.getElectricField());
-        col = color.contrastingColor(model.get("backgroundColor"))
+        // Enter.
         efVector.enter()
           .append("g")
             .attr("class", "vector-electric-field")
-            .attr("transform", function (d) {
-              return "translate(" + model2px(d.x) + ", " + model2pxInv(d.y) + ")";
-            })
-            .style("fill", col)
-            .style("stroke", col)
           .append("g")
             .attr("class", "rot-g")
           .append("svg")
@@ -1418,6 +1413,15 @@ define(function (require) {
             })
           .append("path")
             .attr("d", "M0,0 L0,-8 L1,-8 L0,-10 L-1,-8, L0,-8");
+        // Update.
+        col = color.contrastingColor(model.get("backgroundColor"))
+        efVector
+            .attr("transform", function (d) {
+              return "translate(" + model2px(d.x) + ", " + model2pxInv(d.y) + ")";
+            })
+            .style("fill", col)
+            .style("stroke", col);
+        // Cache selection + update rotation.
         efVector = efVector.select(".rot-g");
         updateElectricForceField();
       }
@@ -1428,8 +1432,8 @@ define(function (require) {
           .attr("transform", function(d) {
             return "rotate(" + (Math.atan2(d.fx, d.fy) * 180 / Math.PI) + ")";
           })
-          .attr("display", function(d) {
-            return d.fx * d.fx + d.fy * d.fy ? "inline" : "none";
+          .style("opacity", function(d) {
+            return Math.min(1000, Math.pow(d.fx * d.fx + d.fy * d.fy, 1));
           });
     }
 
