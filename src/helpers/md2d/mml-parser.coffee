@@ -375,7 +375,8 @@ parseMML = (mmlString) ->
     electricFieldDensity = do () ->
       showEFieldLines = getBooleanProperty $mml.root(), "showEFieldLines", "boolean"
       EFCellSize = getIntProperty $mml.root(), "EFCellSize", "int"
-      return if showEFieldLines and EFCellSize < 10000 then EFCellSize else 0
+      [EFCellSize] = toNextgenLengths EFCellSize
+      return if showEFieldLines and EFCellSize < 100 then Math.round width / EFCellSize else 0
 
     ###
       Find the KE Shading
