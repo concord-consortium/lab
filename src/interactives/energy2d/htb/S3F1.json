@@ -1,0 +1,30 @@
+{
+  "title": "Conduction 3F: Temperatures inside walls",
+  "publicationStatus": "draft",
+  "subtitle": [
+    "In this model, three layers (labeled as **A**, **B**, and **C**) that have different thermal conductivities",
+    "fill the space between the heater and an object.",
+    "",
+    "**Your challenge is to find out which layer has the greatest thermal conductivity and which has the lowest",
+    "by running a sequence of tests for different layer configurations.**",
+    "",
+    "1.  Run the model and note the temperatures measured by the four thermometers.",
+    "2.  Change the order of the layers using the drop-down menu to test a different setup.",
+    "3.  Repeat the above steps until you reach the conclusion."
+  ],
+  "importedFrom": "imports/energy2d/content-htb/S3F.html",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "S3F1",
+      "url": "imports/energy2d/models-json/S3F1.json",
+      "importedFrom": "imports/energy2d/models-xml/S3F1.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}
