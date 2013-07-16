@@ -199,8 +199,8 @@ define(function() {
         defaultValue: false,
         storeInTickHistory: true
       },
-      showElectricForceField: {
-        defaultValue: false,
+      electricFieldDensity: {
+        defaultValue: 0,
         storeInTickHistory: true
       },
       showAtomTrace: {

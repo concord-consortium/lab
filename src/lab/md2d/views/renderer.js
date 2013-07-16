@@ -1392,9 +1392,9 @@ define(function (require) {
     function setupElectricField() {
       fieldVisualization.selectAll(".vector-electric-field").remove();
 
-      drawElectricForceField = model.get("showElectricForceField");
+      drawElectricForceField = model.get("electricFieldDensity") > 0;
       if (drawElectricForceField) {
-        efVector = fieldVisualization.selectAll("path.vector-electric-field").data(model.get("electricForceField"));
+        efVector = fieldVisualization.selectAll("path.vector-electric-field").data(model.getElectricField());
         efVector.enter()
           .append("g")
             .attr("class", "vector-electric-field")
@@ -1419,13 +1419,6 @@ define(function (require) {
     }
 
     function updateElectricForceField() {
-      // This will ensure that electric force field array is up to date.
-      // In theory we should call:
-      //   efVector.data(model.get("electricForceField"));
-      // However we use the knowledge that this array reference is always
-      // valid and only .fx and .fy properties are updated, so there is no
-      // need to bind it again to the selection (performance).
-      model.get("electricForceField");
       efVector
           .attr("transform", function(d) {
             return "rotate(" + (Math.atan2(d.fx, d.fy) * 180 / Math.PI) + ")";
@@ -1792,7 +1785,6 @@ define(function (require) {
       forceVectorLength = model.get("forceVectors").length;
 
       atomTraceColor = model.get("atomTraceColor");
-
 
       createVectorArrowHeads(velocityVectorColor, VELOCITY_STR);
       createVectorArrowHeads(forceVectorColor, FORCE_STR);

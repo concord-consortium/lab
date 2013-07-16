@@ -111,6 +111,26 @@ define(function(require) {
                 engine.pairwiseLJProperties.set(element1, element2, {epsilon: value});
               }
             }
+          },
+
+          electricFieldDensity: function (value) {
+            electricField.length = 0; // reuse existing array!
+            if (!value) return;
+            var minX = 0,
+                minY = 0,
+                maxX = model.properties.width,
+                maxY = model.properties.height,
+                diff = model.properties.width / value,
+                y = minY + 0.5 * diff,
+                x;
+            while(y < maxY) {
+              x = minX + 0.5 * diff;
+              while(x < maxX) {
+                electricField.push({x: x, y: y});
+                x += diff;
+              }
+              y += diff;
+            }
           }
         },
 
@@ -217,6 +237,10 @@ define(function(require) {
         // An array of objects consisting of photon index numbers and property values, for easy
         // consumption by the view. Only defined if the quantum dynamics plugin is used.
         viewPhotons,
+
+        // An array of objects consisting of point coordinates and electric field force at that point
+        // (e.g. [{ x: 1, y: 2, fx: 0.1, fy: 0.3 }, ...]).
+        electricField = [],
 
         // A two dimensional array consisting of radial bond index numbers, radial bond
         // properties, and the postions of the two bonded atoms.
@@ -333,6 +357,7 @@ define(function(require) {
       // representation provided by modelState.photons
       viewPhotons = engine.callPluginAccessor('getViewPhotons');
       updateViewAtoms(modelState.atoms);
+      updateViewElectricField();
     }
 
     // Transpose 'atoms' object into 'viewAtoms' for consumption by view code
@@ -383,6 +408,15 @@ define(function(require) {
         }
       };
     }());
+
+    function updateViewElectricField() {
+      if (!electricField.length) return;
+      var i, len, p;
+      for (i = 0, len = electricField.length; i < len; i++) {
+        p = electricField[i];
+        engine.getCoulombForceAt(p.x, p.y, p);
+      }
+    }
 
     /**
       return a random element index ... which is *not* an amino acid element
@@ -1410,6 +1444,10 @@ define(function(require) {
       return viewAtoms;
     };
 
+    model.getElectricField = function() {
+      return electricField;
+    };
+
     model.getPhotons = function() {
       return viewPhotons;
     },
@@ -1864,14 +1902,15 @@ define(function(require) {
     // have to do it know, as this will also set initial properties, so the
     // engine has to be already defined (see custom setters).
     labModelerMixin.mixInto(model);
+
+    // Initialize minX, minY, maxX, maxY from model width and height if they are undefined.
+    initializeDimensions(model.properties);
+
     propertySupport.on("afterInvalidatingChange.read-model-state", readModelState);
     propertySupport.on("afterInvalidatingChangeSequence.tick-history", function () {
       if (tickHistory) tickHistory.invalidateFollowingState();
       dispatch.invalidation();
     });
-
-    // Initialize minX, minY, maxX, maxY from model width and height if they are undefined.
-    initializeDimensions(model.properties);
 
     // Setup MD2D engine object.
     initializeEngine(model.properties, pluginProperties);
@@ -2041,35 +2080,6 @@ define(function(require) {
       }
       return value;
     });
-
-    model.defineOutput('electricForceField', {}, (function () {
-      var ef = [],
-          minX = model.properties.minX,
-          minY = model.properties.minY,
-          maxX = model.properties.maxX,
-          maxY = model.properties.maxY,
-          diff = model.properties.width / 15,
-          y = minY + 0.5 * diff,
-          x;
-      // Generate array of points.
-      while(y < maxY) {
-        x = minX + 0.5 * diff;
-        while(x < maxX) {
-          ef.push({x: x, y: y});
-          x += diff;
-        }
-        y += diff;
-      }
-      return function () {
-        // Update forces at specified points.
-        var i, len, p;
-        for (i = 0, len = ef.length; i < len; i++) {
-          p = ef[i];
-          engine.getCoulombForceAt(p.x, p.y, 1, p);
-        }
-        return ef;
-      };
-    })());
 
     readModelState();
     model.updateAllOutputProperties();

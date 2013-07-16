@@ -3642,7 +3642,7 @@ define(function (require, exports, module) {
         return bondedAtoms;
       },
 
-      getCoulombForceAt: function(testX, testY, testCharge, resultObj) {
+      getCoulombForceAt: function(testX, testY, resultObj) {
         // Let client code reuse objects.
         resultObj = resultObj || {};
         // Fast path if Coulomb interaction is disabled or there are no charged atoms.
@@ -3658,11 +3658,11 @@ define(function (require, exports, module) {
           atomIdx = chargedAtomsList[i];
           atomCharge = charge[atomIdx];
 
-          dx = testX - x[atomIdx];
-          dy = testY - y[atomIdx];
+          dx = x[atomIdx] - testX;
+          dy = y[atomIdx] - testY;
           rSq = dx * dx + dy * dy;
 
-          fOverR = coulomb.forceOverDistanceFromSquaredDistance(rSq, testCharge, atomCharge,
+          fOverR = coulomb.forceOverDistanceFromSquaredDistance(rSq, 1, atomCharge,
             dielectricConst, realisticDielectricEffect);
 
           fx += fOverR * dx;
