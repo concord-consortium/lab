@@ -153,7 +153,7 @@ define(function (require) {
         // this is a hack put in place to temporarily deal with a IE 10 bug which
         // does not update line markers when svg lines are moved
         // see https://connect.microsoft.com/IE/feedback/details/781964/
-        hideLineMarkers = browser.browser == "MSIE" && browser.version >= "10.0";
+        hideLineMarkers = browser.browser === "MSIE" && browser.version >= "10.0";
 
 
     function modelTimeLabel() {
@@ -518,7 +518,7 @@ define(function (require) {
             "cy": function(d) { return model2pxInv(d.y); },
             "fill-opacity": function(d) { return d.visible ? 1 : 0; },
             "fill": function (d, i) { return gradientNameForParticle[i]; },
-            "filter": function (d, i) { if (d.excitation) {return "url(#glow)";} return null; }
+            "filter": function (d) { if (d.excitation) {return "url(#glow)";} return null; }
           })
           .on("mousedown", moleculeMouseDown)
           .on("mouseover", moleculeMouseOver)
@@ -653,13 +653,13 @@ define(function (require) {
     }
 
     function rectangleEnter() {
-      var layers=[rectangleTop,rectangleBelow];
+      var layers = [rectangleTop, rectangleBelow], i;
       for(i = 0; i < layers.length; i++){
           var rectangleGroup = layers[i].enter().append("g");
         rectangleGroup
           .attr("class", "rectangle")
           .attr("transform",
-            function (d, i) {
+            function (d) {
               return "translate(" + model2px(rectangles.x[d]) + " " + model2pxInv(rectangles.y[d] + rectangles.height[d]) + ")";
             }
           );
@@ -668,12 +668,12 @@ define(function (require) {
             "class": "rectangle-shape",
             "x": 0,
             "y": 0,
-            "width": function(d, i) {return model2px(rectangles.width[d]); },
-            "height": function(d, i) {return model2px(rectangles.height[d]); },
-            "fill": function(d, i) { return rectangles.visible[d] ? rectangles.color[d] : "rgba(128,128,128, 0)"; },
-            "stroke-width": function(d, i) { return rectangles.lineWeight[d]; },
-            "stroke-dasharray": function(d, i) { return rectangles.lineDashes[d]; },
-            "stroke": function(d, i) { return rectangles.visible[d] ? rectangles.lineColor[d] : "rgba(128,128,128, 0)"; }
+            "width": function(d) {return model2px(rectangles.width[d]); },
+            "height": function(d) {return model2px(rectangles.height[d]); },
+            "fill": function(d) { return rectangles.visible[d] ? rectangles.color[d] : "rgba(128,128,128, 0)"; },
+            "stroke-width": function(d) { return rectangles.lineWeight[d]; },
+            "stroke-dasharray": function(d) { return rectangles.lineDashes[d]; },
+            "stroke": function(d) { return rectangles.visible[d] ? rectangles.lineColor[d] : "rgba(128,128,128, 0)"; }
           });
        }
     }
@@ -791,7 +791,7 @@ define(function (require) {
       return d.type === RADIAL_BOND_TYPES.SHORT_SPRING;
     }
 
-    function springStrokeWidth(d) {
+    function springStrokeWidth() {
       return 1.25;
       // The following code is intended to use a thicker stroke-width when
       // the spring constant is larger ... but to work properly in models with
@@ -862,7 +862,7 @@ define(function (require) {
               i: i,
               zOrder: (!!imageProp[i].imageLayerPosition) ? imageProp[i].imageLayerPosition : 0
             });
-            positionOrder.sort(function(a,b){return d3.ascending(a["zOrder"],b["zOrder"])});
+            positionOrder.sort(function(a,b) { return d3.ascending(a["zOrder"],b["zOrder"]); });
             // In Classic MW model size is defined in 0.1A.
             // Model unit (0.1A) - pixel ratio is always 1. The same applies
             // to images. We can assume that their pixel dimensions are
@@ -871,14 +871,14 @@ define(function (require) {
             container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
             container.selectAll("image").remove();
             container.selectAll("image")
-              .data(positionOrder, function(d){ return d["i"] })
+              .data(positionOrder, function(d){ return d["i"]; })
               .enter().append("image")
-                .attr("x", function(d){ return getImageCoords(d["i"])[0] } )
-                .attr("y", function(d){ return getImageCoords(d["i"])[1] } )
-                .attr("class", function(d){ return "image_attach" + d["i"] + " draggable"})
-                .attr("xlink:href", function(d){ return img[d["i"]].src})
-                .attr("width", function(d){return model2px( imageSizes[d["i"]][0] )})
-                .attr("height", function(d){return model2px( imageSizes[d["i"]][1] )})
+                .attr("x", function(d){ return getImageCoords(d["i"])[0]; } )
+                .attr("y", function(d){ return getImageCoords(d["i"])[1]; } )
+                .attr("class", function(d){ return "image_attach" + d["i"] + " draggable"; })
+                .attr("xlink:href", function(d){ return img[d["i"]].src; })
+                .attr("width", function(d){return model2px( imageSizes[d["i"]][0]); })
+                .attr("height", function(d){return model2px( imageSizes[d["i"]][1]); })
                 .attr("pointer-events", "none");
           };
         })(i);
@@ -1328,7 +1328,7 @@ define(function (require) {
         mockRectanglesBelow=[];
         for(var i = 0; i < rectangles.x.length ; i++){
           if(rectangles.layer[i]===1){
-            mockRectanglesTop.push(i)
+            mockRectanglesTop.push(i);
           }
           else{
             mockRectanglesBelow.push(i);
@@ -1414,7 +1414,7 @@ define(function (require) {
           .append("path")
             .attr("d", "M0,0 L0,-8 L1,-8 L0,-10 L-1,-8, L0,-8");
         // Update.
-        col = color.contrastingColor(model.get("backgroundColor"))
+        col = color.contrastingColor(model.get("backgroundColor"));
         efVector
             .attr("transform", function (d) {
               return "translate(" + model2px(d.x) + ", " + model2pxInv(d.y) + ")";
@@ -1456,16 +1456,6 @@ define(function (require) {
 
       vdwLines = VDWLinesContainer.selectAll("line.attractionforce").data(vdwPairs);
       vdwLinesEnter();
-    }
-
-    function mousedown() {
-      setFocus();
-    }
-
-    function setFocus() {
-      if (model.get("enableKeyboardHandlers")) {
-        modelView.node.focus();
-      }
     }
 
     function moleculeMouseOver(d, i) {
@@ -1975,10 +1965,10 @@ define(function (require) {
       }
 
       if (rectangles) {
-        rectangleTop.attr("transform", function (d, i) {
+        rectangleTop.attr("transform", function (d) {
           return "translate(" + model2px(rectangles.x[d]) + " " + model2pxInv(rectangles.y[d] + rectangles.height[d]) + ")";
         });
-        rectangleBelow.attr("transform", function (d, i) {
+        rectangleBelow.attr("transform", function (d) {
           return "translate(" + model2px(rectangles.x[d]) + " " + model2pxInv(rectangles.y[d] + rectangles.height[d]) + ")";
         });
       }
