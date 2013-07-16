@@ -217,7 +217,7 @@ parseMML = (mmlString) ->
         obstacles.push validatedData
 
       obstacles
-    
+
     ### Find and parse mml nodes representing rectangles ###
     parseRectangles = ->
       rectangles = []
@@ -235,7 +235,7 @@ parseMML = (mmlString) ->
         alpha         = getFloatProperty $node, 'alpha'
         visible       = getBooleanProperty $node, 'visible'
         fence         = getBooleanProperty $node, 'reflection'
-        
+
         colorNodes  = $node.find "[property=fillMode] .java-awt-Color>int"
         if colorNodes and colorNodes.length > 0
           corecolor=(parseInt cheerio(colorNodes[0]).text())+","+
@@ -245,20 +245,20 @@ parseMML = (mmlString) ->
             color = "rgba("+corecolor+","+alpha/255+")"
           else
             color = "rgb("+corecolor+")"
-        
+
         lineColorNodes  = $node.find "[property=lineColor] .java-awt-Color>int"
         if lineColorNodes and lineColorNodes.length > 0
           lineColor = "rgb("+(parseInt cheerio(lineColorNodes[0]).text())+","+
                   (parseInt cheerio(lineColorNodes[1]).text())+","+
                   (parseInt cheerio(lineColorNodes[2]).text())+")"
-                  
+
         lineDashes = switch
               when lineStyle is 1 then '2,2'
               when lineStyle is 2 then '4,4'
               when lineStyle is 3 then '6,6'
               when lineStyle is 4 then '2,4,8,4'
               else 'none'
-        
+
         if not x?
           x=20
         if not y?
@@ -289,7 +289,7 @@ parseMML = (mmlString) ->
         rectangles.push validatedData
 
       rectangles
-    
+
     ###
       Find the container size
     ###
@@ -366,6 +366,16 @@ parseMML = (mmlString) ->
       Find the showChargeSymbols
     ###
     showChargeSymbols = getBooleanProperty $mml.root(), "drawCharge", "boolean"
+
+    ###
+      Find the electric field visualization options.
+      In NextGen version we define only density of eletric field, so
+      to disable it completely, it should be set to 0.
+    ###
+    electricFieldDensity = do () ->
+      showEFieldLines = getBooleanProperty $mml.root(), "showEFieldLines", "boolean"
+      EFCellSize = getIntProperty $mml.root(), "EFCellSize", "int"
+      return if showEFieldLines and EFCellSize < 10000 then EFCellSize else 0
 
     ###
       Find the KE Shading
@@ -555,12 +565,12 @@ parseMML = (mmlString) ->
       Find obstacles
     ###
     obstacles = parseObstacles()
-    
+
     ###
       Find rectangles
     ###
     rectangles = parseRectangles()
-    
+
     ###
       Find all elements. Results in:
       "elements": {
@@ -978,6 +988,7 @@ parseMML = (mmlString) ->
       showClock           : showClock
       showVelocityVectors : showVelocityVectors
       showForceVectors    : showForceVectors
+      electricFieldDensity: electricFieldDensity
       images              : images
       textBoxes           : textBoxes
       velocityVectors     :
@@ -1027,7 +1038,7 @@ parseMML = (mmlString) ->
     if obstacles.length > 0
       json.obstacles = unroll obstacles, 'x', 'y', 'vx', 'vy', 'externalAx', 'externalAy', 'friction',
         'height', 'width', 'mass', 'westProbe', 'northProbe', 'eastProbe', 'southProbe', 'color', 'visible'
-    
+
     if rectangles.length > 0
       json.rectangles = unroll rectangles, 'x', 'y', 'height', 'width', 'fence',
         'color', 'lineColor', 'lineWeight', 'lineDashes',
