@@ -1428,12 +1428,13 @@ define(function (require) {
     }
 
     function updateElectricForceField() {
+      var rad2deg = 180 / Math.PI;
       efVector
           .attr("transform", function(d) {
-            return "rotate(" + (Math.atan2(d.fx, d.fy) * 180 / Math.PI) + ")";
+            return "rotate(" + (Math.atan2(d.fx, d.fy) * rad2deg) + ")";
           })
           .style("opacity", function(d) {
-            return Math.min(1000, Math.pow(d.fx * d.fx + d.fy * d.fy, 1));
+            return Math.min(1, Math.pow(d.fx * d.fx + d.fy * d.fy, .2) * .3);
           });
     }
 
