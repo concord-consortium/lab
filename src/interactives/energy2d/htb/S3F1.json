@@ -97,7 +97,7 @@
       "xlabel": "Time (s)",
       "ylabel": "Temperature (°C)",
       "ymin": -5,
-      "ymax": 50,
+      "ymax": 55,
       "xmax": 3600,
       "xTickCount": 5,
       "xFormatter": "2s",
