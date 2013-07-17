@@ -1,6 +1,6 @@
 {
   "title": "Diffusion Across a Permeable Membrane",
-  "publicationStatus": "draft",
+  "publicationStatus": "public",
   "subtitle": "Exchanging gases across a cell membrane",
   "about": [
     "Cell membranes are composed of two layers of phospholipids (a phospholipid bilayer). Some molecules are capable of crossing this membrane directly, without use of specific membrane channels.",
@@ -157,12 +157,6 @@
     }
   ],
   "components": [
-    {
-      "type": "checkbox",
-      "id": "toggle-select",
-      "text": "Highlight atoms by dragging",
-      "property": "markingAtoms"
-    },
     {
       "type": "text",
       "id": "inside-above-label",
@@ -361,7 +355,6 @@
       ]
     ],
     "below": [
-      "toggle-select"
     ],
     "above-left": [
       "outside-above-label"
