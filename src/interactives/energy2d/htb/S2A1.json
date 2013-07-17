@@ -34,14 +34,13 @@
     {
       "name": "power",
       "label": "power",
-      "value": "getPart(2).power > 0;",
       "onChange": [
         "if (value) {",
-        "  getPart(2).power = 0;",
-        "  getPart(3).power = 0;",
-        "} else {",
         "  getPart(2).power = 5000;",
         "  getPart(3).power = 5000;",
+        "} else {",
+        "  getPart(2).power = 0;",
+        "  getPart(3).power = 0;",
         "};"
       ],
       "initialValue": true
