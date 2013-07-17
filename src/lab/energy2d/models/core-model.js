@@ -239,7 +239,6 @@ define(function (require, exports) {
             t[idx] = part.temperature;
           }
           fluidity[idx] = false;
-          q[idx] = part.power;
           conductivity[idx] = part.thermal_conductivity;
           capacity[idx] = part.specific_heat;
           density[idx] = part.density;
@@ -367,6 +366,7 @@ define(function (require, exports) {
           resetArrays();
           setupOptimizationFlags();
           setupMaterialProperties();
+          refreshPowerArray();
           if (WebGL_active) {
             fillGPGPUTextures();
           }
