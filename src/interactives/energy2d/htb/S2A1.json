@@ -23,11 +23,7 @@
       "importedFrom": "imports/energy2d/models-xml/S2A1.e2d",
       "viewOptions": {
         "controlButtons": "play_reset"
-      },
-      "onLoad": [
-        "getPart(2).power = 5000;",
-        "getPart(3).power = 5000;"
-      ]
+      }
     }
   ],
   "parameters": [
