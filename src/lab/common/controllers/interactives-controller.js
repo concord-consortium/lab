@@ -928,7 +928,7 @@ define(function (require) {
         if (typeof interactive.template === "string") {
           result.template = interactive.template;
         } else {
-          result.template = $.extend(true, {}, interactive.template);
+          result.template = $.extend(true, [], interactive.template);
         }
 
         return result;
