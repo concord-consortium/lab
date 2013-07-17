@@ -28,22 +28,6 @@
   ],
   "parameters": [
     {
-      "name": "power",
-      "label": "power",
-      "value": "getPart(2).power > 0;",
-      "onChange": [
-        "if (value) {",
-        "  getPart(2).power = 0;",
-        "  getPart(3).power = 0;",
-        "} else {",
-        "  getPart(2).power = 5000;",
-        "  getPart(3).power = 5000;",
-        "};"
-      ],
-      "initialValue": true
-    },
-
-    {
       "name": "wind-speed",
       "label": "Wind speed:",
       "value": "getPart(0).wind_speed;",
@@ -51,9 +35,8 @@
       "initialValue": 0.05
     },
     {
-      "name": "window-open",
+      "name": "window-closed",
       "label": "Windows",
-      "value": "getPart(8).y === 6.05;",
       "onChange": [
         "if (value) {",
         "  getPart(8).y = 3.95;",
@@ -76,12 +59,12 @@
       "property": "wind-speed",
       "options": [
         {
-          "text": "No wind",
-          "value": 0
-        },
-        {
           "text": "wind",
           "value": 0.05
+        },
+        {
+          "text": "No wind",
+          "value": 0
         }
       ]
     },
@@ -91,14 +74,14 @@
       "label": "Windows:",
       "labelOn": "left",
       "orientation": "horizontal",
-      "property": "window-open",
+      "property": "window-closed",
       "options": [
         {
-          "text": "Open",
+          "text": "Closed",
           "value": true
         },
         {
-          "text": "Closed",
+          "text": "Open",
           "value": false
         }
       ]
