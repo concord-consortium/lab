@@ -565,8 +565,8 @@ define(function (require, exports) {
           var
             i = Math.max(Math.min(nx - 1, Math.round(x / delta_x)), 0),
             j = Math.max(Math.min(ny - 1, Math.round(y / delta_y)), 0),
-            fx = -conductivity[i * ny + j] * (t[(i + 1) * ny + j] - t[(i - 1) * ny + j]) / (2 * delta_x),
-            fy = -conductivity[i * ny + j] * (t[i * ny + j + 1] - t[i * ny + j - 1]) / (2 * delta_y);
+            fx = conductivity[i * ny + j] * (t[(i - 1) * ny + j] - t[(i + 1) * ny + j]) / (2 * delta_x),
+            fy = conductivity[i * ny + j] * (t[i * ny + j - 1] - t[i * ny + j + 1]) / (2 * delta_y);
           return [fx, fy];
         },
 

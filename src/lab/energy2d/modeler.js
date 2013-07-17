@@ -242,7 +242,7 @@ define(function (require) {
         }
         if (s.type === "heatFlux") {
           s.angle = s.angle || 0;
-          s._sin = Math.sin(s.angle * Math.PI / 180);
+          s._sin = Math.sin(-s.angle * Math.PI / 180);
           s._cos = Math.cos(s.angle * Math.PI / 180);
         }
         Object.defineProperty(s, "value", {
