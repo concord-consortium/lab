@@ -47,6 +47,8 @@ AUTHORING = false;
       jsonModelPath,
       $jsonModelLink = $("#json-model-link"),
 
+      $jsonInteractiveLink = $("#json-interactive-link"),
+
       interactivesPromise;
 
   function sendGAPageview(){
@@ -216,6 +218,10 @@ AUTHORING = false;
     // construct link to embeddable version of Interactive
     $embeddableLink.attr("href", function(i, href) { return href + hash; });
     $embeddableLink.attr("title", "Open this Interactive in a new page suitable for embedding.");
+
+    $jsonInteractiveLink.attr("href", origin + Lab.config.actualRoot + interactiveUrl);
+
+    $jsonModelLink.attr("title", "View model JSON in another window");
 
     // construct link to JSON version of model
     jsonModelPath = interactive.models[0].url;
