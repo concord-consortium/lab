@@ -1391,8 +1391,9 @@ define(function (require) {
     }
 
     function setupElectricField() {
-      var col;
-      drawElectricForceField = model.get("electricFieldDensity") > 0;
+      var density = model.get("electricFieldDensity"),
+          col, size;
+      drawElectricForceField = density > 0;
       // Do full enter-update-remove cycle to reuse DOM elements.
       efVector = fieldVisualization.selectAll(".vector-electric-field").data(model.getElectricField());
       efVector.exit().remove();
@@ -1404,13 +1405,7 @@ define(function (require) {
           .append("g")
             .attr("class", "rot-g")
           .append("svg")
-            .attr({
-              "viewBox": "-5 -10 10 12",
-              "x": "-0.5em",
-              "y": "-1em",
-              "width": "1em",
-              "height": "1em"
-            })
+            .attr("viewBox", "-5 -12 10 12")
           .append("path")
             .attr("d", "M0,0 L0,-8 L1,-8 L0,-10 L-1,-8, L0,-8");
         // Update.
@@ -1421,6 +1416,13 @@ define(function (require) {
             })
             .style("fill", col)
             .style("stroke", col);
+        // Size update.
+        size = Math.sqrt(30 / density);
+        efVector.select("svg")
+            .attr("x", (-0.5 * size) + "em")
+            .attr("y", (-size) + "em")
+            .attr("width", size + "em")
+            .attr("height", size + "em");
         // Cache selection + update rotation.
         efVector = efVector.select(".rot-g");
         updateElectricForceField();

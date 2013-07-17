@@ -121,7 +121,8 @@ define(function(require) {
                 maxX = model.properties.width,
                 maxY = model.properties.height,
                 diff = model.properties.width / value,
-                y = minY + 0.5 * diff,
+                yOffset = ((maxY / diff) % 1) * diff,
+                y = minY + 0.5 * (yOffset + (diff <= maxY ? diff : 0)),
                 x;
             while(y < maxY) {
               x = minX + 0.5 * diff;
