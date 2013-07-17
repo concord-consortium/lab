@@ -6,13 +6,11 @@
     "Two closed boxes have identical heaters but the heat capacity of the left-hand box is much greater",
     "than the heat capacity of the right-hand box. The power switch controls both heaters.",
     "",
-    "1. Run the model and turn the graph on to monitor the temperatures.",
+    "1. Run the model and use the graph to monitor the temperatures.",
     "   When the **left-hand side box** reaches 5°C, turn off the power.",
     "2. Try to keep the temperature in the **left-hand side box** between",
     "   3 and 5°C by turning the power on and off.",
-    "3. Compare the shapes of the two temperature curves.",
-    "",
-    "After you have completed your investigation, answer the questions in your workbook."
+    "3. Compare the shapes of the two temperature curves."
   ],
   "importedFrom": "imports/energy2d/content-htb/S2A.html",
   "models": [
@@ -58,6 +56,16 @@
   ],
   "components": [
     {
+      "type": "button",
+      "id": "start-model",
+      "text": "Start model",
+      "action": [
+        "if (isStopped()) {",
+        "  start();",
+        "}"
+      ]
+    },
+    {
       "type": "radio",
       "id": "power-switch",
       "label": "Power switch",
@@ -95,9 +103,9 @@
       "title": "Temperature Probes: T1, T2",
       "xlabel": "Time (s)",
       "ylabel": "Temperature (°C)",
-      "ymin": -5,
-      "ymax": 20,
-      "xmax": 600,
+      "ymin": -1,
+      "ymax": 10,
+      "xmax": 400,
       "xTickCount": 5,
       "xFormatter": "2s",
       "yFormatter": "2s",
@@ -108,7 +116,7 @@
   ],
   "layout": {
     "bottom": [
-      [ "power-switch" ],
+      [ "power-switch", "start-model" ],
       [ "left-specific-heat-output", "right-specific-heat-output" ]
     ],
     "right": [ "graph" ]
