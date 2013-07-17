@@ -78,6 +78,7 @@ end
 #   |   |-- boiling-point-polar-only$0.mml
 #   |   `-- boiling-point-polar-only.cml
 #
+# Always exclude a directory named 'original'
 #
 class MD2DSection
   include ProcessMML
@@ -86,10 +87,12 @@ class MD2DSection
     @section_path = dir
     @section = { "section" => @section_path }
     @page_directories = Dir["#{@section_path}/#{special_path}**"]
+    @page_directories.delete_if {|p| p[/original\//] }
     @page_directories = @page_directories.find_all { |d| Dir["#{d}/*.mml"].length > 0 }
     @section["content"] = []
     @page_directories.each do |page_dir|
-      @section["content"] += process_page_dir(page_dir)
+      content = process_page_dir(page_dir)
+      @section["content"] += content if content  # only add if there is a cml_file
     end
   end
 
@@ -99,8 +102,12 @@ class MD2DSection
     cml_file =  Dir["#{page_dir}/*.cml"][0]
     mml_files = Dir["#{page_dir}/*.mml"]
     @pages = []
-    process_mml_files(name, cml_file, mml_files)
-    @pages
+    if cml_file
+      process_mml_files(name, cml_file, mml_files)
+      @pages
+    else
+      false
+    end
   end
 end
 
@@ -118,8 +125,13 @@ class MD2DImports
     @model_list_dot_js = "#{@path}/model-list.js"
     Dir.chdir(@path) do
       @dirs = Dir["sam-activities/**"]
-      @dirs.each do |dir|
+      @dirs_original_form = Dir["sam-activities/**/original-interactives-in-pages"].collect {|p| File.dirname(p)}
+      @dirs_alternate_form = @dirs - @dirs_original_form
+      @dirs_original_form.each do |dir|
         @model_list.push(MD2DSection.new(dir, "original-interactives-in-pages/").section)
+      end
+      @dirs_alternate_form.each do |dir|
+        @model_list.push(MD2DSection.new(dir).section)
       end
       @dirs = Dir["other-activities/**"]
       @dirs.each do |dir|
