@@ -442,8 +442,8 @@ define(function (require) {
 
     function scale(w, h) {
       if (!w && !h) {
-        cx = Math.max(elem.property("clientWidth"), 120);
-        cy = Math.max(elem.property("clientHeight"),120);
+        cx = Math.max(elem.property("clientWidth"), 60);
+        cy = Math.max(elem.property("clientHeight"),60);
       } else {
         cx = w;
         node.style.width =  cx +"px";
@@ -567,8 +567,8 @@ define(function (require) {
       }
 
       size = {
-        "width":  cx - padding.left - padding.right,
-        "height": cy - padding.top  - padding.bottom
+        "width":  Math.max(cx - padding.left - padding.right, 60),
+        "height": Math.max(cy - padding.top  - padding.bottom, 60)
       };
 
       xScale = d3.scale[options.xscale]()
