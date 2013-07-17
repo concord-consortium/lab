@@ -7,9 +7,7 @@
     "",
     "1.  Run the model and look for leaking energy.",
     "2.  Click on the wall and roof elements to change the sizes and locations of the leaks.",
-    "3.  Note the convection pattern in each situation.",
-    "",
-    "After you have completed your investigation, answer the questions in your workbook."
+    "3.  Note the convection pattern in each situation."
   ],
   "importedFrom": "imports/energy2d/content-htb/S4D.html",
   "models": [

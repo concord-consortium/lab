@@ -13,7 +13,7 @@
     "1.  To change the size of an object, click and drag the small yellow rectangles at its edges.",
     "2.  **Make sure that the objects still touch each other but do not overlap and there is a thermometer in each object.**",
     "3.  Run the model and wait until the temperatures do not change any further.",
-    "4.  If the final temperatures are close to 25°C (within 1°C), write down the sizes of the objects in your workbook.",
+    "4.  If the final temperatures are close to 25°C (within 1°C), note the sizes of the objects.",
     "5.  Otherwise, Reset the model, resize the objects, and run the model again until the final temperatures",
     "    are close to 25°C (within 1°C).",
     "",
