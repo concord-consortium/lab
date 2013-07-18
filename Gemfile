@@ -15,7 +15,7 @@ group :app do
   gem 'neat',               "~> 1.2.0"
   gem 'kramdown',           "~> 0.13.8"
   gem "mustache",           "~> 0.99.4"
-  gem "shutterbug",         "~> 0.0.9"
+  gem "shutterbug",         "~> 0.0.10"
   gem "rack-livereload",    "~> 0.3.15"
 end
 
