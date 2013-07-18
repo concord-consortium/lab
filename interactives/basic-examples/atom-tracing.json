@@ -6,6 +6,7 @@
   "fontScale": 0.8,
   "models": [
     {
+      "type": "md2d",
       "id": "model",
       "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
       "viewOptions": {
@@ -95,17 +96,35 @@
   ],
   "layout": {
     "bottom": [
-      [ "temperature-property-slider" ]
+      [
+        "temperature-property-slider"
+      ]
     ],
     "right": [
-      [ "button-actions-label" ],
-      [ "trace-atom" ],
-      [ "mark-trace-atom" ],
-      [ "untrace-atom" ],
-      [ "axes-label" ],
-      [ "show-gridlines" ],
-      [ "show-xunits" ],
-      [ "show-yunits" ]
+      [
+        "button-actions-label"
+      ],
+      [
+        "trace-atom"
+      ],
+      [
+        "mark-trace-atom"
+      ],
+      [
+        "untrace-atom"
+      ],
+      [
+        "axes-label"
+      ],
+      [
+        "show-gridlines"
+      ],
+      [
+        "show-xunits"
+      ],
+      [
+        "show-yunits"
+      ]
     ]
   },
   "template": [

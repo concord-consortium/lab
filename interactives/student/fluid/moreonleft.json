@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "moreonleft",
       "url": "imports/legacy-mw-content/converted/student/fluid/moreonleft.json",
       "viewOptions": {
@@ -13,9 +14,11 @@
     }
   ],
   "components": [
+
   ],
   "layout": {
     "bottom": [
+
     ]
   }
 }

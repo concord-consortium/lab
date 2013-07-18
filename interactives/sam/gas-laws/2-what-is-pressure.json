@@ -13,6 +13,7 @@
   ],
   "models": [
     {
+      "type": "md2d",
       "id": "page2$0",
       "url": "imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page2/page2$0.json",
       "viewOptions": {
@@ -20,7 +21,7 @@
         "textBoxes": [
           {
             "text": "Inside balloon",
-            "x": 0.70,
+            "x": 0.7,
             "y": 2.45,
             "layer": 1,
             "frame": "rounded rectangle",
@@ -46,7 +47,7 @@
           },
           {
             "text": "Atoms inside: 40",
-            "x": 0.70,
+            "x": 0.7,
             "y": 0.25,
             "layer": 1,
             "frame": "rounded rectangle",
@@ -124,7 +125,11 @@
   ],
   "layout": {
     "bottom": [
-      ["add-atom", "remove-atom", "show-velocity"]
+      [
+        "add-atom",
+        "remove-atom",
+        "show-velocity"
+      ]
     ]
   }
 }

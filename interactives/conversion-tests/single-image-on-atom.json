@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "single-image-on-atom$0",
       "url": "imports/legacy-mw-content/converted/potential-tests/single-image-on-atom/single-image-on-atom$0.json",
       "viewOptions": {

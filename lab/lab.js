@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "9145860d66f046e44367c4a2cc4e3e9e26196cee",
-        "short_sha":      "9145860d",
-        "url":            "https://github.com/concord-consortium/lab/commit/9145860d",
+        "sha":           "b2f00a1b2386f37c7b6f98855e72f9cf1885b3c0",
+        "short_sha":      "b2f00a1b",
+        "url":            "https://github.com/concord-consortium/lab/commit/b2f00a1b",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-06-19 03:08:42 -0400",
-        "short_message": "corrected program invocation comment",
-        "message":       "corrected program invocation comment"
+        "date":          "2013-07-18 13:51:33 -0400",
+        "short_message": "just remove jquery/node_modules/grunt-contrib-jshint",
+        "message":       "just remove jquery/node_modules/grunt-contrib-jshint\n\nwhen running make clean\n... and the same in jquery-ui"
       },
       "dirty": false
     }
@@ -464,59 +464,11 @@ define('lab.config',['require','common/actual-root'],function (require) {
   "logging": true,
   "tracing": false,
   "authoring": false,
-  "actualRoot": ""
+  "actualRoot": "",
+  "environment": "development"
 };
   publicAPI.actualRoot = actualRoot;
   return publicAPI;
-});
-
-/*global define: false console: true */
-
-define('common/structured-clone',['require'],function (require) {
-  var featureSupported = false,
-      publicAPI = {};
-
-  function isStructuredCloneSupported() {
-    var result = 0;
-
-    if (!!window.postMessage) {
-      try {
-        // Safari 5.1 will sometimes throw an exception and sometimes won't, lolwut?
-        // When it doesn't we capture the message event and check the
-        // internal [[Class]] property of the message being passed through.
-        // Safari will pass through DOM nodes as Null iOS safari on the other hand
-        // passes it through as DOMWindow, gotcha.
-        window.onmessage = function(e){
-          var type = Object.prototype.toString.call(e.data);
-          result = (type.indexOf("Null") != -1 || type.indexOf("DOMWindow") != -1) ? 1 : 0;
-          featureSupported = {
-            'structuredClones': result
-          };
-        };
-        // Spec states you can't transmit DOM nodes and it will throw an error
-        // postMessage implimentations that support cloned data will throw.
-        window.postMessage(document.createElement("a"),"*");
-      } catch(e) {
-        // BBOS6 throws but doesn't pass through the correct exception
-        // so check error message
-        result = (e.DATA_CLONE_ERR || e.message == "Cannot post cyclic structures.") ? 1 : 0;
-        featureSupported = {
-          'structuredClones': result
-        };
-      }
-    }
-  }
-
-  isStructuredCloneSupported();
-
-  function supported() {
-    return featureSupported && featureSupported.structuredClones > 0;
-  }
-
-  publicAPI.supported = supported;
-
-  return publicAPI;
-
 });
 
 /*global window Uint8Array Uint8ClampedArray Int8Array Uint16Array Int16Array Uint32Array Int32Array Float32Array Float64Array */
@@ -601,8 +553,15 @@ define('arrays/index',['require','exports','module'],function (require, exports,
           throw new Error("arrays: couldn't understand array type \"" + array_type + "\".");
       }
     }
-    i=-1; while(++i < size) { a[i] = fill; }
+    arrays.fill(a, fill);
     return a;
+  };
+
+  arrays.fill = function(array, value) {
+    var i = -1, size = array.length;
+    while(++i < size) {
+      array[i] = value;
+    }
   };
 
   arrays.constructor_function = function(source) {
@@ -952,6 +911,9 @@ define('common/controllers/interactive-metadata',[],function() {
         defaultValue: ""
       },
 
+      // optional: holds path of html or cml page this Interactive was imported from
+      importedFrom: {},
+
       fontScale: {
         defaultValue: 1
       },
@@ -999,12 +961,17 @@ define('common/controllers/interactive-metadata',[],function() {
     model: {
       // Definition of a model.
       // Can include either a URL to model definition or model options hash..
+      type: {
+        required: true
+      },
       id: {
         required: true
       },
       url: {
         conflictsWith: ["model"]
       },
+      // optional: holds path of html or cml page this Interactive was imported from
+      importedFrom: {},
       model: {
         conflictsWith: ["url"]
       },
@@ -1744,6 +1711,90 @@ define('common/validator',['require','arrays'],function(require) {
 
     // Expose ValidationError. It can be useful for the custom validation routines.
     ValidationError: ValidationError
+  };
+});
+
+define('common/interactive-not-found',['require'],function (require) {
+
+  return function interactiveNotFound(interactiveUrl) {
+    return {
+      "title": "Interactive not found",
+      "subtitle": "Couldn't load Interactive definition",
+      "about": [
+        "Problem loading: [" + interactiveUrl + "](" + interactiveUrl + ")",
+        "Either the definition for this Interactive has moved, been deleted or there have been network problems.",
+        "It would be good to report this issue"
+      ],
+      "publicationStatus": "broken",
+      "fontScale": 1.3,
+      "models": [
+        {
+          "type": "md2d",
+          "id": "empty-model",
+          "model": {
+            "type": "md2d",
+            "width": 5,
+            "height": 3
+          },
+          "viewOptions": {
+            "controlButtons": "",
+            "backgroundColor": "rgba(245,200,200,255)",
+            "showClock": false
+          }
+        }
+      ],
+      "components": [
+        {
+          "type": "text",
+          "id": "interactive-not-found",
+          "text": [
+            "##Oops!",
+            "",
+            "####We couldn't find the Interactive you are looking for:",
+            "[" + interactiveUrl + "](" + interactiveUrl + ")",
+            "",
+            "It may have moved (without leaving a forwarding address).",
+            "Try searching our [Next-Generation Molecular Workbench Activities page](http://mw.concord.org/nextgen/interactives/)."
+          ]
+        }
+      ],
+      "layout": {
+        "error": [ "interactive-not-found" ]
+      },
+      "template": [
+        {
+          "id": "top",
+          "bottom": "model.top",
+          "height": "1em"
+        },
+        {
+          "id": "bottom",
+          "top": "model.bottom",
+          "height": "1em"
+        },
+        {
+          "id": "right",
+          "left": "model.right",
+          "width": "1em"
+        },
+        {
+          "id": "left",
+          "right": "model.left",
+          "width": "1em"
+        },
+        {
+          "id": "error",
+          "top": "model.top",
+          "left": "model.left",
+          "height": "model.height",
+          "width": "model.width",
+          "padding-top": "0.5em",
+          "padding-bottom": "0.5em",
+          "padding-right": "1em",
+          "padding-left": "1em"
+        }
+      ]
+    };
   };
 });
 
@@ -5816,10 +5867,8 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
 
     function scale(w, h) {
       if (!w && !h) {
-        // cx = Math.max($node.width(), 120);
-        // cy = Math.max($node.height(), 62);
-        cx = Math.max(elem.property("clientWidth"), 120);
-        cy = Math.max(elem.property("clientHeight"), 62);
+        cx = Math.max(elem.property("clientWidth"), 60);
+        cy = Math.max(elem.property("clientHeight"),60);
       } else {
         cx = w;
         node.style.width =  cx +"px";
@@ -5943,8 +5992,8 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       }
 
       size = {
-        "width":  cx - padding.left - padding.right,
-        "height": cy - padding.top  - padding.bottom
+        "width":  Math.max(cx - padding.left - padding.right, 60),
+        "height": Math.max(cy - padding.top  - padding.bottom, 60)
       };
 
       xScale = d3.scale[options.xscale]()
@@ -7363,10 +7412,10 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
 
     // Add an array (or arrays) of points.
     function addDataPoints(datapoints) {
-      if (Object.prototype.toString.call(datapoints[0][0]) === "[object Array]") {
+      if (Object.prototype.toString.call(datapoints[0]) === "[object Array]") {
         for (var i = 0; i < datapoints.length; i++) {
           points = pointArray[i];
-          points.push.apply(points, datapoints[i]);
+          points.push.apply(points, [datapoints[i]]);
           pointArray[i] = points;
         }
         points = pointArray[0];
@@ -7415,7 +7464,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         pointArray = [points];
         return;
       }
-      if (Object.prototype.toString.call(datapoints[0][0]) === "[object Array]") {
+      if (Object.prototype.toString.call(datapoints[0]) === "[object Array]") {
         for (var i = 0; i < datapoints.length; i++) {
           pointArray.push(copy(datapoints[i]));
         }
@@ -8573,7 +8622,7 @@ define('common/controllers/scripting-api',['require','common/alert'],function (r
           },
 
           isStopped: function isStopped() {
-            return model.is_stopped();
+            return model.isStopped();
           },
 
           getTime: function getTime() {
@@ -8863,9 +8912,12 @@ define('common/controllers/checkbox-controller',['common/controllers/interactive
 
     $label = $('<label>').append('<span>' + component.text + '</span>');
     $label.attr('for', component.id);
-    $checkbox = $('<input type="checkbox">')
-        .attr('tabindex', interactivesController.getNextTabIndex())
-        .attr('id', component.id);
+    $checkbox = $('<input type="checkbox">').attr('id', component.id);
+
+    if (interactivesController) {
+      $checkbox.attr('tabindex', interactivesController.getNextTabIndex());
+    }
+
     $fakeCheckable = $('<div class="fakeCheckable">');
     // Hide native input, use fake checkable.
     $checkbox.css("display", "none");
@@ -11280,7 +11332,8 @@ define('common/controllers/pulldown-controller',['common/controllers/interactive
         if (option.selected) {
           $option.prop("selected", option.selected);
         }
-        if (option.value) {
+        // allow pulldowns to have "falsy" values (e.g. "0")
+        if (typeof option.value !== 'undefined') {
           $option.prop("value", option.value);
         }
         $pulldown.append($option);
@@ -11328,7 +11381,6 @@ define('common/controllers/pulldown-controller',['common/controllers/interactive
       $pulldown.selectBoxIt();
 
       $wrapper.find(".selectboxit").css("width", "auto");
-      $wrapper.find(".selectboxit-text").css("max-width", "none");
 
       // SelectBoxIt assumes that all select boxes are always going to have a width
       // set in CSS (default 220px). This doesn't work for us, as we don't know how
@@ -11595,10 +11647,471 @@ define('common/parent-message-controller',[],function() {
 
 });
 
+/*global define: false, d3: false */
+/*jshint loopfunc: true*/
+
+/*
+  ------------------------------------------------------------
+
+  Simple benchmark runner and results generator
+
+    see: https://gist.github.com/1364172
+
+  ------------------------------------------------------------
+
+  Runs benchmarks and generates the results in a table.
+
+  Setup benchmarks to run in an array of objects with two properties:
+
+    name: a title for the table column of results
+    numeric: boolean, used to decide what columns should be used to calculate averages
+    formatter: (optional) a function that takes a number and returns a formmatted string, example: d3.format("5.1f")
+    run: a function that is called to run the benchmark and call back with a value.
+         It should accept a single argument, the callback to be called when the
+         benchmark completes. It should pass the benchmark value to the callback.
+
+  Start the benchmarks by passing the table element where the results are to
+  be placed and an array of benchmarks to run.
+
+  Example:
+
+    var benchmarks_table = document.getElementById("benchmarks-table");
+
+    var benchmarks_to_run = [
+      {
+        name: "molecules",
+        run: function(done) {
+          done(mol_number);
+        }
+      },
+      {
+        name: "100 Steps (steps/s)",
+        run: function(done) {
+          modelStop();
+          var start = +Date.now();
+          var i = -1;
+          while (i++ < 100) {
+            model.tick();
+          }
+          elapsed = Date.now() - start;
+          done(d3.format("5.1f")(100/elapsed*1000));
+        }
+      },
+    ];
+
+    benchmark.run(benchmarks_table, benchmarks_to_run)
+
+  You can optionally pass two additional arguments to the run method: start_callback, end_callback
+
+    function run(benchmarks_table, benchmarks_to_run, start_callback, end_callback)
+
+  These arguments are used when the last benchmark test is run using the browsers scheduling and re-painting mechanisms.
+
+  For example this test runs a model un the browser and calculates actual frames per second combining the
+  model, view, and browser scheduling and repaint operations.
+
+    {
+      name: "fps",
+      numeric: true,
+      formatter: d3.format("5.1f"),
+      run: function(done) {
+        // warmup
+        model.start();
+        setTimeout(function() {
+          model.stop();
+          var start = model.get('time');
+          setTimeout(function() {
+            // actual fps calculation
+            model.start();
+            setTimeout(function() {
+              model.stop();
+              var elapsedModelTime = model.get('time') - start;
+              done( elapsedModelTime / (model.get('timeStepsPerTick') * model.get('timeStep')) / 2 );
+            }, 2000);
+          }, 100);
+        }, 1000);
+      }
+    }
+
+  Here's an example calling the benchmark.run method and passing in start_callback, end_callback functions:
+
+    benchmark.run(document.getElementById("model-benchmark-results"), benchmarksToRun, function() {
+      $runBenchmarksButton.attr('disabled', true);
+    }, function() {
+      $runBenchmarksButton.attr('disabled', false);
+    });
+
+  The "Run Benchmarks" button is disabled until the browser finishes running thelast queued test.
+
+  The first five columns in the generated table consist of:
+
+    browser, version, cpu/os, date, and commit
+
+  These columns are followed by a column for each benchmark passed in.
+
+  Subsequent calls to: benchmark.run(benchmarks_table, benchmarks_to_run) will
+  add additional rows to the table.
+
+  A special second row is created in the table which displays averages of all tests
+  that generate numeric results.
+
+  Here are some css styles for the table:
+
+    table {
+      font: 11px/24px Verdana, Arial, Helvetica, sans-serif;
+      border-collapse: collapse; }
+    th {
+      padding: 0 1em;
+      text-align: left; }
+    td {
+      border-top: 1px solid #cccccc;
+      padding: 0 1em; }
+
+*/
+
+define('common/benchmark/benchmark',[],function () {
+
+  var version = "0.0.1",
+      windows_platform_token = {
+        "Windows NT 6.2": "Windows 8",
+        "Windows NT 6.1": "Windows 7",
+        "Windows NT 6.0": "Windows Vista",
+        "Windows NT 5.2": "Windows Server 2003; Windows XP x64 Edition",
+        "Windows NT 5.1": "Windows XP",
+        "Windows NT 5.01": "Windows 2000, Service Pack 1 (SP1)",
+        "Windows NT 5.0": "Windows 2000",
+        "Windows NT 4.0": "Microsoft Windows NT 4.0"
+      },
+      windows_feature_token = {
+        "WOW64":       "64/32",
+        "Win64; IA64": "64",
+        "Win64; x64":  "64"
+      },
+      average_row;
+
+  function what_browser() {
+    var chromematch  = / (Chrome)\/(.*?) /,
+        ffmatch      = / (Firefox)\/([0123456789ab.]+)/,
+        safarimatch  = / AppleWebKit\/([0123456789.+]+) \(KHTML, like Gecko\) Version\/([0123456789.]+) (Safari)\/([0123456789.]+)/,
+        iematch      = / (MSIE) ([0123456789.]+);/,
+        operamatch   = /^(Opera)\/.+? Version\/([0123456789.]+)$/,
+        iphonematch  = /.+?\((iPhone); CPU.+?OS .+?Version\/([0123456789._]+)/,
+        ipadmatch    = /.+?\((iPad); CPU.+?OS .+?Version\/([0123456789._]+)/,
+        ipodmatch    = /.+?\((iPod); CPU (iPhone.+?) like.+?Version\/([0123456789ab._]+)/,
+        androidchromematch = /.+?(Android) ([0123456789.]+).*?; (.+?)\).+? Chrome\/([0123456789.]+)/,
+        androidfirefoxmatch = /.+?(Android.+?\)).+? Firefox\/([0123456789.]+)/,
+        androidmatch = /.+?(Android) ([0123456789ab.]+).*?; (.+?)\)/,
+        match;
+
+    match = navigator.userAgent.match(chromematch);
+    if (match && match[1]) {
+      return {
+        browser: match[1],
+        version: match[2],
+        oscpu: os_platform()
+      };
+    }
+    match = navigator.userAgent.match(ffmatch);
+    if (match && match[1]) {
+      var buildID = navigator.buildID,
+          buildDate = "";
+      if (buildID && buildID.length >= 8) {
+        buildDate = "(" + buildID.slice(0,4) + "-" + buildID.slice(4,6) + "-" + buildID.slice(6,8) + ")";
+      }
+      return {
+        browser: match[1],
+        version: match[2] + ' ' + buildDate,
+        oscpu: os_platform()
+      };
+    }
+    match = navigator.userAgent.match(androidchromematch);
+    if (match && match[1]) {
+      return {
+        browser: "Chrome",
+        version: match[4],
+        oscpu: match[1] + "/" + match[2] + "/" + match[3]
+      };
+    }
+    match = navigator.userAgent.match(androidfirefoxmatch);
+    if (match && match[1]) {
+      return {
+        browser: "Firefox",
+        version: match[2],
+        oscpu: match[1]
+      };
+    }
+    match = navigator.userAgent.match(androidmatch);
+    if (match && match[1]) {
+      return {
+        browser: "Android",
+        version: match[2],
+        oscpu: match[1] + "/" + match[2] + "/" + match[3]
+      };
+    }
+    match = navigator.userAgent.match(safarimatch);
+    if (match && match[3]) {
+      return {
+        browser: match[3],
+        version: match[2] + '/' + match[1],
+        oscpu: os_platform()
+      };
+    }
+    match = navigator.userAgent.match(iematch);
+    if (match && match[1]) {
+      var platform_match = navigator.userAgent.match(/\(.*?(Windows.+?); (.+?)[;)].*/);
+      return {
+        browser: match[1],
+        version: match[2],
+        oscpu: windows_platform_token[platform_match[1]] + "/" + navigator.cpuClass + "/" + navigator.platform
+      };
+    }
+    match = navigator.userAgent.match(operamatch);
+    if (match && match[1]) {
+      return {
+        browser: match[1],
+        version: match[2],
+        oscpu: os_platform()
+      };
+    }
+    match = navigator.userAgent.match(iphonematch);
+    if (match && match[1]) {
+      return {
+        browser: "Mobile Safari",
+        version: match[2],
+        oscpu: match[1] + "/" + "iOS" + "/" + match[2]
+      };
+    }
+    match = navigator.userAgent.match(ipadmatch);
+    if (match && match[1]) {
+      return {
+        browser: "Mobile Safari",
+        version: match[2],
+        oscpu: match[1] + "/" + "iOS" + "/" + match[2]
+      };
+    }
+    match = navigator.userAgent.match(ipodmatch);
+    if (match && match[1]) {
+      return {
+        browser: "Mobile Safari",
+        version: match[3],
+        oscpu: match[1] + "/" + "iOS" + "/" + match[2]
+      };
+    }
+    return {
+      browser: "",
+      version: navigator.appVersion,
+      oscpu:   ""
+    };
+  }
+
+  function os_platform() {
+    var match = navigator.userAgent.match(/\((.+?)[;)] (.+?)[;)].*/);
+    if (!match) { return "na"; }
+    if (match[1] === "Macintosh") {
+      return match[2];
+    } else if (match[1].match(/^Windows/)) {
+      var arch  = windows_feature_token[match[2]] || "32",
+          token = navigator.userAgent.match(/\(.*?(Windows NT.+?)[;)]/);
+      return windows_platform_token[token[1]] + "/" + arch;
+    }
+  }
+
+  function renderToTable(benchmarks_table, benchmarksThatWereRun, results) {
+    var i = 0,
+        results_row,
+        result,
+        col_number = 0,
+        col_numbers = {},
+        title_row,
+        title_cells,
+        len,
+        rows = benchmarks_table.getElementsByTagName("tr");
+
+    benchmarks_table.style.display = "";
+
+    function add_column(title) {
+      var title_row = benchmarks_table.getElementsByTagName("tr")[0],
+          cell = title_row.appendChild(document.createElement("th"));
+
+      cell.innerHTML = title;
+      col_numbers[title] = col_number++;
+    }
+
+    function add_row(num_cols) {
+      num_cols = num_cols || 0;
+      var tr =  benchmarks_table.appendChild(document.createElement("tr")),
+          i;
+
+      for (i = 0; i < num_cols; i++) {
+        tr.appendChild(document.createElement("td"));
+      }
+      return tr;
+    }
+
+    function add_result(name, content, row) {
+      var cell;
+      row = row || results_row;
+      cell = row.getElementsByTagName("td")[col_numbers[name]];
+      if (typeof content === "string" && content.slice(0,1) === "<") {
+        cell.innerHTML = content;
+      } else {
+        cell.textContent = content;
+      }
+    }
+
+    function update_averages() {
+      var i, j,
+          b,
+          row,
+          num_rows = rows.length,
+          cell,
+          cell_index,
+          average_elements = average_row.getElementsByTagName("td"),
+          total,
+          average,
+          genericDecimalFormatter = d3.format("5.1f"),
+          genericIntegerFormatter = d3.format("f");
+
+      function isInteger(i) {
+        return Math.floor(i) === i;
+      }
+
+      for (i = 0; i < benchmarksThatWereRun.length; i++) {
+        b = benchmarksThatWereRun[i];
+        cell_index = col_numbers[b.name];
+        if (b.numeric === false) {
+          row = rows[2];
+          cell = row.getElementsByTagName("td")[cell_index];
+          average_elements[cell_index].innerHTML = cell.innerHTML;
+        } else {
+          total = 0;
+          for (j = 2; j < num_rows; j++) {
+            row = rows[j];
+            cell = row.getElementsByTagName("td")[cell_index];
+            total += (+cell.textContent);
+          }
+          average = total/(num_rows-2);
+          if (b.formatter) {
+            average = b.formatter(average);
+          } else {
+            if (isInteger(average)) {
+              average = genericIntegerFormatter(total/(num_rows-2));
+            } else {
+              average = genericDecimalFormatter(total/(num_rows-2));
+            }
+          }
+          average_elements[cell_index].textContent = average;
+        }
+      }
+    }
+
+    if (rows.length === 0) {
+      add_row();
+      add_column("browser");
+      add_column("version");
+      add_column("cpu/os");
+      add_column("date");
+      for (i = 0; i < benchmarksThatWereRun.length; i++) {
+        add_column(benchmarksThatWereRun[i].name);
+      }
+      average_row = add_row(col_number);
+      average_row.className = 'average';
+    } else {
+      title_row = rows[0];
+      title_cells = title_row.getElementsByTagName("th");
+      for (i = 0, len = title_cells.length; i < len; i++) {
+        col_numbers[title_cells[i].innerHTML] = col_number++;
+      }
+    }
+
+    results_row = add_row(col_number);
+    results_row.className = 'sample';
+
+    for (i = 0; i < 4; i++) {
+      result = results[i];
+      add_result(result[0], result[1]);
+      add_result(result[0], result[1], average_row);
+    }
+
+    for(i = 4; i < results.length; i++) {
+      result = results[i];
+      add_result(result[0], result[1]);
+    }
+    update_averages();
+  }
+
+  function bench(benchmarks_to_run, resultsCallback, start_callback, end_callback) {
+    var bencharks_queue = benchmarks_to_run.slice(),
+        results = [],
+        browser_info = what_browser(),
+        formatter = d3.time.format("%Y-%m-%d %H:%M");
+
+    results.push([ "browser", browser_info.browser]);
+    results.push([ "version", browser_info.version]);
+    results.push([ "cpu/os", browser_info.oscpu]);
+    results.push([ "date", formatter(new Date())]);
+
+    if (start_callback) start_callback();
+
+    runBenchmark(bencharks_queue.shift());
+
+    function runBenchmark(b) {
+      b.run(doneCallback);
+
+      function doneCallback(result) {
+        if (b.formatter) {
+          results.push([ b.name, b.formatter(result) ]);
+        } else {
+          results.push([ b.name, result ]);
+        }
+
+        if (bencharks_queue.length > 0) {
+          runBenchmark(bencharks_queue.shift());
+        } else {
+          if (end_callback) end_callback();
+          if (resultsCallback) resultsCallback(results);
+        }
+      }
+    }
+
+    return results;
+  }
+
+  function run(benchmarks_to_run, benchmarks_table, resultsCallback, start_callback, end_callback) {
+    var results;
+    bench(benchmarks_to_run, function(results) {
+      renderToTable(benchmarks_table, benchmarks_to_run, results);
+      resultsCallback(results);
+    }, start_callback, end_callback);
+    return results;
+  }
+
+  // Return Public API.
+  return {
+    version: version,
+    what_browser: function() {
+      return what_browser();
+    },
+    // run benchmarks, add row to table, update averages row
+    run: function(benchmarks_to_run, benchmarks_table, resultsCallback, start_callback, end_callback) {
+      run(benchmarks_to_run, benchmarks_table, resultsCallback, start_callback, end_callback);
+    },
+    // run benchmarks, return results in object
+    bench: function(benchmarks_to_run, resultsCallback, start_callback, end_callback) {
+      return bench(benchmarks_to_run, resultsCallback, start_callback, end_callback);
+    },
+    // run benchmarks, add row to table, update averages row
+    renderToTable: function(benchmarks_table, benchmarksThatWereRun, results) {
+      renderToTable(benchmarks_table, benchmarksThatWereRun, results);
+    }
+  };
+});
+
 /*global define:false*/
 
-define('common/controllers/parent-message-api',['require','common/parent-message-controller'],function(require) {
-  var parentMessageController = require('common/parent-message-controller');
+define('common/controllers/parent-message-api',['require','common/parent-message-controller','common/benchmark/benchmark'],function(require) {
+  var parentMessageController = require('common/parent-message-controller'),
+      benchmark               = require('common/benchmark/benchmark');
 
   // Defines the default postMessage API used to communicate with parent window (i.e., an embedder)
   return function(model, view, controller) {
@@ -11701,7 +12214,7 @@ define('common/controllers/parent-message-api',['require','common/parent-message
           i            = 0,
           propertyName = null;
 
-      model.on(eventName);
+      model.on(eventName, null);
     });
 
     // on message 'get' propertyName: return a 'propertyValue' message
@@ -12866,7 +13379,7 @@ define('common/controllers/playback-controller',['require','common/inherit','com
     /** @private */
     this._showClock = true;
     /** @private */
-    this._timeUnits = "";
+    this._timeDesc = null;
     /** @private */
     this._$reset = $('<a class="reset"><i class="icon-step-backward"></i></a>').appendTo(this.$element);
     /** @private */
@@ -12910,7 +13423,7 @@ define('common/controllers/playback-controller',['require','common/inherit','com
    * @private
    */
   PlaybackController.prototype._simulationStateChanged = function () {
-    this._modelStopped = model.is_stopped();
+    this._modelStopped = model.isStopped();
     if (this._modelStopped) {
       this._$playPause.removeClass("playing");
     } else {
@@ -12934,6 +13447,8 @@ define('common/controllers/playback-controller',['require','common/inherit','com
     this._showClock = model.get("showClock");
     if (this._showClock) {
       this._$playPause.addClass("with-clock");
+      // Update 'displayTime' description (used for formatting).
+      this._timeDesc =  model.getPropertyDescription("displayTime");
       // Update clock immediately.
       this._timeChanged();
     } else {
@@ -12949,8 +13464,7 @@ define('common/controllers/playback-controller',['require','common/inherit','com
     if (!this._showClock) {
       return;
     }
-    var time = model.get("displayTime").toFixed(1);
-    this._$timeDisplay.html(time + " " + this._timeUnits);
+    this._$timeDisplay.html(this._timeDesc.format(model.get("displayTime")));
   };
 
   /**
@@ -12992,8 +13506,6 @@ define('common/controllers/playback-controller',['require','common/inherit','com
     model.on('stop.' + this.component.id, $.proxy(this._simulationStateChanged, this));
     model.addPropertiesListener(["isPlayable"], $.proxy(this._simulationStateChanged, this));
     this._simulationStateChanged();
-    // Update time units and set time.
-    this._timeUnits = model.getPropertyDescription("displayTime").getUnitAbbreviation();
     model.addPropertiesListener(["showClock"], $.proxy(this._showClockChanged, this));
     model.addPropertiesListener(["displayTime"], $.proxy(this._timeChanged, this));
     this._showClockChanged();
@@ -13716,8 +14228,7 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
         $containerByID[id] = $("<div id='" + id + "'>").appendTo($interactiveContainer);
         $containerByID[id].css({
           "display": "inline-block",
-          "position": "absolute",
-          "z-index": "1"
+          "position": "absolute"
         });
 
         if (container.width === undefined) {
@@ -14278,213 +14789,150 @@ define('common/layout/templates',[],function () {
   };
 });
 
-/*global define, DEVELOPMENT, $, d3, alert, model: true */
+/*global define, d3, alert, model: true */
 
-define('common/controllers/model-controller',['require','arrays'],function (require) {
-  // Dependencies.
-  var arrays            = require('arrays');
+define('common/controllers/model-controller',['require','lab.config'],function (require) {
 
-  return function modelController(modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, interactivesController,
+  var labConfig = require('lab.config');
+
+  return function ModelController(modelUrl, modelOptions, interactivesController,
                                   Model, ModelContainer, ScriptingAPI, Benchmarks) {
     var controller = {},
 
         // event dispatcher
-        dispatch = d3.dispatch('modelReset'),
+        dispatch = d3.dispatch('modelLoaded');
 
-        // Options after processing performed by processOptions().
-        modelOptions,
-        viewOptions;
+    // ------------------------------------------------------------
+    //
+    // Main callback from model process
+    //
+    // Pass this function to be called by the model on every model step
+    //
+    // ------------------------------------------------------------
+    function tickHandler() {
+      controller.modelContainer.update();
+    }
 
-      // ------------------------------------------------------------
-      //
-      // Main callback from model process
-      //
-      // Pass this function to be called by the model on every model step
-      //
-      // ------------------------------------------------------------
-      function tickHandler() {
-        controller.modelContainer.update();
-      }
+    // ------------------------------------------------------------
+    //
+    //   Benchmarks Setup
+    //
+    function setupBenchmarks() {
+      controller.benchmarks = new Benchmarks(controller);
+    }
 
+    // ------------------------------------------------------------
+    //
+    //   Model Setup
+    // ------------------------------------------------------------
+    function setupModel() {
+      model = new Model(modelOptions);
+      model.on('tick', tickHandler);
+    }
 
-      function processOptions() {
-        var meldOptions = function(base, overlay) {
-          var p;
-          for(p in base) {
-            if (overlay[p] === undefined) {
-              if (arrays.isArray(base[p])) {
-                // Array.
-                overlay[p] = $.extend(true, [], base[p]);
-              } else if (typeof base[p] === "object") {
-                // Object.
-                overlay[p] = $.extend(true, {}, base[p]);
-              } else {
-                // Basic type.
-                overlay[p] = base[p];
-              }
-            } else if (typeof overlay[p] === "object" && !(overlay[p] instanceof Array)) {
-              overlay[p] = meldOptions(base[p], overlay[p]);
-            }
-          }
-          return overlay;
-        };
-
-        // 1. Process view options.
-        // Do not modify initial configuration.
-        viewOptions = $.extend(true, {}, interactiveViewConfig);
-        // Merge view options defined in interactive (interactiveViewConfig)
-        // with view options defined in the basic model description.
-        viewOptions = meldOptions(modelConfig.viewOptions || {}, viewOptions);
-
-        // 2. Process model options.
-        // Do not modify initial configuration.
-        modelOptions = $.extend(true, {}, interactiveModelConfig);
-        // Merge model options defined in interactive (interactiveModelConfig)
-        // with the basic model description.
-        modelOptions = meldOptions(modelConfig || {}, modelOptions);
-
-        // Update view options in the basic model description after merge.
-        // Note that many unnecessary options can be passed to Model constructor
-        // because of that (e.g. view-only options defined in the interactive).
-        // However, all options which are unknown for Model will be discarded
-        // during options validation, so this is not a problem
-        // (but significantly simplifies configuration).
-        modelOptions.viewOptions = viewOptions;
-      }
+    // ------------------------------------------------------------
+    //
+    // Create Model Player
+    //
+    // ------------------------------------------------------------
+    function setupModelPlayer() {
 
       // ------------------------------------------------------------
       //
-      //   Benchmarks Setup
-      //
-
-      function setupBenchmarks() {
-        controller.benchmarks = new Benchmarks(controller);
-      }
-
-      // ------------------------------------------------------------
-      //
-      //   Model Setup
-      //
-
-      function setupModel() {
-        processOptions();
-        model = new Model(modelOptions);
-        model.resetTime();
-        model.on('tick', tickHandler);
-      }
-
-      // ------------------------------------------------------------
-      //
-      // Create Model Player
+      // Create container view for model
       //
       // ------------------------------------------------------------
+      controller.modelContainer = new ModelContainer(model, controller.modelUrl);
+    }
 
-      function setupModelPlayer() {
+    /**
+      Note: newModelConfig, newinteractiveViewConfig are optional. Calling this without
+      arguments will simply reload the current model.
+    */
+    function reload(newModelUrl, newModelOptions, suppressEvents) {
+      controller.modelUrl = newModelUrl || controller.modelUrl;
+      modelOptions = newModelOptions || modelOptions;
+      setupModel();
+      controller.modelContainer.bindModel(model, controller.modelUrl);
 
-        // ------------------------------------------------------------
-        //
-        // Create container view for model
-        //
-        // ------------------------------------------------------------
-        controller.modelContainer = new ModelContainer(controller.modelUrl, model, interactivesController.getNextTabIndex);
-      }
+      if (!suppressEvents) dispatch.modelLoaded();
+    }
 
-      function resetModelPlayer() {
+    function repaint() {
+      controller.modelContainer.repaint();
+    }
 
-        // ------------------------------------------------------------
-        //
-        // reset player and container view for model
-        //
-        // ------------------------------------------------------------
-        controller.modelContainer.reset(controller.modelUrl, model);
-      }
+    function resize() {
+      controller.modelContainer.resize();
+    }
 
-      /**
-        Note: newModelConfig, newinteractiveViewConfig are optional. Calling this without
-        arguments will simply reload the current model.
-      */
-      function reload(newModelUrl, newModelConfig, newInteractiveViewConfig, newInteractiveModelConfig) {
-        controller.modelUrl = newModelUrl || controller.modelUrl;
-        modelConfig = newModelConfig || modelConfig;
-        interactiveViewConfig = newInteractiveViewConfig || interactiveViewConfig;
-        interactiveModelConfig = newInteractiveModelConfig || interactiveModelConfig;
+    function state() {
+      return model.serialize();
+    }
+
+    // ------------------------------------------------------------
+    //
+    // Public methods
+    //
+    // ------------------------------------------------------------
+
+    controller.on = function(type, listener) {
+      dispatch.on(type, listener);
+    };
+
+    controller.getViewContainer = function () {
+      return controller.modelContainer.$el;
+    };
+
+    controller.getHeightForWidth = function (width) {
+      return controller.modelContainer.getHeightForWidth(width);
+    };
+
+    controller.enableKeyboardHandlers = function () {
+      return model.get("enableKeyboardHandlers");
+    };
+
+    controller.modelInDOM = function () {
+      controller.modelContainer.setup();
+    };
+
+    controller.reload = reload;
+    controller.repaint = repaint;
+    controller.resize = resize;
+    controller.state = state;
+    controller.ScriptingAPI = ScriptingAPI;
+
+    // ------------------------------------------------------------
+    //
+    // Public variables
+    //
+    // ------------------------------------------------------------
+    controller.modelContainer = null;
+    controller.benchmarks = null;
+    controller.type = Model.type;
+    controller.modelUrl = modelUrl;
+
+    // ------------------------------------------------------------
+    //
+    // Initial setup of this modelController:
+    //
+    // ------------------------------------------------------------
+
+    if (labConfig.environment === 'production') {
+      try {
         setupModel();
-        resetModelPlayer();
-        dispatch.modelReset();
+      } catch(e) {
+        alert(e);
+        throw new Error(e);
       }
+    } else {
+      setupModel();
+    }
 
-      function repaint() {
-        controller.modelContainer.repaint();
-      }
+    setupBenchmarks();
+    setupModelPlayer();
 
-      function resize() {
-        controller.modelContainer.resize();
-      }
-
-      function state() {
-        return model.serialize();
-      }
-
-      // ------------------------------------------------------------
-      //
-      // Public methods
-      //
-      // ------------------------------------------------------------
-
-      controller.on = function(type, listener) {
-        dispatch.on(type, listener);
-      };
-
-      controller.getViewContainer = function () {
-        return controller.modelContainer.$el;
-      };
-
-      controller.getHeightForWidth = function (width) {
-        return controller.modelContainer.getHeightForWidth(width);
-      };
-
-      controller.enableKeyboardHandlers = function () {
-        return model.get("enableKeyboardHandlers");
-      };
-
-      controller.reload = reload;
-      controller.repaint = repaint;
-      controller.resize = resize;
-      controller.state = state;
-      controller.ScriptingAPI = ScriptingAPI;
-
-      // ------------------------------------------------------------
-      //
-      // Public variables
-      //
-      // ------------------------------------------------------------
-      controller.modelContainer = null;
-      controller.benchmarks = null;
-      controller.type = Model.type;
-      controller.modelUrl = modelUrl;
-
-      // ------------------------------------------------------------
-      //
-      // Initial setup of this modelController:
-      //
-      // ------------------------------------------------------------
-
-      if (typeof DEVELOPMENT === 'undefined') {
-        try {
-          setupModel();
-        } catch(e) {
-          alert(e);
-          throw new Error(e);
-        }
-      } else {
-        setupModel();
-      }
-
-      setupBenchmarks();
-      setupModelPlayer();
-      dispatch.modelReset();
-
-      return controller;
+    return controller;
   };
 });
 
@@ -16143,6 +16591,10 @@ define('md2d/models/metadata',[],function() {
         defaultValue: false,
         storeInTickHistory: true
       },
+      electricFieldDensity: {
+        defaultValue: 0,
+        storeInTickHistory: true
+      },
       showAtomTrace: {
         defaultValue: false
       },
@@ -16421,6 +16873,49 @@ define('md2d/models/metadata',[],function() {
       },
       colorB: {
         defaultValue: 128
+      },
+      visible: {
+        defaultValue: true
+      }
+    },
+
+    rectangle: {
+      // Required properties:
+      width: {
+        unitType: "length",
+        required: true
+      },
+      height: {
+        unitType: "length",
+        required: true
+      },
+      // Optional properties:
+      x: {
+        defaultValue: 0,
+        unitType: "length"
+      },
+      y: {
+        defaultValue: 0,
+        unitType: "length"
+      },
+      fence: {
+        defaultValue: false,
+      },
+      // View options.
+      color: {
+        defaultValue: "transparent"
+      },
+      lineColor: {
+        defaultValue: "black"
+      },
+      lineDashes: {
+        defaultValue: "none"
+      },
+      lineWeight: {
+        defaultValue: 1
+      },
+      layer: {
+        defaultValue: 1
       },
       visible: {
         defaultValue: true
@@ -17021,9 +17516,8 @@ define('md2d/models/engine/utils',['require','arrays'],function(require) {
 });
 
 /*global define: true */
-/*jslint eqnull: true, boss: true, loopfunc: true*/
 
-define('md2d/models/engine/md2d',['require','exports','module','arrays','common/array-types','common/console','./constants/index','cs!md2d/models/aminoacids-helper','./math/index','./potentials/index','./potentials/index','cs!./pairwise-lj-properties','common/models/engines/clone-restore-wrapper','./cell-list','./neighbor-list','common/models/plugin-controller','./utils'],function (require, exports, module) {
+define('md2d/models/engine/md2d',['require','exports','module','arrays','common/array-types','common/console','./constants/index','cs!md2d/models/aminoacids-helper','./math/index','./potentials/index','./potentials/index','cs!./pairwise-lj-properties','common/models/engines/clone-restore-wrapper','./cell-list','./neighbor-list','common/models/plugin-controller','./utils'],function (require, exports) {
 
   var arrays               = require('arrays'),
       arrayTypes           = require('common/array-types'),
@@ -17333,6 +17827,29 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         N_obstacles = 0,
 
         // ####################################################################
+        //                      Rectangle Properties
+
+        // Individual properties for the rectangles
+        rectangleX,
+        rectangleY,
+        rectangleWidth,
+        rectangleHeight,
+        rectangleFence,
+        rectangleColor,
+        rectangleLineColor,
+        rectangleLineDashes,
+        rectangleLineWeight,
+        rectangleLayer,
+        rectangleVisible,
+
+        // An object that contains references to the above rectangle-property arrays.
+        // Left undefined if there are no rectangles.
+        rectangles,
+
+        // Number of actual rectangles
+        N_rectangles = 0,
+
+        // ####################################################################
         //                      Misc Properties
         // Hash of arrays containing VdW pairs
         vdwPairs,
@@ -17422,6 +17939,7 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
           createVdwPairsArray(0);
           createSpringForcesArray(0);
           createObstaclesArray(0);
+          createRectanglesArray(0);
 
           // Custom pairwise properties.
           pairwiseLJProperties = new PairwiseLJProperties(engine);
@@ -17658,6 +18176,20 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
             obstacleVisible     = obstacles.visible;
           },
 
+          rectangles: function() {
+            rectangleX             = rectangles.x;
+            rectangleY             = rectangles.y;
+            rectangleWidth         = rectangles.width;
+            rectangleHeight        = rectangles.height;
+            rectangleFence         = rectangles.fence;
+            rectangleColor         = rectangles.color;
+            rectangleLineColor     = rectangles.lineColor;
+            rectangleLineDashes    = rectangles.lineDashes;
+            rectangleLineWeight    = rectangles.lineWeight;
+            rectangleLayer         = rectangles.layer;
+            rectangleVisible       = rectangles.visible;
+          },
+
           springForces: function() {
             springForceAtomIndex = springForces[0];
             springForceX         = springForces[1];
@@ -17799,6 +18331,24 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
           obstacles.visible     = arrays.create(num, 0, arrayTypes.uint8Type);
 
           assignShortcutReferences.obstacles();
+        },
+
+		createRectanglesArray = function(num) {
+          rectangles = engine.rectangles = {};
+
+          rectangles.x             = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.y             = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.width         = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.height        = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.fence         = [];
+          rectangles.color         = [];
+          rectangles.lineColor     = [];
+          rectangles.lineDashes    = [];
+          rectangles.lineWeight    = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.layer         = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.visible       = arrays.create(num, 0, arrayTypes.uint8Type);
+
+          assignShortcutReferences.rectangles();
         },
 
         // Function that accepts a value T and returns an average of the last n values of T (for some n).
@@ -18030,7 +18580,6 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
             py[i] *= -1;
           }
         },
-
         bounceParticleOffObstacles = function(i, x_prev, y_prev, updatePressure) {
           // fast path if no obstacles
           if (N_obstacles < 1) return;
@@ -18139,6 +18688,78 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
                 }
               }
 
+            }
+          }
+        },
+
+        bounceParticleOffRectangles = function(i, x_prev, y_prev) {
+          // fast path if no rectangles
+          if (N_rectangles < 1) return;
+
+          var r,
+              xi,
+              yi,
+
+              j,
+
+              x_inside_left,
+              x_inside_right,
+              y_inside_top,
+              y_inside_bottom,
+              x_outside_left,
+              x_outside_right,
+              y_outside_top,
+              y_outside_bottom;
+
+          r = radius[i];
+          xi = x[i];
+          yi = y[i];
+
+          for (j = 0; j < N_rectangles; j++) {
+
+            if(!rectangleFence[j]) continue;
+
+            x_outside_left = rectangleX[j] - r;
+            x_outside_right = rectangleX[j] + rectangleWidth[j] + r;
+            y_outside_top = rectangleY[j] + rectangleHeight[j] + r;
+            y_outside_bottom = rectangleY[j] - r;
+
+            x_inside_left = rectangleX[j] + r;
+            x_inside_right = rectangleX[j] + rectangleWidth[j] - r;
+            y_inside_top = rectangleY[j] + rectangleHeight[j] - r;
+            y_inside_bottom = rectangleY[j] + r;
+
+            // Check all outside collisions
+            if (xi > x_outside_left && xi < x_outside_right && yi > y_outside_bottom && yi < y_outside_top) {
+              if (x_prev <= x_outside_left) {
+                x[i] = x_outside_left - (xi - x_outside_left);
+                vx[i] *= -1;
+              } else if (x_prev >= x_outside_right) {
+                x[i] = x_outside_right + (x_outside_right - xi);
+                vx[i] *= -1;
+              } else if (y_prev <= y_outside_bottom) {
+                y[i] = y_outside_bottom - (yi - y_outside_bottom);
+                vy[i] *= -1;
+              } else if (y_prev >= y_outside_top) {
+                y[i] = y_outside_top  + (y_outside_top - yi);
+                vy[i] *= -1;
+              }
+            }
+            //Check all inside collisions
+            if (x_prev > x_inside_left && x_prev < x_inside_right && y_prev > y_inside_bottom && y_prev < y_inside_top) {
+              if (xi <= x_inside_left) {
+                x[i] = x_inside_left + (x_inside_left - xi);
+                vx[i] *= -1;
+              } else if (xi >= x_inside_right) {
+                x[i] = x_inside_right - (xi - x_inside_right);
+                vx[i] *= -1;
+              } else if (yi <= y_inside_bottom) {
+                y[i] = y_inside_bottom + (y_inside_bottom - yi);
+                vy[i] *= -1;
+              } else if (yi >= y_inside_top) {
+                y[i] = y_inside_top - (yi - y_inside_top);
+                vy[i] *= -1;
+              }
             }
           }
         },
@@ -18717,6 +19338,8 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
             bounceParticleOffWalls(i);
             // Bounce off obstacles, update pressure probes.
             bounceParticleOffObstacles(i, xPrev, yPrev, true);
+            // Bounce off rectangles
+            bounceParticleOffRectangles(i, xPrev, yPrev);
           }
         },
 
@@ -19315,6 +19938,16 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         }
       },
 
+      setRectangleProperties: function (i, props) {
+        var key;
+        // Set properties from props hash.
+        for (key in props) {
+          if (props.hasOwnProperty(key)) {
+            rectangles[key][i] = props[key];
+          }
+        }
+      },
+
       /**
         The canonical method for adding an atom to the collections of atoms.
 
@@ -19684,6 +20317,47 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         assignShortcutReferences.obstacles();
       },
 
+      addRectangle: function(props) {
+        if (N_rectangles + 1 > rectangles.x.length) {
+          // Extend arrays each time (as there are only
+          // a few rectangles in typical model).
+          utils.extendArrays(rectangles, N_rectangles + 1);
+          assignShortcutReferences.rectangles();
+        }
+
+        N_rectangles++;
+
+        // Set properties of new rectangle.
+        engine.setRectangleProperties(N_rectangles - 1, props);
+      },
+
+      removeRectangle: function(idx) {
+        var i, prop;
+
+        if (idx >= N_rectangles) {
+          throw new Error("Rectangle " + idx + " doesn't exist, so it can't be removed.");
+        }
+
+        N_rectangles--;
+
+        // Shift rectangles properties.
+        // It can be optimized by just replacing the last
+        // rectangle with rectangle 'i', however this approach
+        //  preserves more expectable rectangles indexing.
+        for (i = idx; i < N_rectangles; i++) {
+          for (prop in rectangles) {
+            if (rectangles.hasOwnProperty(prop)) {
+              rectangles[prop][i] = rectangles[prop][i + 1];
+            }
+          }
+        }
+
+        // FIXME: This shouldn't be necessary, however various modules
+        // (e.g. views) use rectangles.x.length as the real number of rectangles.
+        utils.extendArrays(rectangles, N_rectangles);
+        assignShortcutReferences.rectangles();
+      },
+
       atomInBounds: function(_x, _y, i) {
         var r = radius[i], j;
 
@@ -19711,6 +20385,7 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         var orig_x,
             orig_y,
             PEAtLocation,
+            testX, testY, testXMax, testYMax,
             j;
 
         // first do the simpler check to see if we're outside the walls
@@ -20055,6 +20730,8 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
             bounceParticleOffWalls(i);
             // Bounce off obstacles, but DO NOT update pressure probes.
             bounceParticleOffObstacles(i, xPrev, yPrev, false);
+            // Bounce off rectangles
+            bounceParticleOffRectangles(i, xPrev, yPrev);
           }
 
           // Calculate accelerations.
@@ -20080,7 +20757,7 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         for (i = 0; i < N_radialBonds; i++) {
           i1 = radialBondAtom1Index[i];
           i2 = radialBondAtom2Index[i];
-          if (index == i1 || index == i2) {
+          if (index === i1 || index === i2) {
             rbonds.push(i);
           }
         }
@@ -20098,7 +20775,7 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
           i1 = angularBondAtom1Index[i];
           i2 = angularBondAtom2Index[i];
           i3 = angularBondAtom3Index[i];
-          if (index == i1 || index == i2 || index == i3) {
+          if (index === i1 || index === i2 || index === i3) {
             abonds.push(i);
           }
         }
@@ -20128,6 +20805,10 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
 
       getNumberOfObstacles: function() {
         return N_obstacles;
+      },
+
+			getNumberOfRectangles: function() {
+        return N_rectangles;
       },
 
       getNumberOfRadialBonds: function() {
@@ -20478,6 +21159,37 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         return bondedAtoms;
       },
 
+      getCoulombForceAt: function(testX, testY, resultObj) {
+        // Let client code reuse objects.
+        resultObj = resultObj || {};
+        // Fast path if Coulomb interaction is disabled or there are no charged atoms.
+        if (!useCoulombInteraction || !hasChargedAtoms) {
+          resultObj.fx = resultObj.fy = 0;
+          return resultObj;
+        }
+
+        var fx = 0, fy = 0,
+            i, len, dx, dy, rSq, fOverR, atomCharge, atomIdx;
+
+        for (i = 0, len = chargedAtomsList.length; i < len; i++) {
+          atomIdx = chargedAtomsList[i];
+          atomCharge = charge[atomIdx];
+
+          dx = x[atomIdx] - testX;
+          dy = y[atomIdx] - testY;
+          rSq = dx * dx + dy * dy;
+
+          fOverR = coulomb.forceOverDistanceFromSquaredDistance(rSq, 1, atomCharge,
+            dielectricConst, realisticDielectricEffect);
+
+          fx += fOverR * dx;
+          fy += fOverR * dy;
+        }
+        resultObj.fx = constants.convert(fx, { from: unit.MW_FORCE_UNIT, to: unit.EV_PER_NM });
+        resultObj.fy = constants.convert(fy, { from: unit.MW_FORCE_UNIT, to: unit.EV_PER_NM });
+        return resultObj;
+      },
+
       /**
         Returns Kinetic Energy of single atom i, in eV.
       */
@@ -20520,6 +21232,7 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
           new CloneRestoreWrapper(elements),
           new CloneRestoreWrapper(atoms),
           new CloneRestoreWrapper(obstacles),
+          new CloneRestoreWrapper(rectangles),
           new CloneRestoreWrapper(radialBonds),
           new CloneRestoreWrapper(angularBonds),
           new CloneRestoreWrapper(restraints),
@@ -20535,6 +21248,7 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
                 N             : N,
                 N_elements    : N_elements,
                 N_obstacles   : N_obstacles,
+                N_rectangles  : N_rectangles,
                 N_radialBonds : N_radialBonds,
                 N_angularBonds: N_angularBonds,
                 N_restraints  : N_restraints,
@@ -20545,7 +21259,7 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
               time           = state.time;
               N              = state.N;
               N_elements     = state.N_elements;
-              N_obstacles    = state.N_obstacles;
+              N_rectangles   = state.N_rectangles;
               N_radialBonds  = state.N_radialBonds;
               N_angularBonds = state.N_angularBonds;
               N_restraints   = state.N_restraints;
@@ -20585,282 +21299,6 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
 
     // Finally, return Public API.
     return engine;
-  };
-});
-
-/*global define: false */
-/*jslint onevar: true devel:true eqnull: true */
-
-define('common/models/tick-history',[],function() {
-
-
-  /**
-    Class which handles tick history. It supports saving and restoring state
-    of core state objects defined by the modeler and engine. However, while
-    adding a new object which should also be saved in tick history, consider
-    utilization of "external objects" - this is special object which should
-    implement TickHistoryCompatible Interface:
-      #setHistoryLength(number)
-      #push()
-      #extract(index)
-      #invalidate(index)
-
-      Note that index argument is *always* limited to [0, historyLength) range.
-
-    "External objects" handle changes of the current step itself. TickHistory
-    only sends requests to perform various operations. To register new
-    external object use #registerExternalObject(object) method.
-
-    It allows to decentralize management of tick history and tight coupling
-    TickTistory with API of various objects.
-  */
-  return function TickHistory(modelState, model, size) {
-    var tickHistory = {},
-        initialState,
-        list,
-        listState,
-        defaultSize = 1000,
-        // List of objects defining TickHistoryCompatible Interface.
-        externalObjects = [],
-
-        // Provide the "old" interface for models that don't use PropertySupport yet, but provide
-        // a different, new interface for models using PropertySupport for their parameters, etc.
-        // Such models are smart enough to send a single hash of raw property values for all the
-        // properties (parameters, main properties, view properties, etc) we need to save. Older
-        // models need to provide us with separate lists of "regular" properties and parameters,
-        // with their own separate restore callbacks.
-        //
-        //     ***      Remember to remove this when all models use PropertySupport!        ***
-        //
-        useNewInterface = !!modelState.getProperties;
-
-    function newState() {
-      return { input: {}, state: [], parameters: {} };
-    }
-
-    function reset() {
-      list = [];
-      listState = {
-        // Equal to list.length:
-        length: 0,
-        // Drop oldest state in order to keep list no longer than this:
-        maxSize: size,
-        // Index into `list` of the current state:
-        index: -1,
-        // Total length of "total history" (counting valid history states that have been dropped)
-        counter: -1,
-        // Index in "total history" of the oldest state in the list.
-        // Invariant: counter == index + startCounter
-        startCounter: 0
-      };
-    }
-
-    function copyModelState(destination) {
-      var i,
-          prop,
-          state,
-          parameters,
-          name;
-
-      if (useNewInterface) {
-        // we expect that modelState.getProperties returns us a hash we can keep
-        destination.input = modelState.getProperties();
-      } else {
-        // save model input properties
-        for (i = 0; i < modelState.input.length; i++) {
-          prop = modelState.input[i];
-          destination.input[prop] = modelState.getRawPropertyValue(prop);
-        }
-
-        // save model parameters
-        parameters = modelState.parameters;
-        for (name in parameters) {
-          if (parameters.hasOwnProperty(name) && parameters[name].isDefined) {
-            destination.parameters[name] = modelState.getRawPropertyValue(name);
-          }
-        }
-      }
-
-      // save model objects defining state
-      state = modelState.state;
-      for (i = 0; i < state.length; i++) {
-        destination.state[i] = state[i].clone();
-      }
-    }
-
-    /** Copy the current model state into the list at list[listState.index+1] and updates listState.
-        Removes any (now-invalid) states in the list that come after the newly pushed state.
-    */
-    function push() {
-      var lastState = newState(),
-          i;
-
-      copyModelState(lastState);
-      list[listState.index+1] = lastState;
-
-      // Drop the oldest state if we went over the max list size
-      if (list.length > listState.maxSize) {
-        list.splice(0,1);
-        listState.startCounter++;
-      } else {
-        listState.index++;
-      }
-      listState.counter = listState.index + listState.startCounter;
-
-      // Send push request to external objects defining TickHistoryCompatible Interface.
-      for (i = 0; i < externalObjects.length; i++) {
-        externalObjects[i].push();
-      }
-
-      invalidateFollowingState();
-      listState.length = list.length;
-    }
-
-    /** Invalidate (remove) all history after current index. For example, after seeking backwards
-        and then pushing new state */
-    function invalidateFollowingState() {
-      var i;
-
-      list.length = listState.index+1;
-      listState.length = list.length;
-
-      // Invalidate external objects defining TickHistoryCompatible Interface.
-      for (i = 0; i < externalObjects.length; i++) {
-        externalObjects[i].invalidate(listState.index);
-      }
-    }
-
-    function extract(savedState) {
-      var i,
-          state;
-
-      // restore model input properties
-      modelState.restoreProperties(savedState.input);
-
-      if (!useNewInterface) {
-        // old interface requires restoring parameters separately
-        modelState.restoreParameters(savedState.parameters);
-      }
-
-      // restore model objects defining state
-      state = savedState.state;
-      for (i = 0; i < state.length; i++) {
-        modelState.state[i].restore(state[i]);
-      }
-
-      // Send extract request to external objects defining TickHistoryCompatible Interface.
-      for (i = 0; i < externalObjects.length; i++) {
-        externalObjects[i].extract(listState.index);
-      }
-    }
-
-    function checkIndexArg(index) {
-      if (index < 0) {
-        throw new Error("TickHistory: extract index [" + index + "] less than 0");
-      }
-      if (index >= list.length) {
-        throw new Error("TickHistory: extract index [" + index + "] greater than list.length: " + list.length);
-      }
-      return index;
-    }
-
-    //
-    // Public methods
-    //
-    tickHistory.isEmpty = function() {
-      return listState.index === 0;
-    };
-
-    tickHistory.push = function() {
-      push();
-    };
-
-    tickHistory.returnTick = function(ptr) {
-      var i;
-      if (typeof ptr === 'number') {
-        i = ptr;
-      } else {
-        i = listState.index;
-      }
-      checkIndexArg(i);
-      return list[i];
-    };
-
-    tickHistory.extract = function(ptr) {
-      var i;
-      if (typeof ptr === 'number') {
-        i = ptr;
-      } else {
-        i = listState.index;
-      }
-      checkIndexArg(i);
-      extract(list[i]);
-    };
-
-    tickHistory.restoreInitialState = function() {
-      reset();
-      extract(initialState);
-      push();
-    };
-
-    tickHistory.reset = reset;
-
-    tickHistory.decrementExtract = function() {
-      if (listState.counter > listState.startCounter) {
-        listState.index--;
-        listState.counter--;
-        extract(list[listState.index]);
-      }
-    };
-
-    tickHistory.incrementExtract = function() {
-      listState.index++;
-      listState.counter++;
-      extract(list[listState.index]);
-    };
-
-    tickHistory.seekExtract = function(ptr) {
-      if (ptr < listState.startCounter) ptr = listState.startCounter;
-      if (ptr >= listState.startCounter + listState.length) ptr = listState.startCounter + listState.length - 1;
-      listState.counter = ptr;
-      listState.index = ptr - listState.startCounter;
-      extract(list[listState.index]);
-    };
-
-    tickHistory.invalidateFollowingState = invalidateFollowingState;
-
-    tickHistory.get = function(key) {
-      return listState[key];
-    };
-
-    tickHistory.set = function(key, val) {
-      return listState[key] = val;
-    };
-
-    /**
-      Registers a new external object. It is a special object, which handles changes of step itself.
-      TickHistory object only sends requests for various actions.
-      External object should implement TickHistoryCompatible Interface:
-        #setHistoryLength(number)
-        #push()
-        #extract(index)
-        #invalidate(index)
-    */
-    tickHistory.registerExternalObject = function (externalObj) {
-      externalObj.setHistoryLength(listState.maxSize);
-      externalObjects.push(externalObj);
-    };
-
-    //
-    // Initialization
-    //
-    if (size == null) size = defaultSize;
-    initialState = newState();
-    copyModelState(initialState);
-
-    reset();
-    push();
-    return tickHistory;
   };
 });
 
@@ -21162,6 +21600,7 @@ define('common/property-support',[],function() {
                                "afterInvalidatingChangeSequence"),
 
         invalidatingChangeNestingLevel = 0,
+        suppressInvalidatingChangeHooks = false,
 
         // all properties that were notified while notifications were batched
         changedPropertyKeys = [],
@@ -21767,6 +22206,8 @@ define('common/property-support',[],function() {
       },
 
       invalidatingChangePreHook: function() {
+        if (suppressInvalidatingChangeHooks) return;
+
         if (invalidatingChangeNestingLevel === 0) {
           api.storeComputedProperties();
           api.deleteComputedPropertyCachedValues();
@@ -21778,6 +22219,8 @@ define('common/property-support',[],function() {
       },
 
       invalidatingChangePostHook: function() {
+        if (suppressInvalidatingChangeHooks) return;
+
         invalidatingChangeNestingLevel--;
 
         dispatch.afterInvalidatingChange();
@@ -21790,12 +22233,180 @@ define('common/property-support',[],function() {
         }
       },
 
+      startBatch: function() {
+        api.invalidatingChangePreHook();
+        suppressInvalidatingChangeHooks = true;
+      },
+
+      endBatch: function() {
+        suppressInvalidatingChangeHooks = false;
+        api.invalidatingChangePostHook();
+      },
+
       on: function (type, listener) {
         dispatch.on(type, listener);
       }
     };
 
     return api;
+  };
+});
+
+/*global define, d3 */
+/*jshint eqnull:true boss:true */
+
+define('common/property-description',['require','underscore'],function(require) {
+
+  var _ = require('underscore');
+
+  function isUndefined(val) {
+    return val === "";
+  }
+
+  function PropertyDescription(unitDefinition, descriptionHash) {
+    var u;
+
+    this._descriptionHash = descriptionHash;
+    this._label = descriptionHash.label || "";
+
+    this._unitName         = "";
+    this._unitPluralName   = "";
+    this._unitAbbreviation = "";
+
+    if (descriptionHash.unitType) {
+      if ( !(u = unitDefinition.units[descriptionHash.unitType]) ) {
+        throw new Error("PropertyDescription: couldn't find unitType " + descriptionHash.unitType + " in the supplied units definition.");
+      }
+      this._unitType         = descriptionHash.unitType;
+      this._unitName         = u.name;
+      this._unitPluralName   = u.pluralName;
+      this._unitAbbreviation = u.symbol;
+    }
+
+    // allow overriding the unit properties, or specifying custom ones for which there is no
+    // current unit definition.
+    if (descriptionHash.unitName) this._unitName = descriptionHash.unitName;
+    if (descriptionHash.unitPluralName) this._unitPluralName = descriptionHash.unitPluralName;
+    if (descriptionHash.unitAbbreviation) this._unitAbbreviation = descriptionHash.unitAbbreviation;
+
+    this.setFormat(descriptionHash.format);
+  }
+
+  PropertyDescription.prototype.getHash = function() {
+    return _.extend(
+      _.reject({
+          unitName:         this.getUnitName(),
+          unitPluralName:   this.getUnitPluralName(),
+          unitAbbreviation: this.getUnitAbbreviation()
+        }, isUndefined),
+      this._descriptionHash);
+  };
+
+  PropertyDescription.prototype.getLabel = function() {
+    return this._label;
+  };
+
+  PropertyDescription.prototype.getUnitType = function() {
+    return this._unitType;
+  };
+
+  PropertyDescription.prototype.getUnitName = function() {
+    return this._unitName;
+  };
+
+  PropertyDescription.prototype.getUnitPluralName = function() {
+    return this._unitPluralName;
+  };
+
+  PropertyDescription.prototype.getUnitAbbreviation = function() {
+    return this._unitAbbreviation;
+  };
+
+  PropertyDescription.prototype.setFormat = function(s) {
+    if (s) this._formatter = d3.format(s);
+    else   this._formatter = function (val) { return val; };
+  };
+
+  PropertyDescription.prototype.format = function(val, opts) {
+    opts = opts || {};
+
+    var formatter,
+        formattedVal,
+        plural,
+        abbreviated = true;
+
+    if (opts.format) {
+      if (opts.format === this._lastFormat) {
+        formatter = this._lastFormatter;
+      } else {
+        formatter = d3.format(opts.format);
+        this._lastFormat = opts.format;
+        this._lastFormatter = formatter;
+      }
+    } else {
+      formatter = this._formatter;
+    }
+
+    formattedVal = formatter(val);
+
+    if (opts && opts.abbreviated != null) abbreviated = opts.abbreviated;
+
+    if (abbreviated) {
+      return formattedVal + " " + this._unitAbbreviation;
+    }
+
+    plural = parseFloat(formattedVal) !== 1;
+    return formattedVal + " " + (plural ? this._unitPluralName : this._unitName);
+  };
+
+  return PropertyDescription;
+});
+
+/*global define: false */
+
+define('common/parameter-support',['require','common/property-description'],function (require) {
+
+  var PropertyDescription  = require('common/property-description');
+
+  return function ParameterSupport(args) {
+    var propertySupport = args.propertySupport,
+        unitsDefinition = args.unitsDefinition || {};
+
+    return {
+      mixInto: function(target) {
+
+        /**
+          Define a property of the model to be treated as a custom parameter. Custom parameters are
+          (generally, user-defined) read/write properties that trigger a setter action when set, and
+          whose values are automatically persisted in the tick history.
+
+          Because custom parameters are not intended to be interpreted by the engine, but instead simply
+          *represent* states of the model that are otherwise fully specified by the engine state and
+          other properties of the model, and because the setter function might not limit itself to a
+          purely functional mapping from parameter value to model properties, but might perform any
+          arbitrary stateful change, (stopping the model, etc.), the setter is NOT called when custom
+          parameters are updated by the tick history.
+        */
+        target.defineParameter = function(key, descriptionHash, setter) {
+          var descriptor = {
+                type: 'parameter',
+                includeInHistoryState: true,
+                invokeSetterAfterBulkRestore: false,
+                description: new PropertyDescription(unitsDefinition, descriptionHash),
+                beforeSetCallback: propertySupport.invalidatingChangePreHook,
+                afterSetCallback: propertySupport.invalidatingChangePostHook
+              };
+
+          // In practice, some parameters are meant only to be observed, and have no setter
+          if (setter) {
+            descriptor.set = function(value) {
+              setter.call(target, value);
+            };
+          }
+          propertySupport.defineProperty(key, descriptor);
+        };
+      }
+    };
   };
 });
 
@@ -21948,6 +22559,901 @@ define('common/property-support',[],function() {
   });
 
 }).call(this);
+
+/*global define: false */
+
+define('common/output-support',['require','common/property-description','cs!common/running-average-filter'],function (require) {
+
+  var PropertyDescription  = require('common/property-description'),
+      RunningAverageFilter = require('cs!common/running-average-filter');
+
+  return function OutputSupport(args) {
+    var propertySupport = args.propertySupport,
+        unitsDefinition = args.unitsDefinition || {},
+        tickHistory     = args.tickHistory || null,
+
+        filteredOutputs = [];
+
+    function updateFilteredOutputs() {
+      filteredOutputs.forEach(function(output) {
+        output.addSample();
+      });
+    }
+
+    // TODO: is it necessary? It follows the old solution.
+    // In theory filtered outputs could be updated only on time change
+    // or on filtered property value change. Check it!
+    propertySupport.on("afterInvalidatingChange.output-support", updateFilteredOutputs);
+
+    return {
+      mixInto: function(target) {
+
+        /**
+          Add an "output" property to the model. Output properties are expected to change at every
+          model tick, and may also be changed indirectly, outside of a model tick, by a change to model
+          properties or the atom, element, etc. properties.
+
+          `key` should be the name of the output. The property value will be accessed by
+          `model.get(<key>);`
+
+          `description` should be a hash of metadata about the property.
+
+          `getter` should be a no-arg function which calculates the property value. These values are not
+          translated after getter returns because we expect that most output getters are authored
+          scripts, which operate entirely with already-translated units. Therefore, getters defined
+          internally in modeler.js needs to make sure to translate any "model units" values out of the
+          model-unit domain.
+        */
+        target.defineOutput = function(key, descriptionHash, getter) {
+          propertySupport.defineProperty(key, {
+            type: 'output',
+            writable: false,
+            get: getter,
+            includeInHistoryState: false,
+            description: new PropertyDescription(unitsDefinition, descriptionHash)
+          });
+        };
+
+
+        /**
+          Add an "filtered output" property to the model. This is special kind of output property, which
+          is filtered by one of the built-in filters based on time (like running average). Note that filtered
+          outputs do not specify calculate function - instead, they specify property which should filtered.
+          It can be another output, model parameter or custom parameter.
+
+          Filtered output properties are extension of typical output properties. They share all features of
+          output properties, so they are expected to change at every model tick, and may also be changed indirectly,
+          outside of a model tick, by a change to the model parameters or to the configuration of atoms and other
+          objects in the model.
+
+          `key` should be the name of the parameter. The property value will be accessed by
+          `target.get(<key>);`
+
+          `description` should be a hash of metadata about the property. Right now, these metadata are not
+          used. However, example metadata include the label and units name to be used when graphing
+          this property.
+
+          `filteredPropertyKey` should be name of the basic property which should be filtered.
+
+          `type` should be type of filter, defined as string. For now only "RunningAverage" is supported.
+
+          `period` should be number defining length of time period used for calculating filtered value. It should
+          be specified in femtoseconds.
+
+        */
+        target.defineFilteredOutput = function(key, description, filteredPropertyKey, type, period) {
+          var filter, initialValue;
+
+          if (type === "RunningAverage") {
+            filter = new RunningAverageFilter(period);
+          } else {
+            throw new Error("FilteredOutput: unknown filter type " + type + ".");
+          }
+
+          // Add initial sample
+          initialValue = target.properties[filteredPropertyKey];
+          if (initialValue === undefined || isNaN(Number(initialValue))) {
+            throw new Error("FilteredOutput: property is not a valid numeric value or it is undefined.");
+          }
+          filter.addSample(target.properties.time, initialValue);
+
+          if (tickHistory) {
+            // Create simple adapter implementing TickHistoryCompatible Interface
+            // and register it in tick history.
+            tickHistory.registerExternalObject({
+              push: function () {
+                // Filtered outputs are updated only at the end of tick() operation,
+                // druing tickHistory.push() call. So they are *not* updated
+                // immediately after property change, e.g. using model.set("prop", 5).
+                // Filtered ouput bound to "prop" property will reflect this change
+                // in the next tick.
+                filter.addSample(target.properties.time, target.properties[filteredPropertyKey]);
+              },
+              extract: function (idx) {
+                filter.setCurrentStep(idx);
+              },
+              invalidate: function (idx) {
+                filter.invalidate(idx);
+              },
+              setHistoryLength: function (length) {
+                filter.setMaxBufferLength(length);
+              }
+            });
+          } else {
+            filteredOutputs.push({
+              addSample: function() {
+                filter.addSample(target.properties.time, target.properties[filteredPropertyKey]);
+              }
+            });
+          }
+
+          // Extend description to contain information about filter
+          description.property = filteredPropertyKey;
+          description.type = type;
+          description.period = period;
+
+          target.defineOutput(key, description, function () {
+            return filter.calculate();
+          });
+        };
+
+        /**
+          Call this method after moving to a different model time (e.g., after stepping the model
+          forward or back, seeking to a different time, or on model initialization) to update all output
+          properties and notify their listeners. This method is more efficient for that case than
+          updateOutputPropertiesAfterChange because it can assume that all output properties are
+          invalidated by the model step. It therefore does not need to calculate any output property
+          values; it allows them to be evaluated lazily instead. Property values are calculated when and
+          if listeners request them. This method also guarantees that all properties have their updated
+          value when they are requested by any listener.
+
+          Technically, this method first updates the 'viewAtoms' array and macrostate variables, then
+          invalidates any  cached output-property values, and finally notifies all output-property
+          listeners.
+
+          Note that this method and updateOutputPropertiesAfterChange are the only methods which can
+          flush the cached value of an output property. Therefore, be sure to not to make changes
+          which would invalidate a cached value without also calling one of these two methods.
+        */
+        target.updateAllOutputProperties = function () {
+          propertySupport.deleteComputedPropertyCachedValues();
+          propertySupport.notifyAllComputedProperties();
+          updateFilteredOutputs();
+        };
+      }
+    };
+  };
+});
+
+/*global define: false, d3: false */
+/**
+ * This module provides event dispatch based on d3.dispatch:
+ * https://github.com/mbostock/d3/wiki/Internals#wiki-d3_dispatch
+ *
+ * The main improvement over raw d3.dispatch is that this wrapper provides
+ * event batching. You can start batch mode (.startBatch()) and while it is
+ * active events won't be dispatched immediately. They will be dispatched
+ * at the end of batch mode (.endBatch()) or when you call .flush() method.
+ *
+ * Note that there is one *significant limitation*: arguments passed during
+ * event dispatching will be lost! All events will be merged into single
+ * event without any argument. Please keep this in mind while using this module.
+ *
+ * e.g.
+ *   dispatch.on("someEvent", function(arg) { console.log(arg); });
+ *   dispatch.someEvent(123);     // console output: 123
+ *   dispatch.someEvent("test");  // console output: "test"
+ * However...
+ *   dispatch.startBatch();
+ *   dispatch.someEvent(123);
+ *   dispatch.someEvent("test");
+ *   dispatch.endBatch();         // console output: undefined (!)
+ *
+ * Rest of the interface is exactly the same like in d3.dispatch (.on()).
+ * Under the hood delegation to d3.dispatch instance is used.
+ */
+define('common/dispatch-support',[],function() {
+
+  // Converts arguments object to regular array.
+  function argsToArray(args) {
+    return [].slice.call(args);
+  }
+
+  return function DispatchSupport() {
+    var api,
+        d3dispatch,
+        types,
+
+        batchMode = false,
+        suppressedEvents = d3.set();
+
+    function init(newTypes) {
+      var i, len;
+
+      types = newTypes;
+
+      d3dispatch = d3.dispatch.apply(null, types);
+
+      // Provide wrapper around typical calls like dispatch.someEvent().
+      for (i = 0, len = types.length; i < len; i++) {
+        api[types[i]] = dispatchEvent(types[i]);
+      }
+    }
+
+    function dispatchEvent(name) {
+      return function () {
+        if (!batchMode) {
+          d3dispatch[name].apply(d3dispatch, arguments);
+        } else {
+          suppressedEvents.add(name);
+        }
+      };
+    }
+
+    function delegate(funcName) {
+      return function () {
+        d3dispatch[funcName].apply(d3dispatch, arguments);
+      };
+    }
+
+    // Public API.
+    api = {
+      // Copy d3.dispatch API:
+
+      /**
+       * Adds or removes an event listener for the specified type. Please see:
+       * https://github.com/mbostock/d3/wiki/Internals#wiki-dispatch_on
+       */
+      on: delegate("on"),
+
+      // New API specific for Lab DispatchSupport:
+
+      mixInto: function(target) {
+        target.on = api.on;
+        target.suppressEvents = api.suppressEvents;
+      },
+
+      /**
+       * Adds new event types. Old event types are still supported, but
+       * all previously registered listeners will be removed!
+       *
+       * e.g. dispatch.addEventTypes("newEvent", "anotherEvent")
+       */
+      addEventTypes: function () {
+        if (arguments.length) {
+          init(types.concat(argsToArray(arguments)));
+        }
+      },
+
+      /**
+       * Starts batch mode. Events won't be dispatched immediately after call.
+       * They will be merged into single event and dispatched when .flush()
+       * or .endBatch() is called.
+       */
+      startBatch: function () {
+        batchMode = true;
+      },
+
+      /**
+       * Ends batch mode and dispatches suppressed events.
+       */
+      endBatch: function () {
+        batchMode = false;
+        api.flush();
+      },
+
+      /**
+       * Dispatches suppressed events.
+       * @return {[type]} [description]
+       */
+      flush: function () {
+        suppressedEvents.forEach(function (eventName) {
+          d3dispatch[eventName]();
+        });
+        // Reset suppressed events.
+        suppressedEvents = d3.set();
+      },
+
+      /**
+       * Allows to execute some action without dispatching any events.
+       * @param {function} action
+       */
+      suppressEvents: function(action) {
+        batchMode = true;
+        action();
+        batchMode = false;
+        // Reset suppressed events without dispatching them.
+        suppressedEvents = d3.set();
+      }
+    };
+
+    init(argsToArray(arguments));
+
+    return api;
+  };
+});
+
+/*global define: false, d3: false */
+
+define('common/playback-support',['require','common/console'],function (require) {
+  var console = require('common/console');
+
+  return function PlaybackSupport(args) {
+        // DispatchSupport instance or compatible module.
+    var dispatch = args && args.dispatch || null,
+        // Properties object - it can be used to define 'modelSampleRate'. It
+        // can be simple plain object or more sophisticated object returned by
+        // PropertiesSupport module.
+        properties = args && args.properties || null,
+
+        eventsSupported = (function() {
+          // Events support is optional. It should be provided by the
+          // DispatchSupport (common/dispatch-support) or another compatible
+          // module.
+          if (dispatch) {
+            if (dispatch.on && dispatch.addEventTypes) {
+              dispatch.addEventTypes("play", "stop");
+              return true;
+            } else {
+              throw new Error("[PlaybackSupport] Provided Dispatch object doesn't implement required interface!");
+            }
+          } else {
+            return false;
+          }
+        }()),
+
+        stopped = true,
+        stopRequest = false,
+        restartRequest = false;
+
+    /**
+      Repeatedly calls `f` at an interval defined by the modelSampleRate property, until f returns
+      true. (This is the same signature as d3.timer.)
+
+      If modelSampleRate === 'default', try to run at the "requestAnimationFrame rate"
+      (i.e., using d3.timer(), after running f, also request to run f at the next animation frame)
+
+      If modelSampleRate !== 'default', instead uses setInterval to schedule regular calls of f with
+      period (1000 / sampleRate) ms, corresponding to sampleRate calls/s
+    */
+    function timer(f) {
+      var intervalID,
+          // When target support properties and it defines
+          // 'modelSampleRate', it will be used.
+          sampleRate = properties && properties.modelSampleRate || 'default';
+
+      if (sampleRate === 'default') {
+        // use requestAnimationFrame via d3.timer
+        d3.timer(f);
+      } else {
+        // set an interval to run the model more slowly.
+        intervalID = window.setInterval(function() {
+          if (f()) {
+            window.clearInterval(intervalID);
+          }
+        }, 1000/sampleRate);
+      }
+    }
+
+    return {
+      mixInto: function(target) {
+
+        if (typeof target.tick !== "function") {
+          target.tick = function () {
+            console.warn("[PlaybackSupport] .tick() method should be overwritten by target!");
+          };
+        }
+
+        target.start = function() {
+          // Cleanup stop and restart requests.
+          stopRequest = false;
+          restartRequest = false;
+
+          if (!stopped) {
+            // Do nothing, model is running.
+            return target;
+          }
+
+          stopped = false;
+
+          timer(function timerTick(elapsedTime) {
+            console.timeEnd('gap between frames');
+            // Cancel the timer and refuse to to step the model, if the model is stopped.
+            // This is necessary because there is no direct way to cancel a d3 timer.
+            // See: https://github.com/mbostock/d3/wiki/Transitions#wiki-d3_timer)
+            if (stopRequest) {
+              stopped = true;
+              return true;
+            }
+
+            if (restartRequest) {
+              setTimeout(target.start, 0);
+              stopped = true;
+              return true;
+            }
+
+            target.tick(elapsedTime);
+
+            console.time('gap between frames');
+            return false;
+          });
+
+          if (eventsSupported) dispatch.play();
+
+          console.time('gap between frames');
+          return target;
+        };
+
+        target.restart = function() {
+          restartRequest = true;
+          return target;
+        };
+
+        target.stop = function() {
+          stopRequest = true;
+          if (eventsSupported) dispatch.stop();
+          return target;
+        };
+
+        target.isStopped = function () {
+          return stopped || stopRequest;
+        };
+      }
+    };
+  };
+});
+
+/*global define: false */
+
+define('common/define-builtin-properties',['require','common/validator','common/property-description'],function (require) {
+
+  var validator            = require('common/validator'),
+      PropertyDescription  = require('common/property-description');
+
+  return function defineBuiltinProperties(args) {
+    var propertySupport   = args.propertySupport,
+        metadata          = args.metadata,
+        // Optional:
+        unitsDefinition   = args.unitsDefinition || {},
+        unitsTranslation  = args.unitsTranslation || null,
+        setters           = args.setters || {},
+        initialProperties = args.initialProperties || null;
+
+    function defineBuiltinProperty(key, type, setter) {
+      var metadataForType,
+          descriptor,
+          propertyChangeInvalidates,
+          unitType;
+
+      if (type === 'mainProperty') {
+        metadataForType = metadata.mainProperties;
+      } else if (type === 'viewOption') {
+        metadataForType = metadata.viewOptions;
+      } else {
+        throw new Error(type + " is not a supported built-in property type");
+      }
+
+      propertyChangeInvalidates = validator.propertyChangeInvalidates(metadataForType[key]);
+
+      descriptor = {
+        type: type,
+        writable: validator.propertyIsWritable(metadataForType[key]),
+        set: setter,
+        includeInHistoryState: !!metadataForType[key].storeInTickHistory,
+        validate: function(value) {
+          return validator.validateSingleProperty(metadataForType[key], key, value, false);
+        },
+        beforeSetCallback: propertyChangeInvalidates ? propertySupport.invalidatingChangePreHook : undefined,
+        afterSetCallback: propertyChangeInvalidates ? propertySupport.invalidatingChangePostHook : undefined
+      };
+
+      unitType = metadataForType[key].unitType;
+      if (unitType) {
+        descriptor.description = new PropertyDescription(unitsDefinition, { unitType: unitType });
+        if (unitsTranslation) {
+          descriptor.beforeSetTransform = function(value) {
+            return unitsTranslation.translateToModelUnits(value, unitType);
+          };
+          descriptor.afterGetTransform = function(value) {
+            return unitsTranslation.translateFromModelUnits(value, unitType);
+          };
+        }
+      }
+
+      propertySupport.defineProperty(key, descriptor);
+    }
+
+    (function() {
+      var mainProperties,
+          viewOptions;
+
+      // Define built-in properties using provided metadata.
+      Object.keys(metadata.mainProperties).forEach(function (key) {
+        defineBuiltinProperty(key, 'mainProperty', setters[key]);
+      });
+      Object.keys(metadata.viewOptions).forEach(function (key) {
+        defineBuiltinProperty(key, 'viewOption', setters[key]);
+      });
+
+      if (initialProperties) {
+        mainProperties = validator.validateCompleteness(metadata.mainProperties, initialProperties);
+        propertySupport.setRawValues(mainProperties);
+
+        viewOptions = validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {});
+        propertySupport.setRawValues(viewOptions);
+      }
+    }());
+  };
+});
+
+/*global define: false */
+
+define('common/lab-modeler-mixin',['require','common/property-support','common/parameter-support','common/output-support','common/dispatch-support','common/playback-support','common/define-builtin-properties'],function (require) {
+
+  var PropertySupport         = require('common/property-support'),
+      ParameterSupport        = require('common/parameter-support'),
+      OutputSupport           = require('common/output-support'),
+      DispatchSupport         = require('common/dispatch-support'),
+      PlaybackSupport         = require('common/playback-support'),
+      defineBuiltinProperties = require('common/define-builtin-properties');
+
+  return function LabModelerMixin(args) {
+
+    var api,
+
+        /**
+         * Accepted arguments:
+         */
+        metadata          = args.metadata,
+        setters           = args.setters,
+        unitsDefinition   = args.unitsDefinition,
+        unitsTranslation  = args.unitsTranslation,
+        initialProperties = args.initialProperties,
+        tickHistory       = args.tickHistory,
+
+        propertySupport = new PropertySupport({
+          types: ["output", "parameter", "mainProperty", "viewOption"]
+        }),
+        parameterSupport = new ParameterSupport({
+          propertySupport: propertySupport,
+          unitsDefinition: unitsDefinition
+        }),
+        outputSupport = new OutputSupport({
+          propertySupport: propertySupport,
+          unitsDefinition: unitsDefinition,
+          tickHistory: tickHistory
+        }),
+        dispatchSupport = new DispatchSupport(),
+        playbackSupport = new PlaybackSupport({
+          dispatch: dispatchSupport,
+          properties: propertySupport.properties
+        });
+
+    // FIXME: These events have to be available as some other modules try to
+    // add listeners. Probably they aren't necessary, trace it and fix.
+    dispatchSupport.addEventTypes("reset", "stepForward", "stepBack", "seek", "invalidation");
+
+    api = {
+      mixInto: function(target) {
+        propertySupport.mixInto(target);
+        parameterSupport.mixInto(target);
+        outputSupport.mixInto(target);
+        dispatchSupport.mixInto(target);
+        playbackSupport.mixInto(target);
+
+        if (metadata) {
+          defineBuiltinProperties({
+            propertySupport: propertySupport,
+            metadata: metadata,
+
+            unitsDefinition: unitsDefinition,
+            unitsTranslation: unitsTranslation,
+            setters: setters,
+            initialProperties: initialProperties
+          });
+        }
+      },
+
+      get propertySupport() {
+        return propertySupport;
+      },
+
+      get parameterSupport() {
+        return parameterSupport;
+      },
+
+      get outputSupport() {
+        return outputSupport;
+      },
+
+      get dispatchSupport() {
+        return dispatchSupport;
+      },
+
+      get playbackSupport() {
+        return playbackSupport;
+      }
+    };
+
+    return api;
+  };
+});
+
+/*global define: false */
+/*jslint onevar: true devel:true eqnull: true */
+
+define('common/models/tick-history',[],function() {
+
+
+  /**
+    Class which handles tick history. It supports saving and restoring state
+    of core state objects defined by the modeler and engine. However, while
+    adding a new object which should also be saved in tick history, consider
+    utilization of "external objects" - this is special object which should
+    implement TickHistoryCompatible Interface:
+      #setHistoryLength(number)
+      #push()
+      #extract(index)
+      #invalidate(index)
+
+      Note that index argument is *always* limited to [0, historyLength) range.
+
+    "External objects" handle changes of the current step itself. TickHistory
+    only sends requests to perform various operations. To register new
+    external object use #registerExternalObject(object) method.
+
+    It allows to decentralize management of tick history and tight coupling
+    TickTistory with API of various objects.
+  */
+  return function TickHistory(modelState, model, size) {
+    var tickHistory = {},
+        initialState,
+        list,
+        listState,
+        defaultSize = 1000,
+        // List of objects defining TickHistoryCompatible Interface.
+        externalObjects = [],
+
+        // Provide the "old" interface for models that don't use PropertySupport yet, but provide
+        // a different, new interface for models using PropertySupport for their parameters, etc.
+        // Such models are smart enough to send a single hash of raw property values for all the
+        // properties (parameters, main properties, view properties, etc) we need to save. Older
+        // models need to provide us with separate lists of "regular" properties and parameters,
+        // with their own separate restore callbacks.
+        //
+        //     ***      Remember to remove this when all models use PropertySupport!        ***
+        //
+        useNewInterface = !!modelState.getProperties;
+
+    function newState() {
+      return { input: {}, state: [], parameters: {} };
+    }
+
+    function reset() {
+      list = [];
+      listState = {
+        // Equal to list.length:
+        length: 0,
+        // Drop oldest state in order to keep list no longer than this:
+        maxSize: size,
+        // Index into `list` of the current state:
+        index: -1,
+        // Total length of "total history" (counting valid history states that have been dropped)
+        counter: -1,
+        // Index in "total history" of the oldest state in the list.
+        // Invariant: counter == index + startCounter
+        startCounter: 0
+      };
+    }
+
+    function copyModelState(destination) {
+      var i,
+          prop,
+          state,
+          parameters,
+          name;
+
+      if (useNewInterface) {
+        // we expect that modelState.getProperties returns us a hash we can keep
+        destination.input = modelState.getProperties();
+      } else {
+        // save model input properties
+        for (i = 0; i < modelState.input.length; i++) {
+          prop = modelState.input[i];
+          destination.input[prop] = modelState.getRawPropertyValue(prop);
+        }
+
+        // save model parameters
+        parameters = modelState.parameters;
+        for (name in parameters) {
+          if (parameters.hasOwnProperty(name) && parameters[name].isDefined) {
+            destination.parameters[name] = modelState.getRawPropertyValue(name);
+          }
+        }
+      }
+
+      // save model objects defining state
+      state = modelState.state;
+      for (i = 0; i < state.length; i++) {
+        destination.state[i] = state[i].clone();
+      }
+    }
+
+    /** Copy the current model state into the list at list[listState.index+1] and updates listState.
+        Removes any (now-invalid) states in the list that come after the newly pushed state.
+    */
+    function push() {
+      var lastState = newState(),
+          i;
+
+      copyModelState(lastState);
+      list[listState.index+1] = lastState;
+
+      // Drop the oldest state if we went over the max list size
+      if (list.length > listState.maxSize) {
+        list.splice(0,1);
+        listState.startCounter++;
+      } else {
+        listState.index++;
+      }
+      listState.counter = listState.index + listState.startCounter;
+
+      // Send push request to external objects defining TickHistoryCompatible Interface.
+      for (i = 0; i < externalObjects.length; i++) {
+        externalObjects[i].push();
+      }
+
+      invalidateFollowingState();
+      listState.length = list.length;
+    }
+
+    /** Invalidate (remove) all history after current index. For example, after seeking backwards
+        and then pushing new state */
+    function invalidateFollowingState() {
+      var i;
+
+      list.length = listState.index+1;
+      listState.length = list.length;
+
+      // Invalidate external objects defining TickHistoryCompatible Interface.
+      for (i = 0; i < externalObjects.length; i++) {
+        externalObjects[i].invalidate(listState.index);
+      }
+    }
+
+    function extract(savedState) {
+      var i,
+          state;
+
+      // restore model input properties
+      modelState.restoreProperties(savedState.input);
+
+      if (!useNewInterface) {
+        // old interface requires restoring parameters separately
+        modelState.restoreParameters(savedState.parameters);
+      }
+
+      // restore model objects defining state
+      state = savedState.state;
+      for (i = 0; i < state.length; i++) {
+        modelState.state[i].restore(state[i]);
+      }
+
+      // Send extract request to external objects defining TickHistoryCompatible Interface.
+      for (i = 0; i < externalObjects.length; i++) {
+        externalObjects[i].extract(listState.index);
+      }
+    }
+
+    function checkIndexArg(index) {
+      if (index < 0) {
+        throw new Error("TickHistory: extract index [" + index + "] less than 0");
+      }
+      if (index >= list.length) {
+        throw new Error("TickHistory: extract index [" + index + "] greater than list.length: " + list.length);
+      }
+      return index;
+    }
+
+    //
+    // Public methods
+    //
+    tickHistory.isEmpty = function() {
+      return listState.index === 0;
+    };
+
+    tickHistory.push = function() {
+      push();
+    };
+
+    tickHistory.returnTick = function(ptr) {
+      var i;
+      if (typeof ptr === 'number') {
+        i = ptr;
+      } else {
+        i = listState.index;
+      }
+      checkIndexArg(i);
+      return list[i];
+    };
+
+    tickHistory.extract = function(ptr) {
+      var i;
+      if (typeof ptr === 'number') {
+        i = ptr;
+      } else {
+        i = listState.index;
+      }
+      checkIndexArg(i);
+      extract(list[i]);
+    };
+
+    tickHistory.restoreInitialState = function() {
+      reset();
+      extract(initialState);
+      push();
+    };
+
+    tickHistory.reset = reset;
+
+    tickHistory.decrementExtract = function() {
+      if (listState.counter > listState.startCounter) {
+        listState.index--;
+        listState.counter--;
+        extract(list[listState.index]);
+      }
+    };
+
+    tickHistory.incrementExtract = function() {
+      listState.index++;
+      listState.counter++;
+      extract(list[listState.index]);
+    };
+
+    tickHistory.seekExtract = function(ptr) {
+      if (ptr < listState.startCounter) ptr = listState.startCounter;
+      if (ptr >= listState.startCounter + listState.length) ptr = listState.startCounter + listState.length - 1;
+      listState.counter = ptr;
+      listState.index = ptr - listState.startCounter;
+      extract(list[listState.index]);
+    };
+
+    tickHistory.invalidateFollowingState = invalidateFollowingState;
+
+    tickHistory.get = function(key) {
+      return listState[key];
+    };
+
+    tickHistory.set = function(key, val) {
+      return listState[key] = val;
+    };
+
+    /**
+      Registers a new external object. It is a special object, which handles changes of step itself.
+      TickHistory object only sends requests for various actions.
+      External object should implement TickHistoryCompatible Interface:
+        #setHistoryLength(number)
+        #push()
+        #extract(index)
+        #invalidate(index)
+    */
+    tickHistory.registerExternalObject = function (externalObj) {
+      externalObj.setHistoryLength(listState.maxSize);
+      externalObjects.push(externalObj);
+    };
+
+    //
+    // Initialization
+    //
+    if (size == null) size = defaultSize;
+    initialState = newState();
+    copyModelState(initialState);
+
+    reset();
+    push();
+    return tickHistory;
+  };
+});
 
 (function() {
 
@@ -23340,7 +24846,7 @@ define('md2d/models/engine/genetic-engine',['require','cs!md2d/models/aminoacids
             }
           }
         });
-        if (model.is_stopped()) {
+        if (model.isStopped()) {
           // FIXME: ugly workaround to update position, as setAtomProperties
           // doesn't dispatch any events in contrast to minimize energy.
           model.minimizeEnergy();
@@ -23560,220 +25066,6 @@ define('md2d/models/engine/genetic-engine',['require','cs!md2d/models/aminoacids
     model.addPropertiesListener(["DNA"], DNAUpdated);
     model.addPropertiesListener(["DNAState"], stateUpdated);
     updateGeneticProperties();
-    return api;
-  };
-
-});
-
-/*global define d3 */
-/*jshint eqnull:true boss:true */
-
-define('common/property-description',['require','underscore'],function(require) {
-
-  var _ = require('underscore');
-
-  function isUndefined(val) {
-    return typeof val === 'undefined';
-  }
-
-  function PropertyDescription(unitDefinition, descriptionHash) {
-    var u;
-
-    this._descriptionHash = descriptionHash;
-    this._label = descriptionHash.label || "";
-
-    if (descriptionHash.unitType) {
-      if ( !(u = unitDefinition.units[descriptionHash.unitType]) ) {
-        throw new Error("PropertyDescription: couldn't find unitType " + descriptionHash.unitType + " in the supplied units definition.");
-      }
-      this._unitType         = descriptionHash.unitType;
-      this._unitName         = u.name;
-      this._unitPluralName   = u.pluralName;
-      this._unitAbbreviation = u.symbol;
-    }
-
-    // allow overriding the unit properties, or specifying custom ones for which there is no
-    // current unit definition.
-    if (descriptionHash.unitName) this._unitName = descriptionHash.unitName;
-    if (descriptionHash.unitPluralName) this._unitPluralName = descriptionHash.unitPluralName;
-    if (descriptionHash.unitAbbreviation) this._unitAbbreviation = descriptionHash.unitAbbreviation;
-
-    this.setFormat(descriptionHash.format || 'g');
-  }
-
-  PropertyDescription.prototype.getHash = function() {
-    return _.extend(
-      _.reject({
-          unitName:         this.getUnitName(),
-          unitPluralName:   this.getUnitPluralName(),
-          unitAbbreviation: this.getUnitAbbreviation()
-        }, isUndefined),
-      this._descriptionHash);
-  };
-
-  PropertyDescription.prototype.getLabel = function() {
-    return this._label;
-  };
-
-  PropertyDescription.prototype.getUnitType = function() {
-    return this._unitType;
-  };
-
-  PropertyDescription.prototype.getUnitName = function() {
-    return this._unitName;
-  };
-
-  PropertyDescription.prototype.getUnitPluralName = function() {
-    return this._unitPluralName;
-  };
-
-  PropertyDescription.prototype.getUnitAbbreviation = function() {
-    return this._unitAbbreviation;
-  };
-
-  PropertyDescription.prototype.setFormat = function(s) {
-    this._formatter = d3.format(s);
-  };
-
-  PropertyDescription.prototype.format = function(val, opts) {
-    opts = opts || {};
-
-    var formatter,
-        formattedVal,
-        plural,
-        abbreviated = true;
-
-    if (opts.format) {
-      if (opts.format === this._lastFormat) {
-        formatter = this._lastFormatter;
-      } else {
-        formatter = d3.format(opts.format);
-        this._lastFormat = opts.format;
-        this._lastFormatter = formatter;
-      }
-    } else {
-      formatter = this._formatter;
-    }
-
-    formattedVal = formatter(val);
-
-    if (opts && opts.abbreviated != null) abbreviated = opts.abbreviated;
-
-    if (abbreviated) {
-      return formattedVal + " " + this._unitAbbreviation;
-    }
-
-    plural = parseFloat(formattedVal) !== 1;
-    return formattedVal + " " + (plural ? this._unitPluralName : this._unitName);
-  };
-
-  return PropertyDescription;
-});
-
-/*global define: false, d3: false */
-/**
- * This module provides event dispatch based on d3.dispatch:
- * https://github.com/mbostock/d3/wiki/Internals#wiki-d3_dispatch
- *
- * The main improvement over raw d3.dispatch is that this wrapper provides
- * event batching. You can start batch mode (.startBatch()) and while it is
- * active events won't be dispatched immediately. They will be dispatched
- * at the end of batch mode (.endBatch()) or when you call .flush() method.
- *
- * Note that there is one *significant limitation*: arguments passed during
- * event dispatching will be lost! All events will be merged into single
- * event without any argument. Please keep this in mind while using this module.
- *
- * e.g.
- *   dispatch.on("someEvent", function(arg) { console.log(arg); });
- *   dispatch.someEvent(123);     // console output: 123
- *   dispatch.someEvent("test");  // console output: "test"
- * However...
- *   dispatch.startBatch();
- *   dispatch.someEvent(123);
- *   dispatch.someEvent("test");
- *   dispatch.endBatch();         // console output: undefined (!)
- *
- * Rest of the interface is exactly the same like in d3.dispatch (.on()).
- * Under the hood delegation to d3.dispatch instance is used.
- */
-define('common/dispatch',[],function() {
-
-  return function Dispatch() {
-    var api,
-        d3dispatch = d3.dispatch.apply(null, arguments),
-
-        batchMode = false,
-        suppressedEvents = d3.set();
-
-    function init(types) {
-      var i, len;
-      // Provide wrapper around typical calls like dispatch.someEvent().
-      for (i = 0, len = types.length; i < len; i++) {
-        api[types[i]] = dispatchEvent(types[i]);
-      }
-    }
-
-    function dispatchEvent(name) {
-      return function () {
-        if (!batchMode) {
-          d3dispatch[name].apply(d3dispatch, arguments);
-        } else {
-          suppressedEvents.add(name);
-        }
-      };
-    }
-
-    function delegate(funcName) {
-      return function () {
-        d3dispatch[funcName].apply(d3dispatch, arguments);
-      };
-    }
-
-    // Public API.
-    api = {
-      // Copy d3.dispatch API:
-
-      /**
-       * Adds or removes an event listener for the specified type. Please see:
-       * https://github.com/mbostock/d3/wiki/Internals#wiki-dispatch_on
-       */
-      on: delegate("on"),
-
-      // New API specific for Lab Dispatch:
-
-      /**
-       * Starts batch mode. Events won't be dispatched immediately after call.
-       * They will be merged into single event and dispatched when .flush()
-       * or .endBatch() is called.
-       */
-      startBatch: function () {
-        batchMode = true;
-      },
-
-      /**
-       * Ends batch mode and dispatches suppressed events.
-       */
-      endBatch: function () {
-        batchMode = false;
-        api.flush();
-      },
-
-      /**
-       * Dispatches suppressed events.
-       * @return {[type]} [description]
-       */
-      flush: function () {
-        suppressedEvents.forEach(function (eventName) {
-          d3dispatch[eventName]();
-        });
-        // Reset suppressed events.
-        suppressedEvents = d3.set();
-      }
-    };
-
-    init(arguments);
-
     return api;
   };
 
@@ -24096,52 +25388,52 @@ define('md2d/models/units-translation',['require','underscore','md2d/models/engi
 
         force;
 
-        _.each(baseUnitTypes, function (unitType) {
-          var u = unitsDefinition.units[unitType];
-          siFactor[unitType] = u.valueInSIUnits / u.representationInMD2DUnits;
-        });
+    _.each(baseUnitTypes, function (unitType) {
+      var u = unitsDefinition.units[unitType];
+      siFactor[unitType] = u.valueInSIUnits / u.representationInMD2DUnits;
+    });
 
-        siFactor.inverseTime = 1 / siFactor.time;
-        siFactor.velocity = siFactor.length / siFactor.time;
-        siFactor.acceleration = siFactor.velocity / siFactor.time;
-        siFactor.force = siFactor.mass * siFactor.acceleration;
+    siFactor.inverseTime = 1 / siFactor.time;
+    siFactor.velocity = siFactor.length / siFactor.time;
+    siFactor.acceleration = siFactor.velocity / siFactor.time;
+    siFactor.force = siFactor.mass * siFactor.acceleration;
 
-        // The factor should first convert an MD2D value, which is in *eV*, to amu nm/fs^2:
-        siFactor.energy = constants.ratio(constants.unit.MW_ENERGY_UNIT, { per: constants.unit.EV });
-        // Then it should convert amu/fs^2 to N and nm to m, yielding Joules:
-        siFactor.energy *= siFactor.force * siFactor.length;
+    // The factor should first convert an MD2D value, which is in *eV*, to amu nm/fs^2:
+    siFactor.energy = constants.ratio(constants.unit.MW_ENERGY_UNIT, { per: constants.unit.EV });
+    // Then it should convert amu/fs^2 to N and nm to m, yielding Joules:
+    siFactor.energy *= siFactor.force * siFactor.length;
 
-        siFactor.dampingCoefficient = siFactor.force / siFactor.velocity;
-        // stiffness is eV/nm^2; convert eV -> J and 1/nm^2 -> 1/m^2 (yielding N/m)
-        siFactor.stiffness = siFactor.energy / siFactor.length / siFactor.length;
-        // rotational stiffness is in eV/rad; convert eV -> N⋅m -- no need to convert radians
-        siFactor.rotationalStiffness = siFactor.energy / siFactor.length;
+    siFactor.dampingCoefficient = siFactor.force / siFactor.velocity;
+    // stiffness is eV/nm^2; convert eV -> J and 1/nm^2 -> 1/m^2 (yielding N/m)
+    siFactor.stiffness = siFactor.energy / siFactor.length / siFactor.length;
+    // rotational stiffness is in eV/rad; convert eV -> N⋅m -- no need to convert radians
+    siFactor.rotationalStiffness = siFactor.energy / siFactor.length;
 
-       // Force between charge +1 and -1, 1 distance unit apart, with dielectric constant 1
-       force = coulomb.force(1, -1, 1, 1);
-       // See disdcussion at http://lab.dev.concord.org/doc/models/md2d/macroscopic-units/
-       siFactor.charge = Math.sqrt(force * siFactor.force * siFactor.length * siFactor.length / COULOMB_CONSTANT);
+    // Force between charge +1 and -1, 1 distance unit apart, with dielectric constant 1
+    force = coulomb.force(1, -1, 1, 1);
+    // See disdcussion at http://lab.dev.concord.org/doc/models/md2d/macroscopic-units/
+    siFactor.charge = Math.sqrt(force * siFactor.force * siFactor.length * siFactor.length / COULOMB_CONSTANT);
 
-      _.each(_.keys(siFactor), function(unitType) {
-        factor[unitType] = siFactor[unitType] / unitsDefinition.units[unitType].valueInSIUnits;
-      });
+    _.each(_.keys(siFactor), function(unitType) {
+      factor[unitType] = siFactor[unitType] / unitsDefinition.units[unitType].valueInSIUnits;
+    });
 
-      return {
-        translateToMD2DUnits: function(translatedUnitsValue, unitType) {
-          if (factor[unitType] == null) {
-            return translatedUnitsValue;
-          }
-          return translatedUnitsValue / factor[unitType];
-        },
-
-        translateFromMD2DUnits: function(md2dUnitsValue, unitType) {
-          if (factor[unitType] == null) {
-            return md2dUnitsValue;
-          }
-          return md2dUnitsValue * factor[unitType];
+    return {
+      translateToModelUnits: function(translatedUnitsValue, unitType) {
+        if (factor[unitType] == null) {
+          return translatedUnitsValue;
         }
-      };
-   };
+        return translatedUnitsValue / factor[unitType];
+      },
+
+      translateFromModelUnits: function(md2dUnitsValue, unitType) {
+        if (factor[unitType] == null) {
+          return md2dUnitsValue;
+        }
+        return md2dUnitsValue * factor[unitType];
+      }
+    };
+  };
 });
 
 /*global define, $ */
@@ -24167,7 +25459,7 @@ define('md2d/models/performance-optimizer',[],function() {
   }
 
   PerformanceOptimizer.prototype._assessPerformance = function() {
-    if (!this.enabled || this._model.is_stopped()) {
+    if (!this.enabled || this._model.isStopped()) {
       return;
     }
 
@@ -24931,15 +26223,15 @@ define('md2d/models/engine/plugins/quantum-dynamics',['require','common/models/e
 
 /*global define: false, d3: false */
 
-define('md2d/models/modeler',['require','common/console','common/performance','md2d/models/engine/md2d','md2d/models/metadata','common/models/tick-history','common/property-support','cs!common/running-average-filter','cs!md2d/models/solvent','common/serialize','common/validator','md2d/models/aminoacids-props','cs!md2d/models/aminoacids-helper','md2d/models/engine/genetic-engine','md2d/models/engine/constants/units','common/property-description','common/dispatch','md2d/models/unit-definitions/index','md2d/models/units-translation','md2d/models/performance-optimizer','md2d/models/atom-transition','underscore','md2d/models/engine/plugins/quantum-dynamics'],function(require) {
+define('md2d/models/modeler',['require','common/console','common/performance','md2d/models/engine/md2d','md2d/models/metadata','common/lab-modeler-mixin','common/output-support','common/models/tick-history','cs!md2d/models/solvent','common/serialize','common/validator','md2d/models/aminoacids-props','cs!md2d/models/aminoacids-helper','md2d/models/engine/genetic-engine','md2d/models/engine/constants/units','md2d/models/unit-definitions/index','md2d/models/units-translation','md2d/models/performance-optimizer','md2d/models/atom-transition','underscore','md2d/models/engine/plugins/quantum-dynamics'],function(require) {
   // Dependencies.
   var console              = require('common/console'),
       performance          = require('common/performance'),
       md2d                 = require('md2d/models/engine/md2d'),
       metadata             = require('md2d/models/metadata'),
+      LabModelerMixin      = require('common/lab-modeler-mixin'),
+      OutputSupport        = require('common/output-support'),
       TickHistory          = require('common/models/tick-history'),
-      PropertySupport      = require('common/property-support'),
-      RunningAverageFilter = require('cs!common/running-average-filter'),
       Solvent              = require('cs!md2d/models/solvent'),
       serialize            = require('common/serialize'),
       validator            = require('common/validator'),
@@ -24947,8 +26239,6 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       aminoacidsHelper     = require('cs!md2d/models/aminoacids-helper'),
       GeneticEngine        = require('md2d/models/engine/genetic-engine'),
       units                = require('md2d/models/engine/constants/units'),
-      PropertyDescription  = require('common/property-description'),
-      Dispatch             = require('common/dispatch'),
       unitDefinitions      = require('md2d/models/unit-definitions/index'),
       UnitsTranslation     = require('md2d/models/units-translation'),
       PerformanceOptimizer = require('md2d/models/performance-optimizer'),
@@ -24964,13 +26254,147 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     this.constructor.type = "md2d";
 
     var model = {},
-        dispatch = new Dispatch("tick", "play", "stop", "reset", "willReset", "stepForward", "stepBack",
-                                "seek", "addAtom", "removeAtom", "addRadialBond", "removeRadialBond",
-                                "removeAngularBond", "invalidation", "textBoxesChanged"),
 
-        propertySupport = new PropertySupport({
-          types: ["output", "parameter", "mainProperty", "viewOption"]
+        customSetters = {
+          targetTemperature: function (value) {
+            engine.setTargetTemperature(value);
+          },
+
+          temperatureControl: function(value) {
+            engine.useThermostat(value);
+          },
+
+          lennardJonesForces: function(value) {
+            engine.useLennardJonesInteraction(value);
+          },
+
+          coulombForces: function(value) {
+            engine.useCoulombInteraction(value);
+          },
+
+          solventForceType: function(value) {
+            engine.setSolventForceType(value);
+          },
+
+          DNAState: function(value) {
+            engine.setDNAState(value);
+          },
+
+          solventForceFactor: function(value) {
+            engine.setSolventForceFactor(value);
+          },
+
+          additionalSolventForceMult: function(value) {
+            engine.setAdditionalSolventForceMult(value);
+          },
+
+          additionalSolventForceThreshold: function(value) {
+            engine.setAdditionalSolventForceThreshold(value);
+          },
+
+          dielectricConstant: function(value) {
+            engine.setDielectricConstant(value);
+          },
+
+          realisticDielectricEffect: function(value) {
+            engine.setRealisticDielectricEffect(value);
+          },
+
+          VDWLinesCutoff: function(value) {
+            var ratio = VDWLinesCutoffMap[value];
+            if (ratio) {
+              engine.setVDWLinesRatio(ratio);
+            }
+          },
+
+          gravitationalField: function(value) {
+            engine.setGravitationalField(value);
+          },
+
+          modelSampleRate: function() {
+            if (!model.isStopped()) model.restart();
+          },
+
+          viscosity: function(value) {
+            engine.setViscosity(value);
+          },
+
+          polarAAEpsilon: function (value) {
+            var polarAAs, element1, element2,
+                i, j, len;
+
+            // Set custom pairwise LJ properties for polar amino acids.
+            // They should attract stronger to better mimic nature.
+            polarAAs = aminoacidsHelper.getPolarAminoAcids();
+            for (i = 0, len = polarAAs.length; i < len; i++) {
+              element1 = polarAAs[i];
+              for (j = i + 1; j < len; j++) {
+                element2 = polarAAs[j];
+                // Set custom pairwise LJ epsilon (default one for AA is -0.1).
+                engine.pairwiseLJProperties.set(element1, element2, {epsilon: value});
+              }
+            }
+          },
+
+          electricFieldDensity: function (value) {
+            electricField.length = 0; // reuse existing array!
+            if (!value) return;
+            var minX = 0,
+                minY = 0,
+                maxX = model.properties.width,
+                maxY = model.properties.height,
+                diff = model.properties.width / value,
+                yOffset = ((maxY / diff) % 1) * diff,
+                y = minY + 0.5 * (yOffset + (diff <= maxY ? diff : 0)),
+                x;
+            while(y < maxY) {
+              x = minX + 0.5 * diff;
+              while(x < maxX) {
+                electricField.push({x: x, y: y});
+                x += diff;
+              }
+              y += diff;
+            }
+          }
+        },
+
+        // The set of units currently in effect. (Determined by the 'unitsScheme' property of the
+        // model; default value is 'md2d')
+        unitsDefinition = unitDefinitions.get(initialProperties.unitsScheme || 'md2d'),
+
+        // Object that translates between 'native' md2d units and the units defined
+        // by unitsDefinition.
+        unitsTranslation = (function() {
+          var scheme = initialProperties.unitsScheme || 'md2d';
+          // If we're not using MD2D units, we need a translation (which, for each unit type, allows some
+          // number of "native" MD2D units to stand for 1 translated unit, e.g., 1 nm represents 1m, with
+          // the relationships between these ratios set up so that the calculations reamin physically
+          // consistent.
+          if (scheme !== 'md2d') {
+            return new UnitsTranslation(unitsDefinition);
+          }
+          return undefined;
+        }()),
+
+        labModelerMixin = new LabModelerMixin({
+          metadata: metadata,
+          setters: customSetters,
+          unitsDefinition: unitsDefinition,
+          unitsTranslation: unitsTranslation,
+          initialProperties: initialProperties
         }),
+
+        dispatch = (function() {
+          var d = labModelerMixin.dispatchSupport;
+          d.addEventTypes("tick","willReset",
+                          "addAtom", "removeAtom", "addRadialBond", "removeRadialBond",
+                          "removeAngularBond", "invalidation", "textBoxesChanged");
+          return d;
+        }()),
+
+        propertySupport = labModelerMixin.propertySupport,
+
+        outputSupport,
 
         VDWLinesCutoffMap = {
           "short": 1.33,
@@ -24978,21 +26402,25 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
           "long": 2.0
         },
         defaultMaxTickHistory = 1000,
-        stopped = true,
-        stopRequest = false,
-        restartRequest = false,
         newStep = false,
         lastSampleTime,
         sampleTimes = [],
 
-        modelState,
+        // FIXME: do we need global reference?
+        modelState = window.state = {},
         tickHistory,
 
         // Transitions list.
         transitions = [],
 
         // Molecular Dynamics engine.
-        engine,
+        engine = (function() {
+          var e = md2d.createEngine();
+          // Register invalidating change hooks.
+          // pairwiseLJProperties object allows to change state which defines state of the whole simulation.
+          e.pairwiseLJProperties.registerChangeHooks(propertySupport.invalidatingChangePreHook, propertySupport.invalidatingChangePostHook);
+          return e;
+        }()),
 
         // Genetic engine.
         geneticEngine,
@@ -25009,6 +26437,9 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
 
         // A hash of arrays consisting of arrays of obstacle property values
         obstacles,
+
+        // A hash of arrays consisting of arrays of rectangle property values
+        rectangles,
 
         // A hash of arrays consisting of arrays of radial bond property values
         radialBonds,
@@ -25031,6 +26462,10 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
         // consumption by the view. Only defined if the quantum dynamics plugin is used.
         viewPhotons,
 
+        // An array of objects consisting of point coordinates and electric field force at that point
+        // (e.g. [{ x: 1, y: 2, fx: 0.1, fy: 0.3 }, ...]).
+        electricField = [],
+
         // A two dimensional array consisting of radial bond index numbers, radial bond
         // properties, and the postions of the two bonded atoms.
         // FIXME. Engine should not be calculating this.
@@ -25042,66 +26477,8 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
         // Cached value of the 'friction' property of the atom being dragged in a running model
         liveDragSavedFriction,
 
-        // If this is true, output properties will not be recalculated on changes
-        suppressInvalidatingChangeHooks = false,
-
-        // Invalidating change hooks might between others
-        invalidatingChangeHookNestingLevel = 0,
-
-        // The set of units currently in effect. (Determined by the 'unitsScheme' property of the
-        // model; default value is 'md2d')
-        unitsDefinition,
-
-        // Object that translates between 'native' md2d units and the units defined
-        // by unitsDefinition.
-        unitsTranslation,
-
-        // The initial "main" propeties, validated and filtered from the initialProperties array
-        mainProperties,
-
-        // The initial viewOptions, validated and filtered from the initialProperties
-        viewOptions,
-
         // Properties hashes for use by plugins
         pluginProperties;
-
-    function defineBuiltinProperty(type, key, setter) {
-      var metadataForType,
-          descriptor,
-          unitType;
-
-      if (type === 'mainProperty') {
-        metadataForType = metadata.mainProperties;
-      } else if (type === 'viewOption') {
-        metadataForType = metadata.viewOptions;
-      } else {
-        throw new Error(type + " is not a supported built-in property type");
-      }
-
-      descriptor = {
-        type: type,
-        writable: validator.propertyIsWritable(metadataForType[key]),
-        set: setter,
-        includeInHistoryState: !!metadataForType[key].storeInTickHistory,
-        validate: function(value) {
-          return validator.validateSingleProperty(metadataForType[key], key, value, false);
-        },
-        beforeSetCallback: invalidatingChangePreHook,
-        afterSetCallback: invalidatingChangePostHook
-      };
-
-      unitType = metadataForType[key] && metadataForType[key].unitType;
-
-      if (unitsTranslation && unitType) {
-        descriptor.beforeSetTransform = function(value) {
-          return unitsTranslation.translateToMD2DUnits(value, unitType);
-        };
-        descriptor.afterGetTransform = function(value) {
-          return unitsTranslation.translateFromMD2DUnits(value, unitType);
-        };
-      }
-      propertySupport.defineProperty(key, descriptor);
-    }
 
     function processTransitions(timeDiff) {
       var i, len;
@@ -25121,61 +26498,6 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       model.endBatch();
     }
 
-    function tick(elapsedTime, dontDispatchTickEvent) {
-      var timeStep = model.get('timeStep'),
-          // Save number of radial bonds in engine before integration,
-          // as integration can create new disulfide bonds. This is the
-          // only type of objects which can be created by the engine autmatically.
-          prevNumOfRadialBonds = engine.getNumberOfRadialBonds(),
-          t, sampleTime;
-
-      if (unitsTranslation) {
-        timeStep = unitsTranslation.translateToMD2DUnits(timeStep, 'time');
-      }
-
-      if (!stopped) {
-        t = performance.now();
-        if (lastSampleTime) {
-          sampleTime = t - lastSampleTime;
-          lastSampleTime = t;
-          sampleTimes.push(sampleTime);
-          sampleTimes.splice(0, sampleTimes.length - 64);
-
-          // Process all transitions which are in progress
-          // and remove finished.
-          processTransitions(sampleTime);
-        } else {
-          lastSampleTime = t;
-        }
-      }
-
-      // timeStepsPerTick is defined in Classic MW as the number of timesteps per view update.
-      // However, in MD2D we prefer the more physical notion of integrating for a particular
-      // length of time.
-      console.time('integration');
-      engine.integrate(model.get('timeStepsPerTick') * timeStep, timeStep);
-      console.timeEnd('integration');
-      console.time('reading model state');
-      updateAllOutputProperties();
-      console.timeEnd('reading model state');
-
-      console.time('tick history push');
-      tickHistory.push();
-      console.timeEnd('tick history push');
-
-      newStep = true;
-
-      if (!dontDispatchTickEvent) {
-        dispatch.tick();
-      }
-
-      if (prevNumOfRadialBonds < engine.getNumberOfRadialBonds()) {
-        dispatch.addRadialBond();
-      }
-
-      return stopped;
-    }
-
     // Returns a copy of 'obj' with value replaced by fn(key, value) for every (key, value) pair.
     // (Underscore doesn't do this: https://github.com/documentcloud/underscore/issues/220)
     function mapValues(obj, fn) {
@@ -25192,7 +26514,7 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     function translateToMD2DUnits(properties, metadata) {
       if (!unitsTranslation) return properties;
       return mapValues(properties, function(key, value) {
-        return unitsTranslation.translateToMD2DUnits(value, metadata[key] && metadata[key].unitType);
+        return unitsTranslation.translateToModelUnits(value, metadata[key] && metadata[key].unitType);
       });
     }
 
@@ -25202,80 +26524,8 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     function translateFromMD2DUnits(properties, metadata) {
       if (!unitsTranslation) return properties;
       return mapValues(properties, function(key, value) {
-        return unitsTranslation.translateFromMD2DUnits(value, metadata[key] && metadata[key].unitType);
+        return unitsTranslation.translateFromModelUnits(value, metadata[key] && metadata[key].unitType);
       });
-    }
-
-    /**
-      Call this method after moving to a different model time (e.g., after stepping the model
-      forward or back, seeking to a different time, or on model initialization) to update all output
-      properties and notify their listeners. This method is more efficient for that case than
-      updateOutputPropertiesAfterChange because it can assume that all output properties are
-      invalidated by the model step. It therefore does not need to calculate any output property
-      values; it allows them to be evaluated lazily instead. Property values are calculated when and
-      if listeners request them. This method also guarantees that all properties have their updated
-      value when they are requested by any listener.
-
-      Technically, this method first updates the 'viewAtoms' array and macrostate variables, then
-      invalidates any  cached output-property values, and finally notifies all output-property
-      listeners.
-
-      Note that this method and updateOutputPropertiesAfterChange are the only methods which can
-      flush the cached value of an output property. Therefore, be sure to not to make changes
-      which would invalidate a cached value without also calling one of these two methods.
-    */
-    function updateAllOutputProperties() {
-      readModelState();
-      propertySupport.deleteComputedPropertyCachedValues();
-
-      propertySupport.notifyAllComputedProperties();
-    }
-
-    // FIXME
-    //
-    // Instead of requiring balanced calls to "PreHooks" and "PostHooks", we should instead accept a
-    // callback containing actions to perform in between the pre and post actions. That would be a
-    // better way of ensuring that pre and post hooks are always balanced.
-
-    /**
-      ALWAYS CALL THIS FUNCTION before any change to model state outside a model step
-      (i.e., outside a tick, seek, stepForward, stepBack)
-
-      Note:  Changes to view-only property changes that cannot change model physics might reasonably
-      by considered non-invalidating changes that don't require calling this hook.
-    */
-    function invalidatingChangePreHook() {
-      if (suppressInvalidatingChangeHooks) return;
-
-      if (invalidatingChangeHookNestingLevel === 0) {
-        // If we're beginning a series of (possibly-nested) invalidating changes, store computed
-        // property values so they can be compared when we finish the invalidating changes.
-        propertySupport.storeComputedProperties();
-        propertySupport.deleteComputedPropertyCachedValues();
-        propertySupport.enableCaching = false;
-      }
-      invalidatingChangeHookNestingLevel++;
-    }
-
-    /**
-      ALWAYS CALL THIS FUNCTION after any change to model state outside a model step.
-    */
-    function invalidatingChangePostHook() {
-      if (suppressInvalidatingChangeHooks) return;
-      invalidatingChangeHookNestingLevel--;
-
-      // Make sure that computed properties which depend on engine state are valid
-      readModelState();
-
-      if (invalidatingChangeHookNestingLevel === 0) {
-        // Once we've finished the cycle of invalidating changes, go ahead and notify observers of
-        // computed properties that changed.
-        propertySupport.enableCaching = true;
-        propertySupport.notifyChangedComputedProperties();
-
-        if (tickHistory) tickHistory.invalidateFollowingState();
-        dispatch.invalidation();
-      }
     }
 
     /**
@@ -25331,6 +26581,7 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       // representation provided by modelState.photons
       viewPhotons = engine.callPluginAccessor('getViewPhotons');
       updateViewAtoms(modelState.atoms);
+      updateViewElectricField();
     }
 
     // Transpose 'atoms' object into 'viewAtoms' for consumption by view code
@@ -25381,6 +26632,15 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
         }
       };
     }());
+
+    function updateViewElectricField() {
+      if (!electricField.length) return;
+      var i, len, p;
+      for (i = 0, len = electricField.length; i < len; i++) {
+        p = electricField[i];
+        engine.getCoulombForceAt(p.x, p.y, p);
+      }
+    }
 
     /**
       return a random element index ... which is *not* an amino acid element
@@ -25440,160 +26700,6 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     //
     // ------------------------------------------------------------
 
-    // Adds model.properties, model.set, model.get, model.addObserver, model.removeObserver...
-    propertySupport.mixInto(model);
-
-    /**
-      Add a listener callback that will be notified when any of the properties in the passed-in
-      array of properties is changed. (The argument `properties` can also be a string, if only a
-      single name needs to be passed.) This is a simple way for views to update themselves in
-      response to property changes.
-    */
-    model.addPropertiesListener = function(properties, callback) {
-      if (typeof properties === 'string') {
-        model.addObserver(properties, callback);
-      } else {
-        properties.forEach(function(property) {
-          model.addObserver(property, callback);
-        });
-      }
-    };
-
-    /**
-      Add an "output" property to the model. Output properties are expected to change at every
-      model tick, and may also be changed indirectly, outside of a model tick, by a change to model
-      properties or the atom, element, etc. properties.
-
-      `key` should be the name of the output. The property value will be accessed by
-      `model.get(<key>);`
-
-      `description` should be a hash of metadata about the property.
-
-      `getter` should be a no-arg function which calculates the property value. These values are not
-      translated after getter returns because we expect that most output getters are authored
-      scripts, which operate entirely with already-translated units. Therefore, getters defined
-      internally in modeler.js needs to make sure to translate any "md2d units" values out of the
-      md2d-unit domain.
-    */
-    model.defineOutput = function(key, descriptionHash, getter) {
-      propertySupport.defineProperty(key, {
-        type: 'output',
-        writable: false,
-        get: getter,
-        includeInHistoryState: false,
-        description: new PropertyDescription(unitsDefinition, descriptionHash)
-      });
-    };
-
-    /**
-      Add an "filtered output" property to the model. This is special kind of output property, which
-      is filtered by one of the built-in filters based on time (like running average). Note that filtered
-      outputs do not specify calculate function - instead, they specify property which should filtered.
-      It can be another output, model parameter or custom parameter.
-
-      Filtered output properties are extension of typical output properties. They share all features of
-      output properties, so they are expected to change at every model tick, and may also be changed indirectly,
-      outside of a model tick, by a change to the model parameters or to the configuration of atoms and other
-      objects in the model.
-
-      `name` should be the name of the parameter. The property value will be accessed by
-      `model.get(<name>);`
-
-      `description` should be a hash of metadata about the property. Right now, these metadata are not
-      used. However, example metadata include the label and units name to be used when graphing
-      this property.
-
-      `property` should be name of the basic property which should be filtered.
-
-      `type` should be type of filter, defined as string. For now only "RunningAverage" is supported.
-
-      `period` should be number defining length of time period used for calculating filtered value. It should
-      be specified in femtoseconds.
-
-    */
-    model.defineFilteredOutput = function(name, description, property, type, period) {
-      // Filter object.
-      var filter, initialValue;
-
-      if (type === "RunningAverage") {
-        filter = new RunningAverageFilter(period);
-      } else {
-        throw new Error("FilteredOutput: unknown filter type " + type + ".");
-      }
-
-      initialValue = model.get(property);
-      if (initialValue === undefined || isNaN(Number(initialValue))) {
-        throw new Error("FilteredOutput: property is not a valid numeric value or it is undefined.");
-      }
-
-      // Add initial sample.
-      filter.addSample(model.get('time'), initialValue);
-
-      // Create simple adapter implementing TickHistoryCompatible Interface
-      // and register it in tick history.
-      tickHistory.registerExternalObject({
-        push: function () {
-          // Filtered outputs are updated only at the end of tick() operation,
-          // druing tickHistory.push() call. So they are *not* updated
-          // immediately after property change, e.g. using model.set("prop", 5).
-          // Filtered ouput bound to "prop" property will reflect this change
-          // in the next tick.
-          filter.addSample(model.get("time"), model.get(property));
-        },
-        extract: function (idx) {
-          filter.setCurrentStep(idx);
-        },
-        invalidate: function (idx) {
-          filter.invalidate(idx);
-        },
-        setHistoryLength: function (length) {
-          filter.setMaxBufferLength(length);
-        }
-      });
-
-      // Extend description to contain information about filter.
-      description.property = property;
-      description.type = type;
-      description.period = period;
-
-      // Filtered output is still an output.
-      // Reuse existing, well tested logic for caching, observing etc.
-      model.defineOutput(name, description, function () {
-        return filter.calculate();
-      });
-    };
-
-    /**
-      Define a property of the model to be treated as a custom parameter. Custom parameters are
-      (generally, user-defined) read/write properties that trigger a setter action when set, and
-      whose values are automatically persisted in the tick history.
-
-      Because custom parameters are not intended to be interpreted by the engine, but instead simply
-      *represent* states of the model that are otherwise fully specified by the engine state and
-      other properties of the model, and because the setter function might not limit itself to a
-      purely functional mapping from parameter value to model properties, but might perform any
-      arbitrary stateful change, (stopping the model, etc.), the setter is NOT called when custom
-      parameters are updated by the tick history.
-    */
-    model.defineParameter = function(key, descriptionHash, setter) {
-      var descriptor = {
-            type: 'parameter',
-            includeInHistoryState: true,
-            invokeSetterAfterBulkRestore: false,
-            description: new PropertyDescription(unitsDefinition, descriptionHash),
-            beforeSetCallback: invalidatingChangePreHook,
-            afterSetCallback: invalidatingChangePostHook
-          };
-
-      // In practice, some parameters are meant only to be observed, and have no setter
-      if (setter) {
-        descriptor.set = function(value) {
-          setter.call(model, value);
-        };
-      }
-      propertySupport.defineProperty(key, descriptor);
-    };
-
     /**
       Current seek position
     */
@@ -25622,13 +26728,14 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
 
     model.seek = function(location) {
       if (!arguments.length) { location = 0; }
-      if (!model.is_stopped()) {
+      if (!model.isStopped()) {
         model.stop();
       }
       newStep = false;
       runAndDispatchObjectNumberChanges(function() {
         tickHistory.seekExtract(location);
-        updateAllOutputProperties();
+        readModelState();
+        model.updateAllOutputProperties();
         dispatch.seek();
       });
       return tickHistory.get("counter");
@@ -25636,17 +26743,18 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
 
     model.stepBack = function(num) {
       if (!arguments.length) { num = 1; }
-      if (!model.is_stopped()) {
+      if (!model.isStopped()) {
         model.stop();
       }
       newStep = false;
       runAndDispatchObjectNumberChanges(function() {
         var i, index;
-        i=-1; while(++i < num) {
+        i = -1; while(++i < num) {
           index = tickHistory.get("index");
           if (index > 0) {
             tickHistory.decrementExtract();
-            updateAllOutputProperties();
+            readModelState();
+            model.updateAllOutputProperties();
             dispatch.stepBack();
           }
         }
@@ -25656,7 +26764,7 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
 
     model.stepForward = function(num) {
       if (!arguments.length) { num = 1; }
-      if (!model.is_stopped()) {
+      if (!model.isStopped()) {
         model.stop();
       }
       runAndDispatchObjectNumberChanges(function() {
@@ -25666,10 +26774,11 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
           size = tickHistory.get("length");
           if (index < size-1) {
             tickHistory.incrementExtract();
-            updateAllOutputProperties();
+            readModelState();
+            model.updateAllOutputProperties();
             dispatch.stepForward();
           } else {
-            tick();
+            model.tick();
           }
         }
       });
@@ -25696,7 +26805,6 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       Creates a new md2d engine and leaves it in 'engine'.
     */
     function initializeEngine(properties, pluginProperties) {
-      engine = md2d.createEngine();
       engine.setDimensions([properties.minX, properties.minY, properties.maxX, properties.maxY]);
 
       if (pluginProperties.quantumDynamics) {
@@ -25706,12 +26814,6 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
         properties.useQuantumDynamics = false;
       }
 
-      // Register invalidating change hooks.
-      // pairwiseLJProperties object allows to change state which defines state of the whole simulation.
-      engine.pairwiseLJProperties.registerChangeHooks(invalidatingChangePreHook, invalidatingChangePostHook);
-
-      window.state = modelState = {};
-
       // Copy reference to basic properties.
       // FIXME. This should go away. https://www.pivotaltracker.com/story/show/50086079
       elements = engine.elements;
@@ -25720,6 +26822,7 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       angularBonds = engine.angularBonds;
       restraints = engine.restraints;
       obstacles = engine.obstacles;
+      rectangles = engine.rectangles;
     }
 
     model.createElements = function(_elements) {
@@ -25891,18 +26994,31 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
 
       return model;
     };
+    model.createRectangles = function(_rectangles) {
+      var numRectangles = _rectangles.x.length,
+          i, prop, rectangleProps;
+
+      // See function above
+      for (i = 0; i < numRectangles; i++) {
+        rectangleProps = {};
+        for (prop in _rectangles) {
+          if (_rectangles.hasOwnProperty(prop)) {
+            rectangleProps[prop] = _rectangles[prop][i];
+          }
+        }
+        model.addRectangle(rectangleProps);
+      }
+
+      return model;
+    };
 
     model.reset = function() {
       dispatch.willReset();
-      invalidatingChangePreHook();
-      model.resetTime();
-      tickHistory.restoreInitialState();
-      invalidatingChangePostHook();
-      dispatch.reset();
-    };
-
-    model.resetTime = function() {
+      propertySupport.invalidatingChangePreHook();
       engine.setTime(0);
+      tickHistory.restoreInitialState();
+      propertySupport.invalidatingChangePostHook();
+      dispatch.reset();
     };
 
     model.getTotalMass = function() {
@@ -25991,13 +27107,13 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       // When atoms are being deserialized, the deserializing function
       // should handle change hooks due to performance reasons.
       if (!options.deserialization) {
-        invalidatingChangePreHook();
+        propertySupport.invalidatingChangePreHook();
       }
 
       engine.addAtom(props);
 
       if (!options.deserialization) {
-        invalidatingChangePostHook();
+        propertySupport.invalidatingChangePostHook();
       }
 
       if (!options.suppressEvent) {
@@ -26013,11 +27129,11 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
 
       options = options || {};
 
-      invalidatingChangePreHook();
+      propertySupport.invalidatingChangePreHook();
       engine.removeAtom(i);
       // Enforce modeler to recalculate viewAtoms array.
       viewAtoms.length = 0;
-      invalidatingChangePostHook();
+      propertySupport.invalidatingChangePostHook();
 
       if (!options.suppressEvent) {
         // Notify listeners that atoms is removed.
@@ -26059,15 +27175,31 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       // Validate properties, use default values if there is such need.
       validatedProps = validator.validateCompleteness(metadata.obstacle, props);
       // Finally, add obstacle.
-      invalidatingChangePreHook();
+      propertySupport.invalidatingChangePreHook();
       engine.addObstacle(validatedProps);
-      invalidatingChangePostHook();
+      propertySupport.invalidatingChangePostHook();
+    };
+
+    model.addRectangle = function(props) {
+      var validatedProps;
+      // Validate properties, use default values if there is such need.
+      validatedProps = validator.validateCompleteness(metadata.rectangle, props);
+      // Finally, add rectangle.
+      propertySupport.invalidatingChangePreHook();
+      engine.addRectangle(validatedProps);
+      propertySupport.invalidatingChangePostHook();
     };
 
     model.removeObstacle = function (idx) {
-      invalidatingChangePreHook();
+      propertySupport.invalidatingChangePreHook();
       engine.removeObstacle(idx);
-      invalidatingChangePostHook();
+      propertySupport.invalidatingChangePostHook();
+    };
+
+	model.removeRectangle = function (idx) {
+      propertySupport.invalidatingChangePreHook();
+      engine.removeRectangle(idx);
+      propertySupport.invalidatingChangePostHook();
     };
 
     model.addRadialBond = function(props, options) {
@@ -26076,23 +27208,23 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
 
       // During deserialization change hooks are managed manually.
       if (!options || !options.deserialization) {
-        invalidatingChangePreHook();
+        propertySupport.invalidatingChangePreHook();
       }
 
       // Finally, add radial bond.
       engine.addRadialBond(props);
 
       if (!options || !options.deserialization) {
-        invalidatingChangePostHook();
+        propertySupport.invalidatingChangePostHook();
       }
 
       dispatch.addRadialBond();
     },
 
     model.removeRadialBond = function(idx) {
-      invalidatingChangePreHook();
+      propertySupport.invalidatingChangePreHook();
       engine.removeRadialBond(idx);
-      invalidatingChangePreHook();
+      propertySupport.invalidatingChangePreHook();
       dispatch.removeRadialBond();
     };
 
@@ -26102,21 +27234,21 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
 
       // During deserialization change hooks are managed manually.
       if (!options || !options.deserialization) {
-        invalidatingChangePreHook();
+        propertySupport.invalidatingChangePreHook();
       }
 
       // Finally, add angular bond.
       engine.addAngularBond(props);
 
       if (!options || !options.deserialization) {
-        invalidatingChangePostHook();
+        propertySupport.invalidatingChangePostHook();
       }
     };
 
     model.removeAngularBond = function(idx) {
-      invalidatingChangePreHook();
+      propertySupport.invalidatingChangePreHook();
       engine.removeAngularBond(idx);
-      invalidatingChangePostHook();
+      propertySupport.invalidatingChangePostHook();
       dispatch.removeAngularBond();
     };
 
@@ -26124,9 +27256,9 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       // Validate properties, use default values if there is such need.
       props = validator.validateCompleteness(metadata.restraint, props);
       // Finally, add restraint.
-      invalidatingChangePreHook();
+      propertySupport.invalidatingChangePreHook();
       engine.addRestraint(props);
-      invalidatingChangePostHook();
+      propertySupport.invalidatingChangePostHook();
     };
 
     /** Return the bounding box of the molecule containing atom 'atomIndex', with atomic radii taken
@@ -26172,9 +27304,9 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     },
 
     model.setTemperatureOfAtoms = function(atomIndices, T) {
-      invalidatingChangePreHook();
+      propertySupport.invalidatingChangePreHook();
       engine.setTemperatureOfAtoms(atomIndices, T);
-      invalidatingChangePostHook();
+      propertySupport.invalidatingChangePostHook();
     };
 
     model.getTemperatureOfAtoms = function(atomIndices) {
@@ -26228,9 +27360,9 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
         }
       }
 
-      invalidatingChangePreHook();
+      propertySupport.invalidatingChangePreHook();
       engine.setAtomProperties(i, translateToMD2DUnits(props, metadata.atom));
-      invalidatingChangePostHook();
+      propertySupport.invalidatingChangePostHook();
       return true;
     };
 
@@ -26266,9 +27398,9 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       if (aminoacidsHelper.isAminoAcid(i)) {
         throw new Error("Elements: elements with ID " + i + " cannot be edited, as they define amino acids.");
       }
-      invalidatingChangePreHook();
+      propertySupport.invalidatingChangePreHook();
       engine.setElementProperties(i, translateToMD2DUnits(props, metadata.element));
-      invalidatingChangePostHook();
+      propertySupport.invalidatingChangePostHook();
     };
 
     model.getElementProperties = function(i) {
@@ -26286,9 +27418,9 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     model.setObstacleProperties = function(i, props) {
       // Validate properties.
       props = validator.validate(metadata.obstacle, props);
-      invalidatingChangePreHook();
+      propertySupport.invalidatingChangePreHook();
       engine.setObstacleProperties(i, translateToMD2DUnits(props, metadata.obstacle));
-      invalidatingChangePostHook();
+      propertySupport.invalidatingChangePostHook();
     };
 
     model.getObstacleProperties = function(i) {
@@ -26303,12 +27435,32 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       return translateFromMD2DUnits(props, obstacleMetaData);
     };
 
+    model.setRectangleProperties = function(i, props) {
+      // Validate properties.
+      props = validator.validate(metadata.rectangle, props);
+      propertySupport.invalidatingChangePreHook();
+      engine.setRectangleProperties(i, translateToMD2DUnits(props, metadata.rectangle));
+      propertySupport.invalidatingChangePostHook();
+    };
+
+    model.getRectangleProperties = function(i) {
+      var rectangleMetaData = metadata.rectangle,
+          props = {},
+          propName;
+      for (propName in rectangleMetaData) {
+        if (rectangleMetaData.hasOwnProperty(propName)) {
+          props[propName] = rectangles[propName][i];
+        }
+      }
+      return translateFromMD2DUnits(props, rectangleMetaData);
+    };
+
     model.setRadialBondProperties = function(i, props) {
       // Validate properties.
       props = validator.validate(metadata.radialBond, props);
-      invalidatingChangePreHook();
+      propertySupport.invalidatingChangePreHook();
       engine.setRadialBondProperties(i, translateToMD2DUnits(props, metadata.radialBond));
-      invalidatingChangePostHook();
+      propertySupport.invalidatingChangePostHook();
     };
 
     model.getRadialBondProperties = function(i) {
@@ -26326,9 +27478,9 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     model.setRestraintProperties = function(i, props) {
       // Validate properties.
       props = validator.validate(metadata.restraint, props);
-      invalidatingChangePreHook();
+      propertySupport.invalidatingChangePreHook();
       engine.setRestraintProperties(i, translateToMD2DUnits(props, metadata.restraint));
-      invalidatingChangePostHook();
+      propertySupport.invalidatingChangePostHook();
     };
 
     model.getRestraintProperties = function(i) {
@@ -26346,9 +27498,9 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     model.setAngularBondProperties = function(i, props) {
       // Validate properties.
       props = validator.validate(metadata.angularBond, props);
-      invalidatingChangePreHook();
+      propertySupport.invalidatingChangePreHook();
       engine.setAngularBondProperties(i, translateToMD2DUnits(props, metadata.angularBond));
-      invalidatingChangePostHook();
+      propertySupport.invalidatingChangePostHook();
     };
 
     model.getAngularBondProperties = function(i) {
@@ -26387,7 +27539,7 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       if (springConstant == null) springConstant = 500;
 
       if (unitsTranslation) {
-        springConstant = unitsTranslation.translateToMD2DUnits(springConstant, 'stiffness');
+        springConstant = unitsTranslation.translateToModelUnits(springConstant, 'stiffness');
       }
       return engine.addSpringForce(atomIndex, x, y, springConstant);
     };
@@ -26508,16 +27660,16 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       return model.getFPS() * model.get('timeStep') * model.get('timeStepsPerTick');
     };
 
-    model.is_stopped = function() {
-      return stopped || stopRequest;
-    };
-
     model.get_elements = function() {
       return elements;
     };
 
     model.getAtoms = function() {
       return viewAtoms;
+    };
+
+    model.getElectricField = function() {
+      return electricField;
     };
 
     model.getPhotons = function() {
@@ -26552,6 +27704,13 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     model.get_obstacles = function() {
       return obstacles;
     };
+    model.get_rectangles = function() {
+      return rectangles;
+    };
+
+    model.get_rectangles = function() {
+      return rectangles;
+    };
 
     // FIXME. Should be an output property.
     model.getNumberOfElements = function () {
@@ -26561,6 +27720,10 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     // FIXME. Should be an output property.
     model.getNumberOfObstacles = function () {
       return engine.getNumberOfObstacles();
+    };
+
+    model.getNumberOfRectangles = function () {
+      return engine.getNumberOfRectangles();
     };
 
     // FIXME. Should be an output property.
@@ -26598,124 +27761,76 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       return engine.getVdwPairsArray();
     };
 
-    model.on = function(type, listener) {
-      dispatch.on(type, listener);
-      return model;
-    };
-
     model.tickInPlace = function() {
       dispatch.tick();
       return model;
     };
 
-    model.tick = function(num, opts) {
-      if (!arguments.length) num = 1;
+    model.tick = function(elapsedTime) {
+      var timeStep = model.get('timeStep'),
+          // Save number of radial bonds in engine before integration,
+          // as integration can create new disulfide bonds. This is the
+          // only type of objects which can be created by the engine autmatically.
+          prevNumOfRadialBonds = engine.getNumberOfRadialBonds(),
+          t, sampleTime;
 
-      var dontDispatchTickEvent = opts && opts.dontDispatchTickEvent || false,
-          i = -1;
-
-      while(++i < num) {
-        tick(null, dontDispatchTickEvent);
+      if (unitsTranslation) {
+        timeStep = unitsTranslation.translateToModelUnits(timeStep, 'time');
       }
-      return model;
+
+      if (!model.isStopped()) {
+        t = performance.now();
+        if (lastSampleTime) {
+          sampleTime = t - lastSampleTime;
+          lastSampleTime = t;
+          sampleTimes.push(sampleTime);
+          sampleTimes.splice(0, sampleTimes.length - 64);
+
+          // Process all transitions which are in progress
+          // and remove finished.
+          processTransitions(sampleTime);
+        } else {
+          lastSampleTime = t;
+        }
+      }
+
+      // timeStepsPerTick is defined in Classic MW as the number of timesteps per view update.
+      // However, in MD2D we prefer the more physical notion of integrating for a particular
+      // length of time.
+      console.time('integration');
+      engine.integrate(model.get('timeStepsPerTick') * timeStep, timeStep);
+      console.timeEnd('integration');
+      console.time('reading model state');
+      readModelState();
+      model.updateAllOutputProperties();
+      console.timeEnd('reading model state');
+
+      console.time('tick history push');
+      tickHistory.push();
+      console.timeEnd('tick history push');
+
+      newStep = true;
+
+      if (prevNumOfRadialBonds < engine.getNumberOfRadialBonds()) {
+        dispatch.addRadialBond();
+      }
+
+      dispatch.tick();
     };
 
     model.minimizeEnergy = function () {
-      invalidatingChangePreHook();
+      propertySupport.invalidatingChangePreHook();
       engine.minimizeEnergy();
-      invalidatingChangePostHook();
+      propertySupport.invalidatingChangePostHook();
       // Positions of atoms could change, so
       // dispatch tick event.
       dispatch.tick();
       return model;
     };
 
-    model.stop = function() {
-      stopRequest = true;
-      dispatch.stop();
-      return model;
-    };
-
-    /**
-      Restart the model (call model.start()) after the next tick completes.
-
-      This is useful for changing the modelSampleRate interactively.
-    */
-    model.restart = function() {
-      restartRequest = true;
-    };
-
-    model.start = function() {
-      // Cleanup stop and restart requests.
-      stopRequest = false;
-      restartRequest = false;
-
-      if (!stopped) {
-        // Do nothing, model is running.
-        return model;
-      }
-
-      stopped = false;
-      lastSampleTime = null;
-
-      model.timer(function timerTick(elapsedTime) {
-        console.timeEnd('gap between frames');
-        // Cancel the timer and refuse to to step the model, if the model is stopped.
-        // This is necessary because there is no direct way to cancel a d3 timer.
-        // See: https://github.com/mbostock/d3/wiki/Transitions#wiki-d3_timer)
-        if (stopRequest) {
-          stopped = true;
-          return true;
-        }
-
-        if (restartRequest) {
-          setTimeout(model.start, 0);
-          stopped = true;
-          return true;
-        }
-
-        tick(elapsedTime, false);
-
-        console.time('gap between frames');
-        return false;
-      });
-
-      dispatch.play();
-      console.time('gap between frames');
-      return model;
-    };
-
-    /**
-      Repeatedly calls `f` at an interval defined by the modelSampleRate property, until f returns
-      true. (This is the same signature as d3.timer.)
-
-      If modelSampleRate === 'default', try to run at the "requestAnimationFrame rate"
-      (i.e., using d3.timer(), after running f, also request to run f at the next animation frame)
-
-      If modelSampleRate !== 'default', instead uses setInterval to schedule regular calls of f with
-      period (1000 / sampleRate) ms, corresponding to sampleRate calls/s
-    */
-    model.timer = function(f) {
-      var intervalID,
-          sampleRate = model.get("modelSampleRate");
-
-      if (sampleRate === 'default') {
-        // use requestAnimationFrame via d3.timer
-        d3.timer(f);
-      } else {
-        // set an interval to run the model more slowly.
-        intervalID = window.setInterval(function() {
-          if ( f() ) {
-            window.clearInterval(intervalID);
-          }
-        }, 1000/sampleRate);
-      }
-    };
-
     model.dimensions = function() {
       return engine.getDimensions();
     };
-
 
     model.format = function(property, opts) {
       opts = opts || {};
@@ -26780,16 +27895,14 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       properties will no longer be updated.
       */
     model.startBatch = function() {
-      invalidatingChangePreHook();
-      suppressInvalidatingChangeHooks = true;
+      propertySupport.startBatch();
       // Suppress events dispatching. They will be dispatched during
       // .endBatch() execution.
       dispatch.startBatch();
     };
 
     model.endBatch = function() {
-      suppressInvalidatingChangeHooks = false;
-      invalidatingChangePostHook();
+      propertySupport.endBatch();
       // All events will be dispatched now (but just once per event type).
       dispatch.endBatch();
     };
@@ -26881,6 +27994,31 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
         delete propCopy.obstacles.colorG;
         delete propCopy.obstacles.colorB;
       }
+      if (engine.getNumberOfRectangles()) {
+        propCopy.rectangles = serialize(metadata.rectangle, rectangles, engine.getNumberOfRectangles());
+
+        propCopy.rectangles.color = [];
+        propCopy.rectangles.lineColor = [];
+        // Convert color from internal representation to one expected for serialization.
+        for (i = 0, len = propCopy.rectangles.colorR.length; i < len; i++) {
+          propCopy.rectangles.color.push([
+            propCopy.rectangles.colorR[i],
+            propCopy.rectangles.colorG[i],
+            propCopy.rectangles.colorB[i]
+          ]);
+          propCopy.rectangles.lineColor.push([
+            propCopy.rectangles.lineColorR[i],
+            propCopy.rectangles.lineColorG[i],
+            propCopy.rectangles.lineColorB[i]
+          ]);
+        }
+        delete propCopy.rectangles.colorR;
+        delete propCopy.rectangles.colorG;
+        delete propCopy.rectangles.colorB;
+        delete propCopy.rectangles.lineColorR;
+        delete propCopy.rectangles.lineColorR;
+        delete propCopy.rectangles.lineColorR;
+      }
       if (engine.getNumberOfRestraints() > 0) {
         propCopy.restraints = serialize(metadata.restraint, restraints, engine.getNumberOfRestraints());
       }
@@ -26967,7 +28105,6 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
         textBoxes[i] = validator.validateCompleteness(metadata.textBox, textBoxes[i]);
       }
     }());
-    viewOptions = validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {});
 
     // TODO. Implement a pattern whereby the pluginController lets each plugins examine the initial
     // properties and extract the relevant plugin properties. *However*, don't do it in a way that
@@ -26977,28 +28114,6 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       quantumDynamics: initialProperties.quantumDynamics
     };
 
-    // Set the regular, main properties. Note that validation process will return hash without all
-    // properties which are not defined in meta model as mainProperties (like atoms, obstacles,
-    // viewOptions etc).
-    mainProperties = validator.validateCompleteness(metadata.mainProperties, initialProperties);
-
-    // Set up units scheme.
-    unitsDefinition = unitDefinitions.get(mainProperties.unitsScheme);
-
-    // If we're not using MD2D units, we need a translation (which, for each unit type, allows some
-    // number of "native" MD2D units to stand for 1 translated unit, e.g., 1 nm represents 1m, with
-    // the relationships between these ratios set up so that the calculations reamin physically
-    // consistent.
-    if (mainProperties.unitsScheme !== 'md2d') {
-      unitsTranslation = new UnitsTranslation(unitsDefinition);
-    }
-
-    // Initialize minX, minY, maxX, maxY from model width and height if they are undefined.
-    initializeDimensions(mainProperties);
-
-    // Setup MD2D engine object.
-    initializeEngine(mainProperties, pluginProperties);
-
     // TODO: Elements are stored and treated different from other objects. This was enforced by
     // createNewAtoms() method which has been removed. Change also editableElements handling.
     editableElements = initialProperties.elements;
@@ -27007,106 +28122,22 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     // Create elements which specify amino acids also.
     createAminoAcids();
 
-    // ------------------------------
-    // Define toplevel properties of the model
-    // ------------------------------
+    // This will extend model API to support standard Lab model features. We
+    // have to do it know, as this will also set initial properties, so the
+    // engine has to be already defined (see custom setters).
+    labModelerMixin.mixInto(model);
 
-    // Add all the mainProperties, with custom setters defined below
-    (function() {
-      var customSetters = {
-        targetTemperature: function (value) {
-          engine.setTargetTemperature(value);
-        },
+    // Initialize minX, minY, maxX, maxY from model width and height if they are undefined.
+    initializeDimensions(model.properties);
 
-        temperatureControl: function(value) {
-          engine.useThermostat(value);
-        },
-
-        lennardJonesForces: function(value) {
-          engine.useLennardJonesInteraction(value);
-        },
-
-        coulombForces: function(value) {
-          engine.useCoulombInteraction(value);
-        },
-
-        solventForceType: function(value) {
-          engine.setSolventForceType(value);
-        },
-
-        DNAState: function(value) {
-          engine.setDNAState(value);
-        },
-
-        solventForceFactor: function(value) {
-          engine.setSolventForceFactor(value);
-        },
-
-        additionalSolventForceMult: function(value) {
-          engine.setAdditionalSolventForceMult(value);
-        },
-
-        additionalSolventForceThreshold: function(value) {
-          engine.setAdditionalSolventForceThreshold(value);
-        },
-
-        dielectricConstant: function(value) {
-          engine.setDielectricConstant(value);
-        },
-
-        realisticDielectricEffect: function(value) {
-          engine.setRealisticDielectricEffect(value);
-        },
-
-        VDWLinesCutoff: function(value) {
-          var ratio = VDWLinesCutoffMap[value];
-          if (ratio) {
-            engine.setVDWLinesRatio(ratio);
-          }
-        },
-
-        gravitationalField: function(value) {
-          engine.setGravitationalField(value);
-        },
-
-        modelSampleRate: function() {
-          if (!stopped) model.restart();
-        },
-
-        viscosity: function(value) {
-          engine.setViscosity(value);
-        },
-
-        polarAAEpsilon: function (value) {
-          var polarAAs, element1, element2,
-              i, j, len;
-
-          // Set custom pairwise LJ properties for polar amino acids.
-          // They should attract stronger to better mimic nature.
-          polarAAs = aminoacidsHelper.getPolarAminoAcids();
-          for (i = 0, len = polarAAs.length; i < len; i++) {
-            element1 = polarAAs[i];
-            for (j = i + 1; j < len; j++) {
-              element2 = polarAAs[j];
-              // Set custom pairwise LJ epsilon (default one for AA is -0.1).
-              engine.pairwiseLJProperties.set(element1, element2, {epsilon: value});
-            }
-          }
-        }
-      };
-
-      Object.keys(metadata.mainProperties).forEach(function(key) {
-        defineBuiltinProperty('mainProperty', key, customSetters[key]);
-      });
-      propertySupport.setRawValues(mainProperties);
-    })();
-
-    // Define and set the model view options. None of these have custom setters.
-    Object.keys(metadata.viewOptions).forEach(function(key) {
-      defineBuiltinProperty('viewOption', key);
+    propertySupport.on("afterInvalidatingChange.read-model-state", readModelState);
+    propertySupport.on("afterInvalidatingChangeSequence.tick-history", function () {
+      if (tickHistory) tickHistory.invalidateFollowingState();
+      dispatch.invalidation();
     });
-    propertySupport.setRawValues(viewOptions);
 
+    // Setup MD2D engine object.
+    initializeEngine(model.properties, pluginProperties);
 
     // Setup genetic engine.
     geneticEngine = new GeneticEngine(model);
@@ -27125,6 +28156,7 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     if (initialProperties.angularBonds) model.createAngularBonds(initialProperties.angularBonds);
     if (initialProperties.restraints)   model.createRestraints(initialProperties.restraints);
     if (initialProperties.obstacles)    model.createObstacles(initialProperties.obstacles);
+    if (initialProperties.rectangles)    model.createRectangles(initialProperties.rectangles);
     // Basically, this #deserialize method is more or less similar to other #create... methods used
     // above. However, this is the first step to delegate some functionality from modeler to smaller classes.
     if (initialProperties.pairwiseLJProperties)
@@ -27139,6 +28171,17 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       state: engine.getState()
     }, model, defaultMaxTickHistory);
 
+    // FIXME: ugly workaround - mixin OutputSupport again, this time providing
+    // tickHistory, so filtered outputs will use it. We couldn't pass
+    // tickHistory directly to LabModelerMixin, as tickHistory depends on
+    // propertySupport ...returned by LabModelrMixin. It has to be cleaned up.
+    outputSupport = new OutputSupport({
+      propertySupport: propertySupport,
+      unitsDefinition: unitsDefinition,
+      tickHistory: tickHistory
+    });
+    outputSupport.mixInto(model);
+
     newStep = true;
 
     // Define some default output properties.
@@ -27151,7 +28194,7 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       // can only read values already in translated units to start with.
       var value = modelState.time;
       if (unitsTranslation) {
-        value = unitsTranslation.translateFromMD2DUnits(value, 'time');
+        value = unitsTranslation.translateFromModelUnits(value, 'time');
       }
       return value;
     });
@@ -27182,7 +28225,7 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
         unitName:         displayTimeUnits.name,
         unitPluralName:   displayTimeUnits.pluralName,
         unitAbbreviation: displayTimeUnits.symbol,
-        format: '.3f'
+        format: '.1f'
       }, function() {
         return model.get('time') * displayTimeUnits.unitsPerBaseUnit;
       });
@@ -27221,7 +28264,7 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     }, function() {
       var value = modelState.KE;
       if (unitsTranslation) {
-        value = unitsTranslation.translateFromMD2DUnits(value, 'energy');
+        value = unitsTranslation.translateFromModelUnits(value, 'energy');
       }
       return value;
     });
@@ -27233,9 +28276,10 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     }, function() {
       var value = modelState.PE;
       if (unitsTranslation) {
-        value = unitsTranslation.translateFromMD2DUnits(value, 'energy');
+        value = unitsTranslation.translateFromModelUnits(value, 'energy');
       }
-      return value;    });
+      return value;
+    });
 
     model.defineOutput('totalEnergy', {
       label: "Total Energy",
@@ -27244,7 +28288,7 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     }, function() {
       var value = modelState.KE + modelState.PE;
       if (unitsTranslation) {
-        value = unitsTranslation.translateFromMD2DUnits(value, 'energy');
+        value = unitsTranslation.translateFromModelUnits(value, 'energy');
       }
       return value;
     });
@@ -27256,16 +28300,29 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     }, function() {
       var value = modelState.temperature;
       if (unitsTranslation) {
-        value = unitsTranslation.translateFromMD2DUnits(value, 'temperature');
+        value = unitsTranslation.translateFromModelUnits(value, 'temperature');
       }
       return value;
     });
 
-    updateAllOutputProperties();
+    readModelState();
+    model.updateAllOutputProperties();
 
     model.performanceOptimizer = new PerformanceOptimizer(model);
 
     return model;
+  };
+});
+
+/*global define*/
+/**
+ * Views can require this function to get next available tab index.
+ */
+define('common/views/tab-index',[],function () {
+  var tabIndex = 0;
+
+  return function getNextTabIndex() {
+    return tabIndex++;
   };
 });
 
@@ -27275,21 +28332,23 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
 //   PTA View Container
 //
 // ------------------------------------------------------------
-define('common/views/model-view',['require','lab.config','common/performance','common/console'],function (require) {
+define('common/views/svg-container',['require','common/performance','common/views/tab-index','common/console'],function (require) {
   // Dependencies.
-  var labConfig             = require('lab.config'),
-      performance           = require('common/performance'),
+  var performance           = require('common/performance'),
+      getNextTabIndex       = require('common/views/tab-index'),
       console               = require('common/console');
 
-  return function ModelView(modelUrl, model, Renderer, getNextTabIndex) {
+  return function SVGContainer(model, modelUrl, Renderer, opt) {
         // Public API object to be returned.
-    var api = {},
-        renderer,
+    var api,
+
+        // Coordinate system origin. Supported values are 'bottom-left' and 'top-left'.
+        origin = opt && opt.origin || 'bottom-left',
+
         $el,
         node,
         emsize,
         fontSizeInPixels,
-        imagePath,
         vis1, vis, plot, viewportG,
         cx, cy,
         padding, size, modelSize, viewport,
@@ -27311,17 +28370,8 @@ define('common/views/model-view',['require','lab.config','common/performance','c
         // function.
         model2pxInv = d3.scale.linear(),
 
-        // "Containers" - SVG g elements used to position layers of the final visualization.
-        mainContainer,
         gridContainer,
-        radialBondsContainer,
-        VDWLinesContainer,
-        imageContainerBelow,
-        imageContainerTop,
-        textContainerBelow,
-        textContainerTop,
         brushContainer,
-        iconContainer,
 
         clickHandler,
         // d3.svg.brush object used to implement select action. It should be
@@ -27330,15 +28380,9 @@ define('common/views/model-view',['require','lab.config','common/performance','c
 
         dispatch = d3.dispatch("viewportDrag"),
 
-        offsetLeft, offsetTop;
+        renderer,
 
-    function processOptions(newModelUrl, newModel) {
-      modelUrl = newModelUrl || modelUrl;
-      model = newModel || model;
-      if (modelUrl) {
-        imagePath = labConfig.actualRoot + modelUrl.slice(0, modelUrl.lastIndexOf("/") + 1);
-      }
-    }
+        offsetLeft, offsetTop;
 
     function getFontSizeInPixels() {
       return parseFloat($el.css('font-size')) || 18;
@@ -27376,7 +28420,7 @@ define('common/views/model-view',['require','lab.config','common/performance','c
     function scale() {
       var viewPortWidth = model.get("viewPortWidth"),
           viewPortHeight = model.get("viewPortHeight"),
-          viewPortZoom = model.get("viewPortZoom"),
+          viewPortZoom = model.get("viewPortZoom") || 1,
           viewPortX = model.get("viewPortX"),
           viewPortY = model.get("viewPortY"),
           aspectRatio,
@@ -27401,7 +28445,9 @@ define('common/views/model-view',['require','lab.config','common/performance','c
 
       viewport.scaledWidth  = viewport.width / viewPortZoom;
       viewport.scaledHeight = viewport.height / viewPortZoom;
-      viewport.y += viewport.scaledHeight;
+      if (origin === 'bottom-left') {
+        viewport.y += viewport.scaledHeight;
+      }
 
       aspectRatio = viewport.width / viewport.height;
 
@@ -27432,10 +28478,10 @@ define('common/views/model-view',['require','lab.config','common/performance','c
         .domain([0, viewport.width])
         .range([0, size.width]);
 
-      // Inverted model2px scaling function for position (for y-coordinates, inverted domain).
+      // Inverted model2px scaling function for position (for y-coordinates, domain can be inverted).
       model2pxInv
         .domain([viewport.height, 0])
-        .range([0, size.height]);
+        .range(origin === 'bottom-left' ? [0, size.height] : [size.height, 0]);
 
       if (selectBrush) {
         // Update brush to use new scaling functions.
@@ -27454,7 +28500,7 @@ define('common/views/model-view',['require','lab.config','common/performance','c
           stroke = function(d) { return d ? "#ccc" : "#666"; },
           fx = model2px.tickFormat(5),
           fy = model2pxInv.tickFormat(5),
-          lengthUnits = model.getUnitDefinition('length'),
+          lengthUnits = model.getUnitDefinition ? model.getUnitDefinition('length') : "",
           xlabel, ylabel;
 
       if (d3.event && d3.event.transform) {
@@ -27559,7 +28605,7 @@ define('common/views/model-view',['require','lab.config','common/performance','c
     // Setup background.
     function setupBackground() {
       // Just set the color.
-      plot.attr("fill", model.get("backgroundColor"));
+      plot.attr("fill", model.get("backgroundColor") || "rgba(0, 0, 0, 0)");
     }
 
     function mousedown() {
@@ -27605,31 +28651,8 @@ define('common/views/model-view',['require','lab.config','common/performance','c
         // that top-level view defines containers for elements that it's
         // unaware of.
         viewportG = vis.append("svg").attr("class", "viewport");
-        imageContainerBelow  = viewportG.append("g").attr("class", "image-container-below");
-        textContainerBelow   = viewportG.append("g").attr("class", "text-container-below");
-        radialBondsContainer = viewportG.append("g").attr("class", "radial-bonds-container");
-        VDWLinesContainer    = viewportG.append("g").attr("class", "vdw-lines-container");
-        mainContainer        = viewportG.append("g").attr("class", "main-container");
-        imageContainerTop    = viewportG.append("g").attr("class", "image-container-top");
-        textContainerTop     = viewportG.append("g").attr("class", "text-container-top");
-        brushContainer       = viewportG.append("g").attr("class", "brush-container");
+        brushContainer = vis.append("g").attr("class", "brush-container");
 
-        iconContainer = vis.append("g").attr("class", "icon-container");
-
-        // Make all layers available for subviews, expect from brush layer
-        // which is used only internally.
-        api.containers = {
-          svg:                  vis1,
-          gridContainer:        gridContainer,
-          imageContainerBelow:  imageContainerBelow,
-          textContainerBelow:   textContainerBelow,
-          radialBondsContainer: radialBondsContainer,
-          VDWLinesContainer:    VDWLinesContainer,
-          mainContainer:        mainContainer,
-          imageContainerTop:    imageContainerTop,
-          textContainerTop:     textContainerTop,
-          iconContainer:        iconContainer
-        };
       } else {
         // TODO: ?? what g, why is it here?
         vis.selectAll("g.x").remove();
@@ -27683,7 +28706,7 @@ define('common/views/model-view',['require','lab.config','common/performance','c
           ts = [],
           samples = 8,
           newDrag = false,
-          dragOpt = model.properties.viewPortDrag,
+          dragOpt = model.properties.viewPortDrag || false,
           vx, vy, t,
           dragBehavior;
 
@@ -27776,10 +28799,6 @@ define('common/views/model-view',['require','lab.config','common/performance','c
       }
     }
 
-    //
-    // *** Main Renderer functions ***
-    //
-
     function init() {
       // Setup model view state.
       renderContainer();
@@ -27787,20 +28806,9 @@ define('common/views/model-view',['require','lab.config','common/performance','c
 
       clickHandler = {};
 
-      // dynamically add modelUrl as a model property so the renderer
-      // can find resources on paths relative to the model
-      model.url = modelUrl;
-
-      // create a model renderer ... if one hasn't already been created
-      if (!renderer) {
-        renderer = new Renderer(api, model);
-      } else {
-        renderer.reset(model);
-      }
-
       // Register listeners.
       // Redraw container each time when some visual-related property is changed.
-      model.addPropertiesListener([ "backgroundColor"], repaint);
+      model.addPropertiesListener([ "backgroundColor"], api.repaint);
       model.addPropertiesListener(["gridLines", "xunits", "yunits", "xlabel", "ylabel",
                                    "viewPortX", "viewPortY", "viewPortZoom"],
                                    renderContainer);
@@ -27808,46 +28816,81 @@ define('common/views/model-view',['require','lab.config','common/performance','c
                                    viewportDragging);
     }
 
-    //
-    // repaint
-    //
-    // Call when container changes size.
-    //
-    function repaint() {
-      setupBackground();
-      renderer.repaint(model2px, model2pxInv);
-      api.updateClickHandlers();
-    }
-
     api = {
-      $el: null,
-      node: null,
-      update: null,
-      containers: null,
-      model2px: model2px,
-      model2pxInv: model2pxInv,
-      scale: scale,
-      setFocus: setFocus,
-      getFontSizeInPixels: getFontSizeInPixels,
+      get $el() {
+        return $el;
+      },
+      get node() {
+        return node;
+      },
+      get svg() {
+        return vis1;
+      },
+      get vis() {
+        return vis;
+      },
+      get viewport() {
+        return viewportG;
+      },
+      get model2px() {
+        return model2px;
+      },
+      get model2pxInv() {
+        return model2pxInv;
+      },
+      get setFocus() {
+        return setFocus;
+      },
+      get getFontSizeInPixels() {
+        return getFontSizeInPixels;
+      },
+      get url() {
+        return modelUrl;
+      },
+
+      repaint: function() {
+        setupBackground();
+        api.updateClickHandlers();
+
+        if (renderer.repaint) renderer.repaint();
+      },
       resize: function() {
         renderContainer();
-        repaint();
+        api.repaint();
+
+        if (selectBrush) {
+          brushContainer.select("g.select-area").call(selectBrush);
+        }
+
+        if (renderer.resize) renderer.resize();
       },
+
+      setup: function() {
+        if (renderer.setup) renderer.setup();
+      },
+
+      update: function() {
+        if (renderer.update) renderer.update();
+      },
+
       getHeightForWidth: function (width) {
         var aspectRatio = viewport.width / viewport.height;
         width = width - padding.left  - padding.right;
         return width / aspectRatio + padding.top + padding.bottom;
       },
-      repaint: function() {
-        repaint();
-      },
-      reset: function(newModelUrl, newModel) {
+
+      bindModel: function(newModel, newModelUrl) {
+        modelUrl = newModelUrl || modelUrl;
+        model = newModel || model;
         removeClickHandlers();
         api.setSelectHandler(null);
-        processOptions(newModelUrl, newModel);
         init();
-        repaint();
+
+        if (renderer.bindModel) renderer.bindModel(newModel, newModelUrl);
+
+        api.repaint();
       },
+
       pos: function() {
         // Add a pos() function so the model renderer can more easily
         // manipulate absolutely positioned dom elements it may create or
@@ -27940,6 +28983,7 @@ define('common/views/model-view',['require','lab.config','common/performance','c
         brushContainer.select("g.select-area").remove();
         if (handler === null) {
           // Previous handler removed, so just return.
+          selectBrush = null;
           return;
         }
         selectBrush = d3.svg.brush()
@@ -27963,7 +29007,7 @@ define('common/views/model-view',['require','lab.config','common/performance','c
             // Clear and hide the brush.
             selectBrush.clear();
             // Redraw brush (which is now empty).
-            brushContainer.call(selectBrush);
+            brushContainer.select("g.select-area").call(selectBrush);
           });
         // Add a new "g" to easily remove it while
         // disabling / reseting select action.
@@ -27987,479 +29031,11 @@ define('common/views/model-view',['require','lab.config','common/performance','c
     // DOM element.
     node = $el[0];
 
-    processOptions();
     init();
-
-    // Extend Public withExport initialized object to initialized objects
-    api.update = renderer.update;
-    api.$el = $el;
-    api.node = node;
+    renderer = new Renderer(api);
+    renderer.bindModel(model);
 
     return api;
-  };
-});
-
-/*globals define: false, d3: false */
-/*jshint loopfunc: true*/
-
-/*
-  ------------------------------------------------------------
-
-  Simple benchmark runner and results generator
-
-    see: https://gist.github.com/1364172
-
-  ------------------------------------------------------------
-
-  Runs benchmarks and generates the results in a table.
-
-  Setup benchmarks to run in an array of objects with two properties:
-
-    name: a title for the table column of results
-    numeric: boolean, used to decide what columns should be used to calculate averages
-    formatter: (optional) a function that takes a number and returns a formmatted string, example: d3.format("5.1f")
-    run: a function that is called to run the benchmark and call back with a value.
-         It should accept a single argument, the callback to be called when the
-         benchmark completes. It should pass the benchmark value to the callback.
-
-  Start the benchmarks by passing the table element where the results are to
-  be placed and an array of benchmarks to run.
-
-  Example:
-
-    var benchmarks_table = document.getElementById("benchmarks-table");
-
-    var benchmarks_to_run = [
-      {
-        name: "molecules",
-        run: function(done) {
-          done(mol_number);
-        }
-      },
-      {
-        name: "100 Steps (steps/s)",
-        run: function(done) {
-          modelStop();
-          var start = +Date.now();
-          var i = -1;
-          while (i++ < 100) {
-            model.tick();
-          }
-          elapsed = Date.now() - start;
-          done(d3.format("5.1f")(100/elapsed*1000));
-        }
-      },
-    ];
-
-    benchmark.run(benchmarks_table, benchmarks_to_run)
-
-  You can optionally pass two additional arguments to the run method: start_callback, end_callback
-
-    function run(benchmarks_table, benchmarks_to_run, start_callback, end_callback)
-
-  These arguments are used when the last benchmark test is run using the browsers scheduling and re-painting mechanisms.
-
-  For example this test runs a model un the browser and calculates actual frames per second combining the
-  model, view, and browser scheduling and repaint operations.
-
-    {
-      name: "fps",
-      numeric: true,
-      formatter: d3.format("5.1f"),
-      run: function(done) {
-        // warmup
-        model.start();
-        setTimeout(function() {
-          model.stop();
-          var start = model.get('time');
-          setTimeout(function() {
-            // actual fps calculation
-            model.start();
-            setTimeout(function() {
-              model.stop();
-              var elapsedModelTime = model.get('time') - start;
-              done( elapsedModelTime / (model.get('timeStepsPerTick') * model.get('timeStep')) / 2 );
-            }, 2000);
-          }, 100);
-        }, 1000);
-      }
-    }
-
-  Here's an example calling the benchmark.run method and passing in start_callback, end_callback functions:
-
-    benchmark.run(document.getElementById("model-benchmark-results"), benchmarksToRun, function() {
-      $runBenchmarksButton.attr('disabled', true);
-    }, function() {
-      $runBenchmarksButton.attr('disabled', false);
-    });
-
-  The "Run Benchmarks" button is disabled until the browser finishes running thelast queued test.
-
-  The first five columns in the generated table consist of:
-
-    browser, version, cpu/os, date, and commit
-
-  These columns are followed by a column for each benchmark passed in.
-
-  Subsequent calls to: benchmark.run(benchmarks_table, benchmarks_to_run) will
-  add additional rows to the table.
-
-  A special second row is created in the table which displays averages of all tests
-  that generate numeric results.
-
-  Here are some css styles for the table:
-
-    table {
-      font: 11px/24px Verdana, Arial, Helvetica, sans-serif;
-      border-collapse: collapse; }
-    th {
-      padding: 0 1em;
-      text-align: left; }
-    td {
-      border-top: 1px solid #cccccc;
-      padding: 0 1em; }
-
-*/
-
-define('common/benchmark/benchmark',['require'],function (require) {
-
-  var version = "0.0.1",
-      windows_platform_token = {
-        "Windows NT 6.2": "Windows 8",
-        "Windows NT 6.1": "Windows 7",
-        "Windows NT 6.0": "Windows Vista",
-        "Windows NT 5.2": "Windows Server 2003; Windows XP x64 Edition",
-        "Windows NT 5.1": "Windows XP",
-        "Windows NT 5.01": "Windows 2000, Service Pack 1 (SP1)",
-        "Windows NT 5.0": "Windows 2000",
-        "Windows NT 4.0": "Microsoft Windows NT 4.0"
-      },
-      windows_feature_token = {
-        "WOW64":       "64/32",
-        "Win64; IA64": "64",
-        "Win64; x64":  "64"
-      };
-
-  function what_browser() {
-    var chromematch  = / (Chrome)\/(.*?) /,
-        ffmatch      = / (Firefox)\/([0123456789ab.]+)/,
-        safarimatch  = / AppleWebKit\/([0123456789.+]+) \(KHTML, like Gecko\) Version\/([0123456789.]+) (Safari)\/([0123456789.]+)/,
-        iematch      = / (MSIE) ([0123456789.]+);/,
-        operamatch   = /^(Opera)\/.+? Version\/([0123456789.]+)$/,
-        iphonematch  = /.+?\((iPhone); CPU.+?OS .+?Version\/([0123456789._]+)/,
-        ipadmatch    = /.+?\((iPad); CPU.+?OS .+?Version\/([0123456789._]+)/,
-        ipodmatch    = /.+?\((iPod); CPU (iPhone.+?) like.+?Version\/([0123456789ab._]+)/,
-        androidchromematch = /.+?(Android) ([0123456789.]+).*?; (.+?)\).+? Chrome\/([0123456789.]+)/,
-        androidfirefoxmatch = /.+?(Android.+?\)).+? Firefox\/([0123456789.]+)/,
-        androidmatch = /.+?(Android) ([0123456789ab.]+).*?; (.+?)\)/,
-        match;
-
-    match = navigator.userAgent.match(chromematch);
-    if (match && match[1]) {
-      return {
-        browser: match[1],
-        version: match[2],
-        oscpu: os_platform()
-      };
-    }
-    match = navigator.userAgent.match(ffmatch);
-    if (match && match[1]) {
-      var buildID = navigator.buildID,
-          buildDate = "";
-      if (buildID && buildID.length >= 8) {
-        buildDate = "(" + buildID.slice(0,4) + "-" + buildID.slice(4,6) + "-" + buildID.slice(6,8) + ")";
-      }
-      return {
-        browser: match[1],
-        version: match[2] + ' ' + buildDate,
-        oscpu: os_platform()
-      };
-    }
-    match = navigator.userAgent.match(androidchromematch);
-    if (match && match[1]) {
-      return {
-        browser: "Chrome",
-        version: match[4],
-        oscpu: match[1] + "/" + match[2] + "/" + match[3]
-      };
-    }
-    match = navigator.userAgent.match(androidfirefoxmatch);
-    if (match && match[1]) {
-      return {
-        browser: "Firefox",
-        version: match[2],
-        oscpu: match[1]
-      };
-    }
-    match = navigator.userAgent.match(androidmatch);
-    if (match && match[1]) {
-      return {
-        browser: "Android",
-        version: match[2],
-        oscpu: match[1] + "/" + match[2] + "/" + match[3]
-      };
-    }
-    match = navigator.userAgent.match(safarimatch);
-    if (match && match[3]) {
-      return {
-        browser: match[3],
-        version: match[2] + '/' + match[1],
-        oscpu: os_platform()
-      };
-    }
-    match = navigator.userAgent.match(iematch);
-    if (match && match[1]) {
-      var platform_match = navigator.userAgent.match(/\(.*?(Windows.+?); (.+?)[;)].*/);
-      return {
-        browser: match[1],
-        version: match[2],
-        oscpu: windows_platform_token[platform_match[1]] + "/" + navigator.cpuClass + "/" + navigator.platform
-      };
-    }
-    match = navigator.userAgent.match(operamatch);
-    if (match && match[1]) {
-      return {
-        browser: match[1],
-        version: match[2],
-        oscpu: os_platform()
-      };
-    }
-    match = navigator.userAgent.match(iphonematch);
-    if (match && match[1]) {
-      return {
-        browser: "Mobile Safari",
-        version: match[2],
-        oscpu: match[1] + "/" + "iOS" + "/" + match[2]
-      };
-    }
-    match = navigator.userAgent.match(ipadmatch);
-    if (match && match[1]) {
-      return {
-        browser: "Mobile Safari",
-        version: match[2],
-        oscpu: match[1] + "/" + "iOS" + "/" + match[2]
-      };
-    }
-    match = navigator.userAgent.match(ipodmatch);
-    if (match && match[1]) {
-      return {
-        browser: "Mobile Safari",
-        version: match[3],
-        oscpu: match[1] + "/" + "iOS" + "/" + match[2]
-      };
-    }
-    return {
-      browser: "",
-      version: navigator.appVersion,
-      oscpu:   ""
-    };
-  }
-
-  function os_platform() {
-    var match = navigator.userAgent.match(/\((.+?)[;)] (.+?)[;)].*/);
-    if (!match) { return "na"; }
-    if (match[1] === "Macintosh") {
-      return match[2];
-    } else if (match[1].match(/^Windows/)) {
-      var arch  = windows_feature_token[match[2]] || "32",
-          token = navigator.userAgent.match(/\(.*?(Windows NT.+?)[;)]/);
-      return windows_platform_token[token[1]] + "/" + arch;
-    }
-  }
-
-  function renderToTable(benchmarks_table, benchmarksThatWereRun, results) {
-    var i = 0,
-        browser_info,
-        averaged_row,
-        results_row,
-        result,
-        formatter,
-        col_number = 0,
-        col_numbers = {},
-        title_row,
-        title_cells,
-        len,
-        rows = benchmarks_table.getElementsByTagName("tr");
-
-    benchmarks_table.style.display = "";
-
-    function add_column(title) {
-      var title_row = benchmarks_table.getElementsByTagName("tr")[0],
-          cell = title_row.appendChild(document.createElement("th"));
-
-      cell.innerHTML = title;
-      col_numbers[title] = col_number++;
-    }
-
-    function add_row(num_cols) {
-      num_cols = num_cols || 0;
-      var tr =  benchmarks_table.appendChild(document.createElement("tr")),
-          i;
-
-      for (i = 0; i < num_cols; i++) {
-        tr.appendChild(document.createElement("td"));
-      }
-      return tr;
-    }
-
-    function add_result(name, content, row) {
-      var cell;
-      row = row || results_row;
-      cell = row.getElementsByTagName("td")[col_numbers[name]];
-      if (typeof content === "string" && content.slice(0,1) === "<") {
-        cell.innerHTML = content;
-      } else {
-        cell.textContent = content;
-      }
-    }
-
-    function update_averages() {
-      var i, j,
-          b,
-          row,
-          num_rows = rows.length,
-          cell,
-          cell_index,
-          average_elements = average_row.getElementsByTagName("td"),
-          total,
-          average,
-          samples,
-          genericDecimalFormatter = d3.format("5.1f"),
-          genericIntegerFormatter = d3.format("f");
-
-      function isInteger(i) {
-        return Math.floor(i) == i;
-      }
-
-      for (i = 0; i < benchmarksThatWereRun.length; i++) {
-        b = benchmarksThatWereRun[i];
-        cell_index = col_numbers[b.name];
-        if (b.numeric === false) {
-          row = rows[2];
-          cell = row.getElementsByTagName("td")[cell_index];
-          average_elements[cell_index].innerHTML = cell.innerHTML;
-        } else {
-          total = 0;
-          for (j = 2; j < num_rows; j++) {
-            row = rows[j];
-            cell = row.getElementsByTagName("td")[cell_index];
-            total += (+cell.textContent);
-          }
-          average = total/(num_rows-2);
-          if (b.formatter) {
-            average = b.formatter(average);
-          } else {
-            if (isInteger(average)) {
-              average = genericIntegerFormatter(total/(num_rows-2));
-            } else {
-              average = genericDecimalFormatter(total/(num_rows-2));
-            }
-          }
-          average_elements[cell_index].textContent = average;
-        }
-      }
-    }
-
-    if (rows.length === 0) {
-      add_row();
-      add_column("browser");
-      add_column("version");
-      add_column("cpu/os");
-      add_column("date");
-      for (i = 0; i < benchmarksThatWereRun.length; i++) {
-        add_column(benchmarksThatWereRun[i].name);
-      }
-      average_row = add_row(col_number);
-      average_row.className = 'average';
-    } else {
-      title_row = rows[0];
-      title_cells = title_row.getElementsByTagName("th");
-      for (i = 0, len = title_cells.length; i < len; i++) {
-        col_numbers[title_cells[i].innerHTML] = col_number++;
-      }
-    }
-
-    results_row = add_row(col_number);
-    results_row.className = 'sample';
-
-    for (i = 0; i < 4; i++) {
-      result = results[i];
-      add_result(result[0], result[1]);
-      add_result(result[0], result[1], average_row);
-    }
-
-    for(i = 4; i < results.length; i++) {
-      result = results[i];
-      add_result(result[0], result[1]);
-    }
-    update_averages();
-  }
-
-  function bench(benchmarks_to_run, resultsCallback, start_callback, end_callback) {
-    var i,
-        benchmarks_completed,
-        results = [],
-        browser_info = what_browser(),
-        formatter = d3.time.format("%Y-%m-%d %H:%M");
-
-    results.push([ "browser", browser_info.browser]);
-    results.push([ "version", browser_info.version]);
-    results.push([ "cpu/os", browser_info.oscpu]);
-    results.push([ "date", formatter(new Date())]);
-
-    benchmarks_completed = 0;
-    if (start_callback) start_callback();
-    for (i = 0; i < benchmarks_to_run.length; i++) {
-      (function(b) {
-        b.run(function(result) {
-          if (b.formatter) {
-            results.push([ b.name, b.formatter(result) ]);
-          } else {
-            results.push([ b.name, result ]);
-          }
-         if (++benchmarks_completed === benchmarks_to_run.length) {
-           if (end_callback) {
-             end_callback();
-           }
-           if (resultsCallback) {
-             resultsCallback(results);
-           }
-         }
-        });
-      }(benchmarks_to_run[i]));
-      if (end_callback === undefined) {
-      }
-    }
-    return results;
-  }
-
-  function run(benchmarks_to_run, benchmarks_table, resultsCallback, start_callback, end_callback) {
-    var results;
-    bench(benchmarks_to_run, function(results) {
-      renderToTable(benchmarks_table, benchmarks_to_run, results);
-      resultsCallback(results);
-    }, start_callback, end_callback);
-    return results;
-  }
-
-  // Return Public API.
-  return {
-    version: version,
-    what_browser: function() {
-      return what_browser();
-    },
-    // run benchmarks, add row to table, update averages row
-    run: function(benchmarks_to_run, benchmarks_table, resultsCallback, start_callback, end_callback) {
-      run(benchmarks_to_run, benchmarks_table, resultsCallback, start_callback, end_callback);
-    },
-    // run benchmarks, return results in object
-    bench: function(benchmarks_to_run, resultsCallback, start_callback, end_callback) {
-      return bench(benchmarks_to_run, resultsCallback, start_callback, end_callback);
-    },
-    // run benchmarks, add row to table, update averages row
-    renderToTable: function(benchmarks_table, benchmarksThatWereRun, results) {
-      renderToTable(benchmarks_table, benchmarksThatWereRun, results);
-    }
   };
 });
 
@@ -30006,7 +30582,7 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
 
   function GeneticRenderer(modelView, model) {
     var api,
-        svg = modelView.containers.svg,
+        svg = modelView.svg,
         model2px = modelView.model2px,
         model2pxInv = modelView.model2pxInv,
         viewportG = svg.select(".viewport"),
@@ -30037,6 +30613,8 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
       // When viewPortX is changed render DNA and mRNA again. Also center
       // protein while in 'translation-end' state.
       model.addPropertiesListener(["viewPortX"], function() {
+        if (!g || !model.get("DNA")) return;
+
         // state.name values are subset of all animation states. We define
         // more animation states than we publish for author / users
         // (animations with -s0, -s1, (...) suffixes).
@@ -30072,6 +30650,7 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
       // Cleanup.
       cancelTransitions();
       viewportG.selectAll("g.genetics").remove();
+      g = null;
 
       if (!model.get("DNA")) {
         // When DNA is not defined (=== "", undefined or null) genetic
@@ -30632,22 +31211,60 @@ define('common/views/gradients',[],function () {
   };
 });
 
+/*global define: false, d3: false */
+
+/**
+ * Tiny module providing useful functions for color manipulation.
+ */
+define('common/views/color',[],function () {
+
+  function parseColor(color) {
+    // d3.rgb is handy, however it cannor parse RGBA colors. Use it regexp to
+    // parse rgba if it's necessary. Note that alpha channel will be ignored!
+    var rgba = color.match(/rgba\(([0-9]+),([0-9]+),([0-9]+),([0-9]+)\)/i);
+    if (rgba !== null) {
+      return d3.rgb(rgba[1], rgba[2], rgba[3]);
+    } else {
+      return d3.rgb(color);
+    }
+  }
+
+  return {
+    /**
+     * Returns color contrasting to specified background color (black or white).
+     * Note that if background color specifies alpha channel (e.g. rgba(0,0,0,0.5)),
+     * it will be ignored!
+     * @param  {string} bg Web-compatible color definition (e.g. "red", "#ff0012", "#000").
+     * @return {string} Contrasting color - "#000" or "#fff".
+     */
+    contrastingColor: function (bg) {
+      bg = parseColor(bg);
+      // Calculate luminance in YIQ color space.
+      // This ensures that color will be visible on background.
+      // This simple algorithm is described here:
+      // http://www.w3.org/TR/AERT#color-contrast
+      return (bg.r * 299 + bg.g * 587 + bg.b * 114) / 1000 >= 128 ? '#000' : '#fff';
+    }
+  };
+});
+
 /*global $, define: false, d3: false, Image */
 // ------------------------------------------------------------
 //
 //   MD2D View Renderer
 //
 // ------------------------------------------------------------
-define('md2d/views/renderer',['require','lab.config','common/alert','common/console','common/benchmark/benchmark','cs!md2d/views/aminoacid-context-menu','md2d/views/genetic-renderer','cs!common/layout/wrap-svg-text','common/views/gradients'],function (require) {
+define('md2d/views/renderer',['require','lab.config','common/alert','common/console','common/benchmark/benchmark','cs!md2d/views/aminoacid-context-menu','md2d/views/genetic-renderer','cs!common/layout/wrap-svg-text','common/views/gradients','common/views/color'],function (require) {
   // Dependencies.
-  var labConfig             = require('lab.config'),
-      alert                 = require('common/alert'),
-      console               = require('common/console'),
-      benchmark             = require('common/benchmark/benchmark'),
-      amniacidContextMenu   = require('cs!md2d/views/aminoacid-context-menu'),
-      GeneticRenderer       = require('md2d/views/genetic-renderer'),
-      wrapSVGText           = require('cs!common/layout/wrap-svg-text'),
-      gradients             = require('common/views/gradients'),
+  var labConfig           = require('lab.config'),
+      alert               = require('common/alert'),
+      console             = require('common/console'),
+      benchmark           = require('common/benchmark/benchmark'),
+      amniacidContextMenu = require('cs!md2d/views/aminoacid-context-menu'),
+      GeneticRenderer     = require('md2d/views/genetic-renderer'),
+      wrapSVGText         = require('cs!common/layout/wrap-svg-text'),
+      gradients           = require('common/views/gradients'),
+      color               = require('common/views/color'),
 
       RADIAL_BOND_TYPES = {
         STANDARD_STICK  : 101,
@@ -30685,14 +31302,17 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         model2pxInv,
 
         // "Containers" - SVG g elements used to position layers of the final visualization.
-        mainContainer,
-        radialBondsContainer,
-        VDWLinesContainer,
-        imageContainerBelow,
-        imageContainerTop,
-        textContainerBelow,
-        textContainerTop,
-        iconContainer,
+        fieldVisualization      = modelView.viewport.append("g").attr("class", "field-visualization"),
+        rectangleContainerBelow = modelView.viewport.append("g").attr("class", "rectangle-container-below"),
+        imageContainerBelow     = modelView.viewport.append("g").attr("class", "image-container-below"),
+        textContainerBelow      = modelView.viewport.append("g").attr("class", "text-container-below"),
+        radialBondsContainer    = modelView.viewport.append("g").attr("class", "radial-bonds-container"),
+        VDWLinesContainer       = modelView.viewport.append("g").attr("class", "vdw-lines-container"),
+        mainContainer           = modelView.viewport.append("g").attr("class", "main-container"),
+        rectangleContainerTop   = modelView.viewport.append("g").attr("class", "rectangle-container-top"),
+        imageContainerTop       = modelView.viewport.append("g").attr("class", "image-container-top"),
+        textContainerTop        = modelView.viewport.append("g").attr("class", "text-container-top"),
+        iconContainer           = modelView.vis.append("g").attr("class", "icon-container"),
 
         dragOrigin,
 
@@ -30711,6 +31331,11 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         gradientNameForKELevel = [],
         // Number of gradients used for Kinetic Energy Shading.
         KE_SHADING_STEPS = 25,
+        // Set of gradients used for Charge Energy Shading.
+        gradientNameForPositiveChargeLevel = [],
+        gradientNameForNegativeChargeLevel = [],
+        // Number of gradients used for Charge Shading (for both positive and negative charges).
+        CHARGE_SHADING_STEPS = 25,
         // Array which defines a gradient assigned to a given particle.
         gradientNameForParticle = [],
 
@@ -30724,13 +31349,18 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
         modelTimeFormatter = d3.format("5.1f"),
         timePrefix = "",
-        timeSuffix = " (" + model.getPropertyDescription('displayTime').getUnitAbbreviation() + ")",
+        timeSuffix = "",
 
         radialBonds,
         radialBondResults,
         obstacle,
         obstacles,
         mockObstaclesArray = [],
+        rectangles,
+        rectangleTop,
+        rectangleBelow,
+        mockRectanglesTop= [],
+        mockRectanglesBelow = [],
         radialBond1, radialBond2,
         vdwPairs = [],
         vdwLines,
@@ -30739,6 +31369,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         useQuantumDynamics,
         drawVdwLines,
         drawVelocityVectors,
+        drawElectricForceField,
         velocityVectorColor,
         velocityVectorWidth,
         velocityVectorLength,
@@ -30748,6 +31379,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         forceVectorLength,
         velVector,
         forceVector,
+        efVector,
         imageProp,
         imageMapping,
         modelImagePath,
@@ -30771,7 +31403,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         // this is a hack put in place to temporarily deal with a IE 10 bug which
         // does not update line markers when svg lines are moved
         // see https://connect.microsoft.com/IE/feedback/details/781964/
-        hideLineMarkers = browser.browser == "MSIE" && browser.version >= "10.0";
+        hideLineMarkers = browser.browser === "MSIE" && browser.version >= "10.0";
 
 
     function modelTimeLabel() {
@@ -30859,10 +31491,49 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         gradientNameForKELevel[i] = gradientUrl;
       }
 
-      // "Charge" gradients.
-      gradients.createRadialGradient("neg-grad", "#ffefff", "#fdadad", "#e95e5e", mainContainer);
-      gradients.createRadialGradient("pos-grad", "#dfffff", "#9abeff", "#767fbf", mainContainer);
-      gradients.createRadialGradient("neutral-grad", "#FFFFFF", "#f2f2f2", "#A4A4A4", mainContainer);
+      // Scales used for Charge Shading gradients.
+      // Originally Positive:(ffefff,9abeff,767fbf) and Negative:(dfffff,fdadad,e95e5e)
+
+      gradients.createRadialGradient("neutral-grad","#FFFFFF","#f2f2f2","#A4A4A4",mainContainer);
+
+      var posLightColorScale = d3.scale.linear()
+        .interpolate(d3.interpolateRgb)
+        .range(["#FFFFFF", "#ffefff"]),
+      posMedColorScale = d3.scale.linear()
+        .interpolate(d3.interpolateRgb)
+        .range(["#f2f2f2", "#9090FF"]),
+      posDarkColorScale = d3.scale.linear()
+        .interpolate(d3.interpolateRgb)
+        .range(["#A4A4A4", "#3030FF"]),
+      negLightColorScale = d3.scale.linear()
+        .interpolate(d3.interpolateRgb)
+        .range(["#FFFFFF", "#dfffff"]),
+      negMedColorScale = d3.scale.linear()
+        .interpolate(d3.interpolateRgb)
+        .range(["#f2f2f2", "#FF8080"]),
+      negDarkColorScale = d3.scale.linear()
+        .interpolate(d3.interpolateRgb)
+        .range(["#A4A4A4", "#FF2020"]),
+      ChargeLevel;
+
+      // Charge Shading gradients
+      for (i = 1; i < CHARGE_SHADING_STEPS; i++) {
+        gradientName = "pos-charge-shading-" + i;
+        ChargeLevel = i / CHARGE_SHADING_STEPS;
+        gradientUrl = gradients.createRadialGradient(gradientName,
+          posLightColorScale(ChargeLevel),
+          posMedColorScale(ChargeLevel),
+            posDarkColorScale(ChargeLevel), mainContainer);
+        gradientNameForPositiveChargeLevel[i] = gradientUrl;
+
+        gradientName = "neg-charge-shading-" + i;
+        ChargeLevel = i / CHARGE_SHADING_STEPS;
+        gradientUrl = gradients.createRadialGradient(gradientName,
+          negLightColorScale(ChargeLevel),
+          negMedColorScale(ChargeLevel),
+            negDarkColorScale(ChargeLevel), mainContainer);
+        gradientNameForNegativeChargeLevel[i] = gradientUrl;
+      }
 
       // Colored gradients, used for amino acids.
       gradients.createRadialGradient("green-grad", "#dfffef", "#75a643", "#2a7216", mainContainer);
@@ -30930,9 +31601,12 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
     // Returns gradient appropriate for a given atom.
     // d - atom data.
     function getParticleGradient(d) {
-        var ke, keIndex, charge;
+        var ke, keIndex, charge, chargeIndex, chargeColor,
+          aminoAcidColorScheme = model.get("aminoAcidColorScheme");
 
-        if (d.marked) return "url(#mark-grad)";
+        if (d.marked) {
+          return "url(#mark-grad)";
+        }
 
         if (keShadingMode) {
           ke  = model.getAtomKineticEnergy(d.idx),
@@ -30944,30 +31618,27 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
           return gradientNameForKELevel[Math.round(keIndex * (KE_SHADING_STEPS - 1))];
         }
 
-        if (chargeShadingMode) {
+        if (chargeShadingMode || aminoAcidColorScheme==="charge" || aminoAcidColorScheme==="chargeAndHydro") {
           charge = d.charge;
+          chargeIndex = Math.round(Math.min(Math.abs(charge) / 3, 1) * (CHARGE_SHADING_STEPS - 1));
+          chargeColor = chargeIndex === 0 ? "url(#neutral-grad)" : (charge >= 0 ? gradientNameForPositiveChargeLevel : gradientNameForNegativeChargeLevel)[chargeIndex];
+        }
 
-          if (charge === 0) return "url(#neutral-grad)";
-          return charge > 0 ? "url(#pos-grad)" : "url(#neg-grad)";
+        if (chargeShadingMode || aminoAcidColorScheme==="charge" || aminoAcidColorScheme==="chargeAndHydro" && chargeIndex !== 0) {
+          return chargeColor;
         }
 
         if (!d.isAminoAcid()) {
           return gradientNameForElement[d.element % 4];
         }
         // Particle represents amino acid.
-        switch (model.get("aminoAcidColorScheme")) {
+        // Note that if charge shading were on, the charge color would have been returned above
+        switch (aminoAcidColorScheme) {
           case "none":
+          case "charge":
             return "url(#neutral-grad)";
           case "hydrophobicity":
-            return d.hydrophobicity > 0 ? "url(#orange-grad)" : "url(#green-grad)";
-          case "charge":
-            if (d.charge === 0) return "url(#neutral-grad)";
-            return d.charge > 0 ? "url(#pos-grad)" : "url(#neg-grad)";
           case "chargeAndHydro":
-            if (d.charge < -0.000001)
-              return "url(#neg-grad)";
-            if (d.charge > 0.000001)
-              return "url(#pos-grad)";
             return d.hydrophobicity > 0 ? "url(#orange-grad)" : "url(#green-grad)";
           default:
             throw new Error("ModelContainer: unknown amino acid color scheme.");
@@ -31054,11 +31725,11 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
               .attr({
                 "y": yPos,
                 "width": fSize*2,
-                "height": fSize*2,
+                "height": fSize*2
               })
               .style("display", "");
 
-            imageHeight = parseInt(imageSelect.attr("height"));
+            imageHeight = parseInt(imageSelect.attr("height"), 10);
             yPos += imageHeight;
         } else {
             iconContainer.select("#heat-bath").style("display","none");
@@ -31072,7 +31743,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
               .attr({
                 "y": yPos,
                 "width": fSize*2.2,
-                "height": fSize*6,
+                "height": fSize*6
               })
               .style("display", "");
         } else {
@@ -31097,7 +31768,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
             "cy": function(d) { return model2pxInv(d.y); },
             "fill-opacity": function(d) { return d.visible ? 1 : 0; },
             "fill": function (d, i) { return gradientNameForParticle[i]; },
-            "filter": function (d, i) { if (d.excitation) {return "url(#glow)";} return null; }
+            "filter": function (d) { if (d.excitation) {return "url(#glow)";} return null; }
           })
           .on("mousedown", moleculeMouseDown)
           .on("mouseover", moleculeMouseOver)
@@ -31231,6 +31902,32 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       });
     }
 
+    function rectangleEnter() {
+      var layers = [rectangleTop, rectangleBelow], i;
+      for(i = 0; i < layers.length; i++){
+          var rectangleGroup = layers[i].enter().append("g");
+        rectangleGroup
+          .attr("class", "rectangle")
+          .attr("transform",
+            function (d) {
+              return "translate(" + model2px(rectangles.x[d]) + " " + model2pxInv(rectangles.y[d] + rectangles.height[d]) + ")";
+            }
+          );
+        rectangleGroup.append("rect")
+          .attr({
+            "class": "rectangle-shape",
+            "x": 0,
+            "y": 0,
+            "width": function(d) {return model2px(rectangles.width[d]); },
+            "height": function(d) {return model2px(rectangles.height[d]); },
+            "fill": function(d) { return rectangles.visible[d] ? rectangles.color[d] : "rgba(128,128,128, 0)"; },
+            "stroke-width": function(d) { return rectangles.lineWeight[d]; },
+            "stroke-dasharray": function(d) { return rectangles.lineDashes[d]; },
+            "stroke": function(d) { return rectangles.visible[d] ? rectangles.lineColor[d] : "rgba(128,128,128, 0)"; }
+          });
+       }
+    }
+
     function radialBondEnter() {
       radialBond1.enter().append("path")
           .attr({
@@ -31344,7 +32041,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       return d.type === RADIAL_BOND_TYPES.SHORT_SPRING;
     }
 
-    function springStrokeWidth(d) {
+    function springStrokeWidth() {
       return 1.25;
       // The following code is intended to use a thicker stroke-width when
       // the spring constant is larger ... but to work properly in models with
@@ -31415,7 +32112,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
               i: i,
               zOrder: (!!imageProp[i].imageLayerPosition) ? imageProp[i].imageLayerPosition : 0
             });
-            positionOrder.sort(function(a,b){return d3.ascending(a["zOrder"],b["zOrder"])});
+            positionOrder.sort(function(a,b) { return d3.ascending(a["zOrder"],b["zOrder"]); });
             // In Classic MW model size is defined in 0.1A.
             // Model unit (0.1A) - pixel ratio is always 1. The same applies
             // to images. We can assume that their pixel dimensions are
@@ -31424,14 +32121,14 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
             container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
             container.selectAll("image").remove();
             container.selectAll("image")
-              .data(positionOrder, function(d){ return d["i"] })
+              .data(positionOrder, function(d){ return d["i"]; })
               .enter().append("image")
-                .attr("x", function(d){ return getImageCoords(d["i"])[0] } )
-                .attr("y", function(d){ return getImageCoords(d["i"])[1] } )
-                .attr("class", function(d){ return "image_attach" + d["i"] + " draggable"})
-                .attr("xlink:href", function(d){ return img[d["i"]].src})
-                .attr("width", function(d){return model2px( imageSizes[d["i"]][0] )})
-                .attr("height", function(d){return model2px( imageSizes[d["i"]][1] )})
+                .attr("x", function(d){ return getImageCoords(d["i"])[0]; } )
+                .attr("y", function(d){ return getImageCoords(d["i"])[1]; } )
+                .attr("class", function(d){ return "image_attach" + d["i"] + " draggable"; })
+                .attr("xlink:href", function(d){ return img[d["i"]].src; })
+                .attr("width", function(d){return model2px( imageSizes[d["i"]][0]); })
+                .attr("height", function(d){return model2px( imageSizes[d["i"]][1]); })
                 .attr("pointer-events", "none");
           };
         })(i);
@@ -31872,6 +32569,27 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       }
     }
 
+    function setupRectangles() {
+      rectangles = model.get_rectangles();
+      rectangleContainerTop.selectAll(".rectangle").remove();
+      rectangleContainerBelow.selectAll(".rectangle").remove();
+      if (rectangles) {
+        mockRectanglesTop=[];
+        mockRectanglesBelow=[];
+        for(var i = 0; i < rectangles.x.length ; i++){
+          if(rectangles.layer[i]===1){
+            mockRectanglesTop.push(i);
+          }
+          else{
+            mockRectanglesBelow.push(i);
+          }
+        }
+        rectangleTop = rectangleContainerTop.selectAll(".rectangle").data(mockRectanglesTop);
+        rectangleBelow = rectangleContainerBelow.selectAll(".rectangle").data(mockRectanglesBelow);
+        rectangleEnter();
+      }
+    }
+
     function setupRadialBonds() {
       radialBondsContainer.selectAll("path.radialbond1").remove();
       radialBondsContainer.selectAll("path.radialbond2").remove();
@@ -31922,6 +32640,56 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       }
     }
 
+    function setupElectricField() {
+      var density = model.get("electricFieldDensity"),
+          col, size;
+      drawElectricForceField = density > 0;
+      // Do full enter-update-remove cycle to reuse DOM elements.
+      efVector = fieldVisualization.selectAll(".vector-electric-field").data(model.getElectricField());
+      efVector.exit().remove();
+      if (drawElectricForceField) {
+        // Enter.
+        efVector.enter()
+          .append("g")
+            .attr("class", "vector-electric-field")
+          .append("g")
+            .attr("class", "rot-g")
+          .append("svg")
+            .attr("viewBox", "-5 -12 10 12")
+          .append("path")
+            .attr("d", "M0,0 L0,-8 L1,-8 L0,-10 L-1,-8, L0,-8");
+        // Update.
+        col = color.contrastingColor(model.get("backgroundColor"));
+        efVector
+            .attr("transform", function (d) {
+              return "translate(" + model2px(d.x) + ", " + model2pxInv(d.y) + ")";
+            })
+            .style("fill", col)
+            .style("stroke", col);
+        // Size update.
+        size = Math.sqrt(30 / density);
+        efVector.select("svg")
+            .attr("x", (-0.5 * size) + "em")
+            .attr("y", (-size) + "em")
+            .attr("width", size + "em")
+            .attr("height", size + "em");
+        // Cache selection + update rotation.
+        efVector = efVector.select(".rot-g");
+        updateElectricForceField();
+      }
+    }
+
+    function updateElectricForceField() {
+      var rad2deg = 180 / Math.PI;
+      efVector
+          .attr("transform", function(d) {
+            return "rotate(" + (Math.atan2(d.fx, d.fy) * rad2deg) + ")";
+          })
+          .style("opacity", function(d) {
+            return Math.min(1, Math.pow(d.fx * d.fx + d.fy * d.fy, .2) * .3);
+          });
+    }
+
     function setupAtomTrace() {
       mainContainer.selectAll("path.atomTrace").remove();
       atomTracePath = "";
@@ -31940,16 +32708,6 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
       vdwLines = VDWLinesContainer.selectAll("line.attractionforce").data(vdwPairs);
       vdwLinesEnter();
-    }
-
-    function mousedown() {
-      setFocus();
-    }
-
-    function setFocus() {
-      if (model.get("enableKeyboardHandlers")) {
-        modelView.node.focus();
-      }
     }
 
     function moleculeMouseOver(d, i) {
@@ -32015,8 +32773,8 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         "cy": function(d) { return model2pxInv(d.y); }
       });
 
-      if (keShadingMode) {
-        // When Kinetic Energy Shading is enabled, update style of atoms
+      if (keShadingMode || chargeShadingMode) {
+        // When Kinetic Energy Shading or Charge Shading is enabled, update style of atoms
         // during each frame.
         setupColorsOfParticles();
         // Update particles "fill" attribute. Array of colors is already updated.
@@ -32024,7 +32782,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       }
 
       if (useQuantumDynamics) {
-        particle.attr("filter", function (d) { if (d.excitation) {return "url(#glow)";} return null; })
+        particle.attr("filter", function (d) { if (d.excitation) {return "url(#glow)";} return null; });
       }
 
       label.attr("transform", function (d) {
@@ -32101,8 +32859,8 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       radialBond1.attr("d", function (d) { return findPoints(d, 1); });
       radialBond2.attr("d", function (d) { return findPoints(d, 2); });
 
-      if (keShadingMode) {
-        // Update also radial bonds color when keShading is on.
+      if (keShadingMode || chargeShadingMode) {
+        // Update also radial bonds color when keShading or chargeShading is on.
         radialBond1.attr("stroke", getBondAtom1Color);
         radialBond2.attr("stroke", getBondAtom2Color);
       }
@@ -32145,7 +32903,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
     }
 
     function nodeDragStart(d, i) {
-      if (model.is_stopped()) {
+      if (model.isStopped()) {
         // cache the *original* atom position so we can go back to it if drag is disallowed
         dragOrigin = [d.x, d.y];
       }
@@ -32186,7 +32944,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
           dragY = model2pxInv.invert(d3.event.y),
           drag;
 
-      if (model.is_stopped()) {
+      if (model.isStopped()) {
         drag = dragBoundingBox(dragX, dragY, model.getMoleculeBoundingBox(i));
         setAtomPosition(i, drag.x, drag.y, false, true);
         update();
@@ -32201,7 +32959,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       var dragDx = model2px.invert(d3.event.dx),
           dragDy = model2px.invert(d3.event.dy);
 
-      if (!(AUTHORING && model.is_stopped())) {
+      if (!(AUTHORING && model.isStopped())) {
       // for now we don't have user-draggable textBoxes
         return;
       }
@@ -32213,7 +32971,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
     }
 
     function nodeDragEnd(d, i) {
-      if (model.is_stopped()) {
+      if (model.isStopped()) {
 
         if (!setAtomPosition(i, d.x, d.y, true, true)) {
           alert("You can't drop the atom there");     // should be changed to a nice Lab alert box
@@ -32266,8 +33024,8 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       if (modelImagePath) {
         imagePath = labConfig.actualRoot + modelImagePath;
       }
-      else if (model.url) {
-        imagePath = labConfig.actualRoot + model.url.slice(0, model.url.lastIndexOf("/") + 1);
+      else if (modelView.url) {
+        imagePath = labConfig.actualRoot + modelView.url.slice(0, modelView.url.lastIndexOf("/") + 1);
       }
 
       velocityVectorColor = model.get("velocityVectors").color;
@@ -32279,7 +33037,6 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       forceVectorLength = model.get("forceVectors").length;
 
       atomTraceColor = model.get("atomTraceColor");
-
 
       createVectorArrowHeads(velocityVectorColor, VELOCITY_STR);
       createVectorArrowHeads(forceVectorColor, FORCE_STR);
@@ -32352,19 +33109,8 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
     //
     // MD2D Renderer: init
     //
-    // Called when Renderer is created.
-    //
     function init() {
-      // Assign shortcuts, as these variables / functions shouldn't
-      // change.
-      mainContainer        = modelView.containers.mainContainer,
-      radialBondsContainer = modelView.containers.radialBondsContainer,
-      VDWLinesContainer    = modelView.containers.VDWLinesContainer,
-      imageContainerBelow  = modelView.containers.imageContainerBelow,
-      imageContainerTop    = modelView.containers.imageContainerTop,
-      textContainerBelow   = modelView.containers.textContainerBelow,
-      textContainerTop     = modelView.containers.textContainerTop,
-      iconContainer        = modelView.containers.iconContainer,
+      timeSuffix = " (" + model.getPropertyDescription('displayTime').getUnitAbbreviation() + ")";
 
       model2px = modelView.model2px;
       model2pxInv = modelView.model2pxInv;
@@ -32400,6 +33146,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         "showAtomTrace", "atomTraceId", "aminoAcidColorScheme",
         "backgroundColor", "markColor"],
           redrawClickableObjects(repaint));
+      model.addPropertiesListener("electricFieldDensity", setupElectricField);
 
       model.on('addAtom', redrawClickableObjects(setupParticles));
       model.on('removeAtom', redrawClickableObjects(repaint));
@@ -32410,12 +33157,8 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       setupFirefoxWarning();
     }
 
-    //
-    // MD2D Renderer: reset
-    //
     // Call when model is reset or reloaded.
-    //
-    function reset(newModel) {
+    function bindModel(newModel) {
       model = newModel;
       init();
     }
@@ -32443,9 +33186,12 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       setupParticles();
       // Always setup radial bonds *after* particles to use correct atoms
       // color table.
+      setupRectangles();
+      //Rectangles are ON TOP of particles
       setupRadialBonds();
       geneticRenderer.setup();
       setupVectors();
+      setupElectricField();
       setupAtomTrace();
       drawImageAttachment();
       drawTextBoxes();
@@ -32471,6 +33217,15 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         });
       }
 
+      if (rectangles) {
+        rectangleTop.attr("transform", function (d) {
+          return "translate(" + model2px(rectangles.x[d]) + " " + model2pxInv(rectangles.y[d] + rectangles.height[d]) + ")";
+        });
+        rectangleBelow.attr("transform", function (d) {
+          return "translate(" + model2px(rectangles.x[d]) + " " + model2pxInv(rectangles.y[d] + rectangles.height[d]) + ")";
+        });
+      }
+
       if (drawVdwLines) {
         updateVdwPairs();
       }
@@ -32488,6 +33243,9 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       }
       if (drawForceVectors) {
         updateVectors(forceVector, getForceVectorPath, getForceVectorWidth);
+      }
+      if (drawElectricForceField) {
+        updateElectricForceField();
       }
       if (drawAtomTrace) {
         updateAtomTrace();
@@ -32511,31 +33269,23 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       // Expose private methods.
       update: update,
       repaint: repaint,
-      reset: reset,
+      bindModel: bindModel,
       model2px: modelView.model2px,
       model2pxInv: modelView.model2pxInv
     };
-
-    // Initialization.
-    init();
 
     return api;
   };
 });
 
-/*global $ define: false */
-// ------------------------------------------------------------
-//
-//   MD2D View Container
-//
-// ------------------------------------------------------------
-define('md2d/views/view',['require','common/views/model-view','md2d/views/renderer'],function (require) {
-  // Dependencies.
-  var ModelView             = require("common/views/model-view"),
-      Renderer              = require("md2d/views/renderer");
+/*global define: false */
 
-  return function (modelUrl, model) {
-    return new ModelView(modelUrl, model, Renderer);
+define('md2d/views/view',['require','common/views/svg-container','md2d/views/renderer'],function (require) {
+  var SVGContainer = require("common/views/svg-container"),
+      Renderer     = require("md2d/views/renderer");
+
+  return function (model, modelUrl) {
+    return new SVGContainer(model, modelUrl, Renderer);
   };
 
 });
@@ -33012,7 +33762,7 @@ define('md2d/controllers/scripting-api',['require','common/alert','md2d/views/dn
         model.setObstacleProperties(i, props);
         api.repaintIfReady();
       },
-
+      
       /**
         Returns obstacle properties as a human-readable hash.
         e.g. getObstacleProperties(0) --> {x: 1, y: 0.5, externalAx: 0.00001, ... }
@@ -33032,6 +33782,30 @@ define('md2d/controllers/scripting-api',['require','common/alert','md2d/views/dn
             throw e;
         }
 
+        api.repaintIfReady();
+      },
+
+      setRectangleProperties: function setRectangleProperties(i, props) {
+        model.setRectangleProperties(i, props);
+        api.repaintIfReady();
+      },
+
+      getRectangleProperties: function getRectangleProperties(i) {
+        return model.getRectangleProperties(i);
+      },
+
+      getAtomsWithinRectangle: function getAtomsInsideRectangle(i) {
+        var props=model.getRectangleProperties(i);
+        return this.atomsWithinRect(props.x,props.y,props.width,props.height)
+      },
+      
+      removeRectangle: function removeRectangle(i, options) {
+        try {
+          model.removeRectangle(i);
+        } catch (e) {
+          if (!options || !options.silent)
+            throw e;
+        }
         api.repaintIfReady();
       },
 
@@ -33269,9 +34043,9 @@ define('md2d/controllers/scripting-api',['require','common/alert','md2d/views/dn
   };
 });
 
-/*global define model */
+/*global define, model, Lab, d3 */
 
-define('md2d/benchmarks/benchmarks',['require'],function (require) {
+define('md2d/benchmarks/benchmarks',[],function () {
 
   return function Benchmarks(controller) {
 
@@ -33308,10 +34082,9 @@ define('md2d/benchmarks/benchmarks',['require'],function (require) {
         formatter: d3.format("5.1f"),
         run: function(done) {
           var elapsed, start, i;
-
           model.stop();
           start = +Date.now();
-          i = -1;
+          i = 0;
           while (i++ < 100) {
             controller.modelContainer.update();
           }
@@ -33324,15 +34097,15 @@ define('md2d/benchmarks/benchmarks',['require'],function (require) {
         numeric: true,
         formatter: d3.format("5.1f"),
         run: function(done) {
-          var elapsed, start, i;
-
+          var start, elapsed;
           model.stop();
           start = +Date.now();
-          i = -1;
-          while (i++ < 100) {
-            // advance model 1 tick, but don't paint the display
-            model.tick(1, { dontDispatchTickEvent: true });
-          }
+          model.suppressEvents(function () {
+            var i = 0;
+            while (i++ < 100) {
+              model.tick();
+            }
+          });
           elapsed = Date.now() - start;
           done(100/elapsed*1000);
         }
@@ -33343,10 +34116,9 @@ define('md2d/benchmarks/benchmarks',['require'],function (require) {
         formatter: d3.format("5.1f"),
         run: function(done) {
           var start, elapsed, i;
-
           model.stop();
           start = +Date.now();
-          i = -1;
+          i = 0;
           while (i++ < 100) {
             model.tick();
           }
@@ -33386,8 +34158,7 @@ define('md2d/benchmarks/benchmarks',['require'],function (require) {
 
     return benchmarks;
 
-  }
-
+  };
 });
 
 /*global
@@ -33402,8 +34173,8 @@ define('md2d/controllers/controller',['require','common/controllers/model-contro
       ScriptingAPI      = require('md2d/controllers/scripting-api'),
       Benchmarks        = require('md2d/benchmarks/benchmarks');
 
-  return function (modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, interactiveController) {
-    return new ModelController(modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, interactiveController,
+  return function (modelUrl, modelOptions, interactiveController) {
+    return new ModelController(modelUrl, modelOptions, interactiveController,
                                Model, ModelContainer, ScriptingAPI, Benchmarks);
   };
 });
@@ -35112,7 +35883,7 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
 
     model.seek = function(location) {
       if (!arguments.length) { location = 0; }
-      if (!model.is_stopped()) {
+      if (!model.isStopped()) {
         model.stop();
       }
       newStep = false;
@@ -35126,7 +35897,7 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
 
     model.stepBack = function(num) {
       if (!arguments.length) { num = 1; }
-      if (!model.is_stopped()) {
+      if (!model.isStopped()) {
         model.stop();
       }
       newStep = false;
@@ -35146,7 +35917,7 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
 
     model.stepForward = function(num) {
       if (!arguments.length) { num = 1; }
-      if (!model.is_stopped()) {
+      if (!model.isStopped()) {
         model.stop();
       }
       runAndDispatchObjectNumberChanges(function() {
@@ -35261,14 +36032,11 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
     };
 
     model.reset = function() {
-      model.resetTime();
+      engine.setTime(0);
       tickHistory.restoreInitialState();
       dispatch.reset();
     };
 
-    model.resetTime = function() {
-      engine.setTime(0);
-    };
 
     /**
       Attempts to add a body to a random location.
@@ -35440,7 +36208,7 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
       }
     };
 
-    model.is_stopped = function() {
+    model.isStopped = function() {
       return stopped;
     };
 
@@ -35713,7 +36481,7 @@ define('solar-system/models/modeler',['require','arrays','common/console','solar
         unitName:         displayTimeUnits.name,
         unitPluralName:   displayTimeUnits.pluralName,
         unitAbbreviation: displayTimeUnits.symbol,
-        format: '.3f'
+        format: '.1f'
       }, function() {
         return model.get('time') * displayTimeUnits.unitsPerBaseUnit;
       });
@@ -35764,7 +36532,7 @@ define('solar-system/views/renderer',['require','lab.config','common/console','c
       wrapSVGText           = require('cs!common/layout/wrap-svg-text'),
       gradients             = require('common/views/gradients');
 
-  return function SolarSystemView(modelView, model) {
+  return function SolarSystemView(SVGContainer, model) {
     // Public API object to be returned.
     var api = {},
 
@@ -35792,13 +36560,11 @@ define('solar-system/views/renderer',['require','lab.config','common/console','c
         modelResults,
 
         // "Containers" - SVG g elements used to position layers of the final visualization.
-        mainContainer,
-        radialBondsContainer,
-        VDWLinesContainer,
-        imageContainerBelow,
-        imageContainerTop,
-        textContainerBelow,
-        textContainerTop,
+        imageContainerBelow  = SVGContainer.viewport.append("g").attr("class", "image-container-below"),
+        textContainerBelow   = SVGContainer.viewport.append("g").attr("class", "text-container-below"),
+        mainContainer        = SVGContainer.viewport.append("g").attr("class", "main-container"),
+        imageContainerTop    = SVGContainer.viewport.append("g").attr("class", "image-container-top"),
+        textContainerTop     = SVGContainer.viewport.append("g").attr("class", "text-container-top"),
 
         // Array which defines a gradient assigned to a given astromonicalBody.
         gradientNameForBody = [],
@@ -35983,7 +36749,7 @@ define('solar-system/views/renderer',['require','lab.config','common/console','c
     }
 
     function astromonicalBodyMouseDown(d, i) {
-      modelView.node.focus();
+      SVGContainer.node.focus();
       if (model.get("enableBodyTooltips")) {
         if (astromonicalBodyTooltipOn !== false) {
           astromonicalBodyDiv.style("opacity", 1e-6);
@@ -36087,12 +36853,11 @@ define('solar-system/views/renderer',['require','lab.config','common/console','c
       if (modelImagePath) {
         imagePath = labConfig.actualRoot + modelImagePath;
       }
-      else if (model.url) {
-        imagePath = labConfig.actualRoot + model.url.slice(0, model.url.lastIndexOf("/") + 1);
+      else if (SVGContainer.url) {
+        imagePath = labConfig.actualRoot + SVGContainer.url.slice(0, SVGContainer.url.lastIndexOf("/") + 1);
       }
 
       bodyTraceColor = model.get("bodyTraceColor");
-
     }
 
     //
@@ -36101,18 +36866,10 @@ define('solar-system/views/renderer',['require','lab.config','common/console','c
     // Called when Renderer is created.
     //
     function init() {
-      // Assign shortcuts, as these variables / functions shouldn't
-      // change.
-      mainContainer        = modelView.containers.mainContainer,
-      imageContainerBelow  = modelView.containers.imageContainerBelow,
-      imageContainerTop    = modelView.containers.imageContainerTop,
-      textContainerBelow   = modelView.containers.textContainerBelow,
-      textContainerTop     = modelView.containers.textContainerTop,
+      model2px = SVGContainer.model2px;
+      model2pxInv = SVGContainer.model2pxInv;
 
-      model2px = modelView.model2px;
-      model2pxInv = modelView.model2pxInv;
-
-      fontSizeInPixels = modelView.getFontSizeInPixels();
+      fontSizeInPixels = SVGContainer.getFontSizeInPixels();
       textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
       traceBodyStrokeWidth = fontSizeInPixels/12;
 
@@ -36135,7 +36892,7 @@ define('solar-system/views/renderer',['require','lab.config','common/console','c
           redrawOperation();
           // All objects where repainted (probably removed and added again), so
           // it's necessary to apply click handlers again.
-          modelView.updateClickHandlers();
+          SVGContainer.updateClickHandlers();
         };
       }
 
@@ -36150,12 +36907,8 @@ define('solar-system/views/renderer',['require','lab.config','common/console','c
       model.on('removeBody', redrawClickableObjects(repaint));
     }
 
-    //
-    // SolarSystem Renderer: reset
-    //
     // Call when model is reset or reloaded.
-    //
-    function reset(newModel) {
+    function bindModel(newModel) {
       model = newModel;
       init();
     }
@@ -36174,7 +36927,7 @@ define('solar-system/views/renderer',['require','lab.config','common/console','c
         model2px = m2px;
         model2pxInv = m2pxInv;
       }
-      fontSizeInPixels = modelView.getFontSizeInPixels();
+      fontSizeInPixels = SVGContainer.getFontSizeInPixels();
       textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
 
       setupDynamicGradients();
@@ -36209,34 +36962,24 @@ define('solar-system/views/renderer',['require','lab.config','common/console','c
       // Expose private methods.
       update: update,
       repaint: repaint,
-      reset: reset,
-      model2px: modelView.model2px,
-      model2pxInv: modelView.model2pxInv
+      bindModel: bindModel,
+      model2px: SVGContainer.model2px,
+      model2pxInv: SVGContainer.model2pxInv
     };
-
-    // Initialization.
-    init();
 
     return api;
   };
 });
 
-/*global $ define: false */
-// ------------------------------------------------------------
-//
-//   SolarSystem View Container
-//
-// ------------------------------------------------------------
-define('solar-system/views/view',['require','common/console','common/views/model-view','solar-system/views/renderer'],function (require) {
-  // Dependencies.
-  var console               = require('common/console'),
-      ModelView             = require("common/views/model-view"),
-      Renderer              = require("solar-system/views/renderer");
+/*global define: false */
 
-  return function (modelUrl, model) {
-    return new ModelView(modelUrl, model, Renderer);
-  }
+define('solar-system/views/view',['require','common/views/svg-container','solar-system/views/renderer'],function (require) {
+  var SVGContainer = require("common/views/svg-container"),
+      Renderer     = require("solar-system/views/renderer");
 
+  return function (model, modelUrl) {
+    return new SVGContainer(model, modelUrl, Renderer);
+  };
 });
 
 /*global define model */
@@ -36517,228 +37260,10 @@ define('solar-system/controllers/controller',['require','common/controllers/mode
       ScriptingAPI      = require('solar-system/controllers/scripting-api'),
       Benchmarks        = require('solar-system/benchmarks/benchmarks');
 
-  return function (modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, interactiveController) {
-    return new ModelController(modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, interactiveController,
+  return function (modelUrl, modelOptions, interactiveController) {
+    return new ModelController(modelUrl, modelOptions, interactiveController,
                                      Model, ModelContainer, ScriptingAPI, Benchmarks);
   }
-});
-
-/*global define: false */
-
-define('common/parameter-support',['require','common/property-description'],function (require) {
-
-  var PropertyDescription  = require('common/property-description');
-
-  return function ParameterSupport(propertySupport, unitsDefinition) {
-    unitsDefinition = unitsDefinition || {};
-
-    return {
-      mixInto: function(target) {
-
-        target.defineParameter = function(key, descriptionHash, setter) {
-          var descriptor = {
-                type: 'parameter',
-                includeInHistoryState: true,
-                invokeSetterAfterBulkRestore: false,
-                description: new PropertyDescription(unitsDefinition, descriptionHash),
-                beforeSetCallback: propertySupport.invalidatingChangePreHook,
-                afterSetCallback: propertySupport.invalidatingChangePostHook
-              };
-
-          // In practice, some parameters are meant only to be observed, and have no setter
-          if (setter) {
-            descriptor.set = function(value) {
-              setter.call(target, value);
-            };
-          }
-          propertySupport.defineProperty(key, descriptor);
-        };
-      }
-    };
-  };
-});
-
-/*global define: false */
-
-define('common/output-support',['require','common/property-description','cs!common/running-average-filter'],function (require) {
-
-  var PropertyDescription  = require('common/property-description'),
-      RunningAverageFilter = require('cs!common/running-average-filter');
-
-  return function OutputSupport(propertySupport, unitsDefinition) {
-    var filteredOutputs = [];
-
-    function updateFilteredOutputs() {
-      filteredOutputs.forEach(function(output) {
-        output.addSample();
-      });
-    }
-
-    // TODO: is it necessary? It follows the old solution.
-    // In theory filtered outputs could be updated only on time change
-    // or on filtered property value change. Check it!
-    propertySupport.on("afterInvalidatingChange", updateFilteredOutputs);
-
-    return {
-      mixInto: function(target) {
-
-        target.defineOutput = function(key, descriptionHash, getter) {
-          propertySupport.defineProperty(key, {
-            type: 'output',
-            writable: false,
-            get: getter,
-            includeInHistoryState: false,
-            description: new PropertyDescription(unitsDefinition, descriptionHash)
-          });
-        };
-
-        target.defineFilteredOutput = function(key, description, filteredPropertyKey, type, period) {
-          var filter, initialValue;
-
-          if (type === "RunningAverage") {
-            filter = new RunningAverageFilter(period);
-          } else {
-            throw new Error("FilteredOutput: unknown filter type " + type + ".");
-          }
-
-          // Add initial sample
-          initialValue = target.properties[filteredPropertyKey];
-          if (initialValue === undefined || isNaN(Number(initialValue))) {
-            throw new Error("FilteredOutput: property is not a valid numeric value or it is undefined.");
-          }
-          filter.addSample(target.properties.time, initialValue);
-
-          filteredOutputs.push({
-            addSample: function() {
-              filter.addSample(target.properties.time, target.properties[filteredPropertyKey]);
-            }
-          });
-
-          // Extend description to contain information about filter
-          description.property = filteredPropertyKey;
-          description.type = type;
-          description.period = period;
-
-          target.defineOutput(key, description, function () {
-            return filter.calculate();
-          });
-        };
-
-        target.updateAllOutputProperties = function () {
-          propertySupport.deleteComputedPropertyCachedValues();
-          propertySupport.notifyAllComputedProperties();
-          updateFilteredOutputs();
-        };
-      }
-    };
-  };
-});
-
-/*global define: false */
-
-define('common/define-builtin-properties',['require','common/validator','common/property-description'],function (require) {
-
-  var validator            = require('common/validator'),
-      PropertyDescription  = require('common/property-description');
-
-  return function defineBuiltinProperties(propertySupport, unitsDefinition, metadata, customSetters) {
-    customSetters = customSetters || {}; // optional
-
-    function defineBuiltinProperty(key, type, setter) {
-      var metadataForType,
-          descriptor,
-          propertyChangeInvalidates,
-          unitType;
-
-      if (type === 'mainProperty') {
-        metadataForType = metadata.mainProperties;
-      } else if (type === 'viewOption') {
-        metadataForType = metadata.viewOptions;
-      } else {
-        throw new Error(type + " is not a supported built-in property type");
-      }
-
-      propertyChangeInvalidates = validator.propertyChangeInvalidates(metadataForType[key]);
-
-      descriptor = {
-        type: type,
-        writable: validator.propertyIsWritable(metadataForType[key]),
-        set: setter,
-        includeInHistoryState: !!metadataForType[key].storeInTickHistory,
-        validate: function(value) {
-          return validator.validateSingleProperty(metadataForType[key], key, value, false);
-        },
-        beforeSetCallback: propertyChangeInvalidates ? propertySupport.invalidatingChangePreHook : undefined,
-        afterSetCallback: propertyChangeInvalidates ? propertySupport.invalidatingChangePostHook : undefined
-      };
-
-      unitType = metadataForType[key].unitType;
-      if (unitType) {
-        descriptor.description = new PropertyDescription(unitsDefinition, { unitType: unitType });
-      }
-
-      propertySupport.defineProperty(key, descriptor);
-    }
-
-    // Define built-in properties using provided metadata.
-    Object.keys(metadata.mainProperties).forEach(function (key) {
-      defineBuiltinProperty(key, 'mainProperty', customSetters[key]);
-    });
-    Object.keys(metadata.viewOptions).forEach(function (key) {
-      defineBuiltinProperty(key, 'viewOption', customSetters[key]);
-    });
-  };
-});
-
-/*global define: false */
-
-define('common/lab-modeler-mixin',['require','common/property-support','common/parameter-support','common/output-support','common/define-builtin-properties'],function (require) {
-
-  var PropertySupport         = require('common/property-support'),
-      ParameterSupport        = require('common/parameter-support'),
-      OutputSupport           = require('common/output-support'),
-      defineBuiltinProperties = require('common/define-builtin-properties');
-
-  return function LabModelerMixin(args) {
-
-    var api,
-
-        metadata        = args.metadata || null,
-        setters         = args.setters || {},
-        unitsDefinition = args.unitsDefinition || {},
-
-        propertySupport = new PropertySupport({
-          types: ["output", "parameter", "mainProperty", "viewOption"]
-        }),
-        parameterSupport = new ParameterSupport(propertySupport, unitsDefinition),
-        outputSupport = new OutputSupport(propertySupport, unitsDefinition);
-
-    if (metadata) {
-      defineBuiltinProperties(propertySupport, unitsDefinition, metadata, setters);
-    }
-
-    api = {
-      mixInto: function(target) {
-        propertySupport.mixInto(target);
-        parameterSupport.mixInto(target);
-        outputSupport.mixInto(target);
-      },
-
-      get propertySupport() {
-        return propertySupport;
-      },
-
-      get parameterSupport() {
-        return parameterSupport;
-      },
-
-      get outputSupport() {
-        return outputSupport;
-      }
-    };
-
-    return api;
-  };
 });
 
 /*global define: false */
@@ -36754,6 +37279,10 @@ define('signal-generator/metadata',[],function() {
       frequency: {
         defaultValue: 1,
         unitType: "frequency",
+        propertyChangeInvalidates: true
+      },
+      modelSampleRate: {
+        defaultValue: 60,
         propertyChangeInvalidates: true
       },
       timeScale: {
@@ -36775,7 +37304,7 @@ define('signal-generator/metadata',[],function() {
   };
 });
 
-/*global define: false, d3: false*/
+/*global define: false */
 
 define('signal-generator/modeler',['require','common/lab-modeler-mixin','common/validator','signal-generator/metadata'],function(require) {
 
@@ -36818,60 +37347,32 @@ define('signal-generator/modeler',['require','common/lab-modeler-mixin','common/
         labModelerMixin = new LabModelerMixin({
           metadata: metadata,
           setters: customSetters,
-          unitsDefinition: unitsDefinition
+          unitsDefinition: unitsDefinition,
+          initialProperties: initialProperties
         }),
-        propertySupport = labModelerMixin.propertySupport,
+        dispatch = labModelerMixin.dispatchSupport,
 
-        viewOptions,
-        mainProperties,
-        isStopped = true,
-        dispatch = d3.dispatch('play', 'stop', 'tick', 'reset', 'stepForward', 'stepBack', 'seek', 'invalidation'),
-        interval,
-        intervalLength = 16, // ms
         lastFrequency,
         phase = 0,
         time = 0,
         stepCounter = 0,
         model;
 
-    function tick() {
-      stepCounter++;
-      time += (0.001 * intervalLength * model.properties.timeScale);
-
-      model.updateAllOutputProperties();
-
-      dispatch.tick();
-    }
-
     function constrain(angle) {
       return angle - 2 * Math.PI * Math.floor(angle / (2 * Math.PI));
     }
 
     model = {
-      resetTime: function() {
-        model.makeInvalidatingChange(function() {
-          time = 0;
-        });
-      },
 
-      on: function(type, listener) {
-        dispatch.on(type, listener);
-      },
+      tick: function () {
+        var intervalLength = 1000 / model.properties.modelSampleRate;
 
-      start: function() {
-        isStopped = false;
-        interval = setInterval(tick, intervalLength);
-        dispatch.play();
-      },
+        stepCounter++;
+        time += (0.001 * intervalLength * model.properties.timeScale);
 
-      stop: function() {
-        isStopped = true;
-        clearInterval(interval);
-        dispatch.stop();
-      },
+        model.updateAllOutputProperties();
 
-      is_stopped: function() {
-        return isStopped;
+        dispatch.tick();
       },
 
       stepCounter: function() {
@@ -36880,12 +37381,7 @@ define('signal-generator/modeler',['require','common/lab-modeler-mixin','common/
     };
 
     labModelerMixin.mixInto(model);
-
-    mainProperties = validator.validateCompleteness(metadata.mainProperties, initialProperties);
-    propertySupport.setRawValues(mainProperties);
-
-    viewOptions = validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {});
-    propertySupport.setRawValues(viewOptions);
+    dispatch.addEventTypes("tick");
 
     model.defineOutput('time', {
       label: "Time",
@@ -36937,7 +37433,8 @@ define('common/views/null-model-view',[],function() {
       $el: $("<div id='model-container' class='container'/>"),
       getHeightForWidth: function() { return 0; },
       resize: function() {},
-      reset: function() {},
+      bindModel: function() {},
+      setup: function() {},
       update: function() {}
     };
   };
@@ -36953,8 +37450,8 @@ define('signal-generator/controller',['require','common/controllers/model-contro
       ScriptingAPI      = function() {},
       Benchmarks        = function() {};
 
-  return function (modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, interactiveController) {
-    return new ModelController(modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, interactiveController,
+  return function (modelUrl, modelOptions, interactiveController) {
+    return new ModelController(modelUrl, modelOptions, interactiveController,
                                Model, ModelContainer, ScriptingAPI, Benchmarks);
   };
 });
@@ -37899,11 +38396,6 @@ define('sensor/modeler',['require','common/property-support','common/property-de
     }
 
     model = {
-      resetTime: function() {
-        makeInvalidatingChange(function() {
-          time = 0;
-        });
-      },
 
       on: function(type, listener) {
         dispatch.on(type, listener);
@@ -37935,7 +38427,7 @@ define('sensor/modeler',['require','common/property-support','common/property-de
         });
       },
 
-      is_stopped: function() {
+      isStopped: function() {
         return isStopped;
       },
 
@@ -38107,21 +38599,6627 @@ define('sensor/controller',['require','common/controllers/model-controller','sen
       ScriptingAPI      = function() {},
       Benchmarks        = function() {};
 
-  return function (modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, interactiveController) {
-    return new ModelController(modelUrl, modelConfig, interactiveViewConfig, interactiveModelConfig, interactiveController,
+  return function (modelUrl, modelOptions, interactiveController) {
+    return new ModelController(modelUrl, modelOptions, interactiveController,
                                Model, ModelContainer, ScriptingAPI, Benchmarks);
+  };
+});
+
+/*jslint indent: 2, browser: true, newcap: true */
+/*globals define: false*/
+
+// Basic constants used by Energy2D module
+
+define('energy2d/models/constants',['require','exports','module'],function (require, exports, module) {
+  'use strict';
+  // Air's thermal conductivity = 0.025 W/(m*K)
+  exports.AIR_THERMAL_CONDUCTIVITY = 0.025;
+  // Air's specific heat = 1012 J/(kg*K)
+  exports.AIR_SPECIFIC_HEAT = 1012;
+  // Air's density = 1.204 kg/m^3 at 25 C
+  exports.AIR_DENSITY = 1.204;
+  // By default, air's kinematic viscosity = 1.568 x 10^-5 m^2/s at 27 C is
+  // used. It can be set to zero for inviscid fluid.
+  exports.AIR_VISCOSITY = 0.00001568;
+  // Stefan's constant unit J/(s*m^2*K^-4)
+  exports.STEFAN_CONSTANT = 0.0000000567;
+});
+
+/*global define: false */
+
+define('energy2d/metadata',['require','energy2d/models/constants'],function(require) {
+  var constants = require('energy2d/models/constants');
+
+  return {
+    mainProperties: {
+      type: {
+        defaultValue: "energy2d",
+        immutable: true
+      },
+      use_WebGL: {
+        defaultValue: false
+      },
+      grid_width: {
+        defaultValue: 100,
+        immutable: true
+      },
+      grid_height: {
+        defaultValue: 100,
+        immutable: true
+      },
+      model_width: {
+        defaultValue: 10,
+        immutable: true
+      },
+      model_height: {
+        defaultValue: 10,
+        immutable: true
+      },
+      timeStep: {
+        defaultValue: 1
+      },
+      timeStepsPerTick: {
+        defaultValue: 4
+      },
+      ticksPerGPUSync: {
+        defaultValue: 30
+      },
+      convective: {
+        defaultValue: true
+      },
+      background_temperature: {
+        defaultValue: 0
+      },
+      background_conductivity: {
+        defaultValue: constants.AIR_THERMAL_CONDUCTIVITY
+      },
+      background_specific_heat: {
+        defaultValue: constants.AIR_SPECIFIC_HEAT
+      },
+      background_density: {
+        defaultValue: constants.AIR_DENSITY
+      },
+      background_viscosity: {
+        defaultValue: constants.AIR_VISCOSITY
+      },
+      thermal_buoyancy: {
+        defaultValue: 0.00025
+      },
+      buoyancy_approximation: {
+        defaultValue: 1
+      },
+      boundary: {
+        defaultValue: {
+          type: "temperature",
+          upper: 0,
+          lower: 0,
+          left: 0,
+          right: 0
+        }
+      },
+      sunny: {
+        defaultValue: false
+      },
+      sun_angle: {
+        defaultValue: 1.5707964
+      },
+      solar_power_density: {
+        defaultValue: 2000
+      },
+      solar_ray_count: {
+        defaultValue: 24
+      },
+      solar_ray_speed: {
+        defaultValue: 0.1
+      },
+      photon_emission_interval: {
+        defaultValue: 20
+      }
+    },
+
+    viewOptions: {
+      showClock: {
+        defaultValue: true,
+        propertyChangeInvalidates: false
+      },
+      controlButtons: {
+        defaultValue: "play_reset",
+        propertyChangeInvalidates: false
+      },
+      color_palette_type: {
+        defaultValue: 0
+      },
+      velocity: {
+        defaultValue: false
+      },
+      minimum_temperature: {
+        defaultValue: 0
+      },
+      maximum_temperature: {
+        defaultValue: 40.0
+      },
+      enableKeyboardHandlers: {
+        defaultValue: true
+      }
+    },
+
+    part: {
+      shapeType: {
+        // Available options: "rectangle", "ellipse", "ring" or "polygon".
+        required: true,
+        immutable: true
+      },
+      x: {
+        defaultValue: 0
+      },
+      y: {
+        defaultValue: 0
+      },
+      width: {},
+      height: {},
+      a: {},
+      b: {},
+      inner: {},
+      outer: {},
+      vertices: {},
+
+      // Special shortcut properties which let user access polygon properties
+      // faster and more convenient. They can be used both to get and set
+      // value. They are not serialized.
+      raw_x_coords: {
+        serialize: false
+      },
+      raw_y_coords: {
+        serialize: false
+      },
+
+      thermal_conductivity: {
+        defaultValue: 1
+      },
+      specific_heat: {
+        defaultValue: 1300
+      },
+      density: {
+        defaultValue: 25
+      },
+      transmission: {
+        defaultValue: 0
+      },
+      reflection: {
+        defaultValue: 0
+      },
+      absorption: {
+        defaultValue: 1
+      },
+      emissivity: {
+        defaultValue: 0
+      },
+      temperature: {
+        defaultValue: 0
+      },
+      constant_temperature: {
+        defaultValue: false
+      },
+      power: {
+        defaultValue: 0
+      },
+      wind_speed: {
+        defaultValue: 0
+      },
+      wind_angle: {
+        defaultValue: 0
+      },
+      visible: {
+        defaultValue: true
+      },
+      filled: {
+        defaultValue: true
+      },
+      color: {
+        // Auto color means that part will use color matching its power or temperature
+        // (when it has constant temperature) or gray color otherwise.
+        defaultValue: "auto"
+      },
+      label: {
+        defaultValue: ""
+      },
+      texture: {
+        defaultValue: false
+      },
+      draggable: {
+        defaultValue: true
+      }
+    },
+
+    sensor: {
+      type: {
+        required: true,
+        immutable: true
+      },
+      x: {
+        required: true,
+        unitType: "length"
+      },
+      y: {
+        required: true,
+        unitType: "length"
+      },
+      angle: {
+        // Optional, defined only for heat flux sensors.
+        immutable: true
+      },
+      label: {
+        defaultValue: ""
+      },
+      value: {
+        readOnly: true,
+        serialize: false
+      }
+    }
+  };
+});
+
+/*global define: false*/
+
+define('energy2d/models/physics-solvers/heat-solver',['require','exports','module','arrays'],function (require, exports) {
+  'use strict';
+  var
+    arrays = require('arrays'),
+
+    RELAXATION_STEPS = 5;
+
+  exports.makeHeatSolver = function (model) {
+    var
+      // Basic simulation parameters.
+      props = model.getModelOptions(),
+      nx = props.grid_width,
+      ny = props.grid_height,
+
+      relaxationSteps = RELAXATION_STEPS,
+
+      // Simulation arrays provided by model.
+      conductivity = model.getConductivityArray(),
+      capacity     = model.getCapacityArray(),
+      density      = model.getDensityArray(),
+      u            = model.getUVelocityArray(),
+      v            = model.getVVelocityArray(),
+      tb           = model.getBoundaryTemperatureArray(),
+      fluidity     = model.getFluidityArray(),
+
+      // Internal array that stores the previous temperature results.
+      t0 = arrays.create(nx * ny, 0, model.getArrayType()),
+
+      // Convenience variables.
+      nx1 = nx - 1,
+      ny1 = ny - 1,
+      nx2 = nx - 2,
+      ny2 = ny - 2,
+
+      deltaX = props.model_width / props.grid_width,
+      deltaY = props.model_height / props.grid_height,
+
+      //
+      // Private methods
+      //
+
+      applyBoundary  = function (t) {
+        var
+          boundary = props.boundary,
+          vN = boundary.upper,
+          vS = boundary.lower,
+          vW = boundary.left,
+          vE = boundary.right,
+          i, j, inx, inx_ny1;
+
+        if (boundary.type === "temperature") {
+          for (i = 0; i < nx; i += 1) {
+            inx = i * nx;
+            t[inx] = vN;
+            t[inx + ny1] = vS;
+          }
+          for (j = 0; j <  ny; j += 1) {
+            t[j] = vW;
+            t[nx1 * nx + j] = vE;
+          }
+        } else if (boundary.type === "flux") {
+          for (i = 0; i < nx; i += 1) {
+            inx = i * nx;
+            inx_ny1 = inx + ny1;
+            t[inx] = t[inx + 1] + vN * deltaY / conductivity[inx];
+            t[inx_ny1] = t[inx + ny2] - vS * deltaY / conductivity[inx_ny1];
+          }
+          for (j = 0; j < ny; j += 1) {
+            t[j] = t[nx + j] - vW * deltaX / conductivity[j];
+            t[nx1 * nx + j] = t[nx2 * nx + j] + vE * deltaX / conductivity[nx1 * nx + j];
+          }
+        }
+      },
+
+      macCormack  = function (t) {
+        var
+          timeStep = props.timeStep,
+          tx = 0.5 * timeStep / deltaX,
+          ty = 0.5 * timeStep / deltaY,
+          i, j, inx, jinx, jinx_plus_nx, jinx_minus_nx, jinx_plus_1, jinx_minus_1;
+
+        for (i = 1; i < nx1; i += 1) {
+          inx = i * nx;
+          for (j = 1; j < ny1; j += 1) {
+            jinx = inx + j;
+            jinx_minus_nx = jinx - nx;
+            jinx_plus_nx = jinx + nx;
+            jinx_minus_1 = jinx - 1;
+            jinx_plus_1 = jinx + 1;
+            if (fluidity[jinx]) {
+              t0[jinx] = t[jinx]
+                - tx * (u[jinx_plus_nx] * t[jinx_plus_nx] - u[jinx_minus_nx] * t[jinx_minus_nx])
+                - ty * (v[jinx_plus_1] * t[jinx_plus_1] - v[jinx_minus_1] * t[jinx_minus_1]);
+            }
+          }
+        }
+        applyBoundary(t0);
+
+        for (i = 1; i < nx1; i += 1) {
+          inx = i * nx;
+          for (j = 1; j < ny1; j += 1) {
+            jinx = inx + j;
+            if (fluidity[jinx]) {
+              jinx_minus_nx = jinx - nx;
+              jinx_plus_nx = jinx + nx;
+              jinx_minus_1 = jinx - 1;
+              jinx_plus_1 = jinx + 1;
+
+              t[jinx] = 0.5 * (t[jinx] + t0[jinx]) - 0.5 * tx * u[jinx]
+                * (t0[jinx_plus_nx] - t0[jinx_minus_nx]) - 0.5 * ty * v[jinx]
+                * (t0[jinx_plus_1] - t0[jinx_minus_1]);
+            }
+          }
+        }
+        applyBoundary(t);
+      };
+
+    return {
+      solve: function (convective, t, q) {
+        var
+          timeStep = props.timeStep,
+          hx = 0.5 / (deltaX * deltaX),
+          hy = 0.5 / (deltaY * deltaY),
+          invTimeStep = 1.0 / timeStep,
+          rij, sij, axij, bxij, ayij, byij,
+          k, i, j, inx, jinx, jinx_plus_nx, jinx_minus_nx, jinx_plus_1, jinx_minus_1;
+
+        arrays.copy(t, t0);
+
+        for (k = 0; k < relaxationSteps; k += 1) {
+          for (i = 1; i < nx1; i += 1) {
+            inx = i * nx;
+            for (j = 1; j < ny1; j += 1) {
+              jinx = inx + j;
+              if (isNaN(tb[jinx])) {
+                jinx_minus_nx = jinx - nx;
+                jinx_plus_nx = jinx + nx;
+                jinx_minus_1 = jinx - 1;
+                jinx_plus_1 = jinx + 1;
+
+                sij = capacity[jinx] * density[jinx] * invTimeStep;
+                rij = conductivity[jinx];
+                axij = hx * (rij + conductivity[jinx_minus_nx]);
+                bxij = hx * (rij + conductivity[jinx_plus_nx]);
+                ayij = hy * (rij + conductivity[jinx_minus_1]);
+                byij = hy * (rij + conductivity[jinx_plus_1]);
+                t[jinx] = (t0[jinx] * sij + q[jinx] + axij * t[jinx_minus_nx] + bxij
+                          * t[jinx_plus_nx] + ayij * t[jinx_minus_1] + byij * t[jinx_plus_1])
+                          / (sij + axij + bxij + ayij + byij);
+              } else {
+                t[jinx] = tb[jinx];
+              }
+            }
+          }
+          applyBoundary(t);
+        }
+        if (convective) {
+          // advect(t)
+          macCormack(t);
+        }
+      }
+    };
+  };
+});
+
+/*global define: false*/
+
+// WebGL Context Manager module.
+//
+// It provides access to one, global WebGL context.
+// All clients interested in WebGL context should call:
+// getWebGLContext() function. If WebGL is not available,
+// an appropriate error will be thrown.
+define('energy2d/gpu/context',[],function () {
+  'use strict';
+  // The internal `gl` variable holds the current WebGL context.
+  var gl;
+
+  return {
+    getWebGLContext: function () {
+      if (!gl) {
+        var canvas = document.createElement('canvas');
+        try {
+          gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        } catch (e) {}
+        if (!gl) {
+          throw new Error('GL: WebGL not supported.');
+        }
+      }
+      return gl;
+    },
+
+    get error() {
+      if (!gl) return "WebGL unavailable";
+      var error = gl.getError();
+      return error === gl.NO_ERROR ? undefined : error;
+    }
+  };
+});
+
+/*jslint indent: 2, browser: true, newcap: true, es5: true */
+/*globals define: false, Float32Array: false, Uint16Array: false, console: false*/
+
+define('energy2d/gpu/shader',['require','common/console','energy2d/gpu/context'],function (require) {
+  'use strict';
+  var
+    // Dependencies.
+    console = require('common/console'),
+    context = require('energy2d/gpu/context'),
+
+    // The internal `gl` variable holds the current WebGL context.
+    gl,
+
+    // Local, private helper functions.
+    regexMap = function (regex, text, callback) {
+      var result;
+      while ((result = regex.exec(text)) !== null) {
+        callback(result);
+      }
+    },
+    isArray = function (obj) {
+      var str = Object.prototype.toString.call(obj);
+      return str === '[object Array]' || str === '[object Float32Array]';
+    },
+    isNumber = function (obj) {
+      var str = Object.prototype.toString.call(obj);
+      return str === '[object Number]' || str === '[object Boolean]';
+    },
+    // Class to be exported.
+    Shader;
+
+  // Compiles a shader program using the provided vertex and fragment shaders.
+  Shader = function (vertexSource, fragmentSource) {
+    var
+      // Headers are prepended to the sources to provide some automatic functionality.
+      vertexHeader =
+      '\
+      attribute vec4 gl_Vertex;\
+      attribute vec4 gl_TexCoord;\
+      attribute vec3 gl_Normal;\
+      attribute vec4 gl_Color;\
+      ',
+      fragmentHeader =
+      '\
+      precision highp float;\
+      ',
+
+      // The `gl_` prefix must be substituted for something else to avoid compile
+      // errors, since it's a reserved prefix. This prefixes all reserved names with
+      // `_`. The header is inserted after any extensions, since those must come
+      // first.
+      fix = function (header, source) {
+        var replaced = {}, match;
+        match = /^((\s*\/\/.*\n|\s*#extension.*\n)+)[^]*$/.exec(source);
+        source = match ? match[1] + header + source.substr(match[1].length) : header + source;
+        regexMap(/\bgl_\w+\b/g, header, function (result) {
+          if (replaced[result] === undefined) {
+            source = source.replace(new RegExp('\\b' + result + '\\b', 'g'), '_' + result);
+            replaced[result] = true;
+          }
+        });
+        return source;
+      },
+
+      isSampler = {};
+
+    gl = context.getWebGLContext();
+
+    vertexSource = fix(vertexHeader, vertexSource);
+    fragmentSource = fix(fragmentHeader, fragmentSource);
+
+    // Compile and link errors are thrown as strings.
+    function compileSource(type, source) {
+      var shader = gl.createShader(type);
+      gl.shaderSource(shader, source);
+      gl.compileShader(shader);
+      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+        throw new Error('Shader: compile error.\n' + gl.getShaderInfoLog(shader) +
+                        '\nSource:\n' + source);
+      }
+      return shader;
+    }
+
+    this.program = gl.createProgram();
+    gl.attachShader(this.program, compileSource(gl.VERTEX_SHADER, vertexSource));
+    gl.attachShader(this.program, compileSource(gl.FRAGMENT_SHADER, fragmentSource));
+    gl.linkProgram(this.program);
+    if (!gl.getProgramParameter(this.program, gl.LINK_STATUS)) {
+      throw new Error('Shader: link error.\n' + gl.getProgramInfoLog(this.program) +
+                      '\nSource:\n' + vertexSource + '\n\n' + fragmentSource);
+    }
+    this.attributes = {};
+    this.uniformLocations = {};
+
+    // Sampler uniforms need to be uploaded using `gl.uniform1i()` instead of `gl.uniform1f()`.
+    // To do this automatically, we detect and remember all uniform samplers in the source code.
+    regexMap(/uniform\s+sampler(1D|2D|3D|Cube)\s+(\w+)\s*;/g, vertexSource + fragmentSource, function (groups) {
+      isSampler[groups[2]] = 1;
+    });
+    this.isSampler = isSampler;
+  };
+
+  // Set a uniform for each property of `uniforms`. The correct `gl.uniform*()` method is
+  // inferred from the value types and from the stored uniform sampler flags.
+  Shader.prototype.uniforms = function (uniforms) {
+    var name, location, value;
+
+    gl.useProgram(this.program);
+
+    for (name in uniforms) {
+      if (uniforms.hasOwnProperty(name)) {
+        if (this.uniformLocations[name] === undefined) {
+          this.uniformLocations[name] = gl.getUniformLocation(this.program, name);
+        }
+        location = this.uniformLocations[name];
+        if (location === null) {
+          console.warn('Shader: name ' + name + ' does not correspond to an active uniform variable.');
+          continue;
+        }
+        value = uniforms[name];
+        if (isArray(value)) {
+          switch (value.length) {
+          case 1: gl.uniform1fv(location, new Float32Array(value)); break;
+          case 2: gl.uniform2fv(location, new Float32Array(value)); break;
+          case 3: gl.uniform3fv(location, new Float32Array(value)); break;
+          case 4: gl.uniform4fv(location, new Float32Array(value)); break;
+          // Matrices are automatically transposed, since WebGL uses column-major
+          // indices instead of row-major indices.
+          case 9: gl.uniformMatrix3fv(location, false, new Float32Array([
+            value[0], value[3], value[6],
+            value[1], value[4], value[7],
+            value[2], value[5], value[8]
+          ])); break;
+          case 16: gl.uniformMatrix4fv(location, false, new Float32Array([
+            value[0], value[4], value[8], value[12],
+            value[1], value[5], value[9], value[13],
+            value[2], value[6], value[10], value[14],
+            value[3], value[7], value[11], value[15]
+          ])); break;
+          default: throw new Error('Shader: don\'t know how to load uniform "' + name + '" of length ' + value.length);
+          }
+        } else if (isNumber(value)) {
+          (this.isSampler[name] ? gl.uniform1i : gl.uniform1f).call(gl, location, value);
+        } else {
+          throw new Error('Shader: attempted to set uniform "' + name + '" to invalid value ' + value);
+        }
+      }
+    }
+
+    return this;
+  };
+
+  // Sets all uniform matrix attributes, binds all relevant buffers, and draws the
+  // mesh geometry as indexed triangles or indexed lines. Set `mode` to `gl.LINES`
+  // (and either add indices to `lines` or call `computeWireframe()`) to draw the
+  // mesh in wireframe.
+  Shader.prototype.draw = function (mesh, mode) {
+    gl.useProgram(this.program);
+
+    this.drawBuffers(mesh.vertexBuffers,
+      mesh.indexBuffers[mode === gl.LINES ? 'lines' : 'triangles'],
+      arguments.length < 2 ? gl.TRIANGLES : mode);
+  };
+
+  // Sets all uniform matrix attributes, binds all relevant buffers, and draws the
+  // indexed mesh geometry. The `vertexBuffers` argument is a map from attribute
+  // names to `Buffer` objects of type `gl.ARRAY_BUFFER`, `indexBuffer` is a `Buffer`
+  // object of type `gl.ELEMENT_ARRAY_BUFFER`, and `mode` is a WebGL primitive mode
+  // like `gl.TRIANGLES` or `gl.LINES`. This method automatically creates and caches
+  // vertex attribute pointers for attributes as needed.
+  Shader.prototype.drawBuffers = function (vertexBuffers, indexBuffer, mode) {
+    // Create and enable attribute pointers as necessary.
+    var length = 0, attribute, buffer, location;
+
+    for (attribute in vertexBuffers) {
+      if (vertexBuffers.hasOwnProperty(attribute)) {
+        buffer = vertexBuffers[attribute];
+        if (this.attributes[attribute] === undefined) {
+          this.attributes[attribute] = gl.getAttribLocation(this.program, attribute.replace(/^gl_/, '_gl_'));
+        }
+        location = this.attributes[attribute];
+        if (location === -1 || !buffer.buffer) {
+          continue;
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffer.buffer);
+        gl.enableVertexAttribArray(location);
+        gl.vertexAttribPointer(location, buffer.buffer.spacing, gl.FLOAT, false, 0, 0);
+        length = buffer.buffer.length / buffer.buffer.spacing;
+      }
+    }
+
+    // Disable unused attribute pointers.
+    for (attribute in this.attributes) {
+      if (this.attributes.hasOwnProperty(attribute)) {
+        if (vertexBuffers[attribute] === undefined) {
+          gl.disableVertexAttribArray(this.attributes[attribute]);
+        }
+      }
+    }
+
+    // Draw the geometry.
+    if (length && (!indexBuffer || indexBuffer.buffer)) {
+      if (indexBuffer) {
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer.buffer);
+        gl.drawElements(mode, indexBuffer.buffer.length, gl.UNSIGNED_SHORT, 0);
+      } else {
+        gl.drawArrays(mode, 0, length);
+      }
+    }
+  };
+
+  // Export constructor function.
+  return Shader;
+});
+
+/*jslint indent: 2, browser: true, newcap: true */
+/*globals define: false*/
+
+// Simple wrapper around WebGL textures that supports render-to-texture.
+//
+// The arguments `width` and `height` give the size of the texture in texels.
+// WebGL texture dimensions must be powers of two unless `filter` is set to
+// either `gl.NEAREST` or `gl.REPEAT` and `wrap` is set to `gl.CLAMP_TO_EDGE`
+// (which they are by default).
+//
+// Texture parameters can be passed in via the `options` argument.
+// Example usage:
+//
+//     var t = new Texture(256, 256, {
+//       // Defaults to gl.LINEAR, set both at once with "filter"
+//       mag_filter: gl.NEAREST,
+//       min_filter: gl.LINEAR,
+//
+//       // Defaults to gl.CLAMP_TO_EDGE, set both at once with "wrap"
+//       wrap_s: gl.REPEAT,
+//       wrap_t: gl.REPEAT,
+//
+//       format: gl.RGB, // Defaults to gl.RGBA
+//       type: gl.FLOAT  // Defaults to gl.UNSIGNED_BYTE
+//     });
+
+define('energy2d/gpu/texture',['require','energy2d/gpu/context'],function (require) {
+  'use strict';
+  var
+    // Dependencies.
+    context = require('energy2d/gpu/context'),
+
+    // WebGL context.
+    gl,
+
+    // Class to be exported.
+    Texture;
+
+  Texture = function (width, height, options) {
+    gl = context.getWebGLContext();
+    options = options || {};
+    // Basic texture params.
+    this.id = gl.createTexture();
+    this.width = width;
+    this.height = height;
+    this.format = options.format || gl.RGBA;
+    this.type = options.type || gl.UNSIGNED_BYTE;
+    // Number of texture unit which contains this texture (if any).
+    this.tex_unit = null;
+    // Render target params.
+    this.fbo = null;
+
+    // Set parameters.
+    gl.bindTexture(gl.TEXTURE_2D, this.id);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, options.mag_filter || options.filter || gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, options.min_filter || options.filter || gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, options.wrap || options.wrap_s || gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, options.wrap || options.wrap_t || gl.CLAMP_TO_EDGE);
+    gl.texImage2D(gl.TEXTURE_2D, 0, this.format, width, height, 0, this.format, this.type, null);
+  };
+
+  // Set texture as render target.
+  // After this call user can render to texture.
+  Texture.prototype.setAsRenderTarget = function () {
+    if (this.fbo === null) {
+      // FBO initialization during first call.
+      this.fbo = gl.createFramebuffer();
+      gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
+      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.id, 0);
+      gl.viewport(0, 0, this.width, this.height);
+    } else {
+      gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
+      gl.viewport(0, 0, this.width, this.height);
+    }
+  };
+
+  // Bind this texture to the given texture unit (0-7, defaults to 0).
+  Texture.prototype.bind = function (unit) {
+    this.tex_unit = unit || 0;
+    gl.activeTexture(gl.TEXTURE0 + this.tex_unit);
+    gl.bindTexture(gl.TEXTURE_2D, this.id);
+  };
+
+  // Unbind this texture.
+  Texture.prototype.unbind = function (unit) {
+    if (this.tex_unit === null) {
+      return;
+    }
+    gl.activeTexture(gl.TEXTURE0 + this.tex_unit);
+    gl.bindTexture(gl.TEXTURE_2D, null);
+    this.tex_unit = null;
+  };
+
+  // Render all draw calls in `callback` to this texture. It also temporarily
+  // changes the viewport to the size of the texture.
+  Texture.prototype.drawTo = function (callback) {
+    if (this.fbo === null) {
+      throw new Error("Texture: call setupAsRenderTarget() method first.");
+    }
+    gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
+    gl.viewport(0, 0, this.width, this.height);
+
+    callback();
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  };
+
+  // Switch this texture with 'other', useful for the ping-pong rendering
+  // technique used in multi-stage rendering.
+  // Textures should have identical dimensions, types and in general - parameters.
+  // Only ID, FBO and active texture unit values are swapped.
+  Texture.prototype.swapWith = function (other) {
+    var temp;
+    // Swap ID.
+    temp = other.id;
+    other.id = this.id;
+    this.id = temp;
+    // Swap active texture unit.
+    temp = other.tex_unit;
+    other.tex_unit = this.tex_unit;
+    this.tex_unit = temp;
+    // Swap FBO.
+    temp = other.fbo;
+    other.fbo = this.fbo;
+    this.fbo = temp;
+  };
+
+  // Export constructor function.
+  return Texture;
+});
+
+/*jslint indent: 2, browser: true, newcap: true, es5: true */
+/*globals define: false, Float32Array: false, Uint16Array: false*/
+
+// Represents a collection of vertex buffers and index buffers. Each vertex
+// buffer maps to one attribute in GLSL and has a corresponding property set
+// on the Mesh instance. There is one vertex buffer by default: `vertices`,
+// which maps to `gl_Vertex`. The `coords`, `normals`, and `colors` vertex
+// buffers map to `gl_TexCoord`, `gl_Normal`, and `gl_Color` respectively,
+// and can be enabled by setting the corresponding options to true. There are
+// two index buffers, `triangles` and `lines`, which are used for rendering
+// `gl.TRIANGLES` and `gl.LINES`, respectively. Only `triangles` is enabled by
+// default, although `computeWireframe()` will add a normal buffer if it wasn't
+// initially enabled.
+
+define('energy2d/gpu/mesh',['require','energy2d/gpu/context'],function (require) {
+  'use strict';
+  var
+    // Dependencies.
+    context = require('energy2d/gpu/context'),
+
+    // The internal `gl` variable holds the current WebGL context.
+    gl,
+
+    // Internal, private class.
+    Buffer,
+    // Class to be exported.
+    Mesh;
+
+  // Provides a simple method of uploading data to a GPU buffer. Example usage:
+  //
+  //     var vertices = new GL.Buffer(gl.ARRAY_BUFFER, Float32Array);
+  //     var indices = new GL.Buffer(gl.ELEMENT_ARRAY_BUFFER, Uint16Array);
+  //     vertices.data = [[0, 0, 0], [1, 0, 0], [0, 1, 0], [1, 1, 0]];
+  //     indices.data = [[0, 1, 2], [2, 1, 3]];
+  //     vertices.compile();
+  //     indices.compile();
+  Buffer = function (target, type) {
+    gl = context.getWebGLContext();
+    this.buffer = null;
+    this.target = target;
+    this.type = type;
+    this.data = [];
+  };
+
+  // Upload the contents of `data` to the GPU in preparation for rendering. The
+  // data must be a list of lists where each inner list has the same length. For
+  // example, each element of data for vertex normals would be a list of length three.
+  // This will remember the data length and element length for later use by shaders.
+  // The type can be either `gl.STATIC_DRAW` or `gl.DYNAMIC_DRAW`, and defaults to
+  // `gl.STATIC_DRAW`.
+  //
+  // This could have used `[].concat.apply([], this.data)` to flatten
+  // the array but Google Chrome has a maximum number of arguments so the
+  // concatenations are chunked to avoid that limit.
+  Buffer.prototype.compile = function (type) {
+    var data = [], i, chunk, spacing;
+    for (i = 0, chunk = 10000; i < this.data.length; i += chunk) {
+      data = Array.prototype.concat.apply(data, this.data.slice(i, i + chunk));
+    }
+    spacing = this.data.length ? data.length / this.data.length : 0;
+    if (spacing !== Math.round(spacing)) {
+      throw new Error('Mesh: buffer elements not of consistent size, average size is ' + spacing);
+    }
+    this.buffer = this.buffer || gl.createBuffer();
+    this.buffer.length = data.length;
+    this.buffer.spacing = spacing;
+    gl.bindBuffer(this.target, this.buffer);
+    gl.bufferData(this.target, new this.type(data), type || gl.STATIC_DRAW);
+  };
+
+  Mesh = function (options) {
+    gl = context.getWebGLContext();
+    options = options || {};
+    this.vertexBuffers = {};
+    this.indexBuffers = {};
+    this.addVertexBuffer('vertices', 'gl_Vertex');
+    if (options.coords) {
+      this.addVertexBuffer('coords', 'gl_TexCoord');
+    }
+    if (options.normals) {
+      this.addVertexBuffer('normals', 'gl_Normal');
+    }
+    if (options.colors) {
+      this.addVertexBuffer('colors', 'gl_Color');
+    }
+    if (options.lines === undefined || options.triangles) {
+      this.addIndexBuffer('triangles');
+    }
+    if (options.lines) {
+      this.addIndexBuffer('lines');
+    }
+  };
+
+  // Add a new vertex buffer with a list as a property called `name` on this object
+  // and map it to the attribute called `attribute` in all shaders that draw this mesh.
+  Mesh.prototype.addVertexBuffer = function (name, attribute) {
+    var buffer = this.vertexBuffers[attribute] = new Buffer(gl.ARRAY_BUFFER, Float32Array);
+    buffer.name = name;
+    this[name] = [];
+  };
+
+  // Add a new index buffer with a list as a property called `name` on this object.
+  Mesh.prototype.addIndexBuffer = function (name) {
+    var buffer = this.indexBuffers[name] = new Buffer(gl.ELEMENT_ARRAY_BUFFER, Uint16Array);
+    this[name] = [];
+  };
+
+  // Upload all attached buffers to the GPU in preparation for rendering. This
+  // doesn't need to be called every frame, only needs to be done when the data
+  // changes.
+  Mesh.prototype.compile = function () {
+    var attribute, name, buffer;
+    for (attribute in this.vertexBuffers) {
+      if (this.vertexBuffers.hasOwnProperty(attribute)) {
+        buffer = this.vertexBuffers[attribute];
+        buffer.data = this[buffer.name];
+        buffer.compile();
+      }
+    }
+
+    for (name in this.indexBuffers) {
+      if (this.indexBuffers.hasOwnProperty(name)) {
+        buffer = this.indexBuffers[name];
+        buffer.data = this[name];
+        buffer.compile();
+      }
+    }
+  };
+
+  // Generates a square 2x2 mesh the xy plane centered at the origin. The
+  // `options` argument specifies options to pass to the mesh constructor.
+  // Additional options include `detailX` and `detailY`, which set the tesselation
+  // in x and y, and `detail`, which sets both `detailX` and `detailY` at once.
+  // Two triangles are generated by default.
+  // Example usage:
+  //
+  //     var mesh1 = GL.Mesh.plane();
+  //     var mesh2 = GL.Mesh.plane({ detail: 5 });
+  //     var mesh3 = GL.Mesh.plane({ detailX: 20, detailY: 40 });
+  //
+  Mesh.plane = function (options) {
+    var mesh, detailX, detailY, x, y, t, s, i;
+    options = options || {};
+    mesh = new Mesh(options);
+    detailX = options.detailX || options.detail || 1;
+    detailY = options.detailY || options.detail || 1;
+
+    for (y = 0; y <= detailY; y += 1) {
+      t = y / detailY;
+      for (x = 0; x <= detailX; x += 1) {
+        s = x / detailX;
+        mesh.vertices.push([2 * s - 1, 2 * t - 1, 0]);
+        if (mesh.coords) {
+          mesh.coords.push([s, t]);
+        }
+        if (mesh.normals) {
+          mesh.normals.push([0, 0, 1]);
+        }
+        if (x < detailX && y < detailY) {
+          i = x + y * (detailX + 1);
+          mesh.triangles.push([i, i + 1, i + detailX + 1]);
+          mesh.triangles.push([i + detailX + 1, i + 1, i + detailX + 2]);
+        }
+      }
+    }
+
+    mesh.compile();
+    return mesh;
+  };
+
+  // Export constructor function.
+  return Mesh;
+});
+
+/*jshint indent: 2, browser: true, newcap: true, multistr: true, es5: true */
+/*global define: false, Float32Array: false, Uint8Array: false*/
+
+// GPGPU Utils (singleton, one instance in the environment).
+define('energy2d/gpu/gpgpu',['require','energy2d/gpu/context','energy2d/gpu/texture','energy2d/gpu/shader','energy2d/gpu/mesh'],function (require) {
+  'use strict';
+  var
+    // Dependencies.
+    context = require('energy2d/gpu/context'),
+    Texture = require('energy2d/gpu/texture'),
+    Shader  = require('energy2d/gpu/shader'),
+    Mesh    = require('energy2d/gpu/mesh'),
+
+    // The internal `gl` variable holds the current WebGL context.
+    gl,
+
+    // GPGPU utils must know dimensions of data (grid).
+    // This assumption that all the textures will have the same dimensions is
+    // caused by performance reasons (helps avoiding recreating data structures).
+    // To set grid dimensions and initialize WebGL context, call init(grid_width, grid_height).
+    grid_width,
+    grid_height,
+
+    // Texture used as a temporary storage (Float, RGBA).
+    temp_texture,
+    // Texture used for Float to RGBA conversion (Unsigned Byte, RGBA).
+    output_texture,
+    // Array (Float32Array) used as temporal storage during writing RGBA textures.
+    temp_storage,
+    // Mesh used for rendering.
+    plane,
+
+    // Flag which determines if synchronization is allowed or not.
+    sync_allowed = false,
+
+    // Flag which determines if WebGL context and necessary objects are initialized.
+    WebGL_initialized = false,
+
+    // Special shader for encoding floats based on:
+    // https://github.com/cscheid/facet/blob/master/src/shade/bits/encode_float.js
+    encode_program,
+    copy_program,
+
+    // GLSL sources.
+    basic_vertex_shader =
+    '\
+    varying vec2 coord;\
+    void main() {\
+      coord = gl_Vertex.xy * 0.5 + 0.5;\
+      gl_Position = vec4(gl_Vertex.xyz, 1.0);\
+    }',
+
+    encode_fragment_shader =
+    '\
+    uniform sampler2D texture;\
+    uniform float channel;\
+    varying vec2 coord;\
+    float shift_right(float v, float amt) {\
+      v = floor(v) + 0.5;\
+      return floor(v / exp2(amt));\
+    }\
+    float shift_left(float v, float amt) {\
+      return floor(v * exp2(amt) + 0.5);\
+    }\
+    \
+    float mask_last(float v, float bits) {\
+      return mod(v, shift_left(1.0, bits));\
+    }\
+    float extract_bits(float num, float from, float to) {\
+      from = floor(from + 0.5);\
+      to = floor(to + 0.5);\
+      return mask_last(shift_right(num, from), to - from);\
+    }\
+    vec4 encode_float(float val) {\
+      if (val == 0.0)\
+        return vec4(0, 0, 0, 0);\
+      float sign = val > 0.0 ? 0.0 : 1.0;\
+      val = abs(val);\
+      float exponent = floor(log2(val));\
+      float biased_exponent = exponent + 127.0;\
+      float fraction = ((val / exp2(exponent)) - 1.0) * 8388608.0;\
+      \
+      float t = biased_exponent / 2.0;\
+      float last_bit_of_biased_exponent = fract(t) * 2.0;\
+      float remaining_bits_of_biased_exponent = floor(t);\
+      \
+      float byte4 = extract_bits(fraction, 0.0, 8.0) / 255.0;\
+      float byte3 = extract_bits(fraction, 8.0, 16.0) / 255.0;\
+      float byte2 = (last_bit_of_biased_exponent * 128.0 + extract_bits(fraction, 16.0, 23.0)) / 255.0;\
+      float byte1 = (sign * 128.0 + remaining_bits_of_biased_exponent) / 255.0;\
+      return vec4(byte4, byte3, byte2, byte1);\
+    }\
+    void main() {\
+      vec4 data = texture2D(texture, coord);\
+      if (channel == 0.0)\
+        gl_FragColor = encode_float(data.r);\
+      else if (channel == 1.0)\
+        gl_FragColor = encode_float(data.g);\
+      else if (channel == 2.0)\
+        gl_FragColor = encode_float(data.b);\
+      else\
+        gl_FragColor = encode_float(data.a);\
+    }',
+
+    copy_fragment_shader =
+    '\
+    uniform sampler2D texture;\
+    varying vec2 coord;\
+    void main() {\
+      gl_FragColor = texture2D(texture, coord);\
+    }',
+
+    // Common error messages.
+    INIT_ERR = 'GPGPU: call init(grid_width, grid_height) with proper dimensions first!',
+
+    // Features and extensions. Their availability will be updated during initialization.
+    feature = {
+      'WebGLContext': {
+        required: true,
+        available: false
+      },
+      'OES_texture_float': {
+        required: true,
+        available: false
+      },
+      'FLOAT texture as render target': {
+        required: true,
+        available: false
+      },
+      'OES_texture_float_linear': {
+        required: false,
+        available: false
+      }
+    },
+
+    //
+    // Private methods.
+    //
+    initWebGL = function () {
+      // Setup WebGL context.
+      gl = context.getWebGLContext();
+      if (gl) {
+        feature['WebGLContext'].available = true;
+      } else {
+        feature['WebGLContext'].available = false;
+        throw new Error("GPGPU: WebGL is not supported!");
+      }
+
+      // Check if OES_texture_float is available.
+      if (gl.getExtension('OES_texture_float')) {
+        feature['OES_texture_float'].available = true;
+      } else {
+        feature['OES_texture_float'].available = false;
+        throw new Error("GPGPU: OES_texture_float is not supported!");
+      }
+
+      // Optional extension check.
+      if (gl.getExtension('OES_texture_float_linear')) {
+        feature['OES_texture_float_linear'].available = true;
+      } else {
+        feature['OES_texture_float_linear'].available = false;
+        console.warn("GPGPU: OES_texture_float_linear is not supported. Renering quality will be affected.");
+      }
+
+      // Check if rendering to FLOAT textures is supported.
+      temp_texture = new Texture(1, 1, {
+        type: gl.FLOAT,
+        format: gl.RGBA,
+        filter: feature['OES_texture_float_linear'].available ? gl.LINEAR : gl.NEAREST
+      });
+      temp_texture.setAsRenderTarget();
+      if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE) {
+        feature['FLOAT texture as render target'].available = true;
+      } else {
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        feature['FLOAT texture as render target'].available = false;
+        throw new Error("GPGPU: FLOAT texture as render target is not supported!");
+      }
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+
+      // Configure WebGL context and create necessary objects and structures.
+      gl.disable(gl.DEPTH_TEST);
+      plane = Mesh.plane();
+      encode_program = new Shader(basic_vertex_shader, encode_fragment_shader);
+      copy_program = new Shader(basic_vertex_shader, copy_fragment_shader);
+      // Initialization successful.
+      WebGL_initialized = true;
+    },
+
+    packRGBAData = function (R, G, B, A, storage) {
+      var i, i4, len;
+
+      if (R.length !== G.length || R.length !== B.length || R.length !== A.length ||
+          storage.length !== R.length * 4) {
+        throw new Error("GPGPU: Invalid input data length.");
+      }
+      for (i = 0, len = R.length; i < len; i += 1) {
+        i4 = i * 4;
+        storage[i4]     = R[i];
+        storage[i4 + 1] = G[i];
+        storage[i4 + 2] = B[i];
+        storage[i4 + 3] = A[i];
+      }
+    };
+
+  //
+  // Public API.
+  //
+  return {
+    // Setups rendering context (only during first call) and necessary storage (texture, array).
+    init: function (width, height) {
+      var filter;
+
+      if (!WebGL_initialized) {
+        initWebGL();
+      }
+      // Set dimensions.
+      grid_width = width;
+      grid_height = height;
+
+      filter = feature['OES_texture_float_linear'].available ? gl.LINEAR : gl.NEAREST;
+
+      // Setup storage for given dimensions.
+      temp_texture   = new Texture(grid_width, grid_height, { type: gl.FLOAT, format: gl.RGBA, filter: filter });
+      output_texture = new Texture(grid_width, grid_height, { type: gl.UNSIGNED_BYTE, format: gl.RGBA, filter: filter });
+      temp_storage   = new Float32Array(grid_width * grid_height * 4);
+    },
+
+    get featuresInfo() {
+      if (!WebGL_initialized) {
+        try {
+          // While testing features / extensions, we don't want to throw
+          // exceptions.
+          initWebGL();
+        } catch (e) {}
+      }
+      return feature;
+    },
+
+    getWebGLContext: function () {
+      if (gl === undefined) {
+        initWebGL();
+      }
+      return gl;
+    },
+
+    // Creates a floating point texture with proper parameters.
+    createTexture: function () {
+      if (!grid_width || !grid_height) {
+        return new Error(INIT_ERR);
+      }
+      // Use RGBA format as this is the safest option. Single channel textures aren't well supported
+      // as render targets attached to FBO.
+      return new Texture(grid_width, grid_height, {
+        type: gl.FLOAT,
+        format: gl.RGBA,
+        filter: feature['OES_texture_float_linear'].available ? gl.LINEAR : gl.NEAREST
+      });
+    },
+
+    // Convert given array to the RGBA FLoat32Array (which can be used
+    // in the writeTexture function) and fill one of its channel.
+    // Channel should be between 0 and 3, where 0 = R, 1 = G, 2 = B and 3 = A.
+    convertToRGBA: function (data, channel, output) {
+      var rgba, i, len, i4;
+
+      if (data.length !== grid_width * grid_height) {
+        throw new Error("GPGPU: Invalid input data length.");
+      }
+
+      if (output === undefined) {
+        rgba = new Float32Array(data.length * 4);
+      } else {
+        rgba = output;
+      }
+
+      if (channel === undefined) {
+        channel = 0;
+      }
+
+      // Fill RGBA array.
+      for (i = 0, len = data.length; i < len; i += 1) {
+        i4 = i * 4;
+        rgba[i4] = rgba[i4 + 1] = rgba[i4 + 2] = rgba[i4 + 3] = 0;
+        rgba[i4 + channel] = data[i];
+      }
+
+      return rgba;
+    },
+
+    // Write a texture.
+    writeTexture: function (tex, input) {
+      var rgba = this.convertToRGBA(input, 0, temp_storage);
+      // Make sure that texture is bound.
+      gl.bindTexture(gl.TEXTURE_2D, tex.id);
+      gl.texImage2D(gl.TEXTURE_2D, 0, tex.format, tex.width, tex.height, 0, tex.format, tex.type, rgba);
+    },
+
+    writeRGBATexture: function (tex, R, G, B, A) {
+      packRGBAData(R, G, B, A, temp_storage);
+      // Make sure that texture is bound.
+      gl.bindTexture(gl.TEXTURE_2D, tex.id);
+      gl.texImage2D(gl.TEXTURE_2D, 0, tex.format, tex.width, tex.height, 0, tex.format, tex.type, temp_storage);
+    },
+
+    // Read a floating point texture.
+    // Returns Float32Array.
+    readTexture: function (tex, output, channel) {
+      var output_storage;
+      if (!gl || tex.width !== grid_width || tex.height !== grid_height) {
+        return new Error(INIT_ERR);
+      }
+      if (channel === undefined) {
+        channel = 0;
+      }
+      // Use buffer of provided ouput array. So, when result is written there,
+      // output is automaticaly updated in a right way.
+      output_storage = new Uint8Array(output.buffer);
+
+      tex.bind();
+      output_texture.setAsRenderTarget();
+      encode_program.uniforms({ channel: channel });
+      encode_program.draw(plane);
+      // format: gl.RGBA, type: gl.UNSIGNED_BYTE - only this set is accepted by WebGL readPixels.
+      gl.readPixels(0, 0, output_texture.width, output_texture.height, output_texture.format, output_texture.type, output_storage);
+    },
+
+    copyTexture: function (src_tex, dst_tex) {
+      src_tex.bind();
+      dst_tex.setAsRenderTarget();
+      copy_program.draw(plane);
+    },
+
+    // Execute a GLSL program.
+    // Arguments:
+    // - program - GL.Shader
+    // - textures - array of GL.Texture
+    // - output - output texture
+    executeProgram: function (program, textures, output) {
+      var i, len;
+      // Bind textures for reading.
+      for (i = 0, len = textures.length; i < len; i += 1) {
+        textures[i].bind(i);
+      }
+      // Use temp texture as writing and reading from the same texture is impossible.
+      temp_texture.setAsRenderTarget();
+      // Draw simple plane (coordinates x/y from -1 to 1 to cover whole viewport).
+      program.draw(plane);
+      // Unbind textures.
+      for (i = 0, len = textures.length; i < len; i += 1) {
+        textures[i].unbind(i);
+      }
+      output.swapWith(temp_texture);
+    },
+
+    // Synchronization can be useful for debugging.
+    setSynchronizationAllowed: function (b) {
+      sync_allowed = b;
+    },
+
+    // Block until all GL execution is complete if synchronization is allowed.
+    tryFinish: function () {
+      if (sync_allowed) {
+        gl.finish();
+      }
+    }
+  };
+});
+
+define('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/basic.vs.glsl',[],function () { return 'varying vec2 coord;\n\nvoid main() {\n  coord = gl_Vertex.xy * 0.5 + 0.5;\n  gl_Position = vec4(gl_Vertex.xy, 0.0, 1.0);\n}\n';});
+
+define('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/solver.fs.glsl',[],function () { return '// texture 0:\n// - R: t\n// - G: t0\n// - B: tb\n// - A: conductivity\nuniform sampler2D data0_tex;\n// texture 1:\n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n\nuniform vec2 grid;\nuniform float hx;\nuniform float hy;\nuniform float inv_timeStep;\n\n// Boundary conditions uniforms\nuniform float enforce_temp;\nuniform float vN;\nuniform float vS;\nuniform float vW;\nuniform float vE;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data0 = texture2D(data0_tex, coord);\n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y) {\n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n    float tb = data0.b;\n    // Check if tb is NaN. isnan() function is not available\n    // in OpenGL ES GLSL, so use some tricks. IEEE 754 spec defines\n    // that NaN != NaN, however this seems to not work on Windows.\n    // So, also check if the value is outside [-3.4e38, 3.4e38] (3.4e38\n    // is close to 32Float max value), as such values are not expected.\n    if (tb != tb || tb < -3.4e38 || tb > 3.4e38) {\n      vec4 data1 = texture2D(data1_tex, coord);\n      vec4 data0_m_dy = texture2D(data0_tex, coord - dy);\n      vec4 data0_p_dy = texture2D(data0_tex, coord + dy);\n      vec4 data0_m_dx = texture2D(data0_tex, coord - dx);\n      vec4 data0_p_dx = texture2D(data0_tex, coord + dx);\n      float sij = data1.g * data1.b * inv_timeStep;\n      float rij = data0.a;\n      float axij = hx * (rij + data0_m_dy.a);\n      float bxij = hx * (rij + data0_p_dy.a);\n      float ayij = hy * (rij + data0_m_dx.a);\n      float byij = hy * (rij + data0_p_dx.a);\n      data0.r = (data0.g * sij + data1.r\n                 + axij * data0_m_dy.r\n                 + bxij * data0_p_dy.r\n                 + ayij * data0_m_dx.r\n                 + byij * data0_p_dx.r)\n                 / (sij + axij + bxij + ayij + byij);\n    } else {\n      data0.r = tb;\n    }\n  } else if (enforce_temp == 1.0) {\n    // "temperature at border" boundary conditions are\n    // integrated into this shader.\n    if (coord.x < grid.x) {\n      data0.r = vN;\n    } else if (coord.x > 1.0 - grid.x) {\n      data0.r = vS;\n    } else if (coord.y < grid.y) {\n      data0.r = vW;\n    } else if (coord.y > 1.0 - grid.y) {\n      data0.r = vE;\n    }\n  }\n  gl_FragColor = data0;\n}\n';});
+
+define('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/force-flux-t.fs.glsl',[],function () { return '// texture 0: \n// - R: t\n// - G: t0\n// - B: tb\n// - A: conductivity\nuniform sampler2D data0_tex;\n\nuniform vec2 grid;\nuniform float vN;\nuniform float vS;\nuniform float vW;\nuniform float vE;\nuniform float delta_x;\nuniform float delta_y;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data0 = texture2D(data0_tex, coord);\n  vec2 dx = vec2(grid.x, 0.0);\n  vec2 dy = vec2(0.0, grid.y);\n  if (coord.x < grid.x) {\n    data0.r = texture2D(data0_tex, coord + dx).r\n            + vN * delta_y / data0.a;\n  } else if (coord.x > 1.0 - grid.x) {\n    data0.r = texture2D(data0_tex, coord - dx).r\n            - vS * delta_y / data0.a;\n  } else if (coord.y < grid.y) {\n    data0.r = texture2D(data0_tex, coord + dy).r\n            - vW * delta_x / data0.a;\n  } else if (coord.y > 1.0 - grid.y) {\n    data0.r = texture2D(data0_tex, coord - dy).r\n            + vE * delta_x / data0.a;\n  }\n  gl_FragColor = data0;\n}\n';});
+
+define('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/t-to-t0.fs.glsl',[],function () { return '// texture 0: \n// - R: t\n// - G: t0\n// - B: tb\n// - A: conductivity\nuniform sampler2D data0_tex;\n\nvarying vec2 coord;\n\nvoid main() {\n\tvec4 data0 = texture2D(data0_tex, coord);\n\tdata0.g = data0.r;\n\tgl_FragColor = data0;\n}\n';});
+
+define('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/maccormack-step1.fs.glsl',[],function () { return '// texture 0: \n// - R: t\n// - G: t0\n// - B: tb\n// - A: conductivity\nuniform sampler2D data0_tex;\n// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float tx;\nuniform float ty;\n\n// Boundary conditions uniforms.\nuniform float enforce_temp;\nuniform float vN;\nuniform float vS;\nuniform float vW;\nuniform float vE;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data0 = texture2D(data0_tex, coord);\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y) {\n    \n    float fluidity = texture2D(data1_tex, coord).a;\n    if (fluidity == 1.0) {\n      vec2 dx = vec2(grid.x, 0.0);\n      vec2 dy = vec2(0.0, grid.y);\n\n      // Temperature.\n      float t_m_dy = texture2D(data0_tex, coord - dy).r;\n      float t_p_dy = texture2D(data0_tex, coord + dy).r;\n      float t_m_dx = texture2D(data0_tex, coord - dx).r;\n      float t_p_dx = texture2D(data0_tex, coord + dx).r;\n      // Velocity.\n      float u_m_dy = texture2D(data2_tex, coord - dy).r;\n      float u_p_dy = texture2D(data2_tex, coord + dy).r;\n      float v_m_dx = texture2D(data2_tex, coord - dx).g;\n      float v_p_dx = texture2D(data2_tex, coord + dx).g;\n      // Update T0.\n      data0.g = data0.r - tx * (u_p_dy * t_p_dy - u_m_dy * t_m_dy)\n                        - ty * (v_p_dx * t_p_dx - v_m_dx * t_m_dx);\n    }\n  } else if (enforce_temp == 1.0) {\n    // "temperature at border" boundary conditions are\n    // integrated into this shader.\n    if (coord.x < grid.x) {\n      data0.g = vN;\n    } else if (coord.x > 1.0 - grid.x) {\n      data0.g = vS;\n    } else if (coord.y < grid.y) {\n      data0.g = vW;\n    } else if (coord.y > 1.0 - grid.y) {\n      data0.g = vE;\n    }\n  }\n  gl_FragColor = data0;\n}\n';});
+
+define('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/maccormack-step2.fs.glsl',[],function () { return '// texture 0: \n// - R: t\n// - G: t0\n// - B: tb\n// - A: conductivity\nuniform sampler2D data0_tex;\n// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float tx;\nuniform float ty;\n\n// Boundary conditions uniforms.\nuniform float enforce_temp;\nuniform float vN;\nuniform float vS;\nuniform float vW;\nuniform float vE;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data0 = texture2D(data0_tex, coord);\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y) {\n    \n    float fluidity = texture2D(data1_tex, coord).a;\n    if (fluidity == 1.0) {\n      vec2 dx = vec2(grid.x, 0.0);\n      vec2 dy = vec2(0.0, grid.y);\n\n      // Temperature t0.\n      float t0_m_dy = texture2D(data0_tex, coord - dy).g;\n      float t0_p_dy = texture2D(data0_tex, coord + dy).g;\n      float t0_m_dx = texture2D(data0_tex, coord - dx).g;\n      float t0_p_dx = texture2D(data0_tex, coord + dx).g;\n      // Velocity.\n      float u = texture2D(data2_tex, coord).r;\n      float v = texture2D(data2_tex, coord).g;\n      // Update T.\n      data0.r = 0.5 * (data0.r + data0.g)\n              - 0.5 * tx * u * (t0_p_dy - t0_m_dy)\n              - 0.5 * ty * v * (t0_p_dx - t0_m_dx);\n    }\n  } else if (enforce_temp == 1.0) {\n    // "temperature at border" boundary conditions are\n    // integrated into this shader.\n    if (coord.x < grid.x) {\n      data0.r = vN;\n    } else if (coord.x > 1.0 - grid.x) {\n      data0.r = vS;\n    } else if (coord.y < grid.y) {\n      data0.r = vW;\n    } else if (coord.y > 1.0 - grid.y) {\n      data0.r = vE;\n    }\n  }\n  gl_FragColor = data0;\n}\n';});
+
+/*global define: false*/
+
+define('energy2d/models/physics-solvers-gpu/heat-solver-gpu',['require','exports','module','energy2d/gpu/shader','energy2d/gpu/gpgpu','text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/basic.vs.glsl','text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/solver.fs.glsl','text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/force-flux-t.fs.glsl','text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/force-flux-t.fs.glsl','text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/t-to-t0.fs.glsl','text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/maccormack-step1.fs.glsl','text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/maccormack-step2.fs.glsl'],function (require, exports) {
+  'use strict';
+  var
+    // Dependencies.
+    Shader = require('energy2d/gpu/shader'),
+    // GPGPU utilities. It's a singleton instance.
+    // It should have been previously initialized by core-model.
+    gpgpu  = require('energy2d/gpu/gpgpu'),
+    // Shader sources.
+    basic_vs            = require('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/basic.vs.glsl'),
+    solver_fs           = require('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/solver.fs.glsl'),
+    force_flux_t_fs     = require('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/force-flux-t.fs.glsl'),
+    force_flux_t0_fs    = require('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/force-flux-t.fs.glsl'),
+    t_to_t0             = require('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/t-to-t0.fs.glsl'),
+    maccormack_step1_fs = require('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/maccormack-step1.fs.glsl'),
+    maccormack_step2_fs = require('text!energy2d/models/physics-solvers-gpu/heat-solver-glsl/maccormack-step2.fs.glsl'),
+
+    RELAXATION_STEPS = 10;
+
+  exports.makeHeatSolverGPU = function (model) {
+    var
+      // ========================================================================
+      // GLSL Shaders:
+      // - Main solver.
+      solver_program           = new Shader(basic_vs, solver_fs),
+      // - Force flux boundary (for T).
+      force_flux_t_program     = new Shader(basic_vs, force_flux_t_fs),
+      // - Force flux boundary (for T0).
+      force_flux_t0_program    = new Shader(basic_vs, force_flux_t0_fs),
+      // - Copy single channel of texture (t to t0).
+      t_to_t0_program          = new Shader(basic_vs, t_to_t0),
+      // - MacCormack advection step 1.
+      maccormack_step1_program = new Shader(basic_vs, maccormack_step1_fs),
+      // - MacCormack advection step 2.
+      maccormack_step2_program = new Shader(basic_vs, maccormack_step2_fs),
+      // ========================================================================
+
+      // Basic simulation parameters.
+      props = model.getModelOptions(),
+      nx = props.grid_width,
+      ny = props.grid_height,
+
+      timeStep = props.timeStep,
+      boundary = props.boundary,
+
+      delta_x = props.model_width / props.grid_width,
+      delta_y = props.model_height / props.grid_height,
+
+      relaxation_steps = RELAXATION_STEPS,
+
+      // Simulation textures provided by model.
+      // texture 0:
+      // - R: t
+      // - G: t0
+      // - B: tb
+      // - A: conductivity
+      data0_tex = model.getSimulationTexture(0),
+      // texture 1:
+      // - R: q
+      // - G: capacity
+      // - B: density
+      // - A: fluidity
+      data1_tex = model.getSimulationTexture(1),
+      // texture 2:
+      // - R: u
+      // - G: v
+      // - B: u0
+      // - A: v0
+      data2_tex = model.getSimulationTexture(2),
+
+      // Convenience variables.
+      data_0_1_2_array = [data0_tex, data1_tex, data2_tex],
+      data_0_1_array = [data0_tex, data1_tex],
+      data_0_array = [data0_tex],
+      grid_vec = [1 / ny, 1 / nx],
+
+      init = function () {
+        var uniforms;
+
+        // Solver program uniforms.
+        uniforms = {
+          // Texture units.
+          data0_tex: 0,
+          data1_tex: 1,
+          // Uniforms.
+          grid: grid_vec,
+          enforce_temp: 0.0,
+          hx: 0.5 / (delta_x * delta_x),
+          hy: 0.5 / (delta_y * delta_y),
+          inv_timeStep: 1.0 / timeStep
+        };
+        solver_program.uniforms(uniforms);
+
+        // MacCormack step 1 program uniforms.
+        uniforms = {
+          // Texture units.
+          data0_tex: 0,
+          data1_tex: 1,
+          data2_tex: 2,
+          // Uniforms.
+          grid: grid_vec,
+          enforce_temp: 0.0,
+          tx: 0.5 * timeStep / delta_x,
+          ty: 0.5 * timeStep / delta_y
+        };
+        maccormack_step1_program.uniforms(uniforms);
+        maccormack_step2_program.uniforms(uniforms);
+
+        if (boundary.type === "temperature") {
+          uniforms = {
+            // Additional uniforms.
+            enforce_temp: 1.0,
+            vN:  boundary.upper,
+            vS:  boundary.lower,
+            vW:  boundary.left,
+            vE:  boundary.right
+          };
+          // Integrate boundary conditions with other programs.
+          // This is optimization that allows to limit render-to-texture calls.
+          solver_program.uniforms(uniforms);
+          maccormack_step1_program.uniforms(uniforms);
+          maccormack_step2_program.uniforms(uniforms);
+        } else if (boundary.type === "flux") {
+          uniforms = {
+            // Texture units.
+            data0_tex: 0,
+            // Uniforms.
+            grid: grid_vec,
+            vN: boundary.upper,
+            vS: boundary.lower,
+            vW: boundary.left,
+            vE: boundary.right,
+            delta_x: delta_x,
+            delta_y: delta_y
+          };
+          // Flux boundary conditions can't be integrated into solver program,
+          // so use separate GLSL programs.
+          force_flux_t_program.uniforms(uniforms);
+          force_flux_t0_program.uniforms(uniforms);
+        }
+      },
+
+      macCormack = function () {
+        // MacCormack step 1.
+        gpgpu.executeProgram(
+          maccormack_step1_program,
+          data_0_1_2_array,
+          data0_tex
+        );
+        if (boundary.type === "flux") {
+          // Additional program for boundary conditions
+          // is required only for "flux at border" option.
+          // If "temperature at border" is used, boundary
+          // conditions are enforced by the MacCormack program.
+          gpgpu.executeProgram(
+            force_flux_t0_program,
+            data_0_array,
+            data0_tex
+          );
+        }
+        // MacCormack step 2.
+        gpgpu.executeProgram(
+          maccormack_step2_program,
+          data_0_1_2_array,
+          data0_tex
+        );
+        if (boundary.type === "flux") {
+          // Additional program for boundary conditions
+          // is required only for "flux at border" option.
+          // If "temperature at border" is used, boundary
+          // conditions are enforced by the MacCormack program.
+          gpgpu.executeProgram(
+            force_flux_t_program,
+            data_0_array,
+            data0_tex
+          );
+        }
+      },
+
+      heat_solver_gpu = {
+        solve: function (convective) {
+          var k;
+          // Store previous values of t in t0.
+          gpgpu.executeProgram(
+            t_to_t0_program,
+            data_0_array,
+            data0_tex
+          );
+          for (k = 0; k < relaxation_steps; k += 1) {
+            gpgpu.executeProgram(
+              solver_program,
+              data_0_1_array,
+              data0_tex
+            );
+            if (boundary.type === "flux") {
+              // Additional program for boundary conditions
+              // is required only for "flux at border" option.
+              // If "temperature at border" is used, boundary
+              // conditions are enforced by the solver program.
+              gpgpu.executeProgram(
+                force_flux_t_program,
+                data_0_array,
+                data0_tex
+              );
+            }
+          }
+          if (convective) {
+            macCormack();
+          }
+        }
+      };
+    // One-off initialization.
+    init();
+    return heat_solver_gpu;
+  };
+});
+
+/*global define: false*/
+
+define('energy2d/models/physics-solvers/fluid-solver',['require','exports','module','arrays'],function (require, exports) {
+  'use strict';
+  var
+    arrays = require('arrays'),
+
+    RELAXATION_STEPS = 5,
+    GRAVITY = 0,
+
+    BUOYANCY_AVERAGE_ALL = 0,
+    BUOYANCY_AVERAGE_COLUMN = 1;
+
+  exports.makeFluidSolver = function (model) {
+    var
+      // Basic simulation parameters.
+      props = model.getModelOptions(),
+      nx = props.grid_width,
+      ny = props.grid_height,
+
+      relaxationSteps = RELAXATION_STEPS,
+      gravity = GRAVITY,
+
+      // Simulation arrays provided by model.
+      t        = model.getTemperatureArray(),
+      fluidity = model.getFluidityArray(),
+      uWind    = model.getUWindArray(),
+      vWind    = model.getVWindArray(),
+
+      // Internal simulation arrays.
+      array_type = model.getArrayType(),
+      u0         = arrays.create(nx * ny, 0, array_type),
+      v0         = arrays.create(nx * ny, 0, array_type),
+
+      // Convenience variables.
+      nx1 = nx - 1,
+      ny1 = ny - 1,
+      nx2 = nx - 2,
+      ny2 = ny - 2,
+
+      deltaX = props.model_width / props.grid_width,
+      deltaY = props.model_height / props.grid_height,
+
+      i2dx  = 0.5 / deltaX,
+      i2dy  = 0.5 / deltaY,
+      idxsq = 1.0 / (deltaX * deltaX),
+      idysq = 1.0 / (deltaY * deltaY),
+
+      //
+      // Private methods
+      //
+
+      // b = 1 horizontal; b = 2 vertical
+      applyBoundary = function (b, f) {
+        var
+          horizontal = b === 1,
+          vertical   = b === 2,
+          nx1nx = nx1 * nx,
+          nx2nx = nx2 * nx,
+          i, j, inx, inx_plus1, inx_plus_ny1, inx_plus_ny2, nx_plusj;
+
+        for (i = 1; i < nx1; i += 1) {
+          inx = i * nx;
+          inx_plus1 = inx + 1;
+          inx_plus_ny1 = inx + ny1;
+          inx_plus_ny2 = inx + ny2;
+          // upper side
+          f[inx] = vertical ? -f[inx_plus1] : f[inx_plus1];
+          // lower side
+          f[inx_plus_ny1] = vertical ? -f[inx_plus_ny2] : f[inx_plus_ny2];
+        }
+        for (j = 1; j < ny1; j += 1) {
+          // left side
+          nx_plusj = nx + j;
+          f[j] = horizontal ? -f[nx_plusj] : f[nx_plusj];
+          // right side
+          f[nx1nx + j] = horizontal ? -f[nx2nx + j] : f[nx2nx + j];
+        }
+
+        // upper-left corner
+        f[0] = 0.5 * (f[nx] + f[1]);
+        // upper-right corner
+        f[nx1nx] = 0.5 * (f[nx2nx] + f[nx1nx + 1]);
+        // lower-left corner
+        f[ny1] = 0.5 * (f[nx + ny1] + f[ny2]);
+        // lower-right corner
+        f[nx1nx + ny1] = 0.5 * (f[nx2nx + ny1] + f[nx1nx + ny2]);
+      },
+
+      setObstacleVelocity = function (u, v) {
+        var
+          count = 0,
+          uw, vw,
+          i, j, inx, jinx, jinx_plus_nx, jinx_minus_nx, jinx_plus_1, jinx_minus_1;
+
+        for (i = 1; i < nx1; i += 1) {
+          inx = i * nx;
+          for (j = 1; j < ny1; j += 1) {
+            jinx = inx + j;
+            jinx_minus_nx = jinx - nx;
+            jinx_plus_nx = jinx + nx;
+            jinx_minus_1 = jinx - 1;
+            jinx_plus_1 = jinx + 1;
+
+            if (!fluidity[jinx]) {
+              uw = uWind[jinx];
+              vw = vWind[jinx];
+              count = 0;
+              if (fluidity[jinx_minus_nx]) {
+                count += 1;
+                u[jinx] = uw - u[jinx_minus_nx];
+                v[jinx] = vw + v[jinx_minus_nx];
+              } else if (fluidity[jinx_plus_nx]) {
+                count += 1;
+                u[jinx] = uw - u[jinx_plus_nx];
+                v[jinx] = vw + v[jinx_plus_nx];
+              }
+              if (fluidity[jinx_minus_1]) {
+                count += 1;
+                u[jinx] = uw + u[jinx_minus_1];
+                v[jinx] = vw - v[jinx_minus_1];
+              } else if (fluidity[jinx_plus_1]) {
+                count += 1;
+                u[jinx] = uw + u[jinx_plus_1];
+                v[jinx] = vw - v[jinx_plus_1];
+              }
+              if (count === 0) {
+                u[jinx] = uw;
+                v[jinx] = vw;
+              }
+            }
+          }
+        }
+      },
+
+      // ensure dx/dn = 0 at the boundary (the Neumann boundary condition)
+      // float[][] x
+      setObstacleBoundary = function (x) {
+        var i, j, inx, jinx, jinx_plus_nx, jinx_minus_nx, jinx_plus_1, jinx_minus_1;
+
+        for (i = 1; i < nx1; i += 1) {
+          inx = i * nx;
+          for (j = 1; j < ny1; j += 1) {
+            jinx = inx + j;
+            if (!fluidity[jinx]) {
+              jinx_minus_nx = jinx - nx;
+              jinx_plus_nx = jinx + nx;
+              jinx_minus_1 = jinx - 1;
+              jinx_plus_1 = jinx + 1;
+
+              if (fluidity[jinx_minus_nx]) {
+                x[jinx] = x[jinx_minus_nx];
+              } else if (fluidity[jinx_plus_nx]) {
+                x[jinx] = x[jinx_plus_nx];
+              }
+              if (fluidity[jinx_minus_1]) {
+                x[jinx] = x[jinx_minus_1];
+              } else if (fluidity[jinx_plus_1]) {
+                x[jinx] = x[jinx_plus_1];
+              }
+            }
+          }
+        }
+      },
+
+      getMeanTemperature = function (i, j) {
+        var
+          lowerBound = 0,
+          upperBound = ny,
+          t0 = 0,
+          k, inx_plus_k;
+
+          // search for the upper bound
+        for (k = j - 1; k > 0; k -= 1) {
+          inx_plus_k = i * nx + k;
+          if (!fluidity[inx_plus_k]) {
+            lowerBound = k;
+            break;
+          }
+        }
+
+        for (k = j + 1; k < ny; k += 1) {
+          inx_plus_k = i * nx + k;
+          if (!fluidity[inx_plus_k]) {
+            upperBound = k;
+            break;
+          }
+        }
+
+        for (k = lowerBound; k < upperBound; k += 1) {
+          inx_plus_k = i * nx + k;
+          t0 += t[inx_plus_k];
+        }
+        return t0 / (upperBound - lowerBound);
+      },
+
+      applyBuoyancy = function (f) {
+        var
+          g = gravity * props.timeStep,
+          b = props.thermal_buoyancy * props.timeStep,
+          t0,
+          i, j, inx, jinx;
+
+        switch (props.buoyancy_approximation) {
+        case BUOYANCY_AVERAGE_ALL:
+          t0 = (function (array) {
+            // Returns average value of an array.
+            var
+              acc = 0,
+              length = array.length,
+              i;
+            for (i = 0; i < length; i += 1) {
+              acc += array[i];
+            }
+            return acc / length;
+          }(t)); // Call with the temperature array.
+          for (i = 1; i < nx1; i += 1) {
+            inx = i * nx;
+            for (j = 1; j < ny1; j += 1) {
+              jinx = inx + j;
+              if (fluidity[jinx]) {
+                f[jinx] += (g - b) * t[jinx] + b * t0;
+              }
+            }
+          }
+          break;
+        case BUOYANCY_AVERAGE_COLUMN:
+          for (i = 1; i < nx1; i += 1) {
+            inx = i * nx;
+            for (j = 1; j < ny1; j += 1) {
+              jinx = inx + j;
+              if (fluidity[jinx]) {
+                t0 = getMeanTemperature(i, j);
+                f[jinx] += (g - b) * t[jinx] + b * t0;
+              }
+            }
+          }
+          break;
+        }
+      },
+
+      conserve = function (u, v, phi, div) {
+        var
+          s = 0.5 / (idxsq + idysq),
+          k, i, j, inx, jinx, jinx_plus_nx, jinx_minus_nx, jinx_plus_1, jinx_minus_1;
+
+        for (i = 1; i < nx1; i += 1) {
+          inx = i * nx;
+          for (j = 1; j < ny1; j += 1) {
+            jinx = inx + j;
+            if (fluidity[jinx]) {
+              jinx_minus_nx = jinx - nx;
+              jinx_plus_nx = jinx + nx;
+              jinx_minus_1 = jinx - 1;
+              jinx_plus_1 = jinx + 1;
+
+              div[jinx] = (u[jinx_plus_nx] - u[jinx_minus_nx]) * i2dx + (v[jinx_plus_1] - v[jinx_minus_1]) * i2dy;
+              phi[jinx] = 0;
+            }
+          }
+        }
+        applyBoundary(0, div);
+        applyBoundary(0, phi);
+        setObstacleBoundary(div);
+        setObstacleBoundary(phi);
+
+        for (k = 0; k < relaxationSteps; k += 1) {
+          for (i = 1; i < nx1; i += 1) {
+            inx = i * nx;
+            for (j = 1; j < ny1; j += 1) {
+              jinx = inx + j;
+              if (fluidity[jinx]) {
+                jinx_minus_nx = jinx - nx;
+                jinx_plus_nx = jinx + nx;
+                jinx_minus_1 = jinx - 1;
+                jinx_plus_1 = jinx + 1;
+
+                phi[jinx] = s
+                    * ((phi[jinx_minus_nx] + phi[jinx_plus_nx]) * idxsq
+                    + (phi[jinx_minus_1] + phi[jinx_plus_1]) * idysq - div[jinx]);
+              }
+            }
+          }
+        }
+
+        for (i = 1; i < nx1; i += 1) {
+          inx = i * nx;
+          for (j = 1; j < ny1; j += 1) {
+            jinx = inx + j;
+            if (fluidity[jinx]) {
+              jinx_minus_nx = jinx - nx;
+              jinx_plus_nx = jinx + nx;
+              jinx_minus_1 = jinx - 1;
+              jinx_plus_1 = jinx + 1;
+
+              u[jinx] -= (phi[jinx_plus_nx] - phi[jinx_minus_nx]) * i2dx;
+              v[jinx] -= (phi[jinx_plus_1] - phi[jinx_minus_1]) * i2dy;
+            }
+          }
+        }
+        applyBoundary(1, u);
+        applyBoundary(2, v);
+      },
+
+      diffuse = function (b, f0, f) {
+        var
+          timeStep = props.timeStep,
+          viscosity = props.background_viscosity,
+          hx = timeStep * viscosity * idxsq,
+          hy = timeStep * viscosity * idysq,
+          dn = 1.0 / (1 + 2 * (hx + hy)),
+          k, i, j, inx, jinx, jinx_plus_nx, jinx_minus_nx, jinx_plus_1, jinx_minus_1;
+
+        arrays.copy(f, f0);
+        for (k = 0; k < relaxationSteps; k += 1) {
+          for (i = 1; i < nx1; i += 1) {
+            inx = i * nx;
+            for (j = 1; j < ny1; j += 1) {
+              jinx = inx + j;
+              if (fluidity[jinx]) {
+                jinx_minus_nx = jinx - nx;
+                jinx_plus_nx = jinx + nx;
+                jinx_minus_1 = jinx - 1;
+                jinx_plus_1 = jinx + 1;
+
+                f[jinx] = (f0[jinx] + hx * (f[jinx_minus_nx] + f[jinx_plus_nx]) + hy
+                        * (f[jinx_minus_1] + f[jinx_plus_1]))
+                        * dn;
+              }
+            }
+          }
+          applyBoundary(b, f);
+        }
+      },
+
+      // MacCormack
+      macCormack = function (b, f0, f) {
+        var
+          timeStep = props.timeStep,
+          tx = 0.5 * timeStep / deltaX,
+          ty = 0.5 * timeStep / deltaY,
+          i, j, inx, jinx, jinx_plus_nx, jinx_minus_nx, jinx_plus_1, jinx_minus_1;
+
+        for (i = 1; i < nx1; i += 1) {
+          inx = i * nx;
+          for (j = 1; j < ny1; j += 1) {
+            jinx = inx + j;
+            if (fluidity[jinx]) {
+              jinx_minus_nx = jinx - nx;
+              jinx_plus_nx = jinx + nx;
+              jinx_minus_1 = jinx - 1;
+              jinx_plus_1 = jinx + 1;
+
+              f[jinx] = f0[jinx]
+                      - tx
+                      * (u0[jinx_plus_nx] * f0[jinx_plus_nx] - u0[jinx_minus_nx]
+                              * f0[jinx_minus_nx])
+                      - ty
+                      * (v0[jinx_plus_1] * f0[jinx_plus_1] - v0[jinx_minus_1]
+                              * f0[jinx_minus_1]);
+            }
+          }
+        }
+
+        applyBoundary(b, f);
+
+        for (i = 1; i < nx1; i += 1) {
+          inx = i * nx;
+          for (j = 1; j < ny1; j += 1) {
+            jinx = inx + j;
+            if (fluidity[jinx]) {
+              jinx_minus_nx = jinx - nx;
+              jinx_plus_nx = jinx + nx;
+              jinx_minus_1 = jinx - 1;
+              jinx_plus_1 = jinx + 1;
+
+              f0[jinx] = 0.5 * (f0[jinx] + f[jinx]) - 0.5 * tx
+                      * u0[jinx] * (f[jinx_plus_nx] - f[jinx_minus_nx]) - 0.5
+                      * ty * v0[jinx] * (f[jinx_plus_1] - f[jinx_minus_1]);
+            }
+          }
+        }
+
+        arrays.copy(f0, f);
+
+        applyBoundary(b, f);
+      },
+
+      advect = function (b, f0, f) {
+        macCormack(b, f0, f);
+      };
+
+    return {
+      // TODO: swap the two arrays instead of copying them every time?
+      solve: function (u, v) {
+        if (props.thermal_buoyancy !== 0) {
+          applyBuoyancy(v);
+        }
+        setObstacleVelocity(u, v);
+        if (props.background_viscosity > 0) {
+          // inviscid case
+          diffuse(1, u0, u);
+          diffuse(2, v0, v);
+          conserve(u, v, u0, v0);
+          setObstacleVelocity(u, v);
+        }
+        arrays.copy(u, u0);
+        arrays.copy(v, v0);
+        advect(1, u0, u);
+        advect(2, v0, v);
+        conserve(u, v, u0, v0);
+        setObstacleVelocity(u, v);
+      }
+    };
+  };
+});
+
+define('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/basic.vs.glsl',[],function () { return 'varying vec2 coord;\n\nvoid main() {\n  coord = gl_Vertex.xy * 0.5 + 0.5;\n  gl_Position = vec4(gl_Vertex.xy, 0.0, 1.0);\n}\n';});
+
+define('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/maccormack-step1.fs.glsl',[],function () { return '// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float tx;\nuniform float ty;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 1.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n    \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    // Update velocity UV components.\n    data2.rg = data2.ba - tx * (data2_p_dy.bb * data2_p_dy.ba - data2_m_dy.bb * data2_m_dy.ba)\n              - ty * (data2_p_dx.aa * data2_p_dx.ba - data2_m_dx.aa * data2_m_dx.ba);\n  }\n\n  gl_FragColor = data2;\n}\n';});
+
+define('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/maccormack-step2.fs.glsl',[],function () { return '// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float tx;\nuniform float ty;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 1.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n    \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    // Update velocity UV components.\n    data2.rg = 0.5 * (data2.ba + data2.rg) \n            - 0.5 * tx * data2.bb * (data2_p_dy.rg - data2_m_dy.rg)\n            - 0.5 * ty * data2.aa * (data2_p_dx.rg - data2_m_dx.rg);\n  }\n\n  gl_FragColor = data2;\n}\n';});
+
+define('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-uv-boundary.fs.glsl',[],function () { return '// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  vec2 dx = vec2(grid.x, 0.0);\n  vec2 dy = vec2(0.0, grid.y);\n  // Process corners.\n  // TODO: values from previous step are used for corners.\n  if (coord.x < grid.x && coord.y < grid.y) {  \n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    data2.rg = 0.5 * (data2_p_dy.rg + data2_p_dx.rg);\n  }\n  else if (coord.x > 1.0 - grid.x && coord.y < grid.y) {  \n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    data2.rg = 0.5 * (data2_p_dy.rg + data2_m_dx.rg);\n  }\n  else if (coord.x > 1.0 - grid.x && coord.y > 1.0 - grid.y) {  \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    data2.rg = 0.5 * (data2_m_dy.rg + data2_m_dx.rg);\n  }\n  else if (coord.x < grid.x && coord.y > 1.0 - grid.y) {  \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    data2.rg = 0.5 * (data2_m_dy.rg + data2_p_dx.rg);\n  }\n  // Process boundaries.\n  // Left.\n  else if (coord.x < grid.x) {\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    data2.rg = vec2(data2_p_dx.r, -data2_p_dx.g);\n  }\n  // Right.\n  else if (coord.x > 1.0 - grid.x) {\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    data2.rg = vec2(data2_m_dx.r, -data2_m_dx.g);\n  }\n  // Down.\n  else if (coord.y < grid.y) {\n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    data2.rg = vec2(-data2_p_dy.r, data2_p_dy.g);\n  }\n  // Up.\n  else if (coord.y > 1.0 - grid.y) {\n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    data2.rg = vec2(-data2_m_dy.r, data2_m_dy.g);\n  }\n  \n  gl_FragColor = data2;\n}\n';});
+
+define('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-u0v0-boundary.fs.glsl',[],function () { return '// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  vec2 dx = vec2(grid.x, 0.0);\n  vec2 dy = vec2(0.0, grid.y);\n  // Process corners.\n  // TODO: values from previous step are used for corners.\n  if (coord.x < grid.x && coord.y < grid.y) {  \n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    data2.ba = 0.5 * (data2_p_dy.ba + data2_p_dx.ba);\n  }\n  else if (coord.x > 1.0 - grid.x && coord.y < grid.y) {  \n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    data2.ba = 0.5 * (data2_p_dy.ba + data2_m_dx.ba);\n  }\n  else if (coord.x > 1.0 - grid.x && coord.y > 1.0 - grid.y) {  \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    data2.ba = 0.5 * (data2_m_dy.ba + data2_m_dx.ba);\n  }\n  else if (coord.x < grid.x && coord.y > 1.0 - grid.y) {  \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    data2.ba = 0.5 * (data2_m_dy.ba + data2_p_dx.ba);\n  }\n  // Process boundaries.\n  // Left.\n  else if (coord.x < grid.x) {\n    data2.ba = texture2D(data2_tex, coord + dx).ba;\n  }\n  // Right.\n  else if (coord.x > 1.0 - grid.x) {\n    data2.ba = texture2D(data2_tex, coord - dx).ba;\n  }\n  // Down.\n  else if (coord.y < grid.y) {\n    data2.ba = texture2D(data2_tex, coord + dy).ba;\n  }\n  // Up.\n  else if (coord.y > 1.0 - grid.y) {\n    data2.ba = texture2D(data2_tex, coord - dy).ba;\n  }\n  \n  gl_FragColor = data2;\n}\n';});
+
+define('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-boundary.fs.glsl',[],function () { return '// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 0.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n\n    if (texture2D(data1_tex, coord - dy).a == 1.0) {\n      data2.ba = texture2D(data2_tex, coord - dy).ba;\n    } \n    else if (texture2D(data1_tex, coord + dy).a == 1.0) {\n      data2.ba = texture2D(data2_tex, coord + dy).ba;\n    } \n\n    if (texture2D(data1_tex, coord - dx).a == 1.0) {\n      data2.ba = texture2D(data2_tex, coord - dx).ba;\n    } \n    else if (texture2D(data1_tex, coord + dx).a == 1.0) {\n      data2.ba = texture2D(data2_tex, coord + dx).ba;\n    } \n  }\n\n  gl_FragColor = data2;\n}\n';});
+
+define('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-velocity.fs.glsl',[],function () { return '// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n// texture 3: \n// - R: uWind\n// - G: vWind\n// - B: undefined\n// - A: undefined\nuniform sampler2D data3_tex;\n\nuniform vec2 grid;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n\n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 0.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n\n    int count = 0;\n\n    if (texture2D(data1_tex, coord - dy).a == 1.0) {\n      count += 1;\n      vec2 data2_m_dy = texture2D(data2_tex, coord - dy).rg;\n      data2.rg = texture2D(data3_tex, coord).rg + vec2(-data2_m_dy.r, data2_m_dy.g);\n    } \n    else if (texture2D(data1_tex, coord + dy).a == 1.0) {\n      count += 1;\n      vec2 data2_p_dy = texture2D(data2_tex, coord + dy).rg;\n      data2.rg = texture2D(data3_tex, coord).rg + vec2(-data2_p_dy.r, data2_p_dy.g);\n    } \n\n    if (texture2D(data1_tex, coord - dx).a == 1.0) {\n      count += 1;\n      vec2 data2_m_dx = texture2D(data2_tex, coord - dx).rg;\n      data2.rg = texture2D(data3_tex, coord).rg + vec2(data2_m_dx.r, -data2_m_dx.g);\n    } \n    else if (texture2D(data1_tex, coord + dx).a == 1.0) {\n      count += 1;\n      vec2 data2_p_dx = texture2D(data2_tex, coord + dx).rg;\n      data2.rg = texture2D(data3_tex, coord).rg + vec2(data2_p_dx.r, -data2_p_dx.g);\n    } \n\n    if (count == 0) {\n      data2.rg = texture2D(data3_tex, coord).rg;\n    }\n  }\n  \n  gl_FragColor = data2;\n}\n';});
+
+define('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/uv-to-u0v0.fs.glsl',[],function () { return '// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nvarying vec2 coord;\n\nvoid main() {\n\tvec4 data2 = texture2D(data2_tex, coord);\n\tdata2.ba = data2.rg;\n\tgl_FragColor = data2;\n}\n';});
+
+define('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step1.fs.glsl',[],function () { return '// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float i2dx;\nuniform float i2dy;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 1.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n    \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    \n    // Phi.\n    data2.b = 0.0;\n    // Div.\n    data2.a = (data2_p_dy.r - data2_m_dy.r) * i2dx + (data2_p_dx.g - data2_m_dx.g) * i2dy;\n  }\n\n  gl_FragColor = data2;\n}\n';});
+
+define('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step2.fs.glsl',[],function () { return '// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float s;\nuniform float idxsq;\nuniform float idysq;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 1.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n    \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    \n    // Phi.\n    data2.b = s * ((data2_m_dy.b + data2_p_dy.b) * idxsq + (data2_m_dx.b + data2_p_dx.b) * idysq - data2.a);\n  }\n\n  gl_FragColor = data2;\n}\n';});
+
+define('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step3.fs.glsl',[],function () { return '// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float i2dx;\nuniform float i2dy;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 1.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n    \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    \n    // U.\n    data2.r -= (data2_p_dy.b - data2_m_dy.b) * i2dx;\n    // V.\n    data2.g -= (data2_p_dx.b - data2_m_dx.b) * i2dy;\n  }\n\n  gl_FragColor = data2;\n}\n';});
+
+define('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/diffuse.fs.glsl',[],function () { return '// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float hx;\nuniform float hy;\nuniform float dn;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 1.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n    \n    vec4 data2_m_dy = texture2D(data2_tex, coord - dy);\n    vec4 data2_p_dy = texture2D(data2_tex, coord + dy);\n    vec4 data2_m_dx = texture2D(data2_tex, coord - dx);\n    vec4 data2_p_dx = texture2D(data2_tex, coord + dx);\n    // Update velocity UV components.\n    data2.rg = (data2.ba + hx * (data2_m_dy.rg + data2_p_dy.rg)\n                         + hy * (data2_m_dx.rg + data2_p_dx.rg)) * dn;\n  }\n\n  gl_FragColor = data2;\n}\n';});
+
+define('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-buoyancy.fs.glsl',[],function () { return '// texture 0: \n// - R: t\n// - G: t0\n// - B: tb\n// - A: conductivity\nuniform sampler2D data0_tex;\n// texture 1: \n// - R: q\n// - G: capacity\n// - B: density\n// - A: fluidity\nuniform sampler2D data1_tex;\n// texture 2: \n// - R: u\n// - G: v\n// - B: u0\n// - A: v0\nuniform sampler2D data2_tex;\n\nuniform vec2 grid;\nuniform float g;\nuniform float b;\n\nvarying vec2 coord;\n\nvoid main() {\n  vec4 data2 = texture2D(data2_tex, coord);\n  float fluidity = texture2D(data1_tex, coord).a;\n  \n  if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\n      coord.y > grid.y && coord.y < 1.0 - grid.y &&\n      fluidity == 1.0) {\n    \n    vec2 dx = vec2(grid.x, 0.0);\n    vec2 dy = vec2(0.0, grid.y);\n    \n    float t = texture2D(data0_tex, coord).r;\n    // Get average column temperature.\n\n    float avg_t = t;\n    float count = 1.0;\n    vec2 n_coord = coord - dx;\n    // Silly while(true) loop (almost).\n    // While loops are not allowed.\n    // For loops with non-constant expressions also.\n    for (int i = 1; i != 0; i++) {\n      if (n_coord.x > 0.0 && texture2D(data1_tex, n_coord).a == 1.0) {\n        avg_t += texture2D(data0_tex, n_coord).r;\n        count += 1.0;\n        n_coord -= dx;\n      } else {\n        break;\n      }\n    }\n    n_coord = coord + dx;\n    // Silly while(true) loop (almost).\n    // While loops are not allowed.\n    // For loops with non-constant expressions also.\n    for (int i = 1; i != 0; i++) {\n      if (n_coord.x < 1.0 && texture2D(data1_tex, n_coord).a == 1.0) {\n        avg_t += texture2D(data0_tex, n_coord).r;\n        count += 1.0;\n        n_coord += dx;\n      } else {\n        break;\n      }\n    }\n    avg_t /= count;\n\n    // Update velocity V component.\n    data2.g += (g - b) * t + b * avg_t;\n  }\n\n  gl_FragColor = data2;\n}\n';});
+
+/*global define: false*/
+
+define('energy2d/models/physics-solvers-gpu/fluid-solver-gpu',['require','exports','module','energy2d/gpu/shader','energy2d/gpu/gpgpu','text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/basic.vs.glsl','text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/maccormack-step1.fs.glsl','text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/maccormack-step2.fs.glsl','text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-uv-boundary.fs.glsl','text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-u0v0-boundary.fs.glsl','text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-boundary.fs.glsl','text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-velocity.fs.glsl','text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/uv-to-u0v0.fs.glsl','text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step1.fs.glsl','text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step2.fs.glsl','text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step3.fs.glsl','text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/diffuse.fs.glsl','text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-buoyancy.fs.glsl'],function (require, exports) {
+  'use strict';
+  var
+    // Dependencies.
+    Shader = require('energy2d/gpu/shader'),
+    // GPGPU utilities. It's a singleton instance.
+    // It should have been previously initialized by core-model.
+    gpgpu  = require('energy2d/gpu/gpgpu'),
+    // Shader sources. One of Lab build steps converts sources to JavaScript file.
+    basic_vs                 = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/basic.vs.glsl'),
+    maccormack_step1_fs      = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/maccormack-step1.fs.glsl'),
+    maccormack_step2_fs      = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/maccormack-step2.fs.glsl'),
+    apply_uv_boundary_fs     = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-uv-boundary.fs.glsl'),
+    apply_u0v0_boundary_fs   = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-u0v0-boundary.fs.glsl'),
+    set_obstacle_boundary_fs = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-boundary.fs.glsl'),
+    set_obstacle_velocity_fs = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-velocity.fs.glsl'),
+    uv_to_u0v0_fs            = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/uv-to-u0v0.fs.glsl'),
+    conserve_step1_fs        = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step1.fs.glsl'),
+    conserve_step2_fs        = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step2.fs.glsl'),
+    conserve_step3_fs        = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step3.fs.glsl'),
+    diffuse_fs               = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/diffuse.fs.glsl'),
+    apply_buoyancy_fs        = require('text!energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-buoyancy.fs.glsl'),
+
+    RELAXATION_STEPS = 10,
+    GRAVITY = 0;
+
+  exports.makeFluidSolverGPU = function (model) {
+    var
+      // ========================================================================
+      // GLSL Shaders:
+      // - MacCormack advection, first step.
+      maccormack_step1_program      = new Shader(basic_vs, maccormack_step1_fs),
+      maccormack_step2_program      = new Shader(basic_vs, maccormack_step2_fs),
+      apply_uv_boundary_program     = new Shader(basic_vs, apply_uv_boundary_fs),
+      apply_u0v0_boundary_program   = new Shader(basic_vs, apply_u0v0_boundary_fs),
+      set_obstacle_boundary_program = new Shader(basic_vs, set_obstacle_boundary_fs),
+      set_obstacle_velocity_program = new Shader(basic_vs, set_obstacle_velocity_fs),
+      uv_to_u0v0_program            = new Shader(basic_vs, uv_to_u0v0_fs),
+      conserve_step1_program        = new Shader(basic_vs, conserve_step1_fs),
+      conserve_step2_program        = new Shader(basic_vs, conserve_step2_fs),
+      conserve_step3_program        = new Shader(basic_vs, conserve_step3_fs),
+      diffuse_program               = new Shader(basic_vs, diffuse_fs),
+      apply_buoyancy_program        = new Shader(basic_vs, apply_buoyancy_fs),
+      // ========================================================================
+
+      // Simulation arrays provided by model.
+      // texture 0:
+      // - R: t
+      // - G: t0
+      // - B: tb
+      // - A: conductivity
+      data0_tex = model.getSimulationTexture(0),
+      // texture 1:
+      // - R: q
+      // - G: capacity
+      // - B: density
+      // - A: fluidity
+      data1_tex = model.getSimulationTexture(1),
+      // texture 2:
+      // - R: u
+      // - G: v
+      // - B: u0
+      // - A: v0
+      data2_tex = model.getSimulationTexture(2),
+      // texture 3:
+      // - R: uWind
+      // - G: vWind
+      // - B: undefined
+      // - A: undefined
+      data3_tex = model.getSimulationTexture(3),
+
+      // Basic simulation parameters.
+      props = model.getModelOptions(),
+      nx = props.grid_width,
+      ny = props.grid_height,
+
+      timeStep         = props.timeStep,
+      thermal_buoyancy = props.thermal_buoyancy,
+      viscosity        = props.background_viscosity,
+
+      delta_x = props.model_width / props.grid_width,
+      delta_y = props.model_height / props.grid_height,
+
+      relaxation_steps = RELAXATION_STEPS,
+      gravity = GRAVITY,
+
+      // Convenience variables.
+      i2dx  = 0.5 / delta_x,
+      i2dy  = 0.5 / delta_y,
+      idxsq = 1.0 / (delta_x * delta_x),
+      idysq = 1.0 / (delta_y * delta_y),
+      s     = 0.5 / (idxsq + idysq),
+
+      hx = timeStep * viscosity * idxsq,
+      hy = timeStep * viscosity * idysq,
+      dn = 1.0 / (1 + 2 * (hx + hy)),
+
+      g = gravity * timeStep,
+      b = thermal_buoyancy * timeStep,
+
+      grid_vec = [1 / ny, 1 / nx],
+
+      // Textures sets.
+      data_2_array = [data2_tex],
+      data_1_2_array = [data1_tex, data2_tex],
+      data_0_1_2_array = [data0_tex, data1_tex, data2_tex],
+      data_1_2_3_array = [data1_tex, data2_tex, data3_tex],
+
+      init = function () {
+        var uniforms;
+
+        // MacCormack step 1 and 2 uniforms.
+        uniforms = {
+          // Texture units.
+          data1_tex: 0,
+          data2_tex: 1,
+          // Uniforms.
+          grid: grid_vec,
+          tx: 0.5 * timeStep / delta_x,
+          ty: 0.5 * timeStep / delta_y
+        };
+        maccormack_step1_program.uniforms(uniforms);
+        maccormack_step2_program.uniforms(uniforms);
+
+        // Apply UV / U0V0 boundary uniforms.
+        uniforms = {
+          // Texture units.
+          data2_tex: 0,
+          // Uniforms.
+          grid: grid_vec
+        };
+        apply_uv_boundary_program.uniforms(uniforms);
+        apply_u0v0_boundary_program.uniforms(uniforms);
+
+        // Set obstacle boundary uniforms.
+        uniforms = {
+          // Texture units.
+          data1_tex: 0,
+          data2_tex: 1,
+          // Uniforms.
+          grid: grid_vec
+        };
+        set_obstacle_boundary_program.uniforms(uniforms);
+
+        // Set obstacle velocity uniforms.
+        uniforms = {
+          // Texture units.
+          data1_tex: 0,
+          data2_tex: 1,
+          data3_tex: 2,
+          // Uniforms.
+          grid: grid_vec
+        };
+        set_obstacle_velocity_program.uniforms(uniforms);
+
+        // Conserve step 1 and 3 uniforms.
+        uniforms = {
+          // Texture units.
+          data1_tex: 0,
+          data2_tex: 1,
+          // Uniforms.
+          grid: grid_vec,
+          i2dx: i2dx,
+          i2dy: i2dy
+        };
+        conserve_step1_program.uniforms(uniforms);
+        conserve_step3_program.uniforms(uniforms);
+
+        // Conserve step 2 uniforms.
+        uniforms = {
+          // Texture units.
+          data1_tex: 0,
+          data2_tex: 1,
+          // Uniforms.
+          grid: grid_vec,
+          s: s,
+          idxsq: idxsq,
+          idysq: idysq
+        };
+        conserve_step2_program.uniforms(uniforms);
+
+        // Diffuse uniforms.
+        uniforms = {
+          // Texture units.
+          data1_tex: 0,
+          data2_tex: 1,
+          // Uniforms.
+          grid: grid_vec,
+          hx: hx,
+          hy: hy,
+          dn: dn
+        };
+        diffuse_program.uniforms(uniforms);
+
+        // Apply buoyancy uniforms.
+        uniforms = {
+          // Texture units.
+          data0_tex: 0,
+          data1_tex: 1,
+          data2_tex: 2,
+          // Uniforms.
+          grid: grid_vec,
+          g: g,
+          b: b
+        };
+        apply_buoyancy_program.uniforms(uniforms);
+      },
+
+      applyBuoyancy = function () {
+        gpgpu.executeProgram(
+          apply_buoyancy_program,
+          data_0_1_2_array,
+          data2_tex
+        );
+      },
+
+      macCormack = function () {
+        // Step 1.
+        gpgpu.executeProgram(
+          maccormack_step1_program,
+          data_1_2_array,
+          data2_tex
+        );
+        // Apply boundary.
+        gpgpu.executeProgram(
+          apply_uv_boundary_program,
+          data_2_array,
+          data2_tex
+        );
+        // Step 2.
+        gpgpu.executeProgram(
+          maccormack_step2_program,
+          data_1_2_array,
+          data2_tex
+        );
+        // Apply boundary again.
+        gpgpu.executeProgram(
+          apply_uv_boundary_program,
+          data_2_array,
+          data2_tex
+        );
+      },
+
+      conserve = function () {
+        var k;
+        // Step 1.
+        gpgpu.executeProgram(
+          conserve_step1_program,
+          data_1_2_array,
+          data2_tex
+        );
+        // Apply boundary.
+        gpgpu.executeProgram(
+          apply_u0v0_boundary_program,
+          data_2_array,
+          data2_tex
+        );
+        // Set obstacle boundary.
+        gpgpu.executeProgram(
+          set_obstacle_boundary_program,
+          data_1_2_array,
+          data2_tex
+        );
+        // Relaxation.
+        for (k = 0; k < relaxation_steps; k += 1) {
+          // Step 2.
+          gpgpu.executeProgram(
+            conserve_step2_program,
+            data_1_2_array,
+            data2_tex
+          );
+        }
+        // Step 3.
+        gpgpu.executeProgram(
+          conserve_step3_program,
+          data_1_2_array,
+          data2_tex
+        );
+        // Apply boundary.
+        gpgpu.executeProgram(
+          apply_uv_boundary_program,
+          data_2_array,
+          data2_tex
+        );
+      },
+
+      diffuse = function () {
+        var k;
+        // Copy UV to U0V0.
+        gpgpu.executeProgram(
+          uv_to_u0v0_program,
+          data_2_array,
+          data2_tex
+        );
+        // Relaxation.
+        for (k = 0; k < relaxation_steps; k += 1) {
+          // Step 2.
+          gpgpu.executeProgram(
+            diffuse_program,
+            data_1_2_array,
+            data2_tex
+          );
+
+          // Apply boundary.
+          gpgpu.executeProgram(
+            apply_uv_boundary_program,
+            data_2_array,
+            data2_tex
+          );
+        }
+      },
+
+      setObstacleVelocity = function () {
+        gpgpu.executeProgram(
+          set_obstacle_velocity_program,
+          data_1_2_3_array,
+          data2_tex
+        );
+      },
+
+      copyUVtoU0V0 = function () {
+        gpgpu.executeProgram(
+          uv_to_u0v0_program,
+          data_2_array,
+          data2_tex
+        );
+      },
+
+      fluid_solver_gpu = {
+        solve: function () {
+          if (thermal_buoyancy !== 0) {
+            applyBuoyancy();
+          }
+          setObstacleVelocity();
+          if (viscosity > 0) {
+            diffuse();
+            conserve();
+            setObstacleVelocity();
+          }
+          copyUVtoU0V0();
+          macCormack();
+          conserve();
+          setObstacleVelocity();
+        }
+      };
+
+    // One-off initialization.
+    init();
+
+    return fluid_solver_gpu;
+  };
+});
+
+/*jslint indent: 2, browser: true, newcap: true */
+/*globals define: false*/
+
+define('energy2d/models/helpers',['require','exports','module'],function (require, exports, module) {
+  'use strict';
+
+  exports.hypot = function (x, y) {
+    var t;
+    x = Math.abs(x);
+    y = Math.abs(y);
+    t = Math.min(x, y);
+    x = Math.max(x, y);
+    if (x === 0) return 0;
+    t = t / x;
+    return x * Math.sqrt(1 + t * t);
+  };
+});
+/*jslint indent: 2, browser: true, newcap: true */
+/*globals define: false*/
+
+define('energy2d/models/shape',['require','exports','module'],function (require, exports, module) {
+  'use strict';
+
+  // Based on: http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+  // It is optional to repeat the first vertex at the end of list of polygon vertices.
+  exports.pointInsidePolygon = function (nvert, vertx, verty, testx, testy) {
+    var c = 0, i, j;
+    for (i = 0, j = nvert - 1; i < nvert; j = i, i += 1) {
+      if (((verty[i] > testy) !== (verty[j] > testy)) &&
+          (testx < (vertx[j] - vertx[i]) * (testy - verty[i]) / (verty[j] - verty[i]) + vertx[i])) {
+        c = !c;
+      }
+    }
+    return !!c;
+  };
+
+  //
+  // Line in 2D.
+  //
+  // It is defined by two points - (x1, y1) and (x2, y2).
+  var Line = exports.Line = function (x1, y1, x2, y2) {
+    this.x1 = x1;
+    this.y1 = y1;
+    this.x2 = x2;
+    this.y2 = y2;
+  };
+
+  Line.prototype.intersectsLine = function (line) {
+    var
+      result,
+      a1 = {x: this.x1, y: this.y1},
+      a2 = {x: this.x2, y: this.y2},
+      b1 = {x: line.x1, y: line.y1},
+      b2 = {x: line.x2, y: line.y2},
+      ua_t = (b2.x - b1.x) * (a1.y - b1.y) - (b2.y - b1.y) * (a1.x - b1.x),
+      ub_t = (a2.x - a1.x) * (a1.y - b1.y) - (a2.y - a1.y) * (a1.x - b1.x),
+      u_b  = (b2.y - b1.y) * (a2.x - a1.x) - (b2.x - b1.x) * (a2.y - a1.y),
+      ua, ub;
+
+    if (u_b !== 0) {
+      ua = ua_t / u_b;
+      ub = ub_t / u_b;
+
+      if (0 <= ua && ua <= 1 && 0 <= ub && ub <= 1) {
+        result = true;
+      } else {
+        result = false;
+      }
+    } else {
+      if (ua_t === 0 || ub_t === 0) {
+        result = true;  // Coincident.
+      } else {
+        result = false; // Parallel.
+      }
+    }
+    return result;
+  };
+
+  //
+  // Polygon.
+  //
+  // Implements Shape2D interface:
+  // - polygonize()
+  // - contains(x, y)
+  var Polygon = exports.Polygon = function (count, x_coords, y_coords, x, y) {
+    this.count = count;
+    this.raw_x_coords = x_coords;
+    this.raw_y_coords = y_coords;
+    this.x_coords = new Array(count);
+    this.y_coords = new Array(count);
+    // x_coords and y_coors will be updated now:
+    this.x = x || 0;
+    this.y = y || 0;
+  };
+
+  Object.defineProperty(Polygon.prototype, 'x', {
+    get: function() {
+      return this._x;
+    },
+    set: function(v) {
+      var i, len;
+      for (i = 0, len = this.count; i < len; i++) {
+        this.x_coords[i] = this.raw_x_coords[i] + v;
+      }
+      this._x = v;
+    }
+  });
+
+  Object.defineProperty(Polygon.prototype, 'y', {
+    get: function() {
+      return this._y;
+    },
+    set: function(v) {
+      var i, len;
+      for (i = 0, len = this.count; i < len; i++) {
+        this.y_coords[i] = this.raw_y_coords[i] + v;
+      }
+      this._y = v;
+    }
+  });
+
+  Polygon.prototype.polygonize = function () {
+    return this;
+  };
+
+  // Based on: http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+  // It is optional to repeat the first vertex at the end of list of polygon vertices.
+  Polygon.prototype.contains = function (x, y) {
+    var
+      x_coords = this.x_coords,
+      y_coords = this.y_coords,
+      count = this.count,
+      c = 0, i, j;
+
+    for (i = 0, j = count - 1; i < count; j = i, i += 1) {
+      if (((y_coords[i] > y) !== (y_coords[j] > y)) &&
+          (x < (x_coords[j] - x_coords[i]) * (y - y_coords[i]) / (y_coords[j] - y_coords[i]) + x_coords[i])) {
+        c = !c;
+      }
+    }
+    // Convert to Boolean.
+    return !!c;
+  };
+
+  //
+  // Rectangle.
+  // x, y - left-top corner
+  //
+  // Implements Shape2D interface:
+  // - polygonize()
+  // - contains(x, y)
+  var Rectangle = exports.Rectangle = function (x, y, width, height) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.polygon_cache = undefined;
+  };
+
+  Rectangle.prototype.polygonize = function () {
+    var
+      x, y, w, h;
+
+    if (!this.polygon_cache) {
+      x = this.x;
+      y = this.y;
+      w = this.width;
+      h = this.height;
+      this.polygon_cache = new Polygon(4, [x, x + w, x + w, x], [y, y, y + h, y + h]);
+    }
+    return this.polygon_cache;
+  };
+
+  Rectangle.prototype.contains = function (x, y) {
+    return x >= this.x && x <= this.x + this.width &&
+           y >= this.y && y <= this.y + this.height;
+  };
+
+  // Helper function, used by Ellipse and Ring.
+  var polygonizeEllipse = function (x, y, ra, rb, segments) {
+    var
+      vx = new Array(segments),
+      vy = new Array(segments),
+      delta = 2 * Math.PI / segments,
+      theta, i;
+
+    for (i = 0; i < segments; i += 1) {
+      theta = delta * i;
+      vx[i] = x + ra * Math.cos(theta);
+      vy[i] = y + rb * Math.sin(theta);
+    }
+    return new Polygon(segments, vx, vy);
+  };
+
+  //
+  // Ellipse.
+  // x, y - center
+  // a, b - diameter (not radius)
+  //
+  // Implements Shape2D interface:
+  // - polygonize()
+  // - contains(x, y)
+  var Ellipse = exports.Ellipse = function (x, y, a, b) {
+    this.x = x;
+    this.y = y;
+    this.a = a;
+    this.b = b;
+    this.polygon_cache = undefined;
+  };
+
+  Ellipse.prototype.POLYGON_SEGMENTS = 50;
+
+  Ellipse.prototype.polygonize = function () {
+    if (!this.polygon_cache) {
+      this.polygon_cache = polygonizeEllipse(this.x, this.y, this.a * 0.5, this.b * 0.5, this.POLYGON_SEGMENTS);
+    }
+    return this.polygon_cache;
+  };
+
+  Ellipse.prototype.contains = function (x, y) {
+    var
+      px = x - this.x,
+      py = y - this.y,
+      ra = this.a * 0.5,
+      rb = this.b * 0.5;
+
+    return px * px / (ra * ra) + py * py / (rb * rb) <= 1;
+  };
+
+  //
+  // Ring.
+  // x, y - center
+  // inner, outer - diameter (not radius)
+  //
+  // Implements Shape2D interface:
+  // - polygonize()
+  // - contains(x, y)
+  var Ring = exports.Ring = function (x, y, inner, outer) {
+    this.x = x;
+    this.y = y;
+    this.inner = inner;
+    this.outer = outer;
+    this.polygon_cache = undefined;
+  };
+
+  Ring.prototype.POLYGON_SEGMENTS = 50;
+
+  // Returns OUTER circle polygonization.
+  Ring.prototype.polygonize = function () {
+    if (!this.polygon_cache) {
+      this.polygon_cache = polygonizeEllipse(this.x, this.y, this.outer * 0.5, this.outer * 0.5, this.POLYGON_SEGMENTS);
+    }
+    return this.polygon_cache;
+  };
+
+  Ring.prototype.contains = function (x, y) {
+    var
+      px = x - this.x,
+      py = y - this.y,
+      ra_outer = this.outer * 0.5,
+      rb_outer = this.outer * 0.5,
+      ra_inner = this.inner * 0.5,
+      rb_inner = this.inner * 0.5;
+
+    return (px * px / (ra_outer * ra_outer) + py * py / (rb_outer * rb_outer) <= 1) &&
+           (px * px / (ra_inner * ra_inner) + py * py / (rb_inner * rb_inner) >= 1);
+  };
+});
+
+/*jslint indent: 2, browser: true, newcap: true */
+/*globals define: false*/
+
+define('energy2d/models/photon',['require','exports','module','energy2d/models/helpers','energy2d/models/shape','energy2d/models/shape'],function (require, exports, module) {
+  'use strict';
+  var
+    hypot     = require('energy2d/models/helpers').hypot,
+    Line      = require('energy2d/models/shape').Line,
+    Rectangle = require('energy2d/models/shape').Rectangle,
+
+    //
+    // Photon class.
+    //
+    Photon = exports.Photon = function (x, y, energy, c, angle) {
+      this.x = x;
+      this.y = y;
+      this.energy = energy;
+      this.c = c;
+
+      if (angle !== undefined) {
+        this.vx = Math.cos(angle) * c;
+        this.vy = Math.sin(angle) * c;
+      }
+    };
+
+  Photon.prototype.isContained = function (xmin, xmax, ymin, ymax) {
+    return this.x >= xmin && this.x <= xmax && this.y >= ymin && this.y <= ymax;
+  };
+
+  Photon.prototype.move = function (dt) {
+    this.x += this.vx * dt;
+    this.y += this.vy * dt;
+  };
+
+  Photon.prototype.reflectFromLine = function (line, time_step) {
+    var
+      x1 = this.x,
+      y1 = this.y,
+      x2 = this.x - this.vx * time_step,
+      y2 = this.y - this.vy * time_step,
+      photon_line = new Line(x1, y1, x2, y2),
+      vx = this.vx,
+      vy = this.vy,
+      r12, sin, cos, u, w;
+
+    if (photon_line.intersectsLine(line)) {
+      x1 = line.x1;
+      y1 = line.y1;
+      x2 = line.x2;
+      y2 = line.y2;
+      r12 = 1.0 / hypot(x1 - x2, y1 - y2);
+      sin = (y2 - y1) * r12;
+      cos = (x2 - x1) * r12;
+      // Velocity component parallel to the line.
+      u = vx * cos + vy * sin;
+      // Velocity component perpendicular to the line.
+      w = vy * cos - vx * sin;
+      // Update velocities.
+      this.vx = u * cos + w * sin;
+      this.vy = u * sin - w * cos;
+      return true;
+    }
+    return false;
+  };
+
+  Photon.prototype.reflectFromRectangle = function (rectangle, time_step) {
+    var
+      x0 = rectangle.x,
+      y0 = rectangle.y,
+      x1 = rectangle.x + rectangle.width,
+      y1 = rectangle.y + rectangle.height,
+      dx, dy;
+
+    dx = this.vx * time_step;
+    if (this.x - dx < x0) {
+      this.vx = -Math.abs(this.vx);
+    } else if (this.x - dx > x1) {
+      this.vx = Math.abs(this.vx);
+    }
+    dy = this.vy * time_step;
+    if (this.y - dy < y0) {
+      this.vy = -Math.abs(this.vy);
+    } else if (this.y - dy > y1) {
+      this.vy = Math.abs(this.vy);
+    }
+  };
+
+  Photon.prototype.reflectFromPolygon = function (polygon, time_step) {
+    var
+      line = new Line(), // no params, as this object will be reused many times
+      i, len;
+
+    for (i = 0, len = polygon.count - 1; i < len; i += 1) {
+      line.x1 = polygon.x_coords[i];
+      line.y1 = polygon.y_coords[i];
+      line.x2 = polygon.x_coords[i + 1];
+      line.y2 = polygon.y_coords[i + 1];
+      if (this.reflectFromLine(line, time_step)) {
+        return;
+      }
+    }
+    line.x1 = polygon.x_coords[polygon.count - 1];
+    line.y1 = polygon.y_coords[polygon.count - 1];
+    line.x2 = polygon.x_coords[0];
+    line.y2 = polygon.y_coords[0];
+    this.reflectFromLine(line, time_step);
+  };
+
+  Photon.prototype.reflect = function (shape, time_step) {
+    // Check if part contains a photon BEFORE possible polygonization.
+    if (!shape.contains(this.x, this.y)) {
+      return false;
+    }
+
+    if (shape instanceof Rectangle) {
+      // Rectangle also can be polygonized, but for performance reasons
+      // use separate method.
+      this.reflectFromRectangle(shape, time_step);
+    } else {
+      // Other shapes (ellipses, rings, polygons) - polygonize() first
+      // (polygonize() for polygon returns itself).
+      this.reflectFromPolygon(shape.polygonize(), time_step);
+    }
+    return true;
+  };
+});
+
+/*global define: false*/
+
+define('energy2d/models/physics-solvers/ray-solver',['require','exports','module','energy2d/models/photon'],function (require, exports) {
+  'use strict';
+  var
+    Photon = require('energy2d/models/photon').Photon;
+
+  exports.makeRaySolver = function (model) {
+    var
+      // Basic simulation parameters.
+      props = model.getModelOptions(),
+
+      // Simulation arrays provided by model.
+      q       = model.getPowerArray(),
+      parts   = model.getPartsArray(),
+      photons = model.getPhotonsArray(),
+
+      // Convenience variables.
+      lx = props.model_width,
+      ly = props.model_height,
+
+      nx = props.grid_width,
+      ny = props.grid_height,
+      nx1 = nx - 1,
+      ny1 = ny - 1,
+
+      delta_x = props.model_width / props.grid_width,
+      delta_y = props.model_height / props.grid_height,
+
+      //
+      // Private methods
+      //
+
+      sunAngle = function () {
+        return Math.PI - props.sun_angle;
+      },
+
+      // TODO: implement something efficient. Linked list?
+      cleanupPhotonsArray = function () {
+        var i = 0;
+        while (i < photons.length) {
+          if (photons[i] === undefined) {
+            photons.splice(i, 1);
+          } else {
+            i += 1;
+          }
+        }
+      },
+
+      applyBoundary = function () {
+        var i, len;
+        for (i = 0, len = photons.length; i < len; i += 1) {
+          if (!photons[i].isContained(0, lx, 0, ly)) {
+            photons[i] = undefined;
+          }
+        }
+        cleanupPhotonsArray();
+      },
+
+      isContained = function (x, y) {
+        var i, len;
+        for (i = 0, len = parts.length; i < len; i += 1) {
+          if (parts[i].contains(x, y)) {
+            return true;
+          }
+        }
+        return false;
+      },
+
+      shootAtAngle = function (dx, dy) {
+        var
+          sun_angle = sunAngle(),
+          ray_power = props.solar_power_density,
+          ray_speed = props.solar_ray_speed,
+          m = Math.floor(lx / dx),
+          n = Math.floor(ly / dy),
+          x, y, i;
+        if (sun_angle >= 0 && sun_angle < 0.5 * Math.PI) {
+          y = 0;
+          for (i = 1; i <= m; i += 1) {
+            x = dx * i;
+            if (!isContained(x, y)) {
+              photons.push(new Photon(x, y, ray_power, ray_speed, sun_angle));
+            }
+          }
+          x = 0;
+          for (i = 0; i <= n; i += 1) {
+            y = dy * i;
+            if (!isContained(x, y)) {
+              photons.push(new Photon(x, y, ray_power, ray_speed, sun_angle));
+            }
+          }
+        } else if (sun_angle < 0 && sun_angle >= -0.5 * Math.PI) {
+          y = ly;
+          for (i = 1; i <= m; i += 1) {
+            x = dx * i;
+            if (!isContained(x, y)) {
+              photons.push(new Photon(x, y, ray_power, ray_speed, sun_angle));
+            }
+          }
+          x = 0;
+          for (i = 0; i <= n; i += 1) {
+            y = ly - dy * i;
+            if (!isContained(x, y)) {
+              photons.push(new Photon(x, y, ray_power, ray_speed, sun_angle));
+            }
+          }
+        } else if (sun_angle < Math.PI + 0.001 && sun_angle >= 0.5 * Math.PI) {
+          y = 0;
+          for (i = 0; i <= m; i += 1) {
+            x = lx - dx * i;
+            if (!isContained(x, y)) {
+              photons.push(new Photon(x, y, ray_power, ray_speed, sun_angle));
+            }
+          }
+          x = lx;
+          for (i = 1; i <= n; i += 1) {
+            y = dy * i;
+            if (!isContained(x, y)) {
+              photons.push(new Photon(x, y, ray_power, ray_speed, sun_angle));
+            }
+          }
+        } else if (sun_angle >= -Math.PI && sun_angle < -0.5 * Math.PI) {
+          y = ly;
+          for (i = 0; i <= m; i += 1) {
+            x = lx - dx * i;
+            if (!isContained(x, y)) {
+              photons.push(new Photon(x, y, ray_power, ray_speed, sun_angle));
+            }
+          }
+          x = lx;
+          for (i = 1; i <= n; i += 1) {
+            y = ly - dy * i;
+            if (!isContained(x, y)) {
+              photons.push(new Photon(x, y, ray_power, ray_speed, sun_angle));
+            }
+          }
+        }
+      };
+
+    return {
+      solve: function () {
+        var
+          timeStep = props.timeStep,
+          photon_emission_interval = props.photon_emission_interval,
+
+          factor = 1.0 / (timeStep * photon_emission_interval),
+          idx = 1.0 / delta_x,
+          idy = 1.0 / delta_y,
+          photon, part, x, y,
+          i, j, photons_len, parts_len;
+
+        for (i = 0, photons_len = photons.length; i < photons_len; i += 1) {
+          photon = photons[i];
+          photon.move(timeStep);
+
+          for (j = 0, parts_len = parts.length; j < parts_len; j += 1) {
+            part = parts[j];
+            if (part.reflect(photon, timeStep)) {
+              break;
+            } else if (part.absorb(photon)) {
+              x = Math.max(Math.min(Math.round(photon.x * idx), nx1), 0);
+              y = Math.max(Math.min(Math.round(photon.y * idy), ny1), 0);
+              q[x * ny + y] = photon.energy * factor;
+              // Remove photon.
+              photons[i] = undefined;
+              break;
+            }
+          }
+        }
+        // Clean up absorbed photons.
+        cleanupPhotonsArray();
+        // Remove photons that are out of bounds.
+        applyBoundary();
+      },
+
+      radiate: function () {
+        var part, i, len;
+        for (i = 0, len = parts.length; i < len; i += 1) {
+          part = parts[i];
+          if (part.emissivity > 0) {
+            part.radiate(model);
+          }
+        }
+      },
+
+      sunShine: function () {
+        var
+          sun_angle = sunAngle(),
+          s, c, spacing;
+
+        if (sun_angle < 0) {
+          return;
+        }
+        s = Math.abs(Math.sin(sun_angle));
+        c = Math.abs(Math.cos(sun_angle));
+        spacing = s * ly < c * lx ? ly / c : lx / s;
+        spacing /= props.solar_ray_count;
+        shootAtAngle(spacing / s, spacing / c);
+      }
+    };
+  };
+});
+
+/*jslint indent: 2, browser: true, newcap: true */
+/*globals define: false*/
+
+define('energy2d/models/part',['require','exports','module','energy2d/models/constants','energy2d/models/helpers','energy2d/models/photon','energy2d/models/shape','energy2d/models/shape','energy2d/models/shape','energy2d/models/shape','energy2d/models/shape','energy2d/models/shape'],function (require, exports, module) {
+  'use strict';
+  var
+    constants      = require('energy2d/models/constants'),
+    hypot          = require('energy2d/models/helpers').hypot,
+    Photon         = require('energy2d/models/photon').Photon,
+    shape_utils    = require('energy2d/models/shape'),
+    Line           = require('energy2d/models/shape').Line,
+    Polygon        = require('energy2d/models/shape').Polygon,
+    Rectangle      = require('energy2d/models/shape').Rectangle,
+    Ellipse        = require('energy2d/models/shape').Ellipse,
+    Ring           = require('energy2d/models/shape').Ring,
+
+    // Part's constants.
+    RADIATOR_SPACING = 0.5,
+    MINIMUM_RADIATING_TEMPERATUE = 20,
+    UNIT_SURFACE_AREA = 100,
+    SIN30 = Math.sin(Math.PI / 6),
+    COS30 = Math.cos(Math.PI / 6),
+    SIN60 = Math.sin(Math.PI / 3),
+    COS60 = Math.cos(Math.PI / 3),
+
+    // Constructor function.
+    Part = exports.Part = function (options) {
+      var vertices, count, i;
+      this._options = options;
+
+      // Validate and process options.
+      if (options.shapeType === "rectangle") {
+        this.shape = new Rectangle(options.x, options.y, options.width, options.height);
+      } else if (options.shapeType === "ellipse") {
+        this.shape = new Ellipse(options.x, options.y, options.a, options.b);
+      } else if (options.shapeType === "ring") {
+        this.shape = new Ring(options.x, options.y, options.inner, options.outer);
+      } else if (options.shapeType === "polygon") {
+        vertices = options.vertices.split(', ');
+        this.x_coords = [];
+        this.y_coords = [];
+        for (i = 0, count = vertices.length * 0.5; i < count; i += 1) {
+          this.x_coords[i] = Number(vertices[2 * i]);
+          this.y_coords[i] = Number(vertices[2 * i + 1]);
+        }
+        this.shape = new Polygon(count, this.x_coords, this.y_coords, options.x, options.y);
+      } else {
+        throw new Error("Part: shape not defined or not supported.");
+      }
+    };
+
+  Object.defineProperty(Part.prototype, "shapeType", {
+    get: function () {
+      return this._options.shapeType;
+    }
+  });
+
+  ["x", "y", "width", "height", "inner", "outer", "a", "b", "raw_x_coords", "raw_y_coords"].forEach(function (key) {
+    Object.defineProperty(Part.prototype, key, {
+      get: function () {
+        return this.shape[key];
+      },
+      set: function (v) {
+        this.shape[key] = v;
+        this.polygon_cache = undefined;
+      }
+    });
+  });
+
+  Object.defineProperty(Part.prototype, "vertices", {
+    get: function () {
+      if (this.shapeType !== "polygon") return undefined;
+      var x = this.shape.raw_x_coords,
+          y = this.shape.raw_y_coords,
+          r = [], i, len;
+      for (i = 0, len = x.length; i < len; i++) {
+        r.push(x[i]);
+        r.push(y[i]);
+      }
+      return r.join(", ");
+    }
+  });
+
+  ["thermal_conductivity", "specific_heat", "density", "temperature", "constant_temperature", "power", "wind_speed", "wind_angle",
+   "transmission", "reflection", "absorption", "emissivity",
+   "visible", "filled", "color", "texture", "label", "draggable"].forEach(function (key) {
+    Object.defineProperty(Part.prototype, key, {
+      get: function () {
+        return this._options[key];
+      },
+      set: function (v) {
+        this._options[key] = v;
+      }
+    });
+  });
+
+  Part.prototype.getLabel = function () {
+    var label = this.label, s;
+
+    function formatLabel(value, suffix) {
+      var valueStr;
+      if (value >= 100) {
+        valueStr = value.toFixed();
+      } else if (value >= 10) {
+        valueStr = value.toFixed(1);
+      } else {
+        valueStr = value.toFixed(2);
+      }
+      return valueStr + suffix;
+    }
+
+    if (label === "%temperature") {
+      s = formatLabel(this.temperature, " \u00b0C");
+    } else if (label === "%density") {
+      s = formatLabel(this.density, " kg/m\u00b3");
+    } else if (label === "%specific_heat") {
+      s = formatLabel(this.specific_heat, " J/(kg\u00d7\u00b0C)");
+    } else if (label === "%thermal_conductivity") {
+      s = formatLabel(this.thermal_conductivity, " W/(m\u00d7\u00b0C)");
+    } else if (label === "%power_density") {
+      s = formatLabel(this.power, " W/m\u00b3");
+    } else if (label === "%area") {
+      if (this.shapeType === "rectangle") {
+        s = formatLabel(this.width * this.height, " m\u00b2");
+      } else if (this.shapeType === "ellipse") {
+        s = formatLabel(this.a * this.b * 0.25 * Math.PI, " m\u00b2");
+      }
+    } else if (label === "%width") {
+      if (this.shapeType === "rectangle") {
+        s = formatLabel(this.width, " m");
+      } else if (this.shapeType === "ellipse") {
+        s = formatLabel(this.a, " m");
+      }
+    } else if (label === "%height") {
+      if (this.shapeType === "rectangle") {
+        s = formatLabel(this.height, " m");
+      } else if (this.shapeType === "ellipse") {
+        s = formatLabel(this.b, " m");
+      }
+    } else {
+      s = label;
+    }
+    return s;
+  };
+
+  // Returns cells occupied by part on the given grid
+  // Grid is described by:
+  //   nx - grid columns count
+  //   ny - grid rows count
+  //   lx - grid width
+  //   ly - grid height
+  // TODO: refactor it, probably using contains method.
+  Part.prototype.getGridCells = function (nx, ny, lx, ly) {
+    var
+      nx1 = nx - 1,
+      ny1 = ny - 1,
+      dx = nx1 / lx,
+      dy = ny1 / ly,
+
+      rectangleIndices = function (rect) {
+        var i, j, i0, j0, i_max, j_max, idx, indices = [];
+
+        i0 = Math.min(Math.max(Math.ceil(rect.x * dx), 0), nx1);
+        j0 = Math.min(Math.max(Math.ceil(rect.y * dy), 0), ny1);
+        i_max = Math.min(Math.max(Math.floor((rect.x + rect.width) * dx), 0), nx1);
+        j_max = Math.min(Math.max(Math.floor((rect.y + rect.height) * dy), 0), ny1);
+        indices = new Array((i_max - i0 + 1) * (j_max - j0 + 1));
+        idx = 0;
+        for (i = i0; i <= i_max; i += 1) {
+          for (j = j0; j <= j_max; j += 1) {
+            indices[idx += 1] = i * ny + j;
+          }
+        }
+        return indices;
+      },
+
+      ellipseIndices = function (ellipse) {
+        var
+          px = ellipse.x * dx,
+          py = ellipse.y * dy,
+          ra = ellipse.a * 0.5 * dx,
+          rb = ellipse.b * 0.5 * dy,
+          eq, i, i0, i_max, j, j0, j_max,
+          idx, indices = [];
+
+        i0 = Math.min(Math.max(Math.ceil(px - ra), 0), nx1);
+        i_max = Math.min(Math.max(Math.floor(px + ra), 0), nx1);
+        indices = [];
+        idx = 0;
+        for (i = i0; i <= i_max; i += 1) {
+          // solve equation x^2/a^2 + y^2/b^2 < 1 for given x (=> i)
+          // to get range of y (=> j)
+          eq = Math.sqrt(1 - (i - px) * (i - px) / (ra * ra));
+          j0 = Math.min(Math.max(Math.ceil(py - rb * eq), 0), ny1);
+          j_max = Math.min(Math.max(Math.floor(py + rb * eq), 0), ny1);
+          for (j = j0; j <= j_max; j += 1) {
+            indices[idx += 1] = i * ny + j;
+          }
+        }
+        return indices;
+      },
+
+      ringIndices = function (ring) {
+        var
+          px = ring.x * dx,
+          py = ring.y * dy,
+          ra = ring.outer * 0.5 * dx,
+          rb = ring.outer * 0.5 * dy,
+          ra_inner = ring.inner * 0.5 * dx,
+          rb_inner = ring.inner * 0.5 * dy,
+          i, i0, i_max, j, j0, j1, j2, j_max, eq,
+          idx, indices = [];
+
+        i0 = Math.min(Math.max(Math.ceil(px - ra), 0), nx1);
+        i_max = Math.min(Math.max(Math.floor(px + ra), 0), nx1);
+
+        for (i = i0; i <= i_max; i += 1) {
+          // solve equation x^2/a^2 + y^2/b^2 < 1 for given x (=> i)
+          // to get range of y (=> j)
+          eq = Math.sqrt(1 - (i - px) * (i - px) / (ra * ra));
+          j0 = Math.min(Math.max(Math.ceil(py - rb * eq), 0), ny1);
+          j_max = Math.min(Math.max(Math.floor(py + rb * eq), 0), ny1);
+
+          if (Math.abs(i - px) < ra_inner) {
+            // also calculate inner ellipse
+            eq = Math.sqrt(1 - (i - px) * (i - px) / (ra_inner * ra_inner));
+            j1 = Math.min(Math.max(Math.ceil(py - rb_inner * eq), 0), ny1);
+            j2 = Math.min(Math.max(Math.floor(py + rb_inner * eq), 0), ny1);
+            for (j = j0; j <= j1; j += 1) {
+              indices[idx += 1] = i * ny + j;
+            }
+            for (j = j2; j <= j_max; j += 1) {
+              indices[idx += 1] = i * ny + j;
+            }
+          } else {
+            // consider only outer ellipse
+            for (j = j0; j <= j_max; j += 1) {
+              indices[idx += 1] = i * ny + j;
+            }
+          }
+        }
+        return indices;
+      },
+
+      polygonIndices = function (polygon) {
+        var
+          count = polygon.x_coords.length,
+          x_coords = new Array(count),
+          y_coords = new Array(count),
+          x_min = Number.MAX_VALUE, x_max = Number.MIN_VALUE,
+          y_min = Number.MAX_VALUE, y_max = Number.MIN_VALUE,
+          i, i0, i_max, j, j0, j_max,
+          idx, indices = [];
+
+        for (i = 0; i < count; i += 1) {
+          x_coords[i] = polygon.x_coords[i] * dx;
+          y_coords[i] = polygon.y_coords[i] * dy;
+          if (x_coords[i] < x_min) {
+            x_min = x_coords[i];
+          }
+          if (x_coords[i] > x_max) {
+            x_max = x_coords[i];
+          }
+          if (y_coords[i] < y_min) {
+            y_min = y_coords[i];
+          }
+          if (y_coords[i] > y_max) {
+            y_max = y_coords[i];
+          }
+        }
+
+        i0 = Math.min(Math.max(Math.round(x_min), 0), nx1);
+        j0 = Math.min(Math.max(Math.round(y_min), 0), ny1);
+        i_max = Math.min(Math.max(Math.round(x_max), 0), nx1);
+        j_max = Math.min(Math.max(Math.round(y_max), 0), ny1);
+        indices = [];
+        idx = 0;
+        for (i = i0; i <= i_max; i += 1) {
+          for (j = j0; j <= j_max; j += 1) {
+            if (shape_utils.pointInsidePolygon(count, x_coords, y_coords, i, j)) {
+              indices[idx += 1] = i * ny + j;
+            }
+          }
+        }
+        return indices;
+      };
+
+    if (this.shapeType === "rectangle") {
+      return rectangleIndices(this.shape);
+    }
+    if (this.shapeType === "ellipse") {
+      return ellipseIndices(this.shape);
+    }
+    if (this.shapeType === "ring") {
+      return ringIndices(this.shape);
+    }
+    if (this.shapeType === "polygon") {
+      return polygonIndices(this.shape);
+    }
+    throw new Error("Part: unknown shape.");
+  };
+
+  // Tests if the specified coordinates are inside the boundary of the Part.
+  Part.prototype.contains = function (x, y) {
+    return this.shape.contains(x, y);
+  };
+
+  // Test whether part reflects given Photon p.
+  Part.prototype.reflect = function (p, time_step) {
+    // Try to reflect when part's reflection equals ~1.
+    if (Math.abs(this.reflection - 1) < 0.001) {
+      return p.reflect(this.shape, time_step);
+    }
+    // Other case.
+    return false;
+  };
+
+  // Test whether part absorbs given Photon p.
+  Part.prototype.absorb = function (p) {
+    // Absorb when absorption equals ~1 and photon is inside part's shape.
+    if (Math.abs(this.absorption - 1) < 0.001) {
+      return this.shape.contains(p.x, p.y);
+    }
+    // Other case.
+    return false;
+  };
+
+  Part.prototype.getIrradiance = function (temperature) {
+    var t2;
+    if (this.emissivity === 0) {
+      return 0;
+    }
+    t2 = 273 + temperature;
+    t2 *= t2;
+    return this.emissivity * constants.STEFAN_CONSTANT * UNIT_SURFACE_AREA * t2 * t2;
+  };
+
+  // Emit photons if part meets radiation conditions.
+  Part.prototype.radiate = function (model) {
+    var
+      // The shape is polygonized and radiateFromLine() is called for each line.
+      poly = this.shape.polygonize(),
+      line = new Line(),
+      i, len;
+
+    if (this.emissivity === 0) {
+      return;
+    }
+    // Must follow the clockwise direction in setting lines.
+    for (i = 0, len = poly.count - 1; i < len; i += 1) {
+      line.x1 = poly.x_coords[i];
+      line.y1 = poly.y_coords[i];
+      line.x2 = poly.x_coords[i + 1];
+      line.y2 = poly.y_coords[i + 1];
+      this.radiateFromLine(model, line);
+    }
+    line.x1 = poly.x_coords[poly.count - 1];
+    line.y1 = poly.y_coords[poly.count - 1];
+    line.x2 = poly.x_coords[0];
+    line.y2 = poly.y_coords[0];
+    this.radiateFromLine(model, line);
+  };
+
+  // Helper function for radiate() method.
+  Part.prototype.radiateFromLine = function (model, line) {
+    var options, length, cos, sin, n, x, y, p, d, vx, vy, vxi, vyi, nray, ir,
+      i, k;
+
+    if (this.emissivity === 0) {
+      return;
+    }
+    options = model.getModelOptions();
+    length = hypot(line.x1 - line.x2, line.y1 - line.y2);
+    cos = (line.x2 - line.x1) / length;
+    sin = (line.y2 - line.y1) / length;
+    n = Math.max(1, Math.round(length / RADIATOR_SPACING));
+    vx = options.solar_ray_speed * sin;
+    vy = -options.solar_ray_speed * cos;
+    if (n === 1) {
+      d = 0.5 * length;
+      x = line.x1 + d * cos;
+      y = line.y1 + d * sin;
+      d = model.getAverageTemperatureAt(x, y);
+      if (d > MINIMUM_RADIATING_TEMPERATUE) {
+        d = model.getTemperatureAt(x, y);
+        p = new Photon(x, y, this.getIrradiance(d), options.solar_ray_speed);
+        p.vx = vx;
+        p.vy = vy;
+        model.addPhoton(p);
+        if (!this.constant_temperature) {
+          model.setTemperatureAt(x, y, d - p.energy / this.specific_heat);
+        }
+      }
+    } else {
+      vxi = new Array(4);
+      vyi = new Array(4);
+      vxi[0] = vx * COS30 - vy * SIN30;
+      vyi[0] = vx * SIN30 + vy * COS30;
+      vxi[1] = vy * SIN30 + vx * COS30;
+      vyi[1] = vy * COS30 - vx * SIN30;
+      vxi[2] = vx * COS60 - vy * SIN60;
+      vyi[2] = vx * SIN60 + vy * COS60;
+      vxi[3] = vy * SIN60 + vx * COS60;
+      vyi[3] = vy * COS60 - vx * SIN60;
+      nray = 1 + vxi.length;
+      for (i = 0; i < n; i += 1) {
+        d = (i + 0.5) * RADIATOR_SPACING;
+        x = line.x1 + d * cos;
+        y = line.y1 + d * sin;
+        d = model.getAverageTemperatureAt(x, y);
+        ir = this.getIrradiance(d) / nray;
+        if (d > MINIMUM_RADIATING_TEMPERATUE) {
+          p = new Photon(x, y, ir, options.solar_ray_speed);
+          p.vx = vx;
+          p.vy = vy;
+          model.addPhoton(p);
+          for (k = 0; k < nray - 1; k += 1) {
+            p = new Photon(x, y, ir, options.solar_ray_speed);
+            p.vx = vxi[k];
+            p.vy = vyi[k];
+            model.addPhoton(p);
+          }
+          if (!this.constant_temperature) {
+            model.changeAverageTemperatureAt(x, y, -ir * nray / this.specific_heat);
+          }
+        }
+      }
+    }
+  };
+});
+
+/*global define: false */
+
+define('energy2d/models/core-model',['require','exports','module','arrays','energy2d/models/physics-solvers/heat-solver','energy2d/models/physics-solvers-gpu/heat-solver-gpu','energy2d/models/physics-solvers/fluid-solver','energy2d/models/physics-solvers-gpu/fluid-solver-gpu','energy2d/models/physics-solvers/ray-solver','energy2d/models/part','energy2d/gpu/gpgpu','energy2d/models/helpers'],function (require, exports) {
+  'use strict';
+
+  var
+    arrays          = require('arrays'),
+    heatsolver      = require('energy2d/models/physics-solvers/heat-solver'),
+    heatsolver_GPU  = require('energy2d/models/physics-solvers-gpu/heat-solver-gpu'),
+    fluidsolver     = require('energy2d/models/physics-solvers/fluid-solver'),
+    fluidsolver_GPU = require('energy2d/models/physics-solvers-gpu/fluid-solver-gpu'),
+    raysolver       = require('energy2d/models/physics-solvers/ray-solver'),
+    Part            = require('energy2d/models/part').Part,
+    gpgpu           = require('energy2d/gpu/gpgpu'),
+    hypot           = require('energy2d/models/helpers').hypot,
+
+    array_type = (function () {
+      try {
+        new Float32Array();
+      } catch (e) {
+        return 'regular';
+      }
+      return 'Float32Array';
+    }());
+
+  // Core Energy2D model.
+  //
+  // It creates and manages all the data and parameters used for calculations.
+  exports.makeCoreModel = function (opt, partsOpt) {
+    var
+      // Simulation grid dimensions.
+      nx = opt.grid_width,
+      ny = opt.grid_height,
+      array_size = nx * ny,
+
+      // Spacing.
+      delta_x = opt.model_width / nx,
+      delta_y = opt.model_height / ny,
+
+      // Simulation steps counter.
+      indexOfStep = 0,
+
+      // Physics solvers
+      // (initialized later, when core model object is built).
+      heatSolver,
+      fluidSolver,
+      ray_solver,
+
+      // GPU versions of solvers.
+      heat_solver_gpu,
+      fluid_solver_gpu,
+
+      // Optimization flags.
+      radiative,
+      has_part_power,
+
+      // WebGL GPGPU optimization.
+      WebGL_active = false,
+      // This variable holds possible error message connected with WebGL.
+      WebGL_error,
+
+      // Performance model.
+      // By default, mock this object.
+      // To measure performance, set valid object
+      // using core_model.setPerformanceTools(tools);
+      perf = {
+        start: function () {},
+        stop: function () {},
+        startFPS: function () {},
+        updateFPS: function () {},
+        stopFPS: function () {}
+      },
+
+      //
+      // Simulation arrays:
+      //
+      // - temperature array
+      t = arrays.create(array_size, opt.background_temperature, array_type),
+      // - internal temperature boundary array
+      tb = arrays.create(array_size, NaN, array_type),
+      // - velocity x-component array (m/s)
+      u = arrays.create(array_size, 0, array_type),
+      // - velocity y-component array (m/s)
+      v = arrays.create(array_size, 0, array_type),
+      // - internal heat generation array
+      q = arrays.create(array_size, 0, array_type),
+      // - wind speed
+      uWind = arrays.create(array_size, 0, array_type),
+      vWind = arrays.create(array_size, 0, array_type),
+      // - conductivity array
+      conductivity = arrays.create(array_size, opt.background_conductivity, array_type),
+      // - specific heat capacity array
+      capacity = arrays.create(array_size, opt.background_specific_heat, array_type),
+      // - density array
+      density = arrays.create(array_size, opt.background_density, array_type),
+      // - fluid cell array
+      fluidity = arrays.create(array_size, true, array_type),
+      // - photons array
+      photons = [],
+
+      //
+      // [GPGPU] Simulation textures:
+      //
+      // texture 0:
+      // - R: t
+      // - G: t0
+      // - B: tb
+      // - A: conductivity
+      // texture 1:
+      // - R: q
+      // - G: capacity
+      // - B: density
+      // - A: fluidity
+      // texture 2:
+      // - R: u
+      // - G: v
+      // - B: u0
+      // - A: v0
+      // texture 3:
+      // - R: uWind
+      // - G: vWind
+      // - B: undefined
+      // - A: undefined
+      texture = [],
+
+      // Generate parts array.
+      parts = (function () {
+        var result = [],
+            i, len;
+
+        if (partsOpt) {
+          if (!arrays.isArray(partsOpt)) {
+            partsOpt = [partsOpt];
+          }
+          result = new Array(partsOpt.length);
+          for (i = 0, len = partsOpt.length; i < len; i += 1) {
+            result[i] = new Part(partsOpt[i]);
+          }
+        }
+        return result;
+      }()),
+
+      //
+      // Private methods
+      //
+      initGPGPU = function () {
+        WebGL_active = false;
+
+        // Make sure that environment is a browser.
+        if (typeof window === 'undefined') {
+          throw new Error("Core model: WebGL GPGPU unavailable in the node.js environment.");
+        }
+        // Init module.
+        // Width is ny, height is nx (due to data organization).
+        gpgpu.init(ny, nx);
+
+        // Create simulation textures.
+        texture[0] = gpgpu.createTexture();
+        texture[1] = gpgpu.createTexture();
+        texture[2] = gpgpu.createTexture();
+        texture[3] = gpgpu.createTexture();
+
+        // Update textures as material properties should be already set.
+        fillGPGPUTextures();
+
+        // Create GPU solvers.
+        // GPU version of heat solver.
+        heat_solver_gpu = heatsolver_GPU.makeHeatSolverGPU(core_model);
+        // GPU version of fluid solver.
+        fluid_solver_gpu = fluidsolver_GPU.makeFluidSolverGPU(core_model);
+
+        WebGL_active = true;
+      },
+
+      fillGPGPUTextures = function () {
+        // texture 0:
+        // - R: t
+        // - G: t0
+        // - B: tb
+        // - A: conductivity
+        gpgpu.writeRGBATexture(texture[0], t, t, tb, conductivity);
+        // texture 1:
+        // - R: q
+        // - G: capacity
+        // - B: density
+        // - A: fluidity
+        gpgpu.writeRGBATexture(texture[1], q, capacity, density, fluidity);
+        // texture 2:
+        // - R: u
+        // - G: v
+        // - B: u0
+        // - A: v0
+        gpgpu.writeRGBATexture(texture[2], u, v, u, v);
+        // texture 3:
+        // - R: uWind
+        // - G: vWind
+        // - B: undefined
+        // - A: undefined
+        gpgpu.writeRGBATexture(texture[3], uWind, vWind, uWind, vWind);
+      },
+
+      setupOptimizationFlags = function () {
+        radiative = (function () {
+          var i, len;
+          if (opt.sunny) {
+            return true;
+          }
+          for (i = 0, len = parts.length; i < len; i += 1) {
+            if (parts[i].emissivity > 0) {
+              return true;
+            }
+          }
+          return false;
+        }());
+
+        has_part_power = (function () {
+          var i, len;
+          for (i = 0, len = parts.length; i < len; i += 1) {
+            if (parts[i].power > 0) {
+              return true;
+            }
+          }
+          return false;
+        }());
+      },
+
+      setupPart = function (part, updateOnly) {
+        var
+          lx = opt.model_width,
+          ly = opt.model_height,
+          indices, idx,
+          ii, len;
+
+        indices = part.getGridCells(nx, ny, lx, ly);
+        for (ii = 0, len = indices.length; ii < len; ii += 1) {
+          idx = indices[ii];
+
+          if (!updateOnly) {
+            t[idx] = part.temperature;
+          }
+          fluidity[idx] = false;
+          conductivity[idx] = part.thermal_conductivity;
+          capacity[idx] = part.specific_heat;
+          density[idx] = part.density;
+
+          if (part.wind_speed !== 0) {
+            uWind[idx] = part.wind_speed * Math.cos(part.wind_angle);
+            vWind[idx] = part.wind_speed * Math.sin(part.wind_angle);
+          }
+
+          if (part.constant_temperature) {
+            tb[idx] = part.temperature;
+          }
+        }
+      },
+
+      resetArrays = function (skipTempAndVelocity) {
+        if (!skipTempAndVelocity) {
+          arrays.fill(t, opt.background_temperature);
+          arrays.fill(u, 0);
+          arrays.fill(v, 0);
+        }
+        arrays.fill(tb, NaN);
+        arrays.fill(q, 0);
+        arrays.fill(uWind, 0);
+        arrays.fill(vWind, 0);
+        arrays.fill(conductivity, opt.background_conductivity);
+        arrays.fill(capacity, opt.background_specific_heat);
+        arrays.fill(density, opt.background_density);
+        arrays.fill(fluidity, true);
+      },
+
+      setupMaterialProperties = function (updateOnly) {
+        if (!parts || parts.length === 0) return;
+        var i;
+        // Treat overlapping parts as original Energy2D.
+        for (i = parts.length - 1; i >= 0; i -= 1) {
+          setupPart(parts[i], updateOnly);
+        }
+      },
+
+      refreshPowerArray = function () {
+        var part, x, y, i, iny, j, k, len, count;
+        for (i = 0; i < nx; i += 1) {
+          x = i * delta_x;
+          iny = i * ny;
+          for (j = 0; j < ny; j += 1) {
+            y = j * delta_y;
+            q[iny + j] = 0;
+            count = 0;
+            if (has_part_power) {
+              for (k = 0, len = parts.length; k < len; k += 1) {
+                part = parts[k];
+                if (part.shape.contains(x, y)) {
+                  q[iny + j] += part.power;
+                  count++;
+                }
+              }
+              if (count > 0) q[iny + j] /= count;
+            }
+          }
+        }
+      },
+
+      getVorticityAt = function (i, j) {
+        var du_dy = (u[i * ny + j + 1] - u[i * ny + j - 1]) / delta_x,
+            dv_dx = (v[(i + 1) * ny + j] - v[(i - 1) * ny + j]) / delta_y;
+        return 0.5 * (du_dy - dv_dx);
+      },
+
+      //
+      // Public API
+      //
+      core_model = {
+        // !!!
+        // Performs next step of a simulation.
+        // !!!
+        nextStep: function () {
+          perf.start('Core model step');
+          if (WebGL_active) {
+            // GPU solvers.
+            if (opt.convective) {
+              perf.start('Fluid solver GPU');
+              fluid_solver_gpu.solve();
+              perf.stop('Fluid solver GPU');
+            }
+            perf.start('Heat solver GPU');
+            heat_solver_gpu.solve(opt.convective);
+            perf.stop('Heat solver GPU');
+          } else {
+            // CPU solvers.
+            if (radiative) {
+              perf.start('Ray solver CPU');
+              if (indexOfStep % opt.photon_emission_interval === 0) {
+                refreshPowerArray();
+                if (opt.sunny) {
+                  ray_solver.sunShine();
+                }
+                ray_solver.radiate();
+              }
+              ray_solver.solve();
+              perf.stop('Ray solver CPU');
+            }
+            if (opt.convective) {
+              perf.start('Fluid solver CPU');
+              fluidSolver.solve(u, v);
+              perf.stop('Fluid solver CPU');
+            }
+            perf.start('Heat solver CPU');
+            heatSolver.solve(opt.convective, t, q);
+            perf.stop('Heat solver CPU');
+          }
+          indexOfStep += 1;
+          perf.stop('Core model step');
+        },
+
+        // Sets performance tools.
+        // It's expected to be an object created by
+        // energy2d.utils.performance.makePerformanceTools
+        setPerformanceTools: function (perf_tools) {
+          perf = perf_tools;
+        },
+
+        reset: function () {
+          indexOfStep = 0;
+          resetArrays();
+          setupOptimizationFlags();
+          setupMaterialProperties();
+          refreshPowerArray();
+          if (WebGL_active) {
+            fillGPGPUTextures();
+          }
+        },
+
+        partsChanged: function (part, propChanged) {
+          // TODO: in theory we don't have to process all parts. If needed
+          // implement something tricker.
+          // Note that temperature and velocity aren't reset to provide better
+          // interactivity.
+          resetArrays(true);
+          setupOptimizationFlags();
+          setupMaterialProperties(true);
+          refreshPowerArray();
+
+          if (propChanged === "temperature") {
+            setupPart(part);
+          }
+        },
+
+        addPart: function (props) {
+          var part = new Part(props);
+          parts.push(part);
+          setupPart(part);
+        },
+
+        removePart: function (i) {
+          parts.splice(i, 1);
+          core_model.partsChanged();
+        },
+
+        useWebGL: function (v) {
+          if (WebGL_active === v) return;
+          if (!core_model.isWebGLCompatible()) {
+            // Some models are incompatible with WebGL.
+            WebGL_active = false;
+            return;
+          }
+
+          if (v) {
+            // Initialize GPGPU, this will also copy current temperature
+            // and velocity arrays into textures.
+            initGPGPU();
+          } else {
+            // Copy data back from GPU to main memory.
+            core_model.syncTemperature();
+            core_model.syncVelocity();
+            WebGL_active = false;
+          }
+        },
+
+        isWebGLActive: function () {
+          return WebGL_active;
+        },
+
+        isWebGLCompatible: function () {
+          return !radiative;
+        },
+
+        getWebGLError: function () {
+          return WebGL_error;
+        },
+
+        syncTemperature: function () {
+          if (WebGL_active) {
+            gpgpu.readTexture(texture[0], t);
+          }
+        },
+
+        syncVelocity: function () {
+          if (WebGL_active) {
+            gpgpu.readTexture(texture[2], u, 0);
+            gpgpu.readTexture(texture[2], v, 1);
+          }
+        },
+
+        getIndexOfStep: function () {
+          return indexOfStep;
+        },
+        // Returns loaded options after validation.
+        getModelOptions: function () {
+          return opt;
+        },
+
+        // Temperature manipulation.
+        getTemperatureAt: function (x, y) {
+          var
+            i = Math.max(Math.min(nx - 1, Math.round(x / delta_x)), 0),
+            j = Math.max(Math.min(ny - 1, Math.round(y / delta_y)), 0);
+
+          return t[i * ny + j];
+        },
+
+        setTemperatureAt: function (x, y, temperature) {
+          var
+            i = Math.max(Math.min(nx - 1, Math.round(x / delta_x)), 0),
+            j = Math.max(Math.min(ny - 1, Math.round(y / delta_y)), 0);
+
+          t[i * ny + j] = temperature;
+        },
+
+        getAverageTemperatureAt: function (x, y) {
+          var
+            temp = 0,
+            nx1 = nx - 1,
+            ny1 = ny - 1,
+            i0 = Math.round(x / delta_x),
+            j0 = Math.round(y / delta_y),
+            i, j;
+
+          i = Math.max(Math.min(nx1, i0), 0);
+          j = Math.max(Math.min(ny1, j0), 0);
+          temp += t[i * ny + j];
+          i = Math.max(Math.min(nx1, i0 + 1), 0);
+          j = Math.max(Math.min(ny1, j0), 0);
+          temp += t[i * ny + j];
+          i = Math.max(Math.min(nx1, i0 - 1), 0);
+          j = Math.max(Math.min(ny1, j0), 0);
+          temp += t[i * ny + j];
+          i = Math.max(Math.min(nx1, i0), 0);
+          j = Math.max(Math.min(ny1, j0 + 1), 0);
+          temp += t[i * ny + j];
+          i = Math.max(Math.min(nx1, i0), 0);
+          j = Math.max(Math.min(ny1, j0 - 1), 0);
+          temp += t[i * ny + j];
+          return temp * 0.2;
+        },
+
+        // TODO: based on Java version, check it as the logic seems to be weird.
+        changeAverageTemperatureAt: function (x, y, increment) {
+          var
+            nx1 = nx - 1,
+            ny1 = ny - 1,
+            i0 = Math.round(x / delta_x),
+            j0 = Math.round(y / delta_y),
+            i, j;
+
+          increment *= 0.2;
+          i = Math.min(nx1, i0);
+          j = Math.min(ny1, j0);
+          if (i >= 0 && j >= 0) {
+            t[i * ny + j] += increment;
+          }
+          i = Math.min(nx1, i0 + 1);
+          j = Math.min(ny1, j0);
+          if (i >= 0 && j >= 0) {
+            t[i * ny + j] += increment;
+          }
+          i = Math.min(nx1, i0 - 1);
+          j = Math.min(ny1, j0);
+          if (i >= 0 && j >= 0) {
+            t[i * ny + j] += increment;
+          }
+          i = Math.min(nx1, i0);
+          j = Math.min(ny1, j0 + 1);
+          if (i >= 0 && j >= 0) {
+            t[i * ny + j] += increment;
+          }
+          i = Math.min(nx1, i0);
+          j = Math.min(ny1, j0 - 1);
+          if (i >= 0 && j >= 0) {
+            t[i * ny + j] += increment;
+          }
+        },
+
+        getVorticityAt: function (x, y) {
+          var i = Math.max(Math.min(nx - 1, Math.round(x / delta_x)), 0),
+              j = Math.max(Math.min(ny - 1, Math.round(y / delta_y)), 0);
+          return getVorticityAt(i, j);
+        },
+
+        getAverageVorticityAt: function (x, y) {
+          var i = Math.max(Math.min(nx - 1, Math.round(x / delta_x)), 0),
+              j = Math.max(Math.min(ny - 1, Math.round(y / delta_y)), 0),
+              vor = getVorticityAt(i, j);
+          vor += getVorticityAt(i - 1, j);
+          vor += getVorticityAt(i + 1, j);
+          vor += getVorticityAt(i, j - 1);
+          vor += getVorticityAt(i, j + 1);
+          vor += getVorticityAt(i - 1, j - 1);
+          vor += getVorticityAt(i - 1, j + 1);
+          vor += getVorticityAt(i + 1, j - 1);
+          vor += getVorticityAt(i + 1, j + 1);
+          return vor / 9;
+        },
+
+        getSpeedAt: function (x, y) {
+          var
+            i = Math.max(Math.min(nx - 1, Math.round(x / delta_x)), 0),
+            j = Math.max(Math.min(ny - 1, Math.round(y / delta_y)), 0);
+
+          return hypot(u[i * ny + j], v[i * ny + j]);
+        },
+
+        getHeatFluxAt: function (x, y) {
+          var
+            i = Math.max(Math.min(nx - 1, Math.round(x / delta_x)), 0),
+            j = Math.max(Math.min(ny - 1, Math.round(y / delta_y)), 0),
+            fx = conductivity[i * ny + j] * (t[(i - 1) * ny + j] - t[(i + 1) * ny + j]) / (2 * delta_x),
+            fy = conductivity[i * ny + j] * (t[i * ny + j - 1] - t[i * ny + j + 1]) / (2 * delta_y);
+          return [fx, fy];
+        },
+
+        addPhoton: function (photon) {
+          photons.push(photon);
+        },
+
+        removePhoton: function (photon) {
+          var idx = photons.indexOf(photon);
+          if (idx !== -1) {
+            photons.splice(idx, 1);
+          }
+        },
+
+        // Simple getters.
+        getArrayType: function () {
+          // return module variable
+          return array_type;
+        },
+        getPerformanceModel: function () {
+          return perf;
+        },
+        // Arrays.
+        getTemperatureArray: function () {
+          return t;
+        },
+        getUVelocityArray: function () {
+          return u;
+        },
+        getVVelocityArray: function () {
+          return v;
+        },
+        getUWindArray: function () {
+          return uWind;
+        },
+        getVWindArray: function () {
+          return vWind;
+        },
+        getBoundaryTemperatureArray: function () {
+          return tb;
+        },
+        getPowerArray: function () {
+          return q;
+        },
+        getConductivityArray: function () {
+          return conductivity;
+        },
+        getCapacityArray: function () {
+          return capacity;
+        },
+        getDensityArray: function () {
+          return density;
+        },
+        getFluidityArray: function () {
+          return fluidity;
+        },
+        getPhotonsArray: function () {
+          return photons;
+        },
+        getPartsArray: function () {
+          return parts;
+        },
+         // Textures.
+        getTemperatureTexture: function () {
+          return texture[0];
+        },
+        getVelocityTexture: function () {
+          return texture[2];
+        },
+        getSimulationTexture: function (id) {
+          return texture[id];
+        }
+      };
+
+    //
+    // One-off initialization.
+    //
+    setupOptimizationFlags();
+    setupMaterialProperties();
+    refreshPowerArray();
+
+    // CPU version of solvers.
+    heatSolver = heatsolver.makeHeatSolver(core_model);
+    fluidSolver = fluidsolver.makeFluidSolver(core_model);
+    ray_solver = raysolver.makeRaySolver(core_model);
+
+    // Finally, return public API object.
+    return core_model;
+  };
+});
+/*global define: false, d3: false */
+
+define('energy2d/modeler',['require','common/alert','common/console','common/validator','common/serialize','common/lab-modeler-mixin','energy2d/metadata','energy2d/models/core-model'],function (require) {
+  'use strict';
+  var alert           = require('common/alert'),
+      console         = require('common/console'),
+      validator       = require('common/validator'),
+      serialize       = require('common/serialize'),
+      LabModelerMixin = require('common/lab-modeler-mixin'),
+      metadata        = require('energy2d/metadata'),
+      coremodel       = require('energy2d/models/core-model'),
+
+      unitsDefinition = {
+        units: {
+          time: {
+            name: "second",
+            pluralName: "seconds",
+            symbol: "s"
+          },
+          temperature: {
+            name: "degree Celsius",
+            pluralName: "degrees Celsius",
+            symbol: "°C"
+          },
+          length: {
+            name: "meter",
+            pluralName: "meters",
+            symbol: "m"
+          },
+          velocity: {
+            name: "meter per second",
+            pluralName: "meters per second",
+            symbol: "m/s"
+          }
+        }
+      };
+
+  return function Modeler(initialProperties) {
+    var model,
+        coreModel,
+
+        labModelerMixin = new LabModelerMixin({
+          metadata: metadata,
+          unitsDefinition: unitsDefinition,
+          initialProperties: initialProperties,
+          setters: {
+            use_WebGL: function (v) {
+              if (coreModel) {
+                setWebGLEnabled(v);
+              }
+              ticksToGPUSync = model.properties.ticksPerGPUSync;
+            },
+            ticksPerGPUSync: function (v) {
+              if (coreModel) syncGPU();
+              ticksToGPUSync = Number(v); // support "Infinity" value
+            }
+          }
+        }),
+        propertySupport = labModelerMixin.propertySupport,
+        dispatch = labModelerMixin.dispatchSupport,
+
+        ticksToGPUSync = 0,
+
+        // Sensors are modeler-level objects, they only define outputs
+        // and have nothing to do with physics calculations.
+        sensors = [],
+        anemometers = [],
+
+        viewModel = {
+          parts: [],
+          sensors: []
+        },
+
+        updatePartsViewModel = (function () {
+          function PartWrapper(rawPart) {
+            Object.defineProperty(this, '_rawPart', {
+              enumerable: false,
+              get: function () {
+                return rawPart;
+              }
+            });
+          }
+          Object.keys(metadata.part).forEach(function (key) {
+            Object.defineProperty(PartWrapper.prototype, key, {
+              enumerable: true,
+              get: function () {
+                return this._rawPart[key];
+              },
+              set: function (v) {
+                var WebGLOrg = model.properties.use_WebGL;
+                // This will update CPU array.
+                model.properties.use_WebGL = false;
+
+                propertySupport.invalidatingChangePreHook();
+
+                // Update raw part object.
+                this._rawPart[key] = validator.validateSingleProperty(metadata.part[key], key, v);
+
+                if (model.isStopped()) {
+                  // Recalculate all arrays, "authoring" mode.
+                  coreModel.reset();
+                } else {
+                  // Update core model arrays based on part's properties.
+                  coreModel.partsChanged(this._rawPart, key);
+                }
+
+                propertySupport.invalidatingChangePostHook();
+
+                // Restore original WebGL option value. It will
+                // copy CPU arrays to GPU in case of need.
+                model.properties.use_WebGL = WebGLOrg;
+                dispatch.partsChanged();
+              }
+            });
+          });
+          PartWrapper.prototype.computeLabel = function() {
+            return this._rawPart.getLabel();
+          };
+
+          return function () {
+            var rawParts = coreModel.getPartsArray(),
+                viewParts = viewModel.parts,
+                i, len;
+            viewParts.length = 0;
+            for (i = 0, len = rawParts.length; i < len; i++) {
+              viewParts.push(new PartWrapper(rawParts[i]));
+            }
+          };
+        }()),
+
+        updateSensorViewModel = (function () {
+          function SensorWrapper(rawObj) {
+            Object.defineProperty(this, '_rawObj', {
+              enumerable: false,
+              get: function () {
+                return rawObj;
+              }
+            });
+          }
+          var constraint = {
+            x: function (v) { return Math.max(0, Math.min(model.properties.model_width, v)); },
+            y: function (v) { return Math.max(0, Math.min(model.properties.model_height, v)); }
+          };
+          Object.keys(metadata.sensor).forEach(function (key) {
+            Object.defineProperty(SensorWrapper.prototype, key, {
+              enumerable: true,
+              get: function () {
+                return this._rawObj[key];
+              },
+              set: function (v) {
+                propertySupport.invalidatingChangePreHook();
+                v = constraint[key] ? constraint[key](v) : v;
+                this._rawObj[key] = validator.validateSingleProperty(metadata.sensor[key], key, v);
+                propertySupport.invalidatingChangePostHook();
+                dispatch.sensorsChanged();
+              }
+            });
+          });
+
+          return function () {
+            var viewSensors = viewModel.sensors,
+                i, len;
+            viewSensors.length = 0;
+            for (i = 0, len = sensors.length; i < len; i++) {
+              viewSensors.push(new SensorWrapper(sensors[i]));
+            }
+          };
+        }());
+
+    function setWebGLEnabled(v) {
+      try {
+        coreModel.useWebGL(v);
+      } catch (e) {
+        console.warn("WebGL initialization failed. CPU solvers and rendering will be used.");
+        console.warn(e.message);
+      }
+    }
+
+    function syncGPU() {
+      coreModel.syncTemperature();
+      coreModel.syncVelocity();
+    }
+
+    function hasDiverged() {
+      var t = model.getTemperatureArray(),
+          i, len;
+
+      for (i = 0, len = t.length; i < len; i++) {
+        if (isNaN(t[i]) || Math.abs(t[i]) > 1e10) {
+          model.stop();
+          coreModel.reset();
+          return true;
+        }
+      }
+      return false;
+    }
+
+    function validateParts(partsArray) {
+      var result = [];
+      partsArray.forEach(function (v) {
+        result.push(validator.validateCompleteness(metadata.part, v));
+      });
+      return result;
+    }
+
+    function createSensors(sensorsSpec) {
+      var sensorValue = {
+            thermometer: function () {
+              return model.getTemperatureAt(this.x, this.y);
+            },
+            anemometer: function () {
+              return this._rot;
+            },
+            heatFlux: function () {
+              var flux = model.getHeatFluxAt(this.x, this.y);
+              return flux[0] * this._sin + flux[1] * this._cos;
+            }
+          },
+          sensorOutputDesc = {
+            thermometer: {
+              label: "Temperature",
+              unitType: 'temperature',
+              format: '.1f'
+            },
+            anemometer: {
+            },
+            heatFlux: {
+              label: "Heat Flux",
+              unitName: "Watt Per Square Meter",
+              unitPluralName: "Watts Per Square Meter",
+              unitAbbreviation: "W/m²",
+              format: '.1f'
+            }
+          };
+
+      sensors = [];
+      sensorsSpec.forEach(function (s, idx) {
+        s = validator.validateCompleteness(metadata.sensor, s);
+        if (s.type === "anemometer") {
+          s._rot = 0;
+          anemometers.push(s);
+        }
+        if (s.type === "heatFlux") {
+          s.angle = s.angle || 0;
+          s._sin = Math.sin(-s.angle * Math.PI / 180);
+          s._cos = Math.cos(s.angle * Math.PI / 180);
+        }
+        Object.defineProperty(s, "value", {
+          enumerable: true,
+          get: sensorValue[s.type]
+        });
+        sensors.push(s);
+
+        model.defineOutput("sensor-" + idx, sensorOutputDesc[s.type], function() {
+          return s.value;
+        });
+      });
+    }
+
+    function updateAnemometers() {
+      var a, i, len;
+      for (i = 0, len = anemometers.length; i < len; i++) {
+        a = anemometers[i];
+        a._rot += model.getSpeedAt(a.x, a.y) * (model.getVorticityAt(a.x, a.y) < 0 ? -1 : 1) *
+                  model.properties.timeStep * 700;
+        a._rot = a._rot % 360;
+      }
+    }
+
+    model = {
+      tick: function () {
+        var i, len, diverged;
+        for (i = 0, len = model.properties.timeStepsPerTick; i < len; i++) {
+          coreModel.nextStep();
+        }
+        if (coreModel.isWebGLActive()) {
+          if (ticksToGPUSync > 0) {
+            ticksToGPUSync--;
+          } else {
+            syncGPU();
+            ticksToGPUSync = Number(model.properties.ticksPerGPUSync); // support "Infinity" value
+            diverged = hasDiverged();
+          }
+        } else {
+          diverged = hasDiverged();
+        }
+        updateAnemometers();
+        model.updateAllOutputProperties();
+        dispatch.tick();
+
+        if (diverged) {
+          alert("The model has diverged and has been reset!\n\nTry changing its parameters " +
+                "(e.g. 'timeStep', positions of parts etc.) or reload it to restore the initial configuration.");
+        }
+      },
+
+      syncTemperature: function () {
+        propertySupport.invalidatingChangePreHook();
+        coreModel.syncTemperature();
+        propertySupport.invalidatingChangePostHook();
+      },
+      syncVelocity: function () {
+        propertySupport.invalidatingChangePreHook();
+        coreModel.syncVelocity();
+        propertySupport.invalidatingChangePostHook();
+      },
+
+      addPart: function (props) {
+        var WebGLOrg = model.properties.use_WebGL;
+
+        // This will update CPU array.
+        model.properties.use_WebGL = false;
+
+        props = validator.validateCompleteness(metadata.part, props);
+
+        propertySupport.invalidatingChangePreHook();
+
+        coreModel.addPart(props);
+        updatePartsViewModel();
+
+        propertySupport.invalidatingChangePostHook();
+
+        // Restore original WebGL option value. It will
+        // copy CPU arrays to GPU in case of need.
+        model.properties.use_WebGL = WebGLOrg;
+        dispatch.partsChanged();
+      },
+
+      removePart: function (i) {
+        var WebGLOrg = model.properties.use_WebGL;
+
+        // This will update CPU array.
+        model.properties.use_WebGL = false;
+
+        propertySupport.invalidatingChangePreHook();
+
+        coreModel.removePart(i);
+        updatePartsViewModel();
+
+        propertySupport.invalidatingChangePostHook();
+
+        // Restore original WebGL option value. It will
+        // copy CPU arrays to GPU in case of need.
+        model.properties.use_WebGL = WebGLOrg;
+        dispatch.partsChanged();
+      },
+
+      stepCounter: function () {
+        return coreModel.getIndexOfStep();
+      },
+      isNewStep: function () {
+        return true;
+      },
+      stepBack: function (num) {
+        return coreModel.getIndexOfStep();
+      },
+      stepForward: function (num) {
+        if (!arguments.length) { num = 1; }
+        if (!this.isStopped()) {
+          this.stop();
+        }
+        var i=-1; while(++i < num) {
+          model.tick();
+        }
+        return coreModel.getIndexOfStep();
+      },
+      getTime: function () {
+        return model.properties.timeStep * coreModel.getIndexOfStep();
+      },
+      isWebGLActive: function () {
+        return coreModel.isWebGLActive();
+      },
+      isWebGLCompatible: function() {
+        return coreModel.isWebGLCompatible();
+      },
+      getWebGLError: function () {
+        return coreModel.getWebGLError();
+      },
+      getIndexOfStep: function () {
+        return coreModel.getIndexOfStep();
+      },
+      getTemperatureAt: function (x, y) {
+        return coreModel.getTemperatureAt(x, y);
+      },
+      getAverageTemperatureAt: function (x, y) {
+        return coreModel.getAverageTemperatureAt(x, y);
+      },
+      getVorticityAt: function (x, y) {
+        return coreModel.getVorticityAt(x, y);
+      },
+      getHeatFluxAt: function (x, y) {
+        return coreModel.getHeatFluxAt(x, y);
+      },
+      getAverageVorticityAt: function (x, y) {
+        return coreModel.getAverageVorticityAt(x, y);
+      },
+      getSpeedAt: function (x, y) {
+        return coreModel.getSpeedAt(x, y);
+      },
+      getTemperatureArray: function () {
+        return coreModel.getTemperatureArray();
+      },
+      getTemperatureTexture: function () {
+        return coreModel.getTemperatureTexture();
+      },
+      getUVelocityArray: function () {
+        return coreModel.getUVelocityArray();
+      },
+      getVVelocityArray: function () {
+        return coreModel.getVVelocityArray();
+      },
+      getVelocityTexture: function () {
+        return coreModel.getVelocityTexture();
+      },
+      getPhotonsArray: function () {
+        return coreModel.getPhotonsArray();
+      },
+
+      getPartsArray: function () {
+        return viewModel.parts;
+      },
+
+      getSensorsArray: function () {
+        return viewModel.sensors;
+      },
+
+      setPerformanceTools: function () {
+        return coreModel.setPerformanceTools();
+      },
+
+      serialize: function () {
+        var propCopy = {},
+            rawProperties = propertySupport.rawValues;
+
+        propCopy = serialize(metadata.mainProperties, rawProperties);
+        propCopy.viewOptions = serialize(metadata.viewOptions, rawProperties);
+
+        propCopy.structure = {
+          part: []
+        };
+        viewModel.parts.forEach(function (p) {
+          propCopy.structure.part.push(serialize(metadata.part, p));
+        });
+
+        propCopy.sensors = [];
+        viewModel.sensors.forEach(function (s) {
+          propCopy.sensors.push(serialize(metadata.sensor, s));
+        });
+
+        return propCopy;
+      }
+    };
+
+    (function () {
+      var parts;
+
+      labModelerMixin.mixInto(model);
+      dispatch.addEventTypes("tick", "partsChanged", "sensorsChanged");
+
+      // Validate parts before passing options to coreModel.
+      if (initialProperties.structure && initialProperties.structure.part) {
+        parts = validateParts(initialProperties.structure.part);
+      }
+
+      coreModel = coremodel.makeCoreModel(model.properties, parts);
+      setWebGLEnabled(model.properties.use_WebGL);
+
+      if (initialProperties.sensors) {
+        createSensors(initialProperties.sensors);
+      }
+
+      updatePartsViewModel();
+      updateSensorViewModel();
+
+      // Temporal workaround. In fact width and height should
+      // be outputs based on min / max.
+      model.defineOutput('minX', {}, function() {
+        return 0;
+      });
+      model.defineOutput('minY', {}, function() {
+        return 0;
+      });
+      model.defineOutput('maxX', {}, function() {
+        return model.properties.model_width;
+      });
+      model.defineOutput('maxY', {}, function() {
+        return model.properties.model_height;
+      });
+
+      model.defineOutput('time', {
+        label: "Time",
+        unitType: 'time',
+        format: '.2f'
+      }, function() {
+        return model.getTime();
+      });
+
+      model.defineOutput('displayTime', {
+        label: "Time"
+      }, (function() {
+        var f = d3.format("02d");
+        return function() {
+          var time = model.getTime(),
+              seconds, minutes, hours, days;
+          time = Math.floor(time);
+          seconds = time % 60;
+          time = Math.floor(time / 60);
+          minutes = time % 60;
+          time = Math.floor(time / 60);
+          hours = time % 24;
+          time = Math.floor(time / 24);
+          days = time;
+          return days + ':' + f(hours) + ':' + f(minutes)  + ':' + f(seconds);
+        };
+      }()));
+    }());
+
+    return model;
+  };
+});
+
+/*jslint indent: 2, browser: true, newcap: true */
+/*globals define: false*/
+
+
+define('energy2d/views/helpers',[],function () {
+  'use strict';
+
+  // Return module with functions.
+  return {
+    // HSV to RGB color conversion.
+    //
+    // H runs from 0 to 360 degrees,
+    // S and V run from 0 to 100.
+    // 
+    // Ported from the excellent java algorithm by Eugene Vishnevsky at:
+    // http://www.cs.rit.edu/~ncs/color/t_convert.html
+    // http://snipplr.com/view.php?codeview&id=14590
+    HSVToRGB: function (h, s, v) {
+      var
+        r, g, b,
+        i,
+        f, p, q, t;
+
+      // Make sure our arguments stay in-range
+      h = Math.max(0, Math.min(360, h));
+      s = Math.max(0, Math.min(100, s));
+      v = Math.max(0, Math.min(100, v));
+
+      // We accept saturation and value arguments from 0 to 100 because that's
+      // how Photoshop represents those values. Internally, however, the
+      // saturation and value are calculated from a range of 0 to 1. We make
+      // That conversion here.
+      s /= 100;
+      v /= 100;
+
+      if (s === 0) {
+        // Achromatic (grey)
+        r = g = b = v;
+        return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+      }
+
+      h /= 60; // sector 0 to 5
+      i = Math.floor(h);
+      f = h - i; // factorial part of h
+      p = v * (1 - s);
+      q = v * (1 - s * f);
+      t = v * (1 - s * (1 - f));
+
+      switch (i) {
+      case 0:
+        r = v;
+        g = t;
+        b = p;
+        break;
+
+      case 1:
+        r = q;
+        g = v;
+        b = p;
+        break;
+
+      case 2:
+        r = p;
+        g = v;
+        b = t;
+        break;
+
+      case 3:
+        r = p;
+        g = q;
+        b = v;
+        break;
+
+      case 4:
+        r = t;
+        g = p;
+        b = v;
+        break;
+
+      default: // case 5:
+        r = v;
+        g = p;
+        b = q;
+      }
+
+      return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+    }
+  };
+});
+
+/*jslint indent: 2, browser: true, newcap: true, sub: true */
+/*globals define: false, $: false*/
+
+define('energy2d/views/color-palette',['require','energy2d/views/helpers'],function (require) {
+  'use strict';
+  var
+    // Dependencies.
+    view_helpers = require('energy2d/views/helpers'),
+
+    // Object with available color palettes.
+    color_palette,
+    // Constructor function.
+    ColorPalette;
+
+  // Setup basic color palettes.
+  color_palette = {};
+  color_palette['0'] = color_palette['RAINBOW']  = [[ 0, 0, 128 ], [ 20, 50, 120 ], [ 20, 100, 200 ], [ 10, 150, 150 ], [ 120, 180, 50 ], [ 220, 200, 10 ], [ 240, 160, 36 ], [ 225, 50, 50 ], [ 230, 85, 110 ], [ 250, 250, 250 ], [ 255, 255, 255 ] ];
+  color_palette['1'] = color_palette['IRON']     = [ [ 40, 20, 100 ], [ 80, 20, 150 ], [ 150, 20, 150 ], [ 200, 50, 120 ], [ 220, 80, 80 ], [ 230, 120, 30 ], [ 240, 200, 20 ], [ 240, 220, 80 ], [ 255, 255, 125 ], [ 250, 250, 250 ], [ 255, 255, 255 ] ];
+  color_palette['2'] = color_palette['GRAY']     = [ [ 50, 50, 50 ], [ 75, 75, 75 ], [ 100, 100, 100 ], [ 125, 125, 125 ], [ 150, 150, 150 ], [ 175, 175, 175 ], [ 200, 200, 200 ], [ 225, 225, 225 ], [ 250, 250, 250 ], [ 255, 255, 255 ] ];
+  color_palette['3'] = color_palette['RAINBOW2'] = (function () {
+    var
+      HSVToRGB = view_helpers.HSVToRGB,
+      length = 256,
+      rgb = new Array(length),
+      i;
+
+    for (i = 0; i < length; i += 1) {
+      rgb[i] = view_helpers.HSVToRGB(length - 1 - i, 100, 90);
+    }
+    return rgb;
+  }());
+
+  ColorPalette = function (color_palette_id) {
+    if (color_palette_id === undefined || color_palette_id === 'DEFAULT') {
+      color_palette_id = 'RAINBOW';
+    }
+    this.color_palette_id = color_palette_id;
+  };
+
+  ColorPalette.prototype.getRGBArray = function () {
+    if (color_palette[this.color_palette_id] !== undefined) {
+      return color_palette[this.color_palette_id];
+    }
+  };
+
+  // Export constructor function.
+  return ColorPalette;
+});
+
+/*global define: false, $: false*/
+
+// Heatmap view.
+//
+// It uses HTML5 Canvas for rendering.
+// getHTMLElement() returns jQuery object with the canvas used for rendering.
+// Before use, this view should be bound with a heatmap using bindHeapmap(heatmap, grid_width, grid_height).
+// To render the heatmap use renderHeatmap() method.
+// Set size of the heatmap using CSS rules. The view fits canvas dimensions to the real
+// size of the HTML element to avoid low quality CSS scaling *ONLY* when HQ rendering is enabled.
+// Otherwise, the canvas has the same dimensions as heatmap grid and fast CSS scaling is used.
+
+define('energy2d/views/heatmap',['require','energy2d/views/color-palette'],function (require) {
+  'use strict';
+  var
+    // Dependencies.
+    ColorPalette = require('energy2d/views/color-palette');
+
+  return function HeatmapView(html_id) {
+    var
+      DEFAULT_ID = 'energy2d-heatmap-view',
+
+      $heatmap_canvas,
+      canvas_ctx,
+
+      rgb_array,
+      max_rgb_idx,
+
+      heatmap,
+      grid_width,
+      grid_height,
+      min_temp = 0,
+      max_temp = 50,
+
+      //
+      // Private methods.
+      //
+      initHTMLelement = function () {
+        $heatmap_canvas = $('<canvas />');
+        $heatmap_canvas.attr('id', html_id || DEFAULT_ID);
+        canvas_ctx = $heatmap_canvas[0].getContext('2d');
+      },
+
+      //
+      // Public API.
+      //
+      heatmap_view = {
+        // Render heat map on the canvas.
+        renderHeatmap: function () {
+          var
+            scale, rgb_idx, val, color1, color2,
+            image_data, data,
+            i, j, iny, pix_index, pix_stride;
+
+          if (!heatmap) {
+            throw new Error("Heatmap: bind heatmap before rendering.");
+          }
+
+          canvas_ctx.clearRect(0, 0, grid_width, grid_height);
+          // TODO: is it really necessary?
+          canvas_ctx.fillStyle = "rgb(0,0,0)";
+
+          scale = max_rgb_idx / Math.max(1, max_temp - min_temp);
+          image_data = canvas_ctx.getImageData(0, 0, grid_width, grid_height);
+          data = image_data.data;
+
+          pix_index = 0;
+          pix_stride = 4 * grid_width;
+          for (i = 0; i < grid_width; i += 1) {
+            iny = i * grid_height;
+            pix_index = 4 * i;
+            for (j = 0; j < grid_height; j += 1) {
+              val = scale * (heatmap[iny + j] - min_temp);
+              rgb_idx = Math.floor(val);
+              // Get fractional part of val.
+              val -= rgb_idx;
+              if (rgb_idx < 0) {
+                rgb_idx = 0;
+                val = 0;
+              } else if (rgb_idx > max_rgb_idx - 1) {
+                rgb_idx = max_rgb_idx - 1;
+                val = 1;
+              }
+              color1 = rgb_array[rgb_idx];
+              color2 = rgb_array[rgb_idx + 1];
+              data[pix_index]     = color1[0] * (1 - val) + color2[0] * val;
+              data[pix_index + 1] = color1[1] * (1 - val) + color2[1] * val;
+              data[pix_index + 2] = color1[2] * (1 - val) + color2[2] * val;
+              data[pix_index + 3] = 255;
+              pix_index += pix_stride;
+            }
+          }
+          canvas_ctx.putImageData(image_data, 0, 0);
+        },
+
+        // Bind heatmap to the view.
+        bindHeatmap: function (new_heatmap, new_grid_width, new_grid_height) {
+          if (new_grid_width * new_grid_height !== new_heatmap.length) {
+            throw new Error("Heatmap: provided heatmap has wrong dimensions.");
+          }
+          heatmap = new_heatmap;
+          grid_width = new_grid_width;
+          grid_height = new_grid_height;
+          this.setCanvasSize(grid_width, grid_height);
+        },
+
+        getHTMLElement: function () {
+          return $heatmap_canvas;
+        },
+
+        resize: function () {
+          // Don't do anything, canvas width and height depend on  grid
+          // dimensions, not CSS dimensions of canvas itself.
+          // If grid is 100x100, but CSS dimensions are 500x500, CSS scaling
+          // will be used.
+        },
+
+        setCanvasSize: function (w, h) {
+          $heatmap_canvas.attr('width',  w);
+          $heatmap_canvas.attr('height', h);
+        },
+
+        setMinTemperature: function (v) {
+          min_temp = v;
+        },
+        setMaxTemperature: function (v) {
+          max_temp = v;
+        },
+        setColorPalette: function (id) {
+          rgb_array = new ColorPalette(id).getRGBArray();
+          max_rgb_idx = rgb_array.length - 1;
+        }
+      };
+    // One-off initialization.
+    // Set the default color palette.
+    heatmap_view.setColorPalette('DEFAULT');
+
+    initHTMLelement();
+
+    return heatmap_view;
+  };
+});
+
+define('text!energy2d/views/heatmap-webgl-glsl/basic.vs.glsl',[],function () { return 'varying vec2 coord;\n\nvoid main() {\n  coord = gl_TexCoord.xy;\n  gl_Position = vec4(gl_Vertex.xyz, 1.0);\n}\n';});
+
+define('text!energy2d/views/heatmap-webgl-glsl/temp-renderer.fs.glsl',[],function () { return '// Provided textur contains temperature data in R channel.\nuniform sampler2D heatmap_tex;\nuniform sampler2D palette_tex;\n\nuniform float max_temp;\nuniform float min_temp;\n\nvarying vec2 coord;\n\nvoid main() {\n  float temp = texture2D(heatmap_tex, coord).r;\n  float scaled_temp = (temp - min_temp) / max(1.0, max_temp - min_temp);\n  gl_FragColor = texture2D(palette_tex, vec2(scaled_temp, 0.5));\n}\n';});
+
+/*jslint indent: 2, browser: true, newcap: true */
+/*globals define: false, Uint8Array: false, $: false */
+
+// Heatmap WebGL view.
+//
+// It uses HTML5 Canvas and WebGL for rendering.
+// getHTMLElement() returns jQuery object with the canvas used for rendering.
+// Before use, this view should be bound with a heatmap texture using bindHeapmapTexture(heatmap_tex).
+// To render the heatmap use renderHeatmapTexture() method.
+// Set size of the heatmap using CSS rules.
+define('energy2d/views/heatmap-webgl',['require','energy2d/gpu/context','energy2d/gpu/texture','energy2d/gpu/shader','energy2d/gpu/mesh','energy2d/views/color-palette','text!energy2d/views/heatmap-webgl-glsl/basic.vs.glsl','text!energy2d/views/heatmap-webgl-glsl/temp-renderer.fs.glsl'],function (require) {
+  'use strict';
+  var
+    // Dependencies.
+    context      = require('energy2d/gpu/context'),
+    Texture      = require('energy2d/gpu/texture'),
+    Shader       = require('energy2d/gpu/shader'),
+    Mesh         = require('energy2d/gpu/mesh'),
+    ColorPalette = require('energy2d/views/color-palette'),
+    // Shader sources.
+    basic_vs         = require('text!energy2d/views/heatmap-webgl-glsl/basic.vs.glsl'),
+    temp_renderer_fs = require('text!energy2d/views/heatmap-webgl-glsl/temp-renderer.fs.glsl');
+
+  return function HeatmapWebGLView(html_id) {
+    var
+      // Get WebGL context.
+      gl = context.getWebGLContext(),
+      // GLSL Render program.
+      render_program = new Shader(basic_vs, temp_renderer_fs),
+      // Plane used for rendering.
+      plane = Mesh.plane({ coords: true }),
+      // Color palette texture (init later).
+      palette_tex,
+
+      DEFAULT_ID = 'energy2d-heatmap-webgl-view',
+
+      $heatmap_canvas,
+      canvas_width,
+      canvas_height,
+
+      heatmap_tex,
+      min_temp = 0,
+      max_temp = 50,
+
+      //
+      // Private methods.
+      //
+      initHTMLelement = function () {
+        $heatmap_canvas = $(gl.canvas);
+        $heatmap_canvas.attr('id', html_id || DEFAULT_ID);
+      },
+
+      // Make sure that no FBO is bound and viewport has proper dimensions
+      // (it's not obvious as this context is also used for GPGPU calculations).
+      setupRenderTarget = function () {
+        // Ensure that FBO is null, as GPGPU operations which use FBOs also take place.
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        // This is necessary, as GPGPU operations can modify viewport size.
+        gl.viewport(0, 0, canvas_width, canvas_height);
+      },
+
+      //
+      // Public API.
+      //
+      heatmap_view = {
+        // Render heat map on the canvas.
+        renderHeatmap: function () {
+
+          if (!heatmap_tex) {
+            throw new Error("Heatmap: bind heatmap texture before rendering.");
+          }
+
+          setupRenderTarget();
+
+          gl.clear(gl.COLOR_BUFFER_BIT);
+          heatmap_tex.bind(0);
+          palette_tex.bind(1);
+          render_program.draw(plane);
+          palette_tex.unbind(1);
+          heatmap_tex.unbind(0);
+        },
+
+        resize: function () {
+          canvas_width = $heatmap_canvas.width();
+          canvas_height = $heatmap_canvas.height();
+          $heatmap_canvas.attr('width', canvas_width);
+          $heatmap_canvas.attr('height', canvas_height);
+        },
+
+        // Bind heatmap to the view.
+        bindHeatmapTexture: function (new_heatmap_tex) {
+          heatmap_tex = new_heatmap_tex;
+        },
+
+        getHTMLElement: function () {
+          return $heatmap_canvas;
+        },
+
+        setMinTemperature: function (v) {
+          min_temp = v;
+          render_program.uniforms({
+            min_temp: min_temp
+          });
+        },
+        setMaxTemperature: function (v) {
+          max_temp = v;
+          render_program.uniforms({
+            max_temp: max_temp
+          });
+        },
+        setColorPalette: function (id) {
+          var rgb_array, len, tex_data, i, i4;
+          rgb_array = new ColorPalette(id).getRGBArray();
+          len = rgb_array.length;
+          tex_data = new Uint8Array(len * 4);
+          for (i = 0; i < len; i += 1) {
+            i4 = i * 4;
+            tex_data[i4]     = rgb_array[i][0];
+            tex_data[i4 + 1] = rgb_array[i][1];
+            tex_data[i4 + 2] = rgb_array[i][2];
+            tex_data[i4 + 3] = 255;
+          }
+          palette_tex = new Texture(len, 1, { type: gl.UNSIGNED_BYTE, format: gl.RGBA, filter: gl.LINEAR });
+          gl.bindTexture(gl.TEXTURE_2D, palette_tex.id);
+          gl.texImage2D(gl.TEXTURE_2D, 0, palette_tex.format, len, 1, 0, palette_tex.format, palette_tex.type, tex_data);
+        }
+      };
+
+    // One-off initialization.
+    // Set the default color palette.
+    heatmap_view.setColorPalette('DEFAULT');
+    // Set render program uniforms.
+    render_program.uniforms({
+      // Texture units.
+      heatmap_tex: 0,
+      palette_tex: 1,
+      // Uniforms.
+      min_temp: min_temp,
+      max_temp: max_temp
+    });
+    // Setup texture coordinates.
+    plane.coords = [[1, 0], [1, 1], [0, 0], [0, 1]];
+    // Update buffers.
+    plane.compile();
+
+    initHTMLelement();
+
+    return heatmap_view;
+  };
+});
+
+/*global define: false, $: false*/
+
+// WebGL Status.
+// Presents available WebGL features.
+//
+// getHTMLElement() method returns JQuery object with DIV that contains status.
+
+define('energy2d/views/webgl-status',['require','common/controllers/checkbox-controller','energy2d/gpu/gpgpu'],function (require) {
+  'use strict';
+  var
+    // Dependencies.
+    CheckboxController = require('common/controllers/checkbox-controller'),
+    gpgpu              = require('energy2d/gpu/gpgpu'),
+
+    GET_WEBGL = '<p><a href="http://get.webgl.org" target="_blank">Click to learn more about WebGL.</a></p>';
+
+  return function WebGLStatusView(html_id) {
+    var
+      DEFAULT_ID = 'e2d-webgl-status',
+
+      $div,
+      $webgl_icon,
+      $status_wrapper,
+      $status,
+
+      webgl_checkbox = new CheckboxController({
+        "type": "checkbox",
+        "id": "webgl-status-checkbox",
+        "text": "WebGL-accelerated physics engine",
+        "property": "use_WebGL"
+      }),
+      $checkbox = webgl_checkbox.getViewContainer(),
+
+      // Energy2D modeler.
+      energy2d_modeler,
+
+      //
+      // Private methods.
+      //
+      initHTMLelement = function () {
+        var $closeBtn;
+
+        $div = $('<div />');
+        $div.attr('id', html_id || DEFAULT_ID);
+        $status_wrapper = $('<div id="status-wrapper"/>');
+        $status_wrapper.appendTo($div);
+        $status = $('<div />');
+        $status.appendTo($status_wrapper);
+
+        $closeBtn = $('<a id="hide-webgl-status" class="button"><i class="icon-remove"></i></a>');
+        $closeBtn.on('click', hide);
+        $closeBtn.appendTo($status_wrapper);
+
+        $checkbox.appendTo($status_wrapper);
+
+        $webgl_icon = $('<a id="show-webgl-status" class="button"><i class="icon-bolt"></i></a>');
+        $webgl_icon.on('click', show);
+        $webgl_icon.appendTo($div);
+
+        $status_wrapper.hide();
+      },
+
+      show = function () {
+        $webgl_icon.hide();
+        $status_wrapper.fadeIn();
+      },
+
+      hide = function () {
+        $webgl_icon.fadeIn();
+        $status_wrapper.fadeOut();
+      },
+
+      //
+      // Public API.
+      //
+      WebGL_status_view = {
+        bindModel: function (model) {
+          energy2d_modeler = model;
+          // Actually this function should be named 'bindModel(model)'.
+          webgl_checkbox.modelLoadedCallback();
+        },
+
+        render: function () {
+          var modelCompatible = energy2d_modeler.isWebGLCompatible(),
+              feature = gpgpu.featuresInfo,
+              requiredFeatures = true,
+              optionalFeatures = true,
+              initError = energy2d_modeler.properties.use_WebGL && !energy2d_modeler.isWebGLActive(),
+              content;
+
+          $status.empty();
+
+          Object.keys(feature).forEach(function (name) {
+            var f = feature[name];
+            if (f.required && !f.available) {
+              requiredFeatures = false;
+            }
+            if (!f.required && !f.available) {
+              optionalFeatures = false;
+            }
+          });
+
+          // WebGL + required extensions availability message.
+          if (requiredFeatures && optionalFeatures) {
+            $status.append('<p>Your browser <span class="happy">supports</span> WebGL as well as all required and optional extensions!</p>');
+          } else if (requiredFeatures) {
+            $status.append('<p>Your browser <span class="happy">supports</span> WebGL and all required extensions! However some ' +
+                           'optional extensions are unavailable:</p>');
+            Object.keys(feature).forEach(function (name) {
+              var f = feature[name],
+                  supported;
+              if (!f.required) {
+                supported = f.available ? '<span class="happy"><i class="icon-ok"></i></span>' : '<span class="sad"><i class="icon-remove"></i></span>';
+                $status.append('<p class="extension">' + supported + ' ' + name + '</p>');
+              }
+            });
+            $status.append('<p>WebGL rendering quality can be affected.</p>');
+          } else if (feature['WebGL']) {
+            $status.append('<p>Your browser <span class="happy">supports</span> WebGL, however not all required extensions are available:</p>');
+            Object.keys(feature).forEach(function (name) {
+              var f = feature[name],
+                  supported;
+              if (f.required) {
+                supported = f.available ? '<span class="happy"><i class="icon-ok"></i></span>' : '<span class="sad"><i class="icon-remove"></i></span>';
+                $status.append('<p class="extension">' + supported + ' ' + name + '</p>');
+              }
+            });
+            $status.append(GET_WEBGL);
+          } else {
+            $status.append('<p>Sorry, your browser <span class="sad">does not support</span> WebGL.');
+            $status.append(GET_WEBGL);
+          }
+
+          // Model compatibility message.
+          if (modelCompatible) {
+            content = 'This model is <span class="happy">compatible</span> with WebGL-accelerated physics engine';
+            if (energy2d_modeler.isWebGLActive()) {
+              content += ' and it is <span class="happy">active</span>.';
+            } else {
+              content += ', but it is <span class="sad">inactive</span>.';
+              if (initError) {
+                content += ' Unfortunately, its initialization <span class="sad">failed</span>. Check the browser console for details.';
+              } else if (requiredFeatures) {
+                content += ' Enable it to speed up simulation:';
+              }
+            }
+            $status.append('<p>' + content + '</p>');
+          } else {
+            $status.append('<p>Unfortunately, some features used in this model are <span class="sad">incompatible</span> ' +
+                           'with WebGL-accelerated physics engine.</p>');
+          }
+
+          // WebGL solvers checkbox.
+          if (!requiredFeatures || !modelCompatible || initError) {
+            // If any test failed hide the checkbox.
+            $checkbox.hide();
+          } else {
+            $checkbox.show();
+          }
+
+          // WebGL icon tooltip message and color.
+          if (initError) {
+            content = 'WebGL initialization failed.';
+            $webgl_icon.removeClass("happy");
+            $webgl_icon.addClass("sad");
+          } else if (!requiredFeatures || !modelCompatible) {
+            content = 'WebGL unavailable.';
+            $webgl_icon.removeClass("happy");
+            $webgl_icon.addClass("sad");
+          } else if (!energy2d_modeler.isWebGLActive()) {
+            content = 'WebGL available, but inactive.';
+            $webgl_icon.removeClass("happy");
+            $webgl_icon.removeClass("sad");
+          } else {
+            content = 'WebGL available and active.';
+            $webgl_icon.removeClass("sad");
+            $webgl_icon.addClass("happy");
+          }
+          content += ' Click for detailed information.';
+          $webgl_icon.attr('title', content);
+
+          if (initError) {
+            // Display panel when user requested WebGL, but it wasn't
+            // initialized correctly.
+            show();
+          }
+        },
+
+        getHTMLElement: function () {
+          return $div;
+        }
+      };
+
+    // One-off initialization.
+    initHTMLelement();
+
+    return WebGL_status_view;
+  };
+});
+
+/*jslint indent: 2, browser: true, newcap: true */
+/*globals define: false, $: false*/
+
+// Vector map view.
+//
+// It uses HTML5 Canvas for rendering.
+// getHTMLElement() returns jQuery object with canvas used for rendering.
+// Before use, this view should be bound with the vector map using bindVectormap(vectormap_u, vectormap_v, width, height, spacing).
+// To render vector map use renderVectormap() method.
+// Set size of the vectormap using CSS rules. The view fits canvas dimensions to the real
+// size of the HTML element to avoid low quality CSS scaling.
+
+define('energy2d/views/vectormap',[],function () {
+  'use strict';
+
+  return function VectormapView(html_id) {
+    var
+      DEFAULT_ID = 'energy2d-vectormap-view',
+      VECTOR_SCALE = 100,
+      VECTOR_BASE_LEN = 8,
+      WING_COS = Math.cos(0.523598776),
+      WING_SIN = Math.sin(0.523598776),
+      WING_LEN = 4,
+      ARROW_COLOR = "rgb(175,175,175)",
+
+      $vectormap_canvas,
+      canvas_ctx,
+      canvas_width,
+      canvas_height,
+
+      vectormap_u,
+      vectormap_v,
+      grid_width,
+      grid_height,
+      spacing,
+
+      enabled = true,
+
+      //
+      // Private methods.
+      //
+      initHTMLelement = function () {
+        $vectormap_canvas = $('<canvas />');
+        $vectormap_canvas.attr('id', html_id || DEFAULT_ID);
+        canvas_ctx = $vectormap_canvas[0].getContext('2d');
+      },
+
+      // Helper method for drawing a single vector.
+      drawVector = function (x, y, vx, vy) {
+        var
+          r = 1.0 / Math.sqrt(vx * vx + vy * vy),
+          arrowx = vx * r,
+          arrowy = vy * r,
+          x1 = x + arrowx * VECTOR_BASE_LEN + vx * VECTOR_SCALE,
+          y1 = y + arrowy * VECTOR_BASE_LEN + vy * VECTOR_SCALE,
+          wingx = WING_LEN * (arrowx * WING_COS + arrowy * WING_SIN),
+          wingy = WING_LEN * (arrowy * WING_COS - arrowx * WING_SIN);
+
+        canvas_ctx.beginPath();
+        canvas_ctx.moveTo(x, y);
+        canvas_ctx.lineTo(x1, y1);
+
+        canvas_ctx.lineTo(x1 - wingx, y1 - wingy);
+        canvas_ctx.moveTo(x1, y1);
+
+        wingx = WING_LEN * (arrowx * WING_COS - arrowy * WING_SIN);
+        wingy = WING_LEN * (arrowy * WING_COS + arrowx * WING_SIN);
+        canvas_ctx.lineTo(x1 - wingx, y1 - wingy);
+
+        canvas_ctx.stroke();
+      },
+
+      //
+      // Public API.
+      //
+      vectormap_view = {
+        // Render vectormap on the canvas.
+        renderVectormap: function () {
+          if (!enabled) return;
+
+          var
+            dx, dy, x0, y0, uij, vij,
+            i, j, iny, ijny;
+
+          if (!vectormap_u || !vectormap_v) {
+            throw new Error("Vectormap: bind vectormap before rendering.");
+          }
+
+          dx = canvas_width / grid_width;
+          dy = canvas_height / grid_height;
+
+          canvas_ctx.clearRect(0, 0, canvas_width, canvas_height);
+          canvas_ctx.strokeStyle = ARROW_COLOR;
+          canvas_ctx.lineWidth = 1;
+
+          for (i = 1; i < grid_width - 1; i += spacing) {
+            iny = i * grid_height;
+            x0 = (i + 0.5) * dx; // + 0.5 to move arrow into field center
+            for (j = 1; j < grid_height - 1; j += spacing) {
+              ijny = iny + j;
+              y0 = (j + 0.5) * dy; // + 0.5 to move arrow into field center
+              uij = vectormap_u[ijny];
+              vij = vectormap_v[ijny];
+              if (uij * uij + vij * vij > 1e-15) {
+                drawVector(x0, y0, uij, vij);
+              }
+            }
+          }
+        },
+
+        clear: function () {
+          canvas_ctx.clearRect(0, 0, canvas_width, canvas_height);
+        },
+
+        get enabled() {
+          return enabled;
+        },
+        set enabled(v) {
+          enabled = v;
+          // Clear vectormap, as .renderVectormap() call won't do it.
+          if (!enabled) vectormap_view.clear();
+        },
+
+        // Bind vector map to the view.
+        bindVectormap: function (new_vectormap_u, new_vectormap_v, new_grid_width, new_grid_height, arrows_per_row) {
+          if (new_grid_width * new_grid_height !== new_vectormap_u.length) {
+            throw new Error("Heatmap: provided U component of vectormap has wrong dimensions.");
+          }
+          if (new_grid_width * new_grid_height !== new_vectormap_v.length) {
+            throw new Error("Heatmap: provided V component of vectormap has wrong dimensions.");
+          }
+          vectormap_u = new_vectormap_u;
+          vectormap_v = new_vectormap_v;
+          grid_width = new_grid_width;
+          grid_height = new_grid_height;
+          spacing = Math.round(new_grid_width / arrows_per_row);
+        },
+
+        getHTMLElement: function () {
+          return $vectormap_canvas;
+        },
+
+        resize: function () {
+          canvas_width = $vectormap_canvas.width();
+          canvas_height = $vectormap_canvas.height();
+          $vectormap_canvas.attr('width', canvas_width);
+          $vectormap_canvas.attr('height', canvas_height);
+        }
+      };
+
+    // One-off initialization.
+    initHTMLelement();
+
+    return vectormap_view;
+  };
+});
+
+define('text!energy2d/views/vectormap-webgl-glsl/vectormap.vs.glsl',[],function () { return '// Provided texture contains vector data in RG channels.\nattribute vec2 origin;\n\nuniform sampler2D vectormap_tex;\nuniform float base_length;\nuniform float vector_scale;\nuniform vec2 scale;\n\nvoid main() {\n  // Read vector which should be visualized.\n  vec2 vec = texture2D(vectormap_tex, gl_TexCoord.xy).xy;\n  vec.y = -vec.y;\n\n  if (length(vec) < 1e-15) {\n    // Do not draw to small vectors.\n    // Set position outside [-1, 1] region, which is rendered.\n    gl_Position = vec4(2.0);\n    return;\n  }\n\n  // Test which part of the vector arrow is being processed. \n  if (gl_Vertex.x == 0.0 && gl_Vertex.y == 0.0) {\n    // Origin of the arrow is being processed.\n    // Just transform its coordinates.\n    gl_Position = vec4(origin, 0.0, 1.0);\n  } else {\n    // Other parts of arrow are being processed.\n    // Set proper length of the arrow, rotate it, scale\n    // and finally transform.\n\n    // Calculate arrow length.\n    vec2 new_pos = gl_Vertex.xy;\n    new_pos.x += base_length + vector_scale * length(vec);\n\n    // Calculate angle between reference arrow (horizontal).\n    vec = normalize(vec);\n    float angle = acos(dot(vec, vec2(1.0, 0.0)));\n    if (vec.y < 0.0) {\n      angle = -angle;\n    }\n    // Prepare rotation matrix.\n    // See: http://en.wikipedia.org/wiki/Rotation_matrix\n    mat2 rot_m = mat2(\n      cos(angle), sin(angle),\n     -sin(angle), cos(angle)\n    );\n    // Rotate.\n    new_pos = rot_m * new_pos;\n    // Scale.\n    new_pos = new_pos * scale;\n    // Transform.\n    gl_Position = vec4(new_pos + origin, 0.0, 1.0);\n  }\n}\n';});
+
+define('text!energy2d/views/vectormap-webgl-glsl/vectormap.fs.glsl',[],function () { return 'uniform vec4 color;\n\nvoid main() {\n  gl_FragColor = color;\n}\n';});
+
+/*global define: false, $: false*/
+
+// Vectormap WebGL view.
+//
+// It uses HTML5 Canvas and WebGL for rendering.
+// getHTMLElement() returns jQuery object with the canvas used for rendering.
+// Before use, this view should be bound with a heatmap texture using bindHeapmapTexture(vectormap_tex).
+// To render the heatmap use renderVectormapTexture() method.
+// Set size of the heatmap using CSS rules.
+
+define('energy2d/views/vectormap-webgl',['require','energy2d/gpu/context','energy2d/gpu/shader','energy2d/gpu/mesh','text!energy2d/views/vectormap-webgl-glsl/vectormap.vs.glsl','text!energy2d/views/vectormap-webgl-glsl/vectormap.fs.glsl'],function (require) {
+  'use strict';
+  var
+    // Dependencies.
+    context = require('energy2d/gpu/context'),
+    Shader  = require('energy2d/gpu/shader'),
+    Mesh    = require('energy2d/gpu/mesh'),
+    // Shader sources. One of Lab build steps converts sources to the JavaScript file.
+    vectormap_vs = require('text!energy2d/views/vectormap-webgl-glsl/vectormap.vs.glsl'),
+    vectormap_fs = require('text!energy2d/views/vectormap-webgl-glsl/vectormap.fs.glsl');
+
+  return function VectormapWebGLView(html_id) {
+    var
+      // Get WebGL context.
+      gl = context.getWebGLContext(),
+      // GLSL Render program.
+      render_program = new Shader(vectormap_vs, vectormap_fs),
+      // Plane used for rendering.
+      arrows = new Mesh({ coords: true, lines: true }),
+
+      DEFAULT_ID = 'energy2d-vectormap-webgl-view',
+      VECTOR_SCALE = 100,
+      VECTOR_BASE_LEN = 8,
+      ARROW_COLOR = [0.7, 0.7, 0.7, 1.0],
+
+      $vectormap_canvas,
+      canvas_width,
+      canvas_height,
+
+      vectormap_tex,
+      grid_width,
+      grid_height,
+      spacing,
+
+      enabled = true,
+
+      //
+      // Private methods.
+      //
+      initGeometry = function () {
+        var i, j, idx, origin, coord,
+          gdx = 2.0 / grid_width,
+          gdy = 2.0 / grid_height,
+          tdx = 1.0 / grid_width,
+          tdy = 1.0 / grid_height;
+
+        arrows.addVertexBuffer('origins', 'origin');
+        arrows.vertices = [];
+        arrows.origins = [];
+        arrows.coords = [];
+        arrows.lines = [];
+
+        idx = 0;
+        for (i = 1; i < grid_width - 1; i += spacing) {
+          for (j = 1; j < grid_height - 1; j += spacing) {
+            // Base arrows vertices. Origin, front and two wings. The unit is pixel.
+            // Base length is 0.01 px - just for convenience (it distinguish front of the arrows from the origin).
+            arrows.vertices.push([0, 0, 0], [0.01, 0, 0], [-3, 2, 0], [-3, -2, 0]);
+            // All of these vertices have to know which vector they are representing.
+            origin = [-1.0 + (i + 0.5) * gdx, 1.0 - (j + 0.5) * gdy, 0];
+            arrows.origins.push(origin, origin, origin, origin);
+            // Texture coordinates.
+            coord = [(j + 0.5) * tdy, (i + 0.5) * tdx];
+            arrows.coords.push(coord, coord, coord, coord);
+            // Draw three lines. From origin to the fron of the arrows + two wings.
+            arrows.lines.push([idx, idx + 1], [idx + 1, idx + 2], [idx + 1, idx + 3]);
+            idx += 4;
+          }
+        }
+        // Update buffers.
+        arrows.compile();
+      },
+
+      initHTMLelement = function () {
+        $vectormap_canvas = $(gl.canvas);
+        $vectormap_canvas.attr('id', html_id || DEFAULT_ID);
+      },
+
+      // Make sure that no FBO is bound and viewport has proper dimensions
+      // (it's not obvious as this context is also used for GPGPU calculations).
+      setupRenderTarget = function () {
+        // Ensure that FBO is null, as GPGPU operations which use FBOs also take place.
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        // This is necessary, as GPGPU operations can modify viewport size.
+        gl.viewport(0, 0, canvas_width, canvas_height);
+      },
+
+      //
+      // Public API.
+      //
+      vectormap_view = {
+        // Render heat map on the canvas.
+        renderVectormap: function () {
+          if (!enabled) return;
+
+          if (!vectormap_tex) {
+            throw new Error("Vectormap: bind heatmap texture before rendering.");
+          }
+
+          setupRenderTarget();
+
+          vectormap_tex.bind(0);
+          render_program.draw(arrows, gl.LINES);
+          vectormap_tex.unbind(0);
+        },
+
+        get enabled() {
+          return enabled;
+        },
+        set enabled(v) {
+          enabled = v;
+        },
+
+        resize: function () {
+          canvas_width = $vectormap_canvas.width();
+          canvas_height = $vectormap_canvas.height();
+          $vectormap_canvas.attr('width', canvas_width);
+          $vectormap_canvas.attr('height', canvas_height);
+          // Render ara has dimensions from -1.0 to 1.0, so its width/height is 2.0.
+          render_program.uniforms({
+            scale: [2.0 / canvas_width, 2.0 / canvas_height]
+          });
+        },
+
+        // Bind vectormap to the view.
+        bindVectormapTexture: function (new_vectormap_tex, new_grid_width, new_grid_height, arrows_per_row) {
+          vectormap_tex = new_vectormap_tex;
+          grid_width = new_grid_width;
+          grid_height = new_grid_height;
+          spacing = Math.round(grid_width / arrows_per_row);
+
+          initGeometry();
+        },
+
+        getHTMLElement: function () {
+          return $vectormap_canvas;
+        }
+      };
+
+    // One-off initialization.
+    // Set render program uniforms.
+    render_program.uniforms({
+      // Texture units.
+      vectormap_tex: 0,
+      // Uniforms.
+      base_length: VECTOR_BASE_LEN,
+      vector_scale: VECTOR_SCALE,
+      color: ARROW_COLOR
+    });
+
+    initHTMLelement();
+
+    return vectormap_view;
+  };
+});
+
+/*global define: false, $: false*/
+
+// Energy2D photons view.
+//
+// It uses HTML5 Canvas for rendering.
+// getHTMLElement() returns jQuery object with canvas used for rendering.
+// Before use, this view should be bound with the parts array using bindPhotonsArray(photons).
+// To render parts use renderPhotons() method.
+// Set size of the parts view using CSS rules. The view fits canvas dimensions to the real
+// size of the HTML element to avoid low quality scaling.
+
+define('energy2d/views/photons',[],function () {
+  'use strict';
+
+  return function PhotonsView(html_id) {
+    var
+      DEFAULT_ID = 'energy2d-photons-view',
+      DEFAULT_CLASS = 'energy2d-photons-view',
+
+      PHOTON_LENGTH = 10,
+
+      $photons_canvas,
+      canvas_ctx,
+      canvas_width,
+      canvas_height,
+
+      photons,
+      scale_x,
+      scale_y,
+      scene_width,
+      scene_height,
+
+      //
+      // Private methods.
+      //
+      initHTMLelement = function () {
+        $photons_canvas = $('<canvas />');
+        $photons_canvas.attr('id', html_id || DEFAULT_ID);
+        $photons_canvas.addClass(DEFAULT_CLASS);
+
+        canvas_ctx = $photons_canvas[0].getContext('2d');
+      },
+
+      setCanvasStyle = function () {
+        canvas_ctx.strokeStyle = "rgba(255,255,255,128)";
+        canvas_ctx.lineWidth = 0.5;
+      },
+
+      //
+      // Public API.
+      //
+      photons_view = {
+        // Render vectormap on the canvas.
+        renderPhotons: function () {
+          var
+            photon, sx, sy, r,
+            i, len;
+
+          if (!photons) {
+            throw new Error("Photons view: bind parts array before rendering.");
+          }
+
+          canvas_ctx.clearRect(0, 0, canvas_width, canvas_height);
+          for (i = 0, len = photons.length; i < len; i += 1) {
+            photon = photons[i];
+
+            sx = photon.x * scale_x;
+            sy = photon.y * scale_y;
+            r = 1 / Math.sqrt(photon.vx * photon.vx + photon.vy * photon.vy);
+
+            canvas_ctx.beginPath();
+            canvas_ctx.moveTo(sx, sy);
+            canvas_ctx.lineTo(sx + PHOTON_LENGTH * photon.vx * r, sy + PHOTON_LENGTH * photon.vy * r);
+            canvas_ctx.stroke();
+          }
+        },
+
+        // Bind vector map to the view.
+        bindPhotonsArray: function (new_photons, new_scene_width, new_scene_height) {
+          photons = new_photons;
+          scene_width = new_scene_width;
+          scene_height = new_scene_height;
+          scale_x = canvas_width / scene_width;
+          scale_y = canvas_height / scene_height;
+        },
+
+        getHTMLElement: function () {
+          return $photons_canvas;
+        },
+
+        resize: function () {
+          canvas_width = $photons_canvas.width();
+          canvas_height = $photons_canvas.height();
+          scale_x = canvas_width / scene_width;
+          scale_y = canvas_height / scene_height;
+          $photons_canvas.attr('width', canvas_width);
+          $photons_canvas.attr('height', canvas_height);
+          setCanvasStyle();
+        }
+      };
+
+    // One-off initialization.
+    initHTMLelement();
+    setCanvasStyle();
+
+    return photons_view;
+  };
+});
+/*global define: false, d3: false */
+
+define('energy2d/views/parts',[],function () {
+
+  // Classic version of Energy2D was rendering rectangles with small shift.
+  // If we do the same then converted models look better.
+  var E2D_XY_SHIFT = -1,
+      E2D_DIM_SHIFT = 2;
+
+  return function PartsView(SVGContainer, g) {
+    var api,
+        parts,
+
+        m2px = SVGContainer.model2px,
+        m2pxInv = SVGContainer.model2pxInv,
+
+        shapeTest = {
+          "rect":    function (d) { return d.shapeType === "rectangle" ? this : null; },
+          "ellipse": function (d) { return d.shapeType === "ellipse" ? this : null; },
+          "path": function (d) { return d.shapeType === "polygon" || d.shapeType === "ring" ? this : null; }
+        },
+
+        ringPathSpec = d3.svg.arc()
+            .innerRadius(function (d) { return m2px(d.inner * 0.5); })
+            .outerRadius(function (d) { return m2px(d.outer * 0.5); })
+            .startAngle(0)
+            .endAngle(Math.PI * 2),
+
+        dragBehavior = (function () {
+          var x, y, minX, maxX, minY, maxY, bbox;
+          return d3.behavior.drag()
+              .origin(function (d) {
+                return {
+                  x: m2px(d.x),
+                  y: m2pxInv(d.y)
+                };
+              })
+              .on("dragstart", function (d) {
+                var rx, ry;
+                if (d.draggable) {
+                  x = y = null;
+                  rx = m2px.range();
+                  ry = m2pxInv.range();
+                  minX = Math.min(rx[0], rx[1]);
+                  maxX = Math.max(rx[0], rx[1]);
+                  minY = Math.min(ry[0], ry[1]);
+                  maxY = Math.max(ry[0], ry[1]);
+                  bbox = this.getBBox();
+                  bbox.x0 = bbox.x + 10;
+                  bbox.y0 = bbox.y + 10;
+                  bbox.x1 = bbox.x + bbox.width - 10;
+                  bbox.y1 = bbox.y + bbox.height - 10;
+                  d3.select(this).style("opacity", 0.7);
+                }
+              })
+              .on("drag", function (d) {
+                if (d.draggable) {
+                  x = d3.event.x;
+                  y = d3.event.y;
+                  x -= Math.max(0, bbox.x0 + x - maxX) + Math.min(0, bbox.x1 + x - minX);
+                  y -= Math.max(0, bbox.y0 + y - maxY) + Math.min(0, bbox.y1 + y - minY);
+                  d3.select(this).attr("transform", "translate(" + x + "," + y + ")");
+                }
+              })
+              .on("dragend", function (d) {
+                if (d.draggable) {
+                  d3.select(this).style("opacity", 1);
+                  if (x !== null) { // no need to check 'y' too
+                    d.x = m2px.invert(x);
+                    d.y = m2pxInv.invert(y);
+                  }
+                }
+              });
+        }());
+
+    function transform(d) { return "translate(" + m2px(d.x || 0) + "," + m2pxInv(d.y || 0) + ")"; }
+    function width(d) { return m2px(d.width) + E2D_DIM_SHIFT; }
+    function height(d) { return m2px(d.height) + E2D_DIM_SHIFT; }
+    function rx(d) { return m2px(d.a * 0.5); }
+    function ry(d) { return m2px(d.b * 0.5); }
+    function visibility(d) { return d.visible ? "visible" : "hidden"; }
+    function textureFill(d) { return d.texture ? "url(#texture-1)" : "none"; }
+    function label(d) { return d.computeLabel(); }
+    function dx() { return -this.getBBox().width / 2; }
+    function fill(d) {
+      if (!d.filled) return 'rgba(0, 0, 0, 0)';
+      var color;
+      if (d.color === "auto") {
+        if (d.power > 0) {
+          color = '#FFFF00';
+        } else if (d.power < 0) {
+          color = '#B0C4DE';
+        } else if (d.constant_temperature) {
+          // Heatmap will be visible.
+          color = 'rgba(0, 0, 0, 0)';
+        } else {
+          color = "#999";
+        }
+      } else {
+        // Typical color definition.
+        color = d.color;
+        // TODO: this should be done during XML->JSON conversion.
+        if (!isNaN(parseInt(color, 16))) {
+          while (color.length < 6) {
+            color = '0' + color;
+          }
+          color = '#' + color;
+        }
+      }
+      return color;
+    }
+    function polygonPathSpec(d) {
+      var res = [],
+          x = d.raw_x_coords,
+          y = d.raw_y_coords,
+          i, len;
+      for (i = 0, len = x.length; i < len; i++) {
+        res.push(m2px(x[i]));
+        res.push(m2pxInv(y[i]));
+      }
+      return "M" + res.join(",") + "Z";
+    }
+    function pathSpec(d) {
+      switch (d.shapeType ) {
+      case "polygon":
+        return polygonPathSpec(d);
+      case "ring":
+        return ringPathSpec(d);
+      }
+    }
+    function xLabel (d) {
+      var s = d.shapeType;
+      return s === "rectangle" || s === "polygon" ? this.parentNode.firstElementChild.getBBox().width / 2 : 0;
+    }
+    function yLabel (d) {
+      var s = d.shapeType;
+      return s === "rectangle" || s === "polygon" ? this.parentNode.firstElementChild.getBBox().height / 2 : 0;
+    }
+
+    function generateTextures() {
+      var p = g.append("defs").append("pattern")
+          .attr("id", "texture-1")
+          .attr("patternUnits", "userSpaceOnUse")
+          .attr("x", 0)
+          .attr("y", 0)
+          .attr("width", "0.7em")
+          .attr("height", "0.7em")
+          .attr("viewBox", "0 0 16 16");
+      p.append("path")
+          .attr("class", "e2d-texture-path-shadow")
+          .attr("d", "M0,0 L16,16 M-1,15 L1,17 M15,-1 L17,1");
+      p.append("path")
+          .attr("class", "e2d-texture-path")
+          .attr("d", "M0,0 L16,16 M-1,15 L1,17 M15,-1 L17,1");
+    }
+
+    function renderShape(shape, enter, update) {
+      enter = enter.select(shapeTest[shape]);
+      enter.append(shape)
+          .attr("class", "e2d-part-shape");
+      enter.append(shape)
+          .attr("class", "e2d-part-shape-outline")
+          .attr("fill", textureFill);
+
+      // Propagate data.
+      update.select(".e2d-part-shape");
+      update.select(".e2d-part-shape-outline");
+
+      switch(shape) {
+      case "rect":
+        update.selectAll("rect")
+            .attr("x", E2D_XY_SHIFT)
+            .attr("y", E2D_XY_SHIFT)
+            .attr("width", width)
+            .attr("height", height);
+        break;
+      case "ellipse":
+        update.selectAll("ellipse")
+            .attr("rx", rx)
+            .attr("ry", ry);
+        break;
+      case "path":
+        update.selectAll("path")
+            .attr("d", pathSpec);
+        break;
+      }
+    }
+
+    function renderLabels(enter, update) {
+      enter.append("text")
+          .attr("class", "e2d-part-label-shadow")
+          .attr("dy", ".35em");
+      enter.append("text")
+          .attr("class", "e2d-part-label")
+          .attr("dy", ".35em");
+
+      // Propagate data.
+      update.select(".e2d-part-label");
+      update.select(".e2d-part-label-shadow");
+      update.selectAll(".e2d-part-label, .e2d-part-label-shadow")
+          .text(label)
+          .attr("dx", dx)
+          .attr("x", xLabel)
+          .attr("y", yLabel);
+    }
+
+    // Public API.
+    api = {
+      renderParts: function () {
+        if (!parts) return;
+
+        var part, partEnter;
+
+        part = g.selectAll(".e2d-part").data(parts);
+        partEnter = part.enter().append("g")
+            // "part" class is useful for onClick handles, so author
+            // can call: onClick("part", function () { ... }).
+            .attr("class", "e2d-part part");
+
+        renderShape("rect", partEnter, part);
+        renderShape("ellipse", partEnter, part);
+        renderShape("path", partEnter, part);
+        renderLabels(partEnter, part);
+
+        partEnter.call(dragBehavior);
+
+        part
+            .attr("transform", transform);
+        part.select(".e2d-part-shape")
+            .attr("fill", fill)
+            .style("visibility", visibility);
+
+        part.exit().remove();
+      },
+
+      bindPartsArray: function (newParts) {
+        parts = newParts;
+      }
+    };
+
+    (function () {
+      generateTextures();
+    }());
+
+    return api;
+  };
+});
+
+/*global define: false, d3: false */
+
+define('energy2d/views/sensors',[],function () {
+  var TH_W = 2,
+      TH_H = 4;
+
+  return function SensorsView(SVGContainer, g) {
+    var api,
+
+        m2px = SVGContainer.model2px,
+        m2pxInv = SVGContainer.model2pxInv,
+
+        sensors,
+
+        thermBg, // d3.selection
+        thermReading, // d3.selection
+        thermValScale = d3.scale.linear().clamp(true).domain([0, 50]).range([TH_H, 0]),
+
+        anemoRot, // d3.selection
+
+        heatFluxReading, // d3.selection
+
+        dragBehavior = d3.behavior.drag()
+            .origin(function (d) {
+                return {
+                  x: m2px(d.x),
+                  y: m2pxInv(d.y)
+                };
+              })
+            .on("drag", function (d) {
+              d.x = m2px.invert(d3.event.x);
+              d.y = m2pxInv.invert(d3.event.y);
+            });
+
+    function em(val) { return val + "%"; }
+    function transform(d) { return "translate(" + m2px(d.x) + "," + m2pxInv(d.y) + ")"; }
+    function labelDx() { return -this.getBBox().width / 2; }
+    function labelText(d) { return d.label; }
+    function readingText(d) { return d.value.toFixed(1) + " °C"; }
+    function bgHeight(d) { return em(thermValScale(d.value)); }
+
+    function anemometerRotation(d) { return "rotate(" + d.value + ")"; }
+
+    function heatFluxReadingText(d) { return d.value.toFixed(1) + " W/m²"; }
+    function heatFluxRot(d) { return "rotate(" + d.angle + ")"; }
+
+    function measuringPoint(g) {
+      g = g.append("g").attr("class", "e2d-measuring-point");
+      g.append("line")
+          .attr("x1", 0)
+          .attr("y1", "-0.8%")
+          .attr("x2", 0)
+          .attr("y2", "0.8%");
+      g.append("line")
+          .attr("x1", "-0.8%")
+          .attr("y1", 0)
+          .attr("x2", "0.8%")
+          .attr("y2", 0);
+      g.append("circle")
+          .attr("r", "0.8%");
+    }
+
+    function supportLabels(enter, update) {
+      enter.append("text").attr("class", "e2d-sensor-reading-shadow");
+      enter.append("text").attr("class", "e2d-sensor-reading");
+      enter.append("text").attr("class", "e2d-sensor-label-shadow");
+      enter.append("text").attr("class", "e2d-sensor-label");
+
+      // Looks strange, but it propagates data from parent to labels.
+      // .selectAll() doesn't do it. We can do it here, before rendering.
+      // If labels don't exist yet, enter will propagate data. If they
+      // exist, data binding will be updated.
+      update.select(".e2d-sensor-label");
+      update.select(".e2d-sensor-label-shadow");
+      update.select(".e2d-sensor-reading");
+      update.select(".e2d-sensor-reading-shadow");
+    }
+
+    function renderThermometers(data) {
+      var update = g.selectAll(".e2d-sensor.thermometer").data(data.filter(function (d) {
+            return d.type === "thermometer";
+          })),
+          enter = update.enter().append("g")
+              .attr("class", "e2d-sensor sensor thermometer")
+              .call(dragBehavior);
+      supportLabels(enter, update);
+
+      // Note that background and fill are inverted (background covers
+      // fill). It's easier to change only height of background instead of
+      // manipulating both Y coordinate and height of fill.
+      enter.append("rect").attr("class", "e2d-thermometer-fill");
+      enter.append("rect").attr("class", "e2d-thermometer-background");
+      enter.call(measuringPoint);
+
+      update.attr("transform", transform);
+      update.select(".e2d-thermometer-fill")
+        .attr("x", em(-0.5 * TH_W))
+        .attr("y", em(-0.5 * TH_H))
+        .attr("width", em(TH_W))
+        .attr("height", em(TH_H));
+      thermBg = update.select(".e2d-thermometer-background")
+        .attr("x", em(-0.5 * TH_W))
+        .attr("y", em(-0.5 * TH_H))
+        .attr("width", em(TH_W))
+        .attr("height", bgHeight);
+      thermReading = update.selectAll(".e2d-sensor-reading, .e2d-sensor-reading-shadow")
+        .text(readingText)
+        .attr("y", em(-0.5 * TH_H))
+        .attr("dy", "-.2em")
+        .attr("dx", "-.7em");
+      update.selectAll(".e2d-sensor-label, .e2d-sensor-label-shadow")
+        .text(labelText)
+        .attr("dx", labelDx)
+        .attr("dy", "1em")
+        .attr("y", em(0.5 * TH_H));
+
+      update.exit().remove();
+    }
+
+    function renderAnemometer(data) {
+      var update = g.selectAll(".e2d-sensor.anemometer").data(data.filter(function (d) {
+            return d.type === "anemometer";
+          })),
+          enter = update.enter().append("g")
+              .attr("class", "e2d-sensor sensor anemometer")
+              .call(dragBehavior);
+      supportLabels(enter, update);
+
+      enter = enter
+        .append("svg")
+          .attr("class", "e2d-anemometer-shape")
+          .attr("viewBox", "-50 -50 100 100")
+          .attr("x", "-3%")
+          .attr("y", "-3%")
+          .attr("width", "6%")
+          .attr("height", "6%")
+        .append("g")
+          .attr("class", "e2d-anemometer-rot");
+
+      enter.append("path")
+          .attr("d", "M-10,10 L0,50 L10,10 Z")
+          .attr("transform", "rotate(0)");
+      enter.append("path")
+          .attr("d", "M-10,10 L0,50 L10,10 Z")
+          .attr("transform", "rotate(120)");
+      enter.append("path")
+          .attr("d", "M-10,10 L0,50 L10,10 Z")
+          .attr("transform", "rotate(240)");
+      enter.append("circle")
+          .attr("r", 12);
+
+      update.attr("transform", transform);
+      anemoRot = update.select(".e2d-anemometer-rot")
+          .attr("transform", anemometerRotation);
+      update.selectAll(".e2d-sensor-label, .e2d-sensor-label-shadow")
+        .text(labelText)
+        .attr("dx", labelDx)
+        .attr("dy", "0.7em")
+        .attr("y", "3%");
+
+      update.exit().remove();
+    }
+
+    function renderHeatFluxSensors(data) {
+      var update = g.selectAll(".e2d-sensor.heatFlux").data(data.filter(function (d) {
+            return d.type === "heatFlux";
+          })),
+          enter = update.enter().append("g")
+              .attr("class", "e2d-sensor sensor heatFlux")
+              .call(dragBehavior);
+
+      enter = enter.append("g")
+          .attr("transform", heatFluxRot);
+      enter.append("rect")
+          .attr("class", "e2d-heatflux-shape")
+          .attr("x", "-3%")
+          .attr("y", "-1%")
+          .attr("width", "6%")
+          .attr("height", "2%");
+      enter.append("svg")
+          .attr("viewBox", "0 0 6 1")
+          .attr("x", "-3%")
+          .attr("y", "-1%")
+          .attr("width", "6%")
+          .attr("height", "2%")
+        .append("path")
+          .attr("class", "e2d-heatflux-pattern")
+          .attr("d", "M0,0L1,1L2,0L3,1L4,0L5,1L6,0");
+      enter.call(measuringPoint);
+
+      supportLabels(enter, update);
+
+      update.attr("transform", transform);
+      heatFluxReading = update.selectAll(".e2d-sensor-reading, .e2d-sensor-reading-shadow")
+        .text(heatFluxReadingText)
+        .attr("y", "-1%")
+        .attr("dy", "-.2em")
+        .attr("dx", "-1.8em");
+      update.selectAll(".e2d-sensor-label, .e2d-sensor-label-shadow")
+        .text(labelText)
+        .attr("dx", labelDx)
+        .attr("dy", "0.9em")
+        .attr("y", "1%");
+
+      update.exit().remove();
+    }
+
+    // Public API.
+    api = {
+      update: function () {
+        thermBg.attr("height", bgHeight);
+        thermReading.text(readingText);
+        anemoRot.attr("transform", anemometerRotation);
+        heatFluxReading.text(heatFluxReadingText);
+      },
+
+      renderSensors: function () {
+        if (!sensors) return;
+
+        renderThermometers(sensors);
+        renderAnemometer(sensors);
+        renderHeatFluxSensors(sensors);
+      },
+
+      bindSensorsArray: function (newSensors) {
+        sensors = newSensors;
+      },
+
+      setMinMaxTemp: function (min, max) {
+        thermValScale.domain([min, max]);
+      }
+    };
+
+    return api;
+  };
+});
+
+/*global define: false, $: false */
+
+define('energy2d/views/renderer',['require','energy2d/views/heatmap','energy2d/views/heatmap-webgl','energy2d/views/webgl-status','energy2d/views/vectormap','energy2d/views/vectormap-webgl','energy2d/views/photons','energy2d/views/parts','energy2d/views/sensors'],function(require) {
+  var HeatmapView        = require('energy2d/views/heatmap'),
+      HeatmapWebGLView   = require('energy2d/views/heatmap-webgl'),
+      WebGLStatus        = require('energy2d/views/webgl-status'),
+      VectormapView      = require('energy2d/views/vectormap'),
+      VectormapWebGLView = require('energy2d/views/vectormap-webgl'),
+      PhotonsView        = require('energy2d/views/photons'),
+      PartsView          = require('energy2d/views/parts'),
+      SensorsView        = require('energy2d/views/sensors');
+
+
+  return function Renderer(SVGContainer) {
+    var api,
+        model,
+
+        heatmap_view,
+        velocity_view,
+        photons_view,
+        parts_view,
+        sensors_view,
+        webgl_status = new WebGLStatus(),
+        $status = webgl_status.getHTMLElement(),
+        $canvasCont = $("<div id='e2d-canvas-views'>"),
+        cavasCount = 0,
+
+        beforeSetup = true;
+
+    function setAsNextLayer(view) {
+      var $layer = view.getHTMLElement();
+
+      $layer.css('width', '100%');
+      $layer.css('height', '100%');
+      $layer.css('position', 'absolute');
+      $layer.css('top', 0);
+      $layer.css('left', 0);
+      $layer.css('z-index', cavasCount);
+      cavasCount += 1;
+
+      $canvasCont.append($layer);
+
+      // Note that we SHOULD implement it in the following way:
+      //
+      // var $layer = view.getHTMLElement(),
+      //     fo = g.append("foreignObject").attr({
+      //       width: "100%",
+      //       height: "100%"
+      //     }).style({
+      //       width: "100%",
+      //       height: "100%"
+      //     });
+      // $layer.css('width', '100%');
+      // if (!customHeight) $layer.css('height', '100%');
+      // $layer.appendTo(fo);
+      //
+      // but foreignObject support is completely broken in Chrome (works fine in Firefox).
+      // TODO: check if new version (30+?) fixes that.
+    }
+
+    function setupCavnasViews() {
+      var props = model.properties;
+
+      $canvasCont.empty();
+      cavasCount = 0;
+      // Use isWebGLActive() method, not use_WebGL property. The fact that
+      // use_WebGL option is set to true doesn't mean that WebGL can be
+      // initialized. It's only a preference.
+      if (model.isWebGLActive()) {
+        heatmap_view = new HeatmapWebGLView();
+        velocity_view = new VectormapWebGLView();
+        // Both VectormapWebGL and HeatmapWebGL use common canvas,
+        // so it's enough to set it only once as the next layer.
+        setAsNextLayer(velocity_view);
+      } else {
+        heatmap_view = new HeatmapView();
+        setAsNextLayer(heatmap_view);
+        velocity_view = new VectormapView();
+        setAsNextLayer(velocity_view);
+      }
+      photons_view = new PhotonsView();
+      setAsNextLayer(photons_view);
+
+      // It must be called after attaching to parent node.
+      heatmap_view.resize();
+      velocity_view.resize();
+      photons_view.resize();
+
+      // Bind models to freshly created views.
+      if (model.isWebGLActive()) {
+        heatmap_view.bindHeatmapTexture(model.getTemperatureTexture());
+        velocity_view.bindVectormapTexture(model.getVelocityTexture(), props.grid_width, props.grid_height, 25);
+      } else {
+        heatmap_view.bindHeatmap(model.getTemperatureArray(), props.grid_width, props.grid_height);
+        velocity_view.bindVectormap(model.getUVelocityArray(), model.getVVelocityArray(), props.grid_width, props.grid_height, 25);
+      }
+      photons_view.bindPhotonsArray(model.getPhotonsArray(), props.model_width, props.model_height);
+    }
+
+    function setVisOptions () {
+      var props = model.properties;
+      velocity_view.enabled = props.velocity;
+      heatmap_view.setMinTemperature(props.minimum_temperature);
+      heatmap_view.setMaxTemperature(props.maximum_temperature);
+      heatmap_view.setColorPalette(props.color_palette_type);
+      sensors_view.setMinMaxTemp(props.minimum_temperature, props.maximum_temperature);
+    }
+
+    api = {
+      getHeightForWidth: function(width) {
+        return width * model.properties.grid_height / model.properties.grid_width;
+      },
+
+      setup: function () {
+        beforeSetup = false;
+        setupCavnasViews();
+
+        parts_view.bindPartsArray(model.getPartsArray());
+        sensors_view.bindSensorsArray(model.getSensorsArray());
+        webgl_status.bindModel(model);
+        setVisOptions();
+
+        parts_view.renderParts();
+        sensors_view.renderSensors();
+        webgl_status.render();
+        api.update();
+
+        model.addPropertiesListener("use_WebGL", function() {
+          setupCavnasViews();
+          setVisOptions();
+          webgl_status.render();
+          api.update();
+        });
+        model.addPropertiesListener(["color_palette_type", "velocity",
+                                     "minimum_temperature", "maximum_temperature"], function () {
+          setVisOptions();
+          api.update();
+        });
+        model.on('tick.view-update', api.update);
+        model.on('partsChanged.view-update', function () {
+          parts_view.renderParts();
+        });
+        model.on('sensorsChanged.view-update', function () {
+          sensors_view.renderSensors();
+        });
+      },
+
+      update: function () {
+        if (beforeSetup) return;
+        heatmap_view.renderHeatmap();
+        velocity_view.renderVectormap();
+        photons_view.renderPhotons();
+        sensors_view.update();
+      },
+
+      resize: function () {
+        // Ignore all resize() callbacks if view isn't already set up.
+        if (beforeSetup) return;
+        heatmap_view.resize();
+        velocity_view.resize();
+        photons_view.resize();
+        parts_view.renderParts();
+        sensors_view.renderSensors();
+        api.update();
+      },
+
+      reset: function () {},
+
+      setFocus: function () {
+        if (model.get("enableKeyboardHandlers")) {
+          this.$el.focus();
+        }
+      },
+
+      bindModel: function(newModel) {
+        model = newModel;
+      }
+    };
+
+    (function() {
+      // Instantiate SVG views.
+      parts_view = new PartsView(SVGContainer, SVGContainer.viewport.append("g"));
+      sensors_view = new SensorsView(SVGContainer, SVGContainer.viewport.append("g"));
+      SVGContainer.$el.append($canvasCont);
+      SVGContainer.$el.append($status);
+    }());
+
+    return api;
+  };
+});
+/*global define: false, Lab: false, model: false, d3: false */
+
+define('energy2d/benchmarks/benchmarks',[],function () {
+
+  return function Benchmarks(controller) {
+
+    var benchmarks = [
+      {
+        name: "commit",
+        numeric: false,
+        run: function(done) {
+          var link = "<a href='"+Lab.version.repo.commit.url+"' class='opens-in-new-window' target='_blank'>"+Lab.version.repo.commit.short_sha+"</a>";
+          if (Lab.version.repo.dirty) {
+            link += " <i>dirty</i>";
+          }
+          done(link);
+        }
+      },
+      {
+        name: "just graphics (steps/s)",
+        numeric: true,
+        formatter: d3.format("5.1f"),
+        run: function(done) {
+          var elapsed, start, i;
+          model.stop();
+          model.properties.use_WebGL = false;
+          start = +Date.now();
+          i = 0;
+          while (i++ < 100) {
+            controller.modelContainer.update();
+          }
+          elapsed = Date.now() - start;
+          done(100/elapsed*1000);
+        }
+      },
+      {
+        name: "model (steps/s)",
+        numeric: true,
+        formatter: d3.format("5.1f"),
+        run: function(done) {
+          var start, elapsed;
+          model.stop();
+          start = +Date.now();
+          model.suppressEvents(function () {
+            var i = 0;
+            while (i++ < 50) {
+              model.tick();
+            }
+          });
+          elapsed = Date.now() - start;
+          done(50/elapsed*1000);
+        }
+      },
+      {
+        name: "model+graphics (steps/s)",
+        numeric: true,
+        formatter: d3.format("5.1f"),
+        run: function(done) {
+          var start, elapsed, i;
+          model.stop();
+          model.properties.use_WebGL = false;
+          start = +Date.now();
+          i = 0;
+          while (i++ < 50) {
+            model.tick();
+          }
+          elapsed = Date.now() - start;
+          done(50/elapsed*1000);
+        }
+      },
+      {
+        name: "model+graphics-webgl(steps/s)",
+        numeric: true,
+        formatter: d3.format("5.1f"),
+        run: function(done) {
+          var start, elapsed, i;
+          model.stop();
+          model.properties.use_WebGL = true;
+          start = +Date.now();
+          i = 0;
+          while (i++ < 50) {
+            model.tick();
+          }
+          elapsed = Date.now() - start;
+          done(50/elapsed*1000);
+        }
+      },
+      {
+        name: "fps",
+        numeric: true,
+        formatter: d3.format("5.1f"),
+        run: function(done) {
+          // warmup
+          model.properties.use_WebGL = false;
+          model.start();
+          setTimeout(function() {
+            model.stop();
+            var start = model.get('time');
+            setTimeout(function() {
+              // actual fps calculation
+              model.start();
+              setTimeout(function() {
+                model.stop();
+                var elapsedModelTime = model.get('time') - start;
+                done( elapsedModelTime / (model.get('timeStepsPerTick') * model.get('timeStep')) / 2 );
+              }, 2000);
+            }, 100);
+          }, 1000);
+        }
+      },
+      {
+        name: "fps-webgl",
+        numeric: true,
+        formatter: d3.format("5.1f"),
+        run: function(done) {
+          // warmup
+          model.properties.use_WebGL = true;
+          model.start();
+          setTimeout(function() {
+            model.stop();
+            var start = model.get('time');
+            setTimeout(function() {
+              // actual fps calculation
+              model.start();
+              setTimeout(function() {
+                model.stop();
+                var elapsedModelTime = model.get('time') - start;
+                done( elapsedModelTime / (model.get('timeStepsPerTick') * model.get('timeStep')) / 2 );
+              }, 2000);
+            }, 100);
+          }, 1000);
+        }
+      },
+      {
+        name: "interactive",
+        numeric: false,
+        run: function(done) {
+          done(window.location.pathname + window.location.hash);
+        }
+      }
+    ];
+
+    return benchmarks;
+
+  };
+});
+
+/*global define: false, model: false */
+
+define('energy2d/controllers/scripting-api',[],function () {
+
+  return function MD2DScriptingAPI (api) {
+
+    return {
+      getTemperatureAt: function getTemperatureAt(x, y) {
+        return model.getTemperatureAt(x, y);
+      },
+
+      getAverageTemperatureAt: function getAverageTemperatureAt(x, y) {
+        return model.getAverageTemperatureAt(x, y);
+      },
+
+      getSensor: function getSensor(i) {
+        return model.getSensorsArray()[i];
+      },
+
+      getPart: function getPart(i) {
+        return model.getPartsArray()[i];
+      },
+
+      addPart: function addPart(props) {
+        model.addPart(props);
+      },
+
+      removePart: function removePart(i) {
+        model.removePart(i);
+      },
+
+      getNumberOfParts: function getNumberOfParts() {
+        return model.getPartsArray().length;
+      },
+
+      syncTemperature: function syncTemperature() {
+        model.syncTemperature();
+      }
+    };
+  };
+});
+
+/*global define: false, d3: false, model: true */
+
+define('energy2d/controllers/controller',['require','energy2d/modeler','common/views/svg-container','energy2d/views/renderer','energy2d/benchmarks/benchmarks','energy2d/controllers/scripting-api'],function (require) {
+  // Dependencies.
+  var Model          = require('energy2d/modeler'),
+      SVGContainer   = require('common/views/svg-container'),
+      Renderer       = require('energy2d/views/renderer'),
+      Benchmarks     = require('energy2d/benchmarks/benchmarks'),
+      ScriptingAPI   = require('energy2d/controllers/scripting-api');
+
+  return function (modelUrl, modelOptions) {
+    // Export model to global namespace;
+    model = new Model(modelOptions);
+
+    var api,
+        dispatch = d3.dispatch('modelLoaded'),
+        modelContainer = new SVGContainer(model, modelUrl, Renderer, {origin: 'top-left'}),
+        benchmarks;
+
+    api = {
+      get type() {
+        return "energy2d";
+      },
+      get benchmarks() {
+        return benchmarks;
+      },
+      get modelUrl() {
+        return modelUrl;
+      },
+      get modelContainer() {
+        return modelContainer;
+      },
+
+      on: function(type, listener) {
+        dispatch.on(type, listener);
+      },
+
+      getViewContainer: function () {
+        return api.modelContainer.$el;
+      },
+
+      getHeightForWidth: function (width) {
+        return api.modelContainer.getHeightForWidth(width);
+      },
+
+      resize: function () {
+        api.modelContainer.resize();
+      },
+
+      repaint: function () {
+        api.modelContainer.repaint();
+      },
+
+      enableKeyboardHandlers: function () {
+        return true;
+      },
+
+      reload: function (newModelUrl, newModelOptions, suppressEvents) {
+        api.modelUrl = newModelUrl || api.modelUrl;
+        modelOptions = newModelOptions || modelOptions;
+
+        model = new Model(modelOptions);
+        api.modelContainer.bindModel(model);
+
+        if (!suppressEvents) dispatch.modelLoaded();
+      },
+
+      modelInDOM: function () {
+        api.modelContainer.setup();
+      },
+
+      state: function () {
+        return model.serialize();
+      },
+
+      ScriptingAPI: ScriptingAPI
+    };
+
+    benchmarks = new Benchmarks(api);
+
+    return api;
   };
 });
 
 /*global define, model, $, setTimeout, document, window */
 
-define('common/controllers/interactives-controller',['require','lab.config','arrays','common/alert','common/controllers/interactive-metadata','common/validator','common/controllers/bar-graph-controller','common/controllers/graph-controller','common/controllers/export-controller','common/controllers/scripting-api','common/controllers/button-controller','common/controllers/checkbox-controller','common/controllers/text-controller','common/controllers/image-controller','common/controllers/radio-controller','common/controllers/slider-controller','common/controllers/pulldown-controller','common/controllers/numeric-output-controller','common/controllers/parent-message-api','common/controllers/thermometer-controller','common/controllers/playback-controller','common/controllers/div-controller','common/controllers/setup-banner','common/controllers/about-dialog','common/controllers/share-dialog','common/controllers/credits-dialog','common/layout/semantic-layout','common/layout/templates','md2d/controllers/controller','solar-system/controllers/controller','signal-generator/controller','sensor/controller'],function (require) {
+define('common/controllers/interactives-controller',['require','lab.config','arrays','common/alert','common/controllers/interactive-metadata','common/validator','common/interactive-not-found','common/controllers/bar-graph-controller','common/controllers/graph-controller','common/controllers/export-controller','common/controllers/scripting-api','common/controllers/button-controller','common/controllers/checkbox-controller','common/controllers/text-controller','common/controllers/image-controller','common/controllers/radio-controller','common/controllers/slider-controller','common/controllers/pulldown-controller','common/controllers/numeric-output-controller','common/controllers/parent-message-api','common/controllers/thermometer-controller','common/controllers/playback-controller','common/controllers/div-controller','common/controllers/setup-banner','common/controllers/about-dialog','common/controllers/share-dialog','common/controllers/credits-dialog','common/layout/semantic-layout','common/layout/templates','md2d/controllers/controller','solar-system/controllers/controller','signal-generator/controller','sensor/controller','energy2d/controllers/controller'],function (require) {
   // Dependencies.
   var labConfig               = require('lab.config'),
       arrays                  = require('arrays'),
       alert                   = require('common/alert'),
       metadata                = require('common/controllers/interactive-metadata'),
       validator               = require('common/validator'),
+      interactiveNotFound     = require('common/interactive-not-found'),
       BarGraphController      = require('common/controllers/bar-graph-controller'),
       GraphController         = require('common/controllers/graph-controller'),
       ExportController        = require('common/controllers/export-controller'),
@@ -38151,7 +45249,8 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
         'md2d':             require('md2d/controllers/controller'),
         'solar-system':     require('solar-system/controllers/controller'),
         'signal-generator': require('signal-generator/controller'),
-        'sensor':           require('sensor/controller')
+        'sensor':           require('sensor/controller'),
+        'energy2d':         require('energy2d/controllers/controller')
       },
 
       // Set of available components.
@@ -38198,9 +45297,10 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
         'playback':      PlaybackController
       };
 
-  return function interactivesController(interactive, viewSelector) {
+  return function InteractivesController(interactiveReference, viewSelector) {
 
-    var controller = {},
+    var interactive = {},
+        controller = {},
         modelController,
         $interactiveContainer,
         models = [],
@@ -38344,35 +45444,87 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
         }
       }
 
-      function finishWithLoadedModel(modelUrl, modelConfig) {
-        if (modelController) {
-          modelController.reload(modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions);
-        } else {
-          createModelController(modelConfig.type, modelUrl, modelConfig);
-          // also be sure to get notified when the underlying model changes
-          modelController.on('modelReset', modelLoaded);
-          controller.modelController = modelController;
-          // Setup model and notify observers that model was loaded.
-          modelLoaded(modelConfig);
-        }
-        // and setup model player keyboard handlers (if enabled)
-        setupModelPlayerKeyboardHandler();
+      function processOptions(modelConfig, interactiveModelConfig, interactiveViewConfig) {
+        var modelOptions,
+            viewOptions;
 
-        // Setup model in layout.
+        function meldOptions (base, overlay) {
+          var p;
+          for(p in base) {
+            if (overlay[p] === undefined) {
+              if (arrays.isArray(base[p])) {
+                // Array.
+                overlay[p] = $.extend(true, [], base[p]);
+              } else if (typeof base[p] === "object") {
+                // Object.
+                overlay[p] = $.extend(true, {}, base[p]);
+              } else {
+                // Basic type.
+                overlay[p] = base[p];
+              }
+            } else if (typeof overlay[p] === "object" && !(overlay[p] instanceof Array)) {
+              overlay[p] = meldOptions(base[p], overlay[p]);
+            }
+          }
+          return overlay;
+        }
+
+        // 1. Process view options.
+        // Do not modify initial configuration.
+        viewOptions = $.extend(true, {}, interactiveViewConfig);
+        // Merge view options defined in interactive (interactiveViewConfig)
+        // with view options defined in the basic model description.
+        viewOptions = meldOptions(modelConfig.viewOptions || {}, viewOptions);
+
+        // 2. Process model options.
+        // Do not modify initial configuration.
+        modelOptions = $.extend(true, {}, interactiveModelConfig);
+        // Merge model options defined in interactive (interactiveModelConfig)
+        // with the basic model description.
+        modelOptions = meldOptions(modelConfig || {}, modelOptions);
+
+        // Update view options in the basic model description after merge.
+        // Note that many unnecessary options can be passed to Model constructor
+        // because of that (e.g. view-only options defined in the interactive).
+        // However, all options which are unknown for Model will be discarded
+        // during options validation, so this is not a problem
+        // (but significantly simplifies configuration).
+        modelOptions.viewOptions = viewOptions;
+
+        return modelOptions;
+      }
+
+      function finishWithLoadedModel(modelUrl, modelConfig) {
+        var modelOptions = processOptions(modelConfig, interactiveModelOptions, interactiveViewOptions);
+
+        if (modelController) {
+          modelController.reload(modelUrl, modelOptions, true);
+        } else {
+          createModelController(modelConfig.type, modelUrl, modelOptions);
+          // also be sure to get notified when the underlying model changes
+          modelController.on('modelLoaded', modelLoaded);
+          controller.modelController = modelController;
+        }
+        // This will attach model container to DOM.
         semanticLayout.setupModel(modelController);
-        // Finally, layout interactive.
+
+        setupModelPlayerKeyboardHandler();
+        // Setup model and notify observers that model was loaded.
+        modelLoaded();
+
+        // Layout interactive after modelLoaded() callback!
         semanticLayout.layoutInteractive();
       }
 
-      function createModelController(type, modelUrl, modelConfig) {
+      function createModelController(type, modelUrl, modelOptions) {
         // set default model type to "md2d"
         var modelType = type || "md2d";
 
-        if (ModelControllerFor[modelType] == null) {
+        if (ModelControllerFor[modelType] === null) {
           throw new Error("Couldn't understand modelType '" + modelType + "'!");
         }
 
-        modelController = new ModelControllerFor[modelType](modelUrl, modelConfig, interactiveViewOptions, interactiveModelOptions, controller);
+        modelController = new ModelControllerFor[modelType](modelUrl, modelOptions, controller);
 
         // Extending universal Interactive scriptingAPI with model-specific scripting API
         if (modelController.ScriptingAPI) {
@@ -38550,6 +45702,7 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
       // to exist during its definition.
       setupCustomOutputs("filtered", controller.currentModel.filteredOutputs, interactive.filteredOutputs);
 
+      modelController.modelInDOM();
       // Call component callbacks *when* the layout is created.
       // Some callbacks require that their views are already attached to the DOM, e.g. (bar graph uses
       //getBBox() which in Firefox works only when element is visible and rendered).
@@ -38671,16 +45824,36 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
       definition, and
 
       @param newInteractive
-        hash representing the interactive specification
+        hash representing the interactive specification or string representing path or full url
     */
     function loadInteractive(newInteractive) {
+      if (typeof newInteractive === "string") {
+        $.get(newInteractive).done(function(results) {
+          if (typeof results === 'string') results = JSON.parse(results);
+          controller.interactive = results;
+          finishLoadingInteractive();
+        })
+        .fail(function() {
+          document.title = "Interactive not found";
+          controller.interactive = interactiveNotFound(newInteractive);
+          finishLoadingInteractive();
+        });
+      } else {
+        // we were passed an interactive object
+        controller.interactive = newInteractive
+        finishLoadingInteractive();
+      }
+    }
+
+    function finishLoadingInteractive() {
       var componentJsons,
           i, len;
 
       componentCallbacks = [];
 
       // Validate interactive.
-      interactive = validateInteractive(newInteractive);
+      controller.interactive = validateInteractive(controller.interactive);
+      interactive = controller.interactive;
 
       // Set up the list of possible models.
       models = interactive.models;
@@ -38928,6 +46101,8 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
         }
 
         // Copy basic properties from the initial definition, as they are immutable.
+        // FIXME: this should be based on enumerating properties in the metadata. The issue is properties
+        // added to the metadata like "importedFrom" have to be then manually added here.
         result = {
           title: interactive.title,
           publicationStatus: interactive.publicationStatus,
@@ -38944,6 +46119,14 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
           filteredOutputs: $.extend(true, [], interactive.filteredOutputs)
         };
 
+        // add optional attributes to result if defined
+        if (typeof interactive.fontScale !== 'undefined') {
+          result.fontScale = interactive.fontScale
+        }
+        if (typeof interactive.importedFrom !== 'undefined') {
+          result.importedFrom = interactive.importedFrom
+        }
+
         // Serialize components.
         result.components = [];
         for (i = 0, len = componentList.length; i < len; i++) {
@@ -38957,7 +46140,7 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
         if (typeof interactive.template === "string") {
           result.template = interactive.template;
         } else {
-          result.template = $.extend(true, {}, interactive.template);
+          result.template = $.extend(true, [], interactive.template);
         }
 
         return result;
@@ -38965,7 +46148,8 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
       // Make these private variables and functions available
       loadInteractive: loadInteractive,
       validateInteractive: validateInteractive,
-      loadModel: loadModel
+      loadModel: loadModel,
+      interactiveNotFound: interactiveNotFound
     };
 
     //
@@ -38988,60 +46172,59 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
     shareDialog = new ShareDialog();
     controller.on("resize", $.proxy(shareDialog.updateIframeSize, shareDialog));
     // Run this when controller is created.
-    loadInteractive(interactive, viewSelector);
+    loadInteractive(interactiveReference, viewSelector);
 
     return controller;
   };
 });
 
-/*global define: false, window: false */
+/*global define: false console: true */
 
-// TODO: just temporary solution, refactor it.
-define('md2d/public-api',['require','common/controllers/interactives-controller','common/benchmark/benchmark'],function (require) {
-  var interactivesController  = require('common/controllers/interactives-controller'),
-      benchmark               = require('common/benchmark/benchmark'),
-      // Object to be returned.
-      publicAPI;
+define('common/structured-clone',['require'],function (require) {
+  var featureSupported = false,
+      publicAPI = {};
 
-  publicAPI = {
-    version: "0.0.1",
-    // ==========================================================================
-    // Add functions and modules which should belong to this API:
-    interactivesController: interactivesController
-    // ==========================================================================
-  };
-  // Export this API under 'controllers' name.
-  window.controllers = publicAPI;
-  // Also export benchmark.
-  window.benchmark = benchmark;
+  function isStructuredCloneSupported() {
+    var result = 0;
 
-  // Return public API as a module.
+    if (!!window.postMessage) {
+      try {
+        // Safari 5.1 will sometimes throw an exception and sometimes won't, lolwut?
+        // When it doesn't we capture the message event and check the
+        // internal [[Class]] property of the message being passed through.
+        // Safari will pass through DOM nodes as Null iOS safari on the other hand
+        // passes it through as DOMWindow, gotcha.
+        window.onmessage = function(e){
+          var type = Object.prototype.toString.call(e.data);
+          result = (type.indexOf("Null") != -1 || type.indexOf("DOMWindow") != -1) ? 1 : 0;
+          featureSupported = {
+            'structuredClones': result
+          };
+        };
+        // Spec states you can't transmit DOM nodes and it will throw an error
+        // postMessage implimentations that support cloned data will throw.
+        window.postMessage(document.createElement("a"),"*");
+      } catch(e) {
+        // BBOS6 throws but doesn't pass through the correct exception
+        // so check error message
+        result = (e.DATA_CLONE_ERR || e.message == "Cannot post cyclic structures.") ? 1 : 0;
+        featureSupported = {
+          'structuredClones': result
+        };
+      }
+    }
+  }
+
+  isStructuredCloneSupported();
+
+  function supported() {
+    return featureSupported && featureSupported.structuredClones > 0;
+  }
+
+  publicAPI.supported = supported;
+
   return publicAPI;
-});
 
-/*global define: false, window: false */
-
-// TODO: just temporary solution, refactor it.
-define('solar-system/public-api',['require','common/controllers/interactives-controller','common/benchmark/benchmark'],function (require) {
-  var interactivesController  = require('common/controllers/interactives-controller'),
-      benchmark               = require('common/benchmark/benchmark'),
-      // Object to be returned.
-      publicAPI;
-
-  publicAPI = {
-    version: "0.0.1",
-    // ==========================================================================
-    // Add functions and modules which should belong to this API:
-    interactivesController: interactivesController
-    // ==========================================================================
-  };
-  // Export this API under 'controllers' name.
-  window.controllers = publicAPI;
-  // Also export benchmark.
-  window.benchmark = benchmark;
-
-  // Return public API as a module.
-  return publicAPI;
 });
 
 /*global define: false, window: false */
@@ -39165,24 +46348,23 @@ define('import-export/public-api',['require','import-export/dg-exporter','import
 
 /*global define: false */
 
-define('public-api',['require','lab.version','lab.config','common/structured-clone','md2d/public-api','solar-system/public-api','grapher/public-api','import-export/public-api'],function (require) {
+define('public-api',['require','lab.version','lab.config','common/controllers/interactives-controller','common/benchmark/benchmark','common/structured-clone','grapher/public-api','import-export/public-api'],function (require) {
   var version = require('lab.version'),
       config  = require('lab.config'),
-      structuredClone = require('common/structured-clone');
+      InteractivesController  = require('common/controllers/interactives-controller'),
+      benchmark               = require('common/benchmark/benchmark'),
+      structuredClone         = require('common/structured-clone');
 
-  // Require public-api modules
-  // defining other global variables.
-  require('md2d/public-api');
-  require('solar-system/public-api');
+  // Require public-api modules.
   require('grapher/public-api');
   require('import-export/public-api');
 
-  // ###
   // Create or get 'Lab' global object (namespace).
   window.Lab = window.Lab || {};
-  // Export config and version modules.
   window.Lab.version = version;
   window.Lab.config = config;
   window.Lab.structuredClone = structuredClone;
+  window.Lab.InteractivesController = InteractivesController;
+  window.Lab.benchmark = benchmark;
 });
 require(['public-api'], undefined, undefined, true); }());

@@ -5,8 +5,9 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "blackbody$0",
-      "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/blackbody$0.json",
+      "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/blackbody/blackbody$0.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }
@@ -60,7 +61,8 @@
       "thermometer"
     ],
     "bottom": [
-      "enable-light-source", "ke-shading"
+      "enable-light-source",
+      "ke-shading"
     ]
   },
   "template": "left-right-bottom"

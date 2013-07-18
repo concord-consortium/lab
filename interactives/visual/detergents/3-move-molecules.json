@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "MoveMolecules2$0.json",
       "url": "imports/legacy-mw-content/converted/visual/Detergents/MoveMolecules2$0.json",
       "viewOptions": {
@@ -14,9 +15,11 @@
     }
   ],
   "components": [
+
   ],
   "layout": {
     "bottom": [
+
     ]
   }
 }

@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "SteerParticle$0",
       "url": "imports/legacy-mw-content/converted/tutorial/SteerParticle$0.json",
       "viewOptions": {
@@ -13,9 +14,11 @@
     }
   ],
   "components": [
+
   ],
   "layout": {
     "bottom": [
+
     ]
   }
 }

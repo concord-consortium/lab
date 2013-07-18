@@ -9,6 +9,7 @@
   ],
   "models": [
     {
+      "type": "md2d",
       "id": "page4$0",
       "url": "imports/legacy-mw-content/converted/sam-activities/phase-change/original-interactives-in-pages/page4/page4$0.json",
       "viewOptions": {

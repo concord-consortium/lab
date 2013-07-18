@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "static-non-coulomb-test$0",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/custom-lj-properties$0.json",
       "viewOptions": {
@@ -50,7 +51,7 @@
     {
       "type": "slider",
       "id": "epsilon-slider",
-      "min": -0.50,
+      "min": -0.5,
       "max": -0.01,
       "displayValue": "return format('1.2f')(value)",
       "labels": [

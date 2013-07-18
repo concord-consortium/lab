@@ -15,6 +15,7 @@
   ],
   "models": [
     {
+      "type": "md2d",
       "id": "page7$0",
       "url": "imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page7/page7$0.json",
       "viewOptions": {
@@ -79,7 +80,7 @@
         "  vxSum += Math.abs(getAtomProperties(i).vx);",
         "}",
         "return vxSum / atomNum;"
-     ]
+      ]
     },
     {
       "name": "vyMean",
@@ -91,7 +92,7 @@
         "  vySum += Math.abs(getAtomProperties(i).vy);",
         "}",
         "return vySum / atomNum;"
-     ]
+      ]
     },
     {
       "name": "temperatureInside",
@@ -110,12 +111,16 @@
     {
       "name": "volumeInside",
       "unitType": "length",
-      "value": ["return 0.1 * get('height') * getObstacleProperties(0).x;"]
+      "value": [
+        "return 0.1 * get('height') * getObstacleProperties(0).x;"
+      ]
     },
     {
       "name": "volumeOutside",
       "unitType": "length",
-      "value": ["return 0.1 * get('height') * (get('width')-getObstacleProperties(0).x-getObstacleProperties(0).width);"]
+      "value": [
+        "return 0.1 * get('height') * (get('width')-getObstacleProperties(0).x-getObstacleProperties(0).width);"
+      ]
     }
   ],
   "filteredOutputs": [
@@ -157,12 +162,16 @@
     },
     {
       "name": "purpleAtomIndices",
-      "initialValue": [1],
+      "initialValue": [
+        1
+      ],
       "onChange": ""
     },
     {
       "name": "yellowAtomIndices",
-      "initialValue": [1],
+      "initialValue": [
+        1
+      ],
       "onChange": ""
     },
     {
@@ -384,38 +393,54 @@
   ],
   "layout": {
     "left-graphs": [
-      "temperature-inside", "pressure-inside", "volume-inside"
+      "temperature-inside",
+      "pressure-inside",
+      "volume-inside"
     ],
     "left-count": [
       "purple-atoms"
     ],
     "left-spinner": [
-      ["add-inside"],
-      ["remove-inside"]
+      [
+        "add-inside"
+      ],
+      [
+        "remove-inside"
+      ]
     ],
     "left-heat-label": [
       "text-inside-heat"
     ],
     "left-heat": [
-      "heat-inside", "cool-inside"
+      "cool-inside",
+      "heat-inside"
     ],
     "right-graphs": [
-      "temperature-outside", "pressure-outside", "volume-outside"
+      "temperature-outside",
+      "pressure-outside",
+      "volume-outside"
     ],
-    "right-count" : [
+    "right-count": [
       "yellow-atoms"
     ],
     "right-spinner": [
-      ["add-outside"],
-      ["remove-outside"]
+      [
+        "add-outside"
+      ],
+      [
+        "remove-outside"
+      ]
     ],
     "right-heat-label": [
       "text-outside-heat"
     ],
     "right-heat": [
-      "heat-outside", "cool-outside"
+      "cool-outside",
+      "heat-outside"
     ],
-    "footer": [ "show-velocity" ]
+    "footer": [
+      "show-velocity"
+    ]
   },
   "template": [
     {
@@ -450,7 +475,7 @@
       "id": "left-heat",
       "top": "left-heat-label.bottom",
       "left": "left-graphs.left",
-      "fontScale": 0.6
+      "fontScale": 0.65
     },
     {
       "id": "right-graphs",
@@ -487,7 +512,7 @@
       "id": "right-heat",
       "left": "right-graphs.left",
       "top": "right-heat-label.bottom",
-      "fontScale": 0.6,
+      "fontScale": 0.65,
       "padding-left": "1em"
     },
     {

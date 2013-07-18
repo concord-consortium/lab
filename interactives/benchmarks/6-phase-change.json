@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "page6$0",
       "url": "imports/legacy-mw-content/converted/benchmarks/phase-change-energy-input/page6$0.json",
       "viewOptions": {

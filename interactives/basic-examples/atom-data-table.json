@@ -15,6 +15,7 @@
   ],
   "models": [
     {
+      "type": "md2d",
       "id": "simple-gas$0",
       "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
       "viewOptions": {
@@ -262,11 +263,21 @@
   ],
   "layout": {
     "right": [
-      [ "temperature-property-slider" ],
-      [ "axes-label" ],
-      [ "show-gridlines" ],
-      [ "show-xunits" ],
-      [ "show-yunits" ]
+      [
+        "temperature-property-slider"
+      ],
+      [
+        "axes-label"
+      ],
+      [
+        "show-gridlines"
+      ],
+      [
+        "show-xunits"
+      ],
+      [
+        "show-yunits"
+      ]
     ],
     "bottom": [
       [

@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "testingForces$0",
       "url": "imports/legacy-mw-content/converted/potential-tests/static-coulomb-test/testingForces$0.json",
       "viewOptions": {

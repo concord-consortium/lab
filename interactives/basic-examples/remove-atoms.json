@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "remove-atoms$0",
       "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/remove-atoms$0.json",
       "viewOptions": {

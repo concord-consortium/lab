@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "obstacle-ke$0",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/obstacle-ke$0.json",
       "viewOptions": {

@@ -6,6 +6,7 @@
   "fontScale": 0.7,
   "models": [
     {
+      "type": "md2d",
       "id": "page3$0-with-heatbath",
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$0-with-heatbath.json",
       "viewOptions": {
@@ -13,6 +14,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "page3$1",
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$1.json",
       "viewOptions": {
@@ -20,6 +22,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "oilAndWaterMix",
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/oilAndWaterMix.json",
       "viewOptions": {
@@ -250,16 +253,24 @@
         "text-link"
       ],
       [
-        "abs-path-label", "image-absolute-path"
+        "abs-path-label",
+        "image-absolute-path"
       ],
       [
-        "rel-path-label", "image-relative-path"
+        "rel-path-label",
+        "image-relative-path"
       ]
     ],
     "right": [
-      [ "temperature-property-slider" ],
-      [ "temperature-action-slider" ],
-      [ "radio" ]
+      [
+        "temperature-property-slider"
+      ],
+      [
+        "temperature-action-slider"
+      ],
+      [
+        "radio"
+      ]
     ]
   },
   "template": [

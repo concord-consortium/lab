@@ -19,6 +19,7 @@
   ],
   "models": [
     {
+      "type": "md2d",
       "id": "amino-acids$0",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/amino-acids-momentum$0.json",
       "viewOptions": {
@@ -27,7 +28,7 @@
       },
       "modelOptions": {
         "solventForceFactor": 1.25,
-        "additionalSolventForceMult" : 4,
+        "additionalSolventForceMult": 4,
         "additionalSolventForceThreshold": 10,
         "polarAAEpislon": -2
       }
@@ -213,5 +214,6 @@
       ]
     }
   ],
-  "layout": {}
+  "layout": {
+  }
 }

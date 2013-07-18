@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "testingForces$0",
       "url": "imports/legacy-mw-content/converted/potential-tests/static-coulomb-test/testingForces$0.json",
       "viewOptions": {
@@ -51,6 +52,8 @@
     }
   ],
   "layout": {
-    "bottom": [ "<img src='http://lab.dev.concord.org/resources/layout/cc-logo.png'/> <span id='start' style='position: absolute; left: 30%'/> <span id='stop' style='position: absolute; left: 35%'/>  <span style='position: absolute; left: 45%;'>Click here to reset: <span id='reset'/></span>" ]
+    "bottom": [
+      "<img src='http://lab.dev.concord.org/resources/layout/cc-logo.png'/> <span id='start' style='position: absolute; left: 30%'/> <span id='stop' style='position: absolute; left: 35%'/>  <span style='position: absolute; left: 45%;'>Click here to reset: <span id='reset'/></span>"
+    ]
   }
 }

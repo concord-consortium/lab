@@ -15,6 +15,7 @@
   "fontScale": 0.8,
   "models": [
     {
+      "type": "md2d",
       "id": "pendulum1$0",
       "url": "imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
       "viewOptions": {
@@ -131,8 +132,19 @@
     }
   ],
   "exports": {
-    "perRun": ["gravity", "springConstant", "startingDisplacement", "rodLength", "startingAngle", "ballMass", "damping"],
-    "perTick": ["currentAngle", "currentDisplacement"]
+    "perRun": [
+      "gravity",
+      "springConstant",
+      "startingDisplacement",
+      "rodLength",
+      "startingAngle",
+      "ballMass",
+      "damping"
+    ],
+    "perTick": [
+      "currentAngle",
+      "currentDisplacement"
+    ]
   },
   "components": [
     {
@@ -363,7 +375,6 @@
       "height": "model.height * 0.5",
       "padding-left": "1em",
       "padding-right": "0.5em",
-      "padding-bottom": "0.5em",
       "width": "model.width * 1.0",
       "min-width": "model.width * 0.8"
     },

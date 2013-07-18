@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "simple-gas$0",
       "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/sinple-gas-with-textbox-at-center$0.json",
       "viewOptions": {

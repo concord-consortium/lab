@@ -8,6 +8,7 @@
   ],
   "models": [
     {
+      "type": "md2d",
       "id": "simple-ke-shading$0",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/simple-ke-shading$0.json",
       "viewOptions": {
@@ -52,7 +53,10 @@
       "min": 0,
       "max": 1,
       "units": true,
-      "title": ["Kinetic Energy of Particle", "[very long subtitle, which gets truncated]"],
+      "title": [
+        "Kinetic Energy of Particle",
+        "[very long subtitle, which gets truncated]"
+      ],
       "property": "atom0Ke",
       "secondProperty": "atom0KeCustomAVG"
     }

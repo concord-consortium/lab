@@ -4,6 +4,7 @@
   "subtitle": "Use onClick() to add a click listener to a specified type of objects.",
   "models": [
     {
+      "type": "md2d",
       "id": "simple-gas$0",
       "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
       "viewOptions": {
@@ -109,9 +110,18 @@
   ],
   "layout": {
     "bottom": [
-      ["plotLabel", "plotAction"],
-      ["atomLabel", "atomAction"],
-      ["obstacleLabel", "obstacleAction"]
+      [
+        "plotLabel",
+        "plotAction"
+      ],
+      [
+        "atomLabel",
+        "atomAction"
+      ],
+      [
+        "obstacleLabel",
+        "obstacleAction"
+      ]
     ]
   }
 }

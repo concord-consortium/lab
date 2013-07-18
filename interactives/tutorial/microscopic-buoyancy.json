@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "microbuoyancy$0",
       "url": "imports/legacy-mw-content/converted/tutorial/microbuoyancy$0.json",
       "viewOptions": {

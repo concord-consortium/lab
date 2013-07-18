@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "9145860d66f046e44367c4a2cc4e3e9e26196cee",
-        "short_sha":      "9145860d",
-        "url":            "https://github.com/concord-consortium/lab/commit/9145860d",
+        "sha":           "b2f00a1b2386f37c7b6f98855e72f9cf1885b3c0",
+        "short_sha":      "b2f00a1b",
+        "url":            "https://github.com/concord-consortium/lab/commit/b2f00a1b",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-06-19 03:08:42 -0400",
-        "short_message": "corrected program invocation comment",
-        "message":       "corrected program invocation comment"
+        "date":          "2013-07-18 13:51:33 -0400",
+        "short_message": "just remove jquery/node_modules/grunt-contrib-jshint",
+        "message":       "just remove jquery/node_modules/grunt-contrib-jshint\n\nwhen running make clean\n... and the same in jquery-ui"
       },
       "dirty": false
     }
@@ -464,7 +464,8 @@ define('lab.config',['require','common/actual-root'],function (require) {
   "logging": true,
   "tracing": false,
   "authoring": false,
-  "actualRoot": ""
+  "actualRoot": "",
+  "environment": "development"
 };
   publicAPI.actualRoot = actualRoot;
   return publicAPI;
@@ -997,10 +998,8 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
 
     function scale(w, h) {
       if (!w && !h) {
-        // cx = Math.max($node.width(), 120);
-        // cy = Math.max($node.height(), 62);
-        cx = Math.max(elem.property("clientWidth"), 120);
-        cy = Math.max(elem.property("clientHeight"), 62);
+        cx = Math.max(elem.property("clientWidth"), 60);
+        cy = Math.max(elem.property("clientHeight"),60);
       } else {
         cx = w;
         node.style.width =  cx +"px";
@@ -1124,8 +1123,8 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       }
 
       size = {
-        "width":  cx - padding.left - padding.right,
-        "height": cy - padding.top  - padding.bottom
+        "width":  Math.max(cx - padding.left - padding.right, 60),
+        "height": Math.max(cy - padding.top  - padding.bottom, 60)
       };
 
       xScale = d3.scale[options.xscale]()
@@ -2544,10 +2543,10 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
 
     // Add an array (or arrays) of points.
     function addDataPoints(datapoints) {
-      if (Object.prototype.toString.call(datapoints[0][0]) === "[object Array]") {
+      if (Object.prototype.toString.call(datapoints[0]) === "[object Array]") {
         for (var i = 0; i < datapoints.length; i++) {
           points = pointArray[i];
-          points.push.apply(points, datapoints[i]);
+          points.push.apply(points, [datapoints[i]]);
           pointArray[i] = points;
         }
         points = pointArray[0];
@@ -2596,7 +2595,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         pointArray = [points];
         return;
       }
-      if (Object.prototype.toString.call(datapoints[0][0]) === "[object Array]") {
+      if (Object.prototype.toString.call(datapoints[0]) === "[object Array]") {
         for (var i = 0; i < datapoints.length; i++) {
           pointArray.push(copy(datapoints[i]));
         }

@@ -40,6 +40,7 @@
     "VDWLinesCutoff": "medium",
     "showVelocityVectors": false,
     "showForceVectors": false,
+    "electricFieldDensity": 0,
     "showAtomTrace": false,
     "images": [],
     "imageMapping": {},
@@ -2607,6 +2608,52 @@
     ],
     "visible": [
       true,
+      true,
+      true
+    ]
+  },
+  "rectangles": {
+    "x": [
+      -0.13,
+      2.13
+    ],
+    "y": [
+      2.41,
+      2.41
+    ],
+    "height": [
+      1.14,
+      1.14
+    ],
+    "width": [
+      1.66,
+      1.66
+    ],
+    "fence": [
+      true,
+      true
+    ],
+    "color": [
+      "transparent",
+      "transparent"
+    ],
+    "lineColor": [
+      "black",
+      "black"
+    ],
+    "lineWeight": [
+      1,
+      1
+    ],
+    "lineDashes": [
+      "none",
+      "none"
+    ],
+    "layer": [
+      2,
+      2
+    ],
+    "visible": [
       true,
       true
     ]

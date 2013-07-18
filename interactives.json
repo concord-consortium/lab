@@ -438,6 +438,14 @@
       "publicationStatus": "draft"
     },
     {
+      "title": "Amount of Charge",
+      "path": "interactives/conversion-tests/amount-charge.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "Test for smooth charge shading",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
       "title": "Angular Bonds",
       "path": "interactives/conversion-tests/angular-bonds.json",
       "groupKey": "conversion-tests",
@@ -521,6 +529,14 @@
         "constant using the same algorithm like the engine._"
       ],
       "publicationStatus": "public"
+    },
+    {
+      "title": "Electric Field",
+      "path": "interactives/conversion-tests/eletric-field.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
     },
     {
       "title": "Energy Minimization",
@@ -675,6 +691,14 @@
       "publicationStatus": "public"
     },
     {
+      "title": "Rectangles",
+      "path": "interactives/conversion-tests/rectangle.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
       "title": "Single Image on an Atom",
       "path": "interactives/conversion-tests/single-image-on-atom.json",
       "groupKey": "conversion-tests",
@@ -743,6 +767,1570 @@
       "publicationStatus": "public"
     },
     {
+      "title": "Mouse Interaction",
+      "path": "interactives/energy2d/examples/mouse-interaction.json",
+      "groupKey": "energy2d/examples",
+      "subtitle": "Click any point in the model to read its current temperature.",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Outputs",
+      "path": "interactives/energy2d/examples/outputs.json",
+      "groupKey": "energy2d/examples",
+      "subtitle": "Use outputs and Scripting API to graph data.",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Parts",
+      "path": "interactives/energy2d/examples/parts.json",
+      "groupKey": "energy2d/examples",
+      "subtitle": "Use sliders to change properties of the heater. Select an area to create a new part.",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Temperature sensors (bar graphs)",
+      "path": "interactives/energy2d/examples/sensors-and-bar-graphs.json",
+      "groupKey": "energy2d/examples",
+      "subtitle": "Why does a warm object feel warm when you touch it?",
+      "about": "The model shows two contacting objects that have identical mass (*m*)\nand specific heat (*c*<sub>p</sub>) but different initial temperatures.\nThe amount of heat transferred between them measures the heat initially\nstored in the warmer object.\n\n1.  Run the model and note the temperatures measured by the two\n    thermometers.\n2.  Turn the graph on to watch the changes of the temperatures.\n3.  Use the buttons at the upper-right corner of the graph window to\n    rescale the curves if necessary. Click on a thermometer to highlight\n    its data.\n4.  Wait until the temperatures of the two objects do not change any\n    further.\n5.  Record the final temperature of the two objects in your workbook.\n\n**Click the Reset button** and change the initial temperatures of the\ntwo objects using the drop-down menus below the model. Repeat steps 1-5\nfor two more different temperature setups.\n\n",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Temperature sensors (line graph)",
+      "path": "interactives/energy2d/examples/sensors-and-line-graph.json",
+      "groupKey": "energy2d/examples",
+      "subtitle": "Why does a warm object feel warm when you touch it?",
+      "about": "The model shows two contacting objects that have identical mass (*m*)\nand specific heat (*c*<sub>p</sub>) but different initial temperatures.\nThe amount of heat transferred between them measures the heat initially\nstored in the warmer object.\n\n1.  Run the model and note the temperatures measured by the two\n    thermometers.\n2.  Turn the graph on to watch the changes of the temperatures.\n3.  Use the buttons at the upper-right corner of the graph window to\n    rescale the curves if necessary. Click on a thermometer to highlight\n    its data.\n4.  Wait until the temperatures of the two objects do not change any\n    further.\n5.  Record the final temperature of the two objects in your workbook.\n\n**Click the Reset button** and change the initial temperatures of the\ntwo objects using the drop-down menus below the model. Repeat steps 1-5\nfor two more different temperature setups.\n\n",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "View Options",
+      "path": "interactives/energy2d/examples/view-options.json",
+      "groupKey": "energy2d/examples",
+      "subtitle": "Test view options available in Energy2D models.",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "WebGL - Automatic Data Synchronization",
+      "path": "interactives/energy2d/examples/webgl-auto-sync.json",
+      "groupKey": "energy2d/examples",
+      "subtitle": "CPU-GPU data synchronization is controlled by the 'ticksPerGPUSync' option - change it and observe how it affects temperature graph.",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "WebGL - Manual Data Synchronization",
+      "path": "interactives/energy2d/examples/webgl-manual-sync.json",
+      "groupKey": "energy2d/examples",
+      "subtitle": "Set 'ticksPerGPUSync' to 'Infinity' to disable automatic CPU-GPU data synchronization. Use Scripting API to manually synchronize data whenever you need it.",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Heat Storage 1A: Measuring heat storage",
+      "path": "interactives/energy2d/htb/S1A1.json",
+      "groupKey": "energy2d/htb",
+      "subtitle": "Why does a warm object feel warm when you touch it?",
+      "about": [
+        "The model shows two contacting objects that have identical mass (*m*)",
+        "and specific heat (*c*p) but different initial temperatures.",
+        "The amount of heat transferred between them measures the heat initially",
+        "stored in the warmer object.",
+        "",
+        "1.  Run the model and note the temperatures measured by the two thermometers.",
+        "2.  Wait until the temperatures of the two objects do not change any further.",
+        "3.  Note the final temperature of the two objects.",
+        "",
+        "Reset the model and change the initial temperatures of the two",
+        "objects using the sliders below the model. Repeat steps 1-3",
+        "for two more different temperature setups."
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Heat Storage 1B: Heat storage depends on specific heat",
+      "path": "interactives/energy2d/htb/S1B1.json",
+      "groupKey": "energy2d/htb",
+      "subtitle": "Why do some materials take longer to heat up or cool down than others?",
+      "about": [
+        "How much heat is stored in an object depends on its specific heat, as described by the formula below:",
+        "",
+        "*Q* = **c**p⋅**m**(*T*final-*T*initial)",
+        "",
+        "This model is similar to 1A, except that the specific heats of the two rectangular objects are different.",
+        "",
+        "1.  Run the model and note the temperatures measured by the two thermometers.",
+        "2.  Wait until the temperatures of the two objects do not change any further.",
+        "3.  Note the final temperature of the two objects.",
+        "",
+        "Reset the model and change the specific heats of the two",
+        "objects using the sliders below the model. Repeat steps 1-3 for",
+        "two more different setups. Make sure that the specific heats are",
+        "different in each setup."
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Heat Storage 1C: Heat storage depends on size",
+      "path": "interactives/energy2d/htb/S1C1.json",
+      "groupKey": "energy2d/htb",
+      "subtitle": "Why does a bigger house need more energy to heat?",
+      "about": [
+        "How much heat stored in an object depends on its mass, or size, as described by the formula below:",
+        "",
+        "**Q** = *c*p⋅**m**(*T*final - *T*initial)",
+        "",
+        "**Note:** that the specific heats of the two rectangular objects are different. Your task is to change the size of one or both",
+        "objects—hence the mass—so that the equilibrium temperature will be approximately 25°C.",
+        "",
+        "1.  To change the size of an object, click and drag the small yellow rectangles at its edges.",
+        "2.  **Make sure that the objects still touch each other but do not overlap and there is a thermometer in each object.**",
+        "3.  Run the model and wait until the temperatures do not change any further.",
+        "4.  If the final temperatures are close to 25°C (within 1°C), note the sizes of the objects.",
+        "5.  Otherwise, Reset the model, resize the objects, and run the model again until the final temperatures",
+        "    are close to 25°C (within 1°C).",
+        "",
+        "You may use the grid and the ruler as visual assistance when you drag the rectangles.",
+        "",
+        "Use the drop-down menu under the model to change to a different setup of",
+        "specific heats and repeat the task."
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Power and Energy 2A: Regulating temperature",
+      "path": "interactives/energy2d/htb/S2A1.json",
+      "groupKey": "energy2d/htb",
+      "subtitle": "Why does the temperature in a box change more dramatically than the temperature in the other?",
+      "about": [
+        "Two closed boxes have identical heaters but the heat capacity of the left-hand box is much greater",
+        "than the heat capacity of the right-hand box. The power switch controls both heaters.",
+        "",
+        "1. Run the model and use the graph to monitor the temperatures.",
+        "   When the **left-hand side box** reaches 5°C, turn off the power.",
+        "2. Try to keep the temperature in the **left-hand side box** between",
+        "   3 and 5°C by turning the power on and off.",
+        "3. Compare the shapes of the two temperature curves."
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Conduction 3A: Heat conduction through materials",
+      "path": "interactives/energy2d/htb/S3A1.json",
+      "groupKey": "energy2d/htb",
+      "subtitle": "Which material conducts heat most quickly?",
+      "about": [
+        "In this model, you will compare heat conduction through four different types of materials: metal, stone, fiberglass, and wood.",
+        "",
+        "1.  Run the model and note the temperatures measured by the four thermometers.",
+        "2.  Turn the graph on to watch the changes of the temperatures.",
+        "3.  Rescale the graph if necessary",
+        "4.  Wait until the temperatures do not change any further.",
+        "5.  In which material does heat flow the fastest?"
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Conduction 3B: The effect of thermal conductivity",
+      "path": "interactives/energy2d/htb/S3B1.json",
+      "groupKey": "energy2d/htb",
+      "subtitle": "Which test piece has higher thermal conductivity?",
+      "about": [
+        "The rate of heat conduction depends on the thermal conductivity of the material (*k*), as described in the formula below:",
+        "",
+        "Δ*Q*/Δ*t* = -**k** *A*Δ*T*/*L*",
+        "",
+        "(This formula says that heat transfer rate is proportional to thermal conductivity.)",
+        "",
+        "This model has two situations for you to compare. On the left are two separate heat sources with a",
+        "constant temperature (50°C). On the right are two separate objects with a thermometer, which",
+        "measures how much heat has been conducted. The left-hand side and right-hand side objects are",
+        "connected by two test pieces that differ in only thermal conductivity (*k*). **Your task is to",
+        "tell which test piece has higher thermal conductivity.**",
+        "",
+        "1.  Run the model and note the temperatures measured by the two thermometers."
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Conduction 3C: The effect of wall thickness",
+      "path": "interactives/energy2d/htb/S3C1.json",
+      "groupKey": "energy2d/htb",
+      "subtitle": "Which wall loses thermal energy more quickly, thick or thin?",
+      "about": [
+        "The rate of heat conduction depends on how far heat has to travel (*L*), as described below:",
+        "",
+        "Δ*Q*/Δ*t* = -<**k** *A*Δ*T*/*L*",
+        "",
+        "(This formula says that the heat transfer rate is *inversely* proportional to the distance heat has to travel.)",
+        "",
+        "This model has two situations for you to compare. On the left are two separate heat sources with a constant temperature.",
+        "On the right are two separate objects with a thermometer that measures how much heat has been conducted. The upper test",
+        "piece is twice as long as the lower one. Both are made of the same material. This would be like a thick wall compared to a thin one. ",
+        "",
+        "1.  Run the model and note the temperatures measured by the two thermometers."
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Conduction 3D: The effect of temperature difference",
+      "path": "interactives/energy2d/htb/S3D1.json",
+      "groupKey": "energy2d/htb",
+      "subtitle": "Does a hotter object lose heat more quickly?",
+      "about": [
+        "**Your task is to investigate how the amount of heat conducted through the test piece depends on the temperature of the heater on the left-hand side:**",
+        "",
+        "Δ*Q*/Δ*t* = -<**k** *A*Δ*T*/*L*",
+        "",
+        "1.  Run the model until it stops (it will automatically stop after 30 minutes of model time).",
+        "2.  Note the change of the temperature over time in the graph.",
+        "3.  Write down the temperature of the heater and the temperature of the thermometer when the model stops.",
+        "4.  Use the drop-down menu below the model to change the heater temperature.",
+        "5.  Repeat 1-3 for two more different heater temperatures."
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Conduction 3E: Combine thermal conductivity and heat capacity",
+      "path": "interactives/energy2d/htb/S3E1.json",
+      "groupKey": "energy2d/htb",
+      "subtitle": "Which material provides the best insulation?",
+      "about": [
+        "In this model, there are three test pieces made of materials that have different thermal conductivities and heat capacities.",
+        "",
+        "**Your task is to find out which material is the best insulator.**",
+        "",
+        "1.  Run the model and note the temperatures measured by the three thermometers.",
+        "2.  Choose **Thermal energy** from the **Heat map** drop-down list to switch the view from temperature distribution to thermal energy distribution.",
+        "    In the thermal energy view, you will see where the\n    energy goes."
+      ],
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Conduction 3F: Temperatures inside walls",
+      "path": "interactives/energy2d/htb/S3F1.json",
+      "groupKey": "energy2d/htb",
+      "subtitle": "How should you configure different layers for a wall for better insulation?",
+      "about": [
+        "In this model, three layers (labeled as **A**, **B**, and **C**) that have different thermal conductivities",
+        "fill the space between the heater and an object.",
+        "",
+        "**Your challenge is to find out which layer has the greatest thermal conductivity and which has the lowest",
+        "by running a sequence of tests for different layer configurations.**",
+        "",
+        "1.  Run the model and note the temperatures measured by the four thermometers.",
+        "2.  Change the order of the layers using the drop-down menu to test a different setup.",
+        "3.  Repeat the above steps until you reach the conclusion."
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Conduction 3G: Combine thermal conductivity and heat capacity",
+      "path": "interactives/energy2d/htb/S3G1.json",
+      "groupKey": "energy2d/htb",
+      "subtitle": "Which material provides the best insulation?",
+      "about": [
+        "In this model, there are three test pieces made of materials that have different thermal conductivities and heat capacities.",
+        "",
+        "**Your task is to find out which material is the best insulator.**",
+        "",
+        "1.  Run the model and note the temperatures measured by the three thermometers.",
+        "2.  Choose *Thermal energy* from the **Heat map** drop-down list to switch the view from temperature distribution to",
+        "    thermal energy distribution. In the thermal energy view, you will see where the energy goes."
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Conduction 3H: Build your own layered wall (Optional)",
+      "path": "interactives/energy2d/htb/S3H1.json",
+      "groupKey": "energy2d/htb",
+      "subtitle": "",
+      "about": [
+        "Try building your own wall using the objects provided. The conductor has ten times the conductivity",
+        "of the insulator. You can reshape them by clicking on them and dragging the small yellow rectangles.",
+        "Make sure that the pieces touch each other and bridge all the way from the heater on the left to the",
+        "object to be heated on the right.",
+        "",
+        "You can build different walls by:",
+        "",
+        "* moving the boxes around and changing their width and length (use your mouse to do this)",
+        "* copying and then pasting a box to create another one with the same properties (right-click",
+        "  or control-click on the Mac, on an object to do this. You can then move and resize the new object.)",
+        "* making a sandwich of several layers in series",
+        "* making parallel connectors with different conductivities.",
+        "",
+        "(For instance, imagine that the wall consists of insulation with an occasional metal stud that",
+        "forms a bridge through the insulation between\nthe inside and outside.)",
+        "",
+        "You can place the extra thermometers anywhere you like if you want to measure the temperatures inside the wall.",
+        "",
+        "Build at least two different walls in the middle space and compare their rates of heat flow.",
+        "You can compare two walls by turning on the graph, running the model for a minute, and noting",
+        "the temperature of the right-hand object."
+      ],
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Convection 4A: Natural convection",
+      "path": "interactives/energy2d/htb/S4A1.json",
+      "groupKey": "energy2d/htb",
+      "subtitle": "Which mechanism transfers heat more quickly, conduction or convection?",
+      "about": [
+        "This model has two parts with a warm surface at the bottom. The right-hand side is a solid material",
+        "that happens to have the same conductivity as air. The left-hand side is just air. Warmer air heated",
+        "by the hot surface has a buoyant force upward.",
+        "",
+        "**Your task is to compare the rates of the heat flow from the bottom to the top in the two parts.**",
+        "",
+        "1.  Run the model and note the temperatures measured by the two thermometers.",
+        "2.  When the model stops, write the temperatures measured by the thermometers and the temperature at",
+        "    the bottom heater.",
+        "",
+        "Reset the model. Set the bottom temperature to be **Low** and **High** and repeat steps 1-2, respectively."
+      ],
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Convection 4B: Slow down convection",
+      "path": "interactives/energy2d/htb/S4B1.json",
+      "groupKey": "energy2d/htb",
+      "subtitle": "How can convection be reduced?",
+      "about": [
+        "This model has two compartments with a warm surface at the bottom. In the middle of the",
+        "right-hand compartment there is a barrier.",
+        "",
+        "**Your task is to compare the rates of the convective heat transfer from the bottom to the top in the two compartments.**",
+        "",
+        "1.  Run the model and note the temperatures measured by the two thermometers.",
+        "2.  When the model stops, write the temperatures measured by the thermometers and the temperature at the bottom heater.",
+        "3.  Try changing the location of the barrier or adding more barriers. Click on the barrier to change size, move, or copy it.",
+        "4.  Try to connect what you observe in this model to the attic in a house."
+      ],
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Convection 4C: Forced convection",
+      "path": "interactives/energy2d/htb/S4C1.json",
+      "groupKey": "energy2d/htb",
+      "subtitle": "How does blowing air cool down an object?",
+      "about": [
+        "There are two warm objects in this model, separated by a thin, long insulator in the middle.",
+        "In the upper part, there is a fan blowing from left to right. In the lower part, there is no fan blowing.",
+        "",
+        "1.  Run the model and note the temperatures measured by the two thermometers.",
+        "2.  After the model has run for about 25 model minutes (the time for the model, not real time),",
+        "note the temperatures measured by the thermometers.",
+        "",
+        "Set the wind speed to be **Low** and **High** and repeat steps 1-2, respectively."
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Convection 4D: The stack effect",
+      "path": "interactives/energy2d/htb/S4D1.json",
+      "groupKey": "energy2d/htb",
+      "subtitle": "Where does the house lose energy?",
+      "about": [
+        "The two rooms each have a heater at the bottom and **leaks** near the top.",
+        "",
+        "1.  Run the model and look for leaking energy.",
+        "2.  Click on the wall and roof elements to change the sizes and locations of the leaks.",
+        "3.  Note the convection pattern in each situation."
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Convection 4E: Blowing wind",
+      "path": "interactives/energy2d/htb/S4E1.json",
+      "groupKey": "energy2d/htb",
+      "subtitle": "Why should you close the windows in a stormy winter day?",
+      "about": [
+        "This model investigates the effect of wind blowing towards a building. The air currents",
+        "are indicated by arrows and can be shown by streamlines.",
+        "",
+        "1.  Run the model and note the convection and heating patterns both inside and outside the house,",
+        "    heated by a heating board on the floor.",
+        "2.  Change the wind condition and open or close the windows to examine how heat flow will change."
+      ],
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Radiation 5A: Radiation energy depends on temperature",
+      "path": "interactives/energy2d/htb/S5A1.json",
+      "groupKey": "energy2d/htb",
+      "subtitle": "Does a hotter object radiate more energy?",
+      "about": [
+        "This model shows how two heat radiators at different temperatures warm up remote objects through radiation.",
+        "The dashed lines that will radiate out from the radiators represent invisible thermal radiation, which",
+        "passes energy across space. Two thermometers are used to measure the heat gains at the objects.",
+        "",
+        "1.  Change the temperature of the left-hand side object using the radio buttons below the model.",
+        "2.  Compare the heating effect of the radiation at different temperatures.",
+        "3.  Reset the model each time you change the temperature of the left-hand side object."
+      ],
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Solar Energy 6D: Solar heating of a house",
+      "path": "interactives/energy2d/htb/S6D1.json",
+      "groupKey": "energy2d/htb",
+      "subtitle": "How solar angle affect heating in a house?",
+      "about": [
+        "This is a model of sunlight shining on a house with one window (white).",
+        "",
+        "1.  Run the model and watch the house heat up.",
+        "2.  Change the sun angle by slider.",
+        "3.  Try different sun angles — a low angle (winter) and a high angle (summer).",
+        "4.  Turn off sunlight to see how the house loses heat (night condition).",
+        "5.  Be sure to reset the model between experiments."
+      ],
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Energy Detective 7A: A well-insulated house vs. a poorly-insulated house",
+      "path": "interactives/energy2d/htb/S7A1.json",
+      "groupKey": "energy2d/htb",
+      "subtitle": "Compare how much more heat a poorly-insulated house needs with a well-insulated one.",
+      "about": [
+        "You can select one of two houses, A and B, which have identical shape as shown in the model but different quality of construction.",
+        "The yellow object in the middle of the house is a heater. Unlike the previous models, the temperature coloring is initially turned off.",
+        "You may turn it on using the **Heat map** radio button if it helps your diagnosis.",
+        "",
+        "**Your task is to find which house requires higher power to heat.** Tryto maintain a temperature near the window",
+        "at about 20°C. Note that the heater has two power levels and can also be turned off and on as the model runs."
+      ],
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Energy Detective 7B: Where does this house lose heat the most?",
+      "path": "interactives/energy2d/htb/S7B1.json",
+      "groupKey": "energy2d/htb",
+      "subtitle": "Use the temperature difference across walls to find the ones most poorly insulated.",
+      "about": [
+        "This model house may have multiple locations that are poorly insulated.",
+        "",
+        "**Your task is to use the two thermometers at the upper-left corner to detect where the house loses the heat the most.**",
+        "",
+        "1.  Drag the thermometers around to record temperature data to help you find the energy-losing locations.",
+        "2.  There may be multiple locations that are poorly insulated. Compare your measurements and draw conclusions."
+      ],
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Energy Detective 7C: Discover a vertical temperature gradient",
+      "path": "interactives/energy2d/htb/S7C1.json",
+      "groupKey": "energy2d/htb",
+      "subtitle": "How does a ceiling effect the range of temperatures in a house?",
+      "about": [
+        "This model shows the effect of natural convection in a house.",
+        "",
+        "1.  Run the model and note the steady temperatures of the three thermometers, T1, T2, and T3, when the ceiling is present.",
+        "2.  Click the ceiling (the green piece) and move it entirely outside of the house.",
+        "3.  Note how the temperatures of the three thermometers change."
+      ],
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "S1c2",
+      "path": "interactives/energy2d/imported/S1C2.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "S2b1",
+      "path": "interactives/energy2d/imported/S2B1.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "S3f0",
+      "path": "interactives/energy2d/imported/S3F0.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "S3f2",
+      "path": "interactives/energy2d/imported/S3F2.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "S3f3",
+      "path": "interactives/energy2d/imported/S3F3.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "S3f4",
+      "path": "interactives/energy2d/imported/S3F4.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "S3f5",
+      "path": "interactives/energy2d/imported/S3F5.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Rocket Stove",
+      "path": "interactives/energy2d/imported/barrel.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Barrel (Designed by Martin Karl Waldenburg, Germany)",
+      "about": "A [rocket stove][1] mass heater is an innovative and efficient space\nheating system. The following simulation is a barrel model designed by\nMartin Karl Waldenburg from Germany. The volume reduction of the fluid\ndue to the heat loss by the barrel causes an under pressure like a tall\nchimney.\n\n\n\n[1]: http://en.wikipedia.org/wiki/Rocket_stove \n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Bénard Convection Cells",
+      "path": "interactives/energy2d/imported/benard-cell.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "A Self-Organizing Pattern of Fluid Flow",
+      "about": "Rayleigh-Bénard convection is a type of natural convection, occurring in\na plane of fluid heated from below, in which the fluid develops a\nregular pattern of convection cells known as the Bénard cells. The\nfollowing model shows this.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "How does a Bolometer Work?",
+      "path": "interactives/energy2d/imported/bolometer.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Measuring the Power of Incident Electromagnetic Radiation Through the Heating of a Material",
+      "about": "A bolometer consists of a radiation absorber connected to a thermal\nreservoir (a body of constant temperature) through a thermal conductor.\nThe radiation on the absorber raises its temperature above that of the\nreservoir: The greater the radiation intensity, the more energy the\nabsorber absorbs, and the higher its temperature rises. Hence, a\nbolometer can be used to measure radiation intensity.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Heating of a Coaxial Cable",
+      "path": "interactives/energy2d/imported/cable.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Heat Race",
+      "path": "interactives/energy2d/imported/compare-capacity.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Heat Flow through Materials of Different Heat Capacities",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Heat Race",
+      "path": "interactives/energy2d/imported/compare-conductivity.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Heat Flow through Materials of Different Conductivities",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Conduction",
+      "path": "interactives/energy2d/imported/conduction1.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Thermal Conductivity: The Ability to Conduct Heat",
+      "about": "Which conducts heat more quickly from a frying pan to your hand, a wood\nhandle or a metal one?\n\n![Skillet with a wood handle being heated over open\nflame.](_assets/img/skillet-conductivity-low.jpg) ![Skillet with a metal\nhandle being heated over open\nflame.](_assets/img/skillet-conductivity-high.jpg)\n{: align=\"center\"}\n\nThe following model compares heat conduction through two materials of\ndifferent thermal conductivities.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Conduction",
+      "path": "interactives/energy2d/imported/conduction2.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "How does Conducting Area Affect Conduction Rate?",
+      "about": "The following model compares heat conduction through two test pieces\nmade of identical material but their conducting areas are different.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Conduction",
+      "path": "interactives/energy2d/imported/conduction3.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "How does Temperature Difference Affect Conduction Rate?",
+      "about": "If the fire under a frying pan is more intense, will your hand feel\nhotter?\n\n![Skillet over an intense flame.](_assets/img/skillet-more-flame.jpg)\n![Skillet over a low flame.](_assets/img/skillet-less-flame.jpg)\n{: align=\"center\"}\n\nThe following model compares heat conduction through two identical test\npieces but the temperature differences across them are different.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Conduction",
+      "path": "interactives/energy2d/imported/conduction4.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "How does Conducting Distance Affect Conduction Rate?",
+      "about": "If your hand holds in the middle of the handle as opposed to the end,\nwill your hand feel hotter?\n\n![](_assets/img/skillet-long-distance.jpg)\n![](_assets/img/skillet-short-distance.jpg)\n{: align=\"center\"}\n\nThe following model compares heat conduction through two test pieces\nmade of identical material but their lengths are different.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Conduction",
+      "path": "interactives/energy2d/imported/conduction5.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "How does Specific Heat Affect Conduction Rate?",
+      "about": "The following model compares heat conduction through two test pieces\nthat differ ONLY in specific heat. Choosing \\\"Thermal energy\\\" in the\n\\\"Heat map\\\" drop-down list will provide an explanation of the\ndependence of heat conduction rate on specific heat.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Conduction Plate",
+      "path": "interactives/energy2d/imported/conduction_plate.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Conservation of Energy",
+      "path": "interactives/energy2d/imported/conservation-of-energy.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "How Accurate are Our Conduction Calculation?",
+      "about": "This simulation illustrates the accuracy of our heat solver by testing\nhow well it observes the Law of Conservation of Energy (aka the First\nLaw of Thermodynamics). The following model simulates a completely\ninsulative system (i.e., no heat in, no heat out) using a thermal\nboundary of zero heat flux. As you can see, as the time step increases,\nthe precision decreases. But a small time step (0.01s) is capable of\nmaintaining the total thermal energy at a level as accurate as\n**99.99%** for as long as the simulation runs, regardless of the\ncomplexity of the structures in the system!\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Constant Power Sources",
+      "path": "interactives/energy2d/imported/constant-power-sources.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Energy Sources that Absorb or Release Heat at Constant Rates",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Constant Temperature Sources",
+      "path": "interactives/energy2d/imported/constant-temperature-sources.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Energy Sources that Maintain Constant Temperatures",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Temperature, Viscosity, & Conductivity",
+      "path": "interactives/energy2d/imported/convection-exploration.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Exploring Factors that Affect Thermal Convection",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Countercurrent Exchange",
+      "path": "interactives/energy2d/imported/countercurrent-exchange.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Simulation of a Venturi Stove",
+      "path": "interactives/energy2d/imported/cross-section-venturi.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Venturi Effect in Stove (Designed by Martin Karl Waldenburg, Germany)",
+      "about": "\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Dirichlet Boundary Condition",
+      "path": "interactives/energy2d/imported/dirichlet.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Defining the Values on the Boundary of the Problem Domain",
+      "about": "The Dirichlet boundary condition is the first type of boundary condition\nthat defines the values on the border of the problem domain. In the\nfollowing simulation, you can set temperatures of different borders and\nsee how this boundary condition will affect the temperature distribution\ninside the box.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Rocket Stove Mass Heater",
+      "path": "interactives/energy2d/imported/double-bell.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Double Bells (Designed by Martin Karl Waldenburg, Germany)",
+      "about": "A [rocket stove][1] mass heater is an innovative and efficient space\nheating system. Multiple small bells are effective in heat extraction\nthan a single big bell, the total volume can be smaller too. They can be\narranged in many ways, at the side or on top of another. The top\narrangement is used to place a baking oven in one of them. The following\nsimulation is a double-bell model designed by Martin Karl Waldenburg\nfrom Germany.\n\n\n\n[1]: http://en.wikipedia.org/wiki/Rocket_stove \n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Double-Bell Rocket Stove",
+      "path": "interactives/energy2d/imported/double-bell2.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Designed by pinhead",
+      "about": "A [rocket stove][1] mass heater is an innovative and efficient space\nheating system. The following simulation is a double-bell model designed\nby [pinhead][2]. (Author\\'s original comment: \\\"This seems to be a\ndecently-accurate rendition of the bell system that I\\'m currently using\nin my RMH.\\\")\n\n\n\n[1]: http://en.wikipedia.org/wiki/Rocket_stove \n[2]: http://donkey32.proboards.com/index.cgi?action=viewprofile&amp;user=pinhead \n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Double Cavity Flows",
+      "path": "interactives/energy2d/imported/double-cavities.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Energy Audit",
+      "path": "interactives/energy2d/imported/energy-audit.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Where does the House Lose Heat?",
+      "about": "Pretend that you were an energy audit whose job is to inspect the energy\nefficiency of someone\\'s house. You are given two temperature data\nloggers (sensors that record temperature data over time). Your task is\nto identify where the following model house loses most heat and\nrecommend countermeasures.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Field Of Bar",
+      "path": "interactives/energy2d/imported/field-of-bar.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Heat Fins",
+      "path": "interactives/energy2d/imported/fin1.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Accelerating Heat Transfer through Fins",
+      "about": "Fins are used to accelerate heat transfer by increasing surfaces exposed\nto fluids (e.g., air). Fins are often made of materials of high thermal\nconductivity so that they can quickly transport the heat from sources.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Fixed Flux Boundary",
+      "path": "interactives/energy2d/imported/fixed-flux-boundary.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Boundary Conditions",
+      "path": "interactives/energy2d/imported/fixed-temperature-boundary.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Defining the Interaction Between the Simulation Box and the Environment",
+      "about": "The following simulates a box with a constant-temperature heater at the\ncenter. Use the first drop-down menu to select the available boundary\nconditions and run the simulation to examine their effects. You may drag\nthe heater and the thermometers around.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Forced Convection",
+      "path": "interactives/energy2d/imported/forced-convection.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Heat Transfer Caused by Fluid Motion Driven by External Forces",
+      "about": "The following simulation shows a comparison between forced convection\nand conduction.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Exploring Forced Convection",
+      "path": "interactives/energy2d/imported/forced-convection1.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Heat Flow Rates with Different Temperatures and Speeds",
+      "about": "The following model shows how forced convection depends on the wind\nspeed and the temperature of the hot/cold source (how the wind blows\naway heat of your food or defrost the side windows of your car).\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Convective Heat Flow",
+      "path": "interactives/energy2d/imported/forced-convection2.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Four Convection Cells",
+      "path": "interactives/energy2d/imported/forced-convection3.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "When Two Fans Blow Against Each Other...",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Four Fans",
+      "path": "interactives/energy2d/imported/forced-convection4.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "When Four Fans Blow...",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Thermal Ghosting",
+      "path": "interactives/energy2d/imported/ghosting.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Mysterious Dark Areas Caused by Steel Framing in Old Buildings",
+      "about": "You may observe dark areas in interior walls in some old buildings. In\nthe old days people did not understand what caused them. So they\nsuspected that those might be ghosts living in old buildings. Today we\nknow they are caused by the effect of thermal bridging on steer framing\n(colder areas tend to have more water vapor condensation, which\nfacilitates mold growth that makes the areas look dark, like ghost\nshadows). The following simulations show this effect and how to avoid\nit.\n\nRight-click these links to download the models:  \n [ghosting.e2d](e2d/ghosting.e2d),\n[no-ghosting.e2d](e2d/no-ghosting.e2d)\n{: align=\"center\"}\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Heat Conduction to a Hand",
+      "path": "interactives/energy2d/imported/hand.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Why do We Feel Hot or Cold When Touching Something?",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Focusing Heat?",
+      "path": "interactives/energy2d/imported/heat-concentration.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Can Heat be Focused through Forced Convection?",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Heat Storage",
+      "path": "interactives/energy2d/imported/heat-storage.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Which Object is Capable of Storing More Heat from the Sun?",
+      "about": "In the following model, two balls of the same size but of different\nthermal masses are put in different compartments separate by a thermal\ninsulator in the middle. The balls are heated up by shining a light onto\nthem. The light incidents from the upright position and gives an equal\namount of energy to the balls. Start the simulation and wait until the\ntwo thermometers read the same temperature. Then turn off the light.\nSelect \\\"Graph\\\" to see the changes of temperature readings from the\nthermometers.\n\nWhile the simulation is running, turn on the temperature graph. Turn the\nlight on and off several times. If you were to choose from the above two\nmaterials to build a wall of a house, which one would you use?\n\n**Important Note:** Light radiation from the hot plate is represented by\na limited number of rays, each of which travels at a much slower speed\nthan the speed of light. This is a computational approximation that does\nnot reflect the nature of light energy.   \n{: style=\"clear: both;\"}\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "A Heat Shield",
+      "path": "interactives/energy2d/imported/heatshield.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Protecting a Spaceship During Re-Entry",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "A Hot Plate in the Air",
+      "path": "interactives/energy2d/imported/hot-plate-in-air.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Energy Loss from Hot Water",
+      "path": "interactives/energy2d/imported/hot-water-cup-conductivity.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "The Effect of Thermal Conductivity of the Cover",
+      "about": "This model simulates the heat losses from two cups of hot water covered\nby two sheets of materials that have different thermal conductivities.\nOnly a part of the cups is modeled. Convection in water is not\nconsidered.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Energy Loss from Hot Water",
+      "path": "interactives/energy2d/imported/hot-water-cup-open-vs-closed.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "An Open Cup vs. a Closed Cup",
+      "about": "This model simulates the heat losses from two cups of hot water, one\nbeing covered the other closed. Only a part of the cups is modeled.\nConvection in water is not considered.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Energy Loss from Hot Water",
+      "path": "interactives/energy2d/imported/hot-water-cup-thickness.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "The Effect of the Cover Thickness",
+      "about": "This model simulates the heat losses from two cups of hot water covered\nby two sheets of identical materials that have different thickness. Only\na part of the cups is modeled. Convection in water is not considered.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Ceiling as a Thermal Boundary",
+      "path": "interactives/energy2d/imported/house-ceiling.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Comparing Heat Flow in a Room With or Without a Ceiling",
+      "about": "In building science, the border heat can flow to easily is called\nthermal boundary or thermal envelope. It may differ from the shape of\nthe house. With this model, you can investigate if the ceiling is a\nthermal boundary. To remove the ceiling, simply click on it and then\npress the DELETE key.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Heat & Temperature",
+      "path": "interactives/energy2d/imported/ht1.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Computer Simulation: A Visual Approach to Learning the Invisible",
+      "about": "The change of thermal energy, or heat, Q in an object when its\ntemperature changes from T<sub>1</sub> to T<sub>2</sub> is\n\nQ=ρVc(T<sub>2</sub>-T<sub>1</sub>)\n{: .formula}\n\nwhere *ρ* is the density, *V* is the volume, and *c* is the specific\nheat.\n\nImagine an object is placed into a completely insulated box filled with\nwater (see the image below). The initial temperatures of the object and\nthe water may be different. The water will either warm up or cool down\nthrough the diffusion of thermal energy. The direction of heat diffusion\ndepends on the difference of the initial temperatures. Two physical laws\ndictate that the following things must happen:\n\nThe thermal energy that flows into or out of the water in the box is:\n\nQ<sub>wat</sub>=ρ<sub>wat</sub>V<sub>wat</sub>c<sub>wat</sub>(T<sub>final</sub>-T<sub>wat</sub>)\n{: .formula}\n\nThe thermal energy that out of or into the object is:\n\nQ<sub>obj</sub>=ρ<sub>obj</sub>V<sub>obj</sub>c<sub>obj</sub>(T<sub>final</sub>-T<sub>obj</sub>)\n{: .formula}\n\nThe Law of Conservation of Energy requires that\nQ<sub>wat</sub>+Q<sub>obj</sub>=0. This allows us to determine that the\nfinal temperature must be:\n\nT<sub>final</sub>=\n(ρ<sub>wat</sub>V<sub>wat</sub>c<sub>wat</sub>T<sub>wat</sub>+ρ<sub>obj</sub>V<sub>obj</sub>c<sub>obj</sub>T<sub>obj</sub>)/\n(ρ<sub>wat</sub>V<sub>wat</sub>c<sub>wat</sub>+ρ<sub>obj</sub>V<sub>obj</sub>c<sub>obj</sub>)\n{: .formula}\n\nComputer modeling provides opportunities of virtual experimentation,\nwhich could make the understanding of the above concepts more concrete.\nThe model below presents a dynamic view of how heat transfer actually\nhappens between the test piece and the water, as opposed to just\nproviding a value of final temperature.\n\nIn the model, there are two thermometers for monitoring the temperatures\ninside and outside the test piece. While the model is running, you can\nturn a graph on to view the temperatures recorded by the thermometers.\nThe following things can be explored with this model (remember to reset\nthe simulation using the \\\"Reset\\\" button before you change the model):\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Infiltration",
+      "path": "interactives/energy2d/imported/infiltration.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "The Effect of Insulation",
+      "path": "interactives/energy2d/imported/insulation-effect.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Which House is More Energy-Efficient?",
+      "about": "This simulation shows the effect of insulation in warming or cooling a\nhouse. The environment temperature is set to be 20 °C. Which house is\nmore energy-efficient, House A or House B?\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Kelvin Helmholtz",
+      "path": "interactives/energy2d/imported/kelvin-helmholtz.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Laminar Turbulent",
+      "path": "interactives/energy2d/imported/laminar-turbulent.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Lid-Driven Cavity",
+      "path": "interactives/energy2d/imported/lid-driven-cavity.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Benchmark of Computational Fluid Dynamics",
+      "about": "The lid-driven cavity flow involves a fluid in a square box driven by\nconstant \\\"blow\\\" near the lid. Depending on the physical conditions, a\nstable eddy can form within the box (as shown by the streamlines). You\nmay notice that when a stable eddy occupies the entire box, its center\nis actually cooler than the edge, indicating the faster heat transfer\nrate through forced convection than through conduction. The lid-driven\ncavity problem is one of the most important benchmarks for computational\nfluid dynamics.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Man",
+      "path": "interactives/energy2d/imported/man.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Mantle Convection",
+      "path": "interactives/energy2d/imported/mantle.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Moving Heat from Earth's Core to the Surface",
+      "about": "Mantle convection is the slow creeping motion of Earth\\'s rocky mantle\ncaused by convection currents carrying heat from the interior of the\nEarth to the surface.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Natural Convection",
+      "path": "interactives/energy2d/imported/natural-convection.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Convection",
+      "path": "interactives/energy2d/imported/natural-convection1.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Hotter Surface Convects More Heat",
+      "about": "Newton\\'s Law of Cooling suggests that the hotter an object is, the more\nthermal energy it loses through convection. The following model\ndemonstrates this. Notice the linear dependence of transferred heat on\nthe temperature of the heater: If the temperature is twice as high, the\nconvected heat will be approximately twice as much.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Convection",
+      "path": "interactives/energy2d/imported/natural-convection2.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Comparing Convective and Conductive Heat Transfer",
+      "about": "The following model shows the difference between convection and\nconduction. The model has a heater at the bottom that warms up a chamber\nof air and a solid of equal size.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Natural Daylighting",
+      "path": "interactives/energy2d/imported/natural-daylighting.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Using Natural Light in Sustainable Buildings",
+      "about": "Sustainable buildings use windows or other openings and reflective\nsurfaces to provides effective internal lighting using sunlight. Energy\nuse can be reduced by using less electric lights. You can compare a\nregular window and a reflector window in the following simulation.\n\nRight-click the link to download the model:\n[natural-daylighting.e2d](e2d/natural-daylighting.e2d)\n{: align=\"center\"}\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Neumann Boundary Condition",
+      "path": "interactives/energy2d/imported/neumann.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Defining the Gradients on the Boundary of the Problem Domain",
+      "about": "The Neumann boundary condition is the second type of boundary condition\nthat defines the gradients on the border of the problem domain (the\ngradient at a spot along the border describes how much the value across\nthe boundary changes). In the following simulation, you can set heat\nfluxes through different borders and see how this boundary condition\nwill affect the temperature distribution inside the box.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "No Ghosting",
+      "path": "interactives/energy2d/imported/no-ghosting.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Parallel Conductors",
+      "path": "interactives/energy2d/imported/parallel-conductors.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Plume",
+      "path": "interactives/energy2d/imported/plume.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Power and Energy",
+      "path": "interactives/energy2d/imported/power-energy.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "A More Powerful Heater Warms up a Room More Quickly",
+      "about": "Energy (*Q*) and power (*P*) are related by *Q* = *Pt*. This means the\nlonger (*t*) you turn on a heater, the more heat (*Q*) it will produce.\nAnd the higher the power (*P*) is, the more heat (*Q*) it will produce.\n\nTwo identical, closed boxes each have a round heater at the center, with\nthe power output as labeled. Instructions: 1) Run the model and turn the\ngraph on to monitor the temperatures; 2) Use the buttons at the\nupper-right corner of the graph window to rescale the curves if\nnecessary; 3) Calculate **the ratio of the temperatures** measured by\nthe two thermometers in the two boxes and compare it with **the ratio of\nthe heating powers**.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "The Prandtl Number",
+      "path": "interactives/energy2d/imported/prandtl.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Conductive vs. Convective Heat Transfer",
+      "about": "Both conduction and convection happen in fluids. As heat transfer\nthrough both processes reduces the temperature difference, they can be\nconsidered as competing against each other in transferring heat. There\nare many different types of fluids, such as air, water, oil, or mercury.\nThe rates of conduction and convection vary in different fluids.\nSometimes, conduction dominates. Other times, convection dominates. The\nPrandtl number is a parameter that can be used to roughly determine\nwhich process will \\\"win\\\":\n\nPr=ν/α\n{: .formula}\n\nwhere *ν* is the kinematic viscosity and *α* is the thermal diffusivity.\nIf a fluid is more viscous (sticky), the Prandtl number is greater and\nthe heat transfer will be more conductive.\n\nThe following simulation shows how fluids with different Prandtl numbers\ntransfer heat.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "The Projection Effect",
+      "path": "interactives/energy2d/imported/projection-effect.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Projection",
+      "path": "interactives/energy2d/imported/projection.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Thermal Quadrupole",
+      "path": "interactives/energy2d/imported/quadrupole.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Heat Flow from Four Sources in an Insulated Box",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Radiation",
+      "path": "interactives/energy2d/imported/radiation.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "The total energy radiated by an object per unit time is proportional to\nthe fourth power of its absolute temperature *T* (in Kelvin, 0°C≈273K):\n\nP=εσAT<sup>4</sup>\n{: .formula}\n\nwhere *A* is the surface area of the object, *σ* is the Stefan-Boltzmann\nconstant, and *ε* is the emissivity of the object\\'s material. This is\nknown as the **Stefan-Boltzmann Law**.\n\nThe emissivities of materials vary. If the object is a perfect black\nbody, *ε*=1. Metals tend to have a very low emissivity. Water and paper,\non the other hand, have high emissivity (0.95).\n\nThe following model shows the temperature dependence of the radiation\npower.\n\n**Important Note:** Light radiation from the hot plate is represented by\na limited number of rays, each of which travels at a much slower speed\nthan the speed of light. This is a computational approximation that does\nnot reflect the nature of light energy.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Ray Optics",
+      "path": "interactives/energy2d/imported/ray-tracing.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Rectangular vs. Round Heat Source",
+      "path": "interactives/energy2d/imported/rectangular-vs-circular-heat-source.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Why does Temperature Drop Faster near a Round Heat Source?",
+      "about": "A rectangular heat source (that is almost as long as the edge of the\nupper compartment) and a round heat source are both at 80°C. At the left\nside there are two heat sinks set at 20°C. The entire boundary is\ninsulative. The heat flux vectors (the rates of heat flow at given\nlocations) appear to be much greater near the round heat source than\nnear the rectangular one, indicating that temperature drops faster in\nthe former case. The heat flux field in the case of the rectangular heat\nsource appears to be uniform, with the temperature drops one degree at\napproximately the same distance away from the heat source. Can you\nfigure out why there is such a difference? (Hint: Think about\nconservation of energy during heat flow.)\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Regulating Temperature",
+      "path": "interactives/energy2d/imported/regulation.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "Two closed boxes have identical heaters but the heat capacity of the\nleft-hand box is much greater than the heat capacity of the right-hand\nbox. The power switch controls both heaters.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "The Reynolds Number",
+      "path": "interactives/energy2d/imported/reynolds.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Laminar Flow vs. Turbulent Flow",
+      "about": "In fluid mechanics, the Reynolds number Re is a dimensionless number\nthat gives a measure of the ratio of inertial forces to viscous forces\nand consequently quantifies the relative importance of these two types\nof forces for given flow conditions:\n\nRe=VL<sub>c</sub>/ν\n{: .formula}\n\nwhere *ν* is the kinematic viscosity, *V* is the mean velocity of the\nfluid, and *L*<sub>c</sub> is the characteristic length of the geometry.\nThe higher the Reynolds number is, the more turbulent the flow will be.\nThe following simulation compares four different Reynolds numbers. The\nfluid is the same in the four separate flow channels, but the driving\nvelocities are different. The viscosity of the fluid can be altered\nusing a slider.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Series Conductors",
+      "path": "interactives/energy2d/imported/series-conductors.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Shelter",
+      "path": "interactives/energy2d/imported/shelter.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Skylight",
+      "path": "interactives/energy2d/imported/skylight.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Heat from the Sun",
+      "about": "Note: Convection is not considered in the above model.   \n{: style=\"clear: both;\"}\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Smoke In Wind",
+      "path": "interactives/energy2d/imported/smoke-in-wind.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Solar Chimney",
+      "path": "interactives/energy2d/imported/solar-chimney.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Under the Sun or in the Shade",
+      "path": "interactives/energy2d/imported/solar-cycles-shadow.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Two-Four Hours Solar Cycles of Heating and Cooling",
+      "about": "This simulation compares the solar heating under the sun and in the\nshade using two temperature sensors. The simulation starts at 12am and\nassumes that the sun rises at 4am and sets at 20pm. Note that in the\nfirst few seconds you may not see any sun beams. Just wait for a while\nuntil the sun shines in.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Solar Heating Cycles",
+      "path": "interactives/energy2d/imported/solar-cycles.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Twenty-Four Hours Heating and Cooling Cycles under Clouds",
+      "about": "This simulation starts at 12am and assumes that the sun rises at 6am and\nsets at 6pm. So in the first few seconds you may not see heating. Just\nwait for a while until the sun shines in. Notice that the moving clouds\ncause some small random fluctuations in the temperature graph.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Solar Heating in a House",
+      "path": "interactives/energy2d/imported/solar-heating-convection.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "What is Modeling?",
+      "path": "interactives/energy2d/imported/solar-heating-two-story.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Simulating Natural Phenomena with Computers",
+      "about": "Most phenomena involved in physical systems are governed by well-defined\nscientific laws. These laws correlate different properties and provide\ninsights to the states of a system and processes it undergoes.\nMathematical models can therefore be derived based on the laws, allowing\nscientists and engineers to explain what has happened or predict what\nwill happen.\n\nIf a mathematical model is too complicated to solve, a computer will be\nneeded. Thus, we have a **computational model** that approximates the\nsolution using some numerical algorithms. Computational models are now\nincreasingly important parts of computer-aided design (CAD) packages,\nwhich are in the tool box of almost every engineer whose job involves\nresearch and development (R&amp;D). Computational models are often\ncalled **numerical simulations**. So we will use the two terms\ninterchangably.\n\nToday\\'s students need to have a fundamental understanding of what\ncomputational models are and how they can be used to accelerate R&amp;D\nprocesses.\n\nThe following is a simple model of solar heating of a house. Use the\ncontrols to play with it and explore how such a model contributes to\ndeveloping an understanding of the physical variables and processes\ninvolved in designing solar houses.\n\n<input type=\"button\" value=\"Reload page\"\nonclick=\"window.location.reload()\" />   \n  \n **Reload the entire page to reset the model and the buttons.**\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Solar Oven",
+      "path": "interactives/energy2d/imported/solar-oven.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Focusing Sunlight to Cook Up Your Dinner",
+      "about": "Right-click these links to download the models:  \n [solar-oven.e2d](e2d/solar-oven.e2d),\n[solar-oven2.e2d](e2d/solar-oven2.e2d)\n{: align=\"center\"}\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Solar Oven2",
+      "path": "interactives/energy2d/imported/solar-oven2.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Solar Radiation",
+      "path": "interactives/energy2d/imported/solar-radiation.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Heat from the Sun",
+      "about": "Note: Convection is not considered in the above model.   \n{: style=\"clear: both;\"}\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Solar Updraft Tower",
+      "path": "interactives/energy2d/imported/solar-updraft-tower.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "A New Solar Power Technology",
+      "about": "The solar updraft tower is a clean energy power plant for generating\nelectricity from the sun. Sunshine falling on a greenhouse collector\nstructure around the base of a tall chimney heats the air within it. The\nresulting convection causes air to rise up in the tower, driving wind\nturbines to produce electricity. In December 2011, Hyperion Energy\nannounced that it would build a solar updraft tower in Arizona that\nwould rival the height of the tallest building in the world!\n\nRight-click these links to download the models:  \n [solar-updraft-tower.e2d](e2d/solar-updraft-tower.e2d),\n[solar-updraft-tower2.e2d](e2d/solar-updraft-tower2.e2d),\n[solar-updraft-tower3.e2d](e2d/solar-updraft-tower3.e2d)\n{: align=\"center\"}\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Solar Updraft Tower2",
+      "path": "interactives/energy2d/imported/solar-updraft-tower2.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Solar Updraft Tower3",
+      "path": "interactives/energy2d/imported/solar-updraft-tower3.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "A Metal Spoon vs. a Wood Spoon",
+      "path": "interactives/energy2d/imported/spoon.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Which One Feels Hotter?",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Stack Effect",
+      "path": "interactives/energy2d/imported/stack-effect.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "How does Infilstration Cause Buildings to Lose Energy due to Convection?",
+      "about": "Also known as the chimney effect, the stack effect is the movement of\nair in and out a structure driven by natural thermal convection (i.e.,\nhot air rises and cool air sinks). The effect usually causes the system\nto lose energy more quickly, as the following simulation shows.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Test Links",
+      "path": "interactives/energy2d/imported/step1.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Multiple Simulations Can Be Linked Together in Energy2D",
+      "about": "To support the full screen mode, Energy2D provides a small control panel\non which you can define links to the previous simulation and the next\nsimulation. With this functionality, you can load a new simulation into\nEnergy2D without leaving the page and provide a sequence of linked\nsimulations that are related to a topic.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Step2",
+      "path": "interactives/energy2d/imported/step2.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Streamlines",
+      "path": "interactives/energy2d/imported/streamlines.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Sunspace",
+      "path": "interactives/energy2d/imported/sunspace.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "A Thermal Bridge",
+      "path": "interactives/energy2d/imported/thermal-bridge.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Leaking Energy through Thermal Conduction",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Thermoregulation",
+      "path": "interactives/energy2d/imported/thermoregulation.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Keeping the Body Temperature Constant",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "A Thermos",
+      "path": "interactives/energy2d/imported/thermos.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Keeping Stuff Warm or Cool",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Multiple Thermostats (Cooling)",
+      "path": "interactives/energy2d/imported/thermostat-cooling.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Different Cooling Zones",
+      "about": "In Energy2D, you can create as multiple thermostats and a single\ntemperature sensor can be connected to multiple power sources.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "How the Sun Affects a Thermostat",
+      "path": "interactives/energy2d/imported/thermostat.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "How Much Energy Can be Saved for Heating When the Sun Shines?",
+      "about": "A thermostat is a controller that maintains a system\\'s temperature near\na fixed point. The simplest thermostat does this by switching a heater\nor AC on and off to maintain the desired temperature. The following\nmodel simulates a thermostat that uses a temperature sensor to control a\nheater. Turn on the temperature graph. Let the simulation run for a few\ncycles and then turn on the sunlight. Compare the behavior of the\ntemperature graph. You can also try to move the temperature sensor to\nexamine how the on/off time of the thermostat depends on its location.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Solar Heating and Thermostats",
+      "path": "interactives/energy2d/imported/thermostat1.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "How does Solar Heating Affect the Duty Cycle of a Thermostat?",
+      "about": "Note: This simulation starts at 12am and assumes that the sun rises at\n4am and sets at 8pm. So in the first few seconds you may not see\nheating. Just wait for a while until the sun shines in.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Multiple Thermostats (Heating)",
+      "path": "interactives/energy2d/imported/thermostat2.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Different Heating Zones",
+      "about": "In Energy2D, you can create as multiple thermostats and a single\ntemperature sensor can be connected to multiple power sources.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Touch Convect",
+      "path": "interactives/energy2d/imported/touch-convect.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Touch",
+      "path": "interactives/energy2d/imported/touch.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Trombe Wall Closeup",
+      "path": "interactives/energy2d/imported/trombe-wall-closeup.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Trombe Wall",
+      "path": "interactives/energy2d/imported/trombe-wall.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "An Air Convective Loop that Circulates Solar Energy",
+      "about": "A Trombe wall is a sun-facing wall separated from the outdoors by glass\nand an air space, which absorbs solar energy and releases it into the\nhouse through a convective air loop. It consists a solar absorber (often\npainted black) and two vents for air to circulate and carry the solar\nheat. The following simulation shows this.\n\nRight-click these links to download the models:  \n [trombe-wall.e2d](e2d/trombe-wall.e2d),\n[trombe-wall-closeup.e2d](e2d/trombe-wall-closeup.e2d)\n{: align=\"center\"}\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Two Blocks",
+      "path": "interactives/energy2d/imported/two-blocks.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "What Really Makes the Sense of Warmth or Coldness?",
+      "about": "The amount of heat transferred from an object to your hand or vice versa\ndetermines what you really feel when you touch it. The model uses two\ncontacting objects at different temperatures to simulate the heat\ntransfer of touch. The amount of heat transferred between them depends\non a number of factors that you will explore with this simulation.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "What is an Isotherm?",
+      "path": "interactives/energy2d/imported/usa-isotherm.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "A Contour Line Connecting Points of Equal Temperature",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "The Effect of Convection",
+      "path": "interactives/energy2d/imported/vertical-temperature-gradient-in-house.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Discover a Vertical Temperature Gradient in a House",
+      "about": "This simulation shows there exists a vertical temperature gradient in a\nhouse caused by natural thermal convection.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Multiple Buildings",
+      "path": "interactives/energy2d/imported/village1.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Viscosity and Turbulence",
+      "path": "interactives/energy2d/imported/viscosity-turbulence.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "Laminar and Turbulent Heat Flows",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Vortex Street",
+      "path": "interactives/energy2d/imported/vortex-street-viscosity.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "The Effect of Viscosity",
+      "about": "This simulation shows that the formation of a vortex street depends on\nthe viscosity of the fluid.\n\n[Download this model](e2d/vortex-street-viscosity.e2d)\n{: align=\"center\"}\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Vortex Street",
+      "path": "interactives/energy2d/imported/vortex-street.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "The Effect of Obstacle Size",
+      "about": "The term vortex street (also known as von Kármán vortex street) is used\nin fluid dynamics to describe a repeating pattern of swirling vortices\ncaused by the unsteady separation of flow over obstacles. This\nsimulation shows that the formation of a vortex street depends on the\ndiameter of the obstacle.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "The Zeroth Law of Thermodynamics",
+      "path": "interactives/energy2d/imported/zeroth.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "If two systems are in thermal equilibrium with a third one, they are also in thermal equilibrium with each other.",
+      "about": "If A and B are in thermal equilibrium with C, then A and B will be in\nthermal equilibrium with each other if they are brought into contact.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Heat Storage 1A: Measuring heat storage",
+      "path": "interactives/energy2d/imported-htb/S1A1.json",
+      "groupKey": "energy2d/imported-htb",
+      "subtitle": "Why does a warm object feel warm when you touch it?",
+      "about": "The model shows two contacting objects that have identical mass (*m*)\nand specific heat (*c*<sub>p</sub>) but different initial temperatures.\nThe amount of heat transferred between them measures the heat initially\nstored in the warmer object.\n\n1.  Run the model and note the temperatures measured by the two\n    thermometers.\n2.  Turn the graph on to watch the changes of the temperatures.\n3.  Use the buttons at the upper-right corner of the graph window to\n    rescale the curves if necessary. Click on a thermometer to highlight\n    its data.\n4.  Wait until the temperatures of the two objects do not change any\n    further.\n5.  Record the final temperature of the two objects in your workbook.\n\n**Click the Reset button** and change the initial temperatures of the\ntwo objects using the drop-down menus below the model. Repeat steps 1-5\nfor two more different temperature setups.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Heat Storage 1B: Heat storage depends on specific heat",
+      "path": "interactives/energy2d/imported-htb/S1B1.json",
+      "groupKey": "energy2d/imported-htb",
+      "subtitle": "Why do some materials take longer to heat up or cool down than others?",
+      "about": "How much heat is stored in an object depends on its specific heat, as\ndescribed by the formula below:\n\n\n\n| *Q* = <font color=\"red\">***c*<sub>p</sub>***m*(*T*<sub>final</sub>-*T*<sub>initial</sub>) </font>\n\n |\n{: cellpadding=\"10\" border=\"0\" bgcolor=\"#ffffff\"}\n\nThis model is similar to 1A, except that the specific heats of the two\nrectangular objects are different.\n\n1.  Run the model and note the temperatures measured by the two\n    thermometers.\n2.  Turn the graph on to watch the changes of the temperatures.\n3.  Use the buttons at the upper-right corner of the graph window to\n    rescale the curves if necessary.\n4.  Wait until the temperatures of the two objects do not change any\n    further.\n5.  Record the final temperature of the two objects in your workbook.\n\n**Click the Reset button** and change the specific heats of the two\nobjects using the drop-down menus below the model. Repeat steps 1-5 for\ntwo more different setups. Make sure that the specific heats are\ndifferent in each setup.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Heat Storage 1C: Heat storage depends on size",
+      "path": "interactives/energy2d/imported-htb/S1C1.json",
+      "groupKey": "energy2d/imported-htb",
+      "subtitle": "Why does a bigger house need more energy to heat?",
+      "about": "How much heat stored in an object depends on its mass, or size, as\ndescribed by the formula below:\n\n\n\n| *Q* = *c*<sub>p</sub><font color=\"red\">***m***(*T*<sub>final</sub>-*T*<sub>initial</sub>) </font>\n\n |\n{: cellpadding=\"10\" border=\"0\" bgcolor=\"#ffffff\"}\n\nNote that the specific heats of the two rectangular objects are\ndifferent. **Your task is to change the size of one or both\nobjects—hence the mass—so that the equilibrium temperature will be\napproximately 25°C.**\n\n1.  To change the size of an object, click and drag the small yellow\n    rectangles at its edges.\n2.  **Make sure that the objects still touch each other but do not\n    overlap and there is a thermometer in each object.**\n3.  Run the model and wait until the temperatures do not change any\n    further.\n4.  If the final temperatures are close to 25°C (within 1°C), write down\n    the sizes of the objects in your workbook.\n5.  Otherwise, click the Reset button, resize the objects, and run the\n    model again until the final temperatures are close to 25°C (within\n    1°C).\n\nYou may use the grid and the ruler as visual assistance when you drag\nthe rectangles.\n\nUse the drop-down menu under the model to change to a different setup of\nspecific heats and repeat the task.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Power and Energy 2A: Regulating temperature",
+      "path": "interactives/energy2d/imported-htb/S2A1.json",
+      "groupKey": "energy2d/imported-htb",
+      "subtitle": "Why does the temperature in a box change more dramatically than the temperature in the other?",
+      "about": "Two closed boxes have identical heaters but the heat capacity of the\nleft-hand box is much greater than the heat capacity of the right-hand\nbox. The power switch controls both heaters.\n\n1.  Run the model and turn the graph on to monitor the temperatures.\n    Click on a thermometer to highlight its data.\n2.  Use the buttons at the upper-right corner of the graph window to\n    rescale the curves if necessary.\n3.  When the **left-hand side box** reaches 5°C, turn off the power.\n4.  Try to keep the temperature in the **left-hand side box** between 3\n    and 5°C by turning the power on and off.\n5.  Compare the shapes of the two temperature curves.\n\nAfter you have completed your investigation, answer the questions in\nyour workbook.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Conduction 3A: Heat conduction through materials",
+      "path": "interactives/energy2d/imported-htb/S3A1.json",
+      "groupKey": "energy2d/imported-htb",
+      "subtitle": "Which material conducts heat most quickly?",
+      "about": "In this model, you will compare heat conduction through four different\ntypes of materials: metal, stone, fiberglass, and wood.\n\n1.  Run the model and note the temperatures measured by the four\n    thermometers.\n2.  Turn the graph on to watch the changes of the temperatures.\n3.  Use the buttons at the upper-right corner of the graph window to\n    rescale the curves if necessary. Click on a thermometer to highlight\n    its data.\n4.  Wait until the temperatures do not change any further.\n5.  In which material does heat flow the fastest? Answer the questions\n    in your workbook.\n\nIn the following sections, we will study all the factors that affect the\nrate of heat conduction.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Conduction 3B: The effect of thermal conductivity",
+      "path": "interactives/energy2d/imported-htb/S3B1.json",
+      "groupKey": "energy2d/imported-htb",
+      "subtitle": "Which test piece has higher thermal conductivity?",
+      "about": "The rate of heat conduction depends on the thermal conductivity of the\nmaterial (*k*), as described in the formula below:\n\n\n\n| Δ*Q*/Δ*t* = -<font color=\"red\">***k****A*Δ*T*/*L* </font>\n\n |\n{: cellpadding=\"10\" border=\"0\" bgcolor=\"#ffffff\"}\n\n(This formula says that heat transfer rate is proportional to thermal\nconductivity. See the Workbook for the meanings of the math symbols.)\n\nThis model has two situations for you to compare. On the left are two\nseparate heat sources with a constant temperature (50°C). On the right\nare two separate objects with a thermometer, which measures how much\nheat has been conducted. The left-hand side and right-hand side objects\nare connected by two test pieces that differ in only thermal\nconductivity (*k*). **Your task is to tell which test piece has higher\nthermal conductivity.**\n\n1.  Run the model and note the temperatures measured by the two\n    thermometers.\n2.  Turn the graph on to watch the changes of the temperatures.\n3.  Use the buttons at the upper-right corner of the graph window to\n    rescale the curves if necessary.\n4.  Click a thermometer to highlight its temperature curve.\n\nAfter you have observed the model, answer the questions in your\nworkbook.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Conduction 3C: The effect of wall thickness",
+      "path": "interactives/energy2d/imported-htb/S3C1.json",
+      "groupKey": "energy2d/imported-htb",
+      "subtitle": "Which wall loses thermal energy more quickly, thick or thin?",
+      "about": "The rate of heat conduction depends on how far heat has to travel (*L*),\nas described below:\n\n\n\n<table cellpadding=\"10\" border=\"0\" bgcolor=\"#ffffff\"> <tr> <td>\n\nΔ<i>Q</i>/Δ<i>t</i> = -<i>k</i><i>A</i>Δ<i>T</i>/<i><font color=\"red\"><b>L</b> </font>   \n\n<p>(This formula says that the heat transfer rate is <i>inversely</i> proportional to the distance heat has to travel.)\n\n</p> <p>This model has two situations for you to compare. On the left are two separate heat sources with a constant temperature.  On the right are two separate objects with a thermometer that measures how much heat has been conducted. The upper test piece is twice as long as the lower one. Both are made of the same material.  This would be like a thick wall compared to a thin one. \n\n</p> <ol> <li>Run the model and note the temperatures measured by the two thermometers.  </li> <li>Turn the graph on to watch the changes of the temperatures.  </li> <li>Use the buttons at the upper-right corner of the graph window to rescale the curves if necessary. </li> </ol>\n\n<p>After you observe the model, answer the questions in your workbook.  </p>\n</i></td></tr></table>\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Conduction 3D: The effect of temperature difference",
+      "path": "interactives/energy2d/imported-htb/S3D1.json",
+      "groupKey": "energy2d/imported-htb",
+      "subtitle": "Does a hotter object lose heat more quickly?",
+      "about": "**Your task is to investigate how the amount of heat conducted through\nthe test piece depends on the temperature of the heater on the left-hand\nside:**\n\n\n\n| Δ*Q*/Δ*t* = -*k**A*<font color=\"red\">**Δ*T***/*L* </font>\n\n |\n{: cellpadding=\"10\" border=\"0\" bgcolor=\"#ffffff\"}\n\n1.  Run the model until it stops.\n2.  Turn the graph on to watch the change of the temperature if\n    necessary.\n3.  In the workbook, write down the temperature of the heater and the\n    temperature of the thermometer when the model stops.\n4.  Use the drop-down menu below the model to change the heater\n    temperature.\n5.  Repeat 1-3 for two more different heater temperatures.\n\nAfter you have completed your investigation, answer the questions in\nyour workbook.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Conduction 3E: Combine thermal conductivity and heat capacity",
+      "path": "interactives/energy2d/imported-htb/S3E1.json",
+      "groupKey": "energy2d/imported-htb",
+      "subtitle": "Which material provides the best insulation?",
+      "about": "In this model, there are three test pieces made of materials that have\ndifferent thermal conductivities and heat capacities. **Your task is to\nfind out which material is the best insulator.**\n\n1.  Run the model and note the temperatures measured by the three\n    thermometers.\n2.  Turn the graph on to watch the changes of the temperatures.\n3.  Use the buttons at the upper-right corner of the graph window to\n    rescale the curves if necessary.\n4.  Choose \\\"Thermal energy\\\" from the \\\"Heat map\\\" drop-down list to\n    switch the view from temperature distribution to thermal energy\n    distribution. In the thermal energy view, you will see where the\n    energy goes.\n\nAfter you observe the model, answer the questions in your workbook.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Conduction 3F: Temperatures inside walls",
+      "path": "interactives/energy2d/imported-htb/S3F1.json",
+      "groupKey": "energy2d/imported-htb",
+      "subtitle": "How should you configure different layers for a wall for better insulation?",
+      "about": "In this model, three layers (labeled as \\\"A\\\", \\\"B\\\", and \\\"C\\\") that\nhave different thermal conductivities fill the space between the heater\nand an object. **Your challenge is to find out which layer has the\ngreatest thermal conductivity and which has the lowest by running a\nsequence of tests for different layer configurations.**\n\n1.  Run the model and note the temperatures measured by the four\n    thermometers.\n2.  Turn the graph on to watch the changes of the temperatures.\n3.  Use the buttons at the upper-right corner of the graph window to\n    rescale the curves if necessary.\n4.  Change the order of the layers using the drop-down menu to test a\n    different setup.\n5.  Repeat the above steps until you reach the conclusion.\n\nAfter you have completed your investigation, answer the questions in\nyour workbook.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Conduction 3G: Combine thermal conductivity and heat capacity",
+      "path": "interactives/energy2d/imported-htb/S3G1.json",
+      "groupKey": "energy2d/imported-htb",
+      "subtitle": "Which material provides the best insulation?",
+      "about": "In this model, there are three test pieces made of materials that have\ndifferent thermal conductivities and heat capacities. **Your task is to\nfind out which material is the best insulator.**\n\n1.  Run the model and note the temperatures measured by the three\n    thermometers.\n2.  Turn the graph on to watch the changes of the temperatures.\n3.  Use the buttons at the upper-right corner of the graph window to\n    rescale the curves if necessary.\n4.  Choose \\\"Thermal energy\\\" from the \\\"Heat map\\\" drop-down list to\n    switch the view from temperature distribution to thermal energy\n    distribution. In the thermal energy view, you will see where the\n    energy goes.\n\nAfter you observe the model, answer the questions in your workbook.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Conduction 3H: Build your own layered wall (Optional)",
+      "path": "interactives/energy2d/imported-htb/S3H1.json",
+      "groupKey": "energy2d/imported-htb",
+      "subtitle": "",
+      "about": "Try building your own wall using the objects provided. The conductor has\nten times the conductivity of the insulator. You can reshape them by\nclicking on them and dragging the small yellow rectangles. Make sure\nthat the pieces touch each other and bridge all the way from the heater\non the left to the object to be heated on the right.\n\nYou can build different walls by:\n\n* moving the boxes around and changing their width and length (use your\n  mouse to do this);\n* copying and then pasting a box to create another one with the same\n  properties (right-click, or control-click on the Mac, on an object to\n  do this. You can then move and resize the new object.);\n* making a sandwich of several layers in series;\n* making parallel connectors with different conductivities.\n\n(For instance, imagine that the wall consists of insulation with an\noccasional metal stud that forms a bridge through the insulation between\nthe inside and outside.)\n\nYou can place the extra thermometers anywhere you like if you want to\nmeasure the temperatures inside the wall.\n\nBuild at least two different walls in the middle space and compare their\nrates of heat flow. You can compare two walls by turning on the graph,\nrunning the model for a minute, and noting the temperature of the\nright-hand object.\n\n**For Windows users: Take a screenshot of your wall using the \\\"Print\nScreen\\\" key on your keyboard (you may hold down the Ctrl key), paste\ninto the Paint program and save it as an image file in your folder.**\n\nThen answer the questions in your workbook.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Convection 4A: Natural convection",
+      "path": "interactives/energy2d/imported-htb/S4A1.json",
+      "groupKey": "energy2d/imported-htb",
+      "subtitle": "Which mechanism transfers heat more quickly, conduction or convection?",
+      "about": "This model has two parts with a warm surface at the bottom. The\nright-hand side is a solid material that happens to have the same\nconductivity as air. The left-hand side is just air. Warmer air heated\nby the hot surface has a buoyant force upward. **Your task is to compare\nthe rates of the heat flow from the bottom to the top in the two\nparts.**\n\n1.  Run the model and note the temperatures measured by the two\n    thermometers.\n2.  Turn the graph on to watch the changes of the temperatures.\n3.  Use the buttons at the upper-right corner of the graph window to\n    rescale the curves if necessary. Click on a thermometer to highlight\n    its data.\n4.  When the model stops, write the temperatures measured by the\n    thermometers and the temperature at the bottom heater in your\n    workbook.\n\nReset the model. Set the bottom temperature to be \\\"Low\\\" and \\\"High\\\"\nand repeat steps 1-4, respectively.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Convection 4B: Slow down convection",
+      "path": "interactives/energy2d/imported-htb/S4B1.json",
+      "groupKey": "energy2d/imported-htb",
+      "subtitle": "How can convection be reduced?",
+      "about": "This model has two compartments with a warm surface at the bottom. In\nthe middle of the right-hand compartment there is a barrier. **Your task\nis to compare the rates of the convective heat transfer from the bottom\nto the top in the two compartments.**\n\n1.  Run the model and note the temperatures measured by the two\n    thermometers.\n2.  Turn the graph on to watch the changes of the temperatures.\n3.  Use the buttons at the upper-right corner of the graph window to\n    rescale the curves if necessary. Click on a thermometer to highlight\n    its data.\n4.  When the model stops, write the temperatures measured by the\n    thermometers and the temperature at the bottom heater in your\n    workbook.\n5.  Try changing the location of the barrier or adding more barriers.\n    Click on the barrier to change size, move, or copy it.\n6.  Try to connect what you observe in this model to the attic in a\n    house.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Convection 4C: Forced convection",
+      "path": "interactives/energy2d/imported-htb/S4C1.json",
+      "groupKey": "energy2d/imported-htb",
+      "subtitle": "How does blowing air cool down an object?",
+      "about": "There are two warm objects in this model, separated by a thin, long\ninsulator in the middle. In the upper part, there is a fan blowing from\nleft to right. In the lower part, there is no fan blowing.\n\n1.  Run the model and note the temperatures measured by the two\n    thermometers.\n2.  Turn the graph on to watch the changes of the temperatures.\n3.  Use the buttons at the upper-right corner of the graph window to\n    rescale the curves if necessary.\n4.  After the model has run for about 0.4 model hour (the time for the\n    model, not real time), write the temperatures measured by the\n    thermometers in your workbook.\n\nSet the wind speed to be \\\"Low\\\" and \\\"High\\\" and repeat steps 1-4,\nrespectively.\n\nAfter you have completed your investigation, answer the questions in\nyour workbook.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Convection 4D: The stack effect",
+      "path": "interactives/energy2d/imported-htb/S4D1.json",
+      "groupKey": "energy2d/imported-htb",
+      "subtitle": "Where does the house lose energy?",
+      "about": "The two rooms each have a heater at the bottom and \\\"leaks\\\" near the\ntop.\n\n1.  Run the model and look for leaking energy.\n2.  Click on the wall and roof elements and drag the small yellow\n    rectangles on their edges to change the sizes and locations of the\n    leaks.\n3.  Note the convection pattern in each situation.\n\nAfter you have completed your investigation, answer the questions in\nyour workbook.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Convection 4E: Blowing wind",
+      "path": "interactives/energy2d/imported-htb/S4E1.json",
+      "groupKey": "energy2d/imported-htb",
+      "subtitle": "Why should you close the windows in a stormy winter day?",
+      "about": "This model investigates the effect of wind blowing towards a building.\nThe air currents are indicated by arrows and can be shown by\nstreamlines.\n\n1.  Run the model and note the convection and heating patterns both\n    inside and outside the house, heated by a heating board on the\n    floor.\n2.  Change the wind condition and open or close the windows to examine\n    how heat flow will change.\n\nAfter you have completed your investigation, answer the questions in\nyour workbook.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Radiation 5A: Radiation energy depends on temperature",
+      "path": "interactives/energy2d/imported-htb/S5A1.json",
+      "groupKey": "energy2d/imported-htb",
+      "subtitle": "Does a hotter object radiate more energy?",
+      "about": "This model shows how two heat radiators at different temperatures warm\nup remote objects through radiation. The dashed lines that will radiate\nout from the radiators represent invisible thermal radiation, which\npasses energy across space. Two thermometers are used to measure the\nheat gains at the objects.\n\n1.  Turn the graph on to monitor the change of temperatures.\n2.  Change the temperature of the left-hand side object using the radio\n    buttons below the model.\n3.  Compare the heating effect of the radiation at different\n    temperatures.\n4.  Reset the model each time you change the temperature of the\n    left-hand side object.\n\nAfter you have completed your investigation, answer the questions in\nyour workbook.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Solar Energy 6D: Solar heating of a house",
+      "path": "interactives/energy2d/imported-htb/S6D1.json",
+      "groupKey": "energy2d/imported-htb",
+      "subtitle": "",
+      "about": "This is a model of sunlight shining on a house with one window (white).\n\n1.  Run the model and watch the house heat up.\n2.  Change the sun angle by pressing on the \\'Q\\' or \\'W\\' on the\n    keyboard.\n3.  Try different sun angles — a low angle (winter) and a high angle\n    (summer).\n4.  Turn off sunlight to see how the house loses heat (night condition).\n5.  Be sure to reset the model between experiments.\n\nAfter you have completed your investigation, answer the questions in\nyour workbook.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Energy Detective 7A: A well-insulated house vs. a poorly-insulated house",
+      "path": "interactives/energy2d/imported-htb/S7A1.json",
+      "groupKey": "energy2d/imported-htb",
+      "subtitle": "",
+      "about": "You can select one of two houses, A and B, which have identical shape as\nshown in the model but different quality of construction. The yellow\nobject in the middle of the house is a heater. Unlike the previous\nmodels, the temperature coloring is initially turned off. You may turn\nit on using the \\\"Heat map\\\" radio button if it helps your diagnosis.\n\n**Your task is to find which house requires higher power to heat.** Try\nto maintain a temperature near the window at about 20°C. Note that the\nheater has two power levels and can also be turned off and on as the\nmodel runs. Turn on the graph to observe the temperatures recorded by\nthe thermometers.\n\nAfter you have completed your investigation, answer the questions in\nyour workbook.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Energy Detective 7B: Where does this house lose heat the most?",
+      "path": "interactives/energy2d/imported-htb/S7B1.json",
+      "groupKey": "energy2d/imported-htb",
+      "subtitle": "",
+      "about": "This model house may have multiple locations that are poorly insulated.\n**Your task is to use the two thermometers at the upper-left corner to\ndetect where the house loses the heat the most.**\n\n1.  Drag the thermometers around to record temperature data to help you\n    find the energy-losing locations.\n2.  There may be multiple locations that are poorly insulated. Compare\n    your measurements and draw conclusions.\n\nAfter you have completed your investigation, answer the questions in\nyour workbook. Each building section is labeled so that you can refer to\nit in your answers.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Energy Detective 7C: Discover a vertical temperature gradient",
+      "path": "interactives/energy2d/imported-htb/S7C1.json",
+      "groupKey": "energy2d/imported-htb",
+      "subtitle": "",
+      "about": "This model shows the effect of natural convection in a house.\n\n1.  Run the model, turn the graph on, and observe the temperatures.\n2.  Record the steady temperatures of the three thermometers, T1, T2,\n    and T3, when the ceiling is present.\n3.  Click the ceiling (the green piece) and press the DELETE key on your\n    keyboard to remove it.\n4.  Record the temperatures of the three thermometers again.\n\nYou may turn the streamlines on to observe the convective flow in more\ndetails.\n\nAfter you have completed your investigation, answer the questions in\nyour workbook.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "Geniverse Gene to Protein",
       "path": "interactives/external-projects/geniverse/geniverse-gene-to-protein.json",
       "groupKey": "external-projects/geniverse",
@@ -799,6 +2387,14 @@
       "publicationStatus": "public"
     },
     {
+      "title": "Electrostatics: Charged balls",
+      "path": "interactives/interactions-project/chargeballs.json",
+      "groupKey": "interactions-project",
+      "subtitle": "Opposite Charges Attract, Like Charges Repel",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "Horizontal Align",
       "path": "interactives/layout-tests/align.json",
       "groupKey": "layout-tests",
@@ -851,22 +2447,6 @@
         "   Created by hand, this SVG image uses SVG text elements and the SVG feGaussianBlur filter to create the drop-shadow effect."
       ],
       "publicationStatus": "public"
-    },
-    {
-      "title": null,
-      "path": "interactives/models/sam/diffusion/diffusion-build-your-own-mml.json",
-      "groupKey": "models/sam/diffusion",
-      "subtitle": "",
-      "about": "",
-      "publicationStatus": "draft"
-    },
-    {
-      "title": null,
-      "path": "interactives/models/sam/diffusion/diffusion-sandbox-mml.json",
-      "groupKey": "models/sam/diffusion",
-      "subtitle": "",
-      "about": "",
-      "publicationStatus": "draft"
     },
     {
       "title": "light2",
@@ -1205,6 +2785,158 @@
       "publicationStatus": "draft"
     },
     {
+      "title": "atom-builder-page3",
+      "path": "interactives/rites/atom-builder-page3.json",
+      "groupKey": "rites",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "dissociation-edited",
+      "path": "interactives/rites/dissociation-edited.json",
+      "groupKey": "rites",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "gas1",
+      "path": "interactives/rites/gas1.json",
+      "groupKey": "rites",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "gas2",
+      "path": "interactives/rites/gas2.json",
+      "groupKey": "rites",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "heatingCurve3$1",
+      "path": "interactives/rites/heatingCurve3$1.json",
+      "groupKey": "rites",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "heatingCurve3",
+      "path": "interactives/rites/heatingCurve3.json",
+      "groupKey": "rites",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "interaction-melting",
+      "path": "interactives/rites/interaction-melting.json",
+      "groupKey": "rites",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "light1",
+      "path": "interactives/rites/light1.json",
+      "groupKey": "rites",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "light3",
+      "path": "interactives/rites/light3.json",
+      "groupKey": "rites",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "liquid",
+      "path": "interactives/rites/liquid.json",
+      "groupKey": "rites",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "newBrownianPage3",
+      "path": "interactives/rites/newBrownianPage3.json",
+      "groupKey": "rites",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "page2",
+      "path": "interactives/rites/page2.json",
+      "groupKey": "rites",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "page3",
+      "path": "interactives/rites/page3.json",
+      "groupKey": "rites",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "partition-two-atoms",
+      "path": "interactives/rites/partition-two-atoms.json",
+      "groupKey": "rites",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "plasma",
+      "path": "interactives/rites/plasma.json",
+      "groupKey": "rites",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "solid1",
+      "path": "interactives/rites/solid1.json",
+      "groupKey": "rites",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "solid2",
+      "path": "interactives/rites/solid2.json",
+      "groupKey": "rites",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "solids",
+      "path": "interactives/rites/solids.json",
+      "groupKey": "rites",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "sunlight1",
+      "path": "interactives/rites/sunlight1.json",
+      "groupKey": "rites",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "DNA to Protein",
       "path": "interactives/sam/DNA-to-proteins/1-dna-to-protein.json",
       "groupKey": "sam/DNA-to-proteins",
@@ -1318,13 +3050,15 @@
       "title": "Diffusion Across a Permeable Membrane",
       "path": "interactives/sam/diffusion/5-permeable-membrane.json",
       "groupKey": "sam/diffusion",
-      "subtitle": "",
+      "subtitle": "Exchanging gases across a cell membrane",
       "about": [
-        "Oxygen and Carbon Dioxide can both easily cross this gas permeable membrane.",
-        "----------------------------------------------------------------------------",
-        "Change the starting concentrations of the gases on either side and observe how long it takes for the gases to diffuse across the membrane."
+        "Cell membranes are composed of two layers of phospholipids (a phospholipid bilayer). Some molecules are capable of crossing this membrane directly, without use of specific membrane channels.",
+        "",
+        "Oxygen and carbon dioxide are two molecules that can freely cross the cell membrane. In aerobic cells, oxygen is necessary for cell functioning and carbon dioxide is produced as a waste molecule. Hence, the cell “wants” oxygen to enter and carbon dioxide to leave. But molecules don’t move only in one direction–they diffuse randomly across the membrane.",
+        "",
+        "Set up the model with high oxygen and low carbon dioxide outside the cell and low oxygen and high carbon dioxide inside the cell. In which direction do the oxygen and carbon dioxide molecules move?"
       ],
-      "publicationStatus": "draft"
+      "publicationStatus": "public"
     },
     {
       "title": "Diffusion - Build your own model",
@@ -1343,7 +3077,7 @@
       "publicationStatus": "draft"
     },
     {
-      "title": "Empty",
+      "title": "Empty diffusion model",
       "path": "interactives/sam/diffusion/empty.json",
       "groupKey": "sam/diffusion",
       "subtitle": "",
@@ -1564,11 +3298,35 @@
       "publicationStatus": "draft"
     },
     {
+      "title": "Absoprtion Spectra",
+      "path": "interactives/sam/light-matter/absorption.json",
+      "groupKey": "sam/light-matter",
+      "subtitle": "Explore how light interacts mixtured of elements",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "Blackbody Heat and Emission",
       "path": "interactives/sam/light-matter/blackbody-emission.json",
       "groupKey": "sam/light-matter",
       "subtitle": "Blackbody radiation at different temperatures",
       "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Emission Spectrometer",
+      "path": "interactives/sam/light-matter/emission-spectrometer.json",
+      "groupKey": "sam/light-matter",
+      "subtitle": "Measure emission spectra from atoms",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Harvesting Light for Photosynthesis",
+      "path": "interactives/sam/light-matter/harvesting-light.json",
+      "groupKey": "sam/light-matter",
+      "subtitle": "Different colored leaves absorb, reflect, and transmit different photons. Is the light that a leaf absorbs the same color as the leaf?",
+      "about": "Different colored leaves absorb, reflect, and transmit different photons. Is the light that a leaf absorbs the same color as the leaf?",
       "publicationStatus": "draft"
     },
     {
@@ -5769,6 +7527,11 @@
       "category": "Samples"
     },
     {
+      "path": "interactions-project",
+      "name": "Interactions Project",
+      "category": "Curriculum"
+    },
+    {
       "path": "sam/intermolecular-attractions",
       "name": "Science of Atoms and Molecules: Intermolecular Attractions",
       "category": "Curriculum"
@@ -5801,6 +7564,11 @@
     {
       "path": "inquiry-space/pendulum",
       "name": "Inquiry Space: Pendulums",
+      "category": "Curriculum"
+    },
+    {
+      "path": "rites",
+      "name": "RITES",
       "category": "Curriculum"
     },
     {
@@ -5955,7 +7723,27 @@
     },
     {
       "path": "solar-system",
-      "name": "Solar System Interactives",
+      "name": "Solar System",
+      "category": "Tests"
+    },
+    {
+      "path": "energy2d/htb",
+      "name": "Energy2D: Heat Transfer",
+      "category": "Curriculum"
+    },
+    {
+      "path": "energy2d/examples",
+      "name": "Energy2D",
+      "category": "Tests"
+    },
+    {
+      "path": "energy2d/imported-htb",
+      "name": "Energy2D: Heat Transfer (imported)",
+      "category": "Tests"
+    },
+    {
+      "path": "energy2d/imported",
+      "name": "Energy2D (imported)",
       "category": "Tests"
     },
     {

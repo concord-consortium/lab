@@ -444,7 +444,8 @@ define('lab.config',['require','common/actual-root'],function (require) {
   "logging": true,
   "tracing": false,
   "authoring": false,
-  "actualRoot": ""
+  "actualRoot": "",
+  "environment": "development"
 };
   publicAPI.actualRoot = actualRoot;
   return publicAPI;

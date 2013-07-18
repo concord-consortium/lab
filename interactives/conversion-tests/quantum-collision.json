@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "quantum-collision",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/quantum-collision$0.json",
       "viewOptions": {

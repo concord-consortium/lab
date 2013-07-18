@@ -6,6 +6,7 @@
   "fontScale": 0.8,
   "models": [
     {
+      "type": "md2d",
       "id": "pendulum1$0",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/pendulum1$0.json",
       "viewOptions": {
@@ -15,16 +16,16 @@
   ],
   "outputs": [
     {
-      "name":  "currentAngle",
+      "name": "currentAngle",
       "label": "Current Angle",
       "unitAbbreviation": "°",
       "value": [
-          "var pivotAtom = getAtomProperties(0),",
-              "swingingAtom = getAtomProperties(1),",
-              "dx = swingingAtom.x - pivotAtom.x,",
-              "dy = swingingAtom.y - pivotAtom.y,",
-              "angle = 90 + rad2deg * Math.atan2(dy, dx);",
-          "return angle;"
+        "var pivotAtom = getAtomProperties(0),",
+        "swingingAtom = getAtomProperties(1),",
+        "dx = swingingAtom.x - pivotAtom.x,",
+        "dy = swingingAtom.y - pivotAtom.y,",
+        "angle = 90 + rad2deg * Math.atan2(dy, dx);",
+        "return angle;"
       ]
     }
   ],
@@ -64,8 +65,17 @@
     }
   ],
   "exports": {
-    "perRun": ["startingGravity", "startingLength", "startingAngle", "ballMass", "ballFriction"],
-    "perTick": ["currentAngle", "kineticEnergy"]
+    "perRun": [
+      "startingGravity",
+      "startingLength",
+      "startingAngle",
+      "ballMass",
+      "ballFriction"
+    ],
+    "perTick": [
+      "currentAngle",
+      "kineticEnergy"
+    ]
   },
   "components": [
     {
@@ -202,7 +212,11 @@
       "xmax": 100,
       "ymin": 0,
       "ymax": 4.5,
-      "properties": ["kineticEnergy", "startingGravity", "startingLength"]
+      "properties": [
+        "kineticEnergy",
+        "startingGravity",
+        "startingLength"
+      ]
     }
   ],
   "layout": {

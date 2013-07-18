@@ -5,23 +5,24 @@
   "about": "",
   "models": [
     {
+      "type": "solar-system",
       "id": "four-bodies",
-      "type": "pta",
       "url": "models/solar-system/four-planets.json",
       "viewOptions": {
         "controlButtons": "play_reset_step"
       },
       "onLoad": [
+
       ]
     }
   ],
   "outputs": [
     {
-      "name":  "numBodies",
+      "name": "numBodies",
       "label": "Bodies",
       "units": "count",
       "value": [
-          "return getNumberOfBodies();"
+        "return getNumberOfBodies();"
       ]
     }
   ],
@@ -88,14 +89,27 @@
   ],
   "layout": {
     "right": [
-      [ "add-random-body" ],
-      [ "current-bodies" ],
-      [ "wrapping-label" ],
-      [ "horizontal-wrapping" ],
-      [ "vertical-wrapping" ],
-      [ "trace-buttons" ]
+      [
+        "add-random-body"
+      ],
+      [
+        "current-bodies"
+      ],
+      [
+        "wrapping-label"
+      ],
+      [
+        "horizontal-wrapping"
+      ],
+      [
+        "vertical-wrapping"
+      ],
+      [
+        "trace-buttons"
+      ]
     ],
     "bottom": [
+
     ]
   },
   "template": [

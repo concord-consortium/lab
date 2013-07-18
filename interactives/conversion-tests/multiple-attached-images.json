@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "multiple-attached-images$0",
       "url": "imports/legacy-mw-content/converted/potential-tests/multiple-attached-images/multiple-attached-images$0.json",
       "viewOptions": {

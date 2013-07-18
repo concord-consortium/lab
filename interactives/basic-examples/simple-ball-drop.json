@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "main-model",
       "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-ball-drop$0.json",
       "viewOptions": {
@@ -127,21 +128,44 @@
   ],
   "layout": {
     "left": [
-      [ "gravity-slider" ],
-      [ "time-display" ],
-      [ "ball-height-display" ]
+      [
+        "gravity-slider"
+      ],
+      [
+        "time-display"
+      ],
+      [
+        "ball-height-display"
+      ]
     ],
     "bottom": [
+
     ],
     "right": [
-      [ "height-property" ],
-      [ "width-property" ],
-      [ "axes-label" ],
-      [ "show-gridlines" ],
-      [ "show-xunits" ],
-      [ "show-yunits" ],
-      [ "show-xlabel" ],
-      [ "show-ylabel" ]
+      [
+        "height-property"
+      ],
+      [
+        "width-property"
+      ],
+      [
+        "axes-label"
+      ],
+      [
+        "show-gridlines"
+      ],
+      [
+        "show-xunits"
+      ],
+      [
+        "show-yunits"
+      ],
+      [
+        "show-xlabel"
+      ],
+      [
+        "show-ylabel"
+      ]
     ]
   },
   "template": [

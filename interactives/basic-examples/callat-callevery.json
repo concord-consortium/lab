@@ -7,6 +7,7 @@
   ],
   "models": [
     {
+      "type": "md2d",
       "id": "simple-gas$0",
       "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
       "viewOptions": {
@@ -189,12 +190,36 @@
   ],
   "layout": {
     "bottom": [
-      ["c-1", "c-2", "c-3"],
-      ["r-1", "callAt1000", "callAt1000Count"],
-      ["r-2", "callAt1033", "callAt1033Count"],
-      ["r-3", "callEvery3000", "callEvery3000Count"],
-      ["r-4", "callEvery3033", "callEvery3033Count"],
-      ["r-5", "callEvery25", "callEvery25Count"]
+      [
+        "c-1",
+        "c-2",
+        "c-3"
+      ],
+      [
+        "r-1",
+        "callAt1000",
+        "callAt1000Count"
+      ],
+      [
+        "r-2",
+        "callAt1033",
+        "callAt1033Count"
+      ],
+      [
+        "r-3",
+        "callEvery3000",
+        "callEvery3000Count"
+      ],
+      [
+        "r-4",
+        "callEvery3033",
+        "callEvery3033Count"
+      ],
+      [
+        "r-5",
+        "callEvery25",
+        "callEvery25Count"
+      ]
     ]
   }
 }

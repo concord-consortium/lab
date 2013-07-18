@@ -1,0 +1,20 @@
+{
+  "title": "No Ghosting",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "* no further description available",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "no-ghosting",
+      "url": "imports/energy2d/models-json/no-ghosting.json",
+      "importedFrom": "imports/energy2d/models-xml/no-ghosting.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

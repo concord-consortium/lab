@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "scotchyoke$0",
       "url": "imports/legacy-mw-content/converted/student/classic/motion/scotchyoke$0.json",
       "viewOptions": {
@@ -13,9 +14,11 @@
     }
   ],
   "components": [
+
   ],
   "layout": {
     "bottom": [
+
     ]
   }
 }

@@ -5,6 +5,7 @@
   "about": "The custom colors from left to right are: orange, light-blue, red, and yellow.",
   "models": [
     {
+      "type": "md2d",
       "id": "custom-element-colors$0",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/custom-element-colors$0.json",
       "viewOptions": {
@@ -14,6 +15,8 @@
     }
   ],
   "components": [
+
   ],
-  "layout": {}
+  "layout": {
+  }
 }

@@ -7,6 +7,7 @@
   ],
   "models": [
     {
+      "type": "md2d",
       "id": "simple-ke-shading$0",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/simple-ke-shading$0.json",
       "viewOptions": {

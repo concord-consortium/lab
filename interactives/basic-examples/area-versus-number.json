@@ -6,6 +6,7 @@
   "fontScale": 0.8,
   "models": [
     {
+      "type": "md2d",
       "id": "main-model",
       "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/area-versus-applied-pressure$0.json",
       "viewOptions": {

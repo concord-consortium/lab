@@ -5,6 +5,7 @@
   "about": "Run the model and change the temperature. What happens to the pressure when the temperature changes?",
   "models": [
     {
+      "type": "md2d",
       "id": "page5$0",
       "url": "imports/legacy-mw-content/converted/sam-activities/gas-laws/original-interactives-in-pages/page5/page5$0.json",
       "viewOptions": {
@@ -44,7 +45,7 @@
     }
   ],
   "components": [
-      {
+    {
       "type": "slider",
       "id": "temperature-slider",
       "min": 100,

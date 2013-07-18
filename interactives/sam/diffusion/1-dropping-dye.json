@@ -8,6 +8,7 @@
   ],
   "models": [
     {
+      "type": "md2d",
       "id": "model1",
       "url": "imports/legacy-mw-content/converted/sam-activities/diffusion/page1/page1$0.json",
       "viewOptions": {
@@ -41,7 +42,7 @@
         "var atomID = randomAtoms(1);",
         "var tracedAtomID = get('tracedAtom');",
         "if (tracedAtomID != -99) {",
-          "setAtomProperties(tracedAtomID, {element: 0, marked: get('wasMarked')}, false, false, opt);",
+        "setAtomProperties(tracedAtomID, {element: 0, marked: get('wasMarked')}, false, false, opt);",
         "}",
         "setAtomProperties(atomID, {element: 1}, false, false, opt);",
         "set({tracedAtom: atomID});",
@@ -56,19 +57,19 @@
       "text": "Add Drop of Dye",
       "action": [
         "batch(function() {",
-          "var x, y, atomsToMark;",
-          "switch(randomInteger(4)) {",
-          "  case 0:",
-          "  x = 0.5; y = 0.5; break;",
-          "  case 1:",
-          "  x = 3.2; y = 0.5; break;",
-          "  case 2:",
-          "  x = 0.5; y = 2.0; break;",
-          "  case 3:",
-          "  x = 3.2; y = 2.0; break;",
-          "}",
-          "atomsToMark = atomsWithinCircle(x, y, 0.5);",
-          "markAtoms(atomsToMark);",
+        "var x, y, atomsToMark;",
+        "switch(randomInteger(4)) {",
+        "  case 0:",
+        "  x = 0.5; y = 0.5; break;",
+        "  case 1:",
+        "  x = 3.2; y = 0.5; break;",
+        "  case 2:",
+        "  x = 0.5; y = 2.0; break;",
+        "  case 3:",
+        "  x = 3.2; y = 2.0; break;",
+        "}",
+        "atomsToMark = atomsWithinCircle(x, y, 0.5);",
+        "markAtoms(atomsToMark);",
         "});",
         "start();"
       ]
@@ -76,7 +77,8 @@
   ],
   "layout": {
     "under-model": [
-      "trace","drop-dye"
+      "trace",
+      "drop-dye"
     ]
   },
   "template": [

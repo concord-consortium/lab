@@ -9,6 +9,7 @@
   ],
   "models": [
     {
+      "type": "md2d",
       "id": "instructions",
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/instructions.json",
       "viewOptions": {
@@ -19,9 +20,8 @@
             "text": "Explore the different attractive forces between molecules of varying polarity.",
             "x": 0.85,
             "y": 1.8,
-            "width": 2.7,
-            "fontScale": 1.4,
             "width": 2.5,
+            "fontScale": 1.4,
             "layer": 1
           },
           {
@@ -36,6 +36,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "leastPolarPull",
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/leastPolarPull.json",
       "viewOptions": {
@@ -54,6 +55,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "medPolarPull",
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/medPolarPull.json",
       "viewOptions": {
@@ -72,6 +74,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "mostPolarPull",
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page4/mostPolarPull.json",
       "viewOptions": {

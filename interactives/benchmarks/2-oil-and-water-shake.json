@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "page3$1",
       "url": "imports/legacy-mw-content/converted/benchmarks/oil-and-water/page3$1.json",
       "viewOptions": {
@@ -13,6 +14,7 @@
       "onLoad": "set({ showClock: true})"
     },
     {
+      "type": "md2d",
       "id": "oilAndWaterMix",
       "url": "imports/legacy-mw-content/converted/benchmarks/oil-and-water/oilAndWaterMix.json",
       "viewOptions": {

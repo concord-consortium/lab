@@ -10,6 +10,7 @@
   "fontScale": 0.8,
   "models": [
     {
+      "type": "md2d",
       "id": "simple-gas$0",
       "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
       "viewOptions": {
@@ -18,6 +19,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "multiatomic-gas$0",
       "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/multiatomic-gas$0.json",
       "viewOptions": {
@@ -26,6 +28,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "pendulum1$0",
       "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/pendulum1$0.json",
       "viewOptions": {
@@ -34,6 +37,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "plasticforcesimple$0",
       "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/plasticforcesimple$0.json",
       "viewOptions": {

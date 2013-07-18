@@ -9,6 +9,7 @@
   ],
   "models": [
     {
+      "type": "md2d",
       "id": "visible-and-invisible$0",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/visible-and-invisible$0.json",
       "viewOptions": {
@@ -25,7 +26,7 @@
         "} else {",
         "  setAtomProperties(4, { visible: true }); setAtomProperties(5, { visible: true }); setAtomProperties(6, { visible: true }); setAtomProperties(7, { visible: true });",
         "}"
-        ],
+      ],
       "initialValue": true
     }
   ],

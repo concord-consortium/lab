@@ -8,6 +8,7 @@
   "fontScale": 0.8,
   "models": [
     {
+      "type": "md2d",
       "id": "simple-gas",
       "url": "imports/legacy-mw-content/converted/benchmarks/simple-gas/simple-gas$0.json",
       "viewOptions": {
@@ -16,6 +17,7 @@
       "onLoad": "set({ showClock: true})"
     },
     {
+      "type": "md2d",
       "id": "oil-and-water",
       "url": "imports/legacy-mw-content/converted/benchmarks/oil-and-water/page3$1.json",
       "viewOptions": {
@@ -24,6 +26,7 @@
       "onLoad": "set({ showClock: true})"
     },
     {
+      "type": "md2d",
       "id": "temperature-volume",
       "url": "imports/legacy-mw-content/converted/benchmarks/gas-laws-temperature-volume/page4$0.json",
       "viewOptions": {
@@ -35,6 +38,7 @@
       }
     },
     {
+      "type": "md2d",
       "id": "hydrogen-bonds",
       "url": "imports/legacy-mw-content/converted/benchmarks/hydrogen-bonds/page6$0.json",
       "viewOptions": {
@@ -43,6 +47,7 @@
       "onLoad": "set({ showClock: true}); set({temperatureControl: true}); set({targetTemperature: 10000});"
     },
     {
+      "type": "md2d",
       "id": "100-atoms-charged",
       "url": "imports/legacy-mw-content/converted/benchmarks/100-atoms/100-atoms-charged.json",
       "viewOptions": {
@@ -51,6 +56,7 @@
       "onLoad": "set({ showClock: true})"
     },
     {
+      "type": "md2d",
       "id": "phase-change",
       "url": "imports/legacy-mw-content/converted/benchmarks/phase-change-energy-input/page6$0.json",
       "viewOptions": {
@@ -59,6 +65,7 @@
       "onLoad": "set({ showClock: true})"
     },
     {
+      "type": "md2d",
       "id": "plasticforce",
       "url": "imports/legacy-mw-content/converted/benchmarks/plastic-forces/plasticforcesimple$0.json",
       "viewOptions": {
@@ -68,6 +75,7 @@
     }
   ],
   "parameters": [
+
   ],
   "outputs": [
     {
@@ -217,11 +225,23 @@
   ],
   "layout": {
     "bottom": [
-       [ "select-model" ],
-       [ "timestep-slider", "refreshrate-slider", "select-model-sample-rate" ],
-       ["fps"],
-       ["progress-rate"],
-       ["auto-perf-tuning"]
+      [
+        "select-model"
+      ],
+      [
+        "timestep-slider",
+        "refreshrate-slider",
+        "select-model-sample-rate"
+      ],
+      [
+        "fps"
+      ],
+      [
+        "progress-rate"
+      ],
+      [
+        "auto-perf-tuning"
+      ]
     ]
   }
 }

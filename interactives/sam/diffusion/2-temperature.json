@@ -5,11 +5,12 @@
   "about": "Explore the role of temperature on the rate of diffusion. Set the temperature, then remove the barrier, and measure the amount of time it takes the blue molecules to reach the gas sensor. When the gas sensor has detected three blue molecules, it will stop the experiment. Compare the diffusion rates at low, medium and high temperatures. Trace an individual molecule to see the path it takes.",
   "models": [
     {
+      "type": "md2d",
       "id": "model1",
       "url": "imports/legacy-mw-content/converted/sam-activities/diffusion/DiffusionTemp/DiffusionBarrier$0.json",
       "viewOptions": {
         "controlButtons": "play",
-        "textBoxes" : [
+        "textBoxes": [
           {
             "text": "Gas sensor",
             "x": 6.8,
@@ -90,7 +91,7 @@
     {
       "name": "tracingAtom",
       "initialValue": false,
-      "onChange" : [
+      "onChange": [
         "if (!value) {",
         "  untraceAtom();",
         "} else {",
@@ -106,7 +107,7 @@
       "type": "button",
       "id": "remove-obstacle",
       "text": "Remove barrier",
-      "action" : [
+      "action": [
         "if (isStopped()) {",
         "  alert('Press play before removing the barrier');",
         "} else if (getNumberOfObstacles() > 0) { ",
@@ -126,7 +127,7 @@
       "type": "button",
       "id": "reset-barrier",
       "text": "Reset experiment",
-      "action" : [
+      "action": [
         "reset();"
       ]
     },
@@ -171,9 +172,17 @@
   ],
   "layout": {
     "bottom": [
-      ["temperature-slider","experiment-time"],
-      ["remove-obstacle","reset-barrier"],
-      ["trace-atom"]
+      [
+        "temperature-slider",
+        "experiment-time"
+      ],
+      [
+        "remove-obstacle",
+        "reset-barrier"
+      ],
+      [
+        "trace-atom"
+      ]
     ],
     "right": [
       "thermometer"

@@ -1,0 +1,114 @@
+{
+  "title": "Heat Storage 1A: Measuring heat storage",
+  "publicationStatus": "public",
+  "subtitle": "Why does a warm object feel warm when you touch it?",
+  "about": [
+    "The model shows two contacting objects that have identical mass (*m*)",
+    "and specific heat (*c*p) but different initial temperatures.",
+    "The amount of heat transferred between them measures the heat initially",
+    "stored in the warmer object.",
+    "",
+    "1.  Run the model and note the temperatures measured by the two thermometers.",
+    "2.  Wait until the temperatures of the two objects do not change any further.",
+    "3.  Note the final temperature of the two objects.",
+    "",
+    "Reset the model and change the initial temperatures of the two",
+    "objects using the sliders below the model. Repeat steps 1-3",
+    "for two more different temperature setups."
+  ],
+  "importedFrom": "imports/energy2d/content-htb/S1A.html",
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "S1A1",
+      "url": "imports/energy2d/models-json/S1A1.json",
+      "importedFrom": "imports/energy2d/models-xml/S1A1.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "left-block",
+      "label": "Left block temperature",
+      "unitAbbreviation": "C",
+      "onChange": "getPart(0).temperature = value;",
+      "initialValue": 10
+    },
+    {
+      "name": "right-block",
+      "label": "Right block temperature",
+      "unitAbbreviation": "C",
+      "onChange": "getPart(1).temperature = value;",
+      "initialValue": 40
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "left-block-slider",
+      "property": "left-block",
+      "title": "Left block",
+      "min": 0,
+      "max": 50,
+      "displayValue": "return format('1.1f')(value)",
+      "labels": [
+        {
+          "value": 0,
+          "label": "0.0"
+        },
+        {
+          "value": 50,
+          "label": "50.0"
+        }
+      ],
+      "steps": 50,
+      "width": "10em"
+    },
+    {
+      "type": "slider",
+      "id": "right-block-slider",
+      "property": "right-block",
+      "title": "Right block",
+      "min": 0,
+      "max": 50,
+      "displayValue": "return format('1.1f')(value)",
+      "labels": [
+        {
+          "value": 0,
+          "label": 0.0
+        },
+        {
+          "value": 50,
+          "label": 50.0
+        }
+      ],
+      "steps": 50,
+      "width": "10em"
+    },
+    {
+      "type": "graph",
+      "id": "graph",
+      "title": "Temperature Probes: T1, T2",
+      "xlabel": "Time (s)",
+      "ylabel": "Temperature (°C)",
+      "ymin": 0,
+      "ymax": 50,
+      "xmax": 300,
+      "xTickCount": 5,
+      "xFormatter": "2s",
+      "yFormatter": "2s",
+      "properties": [
+        "sensor-1", "sensor-0"
+      ]
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "left-block-slider", "right-block-slider"
+    ],
+    "right": [ "graph" ]
+  },
+  "template": "wide-right"
+}

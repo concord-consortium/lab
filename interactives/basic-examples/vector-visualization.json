@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "pendulum1$0",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/pendulum1$0.json",
       "viewOptions": {
@@ -19,6 +20,7 @@
       "onLoad": "set({showVelocityVectors: true})"
     },
     {
+      "type": "md2d",
       "id": "simple-gas$0",
       "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
       "viewOptions": {
@@ -32,6 +34,7 @@
       "onLoad": "set({showVelocityVectors: true})"
     },
     {
+      "type": "md2d",
       "id": "page3$1",
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page3/page3$1.json",
       "viewOptions": {
@@ -41,7 +44,7 @@
     }
   ],
   "components": [
-   {
+    {
       "type": "checkbox",
       "id": "velocity_vectors",
       "text": "Velocity Vectors",

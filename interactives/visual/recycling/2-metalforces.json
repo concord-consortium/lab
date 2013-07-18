@@ -13,6 +13,7 @@
   ],
   "models": [
     {
+      "type": "md2d",
       "id": "metalforcesimple$0",
       "url": "imports/legacy-mw-content/converted/visual/Recycling/metalforcesimple$0.json",
       "viewOptions": {
@@ -33,15 +34,15 @@
         },
         {
           "text": "Small force",
-          "value": 2e-8
+          "value": 2.0e-08
         },
         {
           "text": "Medium force",
-          "value": 6e-8
+          "value": 6.0e-08
         },
         {
           "text": "Large force",
-          "value": 8e-8
+          "value": 8.0e-08
         }
       ]
     }
@@ -51,7 +52,7 @@
       "force-buttons"
     ]
   },
-  "template":[
+  "template": [
     {
       "id": "bottom",
       "top": "model.bottom",

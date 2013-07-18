@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "mark-atoms$0",
       "url": "imports/legacy-mw-content/converted/potential-tests/mark-atoms/mark-atoms$0.json",
       "viewOptions": {

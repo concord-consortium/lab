@@ -1,7 +1,5 @@
-/*global Lab, _, $, d3, CodeMirror, controllers, alert, model, modelList, benchmark, DEVELOPMENT: true, AUTHORING: true */
+/*global Lab, _, $, jQuery, d3, Shutterbug, CodeMirror, controllers, alert, model, modelList, benchmark, _gaq, DEVELOPMENT: true, AUTHORING: true */
 /*jshint boss:true */
-
-DEVELOPMENT = true;
 
 // Strawman setting for telling the interactive to be in "author mode",
 // allowing things like positioning textBoxes by hand.
@@ -9,61 +7,25 @@ AUTHORING = false;
 
 (function() {
 
-  var interactiveDefinitionLoaded = $.Deferred(),
-      windowLoaded = $.Deferred(),
-      origin,
+  var origin,
       embeddablePath,
       embeddableUrl,
       interactiveDescriptions,
       interactives,
       groups,
       iframePhone,
+      shutterbug,
 
       $content = $("#content"),
-
-      $interactiveHeader = $("#interactive-header"),
       $interactiveTitle = $("#interactive-title"),
-
       $selectInteractive = $("#select-interactive"),
       $selectInteractiveGroups = $("#select-interactive-groups"),
-
       $selectInteractiveSize = $("#select-interactive-size"),
 
-      $updateInteractiveButton = $("#update-interactive-button"),
-      $saveInteractiveButton = $("#save-interactive-button"),
-      $saveAsInteractiveButton = $("#save-as-interactive-button"),
-      $saveModelButton = $("#save-model-button"),
-      $updateJsonFromInteractiveButton = $("#update-json-from-interactive-button"),
-      $autoFormatInteractiveJsonButton = $("#autoformat-interactive-json-button"),
-      $interactiveTextArea = $("#interactive-text-area"),
-      $interactiveErrorDialog = $("#interactive-error-dialog"),
-
-      $updateModelButton = $("#update-model-button"),
-      $updateJsonFromModelButton = $("#update-json-from-model-button"),
-      $autoFormatModelJsonButton = $("#autoformat-model-json-button"),
-      $modelTextArea = $("#model-text-area"),
-
-      $editor = $("#editor"),
       $showEditor = $("#show-editor"),
-      $editorContent = $("#editor-content"),
-
       $showModelEditor = $("#show-model-editor"),
-      $modelEditorContent = $("#model-editor-content"),
-
-      $showBenchmarks = $("#show-benchmarks"),
-      $benchmarksContent = $("#benchmarks-content"),
-      $runBenchmarksButton = $("#run-benchmarks-button"),
-
       $showModelEnergyGraph = $("#show-model-energy-graph"),
-      $modelEnergyGraphContent = $("#model-energy-graph-content"),
-      energyGraphSamplePeriod,
-      modelEnergyGraph,
-      modelEnergyData = [],
-
       $showModelDatatable = $("#show-model-datatable"),
-      $modelDatatableContent = $("#model-datatable-content"),
-      $modelDatatableResults = $("#model-datatable-results"),
-      $modelDatatableStats = $("#model-datatable-stats"),
 
       $previousInteractive = $("#previous-interactive"),
       $nextInteractive = $("#next-interactive"),
@@ -71,28 +33,24 @@ AUTHORING = false;
       $serializedControls = $("#header *.serialize"),
 
       applicationCallbacks,
-      editor,
-      modelEditor,
+
       controller,
       indent = 2,
+
       interactiveUrl,
       interactive,
-      interactiveRemote,
-      modelRemote,
       hash,
 
-      jsonModelPath,
-      contentItems = [],
-      mmlPath,
-      $jsonModelLink = $("#json-model-link"),
-      $mmlModelLink = $("#mml-model-link"),
+      editor,
+      modelEditor,
+      modelJson,
 
-      interactivesPromise,
-      buttonHandlersAdded = false,
-      interactiveRemoteKeys = ['id', 'from_import', 'groupKey', 'path'],
-      modelRemoteKeys = ['id', 'from_import', 'location'],
-      modelButtonHandlersAdded = false,
-      appPath = '/webapp';
+      jsonModelPath,
+      $jsonModelLink = $("#json-model-link"),
+
+      $jsonInteractiveLink = $("#json-interactive-link"),
+
+      interactivesPromise;
 
   function sendGAPageview(){
     // send the pageview to GA
@@ -107,71 +65,53 @@ AUTHORING = false;
     _gaq.push(['_trackPageview', location.pathname + my_hashtag]);
   }
 
-  function isEmbeddablePage() {
-    return ($selectInteractive.length === 0);
-  }
-
-  function isNotEmbeddablePage() {
-    return !isEmbeddablePage();
-  }
-
-  function isStaticPage() {
-    return !(document.location.pathname.match(/^\/webapp.*/));
+  function isFullIFramePage() {
+    return ($("#render-in-iframe").is(':checked'));
   }
 
   function isFullPage(){
-    return (isNotEmbeddablePage() && !$("#render-in-iframe").is(':checked'));
+    return (!isFullIFramePage());
   }
 
-  function isFullIFramePage() {
-    return (isNotEmbeddablePage() && $("#render-in-iframe").is(':checked'));
-  }
+  interactivesPromise = $.get('interactives.json');
 
-  if (!isEmbeddablePage()) {
-    if (isStaticPage()) {
-      interactivesPromise = $.get('interactives.json');
-    }else {
-      interactivesPromise = $.get(appPath + '/interactives.json');
+  interactivesPromise.done(function(results) {
+    if (typeof results === 'string') {
+      results = JSON.parse(results);
     }
+    interactiveDescriptions = results;
+  });
 
-    interactivesPromise.done(function(results) {
-      if (typeof results === 'string') {
-        results = JSON.parse(results);
-      }
-      interactiveDescriptions = results;
-    });
-
-    // TODO: some of the Deferred, ajax call have no error handlers?
-    interactivesPromise.fail(function(){
-      // TODO: need a better way to display errors
-      var mesg = "Failed to retrieve interactives.json";
-      if (benchmark.what_browser().browser === "Chrome") {
-        mesg += "\n";
-        mesg += "\nNote: Chrome prevents loading content directly";
-        mesg += "\nfrom the file system.";
-        mesg += "\n";
-        mesg += "\nIf you are using Chrome to load Lab Interatives";
-        mesg += "\nfrom the file system you will need to start a";
-        mesg += "\nlocal web server instead.";
-        mesg += "\n";
-        mesg += "\nOne solution is to start a simple local web";
-        mesg += "\nserver using Python in the same directory where";
-        mesg += "\nthe static resources are located";
-        mesg += "\n";
-        mesg += "\n    python -m SimpleHTTPServer";
-        mesg += "\n";
-        mesg += "\nNow open this page in your browser:";
-        mesg += "\n";
-        mesg += "\n    http://localhost:8000/interactives.html";
-        mesg += "\n";
-      }
-      console.log(mesg);
-      alert(mesg);
-    });
-  }
+  // TODO: some of the Deferred, ajax call have no error handlers?
+  interactivesPromise.fail(function(){
+    // TODO: need a better way to display errors
+    var mesg = "Failed to retrieve interactives.json";
+    if (Lab.benchmark.what_browser().browser === "Chrome") {
+      mesg += "\n";
+      mesg += "\nNote: Chrome prevents loading content directly";
+      mesg += "\nfrom the file system.";
+      mesg += "\n";
+      mesg += "\nIf you are using Chrome to load Lab Interatives";
+      mesg += "\nfrom the file system you will need to start a";
+      mesg += "\nlocal web server instead.";
+      mesg += "\n";
+      mesg += "\nOne solution is to start a simple local web";
+      mesg += "\nserver using Python in the same directory where";
+      mesg += "\nthe static resources are located";
+      mesg += "\n";
+      mesg += "\n    python -m SimpleHTTPServer";
+      mesg += "\n";
+      mesg += "\nNow open this page in your browser:";
+      mesg += "\n";
+      mesg += "\n    http://localhost:8000/interactives.html";
+      mesg += "\n";
+    }
+    console.log(mesg);
+    alert(mesg);
+  });
 
   if (!document.location.hash) {
-    if (!isEmbeddablePage() && $selectInteractive.val()) {
+    if ($selectInteractive.val()) {
       selectInteractiveHandler();
     } else {
       interactivesPromise.done(function(){
@@ -190,144 +130,168 @@ AUTHORING = false;
   if (hash) {
     interactiveUrl = hash.substr(1, hash.length);
 
-    if (isEmbeddablePage()) {
-      // if we are being embedded in special authoring mode ...
-      // created as a Khan CS demo
-      if ($editor.length) {
-        applicationCallbacks = [setupEmbeddableAuthorPage];
-      }
-    } else {
-      AUTHORING = true;
-      applicationCallbacks = [setupFullPage];
-    }
-
-    $.get(interactiveUrl).done(function(results) {
-      if (typeof results === 'string') results = JSON.parse(results);
-      interactiveRemote = results;
-      interactive = _.omit(interactiveRemote, interactiveRemoteKeys);
-
-      if (interactive.title) {
-        document.title = interactive.title;
-      }
-      sendGAPageview();
-
-      interactiveDefinitionLoaded.resolve();
-    })
-    .fail(function() {
-      document.title = "Interactive not found";
-      interactive = {
-        "title": "Interactive not found",
-        "subtitle": "Couldn't load Interactive definition",
-        "about": [
-          "Problem loading: [" + hash.substr(1) + "](" + interactiveUrl + ")",
-          "Either the definition for this Interactive has moved, been deleted or there have been network problems.",
-          "It would be good to report this issue"
-        ],
-        "publicationStatus": "broken",
-        "fontScale": 1.3,
-        "models": [
-          {
-            "id": "empty-model",
-            "model": {
-              "type": "md2d",
-              "width": 5,
-              "height": 3
-            },
-            "viewOptions": {
-              "controlButtons": "",
-              "backgroundColor": "rgba(245,200,200,255)",
-              "showClock": false
-            }
-          }
-        ],
-        "components": [
-          {
-            "type": "text",
-            "id": "interactive-not-found",
-            "text": [
-              "##Oops!",
-              "",
-              "####We couldn't find the Interactive you are looking for:",
-              "[" + hash.substr(1) + "](" + interactiveUrl + ")",
-              "",
-              "It may have moved (without leaving a forwarding address).",
-              "Try searching our [Next-Generation Molecular Workbench Activities page](http://mw.concord.org/nextgen/interactives/)."
-            ]
-          }
-        ],
-        "layout": {
-          "error": [ "interactive-not-found" ]
-        },
-        "template": [
-          {
-            "id": "top",
-            "bottom": "model.top",
-            "height": "1em"
-          },
-          {
-            "id": "bottom",
-            "top": "model.bottom",
-            "height": "1em"
-          },
-          {
-            "id": "right",
-            "left": "model.right",
-            "width": "1em"
-          },
-          {
-            "id": "left",
-            "right": "model.left",
-            "width": "1em"
-          },
-          {
-            "id": "error",
-            "top": "model.top",
-            "left": "model.left",
-            "height": "model.height",
-            "width": "model.width",
-            "padding-top": "0.5em",
-            "padding-bottom": "0.5em",
-            "padding-right": "1em",
-            "padding-left": "1em"
-          }
-        ]
-      };
-      interactiveDefinitionLoaded.resolve();
-    });
-  }
-
-  $(window).load(function() {
-    windowLoaded.resolve();
-  });
-
-  $.when(interactiveDefinitionLoaded, windowLoaded).done(function() {
-
     restoreOptionsFromCookie();
-
-    if (isFullPage()) {
-      selectInteractiveSizeHandler();
-    }
+    selectInteractiveSizeHandler();
 
     origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
     embeddablePath = location.pathname.replace(/\/[^\/]+$/, "/embeddable.html");
-    origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
     embeddableUrl = origin + embeddablePath + hash;
+
+    AUTHORING = true;
+    applicationCallbacks = [setupFullPage];
 
     if(isFullIFramePage()) {
       // If we are on a Full Interactive Browser page with render in iframe
       // enabled then *don't* create an instance of the Interatactive
-      // Just setup the rest of the page and embed the Interatcive in an iframe
-      applicationCallbacks[0]();
+      // Just setup the rest of the page and embed the Interactive in an iframe
+      embedIframeInteractive();
     } else {
       // On all the other versions of this page we need to create an
       // instance of the Interactive now.
-      controller = controllers.interactivesController(interactive, '#interactive-container');
-      if (_.isArray(applicationCallbacks) && applicationCallbacks.length > 0) {
-        controller.on("modelLoaded", applicationCallbacks);
-      }
+      controller = new Lab.InteractivesController(interactiveUrl, '#interactive-container');
+      controller.on("modelLoaded", function() {
+        interactive = controller.serialize();
+        setupFullPage();
+      });
     }
+    sendGAPageview();
+  }
 
-  });
+  function embedIframeInteractive() {
+    var $iframeWrapper,
+        $iframe;
+
+    // setup iframe
+    $iframeWrapper = $('<div id="iframe-wrapper" class="ui-widget-content ' + $selectInteractiveSize.val() + '"></div>');
+    $iframe = $('<iframe id="iframe-interactive" width="100%" height="100%" frameborder="no" scrolling="no" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" src="' + embeddableUrl + '"></iframe>');
+    $content.append($iframeWrapper);
+    $("#responsive-content").hide();
+    selectInteractiveSizeHandler();
+    $selectInteractiveSize.removeAttr('disabled');
+    $iframeWrapper.append($iframe);
+    $iframeWrapper.resizable({ helper: "ui-resizable-helper" });
+    $content.css("border", "none");
+    // initiate communication with Interactive in iframe and setup callback
+    iframePhone = setupIframeListenerFor($iframe[0], function() {
+      iframePhone.post({ type:'getInteractiveState' });
+      iframePhone.addListener('interactiveState', function(message) {
+        interactive = message;
+        setupFullPage();
+      });
+    });
+  }
+
+  function setupFullPage() {
+    var $interactiveHeader = $("#interactive-header");
+
+    interactivesPromise.done(function() {
+      document.title = "Lab Interactive Browser: " + interactive.title;
+      restoreOptionsFromCookie();
+      setupSelectList();
+      $("#select-filters input").click(setupSelectList);
+      $("#select-filters input").click(setupSelectGroups);
+      $("#render-controls input").click(function() {
+        saveOptionsToCookie();
+        location.reload();
+      });
+      $interactiveTitle.text(interactive.title);
+      if (interactive.publicationStatus === 'draft') {
+        $interactiveTitle.append(" <i>(draft)</i>");
+      }
+      if (interactive.subtitle) {
+        $("#interactive-subtitle").remove();
+        $interactiveHeader.append('<div id="interactive-subtitle">' + interactive.subtitle + '</div>');
+      }
+      finishSetupFullPage();
+    });
+  }
+
+  function finishSetupFullPage() {
+    var javaMWhref,
+        $embeddableLink = $("#embeddable-link"),
+        $dataGamesLink = $("#datagames-link"),
+        origin;
+
+    origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
+
+    setupNextPreviousInteractive();
+
+    // construct link to embeddable version of Interactive
+    $embeddableLink.attr("href", function(i, href) { return href + hash; });
+    $embeddableLink.attr("title", "Open this Interactive in a new page suitable for embedding.");
+
+    $jsonInteractiveLink.attr("href", origin + Lab.config.actualRoot + interactiveUrl);
+
+    $jsonModelLink.attr("title", "View model JSON in another window");
+
+    // construct link to JSON version of model
+    jsonModelPath = interactive.models[0].url;
+    $jsonModelLink.attr("href", origin + Lab.config.actualRoot + jsonModelPath);
+    $jsonModelLink.attr("title", "View model JSON in another window");
+
+    // construct link to DataGames embeddable version of Interactive
+    $dataGamesLink.attr("href", function() {
+      var dgPayload = [{
+            "name": $selectInteractive.find("option:selected").text(),
+            "dimensions": {
+              "width": 600,
+              "height":400
+            },
+            "url": Lab.config.dataGamesProxyPrefix + "embeddable.html#" +  interactiveUrl
+          }],
+          dgUrl = "http://is.kcptech.com/dg?moreGames=" + JSON.stringify(dgPayload);
+      return encodeURI(dgUrl);
+    });
+    $dataGamesLink.attr("title", "Run this Interactive inside DataGames");
+
+    setupOriginalImportLinks();
+    setupExtras();
+  }
+
+  //
+  // Extras
+  //
+  function setupExtras() {
+    if(isFullPage()) {
+      // Interactive Browser with Interactive embedding in DOM (not in iframe)
+      // set keyboard focus on MD2D view
+      // FIXME: generalize when multiple model types implemented
+      controller.modelController.modelContainer.setFocus();
+      $("#json-model-link").attr("href", origin + Lab.config.actualRoot + jsonModelPath);
+      // $selectInteractiveSize.attr('disabled', 'disabled');
+      setupCodeEditor();
+      setupModelCodeEditor();
+      setupSnapshotButton();
+      setupBenchmarks();
+      // pass in the model
+      setupEnergyGraph(model);
+      setupAtomDataTable();
+      $("#extras-bottom").show();
+      $selectInteractiveSize.removeAttr('disabled');
+      $content.resizable({
+        helper: "ui-resizable-helper",
+        resize: controller.resize
+      });
+      shutterbug = new Shutterbug('#responsive-content','#image_output');
+    } else {
+      // Interactive Browser with Interactive embedding in iframe
+      // data table not working in iframe embedding mode yet
+      $("#model-datatable").hide();
+
+      shutterbug = new Shutterbug("#iframe-interactive","#image_output");
+      setupCodeEditor();
+      setupModelCodeEditor();
+      setupSnapshotButton();
+      setupBenchmarks();
+      setupEnergyGraph(null, function() { });
+    }
+    // All the extra items are sortable
+    // $(".sortable").sortable({
+    //   axis: "y",
+    //   containment: "parent",
+    //   cursor: "row-resize"
+    // });
+  }
 
   $(window).bind('hashchange', function() {
     if (document.location.hash !== hash) {
@@ -335,10 +299,6 @@ AUTHORING = false;
     }
   });
 
-  //
-  // The following functions are only used when rendering the
-  // non-embeddable Interactive page
-  //
   function selectInteractiveHandler() {
     document.location.hash = '#' + $selectInteractive.val();
   }
@@ -356,10 +316,10 @@ AUTHORING = false;
           "large":  { height: "700px" }
         };
 
-    dimensions.tiny.width   = parseInt(dimensions.tiny.height  ) * aspectRatio + "px";
-    dimensions.small.width  = parseInt(dimensions.small.height ) * aspectRatio + "px";
-    dimensions.medium.width = parseInt(dimensions.medium.height) * aspectRatio + "px";
-    dimensions.large.width  = parseInt(dimensions.large.height ) * aspectRatio + "px";
+    dimensions.tiny.width   = parseInt(dimensions.tiny.height, 10)   * aspectRatio + "px";
+    dimensions.small.width  = parseInt(dimensions.small.height, 10)  * aspectRatio + "px";
+    dimensions.medium.width = parseInt(dimensions.medium.height, 10) * aspectRatio + "px";
+    dimensions.large.width  = parseInt(dimensions.large.height, 10)  * aspectRatio + "px";
     dim = dimensions[selection];
     saveOptionsToCookie();
     if (isFullPage()) {
@@ -467,29 +427,6 @@ AUTHORING = false;
     setupCodeEditor();
   }
 
-  function setupFullPage() {
-    interactivesPromise.done(function() {
-
-      restoreOptionsFromCookie();
-      setupSelectList();
-      $("#select-filters input").click(setupSelectList);
-      $("#select-filters input").click(setupSelectGroups);
-      $("#render-controls input").click(function() {
-        saveOptionsToCookie();
-        location.reload();
-      });
-      $interactiveTitle.text(interactive.title);
-      if (interactive.publicationStatus === 'draft') {
-        $interactiveTitle.append(" <i>(draft)</i>");
-      }
-      if (interactive.subtitle) {
-        $("#interactive-subtitle").remove();
-        $interactiveHeader.append('<div id="interactive-subtitle">' + interactive.subtitle + '</div>');
-      }
-      finishSetupFullPage();
-    });
-  }
-
   function restoreOptionsFromCookie() {
     var cookie = document.cookie.match(/lab-interactive-options=(.*)(;|$)/),
         str,
@@ -523,129 +460,92 @@ AUTHORING = false;
     document.cookie = "lab-interactive-options=" + cookie;
   }
 
-  function finishSetupFullPage() {
-    var javaMWhref,
-        $embeddableLink = $("#embeddable-link"),
-        $javaMWlink = $("#java-mw-link"),
-        $dataGamesLink = $("#datagames-link"),
-        origin;
+  function setupOriginalImportLinks() {
+    var $originalImportLink = $("#original-import-link"),
+        $originalModelLink = $("#original-model-link"),
+        javaMW = "http://mw2.concord.org/tmp.jnlp?address=",
+        javaMWhref,
+        mmlPath,
+        e2dModelPath,
+        contentItems = [];
 
-    origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
-
-    setupNextPreviousInteractive();
-
-    // construct link to embeddable version of Interactive
-    $embeddableLink.attr("href", function(i, href) { return href + hash; });
-    $embeddableLink.attr("title", "Open this Interactive in a new page suitable for embedding.");
-
-    jsonModelPath = interactive.models[0].url;
-    $jsonModelLink.attr("href", origin + Lab.config.actualRoot + jsonModelPath);
-
-    // construct Java MW link for running Interactive via jnlp
-    // uses generated resource list: /imports/legacy-mw-content/model-list.js
-    // also updates link to original MML in Model Editor
-    mmlPath = jsonModelPath.replace("imports/legacy-mw-content/converted/", "imports/legacy-mw-content/").replace(".json", ".mml");
-    if (typeof modelList !== 'undefined') {
-      contentItems = getObjects(modelList, "mml", mmlPath.replace("imports/legacy-mw-content/", ""));
+    function disableOriginalImportLink() {
+      $originalImportLink.removeAttr("href");
+      $originalImportLink.attr("title", "link to original model not available for this interactive");
+      $originalImportLink.addClass("na");
     }
-    if (contentItems.length > 0) {
-      javaMWhref = "/jnlp/jnlps/org/concord/modeler/mw.jnlp?version-id=1.0&jnlp-args=remote," +
-                      origin + Lab.config.actualRoot + "imports/legacy-mw-content/" + contentItems[0].cml;
-      $javaMWlink.attr("href", javaMWhref);
-      $javaMWlink.attr("title", "View original Java Molecular Workbench content using Java Web Start");
-      $mmlModelLink.attr("href", origin + Lab.config.actualRoot + mmlPath);
-      $mmlModelLink.attr("title", "View original Java Molecular Workbench MML file");
+    function disableOriginalModelLink() {
+      $originalModelLink.removeAttr("href");
+      $originalModelLink.attr("title", "original import model file not available for this model");
+      $originalModelLink.addClass("na");
+    }
+    function disableJsonModelLink() {
+      $jsonModelLink.removeAttr("href");
+      $jsonModelLink.attr("title", "link to JSON model not available for this interactive");
+      $jsonModelLink.addClass("na");
+    }
+    if (jsonModelPath) {
+      switch(interactive.models[0].type) {
+        case "md2d":
+        // construct Java MW link for running Interactive via jnlp
+        // uses generated resource list: /imports/legacy-mw-content/model-list.js
+        // also updates link to original MML in Model Editor
+        mmlPath = jsonModelPath.replace("imports/legacy-mw-content/converted/", "imports/legacy-mw-content/").replace(".json", ".mml");
+        $originalImportLink.attr("target", "");
+        if (typeof modelList !== 'undefined') {
+          contentItems = getObjects(modelList, "mml", mmlPath.replace("imports/legacy-mw-content/", ""));
+        }
+        if (contentItems.length > 0) {
+          javaMWhref = javaMW + origin + Lab.config.actualRoot + "imports/legacy-mw-content/" + contentItems[0].cml;
+          $originalImportLink.attr("href", javaMWhref);
+          $originalImportLink.attr("title", "View original Java Molecular Workbench content using Java Web Start");
+          $originalModelLink.attr("href", origin + Lab.config.actualRoot + mmlPath);
+          $originalModelLink.attr("title", "View original Java Molecular Workbench MML file in another window");
+        } else {
+          disableOriginalImportLink();
+          disableOriginalModelLink();
+        }
+        break;
+        case "energy2d":
+        e2dModelPath = interactive.models[0].importedFrom;
+        $originalImportLink.attr("target", "_blank");
+        if (interactive.importedFrom) {
+          // The Energy2D model exist on a separate HTML page
+          $originalImportLink.attr("href", interactive.importedFrom);
+          $originalImportLink.attr("title", "View original html page with Java Energy2D applet in another window");
+        } else if (e2dModelPath) {
+          // The Energy2D model exists only as an e2d file, there is no associated HTML page,
+          // use Generic Energy2D applet page instead:
+          //    /imports/energy2d/energy2d-applet.html?e2dPath=content/compare-capacity.e2d&title=Compare%20Capacity
+          $originalImportLink.attr("href", origin + Lab.config.actualRoot +
+            "imports/energy2d/energy2d-applet.html?" +
+            encodeURI("e2dPath=" + e2dModelPath.replace("imports/energy2d/", "") + "&title=" + interactive.title.replace(/\*+$/, '')));
+          $originalImportLink.attr("title", "View original Java Energy2D applet in generic HTML page in another window");
+        } else {
+          disableOriginalImportLink();
+        }
+        if (e2dModelPath) {
+          $originalModelLink.attr("href", origin + Lab.config.actualRoot + interactive.models[0].importedFrom);
+          $originalModelLink.attr("title", "View original Java Energy2D applet e2d model file in another window");
+        } else {
+          disableOriginalModelLink();
+        }
+        break;
+        default:
+        disableOriginalImportLink();
+        disableOriginalModelLink();
+        break;
+      }
     } else {
-      $javaMWlink.removeAttr("href");
-      $javaMWlink.attr("title", "Java Web Start link not available for this interactive");
-      $javaMWlink.addClass("na");
-      $mmlModelLink.removeAttr("href");
-      $mmlModelLink.attr("title", "Java Molecular Workbench MML file not available for this model");
-      $javaMWlink.addClass("na");
+      disableOriginalImportLink();
+      disableOriginalModelLink();
+      disableJsonModelLink();
     }
-
-    // construct link to DataGames embeddable version of Interactive
-    $dataGamesLink.attr("href", function() {
-      var dgPayload = [{
-            "name": $selectInteractive.find("option:selected").text(),
-            "dimensions": {
-              "width": 600,
-              "height":400
-            },
-            "url": Lab.config.dataGamesProxyPrefix + "embeddable.html#" +  interactiveUrl
-          }],
-          dgUrl = "http://is.kcptech.com/dg?moreGames=" + JSON.stringify(dgPayload);
-      return encodeURI(dgUrl);
-    });
-    $dataGamesLink.attr("title", "Run this Interactive inside DataGames");
-    setupExtras();
   }
 
   //
-  // Extras
+  // iFrame Phone
   //
-  function setupExtras() {
-    var $iframeWrapper,
-        $iframe;
-
-    if(isFullPage()) {
-      // Interactive Browser with Interactive embedding in DOM (not in iframe)
-      // set keyboard focus on MD2D view
-      // FIXME: generalize when multiple model types implemented
-      controller.modelController.modelContainer.setFocus();
-      $("#json-model-link").attr("href", origin + Lab.config.actualRoot + jsonModelPath);
-      // $selectInteractiveSize.attr('disabled', 'disabled');
-      setupCodeEditor();
-      setupModelCodeEditor();
-      setupBenchmarks();
-      // pass in the model
-      setupEnergyGraph(model);
-      setupAtomDataTable();
-      $("#extras-bottom").show();
-      $selectInteractiveSize.removeAttr('disabled');
-      $content.resizable({
-        helper: "ui-resizable-helper",
-        resize: controller.resize
-      });
-      $(".extras-item").disableSelection();
-    } else {
-      // Interactive Browser with Interactive embedding in iframe
-
-      // data table not working in iframe embedding mode yet
-      $("#model-datatable").hide();
-
-      // setup iframe
-      $iframeWrapper = $('<div id="iframe-wrapper" class="ui-widget-content ' + $selectInteractiveSize.val() + '"></div>');
-      $iframe = $('<iframe id="iframe-interactive" width="100%" height="100%" frameborder="no" scrolling="no" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" src="' + embeddableUrl + '"></iframe>');
-      $content.append($iframeWrapper);
-      $("#responsive-content").hide();
-      selectInteractiveSizeHandler();
-      $selectInteractiveSize.removeAttr('disabled');
-      $iframeWrapper.append($iframe);
-      $iframeWrapper.resizable({ helper: "ui-resizable-helper" });
-      $content.css("border", "none");
-
-      // initiate communication with Interactive in iframe and setup callback
-      iframePhone = setupIframeListenerFor($iframe[0], function() {
-        setupCodeEditor();
-        setupModelCodeEditor();
-        setupBenchmarks();
-        setupEnergyGraph(null, function() {
-          $(".extras-item").disableSelection();
-        });
-      });
-    }
-    // All the extra items are sortable
-    // $(".sortable").sortable({
-    //   axis: "y",
-    //   containment: "parent",
-    //   cursor: "row-resize"
-    // });
-    if(!isStaticPage()) {
-      setupCopySaveInteractive();
-    }
-  }
-
   function setupIframeListenerFor(iframe, callback) {
     var iframeOrigin = iframe.src.match(/(.*?\/\/.*?)\//)[1],
         selfOrigin   = window.location.href.match(/(.*?\/\/.*?)\//)[1],
@@ -745,100 +645,6 @@ AUTHORING = false;
     return iframePhone;
   }
 
-  function remoteSaveInteractive(interactiveState, copyInteractive){
-    var httpMethod = 'POST',
-        url = appPath + '/interactives',
-        newInteractiveState,
-        interactiveJSON;
-
-    if(!copyInteractive) {
-      // updating an interactive
-      httpMethod = 'PUT';
-      url = appPath + '/interactives/' + interactiveRemote.id;
-    }
-    // create an interactive to POST/PUT
-    // merge the, possibly updated, interactive with the interactive last
-    // loaded from the webapp.
-    newInteractiveState = jQuery.extend(true, interactiveRemote, interactiveState);
-    newInteractiveState.from_import = false;
-    interactiveJSON = {'interactive': newInteractiveState};
-
-    $.ajax({
-      type: httpMethod,
-      url: url,
-      data: JSON.stringify(interactiveJSON),
-      success: function(results) {
-        if (typeof results === 'string'){
-          results = JSON.parse(results);
-        }
-        interactiveRemote = results;
-        interactive = _.omit(interactiveRemote, interactiveRemoteKeys);
-
-        // redirect to the new interactive
-        if (httpMethod == 'POST') {
-          location.hash = "#" + interactiveRemote.path;
-          return;
-        }
-
-        if(isFullPage()) {
-          controller.loadInteractive(interactive, '#interactive-container');
-        } else {
-          iframePhone.post({ type:'loadInteractive', data:interactive  });
-          $interactiveTitle.text(interactive.title);
-          $('#interactive-subtitle').text(interactive.subtitle);
-        }
-
-        if (interactive.title) {
-          document.title = interactive.title;
-        }
-
-        document.location.hash = interactiveRemote.path;
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        var updateErrors = JSON.parse(jqXHR.responseText),
-            key;
-        $interactiveErrorDialog.html("<ul></ul>");
-        for(key in updateErrors){
-          $interactiveErrorDialog.find('ul').append("<li>" + key + " " + updateErrors[key] + "</li>");
-        }
-
-        $interactiveErrorDialog.dialog("open");
-      },
-      dataType: "json",
-      contentType: "application/json",
-      processData: false
-    });
-
-  }
-
-  function remoteSaveModel(modelState){
-    var modelJSON = {'md2d': modelState};
-
-    jQuery.ajax({
-      type: 'PUT',
-      url: appPath + '/models/md2ds/' + modelRemote.id,
-      data: JSON.stringify(modelJSON),
-      success: function(results) {
-        if (typeof results === 'string') results = JSON.parse(results);
-        modelRemote = results;
-        md2dModel = _.omit(modelRemote, modelRemoteKeys);
-
-        if(isFullPage()) {
-            controller.loadModel(modelRemote.id, md2dModel);
-        } else {
-          iframePhone.post({ type:'loadModel', data: { modelId: modelRemote.id, modelObject: md2dModel } });
-        }
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        alert("Error: "+ textStatus + " : " + errorThrown);
-      },
-      dataType: "json",
-      contentType: "application/json",
-      processData: false
-    });
-
-  }
-
   function setupSelectGroups(){
 
     $selectInteractiveGroups.empty();
@@ -857,95 +663,12 @@ AUTHORING = false;
                                       .text(group.name));
 
     });
-    $selectInteractiveGroups.val(interactiveRemote.groupKey).attr('selected', true);
+    $selectInteractiveGroups.val(interactive.groupKey).attr('selected', true);
   }
 
-  function setupCopySaveInteractive() {
-    $saveAsInteractiveButton.show();
-
-    if (!interactiveRemote.from_import) {
-      $saveInteractiveButton.show();
-    }
-
-    // setup the Save As dialog to make a copy of an interactive
-    setupSelectGroups();
-    $(".save-interactive-form").dialog({
-      autoOpen: false,
-      modal: true,
-      width: 'auto',
-      buttons: {
-        "Save": function() {
-          // from the dialog
-          var interactiveTitle = $(".save-interactive-title").val();
-          var interactiveGroup = $("#select-interactive-groups").val();
-          $(this).dialog("close");
-          interactiveState = JSON.parse(editor.getValue());
-          interactiveState.title = interactiveTitle;
-          interactiveState.groupKey = interactiveGroup;
-
-          // make a copy of this interactive
-          remoteSaveInteractive(interactiveState, true);
-          editor.setValue(JSON.stringify(interactiveState, null, indent));
-          $saveInteractiveButton.removeAttr('disabled');
-          $saveAsInteractiveButton.removeAttr('disabled');
-        },
-        "Cancel": function() {
-          $(this).dialog("close");
-        }
-      }
-    });
-
-    $saveAsInteractiveButton.on('click', function() {
-        $('.save-interactive-form').dialog("open");
-    });
-
-    $saveInteractiveButton.on('click', function() {
-      interactiveState = JSON.parse(editor.getValue());
-      interactiveState.title = interactive.title;
-      // update this interactive, false = don't copy this interactive.
-      remoteSaveInteractive(interactiveState, false);
-      editor.setValue(JSON.stringify(interactiveState, null, indent));
-      $saveInteractiveButton.removeAttr('disabled');
-      $saveAsInteractiveButton.removeAttr('disabled');
-
-    });
-
-    // Error dialog for creating/updating interactives
-    $interactiveErrorDialog.dialog({
-      modal: true,
-      autoOpen: false,
-      title: "Interactive Error",
-      resizable: false,
-      dialogClass: "error",
-      heigth: 300,
-      width: 300,
-      buttons: {
-        "OK": function() {
-          $(this).dialog("close");
-        }
-      }
-    });
-  }
-
-  function setupSaveModel(md2dModel) {
-    if (modelRemote.from_import) {
-      // if model is imported than it can only be copied
-      // by copying the interactive that contains it.
-      $saveModelButton.hide();
-      return;
-    }else {
-      $saveModelButton.show();
-      $saveModelButton.text("Save");
-    }
-
-    $saveModelButton.on('click', function() {
-      modelState = JSON.parse(modelEditor.getValue());
-      remoteSaveModel(modelState);
-      modelEditor.setValue(JSON.stringify(modelState, null, indent));
-    });
-  }
-
+  //
   // Setup and enable next and previous Interactive buttons
+  //
   function setupNextPreviousInteractive() {
     updateNextPreviousInteractiveStatus();
     $previousInteractive.click(function() {
@@ -996,7 +719,15 @@ AUTHORING = false;
   // Interactive Code Editor
   //
   function setupCodeEditor() {
-    var foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
+    var $updateInteractiveButton = $("#update-interactive-button"),
+        $updateJsonFromInteractiveButton = $("#update-json-from-interactive-button"),
+        $autoFormatInteractiveJsonButton = $("#autoformat-interactive-json-button"),
+        $interactiveTextArea = $("#interactive-text-area"),
+        $editor = $("#editor"),
+        $editorContent = $("#editor-content"),
+        buttonHandlersAdded,
+        foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
+
     $interactiveTextArea.text(JSON.stringify(interactive, null, indent));
 
     if (!editor) {
@@ -1010,18 +741,6 @@ AUTHORING = false;
         collapseRange: true,
         onGutterClick: foldFunc
       });
-
-      if (!isStaticPage()){
-        // disable save, save as button when interactive json has changed
-        editor.on('change', function(instance, changeObj){
-          if (!editor.isClean() &&
-              (!$saveInteractiveButton.attr('disabled') ||
-               !$saveAsInteractiveButton.attr('disabled')) ){
-            $saveInteractiveButton.attr('disabled', 'disabled');
-            $saveAsInteractiveButton.attr('disabled', 'disabled');
-          }
-        });
-      }
     }
 
     if (!buttonHandlersAdded) {
@@ -1029,8 +748,6 @@ AUTHORING = false;
       $updateInteractiveButton.on('click', function() {
         try {
           interactive = JSON.parse(editor.getValue());
-          $saveInteractiveButton.removeAttr('disabled');
-          $saveAsInteractiveButton.removeAttr('disabled');
         } catch (e) {
           alert("Interactive JSON syntax error: " + e.message);
           throw new Error("Interactive JSON syntax error: " + e.message);
@@ -1075,67 +792,91 @@ AUTHORING = false;
   // Model Code Editor
   //
   function setupModelCodeEditor() {
-    var foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
-    $.get(Lab.config.actualRoot + interactive.models[0].url).done(function(results) {
-      if (typeof results === 'string') results = JSON.parse(results);
-      modelRemote = results;
-      var md2dModel = _.omit(modelRemote, modelRemoteKeys);
-      $modelTextArea.text(JSON.stringify(md2dModel, null, indent));
-      if (!modelEditor) {
-        modelEditor = CodeMirror.fromTextArea($modelTextArea.get(0), {
-          mode: { name: "javascript", json: true },
-          indentUnit: indent,
-          lineNumbers: true,
-          lineWrapping: false,
-          onGutterClick: foldFunc
-        });
-      }
-      if (!modelButtonHandlersAdded) {
-        modelButtonHandlersAdded = true;
+    var $updateModelButton = $("#update-model-button"),
+        $updateJsonFromModelButton = $("#update-json-from-model-button"),
+        $autoFormatModelJsonButton = $("#autoformat-model-json-button"),
+        $modelTextArea = $("#model-text-area"),
+        $modelEditorContent = $("#model-editor-content"),
+        modelButtonHandlersAdded,
+        foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
 
-        if (!isStaticPage()){
-          setupSaveModel(md2dModel);
+    if (typeof modelJson === 'undefined') {
+      $.get(Lab.config.actualRoot + interactive.models[0].url).done(function(results) {
+        if (typeof results === 'string') results = JSON.parse(results);
+        modelJson = results;
+        $modelTextArea.text(JSON.stringify(modelJson, null, indent));
+        if (!modelEditor) {
+          modelEditor = CodeMirror.fromTextArea($modelTextArea.get(0), {
+            mode: { name: "javascript", json: true },
+            indentUnit: indent,
+            lineNumbers: true,
+            lineWrapping: false,
+            onGutterClick: foldFunc
+          });
+        } else {
+          modelEditor.setValue(JSON.stringify(modelJson, null, indent));
         }
+        if (!modelButtonHandlersAdded) {
+          modelButtonHandlersAdded = true;
 
-        $updateModelButton.on('click', function() {
-          try {
-            md2dModel = JSON.parse(modelEditor.getValue());
-          } catch (e) {
-            alert("Model JSON syntax error: " + e.message);
-            throw new Error("Model JSON syntax error: " + e.message);
-          }
-          if(isFullPage()) {
-            controller.loadModel(interactive.models[0].id, md2dModel);
-          } else {
-            iframePhone.post({ type:'loadModel', data: { modelId: interactive.models[0].id, modelObject: md2dModel } });
-          }
-        });
+          $updateModelButton.on('click', function() {
+            try {
+              modelJson = JSON.parse(modelEditor.getValue());
+            } catch (e) {
+              alert("Model JSON syntax error: " + e.message);
+              throw new Error("Model JSON syntax error: " + e.message);
+            }
+            if(isFullPage()) {
+              controller.loadModel(interactive.models[0].id, modelJson);
+            } else {
+              iframePhone.post({ type:'loadModel', data: { modelId: interactive.models[0].id, modelObject: modelJson } });
+            }
+          });
 
-        $autoFormatModelJsonButton.on('click', function() {
-          autoFormatEditorContent(modelEditor);
-        });
+          $autoFormatModelJsonButton.on('click', function() {
+            autoFormatEditorContent(modelEditor);
+          });
 
-        $updateJsonFromModelButton.on('click', function() {
-          var modelState;
-          if(isFullPage()) {
-            modelState = controller.getModelController().state();
-            modelEditor.setValue(JSON.stringify(modelState, null, indent));
-          } else {
-            iframePhone.post({ type:'getModelState' });
-            iframePhone.addListener('modelState', function(message) {
-              modelEditor.setValue(JSON.stringify(message, null, indent));
-            });
-          }
-        });
+          $updateJsonFromModelButton.on('click', function() {
+            var modelState;
+            if(isFullPage()) {
+              modelState = controller.getModelController().state();
+              modelEditor.setValue(JSON.stringify(modelState, null, indent));
+            } else {
+              iframePhone.post({ type:'getModelState' });
+              iframePhone.addListener('modelState', function(message) {
+                modelEditor.setValue(JSON.stringify(message, null, indent));
+              });
+            }
+          });
 
-        $showModelEditor.change(function() {
-          if (this.checked) {
-            $modelEditorContent.show(100);
-          } else {
-            $modelEditorContent.hide(100);
-          }
-        }).change();
+          $showModelEditor.change(function() {
+            if (this.checked) {
+              $modelEditorContent.show(100);
+            } else {
+              $modelEditorContent.hide(100);
+            }
+          }).change();
+        }
+      });
+    }
+  }
+
+  function setupSnapshotButton() {
+    var $showSnapshot = $("#show-snapshot"),
+        $snapshotContent = $("#snapshot-content");
+
+    $showSnapshot.change(function() {
+      if (this.checked) {
+        $snapshotContent.show(100);
+      } else {
+        $snapshotContent.hide(100);
       }
+    }).change();
+
+    $('#export_interactive').on('click', function(e) {
+      e.preventDefault();
+      shutterbug.getDomSnapshot();
     });
   }
 
@@ -1154,6 +895,10 @@ AUTHORING = false;
   // Benchmarks
   //
   function setupBenchmarks() {
+    var $showBenchmarks = $("#show-benchmarks"),
+        $benchmarksContent = $("#benchmarks-content"),
+        $runBenchmarksButton = $("#run-benchmarks-button");
+
     $showBenchmarks.change(function() {
       if (this.checked) {
         $benchmarksContent.show(100);
@@ -1171,7 +916,7 @@ AUTHORING = false;
 
       if(isFullPage()) {
         modelController = controller.getModelController();
-        benchmark.run(modelController.benchmarks,
+        Lab.benchmark.run(modelController.benchmarks,
           benchmarksTable,
           function(results) { console.log(results); },
           function() { $runBenchmarksButton.attr('disabled', true); },
@@ -1179,12 +924,11 @@ AUTHORING = false;
       } else {
         iframePhone.post({ type:'runBenchmarks' });
         iframePhone.addListener('returnBenchmarks', function(message) {
-          benchmark.renderToTable(benchmarksTable, message.benchmarks, message.results);
+          Lab.benchmark.renderToTable(benchmarksTable, message.benchmarks, message.results);
         });
       }
     });
   }
-
 
   //
   // Energy Graph
@@ -1192,6 +936,10 @@ AUTHORING = false;
   // otherwize we'll assume the Interactive is embedded in an iframe.
   //
   function setupEnergyGraph(_model, callback) {
+    var $modelEnergyGraphContent = $("#model-energy-graph-content"),
+        energyGraphSamplePeriod,
+        modelEnergyGraph,
+        modelEnergyData = [];
 
     // private functions
     function modelStepCounter() {
@@ -1245,7 +993,7 @@ AUTHORING = false;
     function removeEventHook(name) {
       var privateName = name + '.modelEnergyGraph';
       if (_model) {
-        _model.on(privateName); // for now
+        _model.on(privateName, null); // for now
       } else if (iframePhone) {
         iframePhone.removeDispatchListener(privateName);
       }
@@ -1433,6 +1181,9 @@ AUTHORING = false;
   // Atom Data Table
   //
   function setupAtomDataTable() {
+    var $modelDatatableContent = $("#model-datatable-content"),
+        $modelDatatableResults = $("#model-datatable-results"),
+        $modelDatatableStats = $("#model-datatable-stats");
 
     // private functions
     function renderModelDatatable(reset) {
@@ -1595,12 +1346,12 @@ AUTHORING = false;
     }
 
     function removeEventListeners() {
-      model.on("tick.dataTable");
-      model.on('play.dataTable');
-      model.on('reset.dataTable');
-      model.on('seek.dataTable');
-      model.on('stepForward.dataTable');
-      model.on('stepBack.dataTable');
+      model.on("tick.dataTable", null);
+      model.on('play.dataTable', null);
+      model.on('reset.dataTable', null);
+      model.on('seek.dataTable', null);
+      model.on('stepForward.dataTable', null);
+      model.on('stepBack.dataTable', null);
     }
 
     // Initialization

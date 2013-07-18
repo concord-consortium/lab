@@ -40,6 +40,7 @@
     "VDWLinesCutoff": "medium",
     "showVelocityVectors": false,
     "showForceVectors": true,
+    "electricFieldDensity": 0,
     "showAtomTrace": false,
     "images": [
       {

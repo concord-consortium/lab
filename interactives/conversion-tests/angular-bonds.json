@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "angular-bonds$0",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/angular-bonds$0.json",
       "viewOptions": {
@@ -55,5 +56,6 @@
       "action": "for(var i = 0; i < 5; i++) setAngularBondProperties(i, { angle: value });"
     }
   ],
-  "layout": {}
+  "layout": {
+  }
 }

@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "quantum-emission",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/quantum-emission$0.json",
       "viewOptions": {

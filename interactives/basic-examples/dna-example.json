@@ -6,6 +6,7 @@
   "fontScale": 0.8,
   "models": [
     {
+      "type": "md2d",
       "id": "page3$0",
       "url": "imports/legacy-mw-content/converted/sam-activities/DNA-to-proteins/page3/page3$0.json",
       "viewOptions": {
@@ -179,18 +180,38 @@
   ],
   "layout": {
     "bottom": [
-      ["viewport"],
-      ["current-state"]
+      [
+        "viewport"
+      ],
+      [
+        "current-state"
+      ]
     ],
     "right": [
-      ["dna-dialog"],
-      ["state-pulldown"],
-      ["next-state-jump"],
-      ["prev-state-jump"],
-      ["animate-pulldown"],
-      ["next-state"],
-      ["start"],
-      ["stop-anim"]
+      [
+        "dna-dialog"
+      ],
+      [
+        "state-pulldown"
+      ],
+      [
+        "next-state-jump"
+      ],
+      [
+        "prev-state-jump"
+      ],
+      [
+        "animate-pulldown"
+      ],
+      [
+        "next-state"
+      ],
+      [
+        "start"
+      ],
+      [
+        "stop-anim"
+      ]
     ]
   }
 }

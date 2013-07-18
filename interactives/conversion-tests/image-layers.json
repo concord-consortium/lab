@@ -5,6 +5,7 @@
   "about": "",
   "models": [
     {
+      "type": "md2d",
       "id": "image-layers$0",
       "url": "imports/legacy-mw-content/converted/potential-tests/image-layers/image-layers$0.json",
       "viewOptions": {
