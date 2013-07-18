@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "b2f00a1b2386f37c7b6f98855e72f9cf1885b3c0",
-        "short_sha":      "b2f00a1b",
-        "url":            "https://github.com/concord-consortium/lab/commit/b2f00a1b",
+        "sha":           "d1d04d65e0cab2cf851410d31596b221213c73b7",
+        "short_sha":      "d1d04d65",
+        "url":            "https://github.com/concord-consortium/lab/commit/d1d04d65",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-07-18 13:51:33 -0400",
-        "short_message": "just remove jquery/node_modules/grunt-contrib-jshint",
-        "message":       "just remove jquery/node_modules/grunt-contrib-jshint\n\nwhen running make clean\n... and the same in jquery-ui"
+        "date":          "2013-07-18 14:09:34 -0400",
+        "short_message": "Shutterbug won&#39;t exist on static site",
+        "message":       "Shutterbug won&#39;t exist on static site"
       },
       "dirty": false
     }

@@ -272,13 +272,17 @@ AUTHORING = false;
         helper: "ui-resizable-helper",
         resize: controller.resize
       });
-      shutterbug = new Shutterbug('#responsive-content','#image_output');
+      if (typeof Shutterbug !== 'undefined') {
+        shutterbug = new Shutterbug('#responsive-content','#image_output');
+      }
     } else {
       // Interactive Browser with Interactive embedding in iframe
       // data table not working in iframe embedding mode yet
       $("#model-datatable").hide();
 
-      shutterbug = new Shutterbug("#iframe-interactive","#image_output");
+      if (typeof Shutterbug !== 'undefined') {
+        shutterbug = new Shutterbug("#iframe-interactive","#image_output");
+      }
       setupCodeEditor();
       setupModelCodeEditor();
       setupSnapshotButton();
@@ -876,7 +880,9 @@ AUTHORING = false;
 
     $('#export_interactive').on('click', function(e) {
       e.preventDefault();
-      shutterbug.getDomSnapshot();
+      if (typeof shutterbug !== 'undefined') {
+        shutterbug.getDomSnapshot();
+      }
     });
   }
 
