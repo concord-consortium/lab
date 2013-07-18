@@ -679,7 +679,7 @@ define(function (require) {
             // Clear and hide the brush.
             selectBrush.clear();
             // Redraw brush (which is now empty).
-            brushContainer.call(selectBrush);
+            brushContainer.select("g.select-area").call(selectBrush);
           });
         // Add a new "g" to easily remove it while
         // disabling / reseting select action.
