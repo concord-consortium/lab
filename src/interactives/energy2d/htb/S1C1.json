@@ -5,7 +5,7 @@
   "about": [
     "How much heat stored in an object depends on its mass, or size, as described by the formula below:",
     "",
-    "**Q** = *c*p⋅**m***(*T*final - *T*initial)",
+    "**Q** = *c*p⋅**m**(*T*final - *T*initial)",
     "",
     "**Note:** that the specific heats of the two rectangular objects are different. Your task is to change the size of one or both",
     "objects—hence the mass—so that the equilibrium temperature will be approximately 25°C.",
