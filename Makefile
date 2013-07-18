@@ -131,6 +131,11 @@ clean-finish:
 	# Remove generated products in vendor libraries
 	rm -f vendor/jquery/dist/jquery*.js
 	rm -f vendor/jquery-ui/dist/jquery-ui*.js
+	# hack to always download a new copy of grunt-contrib-jshint
+	# because of packaging issues with an unresolved jshint depedency when
+	# an older version of jshint is installed
+	if [ -d vendor/jquery/node_modules/grunt-contrib-jshint ]; then rm -rf vendor/jquery/node_modules/grunt-contrib-jshint; fi
+	if [ -d vendor/jquery-ui/node_modules/grunt-contrib-jshint ]; then rm -rf vendor/jquery-ui/node_modules/grunt-contrib-jshint; fi
 
 # public dir cleanup.
 .PHONY: clean-public
@@ -575,7 +580,7 @@ public/favicon.ico:
 	cp -f src/favicon.ico public/favicon.ico
 
 vendor/jquery/dist/jquery.min.js: vendor/jquery
-	cd vendor/jquery; rm -rf node_modules; npm install; \
+	cd vendor/jquery; npm install; \
 	 npm install grunt-cli; \
 	 ./node_modules/grunt-cli/bin/grunt
 
@@ -583,7 +588,7 @@ vendor/jquery:
 	git submodule update --init --recursive
 
 vendor/jquery-ui/dist/jquery-ui.min.js: vendor/jquery-ui
-	cd vendor/jquery-ui; rm -rf node_modules; npm install; \
+	cd vendor/jquery-ui; npm install; \
 	npm install grunt-cli; \
 	./node_modules/grunt-cli/bin/grunt build
 
