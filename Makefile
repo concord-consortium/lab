@@ -575,7 +575,7 @@ public/favicon.ico:
 	cp -f src/favicon.ico public/favicon.ico
 
 vendor/jquery/dist/jquery.min.js: vendor/jquery
-	cd vendor/jquery; npm install; \
+	cd vendor/jquery; rm -rf node_modules; npm install; \
 	 npm install grunt-cli; \
 	 ./node_modules/grunt-cli/bin/grunt
 
@@ -583,7 +583,7 @@ vendor/jquery:
 	git submodule update --init --recursive
 
 vendor/jquery-ui/dist/jquery-ui.min.js: vendor/jquery-ui
-	cd vendor/jquery-ui; npm install; \
+	cd vendor/jquery-ui; rm -rf node_modules; npm install; \
 	npm install grunt-cli; \
 	./node_modules/grunt-cli/bin/grunt build
 
