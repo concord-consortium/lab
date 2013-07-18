@@ -27,7 +27,11 @@
     %script{:src => "embeddable.js", :type => "text/javascript"}
     %script{:src => "shutterbug/shutterbug.js", :type => "text/javascript"}
     :javascript
-      window.shutterbug = Shutterbug("#responsive-content","#image_output");
+      $(document).ready(function () {
+        if (Shutterbug) {
+          window.shutterbug = new Shutterbug("#responsive-content","#image_output") };
+        }
+      )
 
     = MOCHA_PHANTOMJS_BODY
 
