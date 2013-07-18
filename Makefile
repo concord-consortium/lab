@@ -583,7 +583,9 @@ vendor/jquery:
 	git submodule update --init --recursive
 
 vendor/jquery-ui/dist/jquery-ui.min.js: vendor/jquery-ui
-	cd vendor/jquery-ui; npm install; ./node_modules/grunt/bin/grunt build
+	cd vendor/jquery-ui; npm install; \
+	npm install grunt-cli; \
+	./node_modules/grunt-cli/bin/grunt build
 
 vendor/jquery-ui:
 	git submodule update --init --recursive
