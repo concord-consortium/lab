@@ -111,7 +111,6 @@ define(function () {
       $pulldown.selectBoxIt();
 
       $wrapper.find(".selectboxit").css("width", "auto");
-      $wrapper.find(".selectboxit-text").css("max-width", "none");
 
       // SelectBoxIt assumes that all select boxes are always going to have a width
       // set in CSS (default 220px). This doesn't work for us, as we don't know how

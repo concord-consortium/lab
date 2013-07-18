@@ -142,8 +142,7 @@ define(function (require) {
         $containerByID[id] = $("<div id='" + id + "'>").appendTo($interactiveContainer);
         $containerByID[id].css({
           "display": "inline-block",
-          "position": "absolute",
-          "z-index": "1"
+          "position": "absolute"
         });
 
         if (container.width === undefined) {

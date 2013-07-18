@@ -32,14 +32,25 @@
   font-size: 1em
   font-family: $fontface, Verdana, Geneva, sans-serif
 
+// These options are very important, they ensure that our
+// select box is responsive (adjusts its size dynamically).
+.selectboxit-text
+  max-width: none !important
+.selectboxit-options
+  min-width: 100% !important
+.selectboxit-option, .selectboxit-optgroup-header
+  text-indent: 0.4em
+
+.selectboxit-container
+  .selectboxit, .selectboxit-options
+    border-radius: 0.7em
+
 .selectboxit-arrow-container
+  width: 2.14em
   border-left: 1px solid #ccc
 
 .selectboxit .selectboxit-arrow-container .selectboxit-arrow
   top: 39%
-
-.selectboxit-arrow-container
-  width: 2.14em
 
 .selectboxit-default-arrow
   border-top: 0.45em solid rgb(140, 140, 140)
@@ -54,18 +65,16 @@
   text-indent: 0.5em
   overflow: visible
 
-.selectboxit-option, .selectboxit-optgroup-header
-  text-indent: 0.4em
+.selectboxit-btn
+  &, &:focus, &.selectboxit-enabled:focus
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3)
+    background-color: #f6f6f6
+    background-position: 0 0
+    @include linear-gradient(#fafafa, #c2c2c2, $fallback: #eee)
 
-.selectboxit-btn,
-.selectboxit-btn:focus
-  background-color: #f6f6f6
-  background-position: 0 0
-  @include linear-gradient(#fafafa, #c2c2c2, $fallback: #eee)
-
-.selectboxit-btn:hover,
-.selectboxit-btn:active
-  color: #333333
-  background-color: #fff
-  background-position: 0 0
-  @include linear-gradient(#fff, #e6e6e6, $fallback: #e6e6e6)
+  &:hover, &.selectboxit-enabled:hover, &:active,
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3)
+    color: #333333
+    background-color: #fff
+    background-position: 0 0
+    @include linear-gradient(#fff, #e6e6e6, $fallback: #e6e6e6)
