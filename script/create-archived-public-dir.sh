@@ -36,7 +36,12 @@ cat <<heredoc
 
 heredoc
 cd public
+if git checkout --quiet public
+then
+echo "checked out existing public branch"
+else
 git checkout -b public
+fi
 git add --all .
 git commit -am "generated from commit: `git --git-dir ../.git log -1 --format="%H%n%n%an <%ae>%n%cd%n%n    %s%n%n    %b"`"
 cd ..
