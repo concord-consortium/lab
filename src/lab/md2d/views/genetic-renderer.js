@@ -166,10 +166,6 @@ define(function (require) {
         // Transition.
         parent.each("start.transition-name", function () {
           animStateInProgress = animState;
-          // ! Set delay to 0 to ensure that transitions deriving from this one
-          // will be executed immediately! This is important, as we call rendering
-          // inside the 'start' event listener.
-          parent.delay(0);
           render();
         });
         parent.each("end.transition-name", function () {
@@ -412,7 +408,7 @@ define(function (require) {
         if (aaCount >= 1) {
           t = nextTrans().duration(150);
           renderState(t, "translation-end-s0");
-          t.each("end", function () {
+          t.each("end.anim", function () {
             geneticEngine.translationCompleted();
           });
 
