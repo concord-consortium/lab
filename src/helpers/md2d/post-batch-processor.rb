@@ -161,6 +161,13 @@ class MD2DImports
 
       @model_list.push(MD2DDirectory.new("rites").section)
 
+      @model_list.push(MD2DDirectory.new("public/part1/crystal").section)
+      @model_list.push(MD2DDirectory.new("public/part1/light").section)
+
+      @model_list.push(MD2DDirectory.new("public/part2/newton").section)
+      @model_list.push(MD2DDirectory.new("public/part2/photon").section)
+      @model_list.push(MD2DDirectory.new("public/part2/spectroscopy").section)
+
       @model_list.push(MD2DDirectory.new("visual/Recycling").section)
       @model_list.push(MD2DDirectory.new("visual/Detergents").section)
       @model_list.push(MD2DDirectory.new("visual/ChemicalReactions").section)

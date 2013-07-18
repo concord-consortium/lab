@@ -138,6 +138,10 @@
   :name: "Classic Java MW Examples: Part1/Light"
   :category: Examples
 
+- :path: public/part1/crystal
+  :name: "Classic Java MW Examples: Part1/Crystal"
+  :category: Examples
+
 - :path: public/part2/newton
   :name: "Classic Java MW Examples: Part2/Newton"
   :category: Examples
