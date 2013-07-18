@@ -47,29 +47,25 @@
     {
       "name": "leftConcentrationO2",
       "value": [
-      "  var n = get('nLeftO2')+get('nRightO2');",
-      "  return n > 0 ? get('nLeftO2') / n : 0"
+      "  return get('nLeftO2') / (get('width') / 2 * get('height') * 0.1);"
       ]
     },
     {
       "name": "leftConcentrationCO2",
       "value": [
-      "  var n = get('nLeftCO2')+get('nRightCO2');",
-      "  return n > 0 ? get('nLeftCO2') / n : 0"
+      "  return get('nLeftCO2') / (get('width') / 2 * get('height') * 0.1);"
       ]
     },
     {
       "name": "rightConcentrationO2",
       "value": [
-      "  var n = get('nLeftO2')+get('nRightO2');",
-      "  return n > 0 ? get('nRightO2') / n : 0"
+      "  return get('nRightO2') / (get('width') / 2 * get('height') * 0.1);"
       ]
     },
     {
       "name": "rightConcentrationCO2",
       "value": [
-      "  var n = get('nLeftCO2')+get('nRightCO2');",
-      "  return n > 0 ? get('nRightCO2') / n : 0"
+      "  return get('nRightCO2') / (get('width') / 2 * get('height') * 0.1);"
       ]
     }
   ],
@@ -182,7 +178,7 @@
       "id": "left-concentration-CO2",
       "fontScale": 0.5,
       "min": 0,
-      "max": 1,
+      "max": 80,
       "labels": 0,
       "barColor": "rgb(143,113,178)",
       "fillColor": "rgb(225,243,253)",
@@ -196,7 +192,7 @@
       "type": "barGraph",
       "id": "left-concentration-O2",
       "min": 0,
-      "max": 1,
+      "max": 80,
       "labels": 0,
       "barColor": "rgb(242,234,27)",
       "fillColor": "rgb(225,243,253)",
@@ -210,7 +206,7 @@
       "type": "barGraph",
       "id": "right-concentration-CO2",
       "min": 0,
-      "max": 1,
+      "max": 80,
       "labels": 0,
       "barColor": "rgb(143,113,178)",
       "fillColor": "rgb(243,222,223)",
@@ -224,7 +220,7 @@
       "type": "barGraph",
       "id": "right-concentration-O2",
       "min": 0,
-      "max": 1,
+      "max": 80,
       "labels": 0,
       "barColor": "rgb(242,234,27)",
       "fillColor": "rgb(243,222,223)",
