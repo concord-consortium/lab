@@ -357,10 +357,10 @@
     "below": [
     ],
     "above-left": [
-      "outside-above-label"
+      "inside-above-label"
     ],
     "above-right": [
-      "inside-above-label"
+      "outside-above-label"
     ]
   },
   "template": [
