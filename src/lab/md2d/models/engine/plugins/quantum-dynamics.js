@@ -379,10 +379,10 @@ define(function(require) {
 
               photonIndex = addPhoton();
 
-          photons.x[photonIndex]     = x;
-          photons.y[photonIndex]     = y;
-          photons.vx[photonIndex]    = vx;
-          photons.vy[photonIndex]    = vy;
+          photons.x[photonIndex]  = x;
+          photons.y[photonIndex]  = y;
+          photons.vx[photonIndex] = vx;
+          photons.vy[photonIndex] = vy;
           photons.angularFrequency[photonIndex] = angularFreq;
         },
 
