@@ -41,7 +41,10 @@ define(function (require) {
       // When viewPortX is changed render DNA and mRNA again. Also center
       // protein while in 'translation-end' state.
       model.addPropertiesListener(["viewPortX"], function() {
-        if (!g || !model.get("DNA")) return;
+        // state.name === "transcription" is an icky workaround for the
+        // problem with transitions when new nucleotide is entering. Rendering
+        // performed by this function breaks the animation.
+        if (!g || !model.get("DNA") || state.name === "transcription") return;
 
         // state.name values are subset of all animation states. We define
         // more animation states than we publish for author / users
