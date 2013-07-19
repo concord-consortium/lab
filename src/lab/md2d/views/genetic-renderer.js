@@ -8,6 +8,20 @@ define(function (require) {
 
       OBJECT_NAMES = GeneticElementsRenderer.OBJECT_NAMES;
 
+  // Implement .interrupt() method that cancels all currently scheduled
+  // transitions. Based on Mike's idea:
+  // https://github.com/mbostock/d3/issues/1410#issuecomment-21251284
+  d3.selection.prototype.interrupt = function() {
+    return this.each(function() {
+      var lock = this.__transition__;
+      if (lock) {
+        var active = -1;
+        for (var id in lock) if ((id = +id) > active) active = id;
+        lock.active = active + 1;
+      }
+    });
+  };
+
   function GeneticRenderer(modelView, model) {
     var api,
         svg = modelView.svg,
@@ -208,21 +222,15 @@ define(function (require) {
       return newTrans;
     }
 
-    /**
-     * Trick to cancel all current transitions. It isn't possible explicitly
-     * so we have to start new, fake transitions, which will cancel previous
-     * ones. Note that some transitions can be applied to elements that live
-     * outside g.genetics element, e.g. viewport and background. So, it isn't
-     * enough to use d3.selectAll("g.genetics *").
-     *
-     * @private
-     */
     function cancelTransitions() {
       var g = svg.select("g.genetics");
       if (!g.empty() && g.node().__transition__) {
-        svg.selectAll("g.genetics, g.genetics *").transition().delay(0);
-        svg.select(".plot").transition().delay(0); // background changes
-        viewportG.transition().delay(0);           // viewport scrolling
+       // Note that some transitions can be applied to elements that live
+       // outside g.genetics element, e.g. viewport and background. So, it
+       // isn't enough to use d3.selectAll("g.genetics *").
+        svg.selectAll("g.genetics, g.genetics *").interrupt();
+        svg.select(".plot").interrupt(); // background changes
+        viewportG.interrupt();           // viewport scrolling
         currentTrans = null;
         animStateInProgress = null;
       }
