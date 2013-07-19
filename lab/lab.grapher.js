@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "5250e78b16bfc74a214daadf3c806b2f5b80c929",
-        "short_sha":      "5250e78b",
-        "url":            "https://github.com/concord-consortium/lab/commit/5250e78b",
-        "author":        "William Day",
-        "email":         "code@william-day.com",
-        "date":          "2013-07-18 17:58:54 -0400",
-        "short_message": "fix issue with concentration in diffusion across a permeable membrane",
-        "message":       "fix issue with concentration in diffusion across a permeable membrane\n\n[#53648239]"
+        "sha":           "8728aecc81c99a5f95cbde8b1d6c44794fdb6a80",
+        "short_sha":      "8728aecc",
+        "url":            "https://github.com/concord-consortium/lab/commit/8728aecc",
+        "author":        "Stephen Bannasch",
+        "email":         "stephen.bannasch@gmail.com",
+        "date":          "2013-07-18 21:41:54 -0400",
+        "short_message": "fix syntax error in reference to shutterbug",
+        "message":       "fix syntax error in reference to shutterbug"
       },
       "dirty": false
     }
