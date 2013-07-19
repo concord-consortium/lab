@@ -40,7 +40,8 @@
     "showClock": false,
     "showVelocityVectors": false,
     "showForceVectors": false,
-    "electricFieldDensity": 0,
+    "showElectricField": false,
+    "electricFieldDensity": 18,
     "showAtomTrace": false,
     "images": [
       {

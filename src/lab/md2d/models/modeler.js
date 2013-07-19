@@ -411,7 +411,10 @@ define(function(require) {
     }());
 
     function updateViewElectricField() {
-      if (!electricField.length) return;
+      // It may seem strange that model reads "viewOption"
+      // ("showElectricField"), but this is definitely reasonable
+      // optimization.
+      if (!electricField.length || !model.properties.showElectricField) return;
       var i, len, p;
       for (i = 0, len = electricField.length; i < len; i++) {
         p = electricField[i];

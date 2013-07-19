@@ -199,8 +199,12 @@ define(function() {
         defaultValue: false,
         storeInTickHistory: true
       },
+      showElectricField: {
+        defaultValue: false,
+        storeInTickHistory: true
+      },
       electricFieldDensity: {
-        defaultValue: 0,
+        defaultValue: 18, // it means 18 arrows per row
         storeInTickHistory: true
       },
       showAtomTrace: {

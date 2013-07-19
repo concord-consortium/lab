@@ -369,14 +369,19 @@ parseMML = (mmlString) ->
 
     ###
       Find the electric field visualization options.
-      In NextGen version we define only density of eletric field, so
-      to disable it completely, it should be set to 0.
     ###
+    showElectricField = getBooleanProperty $mml.root(), "showEFieldLines", "boolean"
     electricFieldDensity = do () ->
-      showEFieldLines = getBooleanProperty $mml.root(), "showEFieldLines", "boolean"
       EFCellSize = getIntProperty $mml.root(), "EFCellSize", "int"
       [EFCellSize] = toNextgenLengths EFCellSize
-      return if showEFieldLines and EFCellSize < 100 then Math.round width / EFCellSize else 0
+      if EFCellSize < 100
+        Math.round width / EFCellSize
+      else
+        # Quite often in Classic MW cell size equal to 100 was used to disable
+        # electric field completely. Instead of using density 0, use defaul
+        # density + set showElectricField to false.
+        showElectricField = false
+        return undefined
 
     ###
       Find the KE Shading
@@ -989,6 +994,7 @@ parseMML = (mmlString) ->
       showClock           : showClock
       showVelocityVectors : showVelocityVectors
       showForceVectors    : showForceVectors
+      showElectricField   : showElectricField
       electricFieldDensity: electricFieldDensity
       images              : images
       textBoxes           : textBoxes

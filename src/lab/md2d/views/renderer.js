@@ -1392,10 +1392,12 @@ define(function (require) {
 
     function setupElectricField() {
       var density = model.get("electricFieldDensity"),
+          show = model.get("showElectricField"),
           col, size;
-      drawElectricForceField = density > 0;
+      drawElectricForceField = show && density > 0;
       // Do full enter-update-remove cycle to reuse DOM elements.
-      efVector = fieldVisualization.selectAll(".vector-electric-field").data(model.getElectricField());
+      efVector = fieldVisualization.selectAll(".vector-electric-field")
+          .data(show ? model.getElectricField() : []);
       efVector.exit().remove();
       if (drawElectricForceField) {
         // Enter.
@@ -1896,7 +1898,8 @@ define(function (require) {
         "showAtomTrace", "atomTraceId", "aminoAcidColorScheme",
         "backgroundColor", "markColor"],
           redrawClickableObjects(repaint));
-      model.addPropertiesListener("electricFieldDensity", setupElectricField);
+      model.addPropertiesListener(["electricFieldDensity", "showElectricField"],
+        setupElectricField);
 
       model.on('addAtom', redrawClickableObjects(setupParticles));
       model.on('removeAtom', redrawClickableObjects(repaint));
