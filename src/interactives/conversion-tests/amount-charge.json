@@ -10,8 +10,7 @@
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/amount-charge$0.json",
       "viewOptions": {
         "controlButtons": "play_reset_step",
-        "modelTimeLabel": true,
-        "electricFieldDensity": 20
+        "showElectricField": true
       }
     }
   ],
@@ -74,7 +73,7 @@
     },
     {
       "type": "checkbox",
-      "id": "force_vectors",
+      "id": "force-vectors",
       "text": "Show forces",
       "property": "showForceVectors"
     },
@@ -97,21 +96,19 @@
       "steps": 20,
       "title": "Electric field density",
       "property": "electricFieldDensity"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-electric-field",
+      "text": "Show electric field",
+      "property": "showElectricField"
     }
   ],
   "layout": {
-    "bottom": [
-      [ "left-slider", "right-slider"],
-      [ "force_vectors", "electric-field-density-slider" ]
-    ]
+    "bottom": ["left-slider", "right-slider"],
+    "bottom2": ["force-vectors", "show-electric-field", "electric-field-density-slider"]
   },
   "template": [
-    {
-      "id": "right",
-      "top": "2em",
-      "left": "model.right",
-      "align": "left"
-    },
     {
       "id": "bottom",
       "left": "model.left",
@@ -119,6 +116,12 @@
       "padding-top": "0.5em",
       "width": "model.width",
       "align": "center"
+    },
+    {
+      "id": "bottom2",
+      "left": "model.left",
+      "top": "bottom.bottom",
+      "width": "interactive.width"
     }
   ]
 }
