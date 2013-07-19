@@ -413,12 +413,12 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "60c506322d3f6a9edd6e7bfc6d2691af99a35500",
-        "short_sha":      "60c50632",
-        "url":            "https://github.com/concord-consortium/lab/commit/60c50632",
+        "sha":           "8a4732fb055118ff161d4b392c6fb7913058b031",
+        "short_sha":      "8a4732fb",
+        "url":            "https://github.com/concord-consortium/lab/commit/8a4732fb",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-07-18 22:38:11 -0400",
+        "date":          "2013-07-18 22:51:35 -0400",
         "short_message": "don&#39;t include Shutterbug in gh-pages branch",
         "message":       "don&#39;t include Shutterbug in gh-pages branch\n\nFIXME:\nThis should also be done when generating the versioned\ntar.gz archives  but since they are created from running\ncode on a server using Rack, Shutterbug can&#39;t be easily\nremoved ..."
       },
