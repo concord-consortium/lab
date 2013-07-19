@@ -141,3 +141,19 @@ else
 <script src='lab/lab.js'></script>
   HEREDOC
 end
+
+if ENV['LAB_DISABLE_SHUTTERBUG']
+  LAB_SHUTTERBUG = ''
+  LAB_SHUTTERBUG_EMBEDDABLE = ''
+else
+  LAB_SHUTTERBUG = "<script src='shutterbug/shutterbug.js' type='text/javascript'></script>"
+  LAB_SHUTTERBUG_EMBEDDABLE = LAB_SHUTTERBUG + <<-HEREDOC
+<script>
+  $(window).load(function () {
+    if (typeof Shutterbug !== 'undefined') {
+      window.shutterbug = new Shutterbug("#responsive-content","#image_output") };
+    }
+  );
+</script>
+  HEREDOC
+end
