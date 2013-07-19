@@ -537,7 +537,7 @@ define(function(require) {
 
       getState: function() {
         return [
-          new CloneRestoreWrapper(photons),
+          new CloneRestoreWrapper(photons, { padArraysWithZeroes: true }),
           {
             clone: function() {
               return {
