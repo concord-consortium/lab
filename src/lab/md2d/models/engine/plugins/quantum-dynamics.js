@@ -341,15 +341,13 @@ define(function(require) {
           }
         },
 
-        addPhoton = function() {
+        findEmptyPhotonIndex = function() {
           var length = photons.x.length,
               i;
 
-          numPhotons++;
-
-          if (numPhotons > length) {
+          if (numPhotons + 1 > length) {
             utils.extendArrays(photons, length+10);
-            return numPhotons - 1;
+            return length;
           }
 
           for (i = 0; i < length; i++) {
@@ -377,8 +375,9 @@ define(function(require) {
               vy          = C * sinA,
               angularFreq = energy / PLANCK_CONSTANT,
 
-              photonIndex = addPhoton();
+              photonIndex = findEmptyPhotonIndex();
 
+          numPhotons++;
           photons.x[photonIndex]  = x;
           photons.y[photonIndex]  = y;
           photons.vx[photonIndex] = vx;
