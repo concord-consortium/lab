@@ -171,9 +171,9 @@ JavaScript dependency management is handled by [RequireJS](http://requirejs.org/
 
 ### Prerequisites:
 
-#### RVM, Ruby 1.9 and the RubyGem bundler
+#### RVM, Ruby 2.0 and the RubyGem bundler
 
-We normally use [RVM](https://rvm.io/) to mange our development dependency on [Ruby 1.9.3](http://www.ruby-lang.org/en/)
+We normally use [RVM](https://rvm.io/) to mange our development dependency on [Ruby 2.0.0](http://www.ruby-lang.org/en/)
 and the specific Ruby Gems needed for building Lab and running the Lab server.
 
 1. [Install RVM](https://rvm.io/rvm/install/)
@@ -181,13 +181,13 @@ and the specific Ruby Gems needed for building Lab and running the Lab server.
 After installation you should see something like the following:
 
     $  ruby -v
-    ruby 1.9.3p392 (2013-02-22 revision 39386) [x86_64-darwin10.8.0]
+    ruby 2.0.0p247 (2013-06-27 revision 41674) [x86_64-darwin10.8.0]
 
 If you already have RVM installed update to the most up-to-date stable version.
 
     $ rvm get stable
 
-Once you have a working version of Ruby 1.9.3 check to see if the RubyGem [bundler](http://gembundler.com/)
+Once you have a working version of Ruby 2.0.0 check to see if the RubyGem [bundler](http://gembundler.com/)
 is already installed:
 
     $ gem list bundler
@@ -196,7 +196,7 @@ is already installed:
 
     bundler (1.3.5)
 
-If Bundler is not installed install it now into the global gemset for ruby-1.9.3-p392
+If Bundler is not installed install it now into the global gemset for ruby-2.0.0-p247
 
     $ rvm gemset use global
     $ gem install bundler
@@ -372,15 +372,16 @@ Alternatively if you don't have commit access use this form:
 
 ### Setup the local Lab repository for development
 
-Make sure you have already installed the prerequistes: [Ruby 1.9](http://www.ruby-lang.org/en/),
+Make sure you have already installed the prerequistes: [Ruby 2.0](http://www.ruby-lang.org/en/),
 the RubyGem [bundler](http://gembundler.com/), and [nodejs](http://nodejs.org/) (which now includes
 [npm](http://npmjs.org/) the Node Package Manager.
 
 Open a shell and change to the `lab/` directory. The first time you `cd` into the `lab/` directory RVM will
-ask you if this *new* `.rvmrc` file should be trusted.
+switch to using `ruby-2.0.0-p247` based on the `.ruby-version` file in the repository. If you don't have
+this version of ruby installed rvm will tell you the command to install it.
 
-The `.rvmrc` specifies that this project dependeds on Ruby 1.9.3-p194 and all the required Ruby Gems
-will be installed in the RVM gemset named `ruby-1.9.3-p194@lab`.
+Additionally the `.ruby-gemset` tells RVM to install the gems in a gemset named `lab`. So together these
+files tell RVM to store and load gems from the `ruby-2.0.0-p247@lab` gemset.
 
     cd lab
     make everything
@@ -1105,7 +1106,7 @@ the resulting library due to the RequireJS optimization process.
 The
 **[src/examples/](https://github.com/concord-consortium/lab/tree/master/src/examples)**,
 **[src/doc](https://github.com/concord-consortium/lab/tree/master/src/doc)** and,
-**[src/exoperments](https://github.com/concord-consortium/lab/tree/master/src/experiments)**
+**[src/experiments](https://github.com/concord-consortium/lab/tree/master/src/experiments)**
 directories contain additional resources for generating the html, css, and image resources
 for the matching target folders in **`public`**.
 
