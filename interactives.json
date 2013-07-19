@@ -2449,6 +2449,62 @@
       "publicationStatus": "public"
     },
     {
+      "title": "crystal_intro2",
+      "path": "interactives/public/part1/crystal/crystal_intro2.json",
+      "groupKey": "public/part1/crystal",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "crystal_intro3",
+      "path": "interactives/public/part1/crystal/crystal_intro3.json",
+      "groupKey": "public/part1/crystal",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "crystal_intro4",
+      "path": "interactives/public/part1/crystal/crystal_intro4.json",
+      "groupKey": "public/part1/crystal",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "crystal_intro5",
+      "path": "interactives/public/part1/crystal/crystal_intro5.json",
+      "groupKey": "public/part1/crystal",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "crystal_intro6",
+      "path": "interactives/public/part1/crystal/crystal_intro6.json",
+      "groupKey": "public/part1/crystal",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "crystal_intro7",
+      "path": "interactives/public/part1/crystal/crystal_intro7.json",
+      "groupKey": "public/part1/crystal",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "simple_material",
+      "path": "interactives/public/part1/crystal/simple_material.json",
+      "groupKey": "public/part1/crystal",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "light2",
       "path": "interactives/public/part1/light/light2.json",
       "groupKey": "public/part1/light",
@@ -7694,6 +7750,11 @@
     {
       "path": "public/part1/light",
       "name": "Classic Java MW Examples: Part1/Light",
+      "category": "Examples"
+    },
+    {
+      "path": "public/part1/crystal",
+      "name": "Classic Java MW Examples: Part1/Crystal",
       "category": "Examples"
     },
     {

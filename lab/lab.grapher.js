@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "d1d04d65e0cab2cf851410d31596b221213c73b7",
-        "short_sha":      "d1d04d65",
-        "url":            "https://github.com/concord-consortium/lab/commit/d1d04d65",
-        "author":        "Stephen Bannasch",
-        "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-07-18 14:09:34 -0400",
-        "short_message": "Shutterbug won&#39;t exist on static site",
-        "message":       "Shutterbug won&#39;t exist on static site"
+        "sha":           "5250e78b16bfc74a214daadf3c806b2f5b80c929",
+        "short_sha":      "5250e78b",
+        "url":            "https://github.com/concord-consortium/lab/commit/5250e78b",
+        "author":        "William Day",
+        "email":         "code@william-day.com",
+        "date":          "2013-07-18 17:58:54 -0400",
+        "short_message": "fix issue with concentration in diffusion across a permeable membrane",
+        "message":       "fix issue with concentration in diffusion across a permeable membrane\n\n[#53648239]"
       },
       "dirty": false
     }

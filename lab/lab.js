@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "d1d04d65e0cab2cf851410d31596b221213c73b7",
-        "short_sha":      "d1d04d65",
-        "url":            "https://github.com/concord-consortium/lab/commit/d1d04d65",
-        "author":        "Stephen Bannasch",
-        "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-07-18 14:09:34 -0400",
-        "short_message": "Shutterbug won&#39;t exist on static site",
-        "message":       "Shutterbug won&#39;t exist on static site"
+        "sha":           "5250e78b16bfc74a214daadf3c806b2f5b80c929",
+        "short_sha":      "5250e78b",
+        "url":            "https://github.com/concord-consortium/lab/commit/5250e78b",
+        "author":        "William Day",
+        "email":         "code@william-day.com",
+        "date":          "2013-07-18 17:58:54 -0400",
+        "short_message": "fix issue with concentration in diffusion across a permeable membrane",
+        "message":       "fix issue with concentration in diffusion across a permeable membrane\n\n[#53648239]"
       },
       "dirty": false
     }
@@ -30738,10 +30738,6 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
         // Transition.
         parent.each("start.transition-name", function () {
           animStateInProgress = animState;
-          // ! Set delay to 0 to ensure that transitions deriving from this one
-          // will be executed immediately! This is important, as we call rendering
-          // inside the 'start' event listener.
-          parent.delay(0);
           render();
         });
         parent.each("end.transition-name", function () {
@@ -30984,7 +30980,7 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
         if (aaCount >= 1) {
           t = nextTrans().duration(150);
           renderState(t, "translation-end-s0");
-          t.each("end", function () {
+          t.each("end.anim", function () {
             geneticEngine.translationCompleted();
           });
 
