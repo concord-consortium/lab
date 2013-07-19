@@ -143,8 +143,10 @@ group :build do
   end
 
   # , :api_version => '1.6', :port => '35728'
-  guard 'livereload' do
-    watch(/^(public\/).+\.(css|js|html|json)/)
+  unless ENV['LAB_USE_LIVE_RELOAD'] == 'NO' then
+    guard 'livereload' do
+      watch(/^(public\/).+\.(css|js|html|json)/)
+    end
   end
 
   guard 'markdown', :kram_ops => { :toc_levels => [2,3,4,5] } do
