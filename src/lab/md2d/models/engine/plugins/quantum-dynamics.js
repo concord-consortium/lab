@@ -56,7 +56,7 @@ define(function(require) {
         elements,
         photons,
 
-        viewPhotons = [],
+        nextPhotonId = 0,
 
         updateAtomsTable = function() {
           var length = atoms.x.length;
@@ -72,6 +72,7 @@ define(function(require) {
           }
 
           photons =  {
+            id    : arrays.create(length, 0, arrayTypes.uint16Type),
             x     : arrays.create(length, 0, arrayTypes.floatType),
             y     : arrays.create(length, 0, arrayTypes.floatType),
             vx    : arrays.create(length, 0, arrayTypes.floatType),
@@ -101,6 +102,7 @@ define(function(require) {
           for (var i = 0; i < photons.x.length; i++) {
             if (photons.vx[i] || photons.vy[i]) {
               numPhotons++;
+              photons.id[i] = nextPhotonId++;
             }
           }
         },
@@ -378,6 +380,7 @@ define(function(require) {
               photonIndex = findEmptyPhotonIndex();
 
           numPhotons++;
+          photons.id[photonIndex] = nextPhotonId++;
           photons.x[photonIndex]  = x;
           photons.y[photonIndex]  = y;
           photons.vx[photonIndex] = vx;
@@ -469,38 +472,60 @@ define(function(require) {
       // extended to allow plugins to define both engine-level and modeler-level parts.
       // Additionally, this can be split into updateViewPhotons which can happen in the
       // modeler's readModelState method, and a simple getViewPhotons accessor used by the view.
-      getViewPhotons: function() {
-        var n = 0,
-            // avoid using closure variable as this method will be relocated to modeler
-            photons = this.getPhotons(),
-            viewPhoton,
-            i,
-            len;
+      getViewPhotons: (function() {
+        var viewPhotons = [],
+            viewPhotonsByIndex = [];
 
-        for (i = 0, len = photons.x.length; i < len; i++) {
-          if (photons.vx[i] || photons.vy[i]) {
-            if (!viewPhotons[n]) {
-              viewPhotons[n] = {
-                idx: n
-              };
-            }
+        function makeViewPhoton(photons, i) {
+          var vx = photons.vx[i],
+              vy = photons.vy[i],
+              // For convenience, this is in the form required by SVG transform
+              angle = -180 * Math.atan2(vy, vx) / Math.PI;
 
-            viewPhoton = viewPhotons[n];
-
-            viewPhoton.x  = photons.x[i];
-            viewPhoton.y  = photons.y[i];
-            viewPhoton.vx = photons.vx[i];
-            viewPhoton.vy = photons.vy[i];
-            viewPhoton.angularFrequency = photons.angularFrequency[i];
-
-            n++;
-          }
+          return {
+            id: photons.id[i],
+            x:  photons.x[i],
+            y:  photons.y[i],
+            vx: vx,
+            vy: vy,
+            angle: angle,
+            angularFrequency: photons.angularFrequency[i]
+          };
         }
 
-        viewPhotons.length = this.getNumPhotons();
+        return function() {
+          // avoid using the closure variable 'photons' as this method will be relocated to
+          // modeler, and will then have to access photons table via some kind of accessor method
+          var photons = this.getPhotons(),
+              n = 0,
+              i,
+              len,
+              viewPhoton;
 
-        return viewPhotons;
-      },
+          viewPhotons.length = this.getNumPhotons();
+          viewPhotonsByIndex.length = photons.x.length;
+
+          for (i = 0, len = photons.x.length; i < len; i++) {
+            if (photons.vx[i] || photons.vy[i]) {
+              viewPhoton = viewPhotonsByIndex[i];
+
+              if (viewPhoton) {
+                viewPhoton.x = photons.x[i];
+                viewPhoton.y = photons.y[i];
+              } else {
+                viewPhoton = makeViewPhoton(photons, i);
+                viewPhotonsByIndex[i] = viewPhoton;
+              }
+              viewPhotons[n++] = viewPhoton;
+            } else {
+              // Release references to the viewPhoton object after we're done with it.
+              viewPhotonsByIndex[i] = null;
+            }
+          }
+
+          return viewPhotons;
+        };
+      }()),
 
       getElementEnergyLevels: function() {
         return elementEnergyLevels;

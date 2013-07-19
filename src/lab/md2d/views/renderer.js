@@ -1832,8 +1832,9 @@ define(function (require) {
     }
 
     function enterAndUpdatePhotons() {
-      var photonData = model.getPhotons(),
-          photons = mainContainer.selectAll(".photon").data(photonData);
+      var photons = mainContainer
+            .selectAll(".photon")
+            .data(model.getPhotons(), function(d) { return d.id; });
 
       photons.enter().append("path")
         .attr({
@@ -1847,9 +1848,8 @@ define(function (require) {
       photons.exit().remove();
 
       photons.attr("transform", function(d) {
-        var angle = -180 * Math.atan2(d.vy, d.vx) / Math.PI;
         return "translate(" + model2px(d.x) + ", " + model2pxInv(d.y) + ") " +
-               "rotate(" + angle + ")";
+               "rotate(" + d.angle + ")";
       });
 
     }
