@@ -13,9 +13,11 @@ define(function (require) {
   // Dependencies.
   var arrays = require('arrays');
 
-  return function CloneRestoreWrapper(hashOfArrays) {
+  return function CloneRestoreWrapper(hashOfArrays, options) {
+    options = options || {};
+
     // Public API.
-    return {
+    var ret = {
       // Clone hash of arrays
       clone: function() {
         var copy = {},
@@ -28,10 +30,26 @@ define(function (require) {
         }
 
         return copy;
-      },
+      }
+    };
 
-      // Restore internal arrays using saved state.
-      restore: function (state) {
+    // Restore internal arrays using saved state. 2 paths, depending on options.padArraysWithZeroes
+    if (options.padArraysWithZeroes) {
+      ret.restore = function(state) {
+        var prop, target, i, j;
+
+        for (prop in hashOfArrays) {
+          if (hashOfArrays.hasOwnProperty(prop)) {
+            target = hashOfArrays[prop];
+            arrays.copy(state[prop], target);
+            for (i = state[prop].length, j = target.length; i < j; i++) {
+              target[i] = 0;
+            }
+          }
+        }
+      };
+    } else {
+      ret.restore = function(state) {
         var prop;
 
         for (prop in hashOfArrays) {
@@ -39,8 +57,10 @@ define(function (require) {
             arrays.copy(state[prop], hashOfArrays[prop]);
           }
         }
-      }
-    };
+      };
+    }
+
+    return ret;
   };
 
 });
