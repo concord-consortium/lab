@@ -11,7 +11,10 @@
   {
     "trim_trailing_white_space_on_save": true,
     "tab_size": 2,
-    "translate_tabs_to_spaces": true
+    "translate_tabs_to_spaces": true,
+    // Wrap at 100 when hard-wrapping using, for example, the Sublime Wrap Plus plugin.
+    "wrap_width": 100,
+    "rulers": [100]
   },
   "build_systems":
   [
