@@ -139,9 +139,9 @@ define(function(require) {
               energyLevels2 = elementEnergyLevels[el2];
 
               // if neither atom is of an element with energy levels, skip
-             if (!energyLevels1.length && !energyLevels2.length) {
-               continue;
-             }
+              if (!energyLevels1.length && !energyLevels2.length) {
+                continue;
+              }
 
               // if we aren't close (within the avrSigma of two atoms), skip
               xij = xi - atoms.x[a2];
