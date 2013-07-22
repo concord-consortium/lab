@@ -594,10 +594,10 @@ define(function() {
 
     electricField: {
       intensity: {
-        required: true
+        defaultValue: 0.004
       },
       orientation: {
-        required: true
+        defaultValue: "E"
       }
     },
 

@@ -594,7 +594,23 @@ parseMML = (mmlString) ->
       removeNaNProperties rawData
 
       # Validate all properties and provides default values for undefined values.
-      return validator.validateCompleteness metadata.electricField, rawData
+      props = validator.validateCompleteness metadata.electricField, rawData
+
+      # Classic MW does weird things when it comes to intensity and orientation.
+      # We can implement conversions that are used in Classic MW and simplify logic
+      # in Next Gen MW. See:
+      # https://github.com/concord-consortium/mw/blob/9d9ec6dd5c00ad5d2dd8f112e3b36e200f22e559/src/org/concord/mw2d/models/ElectricField.java#L92-L111
+      if props.intensity < 0
+        props.intensity *= -1
+        switch props.orientation
+          when "S" then props.orientation = "N"
+          when "E" then props.orientation = "W"
+      else
+        switch props.orientation
+          when "N" then props.orientation = "S"
+          when "W" then props.orientation = "E"
+
+      return props
 
     $fields = $mml "[property=fields] object.org-concord-mw2d-models-ElectricField"
     if $fields.length > 0
