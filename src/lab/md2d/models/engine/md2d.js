@@ -1686,7 +1686,7 @@ define(function (require, exports) {
 
         getElFieldForce = function (i) {
           var o = electricFieldOrientation[i];
-          return (o === "S" || o === "E" ? 1 : -1) * electricFieldIntensity[i];
+          return (o === "N" || o === "E" ? 1 : -1) * electricFieldIntensity[i];
         },
 
         updateElectricFieldsAccelerations = function() {
@@ -1702,7 +1702,7 @@ define(function (require, exports) {
 
             for (i = 0; i < N; i++) {
               if (vertical) {
-                ay[i] -= temp * charge[i] / mass[i];
+                ay[i] += temp * charge[i] / mass[i];
               } else {
                 ax[i] += temp * charge[i] / mass[i];
               }
@@ -3422,7 +3422,7 @@ define(function (require, exports) {
       */
       // TODO: [refactoring] divide this function into smaller chunks?
       computeOutputState: function(state) {
-        var i, j,
+        var i, j, e,
             i1, i2, i3,
             el1, el2,
             dx, dy,
@@ -3430,6 +3430,7 @@ define(function (require, exports) {
             cosTheta, theta,
             r_sq, rij, rkj,
             k, dr, angleDiff,
+            elInMWUnits,
             gravPEInMWUnits,
             // Total kinetic energy, in MW units.
             KEinMWUnits,
@@ -3447,6 +3448,20 @@ define(function (require, exports) {
           if (gravitationalField) {
             gravPEInMWUnits = mass[i] * gravitationalField * y[i];
             PE += constants.convert(gravPEInMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
+          }
+
+          // electric field PE
+          for (e = 0; e < N_electricFields; e++) {
+            elInMWUnits = charge[i] * getElFieldForce(e);
+            switch (electricFieldOrientation[e]) {
+            case "N":
+            case "S":
+              elInMWUnits *= -y[i]; break;
+            case "W":
+            case "E":
+              elInMWUnits *= -x[i]; break;
+            }
+            PE += constants.convert(elInMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
           }
 
           KEinMWUnits += 0.5 * mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
@@ -3778,7 +3793,7 @@ define(function (require, exports) {
         for (i = 0; i < N_electricFields; i++) {
           o = electricFieldOrientation[i];
           if (o === "N" || o === "S") {
-            fy -= getElFieldForce(i);
+            fy += getElFieldForce(i);
           } else {
             fx += getElFieldForce(i);
           }
