@@ -1288,7 +1288,7 @@ define(function(require) {
           propName;
       for (propName in elFieldMetaData) {
         if (elFieldMetaData.hasOwnProperty(propName)) {
-          props[propName] = rectangles[propName][i];
+          props[propName] = electricFields[propName][i];
         }
       }
       return translateFromMD2DUnits(props, elFieldMetaData);

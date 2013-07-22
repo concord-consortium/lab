@@ -2,8 +2,7 @@
 
 define(function (require) {
 
-  var alert = require('common/alert'),
-      DNAEditDialog = require('md2d/views/dna-edit-dialog');
+  var DNAEditDialog = require('md2d/views/dna-edit-dialog');
 
   /**
     Define the model-specific MD2D scripting API used by 'action' scripts on interactive elements.
@@ -402,7 +401,7 @@ define(function (require) {
         model.setObstacleProperties(i, props);
         api.repaintIfReady();
       },
-      
+
       /**
         Returns obstacle properties as a human-readable hash.
         e.g. getObstacleProperties(0) --> {x: 1, y: 0.5, externalAx: 0.00001, ... }
@@ -434,11 +433,20 @@ define(function (require) {
         return model.getRectangleProperties(i);
       },
 
+      setElectricFieldProperties: function setElectricFieldProperties(i, props) {
+        model.setElectricFieldProperties(i, props);
+        api.repaintIfReady();
+      },
+
+      getElectricFieldProperties: function getElectricFieldProperties(i) {
+        return model.getElectricFieldProperties(i);
+      },
+
       getAtomsWithinRectangle: function getAtomsInsideRectangle(i) {
         var props=model.getRectangleProperties(i);
-        return this.atomsWithinRect(props.x,props.y,props.width,props.height)
+        return this.atomsWithinRect(props.x, props.y, props.width, props.height);
       },
-      
+
       removeRectangle: function removeRectangle(i, options) {
         try {
           model.removeRectangle(i);
