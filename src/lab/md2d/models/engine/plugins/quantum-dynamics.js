@@ -299,7 +299,7 @@ define(function(require) {
 
         // If one atom has an electron in a higher energy state (and we didn't
         // just excite this pair) the atom may deexcite during a collision. This
-        // will either release a photon (NOT YET IMPLEMENTED) or will increase
+        // will either release a photon or will increase
         // the relative KE of the atoms (radiationless transition), with the
         // probabilities of each depending on the model settings.
         tryToDeexciteAtoms = function(a1, a2) {
