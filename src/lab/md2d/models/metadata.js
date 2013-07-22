@@ -592,6 +592,15 @@ define(function() {
       }
     },
 
+    electricField: {
+      intensity: {
+        required: true
+      },
+      orientation: {
+        required: true
+      }
+    },
+
     textBox: {
       text: {
         defaultValue: ""

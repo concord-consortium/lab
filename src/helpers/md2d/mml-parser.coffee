@@ -18,6 +18,13 @@ CLASSIC_TO_NEXTGEN_GRAVITATION_RATIO = 0.01 * GF_CONVERSION_CONSTANT
 # converts a 'friction' value from Classic to units of amu/fs
 CLASSIC_TO_NEXTGEN_FRICTION_RATIO = 120 * GF_CONVERSION_CONSTANT
 
+# convert Classic MW numeric constants defining direction to north, east, south or west
+VEC_ORIENTATION =
+    3001: "N"
+    3002: "E"
+    3003: "S"
+    3004: "W"
+
 VDWLinesRatioMap =
   1.33: "short"
   1.67: "medium"
@@ -567,6 +574,34 @@ parseMML = (mmlString) ->
     else
       textBoxes = []
 
+
+    ###
+      Find electric fields.
+    ###
+    parseElectricField = (node) ->
+      $node = getNode cheerio node
+      intensity   = getFloatProperty $node, 'intensity', 'double'
+      orientation = getIntProperty $node, 'orientation', 'int'
+
+      intensity *= GF_CONVERSION_CONSTANT
+      orientation = VEC_ORIENTATION[orientation]
+
+      rawData = { intensity, orientation }
+
+      # Unit conversion performed on undefined values can convert them to NaN.
+      # Revert back all NaNs to undefined, as we do not expect any NaN
+      # as property. Undefined values will be replaced by default values by validator.
+      removeNaNProperties rawData
+
+      # Validate all properties and provides default values for undefined values.
+      return validator.validateCompleteness metadata.electricField, rawData
+
+    $fields = $mml "[property=fields] object.org-concord-mw2d-models-ElectricField"
+    if $fields.length > 0
+      electricFields = (parseElectricField(node) for node in $fields)
+    else
+      electricFields = []
+
     ###
       Find obstacles
     ###
@@ -1050,6 +1085,9 @@ parseMML = (mmlString) ->
       json.rectangles = unroll rectangles, 'x', 'y', 'height', 'width', 'fence',
         'color', 'lineColor', 'lineWeight', 'lineDashes',
         'layer', 'visible'
+
+    if electricFields.length > 0
+      json.electricFields = unroll electricFields, 'intensity', 'orientation'
 
     if useQuantumDynamics
       json.quantumDynamics = quantumDynamics
