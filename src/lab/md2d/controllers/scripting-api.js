@@ -433,6 +433,28 @@ define(function (require) {
         return model.getRectangleProperties(i);
       },
 
+      addElectricField: function addElectricField(props, options) {
+        try {
+          model.addElectricField(props);
+        } catch (e) {
+          if (!options || !options.silent)
+            throw e;
+        }
+
+        api.repaintIfReady();
+      },
+
+      removeElectricField: function removeElectricField(i, options) {
+        try {
+          model.removeElectricField(i);
+        } catch (e) {
+          if (!options || !options.silent)
+            throw e;
+        }
+
+        api.repaintIfReady();
+      },
+
       setElectricFieldProperties: function setElectricFieldProperties(i, props) {
         model.setElectricFieldProperties(i, props);
         api.repaintIfReady();
