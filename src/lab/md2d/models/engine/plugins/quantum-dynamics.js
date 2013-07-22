@@ -87,7 +87,7 @@ define(function(require) {
 
         u1, u2,                       // temporary velocity-calculation variables
         w1, w2,
-        dx, dy,
+        dxFraction, dyFraction,
 
         numPhotons = 0,
 
@@ -110,7 +110,7 @@ define(function(require) {
         // If a pair of atoms are close enough, QD interactions may occur.
         //
         // This is called at the end of every integration loop.
-        performInteractionsBetweenCloseAtoms = function(neighborList) {
+        thermallyExciteAndDeexciteAtoms = function(neighborList) {
           var N     = engine.getNumberOfAtoms(),
               nlist = neighborList.getList(),
               currentlyClosePairs = [],
@@ -168,7 +168,7 @@ define(function(require) {
 
               // if we didn't excite, see if this pair wants to de-excite
               if (!atomWasExcited) {
-                atomWasDeexcited = tryToDeexciteAtoms(a1, a2);
+                atomWasDeexcited = tryToThermallyDeexciteAtoms(a1, a2);
               }
 
               if (atomWasExcited || atomWasDeexcited) {
@@ -206,10 +206,10 @@ define(function(require) {
 
           // excite a random atom, or pick the excitable one if only one can be excited
           selection = Math.random() < 0.5 ? atom1Idx : atom2Idx;
-          atomWasExcited = tryToExcite(selection);
+          atomWasExcited = tryToExciteAtom(selection);
           if (!atomWasExcited) {
             // if we couldn't excite the first, excite the other one
-            atomWasExcited = tryToExcite(atom1Idx+atom2Idx-selection);
+            atomWasExcited = tryToExciteAtom(atom1Idx+atom2Idx-selection);
           }
 
           return atomWasExcited;
@@ -217,7 +217,7 @@ define(function(require) {
 
         // Excites an atom to a new energy level if the relative KE of the pair atom1Idx
         // and atom2Idx is high enough, and updates the velocities of atoms as necessary
-        tryToExcite = function(i) {
+        tryToExciteAtom = function(i) {
           var energyLevels   =   elementEnergyLevels[atoms.element[i]],
               currentEnergyLevel,
               currentElectronEnergy,
@@ -228,7 +228,7 @@ define(function(require) {
 
           if (!energyLevels) return;
 
-          precalculateVelocities();
+          computeVelocityComponents();
 
           relativeKE = getRelativeKE();
 
@@ -259,49 +259,50 @@ define(function(require) {
           return true;
         },
 
-        precalculateVelocities = function() {
-          dx = atoms.x[atom2Idx] - atoms.x[atom1Idx];
-          dy = atoms.y[atom2Idx] - atoms.y[atom1Idx];
+        computeVelocityComponents = function() {
+          var dx = atoms.x[atom2Idx] - atoms.x[atom1Idx],
+              dy = atoms.y[atom2Idx] - atoms.y[atom1Idx],
+              normalizationFactor = 1 / Math.sqrt(dx*dx + dy*dy);
 
-          var normalizationFactor = 1 / Math.sqrt(dx*dx + dy*dy);
-
-          dx *= normalizationFactor;
-          dy *= normalizationFactor;
+          dxFraction = dx * normalizationFactor;
+          dyFraction = dy * normalizationFactor;
 
           // Decompose v1 into components u1 (parallel to d) and w1 (orthogonal to d)
-          u1 = atoms.vx[atom1Idx] * dx + atoms.vy[atom1Idx] * dy;
-          w1 = atoms.vy[atom1Idx] * dx - atoms.vx[atom1Idx] * dy;
+          u1 = atoms.vx[atom1Idx] * dxFraction + atoms.vy[atom1Idx] * dyFraction;
+          w1 = atoms.vy[atom1Idx] * dxFraction - atoms.vx[atom1Idx] * dyFraction;
 
           // Decompose v2 similarly
-          u2 = atoms.vx[atom2Idx] * dx + atoms.vy[atom2Idx] * dy;
-          w2 = atoms.vy[atom2Idx] * dx - atoms.vx[atom2Idx] * dy;
+          u2 = atoms.vx[atom2Idx] * dxFraction + atoms.vy[atom2Idx] * dyFraction;
+          w2 = atoms.vy[atom2Idx] * dxFraction - atoms.vx[atom2Idx] * dyFraction;
         },
 
         getRelativeKE = function() {
-          var du   = u2 - u1;
+          var du = u2 - u1,
+              m1 = atoms.mass[atom1Idx],
+              m2 = atoms.mass[atom2Idx];
 
-          return 0.5 * du * du * atoms.mass[atom1Idx] * atoms.mass[atom2Idx] / (atoms.mass[atom1Idx] + atoms.mass[atom2Idx]);
+          return 0.5 * du * du * m1 * m2 / (m1 + m2);
         },
 
-        updateVelocities = function(delta) {
+        updateVelocities = function(energyDelta) {
           var m1 = atoms.mass[atom1Idx],
               m2 = atoms.mass[atom2Idx],
-              j  = m1 * u1 * u1 + m2 * u2 * u2 - delta,
+              j  = m1 * u1 * u1 + m2 * u2 * u2 - energyDelta,
               g  = m1 * u1 + m2 * u2,
               v1 = (g - Math.sqrt(m2 / m1 * (j * (m1 + m2) - g * g))) / (m1 + m2),
               v2 = (g + Math.sqrt(m1 / m2 * (j * (m1 + m2) - g * g))) / (m1 + m2);
 
-          atoms.vx[atom1Idx] = v1 * dx - w1 * dy;
-          atoms.vy[atom1Idx] = v1 * dy + w1 * dx;
-          atoms.vx[atom2Idx] = v2 * dx - w2 * dy;
-          atoms.vy[atom2Idx] = v2 * dy + w2 * dx;
+          atoms.vx[atom1Idx] = v1 * dxFraction - w1 * dyFraction;
+          atoms.vy[atom1Idx] = v1 * dyFraction + w1 * dxFraction;
+          atoms.vx[atom2Idx] = v2 * dxFraction - w2 * dyFraction;
+          atoms.vy[atom2Idx] = v2 * dyFraction + w2 * dxFraction;
         },
 
         // If one atom has an electron in a higher energy state (and we didn't just excite this
         // pair) the atom may deexcite during a collision. This will either release a photon or will
         // increase the relative KE of the atoms (radiationless transition), with the probabilities
         // of each depending on the model settings.
-        tryToDeexciteAtoms = function(a1, a2) {
+        tryToThermallyDeexciteAtoms = function(a1, a2) {
           var selection,
               excitation1 = atoms.excitation[a1],
               excitation2 = atoms.excitation[a2];
@@ -321,11 +322,11 @@ define(function(require) {
           } else {
             selection = Math.random() < 0.5 ? atom1Idx : atom2Idx;
           }
-          deexcite(selection);
+          deexciteAtom(selection);
           return true;
         },
 
-        deexcite = function(i) {
+        deexciteAtom = function(i) {
           var energyLevels   = elementEnergyLevels[atoms.element[i]],
               currentLevel   = atoms.excitation[i],
               newLevel       = Math.floor(Math.random() * currentLevel),
@@ -335,7 +336,7 @@ define(function(require) {
 
           if (Math.random() < pRadiationless) {
             // new energy goes into increasing atom velocities after collision
-            precalculateVelocities();
+            computeVelocityComponents();
             updateVelocities(energyReleased);
           } else {
             emitPhoton(i, energyReleased);
@@ -403,15 +404,15 @@ define(function(require) {
           }
         },
 
-        spontaneousEmission = function(dt) {
+        spontaneouslyEmitPhotons = function(dt) {
           if (!elementEnergyLevels) { return; }
 
           for (var i = 0, N = engine.getNumberOfAtoms(); i < N; i++) {
-            tryToSpontaneouslyEmit(i, dt);
+            tryToSpontaneouslyEmitPhoton(i, dt);
           }
         },
 
-        tryToSpontaneouslyEmit = function(atomIndex, dt) {
+        tryToSpontaneouslyEmitPhoton = function(atomIndex, dt) {
 
           if (atoms.excitation[atomIndex] === 0) { return; }
 
@@ -424,8 +425,8 @@ define(function(require) {
           // Randomly select an energy level. Reference:
           // https://github.com/concord-consortium/mw/blob/6e2f2d4630323b8e993fcfb531a3e7cb06644fef/src/org/concord/mw2d/models/SpontaneousEmission.java#L48-L70
 
-          var u1 = Math.random(),
-              u2 = Math.random(),
+          var r1 = Math.random(),
+              r2 = Math.random(),
               energyLevels,
               excessEnergy,
               i,
@@ -433,7 +434,7 @@ define(function(require) {
               mInverse = 1/m;
 
           for (i = 0; i < m; i++) {
-            if (i*mInverse <= u1 && u1 < (i+1)*mInverse && pRadiationless < u2) {
+            if (i*mInverse <= r1 && r1 < (i+1)*mInverse && pRadiationless < r2) {
               energyLevels = elementEnergyLevels[atoms.element[atomIndex]];
               excessEnergy = energyLevels[m] - energyLevels[i];
               atoms.excitation[atomIndex] = i;
@@ -454,8 +455,8 @@ define(function(require) {
       },
 
       performActionWithinIntegrationLoop: function(neighborList, dt) {
-        performInteractionsBetweenCloseAtoms(neighborList);
-        spontaneousEmission(dt);
+        thermallyExciteAndDeexciteAtoms(neighborList);
+        spontaneouslyEmitPhotons(dt);
         movePhotons(dt);
       },
 
