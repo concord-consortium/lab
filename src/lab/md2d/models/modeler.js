@@ -218,6 +218,9 @@ define(function(require) {
         // A hash of arrays consisting of arrays of rectangle property values
         rectangles,
 
+        // A hash of arrays consisting of arrays of electric field property values
+        electricFields,
+
         // A hash of arrays consisting of arrays of radial bond property values
         radialBonds,
 
@@ -603,6 +606,7 @@ define(function(require) {
       restraints = engine.restraints;
       obstacles = engine.obstacles;
       rectangles = engine.rectangles;
+      electricFields = engine.electricFields;
     }
 
     model.createElements = function(_elements) {
@@ -774,6 +778,7 @@ define(function(require) {
 
       return model;
     };
+
     model.createRectangles = function(_rectangles) {
       var numRectangles = _rectangles.x.length,
           i, prop, rectangleProps;
@@ -787,6 +792,24 @@ define(function(require) {
           }
         }
         model.addRectangle(rectangleProps);
+      }
+
+      return model;
+    };
+
+    model.createElectricFields = function(_eFields) {
+      var count = _eFields.intensity.length,
+          i, prop, eFieldProps;
+
+      // See function above
+      for (i = 0; i < count; i++) {
+        eFieldProps = {};
+        for (prop in _eFields) {
+          if (_eFields.hasOwnProperty(prop)) {
+            eFieldProps[prop] = _eFields[prop][i];
+          }
+        }
+        model.addElectricField(eFieldProps);
       }
 
       return model;
@@ -960,6 +983,12 @@ define(function(require) {
       propertySupport.invalidatingChangePostHook();
     };
 
+    model.removeObstacle = function (idx) {
+      propertySupport.invalidatingChangePreHook();
+      engine.removeObstacle(idx);
+      propertySupport.invalidatingChangePostHook();
+    };
+
     model.addRectangle = function(props) {
       var validatedProps;
       // Validate properties, use default values if there is such need.
@@ -970,15 +999,25 @@ define(function(require) {
       propertySupport.invalidatingChangePostHook();
     };
 
-    model.removeObstacle = function (idx) {
+    model.removeRectangle = function (idx) {
       propertySupport.invalidatingChangePreHook();
-      engine.removeObstacle(idx);
+      engine.removeRectangle(idx);
       propertySupport.invalidatingChangePostHook();
     };
 
-	model.removeRectangle = function (idx) {
+    model.addElectricField = function(props) {
+      var validatedProps;
+      // Validate properties, use default values if there is such need.
+      validatedProps = validator.validateCompleteness(metadata.electricField, props);
+      // Finally, add rectangle.
       propertySupport.invalidatingChangePreHook();
-      engine.removeRectangle(idx);
+      engine.addElectricField(validatedProps);
+      propertySupport.invalidatingChangePostHook();
+    };
+
+    model.removeElectricField = function (idx) {
+      propertySupport.invalidatingChangePreHook();
+      engine.removeElectricField(idx);
       propertySupport.invalidatingChangePostHook();
     };
 
@@ -1235,6 +1274,26 @@ define(function(require) {
       return translateFromMD2DUnits(props, rectangleMetaData);
     };
 
+    model.setElectricFieldProperties = function(i, props) {
+      // Validate properties.
+      props = validator.validate(metadata.electricField, props);
+      propertySupport.invalidatingChangePreHook();
+      engine.setElectricFieldProperties(i, translateToMD2DUnits(props, metadata.electricField));
+      propertySupport.invalidatingChangePostHook();
+    };
+
+    model.getElectricFieldProperties = function(i) {
+      var elFieldMetaData = metadata.electricField,
+          props = {},
+          propName;
+      for (propName in elFieldMetaData) {
+        if (elFieldMetaData.hasOwnProperty(propName)) {
+          props[propName] = rectangles[propName][i];
+        }
+      }
+      return translateFromMD2DUnits(props, elFieldMetaData);
+    };
+
     model.setRadialBondProperties = function(i, props) {
       // Validate properties.
       props = validator.validate(metadata.radialBond, props);
@@ -1483,9 +1542,6 @@ define(function(require) {
 
     model.get_obstacles = function() {
       return obstacles;
-    };
-    model.get_rectangles = function() {
-      return rectangles;
     };
 
     model.get_rectangles = function() {
@@ -1937,12 +1993,13 @@ define(function(require) {
     // will be injected to engine automatically.
     model.set({polarAAEpsilon: model.get('polarAAEpsilon')});
 
-    if (initialProperties.atoms)        model.createAtoms(initialProperties.atoms);
-    if (initialProperties.radialBonds)  model.createRadialBonds(initialProperties.radialBonds);
-    if (initialProperties.angularBonds) model.createAngularBonds(initialProperties.angularBonds);
-    if (initialProperties.restraints)   model.createRestraints(initialProperties.restraints);
-    if (initialProperties.obstacles)    model.createObstacles(initialProperties.obstacles);
-    if (initialProperties.rectangles)    model.createRectangles(initialProperties.rectangles);
+    if (initialProperties.atoms)          model.createAtoms(initialProperties.atoms);
+    if (initialProperties.radialBonds)    model.createRadialBonds(initialProperties.radialBonds);
+    if (initialProperties.angularBonds)   model.createAngularBonds(initialProperties.angularBonds);
+    if (initialProperties.restraints)     model.createRestraints(initialProperties.restraints);
+    if (initialProperties.obstacles)      model.createObstacles(initialProperties.obstacles);
+    if (initialProperties.rectangles)     model.createRectangles(initialProperties.rectangles);
+    if (initialProperties.electricFields) model.createElectricFields(initialProperties.electricFields);
     // Basically, this #deserialize method is more or less similar to other #create... methods used
     // above. However, this is the first step to delegate some functionality from modeler to smaller classes.
     if (initialProperties.pairwiseLJProperties)

@@ -333,6 +333,20 @@ define(function (require, exports) {
         N_rectangles = 0,
 
         // ####################################################################
+        //                      Electric Field Properties
+
+        // Individual properties for the electric fields.
+        electricFieldIntensity,
+        electricFieldOrientation,
+
+        // An object that contains references to the above rectangle-property arrays.
+        // Left undefined if there are no electric fields.
+        electricFields,
+
+        // Number of actual electric fields.
+        N_electricFields = 0,
+
+        // ####################################################################
         //                      Misc Properties
         // Hash of arrays containing VdW pairs
         vdwPairs,
@@ -423,6 +437,7 @@ define(function (require, exports) {
           createSpringForcesArray(0);
           createObstaclesArray(0);
           createRectanglesArray(0);
+          createElectricFieldsArray(0);
 
           // Custom pairwise properties.
           pairwiseLJProperties = new PairwiseLJProperties(engine);
@@ -673,6 +688,11 @@ define(function (require, exports) {
             rectangleVisible       = rectangles.visible;
           },
 
+          electricFields: function() {
+            electricFieldIntensity   = electricFields.intensity;
+            electricFieldOrientation = electricFields.orientation;
+          },
+
           springForces: function() {
             springForceAtomIndex = springForces[0];
             springForceX         = springForces[1];
@@ -816,7 +836,7 @@ define(function (require, exports) {
           assignShortcutReferences.obstacles();
         },
 
-		createRectanglesArray = function(num) {
+        createRectanglesArray = function(num) {
           rectangles = engine.rectangles = {};
 
           rectangles.x             = arrays.create(num, 0, arrayTypes.floatType);
@@ -833,6 +853,16 @@ define(function (require, exports) {
 
           assignShortcutReferences.rectangles();
         },
+
+        createElectricFieldsArray = function(num) {
+          electricFields = engine.electricFields = {};
+
+          electricFields.intensity   = arrays.create(num, 0, arrayTypes.floatType);
+          electricFields.orientation = [];
+
+          assignShortcutReferences.electricFields();
+        },
+
 
         // Function that accepts a value T and returns an average of the last n values of T (for some n).
         getTWindowed,
@@ -1654,6 +1684,32 @@ define(function (require, exports) {
           }
         },
 
+        getElFieldForce = function (i) {
+          var o = electricFieldOrientation[i];
+          return (o === "S" || o === "E" ? 1 : -1) * electricFieldIntensity[i];
+        },
+
+        updateElectricFieldsAccelerations = function() {
+          // fast path if there are no electric fields
+          if (!electricFields) return;
+
+          var i, e, o, vertical, temp;
+
+          for (e = 0; e < N_electricFields; e++) {
+            o = electricFieldOrientation[e];
+            vertical = o === "N" || o === "S";
+            temp = getElFieldForce(e) / dielectricConst;
+
+            for (i = 0; i < N; i++) {
+              if (vertical) {
+                ay[i] -= temp * charge[i] / mass[i];
+              } else {
+                ax[i] += temp * charge[i] / mass[i];
+              }
+            }
+          }
+        },
+
         // Push all amino acids above some Y coordinate during DNA translation.
         // TODO: this should be part of the MD2D plug-in for proteins engine!
         updateDNATranslationAccelerations = function() {
@@ -1776,6 +1832,9 @@ define(function (require, exports) {
 
           // Accumulate optional gravitational accelerations into a(t + dt).
           updateGravitationalAccelerations();
+
+          // Accumulate optional accelerations coming from electric fields into a(t + dt).
+          updateElectricFieldsAccelerations();
 
           // Push all amino acids above some Y coordinate during DNA translation.
           // TODO: this should be part of the MD2D plug-in for proteins engine!
@@ -2431,6 +2490,16 @@ define(function (require, exports) {
         }
       },
 
+      setElectricFieldProperties: function (i, props) {
+        var key;
+        // Set properties from props hash.
+        for (key in props) {
+          if (props.hasOwnProperty(key)) {
+            electricFields[key][i] = props[key];
+          }
+        }
+      },
+
       /**
         The canonical method for adding an atom to the collections of atoms.
 
@@ -2839,6 +2908,43 @@ define(function (require, exports) {
         // (e.g. views) use rectangles.x.length as the real number of rectangles.
         utils.extendArrays(rectangles, N_rectangles);
         assignShortcutReferences.rectangles();
+      },
+
+      addElectricField: function(props) {
+        if (N_electricFields + 1 > electricFields.intensity.length) {
+          // Extend arrays each time (as there are only
+          // a few electricFields in typical model).
+          utils.extendArrays(electricFields, N_rectangles + 1);
+          assignShortcutReferences.electricFields();
+        }
+
+        N_electricFields++;
+
+        // Set properties of new rectangle.
+        engine.setElectricFieldProperties(N_electricFields - 1, props);
+      },
+
+      removeElectricField: function(idx) {
+        var i, prop;
+
+        if (idx >= N_electricFields) {
+          throw new Error("Electric field " + idx + " doesn't exist, so it can't be removed.");
+        }
+
+        N_electricFields--;
+
+        // Shift electric fields properties.
+        for (i = idx; i < N_electricFields; i++) {
+          for (prop in electricFields) {
+            if (electricFields.hasOwnProperty(prop)) {
+              electricFields[prop][i] = electricFields[prop][i + 1];
+            }
+          }
+        }
+
+        // Follow convention of other engine objects whose array is reduced after removal.
+        utils.extendArrays(electricFields, N_electricFields);
+        assignShortcutReferences.electricFields();
       },
 
       atomInBounds: function(_x, _y, i) {
@@ -3652,7 +3758,7 @@ define(function (require, exports) {
         }
 
         var fx = 0, fy = 0,
-            i, len, dx, dy, rSq, fOverR, atomCharge, atomIdx;
+            i, len, dx, dy, rSq, fOverR, atomCharge, atomIdx, o;
 
         for (i = 0, len = chargedAtomsList.length; i < len; i++) {
           atomIdx = chargedAtomsList[i];
@@ -3668,6 +3774,17 @@ define(function (require, exports) {
           fx += fOverR * dx;
           fy += fOverR * dy;
         }
+
+        for (i = 0; i < N_electricFields; i++) {
+          o = electricFieldOrientation[i];
+          if (o === "N" || o === "S") {
+            fy -= getElFieldForce(i);
+          } else {
+            fx += getElFieldForce(i);
+          }
+        }
+
+
         resultObj.fx = constants.convert(fx, { from: unit.MW_FORCE_UNIT, to: unit.EV_PER_NM });
         resultObj.fy = constants.convert(fy, { from: unit.MW_FORCE_UNIT, to: unit.EV_PER_NM });
         return resultObj;
