@@ -13,7 +13,6 @@ runSimulation = (inFilePath, output, totalTime) ->
 
   # Create MD2D modeler.
   model = md2dNodeApi.Modeler modelJSON
-  model.resetTime()
 
   if output == 'stdout'
     out = process.stdout.fd
