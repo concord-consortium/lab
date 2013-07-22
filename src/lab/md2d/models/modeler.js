@@ -1910,6 +1910,12 @@ define(function(require) {
     // Initialize minX, minY, maxX, maxY from model width and height if they are undefined.
     initializeDimensions(model.properties);
 
+    model.on("stop.last-sample-time-reset", function() {
+      // This has to be done, as otherwise if user stops and then starts the
+      // model, there will be an incorrect sample time reported (equal to time
+      // period between starting and stopping the model).
+      lastSampleTime = null;
+    });
     propertySupport.on("afterInvalidatingChange.read-model-state", readModelState);
     propertySupport.on("afterInvalidatingChangeSequence.tick-history", function () {
       if (tickHistory) tickHistory.invalidateFollowingState();

@@ -788,11 +788,7 @@ define(function (require) {
             }
           }
         });
-        if (model.isStopped()) {
-          // FIXME: ugly workaround to update position, as setAtomProperties
-          // doesn't dispatch any events in contrast to minimize energy.
-          model.minimizeEnergy();
-        }
+        model.tickInPlace();
       },
 
       connectAminoAcid: function (codonIdx) {
