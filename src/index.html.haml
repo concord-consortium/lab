@@ -41,18 +41,43 @@
     #content
       .column1
         .item-list
-          %h2 Interactives
+          %p
+            In November 2011 the Google Foundation awarded Concord Consortium a grant to develop an
+            HTML5 version of Molecular Workbench our award-winning Java-based physics simulation.
+            We've extended these goals and have created a general framework we call Lab for integrating
+            both simulations running in multiple modeling engines and data collection from sensors and
+            probes.
+          %p
+            Lab Interactives are sharable, embeddable, and authorable components defined in JSON
+            that wrap a model with additional inquiry-oriented user interface components such as
+            buttons, checkboxes, sliders, graphs etc.
           %ul
             %li
-              %a{:href => 'interactives.html'} Interactive Browser
-            %li
-              %a{:href => 'doc/interactives/sampler/index.html'} Interactive Sampler
-            %li
-              %a{:href => 'doc/interactives/sampler/errors.html'} Embedded Interactives with Errors
+              %a{:href => 'interactives.html'} Browse all Interactives
+          %p
+            Here's an example Interactive using MD2D, our 2D Molecular dynamics engine for
+            exploring the emergent dynamics of a simple 2D model of charged and neutral atoms.
+          %blockquote
+            %p
+              Charged and Neutral Atoms: Explore Coulomb and intermolecular attractions.
+            .iframe-container
+              %iframe{:width => 400, :height => 315, :scrolling => "no", :allowfullscreen => "true", :webkitallowfullscreen => "true", :mozallowfullscreen => "true", :src => 'embeddable.html#interactives/samples/4-100-atoms-conceptual.json' }
+            %p
+              There are two kinds of attractive forces shown in this model: Coulomb forces
+              (the attraction between ions) and Van der Waals forces (an additional attractive
+              force between all atoms).
+            %p
+              What kinds of patterns tend to form with charged and neutral atoms? How does
+              changing the Van der Waals attraction or charging the atoms affect the melting
+              and boiling point of the substance?
 
+
+      .column2
         .item-list
-          %h2
-            %a{:href => 'doc/models/index.html'} Interactive Model Types
+          %p
+            The following different
+            %a{:href => 'doc/models/index.html'} model types
+            can be used in Interactives.
           %ul
             %li
               %a{:href => 'doc/models/md2d/index.html'} Next Generation Molecular Workbench
@@ -63,23 +88,8 @@
             %li
               %a{:href => 'doc/probeware/index.html'} Probeware
 
-        .item-list
-          %h2 Molecular Dynamics Documentation/Support
-          %ul
-            %li
-              %a{:href => 'doc/models/md2d/macroscopic-units/'} Unit Transformations for Modeling Macroscopic Phenomena
-            %li
-              %a{:href => 'doc/models/md2d/lennard-jones-potential/lennard-jones-potential.html'} Lennard-Jones Potential
-            %li
-              %a{:href => 'imports/legacy-mw-content/tutorial.html'} Java Molecular Workbench Tutorial/Reference Manual
-            %li
-              %a{:href => 'http://blog.concord.org/mw-applets-and-mwscript-javascript-interactions'} MW applets and MWScript-JavaScript interactions
-            %li
-              %a{:href => 'imports/legacy-mw-content/legacyMMLRunnables.html'} Big List of Converted Models
-
-      .column2
-        .item-list
-          %h2 Grapher Examples
+          %p
+            Bar and line graphs can also be integrated into Interactives.
           %ul
             %li
               %a{:href => 'examples/grapher/grapher.html'} Basic Grapher
@@ -88,23 +98,22 @@
             %li
               %a{:href => 'experiments/dsp/dsp.html'} Digital Signal Processing Graphs
 
-        .item-list
-          %h2 Probeware Examples
+          %h2 Performance
+          %p
+            From the beginning we've kept a close eye on performance and extensibility. Performance
+            is best running in the latest browsrs running on desktop computers however many of the
+            simpler models also run acceptably on tablets and smartphones.
+          %p
+            Performance benchmarking can be run for every Interactive displayed in the
+            Interactive Browser.
+
+          %h2 Testing
           %ul
             %li
-              %a{:href => 'experiments/goio-sensor-grapher/index.html'} Vernier GoIO Sensor Grapher
+              %a{:href => 'doc/interactives/sampler/index.html'} Interactive Sampler
             %li
-              %a{:href => 'experiments/labquest-multiple-sensor-grapher/index.html'} Vernier LabQuest Mulitple Sensor Grapher
+              %a{:href => 'doc/interactives/sampler/errors.html'} Embedded Interactives with Errors
 
-        .item-list
-          %h2 Inquiry Space Integration
-          %ul
-            %li
-              %a{:href => 'experiments/inquiry-space-importer/'} InquirySpace: Sensor Data Collector
-              %i (probeware)
-
-      #experiments-divider
-      .column1
-        .item-list
-          %a{:href => 'experiments'} Experiments
+          %h3
+            %a{:href => 'experiments/index.html'} Experiments
 

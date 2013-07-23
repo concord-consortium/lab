@@ -9,8 +9,6 @@ a
 iframe
   border: none
 
-.iframe-container
-
 #header
   @include linear-gradient(#3a878b, #8cbbb8, $fallback: #3a878b)
   color: #fff
@@ -90,12 +88,17 @@ ul
   display: inline-block
 
 .item-list
-  padding: 1em 1em 0em 1em
+  padding: 0.5em 1em 0em 1em
   p
     margin-left: 0em
     padding: 0em
     a
       text-decoration: none
+  blockquote
+    margin: 0.5em 1.5em 0.5em 1em
+    p
+      font-size: 90%
+      font-style: italic
   ul
     list-style-type: none
     margin: .5em 0em 0.5em 0em
@@ -103,7 +106,7 @@ ul
     li
       margin: .5em 0.2em 0em 0.5em
       padding: 0em
-      font-weight: 600
+      font-weight: 400
       p
         margin-left: 1em
         margin-top: 0.5em
@@ -126,7 +129,7 @@ ul
 
 .content
   h2, h3, p
-    margin: 1em
+    margin: 0.5em 1em 0.5em 1em
     a
       text-decoration: none
   ul

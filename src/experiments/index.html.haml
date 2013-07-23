@@ -14,16 +14,31 @@
   %body
     #header
       %a#logo(href="http://www.concord.org/")
-        %img(src="resources/layout/cc-logo.png")
+        %img(src="../resources/layout/cc-logo.png")
       %h1<
         %a(href='../index.html')> Lab
-        \: HTML5-based scientific models, visualizations, graphing, and probeware
+        \: Experiments
 
     #content
-      #experiments-divider
       .column1
         .item-list
-          %h2 Experiments
+          %h3 Inquiry Space Integration
+          %ul
+            %li
+              %a{:href => 'inquiry-space-importer/index.html'} InquirySpace: Sensor Data Collector
+              %i (probeware)
+
+          %h3 Probeware
+          %p
+            Currently only the Vernier GoMotion ultrasonic ranger is supported as a Lab Interactive
+            however we have several experiments listed below that work with more sensor types.
+          %ul
+            %li
+              %a{:href => 'goio-sensor-grapher/index.html'} Vernier GoIO Sensor Grapher
+            %li
+              %a{:href => 'labquest-multiple-sensor-grapher/index.html'} Vernier LabQuest Mulitple Sensor Grapher
+        .item-list
+          %h3 Miscellaneous
           %ul
             %li
               %a{:href => 'html-layout/html-layout.html'} HTML Layout for Interactives
