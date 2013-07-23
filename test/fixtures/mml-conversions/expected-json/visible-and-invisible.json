@@ -42,6 +42,7 @@
     "showForceVectors": false,
     "showElectricField": false,
     "electricFieldDensity": 18,
+    "electricFieldColor": "auto",
     "showAtomTrace": false,
     "images": [],
     "imageMapping": {},
