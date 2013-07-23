@@ -53,6 +53,8 @@ define(function(require) {
 
         properties           = validator.validateCompleteness(metadata.quantumDynamics, _properties),
 
+        isLightSourceOn      = false,
+
         api,
 
         elementEnergyLevels  = properties.elementEnergyLevels,
@@ -454,19 +456,12 @@ define(function(require) {
           photons.x[i] = photons.y[i] = photons.vx[i] = photons.vy[i] = photons.angularFrequency[i] = 0;
         },
 
-        emitPhotonFromAtom = function(atomIndex, energy) {
-          var angle = Math.random() * TWO_PI,
-              cosA  = Math.cos(angle),
+        emitPhoton = function(x, y, angle, energy) {
+          var cosA  = Math.cos(angle),
               sinA  = Math.sin(angle),
-              sigma = elements.sigma[atoms.element[atomIndex]],
-
-              // set photon location just outside atom's sigma
-              x           = atoms.x[atomIndex] + (sigma * 0.51 * cosA),
-              y           = atoms.y[atomIndex] + (sigma * 0.51 * sinA),
               vx          = C * cosA,
               vy          = C * sinA,
               angularFreq = energy / PLANCK_CONSTANT,
-
               photonIndex = findEmptyPhotonIndex();
 
           numPhotons++;
@@ -476,6 +471,19 @@ define(function(require) {
           photons.vx[photonIndex] = vx;
           photons.vy[photonIndex] = vy;
           photons.angularFrequency[photonIndex] = angularFreq;
+        },
+
+        emitPhotonFromAtom = function(atomIndex, energy) {
+          var angle = Math.random() * TWO_PI,
+              cosA  = Math.cos(angle),
+              sinA  = Math.sin(angle),
+              sigma = elements.sigma[atoms.element[atomIndex]],
+
+              // set photon location just outside atom's sigma
+              x = atoms.x[atomIndex] + (sigma * 0.51 * cosA),
+              y = atoms.y[atomIndex] + (sigma * 0.51 * sinA);
+
+          emitPhoton(x, y, angle, energy);
         },
 
         movePhotons = function(dt) {
@@ -532,7 +540,45 @@ define(function(require) {
               return;
             }
           }
+        },
+
+        // Temporary implementation with hard-wired parameters.
+        emitLightSourcePhotons = function() {
+          var x = dimensions[0],
+              y = dimensions[1],
+              w = dimensions[2] - x,
+              h = dimensions[3] - y,
+
+              // hard-wired presets for now
+              // taken from http://lab.dev.concord.org/imports/legacy-mw-content/sam-activities/light-matter/greenhouse-gases/sunOnGround.mml
+              angle = 7 * Math.PI / 6,
+              energy = 13.92 * PLANCK_CONSTANT,
+              nBeams = 5,
+
+              // Lifted from AtomicModel.shootPhotons()
+              // https://github.com/concord-consortium/mw/blob/d3f621ba87825888737257a6cb9ac9e4e4f63f77/src/org/concord/mw2d/models/AtomicModel.java#L2534
+              s = Math.abs(Math.sin(angle)),
+              c = Math.abs(Math.cos(angle)),
+              length = s * h < c * w ? h / c : w / s,
+              spacing = length / nBeams,
+              dx = spacing / s,
+              dy = spacing / c,
+              m = Math.floor(w / dx),
+              n = Math.floor(h / dy),
+              i;
+
+          // Lifted from AtomicModel.shootAtAngle()
+          // https://github.com/concord-consortium/mw/blob/d3f621ba87825888737257a6cb9ac9e4e4f63f77/src/org/concord/mw2d/models/AtomicModel.java#L2471
+          // this is the 'angle > -Math.PI && angle < -0.5 * Math.PI' case:
+          for (i = 0; i <= m; i++) {
+            emitPhoton(x + w - dx * i, y + h, angle, energy);
+          }
+
+          for (i = 1; i <= n; i++) {
+            emitPhoton(x + w, y + h - dy * i, angle, energy);
+          }
         };
+
 
     // Public API.
     api = {
@@ -544,11 +590,24 @@ define(function(require) {
         copyPhotonData(properties.photons);
       },
 
-      performActionWithinIntegrationLoop: function(neighborList, dt) {
+      performActionWithinIntegrationLoop: function(neighborList, dt, time) {
         movePhotons(dt);
         handlePhotonAtomCollisions();
         thermallyExciteAndDeexciteAtoms(neighborList);
         spontaneouslyEmitPhotons(dt);
+        // Temporary hard-wired light source, for demo purposes
+        if (isLightSourceOn && Math.floor(time % 1000) === 0) {
+          emitLightSourcePhotons();
+        }
+      },
+
+      // Presumably, we will need to be able to say *which* light source to turn on
+      turnOnLightSource: function(index) {
+        isLightSourceOn = true;
+      },
+
+      turnOffLightSource: function(index) {
+        isLightSourceOn = false;
       },
 
       getPhotons: function() {
