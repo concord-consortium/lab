@@ -3809,9 +3809,9 @@ define(function (require, exports) {
           if (rect != null && !rectContains(rect, testX, testY)) continue;
           o = electricFieldOrientation[i];
           if (o === "N" || o === "S") {
-            fy += getElFieldForce(i);
+            fy += getElFieldForce(i); // * 1 Coulomb (test charge)
           } else {
-            fx += getElFieldForce(i);
+            fx += getElFieldForce(i); // * 1 Coulomb (test charge)
           }
         }
 

@@ -1,16 +1,17 @@
 {
   "title": "Electric Field",
-  "publicationStatus": "draft",
+  "publicationStatus": "public",
   "subtitle": "",
   "about": "",
-  "fontScale": 0.9,
+  "fontScale": 0.85,
   "models": [
     {
       "type": "md2d",
       "id": "angular-bonds$0",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/electric-field$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset_step"
+        "controlButtons": "play_reset_step",
+        "electricFieldDensity": 16
       }
     }
   ],
@@ -23,14 +24,24 @@
     {
       "name": "electricFieldIntensity",
       "onChange": "setElectricFieldProperties(0, {intensity: value});",
-      "initialValue": 0.00088
+      "initialValue": 0.00056
+    },
+    {
+      "name": "rectElFieldOrientation",
+      "onChange": "setElectricFieldProperties(1, {orientation: value});",
+      "initialValue": "E"
+    },
+    {
+      "name": "rectElFieldIntensity",
+      "onChange": "setElectricFieldProperties(1, {intensity: value});",
+      "initialValue": 0.0008
     }
   ],
   "components": [
       {
       "id": "efield-orientation",
       "type": "pulldown",
-      "label": "Electric field orientation",
+      "label": "Orientation",
       "labelOn": "left",
       "property": "electricFieldOrientation",
       "options": [
@@ -55,12 +66,65 @@
     {
       "type": "slider",
       "id": "efield-intensity",
-      "title": "Electric field intensity",
+      "title": "Intensity (eV/(nm·C))",
       "min": 0,
       "max": 0.001,
       "steps": 100,
-      "displayValue": "return format('.5f')(value)",
-      "property": "electricFieldIntensity"
+      "property": "electricFieldIntensity",
+      "labels": [
+        {
+          "value": 0,
+          "label": 0
+        },
+        {
+          "value": 0.001,
+          "label": 0.001
+        }
+      ]
+    },
+    {
+      "id": "rect-efield-orientation",
+      "type": "pulldown",
+      "label": "Orientation",
+      "labelOn": "left",
+      "property": "rectElFieldOrientation",
+      "options": [
+        {
+          "text": "N",
+          "value": "N"
+        },
+        {
+          "text": "S",
+          "value": "S"
+        },
+        {
+          "text": "E",
+          "value": "E"
+        },
+        {
+          "text": "W",
+          "value": "W"
+        }
+      ]
+    },
+    {
+      "type": "slider",
+      "id": "rect-efield-intensity",
+      "title": "Intensity (eV/(nm·C))",
+      "min": 0,
+      "max": 0.001,
+      "steps": 100,
+      "property": "rectElFieldIntensity",
+      "labels": [
+        {
+          "value": 0,
+          "label": 0
+        },
+        {
+          "value": 0.001,
+          "label": 0.001
+        }
+      ]
     },
     {
       "type": "checkbox",
@@ -77,12 +141,29 @@
       "steps": 20,
       "title": "Electric field visualization density",
       "property": "electricFieldDensity"
+    },
+    {
+      "type": "text",
+      "id": "label-main",
+      "text": "**Main electric field**"
+    },
+    {
+      "type": "text",
+      "id": "label-rect",
+      "text": "**Electric field within rectangle**"
     }
   ],
   "layout": {
     "bottom": [
-      ["efield-orientation", "efield-intensity"],
       ["show-electric-field", "electric-field-density-slider"]
+    ],
+    "right": [
+      ["label-main"],
+      ["efield-orientation"],
+      ["efield-intensity"],
+      ["label-rect"],
+      ["rect-efield-orientation"],
+      ["rect-efield-intensity"]
     ]
   }
 }
