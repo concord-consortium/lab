@@ -165,6 +165,7 @@ define(function(require) {
           var d = labModelerMixin.dispatchSupport;
           d.addEventTypes("tick","willReset",
                           "addAtom", "removeAtom", "addRadialBond", "removeRadialBond",
+                          "addElectricField", "removeElectricField",
                           "removeAngularBond", "invalidation", "textBoxesChanged");
           return d;
         }()),
@@ -798,20 +799,20 @@ define(function(require) {
     };
 
     model.createElectricFields = function(_eFields) {
-      var count = _eFields.intensity.length,
-          i, prop, eFieldProps;
+      model.batch(function () {
+        var count = _eFields.intensity.length,
+                i, prop, eFieldProps;
 
-      // See function above
-      for (i = 0; i < count; i++) {
-        eFieldProps = {};
-        for (prop in _eFields) {
-          if (_eFields.hasOwnProperty(prop)) {
-            eFieldProps[prop] = _eFields[prop][i];
+        for (i = 0; i < count; i++) {
+          eFieldProps = {};
+          for (prop in _eFields) {
+            if (_eFields.hasOwnProperty(prop)) {
+              eFieldProps[prop] = _eFields[prop][i];
+            }
           }
+          model.addElectricField(eFieldProps);
         }
-        model.addElectricField(eFieldProps);
-      }
-
+      });
       return model;
     };
 
@@ -1000,9 +1001,16 @@ define(function(require) {
     };
 
     model.removeRectangle = function (idx) {
+      var prevElFieldsCount = engine.getNumberOfElectricFields();
+
       propertySupport.invalidatingChangePreHook();
       engine.removeRectangle(idx);
       propertySupport.invalidatingChangePostHook();
+
+      if (engine.getNumberOfElectricFields() !== prevElFieldsCount) {
+        dispatch.removeElectricField();
+      }
+      //TODO FIXME: also .removeRectangle() event should be dispatched.
     };
 
     model.addElectricField = function(props) {
@@ -1013,12 +1021,14 @@ define(function(require) {
       propertySupport.invalidatingChangePreHook();
       engine.addElectricField(validatedProps);
       propertySupport.invalidatingChangePostHook();
+      dispatch.addElectricField();
     };
 
     model.removeElectricField = function (idx) {
       propertySupport.invalidatingChangePreHook();
       engine.removeElectricField(idx);
       propertySupport.invalidatingChangePostHook();
+      dispatch.removeElectricField();
     };
 
     model.addRadialBond = function(props, options) {
@@ -1575,6 +1585,11 @@ define(function(require) {
     // FIXME. Should be an output property.
     model.getNumberOfSpringForces = function () {
       return engine.getNumberOfSpringForces();
+    };
+
+    // FIXME. Should be an output property.
+    model.getNumberOfElectricFields = function () {
+      return engine.getNumberOfElectricFields();
     };
 
     model.get_radial_bonds = function() {

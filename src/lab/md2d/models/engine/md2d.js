@@ -2902,6 +2902,20 @@ define(function (require, exports) {
           throw new Error("Rectangle " + idx + " doesn't exist, so it can't be removed.");
         }
 
+        // Remove all electric fields connected with this rectangle.
+
+        // Use such "strange" form of loop, as while removing one electric field,
+        // other change their indexing. So, after removal of field 5, we
+        // should check field 5 again, as it would be another field (previously
+        // indexed as 6).
+        i = 0;
+        while (i < N_electricFields) {
+          if (electricFieldRectangleIdx[i] === idx)
+            engine.removeElectricField(i);
+          else
+            i++;
+        }
+
         N_rectangles--;
 
         // Shift rectangles properties.
@@ -2916,6 +2930,12 @@ define(function (require, exports) {
           }
         }
 
+        // Shift indices of rectangles referenced by electric fields.
+        for (i = 0; i < N_electricFields; i++) {
+          if (electricFieldRectangleIdx[i] > idx)
+            electricFieldRectangleIdx[i]--;
+        }
+
         // FIXME: This shouldn't be necessary, however various modules
         // (e.g. views) use rectangles.x.length as the real number of rectangles.
         utils.extendArrays(rectangles, N_rectangles);
@@ -2926,7 +2946,7 @@ define(function (require, exports) {
         if (N_electricFields + 1 > electricFields.intensity.length) {
           // Extend arrays each time (as there are only
           // a few electricFields in typical model).
-          utils.extendArrays(electricFields, N_rectangles + 1);
+          utils.extendArrays(electricFields, N_electricFields + 1);
           assignShortcutReferences.electricFields();
         }
 
@@ -3426,6 +3446,10 @@ define(function (require, exports) {
 
       getNumberOfSpringForces: function() {
         return N_springForces;
+      },
+
+      getNumberOfElectricFields: function() {
+        return N_electricFields;
       },
 
       /**
