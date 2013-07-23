@@ -440,8 +440,6 @@ define(function (require) {
           if (!options || !options.silent)
             throw e;
         }
-
-        api.repaintIfReady();
       },
 
       removeElectricField: function removeElectricField(i, options) {
@@ -451,13 +449,10 @@ define(function (require) {
           if (!options || !options.silent)
             throw e;
         }
-
-        api.repaintIfReady();
       },
 
       setElectricFieldProperties: function setElectricFieldProperties(i, props) {
         model.setElectricFieldProperties(i, props);
-        api.repaintIfReady();
       },
 
       getElectricFieldProperties: function getElectricFieldProperties(i) {

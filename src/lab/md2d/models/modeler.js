@@ -165,7 +165,7 @@ define(function(require) {
           var d = labModelerMixin.dispatchSupport;
           d.addEventTypes("tick","willReset",
                           "addAtom", "removeAtom", "addRadialBond", "removeRadialBond",
-                          "addElectricField", "removeElectricField",
+                          "addElectricField", "removeElectricField", "changeElectricField",
                           "removeAngularBond", "invalidation", "textBoxesChanged");
           return d;
         }()),
@@ -1290,6 +1290,7 @@ define(function(require) {
       propertySupport.invalidatingChangePreHook();
       engine.setElectricFieldProperties(i, translateToMD2DUnits(props, metadata.electricField));
       propertySupport.invalidatingChangePostHook();
+      dispatch.changeElectricField();
     };
 
     model.getElectricFieldProperties = function(i) {

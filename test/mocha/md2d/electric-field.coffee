@@ -50,6 +50,25 @@ describe "MD2D modeler", ->
       model.addElectricField intensity: 1, orientation: "N"
       callback.callCount.should.equal 1
 
+  describe "when setElectricFieldProperties() is called", ->
+    beforeEach ->
+      model.addElectricField intensity: 1, orientation: "N"
+
+    it "should update electric field properties", ->
+      model.getElectricFieldProperties(0).intensity.should.equal 1
+      model.getElectricFieldProperties(0).orientation.should.equal "N"
+      model.setElectricFieldProperties 0, {intensity: 2, orientation: "E"}
+      model.getElectricFieldProperties(0).intensity.should.equal 2
+      model.getElectricFieldProperties(0).orientation.should.equal "E"
+
+    it "should trigger 'changeElectricField' event", ->
+      callback = sinon.spy()
+      model.on 'changeElectricField', callback
+
+      callback.callCount.should.equal 0
+      model.setElectricFieldProperties 0, {intensity: 1, orientation: "N"}
+      callback.callCount.should.equal 1
+
   describe "when removeElectricField() is called", ->
 
     beforeEach ->
