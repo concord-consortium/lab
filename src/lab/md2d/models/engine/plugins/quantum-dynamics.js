@@ -27,6 +27,10 @@ define(function(require) {
       // in reality, 6.626E-34 m^2kg/s. Classic MW uses 0.2 in its units (eV * fs)
       PLANCK_CONSTANT = constants.convert(0.2, { from: constants.unit.EV, to: constants.unit.MW_ENERGY_UNIT }),
 
+      // MW uses a "tolerance band" to decide if a photon's energy matches an energy level gap.
+      // Reference: https://github.com/concord-consortium/mw/blob/d3f621ba87825888737257a6cb9ac9e4e4f63f77/src/org/concord/mw2d/models/PhotonicExcitor.java#L28
+      ENERGY_GAP_TOLERANCE = constants.convert(0.05, { from: constants.unit.EV, to: constants.unit.MW_ENERGY_UNIT }),
+
       // Speed of light.
       // in reality, about 300 nm/fs! Classic uses 0.2 in its units (0.1Å/fs), which is 0.002 nm/fs:
       C = 0.002,
@@ -34,7 +38,11 @@ define(function(require) {
 
       // expected value of lifetime of excited energy state, in fs
       LIFETIME = 1000,
-      EMISSION_PROBABILITY_PER_FS = 1/LIFETIME;
+      EMISSION_PROBABILITY_PER_FS = 1/LIFETIME,
+
+      // dispatch events from handlePhotonAtomCollision
+      PHOTON_ABSORBED = 1,
+      PHOTON_EMITTED = 2;
 
   return function QuantumDynamics(engine, _properties) {
 
@@ -49,6 +57,7 @@ define(function(require) {
 
         elementEnergyLevels  = properties.elementEnergyLevels,
         pRadiationless       = properties.radiationlessEmissionProbability,
+        pStimulatedEmission  = 0,
 
         dimensions           = engine.getDimensions(),
 
@@ -105,6 +114,87 @@ define(function(require) {
               photons.id[i] = nextPhotonId++;
             }
           }
+        },
+
+        // Iterate over all photon-atom pairs, and allow them to interact if "touching".
+        //
+        // If a photons and atom are close enough, one of the following may happen:
+        //   - the photon is absorbed, exciting the atom's electron to a higher energy level
+        //   - (NOT YET IMPLEMENTED) the photon is absorbed, ionizing the atoms' electron
+        //   - (NOT YET IMPLEMENTED) the photon triggers stimulated emission of a second photon
+        //   - (NOT YET IMPLEMENTED) the photon is scattered
+        //   - or no interaction occurs (the photon and atom are unmodified)
+        //
+        handlePhotonAtomCollisions = function() {
+          var numAtoms = engine.getNumberOfAtoms(),
+              i, len,
+              x, y,
+              atomIndex,
+              r, rsq,
+              dx, dy,
+              collisionResult;
+
+          for (i = 0, len = photons.x.length; i < len; i++) {
+            if (!photons.vx[i] && !photons.vy[i]) {
+              continue;
+            }
+
+            x = photons.x[i];
+            y = photons.y[i];
+
+            // TODO. Consider using the cell list to narrow down the list of atoms to those in the
+            // same cell as the photon.
+            for (atomIndex = 0; atomIndex < numAtoms; atomIndex++) {
+              dx = atoms.x[atomIndex] - x;
+              dy = atoms.y[atomIndex] - y;
+              r = atoms.radius[atomIndex];
+              // TODO. Cache rsq values?
+              rsq = r*r;
+
+              if (dx*dx + dy*dy < rsq) {
+                collisionResult = handlePhotonAtomCollision(i, atomIndex);
+                if (collisionResult === PHOTON_ABSORBED) {
+                  // Break from iteration over atoms, and move on to the next photon.
+                  break;
+                }
+                // TODO. Handle stimulated emission by remembering a list of photons to create
+                // after the loop over photons completes.
+              }
+            }
+          }
+        },
+
+        handlePhotonAtomCollision = function(photonIndex, atomIndex) {
+          if (Math.random() < pStimulatedEmission) {
+            // TODO. Stimulated emission.
+            return PHOTON_EMITTED;
+          } else if (tryToAbsorbPhoton(photonIndex, atomIndex)) {
+            return PHOTON_ABSORBED;
+          }
+
+          // TODO. Scatter photon (or not) depending on the model's "scatter probability".
+        },
+
+        // If the photon can be absorbed by exciting the atom's electron to a higher energy level,
+        // then remove the photon, excite the electron, and return true. Otherwise, return false.
+        tryToAbsorbPhoton = function(photonIndex, atomIndex) {
+          if (!elementEnergyLevels) return;
+
+          var energyLevels     = elementEnergyLevels[atoms.element[atomIndex]],
+              energyLevelIndex = atoms.excitation[atomIndex],
+              electronEnergy   = energyLevels[energyLevelIndex],
+              photonEnergy     = photons.angularFrequency[photonIndex] * PLANCK_CONSTANT,
+              i,
+              nLevels;
+
+          for (i = energyLevelIndex + 1, nLevels = energyLevels.length; i < nLevels; i++) {
+            if (Math.abs(energyLevels[i] - electronEnergy - photonEnergy) < ENERGY_GAP_TOLERANCE) {
+              atoms.excitation[atomIndex] = i;
+              removePhoton(photonIndex);
+              return true;
+            }
+          }
+          return false;
         },
 
         // If a pair of atoms are close enough, QD interactions may occur.
@@ -456,6 +546,7 @@ define(function(require) {
 
       performActionWithinIntegrationLoop: function(neighborList, dt) {
         movePhotons(dt);
+        handlePhotonAtomCollisions();
         thermallyExciteAndDeexciteAtoms(neighborList);
         spontaneouslyEmitPhotons(dt);
       },
