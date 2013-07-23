@@ -429,7 +429,7 @@ define(function(require) {
             computeVelocityComponents();
             updateVelocities(energyReleased);
           } else {
-            emitPhoton(i, energyReleased);
+            emitPhotonFromAtom(i, energyReleased);
           }
         },
 
@@ -454,7 +454,7 @@ define(function(require) {
           photons.x[i] = photons.y[i] = photons.vx[i] = photons.vy[i] = photons.angularFrequency[i] = 0;
         },
 
-        emitPhoton = function(atomIndex, energy) {
+        emitPhotonFromAtom = function(atomIndex, energy) {
           var angle = Math.random() * TWO_PI,
               cosA  = Math.cos(angle),
               sinA  = Math.sin(angle),
@@ -528,7 +528,7 @@ define(function(require) {
               energyLevels = elementEnergyLevels[atoms.element[atomIndex]];
               excessEnergy = energyLevels[m] - energyLevels[i];
               atoms.excitation[atomIndex] = i;
-              emitPhoton(atomIndex, excessEnergy);
+              emitPhotonFromAtom(atomIndex, excessEnergy);
               return;
             }
           }
