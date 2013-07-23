@@ -3470,10 +3470,10 @@ define(function (require, exports) {
             switch (electricFieldOrientation[e]) {
             case "N":
             case "S":
-              elInMWUnits *= -y[i]; break;
+              elInMWUnits *= (rect != null ? rectangleY[rect] : minY) - y[i]; break;
             case "W":
             case "E":
-              elInMWUnits *= -x[i]; break;
+              elInMWUnits *= (rect != null ? rectangleX[rect] : minX) - x[i]; break;
             }
             PE += constants.convert(elInMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
           }
