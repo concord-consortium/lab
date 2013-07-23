@@ -696,7 +696,7 @@ define(function (require) {
         loadModel(models[0].id);
       } else {
         // Setup proxy modelController object with a 0x0 px view for semantic layout system
-        semanticLayout.setupModel({
+        modelController = {
           getViewContainer: function() {
             var $el = $("<div>")
               .attr({
@@ -713,7 +713,8 @@ define(function (require) {
           },
           getHeightForWidth: function() { return 0; },
           resize: function() {}
-        });
+        };
+        semanticLayout.setupModel(modelController);
         // and layout a 'no-model' interactive
         semanticLayout.layoutInteractive();
       }

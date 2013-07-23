@@ -12,20 +12,6 @@ define(function (require) {
       "publicationStatus": "broken",
       "fontScale": 1.3,
       "models": [
-        {
-          "type": "md2d",
-          "id": "empty-model",
-          "model": {
-            "type": "md2d",
-            "width": 5,
-            "height": 3
-          },
-          "viewOptions": {
-            "controlButtons": "",
-            "backgroundColor": "rgba(245,200,200,255)",
-            "showClock": false
-          }
-        }
       ],
       "components": [
         {
@@ -47,32 +33,9 @@ define(function (require) {
       },
       "template": [
         {
-          "id": "top",
-          "bottom": "model.top",
-          "height": "1em"
-        },
-        {
-          "id": "bottom",
-          "top": "model.bottom",
-          "height": "1em"
-        },
-        {
-          "id": "right",
-          "left": "model.right",
-          "width": "1em"
-        },
-        {
-          "id": "left",
-          "right": "model.left",
-          "width": "1em"
-        },
-        {
           "id": "error",
-          "top": "model.top",
-          "left": "model.left",
-          "height": "model.height",
-          "width": "model.width",
-          "padding-top": "0.5em",
+          "width": "interactive.width",
+          "padding-top": "1em",
           "padding-bottom": "0.5em",
           "padding-right": "1em",
           "padding-left": "1em"
