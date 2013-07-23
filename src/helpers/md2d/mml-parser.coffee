@@ -229,7 +229,7 @@ parseMML = (mmlString) ->
     parseRectangles = ->
       rectangles = []
       rectangleNodes = $mml "[property=rectangles] object.org-concord-mw2d-models-RectangleComponent-Delegate"
-      for node in rectangleNodes
+      for node, idx in rectangleNodes
         $node = getNode cheerio node
 
         height        = getFloatProperty $node, 'height'
@@ -294,6 +294,13 @@ parseMML = (mmlString) ->
         validatedData = validator.validateCompleteness metadata.rectangle, rawData
 
         rectangles.push validatedData
+
+        # Rectangle can also specify electric fied.
+        $elField = $node.find "object.org-concord-mw2d-models-ElectricField"
+        if $elField.length > 0
+          parsedElField = parseElectricField $elField
+          parsedElField.rectangleIdx = idx
+          electricFields.push parsedElField
 
       rectangles
 
@@ -1103,7 +1110,7 @@ parseMML = (mmlString) ->
         'layer', 'visible'
 
     if electricFields.length > 0
-      json.electricFields = unroll electricFields, 'intensity', 'orientation'
+      json.electricFields = unroll electricFields, 'intensity', 'orientation', 'rectangleIdx'
 
     if useQuantumDynamics
       json.quantumDynamics = quantumDynamics
