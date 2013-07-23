@@ -143,6 +143,31 @@
       "property": "electricFieldDensity"
     },
     {
+      "id": "electric-field-color",
+      "type": "pulldown",
+      "label": "Electric field visualization color",
+      "labelOn": "left",
+      "property": "electricFieldColor",
+      "options": [
+        {
+          "text": "auto (contrasting)",
+          "value": "auto"
+        },
+        {
+          "text": "#800",
+          "value": "#800"
+        },
+        {
+          "text": "#050",
+          "value": "#050"
+        },
+        {
+          "text": "#005",
+          "value": "#005"
+        }
+      ]
+    },
+    {
       "type": "text",
       "id": "label-main",
       "text": "**Main electric field**"
@@ -155,7 +180,7 @@
   ],
   "layout": {
     "bottom": [
-      ["show-electric-field", "electric-field-density-slider"]
+      ["show-electric-field", "electric-field-density-slider", "electric-field-color"]
     ],
     "right": [
       ["label-main"],
