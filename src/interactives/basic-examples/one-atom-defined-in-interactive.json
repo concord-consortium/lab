@@ -1,0 +1,73 @@
+{
+  "title": "One atom model defined in Interactive",
+  "publicationStatus": "draft",
+  "subtitle": "A Interactive with the model with the model defined in the Interactive.",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "one-atom",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "model": {
+        "type": "md2d",
+        "width": 0.5,
+        "height": 0.5,
+        "elements": {
+          "mass": [
+            20
+          ],
+          "sigma": [
+            0.07
+          ],
+          "epsilon": [
+            -0.0010000000474974513
+          ]
+        },
+        "atoms": {
+          "x": [
+            0.285
+          ],
+          "y": [
+            0.27
+          ],
+          "vx": [
+            0
+          ],
+          "vy": [
+            0
+          ],
+          "charge": [
+            0
+          ],
+          "element": [
+            0
+          ]
+        }
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "add-atom",
+      "text": "Add a random atom",
+      "action": "addRandomAtom()"
+    }
+  ],
+  "layout": {
+    "right": [
+      "add-atom"
+    ]
+  },
+  "template": [
+    {
+      "id": "right",
+      "top": "6em",
+      "left": "model.right",
+      "padding-left": "1em",
+      "align": "center"
+    }
+  ]
+}
