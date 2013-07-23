@@ -36,16 +36,45 @@
 
     .column1
       .item-list
+
         %h2
-          Molecular Dynamics 2D
+          2D Molecular dynamics
         %a{:href => '../../../interactives.html#interactives/samples/1-oil-and-water-shake.json'} Oil and Water
         .iframe-container
-          %iframe{:width => 500, :height => 300, :scrolling => "no", :allowfullscreen => "true", :webkitallowfullscreen => "true", :mozallowfullscreen => "true", :src => '../../../embeddable.html#interactives/samples/1-oil-and-water-shake.json' }
+          %iframe{:width => 450, :height => 300, :scrolling => "no", :allowfullscreen => "true", :webkitallowfullscreen => "true", :mozallowfullscreen => "true", :src => '../../../embeddable.html#interactives/samples/1-oil-and-water-shake.json' }
+
+        %h2
+          Defining input and output controls for a model.
+        %p
+          The slider that controls temperature and the numeric output displaying gas volume
+          are defined in JSON in the Interactive that wraps this model.
+        %a{:href => '../../../interactives.html#interactives/sam/gas-laws/4-temperature-volume-relationship.json'} Temperature-Volume Relationship
+        .iframe-container
+          %iframe{:width => 450, :height => 300, :scrolling => "no", :allowfullscreen => "true", :webkitallowfullscreen => "true", :mozallowfullscreen => "true", :src => '../../../embeddable.html#interactives/sam/gas-laws/4-temperature-volume-relationship.json' }
+
+        %h2
+          Using macroscopic units
+        %p
+          Normally the MD2D engine uses units of femto-seconds and nano-meters however
+          this Interactive is setup to use an optional mks unitsScheme.
+        %a{:href => '../../../interactives.html#interactives/inquiry-space/pendulum/1-pendulum.json'} Pendulum
+        .iframe-container
+          %iframe{:width => 450, :height => 300, :scrolling => "no", :allowfullscreen => "true", :webkitallowfullscreen => "true", :mozallowfullscreen => "true", :src => '../../../embeddable.html#interactives/inquiry-space/pendulum/1-pendulum.json' }
+
+        %h2
+          Electric fields
+        %p
+          The electric field around the atoms can be displayed
+        %a{:href => '../../../interactives.html#interactives/conversion-tests/amount-charge.json'} Amount of Charge
+        .iframe-container
+          %iframe{:width => 450, :height => 300, :scrolling => "no", :allowfullscreen => "true", :webkitallowfullscreen => "true", :mozallowfullscreen => "true", :src => '../../../embeddable.html#interactives/conversion-tests/amount-charge.json' }
 
     .column2
       .item-list
         %h2
           Status
+        %p
+          Useful general pages on this work:
         %ul
           %li
             %a{:href => 'http://mw.concord.org/nextgen/'} Next Generation Molecular Workbench
