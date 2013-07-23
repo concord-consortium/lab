@@ -455,9 +455,9 @@ define(function(require) {
       },
 
       performActionWithinIntegrationLoop: function(neighborList, dt) {
+        movePhotons(dt);
         thermallyExciteAndDeexciteAtoms(neighborList);
         spontaneouslyEmitPhotons(dt);
-        movePhotons(dt);
       },
 
       getPhotons: function() {
