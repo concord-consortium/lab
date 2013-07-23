@@ -207,6 +207,11 @@ define(function() {
         defaultValue: 18, // it means 18 arrows per row
         storeInTickHistory: true
       },
+      electricFieldColor: {
+        // "auto" means color contrasting to background, black or white.
+        // However any custom color can be specified.
+        defaultValue: "auto"
+      },
       showAtomTrace: {
         defaultValue: false
       },

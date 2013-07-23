@@ -1411,7 +1411,10 @@ define(function (require) {
           .append("path")
             .attr("d", "M0,0 L0,-8 L1,-8 L0,-10 L-1,-8, L0,-8");
         // Update.
-        col = color.contrastingColor(model.get("backgroundColor"));
+        col = model.get("electricFieldColor");
+        if (col === "auto")
+          col = color.contrastingColor(model.get("backgroundColor"));
+
         efVector
             .attr("transform", function (d) {
               return "translate(" + model2px(d.x) + ", " + model2pxInv(d.y) + ")";
@@ -1898,7 +1901,7 @@ define(function (require) {
         "showAtomTrace", "atomTraceId", "aminoAcidColorScheme",
         "backgroundColor", "markColor"],
           redrawClickableObjects(repaint));
-      model.addPropertiesListener(["electricFieldDensity", "showElectricField"],
+      model.addPropertiesListener(["electricFieldDensity", "showElectricField", "electricFieldColor"],
         setupElectricField);
 
       model.on('addAtom', redrawClickableObjects(setupParticles));
