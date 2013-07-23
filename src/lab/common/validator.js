@@ -15,6 +15,11 @@ define(function(require) {
   ValidationError.prototype = new Error();
   ValidationError.prototype.constructor = ValidationError;
 
+  function isObject(prop) {
+    // Note that typeof null is also equal to "object", so we have to check it.
+    return prop !== null && typeof prop === "object";
+  }
+
   function checkConflicts(input, propName, conflictingProps) {
     var i, len;
     for (i = 0, len = conflictingProps.length; i < len; i++) {
@@ -57,7 +62,7 @@ define(function(require) {
           // Try to get meta-data for this property.
           propMetadata = metadata[prop];
           // Continue only if the property is listed in meta-data.
-          if (propMetadata !== undefined) {
+          if (typeof propMetadata !== "undefined") {
             input[prop] = validateSingleProperty(propMetadata, prop, input[prop], ignoreImmutable);
             if (propMetadata.conflictsWith) {
               checkConflicts(input, prop, propMetadata.conflictsWith);
@@ -78,7 +83,7 @@ define(function(require) {
 
     propertyChangeInvalidates: function(propertyMetadata) {
       // Default to true for safety.
-      if (propertyMetadata.propertyChangeInvalidates === undefined) {
+      if (typeof propertyMetadata.propertyChangeInvalidates === "undefined") {
         return true;
       }
       return !!propertyMetadata.propertyChangeInvalidates;
@@ -91,7 +96,7 @@ define(function(require) {
     // Later perform basic validation.
     validateCompleteness: function (metadata, input) {
       var result = {},
-          prop, propMetadata;
+          prop, propMetadata, defVal;
 
       if (arguments.length < 2) {
         throw new Error("Incorrect usage. Provide metadata and hash which should be validated.");
@@ -100,26 +105,26 @@ define(function(require) {
       for (prop in metadata) {
         if (metadata.hasOwnProperty(prop)) {
           propMetadata = metadata[prop];
+          defVal = propMetadata.defaultValue;
 
-          if (input[prop] === undefined || input[prop] === null) {
+          if (typeof input[prop] === "undefined") {
             // Value is not declared in the input data.
             if (propMetadata.required === true) {
               throw new ValidationError(prop, "Properties set is missing required property " + prop);
-            } else if (arrays.isArray(propMetadata.defaultValue)) {
+            } else if (arrays.isArray(defVal)) {
               // Copy an array defined as a default value.
               // Do not use instance defined in metadata.
-              result[prop] = arrays.copy(propMetadata.defaultValue, []);
-            } else if (typeof propMetadata.defaultValue === "object") {
-              // Copy an object defined as a default value.
-              // Do not use instance defined in metadata.
-              result[prop] = $.extend(true, {}, propMetadata.defaultValue);
-            } else if (propMetadata.defaultValue !== undefined) {
+              result[prop] = arrays.copy(defVal, []);
+            } else if (isObject(defVal)) {
+              // Copy an object defined as a default value. Do not use instance defined in metadata.
+              result[prop] = $.extend(true, {}, defVal);
+            } else if (typeof defVal !== "undefined") {
               // If it's basic type, just set value.
-              result[prop] = propMetadata.defaultValue;
+              result[prop] = defVal;
             }
-          } else if (!arrays.isArray(input[prop]) && typeof input[prop] === "object" && typeof propMetadata.defaultValue === "object") {
+          } else if (!arrays.isArray(input[prop]) && isObject(input[prop]) && isObject(defVal)) {
             // Note that typeof [] is also "object" - that is the reason of the isArray() check.
-            result[prop] = $.extend(true, {}, propMetadata.defaultValue, input[prop]);
+            result[prop] = $.extend(true, {}, defVal, input[prop]);
           } else if (arrays.isArray(input[prop])) {
             // Deep copy of an array.
             result[prop] = $.extend(true, [], input[prop]);

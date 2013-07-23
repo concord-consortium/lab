@@ -171,7 +171,7 @@ describe('validator module', function() {
           result.should.not.have.property('readOnlyProp');
         });
 
-        it('validation should use it if the input property is null', function () {
+        it('validation should not use it if the input property is null', function () {
           var input = {
                 requiredProp: 1,
                 optionalProp: null
@@ -179,8 +179,8 @@ describe('validator module', function() {
               result = validator.validateCompleteness(metadata, input);
 
           result.requiredProp.should.equal(1);
-          // Default value -1 should be used.
-          result.optionalProp.should.equal(-1);
+          // Default value -1 shouldn't be used, null is a legal value for a property.
+          should.equal(result.optionalProp, null);
           // This property is not required, but it also doesn't define default value.
           result.should.not.have.property('readOnlyProp');
         });
@@ -266,7 +266,7 @@ describe('validator module', function() {
           result.should.not.have.property('readOnlyProp');
         });
 
-        it('validation should use it if the input property is null', function () {
+        it('validation should not use it if the input property is null', function () {
           var input = {
                 requiredProp: 1,
                 optionalProp: null
@@ -274,10 +274,7 @@ describe('validator module', function() {
               result = validator.validateCompleteness(metadata, input);
 
           result.requiredProp.should.equal(1);
-          // Default value should be used.
-          result.optionalProp.should.eql(metadata.optionalProp.defaultValue);
-          // But new object should be created, copying of reference is not enough!
-          result.optionalProp.should.not.equal(metadata.optionalProp.defaultValue);
+          should.equal(result.optionalProp, null);
           // This property is not required, but it also doesn't define default value.
           result.should.not.have.property('readOnlyProp');
         });
@@ -340,14 +337,13 @@ describe('validator module', function() {
         }).should.throwError();
       });
 
-      it('validation should fail when the required property is null', function () {
+      it('validation should not fail when the required property is null', function () {
         var input = {
-          requiredProp: null
-        };
+              requiredProp: null
+            },
+            result = validator.validateCompleteness(metadata, input);
 
-        (function () {
-          validator.validateCompleteness(metadata, input);
-        }).should.throwError();
+        should.equal(result.requiredProp, null);
       });
     });
 
