@@ -598,6 +598,11 @@ define(function() {
       },
       orientation: {
         defaultValue: "E"
+      },
+      rectangleIdx: {
+        // Optional, electric field boundaries can be limited to a rectangle. When 'null' is used,
+        // the electric field will be applied to the whole model area.
+        defaultValue: null
       }
     },
 

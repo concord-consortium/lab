@@ -338,6 +338,7 @@ define(function (require, exports) {
         // Individual properties for the electric fields.
         electricFieldIntensity,
         electricFieldOrientation,
+        electricFieldRectangleIdx,
 
         // An object that contains references to the above rectangle-property arrays.
         // Left undefined if there are no electric fields.
@@ -689,8 +690,9 @@ define(function (require, exports) {
           },
 
           electricFields: function() {
-            electricFieldIntensity   = electricFields.intensity;
-            electricFieldOrientation = electricFields.orientation;
+            electricFieldIntensity    = electricFields.intensity;
+            electricFieldOrientation  = electricFields.orientation;
+            electricFieldRectangleIdx = electricFields.rectangleIdx;
           },
 
           springForces: function() {
@@ -857,8 +859,9 @@ define(function (require, exports) {
         createElectricFieldsArray = function(num) {
           electricFields = engine.electricFields = {};
 
-          electricFields.intensity   = arrays.create(num, 0, arrayTypes.floatType);
-          electricFields.orientation = [];
+          electricFields.intensity    = arrays.create(num, 0, arrayTypes.floatType);
+          electricFields.orientation  = [];
+          electricFields.rectangleIdx = [];
 
           assignShortcutReferences.electricFields();
         },
@@ -1684,6 +1687,13 @@ define(function (require, exports) {
           }
         },
 
+        rectContains = function (i, x, y) {
+          var rx = rectangleX[i],
+              ry = rectangleY[i];
+          return rx <= x && x <= rx + rectangleWidth[i] &&
+                 ry <= y && y <= ry + rectangleHeight[i];
+        },
+
         getElFieldForce = function (i) {
           var o = electricFieldOrientation[i];
           return (o === "N" || o === "E" ? 1 : -1) * electricFieldIntensity[i];
@@ -1693,14 +1703,16 @@ define(function (require, exports) {
           // fast path if there are no electric fields
           if (!electricFields) return;
 
-          var i, e, o, vertical, temp;
+          var i, e, o, vertical, rect, temp;
 
           for (e = 0; e < N_electricFields; e++) {
             o = electricFieldOrientation[e];
             vertical = o === "N" || o === "S";
             temp = getElFieldForce(e) / dielectricConst;
+            rect = electricFieldRectangleIdx[e];
 
             for (i = 0; i < N; i++) {
+              if (rect != null && !rectContains(rect, x[i], y[i])) continue;
               if (vertical) {
                 ay[i] += temp * charge[i] / mass[i];
               } else {
@@ -3427,7 +3439,7 @@ define(function (require, exports) {
             el1, el2,
             dx, dy,
             dxij, dyij, dxkj, dykj,
-            cosTheta, theta,
+            cosTheta, theta, rect,
             r_sq, rij, rkj,
             k, dr, angleDiff,
             elInMWUnits,
@@ -3452,6 +3464,8 @@ define(function (require, exports) {
 
           // electric field PE
           for (e = 0; e < N_electricFields; e++) {
+            rect = electricFieldRectangleIdx[e];
+            if (rect != null && !rectContains(rect, x[i], y[i])) continue;
             elInMWUnits = charge[i] * getElFieldForce(e);
             switch (electricFieldOrientation[e]) {
             case "N":
@@ -3773,7 +3787,7 @@ define(function (require, exports) {
         }
 
         var fx = 0, fy = 0,
-            i, len, dx, dy, rSq, fOverR, atomCharge, atomIdx, o;
+            i, len, dx, dy, rSq, fOverR, atomCharge, atomIdx, rect, o;
 
         for (i = 0, len = chargedAtomsList.length; i < len; i++) {
           atomIdx = chargedAtomsList[i];
@@ -3791,6 +3805,8 @@ define(function (require, exports) {
         }
 
         for (i = 0; i < N_electricFields; i++) {
+          rect = electricFieldRectangleIdx[i];
+          if (rect != null && !rectContains(rect, testX, testY)) continue;
           o = electricFieldOrientation[i];
           if (o === "N" || o === "S") {
             fy += getElFieldForce(i);
