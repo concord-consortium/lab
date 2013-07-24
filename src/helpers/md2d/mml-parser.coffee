@@ -965,6 +965,75 @@ parseMML = (mmlString) ->
     useQuantumDynamics = excitationStates.length > 0
 
     if useQuantumDynamics
+
+      getEnergyLevels = (elementNode) ->
+        ###
+          <!-- Form 1 -->
+
+          <void property="electronicStructure">
+            <void property="energyLevels">
+              <void method="clear"/>
+              <void method="add">
+                <object class="org.concord.mw2d.models.EnergyLevel">
+                  <void property="energy">
+                    <float>-4.0</float>
+                  </void>
+                </object>
+              </void>
+              <void method="add">
+                <object class="org.concord.mw2d.models.EnergyLevel">
+                  <void property="energy">
+                    <float>-3.3</float>
+                  </void>
+                </object>
+              </void>
+            </void>
+          </void>
+
+
+          <!-- Form 2 -->
+
+          <void property="electronicStructure">
+            <void property="energyLevels">
+              <void index="1">
+                <void property="energy">
+                  <float>-3.65</float>
+                </void>
+              </void>
+              <void index="2">
+                <void property="energy">
+                  <float>-1.2</float>
+                </void>
+              </void>
+            </void>
+          </void>
+        ###
+
+        # default energy levels; see:
+        # https://github.com/concord-consortium/mw/blob/d3f621ba87825888737257a6cb9ac9e4e4f63f77/src/org/concord/mw2d/models/ElectronicStructure.java#L41-L47
+        # applied to every element; see:
+        # https://github.com/concord-consortium/mw/blob/d3f621ba87825888737257a6cb9ac9e4e4f63f77/src/org/concord/mw2d/models/Element.java#L183-L185
+        energyLevels = [-4, -1, -0.5]
+
+        $elementNode = getNode(cheerio(elementNode))
+
+        for node in $elementNode.find '[property=energyLevels] > void'
+          $node = getNode(cheerio(node))
+          if $node.attr('method') is 'clear'
+            energyLevels = []
+          else if $node.attr('method') is 'add'
+            energyLevels.push getFloatProperty($node, 'energy', 'float')
+          else if $node.attr('index')
+            index = parseInt $node.attr('index'), 10
+            energyLevels[index] = getFloatProperty($node, 'energy', 'float')
+
+        convert = (energy) -> constants.convert energy,
+          from: constants.unit.EV,
+          to:   constants.unit.MW_ENERGY_UNIT
+
+        return (convert(energy) for energy in energyLevels)
+
+
       for atom in excitationStates
         $node = getNode cheerio atom
         atomIndex = parseInt cheerio($node.find("int")[0]).text()
@@ -973,26 +1042,12 @@ parseMML = (mmlString) ->
         atoms[atomIndex].excitation = excitation
 
       excitation = (atom.excitation for atom in atoms)
+      elementEnergyLevels = (getEnergyLevels(elementNode) for elementNode in elementNodes)
 
-      elementEnergyLevels = []
-      for node in elementNodes
-        $node = getNode(cheerio(node))
-        levels = $node.find "[property=energyLevels] [method=add]"
-        if levels.length > 0
-          levelsArray = []
-          for level in levels
-            $level = getNode(cheerio(level))
-            energy = getFloatProperty $level, "energy", "float"
-            # convert from MW units to NextGen (Daltons, nm conversions)
-            energy = constants.convert energy, { from: constants.unit.EV, to: constants.unit.MW_ENERGY_UNIT }
-            levelsArray.push energy
-          elementEnergyLevels.push levelsArray
-        else
-          elementEnergyLevels.push []
-
-      quantumRule = $mml(".org-concord-mw2d-models-QuantumRule")
+      # default value which can be overridden by an explicit quantumRule found below:
       radiationlessEmissionProbability = 1
 
+      quantumRule = $mml(".org-concord-mw2d-models-QuantumRule")
       if quantumRule.length
         probabilityMap = quantumRule.find "[property=probabilityMap]>[method=put]"
         for put in probabilityMap
@@ -1004,12 +1059,10 @@ parseMML = (mmlString) ->
           if key is 11
             radiationlessEmissionProbability = val
 
-      quantumDynamics = {
+      quantumDynamics = validator.validateCompleteness metadata.quantumDynamics, {
         elementEnergyLevels
         radiationlessEmissionProbability
       }
-
-      quantumDynamics = validator.validateCompleteness metadata.quantumDynamics, quantumDynamics
 
 
     ### Convert array of hashes to a hash of arrays, for use by MD2D ###
