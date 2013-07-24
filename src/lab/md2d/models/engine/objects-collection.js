@@ -26,15 +26,44 @@ define(function (require) {
         }()),
         count = 0,
 
-        dispatch = new DispatchSupport("add", "remove", "set");
+        dispatch = new DispatchSupport("add", "remove", "set"),
+
+        objects = [];
+
+    function ObjectWrapper(idx) {
+      this.idx = idx;
+      Object.freeze(this);
+    }
+
+    propNames.forEach(function (name) {
+      Object.defineProperty(ObjectWrapper.prototype, name, {
+        enumerable: true,
+        configurable: false,
+        get: function () {
+          return data[name][this.idx];
+        },
+        set: function (v) {
+          data[name][this.idx] = v;
+        }
+      });
+    });
 
     api = {
+      get count() {
+        return count;
+      },
+
       get data() {
         return data;
       },
 
-      get count() {
-        return count;
+      get objects() {
+        return objects;
+      },
+
+      get objectPrototype() {
+        // It can be used to extend functionality of the object wrapper.
+        return ObjectWrapper.prototype;
       },
 
       add: function (props) {
@@ -45,6 +74,7 @@ define(function (require) {
         }
         count++;
         api.set(count - 1, props);
+        api.syncObjects();
         dispatch.add();
       },
 
@@ -55,7 +85,6 @@ define(function (require) {
         }
         var prop;
         count--;
-        // Shift properties.
         for (; i < count; i++) {
           for (prop in data) {
             if (data.hasOwnProperty(prop)) {
@@ -63,6 +92,7 @@ define(function (require) {
             }
           }
         }
+        api.syncObjects();
         dispatch.remove();
       },
 
@@ -72,25 +102,29 @@ define(function (require) {
           throw new Error("Object with index " + i +
             " doesn't exist, so its properties can't be set.");
         }
-        var key;
-        // Set properties from props hash.
-        for (key in props) {
-          if (props.hasOwnProperty(key)) {
-            data[key][i] = props[key];
-          }
-        }
+        propNames.forEach(function (key) {
+          data[key][i] = props[key];
+        });
         dispatch.set();
       },
 
       get: function (i) {
-        var props = {},
-            propName;
-        for (propName in metadata) {
-          if (metadata.hasOwnProperty(propName)) {
-            props[propName] = data[propName][i];
-          }
-        }
+        var props = {};
+        propNames.forEach(function (key) {
+          props[key] = data[key][i];
+        });
         return props;
+      },
+
+      syncObjects: function () {
+        var objectsCount = objects.length;
+        while (objectsCount < count) {
+          objects.push(new ObjectWrapper(objectsCount));
+          ++objectsCount;
+        }
+        if (objectsCount > count) {
+          objects.length = count;
+        }
       }
     };
 

@@ -37,6 +37,30 @@ describe "ObjectsCollection", ->
       col.on 'set', handler.set
       col.on 'remove', handler.remove
 
+    checkLen = (len) ->
+      col.count.should.equal len
+      col.objects.length.should.equal len
+
+    check = (idx, values) ->
+      # raw data
+      col.data.a[idx].should.equal values[0]
+      col.data.b[idx].should.equal values[1]
+      col.data.c[idx].should.equal values[2]
+      # props copy
+      props = col.get idx
+      props.a.should.equal values[0]
+      props.b.should.equal values[1]
+      props.c.should.equal values[2]
+      props2 = col.get idx
+      props2.should.eql props
+      # each time new object should be created
+      props2.should.not.equal props
+      # object wrapper
+      obj = col.objects[idx]
+      obj.a.should.equal values[0]
+      obj.b.should.equal values[1]
+      obj.c.should.equal values[2]
+
     it "should provide access to raw data (hash of arrays)", ->
       should.exist col.data
       col.data.a.should.be.an.instanceOf Array
@@ -49,29 +73,17 @@ describe "ObjectsCollection", ->
 
     it "should let add a new object", ->
       col.add {}
-      col.count.should.equal 1
-
-      col.data.a[0].should.equal 0
-      col.data.b[0].should.equal 1
-      col.data.c[0].should.equal 2
+      checkLen 1
+      check 0, [0, 1, 2]
 
     it "should emit appropriate event when new object is added", ->
       handler.add.callCount.should.equal 1
       # 'add' operation consists of 'set' operation:
       handler.set.callCount.should.equal 1
 
-    it "should let get an object properties", ->
-      obj = col.get 0
-      obj.a.should.equal 0
-      obj.b.should.equal 1
-      obj.c.should.equal 2
-
     it "should let set / update an object properties", ->
       col.set 0, {a: 2, b: 1, c: 0}
-      obj = col.get 0
-      obj.a.should.equal 2
-      obj.b.should.equal 1
-      obj.c.should.equal 0
+      check 0, [2, 1, 0]
 
     it "should emit appropriate event when object properties are updated", ->
       handler.set.callCount.should.equal 2
@@ -79,20 +91,14 @@ describe "ObjectsCollection", ->
     it "should let remove an object", ->
       # First add a second object to make test more demanding.
       col.add {}
-      col.count.should.equal 2
-      col.data.a[0].should.equal 2
-      col.data.b[0].should.equal 1
-      col.data.c[0].should.equal 0
-      col.data.a[1].should.equal 0
-      col.data.b[1].should.equal 1
-      col.data.c[1].should.equal 2
+      checkLen 2
+      check 0, [2, 1, 0]
+      check 1, [0, 1, 2]
 
       col.remove 0
-      col.count.should.equal 1
+      checkLen 1
       # Object properties should be shifted.
-      col.data.a[0].should.equal 0
-      col.data.b[0].should.equal 1
-      col.data.c[0].should.equal 2
+      check 0, [0, 1, 2]
 
     it "should emit appropriate event when object is removed", ->
       handler.remove.callCount.should.equal 1
