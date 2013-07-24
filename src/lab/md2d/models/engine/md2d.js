@@ -3314,6 +3314,8 @@ define(function (require, exports) {
         createDisulfideBonds();
       },
 
+      updateParticlesAccelerations: updateParticlesAccelerations,
+
       // Minimize energy using steepest descend method.
       minimizeEnergy: function () {
             // Maximal length of displacement during one step of minimization.

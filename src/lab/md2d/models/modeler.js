@@ -357,6 +357,7 @@ define(function(require) {
       the detection of changed properties.
     */
     function readModelState() {
+      engine.updateParticlesAccelerations();
       engine.computeOutputState(modelState);
       // remember that getViewPhotons will eventually be a modeler-layer method that ingests a raw
       // representation provided by modelState.photons
