@@ -142,6 +142,17 @@ define(function (require) {
         return api.choose(n, numAtoms);
       },
 
+
+      /** Turn on quantum dynamics light source. TODO: sort out whether it's possible to expose
+          lightSource[index].enabled */
+      turnOnLightSource: function turnOnLightSource(index) {
+        model.turnOnLightSource(index);
+      },
+
+      turnOffLightSource: function turnOffLightSource(index) {
+        model.turnOffLightSource(index);
+      },
+
       /**
        * Returns array of atom indices within circular area,
        * optionally specifying an element of interest.

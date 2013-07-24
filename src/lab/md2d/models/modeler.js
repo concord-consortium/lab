@@ -1525,7 +1525,18 @@ define(function(require) {
 
     model.getPhotons = function() {
       return viewPhotons;
-    },
+    };
+
+    // *really* need a way for the QD plugin to add these methods to modeler-layer
+    model.turnOnLightSource = function() {
+      // Note the current, very temporary, implementation ignores index and isn't an
+      // accessor. But this is for prototyping.
+      engine.callPluginAccessor('turnOnLightSource');
+    };
+
+    model.turnOffLightSource = function() {
+      engine.callPluginAccessor('turnOffLightSource');
+    };
 
     model.get_radial_bond_results = function() {
       return radialBondResults;
