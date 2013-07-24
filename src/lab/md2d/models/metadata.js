@@ -516,7 +516,7 @@ define(function() {
         unitType: "length"
       },
       fence: {
-        defaultValue: false,
+        defaultValue: 0,
       },
       // View options.
       color: {
@@ -535,7 +535,7 @@ define(function() {
         defaultValue: 1
       },
       visible: {
-        defaultValue: true
+        defaultValue: 1
       }
     },
 

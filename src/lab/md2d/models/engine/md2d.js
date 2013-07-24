@@ -841,17 +841,17 @@ define(function (require, exports) {
         createRectanglesArray = function(num) {
           rectangles = engine.rectangles = {};
 
-          rectangles.x             = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.y             = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.width         = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.height        = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.fence         = [];
-          rectangles.color         = [];
-          rectangles.lineColor     = [];
-          rectangles.lineDashes    = [];
-          rectangles.lineWeight    = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.layer         = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.visible       = arrays.create(num, 0, arrayTypes.uint8Type);
+          rectangles.x          = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.y          = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.width      = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.height     = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.color      = [];
+          rectangles.lineColor  = [];
+          rectangles.lineDashes = [];
+          rectangles.lineWeight = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.layer      = arrays.create(num, 0, arrayTypes.floatType);
+          rectangles.visible    = arrays.create(num, 0, arrayTypes.uint8Type);
+          rectangles.fence      = arrays.create(num, 0, arrayTypes.uint8Type);
 
           assignShortcutReferences.rectangles();
         },

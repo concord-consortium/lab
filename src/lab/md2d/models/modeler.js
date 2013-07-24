@@ -1848,30 +1848,8 @@ define(function(require) {
       }
       if (engine.getNumberOfRectangles()) {
         propCopy.rectangles = serialize(metadata.rectangle, rectangles, engine.getNumberOfRectangles());
-
-        propCopy.rectangles.color = [];
-        propCopy.rectangles.lineColor = [];
-        // Convert color from internal representation to one expected for serialization.
-        for (i = 0, len = propCopy.rectangles.colorR.length; i < len; i++) {
-          propCopy.rectangles.color.push([
-            propCopy.rectangles.colorR[i],
-            propCopy.rectangles.colorG[i],
-            propCopy.rectangles.colorB[i]
-          ]);
-          propCopy.rectangles.lineColor.push([
-            propCopy.rectangles.lineColorR[i],
-            propCopy.rectangles.lineColorG[i],
-            propCopy.rectangles.lineColorB[i]
-          ]);
-        }
-        delete propCopy.rectangles.colorR;
-        delete propCopy.rectangles.colorG;
-        delete propCopy.rectangles.colorB;
-        delete propCopy.rectangles.lineColorR;
-        delete propCopy.rectangles.lineColorR;
-        delete propCopy.rectangles.lineColorR;
       }
-      if (engine.getNumberOfRestraints() > 0) {
+      if (engine.getNumberOfRestraints()) {
         propCopy.restraints = serialize(metadata.restraint, restraints, engine.getNumberOfRestraints());
       }
 

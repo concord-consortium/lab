@@ -243,6 +243,10 @@ parseMML = (mmlString) ->
         visible       = getBooleanProperty $node, 'visible'
         fence         = getBooleanProperty $node, 'reflection'
 
+        # Change all Boolean values to 0/1.
+        visible = Number visible if visible?
+        fence   = Number fence if fence?
+
         colorNodes  = $node.find "[property=fillMode] .java-awt-Color>int"
         if colorNodes and colorNodes.length > 0
           corecolor=(parseInt cheerio(colorNodes[0]).text())+","+
