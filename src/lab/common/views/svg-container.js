@@ -616,6 +616,7 @@ define(function (require) {
 
         function getClickHandler (handler) {
           return function (d, i) {
+            if (d3.event.defaultPrevented) return;
             // Get current coordinates relative to the plot area!
             var coords = d3.mouse(plot.node()),
                 x = model2px.invert(coords[0]),
