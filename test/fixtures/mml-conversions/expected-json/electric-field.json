@@ -1,8 +1,8 @@
 {
   "type": "md2d",
   "imagePath": "",
-  "width": 3.5,
-  "height": 3.3,
+  "width": 4,
+  "height": 2.5,
   "unitsScheme": "md2d",
   "lennardJonesForces": true,
   "coulombForces": true,
@@ -22,15 +22,15 @@
   "DNA": "",
   "DNAMutations": true,
   "viewOptions": {
-    "viewPortWidth": 3.5,
-    "viewPortHeight": 3.3,
+    "viewPortWidth": 4,
+    "viewPortHeight": 2.5,
     "viewPortZoom": 1,
     "viewPortX": 0,
     "viewPortY": 0,
     "viewPortDrag": false,
-    "backgroundColor": "rgba(0,0,0,255)",
-    "showClock": false,
-    "markColor": "#ffff00",
+    "backgroundColor": "#eeeeee",
+    "showClock": true,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -41,7 +41,7 @@
     "showVelocityVectors": false,
     "showForceVectors": false,
     "showElectricField": true,
-    "electricFieldDensity": 22,
+    "electricFieldDensity": 13,
     "electricFieldColor": "auto",
     "showAtomTrace": false,
     "images": [],
@@ -63,9 +63,9 @@
       "length": 2
     },
     "forceVectors": {
-      "color": "rgb(0,0,255)",
+      "color": "#169C30",
       "width": 0.01,
-      "length": 1.98
+      "length": 2
     }
   },
   "pairwiseLJProperties": [],
@@ -74,39 +74,112 @@
       20,
       40,
       60,
-      800,
+      80,
       600
     ],
     "sigma": [
-      0.2,
+      0.07,
       0.14,
-      0.2,
-      0.08,
+      0.21,
+      0.28,
       0.3
     ],
     "epsilon": [
-      -0.053599998354911804,
+      -0.1,
       -0.1,
       -0.1,
       -0.1,
       -5
     ],
     "color": [
-      -38037,
+      -855310,
       -9066941,
-      -9732353,
-      -205,
+      -9092186,
+      -2539040,
       -855310
     ]
   },
   "atoms": {
-    "x": [],
-    "y": [],
-    "vx": [],
-    "vy": [],
-    "charge": [],
-    "friction": [],
-    "element": [],
-    "pinned": []
+    "x": [
+      0.5,
+      3.4
+    ],
+    "y": [
+      1.3,
+      1.3
+    ],
+    "vx": [
+      0.0008,
+      -0.0008
+    ],
+    "vy": [
+      0,
+      0
+    ],
+    "charge": [
+      -0.2,
+      0.2
+    ],
+    "friction": [
+      0,
+      0
+    ],
+    "element": [
+      2,
+      3
+    ],
+    "pinned": [
+      0,
+      0
+    ]
+  },
+  "rectangles": {
+    "x": [
+      1.45
+    ],
+    "y": [
+      0
+    ],
+    "height": [
+      2.5
+    ],
+    "width": [
+      1
+    ],
+    "fence": [
+      false
+    ],
+    "color": [
+      "rgba(0,128,192,0.25098039215686274)"
+    ],
+    "lineColor": [
+      "black"
+    ],
+    "lineWeight": [
+      1
+    ],
+    "lineDashes": [
+      "none"
+    ],
+    "layer": [
+      1
+    ],
+    "visible": [
+      true
+    ]
+  },
+  "electricFields": {
+    "intensity": [
+      0.0005600000023841858,
+      0.000800000011920929
+    ],
+    "orientation": [
+      "S",
+      "E"
+    ],
+    "rectangleIdx": [
+      null,
+      0
+    ]
   }
 }

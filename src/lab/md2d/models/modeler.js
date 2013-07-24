@@ -1849,6 +1849,9 @@ define(function(require) {
       if (engine.getNumberOfRectangles()) {
         propCopy.rectangles = serialize(metadata.rectangle, rectangles, engine.getNumberOfRectangles());
       }
+      if (engine.getNumberOfElectricFields()) {
+        propCopy.electricFields = serialize(metadata.electricField, electricFields, engine.getNumberOfElectricFields());
+      }
       if (engine.getNumberOfRestraints()) {
         propCopy.restraints = serialize(metadata.restraint, restraints, engine.getNumberOfRestraints());
       }
