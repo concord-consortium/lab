@@ -1,5 +1,4 @@
 helpers = require '../../helpers'
-simpleModel = helpers.getModel 'simple-model.json'
 helpers.setupBrowserEnvironment()
 
 Model = requirejs 'md2d/models/modeler'
@@ -9,7 +8,7 @@ describe "MD2D custom parameters", ->
   setter = null
 
   beforeEach ->
-    model = Model simpleModel
+    model = Model {}
     model.set gravitationalField: 0
     setter = sinon.spy (value) ->
       this.set gravitationalField: 10*value
