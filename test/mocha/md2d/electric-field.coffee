@@ -25,7 +25,6 @@ describe "MD2D modeler", ->
     efData.orientation.should.equal data.orientation[0]
 
     efData = model.getElectricFieldProperties 1
-    console.log efData
     efData.intensity.should.equal data.intensity[1]
     efData.orientation.should.equal data.orientation[1]
 
