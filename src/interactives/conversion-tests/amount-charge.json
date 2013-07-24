@@ -9,7 +9,7 @@
       "id": "mark-atoms$0",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/amount-charge$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset_step",
+        "controlButtons": "reset",
         "showElectricField": true
       }
     }
@@ -47,7 +47,7 @@
         "label": "3"
       }
       ],
-      "steps": 12,
+      "steps": 50,
       "title": "Left Atom Charge",
       "property": "chargeLeft"
     },
@@ -67,7 +67,7 @@
         "label": "3"
       }
       ],
-      "steps": 12,
+      "steps": 50,
       "title": "Right Atom Charge",
       "property": "chargeRight"
     },
@@ -81,7 +81,7 @@
       "type": "slider",
       "id": "electric-field-density-slider",
       "min": 0,
-      "max": 20,
+      "max": 25,
       "displayValue": "return format('1f')(value)",
       "labels": [
         {
@@ -89,11 +89,11 @@
           "label": "0"
         },
         {
-          "value": 20,
-          "label": "20"
+          "value": 25,
+          "label": "25"
         }
       ],
-      "steps": 20,
+      "steps": 25,
       "title": "Electric field density",
       "property": "electricFieldDensity"
     },
