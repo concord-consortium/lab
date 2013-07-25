@@ -14,6 +14,7 @@ define(function (require) {
         propNames = Object.keys(metadata),
 
         capacity = 0,
+        count = 0,
         data = (function () {
           var res = {},
               type;
@@ -24,11 +25,9 @@ define(function (require) {
           });
           return res;
         }()),
-        count = 0,
+        objects = [],
 
-        dispatch = new DispatchSupport("add", "remove", "set"),
-
-        objects = [];
+        dispatch = new DispatchSupport("add", "remove", "set");
 
     function ObjectWrapper(idx) {
       this.idx = idx;
@@ -125,6 +124,25 @@ define(function (require) {
         if (objectsCount > count) {
           objects.length = count;
         }
+      },
+
+      // Clone-restore interface:
+      clone: function () {
+        var state = {
+          __count__: count
+        };
+        propNames.forEach(function (key) {
+          state[key] = arrays.clone(data[key]);
+        });
+        return state;
+      },
+
+      restore: function (state) {
+        count = state.__count__;
+        propNames.forEach(function (key) {
+          arrays.copy(state[key], data[key]);
+        });
+        api.syncObjects();
       }
     };
 

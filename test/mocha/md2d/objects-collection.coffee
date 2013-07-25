@@ -102,3 +102,38 @@ describe "ObjectsCollection", ->
 
     it "should emit appropriate event when object is removed", ->
       handler.remove.callCount.should.equal 1
+
+
+    it "should implement clone-restore interface", ->
+      col.set 0, {a: 7, b: 8, c: 9}
+
+      checkLen 1
+      check 0, [7, 8, 9]
+
+      # clone
+      state1 = col.clone()
+      should.exist state1
+
+      col.add {}
+      col.add {}
+      col.add {}
+      checkLen 4
+      check 1, [0, 1, 2]
+      check 2, [0, 1, 2]
+      check 3, [0, 1, 2]
+
+      # clone
+      state2 = col.clone()
+      should.exist state2
+
+      # restore
+      col.restore state1
+      checkLen 1
+      check 0, [7, 8, 9]
+
+      # restore
+      col.restore state2
+      checkLen 4
+      check 1, [0, 1, 2]
+      check 2, [0, 1, 2]
+      check 3, [0, 1, 2]
