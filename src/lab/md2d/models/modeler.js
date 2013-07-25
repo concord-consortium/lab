@@ -358,7 +358,7 @@ define(function(require) {
       // remember that getViewPhotons will eventually be a modeler-layer method that ingests a raw
       // representation provided by modelState.photons
       viewPhotons = engine.callPluginAccessor('getViewPhotons');
-      updateViewAtoms(modelState.atoms);
+      updateViewAtoms(engine.atoms.data);
       updateViewElectricField();
     }
 
@@ -369,7 +369,7 @@ define(function(require) {
       };
 
       return function(atoms) {
-        var n = engine.getNumberOfAtoms(),
+        var n = engine.atoms.count,
             i,
             prop,
             amino,
@@ -920,7 +920,7 @@ define(function(require) {
         propertySupport.invalidatingChangePreHook();
       }
 
-      engine.addAtom(props);
+      engine.atoms.add(props);
 
       if (!options.deserialization) {
         propertySupport.invalidatingChangePostHook();
@@ -940,7 +940,7 @@ define(function(require) {
       options = options || {};
 
       propertySupport.invalidatingChangePreHook();
-      engine.removeAtom(i);
+      engine.atoms.remove(i);
       // Enforce modeler to recalculate viewAtoms array.
       viewAtoms.length = 0;
       propertySupport.invalidatingChangePostHook();
@@ -1098,9 +1098,9 @@ define(function(require) {
       moleculeAtoms.push(atomIndex);
 
       for (i = 0; i < moleculeAtoms.length; i++) {
-        x = atoms.x[moleculeAtoms[i]];
-        y = atoms.y[moleculeAtoms[i]];
-        r = atoms.radius[moleculeAtoms[i]];
+        x = atoms.data.x[moleculeAtoms[i]];
+        y = atoms.data.y[moleculeAtoms[i]];
+        r = atoms.data.radius[moleculeAtoms[i]];
 
         if (x-r < left  ) left   = x-r;
         if (x+r > right ) right  = x+r;
@@ -1108,8 +1108,8 @@ define(function(require) {
         if (y+r > top   ) top    = y+r;
       }
 
-      cx = atoms.x[atomIndex];
-      cy = atoms.y[atomIndex];
+      cx = atoms.data.x[atomIndex];
+      cy = atoms.data.y[atomIndex];
 
       return { top: top-cy, left: left-cx, bottom: bottom-cy, right: right-cx };
     },
@@ -1149,11 +1149,11 @@ define(function(require) {
       if (moveMolecule) {
         moleculeAtoms = engine.getMoleculeAtoms(i);
         if (moleculeAtoms.length > 0) {
-          dx = typeof props.x === "number" ? props.x - atoms.x[i] : 0;
-          dy = typeof props.y === "number" ? props.y - atoms.y[i] : 0;
+          dx = typeof props.x === "number" ? props.x - atoms.data.x[i] : 0;
+          dy = typeof props.y === "number" ? props.y - atoms.data.y[i] : 0;
           for (j = 0, jj=moleculeAtoms.length; j<jj; j++) {
-            new_x = atoms.x[moleculeAtoms[j]] + dx;
-            new_y = atoms.y[moleculeAtoms[j]] + dy;
+            new_x = atoms.data.x[moleculeAtoms[j]] + dx;
+            new_y = atoms.data.y[moleculeAtoms[j]] + dy;
             if (!model.setAtomProperties(moleculeAtoms[j], {x: new_x, y: new_y}, checkLocation, false)) {
               return false;
             }
@@ -1162,9 +1162,9 @@ define(function(require) {
       }
 
       if (checkLocation) {
-        var x  = typeof props.x === "number" ? props.x : atoms.x[i],
-            y  = typeof props.y === "number" ? props.y : atoms.y[i],
-            el = typeof props.element === "number" ? props.y : atoms.element[i];
+        var x  = typeof props.x === "number" ? props.x : atoms.data.x[i],
+            y  = typeof props.y === "number" ? props.y : atoms.data.y[i],
+            el = typeof props.element === "number" ? props.y : atoms.data.element[i];
 
         if (!engine.canPlaceAtom(el, x, y, i)) {
           return false;
@@ -1172,23 +1172,13 @@ define(function(require) {
       }
 
       propertySupport.invalidatingChangePreHook();
-      engine.setAtomProperties(i, translateToMD2DUnits(props, metadata.atom));
+      engine.atoms.set(i, props);
       propertySupport.invalidatingChangePostHook();
       return true;
     };
 
     model.getAtomProperties = function(i) {
-      var atoms = modelState.atoms,
-          atomMetaData = metadata.atom,
-          props = {},
-          propName;
-
-      for (propName in atomMetaData) {
-        if (atomMetaData.hasOwnProperty(propName) && atoms[propName]) {
-          props[propName] = atoms[propName][i];
-        }
-      }
-      return translateFromMD2DUnits(props, atomMetaData);
+      return engine.atoms.get(i);
     };
 
     model.getRadialBondsForAtom = function(i) {
@@ -1410,8 +1400,8 @@ define(function(require) {
     model.liveDragStart = function(atomIndex, x, y) {
       if (liveDragSpringForceIndex != null) return;    // don't add a second liveDrag force
 
-      if (x == null) x = modelState.atoms.x[atomIndex];
-      if (y == null) y = modelState.atoms.y[atomIndex];
+      if (x == null) x = modelState.atoms.data.x[atomIndex];
+      if (y == null) y = modelState.atoms.data.y[atomIndex];
 
       liveDragSavedFriction = model.getAtomProperties(atomIndex).friction;
 
@@ -1776,7 +1766,7 @@ define(function(require) {
 
       propCopy = serialize(metadata.mainProperties, rawProperties);
       propCopy.viewOptions = serialize(metadata.viewOptions, rawProperties);
-      propCopy.atoms = serialize(metadata.atom, modelState.atoms, engine.getNumberOfAtoms());
+      propCopy.atoms = serialize(metadata.atom, engine.atoms.data, engine.atoms.count);
 
       if (engine.getNumberOfRadialBonds()) {
         propCopy.radialBonds = serialize(metadata.radialBond, radialBonds, engine.getNumberOfRadialBonds());

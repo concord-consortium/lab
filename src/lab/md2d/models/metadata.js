@@ -277,81 +277,104 @@ define(function() {
       // Required properties:
       x: {
         required: true,
-        unitType: "length"
+        unitType: "length",
+        type: "float"
       },
       y: {
         required: true,
-        unitType: "length"
+        unitType: "length",
+        type: "float"
       },
       // Optional properties:
       element: {
-        defaultValue: 0
+        defaultValue: 0,
+        type: "uint8"
       },
       vx: {
         defaultValue: 0,
-        unitType: "velocity"
+        unitType: "velocity",
+        type: "float"
       },
       vy: {
         defaultValue: 0,
-        unitType: "velocity"
+        unitType: "velocity",
+        type: "float"
       },
       ax: {
         defaultValue: 0,
         unitType: "acceleration",
-        serialize: false
+        serialize: false,
+        type: "float"
       },
       ay: {
         defaultValue: 0,
         unitType: "acceleration",
-        serialize: false
+        serialize: false,
+        type: "float"
       },
       charge: {
         defaultValue: 0,
-        unitType: "charge"
+        unitType: "charge",
+        type: "float"
       },
       friction: {
         defaultValue: 0,
-        unitType: "dampingCoefficient"
+        unitType: "dampingCoefficient",
+        type: "float"
       },
       visible: {
-        defaultValue: 1
+        defaultValue: 1,
+        type: "unit8"
       },
       pinned: {
-        defaultValue: 0
+        defaultValue: 0,
+        type: "unit8"
       },
       marked: {
-        defaultValue: 0
+        defaultValue: 0,
+        type: "unit8"
       },
       draggable: {
-        defaultValue: 0
+        defaultValue: 0,
+        type: "unit8"
       },
       // Read-only values, can be set only by engine:
       radius: {
         readOnly: true,
         unitType: "length",
-        serialize: false
+        serialize: false,
+        type: "float"
       },
       px: {
         readOnly: true,
         unitType: "momentum",
-        serialize: false
+        serialize: false,
+        type: "float"
       },
       py: {
         readOnly: true,
         unitType: "momentum",
-        serialize: false
+        serialize: false,
+        type: "float"
       },
       speed: {
         readOnly: true,
         unitType: "velocity",
-        serialize: false
+        serialize: false,
+        type: "float"
       },
       mass: {
         // Mass is defined per element, but this is a convenience shortcut for
         // quick access to mass of the given atom.
         readOnly: true,
         unitType: "mass",
-        serialize: false
+        serialize: false,
+        type: "float"
+      },
+      hydrophobicity: {
+        readOnly: true,
+        serialize: false,
+        type: "int8"
       },
       excitation: {
       }
