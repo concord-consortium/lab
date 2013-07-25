@@ -81,6 +81,7 @@
       "width": 0.01,
       "length": 2
     },
+    "forceVectorsDirectionOnly": false,
     "forceVectors": {
       "color": "#169C30",
       "width": 0.01,

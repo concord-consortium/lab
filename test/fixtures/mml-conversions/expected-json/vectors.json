@@ -62,6 +62,7 @@
       "width": 0.02,
       "color": "rgb(100,200,300)"
     },
+    "forceVectorsDirectionOnly": false,
     "forceVectors": {
       "color": "rgb(0,0,255)",
       "width": 0.01,
