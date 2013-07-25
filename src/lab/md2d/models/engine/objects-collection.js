@@ -27,7 +27,10 @@ define(function (require) {
         }()),
         objects = [],
 
-        dispatch = new DispatchSupport("add", "remove", "set");
+        dispatch = new DispatchSupport("beforeAdd", "add",
+                                       "beforeRemove", "remove",
+                                       "beforeSet", "set",
+                                       "referencesUpdate");
 
     function ObjectWrapper(idx) {
       this.idx = idx;
@@ -66,10 +69,12 @@ define(function (require) {
       },
 
       add: function (props) {
+        dispatch.beforeAdd();
         props = validator.validateCompleteness(metadata, props);
         if (count + 1 > capacity) {
           capacity = capacity * 2 || 1;
           utils.extendArrays(data, capacity);
+          dispatch.referencesUpdate();
         }
         count++;
         api.set(count - 1, props);
@@ -82,6 +87,7 @@ define(function (require) {
           throw new Error("Object with index " + i +
             " doesn't exist, so it can't be removed.");
         }
+        dispatch.beforeRemove();
         var prop;
         count--;
         for (; i < count; i++) {
@@ -96,12 +102,13 @@ define(function (require) {
       },
 
       set: function (i, props) {
-        props = validator.validate(metadata, props);
         if (i >= count) {
           throw new Error("Object with index " + i +
             " doesn't exist, so its properties can't be set.");
         }
-        propNames.forEach(function (key) {
+        dispatch.beforeSet();
+        props = validator.validate(metadata, props);
+        Object.keys(props).forEach(function (key) {
           data[key][i] = props[key];
         });
         dispatch.set();

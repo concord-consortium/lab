@@ -29,12 +29,18 @@ describe "ObjectsCollection", ->
     before ->
       col = new ObjectsCollection metadata
       handler =
+        beforeAdd: sinon.spy()
         add: sinon.spy()
+        beforeSet: sinon.spy()
         set: sinon.spy()
+        beforeRemove: sinon.spy()
         remove: sinon.spy()
 
+      col.on 'beforeAdd', handler.beforeAdd
       col.on 'add', handler.add
+      col.on 'beforeSet', handler.beforeSet
       col.on 'set', handler.set
+      col.on 'beforeRemove', handler.beforeRemove
       col.on 'remove', handler.remove
 
     checkLen = (len) ->
@@ -77,16 +83,24 @@ describe "ObjectsCollection", ->
       check 0, [0, 1, 2]
 
     it "should emit appropriate event when new object is added", ->
+      handler.beforeAdd.callCount.should.equal 1
       handler.add.callCount.should.equal 1
       # 'add' operation consists of 'set' operation:
+      handler.beforeSet.callCount.should.equal 1
       handler.set.callCount.should.equal 1
 
     it "should let set / update an object properties", ->
+      col.set 0, {b: 111}
+      check 0, [0, 111, 2]
+      col.set 0, {c: 222}
+      check 0, [0, 111, 222]
       col.set 0, {a: 2, b: 1, c: 0}
       check 0, [2, 1, 0]
 
     it "should emit appropriate event when object properties are updated", ->
-      handler.set.callCount.should.equal 2
+      # .set() was also called during add operation.
+      handler.beforeSet.callCount.should.equal 4
+      handler.set.callCount.should.equal 4
 
     it "should let remove an object", ->
       # First add a second object to make test more demanding.
@@ -101,8 +115,8 @@ describe "ObjectsCollection", ->
       check 0, [0, 1, 2]
 
     it "should emit appropriate event when object is removed", ->
+      handler.beforeRemove.callCount.should.equal 1
       handler.remove.callCount.should.equal 1
-
 
     it "should implement clone-restore interface", ->
       col.set 0, {a: 7, b: 8, c: 9}
