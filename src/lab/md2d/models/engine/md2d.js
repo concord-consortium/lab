@@ -17,6 +17,8 @@ define(function (require, exports) {
       NeighborList         = require('./neighbor-list'),
       PluginController     = require('common/models/plugin-controller'),
       utils                = require('./utils'),
+      metadata             = require('md2d/models/metadata'),
+      ObjectsCollection    = require('md2d/models/engine/objects-collection'),
 
       // from A. Rahman "Correlations in the Motion of Atoms in Liquid Argon", Physical Review 136 pp. A405–A411 (1964)
       ARGON_LJ_EPSILON_IN_EV = -120 * constants.BOLTZMANN_CONSTANT.as(unit.EV_PER_KELVIN),
@@ -335,17 +337,12 @@ define(function (require, exports) {
         // ####################################################################
         //                      Electric Field Properties
 
-        // Individual properties for the electric fields.
+        // ObjectCollection instance for electric fields.
+        electricFields,
+        // Individual properties for the electric fields (shortcut references).
         electricFieldIntensity,
         electricFieldOrientation,
         electricFieldRectangleIdx,
-
-        // An object that contains references to the above rectangle-property arrays.
-        // Left undefined if there are no electric fields.
-        electricFields,
-
-        // Number of actual electric fields.
-        N_electricFields = 0,
 
         // ####################################################################
         //                      Misc Properties
@@ -438,7 +435,9 @@ define(function (require, exports) {
           createSpringForcesArray(0);
           createObstaclesArray(0);
           createRectanglesArray(0);
-          createElectricFieldsArray(0);
+
+          electricFields = new ObjectsCollection(metadata.electricField);
+          electricFields.on("referencesUpdate", assignShortcutReferences.electricFields);
 
           // Custom pairwise properties.
           pairwiseLJProperties = new PairwiseLJProperties(engine);
@@ -690,9 +689,9 @@ define(function (require, exports) {
           },
 
           electricFields: function() {
-            electricFieldIntensity    = electricFields.intensity;
-            electricFieldOrientation  = electricFields.orientation;
-            electricFieldRectangleIdx = electricFields.rectangleIdx;
+            electricFieldIntensity    = electricFields.data.intensity;
+            electricFieldOrientation  = electricFields.data.orientation;
+            electricFieldRectangleIdx = electricFields.data.rectangleIdx;
           },
 
           springForces: function() {
@@ -855,17 +854,6 @@ define(function (require, exports) {
 
           assignShortcutReferences.rectangles();
         },
-
-        createElectricFieldsArray = function(num) {
-          electricFields = engine.electricFields = {};
-
-          electricFields.intensity    = arrays.create(num, 0, arrayTypes.floatType);
-          electricFields.orientation  = [];
-          electricFields.rectangleIdx = [];
-
-          assignShortcutReferences.electricFields();
-        },
-
 
         // Function that accepts a value T and returns an average of the last n values of T (for some n).
         getTWindowed,
@@ -1705,7 +1693,7 @@ define(function (require, exports) {
 
           var i, e, o, vertical, rect, temp;
 
-          for (e = 0; e < N_electricFields; e++) {
+          for (e = 0; e < electricFields.count; e++) {
             o = electricFieldOrientation[e];
             vertical = o === "N" || o === "S";
             temp = getElFieldForce(e) / dielectricConst;
@@ -2148,6 +2136,10 @@ define(function (require, exports) {
         // ####################################################################
 
     engine = {
+      // Objects Collection instances (for now only electric fields uses this approach):
+      get electricFields() {
+        return electricFields;
+      },
 
       // Adds a new plugin. Plugin will be initialized with the object arrys, so that
       // it can add to them as necessary, and will then be registered in the controller,
@@ -2498,16 +2490,6 @@ define(function (require, exports) {
         for (key in props) {
           if (props.hasOwnProperty(key)) {
             rectangles[key][i] = props[key];
-          }
-        }
-      },
-
-      setElectricFieldProperties: function (i, props) {
-        var key;
-        // Set properties from props hash.
-        for (key in props) {
-          if (props.hasOwnProperty(key)) {
-            electricFields[key][i] = props[key];
           }
         }
       },
@@ -2909,9 +2891,9 @@ define(function (require, exports) {
         // should check field 5 again, as it would be another field (previously
         // indexed as 6).
         i = 0;
-        while (i < N_electricFields) {
+        while (i < electricFields.count) {
           if (electricFieldRectangleIdx[i] === idx)
-            engine.removeElectricField(i);
+            engine.electricFields.remove(i);
           else
             i++;
         }
@@ -2931,7 +2913,7 @@ define(function (require, exports) {
         }
 
         // Shift indices of rectangles referenced by electric fields.
-        for (i = 0; i < N_electricFields; i++) {
+        for (i = 0; i < electricFields.count; i++) {
           if (electricFieldRectangleIdx[i] > idx)
             electricFieldRectangleIdx[i]--;
         }
@@ -2940,43 +2922,6 @@ define(function (require, exports) {
         // (e.g. views) use rectangles.x.length as the real number of rectangles.
         utils.extendArrays(rectangles, N_rectangles);
         assignShortcutReferences.rectangles();
-      },
-
-      addElectricField: function(props) {
-        if (N_electricFields + 1 > electricFields.intensity.length) {
-          // Extend arrays each time (as there are only
-          // a few electricFields in typical model).
-          utils.extendArrays(electricFields, N_electricFields + 1);
-          assignShortcutReferences.electricFields();
-        }
-
-        N_electricFields++;
-
-        // Set properties of new rectangle.
-        engine.setElectricFieldProperties(N_electricFields - 1, props);
-      },
-
-      removeElectricField: function(idx) {
-        var i, prop;
-
-        if (idx >= N_electricFields) {
-          throw new Error("Electric field " + idx + " doesn't exist, so it can't be removed.");
-        }
-
-        N_electricFields--;
-
-        // Shift electric fields properties.
-        for (i = idx; i < N_electricFields; i++) {
-          for (prop in electricFields) {
-            if (electricFields.hasOwnProperty(prop)) {
-              electricFields[prop][i] = electricFields[prop][i + 1];
-            }
-          }
-        }
-
-        // Follow convention of other engine objects whose array is reduced after removal.
-        utils.extendArrays(electricFields, N_electricFields);
-        assignShortcutReferences.electricFields();
       },
 
       atomInBounds: function(_x, _y, i) {
@@ -3450,10 +3395,6 @@ define(function (require, exports) {
         return N_springForces;
       },
 
-      getNumberOfElectricFields: function() {
-        return N_electricFields;
-      },
-
       /**
         Compute the model state and store into the passed-in 'state' object.
         (Avoids GC hit of throwaway object creation.)
@@ -3489,7 +3430,7 @@ define(function (require, exports) {
           }
 
           // electric field PE
-          for (e = 0; e < N_electricFields; e++) {
+          for (e = 0; e < electricFields.count; e++) {
             rect = electricFieldRectangleIdx[e];
             if (rect != null && !rectContains(rect, x[i], y[i])) continue;
             elInMWUnits = charge[i] * getElFieldForce(e);
@@ -3830,7 +3771,7 @@ define(function (require, exports) {
           fy += fOverR * dy;
         }
 
-        for (i = 0; i < N_electricFields; i++) {
+        for (i = 0; i < electricFields.count; i++) {
           rect = electricFieldRectangleIdx[i];
           if (rect != null && !rectContains(rect, testX, testY)) continue;
           o = electricFieldOrientation[i];
@@ -3894,8 +3835,8 @@ define(function (require, exports) {
           new CloneRestoreWrapper(angularBonds),
           new CloneRestoreWrapper(restraints),
           new CloneRestoreWrapper(springForces),
-          // PairwiseLJProperties class implements Clone-Restore Interface.
-          pairwiseLJProperties,
+          electricFields,       // it already implements Clone-Restore Interface.
+          pairwiseLJProperties, // it already implements Clone-Restore Interface.
 
           // Also save toplevel state (time, number of atoms, etc):
           {

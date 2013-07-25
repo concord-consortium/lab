@@ -599,15 +599,18 @@ define(function() {
 
     electricField: {
       intensity: {
-        defaultValue: 0.004
+        defaultValue: 0.004,
+        type: "float"
       },
       orientation: {
-        defaultValue: "E"
+        defaultValue: "E",
+        type: "any" // string
       },
       rectangleIdx: {
         // Optional, electric field boundaries can be limited to a rectangle. When 'null' is used,
         // the electric field will be applied to the whole model area.
-        defaultValue: null
+        defaultValue: null,
+        type: "any" // int and null
       }
     },
 
