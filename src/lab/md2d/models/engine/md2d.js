@@ -3492,9 +3492,6 @@ define(function (require, exports) {
         state.CM             = [x_CM, y_CM];
         state.vCM            = [vx_CM, vy_CM];
         state.omega_CM       = omega_CM;
-
-        // "micro" state. TODO: put radial bonds, etc here.
-        state.atoms = atoms;
       },
 
 
