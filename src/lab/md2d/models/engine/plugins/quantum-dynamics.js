@@ -474,7 +474,7 @@ define(function(require) {
         },
 
         emitPhotonFromAtom = function(atomIndex, energy) {
-          var angle = Math.random() * TWO_PI,
+          var angle = Math.random() * TWO_PI - Math.PI,
               cosA  = Math.cos(angle),
               sinA  = Math.sin(angle),
               sigma = elements.sigma[atoms.element[atomIndex]],
@@ -551,7 +551,7 @@ define(function(require) {
 
               // hard-wired presets for now
               // taken from http://lab.dev.concord.org/imports/legacy-mw-content/sam-activities/light-matter/greenhouse-gases/sunOnGround.mml
-              angle = 7 * Math.PI / 6,
+              angle = -5 * Math.PI / 6,
               energy = 13.92 * PLANCK_CONSTANT,
               nBeams = 5,
 
