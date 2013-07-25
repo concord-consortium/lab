@@ -659,7 +659,12 @@ define(function(require) {
             if (photons.vx[i] || photons.vy[i]) {
               viewPhoton = viewPhotonsByIndex[i];
 
-              if (viewPhoton) {
+              // If we have a viewPhoton for slot i in the photons array, update it instead of
+              // allocating a new viewPhoton object; that will tell the view code to update the
+              // position of the squiggle instead of generating a new one. Note that we also need to
+              // make sure that that slot in the photons array still represents the same photon it
+              // did last time we were called.
+              if (viewPhoton && viewPhoton.id === photons.id[i]) {
                 viewPhoton.x = photons.x[i];
                 viewPhoton.y = photons.y[i];
               } else {
