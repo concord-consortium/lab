@@ -37,7 +37,8 @@ define(function (require) {
         objects = [],
         rawObjects = [],
 
-        dispatch = new DispatchSupport("beforeAdd", "add",
+        dispatch = new DispatchSupport("beforeChange", "change",
+                                       "beforeAdd", "add",
                                        "beforeRemove", "remove",
                                        "beforeSet", "set",
                                        "referencesUpdate");
@@ -60,10 +61,14 @@ define(function (require) {
           return data[name][this.idx];
         },
         set: function (v) {
+          dispatch.beforeChange();
+          dispatch.beforeSet();
           if (unitsTranslation) {
             v = unitsTranslation.translateToModelUnits(v, unitType);
           }
           data[name][this.idx] = v;
+          dispatch.set();
+          dispatch.change();
         }
       });
     });
@@ -82,7 +87,11 @@ define(function (require) {
           return data[name][this.idx];
         },
         set: function (v) {
+          dispatch.beforeChange();
+          dispatch.beforeSet();
           data[name][this.idx] = v;
+          dispatch.set();
+          dispatch.change();
         }
       });
     });
@@ -142,6 +151,7 @@ define(function (require) {
           throw new Error("Object with index " + i +
             " doesn't exist, so it can't be removed.");
         }
+        dispatch.beforeChange();
         dispatch.beforeRemove();
         var prop;
         count--;
@@ -154,6 +164,7 @@ define(function (require) {
         }
         api.syncObjects();
         dispatch.remove();
+        dispatch.change();
       },
 
       setRaw: function (i, props) {
@@ -161,12 +172,14 @@ define(function (require) {
           throw new Error("Object with index " + i +
             " doesn't exist, so its properties can't be set.");
         }
+        dispatch.beforeChange();
         dispatch.beforeSet();
         props = validator.validate(metadata, props);
         Object.keys(props).forEach(function (key) {
           data[key][i] = props[key];
         });
         dispatch.set();
+        dispatch.change();
       },
 
       set: function (i, props) {
