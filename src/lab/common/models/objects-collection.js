@@ -7,7 +7,7 @@ define(function (require) {
       arrayTypes      = require('common/array-types'),
       DispatchSupport = require('common/dispatch-support'),
       validator       = require('common/validator'),
-      utils           = require('md2d/models/engine/utils');
+      utils           = require('common/models/utils');
 
   function mapValues(obj, fn) {
     obj = _.extend({}, obj);

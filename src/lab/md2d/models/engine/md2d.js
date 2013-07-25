@@ -16,9 +16,10 @@ define(function (require, exports) {
       CellList             = require('./cell-list'),
       NeighborList         = require('./neighbor-list'),
       PluginController     = require('common/models/plugin-controller'),
-      utils                = require('./utils'),
+      ObjectsCollection    = require('common/models/objects-collection'),
+      utils                = require('common/models/utils'),
       metadata             = require('md2d/models/metadata'),
-      ObjectsCollection    = require('md2d/models/engine/objects-collection'),
+
 
       // from A. Rahman "Correlations in the Motion of Atoms in Liquid Argon", Physical Review 136 pp. A405–A411 (1964)
       ARGON_LJ_EPSILON_IN_EV = -120 * constants.BOLTZMANN_CONSTANT.as(unit.EV_PER_KELVIN),

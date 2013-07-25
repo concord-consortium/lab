@@ -1,7 +1,7 @@
 helpers = require '../../helpers'
 helpers.setupBrowserEnvironment()
 
-ObjectsCollection = requirejs 'md2d/models/engine/objects-collection'
+ObjectsCollection = requirejs 'common/models/objects-collection'
 
 describe "ObjectsCollection", ->
 
