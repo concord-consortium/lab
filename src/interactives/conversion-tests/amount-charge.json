@@ -74,8 +74,14 @@
     {
       "type": "checkbox",
       "id": "force-vectors",
-      "text": "Show forces",
+      "text": "Show",
       "property": "showForceVectors"
+    },
+    {
+      "type": "checkbox",
+      "id": "dir-only",
+      "text": "Direction only",
+      "property": "forceVectorsDirectionOnly"
     },
     {
       "type": "slider",
@@ -94,21 +100,46 @@
         }
       ],
       "steps": 25,
-      "title": "Electric field density",
+      "title": "Density",
       "property": "electricFieldDensity"
     },
     {
       "type": "checkbox",
       "id": "show-electric-field",
-      "text": "Show electric field",
+      "text": "Show",
       "property": "showElectricField"
+    },
+    {
+      "id": "forces-label",
+      "type": "text",
+      "text": "**Force vectors**"
+    },
+    {
+      "id": "efield-label",
+      "type": "text",
+      "text": "**Electric field**"
     }
   ],
   "layout": {
-    "bottom": ["left-slider", "right-slider"],
-    "bottom2": ["force-vectors", "show-electric-field", "electric-field-density-slider"]
+    "bottom": [
+      ["left-slider", "right-slider"]
+    ],
+    "right": [
+      ["forces-label"],
+      ["force-vectors"],
+      ["dir-only"],
+      ["efield-label"],
+      ["show-electric-field"],
+      ["electric-field-density-slider"]
+    ]
   },
   "template": [
+    {
+      "id": "right",
+      "left": "model.right",
+      "top": "model.top",
+      "padding-right": "0.5em"
+    },
     {
       "id": "bottom",
       "left": "model.left",

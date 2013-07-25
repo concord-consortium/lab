@@ -51,7 +51,7 @@
 <height>60</height>
 <opaque>false</opaque>
 <tick>true</tick>
-<labeltable>{value=&quot;-2.0&quot;, label=&quot;-2&quot;}{value=&quot;-3.0&quot;, label=&quot;-3&quot;}{value=&quot;3.0&quot;, label=&quot;3&quot;}{value=&quot;2.0&quot;, label=&quot;2&quot;}{value=&quot;1.0&quot;, label=&quot;1&quot;}{value=&quot;0.0&quot;, label=&quot;0&quot;}{value=&quot;-1.0&quot;, label=&quot;-1&quot;}</labeltable>
+<labeltable>{value=&quot;-2.0&quot;, label=&quot;-2&quot;}{value=&quot;-3.0&quot;, label=&quot;-3&quot;}{value=&quot;3.0&quot;, label=&quot;3&quot;}{value=&quot;2.0&quot;, label=&quot;2&quot;}{value=&quot;1.0&quot;, label=&quot;1&quot;}{value=&quot;-1.0&quot;, label=&quot;-1&quot;}{value=&quot;0.0&quot;, label=&quot;0&quot;}</labeltable>
 <script>set atom[1].charge %val;
 paint;
 </script>
@@ -71,7 +71,7 @@ paint;
 <height>60</height>
 <opaque>false</opaque>
 <tick>true</tick>
-<labeltable>{value=&quot;-2.0&quot;, label=&quot;-2&quot;}{value=&quot;-3.0&quot;, label=&quot;-3&quot;}{value=&quot;3.0&quot;, label=&quot;3&quot;}{value=&quot;2.0&quot;, label=&quot;2&quot;}{value=&quot;1.0&quot;, label=&quot;1&quot;}{value=&quot;-1.0&quot;, label=&quot;-1&quot;}{value=&quot;0.0&quot;, label=&quot;0&quot;}</labeltable>
+<labeltable>{value=&quot;-2.0&quot;, label=&quot;-2&quot;}{value=&quot;-3.0&quot;, label=&quot;-3&quot;}{value=&quot;3.0&quot;, label=&quot;3&quot;}{value=&quot;2.0&quot;, label=&quot;2&quot;}{value=&quot;1.0&quot;, label=&quot;1&quot;}{value=&quot;0.0&quot;, label=&quot;0&quot;}{value=&quot;-1.0&quot;, label=&quot;-1&quot;}</labeltable>
 <script>set atom[0].charge %val;
 paint;
 </script>
@@ -120,8 +120,8 @@ paint</script>
 
 </paragraph>
 <paragraph start="13" end="14">
-<SpaceBelow>20.0</SpaceBelow>
 <Alignment>1</Alignment>
+<SpaceBelow>20.0</SpaceBelow>
 <content start="13" end="14">
 </content>
 
