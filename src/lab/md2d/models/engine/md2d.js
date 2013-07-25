@@ -86,7 +86,7 @@ define(function (require, exports) {
         }
       };
 
-  exports.createEngine = function() {
+  exports.createEngine = function(unitsTranslation) {
 
     var // the object to be returned
         engine,
@@ -436,7 +436,7 @@ define(function (require, exports) {
           createObstaclesArray(0);
           createRectanglesArray(0);
 
-          electricFields = new ObjectsCollection(metadata.electricField);
+          electricFields = new ObjectsCollection(metadata.electricField, unitsTranslation);
           electricFields.on("referencesUpdate", assignShortcutReferences.electricFields);
 
           // Custom pairwise properties.

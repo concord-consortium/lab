@@ -165,7 +165,6 @@ define(function(require) {
           var d = labModelerMixin.dispatchSupport;
           d.addEventTypes("tick","willReset",
                           "addAtom", "removeAtom", "addRadialBond", "removeRadialBond",
-                          "addElectricField", "removeElectricField", "changeElectricField",
                           "removeAngularBond", "invalidation", "textBoxesChanged");
           return d;
         }()),
@@ -193,7 +192,7 @@ define(function(require) {
 
         // Molecular Dynamics engine.
         engine = (function() {
-          var e = md2d.createEngine();
+          var e = md2d.createEngine(unitsTranslation);
           // Register invalidating change hooks.
           // pairwiseLJProperties object allows to change state which defines state of the whole simulation.
           e.pairwiseLJProperties.registerChangeHooks(propertySupport.invalidatingChangePreHook, propertySupport.invalidatingChangePostHook);
@@ -218,9 +217,6 @@ define(function(require) {
 
         // A hash of arrays consisting of arrays of rectangle property values
         rectangles,
-
-        // A hash of arrays consisting of arrays of electric field property values
-        electricFields,
 
         // A hash of arrays consisting of arrays of radial bond property values
         radialBonds,
@@ -608,7 +604,9 @@ define(function(require) {
       restraints = engine.restraints;
       obstacles = engine.obstacles;
       rectangles = engine.rectangles;
-      electricFields = engine.electricFields;
+
+      engine.electricFields.on("beforeChange.invalidation", propertySupport.invalidatingChangePreHook);
+      engine.electricFields.on("change.invalidation", propertySupport.invalidatingChangePostHook);
     }
 
     model.createElements = function(_elements) {
@@ -811,11 +809,18 @@ define(function(require) {
               eFieldProps[prop] = _eFields[prop][i];
             }
           }
-          model.addElectricField(eFieldProps);
+          engine.electricFields.addRaw(eFieldProps);
         }
       });
       return model;
     };
+
+    Object.defineProperty(model, "electricFields", {
+      enumerable: true,
+      get: function () {
+        return engine.electricFields;
+      }
+    });
 
     model.reset = function() {
       dispatch.willReset();
@@ -1002,30 +1007,10 @@ define(function(require) {
     };
 
     model.removeRectangle = function (idx) {
-      var prevElFieldsCount = engine.electricFields.count;
-
       propertySupport.invalidatingChangePreHook();
       engine.removeRectangle(idx);
       propertySupport.invalidatingChangePostHook();
-
-      if (engine.electricFields.count !== prevElFieldsCount) {
-        dispatch.removeElectricField();
-      }
       //TODO FIXME: also .removeRectangle() event should be dispatched.
-    };
-
-    model.addElectricField = function(props) {
-      propertySupport.invalidatingChangePreHook();
-      engine.electricFields.add(props);
-      propertySupport.invalidatingChangePostHook();
-      dispatch.addElectricField();
-    };
-
-    model.removeElectricField = function (idx) {
-      propertySupport.invalidatingChangePreHook();
-      engine.electricFields.remove(idx);
-      propertySupport.invalidatingChangePostHook();
-      dispatch.removeElectricField();
     };
 
     model.addRadialBond = function(props, options) {
@@ -1279,17 +1264,6 @@ define(function(require) {
         }
       }
       return translateFromMD2DUnits(props, rectangleMetaData);
-    };
-
-    model.setElectricFieldProperties = function(i, props) {
-      propertySupport.invalidatingChangePreHook();
-      engine.electricFields.set(i, translateToMD2DUnits(props, metadata.electricField));
-      propertySupport.invalidatingChangePostHook();
-      dispatch.changeElectricField();
-    };
-
-    model.getElectricFieldProperties = function(i) {
-      return translateFromMD2DUnits(engine.electricFields.get(i), metadata.electricField);
     };
 
     model.setRadialBondProperties = function(i, props) {
@@ -1837,7 +1811,7 @@ define(function(require) {
         propCopy.rectangles = serialize(metadata.rectangle, rectangles, engine.getNumberOfRectangles());
       }
       if (engine.electricFields.count) {
-        propCopy.electricFields = serialize(metadata.electricField, electricFields.data, engine.electricFields.count);
+        propCopy.electricFields = serialize(metadata.electricField, engine.electricFields.data, engine.electricFields.count);
       }
       if (engine.getNumberOfRestraints()) {
         propCopy.restraints = serialize(metadata.restraint, restraints, engine.getNumberOfRestraints());
