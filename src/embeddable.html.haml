@@ -14,7 +14,6 @@
       if (!Modernizr.svg) { window.location = 'browser-upgrade.html'; }
     = LAB_JS_DEPENDENCIES
     = ANALYTICS
-    = MOCHA_PHANTOMJS_HEAD
   %body
     #responsive-content
       #interactive-container{:tabindex => 0}
@@ -26,4 +25,3 @@
     = LAB_JS
     %script{:src => "embeddable.js", :type => "text/javascript"}
     = LAB_SHUTTERBUG_EMBEDDABLE
-    = MOCHA_PHANTOMJS_BODY
