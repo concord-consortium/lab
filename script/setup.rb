@@ -44,27 +44,6 @@ else
   ANALYTICS = ""
 end
 
-if @mocha_phantomjs
-  MOCHA_PHANTOMJS_HEAD = "  <link href='test/mocha.css' rel='stylesheet'>"
-  MOCHA_PHANTOMJS_BODY = <<-HEREDOC
-    <div id='mocha'></div>
-    <script src='test/mocha.js'></script>
-    <script src='test/chai.js'></script>
-    <script>
-      mocha.ui('bdd');
-      mocha.reporter('html');
-      expect = chai.expect;
-    </script>
-    <script>
-      if (window.mochaPhantomJS) { mochaPhantomJS.run(); }
-      else { mocha.run(); }
-    </script>
-  HEREDOC
-else
-  MOCHA_PHANTOMJS_HEAD = ""
-  MOCHA_PHANTOMJS_BODY = ""
-end
-
 # setup partial for fontface
 if CONFIG[:jsconfig] && CONFIG[:jsconfig][:fontface]
   FONTFACE = CONFIG[:jsconfig][:fontface]

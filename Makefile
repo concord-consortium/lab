@@ -240,9 +240,6 @@ public/test: public/embeddable-test-mocha.html
 	cp test/test1.js public/test
 	./node_modules/mocha-phantomjs/bin/mocha-phantomjs -R dot 'public/embeddable-test-mocha.html#interactives/samples/1-oil-and-water-shake.json'
 
-public/embeddable-test-mocha.html: src/embeddable.html.haml
-	haml -r ./script/mocha-phantomjs-setup.rb src/embeddable.html.haml public/embeddable-test-mocha.html
-
 # ------------------------------------------------
 #
 #   Submodules
