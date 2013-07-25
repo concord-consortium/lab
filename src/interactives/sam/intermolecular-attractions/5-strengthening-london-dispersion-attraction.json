@@ -42,6 +42,9 @@
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,
+        "imageMapping": {
+          "star.png": "star.svg"
+        },
         "textBoxes": [
           {
             "text": "Small straight molecules",
@@ -61,6 +64,9 @@
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,
+        "imageMapping": {
+          "star.png": "star.svg"
+        },
         "textBoxes": [
           {
             "text": "Large straight molecules",
@@ -80,6 +86,9 @@
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,
+        "imageMapping": {
+          "star.png": "star.svg"
+        },
         "textBoxes": [
           {
             "text": "Large straight and bent molecules",
@@ -99,6 +108,9 @@
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,
+        "imageMapping": {
+          "star.png": "star.svg"
+        },
         "textBoxes": [
           {
             "text": "Large straight and round molecules",
@@ -118,6 +130,9 @@
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,
+        "imageMapping": {
+          "star.png": "star.svg"
+        },
         "textBoxes": [
           {
             "text": "Large curved and round molecules",

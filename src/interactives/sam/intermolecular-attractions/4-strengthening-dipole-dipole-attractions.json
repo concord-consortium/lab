@@ -15,6 +15,9 @@
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,
+        "imageMapping": {
+          "star.png": "star.svg"
+        },
         "textBoxes": [
           {
             "text": "Explore the different attractive forces between molecules of varying polarity.",
@@ -42,6 +45,9 @@
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,
+        "imageMapping": {
+          "star.png": "star.svg"
+        },
         "textBoxes": [
           {
             "text": "Low polarity molecules",
@@ -61,6 +67,9 @@
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,
+        "imageMapping": {
+          "star.png": "star.svg"
+        },
         "textBoxes": [
           {
             "text": "Medium polarity molecules",
@@ -80,6 +89,9 @@
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,
+        "imageMapping": {
+          "star.png": "star.svg"
+        },
         "textBoxes": [
           {
             "text": "High polarity molecules",
