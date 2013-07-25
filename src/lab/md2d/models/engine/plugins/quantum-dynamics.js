@@ -21,8 +21,8 @@ define(function(require) {
 
   // static variables
   var CloneRestoreWrapper = require('common/models/engines/clone-restore-wrapper'),
+      utils               = require('common/models/utils'),
       constants           = require('../constants/index'),
-      utils               = require('../utils'),
 
       // in reality, 6.626E-34 m^2kg/s. Classic MW uses 0.2 in its units (eV * fs)
       PLANCK_CONSTANT = constants.convert(0.2, { from: constants.unit.EV, to: constants.unit.MW_ENERGY_UNIT }),
