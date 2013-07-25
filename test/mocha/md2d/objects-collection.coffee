@@ -5,29 +5,17 @@ ObjectsCollection = requirejs 'md2d/models/engine/objects-collection'
 
 describe "ObjectsCollection", ->
 
-  metadata =
-    a: {
-      defaultValue: 0
-    }
-    b: {
-      defaultValue: 1
-      type: "any"
-    }
-    c: {
-      defaultValue: 2
-      type: "float"
-    }
+  basicTest = (metadata, unitsTranslation) ->
+    if not unitsTranslation?
+      unitsTranslation =
+        translateToModelUnits: (v, type) -> return v
+        translateFromModelUnits: (v, type) -> return v
 
-  it "should act as a constructor that accepts the metadata spec as its argument", ->
-    col = new ObjectsCollection metadata
-    should.exist col
-
-  describe "A ObjectsCollection instance", ->
     col = null
     handler = null
 
     before ->
-      col = new ObjectsCollection metadata
+      col = new ObjectsCollection metadata, unitsTranslation
       handler =
         beforeAdd: sinon.spy()
         add: sinon.spy()
@@ -49,9 +37,18 @@ describe "ObjectsCollection", ->
 
     check = (idx, values) ->
       # raw data
-      col.data.a[idx].should.equal values[0]
-      col.data.b[idx].should.equal values[1]
-      col.data.c[idx].should.equal values[2]
+      col.data.a[idx].should.equal unitsTranslation.translateToModelUnits values[0]
+      col.data.b[idx].should.equal unitsTranslation.translateToModelUnits values[1]
+      col.data.c[idx].should.equal unitsTranslation.translateToModelUnits values[2]
+      # raw props copy
+      props = col.getRaw idx
+      props.a.should.equal unitsTranslation.translateToModelUnits values[0]
+      props.b.should.equal unitsTranslation.translateToModelUnits values[1]
+      props.c.should.equal unitsTranslation.translateToModelUnits values[2]
+      props2 = col.getRaw idx
+      props2.should.eql props
+      # each time new object should be created
+      props2.should.not.equal props
       # props copy
       props = col.get idx
       props.a.should.equal values[0]
@@ -61,6 +58,11 @@ describe "ObjectsCollection", ->
       props2.should.eql props
       # each time new object should be created
       props2.should.not.equal props
+      # raw object wrapper
+      obj = col.rawObjects[idx]
+      obj.a.should.equal unitsTranslation.translateToModelUnits values[0]
+      obj.b.should.equal unitsTranslation.translateToModelUnits values[1]
+      obj.c.should.equal unitsTranslation.translateToModelUnits values[2]
       # object wrapper
       obj = col.objects[idx]
       obj.a.should.equal values[0]
@@ -151,3 +153,49 @@ describe "ObjectsCollection", ->
       check 1, [0, 1, 2]
       check 2, [0, 1, 2]
       check 3, [0, 1, 2]
+
+  it "should act as a constructor that accepts the metadata spec as its argument", ->
+    metadata =
+      a: {
+        defaultValue: 0
+      }
+    col = new ObjectsCollection metadata
+    should.exist col
+
+  describe "A ObjectsCollection instance with units translation", ->
+    metadata =
+      a: {
+        defaultValue: 0
+      }
+      b: {
+        defaultValue: 0.5
+        type: "any"
+      }
+      c: {
+        defaultValue: 1
+        type: "float"
+      }
+
+    unitsTranslation =
+      translateToModelUnits: (value, type) ->
+        return value / 2
+      translateFromModelUnits: (value, type) ->
+        return value * 2
+
+    basicTest metadata, unitsTranslation
+
+  describe "A ObjectsCollection instance without units translation", ->
+    metadata =
+      a: {
+        defaultValue: 0
+      }
+      b: {
+        defaultValue: 1
+        type: "any"
+      }
+      c: {
+        defaultValue: 2
+        type: "float"
+      }
+
+    basicTest metadata

@@ -2,13 +2,22 @@
 
 define(function (require) {
 
-  var arrays          = require('arrays'),
+  var _               = require('underscore'),
+      arrays          = require('arrays'),
       arrayTypes      = require('common/array-types'),
       DispatchSupport = require('common/dispatch-support'),
       validator       = require('common/validator'),
       utils           = require('md2d/models/engine/utils');
 
-  return function ObjectsCollection(metadata) {
+  function mapValues(obj, fn) {
+    obj = _.extend({}, obj);
+    for (var k in obj) {
+      if (obj.hasOwnProperty(k)) obj[k] = fn(k, obj[k]);
+    }
+    return obj;
+  }
+
+  return function ObjectsCollection(metadata, unitsTranslation) {
     var api,
 
         propNames = Object.keys(metadata),
@@ -26,19 +35,47 @@ define(function (require) {
           return res;
         }()),
         objects = [],
+        rawObjects = [],
 
         dispatch = new DispatchSupport("beforeAdd", "add",
                                        "beforeRemove", "remove",
                                        "beforeSet", "set",
                                        "referencesUpdate");
 
+    // Objects with translated units.
     function ObjectWrapper(idx) {
       this.idx = idx;
       Object.freeze(this);
     }
 
     propNames.forEach(function (name) {
+      var unitType = metadata[name].unitType;
       Object.defineProperty(ObjectWrapper.prototype, name, {
+        enumerable: true,
+        configurable: false,
+        get: function () {
+          if (unitsTranslation) {
+            return unitsTranslation.translateFromModelUnits(data[name][this.idx], unitType);
+          }
+          return data[name][this.idx];
+        },
+        set: function (v) {
+          if (unitsTranslation) {
+            v = unitsTranslation.translateToModelUnits(v, unitType);
+          }
+          data[name][this.idx] = v;
+        }
+      });
+    });
+
+    // Object with raw values.
+    function RawObjectWrapper(idx) {
+      this.idx = idx;
+      Object.freeze(this);
+    }
+
+    propNames.forEach(function (name) {
+      Object.defineProperty(RawObjectWrapper.prototype, name, {
         enumerable: true,
         configurable: false,
         get: function () {
@@ -63,12 +100,21 @@ define(function (require) {
         return objects;
       },
 
+      get rawObjects() {
+        return rawObjects;
+      },
+
       get objectPrototype() {
         // It can be used to extend functionality of the object wrapper.
         return ObjectWrapper.prototype;
       },
 
-      add: function (props) {
+      get rawObjectPrototype() {
+        // It can be used to extend functionality of the object wrapper.
+        return RawObjectWrapper.prototype;
+      },
+
+      addRaw: function (props) {
         dispatch.beforeAdd();
         props = validator.validateCompleteness(metadata, props);
         if (count + 1 > capacity) {
@@ -77,9 +123,18 @@ define(function (require) {
           dispatch.referencesUpdate();
         }
         count++;
-        api.set(count - 1, props);
+        api.setRaw(count - 1, props);
         api.syncObjects();
         dispatch.add();
+      },
+
+      add: function (props) {
+        if (unitsTranslation) {
+          props = mapValues(props, function (k, v) {
+            return unitsTranslation.translateToModelUnits(v, metadata[k].unitType);
+          });
+        }
+        api.addRaw(props);
       },
 
       remove: function (i) {
@@ -101,7 +156,7 @@ define(function (require) {
         dispatch.remove();
       },
 
-      set: function (i, props) {
+      setRaw: function (i, props) {
         if (i >= count) {
           throw new Error("Object with index " + i +
             " doesn't exist, so its properties can't be set.");
@@ -114,7 +169,16 @@ define(function (require) {
         dispatch.set();
       },
 
-      get: function (i) {
+      set: function (i, props) {
+        if (unitsTranslation) {
+          props = mapValues(props, function (k, v) {
+            return unitsTranslation.translateToModelUnits(v, metadata[k].unitType);
+          });
+        }
+        api.setRaw(i, props);
+      },
+
+      getRaw: function (i) {
         var props = {};
         propNames.forEach(function (key) {
           props[key] = data[key][i];
@@ -122,14 +186,25 @@ define(function (require) {
         return props;
       },
 
+      get: function (i) {
+        if (unitsTranslation) {
+          return mapValues(api.getRaw(i), function (k, v) {
+            return unitsTranslation.translateFromModelUnits(v, metadata[k].unitType);
+          });
+        }
+        return api.getRaw(i);
+      },
+
       syncObjects: function () {
         var objectsCount = objects.length;
         while (objectsCount < count) {
           objects.push(new ObjectWrapper(objectsCount));
+          rawObjects.push(new RawObjectWrapper(objectsCount));
           ++objectsCount;
         }
         if (objectsCount > count) {
           objects.length = count;
+          rawObjects.length = count;
         }
       },
 
