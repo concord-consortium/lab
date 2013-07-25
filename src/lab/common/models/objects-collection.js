@@ -61,14 +61,16 @@ define(function (require) {
           return data[name][this.idx];
         },
         set: function (v) {
-          dispatch.beforeChange();
-          dispatch.beforeSet();
+          dispatch.beforeChange(this.idx);
+          dispatch.beforeSet(this.idx);
           if (unitsTranslation) {
             v = unitsTranslation.translateToModelUnits(v, unitType);
           }
           data[name][this.idx] = v;
-          dispatch.set();
-          dispatch.change();
+          var props = {};
+          props[name] = v;
+          dispatch.set(this.idx, props);
+          dispatch.change(this.idx);
         }
       });
     });
@@ -87,11 +89,13 @@ define(function (require) {
           return data[name][this.idx];
         },
         set: function (v) {
-          dispatch.beforeChange();
-          dispatch.beforeSet();
+          dispatch.beforeChange(this.idx);
+          dispatch.beforeSet(this.idx);
           data[name][this.idx] = v;
-          dispatch.set();
-          dispatch.change();
+          var props = {};
+          props[name] = v;
+          dispatch.set(this.idx, props);
+          dispatch.change(this.idx);
         }
       });
     });
@@ -124,8 +128,8 @@ define(function (require) {
       },
 
       addRaw: function (props) {
-        dispatch.beforeAdd();
         props = validator.validateCompleteness(metadata, props);
+        dispatch.beforeAdd(props);
         if (count + 1 > capacity) {
           capacity = capacity * 2 || 1;
           utils.extendArrays(data, capacity);
@@ -134,7 +138,7 @@ define(function (require) {
         count++;
         api.setRaw(count - 1, props);
         api.syncObjects();
-        dispatch.add();
+        dispatch.add(props);
       },
 
       add: function (props) {
@@ -151,8 +155,8 @@ define(function (require) {
           throw new Error("Object with index " + i +
             " doesn't exist, so it can't be removed.");
         }
-        dispatch.beforeChange();
-        dispatch.beforeRemove();
+        dispatch.beforeChange(i);
+        dispatch.beforeRemove(i);
         var prop;
         count--;
         for (; i < count; i++) {
@@ -163,8 +167,8 @@ define(function (require) {
           }
         }
         api.syncObjects();
-        dispatch.remove();
-        dispatch.change();
+        dispatch.remove(i);
+        dispatch.change(i);
       },
 
       setRaw: function (i, props) {
@@ -172,14 +176,14 @@ define(function (require) {
           throw new Error("Object with index " + i +
             " doesn't exist, so its properties can't be set.");
         }
-        dispatch.beforeChange();
-        dispatch.beforeSet();
+        dispatch.beforeChange(i);
+        dispatch.beforeSet(i, props);
         props = validator.validate(metadata, props);
         Object.keys(props).forEach(function (key) {
           data[key][i] = props[key];
         });
-        dispatch.set();
-        dispatch.change();
+        dispatch.set(i, props);
+        dispatch.change(i);
       },
 
       set: function (i, props) {
