@@ -435,7 +435,7 @@ define(function (require) {
 
       addElectricField: function addElectricField(props, options) {
         try {
-          model.addElectricField(props);
+          model.electricFields.add(props);
         } catch (e) {
           if (!options || !options.silent)
             throw e;
@@ -444,7 +444,7 @@ define(function (require) {
 
       removeElectricField: function removeElectricField(i, options) {
         try {
-          model.removeElectricField(i);
+          model.electricFields.remove(i);
         } catch (e) {
           if (!options || !options.silent)
             throw e;
@@ -452,11 +452,11 @@ define(function (require) {
       },
 
       setElectricFieldProperties: function setElectricFieldProperties(i, props) {
-        model.setElectricFieldProperties(i, props);
+        model.electricFields.set(i, props);
       },
 
       getElectricFieldProperties: function getElectricFieldProperties(i) {
-        return model.getElectricFieldProperties(i);
+        return model.electricFields.get(i);
       },
 
       getAtomsWithinRectangle: function getAtomsInsideRectangle(i) {
