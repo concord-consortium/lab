@@ -127,6 +127,7 @@ define(function (require) {
         forceVectorColor,
         forceVectorWidth,
         forceVectorLength,
+        forceVectorsDirectionOnly,
         velVector,
         forceVector,
         efVector,
@@ -292,28 +293,26 @@ define(function (require) {
 
     function createVectorArrowHeads(color, name) {
       var defs,
-          id = "Triangle-"+name,
+          id = "Triangle-" + name,
           arrowHead;
       defs = mainContainer.select("defs");
       if (defs.empty()) {
         defs = mainContainer.append("defs");
       }
-      arrowHead = defs.select("#" + id);
-      if (arrowHead.empty()) {
-        arrowHead = defs.append("marker")
-          .attr("id", "Triangle-"+name)
-          .attr("viewBox", "0 0 10 10")
-          .attr("refX", "0")
-          .attr("refY", "5")
-          .attr("markerUnits", "strokeWidth")
-          .attr("markerWidth", "4")
-          .attr("markerHeight", "3")
-          .attr("orient", "auto")
-          .attr("stroke", color)
-          .attr("fill", color);
-        arrowHead.append("path")
-            .attr("d", "M 0 0 L 10 5 L 0 10 z");
-      }
+      arrowHead = defs.select("#" + id).remove();
+      arrowHead = defs.append("marker")
+        .attr("id", "Triangle-" + name)
+        .attr("viewBox", "0 0 10 10")
+        .attr("refX", "0")
+        .attr("refY", "5")
+        .attr("markerUnits", "strokeWidth")
+        .attr("markerWidth", "4")
+        .attr("markerHeight", "3")
+        .attr("orient", "auto")
+        .attr("stroke", color)
+        .attr("fill", color);
+      arrowHead.append("path")
+          .attr("d", "M 0 0 L 10 5 L 0 10 z");
     }
 
     function createExcitationGlow() {
@@ -1558,12 +1557,16 @@ define(function (require) {
     }
 
     function getForceVectorPath(d) {
-      var x_pos = model2px(d.x),
-          y_pos = model2pxInv(d.y),
+      var xPos = model2px(d.x),
+          yPos = model2pxInv(d.y),
           mass  = d.mass,
-          scale = forceVectorLength * 100,
-          path  = "M "+x_pos+","+y_pos;
-      return path + " L "+(x_pos + model2px(d.ax*mass*scale))+","+(y_pos - model2px(d.ay*mass*scale));
+          scale = forceVectorLength * 100 * mass;
+      if (forceVectorsDirectionOnly) {
+        mass *= mass;
+        scale /= Math.sqrt(d.ax * d.ax * mass + d.ay * d.ay * mass) * 1e3 || 1;
+      }
+      return "M" + xPos + "," + yPos +
+             "L" + (xPos + model2px(d.ax * scale)) + "," + (yPos - model2px(d.ay * scale));
     }
 
     function getVelVectorWidth(d) {
@@ -1772,6 +1775,24 @@ define(function (require) {
       }
     }
 
+    function setupMiscOptions() {
+      // Note that vector options are specified in a very untypical way. They are nested objects.
+      velocityVectorColor = model.get("velocityVectors").color;
+      velocityVectorWidth = model.get("velocityVectors").width;
+      velocityVectorLength = model.get("velocityVectors").length;
+
+      forceVectorColor = model.get("forceVectors").color;
+      forceVectorWidth = model.get("forceVectors").width;
+      forceVectorLength = model.get("forceVectors").length;
+
+      forceVectorsDirectionOnly = model.get("forceVectorsDirectionOnly");
+
+      createVectorArrowHeads(velocityVectorColor, VELOCITY_STR);
+      createVectorArrowHeads(forceVectorColor, FORCE_STR);
+
+      atomTraceColor = model.get("atomTraceColor");
+    }
+
     function setupRendererOptions() {
       imageProp = model.get("images");
       imageMapping = model.get("imageMapping");
@@ -1782,19 +1803,6 @@ define(function (require) {
       else if (modelView.url) {
         imagePath = labConfig.actualRoot + modelView.url.slice(0, modelView.url.lastIndexOf("/") + 1);
       }
-
-      velocityVectorColor = model.get("velocityVectors").color;
-      velocityVectorWidth  = model.get("velocityVectors").width;
-      velocityVectorLength = model.get("velocityVectors").length;
-
-      forceVectorColor = model.get("forceVectors").color;
-      forceVectorWidth  = model.get("forceVectors").width;
-      forceVectorLength = model.get("forceVectors").length;
-
-      atomTraceColor = model.get("atomTraceColor");
-
-      createVectorArrowHeads(velocityVectorColor, VELOCITY_STR);
-      createVectorArrowHeads(forceVectorColor, FORCE_STR);
 
       useQuantumDynamics = model.properties.useQuantumDynamics;
       if (useQuantumDynamics) {
@@ -1899,7 +1907,7 @@ define(function (require) {
         "showVDWLines", "VDWLinesCutoff",
         "showVelocityVectors", "showForceVectors",
         "showAtomTrace", "atomTraceId", "aminoAcidColorScheme",
-        "backgroundColor", "markColor"],
+        "backgroundColor", "markColor", "forceVectorsDirectionOnly"],
           redrawClickableObjects(repaint));
       model.addPropertiesListener(["electricFieldDensity", "showElectricField", "electricFieldColor"],
         setupElectricField);
@@ -1939,6 +1947,7 @@ define(function (require) {
       fontSizeInPixels = modelView.getFontSizeInPixels();
       textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
 
+      setupMiscOptions();
       setupDynamicGradients();
       setupObstacles();
       setupVdwPairs();

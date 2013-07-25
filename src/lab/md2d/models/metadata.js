@@ -270,6 +270,9 @@ define(function() {
           width: 0.01,
           length: 2
         }
+      },
+      forceVectorsDirectionOnly: {
+        defaultValue: false
       }
     },
 
