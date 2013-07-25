@@ -98,6 +98,9 @@ define(function (require) {
         onLoadScripts = [],
         resizeCallbacks = [],
         modelLoadedCallbacks = [],
+        isModelLoaded = false,
+        interactiveRenderedCallbacks = [],
+        isInteractiveRendered = false,
 
         // Hash of instantiated components.
         // Key   - component ID.
@@ -158,6 +161,7 @@ define(function (require) {
           interactiveViewOptions,
           interactiveModelOptions;
 
+      isModelLoaded = false;
       controller.currentModel = modelDefinition;
 
       if (modelDefinition.viewOptions) {
@@ -302,6 +306,9 @@ define(function (require) {
 
         // Layout interactive after modelLoaded() callback!
         semanticLayout.layoutInteractive();
+
+        // notify observers that interactive is rendered.
+        interactiveRendered();
       }
 
       function createModelController(type, modelUrl, modelOptions) {
@@ -477,6 +484,18 @@ define(function (require) {
       return str.join('\n');
     }
 
+
+    /**
+      Call this after the Interactive renders to process any callbacks.
+    */
+    function interactiveRendered() {
+      var i;
+      for(i = 0; i < interactiveRenderedCallbacks.length; i++) {
+        interactiveRenderedCallbacks[i]();
+      }
+      isInteractiveRendered = true;
+    }
+
     /**
       Call this after the model loads, to process any queued resize and update events
       that depend on the model's properties, then draw the screen.
@@ -513,6 +532,7 @@ define(function (require) {
       for(i = 0; i < modelLoadedCallbacks.length; i++) {
         modelLoadedCallbacks[i]();
       }
+      isModelLoaded = true;
     }
 
     /**
@@ -615,6 +635,8 @@ define(function (require) {
         hash representing the interactive specification or string representing path or full url
     */
     function loadInteractive(newInteractive) {
+      isModelLoaded = false;
+      isInteractiveRendered = false;
       if (typeof newInteractive === "string") {
         $.get(newInteractive).done(function(results) {
           if (typeof results === 'string') results = JSON.parse(results);
@@ -852,7 +874,7 @@ define(function (require) {
       },
       /**
        * Adds an event listener for the specified type.
-       * Supported events are: "resize" and "modelLoaded".
+       * Supported events are: "resize", "modelLoaded", and "interactiveRendered".
        *
        * @param {string} type Event type ("resize" or "modelLoaded").
        * @param  {function|array} callback Callback function or an array of functions.
@@ -874,6 +896,9 @@ define(function (require) {
             break;
           case "modelLoaded":
             modelLoadedCallbacks = modelLoadedCallbacks.concat(callback);
+            break;
+          case "interactiveRendered":
+            interactiveRenderedCallbacks = interactiveRenderedCallbacks.concat(callback);
             break;
         }
       },
@@ -957,6 +982,12 @@ define(function (require) {
         }
 
         return result;
+      },
+      modelLoaded: function () {
+        return isModelLoaded;
+      },
+      interactiveRendered: function () {
+        return isInteractiveRendered;
       },
       // Make these private variables and functions available
       loadInteractive: loadInteractive,
