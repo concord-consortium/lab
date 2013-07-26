@@ -38,7 +38,7 @@
         "scaleFactor = (newX - 0.1) / maxX;",
         "batch(function() {",
         "  for(i = 0; i < getNumberOfAtoms(); i++) {",
-        "    setAtomProperties(i, { x: getAtomProperties(i).x * scaleFactor });",
+        "    setAtomProperties(i, { x: getAtomProperties(i).x * scaleFactor }, false);",
         "  }",
         "  setObstacleProperties(0, { x: newX });",
         "});",

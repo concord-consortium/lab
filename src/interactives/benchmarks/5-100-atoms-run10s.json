@@ -33,19 +33,23 @@
           "text": "Charged Atoms",
           "action": [
             "var chargeVal = 1;",
-            "for (var i=0; i < getNumberOfAtoms(); i++) {",
-            "setAtomProperties(i, {charge: chargeVal}, false, false, {suppressRepaint: true});",
-            "chargeVal *= -1;",
-            "}",
+            "batch(function() {",
+            "  for (var i=0; i < getNumberOfAtoms(); i++) {",
+            "    setAtomProperties(i, {charge: chargeVal});",
+            "    chargeVal *= -1;",
+            "  }",
+            "})",
             "set({chargeShading: true});"
           ]
         },
         {
           "text": "Neutral Atoms",
           "action": [
-            "for (var i=0; i < getNumberOfAtoms(); i++) {",
-            "setAtomProperties(i, { charge: 0}, false, false, {suppressRepaint: true});",
-            "}",
+            "batch(function() {",
+            "  for (var i=0; i < getNumberOfAtoms(); i++) {",
+            "    setAtomProperties(i, { charge: 0});",
+            "  }",
+            "});",
             "set({chargeShading: false});"
           ]
         }
