@@ -426,12 +426,7 @@ define(function (require, exports) {
         initialize = function () {
           createElementsArray(0);
 
-          atoms = new ObjectsCollection(metadata.atom, unitsTranslation);
-          atoms.on("referencesUpdate.engine", assignShortcutReferences.atoms);
-          atoms.on("add.engine", atomAdded);
-          atoms.on("remove.engine", atomRemoved);
-          atoms.on("beforeSet.engine", beforeAtomUpdate);
-          atoms.on("set.engine", atomUpdated);
+          createAtomsCollection();
 
           createAngularBondsArray(0);
           createRadialBondsArray(0);
@@ -441,8 +436,7 @@ define(function (require, exports) {
           createObstaclesArray(0);
           createRectanglesArray(0);
 
-          electricFields = new ObjectsCollection(metadata.electricField, unitsTranslation);
-          electricFields.on("referencesUpdate", assignShortcutReferences.electricFields);
+          createElectricFieldsCollection();
 
           // Custom pairwise properties.
           pairwiseLJProperties = new PairwiseLJProperties(engine);
@@ -456,134 +450,6 @@ define(function (require, exports) {
           // code from view concerns such as this "results" array.
           // See https://www.pivotaltracker.com/story/show/50086303
           radialBondResults = engine.radialBondResults = [];
-        },
-
-        atomAdded = function() {
-          // Initialize helper structures for optimizations.
-          initializeCellList();
-          initializeNeighborList();
-        },
-
-        beforeAtomUpdate = function (i, props) {
-          var cysteineEl = aminoacidsHelper.cysteineElement,
-              idx, rest, amino, j;
-
-          if (props.element !== undefined) {
-            if (props.element < 0 || props.element >= N_elements) {
-              throw new Error("md2d: Unknown element " + props.element + ", an atom can't be created.");
-            }
-
-            // Special case when cysteine AA is morphed into other AA type,
-            // which can't create disulphide bonds. Remove a connected
-            // disulphide bond if it exists.
-            if (element[i] === cysteineEl && props.element !== cysteineEl) {
-              for (j = 0; j < N_radialBonds; j++) {
-                if ((radialBondAtom1Index[j] === i || radialBondAtom2Index[j] === i) &&
-                     radialBondType[j] === 109) {
-                  // Remove the radial bond representing disulphide bond.
-                  engine.removeRadialBond(j);
-                  // One cysteine can create only one disulphide bond so there is no need to continue the loop.
-                  break;
-                }
-              }
-            }
-
-            // Mark element as used by some atom (used by performance optimizations).
-            elementUsed[props.element] = true;
-
-            // Update mass and radius when element is changed.
-            mass[i]   = elementMass[props.element];
-            radius[i] = elementRadius[props.element];
-
-            if (aminoacidsHelper.isAminoAcid(props.element)) {
-              amino = aminoacidsHelper.getAminoAcidByElement(props.element);
-              // Setup properties which are relevant to amino acids.
-              charge[i] = amino.charge;
-              // Note that we overwrite value set explicitly in the hash.
-              // So, while setting element of atom, it's impossible to set also its charge.
-              hydrophobicity[i] = amino.hydrophobicity;
-            }
-          }
-
-          // Update charged atoms list (performance optimization).
-          if (!charge[i] && props.charge) {
-            // !charge[i]   => shortcut for charge[i] === 0 || charge[i] === undefined (both cases can occur).
-            // props.charge => shortcut for props.charge !== undefined && props.charge !== 0.
-            // Save index of charged atom.
-            chargedAtomsList.push(i);
-          } else if (charge[i] && props.charge === 0) {
-            // charge[i] => shortcut for charge[i] !== undefined && charge[i] !== 0 (both cases can occur).
-            // Remove index from charged atoms list.
-            idx = chargedAtomsList.indexOf(i);
-            rest = chargedAtomsList.slice(idx + 1);
-            chargedAtomsList.length = idx;
-            Array.prototype.push.apply(chargedAtomsList, rest);
-          }
-          // Update optimization flag.
-          hasChargedAtoms = !!chargedAtomsList.length;
-        },
-
-        atomUpdated = function (i) {
-          // Update properties which depend on other properties.
-          px[i]    = vx[i] * mass[i];
-          py[i]    = vy[i] * mass[i];
-          speed[i] = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
-        },
-
-        atomRemoved = function(idx) {
-          var i, len,
-              l, list, lists;
-          // Start from removing all bonds connected to this atom.
-          // Note that we are removing only radial bonds. Angular bonds
-          // will be removed while removing radial bond, not atom!
-
-          // Use such "strange" form of loop, as while removing one bonds,
-          // other change their indexing. So, after removal of bond 5, we
-          // should check bond 5 again, as it would be another bond (previously
-          // indexed as 6).
-          i = 0;
-          while (i < N_radialBonds) {
-            if (radialBondAtom1Index[i] === idx || radialBondAtom2Index[i] === idx)
-              engine.removeRadialBond(i);
-            else
-              i++;
-          }
-          // Try to remove atom from charged atoms list.
-          i = chargedAtomsList.indexOf(idx);
-          if (i !== -1) {
-            arrays.remove(chargedAtomsList, i);
-          }
-          // Shift indices of atoms in various lists.
-          lists = [
-            chargedAtomsList,
-            radialBondAtom1Index, radialBondAtom2Index,
-            angularBondAtom1Index, angularBondAtom2Index, angularBondAtom3Index
-          ];
-          for (l = 0; l < lists.length; l++) {
-            list = lists[l];
-            for (i = 0, len = list.length; i < len; i++) {
-              if (list[i] > idx)
-                list[i]--;
-            }
-          }
-
-          // Also in radial bonds results...
-          // TODO: they should be recalculated while computing output state.
-          for (i = 0, len = radialBondResults.length; i < len; i++) {
-            if (radialBondResults[i].atom1 > idx)
-              radialBondResults[i].atom1--;
-            if (radialBondResults[i].atom2 > idx)
-              radialBondResults[i].atom2--;
-          }
-
-          // Recalculate radial bond matrix, as indices have changed.
-          calculateRadialBondMatrix();
-          // (Re)initialize helper structures for optimizations.
-          initializeCellList();
-          initializeNeighborList();
-          neighborList.invalidate();
-          // Update accelerations of atoms.
-          updateParticlesAccelerations();
         },
 
         // Throws an informative error if a developer tries to use the setCoefficients method of an
@@ -729,26 +595,6 @@ define(function (require, exports) {
         */
         assignShortcutReferences = {
 
-          atoms: function() {
-            radius         = atoms.data.radius;
-            px             = atoms.data.px;
-            py             = atoms.data.py;
-            x              = atoms.data.x;
-            y              = atoms.data.y;
-            vx             = atoms.data.vx;
-            vy             = atoms.data.vy;
-            speed          = atoms.data.speed;
-            ax             = atoms.data.ax;
-            ay             = atoms.data.ay;
-            charge         = atoms.data.charge;
-            friction       = atoms.data.friction;
-            element        = atoms.data.element;
-            pinned         = atoms.data.pinned;
-            mass           = atoms.data.mass;
-            hydrophobicity = atoms.data.hydrophobicity;
-            visited        = atoms.data.visited;
-          },
-
           radialBonds: function() {
             radialBondAtom1Index  = radialBonds.atom1;
             radialBondAtom2Index  = radialBonds.atom2;
@@ -821,12 +667,6 @@ define(function (require, exports) {
             rectangleVisible       = rectangles.visible;
           },
 
-          electricFields: function() {
-            electricFieldIntensity    = electricFields.data.intensity;
-            electricFieldOrientation  = electricFields.data.orientation;
-            electricFieldRectangleIdx = electricFields.data.rectangleIdx;
-          },
-
           springForces: function() {
             springForceAtomIndex = springForces[0];
             springForceX         = springForces[1];
@@ -838,7 +678,169 @@ define(function (require, exports) {
             vdwPairAtom1Index = vdwPairs.atom1;
             vdwPairAtom2Index = vdwPairs.atom2;
           }
+        },
 
+        createAtomsCollection = function () {
+          atoms = new ObjectsCollection(metadata.atom, {
+            unitsTranslation: unitsTranslation,
+            afterAddCallback: afterAddCallback,
+            beforeSetCallback: beforeSetCallback,
+            afterSetCallback: afterSetCallback,
+            afterRemoveCallback: afterRemoveCallback
+          });
+          atoms.defineHelperArray("hydrophobicity", "int8");
+          atoms.defineHelperArray("visited", "int8");
+          atoms.on("referencesUpdate.engine", assignAtomsReferences);
+          assignAtomsReferences();
+
+          function assignAtomsReferences() {
+            radius         = atoms.data.radius;
+            px             = atoms.data.px;
+            py             = atoms.data.py;
+            x              = atoms.data.x;
+            y              = atoms.data.y;
+            vx             = atoms.data.vx;
+            vy             = atoms.data.vy;
+            speed          = atoms.data.speed;
+            ax             = atoms.data.ax;
+            ay             = atoms.data.ay;
+            charge         = atoms.data.charge;
+            friction       = atoms.data.friction;
+            element        = atoms.data.element;
+            pinned         = atoms.data.pinned;
+            mass           = atoms.data.mass;
+            // Helper arrays.
+            hydrophobicity = atoms.data.hydrophobicity;
+            visited        = atoms.data.visited;
+          }
+
+          function afterAddCallback() {
+            // Initialize helper structures for optimizations.
+            initializeCellList();
+            initializeNeighborList();
+          }
+
+          function beforeSetCallback(i, props) {
+            var cysteineEl = aminoacidsHelper.cysteineElement,
+                idx, rest, amino, j;
+
+            if (props.element !== undefined) {
+              if (props.element < 0 || props.element >= N_elements) {
+                throw new Error("md2d: Unknown element " + props.element + ", an atom can't be created.");
+              }
+
+              // Special case when cysteine AA is morphed into other AA type,
+              // which can't create disulphide bonds. Remove a connected
+              // disulphide bond if it exists.
+              if (element[i] === cysteineEl && props.element !== cysteineEl) {
+                for (j = 0; j < N_radialBonds; j++) {
+                  if ((radialBondAtom1Index[j] === i || radialBondAtom2Index[j] === i) &&
+                       radialBondType[j] === 109) {
+                    // Remove the radial bond representing disulphide bond.
+                    engine.removeRadialBond(j);
+                    // One cysteine can create only one disulphide bond so there is no need to continue the loop.
+                    break;
+                  }
+                }
+              }
+
+              // Mark element as used by some atom (used by performance optimizations).
+              elementUsed[props.element] = true;
+
+              // Update mass and radius when element is changed.
+              props.mass   = elementMass[props.element];
+              props.radius = elementRadius[props.element];
+
+              if (aminoacidsHelper.isAminoAcid(props.element)) {
+                amino = aminoacidsHelper.getAminoAcidByElement(props.element);
+                // Setup properties which are relevant to amino acids.
+                props.charge = amino.charge;
+                // Note that we overwrite value set explicitly in the hash.
+                // So, while setting element of atom, it's impossible to set also its charge.
+                props.hydrophobicity = amino.hydrophobicity;
+              }
+            }
+
+            // Update charged atoms list (performance optimization).
+            if (!charge[i] && props.charge) {
+              // !charge[i]   => shortcut for charge[i] === 0 || charge[i] === undefined (both cases can occur).
+              // props.charge => shortcut for props.charge !== undefined && props.charge !== 0.
+              // Save index of charged atom.
+              chargedAtomsList.push(i);
+            } else if (charge[i] && props.charge === 0) {
+              // charge[i] => shortcut for charge[i] !== undefined && charge[i] !== 0 (both cases can occur).
+              // Remove index from charged atoms list.
+              idx = chargedAtomsList.indexOf(i);
+              rest = chargedAtomsList.slice(idx + 1);
+              chargedAtomsList.length = idx;
+              Array.prototype.push.apply(chargedAtomsList, rest);
+            }
+            // Update optimization flag.
+            hasChargedAtoms = !!chargedAtomsList.length;
+          }
+
+          function afterSetCallback(i) {
+            // Update properties which depend on other properties.
+            px[i]    = vx[i] * mass[i];
+            py[i]    = vy[i] * mass[i];
+            speed[i] = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
+          }
+
+          function afterRemoveCallback(idx) {
+            var i, len,
+                l, list, lists;
+            // Start from removing all bonds connected to this atom.
+            // Note that we are removing only radial bonds. Angular bonds
+            // will be removed while removing radial bond, not atom!
+
+            // Use such "strange" form of loop, as while removing one bonds,
+            // other change their indexing. So, after removal of bond 5, we
+            // should check bond 5 again, as it would be another bond (previously
+            // indexed as 6).
+            i = 0;
+            while (i < N_radialBonds) {
+              if (radialBondAtom1Index[i] === idx || radialBondAtom2Index[i] === idx)
+                engine.removeRadialBond(i);
+              else
+                i++;
+            }
+            // Try to remove atom from charged atoms list.
+            i = chargedAtomsList.indexOf(idx);
+            if (i !== -1) {
+              arrays.remove(chargedAtomsList, i);
+            }
+            // Shift indices of atoms in various lists.
+            lists = [
+              chargedAtomsList,
+              radialBondAtom1Index, radialBondAtom2Index,
+              angularBondAtom1Index, angularBondAtom2Index, angularBondAtom3Index
+            ];
+            for (l = 0; l < lists.length; l++) {
+              list = lists[l];
+              for (i = 0, len = list.length; i < len; i++) {
+                if (list[i] > idx)
+                  list[i]--;
+              }
+            }
+
+            // Also in radial bonds results...
+            // TODO: they should be recalculated while computing output state.
+            for (i = 0, len = radialBondResults.length; i < len; i++) {
+              if (radialBondResults[i].atom1 > idx)
+                radialBondResults[i].atom1--;
+              if (radialBondResults[i].atom2 > idx)
+                radialBondResults[i].atom2--;
+            }
+
+            // Recalculate radial bond matrix, as indices have changed.
+            calculateRadialBondMatrix();
+            // (Re)initialize helper structures for optimizations.
+            initializeCellList();
+            initializeNeighborList();
+            neighborList.invalidate();
+            // Update accelerations of atoms.
+            updateParticlesAccelerations();
+          }
         },
 
         createElementsArray = function(num) {
@@ -955,6 +957,20 @@ define(function (require, exports) {
           rectangles.fence      = arrays.create(num, 0, arrayTypes.uint8Type);
 
           assignShortcutReferences.rectangles();
+        },
+
+        createElectricFieldsCollection = function () {
+          electricFields = new ObjectsCollection(metadata.electricField, {
+            unitsTranslation: unitsTranslation
+          });
+          electricFields.on("referencesUpdate", assignElectricFieldsReferences);
+          assignElectricFieldsReferences();
+
+          function assignElectricFieldsReferences() {
+            electricFieldIntensity    = electricFields.data.intensity;
+            electricFieldOrientation  = electricFields.data.orientation;
+            electricFieldRectangleIdx = electricFields.data.rectangleIdx;
+          }
         },
 
         // Function that accepts a value T and returns an average of the last n values of T (for some n).

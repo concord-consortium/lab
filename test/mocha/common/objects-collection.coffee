@@ -15,24 +15,35 @@ describe "ObjectsCollection", ->
     handler = null
 
     before ->
-      col = new ObjectsCollection metadata, unitsTranslation
       handler =
         beforeChange: sinon.spy()
         change: sinon.spy()
-        beforeAdd: sinon.spy()
         add: sinon.spy()
-        beforeSet: sinon.spy()
         set: sinon.spy()
-        beforeRemove: sinon.spy()
         remove: sinon.spy()
+
+        beforeAddCallback: sinon.spy()
+        afterAddCallback: sinon.spy()
+        beforeSetCallback: sinon.spy()
+        afterSetCallback: sinon.spy()
+        beforeRemoveCallback: sinon.spy()
+        afterRemoveCallback: sinon.spy()
+
+      descriptor =
+        unitsTranslation: unitsTranslation
+        beforeAddCallback: handler.beforeAddCallback
+        afterAddCallback: handler.afterAddCallback
+        beforeSetCallback: handler.beforeSetCallback
+        afterSetCallback: handler.afterSetCallback
+        beforeRemoveCallback: handler.beforeRemoveCallback
+        afterRemoveCallback: handler.afterRemoveCallback
+
+      col = new ObjectsCollection metadata, descriptor
 
       col.on 'beforeChange', handler.beforeChange
       col.on 'change', handler.change
-      col.on 'beforeAdd', handler.beforeAdd
       col.on 'add', handler.add
-      col.on 'beforeSet', handler.beforeSet
       col.on 'set', handler.set
-      col.on 'beforeRemove', handler.beforeRemove
       col.on 'remove', handler.remove
 
     checkLen = (len) ->
@@ -88,12 +99,15 @@ describe "ObjectsCollection", ->
       checkLen 1
       check 0, [0, 1, 2]
 
-    it "should emit appropriate event when new object is added", ->
-      handler.beforeAdd.callCount.should.equal 1
+    it "should trigger appropriate events and callbacks when new object is added", ->
+      handler.beforeAddCallback.callCount.should.equal 1
+      handler.afterAddCallback.callCount.should.equal 1
       handler.add.callCount.should.equal 1
       # 'add' operation consists of 'set' operation:
-      handler.beforeSet.callCount.should.equal 1
+      handler.beforeSetCallback.callCount.should.equal 1
+      handler.afterSetCallback.callCount.should.equal 1
       handler.set.callCount.should.equal 1
+      # 'change' event
       handler.beforeChange.callCount.should.equal 1
       handler.change.callCount.should.equal 1
 
@@ -107,7 +121,8 @@ describe "ObjectsCollection", ->
 
     it "should emit appropriate event when object properties are updated", ->
       # .set() was also called during add operation.
-      handler.beforeSet.callCount.should.equal 4
+      handler.beforeSetCallback.callCount.should.equal 4
+      handler.afterSetCallback.callCount.should.equal 4
       handler.set.callCount.should.equal 4
       handler.beforeChange.callCount.should.equal 4
       handler.change.callCount.should.equal 4
@@ -125,7 +140,8 @@ describe "ObjectsCollection", ->
       check 0, [0, 1, 2]
 
     it "should emit appropriate event when object is removed", ->
-      handler.beforeRemove.callCount.should.equal 1
+      handler.beforeRemoveCallback.callCount.should.equal 1
+      handler.afterRemoveCallback.callCount.should.equal 1
       handler.remove.callCount.should.equal 1
       handler.beforeChange.callCount.should.equal 6
       handler.change.callCount.should.equal 6

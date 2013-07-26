@@ -375,8 +375,6 @@ define(function() {
         readOnly: true,
         serialize: false,
         type: "int8"
-      },
-      excitation: {
       }
     },
 

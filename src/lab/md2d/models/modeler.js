@@ -856,6 +856,8 @@ define(function(require) {
       Otherwise, returns true.
 
       silent = true disables this check.
+
+      FIXME TODO: logic should be moved to the engine, to atom's beforeAdd/SetCallback.
     */
     model.addAtom = function(props, options) {
       var minX = model.get('minX'),
@@ -866,9 +868,6 @@ define(function(require) {
 
       options = options || {};
 
-      // Validate properties, provide default values.
-      props = validator.validateCompleteness(metadata.atom, props);
-
       // As a convenience to script authors, bump the atom within bounds
       radius = engine.getRadiusOfElement(props.element);
       if (props.x < (minX + radius)) props.x = minX + radius;
@@ -877,7 +876,7 @@ define(function(require) {
       if (props.y > (maxY - radius)) props.y = maxY - radius;
 
       // check the potential energy change caused by adding an *uncharged* atom at (x,y)
-      if (!options.suppressCheck && !engine.canPlaceAtom(props.element, props.x, props.y)) {
+      if (!options.suppressCheck && !engine.canPlaceAtom(props.element || 0, props.x, props.y)) {
         // return false on failure
         return false;
       }
@@ -1108,9 +1107,6 @@ define(function(require) {
           dx, dy,
           new_x, new_y,
           j, jj;
-
-      // Validate properties.
-      props = validator.validate(metadata.atom, props);
 
       if (moveMolecule) {
         moleculeAtoms = engine.getMoleculeAtoms(i);
@@ -1461,7 +1457,7 @@ define(function(require) {
     */
     model.getNumberOfAtoms = function(f) {
       if (!f) {
-        return engine.atoms.count.length;
+        return engine.atoms.count;
       }
       return engine.atoms.rawObjects.reduce(function(total, atom) {
         return f(atom) ? total + 1 : total;
@@ -1732,7 +1728,7 @@ define(function(require) {
 
       propCopy = serialize(metadata.mainProperties, rawProperties);
       propCopy.viewOptions = serialize(metadata.viewOptions, rawProperties);
-      propCopy.atoms = serialize(metadata.atom, engine.atoms.data, engine.atoms.count);
+      propCopy.atoms = engine.atoms.serialize();
 
       if (engine.getNumberOfRadialBonds()) {
         propCopy.radialBonds = serialize(metadata.radialBond, radialBonds, engine.getNumberOfRadialBonds());
