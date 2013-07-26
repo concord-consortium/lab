@@ -23,15 +23,15 @@ describe "AtomTransition", ->
     before ->
       model = new Model {}
       # Add atom.
-      model.addAtom {x: 1, y: 1}
+      model.atoms.add {x: 1, y: 1}
       model.getNumberOfAtoms().should.eql 1
       t = new AtomTransition model
       t.id(0).ease("linear").duration(800).prop("x", 9)
 
     it "should modify atom properties when .process() is called", ->
-      model.getAtomProperties(0).x.should.eql 1
+      model.atoms.get(0).x.should.eql 1
       t.process(400)
-      model.getAtomProperties(0).x.should.eql 5 # 1 + 400/800 * (9 - 1) = 5
+      model.atoms.get(0).x.should.eql 5 # 1 + 400/800 * (9 - 1) = 5
       t.process(400)
-      model.getAtomProperties(0).x.should.eql 9 # 1 + 800/800 * (9 - 1) = 9
+      model.atoms.get(0).x.should.eql 9 # 1 + 800/800 * (9 - 1) = 9
       t.isFinished.should.be.true

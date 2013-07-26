@@ -27,7 +27,7 @@ describe "MD2D modeler with Quantum Dynamics plugin", ->
 
       model.createAtoms data
 
-      atomData = model.getAtomProperties 0
+      atomData = model.atoms.get 0
 
       should.exist atomData.excitation
       atomData.excitation.should.equal 0
@@ -41,10 +41,10 @@ describe "MD2D modeler with Quantum Dynamics plugin", ->
 
       model.createAtoms data
 
-      atomData = model.getAtomProperties 0
+      atomData = model.atoms.get 0
       atomData.excitation.should.equal data.excitation[0]
 
-      atomData = model.getAtomProperties 1
+      atomData = model.atoms.get 1
       atomData.excitation.should.equal data.excitation[1]
 
     describe "serialization", ->
@@ -143,5 +143,5 @@ describe "MD2D modeler with Quantum Dynamics plugin", ->
 
       model.createAtoms(data)
 
-      atomData = model.getAtomProperties 0
+      atomData = model.atoms.get 0
       should.not.exist atomData.excitation

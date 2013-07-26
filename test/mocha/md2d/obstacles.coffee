@@ -75,7 +75,7 @@ describe "MD2D modeler", ->
 
     describe "and the properties define an obstacle overlapping with an atom", ->
       it "should fail and report an error", ->
-        model.addAtom x: 1.5, y: 1.5
+        model.atoms.add x: 1.5, y: 1.5
         (-> model.addObstacle x: 1, y: 1, width: 2, height: 2).should.throw()
         model.getNumberOfObstacles().should.equal 0
 

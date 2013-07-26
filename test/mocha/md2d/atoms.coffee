@@ -20,50 +20,50 @@ describe "MD2D modeler", ->
 
     model.createAtoms data
     model.getNumberOfAtoms().should.equal 2
-    atomData = model.getAtomProperties 0
+    atomData = model.atoms.get 0
     atomData.x.should.equal data.x[0]
     atomData.y.should.equal data.y[0]
 
-    atomData = model.getAtomProperties 1
+    atomData = model.atoms.get 1
     atomData.x.should.equal data.x[1]
     atomData.y.should.equal data.y[1]
 
 
-  describe "when addAtom() is called", ->
+  describe "when atoms.add() is called", ->
     describe "and the properties are correct", ->
       it "should add a new atom", ->
         data =
           x: 1
           y: 1
 
-        model.addAtom data
+        model.atoms.add data
 
         model.getNumberOfAtoms().should.equal 1
-        atomData = model.getAtomProperties 0
+        atomData = model.atoms.get 0
         atomData.x.should.equal data.x
         atomData.y.should.equal data.y
 
-      it "should trigger 'addAtom' event", ->
+      it "should trigger 'add' event", ->
         callback = sinon.spy()
-        model.on 'addAtom', callback
+        model.atoms.on 'add', callback
 
         callback.callCount.should.equal 0
-        model.addAtom x: 0, y: 0
+        model.atoms.add x: 0, y: 0
         callback.callCount.should.equal 1
 
     describe "and the properties are incomplete", ->
       it "should fail and report an error", ->
         # No y coordinate provided!
         # It is a required parameter, see metadata.
-        (-> model.addAtom x: 1).should.throw()
+        (-> model.atoms.add x: 1).should.throw()
         model.getNumberOfAtoms().should.equal 0
 
   describe "when removeAtom() is called", ->
 
     beforeEach ->
-      model.addAtom x: 1, y: 1 # idx = 0
-      model.addAtom x: 2, y: 2 # idx = 1
-      model.addAtom x: 3, y: 3 # idx = 2
+      model.atoms.add x: 1, y: 1 # idx = 0
+      model.atoms.add x: 2, y: 2 # idx = 1
+      model.atoms.add x: 3, y: 3 # idx = 2
 
     describe "and provided index matches some atom", ->
       it "should remove it", ->
@@ -79,10 +79,10 @@ describe "MD2D modeler", ->
         model.removeAtom 1
         model.getNumberOfAtoms().should.equal 2
         # Remaining obstacles.
-        model.getAtomProperties(0).x.should.equal 1
-        model.getAtomProperties(0).y.should.equal 1
-        model.getAtomProperties(1).x.should.equal 3
-        model.getAtomProperties(1).y.should.equal 3
+        model.atoms.get(0).x.should.equal 1
+        model.atoms.get(0).y.should.equal 1
+        model.atoms.get(1).x.should.equal 3
+        model.atoms.get(1).y.should.equal 3
 
       it "should trigger 'removeAtom' event", ->
         callback = sinon.spy()
@@ -138,8 +138,8 @@ describe "MD2D modeler", ->
 
           beforeEach ->
             # Add some atoms and radial bond to create two angular bonds.
-            model.addAtom x: 4, y: 4 # idx = 3
-            model.addAtom x: 5, y: 5 # idx = 4
+            model.atoms.add x: 4, y: 4 # idx = 3
+            model.atoms.add x: 5, y: 5 # idx = 4
             model.addRadialBond atom1: 1, atom2: 3, length: 3, strength: 3
             model.addRadialBond atom1: 3, atom2: 4, length: 4, strength: 4
 
