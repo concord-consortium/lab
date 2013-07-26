@@ -7,6 +7,7 @@ define(function (require) {
       arrayTypes      = require('common/array-types'),
       DispatchSupport = require('common/dispatch-support'),
       validator       = require('common/validator'),
+      serialize       = require('common/serialize'),
       utils           = require('common/models/utils');
 
   function mapValues(obj, fn) {
@@ -17,20 +18,33 @@ define(function (require) {
     return obj;
   }
 
-  return function ObjectsCollection(metadata, unitsTranslation) {
+  function getArrType(name) {
+    name = (name || "any") + "Type";
+    return name === "anyType" ? "regular" : arrayTypes[name];
+  }
+
+  return function ObjectsCollection(metadata, descriptor) {
+    metadata = _.extend({}, metadata);
+    descriptor = descriptor || {};
+
     var api,
 
         propNames = Object.keys(metadata),
 
+        unitsTranslation     = descriptor.unitsTranslation,
+        beforeAddCallback    = descriptor.beforeAddCallback,
+        afterAddCallback     = descriptor.afterAddCallback,
+        beforeSetCallback    = descriptor.beforeSetCallback,
+        afterSetCallback     = descriptor.afterSetCallback,
+        beforeRemoveCallback = descriptor.beforeRemoveCallback,
+        afterRemoveCallback  = descriptor.afterRemoveCallback,
+
         capacity = 0,
         count = 0,
         data = (function () {
-          var res = {},
-              type;
+          var res = {};
           propNames.forEach(function (name) {
-            type = (metadata[name].type || "any") + "Type";
-            type = type === "anyType" ? "regular" : arrayTypes[type];
-            res[name] = arrays.create(capacity, 0, type);
+            res[name] = arrays.create(capacity, 0, getArrType(metadata[name].type));
           });
           return res;
         }()),
@@ -48,9 +62,9 @@ define(function (require) {
       this.idx = idx;
       Object.freeze(this);
     }
-
-    propNames.forEach(function (name) {
-      var unitType = metadata[name].unitType;
+    function defineObjectProperty(name) {
+      var unitType = metadata[name].unitType,
+          objCache = {};
       Object.defineProperty(ObjectWrapper.prototype, name, {
         enumerable: true,
         configurable: false,
@@ -61,25 +75,20 @@ define(function (require) {
           return data[name][this.idx];
         },
         set: function (v) {
-          dispatch.beforeChange();
-          dispatch.beforeSet();
-          if (unitsTranslation) {
-            v = unitsTranslation.translateToModelUnits(v, unitType);
-          }
-          data[name][this.idx] = v;
-          dispatch.set();
-          dispatch.change();
+          objCache[name] = v;
+          api.set(this.idx, objCache);
         }
       });
-    });
+    }
+    propNames.forEach(defineObjectProperty);
 
     // Object with raw values.
     function RawObjectWrapper(idx) {
       this.idx = idx;
       Object.freeze(this);
     }
-
-    propNames.forEach(function (name) {
+    function defineRawObjectProperty(name) {
+      var objCache = {};
       Object.defineProperty(RawObjectWrapper.prototype, name, {
         enumerable: true,
         configurable: false,
@@ -87,14 +96,12 @@ define(function (require) {
           return data[name][this.idx];
         },
         set: function (v) {
-          dispatch.beforeChange();
-          dispatch.beforeSet();
-          data[name][this.idx] = v;
-          dispatch.set();
-          dispatch.change();
+          objCache[name] = v;
+          api.setRaw(this.idx, objCache);
         }
       });
-    });
+    }
+    propNames.forEach(defineRawObjectProperty);
 
     api = {
       get count() {
@@ -124,15 +131,24 @@ define(function (require) {
       },
 
       addRaw: function (props) {
-        dispatch.beforeAdd();
         props = validator.validateCompleteness(metadata, props);
         if (count + 1 > capacity) {
           capacity = capacity * 2 || 1;
           utils.extendArrays(data, capacity);
           dispatch.referencesUpdate();
         }
+
+        if (beforeAddCallback) {
+          beforeAddCallback(count, props, data);
+        }
+
         count++;
         api.setRaw(count - 1, props);
+
+        if (afterAddCallback) {
+          afterAddCallback(count - 1, props, data);
+        }
+
         api.syncObjects();
         dispatch.add();
       },
@@ -152,19 +168,28 @@ define(function (require) {
             " doesn't exist, so it can't be removed.");
         }
         dispatch.beforeChange();
-        dispatch.beforeRemove();
-        var prop;
-        count--;
-        for (; i < count; i++) {
-          for (prop in data) {
-            if (data.hasOwnProperty(prop)) {
-              data[prop][i] = data[prop][i + 1];
-            }
-          }
+
+        if (beforeRemoveCallback) {
+          beforeRemoveCallback(i, data);
         }
+
+        count--;
+        propNames.forEach(function (key) {
+          for (var j = i; j < count; ++j) {
+            data[key][j] = data[key][j + 1];
+          }
+        });
+        propNames.forEach(function (key) {
+          data[key][count] = 0;
+        });
+
+        if (afterRemoveCallback) {
+          afterRemoveCallback(i, data);
+        }
+
         api.syncObjects();
-        dispatch.remove();
         dispatch.change();
+        dispatch.remove();
       },
 
       setRaw: function (i, props) {
@@ -172,14 +197,24 @@ define(function (require) {
           throw new Error("Object with index " + i +
             " doesn't exist, so its properties can't be set.");
         }
-        dispatch.beforeChange();
-        dispatch.beforeSet();
         props = validator.validate(metadata, props);
+
+        dispatch.beforeChange();
+
+        if (beforeSetCallback) {
+          beforeSetCallback(i, props, data);
+        }
+
         Object.keys(props).forEach(function (key) {
           data[key][i] = props[key];
         });
-        dispatch.set();
+
+        if (afterSetCallback) {
+          afterSetCallback(i, props, data);
+        }
+
         dispatch.change();
+        dispatch.set();
       },
 
       set: function (i, props) {
@@ -221,6 +256,18 @@ define(function (require) {
         }
       },
 
+      defineNewProperty: function(name, propertyMetadata) {
+        propNames.push(name);
+        metadata[name] = propertyMetadata;
+        data[name] = arrays.create(capacity, 0, getArrType(propertyMetadata.type));
+        defineRawObjectProperty(name);
+        defineObjectProperty(name);
+      },
+
+      defineHelperArray: function (name, type) {
+        data[name] = arrays.create(capacity, 0, getArrType(type));
+      },
+
       // Clone-restore interface:
       clone: function () {
         var state = {
@@ -238,11 +285,14 @@ define(function (require) {
           arrays.copy(state[key], data[key]);
         });
         api.syncObjects();
+      },
+
+      // Serialization
+      serialize: function () {
+        return serialize(metadata, data, count);
       }
     };
-
     dispatch.mixInto(api);
-
     return api;
   };
 });
