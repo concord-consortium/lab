@@ -130,7 +130,7 @@ define(function (require) {
         return RawObjectWrapper.prototype;
       },
 
-      addRaw: function (props) {
+      addRaw: function (props, options) {
         props = validator.validateCompleteness(metadata, props);
         if (count + 1 > capacity) {
           capacity = capacity * 2 || 1;
@@ -139,27 +139,27 @@ define(function (require) {
         }
 
         if (beforeAddCallback) {
-          beforeAddCallback(count, props, data);
+          beforeAddCallback(count, props, options);
         }
 
+        api.setRaw(count, props, options);
         count++;
-        api.setRaw(count - 1, props);
 
         if (afterAddCallback) {
-          afterAddCallback(count - 1, props, data);
+          afterAddCallback(count - 1, props, options);
         }
 
         api.syncObjects();
         dispatch.add();
       },
 
-      add: function (props) {
+      add: function (props, options) {
         if (unitsTranslation) {
           props = mapValues(props, function (k, v) {
             return unitsTranslation.translateToModelUnits(v, metadata[k].unitType);
           });
         }
-        api.addRaw(props);
+        api.addRaw(props, options);
       },
 
       remove: function (i) {
@@ -192,17 +192,13 @@ define(function (require) {
         dispatch.remove();
       },
 
-      setRaw: function (i, props) {
-        if (i >= count) {
-          throw new Error("Object with index " + i +
-            " doesn't exist, so its properties can't be set.");
-        }
+      setRaw: function (i, props, options) {
         props = validator.validate(metadata, props);
 
         dispatch.beforeChange();
 
         if (beforeSetCallback) {
-          beforeSetCallback(i, props, data);
+          beforeSetCallback(i, props, options);
         }
 
         Object.keys(props).forEach(function (key) {
@@ -210,20 +206,20 @@ define(function (require) {
         });
 
         if (afterSetCallback) {
-          afterSetCallback(i, props, data);
+          afterSetCallback(i, props, options);
         }
 
         dispatch.change();
         dispatch.set();
       },
 
-      set: function (i, props) {
+      set: function (i, props, options) {
         if (unitsTranslation) {
           props = mapValues(props, function (k, v) {
             return unitsTranslation.translateToModelUnits(v, metadata[k].unitType);
           });
         }
-        api.setRaw(i, props);
+        api.setRaw(i, props, options);
       },
 
       getRaw: function (i) {

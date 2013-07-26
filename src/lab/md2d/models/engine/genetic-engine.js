@@ -732,7 +732,7 @@ define(function (require) {
         // Add some entropy to y position to avoid perfectly straight line of
         // amino acids what can affect folding process.
         yEnd += Math.random() * 0.02 - 0.01;
-        model.addAtom({x: x, y: y, element: elID, visible: true, pinned: true}, {suppressCheck: true});
+        model.atoms.add({x: x, y: y, element: elID, visible: true, pinned: true}, {checkLocation: false});
         // Transition new amino acid to its final position.
         model.atomTransition().id(codonIdx).duration(duration).prop("x", xEnd);
         model.atomTransition().id(codonIdx).duration(duration).prop("y", yEnd);
@@ -745,8 +745,8 @@ define(function (require) {
         var i, x, y;
         // Shift amino acids to the right.
         for (i = 0; i < count; i++) {
-          x = model.getAtomProperties(i).x + xShift;
-          y = model.getAtomProperties(i).y;
+          x = model.atoms.get(i).x + xShift;
+          y = model.atoms.get(i).y;
           model.atomTransition().id(i).duration(duration).prop("x", x);
           // This is required to keep Y coordinate constant during this
           // transition, some forces applied by the MD2D engine can
@@ -770,21 +770,21 @@ define(function (require) {
               i, x, y;
 
           for (i = 0; i < len; i++) {
-            x = model.getAtomProperties(i).x;
-            y = model.getAtomProperties(i).y;
+            x = model.atoms.get(i).x;
+            y = model.atoms.get(i).y;
             if (x + xDiff > maxX) xDiff = maxX - x;
             if (x + xDiff < minX) xDiff = minX - x;
             if (y + yDiff > maxY) yDiff = maxY - y;
             if (y + yDiff < minY) yDiff = minY - y;
           }
           for (i = 0; i < len; i++) {
-            x = model.getAtomProperties(i).x + xDiff;
-            y = model.getAtomProperties(i).y + yDiff;
+            x = model.atoms.get(i).x + xDiff;
+            y = model.atoms.get(i).y + yDiff;
             if (duration) {
               model.atomTransition().id(i).duration(duration).prop("x", x);
               model.atomTransition().id(i).duration(duration).prop("y", y);
             } else {
-              model.setAtomProperties(i, {x: x, y: y});
+              model.atoms.set(i, {x: x, y: y});
             }
           }
         });
@@ -793,13 +793,13 @@ define(function (require) {
 
       connectAminoAcid: function (codonIdx) {
         if (codonIdx < 1) return;
-        var r1 = model.getAtomProperties(codonIdx - 1).radius,
-            r2 = model.getAtomProperties(codonIdx).radius,
+        var r1 = model.atoms.get(codonIdx - 1).radius,
+            r2 = model.atoms.get(codonIdx).radius,
             // Length of bond is based on the radii of AAs.
             bondLen = (r1 + r2) * 1.25;
         // 10000 is a typical strength for bonds between AAs.
         model.addRadialBond({atom1: codonIdx, atom2: codonIdx - 1, length: bondLen, strength: 10000});
-        model.setAtomProperties(codonIdx - 1, {pinned: false});
+        model.atoms.set(codonIdx - 1, {pinned: false});
       },
 
       translationCompleted: function () {
@@ -807,7 +807,7 @@ define(function (require) {
         if (atomsCount > 0) {
           // Unpin the last atom. Note that sometimes translation
           // can end without any atom.
-          model.setAtomProperties(atomsCount - 1, {pinned: false});
+          model.atoms.set(atomsCount - 1, {pinned: false});
         }
       },
 
@@ -849,7 +849,7 @@ define(function (require) {
         // Note that there is a strong asumption that there are *only* amino
         // acids in the model.
         for (i = 0, len = model.getNumberOfAtoms(); i < len; i++) {
-          atom = model.getAtomProperties(i);
+          atom = model.atoms.get(i);
           xcm += atom.x * atom.mass;
           ycm += atom.y * atom.mass;
           totalMass += atom.mass;
@@ -889,8 +889,8 @@ define(function (require) {
         removeAminoAcids();
 
         model.batch(function () {
-              // Options for .addAtom modeler's method.
-          var opt = {suppressCheck: true},
+              // Options for .atoms.add modeler's method.
+          var opt = {checkLocation: false},
               width   = maxX - minX,
               height  = maxY - minY,
               aaCount = aminoacidsHelper.lastElementID - aminoacidsHelper.firstElementID + 1,
@@ -941,7 +941,7 @@ define(function (require) {
           radius = model.getElementProperties(el).radius;
           props  = {x: xPos, y: yPos, element: el, visible: true};
 
-          model.addAtom(props, opt);
+          model.atoms.add(props, opt);
           createdAA += 1;
 
           // Add remaining amino acids.
@@ -964,7 +964,7 @@ define(function (require) {
 
             el = aaSequence ? aminoacidsHelper.abbrToElement(aaSequence[i]) : getRandomAA();
             props = {x: xPos, y: yPos, element: el, visible: true};
-            model.addAtom(props, opt);
+            model.atoms.add(props, opt);
             createdAA += 1;
 
             // Length of bond is based on the radii of AAs.
@@ -978,9 +978,10 @@ define(function (require) {
         // We have to use a new batch so atoms array will be updated and we
         // can use getAtomProperties for recently added atoms.
         model.batch(function () {
-          // Center protein (X coords only) in the viewport. Make sure
-          // that we don't exceed model boundaries.
-          var proteinsMaxX   = model.getAtomProperties(createdAA - 1).x,
+          var opt = {checkLocation: false},
+              // Center protein (X coords only) in the viewport. Make sure
+              // that we don't exceed model boundaries.
+              proteinsMaxX   = model.atoms.get(createdAA - 1).x,
               proteinsCenter = (proteinsMaxX - minX) / 2,
               viewPortCenter = model.properties.viewPortX + model.properties.viewPortWidth / 2,
               spaceOnRight   = maxX - proteinsMaxX,
@@ -989,7 +990,7 @@ define(function (require) {
 
           // Shift all AAs.
           for (i = 0; i < expectedLength; i++) {
-            model.setAtomProperties(i, {x: model.getAtomProperties(i).x + shift});
+            model.atoms.set(i, {x: model.atoms.get(i).x + shift}, opt);
           }
         });
 

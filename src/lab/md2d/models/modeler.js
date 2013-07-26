@@ -164,7 +164,7 @@ define(function(require) {
         dispatch = (function() {
           var d = labModelerMixin.dispatchSupport;
           d.addEventTypes("tick","willReset",
-                          "addAtom", "removeAtom", "addRadialBond", "removeRadialBond",
+                          "removeAtom", "addRadialBond", "removeRadialBond",
                           "removeAngularBond", "invalidation", "textBoxesChanged");
           return d;
         }()),
@@ -302,16 +302,12 @@ define(function(require) {
 
     /**
       Executes the closure 'extract' which extracts from the tick history, then dispatches
-      addAtom/removeAtom, etc, events as needed.
+      atoms.add/removeAtom, etc, events as needed.
 
       This prevents unneessary creation and removal of atoms.
     */
     var runAndDispatchObjectNumberChanges = (function() {
       var objects = [{
-        getNum: 'getNumberOfAtoms',
-        addEvent: 'addAtom',
-        removeEvent: 'removeAtom'
-      }, {
         getNum: 'getNumberOfRadialBonds',
         addEvent: 'addRadialBond',
         removeEvent: 'removeRadialBond'
@@ -573,6 +569,9 @@ define(function(require) {
         }
       });
 
+      engine.atoms.on("beforeChange.invalidation", propertySupport.invalidatingChangePreHook);
+      engine.atoms.on("change.invalidation", propertySupport.invalidatingChangePostHook);
+
       engine.electricFields.on("beforeChange.invalidation", propertySupport.invalidatingChangePreHook);
       engine.electricFields.on("change.invalidation", propertySupport.invalidatingChangePostHook);
     }
@@ -617,10 +616,10 @@ define(function(require) {
       config: a hash specifying the x,y,vx,vy properties of the atoms
     */
     model.createAtoms = function(config) {
-          // Options for addAtom method.
+          // Options for atoms.add method.
       var options = {
             // Do not check the position of atom, assume that it's valid.
-            suppressCheck: true
+            checkLocation: false
           },
           i, num, prop, atomProps;
 
@@ -633,7 +632,7 @@ define(function(require) {
 
       // config is hash of arrays (as specified in JSON model). So, for each index, create object
       // containing properties of atom 'i'. Later, use these properties to add atom using basic
-      // addAtom method.
+      // atoms.add method.
       for (i = 0; i < num; i++) {
         atomProps = {};
         for (prop in config) {
@@ -641,7 +640,7 @@ define(function(require) {
             atomProps[prop] = config[prop][i];
           }
         }
-        model.addAtom(atomProps, options);
+        model.atoms.add(atomProps, options);
       }
 
       // End batch process
@@ -783,6 +782,13 @@ define(function(require) {
       return model;
     };
 
+    Object.defineProperty(model, "atoms", {
+      enumerable: true,
+      get: function () {
+        return engine.atoms;
+      }
+    });
+
     Object.defineProperty(model, "electricFields", {
       enumerable: true,
       get: function () {
@@ -837,78 +843,28 @@ define(function(require) {
         // findMinimimuPELocation will return false if minimization doesn't converge, in which case
         // try again from a different x, y
         loc = engine.findMinimumPELocation(el, x, y, 0, 0, charge);
-        if (loc && model.addAtom({ element: el, x: loc[0], y: loc[1], charge: charge })) return true;
+
+        if (loc) {
+          try {
+            model.atoms.add({ element: el, x: loc[0], y: loc[1], charge: charge });
+            return true;
+          } catch(e) {
+            // Just try again.
+          }
+        }
       } while (++numTries < maxTries);
 
       return false;
     },
 
-    /**
-      Adds a new atom defined by properties.
-      Intended to be exposed as a script API method also.
-
-      Adjusts (x,y) if needed so that the whole atom is within the walls of the container.
-
-      Returns false and does not add the atom if the potential energy change of adding an *uncharged*
-      atom of the specified element to the specified location would be positive (i.e, if the atom
-      intrudes into the repulsive region of another atom), or if atom is placed inside an obstacle
-
-      Otherwise, returns true.
-
-      silent = true disables this check.
-
-      FIXME TODO: logic should be moved to the engine, to atom's beforeAdd/SetCallback.
-    */
-    model.addAtom = function(props, options) {
-      var minX = model.get('minX'),
-          minY = model.get('minY'),
-          maxX = model.get('maxX'),
-          maxY = model.get('maxY'),
-          radius;
-
-      options = options || {};
-
-      // As a convenience to script authors, bump the atom within bounds
-      radius = engine.getRadiusOfElement(props.element);
-      if (props.x < (minX + radius)) props.x = minX + radius;
-      if (props.x > (maxX - radius)) props.x = maxX - radius;
-      if (props.y < (minY + radius)) props.y = minY + radius;
-      if (props.y > (maxY - radius)) props.y = maxY - radius;
-
-      // check the potential energy change caused by adding an *uncharged* atom at (x,y)
-      if (!options.suppressCheck && !engine.canPlaceAtom(props.element || 0, props.x, props.y)) {
-        // return false on failure
-        return false;
-      }
-
-      // When atoms are being deserialized, the deserializing function
-      // should handle change hooks due to performance reasons.
-      if (!options.deserialization) {
-        propertySupport.invalidatingChangePreHook();
-      }
-
-      engine.atoms.add(props);
-
-      if (!options.deserialization) {
-        propertySupport.invalidatingChangePostHook();
-      }
-
-      if (!options.suppressEvent) {
-        dispatch.addAtom();
-      }
-
-      return true;
-    },
-
+    // TODO: remove this method when radial and angular bonds use ObjectsCollection.
     model.removeAtom = function(i, options) {
       var prevRadBondsCount = engine.getNumberOfRadialBonds(),
           prevAngBondsCount = engine.getNumberOfAngularBonds();
 
       options = options || {};
 
-      propertySupport.invalidatingChangePreHook();
       engine.atoms.remove(i);
-      propertySupport.invalidatingChangePostHook();
 
       if (!options.suppressEvent) {
         // Notify listeners that atoms is removed.
@@ -1087,60 +1043,6 @@ define(function(require) {
 
     model.getTemperatureOfAtoms = function(atomIndices) {
       return engine.getTemperatureOfAtoms(atomIndices);
-    };
-
-    /**
-        A generic method to set properties on a single existing atom.
-
-        Example: setAtomProperties(3, {x: 5, y: 8, px: 0.5, charge: -1})
-
-        This can optionally check the new location of the atom to see if it would
-        overlap with another another atom (i.e. if it would increase the PE).
-
-        This can also optionally apply the same dx, dy to any atoms in the same
-        molecule (if x and y are being changed), and check the location of all
-        the bonded atoms together.
-      */
-    model.setAtomProperties = function(i, props, checkLocation, moveMolecule) {
-      var atoms = engine.atoms,
-          moleculeAtoms,
-          dx, dy,
-          new_x, new_y,
-          j, jj;
-
-      if (moveMolecule) {
-        moleculeAtoms = engine.getMoleculeAtoms(i);
-        if (moleculeAtoms.length > 0) {
-          dx = typeof props.x === "number" ? props.x - atoms.data.x[i] : 0;
-          dy = typeof props.y === "number" ? props.y - atoms.data.y[i] : 0;
-          for (j = 0, jj=moleculeAtoms.length; j<jj; j++) {
-            new_x = atoms.data.x[moleculeAtoms[j]] + dx;
-            new_y = atoms.data.y[moleculeAtoms[j]] + dy;
-            if (!model.setAtomProperties(moleculeAtoms[j], {x: new_x, y: new_y}, checkLocation, false)) {
-              return false;
-            }
-          }
-        }
-      }
-
-      if (checkLocation) {
-        var x  = typeof props.x === "number" ? props.x : atoms.data.x[i],
-            y  = typeof props.y === "number" ? props.y : atoms.data.y[i],
-            el = typeof props.element === "number" ? props.y : atoms.data.element[i];
-
-        if (!engine.canPlaceAtom(el, x, y, i)) {
-          return false;
-        }
-      }
-
-      propertySupport.invalidatingChangePreHook();
-      engine.atoms.set(i, props);
-      propertySupport.invalidatingChangePostHook();
-      return true;
-    };
-
-    model.getAtomProperties = function(i) {
-      return engine.atoms.get(i);
     };
 
     model.getRadialBondsForAtom = function(i) {
@@ -1365,15 +1267,15 @@ define(function(require) {
       if (x == null) x = engine.atoms.data.x[atomIndex];
       if (y == null) y = engine.atoms.data.y[atomIndex];
 
-      liveDragSavedFriction = model.getAtomProperties(atomIndex).friction;
+      liveDragSavedFriction = model.atoms.get(atomIndex).friction;
 
-      // Use setAtomProperties so that we handle things correctly if a web worker is integrating
+      // Use model.atoms.set so that we handle things correctly if a web worker is integrating
       // the model. (Here we follow the rule that we must assume that an integration might change
       // any property of an atom, and therefore cause changes to atom properties in the main thread
       // to be be lost. This is true even though common sense tells us that the friction property
       // won't change during an integration.)
 
-      model.setAtomProperties(atomIndex, { friction: model.LIVE_DRAG_FRICTION });
+      model.atoms.set(atomIndex, { friction: model.LIVE_DRAG_FRICTION });
 
       liveDragSpringForceIndex = model.addSpringForce(atomIndex, x, y, 500);
     };
@@ -1392,7 +1294,7 @@ define(function(require) {
     model.liveDragEnd = function() {
       var atomIndex = engine.springForceAtomIndex(liveDragSpringForceIndex);
 
-      model.setAtomProperties(atomIndex, { friction: liveDragSavedFriction });
+      model.atoms.set(atomIndex, { friction: liveDragSavedFriction });
       model.removeSpringForce(liveDragSpringForceIndex);
       liveDragSpringForceIndex = null;
     };
@@ -1425,10 +1327,6 @@ define(function(require) {
 
     model.get_elements = function() {
       return elements;
-    };
-
-    model.getAtoms = function() {
-      return engine.atoms.rawObjects;
     };
 
     model.getElectricField = function() {

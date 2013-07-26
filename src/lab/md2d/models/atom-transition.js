@@ -14,11 +14,11 @@ define(function (require) {
 
 
   AtomTransition.prototype.setObjectProperties = function(id, props) {
-    this._model.setAtomProperties(id, props);
+    this._model.atoms.set(id, props);
   };
 
   AtomTransition.prototype.getObjectProperties = function (id) {
-    return this._model.getAtomProperties(id);
+    return this._model.atoms.get(id);
   };
 
   return AtomTransition;

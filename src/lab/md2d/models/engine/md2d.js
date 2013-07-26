@@ -719,9 +719,52 @@ define(function (require, exports) {
             initializeNeighborList();
           }
 
-          function beforeSetCallback(i, props) {
+          function beforeSetCallback(i, props, options) {
             var cysteineEl = aminoacidsHelper.cysteineElement,
-                idx, rest, amino, j;
+                checkLocation = options && options.checkLocation,
+                moveMolecule = options && options.moveMolecule,
+                idx, rest, amino, j, jj,
+                radius;
+
+            checkLocation = typeof checkLocation !== "undefined" ? checkLocation : true;
+
+            if (typeof props.x !== "undefined" || typeof props.y !== "undefined") {
+              radius = elementRadius[typeof props.element !== "undefined" ? props.element : element[i]];
+              if (typeof props.x !== "undefined") {
+                if (props.x < (minX + radius)) props.x = minX + radius;
+                if (props.x > (maxX - radius)) props.x = maxX - radius;
+              }
+              if (typeof props.y !== "undefined") {
+                if (props.y < (minY + radius)) props.y = minY + radius;
+                if (props.y > (maxY - radius)) props.y = maxY - radius;
+              }
+
+              if (checkLocation) {
+                var cx = typeof props.x === "number" ? props.x : x[i],
+                    cy = typeof props.y === "number" ? props.y : y[i],
+                    el = typeof props.element === "number" ? props.element : element[i];
+                if (!engine.canPlaceAtom(el, cx, cy, i)) {
+                  throw new Error("md2d: Atom can't be placed at " + cx + ", " + cy);
+                }
+              }
+
+              if (moveMolecule) {
+                var moleculeAtoms = engine.getMoleculeAtoms(i);
+                if (moleculeAtoms.length > 0) {
+                  var dx = typeof props.x === "number" ? props.x - atoms.data.x[i] : 0;
+                  var dy = typeof props.y === "number" ? props.y - atoms.data.y[i] : 0;
+                  for (j = 0, jj = moleculeAtoms.length; j < jj; j++) {
+                    idx = moleculeAtoms[j];
+                    if (checkLocation && !engine.canPlaceAtom(element[idx], x[idx] + dx, y[idx] + dy, idx)) {
+                      throw new Error("md2d: Molecule atom can't be placed at " +
+                                      (x[idx] + dx) + ", " + (y[idx] + dy));
+                    }
+                    x[idx] += dx;
+                    y[idx] += dy;
+                  }
+                }
+              }
+            }
 
             if (props.element !== undefined) {
               if (props.element < 0 || props.element >= N_elements) {

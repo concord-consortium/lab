@@ -68,7 +68,7 @@ define (require) ->
         # Translate abbreviation to element ID.
         elemId = aminoacids.abbrToElement key
         # Set amino acid type.
-        model.setAtomProperties props.idx, element: elemId
+        model.atoms.set props.idx, element: elemId
         # Redraw view.
         # TODO: model should dispatch appropriate event, which should trigger repaint automatically.
         view.repaint()

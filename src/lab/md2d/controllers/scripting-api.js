@@ -47,15 +47,15 @@ define(function (require) {
         return model.getNumberOfAngularBonds();
       },
 
-      addAtom: function addAtom(props, options) {
-        if (options && options.suppressRepaint) {
-          // Translate suppressRepaint option to
-          // option understable by modeler.
-          // supresRepaint is a conveniance option for
-          // Scripting API users.
-          options.suppressEvent = true;
+      addAtom: function addAtom(props, checkLocation) {
+        try {
+          model.atoms.add(props, {
+            checkLocation: checkLocation
+          });
+          return true;
+        } catch (e) {
+          return false;
         }
-        return model.addAtom(props, options);
       },
 
       /*
@@ -157,7 +157,7 @@ define(function (require) {
             props, dist, i, len;
 
         for (i = 0, len = model.getNumberOfAtoms(); i < len; i++) {
-          props = model.getAtomProperties(i);
+          props = model.atoms.get(i);
           if (typeof element !== 'undefined' && props.element !== element) continue;
           dist = Math.sqrt(Math.pow(x - props.x, 2) + Math.pow(y - props.y, 2));
           if (dist <= r) {
@@ -184,7 +184,7 @@ define(function (require) {
             props, dist, inX, inY, i, len;
 
         for (i = 0, len = model.getNumberOfAtoms(); i < len; i++) {
-          props = model.getAtomProperties(i);
+          props = model.atoms.get(i);
           if (typeof element !== 'undefined' && props.element !== element) continue;
           if (typeof h === 'undefined') {
             dist = Math.sqrt(Math.pow(x - props.x, 2) + Math.pow(y - props.y, 2));
@@ -240,7 +240,7 @@ define(function (require) {
         }
 
         for (i = 0, len = model.getNumberOfAtoms(); i < len; i++) {
-          props = model.getAtomProperties(i);
+          props = model.atoms.get(i);
           if (typeof element !== 'undefined' && props.element !== element) continue;
           if (isInTriangle(props.x, props.y)) {
             result.push(i);
@@ -269,7 +269,7 @@ define(function (require) {
 
         // mark the requested atoms
         for (i = 0, len = indices.length; i < len; i++) {
-          model.setAtomProperties(indices[i], {marked: 1});
+          model.atoms.set(indices[i], {marked: 1});
         }
 
         api.repaintIfReady();
@@ -277,7 +277,7 @@ define(function (require) {
 
       unmarkAllAtoms: function unmarkAllAtoms() {
         for (var i = 0, len = model.getNumberOfAtoms(); i < len; i++) {
-          model.setAtomProperties(i, {marked: 0});
+          model.atoms.set(i, {marked: 0});
         }
         api.repaintIfReady();
       },
@@ -298,7 +298,10 @@ define(function (require) {
         e.g. setAtomProperties(5, {x: 1, y: 0.5, charge: 1})
       */
       setAtomProperties: function setAtomProperties(i, props, checkLocation, moveMolecule, options) {
-        model.setAtomProperties(i, props, checkLocation, moveMolecule);
+        model.atoms.set(i, props, {
+          checkLocation: checkLocation,
+          moveMolecule: moveMolecule
+        });
         api.repaintIfReady(options);
       },
 
@@ -329,10 +332,10 @@ define(function (require) {
 
       /**
         Returns atom properties as a human-readable hash.
-        e.g. getAtomProperties(5) --> {x: 1, y: 0.5, charge: 1, ... }
+        e.g. atoms.get(5) --> {x: 1, y: 0.5, charge: 1, ... }
       */
       getAtomProperties: function getAtomProperties(i) {
-        return model.getAtomProperties(i);
+        return model.atoms.get(i);
       },
 
       /**
@@ -684,8 +687,8 @@ define(function (require) {
         model.setTextBoxProperties(i, props);
       },
 
-      repaintIfReady: function(options) {
-        if (!(inBatch || options && options.suppressRepaint)) {
+      repaintIfReady: function() {
+        if (!inBatch) {
           api.repaint();
         }
       },

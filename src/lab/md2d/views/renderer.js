@@ -160,8 +160,11 @@ define(function (require) {
       return timePrefix + modelTimeFormatter(model.get('displayTime')) + timeSuffix;
     }
 
-    function setAtomPosition(i, xpos, ypos, checkPosition, moveMolecule) {
-      return model.setAtomProperties(i, {x: xpos, y: ypos}, checkPosition, moveMolecule);
+    function setAtomPosition(i, xpos, ypos, checkLocation, moveMolecule) {
+      model.atoms.set(i, {x: xpos, y: ypos}, {
+        checkLocation: checkLocation,
+        moveMolecule: moveMolecule
+      });
     }
 
     function getObstacleColor(i) {
@@ -1727,9 +1730,10 @@ define(function (require) {
 
     function nodeDragEnd(d, i) {
       if (model.isStopped()) {
-
-        if (!setAtomPosition(i, d.x, d.y, true, true)) {
-          alert("You can't drop the atom there");     // should be changed to a nice Lab alert box
+        try {
+          setAtomPosition(i, d.x, d.y, true, true)
+        } catch (e) {
+          alert("You can't drop the atom there");
           setAtomPosition(i, dragOrigin[0], dragOrigin[1], false, true);
         }
         update();
@@ -1873,7 +1877,7 @@ define(function (require) {
       fontSizeInPixels = modelView.getFontSizeInPixels();
       textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
 
-      modelAtoms  = model.getAtoms();
+      modelAtoms  = model.atoms.rawObjects;
       modelElements = model.get_elements();
       modelWidth    = model.get('width');
       modelHeight   = model.get('height');
@@ -1904,7 +1908,7 @@ define(function (require) {
       model.addPropertiesListener(["electricFieldDensity", "showElectricField", "electricFieldColor"],
         setupElectricField);
 
-      model.on('addAtom', redrawClickableObjects(setupParticles));
+      model.atoms.on('add', redrawClickableObjects(setupParticles));
       model.on('removeAtom', redrawClickableObjects(repaint));
       model.on('addRadialBond', redrawClickableObjects(setupRadialBonds));
       model.on('removeRadialBond', redrawClickableObjects(setupRadialBonds));
