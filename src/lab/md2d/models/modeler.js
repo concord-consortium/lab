@@ -230,11 +230,6 @@ define(function(require) {
 
         // ####################################################################
 
-        // An array of objects consisting of atom index numbers and atom property values, for easy
-        // consumption by the view. It is updated conservatively from the "unrolled" form used for
-        // speedy computation by the engine.
-        viewAtoms = [],
-
         // An array of objects consisting of photon index numbers and property values, for easy
         // consumption by the view. Only defined if the quantum dynamics plugin is used.
         viewPhotons,
@@ -344,7 +339,7 @@ define(function(require) {
     })();
 
     /**
-      This method is called to refresh the viewAtoms array and macrostate variables (KE, PE,
+      This method is called to refresh the macrostate variables (KE, PE,
       temperature) whenever an engine integration occurs or the model state is otherwise changed.
 
       Normally, you should call the methods updateOutputPropertiesAfterChange or
@@ -358,58 +353,8 @@ define(function(require) {
       // remember that getViewPhotons will eventually be a modeler-layer method that ingests a raw
       // representation provided by modelState.photons
       viewPhotons = engine.callPluginAccessor('getViewPhotons');
-      updateViewAtoms(modelState.atoms);
       updateViewElectricField();
     }
-
-    // Transpose 'atoms' object into 'viewAtoms' for consumption by view code
-    var updateViewAtoms = (function() {
-      var isAminoAcid = function () {
-        return aminoacidsHelper.isAminoAcid(this.element);
-      };
-
-      return function(atoms) {
-        var n = engine.getNumberOfAtoms(),
-            i,
-            prop,
-            amino,
-            viewAtom;
-
-        // TODO: refactor whole approach to creation of objects from flat arrays.
-        // Think about more general way of detecting and representing amino acids.
-        // However it would be reasonable to perform such refactoring later, when all requirements
-        // related to proteins engine are clearer.
-
-        viewAtoms.length = n;
-
-        for (i = 0, n; i < n; i++) {
-          if (!viewAtoms[i]) {
-            viewAtoms[i] = {
-              idx: i
-            };
-          }
-          viewAtom = viewAtoms[i];
-
-          for (prop in atoms) {
-            if (atoms.hasOwnProperty(prop)) {
-              viewAtom[prop] = atoms[prop][i];
-            }
-          }
-
-          // Provide convenience function for view, do not force it to ask
-          // model / engine directly. In the future, atom objects should be
-          // represented by a separate class.
-          viewAtom.isAminoAcid = isAminoAcid;
-
-          // Additional properties, used only by view.
-          if (viewAtom.isAminoAcid()) {
-            amino = aminoacidsHelper.getAminoAcidByElement(atoms.element[i]);
-            viewAtom.symbol = amino.symbol;
-            viewAtom.label  = amino.abbreviation;
-          }
-        }
-      };
-    }());
 
     function updateViewElectricField() {
       // It may seem strange that model reads "viewOption"
@@ -604,6 +549,29 @@ define(function(require) {
       restraints = engine.restraints;
       obstacles = engine.obstacles;
       rectangles = engine.rectangles;
+
+      var proto = engine.atoms.rawObjectPrototype;
+      proto.isAminoAcid = function () {
+        return aminoacidsHelper.isAminoAcid(this.element);
+      };
+      Object.defineProperty(proto, 'symbol', {
+        enumerable: true,
+        get: function() {
+          if (this.isAminoAcid()) {
+            return aminoacidsHelper.getAminoAcidByElement(this.element).symbol;
+          }
+          return undefined;
+        }
+      });
+      Object.defineProperty(proto, 'label', {
+        enumerable: true,
+        get: function() {
+          if (this.isAminoAcid()) {
+            return aminoacidsHelper.getAminoAcidByElement(this.element).abbreviation;
+          }
+          return undefined;
+        }
+      });
 
       engine.electricFields.on("beforeChange.invalidation", propertySupport.invalidatingChangePreHook);
       engine.electricFields.on("change.invalidation", propertySupport.invalidatingChangePostHook);
@@ -888,6 +856,8 @@ define(function(require) {
       Otherwise, returns true.
 
       silent = true disables this check.
+
+      FIXME TODO: logic should be moved to the engine, to atom's beforeAdd/SetCallback.
     */
     model.addAtom = function(props, options) {
       var minX = model.get('minX'),
@@ -898,9 +868,6 @@ define(function(require) {
 
       options = options || {};
 
-      // Validate properties, provide default values.
-      props = validator.validateCompleteness(metadata.atom, props);
-
       // As a convenience to script authors, bump the atom within bounds
       radius = engine.getRadiusOfElement(props.element);
       if (props.x < (minX + radius)) props.x = minX + radius;
@@ -909,7 +876,7 @@ define(function(require) {
       if (props.y > (maxY - radius)) props.y = maxY - radius;
 
       // check the potential energy change caused by adding an *uncharged* atom at (x,y)
-      if (!options.suppressCheck && !engine.canPlaceAtom(props.element, props.x, props.y)) {
+      if (!options.suppressCheck && !engine.canPlaceAtom(props.element || 0, props.x, props.y)) {
         // return false on failure
         return false;
       }
@@ -920,7 +887,7 @@ define(function(require) {
         propertySupport.invalidatingChangePreHook();
       }
 
-      engine.addAtom(props);
+      engine.atoms.add(props);
 
       if (!options.deserialization) {
         propertySupport.invalidatingChangePostHook();
@@ -940,9 +907,7 @@ define(function(require) {
       options = options || {};
 
       propertySupport.invalidatingChangePreHook();
-      engine.removeAtom(i);
-      // Enforce modeler to recalculate viewAtoms array.
-      viewAtoms.length = 0;
+      engine.atoms.remove(i);
       propertySupport.invalidatingChangePostHook();
 
       if (!options.suppressEvent) {
@@ -1081,7 +1046,7 @@ define(function(require) {
     */
     model.getMoleculeBoundingBox = function(atomIndex) {
 
-      var atoms = modelState.atoms,
+      var atoms = engine.atoms,
           moleculeAtoms,
           i,
           x,
@@ -1098,9 +1063,9 @@ define(function(require) {
       moleculeAtoms.push(atomIndex);
 
       for (i = 0; i < moleculeAtoms.length; i++) {
-        x = atoms.x[moleculeAtoms[i]];
-        y = atoms.y[moleculeAtoms[i]];
-        r = atoms.radius[moleculeAtoms[i]];
+        x = atoms.data.x[moleculeAtoms[i]];
+        y = atoms.data.y[moleculeAtoms[i]];
+        r = atoms.data.radius[moleculeAtoms[i]];
 
         if (x-r < left  ) left   = x-r;
         if (x+r > right ) right  = x+r;
@@ -1108,8 +1073,8 @@ define(function(require) {
         if (y+r > top   ) top    = y+r;
       }
 
-      cx = atoms.x[atomIndex];
-      cy = atoms.y[atomIndex];
+      cx = atoms.data.x[atomIndex];
+      cy = atoms.data.y[atomIndex];
 
       return { top: top-cy, left: left-cx, bottom: bottom-cy, right: right-cx };
     },
@@ -1137,23 +1102,20 @@ define(function(require) {
         the bonded atoms together.
       */
     model.setAtomProperties = function(i, props, checkLocation, moveMolecule) {
-      var atoms = modelState.atoms,
+      var atoms = engine.atoms,
           moleculeAtoms,
           dx, dy,
           new_x, new_y,
           j, jj;
 
-      // Validate properties.
-      props = validator.validate(metadata.atom, props);
-
       if (moveMolecule) {
         moleculeAtoms = engine.getMoleculeAtoms(i);
         if (moleculeAtoms.length > 0) {
-          dx = typeof props.x === "number" ? props.x - atoms.x[i] : 0;
-          dy = typeof props.y === "number" ? props.y - atoms.y[i] : 0;
+          dx = typeof props.x === "number" ? props.x - atoms.data.x[i] : 0;
+          dy = typeof props.y === "number" ? props.y - atoms.data.y[i] : 0;
           for (j = 0, jj=moleculeAtoms.length; j<jj; j++) {
-            new_x = atoms.x[moleculeAtoms[j]] + dx;
-            new_y = atoms.y[moleculeAtoms[j]] + dy;
+            new_x = atoms.data.x[moleculeAtoms[j]] + dx;
+            new_y = atoms.data.y[moleculeAtoms[j]] + dy;
             if (!model.setAtomProperties(moleculeAtoms[j], {x: new_x, y: new_y}, checkLocation, false)) {
               return false;
             }
@@ -1162,9 +1124,9 @@ define(function(require) {
       }
 
       if (checkLocation) {
-        var x  = typeof props.x === "number" ? props.x : atoms.x[i],
-            y  = typeof props.y === "number" ? props.y : atoms.y[i],
-            el = typeof props.element === "number" ? props.y : atoms.element[i];
+        var x  = typeof props.x === "number" ? props.x : atoms.data.x[i],
+            y  = typeof props.y === "number" ? props.y : atoms.data.y[i],
+            el = typeof props.element === "number" ? props.y : atoms.data.element[i];
 
         if (!engine.canPlaceAtom(el, x, y, i)) {
           return false;
@@ -1172,23 +1134,13 @@ define(function(require) {
       }
 
       propertySupport.invalidatingChangePreHook();
-      engine.setAtomProperties(i, translateToMD2DUnits(props, metadata.atom));
+      engine.atoms.set(i, props);
       propertySupport.invalidatingChangePostHook();
       return true;
     };
 
     model.getAtomProperties = function(i) {
-      var atoms = modelState.atoms,
-          atomMetaData = metadata.atom,
-          props = {},
-          propName;
-
-      for (propName in atomMetaData) {
-        if (atomMetaData.hasOwnProperty(propName) && atoms[propName]) {
-          props[propName] = atoms[propName][i];
-        }
-      }
-      return translateFromMD2DUnits(props, atomMetaData);
+      return engine.atoms.get(i);
     };
 
     model.getRadialBondsForAtom = function(i) {
@@ -1410,8 +1362,8 @@ define(function(require) {
     model.liveDragStart = function(atomIndex, x, y) {
       if (liveDragSpringForceIndex != null) return;    // don't add a second liveDrag force
 
-      if (x == null) x = modelState.atoms.x[atomIndex];
-      if (y == null) y = modelState.atoms.y[atomIndex];
+      if (x == null) x = engine.atoms.data.x[atomIndex];
+      if (y == null) y = engine.atoms.data.y[atomIndex];
 
       liveDragSavedFriction = model.getAtomProperties(atomIndex).friction;
 
@@ -1476,7 +1428,7 @@ define(function(require) {
     };
 
     model.getAtoms = function() {
-      return viewAtoms;
+      return engine.atoms.rawObjects;
     };
 
     model.getElectricField = function() {
@@ -1505,9 +1457,9 @@ define(function(require) {
     */
     model.getNumberOfAtoms = function(f) {
       if (!f) {
-        return viewAtoms.length;
+        return engine.atoms.count;
       }
-      return viewAtoms.reduce(function(total, atom) {
+      return engine.atoms.rawObjects.reduce(function(total, atom) {
         return f(atom) ? total + 1 : total;
       }, 0);
     };
@@ -1776,7 +1728,7 @@ define(function(require) {
 
       propCopy = serialize(metadata.mainProperties, rawProperties);
       propCopy.viewOptions = serialize(metadata.viewOptions, rawProperties);
-      propCopy.atoms = serialize(metadata.atom, modelState.atoms, engine.getNumberOfAtoms());
+      propCopy.atoms = engine.atoms.serialize();
 
       if (engine.getNumberOfRadialBonds()) {
         propCopy.radialBonds = serialize(metadata.radialBond, radialBonds, engine.getNumberOfRadialBonds());
