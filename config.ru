@@ -21,6 +21,7 @@ use Shutterbug::Rackapp
 if ENVIRONMENT == 'development'
   puts "using rack-live-reload"
   use Rack::LiveReload
+  use Rack::Static, :urls => [""], :root => PUBLIC_PATH, :index =>'index.html'
 end
 
 Rack::Mime::MIME_TYPES.merge!({
