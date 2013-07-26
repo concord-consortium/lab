@@ -135,15 +135,6 @@ describe "MD2D modeler with Quantum Dynamics plugin", ->
         quantumDynamics: null
       }
 
-    it "should not allow excitation to be set", ->
-      # Atoms data.
-      data =
-        x: [1, 1]
-        y: [1, 1]
-        excitation: [0, 1]
-
-      (-> model.createAtoms(data)).should.throw TypeError
-
     it "should not have an excitation table", ->
       # Atoms data.
       data =

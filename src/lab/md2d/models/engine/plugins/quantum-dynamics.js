@@ -53,15 +53,14 @@ define(function(require) {
         dimensions           = engine.getDimensions(),
 
         atoms,
+        atomsData,
         elements,
         photons,
 
         nextPhotonId = 0,
 
         updateAtomsTable = function() {
-          var length = atoms.x.length;
-
-          atoms.excitation = arrays.create(length, 0, arrayTypes.int8Type);
+          atoms.defineNewProperty("excitation", {type: "int8"});
         },
 
         createPhotonsTable = function(serializedPhotons) {
@@ -127,14 +126,14 @@ define(function(require) {
           // get all proximal pairs of atoms, using neighborList
           for (a1 = 0; a1 < N; a1++) {
 
-            xi = atoms.x[a1];
-            yi = atoms.y[a1];
+            xi = atomsData.x[a1];
+            yi = atomsData.y[a1];
 
             for (i = neighborList.getStartIdxFor(a1), len = neighborList.getEndIdxFor(a1); i < len; i++) {
               a2 = nlist[i];
 
-              el1 = atoms.element[a1];
-              el2 = atoms.element[a2];
+              el1 = atomsData.element[a1];
+              el2 = atomsData.element[a2];
               energyLevels1 = elementEnergyLevels[el1];
               energyLevels2 = elementEnergyLevels[el2];
 
@@ -144,8 +143,8 @@ define(function(require) {
              }
 
               // if we aren't close (within the avrSigma of two atoms), skip
-              xij = xi - atoms.x[a2];
-              yij = yi - atoms.y[a2];
+              xij = xi - atomsData.x[a2];
+              yij = yi - atomsData.y[a2];
               ijsq = xij * xij + yij * yij;
               avrSigma = 0.5 * (elements.sigma[el1] + elements.sigma[el2]);
               avrSigmaSq = avrSigma * avrSigma;
@@ -218,7 +217,7 @@ define(function(require) {
         // Excites an atom to a new energy level if the relative KE of the pair atom1Idx
         // and atom2Idx is high enough, and updates the velocities of atoms as necessary
         tryToExcite = function(i) {
-          var energyLevels   =   elementEnergyLevels[atoms.element[i]],
+          var energyLevels   =   elementEnergyLevels[atomsData.element[i]],
               currentEnergyLevel,
               currentElectronEnergy,
               relativeKE,
@@ -232,7 +231,7 @@ define(function(require) {
 
           relativeKE = getRelativeKE();
 
-          currentEnergyLevel = atoms.excitation[i];
+          currentEnergyLevel = atomsData.excitation[i];
           currentElectronEnergy = energyLevels[currentEnergyLevel];
 
           // get the highest energy level above the current that the relative KE can reach
@@ -253,15 +252,15 @@ define(function(require) {
           highest = highest - currentEnergyLevel;
           nextEnergyLevel = Math.ceil(Math.random() * highest) + currentEnergyLevel;
 
-          atoms.excitation[i] = nextEnergyLevel;
+          atomsData.excitation[i] = nextEnergyLevel;
           energyAbsorbed = energyLevels[nextEnergyLevel] - currentElectronEnergy;
           updateVelocities(energyAbsorbed);
           return true;
         },
 
         precalculateVelocities = function() {
-          dx = atoms.x[atom2Idx] - atoms.x[atom1Idx];
-          dy = atoms.y[atom2Idx] - atoms.y[atom1Idx];
+          dx = atomsData.x[atom2Idx] - atomsData.x[atom1Idx];
+          dy = atomsData.y[atom2Idx] - atomsData.y[atom1Idx];
 
           var normalizationFactor = 1 / Math.sqrt(dx*dx + dy*dy);
 
@@ -269,32 +268,33 @@ define(function(require) {
           dy *= normalizationFactor;
 
           // Decompose v1 into components u1 (parallel to d) and w1 (orthogonal to d)
-          u1 = atoms.vx[atom1Idx] * dx + atoms.vy[atom1Idx] * dy;
-          w1 = atoms.vy[atom1Idx] * dx - atoms.vx[atom1Idx] * dy;
+          u1 = atomsData.vx[atom1Idx] * dx + atomsData.vy[atom1Idx] * dy;
+          w1 = atomsData.vy[atom1Idx] * dx - atomsData.vx[atom1Idx] * dy;
 
           // Decompose v2 similarly
-          u2 = atoms.vx[atom2Idx] * dx + atoms.vy[atom2Idx] * dy;
-          w2 = atoms.vy[atom2Idx] * dx - atoms.vx[atom2Idx] * dy;
+          u2 = atomsData.vx[atom2Idx] * dx + atomsData.vy[atom2Idx] * dy;
+          w2 = atomsData.vy[atom2Idx] * dx - atomsData.vx[atom2Idx] * dy;
         },
 
         getRelativeKE = function() {
           var du   = u2 - u1;
 
-          return 0.5 * du * du * atoms.mass[atom1Idx] * atoms.mass[atom2Idx] / (atoms.mass[atom1Idx] + atoms.mass[atom2Idx]);
+          return 0.5 * du * du * atomsData.mass[atom1Idx] * atomsData.mass[atom2Idx] /
+                 (atomsData.mass[atom1Idx] + atomsData.mass[atom2Idx]);
         },
 
         updateVelocities = function(delta) {
-          var m1 = atoms.mass[atom1Idx],
-              m2 = atoms.mass[atom2Idx],
+          var m1 = atomsData.mass[atom1Idx],
+              m2 = atomsData.mass[atom2Idx],
               j  = m1 * u1 * u1 + m2 * u2 * u2 - delta,
               g  = m1 * u1 + m2 * u2,
               v1 = (g - Math.sqrt(m2 / m1 * (j * (m1 + m2) - g * g))) / (m1 + m2),
               v2 = (g + Math.sqrt(m1 / m2 * (j * (m1 + m2) - g * g))) / (m1 + m2);
 
-          atoms.vx[atom1Idx] = v1 * dx - w1 * dy;
-          atoms.vy[atom1Idx] = v1 * dy + w1 * dx;
-          atoms.vx[atom2Idx] = v2 * dx - w2 * dy;
-          atoms.vy[atom2Idx] = v2 * dy + w2 * dx;
+          atomsData.vx[atom1Idx] = v1 * dx - w1 * dy;
+          atomsData.vy[atom1Idx] = v1 * dy + w1 * dx;
+          atomsData.vx[atom2Idx] = v2 * dx - w2 * dy;
+          atomsData.vy[atom2Idx] = v2 * dy + w2 * dx;
         },
 
         // If one atom has an electron in a higher energy state (and we didn't
@@ -304,8 +304,8 @@ define(function(require) {
         // probabilities of each depending on the model settings.
         tryToDeexciteAtoms = function(a1, a2) {
           var selection,
-              excitation1 = atoms.excitation[a1],
-              excitation2 = atoms.excitation[a2];
+              excitation1 = atomsData.excitation[a1],
+              excitation2 = atomsData.excitation[a2];
 
           atom1Idx = a1;
           atom2Idx = a2;
@@ -327,12 +327,12 @@ define(function(require) {
         },
 
         deexcite = function(i) {
-          var energyLevels   = elementEnergyLevels[atoms.element[i]],
-              currentLevel   = atoms.excitation[i],
+          var energyLevels   = elementEnergyLevels[atomsData.element[i]],
+              currentLevel   = atomsData.excitation[i],
               newLevel       = Math.floor(Math.random() * currentLevel),
               energyReleased = energyLevels[newLevel] - energyLevels[currentLevel];
 
-          atoms.excitation[i] = newLevel;
+          atomsData.excitation[i] = newLevel;
 
           if (Math.random() < pRadiationless) {
             // new energy goes into increasing atom velocities after collision
@@ -368,11 +368,11 @@ define(function(require) {
           var angle = Math.random() * TWO_PI,
               cosA  = Math.cos(angle),
               sinA  = Math.sin(angle),
-              sigma = elements.sigma[atoms.element[atomIndex]],
+              sigma = elements.sigma[atomsData.element[atomIndex]],
 
               // set photon location just outside atom's sigma
-              x           = atoms.x[atomIndex] + (sigma * 0.51 * cosA),
-              y           = atoms.y[atomIndex] + (sigma * 0.51 * sinA),
+              x           = atomsData.x[atomIndex] + (sigma * 0.51 * cosA),
+              y           = atomsData.y[atomIndex] + (sigma * 0.51 * sinA),
               vx          = C * cosA,
               vy          = C * sinA,
               angularFreq = energy / PLANCK_CONSTANT,
@@ -414,7 +414,7 @@ define(function(require) {
 
         tryToSpontaneouslyEmit = function(atomIndex, dt) {
 
-          if (atoms.excitation[atomIndex] === 0) { return; }
+          if (atomsData.excitation[atomIndex] === 0) { return; }
 
           // The probability of an emission in the current timestep is the probability that an
           // exponential random variable T with expected value LIFETIME has value t less than dt.
@@ -430,14 +430,14 @@ define(function(require) {
               energyLevels,
               excessEnergy,
               i,
-              m = atoms.excitation[atomIndex],
+              m = atomsData.excitation[atomIndex],
               mInverse = 1/m;
 
           for (i = 0; i < m; i++) {
             if (i*mInverse <= u1 && u1 < (i+1)*mInverse && pRadiationless < u2) {
-              energyLevels = elementEnergyLevels[atoms.element[atomIndex]];
+              energyLevels = elementEnergyLevels[atomsData.element[atomIndex]];
               excessEnergy = energyLevels[m] - energyLevels[i];
-              atoms.excitation[atomIndex] = i;
+              atomsData.excitation[atomIndex] = i;
               emitPhoton(atomIndex, excessEnergy);
               return;
             }
@@ -448,6 +448,7 @@ define(function(require) {
     api = {
       initialize: function(dataTables) {
         atoms     = dataTables.atoms;
+        atomsData = atoms.data;
         elements  = dataTables.elements;
         updateAtomsTable();
         createPhotonsTable(properties.photons);
