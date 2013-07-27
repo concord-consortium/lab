@@ -36,6 +36,8 @@ group :development do
   gem "fog",                "~> 1.12.1"
   gem "librarian-chef",     "~> 0.0.1"
 
+  gem "rack-nocache",       "~> 0.1.0"
+
   # http://about.travis-ci.org/docs/user/travis-lint/
   gem "travis-lint"
 

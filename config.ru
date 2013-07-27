@@ -21,6 +21,8 @@ use Shutterbug::Rackapp
 if ENVIRONMENT == 'development'
   puts "using rack-live-reload"
   use Rack::LiveReload
+  require "rack-nocache"
+  use Rack::Nocache
   use Rack::Static, :urls => [""], :root => PUBLIC_PATH, :index =>'index.html'
 end
 
