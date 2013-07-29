@@ -228,6 +228,30 @@ define(function (require) {
           },
 
           /**
+           * Sets a custom drag handler for objects of a given type.
+           * Drag handler will be executed after position of an object is updated due to user
+           * dragging action, so custom handler can affect it (e.g. limit to only one axis), e.g:
+           *
+           *   onDrag("atom", function (x, y, i, d) {
+           *     setAtomProperties(i, {y: 2});
+           *   });
+           *
+           * MD2D specific notes:
+           * only "atom" type is supported.
+           *
+           * @param {string}   type    Name of the type of draggable objects.
+           * @param {Function} handler Custom drag handler. It will be called
+           *                           when object is dragged with (x, y, d, i) arguments:
+           *                             x - x coordinate in model units,
+           *                             y - y coordinate in model units,
+           *                             d - data associated with a given object (can be undefined!),
+           *                             i - ID of an object (usually its value makes sense if d is defined).
+           */
+          onDrag: function onDrag(type, handler) {
+            interactivesController.getModelController().modelContainer.setDragHandler(type, handler);
+          },
+
+          /**
            * Sets custom select handler. It enables select action and lets author provide custom handler
            * which is executed when select action is finished. The area of selection is passed to handler
            * as arguments. It is defined by rectangle - its lower left corner coordinates, width and height.

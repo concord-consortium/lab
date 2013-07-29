@@ -1711,6 +1711,9 @@ define(function (require) {
         drag = dragPoint(dragX, dragY);
         model.liveDrag(drag.x, drag.y);
       }
+      if (modelView.dragHandler.atom) {
+        modelView.dragHandler.atom(drag.x, drag.y, d, i);
+      }
     }
 
     function textDrag(d) {

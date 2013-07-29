@@ -46,6 +46,7 @@ define(function (require) {
         brushContainer,
 
         clickHandler,
+        dragHandler,
         // d3.svg.brush object used to implement select action. It should be
         // updated each time model2px and model2pxInv functions are changed!
         selectBrush,
@@ -477,6 +478,7 @@ define(function (require) {
       viewportDragging();
 
       clickHandler = {};
+      dragHandler = {};
 
       // Register listeners.
       // Redraw container each time when some visual-related property is changed.
@@ -518,6 +520,9 @@ define(function (require) {
       },
       get url() {
         return modelUrl;
+      },
+      get dragHandler() {
+        return dragHandler;
       },
 
       repaint: function() {
@@ -685,6 +690,27 @@ define(function (require) {
         // Add a new "g" to easily remove it while
         // disabling / reseting select action.
         brushContainer.append("g").classed("select-area", true).call(selectBrush);
+      },
+      /**
+       * Sets custom drag handler. Note that dragging behavior is very specific for implementation
+       * and it's done in the particular renderers. That's why this functions only provides handler
+       * for renderers in .dragHandler property (plain object). Renderers that implement dragging
+       * behavior can tests whether drag handler for a given object type is available, e.g.:
+       * if (svgContainer.dragHandler.someObject) {
+       *   svgContainer.dragHandler.someObject(x, y, d, i);
+       * }
+       * This method is mostly about convention, it doesn't provide any special behavior.
+       *
+       * @param {string}   selector String defining draggable objects.
+       * @param {Function} handler  Custom drag handler. It will be called
+       *                            when object is dragged with (x, y, d, i) arguments:
+       *                              x - x coordinate in model units,
+       *                              y - y coordinate in model units,
+       *                              d - data associated with a given object (can be undefined!),
+       *                              i - ID of an object (usually its value makes sense if d is defined).
+       */
+      setDragHandler: function (type, handler) {
+        dragHandler[type] = handler;
       }
     };
 
