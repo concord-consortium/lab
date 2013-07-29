@@ -1,0 +1,63 @@
+{
+  "title": "onDrag Demo",
+  "publicationStatus": "public",
+  "subtitle": "Use onDrag() to attach an event handler that can react to dragging action.",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "simple-model",
+      "model": {
+        "width": 4,
+        "height": 3,
+        "atoms": {
+          "x": [
+            1,
+            1
+          ],
+          "y": [
+            2.5,
+            0.5
+          ]
+        }
+      },
+      "viewOptions": {
+        "controlButtons": "reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "select-action",
+      "type": "radio",
+      "label": "Limit atoms dragging",
+      "orientation": "horizontal",
+      "options": [
+        {
+          "text": "disabled",
+          "action": "onDrag('atom', null);",
+          "selected": true
+        },
+        {
+          "text": "enabled",
+          "action": [
+            "onDrag('atom', function (x, y, d, i) {",
+            "  if (i === 0) {",
+            "    x = Math.max(1, Math.min(3, x));",
+            "    y = 2.5;",
+            "  } else if (i === 1) {",
+            "    y = Math.max(0.5, Math.min(2, y));",
+            "    x = 1;",
+            "  }",
+            "  setAtomProperties(i, {x: x, y: y});",
+            "});"
+          ]
+        }
+      ]
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "select-action"
+    ]
+  }
+}
