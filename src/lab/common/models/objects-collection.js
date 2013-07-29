@@ -59,13 +59,16 @@ define(function (require) {
 
     // Objects with translated units.
     function ObjectWrapper(idx) {
+      var self = this;
       this.idx = idx;
-      Object.freeze(this);
+      propNames.forEach(function (name) {
+        defineObjectProperty(self, name);
+      });
     }
-    function defineObjectProperty(name) {
+    function defineObjectProperty(target, name) {
       var unitType = metadata[name].unitType,
           objCache = {};
-      Object.defineProperty(ObjectWrapper.prototype, name, {
+      Object.defineProperty(target, name, {
         enumerable: true,
         configurable: false,
         get: function () {
@@ -80,16 +83,18 @@ define(function (require) {
         }
       });
     }
-    propNames.forEach(defineObjectProperty);
 
     // Object with raw values.
     function RawObjectWrapper(idx) {
+      var self = this;
       this.idx = idx;
-      Object.freeze(this);
+      propNames.forEach(function (name) {
+        defineRawObjectProperty(self, name);
+      });
     }
-    function defineRawObjectProperty(name) {
+    function defineRawObjectProperty(target, name) {
       var objCache = {};
-      Object.defineProperty(RawObjectWrapper.prototype, name, {
+      Object.defineProperty(target, name, {
         enumerable: true,
         configurable: false,
         get: function () {
@@ -101,7 +106,6 @@ define(function (require) {
         }
       });
     }
-    propNames.forEach(defineRawObjectProperty);
 
     api = {
       get count() {
@@ -256,8 +260,13 @@ define(function (require) {
         propNames.push(name);
         metadata[name] = propertyMetadata;
         data[name] = arrays.create(capacity, 0, getArrType(propertyMetadata.type));
-        defineRawObjectProperty(name);
-        defineObjectProperty(name);
+        // Update existing object wrappers.
+        objects.forEach(function (obj) {
+          defineObjectProperty(obj, name);
+        });
+        rawObjects.forEach(function (rawObj) {
+          defineRawObjectProperty(rawObj, name);
+        });
       },
 
       defineHelperArray: function (name, type) {
