@@ -122,7 +122,7 @@ define(function(require) {
       // multiple exports during a single DG session.)
       this.doCommand('createCollection', {
         name: this.parentCollectionName,
-        attrs: [{name: 'Number of Time Points'}].concat(perRunColumnLabels),
+        attrs: perRunColumnLabels,
         childAttrName: 'contents'
       });
 
@@ -136,10 +136,9 @@ define(function(require) {
 
       // Step 4. Open a row in the parent table. This will contain the individual time series
       // readings as children.
-      parentCollectionValues = [timeSeriesData.length].concat(perRunColumnValues);
       parentCase = this.doCommand('openCase', {
         collection: this.parentCollectionName,
-        values: parentCollectionValues
+        values: perRunColumnValues
       });
 
       // Step 5. Create rows in the child table for each data point. Using 'createCases' we can
