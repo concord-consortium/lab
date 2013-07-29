@@ -1,4 +1,4 @@
-/*global define model*/
+/*global define, model*/
 /*jslint boss: true*/
 
 define(function (require) {
@@ -8,6 +8,7 @@ define(function (require) {
   var ExportController = function exportController(spec) {
     var perRun  = (spec.perRun || []).slice(),
         perTick = ['displayTime'].concat(spec.perTick.slice()),
+        runNumber = 1,
         perTickValues,
         controller;
 
@@ -113,10 +114,12 @@ define(function (require) {
             i;
 
         logAction('exported');
+        perRunPropertyLabels[0] = "Run";
+        perRunPropertyValues[0] = runNumber++;
 
         for (i = 0; i < perRun.length; i++) {
-          perRunPropertyLabels[i] = getLabelForProperty(perRun[i]);
-          perRunPropertyValues[i] = model.get(perRun[i]);
+          perRunPropertyLabels[i+1] = getLabelForProperty(perRun[i]);
+          perRunPropertyValues[i+1] = model.get(perRun[i]);
         }
 
         for (i = 0; i < perTick.length; i++) {

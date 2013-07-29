@@ -79,11 +79,11 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
         describe "the first argument", ->
           it "should be a list of the per-run parameters followed by the per-run outputs, including labels and units", ->
-            call.args[0].should.eql ["per-run parameter (units 3)", "per-run output (units 1)"]
+            call.args[0].should.eql ["Run", "per-run parameter (units 3)", "per-run output (units 1)"]
 
         describe "the second argument", ->
           it "should be a list of per-run parameters and outputs' values", ->
-            call.args[1].should.eql [10, 1]
+            call.args[1].should.eql [1, 10, 1]
 
         describe "the third argument", ->
           it "should be a list containing \"Time (ps)\", followed by per-tick parameters and outputs, including labels and units", ->
@@ -92,6 +92,16 @@ helpers.withIsolatedRequireJS (requirejs) ->
         describe "the fourth argument", ->
           it "should be a list of lists containing the model time, plus the per-tick values", ->
             call.args[3].should.eql [[0, 2, 20]]
+
+        describe "after exportData is called a second time", ->
+          beforeEach ->
+            exportController.exportData()
+            call = dgExporter.exportData.getCall 1
+
+          describe "the run number", ->
+            it "should be 2", ->
+              call.args[0][0].should.eql "Run"
+              call.args[1][0].should.eql 2
 
 
     describe "regardless of the ordering in the 'perRun' section of the 'exports' spec", ->
@@ -109,7 +119,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
         call = dgExporter.exportData.getCall 0
 
       it "should export per-run parameters before per-run outputs", ->
-        call.args[0].should.eql ["per-run parameter (units 3)", "per-run output (units 1)"]
+        call.args[0].should.eql ["Run", "per-run parameter (units 3)", "per-run output (units 1)"]
 
       it "should continue to export per-tick parameters and outputs in the order listed in the 'perTick' section", ->
         call.args[2].should.eql ["Time (ps)", "per-tick parameter (units 4)", "per-tick output (units 2)"]
