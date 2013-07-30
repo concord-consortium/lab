@@ -318,6 +318,12 @@ define(function() {
         // Note that 'initialValue' makes sense only for checkboxes without property binding.
         // Do not use checkbox as setter.
         conflictsWith: ["property"]
+      },
+      tooltip: {
+        defaultValue: ""
+      },
+      openTooltip: {
+        defaultValue: false
       }
     },
 

@@ -3,7 +3,8 @@
 define(function () {
 
   var metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator');
+      validator = require('common/validator'),
+      tooltip   = require('common/views/tooltip');
 
   return function CheckboxController(component, scriptingAPI, interactivesController) {
     var propertyName,
@@ -114,6 +115,10 @@ define(function () {
         onClickScript(value);
       }
     });
+
+    if (component.tooltip) {
+      tooltip($element, component.tooltip, component.openTooltip, interactivesController);
+    }
 
     // Public API.
     controller = {
