@@ -310,27 +310,27 @@ define(function (require, exports) {
         N_obstacles = 0,
 
         // ####################################################################
-        //                      Rectangle Properties
+        //                      Shape Properties
 
-        // Individual properties for the rectangles
-        rectangleX,
-        rectangleY,
-        rectangleWidth,
-        rectangleHeight,
-        rectangleFence,
-        rectangleColor,
-        rectangleLineColor,
-        rectangleLineDashes,
-        rectangleLineWeight,
-        rectangleLayer,
-        rectangleVisible,
+        // Individual properties for the shapes
+        shapeX,
+        shapeY,
+        shapeWidth,
+        shapeHeight,
+        shapeFence,
+        shapeColor,
+        shapeLineColor,
+        shapeLineDashes,
+        shapeLineWeight,
+        shapeLayer,
+        shapeVisible,
 
-        // An object that contains references to the above rectangle-property arrays.
-        // Left undefined if there are no rectangles.
-        rectangles,
+        // An object that contains references to the above shape-property arrays.
+        // Left undefined if there are no shapes.
+        shapes,
 
-        // Number of actual rectangles
-        N_rectangles = 0,
+        // Number of actual shapes
+        N_shapes = 0,
 
         // ####################################################################
         //                      Electric Field Properties
@@ -338,9 +338,9 @@ define(function (require, exports) {
         // Individual properties for the electric fields.
         electricFieldIntensity,
         electricFieldOrientation,
-        electricFieldRectangleIdx,
+        electricFieldShapeIdx,
 
-        // An object that contains references to the above rectangle-property arrays.
+        // An object that contains references to the above shape-property arrays.
         // Left undefined if there are no electric fields.
         electricFields,
 
@@ -437,7 +437,7 @@ define(function (require, exports) {
           createVdwPairsArray(0);
           createSpringForcesArray(0);
           createObstaclesArray(0);
-          createRectanglesArray(0);
+          createShapesArray(0);
           createElectricFieldsArray(0);
 
           // Custom pairwise properties.
@@ -675,24 +675,24 @@ define(function (require, exports) {
             obstacleVisible     = obstacles.visible;
           },
 
-          rectangles: function() {
-            rectangleX             = rectangles.x;
-            rectangleY             = rectangles.y;
-            rectangleWidth         = rectangles.width;
-            rectangleHeight        = rectangles.height;
-            rectangleFence         = rectangles.fence;
-            rectangleColor         = rectangles.color;
-            rectangleLineColor     = rectangles.lineColor;
-            rectangleLineDashes    = rectangles.lineDashes;
-            rectangleLineWeight    = rectangles.lineWeight;
-            rectangleLayer         = rectangles.layer;
-            rectangleVisible       = rectangles.visible;
+          shapes: function() {
+            shapeX             = shapes.x;
+            shapeY             = shapes.y;
+            shapeWidth         = shapes.width;
+            shapeHeight        = shapes.height;
+            shapeFence         = shapes.fence;
+            shapeColor         = shapes.color;
+            shapeLineColor     = shapes.lineColor;
+            shapeLineDashes    = shapes.lineDashes;
+            shapeLineWeight    = shapes.lineWeight;
+            shapeLayer         = shapes.layer;
+            shapeVisible       = shapes.visible;
           },
 
           electricFields: function() {
             electricFieldIntensity    = electricFields.intensity;
             electricFieldOrientation  = electricFields.orientation;
-            electricFieldRectangleIdx = electricFields.rectangleIdx;
+            electricFieldShapeIdx = electricFields.shapeIdx;
           },
 
           springForces: function() {
@@ -838,22 +838,22 @@ define(function (require, exports) {
           assignShortcutReferences.obstacles();
         },
 
-        createRectanglesArray = function(num) {
-          rectangles = engine.rectangles = {};
+        createShapesArray = function(num) {
+          shapes = engine.shapes = {};
 
-          rectangles.x          = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.y          = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.width      = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.height     = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.color      = [];
-          rectangles.lineColor  = [];
-          rectangles.lineDashes = [];
-          rectangles.lineWeight = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.layer      = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.visible    = arrays.create(num, 0, arrayTypes.uint8Type);
-          rectangles.fence      = arrays.create(num, 0, arrayTypes.uint8Type);
+          shapes.x          = arrays.create(num, 0, arrayTypes.floatType);
+          shapes.y          = arrays.create(num, 0, arrayTypes.floatType);
+          shapes.width      = arrays.create(num, 0, arrayTypes.floatType);
+          shapes.height     = arrays.create(num, 0, arrayTypes.floatType);
+          shapes.color      = [];
+          shapes.lineColor  = [];
+          shapes.lineDashes = [];
+          shapes.lineWeight = arrays.create(num, 0, arrayTypes.floatType);
+          shapes.layer      = arrays.create(num, 0, arrayTypes.floatType);
+          shapes.visible    = arrays.create(num, 0, arrayTypes.uint8Type);
+          shapes.fence      = arrays.create(num, 0, arrayTypes.uint8Type);
 
-          assignShortcutReferences.rectangles();
+          assignShortcutReferences.shapes();
         },
 
         createElectricFieldsArray = function(num) {
@@ -861,7 +861,7 @@ define(function (require, exports) {
 
           electricFields.intensity    = arrays.create(num, 0, arrayTypes.floatType);
           electricFields.orientation  = [];
-          electricFields.rectangleIdx = [];
+          electricFields.shapeIdx = [];
 
           assignShortcutReferences.electricFields();
         },
@@ -1208,9 +1208,9 @@ define(function (require, exports) {
           }
         },
 
-        bounceParticleOffRectangles = function(i, x_prev, y_prev) {
-          // fast path if no rectangles
-          if (N_rectangles < 1) return;
+        bounceParticleOffShapes = function(i, x_prev, y_prev) {
+          // fast path if no shapes
+          if (N_shapes < 1) return;
 
           var r,
               xi,
@@ -1231,19 +1231,19 @@ define(function (require, exports) {
           xi = x[i];
           yi = y[i];
 
-          for (j = 0; j < N_rectangles; j++) {
+          for (j = 0; j < N_shapes; j++) {
 
-            if(!rectangleFence[j]) continue;
+            if(!shapeFence[j]) continue;
 
-            x_outside_left = rectangleX[j] - r;
-            x_outside_right = rectangleX[j] + rectangleWidth[j] + r;
-            y_outside_top = rectangleY[j] + rectangleHeight[j] + r;
-            y_outside_bottom = rectangleY[j] - r;
+            x_outside_left = shapeX[j] - r;
+            x_outside_right = shapeX[j] + shapeWidth[j] + r;
+            y_outside_top = shapeY[j] + shapeHeight[j] + r;
+            y_outside_bottom = shapeY[j] - r;
 
-            x_inside_left = rectangleX[j] + r;
-            x_inside_right = rectangleX[j] + rectangleWidth[j] - r;
-            y_inside_top = rectangleY[j] + rectangleHeight[j] - r;
-            y_inside_bottom = rectangleY[j] + r;
+            x_inside_left = shapeX[j] + r;
+            x_inside_right = shapeX[j] + shapeWidth[j] - r;
+            y_inside_top = shapeY[j] + shapeHeight[j] - r;
+            y_inside_bottom = shapeY[j] + r;
 
             // Check all outside collisions
             if (xi > x_outside_left && xi < x_outside_right && yi > y_outside_bottom && yi < y_outside_top) {
@@ -1688,10 +1688,10 @@ define(function (require, exports) {
         },
 
         rectContains = function (i, x, y) {
-          var rx = rectangleX[i],
-              ry = rectangleY[i];
-          return rx <= x && x <= rx + rectangleWidth[i] &&
-                 ry <= y && y <= ry + rectangleHeight[i];
+          var rx = shapeX[i],
+              ry = shapeY[i];
+          return rx <= x && x <= rx + shapeWidth[i] &&
+                 ry <= y && y <= ry + shapeHeight[i];
         },
 
         getElFieldForce = function (i) {
@@ -1709,7 +1709,7 @@ define(function (require, exports) {
             o = electricFieldOrientation[e];
             vertical = o === "N" || o === "S";
             temp = getElFieldForce(e) / dielectricConst;
-            rect = electricFieldRectangleIdx[e];
+            rect = electricFieldShapeIdx[e];
 
             for (i = 0; i < N; i++) {
               if (rect != null && !rectContains(rect, x[i], y[i])) continue;
@@ -1892,8 +1892,8 @@ define(function (require, exports) {
             bounceParticleOffWalls(i);
             // Bounce off obstacles, update pressure probes.
             bounceParticleOffObstacles(i, xPrev, yPrev, true);
-            // Bounce off rectangles
-            bounceParticleOffRectangles(i, xPrev, yPrev);
+            // Bounce off shapes
+            bounceParticleOffShapes(i, xPrev, yPrev);
           }
         },
 
@@ -2492,12 +2492,12 @@ define(function (require, exports) {
         }
       },
 
-      setRectangleProperties: function (i, props) {
+      setShapeProperties: function (i, props) {
         var key;
         // Set properties from props hash.
         for (key in props) {
           if (props.hasOwnProperty(key)) {
-            rectangles[key][i] = props[key];
+            shapes[key][i] = props[key];
           }
         }
       },
@@ -2881,28 +2881,28 @@ define(function (require, exports) {
         assignShortcutReferences.obstacles();
       },
 
-      addRectangle: function(props) {
-        if (N_rectangles + 1 > rectangles.x.length) {
+      addShape: function(props) {
+        if (N_shapes + 1 > shapes.x.length) {
           // Extend arrays each time (as there are only
-          // a few rectangles in typical model).
-          utils.extendArrays(rectangles, N_rectangles + 1);
-          assignShortcutReferences.rectangles();
+          // a few shapes in typical model).
+          utils.extendArrays(shapes, N_shapes + 1);
+          assignShortcutReferences.shapes();
         }
 
-        N_rectangles++;
+        N_shapes++;
 
-        // Set properties of new rectangle.
-        engine.setRectangleProperties(N_rectangles - 1, props);
+        // Set properties of new shape.
+        engine.setShapeProperties(N_shapes - 1, props);
       },
 
-      removeRectangle: function(idx) {
+      removeShape: function(idx) {
         var i, prop;
 
-        if (idx >= N_rectangles) {
-          throw new Error("Rectangle " + idx + " doesn't exist, so it can't be removed.");
+        if (idx >= N_shapes) {
+          throw new Error("Shape " + idx + " doesn't exist, so it can't be removed.");
         }
 
-        // Remove all electric fields connected with this rectangle.
+        // Remove all electric fields connected with this shape.
 
         // Use such "strange" form of loop, as while removing one electric field,
         // other change their indexing. So, after removal of field 5, we
@@ -2910,36 +2910,36 @@ define(function (require, exports) {
         // indexed as 6).
         i = 0;
         while (i < N_electricFields) {
-          if (electricFieldRectangleIdx[i] === idx)
+          if (electricFieldShapeIdx[i] === idx)
             engine.removeElectricField(i);
           else
             i++;
         }
 
-        N_rectangles--;
+        N_shapes--;
 
-        // Shift rectangles properties.
+        // Shift shapes properties.
         // It can be optimized by just replacing the last
-        // rectangle with rectangle 'i', however this approach
-        //  preserves more expectable rectangles indexing.
-        for (i = idx; i < N_rectangles; i++) {
-          for (prop in rectangles) {
-            if (rectangles.hasOwnProperty(prop)) {
-              rectangles[prop][i] = rectangles[prop][i + 1];
+        // shape with shape 'i', however this approach
+        //  preserves more expectable shapes indexing.
+        for (i = idx; i < N_shapes; i++) {
+          for (prop in shapes) {
+            if (shapes.hasOwnProperty(prop)) {
+              shapes[prop][i] = shapes[prop][i + 1];
             }
           }
         }
 
-        // Shift indices of rectangles referenced by electric fields.
+        // Shift indices of shapes referenced by electric fields.
         for (i = 0; i < N_electricFields; i++) {
-          if (electricFieldRectangleIdx[i] > idx)
-            electricFieldRectangleIdx[i]--;
+          if (electricFieldShapeIdx[i] > idx)
+            electricFieldShapeIdx[i]--;
         }
 
         // FIXME: This shouldn't be necessary, however various modules
-        // (e.g. views) use rectangles.x.length as the real number of rectangles.
-        utils.extendArrays(rectangles, N_rectangles);
-        assignShortcutReferences.rectangles();
+        // (e.g. views) use shapes.x.length as the real number of shapes.
+        utils.extendArrays(shapes, N_shapes);
+        assignShortcutReferences.shapes();
       },
 
       addElectricField: function(props) {
@@ -2952,7 +2952,7 @@ define(function (require, exports) {
 
         N_electricFields++;
 
-        // Set properties of new rectangle.
+        // Set properties of new shape.
         engine.setElectricFieldProperties(N_electricFields - 1, props);
       },
 
@@ -3353,8 +3353,8 @@ define(function (require, exports) {
             bounceParticleOffWalls(i);
             // Bounce off obstacles, but DO NOT update pressure probes.
             bounceParticleOffObstacles(i, xPrev, yPrev, false);
-            // Bounce off rectangles
-            bounceParticleOffRectangles(i, xPrev, yPrev);
+            // Bounce off shapes
+            bounceParticleOffShapes(i, xPrev, yPrev);
           }
 
           // Calculate accelerations.
@@ -3430,8 +3430,8 @@ define(function (require, exports) {
         return N_obstacles;
       },
 
-			getNumberOfRectangles: function() {
-        return N_rectangles;
+			getNumberOfShapes: function() {
+        return N_shapes;
       },
 
       getNumberOfRadialBonds: function() {
@@ -3490,16 +3490,16 @@ define(function (require, exports) {
 
           // electric field PE
           for (e = 0; e < N_electricFields; e++) {
-            rect = electricFieldRectangleIdx[e];
+            rect = electricFieldShapeIdx[e];
             if (rect != null && !rectContains(rect, x[i], y[i])) continue;
             elInMWUnits = charge[i] * getElFieldForce(e);
             switch (electricFieldOrientation[e]) {
             case "N":
             case "S":
-              elInMWUnits *= (rect != null ? rectangleY[rect] : minY) - y[i]; break;
+              elInMWUnits *= (rect != null ? shapeY[rect] : minY) - y[i]; break;
             case "W":
             case "E":
-              elInMWUnits *= (rect != null ? rectangleX[rect] : minX) - x[i]; break;
+              elInMWUnits *= (rect != null ? shapeX[rect] : minX) - x[i]; break;
             }
             PE += constants.convert(elInMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
           }
@@ -3831,7 +3831,7 @@ define(function (require, exports) {
         }
 
         for (i = 0; i < N_electricFields; i++) {
-          rect = electricFieldRectangleIdx[i];
+          rect = electricFieldShapeIdx[i];
           if (rect != null && !rectContains(rect, testX, testY)) continue;
           o = electricFieldOrientation[i];
           if (o === "N" || o === "S") {
@@ -3889,7 +3889,7 @@ define(function (require, exports) {
           new CloneRestoreWrapper(elements),
           new CloneRestoreWrapper(atoms),
           new CloneRestoreWrapper(obstacles),
-          new CloneRestoreWrapper(rectangles),
+          new CloneRestoreWrapper(shapes),
           new CloneRestoreWrapper(radialBonds),
           new CloneRestoreWrapper(angularBonds),
           new CloneRestoreWrapper(restraints),
@@ -3905,7 +3905,7 @@ define(function (require, exports) {
                 N             : N,
                 N_elements    : N_elements,
                 N_obstacles   : N_obstacles,
-                N_rectangles  : N_rectangles,
+                N_shapes  : N_shapes,
                 N_radialBonds : N_radialBonds,
                 N_angularBonds: N_angularBonds,
                 N_restraints  : N_restraints,
@@ -3916,7 +3916,7 @@ define(function (require, exports) {
               time           = state.time;
               N              = state.N;
               N_elements     = state.N_elements;
-              N_rectangles   = state.N_rectangles;
+              N_shapes   = state.N_shapes;
               N_radialBonds  = state.N_radialBonds;
               N_angularBonds = state.N_angularBonds;
               N_restraints   = state.N_restraints;
