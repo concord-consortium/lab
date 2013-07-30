@@ -51,31 +51,33 @@
   &.clickable
     cursor: pointer
 
-// Interactive button is typical button
-// DOM element with 'component' class.
-button.component
-  @include linear-gradient(#fafafa, #c2c2c2, $fallback: #eee)
-  font-size: 1em
-  font-family: $fontface, Verdana, Geneva, sans-serif
+.interactive-button
   height: 2em
-  line-height: 2em
-  border: 1px solid #ccc
-  border-radius: 0.7em
-  color: #333
-  padding-left: 1em
-  padding-right: 1em
-  text-align: center
-  text-shadow: 0 1px 0 #eee
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3)
+  width: auto
+  & > button
+    @include linear-gradient(#fafafa, #c2c2c2, $fallback: #eee)
+    font-size: 1em
+    font-family: $fontface, Verdana, Geneva, sans-serif
+    width: 100%
+    height: 100%
+    line-height: 2em
+    border: 1px solid #ccc
+    border-radius: 0.7em
+    color: #333
+    padding-left: 1em
+    padding-right: 1em
+    text-align: center
+    text-shadow: 0 1px 0 #eee
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3)
 
-  &:hover
-    @include linear-gradient(#fff, #e6e6e6, $fallback: #e6e6e6)
-    cursor: pointer
+    &:hover
+      @include linear-gradient(#fff, #e6e6e6, $fallback: #e6e6e6)
+      cursor: pointer
 
-  &:active
-    @include linear-gradient(#e6e6e6, #fff, $fallback: #fff)
-    border: 1px solid #aaa
-    border-bottom: 1px solid #888
+    &:active
+      @include linear-gradient(#e6e6e6, #fff, $fallback: #fff)
+      border: 1px solid #aaa
+      border-bottom: 1px solid #888
 
 .interactive-text
   &.clickable
