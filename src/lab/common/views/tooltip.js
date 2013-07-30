@@ -26,7 +26,7 @@ define(function () {
         // Position tooltip again, as its dimensions have changed due to line above.
         ui.tooltip.position({
           of: $target,
-          collision: "flipfit",
+          collision: "flipfit flipfit",
           my: "center top+" + fontSize, // arrow's height depends on font-size (defined in ems).
           at: "center bottom",
           using: function(position, feedback) {
