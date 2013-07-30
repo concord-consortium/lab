@@ -226,6 +226,12 @@ define(function() {
       },
       onClick: {
         // Script executed on user click, optional.
+      },
+      tooltip: {
+        defaultValue: ""
+      },
+      openTooltip: {
+        defaultValue: false
       }
     },
 
@@ -249,7 +255,10 @@ define(function() {
         defaultValue: []
       },
       tooltip: {
-        // Optional tooltip text
+        defaultValue: ""
+      },
+      openTooltip: {
+        defaultValue: false
       }
     },
 
@@ -271,6 +280,12 @@ define(function() {
       },
       height: {
         defaultValue: ""
+      },
+      tooltip: {
+        defaultValue: ""
+      },
+      openTooltip: {
+        defaultValue: false
       }
     },
 

@@ -23,7 +23,7 @@ define(function (require) {
     var root = typeof Lab !== "undefined" ? Lab.config.actualRoot : "";
 
     // Call super constructor.
-    InteractiveComponent.call(this, "image", component, scriptingAPI);
+    InteractiveComponent.call(this, "image", component, scriptingAPI, controller);
 
     /** @private */
     this._controller = controller;
