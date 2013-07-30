@@ -24,6 +24,7 @@ define(function (require) {
       ThermometerController   = require('common/controllers/thermometer-controller'),
       PlaybackController      = require('common/controllers/playback-controller'),
       DivController           = require('common/controllers/div-controller'),
+      DispatchSupport         = require('common/dispatch-support'),
 
       // Helper function which just provides banner definition.
       setupBanner             = require('common/controllers/setup-banner'),
@@ -131,7 +132,9 @@ define(function (require) {
         creditsDialog,
 
         semanticLayout,
-        getNextTabIndex;
+        getNextTabIndex,
+
+        dispatch = new DispatchSupport("layoutUpdated");
 
 
     // simple tabindex support, also exposed via api.getNextTabIndex()
@@ -305,7 +308,7 @@ define(function (require) {
         modelLoaded();
 
         // Layout interactive after modelLoaded() callback!
-        semanticLayout.layoutInteractive();
+        layoutInteractive();
 
         // notify observers that interactive is rendered.
         interactiveRendered();
@@ -327,6 +330,11 @@ define(function (require) {
           scriptingAPI.exposeScriptingAPI();
         }
       }
+    }
+
+    function layoutInteractive() {
+      semanticLayout.layoutInteractive();
+      dispatch.layoutUpdated();
     }
 
     // ------------------------------------------------------------
@@ -738,7 +746,7 @@ define(function (require) {
         };
         semanticLayout.setupModel(modelController);
         // and layout a 'no-model' interactive
-        semanticLayout.layoutInteractive();
+        layoutInteractive();
       }
     }
 
@@ -864,19 +872,17 @@ define(function (require) {
         It triggers the layout algorithm again.
       */
       resize: function () {
-        var i;
-
-        semanticLayout.layoutInteractive();
+        layoutInteractive();
         // TODO: use events!
-        for(i = 0; i < resizeCallbacks.length; i++) {
+        for(var i = 0; i < resizeCallbacks.length; i++) {
           resizeCallbacks[i]();
         }
       },
       /**
-       * Adds an event listener for the specified type.
-       * Supported events are: "resize", "modelLoaded", and "interactiveRendered".
+       * Adds an event listener for the specified type. Supported events:
+       * "resize", "modelLoaded", "interactiveRendered" and "layoutUpdated".
        *
-       * @param {string} type Event type ("resize" or "modelLoaded").
+       * @param {string} type
        * @param  {function|array} callback Callback function or an array of functions.
        */
       on: function (type, callback) {
@@ -900,6 +906,9 @@ define(function (require) {
           case "interactiveRendered":
             interactiveRenderedCallbacks = interactiveRenderedCallbacks.concat(callback);
             break;
+          default:
+            // TODO FIXME: always use dispatch, don't support arrays of functions.
+            dispatch.on(type, callback[0]);
         }
       },
 
