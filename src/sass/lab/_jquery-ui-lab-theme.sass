@@ -78,3 +78,57 @@
     background-color: #fff
     background-position: 0 0
     @include linear-gradient(#fff, #e6e6e6, $fallback: #e6e6e6)
+
+// Tooltips
+.ui-tooltip
+  border: none
+  @include linear-gradient(#fff, #e6e6e6, $fallback: #e6e6e6)
+  padding: 0.3em 0.4em
+  color: #333
+  border-radius: 0.7em
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3)
+  max-width: 20em
+
+.ui-tooltip-content
+  font-size: 0.8em
+
+.ui-tooltip-arrow
+  &.top:after
+    background: #fff
+  &.bottom:after
+    background: #e6e6e6
+  &.left:after, &.right:after
+    background: #ebebeb
+
+.ui-tooltip-arrow
+  width: 7em
+  height: 1.6em
+  overflow: hidden
+  position: absolute
+  left: 50%
+  margin-left: -3.5em
+  bottom: -1.6em
+
+  &.top
+    top: -1.6em
+    bottom: auto
+  &.left
+    left: 20%
+
+.ui-tooltip-arrow:after
+  content: ""
+  position: absolute
+  left: 2.25em
+  top: -2em
+  width: 2.5em
+  height: 2.5em
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3)
+  -webkit-transform: rotate(45deg)
+  -moz-transform: rotate(45deg)
+  -ms-transform: rotate(45deg)
+  -o-transform: rotate(45deg)
+  tranform: rotate(45deg)
+
+.ui-tooltip-arrow.top:after
+  bottom: -2em
+  top: auto
