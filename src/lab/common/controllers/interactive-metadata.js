@@ -197,6 +197,12 @@ define(function() {
       },
       height: {
         defaultValue: "auto"
+      },
+      tooltip: {
+        defaultValue: ""
+      },
+      openTooltip: {
+        defaultValue: false
       }
     },
 

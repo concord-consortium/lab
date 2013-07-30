@@ -14,12 +14,13 @@ define(function (require) {
    * @extends InteractiveComponent
    * @param {Object} component Component JSON definition.
    * @param {ScriptingAPI} scriptingAPI
+   * @param {InteracitveController} interacitveController
    */
-  function TextController(component, scriptingAPI) {
+  function TextController(component, scriptingAPI, interacitveController) {
     var text, $element, content, html,
         openInNewWindow = 'class="opens-in-new-window" target="blank"';
     // Call super constructor.
-    InteractiveComponent.call(this, "text", component, scriptingAPI);
+    InteractiveComponent.call(this, "text", component, scriptingAPI, interacitveController);
     // Setup custom class.
     this.$element.addClass("interactive-text");
     // Ensure that common typography for markdown-generated content is used.
