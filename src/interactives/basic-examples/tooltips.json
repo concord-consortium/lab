@@ -1,0 +1,166 @@
+{
+  "title": "Tooltips Demo",
+  "publicationStatus": "public",
+  "subtitle": "You can define tooltips for every type of interactive components.",
+  "about": [],
+  "models": [
+    {
+      "type": "md2d",
+      "id": "simple-gas$0",
+      "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "text",
+      "type": "text",
+      "text": "Interactive components:",
+      "openTooltip": true,
+      "tooltip": [
+        "When you hover any interactive component with your mouse, the tooltip is displayed in",
+        "a little box next to the element, just like a native tooltip.",
+        "",
+        "You can use *[Markdown](http://daringfireball.net/projects/markdown/syntax \"Markdown Syntax\")*",
+        "syntax inside tooltips.",
+        "",
+        "To show tooltip on interactive load (like the one you are reading) set *openTooltip* option to *true*.",
+        "It will disappear when you first hover and then hover out the component."
+      ]
+    },
+    {
+      "type": "button",
+      "id": "button",
+      "text": "Button",
+      "action": "",
+      "tooltip": "I'm a button component!"
+    },
+    {
+      "type": "checkbox",
+      "id": "checkbox",
+      "text": "Checkbox",
+      "onClick": "",
+      "tooltip": "I'm a checkbox component!"
+    },
+    {
+      "type": "slider",
+      "id": "slider",
+      "title": "Slider",
+      "min": 1,
+      "max": 100,
+      "steps": 100,
+      "labels": [
+        {
+          "value": 1,
+          "label": "0"
+        },
+        {
+          "value": 100,
+          "label": "100"
+        }
+      ],
+      "action": "",
+      "tooltip": "I'm a slider component!"
+    },
+    {
+      "type": "pulldown",
+      "id": "pulldown",
+      "options": [
+        {
+          "text": "Option 1",
+          "action": ""
+        },
+        {
+          "text": "Option 2",
+          "action": ""
+        }
+      ],
+      "tooltip": "I'm a pulldown component!"
+    },
+    {
+      "type": "radio",
+      "id": "radio",
+      "options": [
+        {
+          "text": "Option 1",
+          "action": ""
+        },
+        {
+          "text": "Option 2",
+          "action": ""
+        }
+      ],
+      "tooltip": "I'm a radio component!"
+    },
+    {
+      "type": "numericOutput",
+      "id": "numeric-output",
+      "label": "Numeric output",
+      "property": "time",
+      "tooltip": "I'm a numeric output component!"
+    },
+    {
+      "type": "image",
+      "id": "image",
+      "width": "10em",
+      "src": "http://lab.concord.org/resources/layout/cc-logo.png",
+      "tooltip": "I'm an image component!"
+    },
+    {
+      "type": "graph",
+      "id": "graph",
+      "xlabel": "Time (fs)",
+      "ylabel": "Temperature (K)",
+      "ymin": 0,
+      "ymax": 2500,
+      "xmax": 10000,
+      "xTickCount": 4,
+      "yTickCount": 2,
+      "xFormatter": "2s",
+      "yFormatter": "2s",
+      "properties": [
+        "temperature"
+      ],
+      "width": "15em",
+      "height": "9em",
+      "tooltip": "I'm a graph component!"
+    },
+    {
+      "type": "barGraph",
+      "id": "bar-graph",
+      "property": "temperature",
+      "height": "7em",
+      "tooltip": "I'm a bar graph component!"
+    }
+  ],
+  "template": [
+    {
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "height": "model.height",
+      "padding-left": "1em",
+      "padding-right": "0.5em"
+    },
+    {
+      "id": "bottom",
+      "top": "right.bottom",
+      "width": "interactive.width",
+      "padding-top": "1em"
+    }
+  ],
+  "layout": {
+    "right": [
+      ["text"],
+      ["button", "pulldown"],
+      ["checkbox", "radio"],
+      ["slider"],
+      ["numeric-output"]
+    ],
+    "bottom": [
+      ["image", "graph", "bar-graph"]
+    ]
+  }
+}
