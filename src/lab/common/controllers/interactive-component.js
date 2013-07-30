@@ -13,9 +13,9 @@ define(function (require) {
    * @param {string} type Component type, should match definition in interactive metadata.
    * @param {Object} component Component JSON definition.
    * @param {ScriptingAPI} scriptingAPI
-   * @param {InteracitveController} interacitveController
+   * @param {InteractivesController} interactivesController
    */
-  function InteractiveComponent(type, component, scriptingAPI, interacitveController) {
+  function InteractiveComponent(type, component, scriptingAPI, interactivesController) {
     var onClickFunction;
 
     /**
@@ -62,7 +62,7 @@ define(function (require) {
     // optionally add tooltip
     if (this.component.tooltip) {
       tooltip(this.$element, this.component.tooltip, this.component.openTooltip,
-              interacitveController);
+              interactivesController);
     }
   }
 
