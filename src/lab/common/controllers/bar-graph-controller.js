@@ -7,6 +7,7 @@ define(function (require) {
   var BarGraphModel = require('grapher/bar-graph/bar-graph-model'),
       BarGraphView  = require('grapher/bar-graph/bar-graph-view'),
       metadata      = require('common/controllers/interactive-metadata'),
+      tooltip       = require('common/views/tooltip'),
       validator     = require('common/validator'),
 
       // Note: We always explicitly copy properties from component spec to bar graph options hash,
@@ -72,7 +73,7 @@ define(function (require) {
         return options;
       };
 
-  return function BarGraphController(component) {
+  return function BarGraphController(component, scriptingAPI, interactivesController) {
     var // Object with Public API.
         controller,
         // Model with options and current value.
@@ -102,6 +103,10 @@ define(function (require) {
     barGraphView.$el.addClass("component");
     property = component.property;
     secondProperty = component.secondProperty;
+
+    if (component.tooltip) {
+      tooltip(barGraphView.$el, component.tooltip, component.openTooltip, interactivesController);
+    }
 
     controller = {
       // This callback should be trigger when model is loaded.

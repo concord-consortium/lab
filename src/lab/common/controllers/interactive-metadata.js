@@ -511,7 +511,13 @@ define(function() {
         defaultValue: "auto"
       },
       property: {},
-      displayValue: {}
+      displayValue: {},
+      tooltip: {
+        defaultValue: ""
+      },
+      openTooltip: {
+        defaultValue: false
+      }
     },
 
     thermometer: {
@@ -624,6 +630,12 @@ define(function() {
       },
       bars: {
         defaultValue: false
+      },
+      tooltip: {
+        defaultValue: ""
+      },
+      openTooltip: {
+        defaultValue: false
       }
     },
 
@@ -723,6 +735,12 @@ define(function() {
       fillColor: {
         // Color of the area behind the bar.
         defaultValue: "#fff"
+      },
+      tooltip: {
+        defaultValue: ""
+      },
+      openTooltip: {
+        defaultValue: false
       }
     }
   };

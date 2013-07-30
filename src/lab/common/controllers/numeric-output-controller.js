@@ -1,11 +1,12 @@
-/*global define $ model */
+/*global define, $, model */
 
 define(function () {
 
   var metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator');
+      validator = require('common/validator'),
+      tooltip   = require('common/views/tooltip');
 
-  return function NumericOutputController(component, scriptingAPI) {
+  return function NumericOutputController(component, scriptingAPI, interactivesController) {
     var propertyName,
         label,
         units,
@@ -14,6 +15,7 @@ define(function () {
         $label,
         $number,
         $units,
+        $output,
         propertyDescription,
         controller,
 
@@ -64,6 +66,10 @@ define(function () {
 
     if (displayValue) {
       displayValue = scriptingAPI.makeFunctionInScriptContext('value', displayValue);
+    }
+
+    if (component.tooltip) {
+      tooltip($numericOutput, component.tooltip, component.openTooltip, interactivesController);
     }
 
     // Public API.
