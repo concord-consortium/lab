@@ -3,7 +3,8 @@
 define(function () {
 
   var metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator');
+      validator = require('common/validator'),
+      tooltip   = require('common/views/tooltip');
 
   return function SliderController(component, scriptingAPI, interactivesController) {
     var min, max, steps, propertyName,
@@ -171,6 +172,10 @@ define(function () {
 
     if (displayValue) {
       displayValue = scriptingAPI.makeFunctionInScriptContext('value', displayValue);
+    }
+
+    if (component.tooltip) {
+      tooltip($elem, component.tooltip, component.openTooltip, interactivesController);
     }
 
     // Apply custom width and height settings.

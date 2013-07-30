@@ -374,6 +374,12 @@ define(function() {
         // There are better ways to do it, e.g.:
         // "onLoad" scripts (and set({ }) call inside), "modelOptions", etc.
         conflictsWith: ["property"]
+      },
+      tooltip: {
+        defaultValue: ""
+      },
+      openTooltip: {
+        defaultValue: false
       }
     },
 
@@ -397,6 +403,12 @@ define(function() {
       property: {
         // Pulldown can be also connected to a model property.
         // In such case, options should define "value", not "action".
+      },
+      tooltip: {
+        defaultValue: ""
+      },
+      openTooltip: {
+        defaultValue: false
       }
     },
 
@@ -445,6 +457,12 @@ define(function() {
       property: {
         // Radio can be also connected to a model property.
         // In such case, options should define "value", not "action".
+      },
+      tooltip: {
+        defaultValue: ""
+      },
+      openTooltip: {
+        defaultValue: false
       }
     },
 

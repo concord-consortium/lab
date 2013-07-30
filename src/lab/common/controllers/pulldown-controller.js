@@ -3,7 +3,8 @@
 define(function () {
 
   var metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator');
+      validator = require('common/validator'),
+      tooltip   = require('common/views/tooltip');
       require('common/jquery-plugins');
 
   return function PulldownController(component, scriptingAPI, interactivesController) {
@@ -139,6 +140,10 @@ define(function () {
 
       // set hidden select box dimensions too, for mobile devices
       $wrapper.find(".selectboxit-container select").css({width: boxWidth, height: "100%"});
+
+      if (component.tooltip) {
+        tooltip($wrapper, component.tooltip, component.openTooltip, interactivesController);
+      }
     }
 
     // Public API.
