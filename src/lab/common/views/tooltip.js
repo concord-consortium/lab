@@ -4,20 +4,24 @@
   * Lab-compatible tooltips based on jQuery-UI tooltips. The custom styling is used and tooltips
   * scale themselves according to the font-size of #responsive-content div.
   */
-define(function () {
+define(function (require) {
 
-  var getID = (function () {
-    var id = 0;
-    return function () {
-      return id++;
-    };
-  }());
+  var markdownToHTML = require("common/markdown-to-html"),
+
+      getID = (function () {
+        var id = 0;
+        return function () {
+          return id++;
+        };
+      }());
 
   return function tooltip($target, content, openNow, interactiveController) {
     var $rc = $("#responsive-content"),
         visible = false;
-    $target.attr("title", content);
+    $target.attr("data-lab-tooltip", true);
     $target.tooltip({
+      items: "[data-lab-tooltip]",
+      content: markdownToHTML(content),
       open: function (event, ui) {
         var fontSize = $rc.css("font-size");
         // Update font-size using #responsive-content div font-size.
@@ -27,7 +31,8 @@ define(function () {
         ui.tooltip.position({
           of: $target,
           collision: "flipfit flipfit",
-          my: "center top+" + fontSize, // arrow's height depends on font-size (defined in ems).
+          // Arrow's height depends on font-size (as it's defined in ems).
+          my: "center top+" + parseFloat(fontSize) * 1.2,
           at: "center bottom",
           using: function(position, feedback) {
             $(this).css(position);

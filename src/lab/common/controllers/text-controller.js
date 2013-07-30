@@ -1,8 +1,8 @@
-/*global define, $ */
+/*global define */
 
 define(function (require) {
 
-  var markdown             = require('markdown'),
+  var markdownToHTML       = require('common/markdown-to-html'),
       inherit              = require('common/inherit'),
       InteractiveComponent = require('common/controllers/interactive-component');
 
@@ -17,8 +17,6 @@ define(function (require) {
    * @param {InteracitveController} interacitveController
    */
   function TextController(component, scriptingAPI, interacitveController) {
-    var text, $element, content, html,
-        openInNewWindow = 'class="opens-in-new-window" target="blank"';
     // Call super constructor.
     InteractiveComponent.call(this, "text", component, scriptingAPI, interacitveController);
     // Setup custom class.
@@ -26,15 +24,7 @@ define(function (require) {
     // Ensure that common typography for markdown-generated content is used.
     this.$element.addClass("markdown-typography");
     // Use markdown to parse the 'text' content.
-    text = $.isArray(this.component.text) ? this.component.text : [this.component.text];
-    $element = this.$element;
-    content = "";
-    $.each(text, function (idx, val) {
-      content += val + "\n";
-    });
-    html = markdown.toHTML(content);
-    html = html.replace(/<a(.*?)>/g, "<a$1 " + openInNewWindow + ">");
-    $element.append(html);
+    this.$element.append(markdownToHTML(this.component.text));
   }
   inherit(TextController, InteractiveComponent);
 
