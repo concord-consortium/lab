@@ -3,7 +3,8 @@
 define(function (require) {
 
   var metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator');
+      validator = require('common/validator'),
+      tooltip   = require('common/views/tooltip');
 
   /**
    * Basic class for all interactive components.
@@ -12,8 +13,9 @@ define(function (require) {
    * @param {string} type Component type, should match definition in interactive metadata.
    * @param {Object} component Component JSON definition.
    * @param {ScriptingAPI} scriptingAPI
+   * @param {InteracitveController} interacitveController
    */
-  function InteractiveComponent(type, component, scriptingAPI) {
+  function InteractiveComponent(type, component, scriptingAPI, interacitveController) {
     var onClickFunction;
 
     /**
@@ -54,12 +56,13 @@ define(function (require) {
 
     // optionally add new css classes
     if (this.component.classes && this.component.classes.length) {
-      this.$element.addClass(this.component.classes.join(" "))
+      this.$element.addClass(this.component.classes.join(" "));
     }
 
-    // optionally add tooltip as title text
+    // optionally add tooltip
     if (this.component.tooltip) {
-      this.$element.attr("title", this.component.tooltip)
+      tooltip(this.$element, this.component.tooltip, this.component.openTooltip,
+              interacitveController);
     }
   }
 
