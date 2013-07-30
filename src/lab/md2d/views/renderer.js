@@ -53,13 +53,13 @@ define(function (require) {
 
         // "Containers" - SVG g elements used to position layers of the final visualization.
         fieldVisualization      = modelView.viewport.append("g").attr("class", "field-visualization"),
-        rectangleContainerBelow = modelView.viewport.append("g").attr("class", "rectangle-container-below"),
+        shapeContainerBelow = modelView.viewport.append("g").attr("class", "shape-container-below"),
         imageContainerBelow     = modelView.viewport.append("g").attr("class", "image-container-below"),
         textContainerBelow      = modelView.viewport.append("g").attr("class", "text-container-below"),
         radialBondsContainer    = modelView.viewport.append("g").attr("class", "radial-bonds-container"),
         VDWLinesContainer       = modelView.viewport.append("g").attr("class", "vdw-lines-container"),
         mainContainer           = modelView.viewport.append("g").attr("class", "main-container"),
-        rectangleContainerTop   = modelView.viewport.append("g").attr("class", "rectangle-container-top"),
+        shapeContainerTop   = modelView.viewport.append("g").attr("class", "shape-container-top"),
         imageContainerTop       = modelView.viewport.append("g").attr("class", "image-container-top"),
         textContainerTop        = modelView.viewport.append("g").attr("class", "text-container-top"),
         iconContainer           = modelView.vis.append("g").attr("class", "icon-container"),
@@ -106,11 +106,11 @@ define(function (require) {
         obstacle,
         obstacles,
         mockObstaclesArray = [],
-        rectangles,
-        rectangleTop,
-        rectangleBelow,
-        mockRectanglesTop= [],
-        mockRectanglesBelow = [],
+        shapes,
+        shapeTop,
+        shapeBelow,
+        mockShapesTop= [],
+        mockShapesBelow = [],
         radialBond1, radialBond2,
         vdwPairs = [],
         vdwLines,
@@ -651,28 +651,28 @@ define(function (require) {
       });
     }
 
-    function rectangleEnter() {
-      var layers = [rectangleTop, rectangleBelow], i;
+    function shapeEnter() {
+      var layers = [shapeTop, shapeBelow], i;
       for(i = 0; i < layers.length; i++){
-          var rectangleGroup = layers[i].enter().append("g");
-        rectangleGroup
-          .attr("class", "rectangle")
+          var shapeGroup = layers[i].enter().append("g");
+        shapeGroup
+          .attr("class", "shape")
           .attr("transform",
             function (d) {
-              return "translate(" + model2px(rectangles.x[d]) + " " + model2pxInv(rectangles.y[d] + rectangles.height[d]) + ")";
+              return "translate(" + model2px(shapes.x[d]) + " " + model2pxInv(shapes.y[d] + shapes.height[d]) + ")";
             }
           );
-        rectangleGroup.append("rect")
+        shapeGroup.append("rect")
           .attr({
-            "class": "rectangle-shape",
+            "class": "shape-shape",
             "x": 0,
             "y": 0,
-            "width": function(d) {return model2px(rectangles.width[d]); },
-            "height": function(d) {return model2px(rectangles.height[d]); },
-            "fill": function(d) { return rectangles.visible[d] ? rectangles.color[d] : "rgba(128,128,128, 0)"; },
-            "stroke-width": function(d) { return rectangles.lineWeight[d]; },
-            "stroke-dasharray": function(d) { return rectangles.lineDashes[d]; },
-            "stroke": function(d) { return rectangles.visible[d] ? rectangles.lineColor[d] : "rgba(128,128,128, 0)"; }
+            "width": function(d) {return model2px(shapes.width[d]); },
+            "height": function(d) {return model2px(shapes.height[d]); },
+            "fill": function(d) { return shapes.visible[d] ? shapes.color[d] : "rgba(128,128,128, 0)"; },
+            "stroke-width": function(d) { return shapes.lineWeight[d]; },
+            "stroke-dasharray": function(d) { return shapes.lineDashes[d]; },
+            "stroke": function(d) { return shapes.visible[d] ? shapes.lineColor[d] : "rgba(128,128,128, 0)"; }
           });
        }
     }
@@ -1318,24 +1318,24 @@ define(function (require) {
       }
     }
 
-    function setupRectangles() {
-      rectangles = model.get_rectangles();
-      rectangleContainerTop.selectAll(".rectangle").remove();
-      rectangleContainerBelow.selectAll(".rectangle").remove();
-      if (rectangles) {
-        mockRectanglesTop=[];
-        mockRectanglesBelow=[];
-        for(var i = 0; i < rectangles.x.length ; i++){
-          if(rectangles.layer[i]===1){
-            mockRectanglesTop.push(i);
+    function setupShapes() {
+      shapes = model.get_shapes();
+      shapeContainerTop.selectAll(".shape").remove();
+      shapeContainerBelow.selectAll(".shape").remove();
+      if (shapes) {
+        mockShapesTop=[];
+        mockShapesBelow=[];
+        for(var i = 0; i < shapes.x.length ; i++){
+          if(shapes.layer[i]===1){
+            mockShapesTop.push(i);
           }
           else{
-            mockRectanglesBelow.push(i);
+            mockShapesBelow.push(i);
           }
         }
-        rectangleTop = rectangleContainerTop.selectAll(".rectangle").data(mockRectanglesTop);
-        rectangleBelow = rectangleContainerBelow.selectAll(".rectangle").data(mockRectanglesBelow);
-        rectangleEnter();
+        shapeTop = shapeContainerTop.selectAll(".shape").data(mockShapesTop);
+        shapeBelow = shapeContainerBelow.selectAll(".shape").data(mockShapesBelow);
+        shapeEnter();
       }
     }
 
@@ -1957,8 +1957,8 @@ define(function (require) {
       setupParticles();
       // Always setup radial bonds *after* particles to use correct atoms
       // color table.
-      setupRectangles();
-      //Rectangles are ON TOP of particles
+      setupShapes();
+      //Shapes are ON TOP of particles
       setupRadialBonds();
       geneticRenderer.setup();
       setupVectors();
@@ -1988,12 +1988,12 @@ define(function (require) {
         });
       }
 
-      if (rectangles) {
-        rectangleTop.attr("transform", function (d) {
-          return "translate(" + model2px(rectangles.x[d]) + " " + model2pxInv(rectangles.y[d] + rectangles.height[d]) + ")";
+      if (shapes) {
+        shapeTop.attr("transform", function (d) {
+          return "translate(" + model2px(shapes.x[d]) + " " + model2pxInv(shapes.y[d] + shapes.height[d]) + ")";
         });
-        rectangleBelow.attr("transform", function (d) {
-          return "translate(" + model2px(rectangles.x[d]) + " " + model2pxInv(rectangles.y[d] + rectangles.height[d]) + ")";
+        shapeBelow.attr("transform", function (d) {
+          return "translate(" + model2px(shapes.x[d]) + " " + model2pxInv(shapes.y[d] + shapes.height[d]) + ")";
         });
       }
 

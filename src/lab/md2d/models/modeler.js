@@ -216,8 +216,8 @@ define(function(require) {
         // A hash of arrays consisting of arrays of obstacle property values
         obstacles,
 
-        // A hash of arrays consisting of arrays of rectangle property values
-        rectangles,
+        // A hash of arrays consisting of arrays of shape property values
+        shapes,
 
         // A hash of arrays consisting of arrays of electric field property values
         electricFields,
@@ -607,7 +607,7 @@ define(function(require) {
       angularBonds = engine.angularBonds;
       restraints = engine.restraints;
       obstacles = engine.obstacles;
-      rectangles = engine.rectangles;
+      shapes = engine.shapes;
       electricFields = engine.electricFields;
     }
 
@@ -781,19 +781,19 @@ define(function(require) {
       return model;
     };
 
-    model.createRectangles = function(_rectangles) {
-      var numRectangles = _rectangles.x.length,
-          i, prop, rectangleProps;
+    model.createShapes = function(_shapes) {
+      var numShapes = _shapes.x.length,
+          i, prop, shapeProps;
 
       // See function above
-      for (i = 0; i < numRectangles; i++) {
-        rectangleProps = {};
-        for (prop in _rectangles) {
-          if (_rectangles.hasOwnProperty(prop)) {
-            rectangleProps[prop] = _rectangles[prop][i];
+      for (i = 0; i < numShapes; i++) {
+        shapeProps = {};
+        for (prop in _shapes) {
+          if (_shapes.hasOwnProperty(prop)) {
+            shapeProps[prop] = _shapes[prop][i];
           }
         }
-        model.addRectangle(rectangleProps);
+        model.addShape(shapeProps);
       }
 
       return model;
@@ -991,34 +991,34 @@ define(function(require) {
       propertySupport.invalidatingChangePostHook();
     };
 
-    model.addRectangle = function(props) {
+    model.addShape = function(props) {
       var validatedProps;
       // Validate properties, use default values if there is such need.
-      validatedProps = validator.validateCompleteness(metadata.rectangle, props);
-      // Finally, add rectangle.
+      validatedProps = validator.validateCompleteness(metadata.shape, props);
+      // Finally, add shape.
       propertySupport.invalidatingChangePreHook();
-      engine.addRectangle(validatedProps);
+      engine.addShape(validatedProps);
       propertySupport.invalidatingChangePostHook();
     };
 
-    model.removeRectangle = function (idx) {
+    model.removeShape = function (idx) {
       var prevElFieldsCount = engine.getNumberOfElectricFields();
 
       propertySupport.invalidatingChangePreHook();
-      engine.removeRectangle(idx);
+      engine.removeShape(idx);
       propertySupport.invalidatingChangePostHook();
 
       if (engine.getNumberOfElectricFields() !== prevElFieldsCount) {
         dispatch.removeElectricField();
       }
-      //TODO FIXME: also .removeRectangle() event should be dispatched.
+      //TODO FIXME: also .removeShape() event should be dispatched.
     };
 
     model.addElectricField = function(props) {
       var validatedProps;
       // Validate properties, use default values if there is such need.
       validatedProps = validator.validateCompleteness(metadata.electricField, props);
-      // Finally, add rectangle.
+      // Finally, add shape.
       propertySupport.invalidatingChangePreHook();
       engine.addElectricField(validatedProps);
       propertySupport.invalidatingChangePostHook();
@@ -1265,24 +1265,24 @@ define(function(require) {
       return translateFromMD2DUnits(props, obstacleMetaData);
     };
 
-    model.setRectangleProperties = function(i, props) {
+    model.setShapeProperties = function(i, props) {
       // Validate properties.
-      props = validator.validate(metadata.rectangle, props);
+      props = validator.validate(metadata.shape, props);
       propertySupport.invalidatingChangePreHook();
-      engine.setRectangleProperties(i, translateToMD2DUnits(props, metadata.rectangle));
+      engine.setShapeProperties(i, translateToMD2DUnits(props, metadata.shape));
       propertySupport.invalidatingChangePostHook();
     };
 
-    model.getRectangleProperties = function(i) {
-      var rectangleMetaData = metadata.rectangle,
+    model.getShapeProperties = function(i) {
+      var shapeMetaData = metadata.shape,
           props = {},
           propName;
-      for (propName in rectangleMetaData) {
-        if (rectangleMetaData.hasOwnProperty(propName)) {
-          props[propName] = rectangles[propName][i];
+      for (propName in shapeMetaData) {
+        if (shapeMetaData.hasOwnProperty(propName)) {
+          props[propName] = shapes[propName][i];
         }
       }
-      return translateFromMD2DUnits(props, rectangleMetaData);
+      return translateFromMD2DUnits(props, shapeMetaData);
     };
 
     model.setElectricFieldProperties = function(i, props) {
@@ -1567,8 +1567,8 @@ define(function(require) {
       return obstacles;
     };
 
-    model.get_rectangles = function() {
-      return rectangles;
+    model.get_shapes = function() {
+      return shapes;
     };
 
     // FIXME. Should be an output property.
@@ -1581,8 +1581,8 @@ define(function(require) {
       return engine.getNumberOfObstacles();
     };
 
-    model.getNumberOfRectangles = function () {
-      return engine.getNumberOfRectangles();
+    model.getNumberOfShapes = function () {
+      return engine.getNumberOfShapes();
     };
 
     // FIXME. Should be an output property.
@@ -1858,8 +1858,8 @@ define(function(require) {
         delete propCopy.obstacles.colorG;
         delete propCopy.obstacles.colorB;
       }
-      if (engine.getNumberOfRectangles()) {
-        propCopy.rectangles = serialize(metadata.rectangle, rectangles, engine.getNumberOfRectangles());
+      if (engine.getNumberOfShapes()) {
+        propCopy.shapes = serialize(metadata.shape, shapes, engine.getNumberOfShapes());
       }
       if (engine.getNumberOfElectricFields()) {
         propCopy.electricFields = serialize(metadata.electricField, electricFields, engine.getNumberOfElectricFields());
@@ -2007,7 +2007,7 @@ define(function(require) {
     if (initialProperties.angularBonds)   model.createAngularBonds(initialProperties.angularBonds);
     if (initialProperties.restraints)     model.createRestraints(initialProperties.restraints);
     if (initialProperties.obstacles)      model.createObstacles(initialProperties.obstacles);
-    if (initialProperties.rectangles)     model.createRectangles(initialProperties.rectangles);
+    if (initialProperties.shapes)         model.createShapes(initialProperties.shapes);
     if (initialProperties.electricFields) model.createElectricFields(initialProperties.electricFields);
     // Basically, this #deserialize method is more or less similar to other #create... methods used
     // above. However, this is the first step to delegate some functionality from modeler to smaller classes.

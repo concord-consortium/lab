@@ -295,15 +295,15 @@ parseMML = (mmlString) ->
         removeNaNProperties rawData
 
         # Validate all properties and provides default values for undefined values.
-        validatedData = validator.validateCompleteness metadata.rectangle, rawData
+        validatedData = validator.validateCompleteness metadata.shape, rawData
 
         rectangles.push validatedData
 
-        # Rectangle can also specify electric fied.
+        # Shape can also specify electric fied.
         $elField = $node.find "object.org-concord-mw2d-models-ElectricField"
         if $elField.length > 0
           parsedElField = parseElectricField $elField
-          parsedElField.rectangleIdx = idx
+          parsedElField.shapeIdx = idx
           electricFields.push parsedElField
 
       rectangles
@@ -635,9 +635,9 @@ parseMML = (mmlString) ->
     obstacles = parseObstacles()
 
     ###
-      Find rectangles
+      Find shapes
     ###
-    rectangles = parseRectangles()
+    shapes = parseRectangles()
 
     ###
       Find all elements. Results in:
@@ -1161,13 +1161,13 @@ parseMML = (mmlString) ->
       json.obstacles = unroll obstacles, 'x', 'y', 'vx', 'vy', 'externalAx', 'externalAy', 'friction',
         'height', 'width', 'mass', 'westProbe', 'northProbe', 'eastProbe', 'southProbe', 'color', 'visible'
 
-    if rectangles.length > 0
-      json.rectangles = unroll rectangles, 'x', 'y', 'height', 'width', 'fence',
+    if shapes.length > 0
+      json.shapes = unroll shapes, 'x', 'y', 'height', 'width', 'fence',
         'color', 'lineColor', 'lineWeight', 'lineDashes',
         'layer', 'visible'
 
     if electricFields.length > 0
-      json.electricFields = unroll electricFields, 'intensity', 'orientation', 'rectangleIdx'
+      json.electricFields = unroll electricFields, 'intensity', 'orientation', 'shapeIdx'
 
     if useQuantumDynamics
       json.quantumDynamics = quantumDynamics

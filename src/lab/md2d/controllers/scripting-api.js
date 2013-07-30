@@ -435,13 +435,13 @@ define(function (require) {
         api.repaintIfReady();
       },
 
-      setRectangleProperties: function setRectangleProperties(i, props) {
-        model.setRectangleProperties(i, props);
+      setShapeProperties: function setShapeProperties(i, props) {
+        model.setShapeProperties(i, props);
         api.repaintIfReady();
       },
 
-      getRectangleProperties: function getRectangleProperties(i) {
-        return model.getRectangleProperties(i);
+      getShapeProperties: function getShapeProperties(i) {
+        return model.getShapeProperties(i);
       },
 
       addElectricField: function addElectricField(props, options) {
@@ -470,14 +470,14 @@ define(function (require) {
         return model.getElectricFieldProperties(i);
       },
 
-      getAtomsWithinRectangle: function getAtomsInsideRectangle(i) {
-        var props=model.getRectangleProperties(i);
+      getAtomsWithinShape: function getAtomsInsideShape(i) {
+        var props=model.getShapeProperties(i);
         return this.atomsWithinRect(props.x, props.y, props.width, props.height);
       },
 
-      removeRectangle: function removeRectangle(i, options) {
+      removeShape: function removeShape(i, options) {
         try {
-          model.removeRectangle(i);
+          model.removeShape(i);
         } catch (e) {
           if (!options || !options.silent)
             throw e;
