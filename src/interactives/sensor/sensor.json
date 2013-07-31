@@ -13,6 +13,7 @@
       },
       "viewOptions": {
         "controlButtons": "play_reset",
+        "controlButtonStyle": "text",
         "showClock": true
       }
     }
