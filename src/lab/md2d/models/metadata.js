@@ -242,6 +242,11 @@ define(function() {
       controlButtons: {
         defaultValue: "play"
       },
+      controlButtonStyle: {
+        defaultValue: "video",
+        // expectation is that this will be set by the interactive
+        serialize: false
+      },
       gridLines: {
         defaultValue: false
       },

@@ -6,6 +6,27 @@
   background-size: $size
   background-image: url($url)
 
+@mixin lab-button
+  @include linear-gradient(#fafafa, #c2c2c2, $fallback: #eee)
+  font-family: $fontface, Verdana, Geneva, sans-serif
+  border: 1px solid #ccc
+  border-radius: 0.7em
+  color: #333
+  padding-left: 1em
+  padding-right: 1em
+  text-align: center
+  text-shadow: 0 1px 0 #eee
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3)
+
+  &:hover
+    @include linear-gradient(#fff, #e6e6e6, $fallback: #e6e6e6)
+    cursor: pointer
+
+  &:active
+    @include linear-gradient(#e6e6e6, #fff, $fallback: #fff)
+    border: 1px solid #aaa
+    border-bottom: 1px solid #888
+
 // Typography for various interactive components which support markdown. For
 // now it's used in text components and about dialog.
 // Define all rules with !important to ensure that they won't be overwritten
@@ -55,29 +76,11 @@
   height: 2em
   width: auto
   & > button
-    @include linear-gradient(#fafafa, #c2c2c2, $fallback: #eee)
-    font-size: 1em
-    font-family: $fontface, Verdana, Geneva, sans-serif
+    @include lab-button
     width: 100%
     height: 100%
     line-height: 2em
-    border: 1px solid #ccc
-    border-radius: 0.7em
-    color: #333
-    padding-left: 1em
-    padding-right: 1em
-    text-align: center
-    text-shadow: 0 1px 0 #eee
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3)
-
-    &:hover
-      @include linear-gradient(#fff, #e6e6e6, $fallback: #e6e6e6)
-      cursor: pointer
-
-    &:active
-      @include linear-gradient(#e6e6e6, #fff, $fallback: #fff)
-      border: 1px solid #aaa
-      border-bottom: 1px solid #888
+    font-size: 1em
 
 .interactive-text
   &.clickable
@@ -302,10 +305,24 @@
 
 .interactive-playback
   font-size: 1em
-  border-bottom-left-radius: 0.7em
-  border-bottom-right-radius: 0.7em
-  box-shadow: 0px 1px 1px rgba(0,0,0,0.4)
   height: 2em
+
+  &.text > button
+    @include lab-button
+    height: 80%
+    width: 6em
+    font-size: 0.8em
+    line-height: 1.6em
+    margin: 0.5em 0.8em
+
+    &.disabled
+      @include linear-gradient(#fff, #e6e6e6, $fallback: #e6e6e6)
+
+  &.video
+    border-bottom-left-radius: 0.7em
+    border-bottom-right-radius: 0.7em
+    box-shadow: 0px 1px 1px rgba(0,0,0,0.4)
+
   a
     display: inline-block
     vertical-align: middle
