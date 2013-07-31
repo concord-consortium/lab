@@ -313,6 +313,7 @@ define(function (require, exports) {
         //                      Shape Properties
 
         // Individual properties for the shapes
+        shapeType,
         shapeX,
         shapeY,
         shapeWidth,
@@ -323,6 +324,7 @@ define(function (require, exports) {
         shapeLineDashes,
         shapeLineWeight,
         shapeLayer,
+        shapeLayerPosition,
         shapeVisible,
 
         // An object that contains references to the above shape-property arrays.
@@ -676,6 +678,7 @@ define(function (require, exports) {
           },
 
           shapes: function() {
+            shapeType          = shapes.type;
             shapeX             = shapes.x;
             shapeY             = shapes.y;
             shapeWidth         = shapes.width;
@@ -686,6 +689,7 @@ define(function (require, exports) {
             shapeLineDashes    = shapes.lineDashes;
             shapeLineWeight    = shapes.lineWeight;
             shapeLayer         = shapes.layer;
+            shapeLayerPosition = shapes.layerPosition;
             shapeVisible       = shapes.visible;
           },
 
@@ -841,17 +845,19 @@ define(function (require, exports) {
         createShapesArray = function(num) {
           shapes = engine.shapes = {};
 
-          shapes.x          = arrays.create(num, 0, arrayTypes.floatType);
-          shapes.y          = arrays.create(num, 0, arrayTypes.floatType);
-          shapes.width      = arrays.create(num, 0, arrayTypes.floatType);
-          shapes.height     = arrays.create(num, 0, arrayTypes.floatType);
-          shapes.color      = [];
-          shapes.lineColor  = [];
-          shapes.lineDashes = [];
-          shapes.lineWeight = arrays.create(num, 0, arrayTypes.floatType);
-          shapes.layer      = arrays.create(num, 0, arrayTypes.floatType);
-          shapes.visible    = arrays.create(num, 0, arrayTypes.uint8Type);
-          shapes.fence      = arrays.create(num, 0, arrayTypes.uint8Type);
+          shapes.type = [];
+          shapes.x             = arrays.create(num, 0, arrayTypes.floatType);
+          shapes.y             = arrays.create(num, 0, arrayTypes.floatType);
+          shapes.width         = arrays.create(num, 0, arrayTypes.floatType);
+          shapes.height        = arrays.create(num, 0, arrayTypes.floatType);
+          shapes.color         = [];
+          shapes.lineColor     = [];
+          shapes.lineDashes    = [];
+          shapes.lineWeight    = arrays.create(num, 0, arrayTypes.floatType);
+          shapes.layer         = arrays.create(num, 0, arrayTypes.uint8Type);
+          shapes.layerPosition = arrays.create(num, 0, arrayTypes.uint8Type);
+          shapes.visible       = arrays.create(num, 0, arrayTypes.uint8Type);
+          shapes.fence         = arrays.create(num, 0, arrayTypes.uint8Type);
 
           assignShortcutReferences.shapes();
         },
@@ -1225,7 +1231,22 @@ define(function (require, exports) {
               x_outside_left,
               x_outside_right,
               y_outside_top,
-              y_outside_bottom;
+              y_outside_bottom,
+ 
+              shapeXW,
+              shapeYH,
+              shapeWR,
+              shapeHR,
+
+              tx,
+              ty,
+              tvx,
+              tvy,
+              mx,
+              my,
+              mr,
+              tx_prev,
+              ty_prev;
 
           r = radius[i];
           xi = x[i];
@@ -1235,46 +1256,49 @@ define(function (require, exports) {
 
             if(!shapeFence[j]) continue;
 
-            x_outside_left = shapeX[j] - r;
-            x_outside_right = shapeX[j] + shapeWidth[j] + r;
-            y_outside_top = shapeY[j] + shapeHeight[j] + r;
-            y_outside_bottom = shapeY[j] - r;
+            if(shapeType[j]=='rectangle'){
 
-            x_inside_left = shapeX[j] + r;
-            x_inside_right = shapeX[j] + shapeWidth[j] - r;
-            y_inside_top = shapeY[j] + shapeHeight[j] - r;
-            y_inside_bottom = shapeY[j] + r;
-
-            // Check all outside collisions
-            if (xi > x_outside_left && xi < x_outside_right && yi > y_outside_bottom && yi < y_outside_top) {
-              if (x_prev <= x_outside_left) {
-                x[i] = x_outside_left - (xi - x_outside_left);
-                vx[i] *= -1;
-              } else if (x_prev >= x_outside_right) {
-                x[i] = x_outside_right + (x_outside_right - xi);
-                vx[i] *= -1;
-              } else if (y_prev <= y_outside_bottom) {
-                y[i] = y_outside_bottom - (yi - y_outside_bottom);
-                vy[i] *= -1;
-              } else if (y_prev >= y_outside_top) {
-                y[i] = y_outside_top  + (y_outside_top - yi);
-                vy[i] *= -1;
+              x_outside_left = shapeX[j] - r;
+              x_outside_right = shapeX[j] + shapeWidth[j] + r;
+              y_outside_top = shapeY[j] + shapeHeight[j] + r;
+              y_outside_bottom = shapeY[j] - r;
+  
+              x_inside_left = shapeX[j] + r;
+              x_inside_right = shapeX[j] + shapeWidth[j] - r;
+              y_inside_top = shapeY[j] + shapeHeight[j] - r;
+              y_inside_bottom = shapeY[j] + r;
+  
+              // Check all outside collisions
+              if (xi > x_outside_left && xi < x_outside_right && yi > y_outside_bottom && yi < y_outside_top) {
+                if (x_prev <= x_outside_left) {
+                  x[i] = x_outside_left - (xi - x_outside_left);
+                  vx[i] *= -1;
+                } else if (x_prev >= x_outside_right) {
+                  x[i] = x_outside_right + (x_outside_right - xi);
+                  vx[i] *= -1;
+                } else if (y_prev <= y_outside_bottom) {
+                  y[i] = y_outside_bottom - (yi - y_outside_bottom);
+                  vy[i] *= -1;
+                } else if (y_prev >= y_outside_top) {
+                  y[i] = y_outside_top  + (y_outside_top - yi);
+                  vy[i] *= -1;
+                }
               }
-            }
-            //Check all inside collisions
-            if (x_prev > x_inside_left && x_prev < x_inside_right && y_prev > y_inside_bottom && y_prev < y_inside_top) {
-              if (xi <= x_inside_left) {
-                x[i] = x_inside_left + (x_inside_left - xi);
-                vx[i] *= -1;
-              } else if (xi >= x_inside_right) {
-                x[i] = x_inside_right - (xi - x_inside_right);
-                vx[i] *= -1;
-              } else if (yi <= y_inside_bottom) {
-                y[i] = y_inside_bottom + (y_inside_bottom - yi);
-                vy[i] *= -1;
-              } else if (yi >= y_inside_top) {
-                y[i] = y_inside_top - (yi - y_inside_top);
-                vy[i] *= -1;
+              //Check all inside collisions
+              if (x_prev > x_inside_left && x_prev < x_inside_right && y_prev > y_inside_bottom && y_prev < y_inside_top) {
+                if (xi <= x_inside_left) {
+                  x[i] = x_inside_left + (x_inside_left - xi);
+                  vx[i] *= -1;
+                } else if (xi >= x_inside_right) {
+                  x[i] = x_inside_right - (xi - x_inside_right);
+                  vx[i] *= -1;
+                } else if (yi <= y_inside_bottom) {
+                  y[i] = y_inside_bottom + (y_inside_bottom - yi);
+                  vy[i] *= -1;
+                } else if (yi >= y_inside_top) {
+                  y[i] = y_inside_top - (yi - y_inside_top);
+                  vy[i] *= -1;
+                }
               }
             }
           }

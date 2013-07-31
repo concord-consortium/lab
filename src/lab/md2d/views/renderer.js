@@ -659,20 +659,32 @@ define(function (require) {
           .attr("class", "shape")
           .attr("transform",
             function (d) {
-              return "translate(" + model2px(shapes.x[d]) + " " + model2pxInv(shapes.y[d] + shapes.height[d]) + ")";
+              return "translate(" + model2px(shapes.x[d.index]) + " " + model2pxInv(shapes.y[d.index] + shapes.height[d.index]) + ")";
             }
           );
         shapeGroup.append("rect")
           .attr({
-            "class": "shape-shape",
+            "class": "shape-rectangle",
             "x": 0,
             "y": 0,
-            "width": function(d) {return model2px(shapes.width[d]); },
-            "height": function(d) {return model2px(shapes.height[d]); },
-            "fill": function(d) { return shapes.visible[d] ? shapes.color[d] : "rgba(128,128,128, 0)"; },
-            "stroke-width": function(d) { return shapes.lineWeight[d]; },
-            "stroke-dasharray": function(d) { return shapes.lineDashes[d]; },
-            "stroke": function(d) { return shapes.visible[d] ? shapes.lineColor[d] : "rgba(128,128,128, 0)"; }
+            "width": function(d) {return model2px(shapes.width[d.index]); },
+            "height": function(d) {return model2px(shapes.height[d.index]); },
+            "fill": function(d) { return shapes.visible[d.index] && shapes.type[d.index]=='rectangle' ? shapes.color[d.index] : "transparent"; },
+            "stroke-width": function(d) { return shapes.lineWeight[d.index]; },
+            "stroke-dasharray": function(d) { return shapes.lineDashes[d.index]; },
+            "stroke": function(d) { return shapes.visible[d.index] && shapes.type[d.index]=='rectangle'  ? shapes.lineColor[d.index] : "transparent"; }
+          });
+        shapeGroup.append("ellipse")
+          .attr({
+            "class": "shape-ellipse",
+            "cx": function(d) {return model2px(shapes.width[d.index])/2; },
+            "cy": function(d) {return model2px(shapes.height[d.index])/2; },
+            "rx": function(d) {return model2px(shapes.width[d.index])/2; },
+            "ry": function(d) {return model2px(shapes.height[d.index])/2; },
+            "fill": function(d) { return shapes.visible[d.index] && shapes.type[d.index]=='ellipse'  ? shapes.color[d.index] : "transparent"; },
+            "stroke-width": function(d) { return shapes.lineWeight[d.index]; },
+            "stroke-dasharray": function(d) { return shapes.lineDashes[d.index]; },
+            "stroke": function(d) { return shapes.visible[d.index] && shapes.type[d.index]=='ellipse'  ? shapes.lineColor[d.index] : "transparent"; }
           });
        }
     }
@@ -1327,12 +1339,18 @@ define(function (require) {
         mockShapesBelow=[];
         for(var i = 0; i < shapes.x.length ; i++){
           if(shapes.layer[i]===1){
-            mockShapesTop.push(i);
+            mockShapesTop.push({index:i,layerPosition:shapes.layerPosition[i]});
           }
           else{
-            mockShapesBelow.push(i);
+            mockShapesBelow.push({index:i,layerPosition:shapes.layerPosition[i]});
           }
         }
+        mockShapesTop.sort(function(a,b){
+            return a.layerPosition-b.layerPosition
+        })
+        mockShapesBelow.sort(function(a,b){
+            return a.layerPosition-b.layerPosition
+        })
         shapeTop = shapeContainerTop.selectAll(".shape").data(mockShapesTop);
         shapeBelow = shapeContainerBelow.selectAll(".shape").data(mockShapesBelow);
         shapeEnter();
@@ -1990,10 +2008,10 @@ define(function (require) {
 
       if (shapes) {
         shapeTop.attr("transform", function (d) {
-          return "translate(" + model2px(shapes.x[d]) + " " + model2pxInv(shapes.y[d] + shapes.height[d]) + ")";
+          return "translate(" + model2px(shapes.x[d.index]) + " " + model2pxInv(shapes.y[d.index] + shapes.height[d.index]) + ")";
         });
         shapeBelow.attr("transform", function (d) {
-          return "translate(" + model2px(shapes.x[d]) + " " + model2pxInv(shapes.y[d] + shapes.height[d]) + ")";
+          return "translate(" + model2px(shapes.x[d.index]) + " " + model2pxInv(shapes.y[d.index] + shapes.height[d.index]) + ")";
         });
       }
 

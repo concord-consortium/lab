@@ -501,6 +501,10 @@ define(function() {
 
     shape: {
       // Required properties:
+      type: {
+        defaultValue: "rectangle",
+        required: true
+      },
       width: {
         unitType: "length",
         required: true
@@ -535,6 +539,9 @@ define(function() {
         defaultValue: 1
       },
       layer: {
+        defaultValue: 1
+      },
+      layerPosition: {
         defaultValue: 1
       },
       visible: {
