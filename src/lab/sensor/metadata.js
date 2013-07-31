@@ -23,6 +23,11 @@ define(function() {
       controlButtons: {
         defaultValue: "play_reset",
         propertyChangeInvalidates: false
+      },
+      controlButtonStyle: {
+        defaultValue: "video",
+        propertyChangeInvalidates: false,
+        serialize: false
       }
     }
   };
