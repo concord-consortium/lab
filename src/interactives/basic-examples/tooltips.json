@@ -41,7 +41,6 @@
       "type": "checkbox",
       "id": "checkbox",
       "text": "Checkbox",
-      "onClick": "",
       "tooltip": "I'm a checkbox component!"
     },
     {
