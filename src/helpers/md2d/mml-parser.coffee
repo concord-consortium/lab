@@ -232,6 +232,7 @@ parseMML = (mmlString) ->
       for node, idx in rectangleNodes
         $node = getNode cheerio node
 
+        type          = 'rectangle'
         height        = getFloatProperty $node, 'height'
         width         = getFloatProperty $node, 'width'
         x             = getFloatProperty $node, 'x'
@@ -239,15 +240,21 @@ parseMML = (mmlString) ->
         lineStyle     = getFloatProperty $node, 'lineStyle'
         lineWeight    = getFloatProperty $node, 'lineWeight'
         layer         = getFloatProperty $node, 'layer'
+        layerPosition = getFloatProperty $node, 'layerPosition'
         alpha         = getFloatProperty $node, 'alpha'
         visible       = getBooleanProperty $node, 'visible'
         fence         = getBooleanProperty $node, 'reflection'
-
+        
         # Change all Boolean values to 0/1.
         visible = Number visible if visible?
         fence   = Number fence if fence?
 
-        colorNodes  = $node.find "[property=fillMode] .java-awt-Color>int"
+        # Color could be reused from somewhere else in the document
+        idref = $node.find "[property=fillMode] [idref]"
+        if idref and idref.length>0
+          colorNodes  = $mml ("#"+ (idref.attr "idref").replace /[\.$]/g, "-") + " .java-awt-Color>int"
+        else
+          colorNodes  = $node.find "[property=fillMode] .java-awt-Color>int"
         if colorNodes and colorNodes.length > 0
           corecolor=(parseInt cheerio(colorNodes[0]).text())+","+
                   (parseInt cheerio(colorNodes[1]).text())+","+
@@ -256,12 +263,21 @@ parseMML = (mmlString) ->
             color = "rgba("+corecolor+","+alpha/255+")"
           else
             color = "rgb("+corecolor+")"
+        else
+          color = NaN
 
-        lineColorNodes  = $node.find "[property=lineColor] .java-awt-Color>int"
+        # Color could be reused from somewhere else in the document
+        idref = $node.find "[property=lineColor] [idref]"
+        if idref and idref.length>0
+          lineColorNodes  = $mml ("#"+ (idref.attr "idref").replace /[\.$]/g, "-") + " int"
+        else
+          lineColorNodes  = $node.find "[property=lineColor] .java-awt-Color>int"
         if lineColorNodes and lineColorNodes.length > 0
           lineColor = "rgb("+(parseInt cheerio(lineColorNodes[0]).text())+","+
                   (parseInt cheerio(lineColorNodes[1]).text())+","+
                   (parseInt cheerio(lineColorNodes[2]).text())+")"
+        else
+          lineColor = NaN
 
         lineDashes = switch
               when lineStyle is 1 then '2,2'
@@ -280,12 +296,13 @@ parseMML = (mmlString) ->
         y               = y - height     # flip to lower-left coordinate system
 
         rawData = {
+          type,
           x, y,
           height, width,
           fence,
           color,lineColor,
           lineWeight,lineDashes,
-          layer,
+          layer,layerPosition,
           visible
         }
 
@@ -299,7 +316,7 @@ parseMML = (mmlString) ->
 
         rectangles.push validatedData
 
-        # Shape can also specify electric fied.
+        # Shape can also specify electric field.
         $elField = $node.find "object.org-concord-mw2d-models-ElectricField"
         if $elField.length > 0
           parsedElField = parseElectricField $elField
@@ -307,6 +324,108 @@ parseMML = (mmlString) ->
           electricFields.push parsedElField
 
       rectangles
+
+    ### Find and parse mml nodes representing ellipses ###
+    parseEllipses = ->
+      ellipses = []
+      ellipseNodes = $mml "[property=ellipses] object.org-concord-mw2d-models-EllipseComponent-Delegate"
+      for node, idx in ellipseNodes
+        $node = getNode cheerio node
+
+        type          = 'ellipse'
+        height        = getFloatProperty $node, 'height'
+        width         = getFloatProperty $node, 'width'
+        x             = getFloatProperty $node, 'x'
+        y             = getFloatProperty $node, 'y'
+        lineStyle     = getFloatProperty $node, 'lineStyle'
+        lineWeight    = getFloatProperty $node, 'lineWeight'
+        layer         = getFloatProperty $node, 'layer'
+        layerPosition = getFloatProperty $node, 'layerPosition'
+        alpha         = getFloatProperty $node, 'alpha'
+        visible       = getBooleanProperty $node, 'visible'
+        fence         = getBooleanProperty $node, 'reflection'
+
+        # Change all Boolean values to 0/1.
+        visible = Number visible if visible?
+        fence   = Number fence if fence?
+
+        # Color could be reused from somewhere else in the document
+        idref = $node.find "[property=fillMode] [idref]"
+        if idref and idref.length>0
+          colorNodes  = $mml ("#"+ (idref.attr "idref").replace /[\.$]/g, "-") + " .java-awt-Color>int"
+        else
+          colorNodes  = $node.find "[property=fillMode] .java-awt-Color>int"
+
+        if colorNodes and colorNodes.length > 0
+          corecolor=(parseInt cheerio(colorNodes[0]).text())+","+
+                  (parseInt cheerio(colorNodes[1]).text())+","+
+                  (parseInt cheerio(colorNodes[2]).text())
+          if alpha
+            color = "rgba("+corecolor+","+alpha/255+")"
+          else
+            color = "rgb("+corecolor+")"
+        else
+          color = NaN
+
+        # Color could be reused from somewhere else in the document
+        idref = $node.find "[property=lineColor] [idref]"
+        if idref and idref.length>0
+          lineColorNodes  = $mml ("#"+ (idref.attr "idref").replace /[\.$]/g, "-") + " int"
+        else
+          lineColorNodes  = $node.find "[property=lineColor] .java-awt-Color>int"
+
+        if lineColorNodes and lineColorNodes.length > 0
+          lineColor = "rgb("+(parseInt cheerio(lineColorNodes[0]).text())+","+
+                  (parseInt cheerio(lineColorNodes[1]).text())+","+
+                  (parseInt cheerio(lineColorNodes[2]).text())+")"
+        else
+          lineColor = NaN
+
+        lineDashes = switch
+              when lineStyle is 1 then '2,2'
+              when lineStyle is 2 then '4,4'
+              when lineStyle is 3 then '6,6'
+              when lineStyle is 4 then '2,4,8,4'
+              else 'none'
+
+        if not x?
+          x=20
+        if not y?
+          y=20
+        # Unit conversion.
+        [x, y]          = toNextgenCoordinates x, y
+        [height, width] = toNextgenLengths height, width
+        y               = y - height     # flip to lower-left coordinate system
+
+        rawData = {
+          type,
+          x, y,
+          height, width,
+          fence,
+          color,lineColor,
+          lineWeight,lineDashes,
+          layer,layerPosition,
+          visible
+        }
+
+        # Unit conversion performed on undefined values can convert them to NaN.
+        # Revert back all NaNs to undefined, as we do not expect any NaN
+        # as property. Undefined values will be replaced by default values by validator.
+        removeNaNProperties rawData
+
+        # Validate all properties and provides default values for undefined values.
+        validatedData = validator.validateCompleteness metadata.shape, rawData
+
+        ellipses.push validatedData
+
+        # Shape can also specify electric field.
+        $elField = $node.find "object.org-concord-mw2d-models-ElectricField"
+        if $elField.length > 0
+          parsedElField = parseElectricField $elField
+          parsedElField.shapeIdx = idx
+          electricFields.push parsedElField
+
+      ellipses
 
     ###
       Find the container size
@@ -637,7 +756,7 @@ parseMML = (mmlString) ->
     ###
       Find shapes
     ###
-    shapes = parseRectangles()
+    shapes = parseRectangles().concat parseEllipses()
 
     ###
       Find all elements. Results in:
@@ -1166,9 +1285,9 @@ parseMML = (mmlString) ->
         'height', 'width', 'mass', 'westProbe', 'northProbe', 'eastProbe', 'southProbe', 'color', 'visible'
 
     if shapes.length > 0
-      json.shapes = unroll shapes, 'x', 'y', 'height', 'width', 'fence',
+      json.shapes = unroll shapes, 'type', 'x', 'y', 'height', 'width', 'fence',
         'color', 'lineColor', 'lineWeight', 'lineDashes',
-        'layer', 'visible'
+        'layer', 'layerPosition', 'visible'
 
     if electricFields.length > 0
       json.electricFields = unroll electricFields, 'intensity', 'orientation', 'shapeIdx'
