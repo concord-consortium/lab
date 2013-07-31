@@ -1233,20 +1233,18 @@ define(function (require, exports) {
               y_outside_top,
               y_outside_bottom,
  
-              shapeXW,
-              shapeYH,
-              shapeWR,
-              shapeHR,
+              shapeX_offset,shapeY_offset,
 
-              tx,
-              ty,
-              tvx,
-              tvy,
-              mx,
-              my,
-              mr,
-              tx_prev,
-              ty_prev;
+              tx,ty,
+              tx_prev,ty_prev,
+              ar,br,
+
+              a,b,c,
+              f1x,f1y,f1d,
+              f2x,f2y,f2d,
+              tvx,tvy,
+              mx,my,
+              nx,ny,nd;
 
           r = radius[i];
           xi = x[i];
@@ -1299,6 +1297,71 @@ define(function (require, exports) {
                   y[i] = y_inside_top - (yi - y_inside_top);
                   vy[i] *= -1;
                 }
+              }
+            }
+            else if (shapeType[j] == 'ellipse') {
+              a=shapeWidth[j]/2;
+              b=shapeHeight[j]/2;
+              // Transform points from model space to ellipse space
+              // to facilitate collision checking
+              shapeX_offset = shapeX[j] + a;
+              shapeY_offset = shapeY[j] + b;
+              tx = (xi-shapeX_offset)/(a+r);
+              ty = (yi - shapeY_offset)/(b+r);
+              tx*=tx;
+              ty*=ty;
+              tx_prev = (x_prev - shapeX_offset)/(a+r);
+              ty_prev = (y_prev - shapeY_offset)/(b+r);
+              tx_prev*=tx_prev; 
+              ty_prev *=ty_prev;
+              ar=(a+r)/(a-r);
+              br=(b+r)/(b-r);
+              ar*=ar;
+              br*=br;
+              if (tx+ty <= 1 && tx_prev+ty_prev > 1||tx *ar+ ty*br >= 1 && tx_prev*ar + ty_prev*br< 1){
+
+                //Calculate the two foci
+                if(shapeWidth[j]>shapeHeight[j]){
+                  c=Math.sqrt(a*a-b*b);
+                  f1x=shapeX[j]+a+c;
+                  f2x=shapeX[j]+a-c;
+                  f1y=f2y=shapeY[j]+b;
+                }
+                else{
+                  c=Math.sqrt(b*b-a*a);
+                  f1x=f2x=shapeX[j]+a;
+                  f1y=shapeY[j]+b+c;
+                  f2y=shapeY[j]+b-c;
+                }
+
+                // Determine the midpoint of the atom's motion path
+                // so it can be used as an approximate point of collision
+                mx = (xi + x_prev) / 2;
+                my = (yi + y_prev) / 2;
+
+                // Determine the distance from the point of collision
+                // to both foci
+                f1d=Math.sqrt((f1x-mx)*(f1x-mx)+(f1y-my)*(f1y-my));
+                f2d=Math.sqrt((f2x-mx)*(f2x-mx)+(f2y-my)*(f2y-my));
+
+                // Calculate the angle bisector which is the normal vector
+                nx=mx-(f1x*f2d+f2x*f1d)/(f1d+f2d);
+                ny=my-(f1y*f2d+f2y*f1d)/(f1d+f2d);
+
+                // Normalize the normal vector
+                nd=Math.sqrt(nx*nx+ny*ny);
+                nx/=nd;
+                ny/=nd;
+
+                // Reflect the atom's position off the normal vector
+                x[i] = (mx - x_prev) - 2 * ((mx - x_prev) * nx + (my - y_prev) * ny) * nx + mx;
+                y[i] = (my - y_prev) - 2 * ((mx - x_prev) * nx + (my - y_prev) * ny) * ny + my;
+
+                // Reflect the atom's velocity off the normal vector
+                tvx=vx[i]
+                tvy=vy[i]
+                vx[i] = (tvx - 2 * (tvx * nx + tvy * ny) * nx);
+                vy[i] = (tvy - 2 * (tvx * nx + tvy * ny) * ny);
               }
             }
           }
