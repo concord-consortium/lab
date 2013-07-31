@@ -317,12 +317,14 @@ AUTHORING = false;
           "tiny":   { height: "245px" },
           "small":  { height: "280px" },
           "medium": { height: "450px" },
+          "lara": { height: "565px" },
           "large":  { height: "700px" }
         };
 
     dimensions.tiny.width   = parseInt(dimensions.tiny.height, 10)   * aspectRatio + "px";
     dimensions.small.width  = parseInt(dimensions.small.height, 10)  * aspectRatio + "px";
     dimensions.medium.width = parseInt(dimensions.medium.height, 10) * aspectRatio + "px";
+    dimensions.lara.width =   parseInt(dimensions.lara.height, 10) * aspectRatio + "px";
     dimensions.large.width  = parseInt(dimensions.large.height, 10)  * aspectRatio + "px";
     dim = dimensions[selection];
     saveOptionsToCookie();
