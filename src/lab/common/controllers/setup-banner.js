@@ -19,13 +19,13 @@ define(function () {
    *  - layout definition (components location).
    * All these things are used to build the interactive banner.
    *
-   * @param {ScriptingAPI} scriptingAPI Initialized ScriptingAPI object.
+   * @param {InteractivesController} controller
    * @param {Object} interactive Interactive JSON definition.
    * @param {CreditsDialog} creditsDialog
    * @param {AboutDialog} aboutDialog
    * @param {ShareDialog} shareDialog
    */
-  return function setupBanner(scriptingAPI, interactive, creditsDialog, aboutDialog, shareDialog) {
+  return function setupBanner(controller, interactive, creditsDialog, aboutDialog, shareDialog) {
     var components = {},
         template = [],
         layout = {},
@@ -66,7 +66,7 @@ define(function () {
         Controller = PlaybackController;
       }
 
-      components[element.id] = new Controller(element, scriptingAPI);
+      components[element.id] = new Controller(element, controller.scriptingAPI, controller);
       template.push(container);
       layout[container.id] = [element.id];
     }
@@ -83,7 +83,8 @@ define(function () {
         } else {
           creditsDialog.open();
         }
-      }
+      },
+      "tooltip": "Need instructions? Click the *About* link."
     },
     {
       "id": "banner-right",
@@ -110,7 +111,9 @@ define(function () {
         "type": "text",
         "id": "share-link",
         "text": "Share",
-        "onClick": function () { shareDialog.open(); }
+        "onClick": function () { shareDialog.open(); },
+        "tooltip": "Share this interactive using e-mail, IM or embed in website or blog. " +
+                   "Click the *Share* link."
       },
       {
         "id": "banner-middle",
@@ -136,7 +139,8 @@ define(function () {
       "height": "2.5em",
       "width": "8.1em",
       "classes": ["credits"],
-      "tooltip": "Credits",
+      "tooltip": "Learn more about *Next-Generation Molecular Workbench* " +
+                 "and *The Concord Consortium*.",
       "onClick": function () { creditsDialog.open(); }
     },
     {
@@ -190,8 +194,10 @@ define(function () {
         "onClick": function () {
           if (!isFullscreen()) {
             requestFullscreenMethod.call(body);
+            $("#fullsize-link").attr("data-lab-tooltip", "<p>Exit full-screen mode</p>");
           } else {
             document.cancelFullscreenMethod();
+            $("#fullsize-link").attr("data-lab-tooltip", "<p>Open interactive in full-screen mode</p>");
           }
         }
       },

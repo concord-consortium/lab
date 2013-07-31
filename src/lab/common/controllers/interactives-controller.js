@@ -405,7 +405,7 @@ define(function (require) {
       // Banner hash containing components, layout containers and layout deinition
       // (components location). Keep it in a separate structure, because we do not
       // expect these objects to be serialized!
-      banner = setupBanner(scriptingAPI, interactive, creditsDialog, aboutDialog, shareDialog);
+      banner = setupBanner(controller, interactive, creditsDialog, aboutDialog, shareDialog);
       // Register callbacks of banner components.
       components = banner.components;
       for (comp in components) {
@@ -855,6 +855,9 @@ define(function (require) {
     // Public API.
     //
     controller = {
+      get scriptingAPI() {
+        return scriptingAPI;
+      },
       getDGExportController: function () {
         return exportController;
       },

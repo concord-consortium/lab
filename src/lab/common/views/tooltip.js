@@ -69,10 +69,12 @@ define(function (require) {
       });
     }
 
-    $target.attr("data-lab-tooltip", true);
+    $target.attr("data-lab-tooltip", markdownToHTML(content));
     $target.tooltip({
       items: "[data-lab-tooltip]",
-      content: markdownToHTML(content),
+      content: function () {
+        return $(this).attr("data-lab-tooltip");
+      },
       show: false,
       open: function (event, ui) {
         $tooltip = ui.tooltip;
