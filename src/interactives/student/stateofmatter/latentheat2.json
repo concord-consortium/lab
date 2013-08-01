@@ -1,24 +1,183 @@
 {
-  "title": "latentheat2",
+  "title": "Seeing Specific Heat and Latent Heat",
   "publicationStatus": "draft",
   "subtitle": "",
-  "about": "",
+  "about": [
+    "Specific heat capacitiy is the measure of the heat energy required",
+    "to raise the temperature of a given quantity of a substance by one",
+    "kelvin. Latent heat of melting describes tœhe amount of heat",
+    "required to melt a solid. When a solid is undergoing melting, the",
+    "temperature basically remains constant until the entire solid is",
+    "molten. The above simulation demonstrates the specific heat and",
+    "the latent heat.",
+    "",
+    "The physical origin of latent heat is that when a system is in a",
+    "phase transition, its structure will change. Changing structure",
+    "usually results in changes of potential energy, because potential",
+    "energy depends primarily on structure. In the simulation,",
+    "the energy added to the system is absorbed by the atoms and used",
+    "to break the interatomic interactions (so that they can leave the",
+    "condensed state). During the phase transition the kinetic energy",
+    "doesn't increase, as the",
+    "potential energy increases in the expense of the input energy.",
+    "During this period, the interatomic interactions diminish and the",
+    "structure breaks up, resulting in a phase transition.",
+    "",
+    "One thing you would notice is that the temperature-energy curve on",
+    "the right has fluctuations. This is because we have much fewer",
+    "atoms (169) in the simulation than there would be in a real",
+    "physical model."
+  ],
   "models": [
     {
       "type": "md2d",
       "id": "latentheat2$0",
       "url": "imports/legacy-mw-content/converted/student/stateofmatter/latentheat2$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset"
-      }
+        "controlButtons": false
+      },
+      "modelOptions": {
+        "timeStep": 5
+      },
+      "onLoad": [
+        "callEvery(200, function() {",
+        "  if (get('experimentRunning')) {",
+        "    var numAtoms, i, props, ke, factor, runningTime;",
+        "    batch(function () {",
+        "      ke = get('kineticEnergy');",
+        "      factor = (ke + 0.05)/ke;",
+        "      numAtoms = getNumberOfAtoms()",
+        "      for(i=0; i<numAtoms; i++){",
+        "        props = getAtomProperties(i);",
+        "        setAtomProperties(i, {vx:props.vx*factor, vy:props.vy*factor});",
+        "      }",
+        "    });",
+        "    runningTime = get('time') - get('timeExperimentStarted')",
+        "    set('experimentTime', runningTime);",
+        "    if (runningTime > 200000) stop();",
+        "  }",
+        "});"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "timeExperimentStarted",
+      "initialValue": 0,
+      "onChange": ""
+    },
+    {
+      "name": "experimentRunning",
+      "initialValue": false,
+      "onChange": ""
+    },
+    {
+      "name": "experimentTime",
+      "label": "Experiment time",
+      "initialValue": 0,
+      "onChange": ""
     }
   ],
   "components": [
-
+    {
+      "type": "barGraph",
+      "id": "ke-bar-graph",
+      "min": 0,
+      "max": 75,
+      "labels": 0,
+      "title": "Kinetic Energy",
+      "property": "kineticEnergy",
+      "averagePeriod": 2500
+    },
+    {
+      "type": "barGraph",
+      "id": "pe-bar-graph",
+      "min": -200,
+      "max": 0,
+      "labels": 0,
+      "title": "Potential Energy",
+      "property": "potentialEnergy",
+      "averagePeriod": 2500
+    },
+    {
+      "type": "button",
+      "id": "start-heating",
+      "text": "Start adding heat",
+      "action": [
+        "if (isStopped()) {",
+        "  start();",
+        "}",
+        "set('timeExperimentStarted', get('time'));",
+        "set('experimentRunning', true);"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "reset-experiment",
+      "text": "Reset experiment",
+      "action": [
+        "reset();",
+        "set('experimentRunning', false);"
+      ]
+    },
+    {
+      "type": "numericOutput",
+      "id": "experiment-time",
+      "orientation": "vertical",
+      "property": "experimentTime",
+      "displayValue": "return format('1.1f')(value/1000)"
+    }
   ],
   "layout": {
+    "left": [
+      "ke-bar-graph", "pe-bar-graph"
+    ],
     "bottom": [
-
+      "start-heating", "reset-experiment"
+    ],
+    "left-lower": [
+      "experiment-time"
     ]
-  }
+  },
+  "template": [
+    {
+      "id": "top",
+      "bottom": "model.top",
+      "width": "interactive.width"
+    },
+    {
+      "id": "left",
+      "top": "model.top",
+      "right": "model.left",
+      "height": "model.height",
+      "padding-right": "1em",
+      "align": "right",
+      "min-width": "6em"
+    },
+    {
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "height": "model.height",
+      "padding-left": "1em",
+      "padding-right": "0.5em",
+      "min-width": "6em"
+    },
+    {
+      "id": "left-lower",
+      "top": "model.bottom",
+      "right": "model.left",
+      "padding-top": "0.5em",
+      "bottom": "interactive.height",
+      "width": "10em"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "align": "center",
+      "padding-top": "0.5em"
+    }
+  ]
 }
