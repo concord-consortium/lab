@@ -11,12 +11,12 @@ define(function (require) {
    * function.
    * @param {Object} component Component JSON definition.
    * @param {ScriptingAPI} scriptingAPI
+   * @param {InteractiveController} controller
    */
-  function DivController(component, scriptingAPI) {
-
+  function DivController(component, scriptingAPI, controller) {
     // Call super constructor.
-    InteractiveComponent.call(this, "div", component);
-
+    InteractiveComponent.call(this, "div", component, scriptingAPI, controller);
+    this.$element.append(component.content);
   }
   inherit(DivController, InteractiveComponent);
 

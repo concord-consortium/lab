@@ -242,6 +242,9 @@ define(function() {
       type: {
         required: true
       },
+      content: {
+        defaultValue: ""
+      },
       width: {
         defaultValue: "auto"
       },
