@@ -7,6 +7,7 @@ define(function () {
       ImageController    = require('common/controllers/image-controller'),
       DivController      = require('common/controllers/div-controller'),
       PlaybackController = require('common/controllers/playback-controller'),
+      tooltip            = require('common/views/tooltip'),
 
       topBarHeight    = 1.5,
       topBarFontScale = topBarHeight*0.65,
@@ -129,6 +130,55 @@ define(function () {
         "aboveOthers": true
       });
     }
+
+    createElementInContainer({
+      "type": "div",
+      // This is pretty important, as using a right ID, we can avoid disabling our own tooltip.
+      "id": "lab-tooltips-switch",
+      "content": '<i class="icon-question-sign"/>',
+      "classes": ["delay", tooltip.TOOLTIP_ALWAYS_VISIBLE_CLASS],
+      "onClick": function () {
+        var $target = $(this);
+        if (tooltip.disabled) {
+          tooltip.disabled = false;
+          tooltip.delay = true;
+        } else if (tooltip.delay) {
+          tooltip.delay = false;
+        } else {
+          tooltip.disabled = true;
+        }
+        if (tooltip.disabled) {
+          $target.addClass("disabled");
+          $target.removeClass("delay");
+          $target.attr("data-lab-tooltip", "<p>Tooltips are disabled. Click to enable them.</p>");
+        } else if (tooltip.delay) {
+          $target.addClass("delay");
+          $target.removeClass("disabled");
+          $target.attr("data-lab-tooltip", "<p>Tooltips are enabled, but will be shown with a delay. " +
+                                           "Click to show them immediately on hover.</p>");
+        } else {
+          $target.removeClass("delay");
+          $target.removeClass("disabled");
+          $target.attr("data-lab-tooltip", "<p>Tooltips are enabled and will be shown immediately. " +
+                                           "Click to disable them.</p>");
+        }
+        $target.tooltip("close");
+      },
+      "tooltip": "Tooltips are enabled, but will be shown with a delay. " +
+                 "Click to show them immediately on hover."
+    }, {
+      "id": "banner-left",
+      "fontScale": topBarFontScale,
+      "top": "0",
+      "height": topBarHeight + "em",
+      "padding-top": topBarVerticalPadding + "em",
+      "padding-bottom": topBarVerticalPadding + "em",
+      // "banner-right" can be undefined, so check it.
+      "left": "0.6em",
+      "padding-right": "1em",
+      "align": "left",
+      "aboveOthers": true
+    });
 
     // bottom bar
     creditsDialog.update(interactive);
