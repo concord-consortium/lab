@@ -59,12 +59,12 @@ file: ~/.fog
 
   def setup_ssh(hostname=false)
     if hostname
-      hostname = [hostname]
+      hostnames = [hostname]
     else
       hostnames = CONFIG[:deploy][:targets].collect { |target| target[:url] }
     end
-    hostnames.each do |hostname|
-      @name = @options[:name] = hostname
+    hostnames.each do |host|
+      @name = @options[:name] = host
       # unless we can already connect with ssh
       unless run_local_command("ssh ubuntu@#{@name} exit")
         # setup ssh communicatiopnb
@@ -103,6 +103,7 @@ file: ~/.fog
 
   def create(hostname)
     @name = @options[:name] = hostname
+    check_for_target(@name)
     @options[:server][:tags]["Name"] = @name
     puts "\n*** creating new server: #{@name}" if @options[:verbose]
     @server = @compute.servers.create(@options[:server])
@@ -127,6 +128,7 @@ file: ~/.fog
 
   def delete(hostname)
     @name = hostname
+    check_for_target(@name)
     @ipaddress = IPSocket::getaddress(@name)
     @server = @compute.servers.all({ 'ip-address' => @ipaddress }).first
     if @server
@@ -139,6 +141,7 @@ file: ~/.fog
 
   def recreate(hostname)
     @name = @options[:name] = hostname
+    check_for_target(@name)
     @options[:server][:tags]["Name"] = @name
     self.delete(@name)
     puts "\n*** re-creating server: #{@name}" if @options[:verbose]
@@ -154,8 +157,9 @@ file: ~/.fog
     new_server_prologue(hostname)
   end
 
-  def new_server_prologue(hostname)
-    target = find_target(hostname.gsub(/\.$/, ""))
+  def new_server_prologue(host)
+    hostname = host.gsub(/\.$/, "")
+    target = find_target(hostname)
     if @options[:verbose]
       puts <<-HEREDOC
 
@@ -170,7 +174,7 @@ for external users:
   - legacy Molecular Worbench and Energy2D Java Web Start applications
   - Java-based Vernier GoIO browser-sensor applet integration
 
-You should put copy of a valid Java siging certificate keystore
+Put a copy of a valid Java siging certificate keystore
 on #{target[:name]} and edit 'config/config.yml' to reference this
 keystore before running cap #{target[:name]} deploy:setup
 
@@ -274,9 +278,10 @@ Host #{@name}
   end
 
   # Create a new dns record for the server and point it to the public IP address
-  def new_dns_record(name, ipaddress)
-    puts "\n*** Creating new Type A DNS record: #{@name} => #{@ipaddress}" if @options[:verbose]
-    @dnsrecord = @zone.records.create({ :value => ipaddress, :name => name, :type => 'A' })
+  def new_dns_record(name, ipaddress, ttl)
+    ttl = ttl || 60
+    puts "\n*** Creating new Type A DNS record: #{@name} => #{@ipaddress}, ttl => #{ttl}" if @options[:verbose]
+    @dnsrecord = @zone.records.create({ :value => ipaddress, :name => name, :ttl => ttl, :type => 'A' })
   end
 
   # find dns record for the hostname
@@ -311,8 +316,21 @@ Host #{@name}
   end
 
   def find_target(url)
-    target = CONFIG[:deploy][:targets].find { |t| t[:url] == url }
+    CONFIG[:deploy][:targets].find { |t| t[:url] == url }
   end
+
+  def check_for_target(url)
+    unless find_target(url)
+      puts <<-HEREDOC
+
+*** A target does not yet exist for #{url}.
+*** Please add a new deploy target for #{url} to config/config.yml before continuing.
+
+      HEREDOC
+      raise "No deploy target defined for #{url}."
+    end
+  end
+
 
   def setup_littlechef_nodes
     @lab_servers = @compute.servers.all('group-name' => GROUP_NAME).find_all { |ls| ls.state == 'running' }
@@ -345,7 +363,7 @@ Host #{@name}
 
   def update_littlechef_node
     cmd = "cd #{@options[:littlechef_path]} && fix node:#{name} role:lab-server"
-    target = find_target(@name)
+    attempts = 1
     if @options[:verbose]
       puts <<-HEREDOC
 
@@ -357,13 +375,18 @@ Host #{@name}
     end
     success = system(cmd)
     if !success
-      puts <<-HEREDOC
+      while attempts < 10
+        attempts += 1
+        delay = attempts * 10
+        puts <<-HEREDOC
 
-*** trying again in 5s
+*** #{attempts} attempts: trying again in #{delay}s (maximum 10 tries)
 
-      HEREDOC
-      sleep(5)
-      success = system(cmd)
+        HEREDOC
+        sleep(delay)
+        success = system(cmd)
+        break if success
+      end
     end
   end
 

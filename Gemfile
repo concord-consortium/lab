@@ -34,7 +34,14 @@ end
 group :development do
 
   gem "fog",                "~> 1.12.1"
-  gem "librarian-chef",     "~> 0.0.1"
+
+  gem "chef",               "~> 11.6.0"
+
+  # gem "librarian-chef"
+  # work-around bug in version 0.1.0 of librarian
+  # see: https://github.com/applicationsonline/librarian/pull/145
+  gem 'librarian', :git => 'git://github.com/applicationsonline/librarian.git', :ref => 'b1fc0cc3'
+  gem "librarian-chef", :git => 'git://github.com/applicationsonline/librarian-chef.git', :ref => '040490c4'
 
   gem "rack-nocache",       "~> 0.1.0"
 
