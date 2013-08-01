@@ -32,13 +32,16 @@ define(function (require) {
         };
       }()),
 
-      lastHoverOut = null;
+      lastHoverOut = 0,
+      delay = true,
+      disabled = false;
 
-  return function tooltip($target, content, openNow, interactiveController) {
+  function tooltip($target, content, openNow, interactiveController) {
     var $rc = $("#responsive-content"),
         $tooltip = null,
         intervalID = null,
-        wasShown = false;
+        wasShown = false,
+        isAlwaysVisible = $target.hasClass(tooltip.TOOLTIP_ALWAYS_VISIBLE_CLASS);
 
     function position() {
       // Update font-size using #responsive-content div font-size.
@@ -75,23 +78,26 @@ define(function (require) {
       content: function () {
         return $(this).attr("data-lab-tooltip");
       },
-      show: false,
       open: function (event, ui) {
         $tooltip = ui.tooltip;
         position();
-        // Custom delayed animation. Delay value is based on the last user actions.
-        $tooltip.hide();
-        intervalID = setTimeout(function () {
-          $tooltip.fadeIn();
-          wasShown = true;
-        }, 4 * Math.min(500, Date.now() - lastHoverOut));
+        if (delay && !isAlwaysVisible) {
+          // Custom delayed animation. Delay value is based on the last user actions.
+          $tooltip.hide();
+          intervalID = setTimeout(function () {
+            $tooltip.fadeIn();
+            wasShown = true;
+          }, 3 * Math.min(500, Date.now() - lastHoverOut));
+        }
       },
       close: function () {
         $tooltip = null;
         clearInterval(intervalID);
-        if (wasShown) {
-          lastHoverOut = Date.now();
-          wasShown = false;
+        if (delay && !isAlwaysVisible) {
+          if (wasShown) {
+            lastHoverOut = Date.now();
+            wasShown = false;
+          }
         }
       }
     });
@@ -104,5 +110,46 @@ define(function (require) {
         if ($tooltip) position();
       });
     }
-  };
+  }
+
+  /**
+   * Getter and setter of the global 'delay' property defining whether tooltips should be delayed
+   * or not.
+   */
+  Object.defineProperty(tooltip, "delay", {
+    get: function () {
+      return delay;
+    },
+    set: function (v) {
+      delay = v;
+    }
+  });
+
+  /**
+   * Getter and setter of the global 'disabled' property defining whether tooltips should be
+   * disabled or not.
+   */
+  Object.defineProperty(tooltip, "disabled", {
+    get: function () {
+      return disabled;
+    },
+    set: function (v) {
+      disabled = v;
+      $(":not(." + tooltip.TOOLTIP_ALWAYS_VISIBLE_CLASS + ")[data-lab-tooltip]")
+          .tooltip("option", "disabled", disabled);
+    }
+  });
+
+  /**
+   * Elements with this class will always have tooltips enabled and they will be shown immediately.
+   * It can be useful to define elements that presents some state in a tooltip, which should be
+   * always visible (e.g. button that enables and disables other tooltips).
+   */
+  Object.defineProperty(tooltip, "TOOLTIP_ALWAYS_VISIBLE_CLASS", {
+    get: function () {
+      return "lab-tooltip-always-visible";
+    }
+  });
+
+  return tooltip;
 });
