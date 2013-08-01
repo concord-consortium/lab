@@ -622,7 +622,7 @@ public/grapher.css: src/grapher.sass \
 public/%.css: %.scss
 	$(SASS_COMPILER) $< $@
 
-public/%.css: %.sass
+public/%.css: %.sass $(SASS_LAB_LIBRARY_FILES)
 	@echo $($<)
 	$(SASS_COMPILER) $< $@
 
@@ -660,7 +660,7 @@ s:
 
 .PHONY: s1
 sl:
-	@echo $(SASS_LIBRARY_FILES)
+	@echo $(SASS_LAB_LIBRARY_FILES)
 
 .PHONY: m
 m:
