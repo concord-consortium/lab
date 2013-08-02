@@ -53,13 +53,13 @@ define(function (require) {
 
         // "Containers" - SVG g elements used to position layers of the final visualization.
         fieldVisualization      = modelView.viewport.append("g").attr("class", "field-visualization"),
-        shapeContainerBelow = modelView.viewport.append("g").attr("class", "shape-container-below"),
+        shapeContainerBelow     = modelView.viewport.append("g").attr("class", "shape-container-below"),
         imageContainerBelow     = modelView.viewport.append("g").attr("class", "image-container-below"),
         textContainerBelow      = modelView.viewport.append("g").attr("class", "text-container-below"),
         radialBondsContainer    = modelView.viewport.append("g").attr("class", "radial-bonds-container"),
         VDWLinesContainer       = modelView.viewport.append("g").attr("class", "vdw-lines-container"),
         mainContainer           = modelView.viewport.append("g").attr("class", "main-container"),
-        shapeContainerTop   = modelView.viewport.append("g").attr("class", "shape-container-top"),
+        shapeContainerTop       = modelView.viewport.append("g").attr("class", "shape-container-top"),
         imageContainerTop       = modelView.viewport.append("g").attr("class", "image-container-top"),
         textContainerTop        = modelView.viewport.append("g").attr("class", "text-container-top"),
         iconContainer           = modelView.vis.append("g").attr("class", "icon-container"),
@@ -651,42 +651,65 @@ define(function (require) {
       });
     }
 
+
     function shapeEnter() {
       var layers = [shapeTop, shapeBelow], i;
-      for(i = 0; i < layers.length; i++){
-          var shapeGroup = layers[i].enter().append("g");
-        shapeGroup
-          .attr("class", "shape")
-          .attr("transform",
-            function (d) {
-              return "translate(" + model2px(shapes.x[d.index]) + " " + model2pxInv(shapes.y[d.index] + shapes.height[d.index]) + ")";
-            }
-          );
-        shapeGroup.append("rect")
-          .attr({
-            "class": "shape-rectangle",
-            "x": 0,
-            "y": 0,
-            "width": function(d) {return model2px(shapes.width[d.index]); },
-            "height": function(d) {return model2px(shapes.height[d.index]); },
-            "fill": function(d) { return shapes.visible[d.index] && shapes.type[d.index]=='rectangle' ? shapes.color[d.index] : "transparent"; },
-            "stroke-width": function(d) { return shapes.lineWeight[d.index]; },
-            "stroke-dasharray": function(d) { return shapes.lineDashes[d.index]; },
-            "stroke": function(d) { return shapes.visible[d.index] && shapes.type[d.index]=='rectangle'  ? shapes.lineColor[d.index] : "transparent"; }
-          });
-        shapeGroup.append("ellipse")
-          .attr({
-            "class": "shape-ellipse",
-            "cx": function(d) {return model2px(shapes.width[d.index])/2; },
-            "cy": function(d) {return model2px(shapes.height[d.index])/2; },
-            "rx": function(d) {return model2px(shapes.width[d.index])/2; },
-            "ry": function(d) {return model2px(shapes.height[d.index])/2; },
-            "fill": function(d) { return shapes.visible[d.index] && shapes.type[d.index]=='ellipse'  ? shapes.color[d.index] : "transparent"; },
-            "stroke-width": function(d) { return shapes.lineWeight[d.index]; },
-            "stroke-dasharray": function(d) { return shapes.lineDashes[d.index]; },
-            "stroke": function(d) { return shapes.visible[d.index] && shapes.type[d.index]=='ellipse'  ? shapes.lineColor[d.index] : "transparent"; }
-          });
-       }
+      for ( i = 0; i < layers.length; i++) {
+        var shapeGroup = layers[i].enter().append("g");
+        shapeGroup.attr("class", "shape").attr("transform", function(d) {
+          return "translate(" + model2px(shapes.x[d.index]) + " " + model2pxInv(shapes.y[d.index] + shapes.height[d.index]) + ")";
+        });
+        shapeGroup.append("rect").attr({
+          "class" : "shape-rectangle",
+          "x" : 0,
+          "y" : 0,
+          "width" : function(d) {
+            return model2px(shapes.width[d.index]);
+          },
+          "height" : function(d) {
+            return model2px(shapes.height[d.index]);
+          },
+          "fill" : function(d) {
+            return shapes.visible[d.index] && shapes.type[d.index] == 'rectangle' ? shapes.color[d.index] : "transparent";
+          },
+          "stroke-width" : function(d) {
+            return shapes.lineWeight[d.index];
+          },
+          "stroke-dasharray" : function(d) {
+            return shapes.lineDashes[d.index];
+          },
+          "stroke" : function(d) {
+            return shapes.visible[d.index] && shapes.type[d.index] == 'rectangle' ? shapes.lineColor[d.index] : "transparent";
+          }
+        });
+        shapeGroup.append("ellipse").attr({
+          "class" : "shape-ellipse",
+          "cx" : function(d) {
+            return model2px(shapes.width[d.index]) / 2;
+          },
+          "cy" : function(d) {
+            return model2px(shapes.height[d.index]) / 2;
+          },
+          "rx" : function(d) {
+            return model2px(shapes.width[d.index]) / 2;
+          },
+          "ry" : function(d) {
+            return model2px(shapes.height[d.index]) / 2;
+          },
+          "fill" : function(d) {
+            return shapes.visible[d.index] && shapes.type[d.index] == 'ellipse' ? shapes.color[d.index] : "transparent";
+          },
+          "stroke-width" : function(d) {
+            return shapes.lineWeight[d.index];
+          },
+          "stroke-dasharray" : function(d) {
+            return shapes.lineDashes[d.index];
+          },
+          "stroke" : function(d) {
+            return shapes.visible[d.index] && shapes.type[d.index] == 'ellipse' ? shapes.lineColor[d.index] : "transparent";
+          }
+        });
+      }
     }
 
     function radialBondEnter() {
@@ -1335,21 +1358,26 @@ define(function (require) {
       shapeContainerTop.selectAll(".shape").remove();
       shapeContainerBelow.selectAll(".shape").remove();
       if (shapes) {
-        mockShapesTop=[];
-        mockShapesBelow=[];
-        for(var i = 0; i < shapes.x.length ; i++){
-          if(shapes.layer[i]===1){
-            mockShapesTop.push({index:i,layerPosition:shapes.layerPosition[i]});
-          }
-          else{
-            mockShapesBelow.push({index:i,layerPosition:shapes.layerPosition[i]});
+        mockShapesTop = [];
+        mockShapesBelow = [];
+        for (var i = 0; i < shapes.x.length; i++) {
+          if (shapes.layer[i] === 1) {
+            mockShapesTop.push({
+              index : i,
+              layerPosition : shapes.layerPosition[i]
+            });
+          } else {
+            mockShapesBelow.push({
+              index : i,
+              layerPosition : shapes.layerPosition[i]
+            });
           }
         }
-        mockShapesTop.sort(function(a,b){
-            return a.layerPosition-b.layerPosition
+        mockShapesTop.sort(function(a, b) {
+          return a.layerPosition - b.layerPosition
         })
-        mockShapesBelow.sort(function(a,b){
-            return a.layerPosition-b.layerPosition
+        mockShapesBelow.sort(function(a, b) {
+          return a.layerPosition - b.layerPosition
         })
         shapeTop = shapeContainerTop.selectAll(".shape").data(mockShapesTop);
         shapeBelow = shapeContainerBelow.selectAll(".shape").data(mockShapesBelow);
