@@ -1128,6 +1128,10 @@ parseMML = (mmlString) ->
     # Validate all properties and provides default values for undefined values.
     viewOptions = validator.validateCompleteness metadata.viewOptions, viewOptions
 
+    # remove properties that aren't to be serialzed:
+    for own option of viewOptions
+      delete viewOptions[option] if metadata.viewOptions[option].serialize is false
+
     json.viewOptions = viewOptions
 
     json.pairwiseLJProperties = pairwiseLJProperties
