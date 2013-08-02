@@ -41,6 +41,7 @@ define(function (require) {
         'md2d':             require('md2d/controllers/controller'),
         'solar-system':     require('solar-system/controllers/controller'),
         'signal-generator': require('signal-generator/controller'),
+        'iframe-model':     require('iframe-model/controller'),
         'sensor':           require('sensor/controller'),
         'energy2d':         require('energy2d/controllers/controller')
       },

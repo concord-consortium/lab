@@ -378,6 +378,7 @@ public/lab/lab.json: \
 	src/lab/md2d/models/metadata.js \
 	src/lab/sensor/metadata.js \
 	src/lab/signal-generator/metadata.js \
+	src/lab/iframe-model/metadata.js \
 	src/lab/solar-system/models/metadata.js
 	node src/helpers/lab.json.js
 
