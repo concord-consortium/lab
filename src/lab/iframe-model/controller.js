@@ -4,7 +4,7 @@ define(function (require) {
   // Dependencies.
   var ModelController   = require('common/controllers/model-controller'),
       Model             = require('iframe-model/modeler'),
-      ModelContainer    = require('common/views/null-model-view'),
+      ModelContainer    = require('iframe-model/iframe-container'),
       ScriptingAPI      = function() {},
       Benchmarks        = function() {};
 
