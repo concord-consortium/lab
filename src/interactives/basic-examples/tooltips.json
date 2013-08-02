@@ -18,17 +18,7 @@
       "id": "text",
       "type": "text",
       "text": "Interactive components:",
-      "openTooltip": true,
-      "tooltip": [
-        "When you hover any interactive component with your mouse, the tooltip is displayed in",
-        "a little box next to the element, just like a native tooltip.",
-        "",
-        "You can use *[Markdown](http://daringfireball.net/projects/markdown/syntax \"Markdown Syntax\")*",
-        "syntax inside tooltips.",
-        "",
-        "To show tooltip on interactive load (like the one you are reading) set *openTooltip* option to *true*.",
-        "It will disappear when you first hover and then hover out the component."
-      ]
+      "tooltip": "I'm a text component!"
     },
     {
       "type": "button",

@@ -200,9 +200,6 @@ define(function() {
       },
       tooltip: {
         defaultValue: ""
-      },
-      openTooltip: {
-        defaultValue: false
       }
     },
 
@@ -229,9 +226,6 @@ define(function() {
       },
       tooltip: {
         defaultValue: ""
-      },
-      openTooltip: {
-        defaultValue: false
       }
     },
 
@@ -259,9 +253,6 @@ define(function() {
       },
       tooltip: {
         defaultValue: ""
-      },
-      openTooltip: {
-        defaultValue: false
       }
     },
 
@@ -286,9 +277,6 @@ define(function() {
       },
       tooltip: {
         defaultValue: ""
-      },
-      openTooltip: {
-        defaultValue: false
       }
     },
 
@@ -324,9 +312,6 @@ define(function() {
       },
       tooltip: {
         defaultValue: ""
-      },
-      openTooltip: {
-        defaultValue: false
       }
     },
 
@@ -380,9 +365,6 @@ define(function() {
       },
       tooltip: {
         defaultValue: ""
-      },
-      openTooltip: {
-        defaultValue: false
       }
     },
 
@@ -409,9 +391,6 @@ define(function() {
       },
       tooltip: {
         defaultValue: ""
-      },
-      openTooltip: {
-        defaultValue: false
       }
     },
 
@@ -463,9 +442,6 @@ define(function() {
       },
       tooltip: {
         defaultValue: ""
-      },
-      openTooltip: {
-        defaultValue: false
       }
     },
 
@@ -517,9 +493,6 @@ define(function() {
       displayValue: {},
       tooltip: {
         defaultValue: ""
-      },
-      openTooltip: {
-        defaultValue: false
       }
     },
 
@@ -642,9 +615,6 @@ define(function() {
       },
       tooltip: {
         defaultValue: ""
-      },
-      openTooltip: {
-        defaultValue: false
       }
     },
 
@@ -747,9 +717,6 @@ define(function() {
       },
       tooltip: {
         defaultValue: ""
-      },
-      openTooltip: {
-        defaultValue: false
       }
     }
   };
