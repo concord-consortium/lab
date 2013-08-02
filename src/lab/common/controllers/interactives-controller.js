@@ -25,6 +25,7 @@ define(function (require) {
       PlaybackController      = require('common/controllers/playback-controller'),
       DivController           = require('common/controllers/div-controller'),
       DispatchSupport         = require('common/dispatch-support'),
+      tooltip                 = require('common/views/tooltip'),
 
       // Helper function which just provides banner definition.
       setupBanner             = require('common/controllers/setup-banner'),
@@ -712,6 +713,9 @@ define(function (require) {
 
       // When all components are created, we can initialize semantic layout.
       setupLayout();
+
+      // Replace native tooltips with custom, styled and responsive tooltips.
+      tooltip($interactiveContainer);
 
       // FIXME: I moved this after setupLayout() on the previous line
       // when I added the possiblity of including the model definition in the model

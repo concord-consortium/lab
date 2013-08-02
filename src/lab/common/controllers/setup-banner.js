@@ -7,7 +7,6 @@ define(function () {
       ImageController    = require('common/controllers/image-controller'),
       DivController      = require('common/controllers/div-controller'),
       PlaybackController = require('common/controllers/playback-controller'),
-      tooltip            = require('common/views/tooltip'),
 
       topBarHeight    = 1.5,
       topBarFontScale = topBarHeight*0.65,
@@ -85,7 +84,7 @@ define(function () {
           creditsDialog.open();
         }
       },
-      "tooltip": "Need instructions? Click the *About* link."
+      "tooltip": "Instructions"
     },
     {
       "id": "banner-right",
@@ -113,8 +112,7 @@ define(function () {
         "id": "share-link",
         "text": "Share",
         "onClick": function () { shareDialog.open(); },
-        "tooltip": "Share this interactive using e-mail, IM or embed in website or blog. " +
-                   "Click the *Share* link."
+        "tooltip": "Share using e-mail, IM or embed in website"
       },
       {
         "id": "banner-middle",
@@ -131,55 +129,6 @@ define(function () {
       });
     }
 
-    createElementInContainer({
-      "type": "div",
-      // This is pretty important, as using a right ID, we can avoid disabling our own tooltip.
-      "id": "lab-tooltips-switch",
-      "content": '<i class="icon-question-sign"/>',
-      "classes": ["delay", tooltip.TOOLTIP_ALWAYS_VISIBLE_CLASS],
-      "onClick": function () {
-        var $target = $(this);
-        if (tooltip.disabled) {
-          tooltip.disabled = false;
-          tooltip.delay = true;
-        } else if (tooltip.delay) {
-          tooltip.delay = false;
-        } else {
-          tooltip.disabled = true;
-        }
-        if (tooltip.disabled) {
-          $target.addClass("disabled");
-          $target.removeClass("delay");
-          $target.attr("data-lab-tooltip", "<p>Tooltips are disabled. Click to enable them.</p>");
-        } else if (tooltip.delay) {
-          $target.addClass("delay");
-          $target.removeClass("disabled");
-          $target.attr("data-lab-tooltip", "<p>Tooltips are enabled, but will be shown with a delay. " +
-                                           "Click to show them immediately on hover.</p>");
-        } else {
-          $target.removeClass("delay");
-          $target.removeClass("disabled");
-          $target.attr("data-lab-tooltip", "<p>Tooltips are enabled and will be shown immediately. " +
-                                           "Click to disable them.</p>");
-        }
-        $target.tooltip("close");
-      },
-      "tooltip": "Tooltips are enabled, but will be shown with a delay. " +
-                 "Click to show them immediately on hover."
-    }, {
-      "id": "banner-left",
-      "fontScale": topBarFontScale,
-      "top": "0",
-      "height": topBarHeight + "em",
-      "padding-top": topBarVerticalPadding + "em",
-      "padding-bottom": topBarVerticalPadding + "em",
-      // "banner-right" can be undefined, so check it.
-      "left": "0.6em",
-      "padding-right": "1em",
-      "align": "left",
-      "aboveOthers": true
-    });
-
     // bottom bar
     creditsDialog.update(interactive);
     createElementInContainer(
@@ -189,8 +138,7 @@ define(function () {
       "height": "2.5em",
       "width": "8.1em",
       "classes": ["credits"],
-      "tooltip": "Learn more about *Next-Generation Molecular Workbench* " +
-                 "and *The Concord Consortium*.",
+      "tooltip": "Learn more about The Concord Consortium",
       "onClick": function () { creditsDialog.open(); }
     },
     {
@@ -240,14 +188,12 @@ define(function () {
         "height": "2.5em",
         "width": "2.5em",
         "classes": ["fullscreen"],
-        "tooltip": "Open interactive in full-screen mode",
+        "tooltip": "Toggle full-screen",
         "onClick": function () {
           if (!isFullscreen()) {
             requestFullscreenMethod.call(body);
-            $("#fullsize-link").attr("data-lab-tooltip", "<p>Exit full-screen mode</p>");
           } else {
             document.cancelFullscreenMethod();
-            $("#fullsize-link").attr("data-lab-tooltip", "<p>Open interactive in full-screen mode</p>");
           }
         }
       },
@@ -261,7 +207,7 @@ define(function () {
       });
     }
 
-      createElementInContainer(
+    createElementInContainer(
       {
         "type": "playback",
         "id": "playback"

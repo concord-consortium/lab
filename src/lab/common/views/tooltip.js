@@ -21,33 +21,23 @@
  * and set interval which shows it again after calculated amount of milliseconds. Weird, but works
  * quite fine.
  */
-define(function (require) {
+define(function () {
 
-  var markdownToHTML = require("common/markdown-to-html"),
+  var lastClose = 0;
 
-      getID = (function () {
-        var id = 0;
-        return function () {
-          return id++;
-        };
-      }()),
-
-      lastHoverOut = 0,
-      delay = true,
-      disabled = false;
-
-  function tooltip($target, content, openNow, interactiveController) {
+  function tooltip($target) {
     var $rc = $("#responsive-content"),
         $tooltip = null,
         fadeInID = null,
         fadeOutID = null,
-        wasShown = false,
-        isAlwaysVisible = $target.hasClass(tooltip.TOOLTIP_ALWAYS_VISIBLE_CLASS);
+        wasShown = false;
 
-    function position() {
+    function position(target) {
       // Update font-size using #responsive-content div font-size.
       // Lab Interactives scaling is based on the font-size of this div.
-      var fontSize = $rc.css("font-size");
+      var fontSize = $rc.css("font-size"),
+          horOffset = + parseFloat(fontSize),
+          vertOffset = + parseFloat(fontSize) * 0.35;
       $tooltip.css("font-size", fontSize);
       // Font-size of the top container changes also dimensions of various elements
       // that are defined in ems, so calculate correct position for tooltip.
@@ -56,11 +46,11 @@ define(function (require) {
         $tooltip.show();
       }
       $tooltip.position({
-        of: $target,
+        of: target,
         collision: "flipfit flipfit",
         // Arrow's height depends on font-size (as it's defined in ems).
-        my: "center top+" + parseFloat(fontSize) * 1.2,
-        at: "center bottom",
+        my: "left-" + horOffset + " top+" + vertOffset,
+        at: "right bottom",
         using: function(position, feedback) {
           $(this).css(position);
           // Add arrow for nicer look & feel.
@@ -73,88 +63,34 @@ define(function (require) {
       });
     }
 
-    $target.attr("data-lab-tooltip", markdownToHTML(content));
     $target.tooltip({
-      items: "[data-lab-tooltip]",
-      content: function () {
-        return $(this).attr("data-lab-tooltip");
-      },
+      show: false,
+      hide: false,
       open: function (event, ui) {
+        var delayVal = 3 * Math.min(500, Date.now() - lastClose);
         $tooltip = ui.tooltip;
-        position();
-        if (delay && !isAlwaysVisible) {
-          // Custom delayed animation. Delay value is based on the last user actions.
-          $tooltip.hide();
-          fadeInID = setTimeout(function () {
-            $tooltip.fadeIn();
-            wasShown = true;
-            fadeOutID = setTimeout(function () {
-              $target.tooltip("close");
-            }, 5000);
-          }, 3 * Math.min(500, Date.now() - lastHoverOut));
-        }
+        position(event.originalEvent.target);
+        // Custom delayed animation. Delay value is based on the last user actions.
+        $tooltip.hide();
+        fadeInID = setTimeout(function () {
+          $tooltip.fadeIn();
+          wasShown = true;
+        }, delayVal);
+        fadeOutID = setTimeout(function () {
+          $tooltip.fadeOut();
+        }, delayVal + 5000);
       },
       close: function () {
         $tooltip = null;
         clearInterval(fadeInID);
         clearInterval(fadeOutID);
-        if (delay && !isAlwaysVisible) {
-          if (wasShown) {
-            lastHoverOut = Date.now();
-            wasShown = false;
-          }
+        if (wasShown) {
+          lastClose = Date.now();
+          wasShown = false;
         }
       }
     });
-    if (openNow) {
-      $target.tooltip("open");
-    }
-    if (interactiveController) {
-      interactiveController.on("layoutUpdated.tooltip-" + getID(), function () {
-        // If tooltip is visible position it again.
-        if ($tooltip) position();
-      });
-    }
   }
-
-  /**
-   * Getter and setter of the global 'delay' property defining whether tooltips should be delayed
-   * or not.
-   */
-  Object.defineProperty(tooltip, "delay", {
-    get: function () {
-      return delay;
-    },
-    set: function (v) {
-      delay = v;
-    }
-  });
-
-  /**
-   * Getter and setter of the global 'disabled' property defining whether tooltips should be
-   * disabled or not.
-   */
-  Object.defineProperty(tooltip, "disabled", {
-    get: function () {
-      return disabled;
-    },
-    set: function (v) {
-      disabled = v;
-      $(":not(." + tooltip.TOOLTIP_ALWAYS_VISIBLE_CLASS + ")[data-lab-tooltip]")
-          .tooltip("option", "disabled", disabled);
-    }
-  });
-
-  /**
-   * Elements with this class will always have tooltips enabled and they will be shown immediately.
-   * It can be useful to define elements that presents some state in a tooltip, which should be
-   * always visible (e.g. button that enables and disables other tooltips).
-   */
-  Object.defineProperty(tooltip, "TOOLTIP_ALWAYS_VISIBLE_CLASS", {
-    get: function () {
-      return "lab-tooltip-always-visible";
-    }
-  });
 
   return tooltip;
 });

@@ -83,15 +83,15 @@
 .ui-tooltip
   border: none
   @include linear-gradient(#fff, #e6e6e6, $fallback: #e6e6e6)
-  padding: 0 0.4em
+  padding: 0.15em 0.2em
   color: #333
-  border-radius: 0.7em
+  border-radius: 0.4em
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3)
-  min-width: 5em
-  max-width: 20em
+  min-width: 2.5em
+  max-width: 15em
 
 .ui-tooltip-content
-  font-size: 0.8em
+  font-size: 0.85em
 
 .ui-tooltip-arrow
   &.top:after
@@ -100,25 +100,28 @@
     background: #e6e6e6
 
 .ui-tooltip-arrow
-  width: 7em
-  height: 1em
+  width: 0.6em
+  height: 0.5em
   overflow: hidden
   position: absolute
   left: 50%
-  margin-left: -3.5em
-  bottom: -1em
+  bottom: -0.5em
 
   &.top
-    top: -1em
+    top: -0.5em
     bottom: auto
+  &.left
+    left: 0.5em
+  &.right
+    left: auto
+    right: 0.5em
 
 .ui-tooltip-arrow:after
   content: ""
   position: absolute
-  left: 2.25em
-  top: -2em
-  width: 2.5em
-  height: 2.5em
+  top: -0.5em
+  width: 0.6em
+  height: 0.6em
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3)
   -webkit-transform: rotate(45deg)
   -moz-transform: rotate(45deg)
@@ -127,5 +130,5 @@
   tranform: rotate(45deg)
 
 .ui-tooltip-arrow.top:after
-  bottom: -2em
+  bottom: -0.5em
   top: auto

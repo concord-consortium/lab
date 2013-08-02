@@ -3,8 +3,7 @@
 define(function (require) {
 
   var inherit              = require('common/inherit'),
-      InteractiveComponent = require('common/controllers/interactive-component'),
-      tooltip              = require('common/views/tooltip');
+      InteractiveComponent = require('common/controllers/interactive-component');
 
   /**
    * Playback controller.
@@ -65,10 +64,10 @@ define(function (require) {
       scriptingAPI.api.stepForward();
     });
 
-    tooltip(this._$playPause, "Start the simulation", false, interactivesController);
-    tooltip(this._$reset, "Reset the simulation", false, interactivesController);
-    tooltip(this._$stepBackward, "Step back", false, interactivesController);
-    tooltip(this._$stepForward, "Step forward", false, interactivesController);
+    this._$playPause.attr("title", "Start / pause the simulation");
+    this._$reset.attr("title", "Reset the simulation");
+    this._$stepBackward.attr("title", "Step back");
+    this._$stepForward.attr("title", "Step forward");
   }
   inherit(PlaybackController, InteractiveComponent);
 
@@ -80,12 +79,8 @@ define(function (require) {
     this._modelStopped = model.isStopped();
     if (this._modelStopped) {
       this._$playPause.removeClass("playing");
-      this._$playPause.attr("data-lab-tooltip", "<p>Start the simulation</p>");
-      this._$playPause.tooltip("close");
     } else {
       this._$playPause.addClass("playing");
-      this._$playPause.attr("data-lab-tooltip", "<p>Pause the simulation</p>");
-      this._$playPause.tooltip("close");
     }
 
     // Coerce undefined to *true* for models that don't have isPlayable property
