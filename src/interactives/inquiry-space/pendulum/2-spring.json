@@ -17,7 +17,8 @@
       "id": "spring-mass",
       "url": "imports/legacy-mw-content/converted/inquiry-space/pendulum/spring-mass$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset_step",
+        "controlButtons": "play_reset",
+        "controlButtonStyle": "text",
         "gridLines": true,
         "showClock": true,
         "velocityVectors": {
