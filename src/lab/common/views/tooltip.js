@@ -37,7 +37,8 @@ define(function () {
       // Lab Interactives scaling is based on the font-size of this div.
       var fontSize = $rc.css("font-size"),
           horOffset = + parseFloat(fontSize),
-          vertOffset = + parseFloat(fontSize) * 0.35;
+          vertOffset = + parseFloat(fontSize) * 0.35,
+          $posTarget = $(target).closest("[title]");
       $tooltip.css("font-size", fontSize);
       // Font-size of the top container changes also dimensions of various elements
       // that are defined in ems, so calculate correct position for tooltip.
@@ -46,7 +47,7 @@ define(function () {
         $tooltip.show();
       }
       $tooltip.position({
-        of: target,
+        of: $posTarget,
         collision: "flipfit flipfit",
         // Arrow's height depends on font-size (as it's defined in ems).
         my: "left-" + horOffset + " top+" + vertOffset,
