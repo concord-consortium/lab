@@ -583,6 +583,9 @@ define(function() {
       properties: {
         defaultValue: []
       },
+      xProperty: {
+        defaultValue: "time"
+      },
       title: {
         defaultValue: "Graph"
       },

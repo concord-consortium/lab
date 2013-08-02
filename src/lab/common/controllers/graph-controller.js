@@ -47,11 +47,11 @@ define(function (require) {
       time and the current value of each model property specified in component.properties.
     */
     function getDataPoint() {
-      var ret = [], i, len,
-          time = model.get('time');
+      var ret = [], i, len, xval;
 
+      xval = model.get(component.xProperty);
       for (i = 0, len = properties.length; i < len; i++) {
-        ret.push([time, model.get(properties[i])]);
+        ret.push([xval, model.get(properties[i])]);
       }
       return ret;
     }
