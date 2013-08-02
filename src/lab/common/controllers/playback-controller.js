@@ -12,9 +12,8 @@ define(function (require) {
    * @extends InteractiveComponent
    * @param {Object} component Component JSON definition.
    * @param {ScriptingAPI} scriptingAPI
-   * @param {InteractivesController} interactivesController
    */
-  function PlaybackController(component, scriptingAPI, interactivesController) {
+  function PlaybackController(component, scriptingAPI) {
     // Call super constructor.
     InteractiveComponent.call(this, "playback", component, scriptingAPI);
 
