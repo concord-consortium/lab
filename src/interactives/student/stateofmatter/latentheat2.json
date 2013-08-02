@@ -34,10 +34,10 @@
       "id": "latentheat2$0",
       "url": "imports/legacy-mw-content/converted/student/stateofmatter/latentheat2$0.json",
       "viewOptions": {
-        "controlButtons": false
+        "controlButtons": "play_reset_step"
       },
       "modelOptions": {
-        "timeStep": 5
+        "timeStep": 2.5
       },
       "onLoad": [
         "callEvery(200, function() {",
@@ -60,6 +60,16 @@
       ]
     }
   ],
+  "filteredOutputs": [
+    {
+      "name": "temperatureFiltered",
+      "unitType": "temperature",
+      "label": "Temperature",
+      "property": "temperature",
+      "type": "RunningAverage",
+      "period": 5000
+    }
+   ],
   "parameters": [
     {
       "name": "timeExperimentStarted",
@@ -85,6 +95,7 @@
       "min": 0,
       "max": 75,
       "labels": 0,
+      "barWidth": "1.5em",
       "title": "Kinetic Energy",
       "property": "kineticEnergy",
       "averagePeriod": 2500
@@ -95,6 +106,7 @@
       "min": -200,
       "max": 0,
       "labels": 0,
+      "barWidth": "1.5em",
       "title": "Potential Energy",
       "property": "potentialEnergy",
       "averagePeriod": 2500
@@ -123,61 +135,65 @@
     {
       "type": "numericOutput",
       "id": "experiment-time",
-      "orientation": "vertical",
       "property": "experimentTime",
       "displayValue": "return format('1.1f')(value/1000)"
+    },
+    {
+      "type": "graph",
+      "id": "temperature-energy-graph",
+      "title": "",
+      "xlabel": "Total energy",
+      "ylabel": "Temperature (K)",
+      "ymin": 0,
+      "ymax": 2000,
+      "xmin": -160,
+      "xmax": 0,
+      "lines": false,
+      "lineWidth": 2,
+      "yTickCount": 5,
+      "xTickCount": 5,
+      "xFormatter": "2s",
+      "yFormatter": "2s",
+      "xProperty": "totalEnergy",
+      "properties": [
+        "temperatureFiltered"
+      ]
     }
   ],
   "layout": {
-    "left": [
+    "right-bars": [
       "ke-bar-graph", "pe-bar-graph"
     ],
-    "bottom": [
-      "start-heating", "reset-experiment"
+    "right-lines": [
+      "temperature-energy-graph"
     ],
-    "left-lower": [
-      "experiment-time"
+    "bottom": [
+      "start-heating", "reset-experiment", "experiment-time"
     ]
   },
   "template": [
     {
-      "id": "top",
-      "bottom": "model.top",
-      "width": "interactive.width"
-    },
-    {
-      "id": "left",
+      "id": "right-bars",
       "top": "model.top",
-      "right": "model.left",
-      "height": "model.height",
-      "padding-right": "1em",
-      "align": "right",
-      "min-width": "6em"
-    },
-    {
-      "id": "right",
-      "top": "model.top",
+      "bottom": "model.bottom",
       "left": "model.right",
-      "height": "model.height",
       "padding-left": "1em",
       "padding-right": "0.5em",
-      "min-width": "6em"
+      "padding-bottom": "0.5em",
+      "width": "model.width*0.6"
     },
     {
-      "id": "left-lower",
-      "top": "model.bottom",
-      "right": "model.left",
-      "padding-top": "0.5em",
-      "bottom": "interactive.height",
-      "width": "10em"
+      "id": "right-lines",
+      "top": "model.top",
+      "bottom": "model.bottom",
+      "left": "right-bars.right",
+      "width": "model.width*0.8"
     },
     {
       "id": "bottom",
       "top": "model.bottom",
-      "left": "model.left",
-      "width": "model.width",
-      "align": "center",
-      "padding-top": "0.5em"
+      "width": "interactive.width",
+      "padding-top": "1em"
     }
   ]
 }
