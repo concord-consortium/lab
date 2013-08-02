@@ -36,7 +36,6 @@ define(function () {
       // Update font-size using #responsive-content div font-size.
       // Lab Interactives scaling is based on the font-size of this div.
       var fontSize = $rc.css("font-size"),
-          horOffset = + parseFloat(fontSize),
           vertOffset = + parseFloat(fontSize) * 0.35,
           $posTarget = $(target).closest("[title]");
       $tooltip.css("font-size", fontSize);
@@ -50,8 +49,8 @@ define(function () {
         of: $posTarget,
         collision: "flipfit flipfit",
         // Arrow's height depends on font-size (as it's defined in ems).
-        my: "left-" + horOffset + " top+" + vertOffset,
-        at: "right bottom",
+        my: "center top+" + vertOffset,
+        at: "center bottom",
         using: function(position, feedback) {
           $(this).css(position);
           // Add arrow for nicer look & feel.
