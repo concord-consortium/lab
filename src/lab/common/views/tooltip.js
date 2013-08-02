@@ -39,7 +39,8 @@ define(function (require) {
   function tooltip($target, content, openNow, interactiveController) {
     var $rc = $("#responsive-content"),
         $tooltip = null,
-        intervalID = null,
+        fadeInID = null,
+        fadeOutID = null,
         wasShown = false,
         isAlwaysVisible = $target.hasClass(tooltip.TOOLTIP_ALWAYS_VISIBLE_CLASS);
 
@@ -84,15 +85,19 @@ define(function (require) {
         if (delay && !isAlwaysVisible) {
           // Custom delayed animation. Delay value is based on the last user actions.
           $tooltip.hide();
-          intervalID = setTimeout(function () {
+          fadeInID = setTimeout(function () {
             $tooltip.fadeIn();
             wasShown = true;
+            fadeOutID = setTimeout(function () {
+              $target.tooltip("close");
+            }, 5000);
           }, 3 * Math.min(500, Date.now() - lastHoverOut));
         }
       },
       close: function () {
         $tooltip = null;
-        clearInterval(intervalID);
+        clearInterval(fadeInID);
+        clearInterval(fadeOutID);
         if (delay && !isAlwaysVisible) {
           if (wasShown) {
             lastHoverOut = Date.now();
