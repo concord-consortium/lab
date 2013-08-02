@@ -586,6 +586,9 @@ define(function() {
       title: {
         defaultValue: "Graph"
       },
+      lineWidth: {
+        defaultValue: 2.0
+      },
       width: {
         defaultValue: "100%"
       },

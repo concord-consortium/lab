@@ -160,7 +160,7 @@ define(function (require) {
         markerStrokeWidth,
 
         // Stroke width used for lines in graph
-        strokeWidth,
+        lineWidth,
 
         // Used to categorize size of graphs in responsive layout mode where
         // certain graph chrome is removed when graph is rendered smaller.
@@ -305,7 +305,7 @@ define(function (require) {
           showRulersOnSelection: false,
 
           // width of the line used for plotting
-          strokeWidth:      2.0,
+          lineWidth:      2.0,
 
           // Enable values of data points to be changed by selecting and dragging.
           dataChange:      false,
@@ -367,7 +367,7 @@ define(function (require) {
       // use local variables for both access speed and for responsive over-riding
       sampleInterval = options.sampleInterval;
       dataSampleStart = options.dataSampleStart;
-      strokeWidth = options.strokeWidth;
+      lineWidth = options.lineWidth;
 
       xTickCount = options.xTickCount;
       yTickCount = options.yTickCount;
@@ -1771,6 +1771,7 @@ define(function (require) {
     function clearCanvas() {
       if (gcanvas.getContext) {
         gcanvas.width = gcanvas.width;
+        gctx.lineWidth = lineWidth;
         gctx.fillStyle = canvasFillStyle;
         gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
         gctx.strokeStyle = "rgba(255,65,0, 1.0)";
@@ -1781,7 +1782,7 @@ define(function (require) {
       if (gcanvas.getContext) {
         gctx = gcanvas.getContext( '2d' );
         gctx.globalCompositeOperation = "source-over";
-        gctx.lineWidth = 1;
+        gctx.lineWidth = lineWidth;
         gctx.fillStyle = canvasFillStyle;
         gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
         gctx.strokeStyle = "rgba(255,65,0, 1.0)";

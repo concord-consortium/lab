@@ -19,6 +19,7 @@ define(function (require) {
         ylabel: 'ylabel',
         ymin: 'ymin',
         ymax: 'ymax',
+        lineWidth: 'lineWidth',
         xTickCount: 'xTickCount',
         yTickCount: 'yTickCount',
         xscaleExponent: 'xscaleExponent',
