@@ -1892,25 +1892,38 @@ define(function (require) {
       } else {
         for (i = 0; i < numberOfLines; i++) {
           points = pointArray[i];
-          lengthX = 0;
-          setFillColor(i);
-          setStrokeColor(i, true);
-          pointStop = samplePoint - 1;
-          for (index=0; index < pointStop; index++) {
-            px = xScale(points[index][0]);
-            py = yScale(points[index][1]);
-            gctx.arc(px, py, 1, 0, twopi, false);
-            gctx.fill();
+          index = 0;
+          // find first point >= xAxisStart
+          for (j = 0; j < pointsLength; j++) {
+            if (points[j][0] >= xAxisStart) { break; }
+            index++;
           }
-          pointStop = points.length-1;
-          if (index < pointStop) {
+          if (index > 0) { --index; }
+          if (index >= pointsLength) { break; }
+          px = xScale(points[index][0]);
+          py = yScale(points[index][1]);
+          setFillColor(i);
+          dx = points[index][0];
+          index++;
+          // plot all ... or until one point past xAxisEnd
+          // or until we reach currentSample
+          for (; index < samplePoint; index++) {
+            dx = points[index][0];
+            px = xScale(dx);
+            py = yScale(points[index][1]);
+            gctx.fillRect(px, py, lineWidth, lineWidth);
+            if (dx >= xAxisEnd) { break; }
+          }
+          // now plot in a desaturated style all the rest of the points
+          // ... or until one point past xAxisEnd
+          if (index < pointsLength && dx < xAxisEnd) {
             setFillColor(i, true);
-            setStrokeColor(i, true);
-            for (;index < pointStop; index++) {
-              px = xScale(points[index][0]);
+            for (;index < pointsLength; index++) {
+              dx = points[index][0];
+              px = xScale(dx);
               py = yScale(points[index][1]);
-              gctx.arc(px, py, 1, 0, twopi, false);
-              gctx.fill();
+              gctx.fillRect(px, py, lineWidth, lineWidth);
+              if (dx >= xAxisEnd) { break; }
             }
           }
         }
