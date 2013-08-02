@@ -3,8 +3,7 @@
 define(function () {
 
   var metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator'),
-      tooltip   = require('common/views/tooltip');
+      validator = require('common/validator');
       require('common/jquery-plugins');
 
   return function PulldownController(component, scriptingAPI, interactivesController) {
@@ -142,7 +141,7 @@ define(function () {
       $wrapper.find(".selectboxit-container select").css({width: boxWidth, height: "100%"});
 
       if (component.tooltip) {
-        tooltip($wrapper, component.tooltip, component.openTooltip, interactivesController);
+        $wrapper.attr("title", component.tooltip);
       }
     }
 

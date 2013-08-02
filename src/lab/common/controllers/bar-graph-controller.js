@@ -7,7 +7,6 @@ define(function (require) {
   var BarGraphModel = require('grapher/bar-graph/bar-graph-model'),
       BarGraphView  = require('grapher/bar-graph/bar-graph-view'),
       metadata      = require('common/controllers/interactive-metadata'),
-      tooltip       = require('common/views/tooltip'),
       validator     = require('common/validator'),
 
       // Note: We always explicitly copy properties from component spec to bar graph options hash,
@@ -105,7 +104,7 @@ define(function (require) {
     secondProperty = component.secondProperty;
 
     if (component.tooltip) {
-      tooltip(barGraphView.$el, component.tooltip, component.openTooltip, interactivesController);
+      barGraphView.$el.attr("title", component.tooltip);
     }
 
     controller = {

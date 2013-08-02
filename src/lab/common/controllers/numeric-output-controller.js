@@ -3,8 +3,7 @@
 define(function () {
 
   var metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator'),
-      tooltip   = require('common/views/tooltip');
+      validator = require('common/validator');
 
   return function NumericOutputController(component, scriptingAPI, interactivesController) {
     var propertyName,
@@ -69,7 +68,7 @@ define(function () {
     }
 
     if (component.tooltip) {
-      tooltip($numericOutput, component.tooltip, component.openTooltip, interactivesController);
+      $numericOutput.attr("title", component.tooltip);
     }
 
     // Public API.

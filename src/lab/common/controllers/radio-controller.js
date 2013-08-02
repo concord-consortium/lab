@@ -3,8 +3,7 @@
 define(function () {
 
   var metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator'),
-      tooltip   = require('common/views/tooltip');
+      validator = require('common/validator');
 
   return function RadioController(component, scriptingAPI, interactivesController) {
         // Public API.
@@ -147,7 +146,7 @@ define(function () {
       }
 
       if (component.tooltip) {
-        tooltip($div, component.tooltip, component.openTooltip, interactivesController);
+        $div.attr("title", component.tooltip);
       }
     }
 

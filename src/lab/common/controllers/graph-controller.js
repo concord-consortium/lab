@@ -4,7 +4,6 @@ define(function (require) {
   var Graph = require('grapher/core/graph'),
       metadata  = require('common/controllers/interactive-metadata'),
       validator = require('common/validator'),
-      tooltip   = require('common/views/tooltip'),
 
       // Note: We always explicitly copy properties from component spec to grapher options hash,
       // in order to avoid tighly coupling an externally-exposed API (the component spec) to an
@@ -167,7 +166,7 @@ define(function (require) {
       height: component.height
     });
     if (component.tooltip) {
-      tooltip($container, component.tooltip, component.openTooltip, interactivesController);
+      $container.attr("title", component.tooltip);
     }
 
     return controller = {

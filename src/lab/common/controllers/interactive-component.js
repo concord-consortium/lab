@@ -3,8 +3,7 @@
 define(function (require) {
 
   var metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator'),
-      tooltip   = require('common/views/tooltip');
+      validator = require('common/validator');
 
   /**
    * Basic class for all interactive components.
@@ -61,8 +60,7 @@ define(function (require) {
 
     // optionally add tooltip
     if (this.component.tooltip) {
-      tooltip(this.$element, this.component.tooltip, this.component.openTooltip,
-              interactivesController);
+      this.$element.attr("title", this.component.tooltip);
     }
   }
 
