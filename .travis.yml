@@ -22,6 +22,7 @@ rvm:
   - "2.0.0"
 before_script:
   - cp config/config.sample.yml config/config.yml
+  - travis_retry bundle install --binstubs
   - make clean-for-tests
   # see: http://about.travis-ci.org/docs/user/gui-and-headless-browsers/
   - export DISPLAY=:99.0
