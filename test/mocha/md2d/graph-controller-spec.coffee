@@ -140,8 +140,8 @@ helpers.withIsolatedRequireJS (requirejs) ->
           describe "the argument to addPoints", ->
             it "should be an array with the new value of each of component.properties", ->
               dataPoint = grapher.addPoints.getCall(0).args[0]
-              pePoint = [model.get('time'), model.get('potentialEnergy')]
-              kePoint = [model.get('time'), model.get('kineticEnergy')]
+              pePoint = [model.get('displayTime'), model.get('potentialEnergy')]
+              kePoint = [model.get('displayTime'), model.get('kineticEnergy')]
               dataPoint.should.eql [ pePoint , kePoint  ]
 
         describe "after 2 model ticks", ->
@@ -216,14 +216,14 @@ helpers.withIsolatedRequireJS (requirejs) ->
           beforeEach ->
             model.reset()
             expectedData = [[],[]]
-            pePoint0 = [model.get('time'), model.get('potentialEnergy')]
-            kePoint0 = [model.get('time'), model.get('kineticEnergy')]
+            pePoint0 = [model.get('displayTime'), model.get('potentialEnergy')]
+            kePoint0 = [model.get('displayTime'), model.get('kineticEnergy')]
             expectedData[0].push pePoint0
             expectedData[1].push kePoint0
 
             model.tick()
-            pePoint1 = [model.get('time'), model.get('potentialEnergy')]
-            kePoint1 = [model.get('time'), model.get('kineticEnergy')]
+            pePoint1 = [model.get('displayTime'), model.get('potentialEnergy')]
+            kePoint1 = [model.get('displayTime'), model.get('kineticEnergy')]
             expectedData[0].push pePoint1
             expectedData[1].push kePoint1
 
