@@ -1,5 +1,5 @@
 {
-  "title": "pressurediff",
+  "title": "Pressure equilibrium measured by gauges",
   "publicationStatus": "draft",
   "subtitle": "",
   "about": "",
@@ -13,12 +13,66 @@
       }
     }
   ],
+  "outputs": [
+    {
+      "name": "pressureLeftInstantaneous",
+      "unitType": "pressure",
+      "value": [
+        "return getObstacleProperties(0).westProbeValue;"
+      ]
+    },
+    {
+      "name": "pressureRightInstantaneous",
+      "unitType": "pressure",
+      "value": [
+        "return getObstacleProperties(0).eastProbeValue;"
+      ]
+    }
+  ],
+  "filteredOutputs": [
+    {
+      "name": "pressureLeftFiltered",
+      "unitType": "pressure",
+      "property": "pressureLeftInstantaneous",
+      "type": "RunningAverage",
+      "period": 2500
+    },
+    {
+      "name": "pressureRightFiltered",
+      "unitType": "pressure",
+      "property": "pressureRightInstantaneous",
+      "type": "RunningAverage",
+      "period": 2500
+    }
+  ],
   "components": [
-
+    {
+      "type": "graph",
+      "id": "pressure-graph",
+      "title": "Pressure on both sides of piston",
+      "xlabel": "Time (ps)",
+      "ylabel": "Pressure (Bars)",
+      "ymin": 0,
+      "ymax": 6,
+      "xmin": 0,
+      "xmax": 50,
+      "lineWidth": 1,
+      "yTickCount": 5,
+      "xTickCount": 5,
+      "xFormatter": "2s",
+      "yFormatter": "2s",
+      "properties": [
+        "pressureLeftFiltered", "pressureRightFiltered"
+      ]
+    }
   ],
   "layout": {
     "bottom": [
 
+    ],
+    "right": [
+      "pressure-graph"
     ]
-  }
+  },
+  "template": "wide-right"
 }
