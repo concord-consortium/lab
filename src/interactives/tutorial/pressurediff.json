@@ -47,6 +47,20 @@
   ],
   "components": [
     {
+      "type": "text",
+      "id": "explanation",
+      "text": [
+        "The second test of the pressure gauge is to make the obstacle a piston, put",
+        "two gauges on both surfaces and monitor the measured pressures. We should be",
+        "able to relate the measured results with the motion of the piston, as the",
+        "piston is completely driven by the pressure difference, plus a damping force.",
+        "Because of the damping force, the piston should stop but not oscillate when",
+        "the pressures from both compartments measure approximately the same.",
+        "",
+        "Does this happen? Try it out with the following experiment:"
+      ]
+    },
+    {
       "type": "graph",
       "id": "pressure-graph",
       "title": "Pressure on both sides of piston",
@@ -67,12 +81,39 @@
     }
   ],
   "layout": {
-    "bottom": [
-
+    "explanation": [
+      "explanation"
     ],
     "right": [
       "pressure-graph"
     ]
   },
-  "template": "wide-right"
+  "template": [
+    {
+      "id": "explanation",
+      "bottom": "model.top",
+      "width": "interactive.width",
+      "padding-left": "1em",
+      "padding-right": "1em",
+      "padding-top": "0.5em",
+      "padding-bottom": "1em",
+      "fontScale": 0.8
+    },
+    {
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "height": "model.height",
+      "padding-left": "1em",
+      "padding-right": "0.5em",
+      "width": "model.width",
+      "min-width": "6em"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "interactive.width",
+      "padding-top": "0.5em"
+    }
+  ]
 }
