@@ -94,10 +94,10 @@
       "bottom": "model.top",
       "width": "interactive.width",
       "padding-left": "1em",
-      "padding-right": "1em",
+      "padding-right": "2em",
       "padding-top": "0.5em",
       "padding-bottom": "1em",
-      "fontScale": 0.8
+      "fontScale": 0.9
     },
     {
       "id": "right",
