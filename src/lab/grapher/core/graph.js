@@ -499,13 +499,14 @@ define(function (require) {
 
       xAxisNumberWidth  = xlabelMetrics[0];
       xAxisNumberHeight = xlabelMetrics[1];
-      yAxisNumberWidth  = ylabelMetrics[0];
-      yAxisNumberHeight = ylabelMetrics[0];
 
       xAxisLabelHorizontalPadding = xAxisNumberWidth * 0.6;
       xAxisDraggableHeight = xAxisNumberHeight * 1.1;
       xAxisVerticalPadding = xAxisDraggableHeight + xAxisNumberHeight*1.3;
       xAxisLabelBaseline = xAxisVerticalPadding-xAxisNumberHeight/3;
+
+      yAxisNumberWidth  = ylabelMetrics[0];
+      yAxisNumberHeight = ylabelMetrics[1];
 
       yAxisDraggableWidth    = yAxisNumberWidth + xAxisNumberHeight/4;
       yAxisHorizontalPadding = yAxisDraggableWidth + yAxisNumberHeight;
