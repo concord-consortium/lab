@@ -557,7 +557,7 @@ define(function() {
         defaultValue: []
       },
       xProperty: {
-        defaultValue: "time"
+        defaultValue: "displayTime"
       },
       title: {
         defaultValue: "Graph"
