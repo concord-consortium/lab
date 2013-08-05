@@ -21,11 +21,16 @@
  * and set interval which shows it again after calculated amount of milliseconds. Weird, but works
  * quite fine.
  */
-define(function () {
+define(function (require) {
 
-  var lastClose = 0;
+  var benchmark = require("common/benchmark/benchmark"),
+      lastClose = 0;
 
   function tooltip($target) {
+    // Disable custom tooltips on mobile devices, as e.g. on iPad they cause that
+    // user have to tap each component twice as first tap only opens a tooltip.
+    if (benchmark.isMobile) return;
+
     var $rc = $("#responsive-content"),
         $tooltip = null,
         fadeInID = null,
