@@ -1,10 +1,9 @@
 /*global define, $ */
 define(function (require) {
 
-  var arrays      = require('arrays'),
-      markdown    = require('markdown'),
-      inherit     = require('common/inherit'),
-      BasicDialog = require('common/controllers/basic-dialog');
+  var markdownToHTML = require('common/markdown-to-html'),
+      inherit        = require('common/inherit'),
+      BasicDialog    = require('common/controllers/basic-dialog');
 
   /**
    * About Dialog. Inherits from Basic Dialog.
@@ -22,29 +21,14 @@ define(function (require) {
    * @param {Object} interactive Interactive JSON definition.
    */
   AboutDialog.prototype.update = function(interactive) {
-    var $aboutContent = $("<div>"),
-        about,
-        content,
-        html,
-        openInNewWindow = 'class="opens-in-new-window" target="blank"';
+    var $aboutContent = $("<div>");
 
     this.set("title", "About: " + interactive.title);
 
-    // Ensure that common typography for markdown-generated content is used.
-    $aboutContent.addClass("markdown-typography");
     if (interactive.subtitle) {
-      html = markdown.toHTML(interactive.subtitle);
-      html = html.replace(/<a(.*?)>/, "<a$1 " + openInNewWindow + ">");
-      $aboutContent.append(html);
+      $aboutContent.append(markdownToHTML(interactive.subtitle));
     }
-    about = arrays.isArray(interactive.about) ? interactive.about : [interactive.about];
-    content = "";
-    $.each(about, function(idx, val) {
-      content += val + "\n";
-    });
-    html = markdown.toHTML(content);
-    html = html.replace(/<a(.*?)>/g, "<a$1 " + openInNewWindow + ">");
-    $aboutContent.append(html);
+    $aboutContent.append(markdownToHTML(interactive.about));
 
     this.setContent($aboutContent);
   };

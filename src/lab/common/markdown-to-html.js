@@ -13,7 +13,7 @@ define(function (require) {
     text.forEach(function (line) {
       content += line + "\n";
     });
-    html = markdown.toHTML(content);
+    html = '<div class="markdown-typography">' + markdown.toHTML(content) + '</div>';
     return html.replace(/<a(.*?)>/g, "<a$1 " + NEW_WINDOW + ">");
   };
 });
