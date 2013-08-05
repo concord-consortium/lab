@@ -10,6 +10,12 @@ define(function() {
       },
       url: {
         immutable: true
+      },
+      width: {
+        defaultValue: 150
+      },
+      height: {
+        defaultValue: 150
       }
     },
     viewOptions: {

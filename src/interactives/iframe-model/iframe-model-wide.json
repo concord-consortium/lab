@@ -1,0 +1,34 @@
+{
+  "title": "IFrame model wide example",
+  "publicationStatus": "draft",
+  "subtitle": "Testing the IFrame model type",
+  "about": "",
+  "models": [
+    {
+      "type": "iframe-model",
+      "id": "iframe-model",
+      "url": "models/iframe-model/iframe-model.json",
+      "modelOptions":{
+        "url": "/experiments/external-model/wide.html",
+        "width": 1000,
+        "height": 400
+      },
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "showClock": true
+      }
+    }
+  ],
+  "parameters": [
+  ],
+  "components": [
+    {
+      "type": "numericOutput",
+      "id": "time-output",
+      "property": "time",
+      "displayValue": "return format('.1f')(value)"
+    }
+  ],
+  "layout": {
+  }
+}
