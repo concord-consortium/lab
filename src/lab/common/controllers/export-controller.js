@@ -54,7 +54,7 @@ define(function (require) {
         values: perRunPropertyValues
       });
 
-      dgExporter.logAction(logString);
+      ExportController.logAction(logString);
     }
 
     function registerModelListeners() {
@@ -137,6 +137,8 @@ define(function (require) {
   ExportController.isExportAvailable = function() {
     return dgExporter.isExportAvailable();
   };
+
+  ExportController.logAction = dgExporter.logAction;
 
   return ExportController;
 });
