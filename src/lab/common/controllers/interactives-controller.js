@@ -25,6 +25,7 @@ define(function (require) {
       PlaybackController      = require('common/controllers/playback-controller'),
       DivController           = require('common/controllers/div-controller'),
       DispatchSupport         = require('common/dispatch-support'),
+      HelpSystem              = require('common/controllers/help-system'),
       tooltip                 = require('common/views/tooltip'),
 
       // Helper function which just provides banner definition.
@@ -93,6 +94,7 @@ define(function (require) {
         controller = {},
         modelController,
         $interactiveContainer,
+        helpSystem,
         models = [],
         modelsHash = {},
         propertiesListeners = [],
@@ -584,6 +586,7 @@ define(function (require) {
       validateArray("parameter", interactive.parameters);
       validateArray("output", interactive.outputs);
       validateArray("filteredOutput", interactive.filteredOutputs);
+      validateArray("helpTip", interactive.helpTips);
 
       // Validate also nested strucutres.
       models = interactive.models;
@@ -709,6 +712,11 @@ define(function (require) {
             "action": "exportData();"
           });
         }
+      }
+
+      // Setup help system if help tips are defined.
+      if (interactive.helpTips.length > 0) {
+        helpSystem = new HelpSystem(interactive.helpTips, $interactiveContainer);
       }
 
       // When all components are created, we can initialize semantic layout.
@@ -862,6 +870,9 @@ define(function (require) {
       get scriptingAPI() {
         return scriptingAPI;
       },
+      get helpSystem() {
+        return helpSystem;
+      },
       getDGExportController: function () {
         return exportController;
       },
@@ -975,10 +986,10 @@ define(function (require) {
 
         // add optional attributes to result if defined
         if (typeof interactive.fontScale !== 'undefined') {
-          result.fontScale = interactive.fontScale
+          result.fontScale = interactive.fontScale;
         }
         if (typeof interactive.importedFrom !== 'undefined') {
-          result.importedFrom = interactive.importedFrom
+          result.importedFrom = interactive.importedFrom;
         }
 
         // Serialize components.
@@ -1032,7 +1043,7 @@ define(function (require) {
     shareDialog = new ShareDialog();
     controller.on("resize", $.proxy(shareDialog.updateIframeSize, shareDialog));
     // Run this when controller is created.
-    loadInteractive(interactiveReference, viewSelector);
+    loadInteractive(interactiveReference);
 
     return controller;
   };
