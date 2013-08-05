@@ -119,8 +119,8 @@ describe "MD2D modeler", ->
   describe "when shape with electric field is removed", ->
 
       beforeEach ->
-        model.addShape x: 0, y: 0, width: 5, height: 5
-        model.addShape x: 5, y: 0, width: 5, height: 5
+        model.addShape type: "rectangle", x: 0, y: 0, width: 5, height: 5
+        model.addShape type: "rectangle", x: 5, y: 0, width: 5, height: 5
 
         model.addElectricField intensity: 1, orientation: "N", shapeIdx: 0 # idx = 0
         model.addElectricField intensity: 2, orientation: "S", shapeIdx: 1 # idx = 1

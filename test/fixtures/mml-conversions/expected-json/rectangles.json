@@ -1200,7 +1200,14 @@
       0
     ]
   },
-  "rectangles": {
+  "shapes": {
+    "type": [
+      "rectangle",
+      "rectangle",
+      "rectangle",
+      "rectangle",
+      "rectangle"
+    ],
     "x": [
       0.38,
       0.34,
@@ -1248,7 +1255,7 @@
       "rgb(0,51,0)",
       "rgb(204,204,204)",
       "rgb(51,153,0)",
-      "rgb(51,153,0)"
+      "black"
     ],
     "lineWeight": [
       2,
@@ -1270,6 +1277,13 @@
       1,
       2,
       2
+    ],
+    "layerPosition": [
+      1,
+      1,
+      2,
+      3,
+      4
     ],
     "visible": [
       1,
