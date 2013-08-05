@@ -116,40 +116,40 @@ describe "MD2D modeler", ->
         (-> model.removeElectricField 0).should.throw()
 
 
-  describe "when rectangle with electric field is removed", ->
+  describe "when shape with electric field is removed", ->
 
       beforeEach ->
-        model.addRectangle x: 0, y: 0, width: 5, height: 5
-        model.addRectangle x: 5, y: 0, width: 5, height: 5
+        model.addShape x: 0, y: 0, width: 5, height: 5
+        model.addShape x: 5, y: 0, width: 5, height: 5
 
-        model.addElectricField intensity: 1, orientation: "N", rectangleIdx: 0 # idx = 0
-        model.addElectricField intensity: 2, orientation: "S", rectangleIdx: 1 # idx = 1
-        model.addElectricField intensity: 3, orientation: "E", rectangleIdx: null # idx = 2
+        model.addElectricField intensity: 1, orientation: "N", shapeIdx: 0 # idx = 0
+        model.addElectricField intensity: 2, orientation: "S", shapeIdx: 1 # idx = 1
+        model.addElectricField intensity: 3, orientation: "E", shapeIdx: null # idx = 2
 
       it "electric field should be also removed", ->
-        model.getNumberOfRectangles().should.equal 2
+        model.getNumberOfShapes().should.equal 2
         model.getNumberOfElectricFields().should.equal 3
 
-        model.removeRectangle 0
+        model.removeShape 0
 
-        model.getNumberOfRectangles().should.equal 1
+        model.getNumberOfShapes().should.equal 1
         model.getNumberOfElectricFields().should.equal 2
 
         # Note that indices of atoms should be shifter already.
         model.getElectricFieldProperties(0).intensity.should.equal 2
         model.getElectricFieldProperties(0).orientation.should.equal "S"
-        # Index of rectangle should be updated too!
-        model.getElectricFieldProperties(0).rectangleIdx.should.equal 0
+        # Index of shape should be updated too!
+        model.getElectricFieldProperties(0).shapeIdx.should.equal 0
 
-        model.removeRectangle 0
+        model.removeShape 0
 
-        model.getNumberOfRectangles().should.equal 0
+        model.getNumberOfShapes().should.equal 0
         model.getNumberOfElectricFields().should.equal 1
 
         # Note that indices of atoms should be shifter already.
         model.getElectricFieldProperties(0).intensity.should.equal 3
         model.getElectricFieldProperties(0).orientation.should.equal "E"
-        should.equal model.getElectricFieldProperties(0).rectangleIdx, null
+        should.equal model.getElectricFieldProperties(0).shapeIdx, null
 
 
       it "should also trigger 'removeElectricField' event", ->
@@ -157,8 +157,8 @@ describe "MD2D modeler", ->
         model.on 'removeElectricField', callback
 
         callback.callCount.should.equal 0
-        model.removeRectangle 0
+        model.removeShape 0
         # Why? Electric field should be also removed, see test above.
         callback.callCount.should.equal 1
-        model.removeRectangle 0
+        model.removeShape 0
         callback.callCount.should.equal 2

@@ -134,7 +134,10 @@
       0
     ]
   },
-  "rectangles": {
+  "shapes": {
+    "type": [
+      "rectangle"
+    ],
     "x": [
       1.45
     ],
@@ -163,6 +166,9 @@
       "none"
     ],
     "layer": [
+      1
+    ],
+    "layerPosition": [
       1
     ],
     "visible": [
