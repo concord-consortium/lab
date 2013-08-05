@@ -129,6 +129,41 @@ define(function () {
       });
     }
 
+    if (controller.helpSystem) {
+      createElementInContainer(
+      {
+        "type": "div",
+        "id": "help-icon",
+        "content": '<i class="icon-question-sign"></i>',
+        "onClick": function () {
+          var $icon = $(this).find("i");
+          if (!controller.helpSystem.isActive()) {
+            controller.helpSystem.start();
+            $icon.addClass("icon-remove-sign active");
+            $icon.removeClass("icon-question-sign");
+          } else {
+            controller.helpSystem.stop();
+            $icon.addClass("icon-question-sign");
+            $icon.removeClass("icon-remove-sign active");
+          }
+        },
+        "tooltip": "Show help tips"
+      },
+      {
+        "id": "banner-help",
+        "fontScale": topBarFontScale,
+        "top": "0",
+        "height": topBarHeight + "em",
+        "padding-top": topBarVerticalPadding + "em",
+        "padding-bottom": topBarVerticalPadding + "em",
+        // "banner-right" can be undefined, so check it.
+        "left": "0.7em",
+        "padding-right": "1em",
+        "align": "left",
+        "aboveOthers": true
+      });
+    }
+
     // bottom bar
     creditsDialog.update(interactive);
     createElementInContainer(
