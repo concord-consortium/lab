@@ -67,6 +67,11 @@ define(function() {
       template: {
         // Layout template definition.
         defaultValue: "simple"
+      },
+
+      helpTips: {
+        // List of help tips. See 'helpTip' metadata.
+        defaultValue: []
       }
     },
 
@@ -716,6 +721,15 @@ define(function() {
         defaultValue: "#fff"
       },
       tooltip: {
+        defaultValue: ""
+      }
+    },
+
+    helpTip: {
+      component: {
+        defaultValue: ""
+      },
+      text: {
         defaultValue: ""
       }
     }
