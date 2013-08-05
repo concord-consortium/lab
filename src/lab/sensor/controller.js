@@ -4,7 +4,7 @@ define(function (require) {
   // Dependencies.
   var ModelController   = require('common/controllers/model-controller'),
       Model             = require('sensor/modeler'),
-      ModelContainer    = require('common/views/null-model-view'),
+      ModelContainer    = require('sensor/view'),
       ScriptingAPI      = function() {},
       Benchmarks        = function() {};
 
