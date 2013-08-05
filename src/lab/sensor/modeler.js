@@ -11,7 +11,8 @@ define(function(require) {
       appletClasses        = require('./applet/applet-classes'),
       appletErrors         = require('./applet/errors'),
       sensorDefinitions    = require('./applet/sensor-definitions'),
-      BasicDialog          = require('common/controllers/basic-dialog');
+      BasicDialog          = require('common/controllers/basic-dialog'),
+      ExportController     = require('common/controllers/export-controller');
 
   function simpleAlert(message, buttons) {
     var dialog = new BasicDialog({
@@ -178,6 +179,7 @@ define(function(require) {
     function handleUnplugged(what) {
       removeApplet();
       model.stop();
+      ExportController.logAction("User unplugged the " + what + " (" + model.properties[what+'Name'] + ").");
       simpleAlert("The " + model.properties[what+'Name'] + " was unplugged. Try plugging it back in, and then click \"Try Again\".", {
         "Try Again": function() {
           $(this).dialog("close");
