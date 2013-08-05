@@ -278,8 +278,7 @@ Host #{@name}
   end
 
   # Create a new dns record for the server and point it to the public IP address
-  def new_dns_record(name, ipaddress, ttl)
-    ttl = ttl || 60
+  def new_dns_record(name, ipaddress, ttl=60)
     puts "\n*** Creating new Type A DNS record: #{@name} => #{@ipaddress}, ttl => #{ttl}" if @options[:verbose]
     @dnsrecord = @zone.records.create({ :value => ipaddress, :name => name, :ttl => ttl, :type => 'A' })
   end
