@@ -136,15 +136,10 @@ define(function () {
         "id": "help-icon",
         "content": '<i class="icon-question-sign"></i>',
         "onClick": function () {
-          var $icon = $(this).find("i");
           if (!controller.helpSystem.isActive()) {
             controller.helpSystem.start();
-            $icon.addClass("icon-remove-sign active");
-            $icon.removeClass("icon-question-sign");
           } else {
             controller.helpSystem.stop();
-            $icon.addClass("icon-question-sign");
-            $icon.removeClass("icon-remove-sign active");
           }
         },
         "tooltip": "Show help tips"
@@ -161,6 +156,17 @@ define(function () {
         "padding-right": "1em",
         "align": "left",
         "aboveOthers": true
+      });
+
+      controller.helpSystem.on("start.icon", function () {
+        var $icon = $("#help-icon > i");
+        $icon.addClass("icon-remove-sign active");
+        $icon.removeClass("icon-question-sign");
+      });
+      controller.helpSystem.on("stop.icon", function () {
+        var $icon = $("#help-icon > i");
+        $icon.addClass("icon-question-sign");
+        $icon.removeClass("icon-remove-sign active");
       });
     }
 
