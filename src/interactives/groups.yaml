@@ -34,6 +34,10 @@
   :name: "Inquiry Space: Pendulums"
   :category: Curriculum
 
+- :path: itsi/crystal
+  :name: "ITSI: Crystals"
+  :category: Curriculum
+
 - :path: rites
   :name: "RITES"
   :category: Curriculum
