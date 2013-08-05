@@ -210,6 +210,8 @@ AUTHORING = false;
     var javaMWhref,
         $embeddableLink = $("#embeddable-link"),
         $dataGamesLink = $("#datagames-link"),
+        $dataGamesStagingLink = $("#datagames-staging-link"),
+        dgGameSpecification,
         origin;
 
     origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
@@ -230,19 +232,20 @@ AUTHORING = false;
     $jsonModelLink.attr("title", "View model JSON in another window");
 
     // construct link to DataGames embeddable version of Interactive
-    $dataGamesLink.attr("href", function() {
-      var dgPayload = [{
-            "name": $selectInteractive.find("option:selected").text(),
-            "dimensions": {
-              "width": 600,
-              "height":400
-            },
-            "url": Lab.config.dataGamesProxyPrefix + "embeddable.html#" +  interactiveUrl
-          }],
-          dgUrl = "http://is.kcptech.com/dg?moreGames=" + JSON.stringify(dgPayload);
-      return encodeURI(dgUrl);
-    });
+    dgGameSpecification = JSON.stringify([{
+      "name": $selectInteractive.find("option:selected").text(),
+      "dimensions": {
+        "width": 600,
+        "height":400
+      },
+      "url": Lab.config.dataGamesProxyPrefix + "embeddable.html#" +  interactiveUrl
+    }]);
+
+    $dataGamesLink.attr("href", encodeURI("http://is.kcptech.com/dg?moreGames=" + dgGameSpecification));
     $dataGamesLink.attr("title", "Run this Interactive inside DataGames");
+
+    $dataGamesStagingLink.attr("href", encodeURI("http://is-test.kcptech.com/dg?moreGames=" + dgGameSpecification));
+    $dataGamesStagingLink.attr("title", "Run this Interactive inside DataGames' staging server");
 
     setupOriginalImportLinks();
     setupExtras();
