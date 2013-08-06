@@ -981,7 +981,8 @@ define(function (require) {
           parameters: $.extend(true, [], interactive.parameters),
           // Outputs are directly bound to the model, we can copy their initial definitions.
           outputs: $.extend(true, [], interactive.outputs),
-          filteredOutputs: $.extend(true, [], interactive.filteredOutputs)
+          filteredOutputs: $.extend(true, [], interactive.filteredOutputs),
+          helpTips: $.extend(true, [], interactive.helpTips)
         };
 
         // add optional attributes to result if defined
@@ -990,9 +991,6 @@ define(function (require) {
         }
         if (typeof interactive.importedFrom !== 'undefined') {
           result.importedFrom = interactive.importedFrom;
-        }
-        if (typeof interactive.helpTips !== 'undefined') {
-          result.helpTips = interactive.helpTips;
         }
 
         // Serialize components.
