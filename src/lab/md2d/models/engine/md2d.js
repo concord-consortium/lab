@@ -282,9 +282,7 @@ define(function (require, exports) {
         obstacleNorthProbe,
         obstacleEastProbe,
         obstacleSouthProbe,
-        obstacleColorR,
-        obstacleColorG,
-        obstacleColorB,
+        obstacleColor,
         obstacleVisible,
 
         // Properties used only during internal calculations (e.g. shouldn't
@@ -671,9 +669,7 @@ define(function (require, exports) {
             obstacleSProbeValue = obstacles.southProbeValue;
             obstacleXPrev       = obstacles.xPrev;
             obstacleYPrev       = obstacles.yPrev;
-            obstacleColorR      = obstacles.colorR;
-            obstacleColorG      = obstacles.colorG;
-            obstacleColorB      = obstacles.colorB;
+            obstacleColor       = obstacles.color;
             obstacleVisible     = obstacles.visible;
           },
 
@@ -814,30 +810,28 @@ define(function (require, exports) {
         createObstaclesArray = function(num) {
           obstacles = engine.obstacles = {};
 
-          obstacles.x           = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.y           = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.width       = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.height      = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.mass        = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.vx          = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.vy          = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.externalAx  = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.externalAy  = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.friction    = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.westProbe   = arrays.create(num, 0, arrayTypes.uint8Type);
-          obstacles.northProbe  = arrays.create(num, 0, arrayTypes.uint8Type);
-          obstacles.eastProbe   = arrays.create(num, 0, arrayTypes.uint8Type);
-          obstacles.southProbe  = arrays.create(num, 0, arrayTypes.uint8Type);
-          obstacles.westProbeValue = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.x               = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.y               = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.width           = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.height          = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.mass            = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.vx              = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.vy              = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.externalAx      = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.externalAy      = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.friction        = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.westProbe       = arrays.create(num, 0, arrayTypes.uint8Type);
+          obstacles.northProbe      = arrays.create(num, 0, arrayTypes.uint8Type);
+          obstacles.eastProbe       = arrays.create(num, 0, arrayTypes.uint8Type);
+          obstacles.southProbe      = arrays.create(num, 0, arrayTypes.uint8Type);
+          obstacles.westProbeValue  = arrays.create(num, 0, arrayTypes.floatType);
           obstacles.northProbeValue = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.eastProbeValue = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.eastProbeValue  = arrays.create(num, 0, arrayTypes.floatType);
           obstacles.southProbeValue = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.xPrev       = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.yPrev       = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.colorR      = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.colorG      = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.colorB      = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.visible     = arrays.create(num, 0, arrayTypes.uint8Type);
+          obstacles.xPrev           = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.yPrev           = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.color           = [];
+          obstacles.visible         = arrays.create(num, 0, arrayTypes.uint8Type);
 
           assignShortcutReferences.obstacles();
         },
@@ -865,9 +859,9 @@ define(function (require, exports) {
         createElectricFieldsArray = function(num) {
           electricFields = engine.electricFields = {};
 
-          electricFields.intensity    = arrays.create(num, 0, arrayTypes.floatType);
-          electricFields.orientation  = [];
-          electricFields.shapeIdx = [];
+          electricFields.intensity   = arrays.create(num, 0, arrayTypes.floatType);
+          electricFields.orientation = [];
+          electricFields.shapeIdx    = [];
 
           assignShortcutReferences.electricFields();
         },

@@ -964,19 +964,6 @@ define(function(require) {
 
     model.addObstacle = function(props) {
       var validatedProps;
-
-      if (props.color !== undefined && props.colorR === undefined) {
-        // Convert color definition.
-        // Both forms are supported:
-        //   color: [ 128, 128, 255 ]
-        // or
-        //   colorR: 128,
-        //   colorB: 128,
-        //   colorG: 255
-        props.colorR = props.color[0];
-        props.colorG = props.color[1];
-        props.colorB = props.color[2];
-      }
       // Validate properties, use default values if there is such need.
       validatedProps = validator.validateCompleteness(metadata.obstacle, props);
       // Finally, add obstacle.
@@ -1840,13 +1827,7 @@ define(function(require) {
 
         propCopy.obstacles.color = [];
         // Convert color from internal representation to one expected for serialization.
-        for (i = 0, len = propCopy.obstacles.colorR.length; i < len; i++) {
-          propCopy.obstacles.color.push([
-            propCopy.obstacles.colorR[i],
-            propCopy.obstacles.colorG[i],
-            propCopy.obstacles.colorB[i]
-          ]);
-
+        for (i = 0, len = propCopy.obstacles.x.length; i < len; i++) {
           // Silly, but allows to pass current serialization tests.
           // FIXME: try to create more flexible tests for serialization.
           propCopy.obstacles.westProbe[i] = Boolean(propCopy.obstacles.westProbe[i]);
@@ -1854,9 +1835,6 @@ define(function(require) {
           propCopy.obstacles.eastProbe[i] = Boolean(propCopy.obstacles.eastProbe[i]);
           propCopy.obstacles.southProbe[i] = Boolean(propCopy.obstacles.southProbe[i]);
         }
-        delete propCopy.obstacles.colorR;
-        delete propCopy.obstacles.colorG;
-        delete propCopy.obstacles.colorB;
       }
       if (engine.getNumberOfShapes()) {
         propCopy.shapes = serialize(metadata.shape, shapes, engine.getNumberOfShapes());

@@ -490,14 +490,8 @@ define(function() {
         serialize: false
       },
       // View options.
-      colorR: {
-        defaultValue: 128
-      },
-      colorG: {
-        defaultValue: 128
-      },
-      colorB: {
-        defaultValue: 128
+      color:{
+        defaultValue: "rgb(128,128,128)"
       },
       visible: {
         defaultValue: true

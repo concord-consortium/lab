@@ -200,12 +200,7 @@ parseMML = (mmlString) ->
         eastProbe  = getBooleanProperty $node, 'eastProbe'
         southProbe = getBooleanProperty $node, 'southProbe'
         visible    = getBooleanProperty $node, 'visible'
-
-        colorDef  = $node.find ".java-awt-Color>int"
-        if colorDef and colorDef.length > 0
-          colorR = parseInt cheerio(colorDef[0]).text()
-          colorG = parseInt cheerio(colorDef[1]).text()
-          colorB = parseInt cheerio(colorDef[2]).text()
+        color      = getFillColor $node
 
         # Unit conversion.
         [x, y]          = toNextgenCoordinates x, y
@@ -259,7 +254,7 @@ parseMML = (mmlString) ->
           friction,
           mass,
           westProbe, northProbe, eastProbe, southProbe,
-          colorR, colorB, colorG,
+          color,
           visible
         }
 
@@ -270,13 +265,6 @@ parseMML = (mmlString) ->
 
         # Validate all properties and provides default values for undefined values.
         validatedData = validator.validateCompleteness metadata.obstacle, rawData
-
-        # Change colorR, colorB, colorG to array...
-        # TODO: ugly, use just one convention. colorR/G/B should be easier.
-        validatedData.color = []
-        validatedData.color[0] = validatedData.colorR
-        validatedData.color[1] = validatedData.colorG
-        validatedData.color[2] = validatedData.colorB
 
         obstacles.push validatedData
 
@@ -301,14 +289,12 @@ parseMML = (mmlString) ->
         alpha         = getFloatProperty $node, 'alpha'
         visible       = getBooleanProperty $node, 'visible'
         fence         = getBooleanProperty $node, 'reflection'
+        color         = getFillColor $node,alpha
+        lineColor     = getLineColor $node
         
         # Change all Boolean values to 0/1.
         visible = Number visible if visible?
         fence   = Number fence if fence?
-
-        # Find line and fill colors
-        color     = getFillColor($node,alpha)
-        lineColor = getLineColor($node)
 
         lineDashes = switch
               when lineStyle is 1 then '2,2'
@@ -375,14 +361,12 @@ parseMML = (mmlString) ->
         alpha         = getFloatProperty $node, 'alpha'
         visible       = getBooleanProperty $node, 'visible'
         fence         = getBooleanProperty $node, 'reflection'
+        color         = getFillColor $node,alpha
+        lineColor     = getLineColor $node
 
         # Change all Boolean values to 0/1.
         visible = Number visible if visible?
         fence   = Number fence if fence?
-
-        # Find line and fill colors
-        color     = getFillColor($node,alpha)
-        lineColor = getLineColor($node)
 
         lineDashes = switch
               when lineStyle is 1 then '2,2'
