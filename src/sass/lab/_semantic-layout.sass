@@ -86,29 +86,36 @@ body:fullscreen .fullscreen
   &:hover
     opacity: 0.9
 
+.lab-help-next, .lab-help-prev
+  cursor: pointer
+  &.btn
+    font-size: 2em
+    margin: 0 0.4em
+
 .lab-help-overlay
   position: absolute
   top: 0
   left: 0
   width: 200%
   height: 200%
-  background: rgba(60, 60, 60, 0.7)
+  background: rgba(60, 60, 60, 0.3)
   z-index: 100
-  cursor: pointer
 
 .lab-help-instructions
   position: absolute
   width: 100%
   text-align: center
   font-size: 1.2em
-  color: #eee
-  text-shadow: 1px 1px 1px #555
+  color: #fff
+  text-shadow: 1px 1px 1px #444
   z-index: 100
-
+  margin-top: -0.55em
+  & > span
+    vertical-align: middle
 
 .lab-help-tip
   display: inline-block
-  max-width: 70%
+  max-width: 30em
   font-size: 1em
   padding: 0.4em 1em
   z-index: 101
@@ -117,6 +124,8 @@ body:fullscreen .fullscreen
   text-shadow: 1px 1px 2px #fff
   @include linear-gradient(#fff, #e6e6e6, $fallback: #e6e6e6)
   cursor: pointer
+  &:focus
+    outline: none
 
 .lab-help-arrow
   &.top:after
@@ -129,17 +138,13 @@ body:fullscreen .fullscreen
   height: 1em
   overflow: hidden
   position: absolute
-  left: 50%
   margin-left: -1.25em
+  // "left" value is adjusted by JS during tip positioning.
+  left: 2em
   bottom: -1em
   &.top
     top: -1em
     bottom: auto
-  &.left
-    left: 2em
-  &.right
-    left: auto
-    right: 2em
 
 .lab-help-arrow:after
   content: ""

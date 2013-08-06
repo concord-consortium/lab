@@ -22,7 +22,7 @@ define(function (require) {
     var api,
         dispatch = new DispatchSupport("start", "stop"),
         isActive = false,
-        tipIdx = 0,
+        tipIdx = -1,
         $tip,
         $instructions,
         overlays = [];
@@ -32,6 +32,8 @@ define(function (require) {
           $component,
           overlayHeight,
           offset;
+      // Make sure that focus is active so keyboard handlers work fine.
+      $tip.focus();
       // Update content.
       $tip.html(markdownToHTML(def.text));
       // Position.
@@ -46,13 +48,21 @@ define(function (require) {
           my: "left-" + (offset * 4) + " top+" + offset,
           at: "right bottom",
           using: function(position, feedback) {
+            var eLeft  = feedback.element.left,
+                eWidth = feedback.element.width,
+                tLeft  = feedback.target.left,
+                tWidth = feedback.target.width,
+                $arrow, leftOffset;
             $(this).css(position);
-            // Add arrow for nicer look & feel.
-            $("<div>")
+            $arrow = $("<div>")
               .addClass("lab-help-arrow")
               .addClass(feedback.vertical)
-              .addClass(feedback.horizontal)
               .appendTo(this);
+            if (tLeft > eLeft) {
+              leftOffset = tLeft - eLeft + tWidth / 2;
+              leftOffset = Math.max(eWidth * 0.1, Math.min(eWidth * 0.9, leftOffset));
+              $arrow.css("left", leftOffset);
+            }
           }
         });
         overlays.forEach(function ($overlay, idx) {
@@ -88,14 +98,29 @@ define(function (require) {
     api = {
       start: function () {
         for (var i = 0; i < 4; i++) {
-          overlays.push($('<div class="lab-help-overlay"></div>').appendTo($container));
+          overlays.push($('<div class="lab-help-overlay lab-help-next"></div>').appendTo($container));
         }
         $instructions = $('<div class="lab-help-instructions">' +
-                          'Click overlay to see next help tip</div>').appendTo($container);
-        $container.on("click.lab-help-overlay",
-                      ".lab-help-overlay, .lab-help-tip, .lab-help-instructions", api.next);
-        $tip = $('<div class="lab-help-tip"></div>').appendTo($container);
-        tipIdx = 0;
+                          '<span class="lab-help-prev btn"><</span>' +
+                          '<span class="lab-help-next">Click overlay to see next help tip</span>' +
+                          '<span class="lab-help-next btn">></span>' +
+                          '</div>').appendTo($container);
+        $container.on("click.lab-help-next", ".lab-help-next", api.next);
+        $container.on("click.lab-help-prev", ".lab-help-prev", api.prev);
+        $tip = $('<div class="lab-help-tip lab-help-next" tabindex="-1"></div>').appendTo($container);
+        $tip.on('keydown.lab-help', function(event) {
+          switch(event.keycode || event.which) {
+          case 37: // left-arrow
+            api.prev();
+            break;
+          case 39: // right-arrow
+            api.next();
+            break;
+          }
+          event.preventDefault();
+          event.stopPropagation();
+        });
+        tipIdx = -1;
         isActive = true;
         api.next();
         dispatch.start();
@@ -108,19 +133,28 @@ define(function (require) {
           $overlay.remove();
         });
         overlays.length = 0;
-        $container.off("click.lab-help-overlay",
-                       ".lab-help-overlay, .lab-help-tip, .lab-help-instructions");
+        $container.off("click.lab-help-next", ".lab-help-next");
+        $container.off("click.lab-help-prev", ".lab-help-prev");
         isActive = false;
         dispatch.stop();
       },
 
       next: function () {
+        tipIdx++;
         if (tipIdx >= helpTips.length) {
           api.stop();
           return;
         }
         showTip();
-        tipIdx++;
+      },
+
+      prev: function () {
+        tipIdx--;
+        if (tipIdx < 0) {
+          api.stop();
+          return;
+        }
+        showTip();
       },
 
       isActive: function () {
