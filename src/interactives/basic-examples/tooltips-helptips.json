@@ -137,6 +137,19 @@
       ]
     },
     {
+      "component": "model",
+      "text": [
+        "You can reference all interactive components using their IDs defined in components list.",
+        "To create help tip for the model you should use **model** ID:",
+        "",
+        "    \"helpTips\": [",
+        "        {",
+        "            \"component\": \"model\",",
+        "            \"text\": \"...\"",
+        "        },"
+      ]
+    },
+    {
       "component": "graph",
       "text": [
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor",

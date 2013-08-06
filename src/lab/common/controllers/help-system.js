@@ -38,7 +38,8 @@ define(function (require) {
       $tip.html(markdownToHTML(def.text));
       // Position.
       if (def.component) {
-        $component = $("#" + def.component).closest(".component");
+        $component = def.component === "model" ?
+                     $("#model-container") : $("#" + def.component).closest(".component");
         overlayHeight = $component.outerHeight() + 10; // + 5+ 5 => take a loot at OVERLAY_AT values.
         offset = parseFloat($tip.css("font-size"));
         $tip.position({
