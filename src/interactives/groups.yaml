@@ -146,6 +146,54 @@
   :name: "Classic Java MW Examples: Part1/Crystal"
   :category: Examples
 
+- :path: public/part1/chembond
+  :name: "Classic Java MW Examples: Part1/Chemical Binding"
+  :category: Examples
+
+- :path: public/part1/chemequil
+  :name: "Classic Java MW Examples: Part1/Chemical Equilibrium"
+  :category: Examples
+
+- :path: public/part1/chempot
+  :name: "Classic Java MW Examples: Part1/Chemical Potential"
+  :category: Examples
+
+- :path: public/part1/conserve
+  :name: "Classic Java MW Examples: Part1/Conservation"
+  :category: Examples
+
+- :path: public/part1/distillation
+  :name: "Classic Java MW Examples: Part1/Distillation"
+  :category: Examples
+
+- :path: public/part1/emove
+  :name: "Classic Java MW Examples: Part1/Electron Movement"
+  :category: Examples
+
+- :path: public/part1/energy
+  :name: "Classic Java MW Examples: Part1/Energy"
+  :category: Examples
+
+- :path: public/part1/fluorescence
+  :name: "Classic Java MW Examples: Part1/Fluorescence"
+  :category: Examples
+
+- :path: public/part1/heatflow
+  :name: "Classic Java MW Examples: Part1/Heat Flow"
+  :category: Examples
+
+- :path: public/part1/insulin
+  :name: "Classic Java MW Examples: Part1/Insulin"
+  :category: Examples
+
+- :path: public/part1/protein
+  :name: "Classic Java MW Examples: Part1/Protein"
+  :category: Examples
+
+- :path: public/part1/redox
+  :name: "Classic Java MW Examples: Part1/Redox"
+  :category: Examples
+
 - :path: public/part2/newton
   :name: "Classic Java MW Examples: Part2/Newton"
   :category: Examples
