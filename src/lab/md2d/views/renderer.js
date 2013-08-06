@@ -670,7 +670,7 @@ define(function (require) {
             return model2px(shapes.height[d.index]);
           },
           "fill" : function(d) {
-            return shapes.visible[d.index] && shapes.type[d.index] == 'rectangle' ? shapes.color[d.index] : "transparent";
+            return shapes.visible[d.index] && shapes.type[d.index] == 'rectangle' ? gradients.toSVG(gradients.parse(shapes.color[d.index]), mainContainer) : "transparent";
           },
           "stroke-width" : function(d) {
             return shapes.lineWeight[d.index];
@@ -697,7 +697,7 @@ define(function (require) {
             return model2px(shapes.height[d.index]) / 2;
           },
           "fill" : function(d) {
-            return shapes.visible[d.index] && shapes.type[d.index] == 'ellipse' ? shapes.color[d.index] : "transparent";
+            return shapes.visible[d.index] && shapes.type[d.index] == 'ellipse' ? gradients.toSVG(gradients.parse(shapes.color[d.index]), mainContainer) : "transparent";
           },
           "stroke-width" : function(d) {
             return shapes.lineWeight[d.index];
