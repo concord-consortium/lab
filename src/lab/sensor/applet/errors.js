@@ -29,9 +29,6 @@ define(function(require) {
   }
   inherit(SensorConnectionError, Error);
 
-  // temporary check:
-  window.JavaLoadError = JavaLoadError;
-
   return {
     JavaLoadError: JavaLoadError,
     AppletInitializationError: AppletInitializationError,
