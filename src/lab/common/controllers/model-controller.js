@@ -93,8 +93,8 @@ define(function (require) {
       return controller.modelContainer.$el;
     };
 
-    controller.getHeightForWidth = function (width) {
-      return controller.modelContainer.getHeightForWidth(width);
+    controller.getHeightForWidth = function (width, fontSizeChanged) {
+      return controller.modelContainer.getHeightForWidth(width, fontSizeChanged);
     };
 
     controller.enableKeyboardHandlers = function () {

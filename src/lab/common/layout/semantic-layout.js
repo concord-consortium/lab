@@ -40,6 +40,10 @@ define(function (require) {
         // Amount to inset the model and components from the top left
         padding = 10,
 
+        // To optimize getHeightForWidth for model containers that care about the font size, kee
+        // track of changes
+        fontSizeChanged = false,
+
         // Most important variables.
         // In fact they define state of the layout.
         modelWidth,
@@ -97,6 +101,7 @@ define(function (require) {
       // be included in #responsive-content DIV.
       // TODO: #responsive-content ID is hardcoded, change it?
       $("#responsive-content").css("font-size", font + "em");
+      fontSizeChanged = true;
     }
 
     function setupBackground() {
@@ -242,10 +247,12 @@ define(function (require) {
 
       $modelContainer.css({
         width:  modelWidth,
-        height: modelController.getHeightForWidth(modelWidth),
+        height: modelController.getHeightForWidth(modelWidth, fontSizeChanged),
         left:   modelLeft,
         top:    modelTop
       });
+
+      fontSizeChanged = false;
 
       for (i = 0, ii = containerSpecList.length; i<ii; i++) {
         container = containerSpecList[i];
