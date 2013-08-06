@@ -55,7 +55,7 @@ parseMML = (mmlString) ->
       # a node may be an object, or it may be a reference to another object. It should
       # be treated the same in either case
       if $entity.attr("idref")
-        return $mml("##{$entity.attr("idref")}")
+        return $mml("##{$entity.attr("idref").replace(/[\.$]/g,'-')}")
       $entity
 
     getProperty = ($node, propertyName, additionalSelector) ->
@@ -120,6 +120,63 @@ parseMML = (mmlString) ->
       y = y - originalViewPortY
 
       toNextgenLengths x, y
+
+    ### Extracts a java-awt-Color into a core color  ###
+    getColorProperty = ($node, alpha) ->
+      colorNodes = $node.find "int"
+      if colorNodes && colorNodes.length>0
+        corecolor = (parseInt cheerio(colorNodes[0]).text())+","+
+                    (parseInt cheerio(colorNodes[1]).text())+","+
+                    (parseInt cheerio(colorNodes[2]).text())
+        if alpha
+          return "rgba(#{corecolor},#{alpha/255})"
+        else
+          return "rgb(#{corecolor})"
+      else
+        return NaN
+
+    ### Extracts or finds the fill color from a given node and document ###
+    getFillColor = ($node, alpha) ->
+      fillNode = $node.find("[property=fillMode]")
+      fillColor = getNode fillNode.children("object")
+      if fillColor and fillColor.length
+        if fillColor.is ".org-concord-modeler-draw-FillMode-ColorFill"
+          return getColorProperty fillColor
+        else if fillColor.is ".org-concord-modeler-draw-FillMode-GradientFill"
+          color1  = getColorProperty (getNode fillColor.find "[property=color1]>object"), alpha
+          color2  = getColorProperty (getNode fillColor.find "[property=color2]>object"), alpha
+          style   = getIntProperty fillColor, "style"
+          variant = getIntProperty fillColor, "variant"
+          if style is 1036
+            if variant is 1041
+              return "radial #{color1} 0% #{color2} 100%"
+            else if variant is 1042
+              return "radial #{color2} 0% #{color1} 100%"
+          else
+            stops = switch variant
+              when 1041 then "#{color1} 0% #{color2} 100%"
+              when 1042 then "#{color2} 0% #{color1} 100%"
+              when 1043 then "#{color1} 0% #{color2} 50% #{color1} 100%"
+              when 1044 then "#{color2} 0% #{color1} 50% #{color2} 100%"
+            if not stops?
+              return NaN
+            direction = switch style
+              when 1031 then 90
+              when 1032 then 0
+              when 1033 then 45
+              when 1034 then 315
+            if not direction?
+              return NaN
+            return "linear #{direction}deg #{stops}"
+      return NaN
+
+    ### Extracts or finds the line color from a given node and document ###
+    getLineColor = ($node) ->
+      lineNode = $node.find("[property=lineColor]")
+      lineColor = getNode lineNode.children("object")
+      if lineColor and lineColor.length
+        return getColorProperty lineColor
+      return NaN
 
     ### Find and parse mml nodes representing obstacles ###
     parseObstacles = ->
@@ -249,35 +306,9 @@ parseMML = (mmlString) ->
         visible = Number visible if visible?
         fence   = Number fence if fence?
 
-        # Color could be reused from somewhere else in the document
-        idref = $node.find "[property=fillMode] [idref]"
-        if idref and idref.length>0
-          colorNodes  = $mml ("#"+ (idref.attr "idref").replace /[\.$]/g, "-") + " .java-awt-Color>int"
-        else
-          colorNodes  = $node.find "[property=fillMode] .java-awt-Color>int"
-        if colorNodes and colorNodes.length > 0
-          corecolor=(parseInt cheerio(colorNodes[0]).text())+","+
-                  (parseInt cheerio(colorNodes[1]).text())+","+
-                  (parseInt cheerio(colorNodes[2]).text())
-          if alpha
-            color = "rgba("+corecolor+","+alpha/255+")"
-          else
-            color = "rgb("+corecolor+")"
-        else
-          color = NaN
-
-        # Color could be reused from somewhere else in the document
-        idref = $node.find "[property=lineColor] [idref]"
-        if idref and idref.length>0
-          lineColorNodes  = $mml ("#"+ (idref.attr "idref").replace /[\.$]/g, "-") + " int"
-        else
-          lineColorNodes  = $node.find "[property=lineColor] .java-awt-Color>int"
-        if lineColorNodes and lineColorNodes.length > 0
-          lineColor = "rgb("+(parseInt cheerio(lineColorNodes[0]).text())+","+
-                  (parseInt cheerio(lineColorNodes[1]).text())+","+
-                  (parseInt cheerio(lineColorNodes[2]).text())+")"
-        else
-          lineColor = NaN
+        # Find line and fill colors
+        color     = getFillColor($node,alpha)
+        lineColor = getLineColor($node)
 
         lineDashes = switch
               when lineStyle is 1 then '2,2'
@@ -349,37 +380,9 @@ parseMML = (mmlString) ->
         visible = Number visible if visible?
         fence   = Number fence if fence?
 
-        # Color could be reused from somewhere else in the document
-        idref = $node.find "[property=fillMode] [idref]"
-        if idref and idref.length>0
-          colorNodes  = $mml ("#"+ (idref.attr "idref").replace /[\.$]/g, "-") + " .java-awt-Color>int"
-        else
-          colorNodes  = $node.find "[property=fillMode] .java-awt-Color>int"
-
-        if colorNodes and colorNodes.length > 0
-          corecolor=(parseInt cheerio(colorNodes[0]).text())+","+
-                  (parseInt cheerio(colorNodes[1]).text())+","+
-                  (parseInt cheerio(colorNodes[2]).text())
-          if alpha
-            color = "rgba("+corecolor+","+alpha/255+")"
-          else
-            color = "rgb("+corecolor+")"
-        else
-          color = NaN
-
-        # Color could be reused from somewhere else in the document
-        idref = $node.find "[property=lineColor] [idref]"
-        if idref and idref.length>0
-          lineColorNodes  = $mml ("#"+ (idref.attr "idref").replace /[\.$]/g, "-") + " int"
-        else
-          lineColorNodes  = $node.find "[property=lineColor] .java-awt-Color>int"
-
-        if lineColorNodes and lineColorNodes.length > 0
-          lineColor = "rgb("+(parseInt cheerio(lineColorNodes[0]).text())+","+
-                  (parseInt cheerio(lineColorNodes[1]).text())+","+
-                  (parseInt cheerio(lineColorNodes[2]).text())+")"
-        else
-          lineColor = NaN
+        # Find line and fill colors
+        color     = getFillColor($node,alpha)
+        lineColor = getLineColor($node)
 
         lineDashes = switch
               when lineStyle is 1 then '2,2'
