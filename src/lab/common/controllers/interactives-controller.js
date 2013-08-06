@@ -991,6 +991,9 @@ define(function (require) {
         if (typeof interactive.importedFrom !== 'undefined') {
           result.importedFrom = interactive.importedFrom;
         }
+        if (typeof interactive.helpTips !== 'undefined') {
+          result.helpTips = interactive.helpTips;
+        }
 
         // Serialize components.
         result.components = [];
