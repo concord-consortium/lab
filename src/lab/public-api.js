@@ -5,7 +5,7 @@ define(function (require) {
       config  = require('lab.config'),
       InteractivesController  = require('common/controllers/interactives-controller'),
       benchmark               = require('common/benchmark/benchmark'),
-      structuredClone         = require('common/structured-clone');
+      IFramePhone             = require('common/iframe-phone');
 
   // Require public-api modules.
   require('grapher/public-api');
@@ -15,7 +15,7 @@ define(function (require) {
   window.Lab = window.Lab || {};
   window.Lab.version = version;
   window.Lab.config = config;
-  window.Lab.structuredClone = structuredClone;
+  window.Lab.IFramePhone = IFramePhone;
   window.Lab.InteractivesController = InteractivesController;
   window.Lab.benchmark = benchmark;
 });
