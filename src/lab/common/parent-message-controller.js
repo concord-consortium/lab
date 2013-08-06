@@ -1,17 +1,18 @@
 /*global define: false */
 /*jshint boss: true */
 
-define(function() {
+define(function(require) {
 
   var parentOrigin,
       listeners = {},
+      structuredClone = require('common/structured-clone'),
       controller;
 
   function postToTarget(message, target) {
     // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
     //     https://github.com/Modernizr/Modernizr/issues/388
     //     http://jsfiddle.net/ryanseddon/uZTgD/2/
-    if (Lab.structuredClone.supported()) {
+    if (structuredClone.supported()) {
       window.parent.postMessage(message, target);
     } else {
       window.parent.postMessage(JSON.stringify(message), target);
