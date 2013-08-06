@@ -1,7 +1,7 @@
 {
   "title": "Tooltips and Helptips Demo 5",
   "publicationStatus": "public",
-  "subtitle": "You can define tooltips and helptips for every type of interactive components.",
+  "subtitle": "You can define tooltips and helptips for every type of interactive component.",
   "about": [],
   "helpOnLoad": true,
   "models": [
@@ -128,7 +128,7 @@
   "helpTips": [
     {
       "text": [
-        "#Welcome in Lab help system!",
+        "#Welcome to the Lab help system!",
         "- - -",
         "You are reading an initial help tip, which isn't connected to any of interactive components.",
         "To see next help tip just click overlay area or help tip itself. You can leave help system",
