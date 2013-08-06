@@ -2,65 +2,64 @@
 
 define(function(require) {
 
-  var LabModelerMixin         = require('common/lab-modeler-mixin'),
-      validator               = require('common/validator'),
-      metadata                = require('iframe-model/metadata'),
-
-      unitsDefinition = {
-        units: {
-          time: {
-            name: "second",
-            pluralName: "seconds",
-            symbol: "s"
-          }
-        }
-      };
+  // NOTE: much of this is copy and pasted from the lab-modeler-mixin
+  //  the current reason is because this model doesn't need the playback-support
+  var DispatchSupport         = require('common/dispatch-support'),
+      PropertySupport         = require('common/property-support'),
+      defineBuiltinProperties = require('common/define-builtin-properties'),
+      console                 = require('common/console');
+      metadata                = require('iframe-model/metadata');
 
   return function Model(initialProperties) {
-    var labModelerMixin = new LabModelerMixin({
-          metadata: metadata,
-          unitsDefinition: unitsDefinition,
-          initialProperties: initialProperties
+    var dispatchSupport = new DispatchSupport(),
+        propertySupport = new PropertySupport({
+          types: ["output", "parameter", "mainProperty", "viewOption"]
         }),
-        dispatch = labModelerMixin.dispatchSupport,
-        time = 0,
-        stepCounter = 0,
         model;
 
     model = {
-
-      tick: function () {
-        stepCounter++;
-        time += 0.001;
-
-        model.updateAllOutputProperties();
-
-        dispatch.tick();
+      start: function() {
+        console.log("Start called");
+        // start the iframe'd model
+        return model;
       },
 
-      stepCounter: function() {
-        return stepCounter;
+      restart: function() {
+        // restart iframe'd model I'm not sure if this also means 'reset' or not
+        return model;
+      },
+
+      stop: function() {
+        console.log("Stop called");
+        // stop the iframe'd model
+        return model;
+      },
+
+      isStopped: function () {
+        return true;
+        // ask iframe if it is stopped or started
+        // this will be problematic because of asynchron nature of iframe communcation
+        // so this model object will need to track isStopped itself and the iframe will
+        // need to notify us when it is stopped.
       }
     };
 
-    labModelerMixin.mixInto(model);
-    dispatch.addEventTypes("tick");
+    dispatchSupport.mixInto(model);
+    propertySupport.mixInto(model);
 
-    model.defineOutput('time', {
-      label: "Time",
-      unitType: 'time',
-      format: '.2f'
-    }, function() {
-      return time;
-    });
+    if (metadata) {
+      defineBuiltinProperties({
+        propertySupport: propertySupport,
+        metadata: metadata,
+        initialProperties: initialProperties
+      });
+    }
 
-    model.defineOutput('displayTime', {
-      label: "Time",
-      unitType: 'time',
-      format: '.2f'
-    }, function() {
-      return time;
-    });
+    // The default model controller asumes 'tick' is a defined event
+    // the playback controller assumes 'play' and 'stop' are defined even if the viewOptions
+    // disable these buttons
+    // the outer iframe in the interactives browser expects a 'reset', 'stepForward', 'stepBack' event type
+    dispatchSupport.addEventTypes('tick', 'play', 'stop', 'reset', 'stepForward', 'stepBack');
 
     return model;
   };

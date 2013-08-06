@@ -13,19 +13,13 @@
       },
       "viewOptions": {
         "controlButtons": "play_reset",
-        "showClock": true
+        "showClock": false
       }
     }
   ],
   "parameters": [
   ],
   "components": [
-    {
-      "type": "numericOutput",
-      "id": "time-output",
-      "property": "time",
-      "displayValue": "return format('.1f')(value)"
-    }
   ],
   "layout": {
   }

@@ -14,20 +14,14 @@
         "height": 400
       },
       "viewOptions": {
-        "controlButtons": "play_reset",
-        "showClock": true
+        "controlButtons": "",
+        "showClock": false
       }
     }
   ],
   "parameters": [
   ],
   "components": [
-    {
-      "type": "numericOutput",
-      "id": "time-output",
-      "property": "time",
-      "displayValue": "return format('.1f')(value)"
-    }
   ],
   "layout": {
   }
