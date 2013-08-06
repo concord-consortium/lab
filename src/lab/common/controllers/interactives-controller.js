@@ -27,6 +27,7 @@ define(function (require) {
       DispatchSupport         = require('common/dispatch-support'),
       HelpSystem              = require('common/controllers/help-system'),
       tooltip                 = require('common/views/tooltip'),
+      cookies                 = require('common/cookies'),
 
       // Helper function which just provides banner definition.
       setupBanner             = require('common/controllers/setup-banner'),
@@ -717,6 +718,25 @@ define(function (require) {
       // Setup help system if help tips are defined.
       if (interactive.helpTips.length > 0) {
         helpSystem = new HelpSystem(interactive.helpTips, $interactiveContainer);
+        controller.on("interactiveRendered", function () {
+          function hashCode(string) {
+            var hash = 0, len = string.length, i, c;
+            if (len === 0) return hash;
+            for (i = 0; i < len; i++) {
+              c = string.charCodeAt(i);
+              hash = ((hash<<5) - hash) + c;
+              hash = hash & hash;
+            }
+            return hash;
+          }
+          var hash = hashCode(JSON.stringify(interactive));
+          // When displayOnLoad is set to true, the help mode will be automatically shown,
+          // but only when user opens interactive for the first time.
+          if (interactive.helpOnLoad && !cookies.hasItem("lab-help-" + hash)) {
+            helpSystem.start();
+            cookies.setItem("lab-help-" + hash, true);
+          }
+        });
       }
 
       // When all components are created, we can initialize semantic layout.
