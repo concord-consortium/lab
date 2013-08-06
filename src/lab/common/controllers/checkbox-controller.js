@@ -132,7 +132,7 @@ define(function () {
         }
         else if (initialValue !== undefined) {
           setCheckbox(initialValue);
-          onClickScript(initialValue);
+          if (onClickScript) onClickScript(initialValue);
         }
       },
 
