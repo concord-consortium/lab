@@ -35,7 +35,7 @@
     "sizzle": ">=1.1.0",
     "vows": "0.7.0",
     "node-inspector": "0.1.10",
-    "jshint": "0.x",
+    "jshint": ">= 2.1.9",
     "cheerio": "0.12.x",
     "jade": ">=0.31.2",
     "mkdirp": "0.3.2",

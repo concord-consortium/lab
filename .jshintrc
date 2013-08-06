@@ -1,7 +1,6 @@
 {
-  "predef": [],
+  "predef": ["$", "d3", "define", "model"],
 
-  "es5" : true,
   "browser" : true,
 
   "eqnull": true,
@@ -13,7 +12,7 @@
   "evil": true,
   "forin": true,
   "immed": true,
-  "indent": 2,
+  "indent": false,
   "laxbreak": false,
   "newcap": true,
   "noarg": true,
