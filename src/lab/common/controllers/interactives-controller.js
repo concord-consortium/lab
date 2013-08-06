@@ -993,6 +993,7 @@ define(function (require) {
           publicationStatus: interactive.publicationStatus,
           subtitle: interactive.subtitle,
           fontScale: interactive.fontScale,
+          helpOnLoad: interactive.helpOnLoad,
           about: arrays.isArray(interactive.about) ? $.extend(true, [], interactive.about) : interactive.about,
           // Node that models section can also contain custom parameters definition. However, their initial values
           // should be already updated (take a look at the beginning of this function), so we can just serialize whole array.
@@ -1006,9 +1007,6 @@ define(function (require) {
         };
 
         // add optional attributes to result if defined
-        if (typeof interactive.fontScale !== 'undefined') {
-          result.fontScale = interactive.fontScale;
-        }
         if (typeof interactive.importedFrom !== 'undefined') {
           result.importedFrom = interactive.importedFrom;
         }
