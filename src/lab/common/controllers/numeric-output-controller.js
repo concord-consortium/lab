@@ -3,62 +3,55 @@
 define(function () {
 
   var metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator');
+      validator = require('common/validator'),
+      NumericOutputView = require('common/views/numeric-output-view');
 
   return function NumericOutputController(component, scriptingAPI, interactivesController) {
     var propertyName,
         label,
         units,
         displayValue,
-        $numericOutput,
-        $label,
-        $number,
-        $units,
-        $output,
+        view,
+        $element,
         propertyDescription,
-        controller,
+        controller;
 
-        renderValue = function () {
-          var value = model.get(propertyName);
-          if (displayValue) {
-            $number.text(displayValue(value));
-          } else {
-            $number.text(value);
-          }
-        };
+    function renderValue() {
+      var value = model.properties[propertyName];
+
+      if (displayValue) {
+        value = displayValue(value);
+      }
+      view.update(value);
+    }
 
     //
     // Initialization.
     //
     // Validate component definition, use validated copy of the properties.
     component = validator.validateCompleteness(metadata.numericOutput, component);
+
     propertyName = component.property;
-    label = component.label;
     units = component.units;
+    label = component.label;
     displayValue = component.displayValue;
 
-    // Setup view.
-    $label  = $('<span class="label"></span>');
-    $output = $('<span class="output"></span>');
-    $number = $('<span class="value"></span>');
-    $units  = $('<span class="units"></span>');
-    if (label) { $label.html(label); }
-    if (units) { $units.html(units); }
-    $numericOutput = $('<div class="numeric-output">').attr('id', component.id)
-        .append($label)
-        .append($output
-          .append($number)
-          .append($units)
-        );
+    view = new NumericOutputView({
+      id: component.id,
+      units: units,
+      label: label
+    });
+
+    $element = view.render();
 
     // Each interactive component has to have class "component".
-    $numericOutput.addClass("component");
+    $element.addClass("component");
 
     // Add class defining component orientation - "horizontal" or "vertical".
-    $numericOutput.addClass(component.orientation);
+    $element.addClass(component.orientation);
 
     // Custom dimensions.
-    $numericOutput.css({
+    $element.css({
       width: component.width,
       height: component.height
     });
@@ -68,7 +61,7 @@ define(function () {
     }
 
     if (component.tooltip) {
-      $numericOutput.attr("title", component.tooltip);
+      $element.attr("title", component.tooltip);
     }
 
     // Public API.
@@ -78,17 +71,17 @@ define(function () {
         if (propertyName) {
           propertyDescription = model.getPropertyDescription(propertyName);
           if (propertyDescription) {
-            if (!label) { $label.html(propertyDescription.getLabel()); }
-            if (!units) { $units.html(propertyDescription.getUnitAbbreviation()); }
+            if (!label) { view.updateLabel(propertyDescription.getLabel()); }
+            if (!units) { view.updateUnits(propertyDescription.getUnitAbbreviation()); }
           }
           renderValue();
-          model.addPropertiesListener([propertyName], renderValue);
+          model.addObserver(propertyName, renderValue);
         }
       },
 
       // Returns view container. Label tag, as it contains checkbox anyway.
       getViewContainer: function () {
-        return $numericOutput;
+        return $element;
       },
 
       // Returns serialized component definition.
