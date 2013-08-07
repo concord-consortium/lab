@@ -5,7 +5,7 @@ define(function(require) {
 
   var parentOrigin,
       listeners = {},
-      structuredClone = require('common/structured-clone'),
+      structuredClone = require('iframe-phone/structured-clone'),
       controller;
 
   function postToTarget(message, target) {
