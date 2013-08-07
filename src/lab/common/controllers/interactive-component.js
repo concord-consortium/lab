@@ -2,8 +2,9 @@
 
 define(function (require) {
 
-  var metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator');
+  var metadata   = require('common/controllers/interactive-metadata'),
+      validator  = require('common/validator'),
+      disablable = require('common/controllers/disablable');
 
   /**
    * Basic class for all interactive components.
@@ -36,6 +37,10 @@ define(function (require) {
     }
     if (this.component.height) {
       this.$element.css("height", this.component.height);
+    }
+
+    if (this.component.disabled) {
+      this.setDisabled(this.component.disabled);
     }
 
     // optionally add onClick handler. If components such as buttons and sliders
@@ -77,6 +82,9 @@ define(function (require) {
   InteractiveComponent.prototype.serialize = function() {
     return this.component;
   };
+
+  // It will add .setDisabled() method to the prototype.
+  disablable(InteractiveComponent.prototype);
 
   return InteractiveComponent;
 });

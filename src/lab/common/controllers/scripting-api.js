@@ -267,6 +267,10 @@ define(function (require) {
             interactivesController.getModelController().modelContainer.setSelectHandler(handler);
           },
 
+          setComponentDisabled: function setComponentDisabled(compID, v) {
+            interactivesController.getComponent(compID).setDisabled(v);
+          },
+
           start: function start() {
             model.start();
             trackEvent('Interactive', "Start", "Starting interactive: " + interactivesController.get('title') );

@@ -2,8 +2,9 @@
 
 define(function () {
 
-  var metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator');
+  var metadata   = require('common/controllers/interactive-metadata'),
+      validator  = require('common/validator'),
+      disablable = require('common/controllers/disablable');
       require('common/jquery-plugins');
 
   return function PulldownController(component, scriptingAPI, interactivesController) {
@@ -143,6 +144,8 @@ define(function () {
       if (component.tooltip) {
         $wrapper.attr("title", component.tooltip);
       }
+
+      disablable(controller, component);
     }
 
     // Public API.

@@ -899,6 +899,9 @@ define(function (require) {
       getModelController: function () {
         return modelController;
       },
+      getComponent: function (id) {
+        return componentByID[id];
+      },
       pushOnLoadScript: function (callback) {
         onLoadScripts.push(callback);
       },

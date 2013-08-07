@@ -2,8 +2,9 @@
 
 define(function () {
 
-  var metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator');
+  var metadata   = require('common/controllers/interactive-metadata'),
+      validator  = require('common/validator'),
+      disablable = require('common/controllers/disablable');
 
   return function SliderController(component, scriptingAPI, interactivesController) {
     var min, max, steps, propertyName,
@@ -176,6 +177,8 @@ define(function () {
     if (component.tooltip) {
       $elem.attr("title", component.tooltip);
     }
+
+    disablable(controller, component);
 
     // Apply custom width and height settings.
     // Also not that we set dimensions of the most outer container, not slider.

@@ -2,8 +2,9 @@
 
 define(function () {
 
-  var metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator');
+  var metadata   = require('common/controllers/interactive-metadata'),
+      disablable = require('common/controllers/disablable'),
+      validator  = require('common/validator');
 
   return function CheckboxController(component, scriptingAPI, interactivesController) {
     var propertyName,
@@ -155,6 +156,9 @@ define(function () {
         return result;
       }
     };
+
+    disablable(controller, component);
+
     // Return Public API object.
     return controller;
   };
