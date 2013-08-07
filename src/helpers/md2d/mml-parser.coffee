@@ -128,7 +128,7 @@ parseMML = (mmlString) ->
         corecolor = (parseInt cheerio(colorNodes[0]).text())+","+
                     (parseInt cheerio(colorNodes[1]).text())+","+
                     (parseInt cheerio(colorNodes[2]).text())
-        if alpha
+        if alpha?
           return "rgba(#{corecolor},#{alpha/255})"
         else
           return "rgb(#{corecolor})"
@@ -141,7 +141,7 @@ parseMML = (mmlString) ->
       fillColor = getNode fillNode.children("object")
       if fillColor and fillColor.length
         if fillColor.is ".org-concord-modeler-draw-FillMode-ColorFill"
-          return getColorProperty fillColor
+          return getColorProperty fillColor, alpha
         else if fillColor.is ".org-concord-modeler-draw-FillMode-GradientFill"
           color1  = getColorProperty (getNode fillColor.find "[property=color1]>object"), alpha
           color2  = getColorProperty (getNode fillColor.find "[property=color2]>object"), alpha

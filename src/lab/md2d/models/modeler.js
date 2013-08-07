@@ -1824,9 +1824,6 @@ define(function(require) {
       }
       if (engine.getNumberOfObstacles()) {
         propCopy.obstacles = serialize(metadata.obstacle, obstacles, engine.getNumberOfObstacles());
-
-        propCopy.obstacles.color = [];
-        // Convert color from internal representation to one expected for serialization.
         for (i = 0, len = propCopy.obstacles.x.length; i < len; i++) {
           // Silly, but allows to pass current serialization tests.
           // FIXME: try to create more flexible tests for serialization.
