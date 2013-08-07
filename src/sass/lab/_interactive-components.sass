@@ -27,6 +27,16 @@
     border: 1px solid #aaa
     border-bottom: 1px solid #888
 
+.lab-disabled
+  opacity: 0.7
+.lab-disabled-overlay
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  z-index: 100
+
 // Typography for various interactive components which support markdown. For
 // now it's used in text components and about dialog.
 // Define all rules with !important to ensure that they won't be overwritten
@@ -54,6 +64,7 @@
     font-size: 0.90em !important
 
 .component
+  position: relative // to position .lab-disabled-overlay correctly
   display: inline-block
   vertical-align: middle
   // Important! Layout algorithm sometimes uses 'nowrap' value for containers
