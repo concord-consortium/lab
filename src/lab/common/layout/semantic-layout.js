@@ -33,19 +33,6 @@ define(function (require) {
         // Model container jQuery object.
         $modelContainer,
 
-        // Interactive dimensions which fits canonical dimensions.
-        // So, basic dimensions are <= canonical dimensions.
-        // They are required to correctly determine font size
-        // (as we can't simply use canonical dimensions).
-        basicInteractiveWidth,
-        basicInteractiveHeight,
-
-        // Interactive aspect ratio. It's used to determine font size.
-        // Note that it may change a little bit during resizing (as there are
-        // some dimensions defined in px, like borders, user agent styles etc.),
-        // however this slight differences don't have any significant impact on result.
-        interactiveAspectRatio,
-
         // Dimensions of the container.
         availableWidth,
         availableHeight,
@@ -91,14 +78,10 @@ define(function (require) {
     }
 
     function setFontSize() {
-      var containerAspectRatio = $interactiveContainer.width() / $interactiveContainer.height(),
-          containerScale, font;
+      var containerScale, font;
 
-      if (interactiveAspectRatio <= containerAspectRatio) {
-        containerScale = $interactiveContainer.height() / basicInteractiveHeight;
-      } else {
-        containerScale = $interactiveContainer.width() / basicInteractiveWidth;
-      }
+      containerScale = Math.min($interactiveContainer.height() / layoutConfig.canonicalInteractiveHeight,
+                                $interactiveContainer.width() / layoutConfig.canonicalInteractiveWidth);
 
       padding = containerScale * 10;
 
@@ -436,57 +419,6 @@ define(function (require) {
       }
     }
 
-    function calcInteractiveAspectRatio() {
-      var redraws = layoutConfig.iterationsLimit,
-          canonicalInteractiveWidth = layoutConfig.canonicalInteractiveWidth,
-          canonicalInteractiveHeight = layoutConfig.canonicalInteractiveHeight,
-          canonicalAspectRatio = canonicalInteractiveWidth / canonicalInteractiveHeight,
-          maxX = -Infinity,
-          maxY = -Infinity,
-          id, $container, val;
-
-      reset();
-      availableWidth = canonicalInteractiveWidth;
-      availableHeight = canonicalInteractiveHeight;
-      modelWidth = availableWidth;
-
-      // Set basic interactive dimensions to default values to ensure that default font will be used.
-      basicInteractiveWidth = canonicalInteractiveWidth;
-      basicInteractiveHeight = canonicalInteractiveHeight;
-
-      // Set font size to ensure that "fontScale" and "canonicalFontSize" are taken into account.
-      setFontSize();
-
-      positionContainers();
-      while (--redraws > 0 && !resizeModelContainer()) {
-        positionContainers();
-      }
-
-      console.log('[layout] aspect ratio calc: ' + (layoutConfig.iterationsLimit - redraws) + ' iterations');
-
-      for (id in $containerByID) {
-        if (!$containerByID.hasOwnProperty(id)) continue;
-        $container = $containerByID[id];
-        val = getDimensionOfContainer($container, "right");
-        if (val > maxX) {
-          maxX = val;
-        }
-        val = getDimensionOfContainer($container, "bottom");
-        if (val > maxY) {
-          maxY = val;
-        }
-      }
-
-      interactiveAspectRatio = maxX / maxY;
-      if (interactiveAspectRatio < canonicalAspectRatio) {
-        basicInteractiveWidth = canonicalInteractiveHeight * interactiveAspectRatio;
-        basicInteractiveHeight = canonicalInteractiveHeight;
-      } else {
-        basicInteractiveWidth = canonicalInteractiveWidth;
-        basicInteractiveHeight = canonicalInteractiveWidth / interactiveAspectRatio;
-      }
-    }
-
     // Public API.
     layout = {
       /**
@@ -514,10 +446,6 @@ define(function (require) {
 
         createContainers();
         placeComponentsInContainers();
-
-        // Clear previous aspect ratio, as new components
-        // can completely change it.
-        interactiveAspectRatio = null;
       },
 
       /**
@@ -529,9 +457,6 @@ define(function (require) {
        */
       setupModel: function (newModelController) {
         modelController = newModelController;
-        // Clear previous aspect ratio, as new model
-        // can completely change it.
-        interactiveAspectRatio = null;
 
         if ($containerByID.model) {
           if ($containerByID.model === modelController.getViewContainer()) {
@@ -561,13 +486,6 @@ define(function (require) {
             id;
 
         console.time('[layout] update');
-
-        if (!interactiveAspectRatio) {
-          // Calculate aspect ratio when it's needed.
-          // Adding a new component or model change can invalidate current
-          // aspect ratio.
-          calcInteractiveAspectRatio();
-        }
 
         reset();
         availableWidth  = $interactiveContainer.width();
