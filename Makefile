@@ -406,8 +406,7 @@ public/lab/lab.import-export.js: \
 	$(R_OPTIMIZER) -o src/lab/import-export/import-export.build.js
 
 public/lab/lab.iframe-phone.js: \
-	$(IFRAME_PHONE_SRC_FILES) \
-	$(COMMON_SRC_FILES)
+	$(IFRAME_PHONE_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/iframe-phone/iframe-phone.build.js
 
 # ------------------------------------------------
