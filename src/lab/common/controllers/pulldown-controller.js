@@ -34,6 +34,7 @@ define(function () {
       }
 
       view = new SelectBoxView({
+        id: component.id,
         options: options,
         label: component.label,
         labelOn: component.labelOn,
@@ -49,7 +50,7 @@ define(function () {
         }
       });
 
-      $element = view.render(parent, component.id);
+      $element = view.render(parent);
 
       $element
         .addClass("interactive-pulldown")

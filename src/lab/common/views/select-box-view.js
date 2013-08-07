@@ -1,7 +1,8 @@
 define(function() {
 
   return function SelectBoxView(opts) {
-    var options  = opts.options,
+    var id       = opts.id,
+        options  = opts.options,
         label    = opts.label,
         labelOn  = opts.labelOn,
         onChange = opts.onChange,
@@ -36,7 +37,7 @@ define(function() {
         $select.data("selectBox-selectBoxIt").selectOption(selection.toString());
       },
 
-      render: function(parent, id) {
+      render: function(parent) {
         var $options = [],
             $option, $label, ulWidth, arrowWidth, boxWidth;
 
