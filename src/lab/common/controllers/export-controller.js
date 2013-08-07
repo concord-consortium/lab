@@ -138,7 +138,9 @@ define(function (require) {
     return dgExporter.isExportAvailable();
   };
 
-  ExportController.logAction = dgExporter.logAction;
+  ExportController.logAction = function() {
+    dgExporter.logAction.apply(dgExporter, arguments);
+  };
 
   return ExportController;
 });
