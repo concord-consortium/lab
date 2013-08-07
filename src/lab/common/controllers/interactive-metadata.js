@@ -285,6 +285,9 @@ define(function() {
       height: {
         defaultValue: ""
       },
+      disabled: {
+        defaultValue: false
+      },
       tooltip: {
         defaultValue: ""
       }
@@ -319,6 +322,9 @@ define(function() {
         // Note that 'initialValue' makes sense only for checkboxes without property binding.
         // Do not use checkbox as setter.
         conflictsWith: ["property"]
+      },
+      disabled: {
+        defaultValue: false
       },
       tooltip: {
         defaultValue: ""
@@ -373,6 +379,9 @@ define(function() {
         // "onLoad" scripts (and set({ }) call inside), "modelOptions", etc.
         conflictsWith: ["property"]
       },
+      disabled: {
+        defaultValue: false
+      },
       tooltip: {
         defaultValue: ""
       }
@@ -398,6 +407,9 @@ define(function() {
       property: {
         // Pulldown can be also connected to a model property.
         // In such case, options should define "value", not "action".
+      },
+      disabled: {
+        defaultValue: false
       },
       tooltip: {
         defaultValue: ""
@@ -449,6 +461,9 @@ define(function() {
       property: {
         // Radio can be also connected to a model property.
         // In such case, options should define "value", not "action".
+      },
+      disabled: {
+        defaultValue: false
       },
       tooltip: {
         defaultValue: ""
