@@ -24,7 +24,7 @@ define(function() {
 
     return {
 
-      updateSelection: function(selection) {
+      update: function(selection) {
         // Set flag indicating that change event should be ignored by our own change listener. It
         // prevents from infinite loop like: pulldown update => property update => pulldown update =>
         // ... It's necessary as selectOption() call below will trigger change event of original

@@ -18,7 +18,7 @@ define(function () {
         $element;
 
     function updatePulldown() {
-      view.updateSelection(model.properties[component.property]);
+      view.update(model.properties[component.property]);
     }
 
     function initialize() {
