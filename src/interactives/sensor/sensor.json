@@ -41,6 +41,10 @@
       "propertiesGraph"
     ]
   },
+  "exports": {
+    "perRun": ["sensorType"],
+    "perTick": ["sensorReading"]
+  },
   "template": [
     {
       "id": "below-model",
