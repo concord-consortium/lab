@@ -95,6 +95,43 @@ The only thing you need to be aware of is that offset percentages come AFTER the
   gradients={
     /**
      * NOT INTENDED FOR INDEPENDENT USE
+     * Resolves mismatched parentheses in a string.
+     * Optionally, removes or "peels" the outermost pair of parenthesis
+     *
+     * @param  {string} string    String to resolve
+     * @param  {boolean} peel     Whether or not to "peel" the outermost parenthesis pair.
+     * @return {string}           Resolved string
+     */
+    settleParens: function(string, peel) {
+      var end, inparens, firstparen;
+      inparens = false;
+      string = string.split("")
+      for (end = 0; end < string.length; end++) {
+        if (inparens) {
+          if (string[end] == ")") {
+            inparens = false;
+          } else if (string[end] == "(") {
+            string[firstparen] = " ";
+            firstparen = end;
+          }
+        } else {
+          if (string[end] == "(") {
+            if (peel) {
+              string[end] = " "
+              peel = false
+            } else {
+              inparens = true;
+              firstparen = end;
+            }
+          } else if (string[end] == ")") {
+            string[end] = " ";
+          }
+        }
+      }
+      return string.join("").replace(/\s+/, " ").trim()
+    },
+    /**
+     * NOT INTENDED FOR INDEPENDENT USE
      * Splits a string by space or comma, keeping parentheses intact
      * Then, parses each "word" for possible meanings
      * Optionally, removes or "peels" the outermost pair of parenthesis before splitting
@@ -484,6 +521,58 @@ The only thing you need to be aware of is that offset percentages come AFTER the
         color.standard = temp;
         return temp;
       }
+    },
+    /**
+     * Converts a given gradient/color to an SVG fill, creating a gradient definition if necessary
+     *
+     * @param  {Object} color    A gradient/color object created by gradients.parse
+     * @param  {Object} continer The container to append the gradient definitions to
+     * @return {string}          The converted string for use in SVG fill
+     */
+    toSVG: function(color, container) {
+      if (color.color) {
+        return color.color;
+      }
+      var gradientUrl, defs, gradient, id, c, x0, y0, xt, yt, args, stop;
+      defs = container.select("defs");
+      if (defs.empty()) {
+        // Store gradients in 'defs' element.
+        defs = container.append("defs");
+      }
+
+      id = color.standard.replace(/[^a-z0-9]/g, '');
+      gradient = defs.select("#" + id);
+
+      if (gradient.empty()) {
+        // Create a new gradient.
+        if (color.gradient == 'linear') {
+          xt = -Math.cos(Math.PI * color.direction / 180);
+          yt = -Math.sin(Math.PI * color.direction / 180);
+          if (Math.abs(yt) > Math.abs(xt)) {
+            x0 = xt * Math.abs(50 / yt);
+            y0 = (yt < 0 ? -1 : 1) * 50;
+          } else {
+            x0 = (xt < 0 ? -1 : 1) * 50;
+            y0 = yt * Math.abs(50 / xt);
+          }
+          gradient = defs.append("linearGradient").attr("id", id).attr("x1", (50 + x0) + "%").attr("y1", (50 + y0) + "%").attr("x2", (50 - x0) + "%").attr("y2", (50 - y0) + "%");
+        } else {
+          gradient = defs.append("radialGradient").attr("id", id).attr("cx", "50%").attr("cy", "50%").attr("r", "50%").attr("fx", "50%").attr("fy", "50%");
+        }
+      } else {
+        // Gradient exists. Using it.
+        return "url(#" + id + ")";
+      }
+
+      for (c = 0; c < color.stops.length; c++) {
+        stop = gradient.append("stop").attr("stop-color", color.stops[c].color).attr("offset", color.stops[c].offset + "%");
+        args = color.stops[c].color.split(",");
+        if (args.length == 4 && !isNaN(args = parseFloat(args[3]))) {
+          stop.attr("stop-opacity", args)
+        }
+      };
+
+      return "url(#" + id + ")";
     }
   };
   function enter(value){
