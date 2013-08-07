@@ -18,6 +18,7 @@ LAB_SRC_FILES := $(shell find src/lab -type f ! -name '.*' -print)
 MD2D_SRC_FILES := $(shell find src/lab/md2d -type f ! -name '.*' -print)
 GRAPHER_SRC_FILES := $(shell find src/lab/grapher -type f ! -name '.*' -print)
 IMPORT_EXPORT_SRC_FILES := $(shell find src/lab/import-export -type f ! -name '.*' -print)
+IFRAME_PHONE_SRC_FILES := $(shell find src/lab/iframe-phone -type f ! -name '.*' -print)
 
 COMMON_SRC_FILES := $(shell find src/lab/common -type f ! -name '.*' -print)
 
@@ -53,7 +54,8 @@ vpath %.md src
 LAB_JS_FILES = \
 	public/lab/lab.js \
 	public/lab/lab.grapher.js \
-	public/lab/lab.import-export.js
+	public/lab/lab.import-export.js \
+	public/lab/lab.iframe-phone.js
 
 # default target executed when running make
 .PHONY: all
@@ -402,6 +404,11 @@ public/lab/lab.import-export.js: \
 	$(IMPORT_EXPORT_SRC_FILES) \
 	$(COMMON_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/import-export/import-export.build.js
+
+public/lab/lab.iframe-phone.js: \
+	$(IFRAME_PHONE_SRC_FILES) \
+	$(COMMON_SRC_FILES)
+	$(R_OPTIMIZER) -o src/lab/iframe-phone/iframe-phone.build.js
 
 # ------------------------------------------------
 #

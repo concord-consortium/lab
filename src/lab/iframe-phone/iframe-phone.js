@@ -1,7 +1,7 @@
 /*global define: false */
 
 define(function (require){
-  var structuredClone = require('common/structured-clone');
+  var structuredClone = require('iframe-phone/structured-clone');
 
   return function IFramePhone(iframe, afterConnectedCallback) {
     var iframeOrigin = iframe.src.match(/(.*?\/\/.*?)\//)[1],
@@ -93,6 +93,7 @@ define(function (require){
 
     // public API
     return {
+      version: "1.0",
       post: post,
       addListener: addListener,
       removeListener: removeListener,
