@@ -320,13 +320,13 @@ AUTHORING = false;
           "tiny":   { height: "245px" },
           "small":  { height: "280px" },
           "medium": { width: "565px" },
-          "large":  { height: "700px" }
+          "large":  { width: "960px" }
         };
 
     dimensions.tiny.width    = parseInt(dimensions.tiny.height, 10)   * aspectRatio + "px";
     dimensions.small.width   = parseInt(dimensions.small.height, 10)  * aspectRatio + "px";
     dimensions.medium.height = parseInt(dimensions.medium.width, 10) * 1/aspectRatio + "px";
-    dimensions.large.width   = parseInt(dimensions.large.height, 10)  * aspectRatio + "px";
+    dimensions.large.height   = parseInt(dimensions.large.width, 10)  * 1/aspectRatio + "px";
     dim = dimensions[selection];
     saveOptionsToCookie();
     if (isFullPage()) {
