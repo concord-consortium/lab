@@ -374,14 +374,10 @@ define(function (require) {
         }
       }
 
-      // TODO: this is quite naive approach.
-      // It should be changed to some fitness function defining quality of the layout.
-      // Using current algorithm, very often we follow some local minima.
-      if ((maxX <= availableWidth && maxY <= (availableHeight-bottomBarWidth)) &&
-          (Math.abs(availableWidth - maxX) < 1 || Math.abs((availableHeight-bottomBarWidth) - maxY) < 1) &&
-          (Math.abs(minX - leftBoundary) < 1 && Math.abs(minY - topBoundary) < 1)) {
-        // Perfect solution found!
-        // (TODO: not so perfect, see above)
+      // Stop condition. We assume that layout is good enough when it fits the container +/- 2px.
+      if ((maxX <= availableWidth + 2 && maxY <= (availableHeight-bottomBarWidth + 2)) &&
+          (Math.abs(availableWidth - maxX) < 2 || Math.abs((availableHeight-bottomBarWidth) - maxY) < 2) &&
+          (Math.abs(minX - leftBoundary) < 2 && Math.abs(minY - topBoundary) < 2)) {
         return true;
       }
 
