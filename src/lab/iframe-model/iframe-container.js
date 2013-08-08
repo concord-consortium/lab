@@ -1,5 +1,7 @@
 /*global $, define: false */
-define(function() {
+define(function(require) {
+  var IFramePhone = require('iframe-phone/iframe-phone');
+
   return function(model, modelUrl) {
     var _model = model,
         $el = $("<div id='model-container' class='container'>" +
@@ -19,7 +21,10 @@ define(function() {
         $el.find('#iframe-model').attr('src', newModel.get('url'));
         _model = newModel;
       },
-      setup: function() {},
+      setup: function() {
+        // give the model an iframe-phone so it can talk to the model inside the iframe
+        _model.iframePhone = new IFramePhone($('#iframe-model')[0]);
+      },
       update: function() {}
     };
   };

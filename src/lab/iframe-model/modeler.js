@@ -21,6 +21,7 @@ define(function(require) {
       start: function() {
         console.log("Start called");
         // start the iframe'd model
+        model.iframePhone.post({type: 'play'});
         return model;
       },
 
@@ -41,7 +42,9 @@ define(function(require) {
         // this will be problematic because of asynchron nature of iframe communcation
         // so this model object will need to track isStopped itself and the iframe will
         // need to notify us when it is stopped.
-      }
+      },
+
+      iframePhone: null
     };
 
     dispatchSupport.mixInto(model);
