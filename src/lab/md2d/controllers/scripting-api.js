@@ -444,6 +444,15 @@ define(function (require) {
         return model.getShapeProperties(i);
       },
 
+      setLineProperties: function setLineProperties(i, props) {
+        model.setLineProperties(i, props);
+        api.repaintIfReady();
+      },
+
+      getLineProperties: function getLineProperties(i) {
+        return model.getLineProperties(i);
+      },
+
       addElectricField: function addElectricField(props, options) {
         try {
           model.addElectricField(props);
@@ -478,6 +487,16 @@ define(function (require) {
       removeShape: function removeShape(i, options) {
         try {
           model.removeShape(i);
+        } catch (e) {
+          if (!options || !options.silent)
+            throw e;
+        }
+        api.repaintIfReady();
+      },
+
+      removeLine: function removeLine(i, options) {
+        try {
+          model.removeLine(i);
         } catch (e) {
           if (!options || !options.silent)
             throw e;

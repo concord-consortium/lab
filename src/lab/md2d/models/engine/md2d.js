@@ -332,6 +332,32 @@ define(function (require, exports) {
         // Number of actual shapes
         N_shapes = 0,
 
+
+        // ####################################################################
+        //                      Line Properties
+
+        // Individual properties for the lines
+        lineX1,
+        lineY1,
+        lineX2,
+        lineY2,
+        lineBeginStyle,
+        lineEndStyle,
+        lineFence,
+        lineLineColor,
+        lineLineDashes,
+        lineLineWeight,
+        lineLayer,
+        lineLayerPosition,
+        lineVisible,
+
+        // An object that contains references to the above line-property arrays.
+        // Left undefined if there are no lines.
+        lines,
+
+        // Number of actual lines
+        N_lines = 0,
+
         // ####################################################################
         //                      Electric Field Properties
 
@@ -438,6 +464,7 @@ define(function (require, exports) {
           createSpringForcesArray(0);
           createObstaclesArray(0);
           createShapesArray(0);
+          createLinesArray(0);
           createElectricFieldsArray(0);
 
           // Custom pairwise properties.
@@ -689,6 +716,22 @@ define(function (require, exports) {
             shapeVisible       = shapes.visible;
           },
 
+          lines: function() {
+            lineX1            = lines.x1;
+            lineY1            = lines.y1;
+            lineX2            = lines.x2;
+            lineY2            = lines.y2;
+            lineBeginStyle    = lines.beginStyle;
+            lineEndStyle      = lines.endStyle;
+            lineFence         = lines.fence;
+            lineLineColor     = lines.lineColor;
+            lineLineDashes    = lines.lineDashes;
+            lineLineWeight    = lines.lineWeight;
+            lineLayer         = lines.layer;
+            lineLayerPosition = lines.layerPosition;
+            lineVisible       = lines.visible;
+          },
+
           electricFields: function() {
             electricFieldIntensity    = electricFields.intensity;
             electricFieldOrientation  = electricFields.orientation;
@@ -854,6 +897,26 @@ define(function (require, exports) {
           shapes.fence         = arrays.create(num, 0, arrayTypes.uint8Type);
 
           assignShortcutReferences.shapes();
+        },
+
+        createLinesArray = function(num) {
+          lines = engine.lines = {};
+
+          lines.x1            = arrays.create(num, 0, arrayTypes.floatType);
+          lines.y1            = arrays.create(num, 0, arrayTypes.floatType);
+          lines.x2            = arrays.create(num, 0, arrayTypes.floatType);
+          lines.y2            = arrays.create(num, 0, arrayTypes.floatType);
+          lines.beginStyle    = arrays.create(num, 0, arrayTypes.uint8Type);
+          lines.endStyle      = arrays.create(num, 0, arrayTypes.uint8Type);
+          lines.lineColor     = [];
+          lines.lineDashes    = [];
+          lines.lineWeight    = arrays.create(num, 0, arrayTypes.floatType);
+          lines.layer         = arrays.create(num, 0, arrayTypes.uint8Type);
+          lines.layerPosition = arrays.create(num, 0, arrayTypes.uint8Type);
+          lines.visible       = arrays.create(num, 0, arrayTypes.uint8Type);
+          lines.fence         = arrays.create(num, 0, arrayTypes.uint8Type);
+
+          assignShortcutReferences.lines();
         },
 
         createElectricFieldsArray = function(num) {
@@ -1368,6 +1431,11 @@ define(function (require, exports) {
             }
           }
         },
+
+        bounceParticleOffLines = function(i) {
+            // TODO: Needs to be written.
+        },
+
         // ####################################################################
         // #         Functions calculating forces and accelerations.          #
         // ####################################################################
@@ -2590,6 +2658,16 @@ define(function (require, exports) {
         }
       },
 
+      setLineProperties: function (i, props) {
+        var key;
+        // Set properties from props hash.
+        for (key in props) {
+          if (props.hasOwnProperty(key)) {
+            lines[key][i] = props[key];
+          }
+        }
+      },
+
       setElectricFieldProperties: function (i, props) {
         var key;
         // Set properties from props hash.
@@ -3030,6 +3108,45 @@ define(function (require, exports) {
         assignShortcutReferences.shapes();
       },
 
+      addLine: function(props) {
+        if (N_lines + 1 > lines.x1.length) {
+          // Extend arrays each time (as there are only
+          // a few lines in typical model).
+          utils.extendArrays(lines, N_lines + 1);
+          assignShortcutReferences.lines();
+        }
+
+        N_lines++;
+
+        // Set properties of new line.
+        engine.setLineProperties(N_lines - 1, props);
+      },
+
+      removeLine: function(idx) {
+        var i, prop;
+
+        if (idx >= N_lines) {
+          throw new Error("Line " + idx + " doesn't exist, so it can't be removed.");
+        }
+
+        // Shift lines properties.
+        // It can be optimized by just replacing the last
+        // shape with shape 'i', however this approach
+        //  preserves more expectable lines indexing.
+        for (i = idx; i < N_shapes; i++) {
+          for (prop in lines) {
+            if (lines.hasOwnProperty(prop)) {
+              lines[prop][i] = lines[prop][i + 1];
+            }
+          }
+        }
+
+        // FIXME: This shouldn't be necessary, however various modules
+        // (e.g. views) use lines.x1.length as the real number of lines.
+        utils.extendArrays(lines, N_shapes);
+        assignShortcutReferences.lines();
+      },
+
       addElectricField: function(props) {
         if (N_electricFields + 1 > electricFields.intensity.length) {
           // Extend arrays each time (as there are only
@@ -3443,6 +3560,8 @@ define(function (require, exports) {
             bounceParticleOffObstacles(i, xPrev, yPrev, false);
             // Bounce off shapes
             bounceParticleOffShapes(i, xPrev, yPrev);
+            // Bounce off lines
+            bounceParticleOffLines(i, xPrev, yPrev);
           }
 
           // Calculate accelerations.
@@ -3518,8 +3637,12 @@ define(function (require, exports) {
         return N_obstacles;
       },
 
-			getNumberOfShapes: function() {
+      getNumberOfShapes: function() {
         return N_shapes;
+      },
+
+      getNumberOfLines: function() {
+        return N_lines;
       },
 
       getNumberOfRadialBonds: function() {
@@ -3978,6 +4101,7 @@ define(function (require, exports) {
           new CloneRestoreWrapper(atoms),
           new CloneRestoreWrapper(obstacles),
           new CloneRestoreWrapper(shapes),
+          new CloneRestoreWrapper(lines),
           new CloneRestoreWrapper(radialBonds),
           new CloneRestoreWrapper(angularBonds),
           new CloneRestoreWrapper(restraints),
@@ -3993,7 +4117,8 @@ define(function (require, exports) {
                 N             : N,
                 N_elements    : N_elements,
                 N_obstacles   : N_obstacles,
-                N_shapes  : N_shapes,
+                N_shapes      : N_shapes,
+                N_lines       : N_lines,
                 N_radialBonds : N_radialBonds,
                 N_angularBonds: N_angularBonds,
                 N_restraints  : N_restraints,
@@ -4004,7 +4129,8 @@ define(function (require, exports) {
               time           = state.time;
               N              = state.N;
               N_elements     = state.N_elements;
-              N_shapes   = state.N_shapes;
+              N_shapes       = state.N_shapes;
+              N_lines        = state.N_lines;
               N_radialBonds  = state.N_radialBonds;
               N_angularBonds = state.N_angularBonds;
               N_restraints   = state.N_restraints;

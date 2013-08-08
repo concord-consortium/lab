@@ -219,6 +219,9 @@ define(function(require) {
         // A hash of arrays consisting of arrays of shape property values
         shapes,
 
+        // A hash of arrays consisting of arrays of line property values
+        lines,
+
         // A hash of arrays consisting of arrays of electric field property values
         electricFields,
 
@@ -601,13 +604,14 @@ define(function(require) {
 
       // Copy reference to basic properties.
       // FIXME. This should go away. https://www.pivotaltracker.com/story/show/50086079
-      elements = engine.elements;
-      radialBonds = engine.radialBonds;
+      elements          = engine.elements;
+      radialBonds       = engine.radialBonds;
       radialBondResults = engine.radialBondResults;
-      angularBonds = engine.angularBonds;
-      restraints = engine.restraints;
-      obstacles = engine.obstacles;
-      shapes = engine.shapes;
+      angularBonds      = engine.angularBonds;
+      restraints        = engine.restraints;
+      obstacles         = engine.obstacles;
+      shapes            = engine.shapes;
+      lines             = engine.lines;
       electricFields = engine.electricFields;
     }
 
@@ -794,6 +798,24 @@ define(function(require) {
           }
         }
         model.addShape(shapeProps);
+      }
+
+      return model;
+    };
+
+    model.createLines = function(_lines) {
+      var numLines = _lines.x1.length,
+          i, prop, lineProps;
+
+      // See function above
+      for (i = 0; i < numLines; i++) {
+        lineProps = {};
+        for (prop in _lines) {
+          if (_lines.hasOwnProperty(prop)) {
+            lineProps[prop] = _lines[prop][i];
+          }
+        }
+        model.addLine(lineProps);
       }
 
       return model;
@@ -1001,6 +1023,25 @@ define(function(require) {
         dispatch.removeElectricField();
       }
       //TODO FIXME: also .removeShape() event should be dispatched.
+    };
+
+    model.addLine = function(props) {
+      var validatedProps;
+      // Validate properties, use default values if there is such need.
+      validatedProps = validator.validateCompleteness(metadata.line, props);
+      // Finally, add line.
+      propertySupport.invalidatingChangePreHook();
+      engine.addLine(validatedProps);
+      propertySupport.invalidatingChangePostHook();
+    };
+
+    model.removeLine = function (idx) {
+      var prevElFieldsCount = engine.getNumberOfElectricFields();
+
+      propertySupport.invalidatingChangePreHook();
+      engine.removeLine(idx);
+      propertySupport.invalidatingChangePostHook();
+      //TODO FIXME: also .removeLine() event should be dispatched.
     };
 
     model.addElectricField = function(props) {
@@ -1272,6 +1313,26 @@ define(function(require) {
         }
       }
       return translateFromMD2DUnits(props, shapeMetaData);
+    };
+
+    model.setLineProperties = function(i, props) {
+      // Validate properties.
+      props = validator.validate(metadata.line, props);
+      propertySupport.invalidatingChangePreHook();
+      engine.setLineProperties(i, translateToMD2DUnits(props, metadata.line));
+      propertySupport.invalidatingChangePostHook();
+    };
+
+    model.getLineProperties = function(i) {
+      var lineMetaData = metadata.line,
+          props = {},
+          propName;
+      for (propName in lineMetaData) {
+        if (lineMetaData.hasOwnProperty(propName)) {
+          props[propName] = lines[propName][i];
+        }
+      }
+      return translateFromMD2DUnits(props, lineMetaData);
     };
 
     model.setElectricFieldProperties = function(i, props) {
@@ -1560,6 +1621,10 @@ define(function(require) {
       return shapes;
     };
 
+    model.get_lines = function() {
+      return lines;
+    };
+
     // FIXME. Should be an output property.
     model.getNumberOfElements = function () {
       return engine.getNumberOfElements();
@@ -1572,6 +1637,10 @@ define(function(require) {
 
     model.getNumberOfShapes = function () {
       return engine.getNumberOfShapes();
+    };
+
+    model.getNumberOfLines = function () {
+      return engine.getNumberOfLines();
     };
 
     // FIXME. Should be an output property.
@@ -1838,6 +1907,9 @@ define(function(require) {
       if (engine.getNumberOfShapes()) {
         propCopy.shapes = serialize(metadata.shape, shapes, engine.getNumberOfShapes());
       }
+      if (engine.getNumberOfLines()) {
+        propCopy.lines = serialize(metadata.line, lines, engine.getNumberOfLines());
+      }
       if (engine.getNumberOfElectricFields()) {
         propCopy.electricFields = serialize(metadata.electricField, electricFields, engine.getNumberOfElectricFields());
       }
@@ -1985,6 +2057,7 @@ define(function(require) {
     if (initialProperties.restraints)     model.createRestraints(initialProperties.restraints);
     if (initialProperties.obstacles)      model.createObstacles(initialProperties.obstacles);
     if (initialProperties.shapes)         model.createShapes(initialProperties.shapes);
+    if (initialProperties.lines)          model.createLines(initialProperties.lines);
     if (initialProperties.electricFields) model.createElectricFields(initialProperties.electricFields);
     // Basically, this #deserialize method is more or less similar to other #create... methods used
     // above. However, this is the first step to delegate some functionality from modeler to smaller classes.
