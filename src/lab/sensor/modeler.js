@@ -32,7 +32,8 @@ define(function(require) {
         viewOptions,
         mainProperties,
         isStopped = true,
-        dispatch = d3.dispatch('play', 'stop', 'tick', 'reset', 'stepForward', 'stepBack', 'seek', 'invalidation'),
+        dispatch = d3.dispatch('play', 'stop', 'tick', 'willReset', 'reset', 'stepForward',
+                               'stepBack', 'seek', 'invalidation'),
         sensorType,
         applet,
         didStop = false,
@@ -264,6 +265,10 @@ define(function(require) {
         makeInvalidatingChange(function() {
           didStop = true;
         });
+      },
+
+      willReset: function() {
+        dispatch.willReset();
       },
 
       isStopped: function() {
