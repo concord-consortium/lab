@@ -136,7 +136,11 @@ define(function(require) {
     });
 
     parentMessageController.addListener('play', function(message) {
-      model.start();
+      controller.scriptingAPI.api.start();
+    });
+
+    parentMessageController.addListener('stop', function(message) {
+      controller.scriptingAPI.api.stop();
     });
 
     parentMessageController.initialize();

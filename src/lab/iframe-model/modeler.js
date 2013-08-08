@@ -19,32 +19,54 @@ define(function(require) {
 
     model = {
       start: function() {
-        console.log("Start called");
-        // start the iframe'd model
         model.iframePhone.post({type: 'play'});
         return model;
       },
 
       restart: function() {
-        // restart iframe'd model I'm not sure if this also means 'reset' or not
+        // restart iframe'd model I'm not sure if this should mean 'reset' or not
+        model.iframePhone.post({type: 'reset'});
         return model;
       },
 
       stop: function() {
-        console.log("Stop called");
         // stop the iframe'd model
+        // TODO #1 we might want to set _isStopped to true here.
+        // in the playback-support for other models it checks for 'stopRequest'
+        // which is set as soon as stop is called.
+        // TODO #2 we are not notifying about the stop event until we hear from
+        // the model that it is stopped. We should check if that is best approach.
+        // It is possible that some data events will be sent out even after stop
+        // is called so it might be best to leave this as is. That seems like it could
+        // happen in a regular model since playback support notifies about stop as soon
+        // as it is called, but there is still a timer process that needs to complete.
+        model.iframePhone.post({type: 'stop'});
         return model;
       },
 
+      _isStopped: true,
+
       isStopped: function () {
-        return true;
-        // ask iframe if it is stopped or started
-        // this will be problematic because of asynchron nature of iframe communcation
-        // so this model object will need to track isStopped itself and the iframe will
-        // need to notify us when it is stopped.
+        return model._isStopped;
       },
 
-      iframePhone: null
+      set iframePhone(phone){
+        model._iframePhone = phone;
+        phone.addDispatchListener('play.iframe-model', function(){
+          model._isStopped = false;
+          // notify that we are playing
+          dispatchSupport.play();
+        });
+        phone.addDispatchListener('stop.iframe-model', function(){
+          model._isStopped = true;
+          // notify that we are stopped
+          dispatchSupport.stop();
+        });
+      },
+
+      get iframePhone(){
+        return model._iframePhone;
+      }
     };
 
     dispatchSupport.mixInto(model);
