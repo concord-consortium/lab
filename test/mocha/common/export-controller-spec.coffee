@@ -103,28 +103,6 @@ helpers.withIsolatedRequireJS (requirejs) ->
               call.args[0][0].should.eql "Run"
               call.args[1][0].should.eql 2
 
-
-    describe "regardless of the ordering in the 'perRun' section of the 'exports' spec", ->
-      call = null
-      beforeEach ->
-        exportsSpecReversed =
-          {
-            "perRun": ["perRunOutput", "perRunParam"]
-            "perTick": ["perTickParam", "perTickOutput"]
-          }
-        exportController = new ExportController exportsSpecReversed
-        exportController.modelLoadedCallback()
-        exportController.exportData()
-
-        call = dgExporter.exportData.getCall 0
-
-      it "should export per-run parameters before per-run outputs", ->
-        call.args[0].should.eql ["Run", "per-run parameter (units 3)", "per-run output (units 1)"]
-
-      it "should continue to export per-tick parameters and outputs in the order listed in the 'perTick' section", ->
-        call.args[2].should.eql ["Time (ps)", "per-tick parameter (units 4)", "per-tick output (units 2)"]
-        call.args[3].should.eql [[0, 20, 2]]
-
     describe "effect of stepping model forward/back/etc", ->
 
       exportedTimePoints = ->

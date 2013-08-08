@@ -97,12 +97,6 @@ define(function (require) {
     return controller = {
 
       modelLoadedCallback: function() {
-        // put per-run parameters before per-run outputs
-        function is(type) {
-          return function(p) { return model.getPropertyType(p) === type; };
-        }
-        perRun = perRun.filter(is('parameter')).concat(perRun.filter(is('output')));
-
         resetData();
         registerModelListeners();
       },
