@@ -59,14 +59,15 @@ define(function(require) {
 
     // on message 'runBenchmarks' call controller.runBenchmarks
     parentMessageController.addListener('runBenchmarks', function() {
-      var modelController;
+      var modelController, benchmarks;
       if (controller && controller.getModelController) {
         modelController = controller.getModelController();
-        benchmark.bench(modelController.benchmarks, function(results) {
+        benchmarks = controller.benchmarks.concat(modelController.benchmarks);
+        benchmark.bench(benchmarks, function(results) {
           console.log(results);
           parentMessageController.post({
             'type':   'returnBenchmarks',
-            'values': { 'results': results, 'benchmarks': modelController.benchmarks }
+            'values': { 'results': results, 'benchmarks': benchmarks }
           }, function() {}, function() {});
         });
       }

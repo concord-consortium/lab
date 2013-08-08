@@ -828,7 +828,8 @@ AUTHORING = false;
 
       if(isFullPage()) {
         modelController = controller.getModelController();
-        Lab.benchmark.run(modelController.benchmarks,
+        // Run interactive benchmarks + model benchmarks.
+        Lab.benchmark.run(controller.benchmarks.concat(modelController.benchmarks),
           benchmarksTable,
           function(results) { console.log(results); },
           function() { $runBenchmarksButton.attr('disabled', true); },
