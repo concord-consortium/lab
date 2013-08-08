@@ -82,6 +82,11 @@ define(function(require) {
       unitType = metadataForType[key].unitType;
       if (unitType) {
         descriptor.description = new PropertyDescription(unitsDefinition, { unitType: unitType });
+      } else {
+        // A property with no units should at least have a label
+        descriptor.description = new PropertyDescription(null, {
+          label: metadataForType.label || key
+        });
       }
 
       propertySupport.defineProperty(key, descriptor);
