@@ -162,6 +162,7 @@ class MD2DImports
       @model_list.push(MD2DDirectory.new("rites").section)
 
       @model_list.push(MD2DDirectory.new("public/part1/crystal").section)
+      @model_list.push(MD2DDirectory.new("public/part1/molecularcrystal").section)
       @model_list.push(MD2DDirectory.new("public/part1/light").section)
       @model_list.push(MD2DDirectory.new("public/part1/chembond").section)
       @model_list.push(MD2DDirectory.new("public/part1/chemequil").section)

@@ -42,7 +42,7 @@
     {
       "type": "checkbox",
       "id": "show-attractions",
-      "text": "Show VDW attractions",
+      "text": "Show Van der Waals Attractions",
       "property": "showVDWLines"
     }
   ],
