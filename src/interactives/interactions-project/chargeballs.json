@@ -15,11 +15,11 @@
     }
   ],
   "components": [
-  	{
-  	  "type": "text",
-  	  "id":"left-label",
-  	  "text":"Charge left ball"
-  	},
+    {
+      "type": "text",
+      "id":"left-label",
+      "text":"Charge left ball"
+    },
     {
       "type": "button",
       "id": "left-pos",
@@ -32,11 +32,11 @@
       "text": "Negative",
       "action": "setAtomProperties(0,{charge:-1});start()"
     },
-  	{
-  	  "type": "text",
-  	  "id":"right-label",
-  	  "text":"Charge right ball"
-  	},
+    {
+      "type": "text",
+      "id":"right-label",
+      "text":"Charge right ball"
+    },
     {
       "type": "button",
       "id": "right-pos",
