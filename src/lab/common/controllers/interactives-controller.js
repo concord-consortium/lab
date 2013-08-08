@@ -1044,6 +1044,26 @@ define(function (require) {
       interactiveRendered: function () {
         return isInteractiveRendered;
       },
+      benchmarks: [
+        {
+          name: "layout (iterations)",
+          numeric: true,
+          formatter: d3.format("g"),
+          run: function(done) {
+            done(semanticLayout.layoutInteractive());
+          }
+        },
+        {
+          name: "layout (time in ms)",
+          numeric: true,
+          formatter: d3.format("5.1f"),
+          run: function(done) {
+            var start = +Date.now();
+            semanticLayout.layoutInteractive();
+            done(Date.now() - start);
+          }
+        }
+      ],
       // Make these private variables and functions available
       loadInteractive: loadInteractive,
       validateInteractive: validateInteractive,

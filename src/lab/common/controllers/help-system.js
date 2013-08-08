@@ -45,6 +45,7 @@ define(function (require) {
         $tip.position({
           of: $component,
           collision: "flipfit flipfit",
+          within: $container,
           // Arrow's height depends on font-size (as it's defined in ems).
           my: "left-" + (offset * 4) + " top+" + offset,
           at: "right bottom",
@@ -80,6 +81,7 @@ define(function (require) {
         $tip.position({
           of: $container,
           collision: "flipfit flipfit",
+          within: $container,
           my: "center center",
           at: "center center"
         });

@@ -521,6 +521,9 @@ define(function (require) {
         setupBackground();
 
         console.timeEnd('[layout] update');
+
+        // Return number of iterations (e.g. for benchmarks).
+        return layoutConfig.iterationsLimit - redraws;
       }
     };
 

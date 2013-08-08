@@ -53,6 +53,7 @@ define(function (require) {
       $tooltip.position({
         of: $posTarget,
         collision: "flipfit flipfit",
+        within: $rc,
         // Arrow's height depends on font-size (as it's defined in ems).
         my: "center top+" + vertOffset,
         at: "center bottom",
