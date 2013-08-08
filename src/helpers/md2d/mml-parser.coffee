@@ -291,7 +291,7 @@ parseMML = (mmlString) ->
         fence         = getBooleanProperty $node, 'reflection'
         color         = getFillColor $node,alpha
         lineColor     = getLineColor $node
-        
+
         # Change all Boolean values to 0/1.
         visible = Number visible if visible?
         fence   = Number fence if fence?
@@ -413,6 +413,80 @@ parseMML = (mmlString) ->
           electricFields.push parsedElField
 
       ellipses
+
+    parseLines = ->
+      lines = []
+      lineNodes = $mml "[property=lines] object.org-concord-mw2d-models-LineComponent-Delegate"
+      for node, idx in lineNodes
+        $node = getNode cheerio node
+
+        x             = getFloatProperty $node, 'x'
+        y             = getFloatProperty $node, 'y'
+        x12           = getFloatProperty $node, 'x12'
+        y12           = getFloatProperty $node, 'y12'
+        beginStyle    = getFloatProperty $node, 'beginStyle'
+        endStyle      = getFloatProperty $node, 'endStyle'
+        lineStyle     = getFloatProperty $node, 'style'
+        lineWeight    = getFloatProperty $node, 'weight'
+        layer         = getFloatProperty $node, 'layer'
+        layerPosition = getFloatProperty $node, 'layerPosition'
+        visible       = getBooleanProperty $node, 'visible'
+        fence         = getBooleanProperty $node, 'reflection'
+        lineColor     = getColorProperty getNode $node.find "[property=color]>object"
+
+        # Change all Boolean values to 0/1.
+        visible = Number visible if visible?
+        fence   = Number fence if fence?
+
+        lineDashes = switch
+              when lineStyle is 1 then '2,2'
+              when lineStyle is 2 then '4,4'
+              when lineStyle is 3 then '6,6'
+              when lineStyle is 4 then '2,4,8,4'
+              else 'none'
+
+        if not x?
+          x = 20
+        if not y?
+          y = 20
+        if not x12?
+          x12 = 0
+        if not y12?
+          y12 = 0
+
+        # Convert x,y and x12, y12 into x1, y1 and x2, y2
+        x1 = x + x12 / 2
+        y1 = y + y12 / 2
+        x2 = x - x12 / 2
+        y2 = y - y12 / 2
+
+        # Unit conversion.
+        [x1, y1]          = toNextgenLengths x1, y1
+        [x2, y2]          = toNextgenLengths x2, y2
+
+        rawData = {
+          x1, y1,
+          x2, y2,
+          beginStyle,
+          endStyle,
+          fence,
+          lineColor,
+          lineWeight,lineDashes,
+          layer,layerPosition,
+          visible
+        }
+
+        # Unit conversion performed on undefined values can convert them to NaN.
+        # Revert back all NaNs to undefined, as we do not expect any NaN
+        # as property. Undefined values will be replaced by default values by validator.
+        removeNaNProperties rawData
+
+        # Validate all properties and provides default values for undefined values.
+        validatedData = validator.validateCompleteness metadata.line, rawData
+
+        lines.push validatedData
+
+      lines
 
     ###
       Find the container size
@@ -744,6 +818,11 @@ parseMML = (mmlString) ->
       Find shapes
     ###
     shapes = parseRectangles().concat parseEllipses()
+
+    ###
+      Find lines
+    ###
+    lines = parseLines()
 
     ###
       Find all elements. Results in:
@@ -1278,6 +1357,10 @@ parseMML = (mmlString) ->
 
     if electricFields.length > 0
       json.electricFields = unroll electricFields, 'intensity', 'orientation', 'shapeIdx'
+
+    if lines.length > 0
+      json.lines = unroll lines, 'x1', 'y1', 'x2', 'y2', 'beginStyle', 'endStyle', 'fence', 'lineColor', 'lineWeight', 'lineDashes',
+        'layer', 'layerPosition', 'visible'
 
     if useQuantumDynamics
       json.quantumDynamics = quantumDynamics
