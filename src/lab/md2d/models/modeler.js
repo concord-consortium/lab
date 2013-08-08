@@ -163,7 +163,7 @@ define(function(require) {
 
         dispatch = (function() {
           var d = labModelerMixin.dispatchSupport;
-          d.addEventTypes("tick","willReset",
+          d.addEventTypes("tick",
                           "addAtom", "removeAtom", "addRadialBond", "removeRadialBond",
                           "addElectricField", "removeElectricField", "changeElectricField",
                           "removeAngularBond", "invalidation", "textBoxesChanged");
@@ -817,6 +817,8 @@ define(function(require) {
       return model;
     };
 
+    // Beware. The "reset" button in Lab interactives do not call this method. Instead they "reload"
+    // the model, discarding this model object and creating a new one from the model JSON.
     model.reset = function() {
       dispatch.willReset();
       propertySupport.invalidatingChangePreHook();

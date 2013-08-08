@@ -43,7 +43,7 @@ define(function (require) {
 
     // FIXME: These events have to be available as some other modules try to
     // add listeners. Probably they aren't necessary, trace it and fix.
-    dispatchSupport.addEventTypes("reset", "stepForward", "stepBack", "seek", "invalidation");
+    dispatchSupport.addEventTypes("reset", "stepForward", "stepBack", "seek", "invalidation", "willReset");
 
     api = {
       mixInto: function(target) {
@@ -52,6 +52,13 @@ define(function (require) {
         outputSupport.mixInto(target);
         dispatchSupport.mixInto(target);
         playbackSupport.mixInto(target);
+
+        // This allows external code (such as the model controller) to trigger the model's
+        // willReset event. This allows observers such as the export controller to observe model
+        // state before it gets blown away.
+        target.willReset = function() {
+          dispatchSupport.willReset();
+        };
 
         if (metadata) {
           defineBuiltinProperties({
