@@ -52,17 +52,18 @@ define(function(require) {
       model2pxInv,
 
       // "Containers" - SVG g elements used to position layers of the final visualization.
-      fieldVisualization = modelView.viewport.append("g").attr("class", "field-visualization"),
-      shapeContainerBelow = modelView.viewport.append("g").attr("class", "shape-container-below"),
-      imageContainerBelow = modelView.viewport.append("g").attr("class", "image-container-below"),
-      textContainerBelow = modelView.viewport.append("g").attr("class", "text-container-below"),
+      fieldVisualization   = modelView.viewport.append("g").attr("class", "field-visualization"),
+      shapeContainerBelow  = modelView.viewport.append("g").attr("class", "shape-container-below"),
+      imageContainerBelow  = modelView.viewport.append("g").attr("class", "image-container-below"),
+      textContainerBelow   = modelView.viewport.append("g").attr("class", "text-container-below"),
       radialBondsContainer = modelView.viewport.append("g").attr("class", "radial-bonds-container"),
-      VDWLinesContainer = modelView.viewport.append("g").attr("class", "vdw-lines-container"),
-      mainContainer = modelView.viewport.append("g").attr("class", "main-container"),
-      shapeContainerTop = modelView.viewport.append("g").attr("class", "shape-container-top"),
-      imageContainerTop = modelView.viewport.append("g").attr("class", "image-container-top"),
-      textContainerTop = modelView.viewport.append("g").attr("class", "text-container-top"),
-      iconContainer = modelView.vis.append("g").attr("class", "icon-container"),
+      VDWLinesContainer    = modelView.viewport.append("g").attr("class", "vdw-lines-container"),
+      mainContainer        = modelView.viewport.append("g").attr("class", "main-container"),
+      shapeContainerTop    = modelView.viewport.append("g").attr("class", "shape-container-top"),
+      lineContainerTop     = modelView.viewport.append("g").attr("class", "line-container-top"),
+      imageContainerTop    = modelView.viewport.append("g").attr("class", "image-container-top"),
+      textContainerTop     = modelView.viewport.append("g").attr("class", "text-container-top"),
+      iconContainer        = modelView.vis.append("g").attr("class", "icon-container"),
 
       dragOrigin,
 
@@ -111,6 +112,9 @@ define(function(require) {
       shapeBelow,
       mockShapesTop = [],
       mockShapesBelow = [],
+      lines,
+      lineTop,
+      mockLinesTop = [],
       radialBond1, radialBond2,
       vdwPairs = [],
       vdwLines,
@@ -744,6 +748,33 @@ define(function(require) {
           }
         });
       }
+    }
+
+    function lineEnter() {
+      lineTop.enter().append("line").attr({
+        "class": "line",
+        "x1": function(d, i) {
+          return model2px(lines.x1[i]);
+        },
+        "y1": function(d, i) {
+          return model2px(lines.y1[i]);
+        },
+        "x2": function(d, i) {
+          return model2px(lines.x2[i]);
+        },
+        "y2": function(d, i) {
+          return model2px(lines.y2[i]);
+        },
+        "stroke-width": function(d, i) {
+          return lines.lineWeight[i];
+        },
+        "stroke-dasharray": function(d, i) {
+          return lines.lineDashes[i];
+        },
+        "stroke": function(d, i) {
+          return lines.visible[i] ? lines.lineColor[i] : "transparent";
+        }
+      });
     }
 
     function radialBondEnter() {
@@ -1495,6 +1526,16 @@ define(function(require) {
       }
     }
 
+    function setupLines() {
+      lines = model.get_lines();
+      lineContainerTop.selectAll(".line").remove();
+      if (lines) {
+        mockLinesTop.length = lines.x1.length;
+        lineTop = lineContainerTop.selectAll(".line").data(mockLinesTop);
+        lineEnter();
+      }
+    }
+
     function setupRadialBonds() {
       radialBondsContainer.selectAll("path.radialbond1").remove();
       radialBondsContainer.selectAll("path.radialbond2").remove();
@@ -2144,7 +2185,7 @@ define(function(require) {
       // Always setup radial bonds *after* particles to use correct atoms
       // color table.
       setupShapes();
-      //Shapes are ON TOP of particles
+      setupLines();
       setupRadialBonds();
       geneticRenderer.setup();
       setupVectors();
