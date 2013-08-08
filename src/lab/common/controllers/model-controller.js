@@ -59,12 +59,18 @@ define(function (require) {
       arguments will simply reload the current model.
     */
     function reload(newModelUrl, newModelOptions, suppressEvents) {
+      if (model.willReset) {
+        model.willReset();
+      }
+
       controller.modelUrl = newModelUrl || controller.modelUrl;
       modelOptions = newModelOptions || modelOptions;
       setupModel();
       controller.modelContainer.bindModel(model, controller.modelUrl);
 
-      if (!suppressEvents) dispatch.modelLoaded();
+      if (!suppressEvents) {
+        dispatch.modelLoaded();
+      }
     }
 
     function repaint() {
