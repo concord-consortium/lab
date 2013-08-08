@@ -399,7 +399,7 @@ define(function (require) {
     }
 
     function setupLayout() {
-      var template, layout, comp, components, fontScale, banner, resizeAfterFullscreen;
+      var template, layout, comp, components, banner, resizeAfterFullscreen;
 
       if (typeof interactive.template === "string") {
         template = templates[interactive.template];
@@ -409,8 +409,6 @@ define(function (require) {
 
       // The authored definition of which components go in which container.
       layout = interactive.layout;
-      // Font scale which affect whole interactive container.
-      fontScale = interactive.fontScale;
 
       // Banner hash containing components, layout containers and layout deinition
       // (components location). Keep it in a separate structure, because we do not
@@ -437,7 +435,8 @@ define(function (require) {
 
       // Setup layout using both author components and components
       // created automatically in this controller.
-      semanticLayout.initialize(template, layout, components, fontScale);
+      semanticLayout.initialize(template, layout, components,
+                                interactive.aspectRatio, interactive.fontScale);
 
       // We are rendering in embeddable mode if only element on page
       // so resize when window resizes.
@@ -1001,6 +1000,7 @@ define(function (require) {
           title: interactive.title,
           publicationStatus: interactive.publicationStatus,
           subtitle: interactive.subtitle,
+          aspectRatio: interactive.aspectRatio,
           fontScale: interactive.fontScale,
           helpOnLoad: interactive.helpOnLoad,
           about: arrays.isArray(interactive.about) ? $.extend(true, [], interactive.about) : interactive.about,

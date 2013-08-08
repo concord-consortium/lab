@@ -27,8 +27,9 @@ define(function () {
       Canonical dimensions of the interactive, they decide about font size.
       (canoncicalFontSize * fontScale) em is used for the interactive which fits this container:
     */
-    canonicalInteractiveWidth: 600,
-    canonicalInteractiveHeight: 420,
+    canonicalWidth: 565,
+    canonicalHeight: 435,
+
     /**
       Colors used to mark layout containers in the authoring mode.
     */

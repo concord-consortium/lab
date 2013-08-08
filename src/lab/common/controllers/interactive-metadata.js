@@ -26,6 +26,10 @@ define(function() {
       // optional: holds path of html or cml page this Interactive was imported from
       importedFrom: {},
 
+      aspectRatio: {
+        defaultValue: 1.3
+      },
+
       fontScale: {
         defaultValue: 1
       },

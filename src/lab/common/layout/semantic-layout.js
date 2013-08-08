@@ -24,6 +24,7 @@ define(function (require) {
         // Hash of component controllers.
         componentByID,
         modelController,
+        aspectRatio,
         fontScale,
 
         // Container specifications by ID.
@@ -82,10 +83,22 @@ define(function (require) {
     }
 
     function setFontSize() {
-      var containerScale, font;
+      var containerScale, font,
+          canonicalAspectRatio = layoutConfig.canonicalWidth / layoutConfig.canonicalHeight,
+          basicWidth, basicHeight;
 
-      containerScale = Math.min($interactiveContainer.height() / layoutConfig.canonicalInteractiveHeight,
-                                $interactiveContainer.width() / layoutConfig.canonicalInteractiveWidth);
+      // Basic dimensions (dimensionsw when font size is equal to canonical font size) are
+      // always equal or bigger than canonical dimensions.
+      if (aspectRatio < canonicalAspectRatio) {
+        basicWidth = layoutConfig.canonicalWidth;
+        basicHeight = basicWidth / aspectRatio;
+      } else {
+        basicHeight = layoutConfig.canonicalHeight;
+        basicWidth = basicHeight * aspectRatio;
+      }
+
+      containerScale = Math.min($interactiveContainer.width() / basicWidth,
+                                $interactiveContainer.height() / basicHeight);
 
       padding = containerScale * 10;
 
@@ -442,13 +455,14 @@ define(function (require) {
        * @param {array} newContainers List of layout containers.
        * @param {Object} newContainersContent Hash of components locations, e.g. {"bottom": ["button", "textLabel"]}.
        * @param {Object} newComponents Hash of components controllers. Keys are IDs of the components.
-       *
+       * @param {number} newFontScale Aspect ratio, floating point number, typically around 1.3.
        * @param {number} newFontScale Font scale, floating point number, typically between 0.5 and 1.5.
        */
-      initialize: function(newContainers, newContainersContent, newComponents, newFontScale) {
+      initialize: function(newContainers, newContainersContent, newComponents, newAspectRatio, newFontScale) {
         containerSpecList = newContainers;
         containersContent = newContainersContent;
         componentByID = newComponents;
+        aspectRatio = newAspectRatio;
         fontScale = newFontScale;
 
         createContainers();
