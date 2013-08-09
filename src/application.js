@@ -329,38 +329,27 @@ AUTHORING = false;
 
   function selectInteractiveSizeHandler() {
     var selection = $selectInteractiveSize.val(),
-        intAspectRatio = descriptionByPath && interactiveUrl && descriptionByPath[interactiveUrl].aspectRatio
-                         || DEF_ASPECT_RATIO,
-        dimensions = {
-          "tiny":   { height: "245px" },
-          "small":  { height: "280px" },
-          "medium": { width: "565px" },
-          "large":  { width: "960px" }
+        intAspectRatio = descriptionByPath && interactiveUrl &&
+                         descriptionByPath[interactiveUrl].aspectRatio || DEF_ASPECT_RATIO,
+        widths = {
+          "tiny":   "318px",
+          "small":  "364px",
+          "medium": "565px",
+          "large":  "960px"
         },
-        dim;
-
-    dimensions.tiny.width    = parseInt(dimensions.tiny.height, 10)   * DEF_ASPECT_RATIO + "px";
-    dimensions.small.width   = parseInt(dimensions.small.height, 10)  * DEF_ASPECT_RATIO + "px";
-    dimensions.medium.height = parseInt(dimensions.medium.width, 10) / DEF_ASPECT_RATIO + "px";
-    dimensions.large.height  = parseInt(dimensions.large.width, 10)  / DEF_ASPECT_RATIO + "px";
-    dim = dimensions[selection];
-
-    if (intAspectRatio > DEF_ASPECT_RATIO) {
-      dim.width = parseInt(dim.height, 10) * intAspectRatio + "px";
-    } else {
-      dim.height = parseInt(dim.width, 10) / intAspectRatio + "px";
-    }
+        width  = widths[selection],
+        height = parseInt(width, 10) / intAspectRatio + "px";
 
     saveOptionsToCookie();
     if (isFullPage()) {
-      $content.width(dim.width).height(dim.height);
+      $content.width(width).height(height);
       // Window size is not change, so we have to call "resize()"
       // method manually.
       if (controller) {
         controller.resize();
       }
     } else {
-      $("#iframe-wrapper").width(dim.width).height(dim.height);
+      $("#iframe-wrapper").width(width).height(height);
       // No need to call controller.resize(), as interactive controller
       // automatically binds to the window resize event.
     }

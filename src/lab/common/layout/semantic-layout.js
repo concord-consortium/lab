@@ -83,22 +83,12 @@ define(function (require) {
     }
 
     function setFontSize() {
-      var containerScale, font,
-          canonicalAspectRatio = layoutConfig.canonicalWidth / layoutConfig.canonicalHeight,
-          basicWidth, basicHeight;
+      var canonicalWidth = layoutConfig.canonicalWidth,
+          canonicalHeight = canonicalWidth / aspectRatio,
+          containerScale, font;
 
-      // Basic dimensions (dimensionsw when font size is equal to canonical font size) are
-      // always equal or bigger than canonical dimensions.
-      if (aspectRatio < canonicalAspectRatio) {
-        basicWidth = layoutConfig.canonicalWidth;
-        basicHeight = basicWidth / aspectRatio;
-      } else {
-        basicHeight = layoutConfig.canonicalHeight;
-        basicWidth = basicHeight * aspectRatio;
-      }
-
-      containerScale = Math.min($interactiveContainer.width() / basicWidth,
-                                $interactiveContainer.height() / basicHeight);
+      containerScale = Math.min($interactiveContainer.width() / canonicalWidth,
+                                $interactiveContainer.height() / canonicalHeight);
 
       padding = containerScale * 10;
 
