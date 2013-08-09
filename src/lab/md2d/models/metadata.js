@@ -548,6 +548,59 @@ define(function() {
       }
     },
 
+    line: {
+      // Required properties:
+      x1: {
+        defaultValue: 0,
+        required: true,
+        unitType: "length"
+      },
+      y1: {
+        defaultValue: 0,
+        required: true,
+        unitType: "length"
+      },
+      x2: {
+        defaultValue: 0,
+        required: true,
+        unitType: "length"
+      },
+      y2: {
+        defaultValue: 0,
+        required: true,
+        unitType: "length"
+      },
+      // Optional properties:
+      beginStyle: {
+        defaultValue: "none",
+      },
+      endStyle: {
+        defaultValue: "none",
+      },
+      fence: {
+        defaultValue: 0,
+      },
+      // View options.
+      lineColor: {
+        defaultValue: "black"
+      },
+      lineDashes: {
+        defaultValue: "none"
+      },
+      lineWeight: {
+        defaultValue: 1
+      },
+      layer: {
+        defaultValue: 1
+      },
+      layerPosition: {
+        defaultValue: 1
+      },
+      visible: {
+        defaultValue: 1
+      }
+    },
+
     radialBond: {
       atom1: {
         defaultValue: 0

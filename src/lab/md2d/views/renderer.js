@@ -52,17 +52,18 @@ define(function(require) {
       model2pxInv,
 
       // "Containers" - SVG g elements used to position layers of the final visualization.
-      fieldVisualization = modelView.viewport.append("g").attr("class", "field-visualization"),
-      shapeContainerBelow = modelView.viewport.append("g").attr("class", "shape-container-below"),
-      imageContainerBelow = modelView.viewport.append("g").attr("class", "image-container-below"),
-      textContainerBelow = modelView.viewport.append("g").attr("class", "text-container-below"),
+      fieldVisualization   = modelView.viewport.append("g").attr("class", "field-visualization"),
+      shapeContainerBelow  = modelView.viewport.append("g").attr("class", "shape-container-below"),
+      imageContainerBelow  = modelView.viewport.append("g").attr("class", "image-container-below"),
+      textContainerBelow   = modelView.viewport.append("g").attr("class", "text-container-below"),
       radialBondsContainer = modelView.viewport.append("g").attr("class", "radial-bonds-container"),
-      VDWLinesContainer = modelView.viewport.append("g").attr("class", "vdw-lines-container"),
-      mainContainer = modelView.viewport.append("g").attr("class", "main-container"),
-      shapeContainerTop = modelView.viewport.append("g").attr("class", "shape-container-top"),
-      imageContainerTop = modelView.viewport.append("g").attr("class", "image-container-top"),
-      textContainerTop = modelView.viewport.append("g").attr("class", "text-container-top"),
-      iconContainer = modelView.vis.append("g").attr("class", "icon-container"),
+      VDWLinesContainer    = modelView.viewport.append("g").attr("class", "vdw-lines-container"),
+      mainContainer        = modelView.viewport.append("g").attr("class", "main-container"),
+      shapeContainerTop    = modelView.viewport.append("g").attr("class", "shape-container-top"),
+      lineContainerTop     = modelView.viewport.append("g").attr("class", "line-container-top"),
+      imageContainerTop    = modelView.viewport.append("g").attr("class", "image-container-top"),
+      textContainerTop     = modelView.viewport.append("g").attr("class", "text-container-top"),
+      iconContainer        = modelView.vis.append("g").attr("class", "icon-container"),
 
       dragOrigin,
 
@@ -111,6 +112,9 @@ define(function(require) {
       shapeBelow,
       mockShapesTop = [],
       mockShapesBelow = [],
+      lines,
+      lineTop,
+      mockLinesTop = [],
       radialBond1, radialBond2,
       vdwPairs = [],
       vdwLines,
@@ -288,6 +292,34 @@ define(function(require) {
       // Colored gradients, used for amino acids.
       gradients.createRadialGradient("green-grad", "#dfffef", "#75a643", "#2a7216", mainContainer);
       gradients.createRadialGradient("orange-grad", "#F0E6D1", "#E0A21B", "#AD7F1C", mainContainer);
+    }
+
+    function createCustomArrowHead(path){
+      if(!path||path=="none"){
+        return "none"
+      }
+      var defs,
+        id = "Arrowhead-" + path.toLowerCase().replace(/[^a-z0-9]/g,''),
+        arrowHead;
+      defs = mainContainer.select("defs");
+      if (defs.empty()) {
+        defs = mainContainer.append("defs");
+      }
+      arrowHead = defs.select("#" + id);
+      if(arrowHead.empty()){
+        arrowHead = defs.append("marker")
+          .attr("id", id)
+          .attr("viewBox", "0 0 10 10")
+          .attr("refX", "0")
+          .attr("refY", "5")
+          .attr("markerUnits", "strokeWidth")
+          .attr("markerWidth", "4")
+          .attr("markerHeight", "4")
+          .attr("orient", "auto");
+        arrowHead.append("path")
+          .attr("d", path);
+      }
+      return "url(#" + id + ")";
     }
 
     function createVectorArrowHeads(color, name) {
@@ -744,6 +776,39 @@ define(function(require) {
           }
         });
       }
+    }
+
+    function lineEnter() {
+      lineTop.enter().append("line").attr({
+        "class": "line",
+        "x1": function(d, i) {
+          return model2px(lines.x1[i]);
+        },
+        "y1": function(d, i) {
+          return model2pxInv(lines.y1[i]);
+        },
+        "x2": function(d, i) {
+          return model2px(lines.x2[i]);
+        },
+        "y2": function(d, i) {
+          return model2pxInv(lines.y2[i]);
+        },
+        "stroke-width": function(d, i) {
+          return lines.lineWeight[i];
+        },
+        "stroke-dasharray": function(d, i) {
+          return lines.lineDashes[i];
+        },
+        "stroke": function(d, i) {
+          return lines.visible[i] ? lines.lineColor[i] : "transparent";
+        },
+        "marker-start": function(d,i){
+          return createCustomArrowHead(lines.beginStyle[i]);
+        },
+        "marker-end": function(d,i){
+          return createCustomArrowHead(lines.endStyle[i]);
+        }
+      });
     }
 
     function radialBondEnter() {
@@ -1495,6 +1560,16 @@ define(function(require) {
       }
     }
 
+    function setupLines() {
+      lines = model.get_lines();
+      lineContainerTop.selectAll(".line").remove();
+      if (lines) {
+        mockLinesTop.length = lines.x1.length;
+        lineTop = lineContainerTop.selectAll(".line").data(mockLinesTop);
+        lineEnter();
+      }
+    }
+
     function setupRadialBonds() {
       radialBondsContainer.selectAll("path.radialbond1").remove();
       radialBondsContainer.selectAll("path.radialbond2").remove();
@@ -1990,7 +2065,6 @@ define(function(require) {
 
       createSymbolImages();
       createImmutableGradients();
-
       // Register additional controls, context menus etc.
       // Note that special selector for class is used. Typical class selectors
       // (e.g. '.amino-acid') cause problems when interacting with SVG nodes.
@@ -2144,7 +2218,7 @@ define(function(require) {
       // Always setup radial bonds *after* particles to use correct atoms
       // color table.
       setupShapes();
-      //Shapes are ON TOP of particles
+      setupLines();
       setupRadialBonds();
       geneticRenderer.setup();
       setupVectors();

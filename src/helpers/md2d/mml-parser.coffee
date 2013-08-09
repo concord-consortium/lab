@@ -121,6 +121,37 @@ parseMML = (mmlString) ->
 
       toNextgenLengths x, y
 
+    ### Converts a stroke dash number into nexgen stroke dash style ###
+    convertLineDashes = (lineStyle) ->
+      return switch
+        when lineStyle is 1 then "2,2"
+        when lineStyle is 2 then "4,4"
+        when lineStyle is 3 then "6,6"
+        when lineStyle is 4 then "2,4,8,4"
+        else 'none'
+
+    ### Converts an arrowhead number into nexgen arrowhead style ###
+    convertArrowHead = (arrowStyle, reverse) ->
+      return switch
+        when arrowStyle is 1
+          if reverse
+            "M 0 0 L 10 5 L 0 10 z"
+          else
+            "M 10 0 L 0 5 L 10 10 z"
+        when arrowStyle is 2
+          if reverse
+            "M 0 0 L 10 5 L 0 10"
+          else
+            "M 10 0 L 0 5 L 10 10"
+        when arrowStyle is 3
+          if reverse
+            "M 0 0 L 10 5 L 0 10 L 3 5 z"
+          else
+            "M 10 0 L 0 5 L 10 10 L 7 5 z"
+        when arrowStyle is 4 then "M 0 5 L 5 10 L 10 5 L 5 0 z"
+        when arrowStyle is 5 then "M 0 5 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0 z"
+        else 'none'
+
     ### Extracts a java-awt-Color into a core color  ###
     getColorProperty = ($node, alpha) ->
       colorNodes = $node.find "int"
@@ -282,7 +313,7 @@ parseMML = (mmlString) ->
         width         = getFloatProperty $node, 'width'
         x             = getFloatProperty $node, 'x'
         y             = getFloatProperty $node, 'y'
-        lineStyle     = getFloatProperty $node, 'lineStyle'
+        lineDashes    = convertLineDashes getFloatProperty $node, 'lineStyle'
         lineWeight    = getFloatProperty $node, 'lineWeight'
         layer         = getFloatProperty $node, 'layer'
         layerPosition = getFloatProperty $node, 'layerPosition'
@@ -291,17 +322,10 @@ parseMML = (mmlString) ->
         fence         = getBooleanProperty $node, 'reflection'
         color         = getFillColor $node,alpha
         lineColor     = getLineColor $node
-        
+
         # Change all Boolean values to 0/1.
         visible = Number visible if visible?
         fence   = Number fence if fence?
-
-        lineDashes = switch
-              when lineStyle is 1 then '2,2'
-              when lineStyle is 2 then '4,4'
-              when lineStyle is 3 then '6,6'
-              when lineStyle is 4 then '2,4,8,4'
-              else 'none'
 
         if not x?
           x=20
@@ -354,7 +378,7 @@ parseMML = (mmlString) ->
         width         = getFloatProperty $node, 'width'
         x             = getFloatProperty $node, 'x'
         y             = getFloatProperty $node, 'y'
-        lineStyle     = getFloatProperty $node, 'lineStyle'
+        lineDashes    = convertLineDashes getFloatProperty $node, 'lineStyle'
         lineWeight    = getFloatProperty $node, 'lineWeight'
         layer         = getFloatProperty $node, 'layer'
         layerPosition = getFloatProperty $node, 'layerPosition'
@@ -367,13 +391,6 @@ parseMML = (mmlString) ->
         # Change all Boolean values to 0/1.
         visible = Number visible if visible?
         fence   = Number fence if fence?
-
-        lineDashes = switch
-              when lineStyle is 1 then '2,2'
-              when lineStyle is 2 then '4,4'
-              when lineStyle is 3 then '6,6'
-              when lineStyle is 4 then '2,4,8,4'
-              else 'none'
 
         if not x?
           x=20
@@ -413,6 +430,73 @@ parseMML = (mmlString) ->
           electricFields.push parsedElField
 
       ellipses
+
+    parseLines = ->
+      lines = []
+      lineNodes = $mml "[property=lines] object.org-concord-mw2d-models-LineComponent-Delegate"
+      for node, idx in lineNodes
+        $node = getNode cheerio node
+
+        x             = getFloatProperty $node, 'x'
+        y             = getFloatProperty $node, 'y'
+        x12           = getFloatProperty $node, 'x12'
+        y12           = getFloatProperty $node, 'y12'
+        beginStyle    = convertArrowHead getFloatProperty $node, 'beginStyle'
+        endStyle      = convertArrowHead (getFloatProperty $node, 'endStyle'), true
+        lineDashes    = convertLineDashes getFloatProperty $node, 'style'
+        lineWeight    = getFloatProperty $node, 'weight'
+        layer         = getFloatProperty $node, 'layer'
+        layerPosition = getFloatProperty $node, 'layerPosition'
+        visible       = getBooleanProperty $node, 'visible'
+        fence         = getBooleanProperty $node, 'reflector'
+        lineColor     = getColorProperty getNode $node.find "[property=color]>object"
+
+        # Change all Boolean values to 0/1.
+        visible = Number visible if visible?
+        fence   = Number fence if fence?
+
+        if not x?
+          x = 20
+        if not y?
+          y = 20
+        if not x12?
+          x12 = 0
+        if not y12?
+          y12 = 0
+
+        # Convert x,y and x12, y12 into x1, y1 and x2, y2
+        x1 = x + x12 / 2
+        y1 = y + y12 / 2
+        x2 = x - x12 / 2
+        y2 = y - y12 / 2
+
+        # Unit conversion.
+        [x1, y1]          = toNextgenCoordinates x1, y1
+        [x2, y2]          = toNextgenCoordinates x2, y2
+
+        rawData = {
+          x1, y1,
+          x2, y2,
+          beginStyle,
+          endStyle,
+          fence,
+          lineColor,
+          lineWeight,lineDashes,
+          layer,layerPosition,
+          visible
+        }
+
+        # Unit conversion performed on undefined values can convert them to NaN.
+        # Revert back all NaNs to undefined, as we do not expect any NaN
+        # as property. Undefined values will be replaced by default values by validator.
+        removeNaNProperties rawData
+
+        # Validate all properties and provides default values for undefined values.
+        validatedData = validator.validateCompleteness metadata.line, rawData
+
+        lines.push validatedData
+
+      lines
 
     ###
       Find the container size
@@ -744,6 +828,11 @@ parseMML = (mmlString) ->
       Find shapes
     ###
     shapes = parseRectangles().concat parseEllipses()
+
+    ###
+      Find lines
+    ###
+    lines = parseLines()
 
     ###
       Find all elements. Results in:
@@ -1278,6 +1367,10 @@ parseMML = (mmlString) ->
 
     if electricFields.length > 0
       json.electricFields = unroll electricFields, 'intensity', 'orientation', 'shapeIdx'
+
+    if lines.length > 0
+      json.lines = unroll lines, 'x1', 'y1', 'x2', 'y2', 'beginStyle', 'endStyle', 'fence', 'lineColor', 'lineWeight', 'lineDashes',
+        'layer', 'layerPosition', 'visible'
 
     if useQuantumDynamics
       json.quantumDynamics = quantumDynamics
