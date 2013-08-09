@@ -14,7 +14,7 @@
         "height": 400
       },
       "viewOptions": {
-        "controlButtons": "",
+        "controlButtons": "play_reset",
         "showClock": false
       }
     }
