@@ -2185,6 +2185,7 @@ define(function (require) {
       renderGraph();
       // and then render again using actual size of SVG text elements are
       renderGraph();
+      redraw();
       registerKeyboardHandler();
       return api;
     }
