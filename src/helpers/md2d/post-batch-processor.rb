@@ -127,16 +127,24 @@ class MD2DImports
       @dirs = Dir["sam-activities/**"]
       @dirs_original_form = Dir["sam-activities/**/original-interactives-in-pages"].collect {|p| File.dirname(p)}
       @dirs_alternate_form = @dirs - @dirs_original_form
+
       @dirs_original_form.each do |dir|
         @model_list.push(MD2DSection.new(dir, "original-interactives-in-pages/").section)
       end
       @dirs_alternate_form.each do |dir|
         @model_list.push(MD2DSection.new(dir).section)
       end
+
       @dirs = Dir["other-activities/**"]
       @dirs.each do |dir|
         model_list.push(MD2DSection.new(dir, "original-interactives-in-pages/").section)
       end
+
+      @dirs = Dir["interactions/**"]
+      @dirs.each do |dir|
+        model_list.push(MD2DDirectory.new(dir).section)
+      end
+
       @model_list.push(MD2DSection.new("potential-tests").section)
       @model_list.push(MD2DSection.new("validation").section)
       @model_list.push(MD2DDirectory.new("tutorial").section)
