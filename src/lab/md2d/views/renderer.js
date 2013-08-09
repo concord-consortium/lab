@@ -18,6 +18,22 @@ define(function(require) {
     gradients = require('common/views/gradients'),
     color = require('common/views/color'),
 
+    // borrowed from http://bl.ocks.org/tmcw/4131834
+    // see discussion in: http://www.mapbox.com/osmdev/2012/11/20/getting-serious-about-svg/
+    transformProp = (function(props) {
+      var style = document.documentElement.style;
+      for (var i = 0; i < props.length; i++) {
+        if (props[i] in style) return {
+          transform: 'transform',
+          WebkitTransform: '-webkit-transform',
+          OTransform: '-o-transform',
+          MozTransform: '-moz-transform',
+          msTransform: '-ms-transform'
+        }[props[i]];
+      }
+      return false;
+  })(['transform', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']),
+
     RADIAL_BOND_TYPES = {
       STANDARD_STICK: 101,
       LONG_SPRING: 102,
@@ -543,9 +559,7 @@ define(function(require) {
     }
 
     function updateParticleRadius() {
-      mainContainer.selectAll("circle").data(modelAtoms).attr("r", function(d) {
-        return model2px(d.radius);
-      });
+      // Removed because it can be proved that it is never called except right after particleEnterExit.
     }
 
     /**
@@ -553,41 +567,57 @@ define(function(require) {
     */
 
     function particleEnterExit() {
-      particle.enter().append("circle")
-        .attr({
-          "class": function(d) {
-            return d.isAminoAcid() ? "draggable atom amino-acid" : "atom draggable";
-          },
-          "r": function(d) {
-            return model2px(d.radius);
-          },
-          "cx": function(d) {
-            return model2px(d.x);
-          },
-          "cy": function(d) {
-            return model2pxInv(d.y);
-          },
-          "fill-opacity": function(d) {
-            return d.visible ? 1 : 0;
-          },
-          "fill": function(d, i) {
-            return gradientNameForParticle[i];
-          },
-          "filter": function(d) {
-            if (d.excitation) {
-              return "url(#glow)";
+      function radius(d) {
+        return model2px(d.radius);
+      }
+      function twoRadius(d) {
+        return 2 * radius(d);
+      }
+
+      var style = {
+          "position": "absolute",
+          "top": 0,
+          "left": 0,
+          "width": twoRadius,
+          "height": twoRadius
+      };
+
+      style[transformProp] = function (d) {
+        return "translate3d(" + model2px(d.x) + "px," + model2pxInv(d.y) + "px,0)";
+      };
+
+      particle.enter().append("svg")
+        .attr("class", "particle-svg")
+        .style(style)
+        .append("circle")
+          .attr({
+            "class": function(d) {
+              return d.isAminoAcid() ? "draggable atom amino-acid" : "atom draggable";
+            },
+            "r": radius,
+            "cx": radius,
+            "cy": radius,
+            "fill-opacity": function(d) {
+              return d.visible ? 1 : 0;
+            },
+            "fill": function(d, i) {
+              return gradientNameForParticle[i];
+            },
+            "filter": function(d) {
+              if (d.excitation) {
+                return "url(#glow)";
+              }
+              return null;
             }
-            return null;
-          }
-        })
-        .on("mousedown", moleculeMouseDown)
-        .on("mouseover", moleculeMouseOver)
-        .on("mouseout", moleculeMouseOut)
-        .call(d3.behavior.drag()
-          .on("dragstart", nodeDragStart)
-          .on("drag", nodeDrag)
-          .on("dragend", nodeDragEnd)
-      );
+          })
+          .on("mousedown", moleculeMouseDown)
+          .on("mouseover", moleculeMouseOver)
+          .on("mouseout", moleculeMouseOut)
+          .call(d3.behavior.drag()
+            .on("dragstart", nodeDragStart)
+            .on("drag", nodeDrag)
+            .on("dragend", nodeDragEnd)
+          );
 
       particle.exit().remove();
     }
@@ -1430,13 +1460,12 @@ define(function(require) {
 
       setupColorsOfParticles();
 
-      mainContainer.selectAll("circle").remove();
+      d3.selectAll("svg.particle-svg").remove();
       mainContainer.selectAll("g.label").remove();
 
-      particle = mainContainer.selectAll("circle").data(modelAtoms);
-      updateParticleRadius();
-
+      particle = d3.select("#model-container").selectAll("svg.particle-svg").data(modelAtoms);
       particleEnterExit();
+      updateParticleRadius();
 
       label = mainContainer.selectAll("g.label")
         .data(modelAtoms);
@@ -1758,14 +1787,9 @@ define(function(require) {
     // its content.
 
     function updateParticles() {
-      // particle.attr({
-      //   "cx": function(d) {
-      //     return model2px(d.x);
-      //   },
-      //   "cy": function(d) {
-      //     return model2pxInv(d.y);
-      //   }
-      // });
+      particle.style(transformProp, function(d) {
+        return "translate3d(" + model2px(d.x) + "px," + model2pxInv(d.y) + "px,0)";
+      });
 
       if (keShadingMode || chargeShadingMode) {
         // When Kinetic Energy Shading or Charge Shading is enabled, update style of atoms
