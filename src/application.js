@@ -329,14 +329,15 @@ AUTHORING = false;
 
   function selectInteractiveSizeHandler() {
     var selection = $selectInteractiveSize.val(),
-        dim,
-        intAspectRatio = descriptionByPath && descriptionByPath[interactiveUrl].aspectRatio || DEF_ASPECT_RATIO,
+        intAspectRatio = descriptionByPath && interactiveUrl && descriptionByPath[interactiveUrl].aspectRatio
+                         || DEF_ASPECT_RATIO,
         dimensions = {
           "tiny":   { height: "245px" },
           "small":  { height: "280px" },
           "medium": { width: "565px" },
           "large":  { width: "960px" }
-        };
+        },
+        dim;
 
     dimensions.tiny.width    = parseInt(dimensions.tiny.height, 10)   * DEF_ASPECT_RATIO + "px";
     dimensions.small.width   = parseInt(dimensions.small.height, 10)  * DEF_ASPECT_RATIO + "px";
