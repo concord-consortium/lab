@@ -88,63 +88,63 @@
 
 - :path: student/classic/pendulum
   :name: "Classic Java MW Examples: Pendulum"
-  :category: Examples
+  :category: Curriculum
 
 - :path: student/classic/motion
   :name: "Classic Java MW Examples: Motion"
-  :category: Examples
+  :category: Curriculum
 
 - :path: student/classic/freefall
   :name: "Classic Java MW Examples: Freefall"
-  :category: Examples
+  :category: Curriculum
 
 - :path: student/classic/gear
   :name: "Classic Java MW Examples: Gear"
-  :category: Examples
+  :category: Curriculum
 
 - :path: student/classic/harmonic
   :name: "Classic Java MW Examples: Harmonic"
-  :category: Examples
+  :category: Curriculum
 
 - :path: student/classic/machine
   :name: "Classic Java MW Examples: Machine"
-  :category: Examples
+  :category: Curriculum
 
 - :path: student/classic/pulley
   :name: "Classic Java MW Examples: Pulley"
-  :category: Examples
+  :category: Curriculum
 
 - :path: student/classic/spring
   :name: "Classic Java MW Examples: Spring"
-  :category: Examples
+  :category: Curriculum
 
 - :path: student/fluid
   :name: "Classic Java MW Examples: Fluid"
-  :category: Examples
+  :category: Curriculum
 
 - :path: student/materials
   :name: "Classic Java MW Examples: Materials"
-  :category: Examples
+  :category: Curriculum
 
 - :path: student/motionandforce
   :name: "Classic Java MW Examples: Motion and Force"
-  :category: Examples
+  :category: Curriculum
 
 - :path: student/osmosis
   :name: "Classic Java MW Examples: Osmosis"
-  :category: Examples
+  :category: Curriculum
 
 - :path: student/stateofmatter
   :name: "Classic Java MW Examples: States of Matter"
-  :category: Examples
+  :category: Curriculum
 
 - :path: student/wave
   :name: "Classic Java MW Examples: Waves"
-  :category: Examples
+  :category: Curriculum
 
 - :path: student/classic/wave
   :name: "Classic Java MW Examples: Wave"
-  :category: Examples
+  :category: Curriculum
 
 - :path: public/part1/light
   :name: "Classic Java MW Examples: Part1/Light"
