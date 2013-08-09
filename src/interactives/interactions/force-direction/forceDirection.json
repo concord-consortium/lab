@@ -1,0 +1,23 @@
+{
+  "title": "forceDirection",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "forceDirection$0",
+      "url": "imports/legacy-mw-content/converted/interactions/force-direction/forceDirection$0.json",
+      "importedFrom": "imports/legacy-mw-content/interactions/force-direction/forceDirection$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

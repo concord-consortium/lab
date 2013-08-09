@@ -1,0 +1,23 @@
+{
+  "title": "particleMixing",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "particleMixing$0",
+      "url": "imports/legacy-mw-content/converted/interactions/mixing-liquids/particleMixing$0.json",
+      "importedFrom": "imports/legacy-mw-content/interactions/mixing-liquids/particleMixing$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}
