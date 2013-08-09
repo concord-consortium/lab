@@ -53,7 +53,9 @@ AUTHORING = false;
 
       $jsonInteractiveLink = $("#json-interactive-link"),
 
-      interactivesPromise;
+      interactivesPromise,
+
+      editMode = false;
 
   function sendGAPageview(){
     // send the pageview to GA
@@ -179,7 +181,20 @@ AUTHORING = false;
     selectInteractiveSizeHandler();
     $selectInteractiveSize.removeAttr('disabled');
     $iframeWrapper.append($iframe);
-    $iframeWrapper.resizable({ helper: "ui-resizable-helper" });
+    $iframeWrapper.resizable({
+      helper: "ui-resizable-helper",
+      stop: function (event, ui) {
+        if (editMode) {
+          var aspectRatio = ui.size.width / ui.size.height;
+          interactive.aspectRatio = aspectRatio;
+          descriptionByPath[interactiveUrl].aspectRatio = aspectRatio;
+          iframePhone.post({ type:'loadInteractive', data: interactive });
+          // Update editor.
+          editor.setValue(JSON.stringify(interactive, null, indent));
+          console.log("new aspect ratio: " + aspectRatio);
+        }
+      }
+    });
     $content.css("border", "none");
     // initiate communication with Interactive in iframe and setup callback
     iframePhone = new Lab.IFramePhone($iframe[0], function() {
@@ -639,6 +654,7 @@ AUTHORING = false;
     var $updateInteractiveButton = $("#update-interactive-button"),
         $updateJsonFromInteractiveButton = $("#update-json-from-interactive-button"),
         $autoFormatInteractiveJsonButton = $("#autoformat-interactive-json-button"),
+        $editModeCheckbox = $("#edit-mode"),
         $interactiveTextArea = $("#interactive-text-area"),
         $editor = $("#editor"),
         $editorContent = $("#editor-content"),
@@ -700,6 +716,10 @@ AUTHORING = false;
             editor.setValue(JSON.stringify(message, null, indent));
           });
         }
+      });
+
+      $editModeCheckbox.on('change', function () {
+        editMode = $editModeCheckbox.prop("checked");
       });
 
       $showEditor.change(function() {
