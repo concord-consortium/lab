@@ -151,6 +151,7 @@ exports.withIsolatedRequireJSAndViewsMocked = function(continuation) {
         return {
           initialize: function() {},
           setupModel: function() {},
+          isReady: function() {},
           layoutInteractive: function() {}
         };
       };
