@@ -15,17 +15,32 @@ define(function(require) {
         propertySupport = new PropertySupport({
           types: ["output", "parameter", "mainProperty", "viewOption"]
         }),
-        model;
+        model,
+        phone,
+        stopped = true;
+
+    function addListeners() {
+      phone.addDispatchListener('play.iframe-model', function(){
+        stopped = false;
+        // notify that we are playing
+        dispatchSupport.play();
+      });
+      phone.addDispatchListener('stop.iframe-model', function(){
+        stopped = true;
+        // notify that we are stopped
+        dispatchSupport.stop();
+      });
+    }
 
     model = {
       start: function() {
-        model.iframePhone.post({type: 'play'});
+        phone.post({type: 'play'});
         return model;
       },
 
       restart: function() {
         // restart iframe'd model I'm not sure if this should mean 'reset' or not
-        model.iframePhone.post({type: 'reset'});
+        phone.post({type: 'reset'});
         return model;
       },
 
@@ -40,32 +55,21 @@ define(function(require) {
         // is called so it might be best to leave this as is. That seems like it could
         // happen in a regular model since playback support notifies about stop as soon
         // as it is called, but there is still a timer process that needs to complete.
-        model.iframePhone.post({type: 'stop'});
+        phone.post({type: 'stop'});
         return model;
       },
 
-      _isStopped: true,
-
       isStopped: function () {
-        return model._isStopped;
+        return stopped;
       },
 
-      set iframePhone(phone){
-        model._iframePhone = phone;
-        phone.addDispatchListener('play.iframe-model', function(){
-          model._isStopped = false;
-          // notify that we are playing
-          dispatchSupport.play();
-        });
-        phone.addDispatchListener('stop.iframe-model', function(){
-          model._isStopped = true;
-          // notify that we are stopped
-          dispatchSupport.stop();
-        });
+      set iframePhone(_phone){
+        phone = _phone;
+        addListeners();
       },
 
       get iframePhone(){
-        return model._iframePhone;
+        return phone;
       }
     };
 
