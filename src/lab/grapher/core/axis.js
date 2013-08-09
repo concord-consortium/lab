@@ -76,6 +76,8 @@ define(function (require) {
           }
         }
       }
+      newdomain[0] = +newdomain[0].toPrecision(5)
+      newdomain[1] = +newdomain[1].toPrecision(5)
       return newdomain;
     }
   };

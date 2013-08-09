@@ -272,7 +272,7 @@ define(function (require) {
           // The formatter used to convert numbers into strings.
           // see: https://github.com/mbostock/d3/wiki/Formatting#wiki-d3_format
           xFormatter:      ".3s",
-          yFormatter:      ".3r",
+          yFormatter:      ".3s",
 
           // Scale type: options are:
           //   linear: https://github.com/mbostock/d3/wiki/Quantitative-Scales#wiki-linear
@@ -361,13 +361,17 @@ define(function (require) {
       }
       titles.reverse();
 
-      fx = d3.format(options.xFormatter);
-      fy = d3.format(options.yFormatter);
-
       // use local variables for both access speed and for responsive over-riding
       sampleInterval = options.sampleInterval;
       dataSampleStart = options.dataSampleStart;
       lineWidth = options.lineWidth;
+
+      size = {
+        "width":  120,
+        "height": 120
+      };
+
+      setupScales();
 
       xTickCount = options.xTickCount;
       yTickCount = options.yTickCount;
@@ -460,7 +464,7 @@ define(function (require) {
       calculateSizeType();
     }
 
-    function calculateLayout() {
+    function calculateLayout(forceUpdate) {
       scale();
 
       fontSizeInPixels = parseFloat($node.css("font-size"));
@@ -567,29 +571,10 @@ define(function (require) {
         titles = [titles[0]];
       }
 
-      size = {
-        "width":  Math.max(cx - padding.left - padding.right, 60),
-        "height": Math.max(cy - padding.top  - padding.bottom, 60)
-      };
+      size.width  = Math.max(cx - padding.left - padding.right, 60);
+      size.height = Math.max(cy - padding.top  - padding.bottom, 60);
 
-      xScale = d3.scale[options.xscale]()
-        .domain([options.xmin, options.xmax])
-        .range([0, size.width]);
-
-      if (options.xscale === "pow") {
-        xScale.exponent(options.xscaleExponent);
-      }
-
-      yScale = d3.scale[options.yscale]()
-        .domain([options.ymin, options.ymax]).nice()
-        .range([size.height, 0]).nice();
-
-      if (options.yscale === "pow") {
-        yScale.exponent(options.yscaleExponent);
-      }
-
-      updateXScale();
-      updateYScale();
+      updateScales();
 
       line = d3.svg.line()
           .x(function(d, i) { return xScale(points[i][0]); })
@@ -654,16 +639,30 @@ define(function (require) {
       return formatter(array[index]);
     }
 
+
+    function setupScales() {
+      xScale = d3.scale[options.xscale]();
+      yScale = d3.scale[options.yscale]();
+      updateScales();
+    }
+
+    function updateScales() {
+      updateXScale();
+      updateYScale();
+    }
+
     // Update the x-scale.
     function updateXScale() {
       xScale.domain([options.xmin, options.xmax])
             .range([0, size.width]);
+      fx = xScale.tickFormat(options.xTickCount, options.xFormatter);
     }
 
     // Update the y-scale.
     function updateYScale() {
       yScale.domain([options.ymin, options.ymax])
             .range([size.height, 0]);
+      fy = yScale.tickFormat(options.yTickCount, options.yFormatter);
     }
 
     function persistScaleChangesToOptions() {
@@ -1047,6 +1046,8 @@ define(function (require) {
     // Redraw the plot and axes when plot is translated or axes are re-scaled
     //
     function redraw() {
+      calculateLayout();
+      repaintExistingGraph();
       // Regenerate x-ticks
       var gx = vis.selectAll("g.x")
           .data(xScale.ticks(xTickCount), String)
@@ -2192,6 +2193,7 @@ define(function (require) {
       scale(w, h);
       initializeLayout();
       renderGraph();
+      redraw();
       return api;
     }
 

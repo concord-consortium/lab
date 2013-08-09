@@ -230,8 +230,9 @@
       "ymax": 100,
       "xmax": 10,
       "xTickCount": 5,
-      "xFormatter": "2s",
-      "yFormatter": "2s",
+      "yTickCount": 8,
+      "xFormatter": ".2r",
+      "yFormatter": ".2r",
       "properties": [
         "currentAngle"
       ]
