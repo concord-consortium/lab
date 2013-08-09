@@ -55,6 +55,7 @@ AUTHORING = false;
 
       interactivesPromise,
 
+      widthBeforeEditMode,
       editMode = false;
 
   function sendGAPageview(){
@@ -185,7 +186,9 @@ AUTHORING = false;
       helper: "ui-resizable-helper",
       stop: function (event, ui) {
         if (editMode) {
-          var aspectRatio = ui.size.width / ui.size.height;
+          var aspectRatio = ui.size.width / ui.size.height,
+              fontScale = widthBeforeEditMode / ui.size.width;
+          interactive.fontScale = fontScale;
           interactive.aspectRatio = aspectRatio;
           descriptionByPath[interactiveUrl].aspectRatio = aspectRatio;
           iframePhone.post({ type:'loadInteractive', data: interactive });
@@ -719,6 +722,7 @@ AUTHORING = false;
       });
 
       $editModeCheckbox.on('change', function () {
+        widthBeforeEditMode = $("#iframe-wrapper").width();
         editMode = $editModeCheckbox.prop("checked");
       });
 
