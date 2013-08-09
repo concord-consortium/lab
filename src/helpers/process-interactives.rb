@@ -23,7 +23,7 @@ Dir.chdir(INTERACTIVE_EXAMPLES_PATH) do
   interactive_files.each do |path|
     interactive = JSON.load(File.read(path))
     groupKey = File.join(File.dirname(path).split(File::SEPARATOR).slice(1..-1))
-    interactives << { 
+    meta = {
       :title => interactive['title'],
       :path => path,
       :groupKey => groupKey,
@@ -31,6 +31,8 @@ Dir.chdir(INTERACTIVE_EXAMPLES_PATH) do
       :about => interactive['about'] || "",
       :publicationStatus => interactive['publicationStatus'] || 'draft'
     }
+    meta[:aspectRatio] = interactive['aspectRatio'] if interactive['aspectRatio']
+    interactives << meta
   end
 end
 
