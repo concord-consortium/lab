@@ -7,6 +7,7 @@
     "Attractions between molecules are shown with dotted lines. Run the model, then heat the liquids.",
     "What does boiling look like at the molecular level?"
   ],
+  "aspectRatio": 1.7,
   "models": [
     {
       "type": "md2d",
