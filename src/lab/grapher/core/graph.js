@@ -387,7 +387,7 @@ define(function (require) {
 
       fx = function(num) {
         var domain = xScale.domain(),
-            onePercent = Math.abs((domain[1] - domain[0])*0.1);
+            onePercent = Math.abs((domain[1] - domain[0])*0.01);
         if (Math.abs(0+num) < onePercent) {
           num = 0;
         }
@@ -396,7 +396,7 @@ define(function (require) {
 
       fy = function(num) {
         var domain = yScale.domain(),
-            onePercent = Math.abs((domain[1] - domain[0])*0.1);
+            onePercent = Math.abs((domain[1] - domain[0])*0.01);
         if (Math.abs(0+num) < onePercent) {
           num = 0;
         }
