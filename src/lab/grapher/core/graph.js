@@ -57,9 +57,13 @@ define(function (require) {
         // Instantiated D3 line function: d3.svg.line()
         line,
 
-        // Instantiated D3 numeric format functions: d3.format()
+        // numeric format functions wrapping the d3.format() functions
         fx,
         fy,
+
+        // Instantiated D3 numeric format functions: d3.format()
+        fx_d3,
+        fy_d3,
 
         // Function for stroke styling of major and minor grid lines
         gridStroke = function(d) { return d ? "#ccc" : "#666"; },
@@ -269,7 +273,7 @@ define(function (require) {
           xTickCount:      10,
           yTickCount:      10,
 
-          // The formatter used to convert numbers into strings.
+          // The formatter strings used to convert numbers into strings.
           // see: https://github.com/mbostock/d3/wiki/Formatting#wiki-d3_format
           xFormatter:      ".3s",
           yFormatter:      ".3s",
@@ -372,6 +376,32 @@ define(function (require) {
       };
 
       setupScales();
+
+      fx_d3 = d3.format(options.xFormatter);
+      fy_d3 = d3.format(options.yFormatter);
+
+      // Wrappers around certain d3 formatters to prevent problems like this:
+      //   scale = d3.scale.linear().domain([-.7164, .7164])
+      //   scale.ticks(10).map(d3.format('.3r'))
+      //   => ["-0.600", "-0.400", "-0.200", "-0.0000000000000000888", "0.200", "0.400", "0.600"]
+
+      fx = function(num) {
+        var domain = xScale.domain(),
+            onePercent = Math.abs((domain[1] - domain[0])*0.1);
+        if (Math.abs(0+num) < onePercent) {
+          num = 0;
+        }
+        return fx_d3(num);
+      };
+
+      fy = function(num) {
+        var domain = yScale.domain(),
+            onePercent = Math.abs((domain[1] - domain[0])*0.1);
+        if (Math.abs(0+num) < onePercent) {
+          num = 0;
+        }
+        return fy_d3(num);
+      };
 
       xTickCount = options.xTickCount;
       yTickCount = options.yTickCount;
@@ -655,14 +685,12 @@ define(function (require) {
     function updateXScale() {
       xScale.domain([options.xmin, options.xmax])
             .range([0, size.width]);
-      fx = xScale.tickFormat(options.xTickCount, options.xFormatter);
     }
 
     // Update the y-scale.
     function updateYScale() {
       yScale.domain([options.ymin, options.ymax])
             .range([size.height, 0]);
-      fy = yScale.tickFormat(options.yTickCount, options.yFormatter);
     }
 
     function persistScaleChangesToOptions() {
