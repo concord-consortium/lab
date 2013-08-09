@@ -93,7 +93,6 @@ define(function (require){
 
     // public API
     return {
-      version: "1.0",
       post: post,
       addListener: addListener,
       removeListener: removeListener,
