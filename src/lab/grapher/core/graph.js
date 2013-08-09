@@ -519,7 +519,30 @@ define(function (require) {
         xlabelFontSizeInPixels = parseFloat($("svg.graph text.xlabel").css("font-size"));
         ylabelFontSizeInPixels = parseFloat($("svg.graph text.ylabel").css("font-size"));
       }
+      updateAxesAndSize();
 
+      updateScales();
+
+      line = d3.svg.line()
+          .x(function(d, i) { return xScale(points[i][0]); })
+          .y(function(d, i) { return yScale(points[i][1]); });
+    }
+
+    function setupOptions(options) {
+      if (options) {
+        for(var p in default_options) {
+          if (options[p] === undefined) {
+            options[p] = default_options[p];
+          }
+        }
+      } else {
+        options = default_options;
+      }
+      if (options.axisShift < 1) options.axisShift = 1;
+      return options;
+    }
+
+    function updateAxesAndSize() {
       if (xScale === undefined) {
         xlabelMetrics = [fontSizeInPixels, fontSizeInPixels];
         ylabelMetrics = [fontSizeInPixels*2, fontSizeInPixels];
@@ -603,27 +626,6 @@ define(function (require) {
 
       size.width  = Math.max(cx - padding.left - padding.right, 60);
       size.height = Math.max(cy - padding.top  - padding.bottom, 60);
-
-      updateScales();
-
-      line = d3.svg.line()
-          .x(function(d, i) { return xScale(points[i][0]); })
-          .y(function(d, i) { return yScale(points[i][1]); });
-
-    }
-
-    function setupOptions(options) {
-      if (options) {
-        for(var p in default_options) {
-          if (options[p] === undefined) {
-            options[p] = default_options[p];
-          }
-        }
-      } else {
-        options = default_options;
-      }
-      if (options.axisShift < 1) options.axisShift = 1;
-      return options;
     }
 
     function calculateSizeType() {
@@ -1074,7 +1076,7 @@ define(function (require) {
     // Redraw the plot and axes when plot is translated or axes are re-scaled
     //
     function redraw() {
-      calculateLayout();
+      updateAxesAndSize();
       repaintExistingGraph();
       // Regenerate x-ticks
       var gx = vis.selectAll("g.x")
