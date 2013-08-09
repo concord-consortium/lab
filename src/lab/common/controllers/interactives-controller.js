@@ -340,7 +340,7 @@ define(function (require) {
       // Do nothing if this is called before the model loads (for example via a resize event).
       // The interactive will be laid out as soon as the model loads anyway, and furthermore the
       // semantic layout mechanism calls at least one modelController method.
-      if (!modelController) {
+      if (!semanticLayout.isReady()) {
         return;
       }
       semanticLayout.layoutInteractive();

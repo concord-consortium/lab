@@ -467,6 +467,9 @@ define(function (require) {
 
         createContainers();
         placeComponentsInContainers();
+
+        // After .initialize() call client code has to call .setupModel().
+        modelController = null;
       },
 
       /**
@@ -496,6 +499,15 @@ define(function (require) {
         });
         $modelContainer.appendTo($interactiveContainer);
         $containerByID.model = $modelContainer;
+      },
+
+      /**
+       * Returns true if semantic layout is ready to perform calculations.
+       * @return {boolean}
+       */
+      isReady: function () {
+        if (!modelController) return false;
+        else return true;
       },
 
       /**
