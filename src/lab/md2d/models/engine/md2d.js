@@ -906,8 +906,8 @@ define(function (require, exports) {
           lines.y1            = arrays.create(num, 0, arrayTypes.floatType);
           lines.x2            = arrays.create(num, 0, arrayTypes.floatType);
           lines.y2            = arrays.create(num, 0, arrayTypes.floatType);
-          lines.beginStyle    = arrays.create(num, 0, arrayTypes.uint8Type);
-          lines.endStyle      = arrays.create(num, 0, arrayTypes.uint8Type);
+          lines.beginStyle    = [];
+          lines.endStyle      = [];
           lines.lineColor     = [];
           lines.lineDashes    = [];
           lines.lineWeight    = arrays.create(num, 0, arrayTypes.floatType);

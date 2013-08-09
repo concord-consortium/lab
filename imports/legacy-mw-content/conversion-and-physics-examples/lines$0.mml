@@ -328,7 +328,7 @@
    <void method="put">
     <string>date</string>
     <object class="java.util.Date">
-     <long>1375911458000</long>
+     <long>1376076387000</long>
     </object>
    </void>
    <void method="put">
@@ -337,7 +337,7 @@
    </void>
    <void method="put">
     <string>size</string>
-    <long>61275</long>
+    <long>61447</long>
    </void>
    <void method="put">
     <string>codebase</string>
@@ -562,6 +562,9 @@
       </void>
       <void property="layerPosition">
        <byte>7</byte>
+      </void>
+      <void property="weight">
+       <int>2</int>
       </void>
       <void property="x">
        <double>163.5</double>
@@ -936,6 +939,9 @@
       </void>
       <void property="layerPosition">
        <byte>24</byte>
+      </void>
+      <void property="weight">
+       <int>2</int>
       </void>
       <void property="x">
        <double>28.0</double>
@@ -2394,6 +2400,9 @@
       <void property="layerPosition">
        <byte>85</byte>
       </void>
+      <void property="weight">
+       <int>2</int>
+      </void>
       <void property="x">
        <double>117.0</double>
       </void>
@@ -2418,6 +2427,9 @@
       </void>
       <void property="layerPosition">
        <byte>86</byte>
+      </void>
+      <void property="weight">
+       <int>2</int>
       </void>
       <void property="x">
        <double>293.0</double>

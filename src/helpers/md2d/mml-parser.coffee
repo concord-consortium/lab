@@ -121,6 +121,37 @@ parseMML = (mmlString) ->
 
       toNextgenLengths x, y
 
+    ### Converts a stroke dash number into nexgen stroke dash style ###
+    convertLineDashes = (lineStyle) ->
+      return switch
+        when lineStyle is 1 then "2,2"
+        when lineStyle is 2 then "4,4"
+        when lineStyle is 3 then "6,6"
+        when lineStyle is 4 then "2,4,8,4"
+        else 'none'
+
+    ### Converts an arrowhead number into nexgen arrowhead style ###
+    convertArrowHead = (arrowStyle, reverse) ->
+      return switch
+        when arrowStyle is 1
+          if reverse
+            "M 0 0 L 10 5 L 0 10 z"
+          else
+            "M 10 0 L 0 5 L 10 10 z"
+        when arrowStyle is 2
+          if reverse
+            "M 0 0 L 10 5 L 0 10"
+          else
+            "M 10 0 L 0 5 L 10 10"
+        when arrowStyle is 3
+          if reverse
+            "M 0 0 L 10 5 L 0 10 L 3 5 z"
+          else
+            "M 10 0 L 0 5 L 10 10 L 7 5 z"
+        when arrowStyle is 4 then "M 0 5 L 5 10 L 10 5 L 5 0 z"
+        when arrowStyle is 5 then "M 0 5 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0 z"
+        else 'none'
+
     ### Extracts a java-awt-Color into a core color  ###
     getColorProperty = ($node, alpha) ->
       colorNodes = $node.find "int"
@@ -282,7 +313,7 @@ parseMML = (mmlString) ->
         width         = getFloatProperty $node, 'width'
         x             = getFloatProperty $node, 'x'
         y             = getFloatProperty $node, 'y'
-        lineStyle     = getFloatProperty $node, 'lineStyle'
+        lineDashes    = convertLineDashes getFloatProperty $node, 'lineStyle'
         lineWeight    = getFloatProperty $node, 'lineWeight'
         layer         = getFloatProperty $node, 'layer'
         layerPosition = getFloatProperty $node, 'layerPosition'
@@ -295,13 +326,6 @@ parseMML = (mmlString) ->
         # Change all Boolean values to 0/1.
         visible = Number visible if visible?
         fence   = Number fence if fence?
-
-        lineDashes = switch
-              when lineStyle is 1 then '2,2'
-              when lineStyle is 2 then '4,4'
-              when lineStyle is 3 then '6,6'
-              when lineStyle is 4 then '2,4,8,4'
-              else 'none'
 
         if not x?
           x=20
@@ -354,7 +378,7 @@ parseMML = (mmlString) ->
         width         = getFloatProperty $node, 'width'
         x             = getFloatProperty $node, 'x'
         y             = getFloatProperty $node, 'y'
-        lineStyle     = getFloatProperty $node, 'lineStyle'
+        lineDashes    = convertLineDashes getFloatProperty $node, 'lineStyle'
         lineWeight    = getFloatProperty $node, 'lineWeight'
         layer         = getFloatProperty $node, 'layer'
         layerPosition = getFloatProperty $node, 'layerPosition'
@@ -367,13 +391,6 @@ parseMML = (mmlString) ->
         # Change all Boolean values to 0/1.
         visible = Number visible if visible?
         fence   = Number fence if fence?
-
-        lineDashes = switch
-              when lineStyle is 1 then '2,2'
-              when lineStyle is 2 then '4,4'
-              when lineStyle is 3 then '6,6'
-              when lineStyle is 4 then '2,4,8,4'
-              else 'none'
 
         if not x?
           x=20
@@ -424,9 +441,9 @@ parseMML = (mmlString) ->
         y             = getFloatProperty $node, 'y'
         x12           = getFloatProperty $node, 'x12'
         y12           = getFloatProperty $node, 'y12'
-        beginStyle    = getFloatProperty $node, 'beginStyle'
-        endStyle      = getFloatProperty $node, 'endStyle'
-        lineStyle     = getFloatProperty $node, 'style'
+        beginStyle    = convertArrowHead getFloatProperty $node, 'beginStyle'
+        endStyle      = convertArrowHead (getFloatProperty $node, 'endStyle'), true
+        lineDashes    = convertLineDashes getFloatProperty $node, 'style'
         lineWeight    = getFloatProperty $node, 'weight'
         layer         = getFloatProperty $node, 'layer'
         layerPosition = getFloatProperty $node, 'layerPosition'
@@ -437,13 +454,6 @@ parseMML = (mmlString) ->
         # Change all Boolean values to 0/1.
         visible = Number visible if visible?
         fence   = Number fence if fence?
-
-        lineDashes = switch
-              when lineStyle is 1 then '2,2'
-              when lineStyle is 2 then '4,4'
-              when lineStyle is 3 then '6,6'
-              when lineStyle is 4 then '2,4,8,4'
-              else 'none'
 
         if not x?
           x = 20

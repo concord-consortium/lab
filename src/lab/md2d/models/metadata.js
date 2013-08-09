@@ -572,10 +572,10 @@ define(function() {
       },
       // Optional properties:
       beginStyle: {
-        defaultValue: 0,
+        defaultValue: "none",
       },
       endStyle: {
-        defaultValue: 0,
+        defaultValue: "none",
       },
       fence: {
         defaultValue: 0,

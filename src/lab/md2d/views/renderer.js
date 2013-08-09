@@ -294,6 +294,34 @@ define(function(require) {
       gradients.createRadialGradient("orange-grad", "#F0E6D1", "#E0A21B", "#AD7F1C", mainContainer);
     }
 
+    function createCustomArrowHead(path){
+      if(!path||path=="none"){
+        return "none"
+      }
+      var defs,
+        id = "Arrowhead-" + path.toLowerCase().replace(/[^a-z0-9]/g,''),
+        arrowHead;
+      defs = mainContainer.select("defs");
+      if (defs.empty()) {
+        defs = mainContainer.append("defs");
+      }
+      arrowHead = defs.select("#" + id);
+      if(arrowHead.empty()){
+        arrowHead = defs.append("marker")
+          .attr("id", id)
+          .attr("viewBox", "0 0 10 10")
+          .attr("refX", "0")
+          .attr("refY", "5")
+          .attr("markerUnits", "strokeWidth")
+          .attr("markerWidth", "4")
+          .attr("markerHeight", "4")
+          .attr("orient", "auto");
+        arrowHead.append("path")
+          .attr("d", path);
+      }
+      return "url(#" + id + ")";
+    }
+
     function createVectorArrowHeads(color, name) {
       var defs,
         id = "Triangle-" + name,
@@ -773,6 +801,12 @@ define(function(require) {
         },
         "stroke": function(d, i) {
           return lines.visible[i] ? lines.lineColor[i] : "transparent";
+        },
+        "marker-start": function(d,i){
+          return createCustomArrowHead(lines.beginStyle[i]);
+        },
+        "marker-end": function(d,i){
+          return createCustomArrowHead(lines.endStyle[i]);
         }
       });
     }
@@ -2031,7 +2065,6 @@ define(function(require) {
 
       createSymbolImages();
       createImmutableGradients();
-
       // Register additional controls, context menus etc.
       // Note that special selector for class is used. Typical class selectors
       // (e.g. '.amino-acid') cause problems when interacting with SVG nodes.
