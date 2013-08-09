@@ -6,11 +6,14 @@
 AUTHORING = false;
 
 (function() {
+      // Default interactive aspect ratio.
+  var DEF_ASPECT_RATIO = 1.3,
 
-  var origin,
+      origin,
       embeddablePath,
       embeddableUrl,
       interactiveDescriptions,
+      descriptionByPath,
       interactives,
       groups,
       iframePhone,
@@ -80,6 +83,13 @@ AUTHORING = false;
       results = JSON.parse(results);
     }
     interactiveDescriptions = results;
+
+    descriptionByPath = {};
+    interactiveDescriptions.interactives.forEach(function (i) {
+      descriptionByPath[i.path] = i;
+    });
+    // Aspect ratios are now available, so it can affect container dimensions.
+    selectInteractiveSizeHandler();
   });
 
   // TODO: some of the Deferred, ajax call have no error handlers?
@@ -320,7 +330,7 @@ AUTHORING = false;
   function selectInteractiveSizeHandler() {
     var selection = $selectInteractiveSize.val(),
         dim,
-        aspectRatio = 1.3,
+        intAspectRatio = descriptionByPath && descriptionByPath[interactiveUrl].aspectRatio || DEF_ASPECT_RATIO,
         dimensions = {
           "tiny":   { height: "245px" },
           "small":  { height: "280px" },
@@ -328,11 +338,18 @@ AUTHORING = false;
           "large":  { width: "960px" }
         };
 
-    dimensions.tiny.width    = parseInt(dimensions.tiny.height, 10)   * aspectRatio + "px";
-    dimensions.small.width   = parseInt(dimensions.small.height, 10)  * aspectRatio + "px";
-    dimensions.medium.height = parseInt(dimensions.medium.width, 10) * 1/aspectRatio + "px";
-    dimensions.large.height   = parseInt(dimensions.large.width, 10)  * 1/aspectRatio + "px";
+    dimensions.tiny.width    = parseInt(dimensions.tiny.height, 10)   * DEF_ASPECT_RATIO + "px";
+    dimensions.small.width   = parseInt(dimensions.small.height, 10)  * DEF_ASPECT_RATIO + "px";
+    dimensions.medium.height = parseInt(dimensions.medium.width, 10) / DEF_ASPECT_RATIO + "px";
+    dimensions.large.height  = parseInt(dimensions.large.width, 10)  / DEF_ASPECT_RATIO + "px";
     dim = dimensions[selection];
+
+    if (intAspectRatio > DEF_ASPECT_RATIO) {
+      dim.width = parseInt(dim.height, 10) * intAspectRatio + "px";
+    } else {
+      dim.height = parseInt(dim.width, 10) / intAspectRatio + "px";
+    }
+
     saveOptionsToCookie();
     if (isFullPage()) {
       $content.width(dim.width).height(dim.height);
@@ -656,8 +673,14 @@ AUTHORING = false;
     if (!buttonHandlersAdded) {
       buttonHandlersAdded = true;
       $updateInteractiveButton.on('click', function() {
+        var aspectRatioChanged = false;
         try {
           interactive = JSON.parse(editor.getValue());
+          if (typeof interactive.aspectRatio !== "undefined") {
+            // Update aspect ratio.
+            descriptionByPath[interactiveUrl].aspectRatio = interactive.aspectRatio;
+            aspectRatioChanged = true;
+          }
         } catch (e) {
           alert("Interactive JSON syntax error: " + e.message);
           throw new Error("Interactive JSON syntax error: " + e.message);
@@ -669,6 +692,7 @@ AUTHORING = false;
           $interactiveTitle.text(interactive.title);
           $('#interactive-subtitle').text(interactive.subtitle);
         }
+        if (aspectRatioChanged) selectInteractiveSizeHandler();
       });
 
       $autoFormatInteractiveJsonButton.on('click', function() {
