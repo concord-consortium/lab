@@ -13,6 +13,7 @@
     "Set the wind speed to be **Low** and **High** and repeat steps 1-2, respectively."
   ],
   "importedFrom": "imports/energy2d/content-htb/S4C.html",
+  "aspectRatio": 1.5,
   "models": [
     {
       "type": "energy2d",

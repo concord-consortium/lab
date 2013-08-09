@@ -12,6 +12,7 @@
     "    thermal energy distribution. In the thermal energy view, you will see where the energy goes."
   ],
   "importedFrom": "imports/energy2d/content-htb/S3G.html",
+  "aspectRatio": 1.4,
   "models": [
     {
       "type": "energy2d",

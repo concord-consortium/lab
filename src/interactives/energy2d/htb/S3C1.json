@@ -16,6 +16,7 @@
     "1.  Run the model and note the temperatures measured by the two thermometers."
   ],
   "importedFrom": "imports/energy2d/content-htb/S3C.html",
+  "aspectRatio": 1.5,
   "models": [
     {
       "type": "energy2d",

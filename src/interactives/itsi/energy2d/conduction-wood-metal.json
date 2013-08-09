@@ -4,6 +4,7 @@
   "subtitle": "Thermal Conductivity: The Ability to Conduct Heat",
   "about": "Which conducts heat more quickly from a frying pan to your hand, a wood\nhandle or a metal one?\n\n![Skillet with a wood handle being heated over open\nflame.](_assets/img/skillet-conductivity-low.jpg) ![Skillet with a metal\nhandle being heated over open\nflame.](_assets/img/skillet-conductivity-high.jpg)\n{: align=\"center\"}\n\nThe following model compares heat conduction through two materials of\ndifferent thermal conductivities.\n\n",
   "importedFrom": "imports/energy2d/content/thermal-conductivity.html",
+  "aspectRatio": 1.5,
   "models": [
     {
       "type": "energy2d",

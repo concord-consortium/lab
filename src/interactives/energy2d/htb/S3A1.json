@@ -12,6 +12,7 @@
     "5.  In which material does heat flow the fastest?"
   ],
   "importedFrom": "imports/energy2d/content-htb/S3A.html",
+  "aspectRatio": 1.5,
   "models": [
     {
       "type": "energy2d",

@@ -10,6 +10,7 @@
     "Can you explain why? Is this different from the relationships for a pendulum? Try the",
     "damping slider. Does damping change the period?"
   ],
+  "aspectRatio": 1.6,
   "fontScale": 0.8,
   "models": [
     {

@@ -12,6 +12,7 @@
     "and up and down? Does the initial starting angle affect the patterns when all the",
     "other variables are unchanged?"
   ],
+  "aspectRatio": 1.4,
   "fontScale": 0.8,
   "models": [
     {

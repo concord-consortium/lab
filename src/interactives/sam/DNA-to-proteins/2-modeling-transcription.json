@@ -2,6 +2,7 @@
   "title": "Modeling Transcription",
   "publicationStatus": "public",
   "subtitle": "Explore how an mRNA copy is made of DNA.",
+  "aspectRatio": 1.2,
   "about": [
     "One strand of the DNA is used as a template to create an mRNA copy. This process is called transcription. An mRNA copy needs to be made because DNA cannot leave the nucleus.",
     "",

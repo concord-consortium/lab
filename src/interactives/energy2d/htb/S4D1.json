@@ -10,6 +10,7 @@
     "3.  Note the convection pattern in each situation."
   ],
   "importedFrom": "imports/energy2d/content-htb/S4D.html",
+  "aspectRatio": 1.0,
   "models": [
     {
       "type": "energy2d",

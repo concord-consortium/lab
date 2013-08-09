@@ -13,6 +13,7 @@
     "change. Which has a greater effect on equilibrium -- changing the number of gas molecules",
     "or changing the temperature? Why?"
   ],
+  "aspectRatio": 1.9,
   "models": [
     {
       "type": "md2d",

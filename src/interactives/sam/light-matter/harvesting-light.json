@@ -3,6 +3,7 @@
   "publicationStatus": "draft",
   "subtitle": "Different colored leaves absorb, reflect, and transmit different photons. Is the light that a leaf absorbs the same color as the leaf?",
   "about": "Different colored leaves absorb, reflect, and transmit different photons. Is the light that a leaf absorbs the same color as the leaf?",
+  "aspectRatio": 1.0,
   "models": [
     {
       "type": "md2d",

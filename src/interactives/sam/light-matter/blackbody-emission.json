@@ -3,6 +3,7 @@
   "publicationStatus": "draft",
   "subtitle": "Blackbody radiation at different temperatures",
   "about": "",
+  "aspectRatio": 1.7,
   "models": [
     {
       "type": "md2d",

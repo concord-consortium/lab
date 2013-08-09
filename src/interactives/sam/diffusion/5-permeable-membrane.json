@@ -9,6 +9,7 @@
     "",
     "Set up the model with high oxygen and low carbon dioxide outside the cell and low oxygen and high carbon dioxide inside the cell. In which direction do the oxygen and carbon dioxide molecules move?"
   ],
+  "aspectRatio": 1.6,
   "fontScale": 0.8,
   "models": [
     {

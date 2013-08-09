@@ -10,6 +10,7 @@
     "Use the tools on the sides of the model to more accurately represent the experiment. ",
     "Use tools to heat and cool the molecules where it is appropriate. "
   ],
+  "aspectRatio": 1.7,
   "models": [
     {
       "type": "md2d",

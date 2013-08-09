@@ -3,6 +3,7 @@
   "publicationStatus": "draft",
   "subtitle": "Explore how size and number of particles affect diffusion among gases.",
   "about": "Modify the model by adding and arranging molecules in order to explore how diffusion works.",
+  "aspectRatio": 1.5,
   "models": [
     {
       "type": "md2d",

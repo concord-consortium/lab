@@ -2,6 +2,7 @@
   "title": "Molecular View of a Liquid",
   "publicationStatus": "public",
   "subtitle": "Explore how molecules in a liquid move.",
+  "aspectRatio": 1.2,
   "about": [
     "Molecules are in constant motion. \"Mark two atoms,\" then run the model to see",
     "how the molecules in a liquid move relative to each other. How does the movement",

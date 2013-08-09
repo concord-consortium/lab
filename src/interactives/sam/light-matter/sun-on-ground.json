@@ -3,6 +3,7 @@
   "publicationStatus": "draft",
   "subtitle": "Explore how light interacts with both the ground and CO2",
   "about": "",
+  "aspectRatio": 1.7,
   "fontScale": 0.8,
   "models": [
     {
