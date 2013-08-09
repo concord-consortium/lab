@@ -757,13 +757,13 @@ define(function(require) {
           return model2px(lines.x1[i]);
         },
         "y1": function(d, i) {
-          return model2px(lines.y1[i]);
+          return model2pxInv(lines.y1[i]);
         },
         "x2": function(d, i) {
           return model2px(lines.x2[i]);
         },
         "y2": function(d, i) {
-          return model2px(lines.y2[i]);
+          return model2pxInv(lines.y2[i]);
         },
         "stroke-width": function(d, i) {
           return lines.lineWeight[i];

@@ -431,7 +431,7 @@ parseMML = (mmlString) ->
         layer         = getFloatProperty $node, 'layer'
         layerPosition = getFloatProperty $node, 'layerPosition'
         visible       = getBooleanProperty $node, 'visible'
-        fence         = getBooleanProperty $node, 'reflection'
+        fence         = getBooleanProperty $node, 'reflector'
         lineColor     = getColorProperty getNode $node.find "[property=color]>object"
 
         # Change all Boolean values to 0/1.
@@ -461,8 +461,8 @@ parseMML = (mmlString) ->
         y2 = y - y12 / 2
 
         # Unit conversion.
-        [x1, y1]          = toNextgenLengths x1, y1
-        [x2, y2]          = toNextgenLengths x2, y2
+        [x1, y1]          = toNextgenCoordinates x1, y1
+        [x2, y2]          = toNextgenCoordinates x2, y2
 
         rawData = {
           x1, y1,

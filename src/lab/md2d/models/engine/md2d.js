@@ -1385,7 +1385,7 @@ define(function (require, exports) {
               br *= br;
               if (tx + ty <= 1 && tx_prev + ty_prev > 1 || tx * ar + ty * br >= 1 && tx_prev * ar + ty_prev * br < 1) {
 
-                //Calculate the two foci
+                // Calculate the two foci
                 if (shapeWidth[j] > shapeHeight[j]) {
                   c = Math.sqrt(a * a - b * b);
                   f1x = shapeX[j] + a + c;
@@ -1406,15 +1406,15 @@ define(function (require, exports) {
 
                 // Determine the distance from the point of collision
                 // to both foci
-                f1d = Math.sqrt((f1x - mx) * (f1x - mx) + (f1y - my) * (f1y - my));
-                f2d = Math.sqrt((f2x - mx) * (f2x - mx) + (f2y - my) * (f2y - my));
+                f1d = Math.sqrt(sumSquare(f1x - mx, f1y - my));
+                f2d = Math.sqrt(sumSquare(f2x - mx, f2x - mx));
 
                 // Calculate the angle bisector which is the normal vector
                 nx = mx - (f1x * f2d + f2x * f1d) / (f1d + f2d);
                 ny = my - (f1y * f2d + f2y * f1d) / (f1d + f2d);
 
                 // Normalize the normal vector
-                nd = Math.sqrt(nx * nx + ny * ny);
+                nd = Math.sqrt(sumSquare(nx, ny));
                 nx /= nd;
                 ny /= nd;
 
@@ -1432,8 +1432,67 @@ define(function (require, exports) {
           }
         },
 
-        bounceParticleOffLines = function(i) {
-            // TODO: Needs to be written.
+        bounceParticleOffLines = function(i, x_prev, y_prev) {
+          // fast path if no lines
+          if (N_lines < 1) return;
+
+          var r,
+              x1,
+              y1,
+              ld,
+              atom1_to_line,
+              atom2_to_line,
+              line1_to_atom,
+              line2_to_atom,
+              mx,my,
+              nx,ny,nd,
+              tvx,tvy;
+
+          r = radius[i];
+          xi = x[i];
+          yi = y[i];
+
+          for (j = 0; j < N_lines; j++) {
+            if (!lineFence[j])
+              continue;
+
+            // Find a bunch of cross products to check collision
+            line1_to_atom = cross(x_prev - lineX1[j], y_prev - lineY1[j], xi - lineX1[j], yi - lineY1[j]);
+            line2_to_atom = cross(x_prev - lineX2[j], y_prev - lineY2[j], xi - lineX2[j], yi - lineY2[j]);
+            if (line1_to_atom * line2_to_atom < 0) {
+              ld = Math.sqrt(sumSquare(lineX1[j] - lineX2[j], lineY1[j] - lineY2[j]));
+              atom1_to_line = cross(lineX2[j] - x_prev, lineY2[j] - y_prev, lineX1[j] - x_prev, lineY1[j] - y_prev);
+              atom2_to_line = cross(lineX2[j] - xi, lineY2[j] - yi, lineX1[j] - xi, lineY1[j] - yi);
+              if ((atom1_to_line < 0 && atom2_to_line > -r*ld || atom1_to_line > 0 && atom2_to_line < r*ld) &&
+                   atom1_to_line * line1_to_atom > 0) {
+                // Collision!
+
+                // Determine the midpoint of the atom's motion path
+                // so it can be used as an approximate point of collision
+                mx = (xi + x_prev) / 2;
+                my = (yi + y_prev) / 2;
+
+                // Caclulate the normal vector (just perpendicular to the line)
+                nx = lineY2[j] - lineY1[j];
+                ny = -(lineX2[j] - lineX1[j]);
+
+                // Normalize the normal vector
+                nd = Math.sqrt(sumSquare(nx, ny));
+                nx /= nd;
+                ny /= nd;
+
+                // Reflect the atom's position off the normal vector
+                x[i] = (mx - x_prev) - 2 * ((mx - x_prev) * nx + (my - y_prev) * ny) * nx + mx;
+                y[i] = (my - y_prev) - 2 * ((mx - x_prev) * nx + (my - y_prev) * ny) * ny + my;
+
+                // Reflect the atom's velocity off the normal vector
+                tvx = vx[i]
+                tvy = vy[i]
+                vx[i] = (tvx - 2 * (tvx * nx + tvy * ny) * nx);
+                vy[i] = (tvy - 2 * (tvx * nx + tvy * ny) * ny);
+              }
+            }
+          }
         },
 
         // ####################################################################
@@ -1449,7 +1508,7 @@ define(function (require, exports) {
               elJ = element[j],
               dx  = x[j] - x[i],
               dy  = y[j] - y[i],
-              rSq = dx * dx + dy * dy,
+              rSq = sumSquare(dx, dy),
               fOverR, fx, fy;
 
           if (updateNeighborList && rSq < cutoffNeighborListSquared[elI][elJ]) {
@@ -2050,6 +2109,8 @@ define(function (require, exports) {
             bounceParticleOffObstacles(i, xPrev, yPrev, true);
             // Bounce off shapes
             bounceParticleOffShapes(i, xPrev, yPrev);
+            // Bounce off lines
+            bounceParticleOffLines(i, xPrev, yPrev);
           }
         },
 
